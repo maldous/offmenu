@@ -2975,6 +2975,59 @@ class CurrentDispatchTests(unittest.TestCase):
             asyncio.run(self.turn(native,issue,runtime))
         self.assertEqual(mocked.call_count,1)
 
+    def test_owned_turn_private_exclusive_intent_under_permissive_umask(self):
+        from stokowski_completed import pinned
+        issue, runtime = self.qualify(138)
+        native, _, _ = self.adapted()
+        context = self.current.context(issue.identifier)
+        manifest = context[1]
+        task = manifest['tasks'][issue.identifier]
+        request = adapter.read_record(runtime/'requests'/(issue.identifier+'.json'))
+        binding = dict(branch=manifest['branch'], head=manifest['base_revision'],
+            owner=task['owner'], write_roots=task['allowed_paths'], resources=task['resources'],
+            task_sha256=adapter.digest(dict(runtime=str(runtime), manifest=manifest, request=request)))
+        lease = runtime_lease_ids(runtime, manifest)[issue.identifier]
+        directory = runtime/'attempts'/issue.identifier
+        intent = directory/'dispatch-intent.json'
+        captured = []
+
+        async def spawn(*args, **kwargs):
+            self.assertEqual(intent.stat().st_mode & 0o7777, 0o600)
+            captured.append(intent.read_bytes())
+            dispatch = pinned(dict(path=str(intent), sha256=adapter.file_sha(intent)), self.root)
+            self.assertEqual(dispatch, dict(entry_sha256=adapter.digest(self.entries[-1]),
+                request_sha256=adapter.file_sha(runtime/'requests'/(issue.identifier+'.json')),
+                manifest_sha256=adapter.file_sha(runtime/'manifest.json'),
+                provider_proof_sha256=adapter.file_sha(runtime/'provider-proof.json'),
+                expected_lease=lease, owner=self.current.config['owner'], pid=os.getpid()))
+            # Synthetic stopped worker evidence; the dispatch artifact is exclusively
+            # produced above by owned_turn, never by this fixture.
+            self.write(directory/'intent.json', dict(binding=binding, lease=lease))
+            self.write(directory/'receipt.json', dict(issue=issue.identifier, lease=lease,
+                binding_sha256=adapter.digest(binding), status='succeeded',
+                child_tree_gone=True, accepted_delivery=False))
+            return SimpleNamespace(pid=98765, returncode=0, communicate=AsyncMock())
+
+        previous_umask = os.umask(0o002)
+        try:
+            with patch.object(adapter.asyncio, 'create_subprocess_exec', side_effect=spawn) as mocked:
+                self.assertEqual(asyncio.run(self.turn(native, issue, runtime)).status, 'succeeded')
+                qualified = self.current.gate_binding(issue)
+                self.assertEqual(qualified['native_receipt_sha256'], adapter.file_sha(directory/'receipt.json'))
+                with self.assertRaises(AdmissionError):
+                    asyncio.run(self.turn(native, issue, runtime))
+                # Retain normal admission above, then isolate the exclusive-create
+                # barrier itself using the same previously qualified synthetic context.
+                with patch.object(self.current, 'context', return_value=context):
+                    with self.assertRaises(FileExistsError):
+                        asyncio.run(self.turn(native, issue, runtime))
+                self.assertEqual(mocked.call_count, 1)
+                self.assertEqual(intent.read_bytes(), captured[0])
+                self.assertEqual(intent.stat().st_mode & 0o7777, 0o600)
+                self.assertFalse((self.temp/'pool').exists())
+        finally:
+            os.umask(previous_umask)
+
     def test_worker_intent_receipt_and_lease_are_barriers_even_without_request_effect(self):
         issue, runtime = self.qualify(211)
         for name in ('intent.json','receipt.json'):
