@@ -1,5 +1,24 @@
 # OffMenu local curation and static delivery
 
+Latest expansion, 13 October 2026: **`expanded-country-search-20261013` is live**
+with **22,519,902 curated records from 18 sources**. Added the complete Overture
+food-place selection (12,681,108 references), Finland (4,238 composition foods),
+New Zealand (2,857) and Sweden (2,606). Country/type indexes cover every search
+entry; all 18 source examples and large/default/text-filtered country pagination
+passed through the live Worker. Full licence notices and the prior accepted
+static release are retained. 115 JavaScript tests, 26 Python tests and build pass.
+Runtime matches tested source `f3f42f6403762193ec451d5312b3044d943c8d9b`;
+private state and vault binding remain unchanged, public D1 replicas remain zero.
+Finland's additional 2,032 recipe formulae and 27,536 diet assertions are normalized
+and exercised locally; cooking/serving and qualification review is still required.
+The 249-country report records accepted tagged facts in 243 queues, with six
+explicit gaps. Source assertions do not establish complete country coverage,
+ownership, inventory or verified diet qualification. See
+[18-source execution evidence](expanded-places-national-20261013.json) and
+[collection scope and notices](places-national-expansion.md). This supersedes the
+older delivery checkpoints below.
+
+
 Latest expanded execution, 13 October 2026: `expanded-world-20261013` is live
 with 9,829,099 curated records from 14 sources. Complete local collections now
 include eight added national composition tables (AU, FR, GB, DE, NO, DK, CA, JP),

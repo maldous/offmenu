@@ -2,7 +2,8 @@
 
 This checkpoint adds complete pinned Overture place acquisition and the complete
 publisher downloads for Finland, New Zealand and Sweden. Serving acceptance and
-live deployment evidence are recorded in `expanded-places-national-20261013.json`.
+live deployment evidence are recorded in `expanded-places-national-20261013.json`. The serving release is
+`expanded-country-search-20261013`, including checked country/type indexes.
 
 | Source | Complete local scope | Accepted curated records |
 |---|---|---:|
@@ -58,3 +59,5 @@ separate source version, not included in this snapshot.
 require source/version attribution and unchanged values. The export itself names
 version 2026-07-01. Recipe-derived composition entries provide nutrient references,
 not quantified cooking instructions.
+
+The complete Finnish reference tables are also normalized locally: 11,138 ingredient-component rows form 2,032 recipe formulae, and 27,536 dietary flags remain unreviewed source assertions. All 29,568 records passed structural and recipe-review consumer checks. Serving yield remains unknown, source cooking-factor fields are preserved, and no recipe became automatically eligible for planning. These tables are separate from the hosted nutrient profiles and require recipe/qualification review.

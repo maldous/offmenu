@@ -1,0 +1,58 @@
+[
+  {
+    "key": "nz-foodfiles-2024.msi",
+    "url": "https://foodcomposition.co.nz/downloads/foodfiles-2024-v1.msi",
+    "bytes": 48361472,
+    "sha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+    "contentType": "application/octet-stream"
+  },
+  {
+    "key": "nz-manual-2024.pdf",
+    "url": "https://foodcomposition.co.nz/downloads/new-zealand-food-composition-database-2024-data-manual.pdf",
+    "bytes": 1528600,
+    "sha256": "ee5f4968bdc0cc924cf0658f0b23d71a67865721590e1fbc3969e8b8a0ec88ac",
+    "contentType": "application/pdf"
+  },
+  {
+    "key": "fineli-basic2.zip",
+    "url": "https://fineli.fi/fineli/content/file/49",
+    "bytes": 1954388,
+    "sha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+    "method": "Official browser download; terminal request forbidden"
+  },
+  {
+    "key": "sweden-20260701.xlsx",
+    "url": "https://soknaringsinnehall.livsmedelsverket.se/Spara/HamtaHelaDatabasen",
+    "method": "Publisher full-database export POST",
+    "bytes": 678355,
+    "sha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569"
+  },
+  {
+    "key": "fineli-basic1.zip",
+    "url": "https://fineli.fi/fineli/content/file/47",
+    "bytes": 1546008,
+    "sha256": "0d5dc65699a82c5018e58d6f35ee4681cee54081d25621ed4098bdfd86416e13",
+    "method": "Official browser download"
+  },
+  {
+    "key": "fineli-ingredients.zip",
+    "url": "https://fineli.fi/fineli/content/file/48",
+    "bytes": 469764,
+    "sha256": "285d4e80b5b36a8aee19256cd078fd74481994dc7173e6040f09c498848b6985",
+    "method": "Official browser download"
+  },
+  {
+    "key": "fineli-data-instructions.pdf",
+    "url": "https://fineli.fi/fineli/content/file/7",
+    "bytes": 73601,
+    "sha256": "691da5d60d3dba5f1ea560b33ce1d375645f7c2ba3dde530f1d599594c648268",
+    "method": "Official browser download"
+  },
+  {
+    "key": "fineli-components.pdf",
+    "url": "https://fineli.fi/fineli/content/file/10",
+    "bytes": 177115,
+    "sha256": "0ee1ff133f4cb42ec8c406289fd86c56a9c18da1e9ff84d70a1cf97baa486506",
+    "method": "Official browser download"
+  }
+]
