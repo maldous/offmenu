@@ -5,6 +5,9 @@ review decisions and provenance references can enter the hosted release.
 """
 import hashlib
 import math
+import json
+from pathlib import Path
+COUNTRY_CODES = frozenset(c["iso2"] for c in json.loads((Path(__file__).resolve().parents[1] / "docs/country-delivery-matrix.json").read_text())["countries"])
 
 METRICS = {'energy': 'kcal', 'energyKJ': 'kJ', 'protein': 'g', 'carbohydrate': 'g',
            'fat': 'g', 'sugars': 'g', 'addedSugars': 'g', 'freeSugars': 'g', 'fibre': 'g',
@@ -29,7 +32,7 @@ def curate(rows, policy_version):
         common = {'schemaVersion': '1.0', 'id': ids[row['id']], 'kind': kind,
                   'countries': row.get('countries', []),
                   'provenance': {key: provenance.get(key) for key in
-                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId', 'limitationStatement', 'countryNotice', 'changes', 'rights'] if provenance.get(key) is not None},
+                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId', 'limitationStatement', 'countryNotice', 'changes', 'rights', 'licenseNotices', 'copyright'] if provenance.get(key) is not None},
                   'curation': {'schema': 'offmenu-curation/1', 'policyVersion': policy_version,
                      'sourceRecordReference': row['id'], 'status': 'selected-source-facts',
                      'humanReviewed': False, 'automaticDietQualification': False,
@@ -83,6 +86,15 @@ def curate(rows, policy_version):
         elif kind == 'sourceAssertion' and source == 'dietary-guidelines':
             projected = {key: data.get(key) for key in ['name', 'referenceType', 'referenceUrl', 'directoryUrl', 'reviewStatus', 'contentPermission', 'qualificationStatus']}
             common['curation']['status'] = 'discovery-reference'
+        elif kind in ('retailer', 'site') and source == 'overture-food-places':
+            projected = {key: data.get(key) for key in ['name', 'names', 'identifiers', 'role', 'taxonomy', 'basicCategory', 'locations', 'countryBasis', 'sourceReportedOperatingStatus', 'existenceConfidence', 'sourceProviders', 'sourceLicenses', 'sourceVersion']}
+            source_country_tags = row.get('countries', [])
+            common['countries'] = sorted({('GB' if code == 'UK' else code) for code in source_country_tags if ('GB' if code == 'UK' else code) in COUNTRY_CODES})
+            projected['sourceCountryTags'] = source_country_tags
+            projected['countryMappingStatus'] = 'unallocated-source-tags-retained' if any(('GB' if code == 'UK' else code) not in COUNTRY_CODES for code in source_country_tags) else 'source-code-in-project-registry'
+            projected.update(inventoryAvailability='unknown', ownershipVerified=False, dietQualification='unknown', reviewStatus='source-reference-unreviewed')
+            common['curation']['status'] = 'place-reference'
+            common['provenance']['licenseNotices'] = ['https://offmenu-corpus.netlify.app/notices/' + source + '/' + str(provenance['releaseId']) + '/' + name for name in provenance.get('licenseNotices', [])]
         elif kind == 'recipe':
             # Discovery references are OffMenu's curation; the complete source
             # recipe, wording and inferred quantities are retained only locally.

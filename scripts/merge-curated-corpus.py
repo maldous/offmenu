@@ -61,14 +61,22 @@ def merge(inputs,output,version):
   dest=output/key;dest.parent.mkdir(parents=True,exist_ok=True)
   with gzip.open(dest,'wt',encoding='utf8',compresslevel=1) as f:
    for term in sorted(index):f.write(json.dumps([term,index[term]],ensure_ascii=False,separators=(',',':'))+'\n')
- manifest={k:v for k,v in first.items() if k not in ['manifestSha256','curatedAcceptance','files','sources','releaseId','completedAt','records','entries','entryPages']}
+ manifest={k:v for k,v in first.items() if k not in ['notices','manifestSha256','curatedAcceptance','files','sources','releaseId','completedAt','records','entries','entryPages']}
+ notices={}
+ for i,(root,m) in enumerate(zip(inputs,manifests)):
+  for item in m.get('notices',[]):
+   if winners.get(item['sourceId'])!=i:continue
+   original=(root/item['key']).resolve()
+   if not original.is_relative_to(root.resolve()) or sha(original)!=item['sha256'] or original.stat().st_size!=item['bytes']:raise ValueError('Licence document mismatch')
+   destination=output/item['key'];destination.parent.mkdir(parents=True,exist_ok=True);os.link(original,destination);notices[item['key']]=item
+ manifest['notices']=list(notices.values())
  manifest['curationPolicy']={**first['curationPolicy'],'publicSources':sorted(set(s for m in manifests for s in m['curationPolicy']['publicSources']))}
  manifest.update(releaseId=version,sources=sources,records=sum(s['records'] for s in sources.values()),entries=sum(s['bundles'] for s in sources.values()),entryPages=pages_count,completedAt=datetime.now(timezone.utc).isoformat(),mergedReleaseIds=[m['releaseId'] for m in manifests],files=[{'key':str(p.relative_to(output)),'bytes':p.stat().st_size,'sha256':sha(p)} for p in sorted(output.rglob('*.gz'))]);source_count=sum(len(m['sources']) for m in manifests)
  if len(winners)==source_count and all(m.get('curatedAcceptance',{}).get('status')=='all-curated-records-exercised' for m in manifests):
   accepted=[m['curatedAcceptance'] for m in manifests]
   if any(a['records']!=m['records'] for a,m in zip(accepted,manifests)):raise ValueError('Input acceptance count mismatch')
   acceptance={'status':'all-curated-records-exercised','releaseId':version,'rawSourcePayloadPublished':False,'independentlyAccepted':False,'method':'Composition of individually exercised immutable source files; every source-file checksum revalidated by merger.','limitation':'Structural and synthetic consumer checks do not establish independently reviewed food identity or dietary qualification.','completedAt':manifest['completedAt'],'countryRecordCounts':{}}
-  for key in ['records','profiles','planningExercises','recipeReferences','prices','organizationReferences','guidelineReferences']:acceptance[key]=sum(a.get(key,0) for a in accepted)
+  for key in ['records','profiles','planningExercises','recipeReferences','prices','organizationReferences','guidelineReferences','retailerReferences','siteReferences']:acceptance[key]=sum(a.get(key,0) for a in accepted)
   for a in accepted:acceptance['countryRecordCounts'].update(a.get('countryRecordCounts',{}))
   manifest['curatedAcceptance']=acceptance
  manifest['manifestSha256']=hashlib.sha256(json.dumps(manifest,separators=(',',':')).encode()).hexdigest();(output/'manifest.json').write_text(json.dumps(manifest,separators=(',',':'))+'\n');print(json.dumps({'release':version,'sources':list(sources),'records':manifest['records'],'files':len(manifest['files'])}),flush=True)

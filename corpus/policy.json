@@ -15,7 +15,11 @@
     "wikidata-food-businesses",
     "dietary-guidelines",
     "cnf",
-    "mext"
+    "mext",
+    "overture-food-places",
+    "fineli",
+    "foodfiles",
+    "sweden-food"
   ],
   "privateKinds": [
     "healthObservation",

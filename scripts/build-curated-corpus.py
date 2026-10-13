@@ -165,6 +165,18 @@ def compile_release(directories, output, version, policy_path):
         records.close()
         if count != expected:
             raise ValueError('Full source reconciliation failed: ' + source)
+        for notice in upstream.get('licenseDocuments', []):
+            name = notice['key']
+            if not re.fullmatch(r'[-A-Za-z0-9.]+\.txt', name):
+                raise ValueError('Unsupported licence document name')
+            original = directory / 'licenses' / name
+            if digest(original) != notice['sha256'] or original.stat().st_size > 256 * 1024:
+                raise ValueError('Licence document checksum/size mismatch')
+            key = 'notices/' + source + '/' + str(upstream['releaseId']) + '/' + name
+            destination = blobs / key
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(original.read_bytes())
+            manifest.setdefault('notices', []).append({'sourceId': source, 'key': key, 'bytes': destination.stat().st_size, 'sha256': digest(destination), 'sourceUrl': notice['sourceUrl']})
         manifest['sources'][source] = {'sourceId': source, 'releaseId': upstream.get('releaseId', directory.name),
             'records': curated_count, 'normalizedLocalRecords': count, 'withheldRecords': count - curated_count,
             'withheldReasons': dict(withheld_reasons), 'bundles': bundles, 'recordShardLength': record_shard_length, 'entryRange': [start, next_id],

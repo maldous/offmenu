@@ -34,6 +34,18 @@ class ProjectionTests(unittest.TestCase):
         self.assertEqual(projected[0]['data']['contentPermission'], 'holder permission required')
         self.assertFalse(projected[0]['curation']['automaticDietQualification'])
 
+    def test_place_country_aliases_do_not_allocate_unsupported_source_tags(self):
+        row = record('retailer', 'overture-food-places', {'name': 'Shop', 'inventoryAvailability': 'in-stock', 'ownershipVerified': True})
+        row['countries'] = ['UK', 'XK']
+        row['provenance']['releaseId'] = 'release'
+        row['provenance']['licenseNotices'] = ['Apache-2.0.txt']
+        projected, _ = projection.curate([row], '1')
+        self.assertEqual(projected[0]['countries'], ['GB'])
+        self.assertEqual(projected[0]['data']['sourceCountryTags'], ['UK', 'XK'])
+        self.assertEqual(projected[0]['data']['inventoryAvailability'], 'unknown')
+        self.assertFalse(projected[0]['data']['ownershipVerified'])
+        self.assertIn('notices/overture-food-places/release/Apache-2.0.txt', projected[0]['provenance']['licenseNotices'][0])
+
     def test_national_composition_retains_required_derivative_notices(self):
         row = record('nutrientProfile', 'afcd', {'foodName': 'Food', 'basis': {'amount': 100, 'unit': 'g'},
                      'nutrients': {'protein': {'value': 3, 'unit': 'g'}}})

@@ -14,7 +14,7 @@ if(manifest.status!=='normalized')throw Error('Reconciled normalized release req
 const files=manifest.partitions?.map(p=>p.key)||['normalized.jsonl.gz'];
 const result={source:manifest.sourceId,release:manifest.releaseId||directory.split('/').pop(),records:0,
  profiles:0,planningExercises:0,reviewableRecipes:0,recipesWithoutIngredients:0,prices:0,
- missingPriceAmount:0,missingCurrency:0,missingPriceDate:0,negativePriceAmount:0,
+ missingPriceAmount:0,missingCurrency:0,missingPriceDate:0,negativePriceAmount:0,retailerReferences:0,siteReferences:0,
  knownMetrics:Object.fromEntries(NUTRIENTS.map(([k])=>[k,0])),errors:[],status:'running',
  limitation:'Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy'};
 const recipe={id:'exercise',title:'Synthetic source-basis exercise',servings:1,ingredients:[{ingredient:'source-food',quantity:100,unit:'g'}]};
@@ -35,6 +35,9 @@ for(const file of files){
    }else if(r.kind==='recipe'){
     if(!r.data.ingredients?.length){result.recipesWithoutIngredients++;continue;}
     const review=recipeForReview(r);if(quantified(review))throw Error('Unreviewed source recipe became automatic');result.reviewableRecipes++;
+   }else if(['retailer','site'].includes(r.kind)&&r.provenance.sourceId==='overture-food-places'){
+    if(r.data.inventoryAvailability!=='unknown'||r.data.ownershipVerified!==false||r.data.dietQualification!=='unknown')throw Error('Place reference invented inventory, ownership or diet qualification');
+    if(r.kind==='retailer')result.retailerReferences++;else result.siteReferences++;
    }else if(r.kind==='priceObservation'){
     result.prices++;const d=r.data;
     if(d.amount==null)result.missingPriceAmount++;else if(!Number.isFinite(d.amount))throw Error('Non-finite price '+r.id);else if(d.amount<0)result.negativePriceAmount++;
