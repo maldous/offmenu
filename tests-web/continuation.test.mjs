@@ -107,3 +107,6 @@ test('public enrichment caches only within unchanged source policy and denies wi
 
 import {generateHouseholdDay} from '../public/household-model.js';
 test('automatic planning withholds menus with unresolved strict dietary evidence',()=>{const member={id:'a',name:'A',portion:1,advisors:[],restrictions:[{type:'allergy',term:'peanut'}]};assert.equal(generateHouseholdDay([recipe],raw,{},[member],'2026-10-13').length,0);});
+
+import handler from '../cloud/handler.mjs';
+test('the full Worker dispatcher reaches public enrichment instead of catalogue 404',async()=>{const {env}=database(),original=globalThis.fetch;globalThis.fetch=async()=>Response.json({data:[]});try{const r=await handler.fetch(request('/api/catalogue/enrich?source=gleif&query=Example'),env);assert.equal(r.status,200);assert.equal((await r.json()).cache,'miss');}finally{globalThis.fetch=original;}});
