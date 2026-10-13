@@ -37,14 +37,15 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntrie
    if(!Number.isSafeInteger(decoded.offset)||decoded.offset<0)throw Error('Invalid cursor');offset=decoded.offset;
   }
   let candidates=null;
-  if(country&&definition.countryIndex&&!barcode&&!query.trim()){
-   const text=await read(`countries/${source}/${country}-${kind||'all'}.json.gz`);
-   candidates=text?JSON.parse(text):[];
-  }
   if(barcode)candidates=await posting('barcodes',barcode,source,read);
   // Unicode words: JS \w is ASCII, so use explicit letters/numbers for search.
   const unicodeTerms=[...new Set(norm(query).match(/[\p{L}\p{N}]+/gu)||[])];
   for(const term of unicodeTerms){const found=await posting('terms',term,source,read);if(candidates===null)candidates=found;else{const set=new Set(found);candidates=candidates.filter(id=>set.has(id));}if(!candidates.length)break;}
+  if(country&&definition.countryIndex){
+   const text=await read(`countries/${source}/${country}-${kind||'all'}.json.gz`),found=text?JSON.parse(text):[];
+   if(candidates===null)candidates=found;
+   else{const intersection=[];let i=0,j=0;while(i<candidates.length&&j<found.length){if(candidates[i]===found[j]){intersection.push(candidates[i]);i++;j++;}else if(candidates[i]<found[j])i++;else j++;}candidates=intersection;}
+  }
   const [start,end]=definition.entryRange,total=candidates?.length??end-start;
   if(offset>total)throw Error('Cursor outside collection');
   const pages=new Map(),selected=[],recordShards=new Set();let examined=0;
