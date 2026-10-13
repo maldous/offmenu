@@ -1,5 +1,15 @@
 # OffMenu local curation and static delivery
 
+Latest recovery outcome: Workers Paid was activated with the user's explicit
+approval ($5/month plus usage). OffMenu now has a 10,000 ms CPU ceiling.
+Default and oversized live queries passed pagination checks across the published
+three-source curation after activation. The prior CPU/plan blocker is resolved.
+OFF recovery also completed: 4,807,663 raw rows reconcile to 4,807,217 accepted,
+61 duplicates and 385 quarantined; all 9,614,434 normalized records passed the
+consumer exercise. OFF remains local, outside the currently published release.
+See `recovery-2026-10-13.json` for current evidence; earlier notes below retain
+the investigation history.
+
 Recovery update, 13 October 2026: the repository and authenticated deployment
 are restored. The three-source static curation is live on Netlify and enabled in
 the Worker. Residual public D1 rows and raw caches are zero; the private account

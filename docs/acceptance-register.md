@@ -1,5 +1,15 @@
 # OffMenu acceptance register
 
+Latest recovery outcome: Workers Paid was activated with the user's explicit
+approval ($5/month plus usage). OffMenu now has a 10,000 ms CPU ceiling.
+Default and oversized live queries passed pagination checks across the published
+three-source curation after activation. The prior CPU/plan blocker is resolved.
+OFF recovery also completed: 4,807,663 raw rows reconcile to 4,807,217 accepted,
+61 duplicates and 385 quarantined; all 9,614,434 normalized records passed the
+consumer exercise. OFF remains local, outside the currently published release.
+See `recovery-2026-10-13.json` for current evidence; earlier notes below retain
+the investigation history.
+
 ## Recovered local execution — 13 October 2026
 
 Current evidence is in `recovery-2026-10-13.json`; older checkpoints below are historical.

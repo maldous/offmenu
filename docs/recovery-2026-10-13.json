@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-13T06:15:21.499106+00:00",
+  "checkedAt": "2026-10-13T06:33:19.040428+00:00",
   "sourceCommit": "f9fec058ed8607f2a3bd7f84de81d1fd54fe7593",
-  "deploymentId": "9b9aed47-288a-4872-9179-87da7d501de2",
-  "workerVersion": "99aceeeb-6101-46a3-9d14-b654b287b634",
+  "deploymentId": "672480b0-e2af-4b9c-bfd2-48818651820e",
+  "workerVersion": "111c5bae-8f45-4003-8276-4f7b7a0c46e9",
   "bindings": [
     "DB",
     "PROVIDER_VAULT_KEY",
@@ -147,6 +147,39 @@
       "status": "all normalized records structurally exercised",
       "limitation": "Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy",
       "completedAt": "2026-10-13T05:20:51.127Z"
+    },
+    "off": {
+      "source": "off",
+      "release": "2026-10-12",
+      "records": 9614434,
+      "profiles": 4807217,
+      "planningExercises": 4807217,
+      "reviewableRecipes": 0,
+      "recipesWithoutIngredients": 0,
+      "prices": 0,
+      "missingPriceAmount": 0,
+      "missingCurrency": 0,
+      "missingPriceDate": 0,
+      "negativePriceAmount": 0,
+      "knownMetrics": {
+        "energy-kcal_100g": 972192,
+        "proteins_100g": 970143,
+        "carbohydrates_100g": 971461,
+        "fat_100g": 969075,
+        "sugars_100g": 870932,
+        "salt_100g": 832167,
+        "sodium_mg_100g": 832171,
+        "saturated-fat_100g": 833243,
+        "fiber_100g": 660508,
+        "calcium_100g": 329978,
+        "iron_100g": 339685,
+        "potassium_100g": 180954,
+        "vitamin-c_100g": 218248
+      },
+      "errors": [],
+      "status": "all normalized records structurally exercised",
+      "limitation": "Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy",
+      "completedAt": "2026-10-13T06:19:33.909Z"
     }
   },
   "runtimeBuildVerification": {
@@ -254,14 +287,22 @@
   },
   "offRecovery": {
     "service": "offmenu-off-recovery-20261013.service",
-    "status": "complete archive verified; full normalization and exercise running locally",
+    "status": "full archive normalized and all 9,614,434 records structurally exercised",
     "expectedBytes": 13132516914,
     "expectedSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
     "runner": "/home/user/src/offmenu-data/run-off-recovery.sh",
     "downloadPlan": "/home/user/src/offmenu-data/originals/off-parts/plan.json",
     "logDirectory": "/home/user/src/offmenu-data/logs",
-    "publication": "not included until full acceptance",
-    "archiveVerified": true
+    "publication": "locally recovered and exercised; not included in current three-source static release",
+    "archiveVerified": true,
+    "counts": {
+      "raw": 4807663,
+      "accepted": 4807217,
+      "duplicates": 61,
+      "quarantined": 385,
+      "excluded": 0,
+      "records": 9614434
+    }
   },
   "preservationAfterLiveLookup": {
     "accounts": 1,
@@ -310,14 +351,157 @@
     "rawSourcesPublished": false
   },
   "liveQueryLimitation": {
-    "status": "intermittent CPU exhaustion remains; not fully accepted",
+    "status": "resolved after user-authorized Workers Paid activation",
     "evidence": "Cloudflare invocation a49c30f84d8177db, version 99aceeeb-6101-46a3-9d14-b654b287b634: exceededCpu, 572ms CPU, 3004ms wall time",
     "bounds": {
       "blobReads": 24,
       "pageEntries": 20,
       "concurrentRecordReads": 4
     },
-    "planDiagnostic": "Cloudflare API 100328 rejects cpu_ms setting: CPU limits are not supported for the Free plan. User reports paid context; entitlement discrepancy requires resolution. No plan or billing changes performed.",
+    "planDiagnostic": "Paid web plan was separate from Workers Free. User authorized $5/month plus usage and checkout terms. Browser confirmed purchase complete. API accepted and read back cpu_ms=10000.",
     "passed": "Earlier limit=2 queries for all three sources, several default pages, and first limit=100 US milk page. Repeated pagination still fails; these passes do not establish reliable service."
+  },
+  "liveAcceptance": {
+    "checkedAt": "2026-10-13T06:32:52.312Z",
+    "queries": [
+      {
+        "filters": {
+          "source": "usda-files",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 36,
+            "ms": 302
+          },
+          {
+            "records": 39,
+            "ms": 147
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filters": {
+          "source": "wikibooks",
+          "query": "soup"
+        },
+        "pages": [
+          {
+            "records": 20,
+            "ms": 126
+          },
+          {
+            "records": 20,
+            "ms": 101
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filters": {
+          "source": "prices",
+          "barcode": "3560070283484"
+        },
+        "pages": [
+          {
+            "records": 11,
+            "ms": 116
+          },
+          {
+            "records": 1,
+            "ms": 119
+          }
+        ],
+        "pagination": false
+      },
+      {
+        "filters": {
+          "source": "usda-files",
+          "query": "milk",
+          "country": "US",
+          "limit": "100"
+        },
+        "pages": [
+          {
+            "records": 36,
+            "ms": 1067
+          },
+          {
+            "records": 39,
+            "ms": 1165
+          }
+        ],
+        "pagination": true
+      }
+    ],
+    "coverage": {
+      "schemaVersion": "1.0",
+      "publicRecordCounts": [
+        {
+          "source_id": "usda-files",
+          "records": 4025777
+        },
+        {
+          "source_id": "prices",
+          "records": 317898
+        },
+        {
+          "source_id": "wikibooks",
+          "records": 3895
+        }
+      ],
+      "collections": [
+        {
+          "source_id": "usda-files",
+          "releaseId": "recovery-20261013",
+          "records": 4025777,
+          "scope": "OffMenu selected facts and discovery references",
+          "normalizedLocalRecords": 4202558,
+          "rawSourcePayloadPublished": false,
+          "status": "published OffMenu curation",
+          "independentAcceptance": false,
+          "license": "USDA FoodData Central public domain / CC0"
+        },
+        {
+          "source_id": "prices",
+          "releaseId": "recovery-20261013",
+          "records": 317898,
+          "scope": "OffMenu selected facts and discovery references",
+          "normalizedLocalRecords": 317898,
+          "rawSourcePayloadPublished": false,
+          "status": "published OffMenu curation",
+          "independentAcceptance": false,
+          "license": "ODbL"
+        },
+        {
+          "source_id": "wikibooks",
+          "releaseId": "recovery-20261013",
+          "records": 3895,
+          "scope": "OffMenu selected facts and discovery references",
+          "normalizedLocalRecords": 3895,
+          "rawSourcePayloadPublished": false,
+          "status": "published OffMenu curation",
+          "independentAcceptance": false,
+          "license": "CC BY-SA 4.0"
+        }
+      ],
+      "notice": "Counts describe ingested records. Source inclusion and global feeds do not establish complete coverage of any country."
+    },
+    "health": {
+      "status": "ok",
+      "cloud_storage": true,
+      "release": {
+        "sourceCommit": "f9fec058ed8607f2a3bd7f84de81d1fd54fe7593",
+        "builtAt": "2026-10-13T06:07:39.561Z"
+      }
+    },
+    "status": "Live default and oversized query pagination verified; records structurally valid and nonduplicated"
+  },
+  "workersPlan": {
+    "status": "Paid activated",
+    "baseMonthlyUSD": 5,
+    "additionalUsageCharges": true,
+    "cpuMsPerRequest": 10000
   }
 }
