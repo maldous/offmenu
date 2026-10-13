@@ -296,5 +296,6 @@
   "publicationVerification": "docs/common-data-publication-verification-20261014.json",
   "previousLiveAcceptanceReference": "docs/live-recipe-acceptance.json",
   "previousLiveAcceptanceRelease": "world-recipes-20261014",
-  "independentCulinaryOrDietaryAcceptance": false
+  "independentCulinaryOrDietaryAcceptance": false,
+  "liveAcceptanceReference": "docs/common-data-recipe-consumer-verification-20261014.json"
 }

@@ -58,7 +58,8 @@
     "wholePackage": "79,534 packets checked against schema; resource/assertion/relation identity uniqueness, citation resolution and public scope checked",
     "javascript": "119 passed",
     "nativeRecipeSchema": "25,135 validated",
-    "publishedData": "170 files and both native recipe downloads fully read back; bytes/hashes/counts checked; base 22,519,902 records unchanged"
+    "publishedData": "170 files and both native recipe downloads fully read back; bytes/hashes/counts checked; base 22,519,902 records unchanged",
+    "recipeConsumer": "All 25,135 recipes exercised through stock matching/portable export; all 256 incomplete OCR candidates withheld from planning and personal conversion"
   },
   "limits": "Entire 20-source corpus is declaratively mapped; full resource graphs in this package cover recipes, ingredient terminology and FoodOn. Remaining legacy source records are not falsely claimed migrated. Translation UI, reviewed cross-source synthesis and application migration are the implementing agent’s work.",
   "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
@@ -81,5 +82,6 @@
     "externalReferences": 362,
     "allFileDigestsChecked": 170
   },
-  "checkedAt": "2026-10-13T21:37:59.318718+00:00"
+  "checkedAt": "2026-10-13T21:37:59.318718+00:00",
+  "recipeConsumerVerification": "docs/common-data-recipe-consumer-verification-20261014.json"
 }
