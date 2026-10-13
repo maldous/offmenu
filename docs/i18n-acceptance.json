@@ -70,5 +70,16 @@
     "browserSavedSelectionNextLanding": "passed at localhost:8789 with synthetic EG country",
     "liveOAuthTested": false,
     "deploymentPerformed": false
+  },
+  "reviewedCorpusPackage": {
+    "manifest": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014/manifest.json",
+    "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+    "readerPacketsTested": 521,
+    "filesWithVerifiedManifestHash": 12,
+    "publishedTranslationProjection": "English to Russian",
+    "fixedExpressionsPreserved": true,
+    "foreignSourcePublishedEnglishTranslationFound": false,
+    "wholePackageReaderValidation": false,
+    "evidence": "i18n-corpus-compatibility.json"
   }
 }
