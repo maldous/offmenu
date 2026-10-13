@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
+import {mkdtemp,writeFile,readFile,rm,mkdir,cp} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {gzipSync} from 'node:zlib';
@@ -60,6 +60,23 @@ test('local compiler and serving engine publish selected facts, page Unicode/bar
    await assert.rejects(corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off'}),/Curated release unavailable \(302\)/);
   }
   finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
+  // Cached previous manifests need their immutable files after publication.
+  const previous=join(dir,'previous');await cp(output,previous,{recursive:true});
+  const previousManifest={...manifest,releaseId:'previous-test'};
+  await writeFile(join(previous,'blobs/manifest.json'),JSON.stringify(previousManifest));
+  await writeFile(join(output,'blobs/manifest.json'),JSON.stringify(manifest));
+  await mkdir(join(dir,'netlify/public'),{recursive:true});await writeFile(join(dir,'netlify/public/index.html'),'<h1>Curation</h1>');
+  const publisher=join(process.cwd(),'scripts/prepare-curated-publication.mjs');
+  execFileSync('node',[publisher,output,'--retain-release',previous],{cwd:dir});
+  const published=join(dir,'dist/curated-public');
+  assert.equal(JSON.parse(await readFile(join(published,'manifest.json'))).releaseId,'test');
+  const retainedFile=previousManifest.files.find(f=>f.key.startsWith('records/'));
+  await readFile(join(published,'releases/previous-test',retainedFile.key));
+  const bad=gzipSync(JSON.stringify([page.records[0].id,[{...page.records[0],data:{credentials:'private'}}]])+'\n');
+  await writeFile(join(previous,'blobs',retainedFile.key),bad);retainedFile.bytes=bad.length;retainedFile.sha256=createHash('sha256').update(bad).digest('hex');
+  await writeFile(join(previous,'blobs/manifest.json'),JSON.stringify(previousManifest));
+  assert.throws(()=>execFileSync('node',[publisher,output,'--retain-release',previous],{cwd:dir,stdio:'pipe'}),/Command failed/);
+  await assert.rejects(readFile(join(published,'manifest.json')),/ENOENT/);
   assert.throws(()=>assertCurated({...page.records[0],data:{credentials:'secret'}}),/private payload/);
   await writeFile(join(input,'normalized.jsonl.gz'),gzipSync(JSON.stringify([{...row,provenance:{...provenance,visibility:'private'}}])+'\n'));
   assert.throws(()=>execFileSync('python3',['scripts/build-curated-corpus.py','--release-dir',input,'--output',join(dir,'private-output'),'--version','bad'],{stdio:'pipe'}),/Command failed/);

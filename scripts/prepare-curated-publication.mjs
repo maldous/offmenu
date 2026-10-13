@@ -21,6 +21,21 @@ for(const file of manifest.files){
  const destination=resolve(target,'releases',manifest.releaseId,file.key);await mkdir(dirname(destination),{recursive:true});await copyFile(path,destination);
 }
 if(verified!==manifest.records)throw Error('Publication record count mismatch');
+// Retain an accepted preceding release so cached manifests can finish queries
+// across the atomic Netlify switch without referring to removed file paths.
+const retainIndex=process.argv.indexOf('--retain-release');
+if(retainIndex>=0){
+ const previous=await realpath(resolve(process.argv[retainIndex+1],'blobs')),old=JSON.parse(await readFile(resolve(previous,'manifest.json')));
+ if(old.curatedAcceptance?.status!=='all-curated-records-exercised'||old.privateProviderData!==false||old.acquisitionAtRuntime!==false||!/^[-A-Za-z0-9.]+$/.test(old.releaseId)||old.releaseId===manifest.releaseId)throw Error('Invalid retained curation release');
+ await createEngine(key=>readFile(resolve(previous,key)));
+ for(const file of old.files){
+  const path=await realpath(resolve(previous,file.key));if(!path.startsWith(previous+sep)||!file.key.endsWith('.gz'))throw Error('Non-curation retained publication path');
+  const data=await readFile(path);if(data.length!==file.bytes||createHash('sha256').update(data).digest('hex')!==file.sha256)throw Error('Retained publication checksum mismatch');
+  if(file.key.startsWith('records/'))for(const line of gunzipSync(data,{maxOutputLength:80*1024*1024}).toString('utf8').split('\n')){if(!line)continue;for(const row of JSON.parse(line)[1])assertCurated(row);}
+  const destination=resolve(target,'releases',old.releaseId,file.key);await mkdir(dirname(destination),{recursive:true});await copyFile(path,destination);
+ }
+ console.log(JSON.stringify({status:'accepted-prior-curation-retained',releaseId:old.releaseId,files:old.files.length}));
+}
 await copyFile(resolve(source,'manifest.json'),resolve(target,'manifest.json'));
 await copyFile('netlify/public/index.html',resolve(target,'index.html'));
 await writeFile(resolve(target,'_headers'),'/*\n  Cache-Control: public, max-age=60\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: default-src \'none\'; style-src \'self\'\n');
