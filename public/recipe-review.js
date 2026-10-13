@@ -1,9 +1,10 @@
+import {t} from './i18n.js';
 import {validateRecipes} from './model.js';
 import {recordPermission} from './record-policy.js';
 
 export function recipeForReview(record){
- if(record.kind!=='recipe')throw Error('Select a recipe record');
- if(!recordPermission(record,{action:'derive'}).allowed)throw Error('Source rights do not permit recipe reuse');
+ if(record.kind!=='recipe')throw Error(t('Select a recipe record'));
+ if(!recordPermission(record,{action:'derive'}).allowed)throw Error(t('Source rights do not permit recipe reuse'));
  const d=record.data,yieldValue=d.yield?.value;
  return validateRecipes([{id:record.id,title:d.name,source:record.provenance.url,
   license:record.provenance.license,attribution:record.provenance.attribution,

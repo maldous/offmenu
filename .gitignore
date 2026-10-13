@@ -11,3 +11,7 @@ dist/
 cloud/generated.mjs
 
 .netlify/
+
+.playwright-cli/
+output/playwright/
+netlify-return/i18n.js

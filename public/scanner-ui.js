@@ -1,3 +1,4 @@
+import {t,setLocalizedText} from './i18n.js';
 import {NATIVE_FORMATS, retailCode, createPresentationGate, cameraError} from './scanner-model.js';
 
 export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
@@ -9,7 +10,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
   let preferences={mode:'bench',camera:'user',mirror:true,rotate:false,enhance:true};
   try { preferences={...preferences,...JSON.parse(localStorage.getItem('offmenu-scanner-v2')||'{}')}; } catch {}
   if(!['handheld','bench','stand'].includes(preferences.mode)) preferences.mode='bench';
-  const status=text=>{$('scanner-status').textContent=text;};
+  const status=text=>{setLocalizedText($('scanner-status'),text);};
   const save=()=>{try{localStorage.setItem('offmenu-scanner-v2',JSON.stringify(preferences));}catch{}};
   const range=cap=>cap && Number.isFinite(cap.min) && Number.isFinite(cap.max) && cap.max>cap.min;
   const caps=()=>{try{return track?.getCapabilities?.()||{};}catch{return {};}};
@@ -22,11 +23,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
   }
   function guide() {
     $('scanner-mode').value=preferences.mode;
-    $('scanner-placement').textContent=preferences.mode==='bench'
-      ? 'Screen-up bench: front camera faces the barcode. Start around 30–50 cm away and move slowly until the bars look sharp. Fixed-focus lenses may need more distance; use a rear-camera stand if they stay blurry.'
-      : preferences.mode==='stand'
-      ? 'Hands-free rear: prop the phone securely upright or in a stand, with the rear lens exposed. Move each barcode into view and pause for the beep. A phone lying screen-up blocks its rear camera.'
-      : 'Handheld: rear camera recommended. Start around 15–30 cm from the barcode; move back if it blurs. Keep the entire code and its blank edges visible. Tilt shiny packaging away from glare.';
+    setLocalizedText($('scanner-placement'),preferences.mode==='bench'?t('Screen-up bench: front camera faces the barcode. Start around 30–50 cm away and move slowly until the bars look sharp. Fixed-focus lenses may need more distance; use a rear-camera stand if they stay blurry.'):preferences.mode==='stand'?t('Hands-free rear: prop the phone securely upright or in a stand, with the rear lens exposed. Move each barcode into view and pause for the beep. A phone lying screen-up blocks its rear camera.'):t('Handheld: rear camera recommended. Start around 15–30 cm from the barcode; move back if it blurs. Keep the entire code and its blank edges visible. Tilt shiny packaging away from glare.'));
   }
   async function keepAwake(sessionToken) {
     if(!navigator.wakeLock?.request) return;
@@ -37,7 +34,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
   }
   function closeDecoder() {
     worker?.terminate(); worker=null;
-    if(pending) { clearTimeout(pending.timeout); pending.reject(Error('Decoder stopped')); pending=null; }
+    if(pending) { clearTimeout(pending.timeout); pending.reject(Error(t('Decoder stopped'))); pending=null; }
   }
   function stop({announce=true}={}) {
     token++; running=false; clearTimeout(timer); closeDecoder(); native=null;
@@ -73,8 +70,8 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
     }
     $('scanner-torch').hidden=!c.torch;
     $('scanner-torch').setAttribute('aria-pressed',String(!!settings.torch));
-    $('scanner-torch').textContent=settings.torch?'Light on':'Light off';
-    $('scanner-capabilities').textContent=`${settings.width||video.videoWidth} × ${settings.height||video.videoHeight} · `+(modes.includes('continuous')?'autofocus control available':modes.length?'focus controls available':'focus control not exposed; lens may be fixed-focus or managed by the camera')+` · ${native?'native + enhanced decoder':'enhanced decoder'}`;
+    setLocalizedText($('scanner-torch'),settings.torch?t('Light on'):t('Light off'));
+    setLocalizedText($('scanner-capabilities'),`${settings.width||video.videoWidth} × ${settings.height||video.videoHeight} · `+(modes.includes('continuous')?'autofocus control available':modes.length?'focus controls available':'focus control not exposed; lens may be fixed-focus or managed by the camera')+` · ${native?'native + enhanced decoder':'enhanced decoder'}`);
   }
   async function enumerate() {
     const devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput');
@@ -101,7 +98,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
   }
   function pixels(source=video,limit=1920) {
     const width=source.videoWidth||source.width, height=source.videoHeight||source.height;
-    if(!width||!height) throw Error('No camera frame yet');
+    if(!width||!height) throw Error(t('No camera frame yet'));
     const scale=Math.min(1,limit/Math.max(width,height));
     canvas.width=Math.round(width*scale); canvas.height=Math.round(height*scale);
     context.drawImage(source,0,0,canvas.width,canvas.height);
@@ -126,7 +123,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
         const accepted=gate.observe(codes,performance.now());
         if(accepted) {
           lastRead=performance.now(); onCode(accepted);
-          $('scanner-last').textContent='Accepted: '+accepted;
+          setLocalizedText($('scanner-last'),"Accepted: {v0}",{v0:(accepted)});
           status('Accepted ✓ Move this item away. Present the next barcode.');
           $('camera-stage').classList.add('scan-accepted');
           setTimeout(()=>$('camera-stage').classList.remove('scan-accepted'),500);
@@ -214,7 +211,7 @@ export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
       if(photoToken!==token) return;
       const codes=[...new Set(results.map(retailCode).filter(Boolean))];
       if(codes.length!==1) return status(codes.length?'Several barcodes found. Crop the photo to one product.':'No retail barcode found. Use a sharp photo of the entire barcode, including its blank edges.');
-      onCode(codes[0]); $('scanner-last').textContent='Accepted from photo: '+codes[0]; status('Photo accepted ✓');
+      onCode(codes[0]); setLocalizedText($('scanner-last'),"Accepted from photo: {v0}",{v0:(codes[0])}); status('Photo accepted ✓');
     } catch { if(photoToken===token) status('Photo could not be decoded. Try a JPEG/PNG photo or enter the barcode.'); }
     finally { bitmap?.close(); if(photoToken===token){closeDecoder();$('scanner-photo').disabled=false;} }
   };

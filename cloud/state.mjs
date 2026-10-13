@@ -15,8 +15,9 @@ export function validateState(value) {
   const products=value.products||{};
   if(typeof products!=='object'||Array.isArray(products)||Object.keys(products).length>10000)throw Error('Invalid barcode list.');
   for(const [code,p]of Object.entries(products))if(!(/^[0-9]{4,32}$/.test(code)||/^local:[a-zA-Z0-9-]{1,100}$/.test(code))||!p||typeof p.name!=='string'||p.name.length>1000)throw Error('Invalid product.');
-  if(profile.dataLanguage&&!['en','native','fr','de','zh','hi','id','ru'].includes(profile.dataLanguage))throw Error('Invalid data display language.');
-  const settings={...(profile.dataLanguage?{dataLanguage:profile.dataLanguage}:{}),country:profile.country||'',units:profile.units||'metric',servings:Number(profile.servings)};
+  if(profile.dataLanguage&&!['ui','en','native','fr','de','zh','hi','id','ru','ar','ja'].includes(profile.dataLanguage))throw Error('Invalid data display language.');
+  if(profile.uiLanguage&&!['en','ar'].includes(profile.uiLanguage))throw Error('Invalid interface language.');
+  const settings={...(profile.uiLanguage?{uiLanguage:profile.uiLanguage}:{}),...(profile.dataLanguage?{dataLanguage:profile.dataLanguage}:{}),country:profile.country||'',units:profile.units||'metric',servings:Number(profile.servings)};
   if(profile.locations){if(!Array.isArray(profile.locations)||profile.locations.length>1000)throw Error('Invalid locations.');settings.locations=profile.locations.map(l=>{if(typeof l.id!=='string'||typeof l.area!=='string'||!l.area.trim()||l.area.length>60||typeof l.shelf!=='string'||!l.shelf.trim()||l.shelf.length>60)throw Error('Invalid location.');return {id:l.id,area:l.area.trim(),shelf:l.shelf.trim()};});}
   if(profile.batches)settings.batches=validateBatches(profile.batches);
   if(profile.accessibility){settings.accessibility={large:!!profile.accessibility.large,quiet:!!profile.accessibility.quiet};}

@@ -1,10 +1,11 @@
+import {t} from './i18n.js';
 export function locationKey(location){return `${location?.area||'Unassigned'} / ${location?.shelf||'Unsorted'}`;}
 export function finishInventory(existing,session){
- if(!session||!['shelf','shopping','waste'].includes(session.mode)||typeof session.area!=='string'||!session.area.trim()||session.area.length>60||!String(session.shelf||'').trim()||!Array.isArray(session.items)||!session.items.length)throw Error('Scan at least one item and choose its shelf.');
- if(session.mode==='waste'){const ids=new Set();for(const item of session.items){const source=existing.find(l=>l.id===item.id);if(!source||(source.location?.area||'Unassigned')!==session.area||(source.location?.shelf||'Unsorted')!==session.shelf||source.barcode!==item.barcode||source.quantity!==item.quantity||source.unit!==item.unit||ids.has(item.id))throw Error('Cleanup stock changed. Review and rescan the source location.');const amount=item.discardQuantity??item.quantity;if(!Number.isFinite(amount)||amount<=0||amount>source.quantity)throw Error('Discard amount exceeds recorded stock.');ids.add(item.id);}return existing.flatMap(l=>{const item=session.items.find(i=>i.id===l.id);if(!item)return [l];const remaining=l.quantity-(item.discardQuantity??item.quantity);return remaining>0?[{...l,quantity:remaining}]:[];});}
+ if(!session||!['shelf','shopping','waste'].includes(session.mode)||typeof session.area!=='string'||!session.area.trim()||session.area.length>60||!String(session.shelf||'').trim()||!Array.isArray(session.items)||!session.items.length)throw Error(t('Scan at least one item and choose its shelf.'));
+ if(session.mode==='waste'){const ids=new Set();for(const item of session.items){const source=existing.find(l=>l.id===item.id);if(!source||(source.location?.area||'Unassigned')!==session.area||(source.location?.shelf||'Unsorted')!==session.shelf||source.barcode!==item.barcode||source.quantity!==item.quantity||source.unit!==item.unit||ids.has(item.id))throw Error(t('Cleanup stock changed. Review and rescan the source location.'));const amount=item.discardQuantity??item.quantity;if(!Number.isFinite(amount)||amount<=0||amount>source.quantity)throw Error(t('Discard amount exceeds recorded stock.'));ids.add(item.id);}return existing.flatMap(l=>{const item=session.items.find(i=>i.id===l.id);if(!item)return [l];const remaining=l.quantity-(item.discardQuantity??item.quantity);return remaining>0?[{...l,quantity:remaining}]:[];});}
  const location={area:session.area,shelf:session.shelf.trim()};
  const items=session.items.map(item=>({...item,location,checkedAt:session.startedAt}));
- if(new Set(items.map(i=>i.id)).size!==items.length)throw Error('Duplicate checkout items.');
+ if(new Set(items.map(i=>i.id)).size!==items.length)throw Error(t('Duplicate checkout items.'));
  const retained=session.mode==='shelf'?existing.filter(item=>item.location?.area!==location.area||item.location?.shelf!==location.shelf):existing;
  return [...retained,...items];
 }
@@ -19,7 +20,7 @@ export function packAmount(product){
  return amount>0&&Number.isFinite(amount)?{quantity:amount,unit,amountBasis:'full-pack'}:{quantity:1,unit:'count',amountBasis:'package'};
 }
 export function makeAutoLot(code,product,ingredient='unmapped'){
- if(!/^\d{4,32}$/.test(code))throw Error('Invalid barcode.');
+ if(!/^\d{4,32}$/.test(code))throw Error(t('Invalid barcode.'));
  return {id:crypto.randomUUID(),barcode:code,name:product?.name||'Unknown product · '+code,ingredient:ingredient||'unmapped',...packAmount(product),expires:null,needsReview:!product?.name||!ingredient||ingredient==='unmapped'};
 }
 // A code held in view counts once; removing it from view re-arms the scanner.
