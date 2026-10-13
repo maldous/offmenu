@@ -12,3 +12,5 @@ INSERT INTO source_policies(id,document,revision,active) VALUES('wikidata','{"id
 
 CREATE TABLE IF NOT EXISTS catalogue_source_countries(source_id TEXT NOT NULL,country TEXT NOT NULL,PRIMARY KEY(source_id,country));
 CREATE INDEX IF NOT EXISTS catalogue_source_country ON catalogue_source_countries(country,source_id);
+
+CREATE TABLE IF NOT EXISTS resolver_leases(key TEXT PRIMARY KEY,expires_at INTEGER NOT NULL);

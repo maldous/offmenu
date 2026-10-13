@@ -16,6 +16,7 @@ assets['scanner-worker.js']=await readFile('dist/scanner-worker.js','utf8');
 assets['scanner.wasm']=(await readFile('node_modules/zxing-wasm/dist/reader/zxing_reader.wasm')).toString('base64');
 assets['app.js']=await readFile('dist/app.js','utf8');
 const template=await readFile('cloud/handler.mjs','utf8');
-await writeFile('cloud/generated.mjs','const ASSETS='+JSON.stringify(assets)+';\n'+template);
+const release={sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),builtAt:new Date().toISOString()};
+await writeFile('cloud/generated.mjs','const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+template);
 await build({entryPoints:['cloud/generated.mjs'],bundle:true,minify:true,format:'esm',platform:'browser',outfile:'dist/worker.mjs'});
 console.log('Built worker with '+Object.keys(assets).length+' assets');

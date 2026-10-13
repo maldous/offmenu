@@ -1,0 +1,79 @@
+{
+  "sourceMain": "a3b0f89c8148bfcd7c3d3feb17f7d8e83b9bedd0",
+  "reports": [
+    {
+      "file": "research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "pages": 16,
+      "textCharacters": 40291
+    },
+    {
+      "file": "research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "pages": 16,
+      "textCharacters": 63785
+    },
+    {
+      "file": "research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "pages": 75,
+      "textCharacters": 206357
+    },
+    {
+      "file": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+      "pages": 10,
+      "textCharacters": 34323
+    },
+    {
+      "file": "research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sha256": "5d4795811f472d0255e4c287a3401a2dbbcbd3991c8516c85dbe5341e9083a19",
+      "pages": 75,
+      "textCharacters": 371981
+    }
+  ],
+  "registers": [
+    {
+      "file": "research/OffMenu_Enrichment_Source_Register_249.json",
+      "sha256": "8c305dfa3362d469dc520f8df0a434349977b131fbabf5ff852fae111297c48e",
+      "countries": 249,
+      "valid": true
+    },
+    {
+      "file": "research/OffMenu_Basket_Normalization_Spec.json",
+      "sha256": "61e06a7d99545bd547b85562389cb339b02882e52bb2e0cf8af20a72975fcf6e",
+      "countries": 0,
+      "valid": true
+    },
+    {
+      "file": "research/OffMenu_Country_Basket_Register.json",
+      "sha256": "239ad2177170969423ae0c259c106acdd87d383a486f427a35e7130e12e547b4",
+      "countries": 249,
+      "valid": true
+    },
+    {
+      "file": "research/OffMenu_Global_Data_Source_Register.json",
+      "sha256": "ee3b5a6a2e29f4a13c2864195d5a9a861330fcd8a9639acb89a8b3fa54347c37",
+      "countries": 249,
+      "valid": true
+    }
+  ],
+  "countChecks": {
+    "basketLine": 3230,
+    "country": 249,
+    "foodConcept": 337,
+    "metric": 45,
+    "source": 1303,
+    "specification": 3
+  },
+  "reviewedRequirements": [
+    "source lineage and rights",
+    "country discovery versus ingested coverage",
+    "private cache and revocation",
+    "basket metric completeness and compatible denominators",
+    "date/market scoped ownership and origin",
+    "health consent and private export",
+    "household inventory/cooking/consumption balances",
+    "device and independent review gates"
+  ]
+}

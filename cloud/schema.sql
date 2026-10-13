@@ -13,3 +13,5 @@ CREATE INDEX IF NOT EXISTS unified_records_owner_kind ON unified_records(owner,k
 CREATE TABLE IF NOT EXISTS kitchens (id TEXT PRIMARY KEY, name TEXT NOT NULL, revision INTEGER NOT NULL, state_json TEXT NOT NULL, updated_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS kitchen_members (kitchen_id TEXT NOT NULL, user_id TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('owner','editor','viewer')), PRIMARY KEY(kitchen_id,user_id));
 CREATE TABLE IF NOT EXISTS kitchen_invites (token_hash TEXT PRIMARY KEY, kitchen_id TEXT NOT NULL, role TEXT NOT NULL, expires_at INTEGER NOT NULL, used_at INTEGER);
+
+CREATE TABLE IF NOT EXISTS source_policies(id TEXT PRIMARY KEY,document TEXT NOT NULL,revision INTEGER NOT NULL,active INTEGER NOT NULL);
