@@ -1,0 +1,40 @@
+{
+  "version": "2026-10-13.1",
+  "counts": {
+    "basketLine": 3230,
+    "country": 249,
+    "foodConcept": 337,
+    "metric": 45,
+    "source": 1303,
+    "specification": 3
+  },
+  "countries": 249,
+  "sourceFiles": [
+    {
+      "name": "OffMenu_Basket_Normalization_Spec.json",
+      "sha256": "61e06a7d99545bd547b85562389cb339b02882e52bb2e0cf8af20a72975fcf6e"
+    },
+    {
+      "name": "OffMenu_Country_Basket_Register.json",
+      "sha256": "239ad2177170969423ae0c259c106acdd87d383a486f427a35e7130e12e547b4"
+    },
+    {
+      "name": "OffMenu_Enrichment_Source_Register_249.json",
+      "sha256": "8c305dfa3362d469dc520f8df0a434349977b131fbabf5ff852fae111297c48e"
+    },
+    {
+      "name": "OffMenu_Global_Data_Source_Register.json",
+      "sha256": "ee3b5a6a2e29f4a13c2864195d5a9a861330fcd8a9639acb89a8b3fa54347c37"
+    }
+  ],
+  "limits": [
+    "I means one or more actual food item names/examples were observed, not a complete basket or quantity extraction.",
+    "M confirms a source/method or categories, not a complete named food list.",
+    "L is a discovery lead; no applicable current basket established.",
+    "S preserves provisioning, historical or territorial context; it does not always mean uninhabited.",
+    "All suggested_foods and demo_lines are editorial proposals; no national representativeness, current availability or nutritional adequacy claimed.",
+    "Source dates may be historical; discovery is geographically complete but source and item coverage are uneven.",
+    "Public access does not establish permission to redistribute; licence and access checks remain source-specific."
+  ],
+  "metrics": 45
+}

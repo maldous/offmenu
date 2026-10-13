@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+data/
+*.pem
+*.key
+
+node_modules/
+dist/
+cloud/generated.mjs
