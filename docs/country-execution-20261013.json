@@ -1,6 +1,6 @@
 {
   "schema": "offmenu-country-execution/1",
-  "checkedAt": "2026-10-13T07:27:18.224347+00:00",
+  "checkedAt": "2026-10-13T07:47:19.653922+00:00",
   "countries": [
     {
       "iso2": "AD",
@@ -1599,6 +1599,9 @@
         },
         "prices": {
           "all-normalized-records": 674
+        },
+        "cnf": {
+          "nutrientProfile": 5690
         },
         "wikidata-food-businesses": {
           "organization": 57,
@@ -4785,6 +4788,9 @@
         },
         "prices": {
           "all-normalized-records": 642
+        },
+        "mext": {
+          "nutrientProfile": 2538
         },
         "wikidata-food-businesses": {
           "organization": 126,
@@ -10426,6 +10432,20 @@
       "normalizedRecords": 1381,
       "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
       "manifest": "/home/user/src/offmenu-data/frida-5.5/manifest.json"
+    },
+    {
+      "sourceId": "cnf",
+      "releaseId": "2015",
+      "normalizedRecords": 5690,
+      "scope": "All 12 CSV relational tables in the complete CNF 2015 archive. Every food and nutrient observation parsed; original files and supporting guides retained locally.",
+      "manifest": "/home/user/src/offmenu-data/cnf-2015/manifest.json"
+    },
+    {
+      "sourceId": "mext",
+      "releaseId": "2023-corrected-20260327-main",
+      "normalizedRecords": 2538,
+      "scope": "Every food row and component in the complete main composition table, corrected 27 March 2026. All 17 publisher release files retained; special-denominator companion tables remain original files, outside this per-100g projection. Parenthesized values remain unresolved.",
+      "manifest": "/home/user/src/offmenu-data/mext-2023-main/manifest.json"
     },
     {
       "sourceId": "wikidata-food-businesses",

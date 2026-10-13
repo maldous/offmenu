@@ -56,6 +56,22 @@ class CurationMergeTests(unittest.TestCase):
             for item in manifest['files']:
                 self.assertEqual(hashlib.sha256((output / item['key']).read_bytes()).hexdigest(), item['sha256'])
 
+    def test_disjoint_accepted_sources_compose_without_reencoding_existing_pages(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            left = release(root / 'left', 'left', 'off', 'food')
+            right = release(root / 'right', 'right', 'prices', 'price')
+            for path, source in [(left, 'off'), (right, 'prices')]:
+                manifest = json.loads((path / 'manifest.json').read_text())
+                manifest['records'] = 1
+                manifest['curatedAcceptance'] = {'status': 'all-curated-records-exercised', 'records': 1,
+                    'profiles': 0, 'countryRecordCounts': {source: {'AU': {'product': 1}}}}
+                (path / 'manifest.json').write_text(json.dumps(manifest))
+            merged = merger.merge([left, right], root / 'output', 'combined')
+            self.assertEqual(merged['curatedAcceptance']['records'], 2)
+            self.assertEqual(merged['curatedAcceptance']['countryRecordCounts']['prices']['AU']['product'], 1)
+            self.assertEqual((left / 'entries-0.json.gz').read_bytes(), (root / 'output/entries-0.json.gz').read_bytes())
+
     def test_corrupt_input_prevents_serving_manifest(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

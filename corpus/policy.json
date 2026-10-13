@@ -13,7 +13,9 @@
     "matvaretabellen",
     "frida",
     "wikidata-food-businesses",
-    "dietary-guidelines"
+    "dietary-guidelines",
+    "cnf",
+    "mext"
   ],
   "privateKinds": [
     "healthObservation",
