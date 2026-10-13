@@ -1,0 +1,57 @@
+{
+  "schema": "offmenu-i18n-acceptance/1",
+  "date": "2026-10-14",
+  "branch": "codex/offmenu-i18n",
+  "baseCommit": "ac2df94",
+  "tests": {
+    "javascriptPassed": 139,
+    "pythonPassed": 32,
+    "inventoryCheck": "passed",
+    "placeholderAndDuplicateKeys": "passed",
+    "build": "passed",
+    "completeArabicReleaseGate": "expected failure: untranslated messages"
+  },
+  "coverage": {
+    "candidateMessages": 2066,
+    "arabicTranslated": 376,
+    "arabicMissing": 1690
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:8787",
+    "interfaceLocales": [
+      "en",
+      "ar"
+    ],
+    "rtlWidthsWithoutPageOverflow": [
+      390,
+      1280
+    ],
+    "offlineLanguageQuerySwitch": "passed",
+    "canonicalMealSlotValues": "passed",
+    "dataWorkspaceUnknownValueTable": "passed",
+    "syntheticFrenchGraphEnglishProjectionInArabicUI": "passed",
+    "nativeTextLanguage": "fr",
+    "commonGraphPreviewWriteControlsDisabled": true
+  },
+  "realCorpusSamples": {
+    "terminology": {
+      "path": "/home/user/src/offmenu-data/common-terminology-20261014/ingredient-resources.jsonl.gz",
+      "sample": "first packet only",
+      "status": "accepted",
+      "resources": 1,
+      "assertions": 17
+    },
+    "recipe": {
+      "path": "/home/user/src/offmenu-data/common-recipes-cited-20261014/recipe-source-alignment.jsonl.gz",
+      "sample": "first packet only",
+      "status": "rejected duplicate assertion IDs; producer fix confirmed, regeneration pending"
+    }
+  },
+  "limitations": [
+    "Arabic catalogue is a preview and needs completion and language review.",
+    "Source translations are consumed when supplied and reviewed; no automatic translation service is enabled.",
+    "Common graphs are local previews or supplied by an existing API response; no new corpus publication endpoint is implemented.",
+    "No authenticated or production write flows were tested or deployed.",
+    "Entire corpus packages have not been validated by this UI task."
+  ]
+}

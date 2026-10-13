@@ -1,1 +1,1 @@
-{"name":"offmenu — Pantry to plate","short_name":"offmenu","start_url":"/","display":"standalone","background_color":"#f4f2e9","theme_color":"#183d34","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{"name": "offmenu — Pantry to plate", "short_name": "offmenu", "start_url": "/", "display": "standalone", "background_color": "#f4f2e9", "theme_color": "#183d34", "icons": [{"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}], "lang": "en", "dir": "ltr"}
