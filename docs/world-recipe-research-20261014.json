@@ -1,7 +1,7 @@
 {
   "schema": "offmenu-world-recipe-research/1",
   "checkedAt": "2026-10-13T19:21:43.823214+00:00",
-  "status": "checked-quality-release-awaiting-final-live-verification",
+  "status": "published-download-and-consumer-gates-verified",
   "releaseId": "world-recipes-20261014",
   "counts": {
     "raw": 98941,
@@ -269,5 +269,7 @@
   },
   "fullRecipeRecords": 23661,
   "historicalOcrCandidates": 256,
-  "ocrPolicy": "Smithsonian OCR candidates explicitly have ingredientExtractionComplete=false; pantry matching and personal recipe saving are disabled until complete ingredient transcription."
+  "ocrPolicy": "Smithsonian OCR candidates explicitly have ingredientExtractionComplete=false; pantry matching and personal recipe saving are disabled until complete ingredient transcription.",
+  "liveAcceptanceReference": "docs/live-recipe-acceptance.json",
+  "independentCulinaryOrDietaryAcceptance": false
 }
