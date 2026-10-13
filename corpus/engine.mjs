@@ -4,6 +4,9 @@ const encoder=new TextEncoder(),decoder=new TextDecoder();
 const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',typeof value==='string'?encoder.encode(value):value)),b=>b.toString(16).padStart(2,'0')).join('');
 async function decompress(bytes){const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip')),reader=stream.getReader();let total=0,text='';const decode=new TextDecoder();try{while(true){const {done,value}=await reader.read();if(done)break;total+=value.byteLength;if(total>80*1024*1024)throw Error('Curated partition exceeds limit');text+=decode.decode(value,{stream:true});}return text+decode.decode();}finally{await reader.cancel();}}
 const norm=value=>value.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase();
+// Inspect only the first JSON string in a partition line. Parsing every full
+// nutrition document in a shard wastes CPU when a page needs just a few keys.
+function lineKey(line){const match=/^\s*\[\s*("(?:\\.|[^"\\])*")\s*,/.exec(line);if(!match)throw Error('Invalid curation partition line');return JSON.parse(match[1]);}
 import {assertCurated} from './assert-curated.mjs';
 export {assertCurated} from './assert-curated.mjs';
 export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
@@ -19,7 +22,7 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
  }
  async function posting(namespace,key,source,read){
   const text=await read(`${namespace}/${(await hash(key)).slice(0,manifest.shardLength)}.jsonl.gz`);if(!text)return [];
-  for(const line of text.split('\n')){if(!line)continue;const [term,values]=JSON.parse(line);if(term===key)return values[source]||[];}return [];
+  for(const line of text.split('\n')){if(!line)continue;if(lineKey(line)===key)return JSON.parse(line)[1][source]||[];}return [];
  }
  async function lookup({source,query='',barcode='',kind='',country='',cursor='',limit=20}={}){
   let reads=0;
@@ -60,7 +63,7 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
   // Response ordering remains the selected index order, not completion order.
   await Promise.all(Array.from({length:Math.min(4,pending.length)},async()=>{
    while(nextBucket<pending.length){const [shard,keys]=pending[nextBucket++],text=await read(`records/${source}/${shard}.jsonl.gz`);if(!text)throw Error('Record partition missing');
-    for(const line of text.split('\n')){if(!line)continue;const [key,records]=JSON.parse(line);if(keys.has(key))recordsByKey.set(key,records.map(assertCurated));}
+    for(const line of text.split('\n')){if(!line)continue;const key=lineKey(line);if(keys.has(key))recordsByKey.set(key,JSON.parse(line)[1].map(assertCurated));}
    }
   }));
   const records=selected.flatMap(e=>{const rows=recordsByKey.get(e.key);if(!rows)throw Error('Record missing from curation partition');return rows.filter(r=>!kind||r.kind===kind);});
