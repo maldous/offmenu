@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-14",
+  "scope": "Branded OffMenu support email and existing sign-in readiness",
+  "authorized": "Create appropriate support accounts/configurations at zero additional cost",
+  "domain": "offmenu.aldous.info",
+  "plannedSupportAddress": "support@offmenu.aldous.info",
+  "routingDNS": {
+    "status": "ready",
+    "enabled": true,
+    "createdAt": "2026-10-13T22:50:30.314496Z",
+    "provider": "Cloudflare Email Routing",
+    "recordsAdded": [
+      "3 MX records at offmenu.aldous.info",
+      "SPF TXT at offmenu.aldous.info"
+    ],
+    "existingOffMenuAAAAUnchanged": true,
+    "parentDomain": {
+      "existingMXUnchanged": true,
+      "additionalRecord": "Cloudflare automatically added the previously missing SPF TXT at aldous.info during subdomain enablement",
+      "addedTXTId": "e8942e2a8a0e81015034c5448670dafc"
+    }
+  },
+  "supportAddress": {
+    "status": "awaiting_destination_and_bounded_native_intake",
+    "ruleCreated": false,
+    "mailboxCreated": false,
+    "existingVerifiedDestinations": 1,
+    "destinationSelected": false,
+    "verificationOrTestEmailsSent": 0,
+    "destinationPurpose": "Minimal staff case notifications, not raw customer-body forwarding"
+  },
+  "outbound": {
+    "status": "not_activated",
+    "cloudflareQuota": null,
+    "cloudflareUsage": null,
+    "reason": "Null readback does not establish sending entitlement; no metered arbitrary-recipient sending enabled",
+    "preferredInitialTransport": "Optional Brevo Free within verified quota"
+  },
+  "identity": {
+    "status": "read_only_verified",
+    "origin": "https://offmenu-accounts.netlify.app/.netlify/identity",
+    "googleEnabled": true,
+    "emailEnabled": true,
+    "emailConfirmationRequired": true,
+    "samlEnabled": false,
+    "configurationChanged": false,
+    "ssoInterpretation": "awaiting_user_clarification"
+  },
+  "additionalSpend": 0,
+  "applicationDeploymentPerformed": false,
+  "sources": [
+    "https://developers.cloudflare.com/email-service/platform/pricing/",
+    "https://developers.cloudflare.com/email-service/configuration/subdomains/"
+  ],
+  "nextSteps": [
+    "User selects staff notification destination",
+    "Reuse verified destination or create verification request for the selected address",
+    "Implement bounded text-only native inbound case intake and verify sender/owner boundaries, staff access, retention and attachment rejection",
+    "Record current plans, included allocations, account-wide use and conservative numeric no-cost budgets",
+    "Verify parent SPF against real apex outbound senders",
+    "Create literal support-to-intake rule and verify rule/DNS; then publish branded support address",
+    "Qualify sender/reply path without paid upgrade or metered overage"
+  ]
+}
