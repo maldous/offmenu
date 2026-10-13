@@ -11,13 +11,13 @@ const configured={THIRD_PARTY_CONFIG:JSON.stringify({client:{diagnostics:{enable
 function storage(){
   const db=new DatabaseSync(':memory:');
   db.exec(readFileSync(new URL('../cloud/schema.sql',import.meta.url),'utf8'));
-  return {db,DB:{prepare(sql){return {bind(...args){return {async first(){return db.prepare(sql).get(...args)||null;},async run(){return db.prepare(sql).run(...args);}}}}}}};
+  return {db,DB:{prepare(sql){const make=args=>({async first(){return db.prepare(sql).get(...args)||null;},async run(){return db.prepare(sql).run(...args);}});return {...make([]),bind(...args){return make(args);}}}}};
 }
 const req=(body,origin='https://offmenu.test')=>new Request('https://offmenu.test/api/services/diagnostics',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify(body)});
 const deps={reply:(body,status=200)=>Response.json(body,{status}),verifiedUser:async()=>({id:'private-account-id'}),boundedJSON:request=>request.json()};
 
 test('public capability status exposes no runtime credentials and downgrades absent prerequisites',async()=>{
- const env={DB:{},PROVIDER_VAULT_KEY:'a'.repeat(64),BREVO_API_KEY:'private-brevo-credential',BREVO_SENDER_NAME:'OffMenu',BREVO_SENDER_EMAIL:'sender@example.test',SUPPORT_EMAIL:'support@example.test',...configured};
+ const env={...storage(),PROVIDER_VAULT_KEY:'a'.repeat(64),BREVO_API_KEY:'private-brevo-credential',BREVO_SENDER_NAME:'OffMenu',BREVO_SENDER_EMAIL:'sender@example.test',SUPPORT_EMAIL:'support@example.test',...configured};
  const result=await handler.fetch(new Request('https://offmenu.test/api/services'),env);
  assert.equal(result.status,200);assert.equal(result.headers.get('Cache-Control'),'no-store');
  const body=await result.json(),text=JSON.stringify(body);

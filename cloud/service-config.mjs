@@ -1,5 +1,6 @@
 // Public service metadata is explicitly projected; secrets never enter this model.
 import {serviceEmailConfigured} from './service-support.mjs';
+import {defaultGlobalSettings,parseGlobalSettings} from './global-settings.mjs';
 const object = (value, name) => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw Error('Invalid '+name+'.');
   return value;
@@ -76,11 +77,15 @@ export function sentryDestination(dsn) {
 export function validEmail(value) {
   return typeof value === 'string' && value.length <= 254 && /^[^\s<>"@]+@[^\s<>"@]+\.[^\s<>"@]+$/.test(value);
 }
+function runtimeSettings(env) {
+  try { const value=env.SERVICE_GLOBAL_SETTINGS||{};return parseGlobalSettings(typeof value==='string'?JSON.parse(value):value); }
+  catch { return defaultGlobalSettings(); }
+}
 export function serviceConfiguration(env = {}) {
   let config, invalid = false;
   try { config = parseServiceConfig(env.THIRD_PARTY_CONFIG); }
   catch { config = parseServiceConfig({}); invalid = true; }
-  const {client,links,seo} = config;
+  const {client,links,seo} = config, global = runtimeSettings(env);
   const diagnostics = client.diagnostics.enabled && !!sentryDestination(env.SENTRY_DSN);
   const email = !!env.DB && serviceEmailConfigured(env);
   // Downgrade requested features without their server prerequisites.
@@ -90,8 +95,8 @@ export function serviceConfiguration(env = {}) {
     entry('cloudflare','Cloudflare','hosting',true,'Managed hosting is required.'),
     entry('netlify-identity','Netlify Identity','identity',true,'Account service is required.'),
     entry('sentry','Sentry','diagnostics',diagnostics,'An OffMenu error-monitoring project must be configured.'),
-    entry('brevo','Brevo','email',email,'An OffMenu sender and email service must be configured.'),
-    entry('support','Support email','support',email && validEmail(env.SUPPORT_EMAIL),'A support recipient and email service must be configured.'),
+    entry('brevo','Brevo','email',email && (global.features.supportEmail || global.features.documentEmail),'An OffMenu sender and email service must be configured.'),
+    entry('support','Support email','support',global.features.supportEmail && email && validEmail(env.SUPPORT_EMAIL),'A support recipient and email service must be configured.'),
     entry('iubenda','iubenda','consent',!!client.consent.siteId,'An OffMenu cookie policy must be configured.'),
     entry('sleekplan','Sleekplan','feedback',!!(client.feedback.productId || client.feedback.boardUrl),'An OffMenu feedback board must be configured.'),
     entry('zaraz','Cloudflare Zaraz','analytics',client.analytics.enabled,'An analytics consent purpose must be configured.'),
@@ -100,7 +105,7 @@ export function serviceConfiguration(env = {}) {
     entry('google-search','Google Search Console','discovery',!!seo.googleSiteVerification,'OffMenu property verification must be configured.'),
     entry('bing-search','Bing Webmaster Tools','discovery',!!seo.bingSiteVerification,'OffMenu site verification must be configured.')
   ];
-  return {schemaVersion:1,configurationValid:!invalid,client,links,seo,services};
+  return {schemaVersion:1,configurationValid:!invalid,client,links,seo,globalDefaults:global.defaults,emailFeatures:{support:global.features.supportEmail && email,document:global.features.documentEmail && email},services};
 }
 export function serviceCSP(env = {}) {
   const {client} = serviceConfiguration(env);
@@ -133,7 +138,7 @@ export function serviceRoutes(request, env, {reply}) {
     if (request.method !== 'GET') return reply({error:'Method not allowed'},405);
     return reply({schemaVersion:1,optionalDefaults:'off',consentStorage:'this browser',
       categories:{diagnostics:'Fixed runtime error codes only; no exception text, URLs, identifiers or pantry data.',analytics:'Allowlisted coarse actions only after local and vendor-purpose consent.',support:'Only the message and reply email you confirm are sent to the configured support provider.',email:'Only your confirmed document is sent to your verified account email address.',advertising:'Optional approved advertising requires local choice and a valid vendor consent decision.'},
-      retention:{supportPayloadDays:30,deliveryIdentity:'Retained to prevent uncertain delivery from being replayed.'},
+      retention:{supportPayloadDays:runtimeSettings(env).limits.supportRetentionDays,deliveryIdentity:'Retained to prevent uncertain delivery from being replayed.'},
       links:serviceConfiguration(env).links});
   }
   if (url.pathname === '/robots.txt' && request.method === 'GET') return new Response('User-agent: *\nDisallow: /api/\nDisallow: /oauth/\nDisallow: /.netlify/\nDisallow: /data-workspace.html\nSitemap: '+url.origin+'/sitemap.xml\n',{headers:{'Content-Type':'text/plain;charset=utf-8','Cache-Control':'public,max-age=300'}});

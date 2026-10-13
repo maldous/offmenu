@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2218,
+  "messages": 2297,
   "arabicTranslated": 376,
-  "arabicMissing": 1842,
+  "arabicMissing": 1921,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -206,6 +206,13 @@
       ],
       "arabic": false
     },
+    " · revision ": {
+      "sources": [
+        "public/admin-operations-ui.js",
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     " · source quantities available": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -219,6 +226,12 @@
       "arabic": false
     },
     "#finish-items input[data-waste-id]": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "#third-party-services, #offmenu-administration, #offmenu-admin-operations": {
       "sources": [
         "public/app.js"
       ],
@@ -313,6 +326,12 @@
       ],
       "arabic": false
     },
+    "../public/countries.js": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
     "../public/evidence-model.js": {
       "sources": [
         "cloud/catalogue.mjs",
@@ -391,6 +410,37 @@
       "arabic": false
     },
     "./access-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./admin-model.js": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "./admin-operations-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./admin-operations.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "./admin-settings.mjs": {
+      "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "./admin-ui.js": {
       "sources": [
         "public/app.js"
       ],
@@ -481,6 +531,16 @@
       ],
       "arabic": false
     },
+    "./global-settings.mjs": {
+      "sources": [
+        "cloud/admin-settings.mjs",
+        "cloud/locale.mjs",
+        "cloud/service-config.mjs",
+        "cloud/service-observability.mjs",
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "./household-model.js": {
       "sources": [
         "public/app.js",
@@ -492,6 +552,8 @@
     "./i18n.js": {
       "sources": [
         "public/access-ui.js",
+        "public/admin-operations-ui.js",
+        "public/admin-ui.js",
         "public/app.js",
         "public/basket-model.js",
         "public/checkout-model.js",
@@ -600,6 +662,7 @@
     },
     "./provider-data.mjs": {
       "sources": [
+        "cloud/admin-settings.mjs",
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
@@ -654,6 +717,7 @@
     },
     "./service-config.mjs": {
       "sources": [
+        "cloud/admin-settings.mjs",
         "cloud/handler.mjs",
         "cloud/service-observability.mjs"
       ],
@@ -858,6 +922,7 @@
     },
     "/robots.txt": {
       "sources": [
+        "cloud/handler.mjs",
         "cloud/service-config.mjs"
       ],
       "arabic": false
@@ -877,6 +942,7 @@
     },
     "/sitemap.xml": {
       "sources": [
+        "cloud/handler.mjs",
         "cloud/service-config.mjs"
       ],
       "arabic": false
@@ -1062,6 +1128,12 @@
       ],
       "arabic": false
     },
+    "A newer administrative settings revision exists.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
     "A newer cloud save exists. Load it before saving; export your local copy first.": {
       "sources": [
         "cloud/handler.mjs"
@@ -1071,6 +1143,12 @@
     "A newer kitchen save exists": {
       "sources": [
         "cloud/kitchens.mjs"
+      ],
+      "arabic": false
+    },
+    "A newer public source revision exists.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
       ],
       "arabic": false
     },
@@ -1371,6 +1449,57 @@
     "Adjustments:": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Administration": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Administrative action unavailable.": {
+      "sources": [
+        "public/admin-operations-ui.js",
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Administrative settings are incomplete.": {
+      "sources": [
+        "public/admin-model.js"
+      ],
+      "arabic": false
+    },
+    "Administrative settings are unavailable.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Administrative settings unavailable.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Administrative settings update failed.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Administrative storage unavailable.": {
+      "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Administrator permission required.": {
+      "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -1676,6 +1805,12 @@
     "At least {v0} {v1} for any one recipe: {v2}": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Atomic D1 batch unavailable": {
+      "sources": [
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -2174,6 +2309,12 @@
       ],
       "arabic": false
     },
+    "Changes: ": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Check ALDI delivery on DoorDash ↗": {
       "sources": [
         "public/data-ui.js"
@@ -2301,6 +2442,12 @@
     "Choose a clear barcode photo": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Choose a different source status.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
       ],
       "arabic": false
     },
@@ -3162,6 +3309,12 @@
       ],
       "arabic": false
     },
+    "Credential vault is unavailable.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
     "Credentials saved privately. They have not yet been validated by the provider.": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -3421,9 +3574,33 @@
       ],
       "arabic": false
     },
+    "Default country": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Default currency for prices": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Default interface language": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Default servings": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Default units": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -3496,6 +3673,12 @@
       ],
       "arabic": false
     },
+    "Diagnostics hourly limit": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Dietary advisors": {
       "sources": [
         "public/index.html"
@@ -3545,6 +3728,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Disable value": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
     },
     "Discard amount exceeds recorded stock.": {
       "sources": [
@@ -3603,6 +3792,18 @@
       ],
       "arabic": false
     },
+    "Document email": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Document email is not available.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Document email is unavailable.": {
       "sources": [
         "public/services-ui.js"
@@ -3612,6 +3813,12 @@
     "Document emailed to your verified account address.": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Document hourly limit": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -3997,6 +4204,12 @@
     "Enter a positive yield and at least one required ingredient.": {
       "sources": [
         "public/recipe-library-model.js"
+      ],
+      "arabic": false
+    },
+    "Enter a replacement value for ": {
+      "sources": [
+        "public/admin-model.js"
       ],
       "arabic": false
     },
@@ -4881,6 +5094,12 @@
       ],
       "arabic": false
     },
+    "Global settings": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Global · all countries": {
       "sources": [
         "public/index.html",
@@ -5523,7 +5742,14 @@
     },
     "Invalid ": {
       "sources": [
+        "cloud/global-settings.mjs",
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid administrative settings.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -5605,6 +5831,18 @@
       ],
       "arabic": false
     },
+    "Invalid credential.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid credentials": {
+      "sources": [
+        "cloud/admin-settings.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid data display language.": {
       "sources": [
         "cloud/state.mjs"
@@ -5614,6 +5852,30 @@
     "Invalid date arguments": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid default country.": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid default language.": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid default servings.": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid default units.": {
+      "sources": [
+        "cloud/global-settings.mjs"
       ],
       "arabic": false
     },
@@ -5863,6 +6125,12 @@
       ],
       "arabic": false
     },
+    "Invalid service feature.": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid serving event": {
       "sources": [
         "public/cooking-model.js"
@@ -5872,6 +6140,12 @@
     "Invalid servings.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid settings.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -5890,6 +6164,12 @@
     "Invalid shopping items.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid source operation.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
       ],
       "arabic": false
     },
@@ -6015,6 +6295,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Keep existing value": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
     },
     "Keep leading zeroes": {
       "sources": [
@@ -6704,6 +6990,8 @@
     },
     "Method not allowed": {
       "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs",
         "cloud/catalogue.mjs",
         "cloud/enrichment.mjs",
         "cloud/handler.mjs",
@@ -6959,6 +7247,12 @@
       ],
       "arabic": false
     },
+    "New value": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Newer revision exists; reload before editing": {
       "sources": [
         "cloud/catalogue.mjs"
@@ -7002,6 +7296,12 @@
     "No camera frame yet": {
       "sources": [
         "public/scanner-ui.js"
+      ],
+      "arabic": false
+    },
+    "No changes to save.": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -7185,6 +7485,7 @@
     },
     "Not found": {
       "sources": [
+        "cloud/admin-settings.mjs",
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
@@ -7733,6 +8034,8 @@
     },
     "Origin": {
       "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs",
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
@@ -7745,6 +8048,8 @@
     },
     "Origin mismatch": {
       "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs",
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
@@ -8503,6 +8808,24 @@
       ],
       "arabic": false
     },
+    "Public source operation failed.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
+      ],
+      "arabic": false
+    },
+    "Public source operations": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
+    "Public source policies unavailable.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
+      ],
+      "arabic": false
+    },
     "Public sources stay available to every profile. Country filtering is optional. Your private provider connections use your own API plans and credentials.": {
       "sources": [
         "public/index.html"
@@ -8635,6 +8958,18 @@
     "Raw": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Reactivate source": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
+    "Reactivate this reviewed public source?": {
+      "sources": [
+        "public/admin-operations-ui.js"
       ],
       "arabic": false
     },
@@ -9077,6 +9412,18 @@
       ],
       "arabic": false
     },
+    "Reload settings": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Reload source policies": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
     "Remainder saved": {
       "sources": [
         "public/insights-ui.js"
@@ -9170,6 +9517,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Replace value": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
     },
     "Replace your pantry with this backup?": {
       "sources": [
@@ -9297,6 +9650,12 @@
     "Review before putting away.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Review changes": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -9496,6 +9855,12 @@
       ],
       "arabic": false
     },
+    "Save confirmed settings": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Save correction": {
       "sources": [
         "public/index.html"
@@ -9580,6 +9945,12 @@
     "Save serving": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Save these reviewed administrative settings?": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -9880,6 +10251,12 @@
       ],
       "arabic": false
     },
+    "Service settings": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Service setup is required.": {
       "sources": [
         "public/services-ui.js"
@@ -9926,6 +10303,12 @@
     "Set your own daily goals for a person or for unassigned household records. All-record totals do not combine personal goals.": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Settings changed elsewhere. Refresh and review again.": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -10106,6 +10489,14 @@
       ],
       "arabic": false
     },
+    "Sign in as an administrator.": {
+      "sources": [
+        "public/admin-operations-ui.js",
+        "public/admin-ui.js",
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "Sign in first": {
       "sources": [
         "public/index.html"
@@ -10115,6 +10506,13 @@
     "Sign in for cloud record storage, or export this batch.": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in required.": {
+      "sources": [
+        "cloud/admin-operations.mjs",
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -10337,6 +10735,12 @@
       ],
       "arabic": false
     },
+    "Source changed elsewhere. Reload and review it again.": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
     "Source directory": {
       "sources": [
         "public/data-workspace.html"
@@ -10349,6 +10753,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Source is not an administrable public policy.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
+      ],
+      "arabic": false
     },
     "Source licences preserved": {
       "sources": [
@@ -10425,6 +10835,12 @@
     "Source text fingerprint does not match.": {
       "sources": [
         "public/common-corpus-locale.js"
+      ],
+      "arabic": false
+    },
+    "Source unavailable.": {
+      "sources": [
+        "cloud/admin-operations.mjs"
       ],
       "arabic": false
     },
@@ -10617,13 +11033,26 @@
     },
     "Support email": {
       "sources": [
-        "cloud/service-config.mjs"
+        "cloud/service-config.mjs",
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "Support email is not available.": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
     "Support email is not configured.": {
       "sources": [
         "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Support hourly limit": {
+      "sources": [
+        "public/admin-ui.js"
       ],
       "arabic": false
     },
@@ -10651,9 +11080,33 @@
       ],
       "arabic": false
     },
+    "Support retention days": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
     "Survey food and nutrient datasets; use the applicable release and definitions.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Suspend or restore existing reviewed public source policies. This cannot publish personal records or access account data.": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
+    "Suspend source": {
+      "sources": [
+        "public/admin-operations-ui.js"
+      ],
+      "arabic": false
+    },
+    "Suspend this reviewed public source?": {
+      "sources": [
+        "public/admin-operations-ui.js"
       ],
       "arabic": false
     },
@@ -11488,6 +11941,7 @@
     },
     "Vault unavailable": {
       "sources": [
+        "cloud/admin-settings.mjs",
         "cloud/service-support.mjs"
       ],
       "arabic": false
@@ -12162,6 +12616,12 @@
       ],
       "arabic": false
     },
+    "application defaults": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
     "application/xml;charset=utf-8": {
       "sources": [
         "cloud/service-config.mjs"
@@ -12386,6 +12846,18 @@
     "cream|dairy cream": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "credential ": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
+    },
+    "credentials.": {
+      "sources": [
+        "cloud/admin-settings.mjs"
       ],
       "arabic": false
     },
@@ -12615,6 +13087,12 @@
     "g → convert to mg": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "global settings": {
+      "sources": [
+        "cloud/global-settings.mjs"
       ],
       "arabic": false
     },
@@ -12862,6 +13340,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "not configured": {
+      "sources": [
+        "public/admin-ui.js"
+      ],
+      "arabic": false
     },
     "nothing entered": {
       "sources": [
@@ -13258,6 +13742,18 @@
       ],
       "arabic": false
     },
+    "service features": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
+    "service limits": {
+      "sources": [
+        "cloud/global-settings.mjs"
+      ],
+      "arabic": false
+    },
     "service link": {
       "sources": [
         "cloud/service-config.mjs"
@@ -13449,6 +13945,12 @@
     "use not permitted": {
       "sources": [
         "public/evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "user-contributed promotion disabled": {
+      "sources": [
+        "cloud/admin-operations.mjs"
       ],
       "arabic": false
     },

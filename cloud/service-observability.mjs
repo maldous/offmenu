@@ -1,6 +1,8 @@
 import {serviceConfiguration,sentryDestination} from './service-config.mjs';
+import {defaultGlobalSettings,parseGlobalSettings} from './global-settings.mjs';
 import {DIAGNOSTIC_CODES as CLIENT_DIAGNOSTIC_CODES} from '../public/services-model.js';
 export const DIAGNOSTIC_CODES = Object.freeze([...CLIENT_DIAGNOSTIC_CODES,'worker_error']);
+function runtimeSettings(env){try{const value=env.SERVICE_GLOBAL_SETTINGS||{};return parseGlobalSettings(typeof value==='string'?JSON.parse(value):value);}catch{return defaultGlobalSettings();}}
 export function diagnosticEvent(code, release = {}) {
   if (!DIAGNOSTIC_CODES.includes(code)) throw Error('Invalid diagnostic code.');
   return {
@@ -38,7 +40,7 @@ export async function diagnosticRoutes(request, env, {reply,verifiedUser,bounded
   const key = [...new Uint8Array(bytes)].map(value=>value.toString(16).padStart(2,'0')).join('');
   const bucket=Math.floor(Date.now()/3600000);
   const count=await env.DB.prepare('INSERT INTO integration_limits(key,bucket,count) VALUES(?,?,1) ON CONFLICT(key,bucket) DO UPDATE SET count=count+1 RETURNING count').bind(key,bucket).first();
-  if (count.count > 30) return reply({error:'Error reporting limit reached.'},429);
+  if (count.count > runtimeSettings(env).limits.diagnosticsHourlyLimit) return reply({error:'Error reporting limit reached.'},429);
   const sent = await reportDiagnostic(env,body.code,release);
   return reply({accepted:sent},sent?202:502);
 }

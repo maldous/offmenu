@@ -1,9 +1,11 @@
 import {sealCredentials} from './provider-data.mjs';
+import {defaultGlobalSettings,parseGlobalSettings} from './global-settings.mjs';
 
 const BREVO_URL='https://api.brevo.com/v3/smtp/email';
 const encoder=new TextEncoder();
 const replyFallback=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function runtimeSettings(env){try{const value=env.SERVICE_GLOBAL_SETTINGS||{};return parseGlobalSettings(typeof value==='string'?JSON.parse(value):value);}catch{return defaultGlobalSettings();}}
 
 const hex=bytes=>[...new Uint8Array(bytes)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
 const validVault=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
@@ -36,6 +38,7 @@ export async function serviceSupportRoutes(request,env,{verifiedUser,boundedJSON
  let body;try{body=await boundedJSON(request,20_000);}catch(error){return reply({error:'Use a small JSON request.'},400);}
  if(!exactKeys(body,path.endsWith('/support')?['idempotencyKey','confirmed','subject','message']:['idempotencyKey','confirmed','document'])||body?.confirmed!==true)return reply({error:'Confirm a valid email request before it is sent.'},400);
  const kind=path.endsWith('/support')?'support':'email',key=requestKey(body.idempotencyKey);if(!key)return reply({error:'Use an idempotency key with 16–128 letters, numbers, underscores or hyphens.'},400);
+ const settings=runtimeSettings(env);if(kind==='support'&&!settings.features.supportEmail)return reply({error:'Support email is not available.'},503);if(kind==='email'&&!settings.features.documentEmail)return reply({error:'Document email is not available.'},503);
  const to=kind==='support'?text(env.SUPPORT_EMAIL,254,{singleLine:true}):ownerEmail(user);
  if(!to||!validEmail(to))return reply({error:kind==='support'?'Support email is not configured.':'Your verified account has no deliverable email address.'},503);
  if(kind==='email'&&!exactKeys(body.document,['title','text']))return reply({error:'Select a titled plain-text document.'},400);
@@ -46,9 +49,9 @@ export async function serviceSupportRoutes(request,env,{verifiedUser,boundedJSON
  let bodyHash;try{bodyHash=await requestHash(env,user.id,kind,payload);}catch{return reply({error:'Private request encryption is unavailable.'},503);}
  const existing=await env.DB.prepare('SELECT id,kind,body_hash,status,created_at,updated_at FROM service_requests WHERE owner=? AND kind=? AND idempotency_key=?').bind(user.id,kind,key).first();
  if(existing){if(existing.body_hash!==bodyHash)return reply({error:'This idempotency key was already used for a different request.'},409);if(existing.status==='pending'||existing.status==='unknown')return reply({error:'Delivery is uncertain and will not be resent automatically.',request:display(existing)},409);return reply({request:display(existing),replayed:true},existing.status==='sent'?200:409);}
- if(!await rateLimit(env,user.id,kind,kind==='support'?10:5))return reply({error:'Private service request limit reached. Try again next hour.'},429);
+ if(!await rateLimit(env,user.id,kind,kind==='support'?settings.limits.supportHourlyLimit:settings.limits.documentHourlyLimit))return reply({error:'Private service request limit reached. Try again next hour.'},429);
  if(!serviceEmailConfigured(env))return reply({error:'Email delivery is not configured.'},503);
  const id=crypto.randomUUID(),now=new Date().toISOString();let sealed;try{sealed=await sealCredentials(payload,env.PROVIDER_VAULT_KEY,user.id+'|service|'+id);}catch{return reply({error:'Private request encryption is unavailable.'},503);}
- try{await env.DB.prepare('INSERT INTO service_requests(id,owner,kind,idempotency_key,body_hash,status,sealed,created_at,updated_at,retain_until) VALUES(?,?,?,?,?,\'pending\',?,?,?,?)').bind(id,user.id,kind,key,bodyHash,sealed,now,now,Date.now()+30*86400000).run();}catch(error){return reply({error:'Unable to create the private request.'},409);}
+ try{await env.DB.prepare('INSERT INTO service_requests(id,owner,kind,idempotency_key,body_hash,status,sealed,created_at,updated_at,retain_until) VALUES(?,?,?,?,?,\'pending\',?,?,?,?)').bind(id,user.id,kind,key,bodyHash,sealed,now,now,Date.now()+settings.limits.supportRetentionDays*86400000).run();}catch(error){return reply({error:'Unable to create the private request.'},409);}
  try{const delivery=await deliver(env,{to,subject,textContent:kind==='support'?`Private support request from ${ownerEmail(user)||'an OffMenu account'}\n\n${content}`:content});if(delivery==='failed'){await setStatus(env,id,'failed');return reply({error:'Email provider rejected the request.',request:{id,status:'failed'}},502);}if(delivery==='unknown'){await setStatus(env,id,'unknown');return reply({error:'Email delivery is uncertain and will not be resent automatically.',request:{id,status:'unknown'}},502);}await setStatus(env,id,'sent');return reply({request:{id,status:'sent'}},201);}catch{try{await setStatus(env,id,'unknown');}catch{}return reply({error:'Email delivery is uncertain and will not be resent automatically.',request:{id,status:'unknown'}},502);}
 }
