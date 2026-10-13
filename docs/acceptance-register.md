@@ -43,3 +43,17 @@ Functional source `e57db238d96059caa00712e9f6fb94f770e134db` serves production a
 Two integration defects were found by live acceptance and corrected: the catalogue dispatcher previously intercepted enrichment; upstream fetch used a redirect mode unsupported by Workers. Full-dispatch regression and live lookups now pass. The final evidence/test commit may follow the deployed functional commit; it does not change runtime code.
 
 Production data remains preserved: 1 account record, summed revision 2, 821 snapshot bytes; catalogue/composition/source-country counts unchanged; vault binding, Netlify identity, query redaction and existing maintenance schedule retained. No account, connection, bearer token or private production test fixture was created. The public resolver lease table is the sole schema addition.
+
+## Full collection programme — execution checkpoint
+
+| Item | Delivered evidence | Current gate |
+|---|---|---|
+| Complete USDA April 2026 archive | All 34 CSV tables, 36,049,091 raw rows; 4,202,558 normalized records; original columns retained | Full corpus publication and feature acceptance pending |
+| Complete Open Prices 12 October 2026 exports | 326,767 prices reconciled; 317,898 accepted; all locations and proof metadata parsed | Dedicated D1 import in progress; activation/live use pending |
+| Complete Wikibooks 31 July 2024 snapshot | 3,895 recipe rows normalized and count-gated D1 activation | Worker deployment pending; independent recipe review remains external |
+| Complete OFF 12 October 2026 export | Entire 13,132,516,914-byte gzip downloaded | Full normalization running; reconciliation/publication pending |
+| Reusable collection tools | Atomic table checkpoints, archive change refusal, reconciliation, bounded import parts, inactive partial releases | 111 JavaScript / 9 Python tests pass; production build succeeds |
+| HN discovery | OpenNutrition publisher checksum verified; primary methodology and modified attribution checked | Supplemental source/quality register in progress; no measured-nutrition claim |
+| Durable raw release archive | Checksum and named upstream release retained; local archives acquired | R2 API error 10042 requires account activation; not claimed durable |
+
+Detailed evidence: `docs/collection-execution.md`, `docs/collections/`. This is an in-progress checkpoint, not programme completion. No current account state or credential was read or modified.
