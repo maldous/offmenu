@@ -54,7 +54,7 @@
     "sourceRights": "Per-citation licence, attribution and rights scope retained; imported FoodOn classes remain references."
   },
   "tests": {
-    "python": "35 passed",
+    "python": "36 passed",
     "wholePackage": "79,534 packets checked against schema; resource/assertion/relation identity uniqueness, citation resolution and public scope checked",
     "javascript": "119 passed",
     "nativeRecipeSchema": "25,135 validated",
@@ -83,5 +83,26 @@
     "allFileDigestsChecked": 170
   },
   "checkedAt": "2026-10-13T21:37:59.318718+00:00",
-  "recipeConsumerVerification": "docs/common-data-recipe-consumer-verification-20261014.json"
+  "recipeConsumerVerification": "docs/common-data-recipe-consumer-verification-20261014.json",
+  "packageManifestPayloadSha256": "99a5b2cb384ec1d8b03f958f1380954a07e470b92d47299698cbe4d43aca2121",
+  "packageManifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+  "servingManifestPayloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+  "servingManifestByteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+  "manifestChecksumDefinition": {
+    "legacyFields": [
+      "packageManifestSha256",
+      "servingManifestSha256"
+    ],
+    "legacyMeaning": "Producer payload digest excluding its own manifestSha256 field; not exact downloaded bytes. Use the explicitly named ByteSha256 fields for byte pinning.",
+    "payloadAlgorithm": "Legacy producer payload digest: remove only the top-level manifestSha256 field, retain JSON member order, serialize with Python json.dumps ensure_ascii=True and separators=(comma,colon), then SHA-256 UTF-8 bytes. This is not a digest of downloaded bytes and not RFC 8785 canonical JSON.",
+    "byteAlgorithm": "SHA-256 of the exact UTF-8 file bytes, including whitespace and trailing newline. Use this value to pin downloaded manifests.",
+    "publishedDefinitionsAndChecksums": "https://offmenu-corpus.netlify.app/common-data/manifest-checksums.json",
+    "servingByteChecksum": "https://offmenu-corpus.netlify.app/common-data/manifest.json.sha256",
+    "packageByteChecksum": "https://offmenu-corpus.netlify.app/common-data/releases/common-data-20261014/manifest.json.sha256"
+  },
+  "manifestChecksumVerification": "docs/common-data-manifest-checksum-verification-20261014.json",
+  "manifestChecksumDeployment": {
+    "id": "6acea54e7b6d662e6991719f",
+    "immutableChecksumReceipt": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
+  }
 }

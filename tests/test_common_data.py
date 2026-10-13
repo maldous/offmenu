@@ -7,6 +7,15 @@ foodon=importlib.util.module_from_spec(spec);spec.loader.exec_module(foodon)
 import jsonschema_rs
 ROOT=Path(__file__).parents[1]
 class CommonDataTests(unittest.TestCase):
+ def test_manifest_payload_and_byte_checksums_are_distinct(self):
+  spec=importlib.util.spec_from_file_location('publisher',ROOT/'scripts/publish-common-data.py');publisher=importlib.util.module_from_spec(spec);spec.loader.exec_module(publisher)
+  with tempfile.TemporaryDirectory() as temp:
+   root=Path(temp);release=root/'common-data/releases/fixture';release.mkdir(parents=True)
+   m={'releaseId':'fixture','label':'餡'};m['manifestSha256']=hashlib.sha256(json.dumps(m,separators=(',',':')).encode()).hexdigest();b=(json.dumps(m,ensure_ascii=False,indent=2)+'\n').encode()
+   (release/'manifest.json').write_bytes(b);(root/'common-data/manifest.json').write_bytes(b)
+   receipt=publisher.write_manifest_checksums(root)
+   for f in receipt['files']:
+    self.assertEqual(f['byteSha256'],hashlib.sha256(b).hexdigest());self.assertEqual(f['payloadSha256'],m['manifestSha256']);self.assertNotEqual(f['byteSha256'],f['payloadSha256']);self.assertEqual((root/(f['key']+'.sha256')).read_text(),f['byteSha256']+'  manifest.json\n')
  def test_unicode_links_and_formal_expressions_remain_fixed(self):
   schema=json.loads((ROOT/'corpus/common-data.schema.json').read_text())
   validator=jsonschema_rs.Draft202012Validator({'$defs':schema['$defs'],'$ref':'#/$defs/value'},validate_formats=True)

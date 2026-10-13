@@ -5,6 +5,16 @@ from pathlib import Path
 STATUS='all-packets-schema-identity-citation-and-scope-checked'
 def digest(value):return hashlib.sha256(value).hexdigest()
 def read(path):return json.loads(path.read_text())
+def write_manifest_checksums(target):
+ serving=read(target/'common-data/manifest.json');prefix='common-data/releases/'+serving['releaseId']+'/'
+ files=[]
+ for key in ['common-data/manifest.json',prefix+'manifest.json']:
+  path=target/key;b=path.read_bytes();m=json.loads(b)
+  payload=digest(json.dumps({k:v for k,v in m.items() if k!='manifestSha256'},ensure_ascii=True,separators=(',',':')).encode('utf8'));assert payload==m['manifestSha256']
+  exact=digest(b);(target/(key+'.sha256')).write_text(exact+'  manifest.json\n')
+  files.append({'key':key,'bytes':len(b),'byteSha256':exact,'payloadSha256':payload,'checksumUrl':'https://offmenu-corpus.netlify.app/'+key+'.sha256'})
+ receipt={'schemaVersion':'offmenu-manifest-checksums/1','byteSha256Definition':'SHA-256 of the exact UTF-8 file bytes, including whitespace and trailing newline. Use this value to pin downloaded manifests.','manifestSha256Definition':'Legacy producer payload digest: remove only the top-level manifestSha256 field, retain JSON member order, serialize with Python json.dumps ensure_ascii=True and separators=(comma,colon), then SHA-256 UTF-8 bytes. This is not a digest of downloaded bytes and not RFC 8785 canonical JSON.','files':files}
+ (target/'common-data/manifest-checksums.json').write_text(json.dumps(receipt,indent=2)+'\n');return receipt
 def publish(package,target):
  m=read(package/'manifest.json');assert m['status']==STATUS
  encoded=json.dumps({k:v for k,v in m.items() if k!='manifestSha256'},separators=(',',':')).encode();assert digest(encoded)==m['manifestSha256']
@@ -18,6 +28,7 @@ def publish(package,target):
  for key in ['schema.json','contract.json','source-mappings.json']:shutil.copyfile(package/key,target/'common-data'/key)
  recipes['library']['commonData']={'manifest':'https://offmenu-corpus.netlify.app/common-data/manifest.json','schema':'https://offmenu-corpus.netlify.app/common-data/schema.json','contract':'https://offmenu-corpus.netlify.app/common-data/contract.json','sourceMappings':'https://offmenu-corpus.netlify.app/common-data/source-mappings.json','status':STATUS,'releaseId':m['releaseId']};recipes.pop('manifestSha256');recipes['manifestSha256']=digest(json.dumps(recipes,ensure_ascii=False,separators=(',',':')).encode());(target/'recipes/manifest.json').write_text(json.dumps(recipes,ensure_ascii=False,separators=(',',':')))
  p=target/'index.html';s=p.read_text();s=s.replace('</main>','<h2>Common data contract</h2><p><a href="/common-data/manifest.json">Aligned data manifest</a> · <a href="/common-data/schema.json">Schema</a> · <a href="/common-data/contract.json">Type and relation contract</a> · <a href="/common-data/source-mappings.json">Whole-corpus source mappings</a>. Original citations, cultural variants and typed quantities are retained. Candidate joins require review.</p></main>');p.write_text(s)
+ write_manifest_checksums(target)
  print(json.dumps({'status':'checked-common-data-publication-ready','files':len(m['files']),'recipeRecords':m['recipeRecords'],'sourceCount':m['sourceCount'],'manifestSha256':serving['manifestSha256'],'baseCorpusUnchanged':root['releaseId']}))
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('package',type=Path);p.add_argument('target',type=Path);a=p.parse_args();publish(a.package,a.target)

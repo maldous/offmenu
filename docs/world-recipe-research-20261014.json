@@ -291,7 +291,10 @@
     "newTypes": "docs/common-data-type-discovery-20261014.json",
     "applicationOwner": "OffMenu i18n task",
     "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
-    "sourceCount": 20
+    "sourceCount": 20,
+    "servingManifestPayloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+    "servingManifestByteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+    "manifestChecksumDefinition": "https://offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
   },
   "publicationVerification": "docs/common-data-publication-verification-20261014.json",
   "previousLiveAcceptanceReference": "docs/live-recipe-acceptance.json",

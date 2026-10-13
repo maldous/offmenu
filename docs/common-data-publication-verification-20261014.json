@@ -1048,5 +1048,9 @@
     }
   ],
   "privateDataPublished": false,
-  "applicationChanged": false
+  "applicationChanged": false,
+  "commonManifestPayloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+  "commonManifestByteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+  "manifestChecksumVerification": "docs/common-data-manifest-checksum-verification-20261014.json",
+  "legacyCommonManifestSha256Meaning": "producer payload excluding embedded manifestSha256 field, not fetched bytes"
 }

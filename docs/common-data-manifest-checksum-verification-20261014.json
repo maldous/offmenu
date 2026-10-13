@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "offmenu-manifest-checksums/1",
+  "byteSha256Definition": "SHA-256 of the exact UTF-8 file bytes, including whitespace and trailing newline. Use this value to pin downloaded manifests.",
+  "manifestSha256Definition": "Legacy producer payload digest: remove only the top-level manifestSha256 field, retain JSON member order, serialize with Python json.dumps ensure_ascii=True and separators=(comma,colon), then SHA-256 UTF-8 bytes. This is not a digest of downloaded bytes and not RFC 8785 canonical JSON.",
+  "files": [
+    {
+      "key": "common-data/manifest.json",
+      "bytes": 53572,
+      "byteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+      "payloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+      "checksumUrl": "https://offmenu-corpus.netlify.app/common-data/manifest.json.sha256"
+    },
+    {
+      "key": "common-data/releases/common-data-20261014/manifest.json",
+      "bytes": 32624,
+      "byteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "payloadSha256": "99a5b2cb384ec1d8b03f958f1380954a07e470b92d47299698cbe4d43aca2121",
+      "checksumUrl": "https://offmenu-corpus.netlify.app/common-data/releases/common-data-20261014/manifest.json.sha256"
+    }
+  ],
+  "status": "hosted-exact-byte-and-payload-checksums-verified",
+  "checkedAt": "2026-10-13T21:41:38.990270+00:00",
+  "deployId": "6acea54e7b6d662e6991719f",
+  "immutableChecksumReceipt": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app/common-data/manifest-checksums.json",
+  "originalManifestBytesUnchanged": true,
+  "dataFileEntriesUnchanged": true
+}
