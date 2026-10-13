@@ -293,5 +293,8 @@
     "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
     "sourceCount": 20
   },
-  "publicationVerification": "docs/common-data-publication-verification-20261014.json"
+  "publicationVerification": "docs/common-data-publication-verification-20261014.json",
+  "previousLiveAcceptanceReference": "docs/live-recipe-acceptance.json",
+  "previousLiveAcceptanceRelease": "world-recipes-20261014",
+  "independentCulinaryOrDietaryAcceptance": false
 }

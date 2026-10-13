@@ -1,0 +1,1465 @@
+{
+  "schema": "offmenu-delivery-reconciliation/1",
+  "checkedAt": "2026-10-13T20:48:10.471328+00:00",
+  "runtimeSource": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+  "programmeComplete": false,
+  "reason": "Source ingestion, feature implementation and independent acceptance are different gates. Several required capabilities and external approvals remain open.",
+  "requirementsAccountedFor": 105,
+  "statusCounts": {
+    "external-acceptance-required": 1,
+    "verified-prototype": 2,
+    "partially-verified": 50,
+    "not-implemented": 3,
+    "partially-implemented": 21,
+    "external-access-and-mobile-build-required": 2,
+    "external-governance-required": 1,
+    "verified-named-local-release": 1,
+    "verified-acquired-routes-review-required": 1,
+    "external-provider-access-required": 3,
+    "verified-named-release": 1,
+    "external-issued-credentials-required": 1,
+    "external-merchant-access-required": 1,
+    "deferred-to-feedback-and-pilots": 6,
+    "verified-arithmetic-contract": 1,
+    "verified-discovery-access-pass": 1,
+    "external-privacy-review-required": 1,
+    "verified-register": 1,
+    "verified-evidence-track-separation": 1,
+    "source-data-required": 1,
+    "verified-country-discovery-pass": 1,
+    "excluded-from-current-scope": 4
+  },
+  "liveEvidence": {
+    "curationRelease": "expanded-country-search-20261013",
+    "curatedRecords": 22519902,
+    "curationSources": 18,
+    "recipeRelease": "world-recipes-20261014",
+    "fullSourceRecipes": 23661,
+    "incompleteHistoricalOcrCandidates": 256,
+    "countryQueues": 249,
+    "countryQueuesWithTaggedCuratedRecords": 243,
+    "sourcesLandingAccessChecked": 1303,
+    "comparisonReadyCountryBaskets": 0
+  },
+  "verification": {
+    "javascriptTests": 119,
+    "pythonTests": 32,
+    "build": "passed",
+    "privateAccountAggregatePreserved": {
+      "accounts": 1,
+      "revisionSum": 2,
+      "stateBytes": 821
+    },
+    "publicSourceReplicasInAccountDatabase": 0,
+    "reportReview": "Five current project PDFs plus original global data discovery report; four unchanged machine-readable registers.",
+    "recipeDownload": "all published records passed checksum, export and OCR consumer gates"
+  },
+  "nextDeliveryOrder": [
+    "Complete receipt/label capture, richer reusable planning and shopping interoperability; preserve current meal/accounting behavior.",
+    "Finish original basket quantities and reviewed food/portion/recipe joins for eligible primary sources.",
+    "Expand dated product-to-producer/control/origin/certification/recall evidence; keep uncertainty and access gates explicit.",
+    "Exercise actual BYOC merchant/retailer/vendor credentials and native health bridges.",
+    "Run independent cooking, physical-device accessibility, two-device/offline and external-MCP acceptance.",
+    "Presentation and promotion follow the later user-feedback run."
+  ],
+  "requirements": [
+    {
+      "id": "P0-01",
+      "title": "Independently reviewed quantified meal pack and useful ingredient mappings",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "external-acceptance-required",
+      "remainingAcceptance": "Independently cook/review the quantified starter meals and nutrition before calling the meal pack independently validated.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-02",
+      "title": "Produce, no-barcode and missing-product capture",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "verified-prototype",
+      "remainingAcceptance": "Keep physical scanner speed, device and accessibility pilots separate from verified non-barcode and missing-product capture.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-03",
+      "title": "Ingredient identity and dimensional unit engine",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-verified",
+      "remainingAcceptance": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-04",
+      "title": "Independent household membership and roles",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-verified",
+      "remainingAcceptance": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-05",
+      "title": "Durable autosync, retry-safe operations and two-device proof",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-verified",
+      "remainingAcceptance": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-06",
+      "title": "Cooking, serving, leftovers and waste reconciliation",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "verified-prototype",
+      "remainingAcceptance": "Preserve idempotent ingredient deduction, servings, saved leftovers and waste; complete physical household pilot.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-07",
+      "title": "Restriction certainty and actual-package evidence",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-verified",
+      "remainingAcceptance": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P0-08",
+      "title": "Keyboard/screen-reader/device usability, trust and recovery",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-verified",
+      "remainingAcceptance": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/journey.test.mjs",
+        "tests-web/kitchens.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P1-01",
+      "title": "Reviewed receipt/label OCR with duplicates and minimal retention",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "not-implemented",
+      "remainingAcceptance": "Implement user-reviewed receipt/label OCR, duplicate detection, field corrections and image-retention controls; historical recipe OCR is a different capability.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "public/documents.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P1-02",
+      "title": "Reusable planning, lunchboxes, attendance, batch cooking and date-aware reservations",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Deliver the remaining workflow and exercise its end-to-end acceptance; partial overlap with existing planner/shopping does not complete this requirement.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "public/documents.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P1-03",
+      "title": "Household likes, texture/spice preferences and reset",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Deliver the remaining workflow and exercise its end-to-end acceptance; partial overlap with existing planner/shopping does not complete this requirement.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "public/documents.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P1-04",
+      "title": "Shared shopping, substitutes, printable views, calendar and retailer handoff",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Priority feature portfolio, page 5",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Deliver the remaining workflow and exercise its end-to-end acceptance; partial overlap with existing planner/shopping does not complete this requirement.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "public/documents.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-01",
+      "title": "Taste/culture, fasting windows, multiple homes and carers",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-02",
+      "title": "Opened/frozen/thawed/decanted/partial stock and private labels",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-03",
+      "title": "Private recipes, bookmarks, family collections and creator packs",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-04",
+      "title": "Pack/unit-price/budget alternatives, fees and limited store stops",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "not-implemented",
+      "remainingAcceptance": "Implement dated pack/unit-price, fees, preferred-store and limited-extra-stop budget optimization; do not advertise historic observations as checkout quotes.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-05",
+      "title": "Measured waste reasons/quantity/value and seasonal smaller-pack suggestions",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-06",
+      "title": "Nutrition/hydration/snacks/restaurant entries/substitutions and private trends",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-07",
+      "title": "Exercise schedules and consented dated body metrics",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-08",
+      "title": "Native wearables/scales/vendor imports with overlap handling",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "external-access-and-mobile-build-required",
+      "remainingAcceptance": "Deliver native Health Connect/HealthKit bridge and approved vendor flows; obtain device permissions and issued credentials, then test overlap/revocation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-09",
+      "title": "Country recall evidence and lot/date warnings",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-10",
+      "title": "Approved assistants, home displays and scoped future write proposals",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-11",
+      "title": "Governed professional sharing and clinical/IDDSI boundary",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "external-governance-required",
+      "remainingAcceptance": "Define professional consent/clinical/IDDSI scope and obtain specialist validation before enabling care-provider prescriptions.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "P2-12",
+      "title": "Moderated creator/community/partnership features with rights and sponsorship",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion opportunities, page 6",
+      "status": "not-implemented",
+      "remainingAcceptance": "Implement moderated creator sharing, sponsorship disclosure and rights review; licensed recipe acquisition alone does not deliver a community.",
+      "evidence": [
+        "docs/acceptance-register.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-01",
+      "title": "Full eligible Open Food Facts product release and taxonomies",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-02",
+      "title": "Complete AFCD and eligible AUSNUT releases and supporting tables",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-03",
+      "title": "Complete eligible USDA food data types and supporting tables",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "verified-named-local-release",
+      "remainingAcceptance": "Complete April 2026 USDA scope reconciles all 34 source tables and 4,202,558 normalized records; hosted curation deliberately withholds unusable rows.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-04",
+      "title": "Full permitted Wikibooks and rights-cleared creator recipe collections",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "verified-acquired-routes-review-required",
+      "remainingAcceptance": "Live recipes: 23,661 full source records plus 256 incomplete OCR candidates. Personal measurement and culinary/dietary review remain distinct from ingestion.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-05",
+      "title": "Approved GS1 supplier/product identity feeds",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-provider-access-required",
+      "remainingAcceptance": "Use approved GS1 contracts and user entitlements; no licensed GS1 feed access has been exercised.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-06",
+      "title": "Full permitted Open Prices related exports",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "verified-named-release",
+      "remainingAcceptance": "Open Prices named release reconciles price, location and proof metadata; 317,898 price observations published, with no local-stock guarantee.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-07",
+      "title": "Full eligible CoFID/Ciqual/BLS and other national composition sources",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-08",
+      "title": "Credentialed nutrition/recipe providers under actual plan permissions",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-issued-credentials-required",
+      "remainingAcceptance": "Exercise real USDA/Edamam/provider credentials under the actual user plan; storing a key is not successful integration.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-09",
+      "title": "Official recalls and source-backed storage guidance",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-10",
+      "title": "Private user/manufacturer input with separate contribution rights",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-11",
+      "title": "Approved regional retailer and WhichGrocer product/offer coverage",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-provider-access-required",
+      "remainingAcceptance": "Exercise approved retailer/WhichGrocer credentials, rights, barcode/pack matching and refresh before advertising live quote/stock coverage.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-12",
+      "title": "Approved merchant/delivery/Instacart/Kroger capabilities",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-provider-access-required",
+      "remainingAcceptance": "Obtain approved Instacart/Kroger/delivery/merchant grants and test the specified region and capabilities.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-13",
+      "title": "Authorized POS/catalogue/menu/venue feeds",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-merchant-access-required",
+      "remainingAcceptance": "Obtain authorized merchant/POS exports or API grants; Overture venue references do not establish restaurant menu data.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-14",
+      "title": "Consented vendor health and native bridges",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "external-access-and-mobile-build-required",
+      "remainingAcceptance": "Implement and exercise permissioned vendor/native health bridges; manual measurements remain available.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-15",
+      "title": "Portable import/export/calendar/hardware input",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DATA-16",
+      "title": "Real REST/MCP clients, scopes and freshness",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Datasets and integrations, pages 7–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "evidence": [
+        "docs/expanded-places-national-20261013.json",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-01",
+      "title": "Health/allergen/preference uncertainty and intended-purpose boundaries",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-02",
+      "title": "Private health/religious/child information with narrow consent and deletion",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-03",
+      "title": "Use-by versus best-before versus review reminder distinctions",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-04",
+      "title": "Account/household/organization lifecycle and shared-device revocation",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-05",
+      "title": "WCAG keyboard/focus/screen-reader/reflow/contrast/large-target acceptance",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-06",
+      "title": "Camera alternatives, quiet/reduced-motion and cognitive/motor recovery",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-07",
+      "title": "Localized strings/plurals/RTL/names and language metadata",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-08",
+      "title": "Real metric/imperial/cup/spoon/currency/date/timezone behavior",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-09",
+      "title": "Regional aliases/rules/guidance/data/retailer locale packs",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-10",
+      "title": "Offline/poor-network/older-phone/tablet continuity",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "TRUST-11",
+      "title": "Support, terms/licences, issue reporting, status/recovery and truthful availability",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "status": "partially-verified",
+      "remainingAcceptance": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "evidence": [
+        "docs/acceptance-register.md",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-01",
+      "title": "Five-food-to-dinner first outcome and measured activation",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-02",
+      "title": "Private household invitation and second-user contribution",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-03",
+      "title": "Licensed creator meal packs and factual search content",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-04",
+      "title": "Measured waste/budget household pilots and technical MCP demonstration",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-05",
+      "title": "Retention/effort/reliability/support/cost scorecard",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "PROMO-06",
+      "title": "Explicit revenue/referral/sponsorship decisions without health-data targeting",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Promotion and staged pilots, pages 13–14",
+      "status": "deferred-to-feedback-and-pilots",
+      "remainingAcceptance": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-01",
+      "title": "Original and edible quantities, population and person-day basis",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-02",
+      "title": "All 45 nutrient metrics with compatible units/analytical definitions",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-03",
+      "title": "Vitamin/mineral equivalent and missing/trace/rounded-zero distinctions",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-04",
+      "title": "All 17 evidenced food groups with non-overlap and unallocated mass",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-05",
+      "title": "Density/count/edible/drained/yield/retention conversion chains",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-06",
+      "title": "Prepared recipe/menu/portion and substituted-ingredient calculations",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-07",
+      "title": "Metric-specific completeness, uncertainty, lineage and ranking gates",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-08",
+      "title": "Cohort/track/purpose/state/reference-period compatible comparison",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-09",
+      "title": "Dated cost/FX/PPP/affordability and pack-versus-consumed cost",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-10",
+      "title": "Versioned basket/product/recipe/menu/supplier/source entity joins",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-11",
+      "title": "GTIN/Digital Link/lot/date and product-version matching",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-12",
+      "title": "Dietary/supplier pass/fail/unknown/conflict and weighted coverage",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-13",
+      "title": "Seven comparison views and named reference-profile contracts",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "partially-verified",
+      "remainingAcceptance": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "NORM-14",
+      "title": "Reproduce synthetic totals/coverage and hold incomplete ranks",
+      "sourceReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "sourceSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "status": "verified-arithmetic-contract",
+      "remainingAcceptance": "Synthetic totals, missingness and incompatible-definition comparisons pass; synthetic arithmetic does not establish real national basket adequacy.",
+      "evidence": [
+        "public/basket-model.js",
+        "tests-web/global-data.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-01",
+      "title": "Dated product-brand-business-control joins",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-02",
+      "title": "Manufacturing/ingredient/packing/headquarters origin kept distinct",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-03",
+      "title": "Current versus pending/historical control and minority/licensing relations",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-04",
+      "title": "Scheme/certifier/site/product/lot scoped non-GMO/halal/kosher/organic evidence",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-05",
+      "title": "Jurisdiction/category/limit/transition additive and regulatory rules",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-06",
+      "title": "Current recall action versus historical enforcement with precise lot scope",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-07",
+      "title": "Independent/local/small producer and fiscal-year size evidence",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-08",
+      "title": "Grower/cooperative/market seller routes without fictional GTINs",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-09",
+      "title": "Minimal prompting and ambiguous identity candidates",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-10",
+      "title": "Permitted public evidence and BYOC/partner entitlement separation",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "ENRICH-11",
+      "title": "All 938 source-catalogue entries and country gaps retained/processed",
+      "sourceReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sourceSection": "Decision brief and all regional source entries",
+      "status": "verified-discovery-access-pass",
+      "remainingAcceptance": "All 1,303 original entries, including the 938 enrichment URLs, have recorded landing access checks. Dataset ingestion, rights and source-role decisions remain separate.",
+      "evidence": [
+        "cloud/enrichment.mjs",
+        "public/evidence-model.js",
+        "docs/source-delivery-ledger.json"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-01",
+      "title": "Transient/private/shared/derived/aggregate partitions with executable field policies",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-02",
+      "title": "Audience/action/territory/retention/entitlement/attribution permissions",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-03",
+      "title": "Scoped cache keys and no credential/personal-data key leakage",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-04",
+      "title": "Versioned source assertions, dependencies and independent evidence",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-05",
+      "title": "Freshness/validity/retention clocks and event/delta invalidation",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-06",
+      "title": "Conditional/coalesced requests, retry/negative cache/backoff and spend budgets",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-07",
+      "title": "Consent/contribution/refresh/disconnect choices and queued-job rechecks",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-08",
+      "title": "Separate aggregate privacy assessment and anti-reidentification rules",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "external-privacy-review-required",
+      "remainingAcceptance": "Aggregation is disabled until the specific privacy/reidentification assessment and source permissions pass.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-09",
+      "title": "Identity/quality review before any field promotion",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-10",
+      "title": "Search/export/index/derived-use isolation and withdrawal/deletion",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "CACHE-11",
+      "title": "Live warm cache, two-account revocation and mixed-response acceptance",
+      "sourceReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sourceSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "status": "partially-verified",
+      "remainingAcceptance": "Existing admission, isolation, expiry and cache tests cover the prototype; exercise all field-level policy, entitlement, dependency and withdrawal scenarios before broader promotion.",
+      "evidence": [
+        "public/record-policy.js",
+        "cloud/enrichment.mjs",
+        "tests-web/continuation.test.mjs"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-01",
+      "title": "All 249 ISO entries and special provisioning contexts",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "verified-register",
+      "remainingAcceptance": "All 249 ISO entries and special provisioning contexts are retained; seven entries receive no invented household defaults.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-02",
+      "title": "Editorial/statistical/basic-needs/acquisition/consumption/supply tracks separated",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "verified-evidence-track-separation",
+      "remainingAcceptance": "2,523 editorial lines remain separate from 707 partial published examples; acquisition and consumption are separate tracks.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-03",
+      "title": "Local starter structure and reviewed alternatives without inferred dietary identity",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "partially-verified",
+      "remainingAcceptance": "All research lines are retained; complete original quantities, population, time/state/food matching and price evidence where available. Unknowns remain unknown.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-04",
+      "title": "Primary-source complete quantities/population/period extraction where available",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "source-data-required",
+      "remainingAcceptance": "No comparison-ready national baskets are established. Extract actual primary quantities/population/period where published; preserve explicit gaps elsewhere.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-05",
+      "title": "Recipe-derived shopping quantities, usable inventory and pack rounding",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "partially-verified",
+      "remainingAcceptance": "All research lines are retained; complete original quantities, population, time/state/food matching and price evidence where available. Unknowns remain unknown.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-06",
+      "title": "Food-concept/product/menu/offer/supplier matching",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "partially-verified",
+      "remainingAcceptance": "All research lines are retained; complete original quantities, population, time/state/food matching and price evidence where available. Unknowns remain unknown.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-07",
+      "title": "Dated price/currency/geography/specification and compatible comparisons",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "partially-verified",
+      "remainingAcceptance": "All research lines are retained; complete original quantities, population, time/state/food matching and price evidence where available. Unknowns remain unknown.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "BASKET-08",
+      "title": "Country evidence/access/gap/localization review for every entry",
+      "sourceReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sourceSection": "Basket definition, matching and all country cards",
+      "status": "verified-country-discovery-pass",
+      "remainingAcceptance": "All 249 queues have source/field/access gaps; accepted country-tagged curation exists in 243, with EH, GS, HM, PN, TK and UM explicit gaps.",
+      "evidence": [
+        "research/manifest.json",
+        "docs/country-execution-20261013.json",
+        "public/basket-model.js"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DEFER-01",
+      "title": "Automatic grocery purchasing",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion boundaries, page 6",
+      "status": "excluded-from-current-scope",
+      "remainingAcceptance": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DEFER-02",
+      "title": "Disease treatment and glucose/medication dosing",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion boundaries, page 6",
+      "status": "excluded-from-current-scope",
+      "remainingAcceptance": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DEFER-03",
+      "title": "Smart-fridge hardware dependence",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion boundaries, page 6",
+      "status": "excluded-from-current-scope",
+      "remainingAcceptance": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    },
+    {
+      "id": "DEFER-04",
+      "title": "Full social network",
+      "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sourceSection": "Expansion boundaries, page 6",
+      "status": "excluded-from-current-scope",
+      "remainingAcceptance": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "evidence": [
+        "docs/research-delivery-plan.md"
+      ],
+      "independentAcceptanceClaimed": false
+    }
+  ],
+  "liveRecipeAcceptance": {
+    "schema": "offmenu-live-recipe-acceptance/1",
+    "checkedAt": "2026-10-13T20:49:03.323Z",
+    "releaseId": "world-recipes-20261014",
+    "manifestSha256": "9bf3f77bdb6ab8efdbbdc3a43e3a86214a3bc27fea48088c49c8e2e7e6c89039",
+    "downloadSha256": "fb01454b8867e54bcb8c31a791ef6203354ab63268d45241fd73ebd43e1c6b5a",
+    "records": 23917,
+    "fullSourceRecipes": 23661,
+    "incompleteHistoricalOcrCandidates": 256,
+    "unknownYield": 22067,
+    "recordsWithUnknownQuantities": 23576,
+    "portableExports": "all source ingredient/direction counts preserved",
+    "ocrGate": "all incomplete OCR withheld from stock matching and personally reviewed recipe conversion",
+    "status": "published-download-and-consumer-gates-verified",
+    "independentCulinaryOrDietaryAcceptance": false,
+    "limitation": "Complete source text does not establish complete measurements, reviewed culinary identities or dietary suitability."
+  }
+}
