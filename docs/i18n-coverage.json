@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2074,
+  "messages": 2218,
   "arabicTranslated": 376,
-  "arabicMissing": 1698,
+  "arabicMissing": 1842,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -128,6 +128,12 @@
       ],
       "arabic": false
     },
+    " setting.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     " · Age ": {
       "sources": [
         "public/app.js"
@@ -226,6 +232,7 @@
     },
     "&amp;": {
       "sources": [
+        "cloud/service-config.mjs",
         "public/documents.js"
       ],
       "arabic": false
@@ -238,12 +245,14 @@
     },
     "&lt;": {
       "sources": [
+        "cloud/service-config.mjs",
         "public/documents.js"
       ],
       "arabic": false
     },
     "&quot;": {
       "sources": [
+        "cloud/service-config.mjs",
         "public/documents.js"
       ],
       "arabic": false
@@ -345,6 +354,12 @@
     "../public/record-policy.js": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "../public/services-model.js": {
+      "sources": [
+        "cloud/service-observability.mjs"
       ],
       "arabic": false
     },
@@ -496,6 +511,7 @@
         "public/recipe-library-ui.js",
         "public/recipe-review.js",
         "public/scanner-ui.js",
+        "public/services-ui.js",
         "public/sharing-ui.js",
         "public/sw.js",
         "public/sync-ui.js",
@@ -586,7 +602,8 @@
       "sources": [
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
-        "cloud/integrations.mjs"
+        "cloud/integrations.mjs",
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -630,6 +647,38 @@
       "arabic": false
     },
     "./scanner-ui.js": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./service-config.mjs": {
+      "sources": [
+        "cloud/handler.mjs",
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
+    "./service-observability.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "./service-support.mjs": {
+      "sources": [
+        "cloud/handler.mjs",
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "./services-model.js": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "./services-ui.js": {
       "sources": [
         "public/app.js"
       ],
@@ -807,6 +856,12 @@
       ],
       "arabic": false
     },
+    "/robots.txt": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "/scanner-worker.js": {
       "sources": [
         "public/scanner-ui.js",
@@ -817,6 +872,18 @@
     "/scanner.wasm": {
       "sources": [
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "/sitemap.xml": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "/sitemap.xml\n": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -1026,6 +1093,12 @@
       ],
       "arabic": false
     },
+    "A support recipient and email service must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "A world of food data.": {
       "sources": [
         "public/index.html"
@@ -1139,6 +1212,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Account service is required.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
     },
     "Account setup pending. Guest pantry and offline recipes remain available.": {
       "sources": [
@@ -1301,6 +1380,12 @@
       ],
       "arabic": false
     },
+    "Advertising requires an approved site, slot and configured TCF consent.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Advisors rank and screen menus using available food data and ingredient preferences. Body measurements are recorded for reviewing your plan; portions are user-selected. Adult weight-loss scoring is disabled for children.": {
       "sources": [
         "public/index.html"
@@ -1421,6 +1506,12 @@
       ],
       "arabic": false
     },
+    "Allowlisted coarse actions only after local and vendor-purpose consent.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Already joined or invitation no longer available": {
       "sources": [
         "cloud/kitchens.mjs"
@@ -1472,9 +1563,51 @@
       ],
       "arabic": false
     },
+    "An OffMenu cookie policy must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An OffMenu error-monitoring project must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An OffMenu feedback board must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An OffMenu sender and email service must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An OffMenu status page must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An analytics consent purpose must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "An input dependency does not permit reuse": {
       "sources": [
         "public/record-policy.js"
+      ],
+      "arabic": false
+    },
+    "Analytics requires a configured Zaraz consent purpose.": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -1578,9 +1711,22 @@
       ],
       "arabic": false
     },
+    "Availability status": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Available": {
       "sources": [
+        "public/services-ui.js",
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Available when you choose to use it.": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -1718,6 +1864,12 @@
       ],
       "arabic": false
     },
+    "Bing Webmaster Tools": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Blank = unknown; * = partial. Sodium uses label data when available, otherwise salt × 400 mg/g. {v0}": {
       "sources": [
         "public/insights-ui.js"
@@ -1750,6 +1902,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Brevo": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
     },
     "Bring on the beeps.": {
       "sources": [
@@ -2227,6 +2385,24 @@
       ],
       "arabic": false
     },
+    "Choose support before emailing a document.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Choose support before opening the support board.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Choose support before sending a request.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Choose the appropriate country retailer website and use your own browser session. No public global barcode-price API assumed.": {
       "sources": [
         "public/sources.js"
@@ -2437,6 +2613,18 @@
       ],
       "arabic": false
     },
+    "Cloudflare": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Cloudflare Zaraz": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "CoFID is UK food composition; FSA ratings distinguish England, Wales, Scotland and Northern Ireland.": {
       "sources": [
         "public/sources.js"
@@ -2578,6 +2766,12 @@
       ],
       "arabic": false
     },
+    "Confirm a valid email request before it is sent.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Confirm basis and preparation against the product label.": {
       "sources": [
         "public/unified-data.js"
@@ -2706,6 +2900,12 @@
       ],
       "arabic": false
     },
+    "Consent requires both site and policy IDs.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Consumption records, not plans": {
       "sources": [
         "public/insights-ui.js"
@@ -2715,6 +2915,12 @@
     "Consumption, curiosity and little milestones. Make it your own.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Contact support": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -3240,6 +3446,12 @@
       ],
       "arabic": false
     },
+    "Delivery is uncertain and will not be resent automatically.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Demo changes stay separate from your kitchen.": {
       "sources": [
         "public/app.js",
@@ -3388,6 +3600,18 @@
     "Document": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Document email is unavailable.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Document emailed to your verified account address.": {
+      "sources": [
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -3617,6 +3841,54 @@
       ],
       "arabic": true
     },
+    "Email a copy to my verified account address.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Email delivery is not configured.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Email delivery is uncertain and will not be resent automatically.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Email delivery is uncertain. Check your mailbox before creating another request.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Email provider rejected the request.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Email service setup is required.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Email the displayed document to your verified account address using Brevo? It may contain private kitchen or health information.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Email this preview": {
+      "sources": [
+        "public/index.html"
+      ],
+      "arabic": false
+    },
     "Energy": {
       "sources": [
         "public/checkout-model.js",
@@ -3798,6 +4070,24 @@
     "Equivalent public lookup is refreshing": {
       "sources": [
         "cloud/enrichment.mjs"
+      ],
+      "arabic": false
+    },
+    "Error reporting is not configured.": {
+      "sources": [
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
+    "Error reporting is unavailable.": {
+      "sources": [
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
+    "Error reporting limit reached.": {
+      "sources": [
+        "cloud/service-observability.mjs"
       ],
       "arabic": false
     },
@@ -4241,6 +4531,12 @@
       ],
       "arabic": false
     },
+    "Fixed runtime error codes only; no exception text, URLs, identifiers or pantry data.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Focus": {
       "sources": [
         "public/index.html"
@@ -4616,6 +4912,12 @@
       ],
       "arabic": false
     },
+    "Google AdSense": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Google Health": {
       "sources": [
         "public/sources.js"
@@ -4631,6 +4933,12 @@
     "Google Health developer terms / explicit consent": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Google Search Console": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -4876,6 +5184,12 @@
     "I reviewed the product, price, currency and source terms.": {
       "sources": [
         "extension/popup.html"
+      ],
+      "arabic": false
+    },
+    "I reviewed this message and want to send it.": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -5207,6 +5521,12 @@
       ],
       "arabic": false
     },
+    "Invalid ": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid authorization request.": {
       "sources": [
         "cloud/integrations.mjs"
@@ -5297,6 +5617,12 @@
       ],
       "arabic": false
     },
+    "Invalid diagnostic code.": {
+      "sources": [
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid discard amount.": {
       "sources": [
         "public/model.js"
@@ -5306,6 +5632,12 @@
     "Invalid eaten portions": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid error report.": {
+      "sources": [
+        "cloud/service-observability.mjs"
       ],
       "arabic": false
     },
@@ -5522,6 +5854,12 @@
     "Invalid served portions.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid service configuration JSON.": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -6164,6 +6502,12 @@
       ],
       "arabic": false
     },
+    "Managed hosting is required.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Manual focus": {
       "sources": [
         "public/scanner-ui.js"
@@ -6352,6 +6696,12 @@
       ],
       "arabic": false
     },
+    "Message": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Method not allowed": {
       "sources": [
         "cloud/catalogue.mjs",
@@ -6359,7 +6709,10 @@
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
-        "cloud/provider-data.mjs"
+        "cloud/provider-data.mjs",
+        "cloud/service-config.mjs",
+        "cloud/service-observability.mjs",
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -6588,6 +6941,12 @@
       ],
       "arabic": true
     },
+    "Netlify Identity": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "New Zealand FOODfiles": {
       "sources": [
         "public/sources.js"
@@ -6812,6 +7171,12 @@
       ],
       "arabic": true
     },
+    "Not connected": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Not entered": {
       "sources": [
         "public/documents.js"
@@ -7000,9 +7365,33 @@
       ],
       "arabic": false
     },
+    "OffMenu property verification must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu runtime failure": {
+      "sources": [
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
     "OffMenu selected facts and discovery references": {
       "sources": [
         "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu site approval and advertising consent are required.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu site verification must be configured.": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -7121,6 +7510,18 @@
     "Only controls reported by this camera are shown. Preview mirroring and rotation do not change barcode decoding.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Only the message and reply email you confirm are sent to the configured support provider.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Only your confirmed document is sent to your verified account email address.": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -7255,6 +7656,12 @@
       ],
       "arabic": false
     },
+    "Open support board": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Open worldwide recipes": {
       "sources": [
         "public/index.html",
@@ -7288,6 +7695,12 @@
       ],
       "arabic": true
     },
+    "Optional approved advertising requires local choice and a valid vendor consent decision.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Optional correction. Save it to return to the final receipt.": {
       "sources": [
         "public/app.js"
@@ -7306,13 +7719,27 @@
       ],
       "arabic": false
     },
+    "Optional services are off until you choose them. Analytics and diagnostics use only coarse service data; support sends the message you confirm and can email your verified account address.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Optional services revoked. Reload this page if a provider panel remains open.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Origin": {
       "sources": [
         "cloud/catalogue.mjs",
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
-        "cloud/provider-data.mjs"
+        "cloud/provider-data.mjs",
+        "cloud/service-observability.mjs",
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -7322,7 +7749,9 @@
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
-        "cloud/provider-data.mjs"
+        "cloud/provider-data.mjs",
+        "cloud/service-observability.mjs",
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -7748,9 +8177,33 @@
       ],
       "arabic": false
     },
+    "Preview and confirm the document before emailing it.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Preview and confirm your message before sending.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Preview document": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Preview message": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Preview your message before sending.": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -7785,6 +8238,12 @@
       ],
       "arabic": true
     },
+    "Privacy": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Private health history": {
       "sources": [
         "public/data-workspace.html"
@@ -7800,6 +8259,24 @@
     "Private measurement group deleted. Reload history to refresh totals.": {
       "sources": [
         "public/data-workspace.js"
+      ],
+      "arabic": false
+    },
+    "Private request encryption is unavailable.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Private service request limit reached. Try again next hour.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Private service storage is unavailable.": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -7891,6 +8368,12 @@
     "Provide 1–1,000 quantified lines.": {
       "sources": [
         "public/basket-model.js"
+      ],
+      "arabic": false
+    },
+    "Provide a subject and message.": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -8767,6 +9250,12 @@
       ],
       "arabic": false
     },
+    "Retained to prevent uncertain delivery from being replayed.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Return to my private kitchen": {
       "sources": [
         "public/sharing-ui.js"
@@ -8873,6 +9362,12 @@
     "Revoke access": {
       "sources": [
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "Revoke all optional services": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -9073,6 +9568,12 @@
     "Save privately": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Save service choices": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -9281,6 +9782,18 @@
       ],
       "arabic": false
     },
+    "Secure document delivery is unavailable in this browser.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Secure message delivery is unavailable in this browser.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Select a recipe record": {
       "sources": [
         "public/recipe-review.js"
@@ -9293,9 +9806,39 @@
       ],
       "arabic": false
     },
+    "Select a titled plain-text document.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Selected day": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Send support request": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sending your confirmed message…": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sentry": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Sentry sentry_version=7,sentry_client=offmenu/1.0,sentry_key=": {
+      "sources": [
+        "cloud/service-observability.mjs"
       ],
       "arabic": false
     },
@@ -9325,9 +9868,45 @@
       ],
       "arabic": false
     },
+    "Service choices saved.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Service configuration is too large.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Service setup is required.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Service setup is unavailable.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Service status": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Service temporarily unavailable. Your local pantry is retained.": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "Services, privacy & support": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -9545,6 +10124,19 @@
       ],
       "arabic": false
     },
+    "Sign in to contact support.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Sign in to email a document.": {
+      "sources": [
+        "public/app.js",
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Sign in to manage integrations for your own cloud kitchen. Demo data is not shared.": {
       "sources": [
         "public/access-ui.js"
@@ -9558,6 +10150,12 @@
       ],
       "arabic": true
     },
+    "Sign in to send an error report.": {
+      "sources": [
+        "cloud/service-observability.mjs"
+      ],
+      "arabic": false
+    },
     "Sign in to share a kitchen": {
       "sources": [
         "cloud/kitchens.mjs"
@@ -9567,6 +10165,13 @@
     "Sign in to use private data": {
       "sources": [
         "cloud/catalogue.mjs"
+      ],
+      "arabic": false
+    },
+    "Sign in to use private support.": {
+      "sources": [
+        "cloud/service-support.mjs",
+        "public/app.js"
       ],
       "arabic": false
     },
@@ -9639,6 +10244,12 @@
       ],
       "arabic": true
     },
+    "Sleekplan": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Sleep · minutes": {
       "sources": [
         "public/data-workspace.html"
@@ -9696,7 +10307,8 @@
         "public/data-workspace.html",
         "public/documents.js",
         "public/index.html",
-        "public/insights-ui.js"
+        "public/insights-ui.js",
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -9959,6 +10571,12 @@
       ],
       "arabic": false
     },
+    "Subject": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Sugar": {
       "sources": [
         "public/locales/ar.js"
@@ -9997,6 +10615,42 @@
       ],
       "arabic": true
     },
+    "Support email": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Support email is not configured.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Support request sent and a copy was emailed to your verified address.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Support request sent.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Support request sent; email copy failed.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Support request sent; email copy outcome is unknown.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "Survey food and nutrient datasets; use the applicable release and definitions.": {
       "sources": [
         "public/sources.js"
@@ -10012,6 +10666,12 @@
     "Synced · ": {
       "sources": [
         "public/sync-ui.js"
+      ],
+      "arabic": false
+    },
+    "TCF enabled": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -10078,6 +10738,12 @@
       ],
       "arabic": false
     },
+    "The external privacy panel uses {language}.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
     "The owner must retain ownership": {
       "sources": [
         "cloud/kitchens.mjs"
@@ -10114,9 +10780,27 @@
       ],
       "arabic": false
     },
+    "This delivery has an unknown result. Edit and preview a new message before sending again.": {
+      "sources": [
+        "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "This document is too long to email. Download it instead.": {
+      "sources": [
+        "public/app.js"
+      ],
+      "arabic": false
+    },
     "This external client will be able to read the selected private records, including sensitive dietary information if requested. Approve only a client you recognise.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "This idempotency key was already used for a different request.": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -10189,6 +10873,12 @@
     "This stateless server responds to POST with JSON; SSE is not offered.": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "This support request was already sent.": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -10382,6 +11072,12 @@
       ],
       "arabic": false
     },
+    "Unable to create the private request.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Unable to read this page. Choose a retailer HTTPS product page and try again.": {
       "sources": [
         "extension/popup-source.js"
@@ -10496,6 +11192,12 @@
       ],
       "arabic": true
     },
+    "Unknown ": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Unknown / skip": {
       "sources": [
         "public/index.html"
@@ -10597,6 +11299,12 @@
       ],
       "arabic": false
     },
+    "Unsupported analytics provider.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Unsupported common corpus graph.": {
       "sources": [
         "public/common-corpus-locale.js"
@@ -10609,15 +11317,33 @@
       ],
       "arabic": false
     },
+    "Unsupported privacy policy language.": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "Use GLEIF company name or an exact Wikidata Q identifier": {
       "sources": [
         "cloud/enrichment.mjs"
       ],
       "arabic": false
     },
+    "Use a small JSON request.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Use an API credential issued to you for this service. Retailer account passwords belong in the retailer’s own login page.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Use an idempotency key with 16–128 letters, numbers, underscores or hyphens.": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -10706,6 +11432,12 @@
       ],
       "arabic": false
     },
+    "User-agent: *\nDisallow: /api/\nDisallow: /oauth/\nDisallow: /.netlify/\nDisallow: /data-workspace.html\nSitemap: ": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "User-confirmed private import; no shared publication rights established": {
       "sources": [
         "public/record-policy.js"
@@ -10751,6 +11483,12 @@
     "Vary": {
       "sources": [
         "cloud/locale.mjs"
+      ],
+      "arabic": false
+    },
+    "Vault unavailable": {
+      "sources": [
+        "cloud/service-support.mjs"
       ],
       "arabic": false
     },
@@ -11326,6 +12064,12 @@
       ],
       "arabic": false
     },
+    "Your verified account has no deliverable email address.": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
     "Your week’s shopping.": {
       "sources": [
         "public/index.html"
@@ -11357,6 +12101,24 @@
       ],
       "arabic": false
     },
+    "advertising approval": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "advertising client": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "advertising slot": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "almond flour": {
       "sources": [
         "public/ingredients.js"
@@ -11376,9 +12138,33 @@
       ],
       "arabic": true
     },
+    "an OffMenu account": {
+      "sources": [
+        "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "analytics enabled": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "analytics purpose ID": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "animal ingredient": {
       "sources": [
         "public/household-model.js"
+      ],
+      "arabic": false
+    },
+    "application/xml;charset=utf-8": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -11449,6 +12235,12 @@
     "black pepper": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "blob:": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -11555,6 +12347,12 @@
       ],
       "arabic": false
     },
+    "consent site ID": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "contribution not admitted": {
       "sources": [
         "public/evidence-model.js"
@@ -11564,6 +12362,12 @@
     "cooked:": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "cookie policy ID": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -11613,6 +12417,18 @@
     "dependency not permitted": {
       "sources": [
         "public/evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "diagnostics enabled": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "diagnostics:": {
+      "sources": [
+        "cloud/service-observability.mjs"
       ],
       "arabic": false
     },
@@ -11760,6 +12576,18 @@
       ],
       "arabic": false
     },
+    "feedback board": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "feedback product ID": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "filter[entity.legalName]": {
       "sources": [
         "cloud/enrichment.mjs"
@@ -11844,6 +12672,7 @@
     "https:": {
       "sources": [
         "cloud/integrations.mjs",
+        "cloud/service-config.mjs",
         "public/data-ui.js",
         "public/unified-data.js"
       ],
@@ -11996,6 +12825,12 @@
       ],
       "arabic": false
     },
+    "msvalidate.01": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "native + enhanced decoder": {
       "sources": [
         "public/scanner-ui.js"
@@ -12012,6 +12847,12 @@
       "sources": [
         "public/data-ui.js",
         "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
+    "noopener,noreferrer": {
+      "sources": [
+        "public/services-ui.js"
       ],
       "arabic": false
     },
@@ -12319,6 +13160,12 @@
       ],
       "arabic": false
     },
+    "public,max-age=300": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "published OffMenu curation": {
       "sources": [
         "cloud/corpus.mjs"
@@ -12405,6 +13252,18 @@
       ],
       "arabic": false
     },
+    "service configuration": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "service link": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
     "sesame oil": {
       "sources": [
         "public/ingredients.js"
@@ -12414,6 +13273,18 @@
     "sesame seeds": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "sleekplan.app": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "sleekplan.com": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
@@ -12530,6 +13401,18 @@
       "sources": [
         "cloud/handler.mjs",
         "public/sw.js"
+      ],
+      "arabic": false
+    },
+    "text/plain;charset=utf-8": {
+      "sources": [
+        "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "this browser": {
+      "sources": [
+        "cloud/service-config.mjs"
       ],
       "arabic": false
     },
