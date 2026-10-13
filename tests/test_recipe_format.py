@@ -8,11 +8,21 @@ class RecipeFormatTests(unittest.TestCase):
     def test_quantities_preserve_uncertainty(self):
         self.assertEqual(ingredient('1½ kg rice')['amount'], 1500)
         self.assertEqual(ingredient('牛肉300g')['amount'], 300)
+        self.assertEqual(ingredient('50 dkg rizs')['amount'],500)
+        self.assertEqual(ingredient('| চাল || ২০০ গ্রাম',True)['amount'],200)
+        self.assertEqual(ingredient('| গরুর মাংস (হাড়সহ) || ২ কেজি',True)['amount'],2000)
         self.assertEqual(ingredient('٢ eggs')['amount'], 2)
         for line in ['2 cups rice', '2 cloves garlic', '1–2 kg rice', '1,000 g rice']:
             self.assertIsNone(ingredient(line)['amount'], line)
         self.assertEqual(ingredient('1–2 kg rice')['sourceQuantity']['range'], {'min':1,'max':2})
         self.assertEqual(number('0,500'), .5)
+
+    def test_unknown_units_are_not_count_and_indic_marks_survive(self):
+        self.assertIsNone(ingredient('2 cups rice')['amount'])
+        self.assertIsNone(ingredient('2 pinches turmeric')['amount'])
+        self.assertEqual(ingredient('500 mg salt')['amount'], .5)
+        self.assertEqual(ingredient('2 eggs')['amount'], 2)
+        self.assertEqual(ingredient('২০০ গ্রাম চাল')['ingredientId'], 'rice')
 
     def test_wiki_numbered_steps_are_directions(self):
         items, steps, servings = sections('== Ingredients ==\n* 200 g rice\n== Preparation ==\n# Wash rice.\n=== Cooking ===\n# Boil rice.', True)

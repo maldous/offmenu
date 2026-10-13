@@ -1,22 +1,24 @@
 {
   "schema": "offmenu-world-recipe-research/1",
-  "checkedAt": "2026-10-13T19:21:43.823214+00:00",
-  "status": "checked-quality-release-awaiting-final-live-verification",
-  "releaseId": "world-recipes-20261014",
+  "checkedAt": "2026-10-13T21:37:59.318718+00:00",
+  "status": "all-native-and-common-data-downloads-live-verified",
+  "releaseId": "world-recipes-common-20261014",
   "counts": {
-    "raw": 98941,
-    "accepted": 23917,
+    "raw": 100380,
+    "accepted": 25135,
     "duplicates": 0,
     "quarantined": 0,
-    "excluded": 75024,
-    "records": 23917
+    "excluded": 75245,
+    "records": 25135
   },
   "acceptedSourceCounts": {
     "wikibooks:en": 3309,
     "wikibooks:ar": 18,
+    "wikibooks:bn": 1103,
     "wikibooks:cs": 3,
     "wikibooks:da": 11,
     "wikibooks:de": 636,
+    "wikibooks:el": 9,
     "wikibooks:es": 21,
     "wikibooks:fa": 11,
     "wikibooks:fi": 14,
@@ -24,7 +26,7 @@
     "wikibooks:he": 154,
     "wikibooks:hi": 5,
     "wikibooks:hr": 14,
-    "wikibooks:hu": 6299,
+    "wikibooks:hu": 6402,
     "wikibooks:id": 1003,
     "wikibooks:it": 597,
     "wikibooks:ja": 300,
@@ -39,7 +41,7 @@
     "wikibooks:simple": 6,
     "wikibooks:sk": 19,
     "wikibooks:sv": 350,
-    "wikibooks:th": 43,
+    "wikibooks:th": 46,
     "wikibooks:tr": 128,
     "wikibooks:zh": 18,
     "unitools": 501,
@@ -53,9 +55,11 @@
   "languageEditionCounts": {
     "en": 10702,
     "ar": 18,
+    "bn": 1103,
     "cs": 3,
     "da": 11,
     "de": 637,
+    "el": 9,
     "es": 21,
     "fa": 11,
     "fi": 14,
@@ -63,7 +67,7 @@
     "he": 154,
     "hi": 5,
     "hr": 14,
-    "hu": 6299,
+    "hu": 6402,
     "id": 1003,
     "it": 597,
     "ja": 300,
@@ -78,13 +82,13 @@
     "simple": 6,
     "sk": 19,
     "sv": 350,
-    "th": 43,
+    "th": 46,
     "tr": 128,
     "zh": 380
   },
-  "languageNote": "30 publisher language codes/editions, including Simple English separately; UniTools bilingual recipes appear in both language counts. No invented translations. Historical archive adaptations are English even when original books are in another language.",
-  "standardQuantityIngredients": 34572,
-  "sourceNumericQuantityIngredients": 115164,
+  "languageNote": "32 publisher language/edition codes: 31 languages plus Simple English. Language and country are independent; recipes remain available globally.",
+  "standardQuantityIngredients": 48165,
+  "sourceNumericQuantityIngredients": 117400,
   "scope": "Full acquired cookbook routes for 54 Wikibooks projects plus English complete category, pinned openly licensed GitHub files, 501 complete UniTools recipes, six cleared historical archive collections, and sixteen Smithsonian CC0 archived book texts. All continuation exhausted; unextractable or rights-unresolved candidates remain locally retained. This is not exhaustive worldwide coverage.",
   "sources": [
     {
@@ -258,16 +262,36 @@
   "localPaths": {
     "research": "/home/user/src/offmenu-data/recipe-research-20261013",
     "wikiOriginals": "/home/user/src/offmenu-data/recipe-wikis-20261013",
-    "normalized": "/home/user/src/offmenu-data/world-recipes-quality-20261014",
-    "curated": "/home/user/src/offmenu-data/curated-world-recipes-quality-20261014"
+    "normalized": "/home/user/src/offmenu-data/world-recipes-common-input-20261014",
+    "curated": "/home/user/src/offmenu-data/curated-world-recipes-common-20261014"
   },
   "downloads": {
     "manifest": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
-    "jsonl": "https://offmenu-corpus.netlify.app/releases/world-recipes-20261014/recipes.jsonl.gz",
-    "schemaorg": "https://offmenu-corpus.netlify.app/releases/world-recipes-20261014/recipes.schemaorg.jsonld.gz",
+    "jsonl": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.jsonl.gz",
+    "schemaorg": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.schemaorg.jsonld.gz",
     "app": "https://offmenu.aldous.info/"
   },
-  "fullRecipeRecords": 23661,
+  "fullRecipeRecords": 24879,
   "historicalOcrCandidates": 256,
-  "ocrPolicy": "Smithsonian OCR candidates explicitly have ingredientExtractionComplete=false; pantry matching and personal recipe saving are disabled until complete ingredient transcription."
+  "ocrPolicy": "Smithsonian OCR candidates explicitly have ingredientExtractionComplete=false; pantry matching and personal recipe saving are disabled until complete ingredient transcription.",
+  "wikiRouteCoverage": {
+    "routesCompleted": 54,
+    "allContinuationsRetained": true,
+    "recoveredRoutes": [
+      "bn",
+      "el",
+      "ka"
+    ]
+  },
+  "commonSchema": {
+    "manifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+    "schema": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+    "contract": "https://offmenu-corpus.netlify.app/common-data/contract.json",
+    "sourceMappings": "https://offmenu-corpus.netlify.app/common-data/source-mappings.json",
+    "newTypes": "docs/common-data-type-discovery-20261014.json",
+    "applicationOwner": "OffMenu i18n task",
+    "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+    "sourceCount": 20
+  },
+  "publicationVerification": "docs/common-data-publication-verification-20261014.json"
 }

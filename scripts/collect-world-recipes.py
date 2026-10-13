@@ -4,7 +4,7 @@ import argparse,collections,datetime,gzip,hashlib,json,re,urllib.parse
 from pathlib import Path
 import mwparserfromhell
 from recipe_format import ingredient,sections,text,number,norm,ALIASES,ING_HEAD,DIR_HEAD
-SOURCE='world-recipes';RELEASE='world-recipes-20261014'
+SOURCE='world-recipes';RELEASE='world-recipes-global-20261014'
 def attach_licenses(research, output, manifest):
  documents=[]
  for repo, filename, url in [('farcrak--unitools-recipes','CC-BY-SA-4.0.txt','https://creativecommons.org/licenses/by-sa/4.0/legalcode'),('recipecommons--openrecipe-spec','CC0-1.0.txt','https://creativecommons.org/publicdomain/zero/1.0/legalcode'),('Anduin2017--HowToCook','Unlicense.txt','https://unlicense.org/')]:

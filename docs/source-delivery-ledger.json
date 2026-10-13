@@ -43764,5 +43764,18 @@
     "blocker": null
   },
   "inheritance": "Every source inherits sourceDefaults unless explicitly overridden; detailed research notes remain authoritative in researchReference, not duplicated here.",
-  "accessCheckedAt": "2026-10-13T07:01:53.399915+00:00"
+  "accessCheckedAt": "2026-10-13T07:01:53.399915+00:00",
+  "commonSchemaAcquisitionCheckpoint": {
+    "date": "2026-10-14",
+    "sourceMappings": "corpus/common-source-mappings.json",
+    "sourceCount": 20,
+    "sourceRecordTotal": 22574292,
+    "recipeRecords": 25135,
+    "foodonOwnNamespaceClasses": 29255,
+    "handoff": "docs/I18N_DATA_HANDOFF.json",
+    "typeDiscovery": "docs/common-data-type-discovery-20261014.json",
+    "status": "all-native-and-common-data-downloads-live-verified",
+    "note": "Source-directory research entries are not acquired corpus sources. All new acquisitions must map to the common contract or retain typed unmapped facts and an extension proposal. Fully aligned graphs currently cover recipes, terminology and FoodOn; other legacy sources are declaratively mapped.",
+    "verification": "docs/common-data-publication-verification-20261014.json"
+  }
 }

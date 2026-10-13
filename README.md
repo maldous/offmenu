@@ -241,3 +241,12 @@ In the kitchen, open **Today → Worldwide recipe library → Open worldwide rec
 Public dataset: [manifest](https://offmenu-corpus.netlify.app/recipes/manifest.json), [JSONL gzip](https://offmenu-corpus.netlify.app/releases/world-recipes-20261014/recipes.jsonl.gz), [Schema.org JSON-LD gzip](https://offmenu-corpus.netlify.app/releases/world-recipes-20261014/recipes.schemaorg.jsonld.gz), [recipe schema](https://offmenu-corpus.netlify.app/recipes/schema.json). Per-record licences apply; preserve attribution and CC BY-SA share-alike. Ingredient-indexed REST example: `/api/data/public?source=world-recipes&query=rice`. Research and exclusions: `docs/world-recipe-research-20261014.json`. Full acquired originals and unresolved candidates stay in the local data directory.
 
 Recipe extraction tests require the declared test extras: `uv pip install --python .venv/bin/python -e ".[test]"`, then `.venv/bin/python -m unittest discover -s tests`. Acquisition requires the collection extras.
+
+
+### Common corpus acquisition contract (14 October 2026)
+
+Current acquisition is aligned to [the common data contract](corpus/common-data-contract.json), [JSON Schema](corpus/common-data.schema.json) and [whole-corpus source mappings](corpus/common-source-mappings.json). Every new source must retain its citations, original measurement notation, language and cultural representation, map its fields and relations, and propose additional types when required. Stable shared identities are separate from localizable labels, source variants and reviewable candidate joins.
+
+The data package contains 25,135 recipe records (24,879 source recipes and 256 partial historical OCR candidates), 29,255 FoodOn classes, shared ingredient terminology and source-published bilingual instructions. Thirty-two publisher language/edition codes include 31 languages plus Simple English. Mappings cover all 20 collected sources; fully aligned packets currently cover recipes, terminology and FoodOn. No worldwide completeness, reviewed recipe synthesis or completed universal translation is claimed.
+
+The [data handoff](docs/I18N_DATA_HANDOFF.json) identifies immutable package files and the implementation owner. The other OffMenu i18n task owns application realization. Acquisition tools and declarative contracts in this checkpoint do not migrate the application. Published entry points: [common data](https://offmenu-corpus.netlify.app/common-data/manifest.json) and [recipe library](https://offmenu-corpus.netlify.app/recipes/manifest.json). Per-citation rights apply.

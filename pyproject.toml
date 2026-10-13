@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0"]
+test = ["openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6"]
 collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2"]
 
 [project.scripts]

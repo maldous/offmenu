@@ -4,11 +4,19 @@ from pathlib import Path
 import mwparserfromhell
 ALIASES=json.loads((Path(__file__).resolve().parents[1]/'public/recipe-ingredient-aliases.json').read_text())
 FRACTIONS={'½':'1/2','⅓':'1/3','⅔':'2/3','¼':'1/4','¾':'3/4','⅕':'1/5','⅖':'2/5','⅗':'3/5','⅘':'4/5','⅙':'1/6','⅚':'5/6','⅛':'1/8','⅜':'3/8','⅝':'5/8','⅞':'7/8'}
-UNITS={'g':('g',1),'gram':('g',1),'grams':('g',1),'gramme':('g',1),'grammes':('g',1),'gramos':('g',1),'grammi':('g',1),'гр':('g',1),'г':('g',1),'克':('g',1),'kg':('g',1000),'kilogram':('g',1000),'kilograms':('g',1000),'公斤':('g',1000),'千克':('g',1000),'ml':('ml',1),'millilitre':('ml',1),'milliliters':('ml',1),'毫升':('ml',1),'cl':('ml',10),'dl':('ml',100),'l':('ml',1000),'litre':('ml',1000),'litres':('ml',1000),'liter':('ml',1000),'liters':('ml',1000),'oz':('g',28.349523125),'ounce':('g',28.349523125),'ounces':('g',28.349523125),'lb':('g',453.59237),'lbs':('g',453.59237),'pound':('g',453.59237),'pounds':('g',453.59237),'piece':('count',1),'pieces':('count',1),'count':('count',1),'个':('count',1),'個':('count',1)}
-OTHER_UNITS={'cup','cups','tsp','teaspoon','teaspoons','tbsp','tablespoon','tablespoons','cucharada','cucharadas','cucharadita','cucharaditas','tasse','tasses','cuillère','cuillerée','cuillere','esslöffel','teelöffel','el','tl','bunch','bunches','clove','cloves','can','cans','packet','packets','pinch','handful','pint','pints','quart','quarts','gallon','gallons','斤','两','勺','茶匙','汤匙','大匙','小匙','瓣','把','стакан','стакана','ложка','ложки','шт','šálka','gill','gills','dram','drachm','spoonful','spoonfuls','dessertspoon','dessertspoons','pfund','pfunde','szklanka','łyżka','ложек','ст','ч','ч.','ст.','カップ','片','大さじ','小さじ'}
-ING_HEAD=['ingredients','ingredienti','ingrédients','ingredientes','zutaten','składniki','ингредиенты','состав','продукты','材料','原料','食材','必备原料','计算','מרכיבים','מצרכים','مكونات','المقادير','المكونات','مواد لازم','উপকরণ','सामग्री','bahan','malzemeler','재료','ainekset','aineet','ingrediënten','ingredienser','sestavine','sastojci','υλικά','інгредієнти','ingrediencoj','ingedientes','nguyên liệu','ส่วนผสม','hozzával','alapanyag','suroviny','suroviny','ingredients','सामाग्री','bahan-bahan','bahankeperluan']
+UNITS={'mg':('g',0.001),'µg':('g',0.000001),'μg':('g',0.000001),'dkg':('g',10),'dag':('g',10),'কিলোগ্রাম':('g',1000),'মিলিলিটার':('ml',1),'লিটার':('ml',1000),'কেজি':('g',1000),'গ্রাম':('g',1),'ml':('ml',1),'g':('g',1),'gram':('g',1),'grams':('g',1),'gramme':('g',1),'grammes':('g',1),'gramos':('g',1),'grammi':('g',1),'гр':('g',1),'г':('g',1),'克':('g',1),'kg':('g',1000),'kilogram':('g',1000),'kilograms':('g',1000),'公斤':('g',1000),'千克':('g',1000),'ml':('ml',1),'millilitre':('ml',1),'milliliters':('ml',1),'毫升':('ml',1),'cl':('ml',10),'dl':('ml',100),'l':('ml',1000),'litre':('ml',1000),'litres':('ml',1000),'liter':('ml',1000),'liters':('ml',1000),'oz':('g',28.349523125),'ounce':('g',28.349523125),'ounces':('g',28.349523125),'lb':('g',453.59237),'lbs':('g',453.59237),'pound':('g',453.59237),'pounds':('g',453.59237),'piece':('count',1),'pieces':('count',1),'count':('count',1),'个':('count',1),'個':('count',1)}
+OTHER_UNITS={'cup','cups','tsp','teaspoon','teaspoons','tbsp','tablespoon','tablespoons','cucharada','cucharadas','cucharadita','cucharaditas','tasse','tasses','cuillère','cuillerée','cuillere','esslöffel','teelöffel','el','tl','bunch','bunches','clove','cloves','can','cans','packet','packets','pinch','handful','pint','pints','quart','quarts','gallon','gallons','斤','两','勺','茶匙','汤匙','大匙','小匙','瓣','把','стакан','стакана','ложка','ложки','шт','šálka','gill','gills','dram','drachm','spoonful','spoonfuls','dessertspoon','dessertspoons','pfund','pfunde','szklanka','łyżka','ложек','ст','ч','ч.','ст.','কাপ','চামচ','ক্যান','カップ','片','大さじ','小さじ'}
+ING_HEAD=['ingredients','ingredienti','ingrédients','ingredientes','zutaten','składniki','ингредиенты','состав','продукты','材料','原料','食材','必备原料','计算','מרכיבים','מצרכים','مكونات','المقادير','المكونات','مواد لازم','উপকরণ','উপকরন','सामग्री','bahan','malzemeler','재료','ainekset','aineet','ingrediënten','ingredienser','sestavine','sastojci','υλικά','συστατικά','інгредієнти','ingrediencoj','ingedientes','nguyên liệu','ส่วนผสม','hozzával','alapanyag','suroviny','suroviny','ingredients','सामाग्री','bahan-bahan','bahankeperluan']
 DIR_HEAD=['directions','instructions','procedure','preparation','method','préparation','preparazione','preparación','preparacao','modo de preparo','modo de preparação','elaboración','procedimiento','zubereitung','przygotowanie','wykonanie','приготовление','способ приготовления','делаем','操作','做法','步骤','作り方','調理','הכנה','אופן ההכנה','طريقة','طرز تهیه','প্রণালী','विधि','caranya','cara membuat','cara memasak','yapılışı','hazırlanışı','조리','만드는','valmistus','bereiding','fremgang','tillagning','priprava','priprema','εκτέλεση','приготування','preparado','cách làm','วิธีทำ','elkészít','elkeszit','příprava','postup','основной рецепт','recept elkészít']
-def norm(value):return ''.join(c for c in unicodedata.normalize('NFKD',str(value).lower()) if not unicodedata.combining(c)).strip()
+def norm(value):
+ result=[];latin=False
+ for c in unicodedata.normalize('NFKD',str(value).lower()):
+  if unicodedata.combining(c) and latin:continue
+  if not unicodedata.combining(c):latin='LATIN' in unicodedata.name(c,'')
+  result.append(c)
+ return unicodedata.normalize('NFC',''.join(result)).strip()
+UNITS={norm(k):v for k,v in UNITS.items()}
+OTHER_UNITS={norm(k) for k in OTHER_UNITS}
 def text(value,wiki=False):
  if wiki and re.match(r'^\s*\[\[(?:File|Image|Fichier|Datei|Súbor|Файл|ファイル|文件|קובץ|ملف|Fájl):',value,re.I):return ''
  value=re.sub(r'<ref\b[^>]*>.*?</ref>|<ref[^>]*/>','',value,flags=re.S|re.I)
@@ -50,13 +58,13 @@ def ingredient(line,wiki=False):
  value=value.replace('–','-').replace('—','-');quantity=None;unit=None;name=value;range_value=None
  pattern=r'(\d+(?:[.,]\d+)?(?:/\d+)?(?:\s+\d+/\d+)?)'
  leading=re.match(r'^'+pattern+r'(?:\s*-\s*'+pattern+r')?\s*(.*)$',value)
- trailing_value=re.sub(r'\s*[（(].*$','',value)
- trailing=re.match(r'^(.*?)\s*(?:[-:：]\s*)?'+pattern+r'\s*([A-Za-z\u0400-\u04ff\u3040-\u30ff\u4e00-\u9fff]+)\.?$',trailing_value)
+ trailing_value=re.sub(r'[（(][^）)]*[）)]','',value)
+ trailing=re.match(r'^(.*?)\s*(?:[-:：]\s*)?'+pattern+r'\s*([^\s\d.,()（）]+)\.?$',trailing_value)
  if leading:
   quantity=number(leading[1]);name=leading[3];range_value={'min':quantity,'max':number(leading[2])} if leading[2] else None
   token=re.match(r'^([^\s.]+)\.?\s*(.*)$',name)
   if token and norm(token[1]) in set(UNITS)|OTHER_UNITS:unit=norm(token[1]);name=token[2]
-  else:unit='count'
+  else:unit='count' if identity(name) else None
  elif trailing and norm(trailing[3]) in set(UNITS)|OTHER_UNITS:
   name=trailing[1].strip(' -:：');quantity=number(trailing[2]);unit=norm(trailing[3])
  name=re.sub(r'^(?:of|de|d[’\'])\s+','',name,flags=re.I);name=name.strip(' .;:-') or original

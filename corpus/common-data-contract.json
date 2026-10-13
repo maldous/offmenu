@@ -1,0 +1,951 @@
+{
+  "schemaVersion": "offmenu-common-contract/1",
+  "status": "data acquisition and alignment contract; application implementation owned by OffMenu i18n task",
+  "schema": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+  "purpose": "One language-independent resource graph for the entire OffMenu corpus, including private records under their own scope. Country and source language describe evidence and representations, not access partitions.",
+  "types": {
+    "ActivityObservation": {
+      "id": "urn:offmenu:type:ActivityObservation",
+      "description": "Canonical ActivityObservation resource; labels and assertions retain individual source evidence."
+    },
+    "AllergenConcept": {
+      "id": "urn:offmenu:type:AllergenConcept",
+      "description": "Canonical AllergenConcept resource; labels and assertions retain individual source evidence."
+    },
+    "BasketDefinition": {
+      "id": "urn:offmenu:type:BasketDefinition",
+      "description": "Canonical BasketDefinition resource; labels and assertions retain individual source evidence."
+    },
+    "BasketLine": {
+      "id": "urn:offmenu:type:BasketLine",
+      "description": "Canonical BasketLine resource; labels and assertions retain individual source evidence."
+    },
+    "Batch": {
+      "id": "urn:offmenu:type:Batch",
+      "description": "Canonical Batch resource; labels and assertions retain individual source evidence."
+    },
+    "CertificationAssertion": {
+      "id": "urn:offmenu:type:CertificationAssertion",
+      "description": "Canonical CertificationAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "Citation": {
+      "id": "urn:offmenu:type:Citation",
+      "description": "Canonical Citation resource; labels and assertions retain individual source evidence."
+    },
+    "ClassificationAssertion": {
+      "id": "urn:offmenu:type:ClassificationAssertion",
+      "description": "Canonical ClassificationAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "CookingMethod": {
+      "id": "urn:offmenu:type:CookingMethod",
+      "description": "Canonical CookingMethod resource; labels and assertions retain individual source evidence."
+    },
+    "CookingTransformation": {
+      "id": "urn:offmenu:type:CookingTransformation",
+      "description": "Canonical CookingTransformation resource; labels and assertions retain individual source evidence."
+    },
+    "Country": {
+      "id": "urn:offmenu:type:Country",
+      "description": "Canonical Country resource; labels and assertions retain individual source evidence."
+    },
+    "CrosswalkAssertion": {
+      "id": "urn:offmenu:type:CrosswalkAssertion",
+      "description": "Canonical CrosswalkAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "CulturalRepresentation": {
+      "id": "urn:offmenu:type:CulturalRepresentation",
+      "description": "Canonical CulturalRepresentation resource; labels and assertions retain individual source evidence."
+    },
+    "Currency": {
+      "id": "urn:offmenu:type:Currency",
+      "description": "Canonical Currency resource; labels and assertions retain individual source evidence."
+    },
+    "DietQualificationAssertion": {
+      "id": "urn:offmenu:type:DietQualificationAssertion",
+      "description": "Canonical DietQualificationAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "DietaryType": {
+      "id": "urn:offmenu:type:DietaryType",
+      "description": "Canonical DietaryType resource; labels and assertions retain individual source evidence."
+    },
+    "FoodCompositionObservation": {
+      "id": "urn:offmenu:type:FoodCompositionObservation",
+      "description": "Canonical FoodCompositionObservation resource; labels and assertions retain individual source evidence."
+    },
+    "FoodConcept": {
+      "id": "urn:offmenu:type:FoodConcept",
+      "description": "Canonical FoodConcept resource; labels and assertions retain individual source evidence."
+    },
+    "FoodCultivar": {
+      "id": "urn:offmenu:type:FoodCultivar",
+      "description": "Canonical FoodCultivar resource; labels and assertions retain individual source evidence."
+    },
+    "FoodIngredient": {
+      "id": "urn:offmenu:type:FoodIngredient",
+      "description": "Canonical FoodIngredient resource; labels and assertions retain individual source evidence."
+    },
+    "FoodName": {
+      "id": "urn:offmenu:type:FoodName",
+      "description": "Canonical FoodName resource; labels and assertions retain individual source evidence."
+    },
+    "FoodNotice": {
+      "id": "urn:offmenu:type:FoodNotice",
+      "description": "Canonical FoodNotice resource; labels and assertions retain individual source evidence."
+    },
+    "FoodPreparation": {
+      "id": "urn:offmenu:type:FoodPreparation",
+      "description": "Canonical FoodPreparation resource; labels and assertions retain individual source evidence."
+    },
+    "FoodProduce": {
+      "id": "urn:offmenu:type:FoodProduce",
+      "description": "Canonical FoodProduce resource; labels and assertions retain individual source evidence."
+    },
+    "FoodProduct": {
+      "id": "urn:offmenu:type:FoodProduct",
+      "description": "Canonical FoodProduct resource; labels and assertions retain individual source evidence."
+    },
+    "FoodSpecies": {
+      "id": "urn:offmenu:type:FoodSpecies",
+      "description": "Canonical FoodSpecies resource; labels and assertions retain individual source evidence."
+    },
+    "HealthObservation": {
+      "id": "urn:offmenu:type:HealthObservation",
+      "description": "Canonical HealthObservation resource; labels and assertions retain individual source evidence."
+    },
+    "HistoricalRecipeCandidate": {
+      "id": "urn:offmenu:type:HistoricalRecipeCandidate",
+      "description": "Canonical HistoricalRecipeCandidate resource; labels and assertions retain individual source evidence."
+    },
+    "IngredientAlternative": {
+      "id": "urn:offmenu:type:IngredientAlternative",
+      "description": "Canonical IngredientAlternative resource; labels and assertions retain individual source evidence."
+    },
+    "IngredientMention": {
+      "id": "urn:offmenu:type:IngredientMention",
+      "description": "Canonical IngredientMention resource; labels and assertions retain individual source evidence."
+    },
+    "IntakeEvent": {
+      "id": "urn:offmenu:type:IntakeEvent",
+      "description": "Canonical IntakeEvent resource; labels and assertions retain individual source evidence."
+    },
+    "InventoryBalance": {
+      "id": "urn:offmenu:type:InventoryBalance",
+      "description": "Canonical InventoryBalance resource; labels and assertions retain individual source evidence."
+    },
+    "InventoryLot": {
+      "id": "urn:offmenu:type:InventoryLot",
+      "description": "Canonical InventoryLot resource; labels and assertions retain individual source evidence."
+    },
+    "LeftoverEvent": {
+      "id": "urn:offmenu:type:LeftoverEvent",
+      "description": "Canonical LeftoverEvent resource; labels and assertions retain individual source evidence."
+    },
+    "Lot": {
+      "id": "urn:offmenu:type:Lot",
+      "description": "Canonical Lot resource; labels and assertions retain individual source evidence."
+    },
+    "Market": {
+      "id": "urn:offmenu:type:Market",
+      "description": "Canonical Market resource; labels and assertions retain individual source evidence."
+    },
+    "MealPlan": {
+      "id": "urn:offmenu:type:MealPlan",
+      "description": "Canonical MealPlan resource; labels and assertions retain individual source evidence."
+    },
+    "MeasurementMethod": {
+      "id": "urn:offmenu:type:MeasurementMethod",
+      "description": "Canonical MeasurementMethod resource; labels and assertions retain individual source evidence."
+    },
+    "MenuItem": {
+      "id": "urn:offmenu:type:MenuItem",
+      "description": "Canonical MenuItem resource; labels and assertions retain individual source evidence."
+    },
+    "NutrientDefinition": {
+      "id": "urn:offmenu:type:NutrientDefinition",
+      "description": "Canonical NutrientDefinition resource; labels and assertions retain individual source evidence."
+    },
+    "Organization": {
+      "id": "urn:offmenu:type:Organization",
+      "description": "Canonical Organization resource; labels and assertions retain individual source evidence."
+    },
+    "OriginAssertion": {
+      "id": "urn:offmenu:type:OriginAssertion",
+      "description": "Canonical OriginAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "OwnershipAssertion": {
+      "id": "urn:offmenu:type:OwnershipAssertion",
+      "description": "Canonical OwnershipAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "Package": {
+      "id": "urn:offmenu:type:Package",
+      "description": "Canonical Package resource; labels and assertions retain individual source evidence."
+    },
+    "Portion": {
+      "id": "urn:offmenu:type:Portion",
+      "description": "Canonical Portion resource; labels and assertions retain individual source evidence."
+    },
+    "PreparationState": {
+      "id": "urn:offmenu:type:PreparationState",
+      "description": "Canonical PreparationState resource; labels and assertions retain individual source evidence."
+    },
+    "PriceObservation": {
+      "id": "urn:offmenu:type:PriceObservation",
+      "description": "Canonical PriceObservation resource; labels and assertions retain individual source evidence."
+    },
+    "Producer": {
+      "id": "urn:offmenu:type:Producer",
+      "description": "Canonical Producer resource; labels and assertions retain individual source evidence."
+    },
+    "Quantity": {
+      "id": "urn:offmenu:type:Quantity",
+      "description": "Canonical Quantity resource; labels and assertions retain individual source evidence."
+    },
+    "RecipeConcept": {
+      "id": "urn:offmenu:type:RecipeConcept",
+      "description": "Canonical RecipeConcept resource; labels and assertions retain individual source evidence."
+    },
+    "RecipeStep": {
+      "id": "urn:offmenu:type:RecipeStep",
+      "description": "Canonical RecipeStep resource; labels and assertions retain individual source evidence."
+    },
+    "RecipeVariant": {
+      "id": "urn:offmenu:type:RecipeVariant",
+      "description": "Canonical RecipeVariant resource; labels and assertions retain individual source evidence."
+    },
+    "RegulatoryProvision": {
+      "id": "urn:offmenu:type:RegulatoryProvision",
+      "description": "Canonical RegulatoryProvision resource; labels and assertions retain individual source evidence."
+    },
+    "Restaurant": {
+      "id": "urn:offmenu:type:Restaurant",
+      "description": "Canonical Restaurant resource; labels and assertions retain individual source evidence."
+    },
+    "RetailOutlet": {
+      "id": "urn:offmenu:type:RetailOutlet",
+      "description": "Canonical RetailOutlet resource; labels and assertions retain individual source evidence."
+    },
+    "Retailer": {
+      "id": "urn:offmenu:type:Retailer",
+      "description": "Canonical Retailer resource; labels and assertions retain individual source evidence."
+    },
+    "SchemaTypeProposal": {
+      "id": "urn:offmenu:type:SchemaTypeProposal",
+      "description": "Canonical SchemaTypeProposal resource; labels and assertions retain individual source evidence."
+    },
+    "ServedFoodEvent": {
+      "id": "urn:offmenu:type:ServedFoodEvent",
+      "description": "Canonical ServedFoodEvent resource; labels and assertions retain individual source evidence."
+    },
+    "ShoppingList": {
+      "id": "urn:offmenu:type:ShoppingList",
+      "description": "Canonical ShoppingList resource; labels and assertions retain individual source evidence."
+    },
+    "Site": {
+      "id": "urn:offmenu:type:Site",
+      "description": "Canonical Site resource; labels and assertions retain individual source evidence."
+    },
+    "SourceAssertion": {
+      "id": "urn:offmenu:type:SourceAssertion",
+      "description": "Canonical SourceAssertion resource; labels and assertions retain individual source evidence."
+    },
+    "SourceDataset": {
+      "id": "urn:offmenu:type:SourceDataset",
+      "description": "Canonical SourceDataset resource; labels and assertions retain individual source evidence."
+    },
+    "SourceDocument": {
+      "id": "urn:offmenu:type:SourceDocument",
+      "description": "Canonical SourceDocument resource; labels and assertions retain individual source evidence."
+    },
+    "SourceRecord": {
+      "id": "urn:offmenu:type:SourceRecord",
+      "description": "Canonical SourceRecord resource; labels and assertions retain individual source evidence."
+    },
+    "StatisticalComparison": {
+      "id": "urn:offmenu:type:StatisticalComparison",
+      "description": "Canonical StatisticalComparison resource; labels and assertions retain individual source evidence."
+    },
+    "StatisticalMetricDefinition": {
+      "id": "urn:offmenu:type:StatisticalMetricDefinition",
+      "description": "Canonical StatisticalMetricDefinition resource; labels and assertions retain individual source evidence."
+    },
+    "StatisticalObservation": {
+      "id": "urn:offmenu:type:StatisticalObservation",
+      "description": "Canonical StatisticalObservation resource; labels and assertions retain individual source evidence."
+    },
+    "StockEvent": {
+      "id": "urn:offmenu:type:StockEvent",
+      "description": "Canonical StockEvent resource; labels and assertions retain individual source evidence."
+    },
+    "Supplier": {
+      "id": "urn:offmenu:type:Supplier",
+      "description": "Canonical Supplier resource; labels and assertions retain individual source evidence."
+    },
+    "Translation": {
+      "id": "urn:offmenu:type:Translation",
+      "description": "Canonical Translation resource; labels and assertions retain individual source evidence."
+    },
+    "TranslationRevision": {
+      "id": "urn:offmenu:type:TranslationRevision",
+      "description": "Canonical TranslationRevision resource; labels and assertions retain individual source evidence."
+    },
+    "Unit": {
+      "id": "urn:offmenu:type:Unit",
+      "description": "Canonical Unit resource; labels and assertions retain individual source evidence."
+    },
+    "UnmappedSourceFact": {
+      "id": "urn:offmenu:type:UnmappedSourceFact",
+      "description": "Canonical UnmappedSourceFact resource; labels and assertions retain individual source evidence."
+    },
+    "WasteEvent": {
+      "id": "urn:offmenu:type:WasteEvent",
+      "description": "Canonical WasteEvent resource; labels and assertions retain individual source evidence."
+    },
+    "WorkedRecipe": {
+      "id": "urn:offmenu:type:WorkedRecipe",
+      "description": "Canonical WorkedRecipe resource; labels and assertions retain individual source evidence."
+    },
+    "RecipeFormula": {
+      "id": "urn:offmenu:type:RecipeFormula",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "IngredientComponentRow": {
+      "id": "urn:offmenu:type:IngredientComponentRow",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "ProcessYieldFactor": {
+      "id": "urn:offmenu:type:ProcessYieldFactor",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "DietFlagAssertion": {
+      "id": "urn:offmenu:type:DietFlagAssertion",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "IngredientScalingRule": {
+      "id": "urn:offmenu:type:IngredientScalingRule",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "TextExtractionCandidate": {
+      "id": "urn:offmenu:type:TextExtractionCandidate",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "DiscussionPosting": {
+      "id": "urn:offmenu:type:DiscussionPosting",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "ReusePermission": {
+      "id": "urn:offmenu:type:ReusePermission",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "MetricBasisDefinition": {
+      "id": "urn:offmenu:type:MetricBasisDefinition",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "SourceLicenceNotice": {
+      "id": "urn:offmenu:type:SourceLicenceNotice",
+      "description": "Additional data type exposed by the acquired source tables or historical recipe evidence."
+    },
+    "RecipeDiscoveryReference": {
+      "id": "urn:offmenu:type:RecipeDiscoveryReference",
+      "description": "Source discovery/extraction representation, distinct from a complete reviewed recipe or standardized measurement."
+    },
+    "MeasurementNotation": {
+      "id": "urn:offmenu:type:MeasurementNotation",
+      "description": "Source discovery/extraction representation, distinct from a complete reviewed recipe or standardized measurement."
+    },
+    "Agent": {
+      "id": "urn:offmenu:type:Agent",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "Person": {
+      "id": "urn:offmenu:type:Person",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "ActorRole": {
+      "id": "urn:offmenu:type:ActorRole",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "CompositionRatio": {
+      "id": "urn:offmenu:type:CompositionRatio",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "IngredientFraction": {
+      "id": "urn:offmenu:type:IngredientFraction",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "DensityConversionAssertion": {
+      "id": "urn:offmenu:type:DensityConversionAssertion",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "QuarantineRecord": {
+      "id": "urn:offmenu:type:QuarantineRecord",
+      "description": "Explicit type for source identity, role, composition/measurement context or admission status; no unreviewed inference."
+    },
+    "OntologyClass": {
+      "id": "urn:offmenu:type:OntologyClass",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "OntologyAxiom": {
+      "id": "urn:offmenu:type:OntologyAxiom",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "OntologyAnnotation": {
+      "id": "urn:offmenu:type:OntologyAnnotation",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "ExternalConceptReference": {
+      "id": "urn:offmenu:type:ExternalConceptReference",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "FormalExpression": {
+      "id": "urn:offmenu:type:FormalExpression",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "LanguageTagCrosswalk": {
+      "id": "urn:offmenu:type:LanguageTagCrosswalk",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "DimensionDefinition": {
+      "id": "urn:offmenu:type:DimensionDefinition",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "CoordinateReferenceSystem": {
+      "id": "urn:offmenu:type:CoordinateReferenceSystem",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "Geometry": {
+      "id": "urn:offmenu:type:Geometry",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "NumericalRepresentation": {
+      "id": "urn:offmenu:type:NumericalRepresentation",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "ConsentRecord": {
+      "id": "urn:offmenu:type:ConsentRecord",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "AccessEntitlement": {
+      "id": "urn:offmenu:type:AccessEntitlement",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "CredentialReference": {
+      "id": "urn:offmenu:type:CredentialReference",
+      "description": "Source-discovered or corpus-wide representation; original identifiers, syntax, evidence and scope are retained."
+    },
+    "IRIReference": {
+      "id": "urn:offmenu:type:IRIReference",
+      "description": "Source resource identifier may contain Unicode under RFC 3987; it is never a translated display label."
+    },
+    "SourceAnomaly": {
+      "id": "urn:offmenu:type:SourceAnomaly",
+      "description": "Original source declared an invalid identifier or datatype. Preserve original attributes/lexical form and mark interpretation candidate rather than fabricating a valid link."
+    }
+  },
+  "legacyKindMappings": {
+    "product": "FoodProduct",
+    "nutrientProfile": "FoodCompositionObservation",
+    "priceObservation": "PriceObservation",
+    "retailer": "Retailer",
+    "recipe": "RecipeVariant",
+    "foodClassification": "ClassificationAssertion",
+    "foodNotice": "FoodNotice",
+    "pantryLot": "InventoryLot",
+    "mealPlan": "MealPlan",
+    "intakeRecord": "IntakeEvent",
+    "shoppingList": "ShoppingList",
+    "healthObservation": "HealthObservation",
+    "activity": "ActivityObservation",
+    "wasteRecord": "WasteEvent",
+    "organization": "Organization",
+    "ownershipRelation": "OwnershipAssertion",
+    "originAssertion": "OriginAssertion",
+    "certification": "CertificationAssertion",
+    "regulatoryProvision": "RegulatoryProvision",
+    "sourceAssertion": "SourceAssertion",
+    "basketDefinition": "BasketDefinition",
+    "basketLine": "BasketLine",
+    "foodConcept": "FoodConcept",
+    "comparisonResult": "StatisticalComparison",
+    "menuItem": "MenuItem",
+    "site": "Site",
+    "portion": "Portion",
+    "cookingTransformation": "CookingTransformation"
+  },
+  "relationshipVocabulary": {
+    "variantOf": {
+      "id": "urn:offmenu:relation:variantOf",
+      "evidenceRequired": true,
+      "identityEffect": "common recipe concept; variant ingredients and methods remain distinct"
+    },
+    "ingredientOf": {
+      "id": "urn:offmenu:relation:ingredientOf",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "mentionsIngredient": {
+      "id": "urn:offmenu:relation:mentionsIngredient",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "candidateMatch": {
+      "id": "urn:offmenu:relation:candidateMatch",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "exactMatch": {
+      "id": "urn:offmenu:relation:exactMatch",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "broaderMatch": {
+      "id": "urn:offmenu:relation:broaderMatch",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "derivedFrom": {
+      "id": "urn:offmenu:relation:derivedFrom",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "preparedFrom": {
+      "id": "urn:offmenu:relation:preparedFrom",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "producedBy": {
+      "id": "urn:offmenu:relation:producedBy",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "suppliedBy": {
+      "id": "urn:offmenu:relation:suppliedBy",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "soldBy": {
+      "id": "urn:offmenu:relation:soldBy",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "availableAt": {
+      "id": "urn:offmenu:relation:availableAt",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "locatedIn": {
+      "id": "urn:offmenu:relation:locatedIn",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "assertedOrigin": {
+      "id": "urn:offmenu:relation:assertedOrigin",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasRole": {
+      "id": "urn:offmenu:relation:hasRole",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "ownedBy": {
+      "id": "urn:offmenu:relation:ownedBy",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasQuantity": {
+      "id": "urn:offmenu:relation:hasQuantity",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasUnit": {
+      "id": "urn:offmenu:relation:hasUnit",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasBasis": {
+      "id": "urn:offmenu:relation:hasBasis",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasPreparationState": {
+      "id": "urn:offmenu:relation:hasPreparationState",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasNutrientObservation": {
+      "id": "urn:offmenu:relation:hasNutrientObservation",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasMetricDefinition": {
+      "id": "urn:offmenu:relation:hasMetricDefinition",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasMethod": {
+      "id": "urn:offmenu:relation:hasMethod",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasDietAssertion": {
+      "id": "urn:offmenu:relation:hasDietAssertion",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasCertification": {
+      "id": "urn:offmenu:relation:hasCertification",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "usesAlternative": {
+      "id": "urn:offmenu:relation:usesAlternative",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "usesIngredient": {
+      "id": "urn:offmenu:relation:usesIngredient",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasStep": {
+      "id": "urn:offmenu:relation:hasStep",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasYield": {
+      "id": "urn:offmenu:relation:hasYield",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "partOf": {
+      "id": "urn:offmenu:relation:partOf",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasBatch": {
+      "id": "urn:offmenu:relation:hasBatch",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "storedAt": {
+      "id": "urn:offmenu:relation:storedAt",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "consumedFrom": {
+      "id": "urn:offmenu:relation:consumedFrom",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "servedAs": {
+      "id": "urn:offmenu:relation:servedAs",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "eatenAs": {
+      "id": "urn:offmenu:relation:eatenAs",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "leftoverFrom": {
+      "id": "urn:offmenu:relation:leftoverFrom",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "wastedFrom": {
+      "id": "urn:offmenu:relation:wastedFrom",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasCulturalRepresentation": {
+      "id": "urn:offmenu:relation:hasCulturalRepresentation",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "hasName": {
+      "id": "urn:offmenu:relation:hasName",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "translationOf": {
+      "id": "urn:offmenu:relation:translationOf",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "cites": {
+      "id": "urn:offmenu:relation:cites",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "supersedes": {
+      "id": "urn:offmenu:relation:supersedes",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "contradicts": {
+      "id": "urn:offmenu:relation:contradicts",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    },
+    "comparedWith": {
+      "id": "urn:offmenu:relation:comparedWith",
+      "evidenceRequired": true,
+      "identityEffect": "none unless separately reviewed exactMatch"
+    }
+  },
+  "rules": {
+    "identity": "Stable resource IDs do not change when translated. Source records and canonical resources have separate IDs. Name similarity is a candidate relationship, not identity or nutritional equivalence. Cooking/prepared state, cultivar, variety and product formulation remain explicit.",
+    "citations": "Every assertion, relationship, ingredient mention, source quantity, cultural representation and translation cites its original source record/revision. Derived facts cite all input assertions and the derivation method. Dataset wrappers cannot replace original source citations.",
+    "values": "All values have a declared datatype. Display text is localized text with source language, source text hash and translation provenance. IDs, numbers, dates, units, currencies and relationship predicates are never translated into stored identities. Unknown remains null with a qualifier; ranges and limits are preserved.",
+    "quantity": "Magnitude, dimension, unit, count entity, denominator/basis, preparation state, source notation and measurement method are separate. Only exact supported unit conversions are allowed. Cups/spoons/servings/historical measures require their own definitions; no density or yield is inferred.",
+    "recipes": "Common recipe concepts join identified source variants. A WorkedRecipe is a distinct editorial resource citing variants and ingredient/quantity decisions. Contradictory methods or ingredient alternatives are retained; quantities are not blindly averaged. Unreviewed/OCR variants cannot be planning-qualified by a join.",
+    "culture": "CulturalRepresentation connects a dish, local names, ingredients/substitutions, preparation practice, geography and sources. Language is not proof of origin. Cuisine labels are source assertions; regional variants are not erased by translation.",
+    "diet": "DietaryType is a shared concept. Suitability, allergen, certification and personal restriction assertions are separate, scoped, dated and evidence-bearing; source labels never become independently verified qualifications automatically.",
+    "statistics": "Every metric names its definition, unit, denominator, cohort, time, source method and qualifier. Nutrient, serving, whole-food, component, price and consumption statistics cannot be combined across incompatible bases.",
+    "inventory": "Product, ingredient concept, physical lot/batch, stock quantity, preparation, location and stock event are distinct. Bought, cooked, served, eaten, leftover and wasted quantities are separate facts. Private inventories, health and credentials are never promoted by canonical identity joins.",
+    "translation": "Any supported BCP47 locale can be attached to a resource field independent of source or country. Original text remains retrievable. Translation entries include source text hash, translator/method, status, terminology references and citations; stale or missing translations are explicit. Simple English publisher code maps to en-x-simple, retaining the original edition code.",
+    "newTypes": "Every new source must map fields and relations to this registry. New domains/units/types produce SchemaTypeProposal evidence before type registration; unrecognized fields become typed UnmappedSourceFact resources, never silently discarded or forced into a misleading existing type.",
+    "rights": "A common entity does not relicense its source assertions. Each citation carries licence, attribution, reuse scope and derivative requirements. Restricted source content stays in permitted local/private scope."
+  },
+  "sourceStandards": [
+    {
+      "name": "Schema.org Recipe, Product, Organization, QuantitativeValue",
+      "url": "https://schema.org/Recipe",
+      "use": "Interoperable presentation exports; does not replace OffMenu evidence or identity model."
+    },
+    {
+      "name": "FoodOn",
+      "url": "https://foodon.org/",
+      "use": "Food products, origins and processes as external ontology references; external concept links require reviewed crosswalks."
+    },
+    {
+      "name": "UCUM",
+      "url": "https://ucum.org/ucum",
+      "use": "Unit communication references; source measurement definitions and licence remain attached."
+    },
+    {
+      "name": "QUDT",
+      "url": "https://www.qudt.org/doc/2025/01/DOC_SCHEMA-QUDT.html",
+      "use": "Quantity, unit and dimension distinctions."
+    },
+    {
+      "name": "FoodOn pinned release",
+      "revision": "cd73540243a84bcd511a500d9a497d12d7dc02f6",
+      "versionIRI": "http://purl.obolibrary.org/obo/foodon/releases/2026-09-20/foodon.owl",
+      "licence": "CC-BY-4.0",
+      "use": "All own-namespace class definitions; imported concepts remain references. Ingredient equivalence is not inferred."
+    }
+  ],
+  "sourceAdmissionRequirements": [
+    "original publisher/dataset/revision citation and content digest",
+    "licence and derivative/reuse scope",
+    "declared source-language/edition, separately represented culture and geography",
+    "field-to-property and source-kind-to-resource-type mappings",
+    "typed quantities, original notation, units, basis and unknown qualifiers",
+    "ingredient/product/organization identifiers and candidate crosswalk evidence",
+    "new type/unit/property proposals for previously unrepresented data",
+    "complete source reconciliation and explicit extraction limitations"
+  ],
+  "implementationOwner": "OffMenu i18n task; this package defines data contracts, source alignment and collected artifacts only.",
+  "sharedProperties": {
+    "yield": {
+      "id": "urn:offmenu:property:yield",
+      "description": "Declared source recipe yield; unknown is retained."
+    },
+    "requiredQuantity": {
+      "id": "urn:offmenu:property:requiredQuantity",
+      "description": "Ingredient magnitude/unit/source notation and range.",
+      "basisDefault": "Source recipe batch, never assumed per serving. Portion scaling requires the cited yield and source scaling rule."
+    },
+    "optional": {
+      "id": "urn:offmenu:property:optional",
+      "description": "Optional ingredient flag, separate from amount and presence."
+    },
+    "scalingRule": {
+      "id": "urn:offmenu:property:scalingRule",
+      "description": "Source linear/damped/fixed scaling rule; no conversion to linear assumed."
+    },
+    "instruction": {
+      "id": "urn:offmenu:property:instruction",
+      "description": "Localized source preparation step text with stable text identity."
+    },
+    "position": {
+      "id": "urn:offmenu:property:position",
+      "description": "Source step order."
+    },
+    "originalSourceRecord": {
+      "id": "urn:offmenu:property:originalSourceRecord",
+      "description": "Stable acquired record ID, separate from common resource ID."
+    },
+    "sourceEditionLanguage": {
+      "id": "urn:offmenu:property:sourceEditionLanguage",
+      "description": "Publisher edition; not culinary origin or audience restriction."
+    },
+    "sourceCulture": {
+      "id": "urn:offmenu:property:sourceCulture",
+      "description": "Original stated cultural context with source evidence."
+    },
+    "sourceCuisineCountry": {
+      "id": "urn:offmenu:property:sourceCuisineCountry",
+      "description": "Original source country assertion; not a language inference."
+    },
+    "sourceBook": {
+      "id": "urn:offmenu:property:sourceBook",
+      "description": "Original work/edition identity and title."
+    },
+    "sourceOriginalLanguages": {
+      "id": "urn:offmenu:property:sourceOriginalLanguages",
+      "description": "Original book language codes, separate from adaptation language."
+    },
+    "sourcePublicationYear": {
+      "id": "urn:offmenu:property:sourcePublicationYear",
+      "description": "Original source edition publication year."
+    },
+    "sourceExtraction": {
+      "id": "urn:offmenu:property:sourceExtraction",
+      "description": "Acquisition/extraction method and limits."
+    },
+    "ingredientExtractionComplete": {
+      "id": "urn:offmenu:property:ingredientExtractionComplete",
+      "description": "False for incomplete OCR ingredient extraction."
+    },
+    "automaticPlanningEligible": {
+      "id": "urn:offmenu:property:automaticPlanningEligible",
+      "description": "Always false for unreviewed acquired recipes."
+    },
+    "originalIngredientStatement": {
+      "id": "urn:offmenu:property:originalIngredientStatement",
+      "description": "Original ingredient wording retained with citation; canonical quantities cite this as their normalization input."
+    },
+    "sourceLanguages": {
+      "id": "urn:offmenu:property:sourceLanguages",
+      "description": "All publisher-declared languages, independently of audience and country."
+    },
+    "termAlias": {
+      "id": "urn:offmenu:property:termAlias",
+      "description": "Candidate lexical alias, never a substitute for identity/state/definition evidence."
+    },
+    "originalRdfNotation": {
+      "id": "urn:offmenu:property:originalRdfNotation",
+      "description": "Original RDF attributes, datatype/language tags and lexical form remain fixed for audit."
+    }
+  },
+  "sourcePropertyExtensions": {
+    "namespace": "urn:offmenu:property:source-field:",
+    "rule": "Typed source-specific fields preserve every additional source value. A reviewed crosswalk promotes the meaning to a shared property; unresolved fields do not disappear.",
+    "externalNamespaces": "Original RDF/OWL predicate URIs are preserved as source-declared properties/relations. Source ontology statements are not exact matches to an OffMenu ingredient or dietary qualification."
+  },
+  "translationBoundaries": {
+    "fixedIdentifiers": [
+      "resource.id",
+      "resource.type",
+      "assertion.propertyId",
+      "relation.predicateId",
+      "quantity.unitId",
+      "countryCode",
+      "currencyCode",
+      "formal expression syntax and original RDF lexical identifiers"
+    ],
+    "localizable": [
+      "resource.names",
+      "value.kind=text",
+      "original ingredient wording",
+      "instruction text",
+      "cultural/local dish names",
+      "source notes and terminology descriptions"
+    ],
+    "originalsAlwaysPreserved": [
+      "citations",
+      "source notation",
+      "original author/work/revision",
+      "source-language and edition",
+      "derivation inputs and method"
+    ]
+  },
+  "units": {
+    "g": {
+      "id": "urn:offmenu:unit:g",
+      "dimension": "mass",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "kg": {
+      "id": "urn:offmenu:unit:kg",
+      "dimension": "mass",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "mg": {
+      "id": "urn:offmenu:unit:mg",
+      "dimension": "mass",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "microgram": {
+      "id": "urn:offmenu:unit:microgram",
+      "dimension": "mass",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "ml": {
+      "id": "urn:offmenu:unit:ml",
+      "dimension": "volume",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "l": {
+      "id": "urn:offmenu:unit:l",
+      "dimension": "volume",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "count": {
+      "id": "urn:offmenu:unit:count",
+      "dimension": "count",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "portion": {
+      "id": "urn:offmenu:unit:portion",
+      "dimension": "count",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "kcal": {
+      "id": "urn:offmenu:unit:kcal",
+      "dimension": "energy",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "kJ": {
+      "id": "urn:offmenu:unit:kJ",
+      "dimension": "energy",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "minute": {
+      "id": "urn:offmenu:unit:minute",
+      "dimension": "time",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "hour": {
+      "id": "urn:offmenu:unit:hour",
+      "dimension": "time",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "degreeCelsius": {
+      "id": "urn:offmenu:unit:degreeCelsius",
+      "dimension": "temperature",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    },
+    "percent": {
+      "id": "urn:offmenu:unit:percent",
+      "dimension": "ratio",
+      "conversionPolicy": "Exact conversions only within the same dimension and definition"
+    }
+  },
+  "referenceNamespaces": {
+    "urn:offmenu:ingredient:": "Shared ingredient concept registry; candidate aliases are not exact nutritional equivalence.",
+    "urn:offmenu:country:": "Country/source territory code registry; ISO assignments and source extension codes remain distinguished.",
+    "urn:offmenu:unit:": "Declared dimension/unit definitions; source notation is retained separately.",
+    "urn:offmenu:recipe-concept:": "Common recipe concept candidates with cited source variants; not a collapsed formulation."
+  },
+  "actorRule": "Organizations and people retain one identity. Producer, supplier, retailer and restaurant roles can coexist as cited hasRole assertions; a site is a separate resource.",
+  "valueTypes": {
+    "expression": "Fixed formal syntax (for example RDF/XML); not translated as natural-language display text. Human-facing labels/definitions are separate localized text values.",
+    "number": "Typed numeric value; source lexical form, precision/fraction/range and method remain available where supplied.",
+    "identifier": "A fixed namespace/code, never replaced by translated display labels.",
+    "uri": "Fixed URI or internationalized resource identifier (IRI), including multilingual source URLs; preserve the original identifier rather than translating it."
+  },
+  "normalizationEvidenceRule": "Normalizer-derived quantities and default scaling are candidates/derivations, not independently verified source claims. Keep source statements and derivation input/method/review status."
+}
