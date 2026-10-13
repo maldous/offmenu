@@ -7,6 +7,7 @@ import {quantified} from '../public/ingredients.js';
 import {cookMeal} from '../public/cooking-model.js';
 import {generateHouseholdDay,pantryDuration} from '../public/household-model.js';
 import {corpusLookup} from '../cloud/corpus.mjs';
+import handler from '../cloud/handler.mjs';
 
 test('bulk price fields retain discount and unit semantics',()=>{
  const [r]=normalizePrices({items:[{id:1,price:'1.25',price_is_discounted:true,price_without_discount:'2.50',price_per:'KILOGRAM',proof_id:12,duplicate_of:null,location:{osm_address_country_code:'fr'}}]},sourceById('prices'));
@@ -40,4 +41,13 @@ test('corpus paging binds filters and reads only the dedicated public database',
  assert.equal(result.records.length,1);assert.equal(result.nextCursor,'b');assert.equal(result.withheld,1);
  assert.equal(calls[1].sql.includes("a%_'"),false);assert.equal(calls[1].args[3],"%a\\%\\_'%");
  assert.equal(await corpusLookup({}, {source:'off'}),null);
+});
+
+test('a failed optional cache write still returns the valid product lookup',async()=>{
+ const old=globalThis.fetch;
+ globalThis.fetch=async()=>Response.json({status:1,product:{code:'00012345',product_name:'Rice'}});
+ const env={DB:{prepare:()=>({bind:()=>({first:async()=>null,run:async()=>{throw Error('D1 free tier write limit');}})})}};
+ try{const response=await handler.fetch(new Request('https://offmenu.aldous.info/api/product?barcode=00012345'),env);
+  assert.equal(response.status,200);const data=await response.json();assert.equal(data.product.product_name,'Rice');assert.equal(data.offmenu_cacheUnavailable,true);
+ }finally{globalThis.fetch=old;}
 });

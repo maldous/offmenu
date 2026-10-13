@@ -25,3 +25,13 @@ Cloudflare R2 API explicitly returned error 10042: “Please enable R2 through t
 ## Hacker News discovery extension
 
 Matt additionally requested HN announcements and novel curated datasets. Maintain a supplemental register with announcement and primary-source links, exact releases, novelty against the original register, licence text and quality disposition. HN itself is a discovery signal, not source rights or validation. OpenNutrition 2025.1 downloaded and SHA-256 matches the publisher; its primary methodology explicitly includes model estimates and unresolved citations, and modified contents attribution obligations need enforcement. It is not admitted as measured composition or verified allergy/diet evidence. RecipeNLG, Swiss openfood and SNAPMe are additional leads under primary-source review. Original research registers are not rewritten.
+
+## Confirmed quota stop
+
+Cloudflare API error 7500 now rejects D1 writes: account free-tier daily row write allowance exhausted. This affects account saves until reset at midnight UTC (14 October 2026 at 11:00 Australia/Melbourne) or an authorized plan change. Bulk imports have stopped. All 317,898 accepted prices are staged and count-verified in the public D1; price activation failed, so that release is correctly not advertised as available. Wikibooks had already been activated. Public D1 size is 472,342,528 bytes. No quota bypass or silent plan upgrade will be attempted. Future bulk publication requires verified capacity plus a protected account-write reserve; import parts must be checked against total rows including index writes before uploading. This run underestimated account-wide quota impact; the production account records remain unchanged.
+
+Product/price upstream lookup now treats optional cache-write failure as a transient storage issue: valid upstream data is returned even while cache storage is unavailable. Private saves still fail explicitly and retain the local copy; no success is fabricated.
+
+Matt confirms paid Cloudflare and Netlify subscriptions. The connected Cloudflare account list exposes only 7edd51038e07b5b84a635b3ff7e11144, matching production; Workers settings report default_usage_model=standard. Billing subscription reads are denied with error 10000. Therefore the observed D1 free-tier error is a billing/entitlement discrepancy to reconcile, not proof Matt lacks a paid Cloudflare subscription. Cloudflare documentation distinguishes Workers Paid from website plans; confirm the existing Workers entitlement before recommending or attempting any new subscription. Netlify billing does not determine D1 limits.
+
+Cache-write resilience verification now passes: 112 JavaScript tests, nine Python tests, successful production build.
