@@ -1,5 +1,22 @@
 # OffMenu acceptance register
 
+## Recovered local execution — 13 October 2026
+
+Current evidence is in `recovery-2026-10-13.json`; older checkpoints below are historical.
+Residual source records and raw caches have been removed from D1 and verified empty,
+including after a successful transient barcode lookup. The private account aggregate
+and vault binding are preserved. The curation Worker redirect fix is deployed at
+source `815bd03`; 114 JavaScript tests, nine Python tests and the build pass.
+
+Full USDA, Open Prices and Wikibooks releases have been reacquired, reconciled and
+exercised locally. Their curation contains 4,347,570 records; 176,781 USDA records
+were withheld for unusable identity or absent mapped composition facts. Every
+curated record and file passed the publication gate. Static Netlify upload is in
+progress; Worker activation and live curation acceptance are not yet claimed.
+OpenNutrition's checksum and 326,759-row reconciliation match the saved evidence;
+it remains unadmitted to authoritative nutrition. Open Food Facts is downloading
+under `offmenu-off-recovery-20261013.service`; it is not part of current coverage.
+
 ## Local curation amendment — 13 October 2026
 
 - Verified separate public corpus D1 deletion and Worker binding removal.
