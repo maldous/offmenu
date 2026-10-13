@@ -15,6 +15,18 @@ def record(kind, source, data):
 
 
 class ProjectionTests(unittest.TestCase):
+    def test_full_recipes_require_content_permission_and_stay_unreviewed(self):
+        data={'recipeSchema':'offmenu-recipe/1','name':'Rice','ingredients':[{'name':'rice','amount':100,'unit':'g'}], 'directions':['Boil rice.'],'automaticPlanningEligible':True,'qualificationStatus':'verified','rawFields':{'private':'secret'}}
+        row=record('recipe','world-recipes',data)
+        projected,_=projection.curate([row],'1')
+        self.assertEqual(projected[0]['data']['ingredients'],[])
+        row['provenance']['recipeReuse']='licensed-full-recipe-content'
+        projected,_=projection.curate([row],'1')
+        self.assertEqual(projected[0]['data']['directions'],['Boil rice.'])
+        self.assertFalse(projected[0]['data']['automaticPlanningEligible'])
+        self.assertEqual(projected[0]['data']['qualificationStatus'],'unknown')
+        self.assertNotIn('rawFields',projected[0]['data'])
+
     def test_organization_reference_cannot_promote_ownership_or_raw_provider_body(self):
         row = record('organization', 'wikidata-food-businesses', {'name': 'Company', 'roles': ['food-manufacturer'],
                      'ownershipVerified': True, 'operationalCoverageVerified': True, 'rawFields': {'owner': 'private'}, 'credentials': 'secret'})

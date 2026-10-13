@@ -231,3 +231,11 @@ Deployment **must preserve the vault secret**: use multipart metadata `keep_bind
 
 ## Product review checkpoint
 See [implementation status and remaining validation gates](docs/product-review-status.md) for the dinner journey, cooking accounting, shared kitchen and request-reduction release.
+
+## Worldwide recipes
+
+The shared recipe library is acquired from licensed Wikibooks cookbook pages, pinned GitHub recipe collections, UniTools and documented historical/Smithsonian editions. The checked release has 23,917 full source recipes across 30 language editions/codes (including Simple English separately). Recipe wording, source quantities, unknown measurements, directions, revision, attribution and per-record rights are retained. It is not complete worldwide coverage or independently reviewed dietary advice.
+
+In the kitchen, open **Menus → Worldwide recipe library → Load recipe library**. Search dishes or ingredients, choose a language, compare compatible source-batch quantities with usable pantry lots locally, and read source instructions. Explicitly review ingredients, measurements, servings and scaling before saving a personal kitchen recipe. Public recipes remain unreviewed; historical OCR and nonstandard measures require correction.
+
+Public dataset: [manifest](https://offmenu-corpus.netlify.app/recipes/manifest.json), [JSONL gzip](https://offmenu-corpus.netlify.app/releases/world-recipes-20261013/recipes.jsonl.gz), [Schema.org JSON-LD gzip](https://offmenu-corpus.netlify.app/releases/world-recipes-20261013/recipes.schemaorg.jsonld.gz), [recipe schema](https://offmenu-corpus.netlify.app/recipes/schema.json). Per-record licences apply; preserve attribution and CC BY-SA share-alike. Ingredient-indexed REST example: `/api/data/public?source=world-recipes&query=rice`. Research and exclusions: `docs/world-recipe-research-20261014.json`. Full acquired originals and unresolved candidates stay in the local data directory.

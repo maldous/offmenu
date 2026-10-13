@@ -143,6 +143,9 @@ def compile_release(directories, output, version, policy_path):
                             data['automaticPlanningEligible'] = False
                         name = data.get('name') or data.get('foodName') or data.get('title') or key
                         names.add(name)
+                        if row['kind'] == 'recipe':
+                            names.update(str(i.get('ingredientId') or i.get('name','')) for i in data.get('ingredients',[]))
+                            names.update(str(i.get('originalText','')) for i in data.get('ingredients',[]))
                         names.update(str(v) for v in data.get('names', {}).values() if v)
                         for ident in data.get('identifiers', []):
                             if ident.get('system') == 'barcode':

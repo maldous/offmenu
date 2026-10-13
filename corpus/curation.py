@@ -32,7 +32,7 @@ def curate(rows, policy_version):
         common = {'schemaVersion': '1.0', 'id': ids[row['id']], 'kind': kind,
                   'countries': row.get('countries', []),
                   'provenance': {key: provenance.get(key) for key in
-                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId', 'limitationStatement', 'countryNotice', 'changes', 'rights', 'licenseNotices', 'copyright'] if provenance.get(key) is not None},
+                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId', 'limitationStatement', 'countryNotice', 'changes', 'rights', 'licenseNotices', 'copyright', 'originSourceId', 'revisionId', 'historyUrl', 'sourceRevision', 'rightsEvidenceUrl', 'recipeReuse', 'originalAuthors', 'rightsScope', 'originalContentSha256', 'sourceDocumentSha256'] if provenance.get(key) is not None},
                   'curation': {'schema': 'offmenu-curation/1', 'policyVersion': policy_version,
                      'sourceRecordReference': row['id'], 'status': 'selected-source-facts',
                      'humanReviewed': False, 'automaticDietQualification': False,
@@ -96,6 +96,15 @@ def curate(rows, policy_version):
             common['curation']['status'] = 'place-reference'
             common['provenance']['licenseNotices'] = ['https://offmenu-corpus.netlify.app/notices/' + source + '/' + str(provenance['releaseId']) + '/' + name for name in provenance.get('licenseNotices', [])]
         elif kind == 'recipe':
+            if source == 'world-recipes' and data.get('recipeSchema') == 'offmenu-recipe/1' and provenance.get('recipeReuse') == 'licensed-full-recipe-content':
+                if not data.get('ingredients') or not data.get('directions'):
+                    withheld.append({'id': row['id'], 'reason': 'recipe ingredients or instructions unavailable'})
+                    continue
+                projected = {key: data[key] for key in ['recipeSchema', 'name', 'names', 'nativeName', 'languages', 'yield', 'ingredients', 'directions', 'directionsByLanguage', 'time', 'quantityCoverage', 'sourcePublisher', 'historical', 'sourceBook', 'sourcePublicationYear', 'sourceCulture', 'sourceOriginalLanguages', 'sourceCuisineCountry', 'sourceExtraction', 'sourceParagraphRange', 'sourceDocument', 'limitations'] if key in data}
+                projected.update(reviewStatus='source-recipe-needs-personal-quantity-and-food-review', automaticPlanningEligible=False, qualificationStatus='unknown')
+                common['curation']['status'] = 'licensed-recipe-content'
+                result.append({**common, 'data': projected})
+                continue
             # Discovery references are OffMenu's curation; the complete source
             # recipe, wording and inferred quantities are retained only locally.
             projected = {'name': data.get('name'), 'yield': {'value': None, 'unit': 'portion'},

@@ -16,7 +16,7 @@ for(const file of manifest.files){const bytes=await readFile(join(root,file.key)
    if(row.kind==='nutrientProfile'){result.profiles++;const unit=d.basis.unit,recipe={id:key,title:'Curation basis exercise',servings:1,ingredients:[{ingredient:key,quantity:100,unit}]};
     const nutrients=asOffNutriments(row,unit),products={[key]:{product_quantity:100,product_quantity_unit:unit,nutriments:nutrients}},inventory=[{id:key,barcode:key,ingredient:key,quantity:100,unit}];
     const summary=planSummary([{recipeId:key,date:'2026-10-13',servings:1}],[recipe],inventory,products,['2026-10-13']);if(summary.missing.length||summary.unresolved)throw Error('Curated consumer exercise failed');result.planningExercises++;
-   }else if(row.kind==='recipe'){if(d.automaticPlanningEligible||d.ingredients.length||d.directions.length)throw Error('Source recipe body entered discovery projection');result.recipeReferences++;}
+   }else if(row.kind==='recipe'){if(d.automaticPlanningEligible)throw Error('Unreviewed recipe became automatic');if(row.provenance.sourceId==='world-recipes'){if(d.recipeSchema!=='offmenu-recipe/1'||!d.ingredients.length||!d.directions.length||row.provenance.recipeReuse!=='licensed-full-recipe-content')throw Error('Licensed recipe content missing');}else if(d.ingredients.length||d.directions.length)throw Error('Source recipe body entered discovery projection');result.recipeReferences++;}
    else if(row.kind==='priceObservation')result.prices++;
    else if(row.kind==='organization')result.organizationReferences++;
    else if(row.kind==='sourceAssertion')result.guidelineReferences++;

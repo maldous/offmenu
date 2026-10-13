@@ -11,7 +11,7 @@ dependencies = []
 
 [project.optional-dependencies]
 test = ["openpyxl==3.1.5"]
-collection = ["duckdb==1.5.6", "pyarrow==26.0.0"]
+collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2"]
 
 [project.scripts]
 offmenu = "offmenu.cli:main"
