@@ -2407,7 +2407,9 @@
       "builtAt",
       "sourceCommit"
     ],
-    "cpuMs": 10000
+    "cpuMs": 10000,
+    "runtimeReadBackVerified": true,
+    "vaultBindingReadBackVerified": true
   },
   "verification": {
     "javascriptTests": 115,
@@ -2424,7 +2426,8 @@
     "publicD1Rows": 0,
     "rawProductCache": 0,
     "rawPriceCache": 0,
-    "vaultBinding": "preserved"
+    "vaultBinding": "preserved",
+    "readBackAfterAllLiveQueries": true
   },
   "countryReport": "country-execution-20261013.json",
   "sourceAccessSummary": {
