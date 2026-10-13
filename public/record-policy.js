@@ -1,7 +1,7 @@
 // Private use does not remove upstream restrictions. Unknown sources need a
 // reviewed server policy; a checkbox cannot grant a commercial provider's rights.
 export const RECORD_POLICY_VERSION='offmenu-record-use/1';
-const openSources=new Set(['off','prices','usda','usda-files','afcd','ciqual','cofid','germany-bls','wikibooks','fsa-alerts','fsa-ratings','openfda']);
+const openSources=new Set(['off','prices','usda','usda-files','afcd','ciqual','cofid','germany-bls','fineli','wikibooks','fsa-alerts','fsa-ratings','openfda']);
 export const SENSITIVE_KINDS=new Set(['healthObservation','activity','intakeRecord']);
 const ownSources=new Set(['personal-import','retailer-browser']);
 export function recordPermission(record,{action='display',confirmed=false,policy,now=Date.now(),market=''}={}){

@@ -13,7 +13,7 @@ const manifest=JSON.parse(await readFile(directory+'/manifest.json','utf8'));
 if(manifest.status!=='normalized')throw Error('Reconciled normalized release required');
 const files=manifest.partitions?.map(p=>p.key)||['normalized.jsonl.gz'];
 const result={source:manifest.sourceId,release:manifest.releaseId||directory.split('/').pop(),records:0,
- profiles:0,planningExercises:0,reviewableRecipes:0,recipesWithoutIngredients:0,prices:0,
+ profiles:0,planningExercises:0,reviewableRecipes:0,recipesWithoutIngredients:0,unreviewedDietAssertions:0,prices:0,
  missingPriceAmount:0,missingCurrency:0,missingPriceDate:0,negativePriceAmount:0,retailerReferences:0,siteReferences:0,
  knownMetrics:Object.fromEntries(NUTRIENTS.map(([k])=>[k,0])),errors:[],status:'running',
  limitation:'Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy'};
@@ -35,6 +35,8 @@ for(const file of files){
    }else if(r.kind==='recipe'){
     if(!r.data.ingredients?.length){result.recipesWithoutIngredients++;continue;}
     const review=recipeForReview(r);if(quantified(review))throw Error('Unreviewed source recipe became automatic');result.reviewableRecipes++;
+   }else if(r.kind==='sourceAssertion'&&r.provenance.sourceId==='fineli'){
+    if(r.data.qualificationStatus!=='unknown'||r.data.automaticDietQualification!==false)throw Error('Source diet tag became a verified qualification');result.unreviewedDietAssertions++;
    }else if(['retailer','site'].includes(r.kind)&&r.provenance.sourceId==='overture-food-places'){
     if(r.data.inventoryAvailability!=='unknown'||r.data.ownershipVerified!==false||r.data.dietQualification!=='unknown')throw Error('Place reference invented inventory, ownership or diet qualification');
     if(r.kind==='retailer')result.retailerReferences++;else result.siteReferences++;
