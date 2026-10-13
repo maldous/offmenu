@@ -10,7 +10,7 @@ async function engine(env){
   const url=base+'/'+(metadata?'releases/'+manifest.releaseId+'/':'')+key,cache=globalThis.caches?.default;
   const cacheKey=url+(metadata?'?release='+manifest.manifestSha256:'');let response;
   try{response=await cache?.match(cacheKey);}catch{/* cache is optional */}
-  if(!response){response=await fetch(url,{redirect:'error',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('Curated release unavailable ('+response.status+')');}
+  if(!response){response=await fetch(url,{redirect:'manual',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('Curated release unavailable ('+response.status+')');}
   const bytes=await response.arrayBuffer();if(bytes.byteLength>10*1024*1024)throw Error('Curated file exceeds request limit');
   if(metadata){const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');if(bytes.byteLength!==metadata.bytes||digest!==metadata.sha256)throw Error('Curated file checksum mismatch');}
   else{manifest=JSON.parse(new TextDecoder().decode(bytes));if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.curatedAcceptance?.status!=='all-curated-records-exercised'||!/^[-A-Za-z0-9.]+$/.test(manifest.releaseId))throw Error('Unaccepted OffMenu curation');}

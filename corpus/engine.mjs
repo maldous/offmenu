@@ -1,4 +1,4 @@
-// The same read-only curation engine runs locally and in Netlify Functions.
+// The same read-only curation engine runs locally and in Cloudflare Workers.
 // It never reads source archives, the local SQLite build index or private data.
 const encoder=new TextEncoder(),decoder=new TextDecoder();
 const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',typeof value==='string'?encoder.encode(value):value)),b=>b.toString(16).padStart(2,'0')).join('');

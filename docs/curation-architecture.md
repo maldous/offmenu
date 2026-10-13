@@ -1,5 +1,13 @@
 # OffMenu local curation and static delivery
 
+Recovery update, 13 October 2026: the residual D1 source rows and raw caches were
+successfully deleted and verified empty. The private account aggregate remains
+one row, revision sum 2, 821 bytes. Production already runs the `8fcf67d` retirement
+code (deployment `392488fb-b84b-4d0a-ab3a-c07f673b79e7`). The local checkout and
+Netlify CLI authentication are recovered. The historical quota and login blockers
+below are resolved; full local collection/publication remains in progress. Consult
+`recovery-2026-10-13.json` and local `offmenu-data/logs` for current evidence.
+
 13 October 2026. This decision supersedes bulk D1 corpus replication and the
 prototype Netlify query function. User instructions: manually trigger local
 collection and normalization; host only OffMenu curation; use Cloudflare for

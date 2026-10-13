@@ -1,5 +1,23 @@
 # OffMenu Codex handover
 
+## Local recovery, 13 October 2026 — read first
+
+The historical migration checkpoint below is superseded by `curation-architecture.md`
+and `recovery-2026-10-13.json`. Source datasets belong only in local
+`/home/user/src/offmenu-data`; publish only accepted OffMenu curation as static
+Netlify files. Do not restart public D1 imports or use Netlify Functions for this path.
+The repository has been restored locally from `8fcf67d`. Reacquisition is authorized.
+The remaining 15,312 public source records, 14 product caches and one price cache
+were deleted successfully; read-back is zero, with the account aggregate unchanged
+(one account, revision sum 2, 821 bytes). The vault binding is preserved.
+
+Install Python test dependencies with `uv venv .venv` and
+`uv pip install --python .venv/bin/python -e '.[test]'`, then use
+`.venv/bin/python -m unittest discover -s tests`. The fresh checkout initially lacked
+openpyxl. Recovery verification passes 114 JavaScript tests, nine Python tests and
+the Worker build. Local raw archives, collection outputs and per-stage logs are
+outside Git under `offmenu-data`; inspect these before restarting long operations.
+
 Checkpoint: 13 October 2026, Australia/Melbourne. Owner: Matt Aldous, GitHub account `maldous`. Migration destination: **private** repository `https://github.com/maldous/offmenu`, branch `main`. This handover imports the saved source checkpoint, all five reports and four research registers. Historical Git history is preserved in `migration/offmenu-checkpoint.bundle`; the remote migration commit is based on the existing bootstrap commit. Read `docs/MIGRATION.md` for provenance and verification.
 
 ## Mission and authorization

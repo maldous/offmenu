@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-10-13T05:19:58.490704+00:00",
+  "sourceCommit": "8fcf67d96efbb6360f0d9867a36583bc1f21374d",
+  "deploymentId": "392488fb-b84b-4d0a-ab3a-c07f673b79e7",
+  "workerVersion": "c0320c3a-6f6a-4e91-a991-ba88d2243783",
+  "bindings": [
+    "DB",
+    "PROVIDER_VAULT_KEY"
+  ],
+  "accountAggregate": {
+    "accounts": 1,
+    "revisions": 2,
+    "bytes": 821
+  },
+  "cleanup": {
+    "deletedPublicRecords": 15312,
+    "deletedProducts": 14,
+    "deletedPrices": 1,
+    "verifiedRemaining": {
+      "publicRecords": 0,
+      "products": 0,
+      "prices": 0
+    }
+  },
+  "privateDataExported": false,
+  "tests": {
+    "javascript": 114,
+    "python": 9,
+    "build": "passed"
+  },
+  "localDataRoot": "/home/user/src/offmenu-data",
+  "netlifyCLI": "authenticated; no curation publication yet",
+  "collections": {
+    "wikibooks": {
+      "source": "wikibooks",
+      "release": "2024-07-31",
+      "records": 3895,
+      "profiles": 0,
+      "planningExercises": 0,
+      "reviewableRecipes": 3801,
+      "recipesWithoutIngredients": 94,
+      "prices": 0,
+      "missingPriceAmount": 0,
+      "missingCurrency": 0,
+      "missingPriceDate": 0,
+      "negativePriceAmount": 0,
+      "knownMetrics": {
+        "energy-kcal_100g": 0,
+        "proteins_100g": 0,
+        "carbohydrates_100g": 0,
+        "fat_100g": 0,
+        "sugars_100g": 0,
+        "salt_100g": 0,
+        "sodium_mg_100g": 0,
+        "saturated-fat_100g": 0,
+        "fiber_100g": 0,
+        "calcium_100g": 0,
+        "iron_100g": 0,
+        "potassium_100g": 0,
+        "vitamin-c_100g": 0
+      },
+      "errors": [],
+      "status": "all normalized records structurally exercised",
+      "limitation": "Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy",
+      "completedAt": "2026-10-13T05:11:51.012Z"
+    },
+    "prices": {
+      "source": "prices",
+      "release": "2026-10-12",
+      "records": 317898,
+      "profiles": 0,
+      "planningExercises": 0,
+      "reviewableRecipes": 0,
+      "recipesWithoutIngredients": 0,
+      "prices": 317898,
+      "missingPriceAmount": 0,
+      "missingCurrency": 171,
+      "missingPriceDate": 186,
+      "negativePriceAmount": 0,
+      "knownMetrics": {
+        "energy-kcal_100g": 0,
+        "proteins_100g": 0,
+        "carbohydrates_100g": 0,
+        "fat_100g": 0,
+        "sugars_100g": 0,
+        "salt_100g": 0,
+        "sodium_mg_100g": 0,
+        "saturated-fat_100g": 0,
+        "fiber_100g": 0,
+        "calcium_100g": 0,
+        "iron_100g": 0,
+        "potassium_100g": 0,
+        "vitamin-c_100g": 0
+      },
+      "errors": [],
+      "status": "all normalized records structurally exercised",
+      "limitation": "Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy",
+      "completedAt": "2026-10-13T05:12:28.450Z"
+    },
+    "opennutrition": {
+      "release": "2025.1",
+      "rawRows": 326759,
+      "types": {
+        "everyday": 5299,
+        "prepared": 3836,
+        "grocery": 313442,
+        "restaurant": 4182
+      },
+      "duplicateIds": 0,
+      "missingBarcode": 13317,
+      "invalidJsonFields": 0,
+      "status": "full TSV structural reconciliation; not admitted to authoritative nutrition",
+      "productionPublished": false,
+      "sha256": "30420802bbf0e29852c282e37a58c7e18ebc1b57e109706925ef969f0498ff47",
+      "completedAt": "2026-10-13T05:16:24.433671+00:00"
+    }
+  }
+}

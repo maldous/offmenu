@@ -31,9 +31,12 @@ test('local compiler and serving engine publish selected facts, page Unicode/bar
   // or a Netlify function. Public cache failures still allow valid lookups.
   const oldFetch=globalThis.fetch,oldCaches=globalThis.caches;
   const manifest=engine.manifest;manifest.curatedAcceptance={status:'all-curated-records-exercised'};
-  globalThis.fetch=async url=>{const path=new URL(url).pathname;assert.equal(path.includes('/v1/'),false);return path==='/manifest.json'?Response.json(manifest):new Response(await readFile(join(output,'blobs',path.replace('/releases/test/',''))));};
+  globalThis.fetch=async (url,options)=>{assert.equal(options.redirect,'manual','Workers must inspect redirects without following them');const path=new URL(url).pathname;assert.equal(path.includes('/v1/'),false);return path==='/manifest.json'?Response.json(manifest):new Response(await readFile(join(output,'blobs',path.replace('/releases/test/',''))));};
   globalThis.caches={default:{match:async()=>{throw Error('cache unavailable');},put:async()=>{throw Error('cache unavailable');}}};
-  try{const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app',DB:{prepare(){throw Error('Account DB touched');}}},{source:'off',barcode:'00012345'});assert.equal(result.records.length,1);}
+  try{const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app',DB:{prepare(){throw Error('Account DB touched');}}},{source:'off',barcode:'00012345'});assert.equal(result.records.length,1);
+   globalThis.fetch=async (_url,options)=>{assert.equal(options.redirect,'manual');return new Response(null,{status:302,headers:{Location:'https://example.com/untrusted'}});};
+   await assert.rejects(corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off'}),/Curated release unavailable \(302\)/);
+  }
   finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
   assert.throws(()=>assertCurated({...page.records[0],data:{credentials:'secret'}}),/private payload/);
   await writeFile(join(input,'normalized.jsonl.gz'),gzipSync(JSON.stringify([{...row,provenance:{...provenance,visibility:'private'}}])+'\n'));
