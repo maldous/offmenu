@@ -6,7 +6,7 @@ async function decompress(bytes){const stream=new Blob([bytes]).stream().pipeThr
 const norm=value=>value.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase();
 import {assertCurated} from './assert-curated.mjs';
 export {assertCurated} from './assert-curated.mjs';
-export async function createEngine(readBlob){
+export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
  const bytes=await readBlob('manifest.json');if(!bytes)throw Error('Curated release is not published');
  const manifest=JSON.parse(decoder.decode(bytes));
  if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.acquisitionAtRuntime!==false)throw Error('Unaccepted curation manifest');
@@ -17,11 +17,13 @@ export async function createEngine(readBlob){
   const compressed=new Uint8Array(data);if(compressed.byteLength!==metadata.bytes||await hash(compressed)!==metadata.sha256)throw Error('Curated release checksum failed');
   return decompress(compressed);
  }
- async function posting(namespace,key,source){
-  const text=await load(`${namespace}/${(await hash(key)).slice(0,manifest.shardLength)}.jsonl.gz`);if(!text)return [];
+ async function posting(namespace,key,source,read){
+  const text=await read(`${namespace}/${(await hash(key)).slice(0,manifest.shardLength)}.jsonl.gz`);if(!text)return [];
   for(const line of text.split('\n')){if(!line)continue;const [term,values]=JSON.parse(line);if(term===key)return values[source]||[];}return [];
  }
  async function lookup({source,query='',barcode='',kind='',country='',cursor='',limit=20}={}){
+  let reads=0;
+  const read=async key=>{if(reads>=maxBlobReads)throw Error('Search needs too many index reads; use fewer search terms.');reads++;return load(key);};
   const definition=manifest.sources[source];if(!definition)throw Error('Source absent from curated release');
   if(typeof query!=='string'||query.length>100||barcode&&!/^\d{4,32}$/.test(barcode)||country&&!/^[A-Z]{2}$/.test(country)||kind&&!/^[A-Za-z]+$/.test(kind)||cursor.length>600)throw Error('Invalid collection filter');
   const size=Math.max(1,Math.min(100,Number(limit)||20));
@@ -32,24 +34,29 @@ export async function createEngine(readBlob){
    if(!Number.isSafeInteger(decoded.offset)||decoded.offset<0)throw Error('Invalid cursor');offset=decoded.offset;
   }
   let candidates=null;
-  if(barcode)candidates=await posting('barcodes',barcode,source);
+  if(barcode)candidates=await posting('barcodes',barcode,source,read);
   // Unicode words: JS \w is ASCII, so use explicit letters/numbers for search.
   const unicodeTerms=[...new Set(norm(query).match(/[\p{L}\p{N}]+/gu)||[])];
-  for(const term of unicodeTerms){const found=await posting('terms',term,source);if(candidates===null)candidates=found;else{const set=new Set(found);candidates=candidates.filter(id=>set.has(id));}if(!candidates.length)break;}
+  for(const term of unicodeTerms){const found=await posting('terms',term,source,read);if(candidates===null)candidates=found;else{const set=new Set(found);candidates=candidates.filter(id=>set.has(id));}if(!candidates.length)break;}
   const [start,end]=definition.entryRange,total=candidates?.length??end-start;
   if(offset>total)throw Error('Cursor outside collection');
-  const pages=new Map(),selected=[];let examined=0;
+  const pages=new Map(),selected=[],recordShards=new Set();let examined=0;
   while(offset<total&&selected.length<size&&examined<10000){
-   const id=candidates?candidates[offset]:start+offset;offset++;examined++;
+   const id=candidates?candidates[offset]:start+offset;
    const pageId=Math.floor(id/manifest.entryPageSize);
-   if(!pages.has(pageId)){const text=await load(`entries-${pageId}.json.gz`);if(!text)throw Error('Entry index missing');pages.set(pageId,JSON.parse(text));}
+   // Reserve a read for every selected record shard before advancing the
+   // cursor. A bounded page must never skip a candidate it could not load.
+   if(!pages.has(pageId)){if(reads+1+recordShards.size>maxBlobReads)break;const text=await read(`entries-${pageId}.json.gz`);if(!text)throw Error('Entry index missing');pages.set(pageId,JSON.parse(text));}
    const entry=pages.get(pageId).find(e=>e.id===id);if(!entry||entry.source!==source)throw Error('Entry index mismatch');
-   if(kind&&!entry.kinds.includes(kind)||country&&entry.countries.length&&!entry.countries.includes(country))continue;
+   if(kind&&!entry.kinds.includes(kind)||country&&entry.countries.length&&!entry.countries.includes(country)){offset++;examined++;continue;}
+   if(reads+recordShards.size+(recordShards.has(entry.shard)?0:1)>maxBlobReads)break;
+   recordShards.add(entry.shard);offset++;examined++;
    selected.push(entry);
   }
+  if(!examined&&offset<total)throw Error('Search needs too many index reads; use fewer search terms.');
   const buckets=new Map();for(const e of selected){if(!buckets.has(e.shard))buckets.set(e.shard,new Map());buckets.get(e.shard).set(e.key,e);}
   const recordsByKey=new Map();
-  for(const [shard,keys] of buckets){const text=await load(`records/${source}/${shard}.jsonl.gz`);if(!text)throw Error('Record partition missing');
+  for(const [shard,keys] of buckets){const text=await read(`records/${source}/${shard}.jsonl.gz`);if(!text)throw Error('Record partition missing');
    for(const line of text.split('\n')){if(!line)continue;const [key,records]=JSON.parse(line);if(keys.has(key))recordsByKey.set(key,records.map(assertCurated));}
   }
   const records=selected.flatMap(e=>{const rows=recordsByKey.get(e.key);if(!rows)throw Error('Record missing from curation partition');return rows.filter(r=>!kind||r.kind===kind);});

@@ -5,9 +5,31 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {gzipSync} from 'node:zlib';
 import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {gzipLines} from '../scripts/gzip-jsonl.mjs';
 import {createEngine,assertCurated} from '../corpus/engine.mjs';
 import {corpusLookup} from '../cloud/corpus.mjs';
+test('cold Worker pages stay within 50 operations and resume sparse filters without losing records',async()=>{
+ const files=new Map(),entries=[];
+ const add=(key,value)=>files.set(key,gzipSync(value));
+ for(let i=0;i<100;i++){
+  const key='offmenu:product:'+i,shard=String(i).padStart(3,'0'),countries=[i%17===0?'AU':'US'];
+  const row={schemaVersion:'1.0',id:key,kind:'product',countries,provenance:{sourceId:'off',visibility:'public',license:'ODbL',attribution:'OFF'},curation:{schema:'offmenu-curation/1',rawSourcePayloadPublished:false},data:{name:'Product '+i}};
+  entries.push({id:i,source:'off',key,shard,countries,kinds:['product']});
+  add(`entries-${i}.json.gz`,JSON.stringify([entries[i]]));
+  add(`records/off/${shard}.jsonl.gz`,JSON.stringify([key,[row]])+'\n');
+ }
+ const manifest={format:'offmenu-curated/1',status:'curated-release-ready',privateProviderData:false,acquisitionAtRuntime:false,releaseId:'budget-test',manifestSha256:'budget-test',entryPageSize:1,shardLength:3,curatedAcceptance:{status:'all-curated-records-exercised'},sources:{off:{entryRange:[0,100],records:100,license:'ODbL'}},files:[...files].map(([key,data])=>({key,bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')}))};
+ const oldFetch=globalThis.fetch,oldCaches=globalThis.caches;let operations=0;
+ const count=()=>{if(++operations>50)throw Error('Worker subrequest ceiling exceeded');};
+ globalThis.fetch=async url=>{count();const path=new URL(url).pathname;if(path==='/manifest.json')return Response.json(manifest);const bytes=files.get(path.replace('/releases/budget-test/',''));assert.ok(bytes);return new Response(bytes);};
+ globalThis.caches={default:{match:async()=>{count();return undefined;},put:async()=>{count();}}};
+ try{for(const country of ['', 'AU']){
+  const ids=[];let cursor='',pages=0;
+  do{operations=0;const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off',country,limit:100,cursor});assert.ok(operations<=50);ids.push(...result.records.map(r=>r.id));assert.notEqual(result.nextCursor,cursor);cursor=result.nextCursor;assert.ok(++pages<20);}while(cursor);
+  assert.deepEqual(ids,entries.filter(e=>!country||e.countries.includes(country)).map(e=>e.key));
+ }}finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
+});
 test('literal LF reader preserves Unicode separators and rejects truncated gzip',async()=>{
  const dir=await mkdtemp(join(tmpdir(),'offmenu-lines-'));
  try{const rows=[{name:'Milk\u2028Zutaten\u2029日本語',text:'a\r\nb'}, {code:'00012345'}],bytes=gzipSync(rows.map(JSON.stringify).join('\n'));
