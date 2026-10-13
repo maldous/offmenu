@@ -110,3 +110,16 @@ test('automatic planning withholds menus with unresolved strict dietary evidence
 
 import handler from '../cloud/handler.mjs';
 test('the full Worker dispatcher reaches public enrichment instead of catalogue 404',async()=>{const {env}=database(),original=globalThis.fetch;globalThis.fetch=async(url,options)=>{assert.equal(options.redirect,'manual');return Response.json({data:[]});};try{const r=await handler.fetch(request('/api/catalogue/enrich?source=gleif&query=Example'),env);assert.equal(r.status,200);assert.equal((await r.json()).cache,'miss');}finally{globalThis.fetch=original;}});
+
+test('REST and MCP private-document reads paginate without crossing account scopes',async()=>{
+ const {db,env}=database();
+ for(const id of ['a','b','c'])db.prepare('INSERT INTO private_documents VALUES(?,?,?,?,?,?)').run('alice','health',id,1,JSON.stringify({records:[]}),'now');
+ db.prepare('INSERT INTO private_documents VALUES(?,?,?,?,?,?)').run('bob','health','secret',1,JSON.stringify({records:[]}),'now');
+ const issue=async(resource)=> (await(await integrationRoutes(request('/api/integrations/tokens','POST',{resource,scopes:['health:read']}),env,opts)).json()).access_token;
+ const apiToken=await issue('api');
+ const rest=new Request(origin+'/api/v1/health?limit=2',{headers:{Authorization:'Bearer '+apiToken}});
+ const page=await(await integrationRoutes(rest,env,opts)).json();assert.deepEqual(page.documents.map(x=>x.id),['a','b']);assert.equal(page.nextCursor,'b');
+ const mcpToken=await issue('mcp');
+ const rpc=new Request(origin+'/mcp',{method:'POST',headers:{Authorization:'Bearer '+mcpToken},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'get_health_observations',arguments:{cursor:'b',limit:2}}})});
+ const value=await(await integrationRoutes(rpc,env,opts)).json();assert.deepEqual(value.result.structuredContent.documents.map(x=>x.id),['c']);assert.equal(value.result.structuredContent.nextCursor,null);
+});
