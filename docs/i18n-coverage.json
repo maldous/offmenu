@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2066,
+  "messages": 2074,
   "arabicTranslated": 376,
-  "arabicMissing": 1690,
+  "arabicMissing": 1698,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -319,6 +319,7 @@
     },
     "../public/i18n.js": {
       "sources": [
+        "cloud/locale.mjs",
         "extension/popup-source.js"
       ],
       "arabic": false
@@ -326,6 +327,12 @@
     "../public/insights-model.js": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "../public/locale-negotiation.js": {
+      "sources": [
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },
@@ -545,6 +552,12 @@
       ],
       "arabic": false
     },
+    "./locale.mjs": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
     "./menu-model.js": {
       "sources": [
         "public/app.js",
@@ -750,12 +763,14 @@
     },
     "/manifest-ar.webmanifest": {
       "sources": [
+        "cloud/locale.mjs",
         "public/sw.js"
       ],
       "arabic": false
     },
     "/manifest.webmanifest": {
       "sources": [
+        "cloud/locale.mjs",
         "public/sw.js"
       ],
       "arabic": false
@@ -889,6 +904,12 @@
     ":read. Token audience must be /api/v1. History includes food and cleanup records; directory includes saved recipes and locations.": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "; Path=/; SameSite=Lax; Secure; Max-Age=31536000": {
+      "sources": [
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },
@@ -1053,6 +1074,12 @@
     "AT THE TABLE": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Accept-Language, Cookie": {
+      "sources": [
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },
@@ -1534,7 +1561,8 @@
     "Authorization": {
       "sources": [
         "cloud/handler.mjs",
-        "cloud/integrations.mjs"
+        "cloud/integrations.mjs",
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },
@@ -2791,7 +2819,8 @@
     },
     "Cookie": {
       "sources": [
-        "cloud/handler.mjs"
+        "cloud/handler.mjs",
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },
@@ -5323,6 +5352,12 @@
       "arabic": false
     },
     "Invalid household.": {
+      "sources": [
+        "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid interface language.": {
       "sources": [
         "cloud/state.mjs"
       ],
@@ -10713,6 +10748,12 @@
       ],
       "arabic": false
     },
+    "Vary": {
+      "sources": [
+        "cloud/locale.mjs"
+      ],
+      "arabic": false
+    },
     "Vegan": {
       "sources": [
         "public/household-model.js"
@@ -11550,6 +11591,12 @@
       ],
       "arabic": false
     },
+    "data-workspace.html": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
     "data:read": {
       "sources": [
         "cloud/integrations.mjs",
@@ -12232,6 +12279,12 @@
     "private measurement history and descriptive statistics": {
       "sources": [
         "cloud/catalogue.mjs"
+      ],
+      "arabic": false
+    },
+    "private, no-store": {
+      "sources": [
+        "cloud/locale.mjs"
       ],
       "arabic": false
     },

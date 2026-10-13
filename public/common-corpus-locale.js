@@ -102,7 +102,7 @@ export async function createCommonCorpus(graph,{userId=null,allowLocalRestricted
     if(value.kind==='number')return new Intl.NumberFormat(locale,{maximumFractionDigits:20}).format(value.value);
     if(value.kind==='boolean')return t(value.value?'Yes':'No',{},locale);
     if(value.kind==='null')return t('Unknown',{},locale);
-    if(['identifier','uri'].includes(value.kind))return value.value;
+    if(['identifier','uri','expression'].includes(value.kind))return value.value;
     if(['date','datetime'].includes(value.kind)){try{return new Intl.DateTimeFormat(locale,value.kind==='datetime'?{dateStyle:'medium',timeStyle:'short'}:{}).format(new Date(value.kind==='date'?value.value+'T12:00:00':value.value));}catch{return value.value;}}
     if(value.kind==='quantity'){
       const amount=value.value==null?t('Unknown',{},locale):new Intl.NumberFormat(locale,{maximumFractionDigits:20}).format(value.value);

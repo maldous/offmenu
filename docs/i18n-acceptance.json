@@ -4,17 +4,18 @@
   "branch": "codex/offmenu-i18n",
   "baseCommit": "ac2df94",
   "tests": {
-    "javascriptPassed": 139,
+    "javascriptPassed": 144,
     "pythonPassed": 32,
     "inventoryCheck": "passed",
     "placeholderAndDuplicateKeys": "passed",
     "build": "passed",
-    "completeArabicReleaseGate": "expected failure: untranslated messages"
+    "completeArabicReleaseGate": "expected failure: untranslated messages",
+    "workersRuntimePassed": 1
   },
   "coverage": {
-    "candidateMessages": 2066,
+    "candidateMessages": 2074,
     "arabicTranslated": 376,
-    "arabicMissing": 1690
+    "arabicMissing": 1698
   },
   "browser": {
     "origin": "http://127.0.0.1:8787",
@@ -42,9 +43,12 @@
       "assertions": 17
     },
     "recipe": {
-      "path": "/home/user/src/offmenu-data/common-recipes-cited-20261014/recipe-source-alignment.jsonl.gz",
+      "path": "/home/user/src/offmenu-data/common-recipes-accepted-20261014/recipe-source-alignment.jsonl.gz",
       "sample": "first packet only",
-      "status": "rejected duplicate assertion IDs; producer fix confirmed, regeneration pending"
+      "status": "accepted",
+      "resources": 33,
+      "assertions": 105,
+      "relations": 34
     }
   },
   "limitations": [
@@ -53,5 +57,18 @@
     "Common graphs are local previews or supplied by an existing API response; no new corpus publication endpoint is implemented.",
     "No authenticated or production write flows were tested or deployed.",
     "Entire corpus packages have not been validated by this UI task."
-  ]
+  ],
+  "localeIntegration": {
+    "provider": "Cloudflare request.cf.country",
+    "googleLocale": "optional Identity metadata; no additional scope",
+    "weightedAcceptLanguage": "passed",
+    "geoipBelowExplicitPreferences": "passed",
+    "profileField": "uiLanguage",
+    "privateAccountPreferenceExcludedFromSharedKitchen": "passed",
+    "localizedHTMLAndHeaders": "Workers-runtime integration passed",
+    "sharedHTMLCache": "private, no-store",
+    "browserSavedSelectionNextLanding": "passed at localhost:8789 with synthetic EG country",
+    "liveOAuthTested": false,
+    "deploymentPerformed": false
+  }
 }

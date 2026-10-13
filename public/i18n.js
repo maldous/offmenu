@@ -1,4 +1,5 @@
 import {ARABIC} from './locales/ar.js';
+import {SUPPORTED_LOCALES,supportedLocale,negotiateLocale,cookieValue,LOCALE_COOKIE,ACCOUNT_LOCALE_COOKIE,providerLocale} from './locale-negotiation.js';
 
 export const LANGUAGES = Object.freeze([
   {code:'en', name:'English', direction:'ltr'},
@@ -8,11 +9,13 @@ export const LANGUAGE_KEY = 'offmenu-ui-language-v1';
 const CATALOGUES = {ar:ARABIC};
 const renderedLanguages = new Map();
 let language = 'en';
+let preferenceHandler;
+export function onLanguagePreference(handler){preferenceHandler=handler;}
 
 export function resolveLanguage(preferred = []) {
   for (const value of Array.isArray(preferred) ? preferred : [preferred]) {
-    const code = String(value || '').toLowerCase().split(/[-_]/)[0];
-    if (LANGUAGES.some(item => item.code === code)) return code;
+    const code = supportedLocale(value);
+    if (SUPPORTED_LOCALES.includes(code)) return code;
   }
   return 'en';
 }
@@ -87,11 +90,40 @@ export function translateUI(root = document) {
     }
   }
 }
-export function setupLanguage(root = document, storage, browser = globalThis.navigator) {
+export function writeLocaleCookie(name,value,root=globalThis.document){
+  if(!root)return;
+  try{root.cookie=name+'='+encodeURIComponent(value||'')+'; Path=/; SameSite=Lax; Max-Age='+(value?31536000:0)+(globalThis.location?.protocol==='https:'?'; Secure':'');}catch{/* Cookie denial does not block local or URL preferences. */}
+}
+export function browserLocaleDecision(root=globalThis.document,storage,browser=globalThis.navigator){
   let saved;
   try { storage ??= globalThis.localStorage; saved = storage?.getItem(LANGUAGE_KEY); } catch { /* A URL preference also works with storage disabled. */ }
   const requested = new URL(globalThis.location?.href || 'https://offmenu.invalid/').searchParams.get('uiLanguage');
-  setLanguage(requested || saved || browser?.languages || browser?.language || 'en');
+  const boot=root?.documentElement?.dataset||{};
+  const accountHint=cookieValue(root?.cookie,ACCOUNT_LOCALE_COOKIE)?.split(':');
+  const source=accountHint?.[0],hint=accountHint?.[1];
+  const accepted=Array.isArray(browser?.languages)?browser.languages:[browser?.language];
+  return negotiateLocale({explicit:requested,device:saved,cookie:cookieValue(root?.cookie,LOCALE_COOKIE),
+    profile:source==='profile'?hint:null,
+    provider:source==='provider'?hint:null,
+    accepted:[...accepted,...(boot.offmenuLocaleSource==='accept-language'?[boot.offmenuLocale]:[])],excluded:(boot.offmenuExcludedLocales||'').split(','),country:boot.offmenuCountry});
+}
+export function applyAccountLanguage({user,profile,isDemo=false,root=globalThis.document,storage,browser=globalThis.navigator,reload=()=>globalThis.location?.reload()}={}){
+  if(isDemo)return false;
+  const preferred=user?supportedLocale(profile?.uiLanguage):null,provider=user?providerLocale(user):null;
+  writeLocaleCookie(ACCOUNT_LOCALE_COOKIE,preferred?'profile:'+preferred:provider?'provider:'+provider:null,root);
+  // Remove a previous account's injected hint before re-evaluating the page.
+  const boot=root?.documentElement?.dataset;
+  if(boot&&['profile','provider'].includes(boot.offmenuLocaleSource)){delete boot.offmenuLocale;delete boot.offmenuLocaleSource;}
+  const next=browserLocaleDecision(root,storage,browser).locale;
+  if(next!==language){reload();return true;}return false;
+}
+export function setupLanguage(root = document, storage, browser = globalThis.navigator) {
+  try{storage??=globalThis.localStorage;}catch{}
+  const decision=browserLocaleDecision(root,storage,browser);
+  setLanguage(decision.locale);
+  // Mirror an existing explicit device choice so the next landing response can
+  // render it before JavaScript runs. Inferred browser/GeoIP hints are not saved.
+  if(['url','device','cookie'].includes(decision.source))writeLocaleCookie(LOCALE_COOKIE,language,root);
   translateUI(root);
   const manifest = root.querySelector('link[rel="manifest"]');
   if (manifest) manifest.href = language === 'ar' ? '/manifest-ar.webmanifest' : '/manifest.webmanifest';
@@ -101,6 +133,8 @@ export function setupLanguage(root = document, storage, browser = globalThis.nav
       const previous = language;
       const next = resolveLanguage(select.value);
       try { storage?.setItem(LANGUAGE_KEY, next); } catch { /* Retain the preference in the URL. */ }
+      writeLocaleCookie(LOCALE_COOKIE,next,root);
+      try{preferenceHandler?.(next);}catch{/* Profile storage failure must not block the language choice. */}
       // Reinitialize every dynamic view in the selected locale. Pantry, account,
       // recipe and checkout data already persist independently of this preference.
       if (next !== previous) {

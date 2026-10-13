@@ -11,13 +11,13 @@ async function api(path,method='GET',body){const current=generation;if(getUser()
 function clearCommon(){commonData=null;configureCorpusResolver(null);$('data-save').disabled=false;$('data-export').disabled=false;}
 async function useCommonGraph(graph){const current=generation;const reader=await createCommonCorpus(graph,{userId:signed()?getUser().id:null});if(current!==generation)throw Error(t('Profile changed. Retry in your current profile.'));commonData=reader;configureCorpusResolver(reader.resolveField);records=[];$('data-save').disabled=true;$('data-export').disabled=true;renderRecords();setLocalizedText($('data-notice'),'Common corpus graph loaded for local preview. Source identities, citations and quantities are preserved; nothing is saved.');}
 function commonValueNode(value,language){
-  const node=el('span','');
+  const node=el(value.kind==='expression'?'code':'span','');
   if(value.kind==='text'){const projection=commonData.projectText(value,language);if(projection)showLocalized(node,projection);else setLocalizedText(node,'Unavailable source text');}
   else if(value.kind==='reference'){const projection=commonData.resolveField(value.id,'name',language);if(projection)showLocalized(node,projection);else showUserText(node,value.id);}
   else if(value.kind==='list'||value.kind==='structure'){
     const entries=value.kind==='list'?value.items.map(item=>[null,item]):Object.entries(value.fields);
     for(const [index,[key,item]] of entries.entries()){if(index)node.append(document.createTextNode(' · '));if(key)node.append(el('span',t(key)),document.createTextNode(': '));node.append(commonValueNode(item,language));}
-  }else {node.textContent=commonData.displayValue(value,getLanguage());node.lang=['identifier','uri','quantity'].includes(value.kind)?'und':getLanguage();}
+  }else {node.textContent=commonData.displayValue(value,getLanguage());node.lang=value.kind==='expression'?'zxx':['identifier','uri','quantity'].includes(value.kind)?'und':getLanguage();if(value.kind==='expression')node.dir='ltr';}
   return node;
 }
 function renderCommon(language){

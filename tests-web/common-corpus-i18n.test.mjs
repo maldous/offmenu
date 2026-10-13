@@ -50,6 +50,8 @@ test('private resource and citation scopes must both be available to the current
 test('generic typed values retain dimensions, unknowns, identifiers and source quantities without conversions',async()=>{
  const reader=await createCommonCorpus(graph());
  assert.equal(reader.displayValue({kind:'identifier',value:'0000123456789'},'ar'),'0000123456789');
+ assert.equal(reader.displayValue({kind:'uri',value:'https://ja.wikipedia.org/wiki/餡'},'ar'),'https://ja.wikipedia.org/wiki/餡');
+ const expression={kind:'expression',syntax:'rdf/xml',value:'<rdf:Description xml:lang="ja">餡</rdf:Description>'};assert.equal(reader.displayValue(expression,'ar'),expression.value);
  const quantity={kind:'quantity',value:null,unitId:null,dimension:'volume',sourceValue:'one cup',sourceUnit:'cup',qualifiers:['unresolved']},before=structuredClone(quantity);
  assert.equal(reader.displayValue(quantity,'en'),'Unknown cup');assert.deepEqual(quantity,before);
  assert.equal(reader.displayValue({kind:'boolean',value:false},'en'),'No');
