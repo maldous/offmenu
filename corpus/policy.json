@@ -1,8 +1,28 @@
 {
   "version": "offmenu-curation/1",
   "mode": "manually-triggered-local",
-  "publicSources": ["off", "prices", "usda-files", "wikibooks", "afcd", "ciqual", "cofid", "germany-bls"],
-  "privateKinds": ["healthObservation", "activity", "intakeRecord", "pantryLot", "mealPlan", "wasteRecord"],
+  "publicSources": [
+    "off",
+    "prices",
+    "usda-files",
+    "wikibooks",
+    "afcd",
+    "ciqual",
+    "cofid",
+    "germany-bls",
+    "matvaretabellen",
+    "frida",
+    "wikidata-food-businesses",
+    "dietary-guidelines"
+  ],
+  "privateKinds": [
+    "healthObservation",
+    "activity",
+    "intakeRecord",
+    "pantryLot",
+    "mealPlan",
+    "wasteRecord"
+  ],
   "rules": {
     "visibility": "public only; never user provider responses",
     "unknown": "retain nulls and original qualifiers",

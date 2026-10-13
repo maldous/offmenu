@@ -29,7 +29,7 @@ def curate(rows, policy_version):
         common = {'schemaVersion': '1.0', 'id': ids[row['id']], 'kind': kind,
                   'countries': row.get('countries', []),
                   'provenance': {key: provenance.get(key) for key in
-                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId'] if provenance.get(key) is not None},
+                     ['sourceId', 'recordId', 'url', 'license', 'licenseUrl', 'attribution', 'sourceDate', 'releaseId', 'limitationStatement', 'countryNotice', 'changes', 'rights'] if provenance.get(key) is not None},
                   'curation': {'schema': 'offmenu-curation/1', 'policyVersion': policy_version,
                      'sourceRecordReference': row['id'], 'status': 'selected-source-facts',
                      'humanReviewed': False, 'automaticDietQualification': False,
@@ -76,6 +76,13 @@ def curate(rows, policy_version):
             projected.update(priceType='dated-observation', availability='unknown',
                              retailer={'name': retailer.get('name'), 'externalId': retailer.get('externalId')},
                              comparable=data.get('amount') is not None and bool(data.get('currency')) and bool(data.get('observedAt')))
+        elif kind == 'organization' and source == 'wikidata-food-businesses':
+            projected = {key: data.get(key) for key in ['name', 'names', 'identifiers', 'roles', 'websites', 'countryBasis', 'reviewStatus']}
+            projected.update(ownershipVerified=False, operationalCoverageVerified=False)
+            common['curation']['status'] = 'organization-reference'
+        elif kind == 'sourceAssertion' and source == 'dietary-guidelines':
+            projected = {key: data.get(key) for key in ['name', 'referenceType', 'referenceUrl', 'directoryUrl', 'reviewStatus', 'contentPermission', 'qualificationStatus']}
+            common['curation']['status'] = 'discovery-reference'
         elif kind == 'recipe':
             # Discovery references are OffMenu's curation; the complete source
             # recipe, wording and inferred quantities are retained only locally.

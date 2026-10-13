@@ -51,7 +51,7 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntrie
    // cursor. A bounded page must never skip a candidate it could not load.
    if(!pages.has(pageId)){if(reads+1+recordShards.size>maxBlobReads)break;const text=await read(`entries-${pageId}.json.gz`);if(!text)throw Error('Entry index missing');pages.set(pageId,JSON.parse(text));}
    const entry=pages.get(pageId).find(e=>e.id===id);if(!entry||entry.source!==source)throw Error('Entry index mismatch');
-   if(kind&&!entry.kinds.includes(kind)||country&&entry.countries.length&&!entry.countries.includes(country)){offset++;examined++;continue;}
+   if(kind&&!entry.kinds.includes(kind)||country&&!entry.countries.includes(country)){offset++;examined++;continue;}
    if(reads+recordShards.size+(recordShards.has(entry.shard)?0:1)>maxBlobReads)break;
    recordShards.add(entry.shard);offset++;examined++;
    selected.push(entry);

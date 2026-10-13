@@ -13,7 +13,7 @@ test('cold Worker pages stay within 50 operations and resume sparse filters with
  const files=new Map(),entries=[];
  const add=(key,value)=>files.set(key,gzipSync(value));
  for(let i=0;i<100;i++){
-  const key='offmenu:product:'+i,shard=String(i).padStart(3,'0'),countries=[i%17===0?'AU':'US'];
+  const key='offmenu:product:'+i,shard=String(i).padStart(3,'0'),countries=i===99?[]:[i%17===0?'AU':'US'];
   const row={schemaVersion:'1.0',id:key,kind:'product',countries,provenance:{sourceId:'off',visibility:'public',license:'ODbL',attribution:'OFF'},curation:{schema:'offmenu-curation/1',rawSourcePayloadPublished:false},data:{name:'Product '+i}};
   entries.push({id:i,source:'off',key,shard,countries,kinds:['product']});
   add(`entries-${i}.json.gz`,JSON.stringify([entries[i]]));
