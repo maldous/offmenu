@@ -1,0 +1,84 @@
+# OffMenu local curation and static delivery
+
+13 October 2026. This decision supersedes bulk D1 corpus replication and the
+prototype Netlify query function. User instructions: manually trigger local
+collection and normalization; host only OffMenu curation; use Cloudflare for
+request caching. No source datasets in Cloudflare or Netlify.
+
+## Boundaries
+
+| Location | Contents and role |
+|---|---|
+| Local `/home/user/src/offmenu-data` | Complete original releases, source SQLite tables, normalized source records, quarantine, reconciliation and build indexes |
+| Netlify `offmenu-corpus` | Static OffMenu selected facts, own IDs, unresolved/review decisions, discovery references, provenance, compressed search indexes and manifests |
+| Cloudflare Worker | Read-only queries against Netlify curation; optional checksummed static-file cache; no public corpus database |
+| Existing `offmenu-users` | Private account/shared-kitchen state, authentication support and encrypted BYOC connections; public source replicas retired |
+
+Netlify Functions, Edge Functions, Database and Blobs are not required for this
+path. Static delivery still uses Netlify bandwidth/web-request allowances.
+Cloudflare query compute/cache limits still apply. No claim of unlimited hosting.
+
+Selected facts are explicitly source reported, not independently reviewed or
+verified diet qualifications. Renaming a source record is not sufficient curation:
+the separate publication projection drops raw source fields, ingredient wording,
+unmapped source tables, contributor/proof metadata and original recipe bodies.
+Recipe discovery references cannot be automatically planned or cooked. Product
+ingredient matches remain unresolved. Licences and attribution remain attached;
+OffMenu's schema does not remove upstream rights obligations.
+
+## Manual process
+
+1. Collect the entire permitted named release locally. Reconcile all rows and
+   required related tables; preserve original archives and hashes.
+2. Run `scripts/exercise-collection.mjs` over every normalized record.
+3. Run `scripts/build-curated-corpus.py` against admitted local releases, choosing
+   a new immutable output/version. The publication projection is
+   `corpus/curation.py`, governed by `corpus/policy.json`.
+4. Run `scripts/exercise-curated-corpus.mjs` over all curated output. This gate
+   checks checksums, source/private payload exclusion, joins and consumer paths.
+5. Set `OFFMENU_CURATED_RELEASE` locally to that accepted release directory.
+   Run `node scripts/prepare-curated-publication.mjs`. Only accepted checksummed
+   curation files enter `dist/curated-public`; local SQLite/originals never do.
+6. Deploy that static directory with the Netlify CLI to site
+   `a1df1508-4bb9-4b55-ab1f-88611e456e61`. This is a separate project from
+   `offmenu-accounts`; do not relink or deploy to the authentication project.
+7. Verify the live static manifest and indexed queries, then enable the Worker
+   `CURATED_CORPUS_ORIGIN=https://offmenu-corpus.netlify.app` setting. Until that
+   acceptance passes, the binding remains absent and corpus coverage empty.
+
+Netlify CLI authentication is currently unavailable in this execution environment.
+The empty target project exists; no curation deploy has been claimed. The CLI's
+normal login flow is required; never extract connector or CLI tokens from configs.
+
+## Cleanup checkpoint
+
+Cloudflare `offmenu-open-corpus` database
+`a3c9b1fc-bc8d-4c3e-afdf-de78caeeba49` deleted successfully. `CORPUS` detached
+from the Worker; settings deployment `82549a5b-a0b0-494b-a540-43bac7c0c878`,
+version `268d0f10-00ff-4254-ab58-35d7333bdfdf`. Read-back verifies only private
+DB and the unchanged `PROVIDER_VAULT_KEY` secret bindings. Account aggregate
+remains one row, summed revision 2, 821 bytes. Authentication endpoint unchanged.
+
+Deleting the remaining 15,312 `public:*` unified records returned Cloudflare
+7500 (D1 free-tier daily write quota). Remaining old source caches: products 14,
+price observations 1; `public_products` 0. These are pending deletion, not removed.
+Never drop the shared account DB or mixed `unified_records` table. Keep the
+40 existing curated application recipes and private/application tables.
+
+`cloud/provider-data.mjs` retires national source replica serving and excludes
+replica counts from current operational coverage. `cloud/handler.mjs` stops raw
+product/price response cache reads and writes. Deploy and verify that code before
+claiming those retirement changes are live.
+
+## Collection correctness checkpoint
+
+The initial OFF normalization used Node readline, which splits valid JSON
+strings at Unicode U+2028/U+2029. Its reconciliation and all-record exercise are
+superseded. The original complete archive remains intact. `scripts/gzip-jsonl.mjs`
+uses literal LF and propagates gzip corruption errors. Tests verify Unicode
+separators, multibyte text and truncated gzip. The full OFF release is being
+recollected into `off-2026-10-12-lf`; no accepted final counts yet.
+
+The unfinished curation version 2 was stopped and its reproducible output removed
+before upload. It must not be accepted or published. Full curation rebuild follows
+the corrected OFF reconciliation and all-record consumer exercise.

@@ -2,6 +2,14 @@
 
 13 October 2026, Australia/Melbourne. Programme execution is in progress, not complete.
 
+**Later decision/checkpoint:** User requires source data only locally and static
+OffMenu curation on Netlify with Cloudflare queries/caching. Separate public D1
+is now deleted; residual public records in the shared account DB are quota-blocked
+for deletion. Initial OFF normalization acceptance is superseded by a Unicode
+JSONL reader defect; complete recollection is running. Historical D1 publication
+statements below describe the superseded approach, not current availability.
+Current architecture and truthful status: `curation-architecture.md`.
+
 The complete USDA April 2026 CSV archive downloaded, checksummed and reconciled: all 34 CSV tables, 36,049,091 raw rows and the supporting workbook retained in the original archive. All 2,101,279 food rows and 27,195,013 nutrient observations normalized into 4,202,558 unified records; all original relational columns remain in the release database. Multiple nutrient observations are retained instead of overwriting. Sample/acquisition records remain research records, not household food identity approvals.
 
 Open Prices daily 12 October 2026 export: 326,767 raw price rows = 317,898 accepted + 8,869 source-marked duplicate exclusions; zero unexplained losses or quarantines. All 7,550 location rows and 127,894 proof metadata rows parsed and checksummed. Contributor identities, consumption fields, comments and image paths stay out of public projections. Proof images are not acquired. Prices are dated observations, not offers or inventory guarantees.

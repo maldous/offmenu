@@ -1,0 +1,3 @@
+[build]
+  command = "node scripts/prepare-curated-publication.mjs"
+  publish = "dist/curated-public"

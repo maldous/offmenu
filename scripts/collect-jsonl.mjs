@@ -5,21 +5,13 @@ import {createReadStream,createWriteStream} from 'node:fs';
 import {mkdir,readFile,writeFile,rename,rm,stat} from 'node:fs/promises';
 import {createGunzip,createGzip} from 'node:zlib';
 import {createHash} from 'node:crypto';
-import {createInterface} from 'node:readline';
+import {gzipLines as lines} from './gzip-jsonl.mjs';
 import {once} from 'node:events';
 import {finished} from 'node:stream/promises';
 import {normalizeOFF,normalizePrices,record,validateRecords} from '../public/unified-data.js';
 import {sourceById} from '../public/sources.js';
 
 async function hash(path){const h=createHash('sha256');for await(const b of createReadStream(path))h.update(b);return h.digest('hex');}
-async function* lines(path){
- const unzip=createReadStream(path).pipe(createGunzip());
- // readline alone does not reliably propagate upstream gzip integrity errors.
- let failure;unzip.on('error',e=>{failure=e;});
- const reader=createInterface({input:unzip,crlfDelay:Infinity});
- for await(const line of reader){if(line.trim())yield line;}
- if(failure)throw failure;
-}
 const [sourceId,release,input,directory,locationInput,proofInput]=process.argv.slice(2);
 if(!['off','prices'].includes(sourceId)||!release||!input||!directory)throw Error('Usage: node scripts/collect-jsonl.mjs off|prices release input.gz output-directory [locations.gz proofs.gz]');
 const source=sourceById(sourceId),sha256=await hash(input);

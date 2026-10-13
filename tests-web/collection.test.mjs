@@ -33,21 +33,16 @@ test('a source recipe remains blocked for cooking and automatic selection until 
  assert.deepEqual(generateHouseholdDay([r],[],{},[],'2026-10-13'),[]);
  assert.equal(pantryDuration([r],[{ingredient:'rice',quantity:1000,unit:'g'}],[],2,'2026-10-13').meals,0);
 });
-test('corpus paging binds filters and reads only the dedicated public database',async()=>{
- const calls=[],records=[{id:'a',countries:['FR'],document:JSON.stringify({countries:['FR'],kind:'product',data:{name:'A'}})},{id:'b',countries:['US'],document:JSON.stringify({countries:['US'],kind:'product',data:{name:'B'}})},{id:'c',document:'unused'}];
- const database={prepare(sql){return {bind(...args){calls.push({sql,args});return {first:async()=>({release_id:'r1',document:JSON.stringify({scope:'complete named release',license:'ODbL',publishedRecords:3})}),all:async()=>({results:records})};}}}};
- const env={PRODUCT_CORPUS:database,DB:{prepare(){throw Error('Private DB touched');}}};
- const result=await corpusLookup(env,{source:'off',country:'FR',query:"a%_'",limit:2});
- assert.equal(result.records.length,1);assert.equal(result.nextCursor,'b');assert.equal(result.withheld,1);
- assert.equal(calls[1].sql.includes("a%_'"),false);assert.equal(calls[1].args[3],"%a\\%\\_'%");
- assert.equal(await corpusLookup({}, {source:'off'}),null);
+test('retired source database bindings are never queried',async()=>{
+ const database={prepare(){throw Error('Source replica touched');}};
+ assert.equal(await corpusLookup({CORPUS:database,PRODUCT_CORPUS:database,DB:database}, {source:'off'}),null);
 });
 
-test('a failed optional cache write still returns the valid product lookup',async()=>{
+test('transient source responses return valid products without writing source caches',async()=>{
  const old=globalThis.fetch;
  globalThis.fetch=async()=>Response.json({status:1,product:{code:'00012345',product_name:'Rice'}});
  const env={DB:{prepare:()=>({bind:()=>({first:async()=>null,run:async()=>{throw Error('D1 free tier write limit');}})})}};
  try{const response=await handler.fetch(new Request('https://offmenu.aldous.info/api/product?barcode=00012345'),env);
-  assert.equal(response.status,200);const data=await response.json();assert.equal(data.product.product_name,'Rice');assert.equal(data.offmenu_cacheUnavailable,true);
+  assert.equal(response.status,200);const data=await response.json();assert.equal(data.product.product_name,'Rice');assert.equal(data.offmenu_cachePolicy,'source-response-not-persisted');
  }finally{globalThis.fetch=old;}
 });

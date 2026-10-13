@@ -1,5 +1,12 @@
 # OffMenu complete research delivery programme
 
+**Architecture amendment, 13 October 2026:** Full source releases and their
+normalized copies stay LOCAL. Publish only OffMenu curation and indexes as static
+Netlify files; Cloudflare performs read-only queries and caching. No Netlify
+runtime functions or hosted source corpus database. The user's later instruction
+supersedes contrary bulk-hosting sections below. See `curation-architecture.md`
+for implementation, publication gates and exact cleanup state.
+
 13 October 2026. Owner: Matt Aldous. Baseline: private `maldous/offmenu` main `c1b2bec`; deployed functional source `e57db23`. This plan replaces the assumption that building a directory or importer completes data delivery. It is a plan, not evidence that the following collection has run. Preserve existing account data, authentication, the provider vault and working product. UI/UX refinement remains a later feedback run; accessibility and reliable task completion are acceptance requirements now.
 
 ## 1. The outcome and the meaning of “full datasets”

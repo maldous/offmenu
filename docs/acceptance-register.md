@@ -1,5 +1,22 @@
 # OffMenu acceptance register
 
+## Local curation amendment — 13 October 2026
+
+- Verified separate public corpus D1 deletion and Worker binding removal.
+- Verified account baseline unchanged and provider-vault secret binding preserved.
+- Remaining 15,312 public unified rows and 15 old raw response-cache rows await
+  D1 write availability; deletion is externally blocked by Cloudflare 7500.
+- New code retires source replica serving/coverage and raw response persistence;
+  production deployment acceptance is pending at this checkpoint.
+- Static Netlify curation publisher and shared local/Worker query engine implemented.
+  No Netlify runtime function retained. Full publication requires accepted curation
+  output and CLI authentication; neither is claimed complete.
+- Initial OFF collection acceptance superseded: Unicode text line separators
+  incorrectly split JSON. Correct literal-LF full recollection running.
+- 114 JavaScript and nine Python tests pass; Worker build passes. New tests cover
+  publication projection/private rejection, Unicode queries/barcodes, local compiled
+  serving, Unicode JSONL separators and truncated gzip integrity.
+
 Continuation from private GitHub main `a3b0f89c8148bfcd7c3d3feb17f7d8e83b9bedd0`, 13 October 2026. Functionality takes priority over presentation. Research discovery is not operational data coverage. All five PDFs and four registers are preserved; checksums and structural checks are in `research-audit.json`.
 
 Status meanings: **verified** has automated or live evidence; **implemented** needs the stated acceptance; **blocked** needs an external dependency. Source checkpoint tests: 92 JavaScript / 7 Python passed; production build passed.
