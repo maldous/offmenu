@@ -33,5 +33,22 @@
     "bytes": 108265,
     "sha256": "e76f179db6c135b37fdfb18ed58aa39d7cc1abb95d91e497721cb2eb6b411553",
     "status": "matches qualified local file"
+  },
+  "checksumSidecars": {
+    "dataCommit": "1da1cc5",
+    "deploymentId": "6acea54e7b6d662e6991719f",
+    "checks": [
+      {
+        "url": "https://offmenu-corpus.netlify.app/common-data/manifest.json.sha256",
+        "byteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+        "status": "verified"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/common-data/releases/common-data-20261014/manifest.json.sha256",
+        "byteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+        "status": "verified"
+      }
+    ],
+    "immutableAlgorithmsReceipt": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
   }
 }
