@@ -36,6 +36,14 @@ def merge(inputs,output,version):
     source=key.split('/')[1]
     if winners[source]!=i:continue
     dest=output/key;dest.parent.mkdir(parents=True,exist_ok=True);os.link(p,dest)
+   elif key.startswith('countries/'):
+    source=key.split('/')[1]
+    if winners[source]!=i:continue
+    with gzip.open(p,'rt',encoding='utf8') as f:ids=json.load(f)
+    dest=output/key;dest.parent.mkdir(parents=True,exist_ok=True)
+    if offset==0:os.link(p,dest)
+    else:
+     with gzip.open(dest,'wt',encoding='utf8',compresslevel=1) as f:json.dump([ident+offset for ident in ids],f,separators=(',',':'))
    elif key.startswith('entries-'):
     with gzip.open(p,'rt',encoding='utf8') as f:original_rows=json.load(f)
     rows=[{**r,'id':r['id']+offset} for r in original_rows if winners[r['source']]==i]

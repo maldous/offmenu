@@ -20,6 +20,7 @@ test('cold Worker pages stay within 50 operations and resume sparse filters with
   add(`records/off/${shard}.jsonl.gz`,JSON.stringify([key,[row]])+'\n');
  }
  const manifest={format:'offmenu-curated/1',status:'curated-release-ready',privateProviderData:false,acquisitionAtRuntime:false,releaseId:'budget-test',manifestSha256:'budget-test',entryPageSize:1,shardLength:3,curatedAcceptance:{status:'all-curated-records-exercised'},sources:{off:{entryRange:[0,100],records:100,license:'ODbL'}},files:[...files].map(([key,data])=>({key,bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')}))};
+ manifest.sources.off.countryIndex=true;add('countries/off/AU-all.json.gz',JSON.stringify(entries.filter(e=>e.countries.includes('AU')).map(e=>e.id)));manifest.files=[...files].map(([key,data])=>({key,bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')}));
  const oldFetch=globalThis.fetch,oldCaches=globalThis.caches;let operations=0,active=0,peak=0;
  const count=()=>{if(++operations>50)throw Error('Worker subrequest ceiling exceeded');};
  globalThis.fetch=async url=>{count();const path=new URL(url).pathname;if(path==='/manifest.json')return Response.json(manifest);const bytes=files.get(path.replace('/releases/budget-test/',''));assert.ok(bytes);if(path.includes('/records/')){active++;peak=Math.max(peak,active);await new Promise(resolve=>setTimeout(resolve,2));active--;}return new Response(bytes);};
@@ -28,7 +29,7 @@ test('cold Worker pages stay within 50 operations and resume sparse filters with
   const ids=[];let cursor='',pages=0;
   do{operations=0;const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off',country,limit:100,cursor});assert.ok(operations<=30);assert.ok(result.records.length<=20);ids.push(...result.records.map(r=>r.id));assert.notEqual(result.nextCursor,cursor);cursor=result.nextCursor;assert.ok(++pages<20);}while(cursor);
   assert.deepEqual(ids,entries.filter(e=>!country||e.countries.includes(country)).map(e=>e.key));
- }assert.ok(peak>1&&peak<=4,'Record fetches must overlap with bounded concurrency');}finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
+ }operations=0;assert.equal((await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off',country:'GB'})).records.length,0);assert.ok(peak>1&&peak<=4,'Record fetches must overlap with bounded concurrency');}finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
 });
 test('literal LF reader preserves Unicode separators and rejects truncated gzip',async()=>{
  const dir=await mkdtemp(join(tmpdir(),'offmenu-lines-'));

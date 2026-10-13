@@ -37,6 +37,10 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntrie
    if(!Number.isSafeInteger(decoded.offset)||decoded.offset<0)throw Error('Invalid cursor');offset=decoded.offset;
   }
   let candidates=null;
+  if(country&&definition.countryIndex&&!barcode&&!query.trim()){
+   const text=await read(`countries/${source}/${country}-${kind||'all'}.json.gz`);
+   candidates=text?JSON.parse(text):[];
+  }
   if(barcode)candidates=await posting('barcodes',barcode,source,read);
   // Unicode words: JS \w is ASCII, so use explicit letters/numbers for search.
   const unicodeTerms=[...new Set(norm(query).match(/[\p{L}\p{N}]+/gu)||[])];
