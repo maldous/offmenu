@@ -1,11 +1,12 @@
 {
-  "checkedAt": "2026-10-13T05:35:13.690135+00:00",
-  "sourceCommit": "815bd037ded3bb7a7ed85a1cf752ae60f62df6db",
-  "deploymentId": "9d465a07-0611-4201-9ad4-8b7a41482585",
-  "workerVersion": "8c240bf0-9ad3-4218-bee6-a4d58dc361e7",
+  "checkedAt": "2026-10-13T06:15:21.499106+00:00",
+  "sourceCommit": "f9fec058ed8607f2a3bd7f84de81d1fd54fe7593",
+  "deploymentId": "9b9aed47-288a-4872-9179-87da7d501de2",
+  "workerVersion": "99aceeeb-6101-46a3-9d14-b654b287b634",
   "bindings": [
     "DB",
-    "PROVIDER_VAULT_KEY"
+    "PROVIDER_VAULT_KEY",
+    "CURATED_CORPUS_ORIGIN"
   ],
   "accountAggregate": {
     "accounts": 1,
@@ -24,7 +25,7 @@
   },
   "privateDataExported": false,
   "tests": {
-    "javascript": 114,
+    "javascript": 115,
     "python": 9,
     "build": "passed"
   },
@@ -149,13 +150,13 @@
     }
   },
   "runtimeBuildVerification": {
-    "normalizedSha256": "53da47bfb47258f11c1fc4d8b0424b1498074d9691fdf3b2483ab14672d68e39",
+    "normalizedSha256": "affad5da9ff51b90057d5174760cfd9450f58aa59133897876485512b3489523",
     "excludedBuildMetadata": [
       "retailer-extension.zip timestamp bytes",
       "builtAt",
       "sourceCommit"
     ],
-    "liveHealthSourceCommit": "815bd037ded3bb7a7ed85a1cf752ae60f62df6db"
+    "liveHealthSourceCommit": "f9fec058ed8607f2a3bd7f84de81d1fd54fe7593"
   },
   "curation": {
     "releaseId": "recovery-20261013",
@@ -245,20 +246,22 @@
   },
   "staticDeployment": {
     "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
-    "deployId": "6acdc24e6e1555d6816c10c7",
-    "status": "uploading; not yet enabled in Worker",
+    "deployId": "6acdc4d8a608c3e3256b574b",
+    "status": "live; enabled in Worker",
     "sourceReplicaFiles": false,
-    "runtimeFunctions": false
+    "runtimeFunctions": false,
+    "url": "https://offmenu-corpus.netlify.app"
   },
   "offRecovery": {
     "service": "offmenu-off-recovery-20261013.service",
-    "status": "downloading pinned complete release; normalization and full-record exercise follow automatically",
+    "status": "complete archive verified; full normalization and exercise running locally",
     "expectedBytes": 13132516914,
     "expectedSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
     "runner": "/home/user/src/offmenu-data/run-off-recovery.sh",
     "downloadPlan": "/home/user/src/offmenu-data/originals/off-parts/plan.json",
     "logDirectory": "/home/user/src/offmenu-data/logs",
-    "publication": "not included until full acceptance"
+    "publication": "not included until full acceptance",
+    "archiveVerified": true
   },
   "preservationAfterLiveLookup": {
     "accounts": 1,
@@ -267,5 +270,54 @@
     "publicRecords": 0,
     "rawProductCache": 0,
     "rawPriceCache": 0
+  },
+  "hostedAcceptance": {
+    "status": "hosted curation verified",
+    "origin": "https://offmenu-corpus.netlify.app",
+    "releaseId": "recovery-20261013",
+    "manifestSha256": "3c536fb4c70edaf13ca2d7d70029682a18ef21fa4541a3c562959f3c0247eaf8",
+    "records": 4347570,
+    "queries": [
+      {
+        "filters": {
+          "source": "usda-files",
+          "query": "milk",
+          "limit": 2
+        },
+        "records": 2,
+        "pagination": true
+      },
+      {
+        "filters": {
+          "source": "wikibooks",
+          "query": "soup",
+          "limit": 2
+        },
+        "records": 2,
+        "pagination": true
+      },
+      {
+        "filters": {
+          "source": "prices",
+          "barcode": "3560070283484",
+          "limit": 2
+        },
+        "records": 2,
+        "pagination": true
+      }
+    ],
+    "checksummedFiles": 26,
+    "rawSourcesPublished": false
+  },
+  "liveQueryLimitation": {
+    "status": "intermittent CPU exhaustion remains; not fully accepted",
+    "evidence": "Cloudflare invocation a49c30f84d8177db, version 99aceeeb-6101-46a3-9d14-b654b287b634: exceededCpu, 572ms CPU, 3004ms wall time",
+    "bounds": {
+      "blobReads": 24,
+      "pageEntries": 20,
+      "concurrentRecordReads": 4
+    },
+    "planDiagnostic": "Cloudflare API 100328 rejects cpu_ms setting: CPU limits are not supported for the Free plan. User reports paid context; entitlement discrepancy requires resolution. No plan or billing changes performed.",
+    "passed": "Earlier limit=2 queries for all three sources, several default pages, and first limit=100 US milk page. Repeated pagination still fails; these passes do not establish reliable service."
   }
 }

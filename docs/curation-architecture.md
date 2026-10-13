@@ -1,12 +1,13 @@
 # OffMenu local curation and static delivery
 
-Recovery update, 13 October 2026: the residual D1 source rows and raw caches were
-successfully deleted and verified empty. The private account aggregate remains
-one row, revision sum 2, 821 bytes. Production already runs the `8fcf67d` retirement
-code (deployment `392488fb-b84b-4d0a-ab3a-c07f673b79e7`). The local checkout and
-Netlify CLI authentication are recovered. The historical quota and login blockers
-below are resolved; full local collection/publication remains in progress. Consult
-`recovery-2026-10-13.json` and local `offmenu-data/logs` for current evidence.
+Recovery update, 13 October 2026: the repository and authenticated deployment
+are restored. The three-source static curation is live on Netlify and enabled in
+the Worker. Residual public D1 rows and raw caches are zero; the private account
+aggregate and vault binding are unchanged. Live queries still intermittently hit
+Cloudflare CPU exhaustion. The API currently rejects CPU settings as Free-plan
+unsupported despite the user's paid-plan context. This remains unresolved;
+see `recovery-2026-10-13.json`. The complete OFF archive is verified locally,
+with normalization and full-record exercise continuing under a user service.
 
 13 October 2026. This decision supersedes bulk D1 corpus replication and the
 prototype Netlify query function. User instructions: manually trigger local
@@ -19,7 +20,7 @@ request caching. No source datasets in Cloudflare or Netlify.
 |---|---|
 | Local `/home/user/src/offmenu-data` | Complete original releases, source SQLite tables, normalized source records, quarantine, reconciliation and build indexes |
 | Netlify `offmenu-corpus` | Static OffMenu selected facts, own IDs, unresolved/review decisions, discovery references, provenance, compressed search indexes and manifests |
-| Cloudflare Worker | Read-only queries against Netlify curation; optional checksummed static-file cache; no public corpus database |
+| Cloudflare Worker | Read-only queries against Netlify curation; manifest and completed-query cache; checksummed static-file reads; no public corpus database |
 | Existing `offmenu-users` | Private account/shared-kitchen state, authentication support and encrypted BYOC connections; public source replicas retired |
 
 Netlify Functions, Edge Functions, Database and Blobs are not required for this

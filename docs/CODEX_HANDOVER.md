@@ -14,9 +14,11 @@ were deleted successfully; read-back is zero, with the account aggregate unchang
 Install Python test dependencies with `uv venv .venv` and
 `uv pip install --python .venv/bin/python -e '.[test]'`, then use
 `.venv/bin/python -m unittest discover -s tests`. The fresh checkout initially lacked
-openpyxl. Recovery verification passes 114 JavaScript tests, nine Python tests and
+openpyxl. Recovery verification passes 115 JavaScript tests, nine Python tests and
 the Worker build. Local raw archives, collection outputs and per-stage logs are
 outside Git under `offmenu-data`; inspect these before restarting long operations.
+The static three-source curation is live. Worker CPU exhaustion remains intermittent;
+see the recovery JSON for the confirmed account-plan API discrepancy and current deployment.
 
 Checkpoint: 13 October 2026, Australia/Melbourne. Owner: Matt Aldous, GitHub account `maldous`. Migration destination: **private** repository `https://github.com/maldous/offmenu`, branch `main`. This handover imports the saved source checkpoint, all five reports and four research registers. Historical Git history is preserved in `migration/offmenu-checkpoint.bundle`; the remote migration commit is based on the existing bootstrap commit. Read `docs/MIGRATION.md` for provenance and verification.
 

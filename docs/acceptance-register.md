@@ -5,17 +5,20 @@
 Current evidence is in `recovery-2026-10-13.json`; older checkpoints below are historical.
 Residual source records and raw caches have been removed from D1 and verified empty,
 including after a successful transient barcode lookup. The private account aggregate
-and vault binding are preserved. The curation Worker redirect fix is deployed at
-source `815bd03`; 114 JavaScript tests, nine Python tests and the build pass.
+and vault binding are preserved. Source `f9fec05` is deployed; 115 JavaScript
+tests, nine Python tests and the build pass.
 
 Full USDA, Open Prices and Wikibooks releases have been reacquired, reconciled and
-exercised locally. Their curation contains 4,347,570 records; 176,781 USDA records
-were withheld for unusable identity or absent mapped composition facts. Every
-curated record and file passed the publication gate. Static Netlify upload is in
-progress; Worker activation and live curation acceptance are not yet claimed.
-OpenNutrition's checksum and 326,759-row reconciliation match the saved evidence;
-it remains unadmitted to authoritative nutrition. Open Food Facts is downloading
-under `offmenu-off-recovery-20261013.service`; it is not part of current coverage.
+exercised locally. Their 4,347,570 curated records are live on static Netlify.
+176,781 USDA records were withheld. Every curated record and file passed the
+publication gate. Hosted checksummed reads and small live queries passed.
+Repeated default/large live pagination still intermittently exhausts Worker CPU;
+full production query acceptance is NOT claimed. Cloudflare rejects CPU settings
+with Free-plan error 100328; the user reports paid-plan context.
+OpenNutrition's 326,759 rows reconcile; it remains unadmitted to authoritative
+nutrition. The complete OFF archive is checksum verified, with normalization and
+full-record exercise running under `offmenu-off-recovery-20261013.service`.
+OFF is not part of current published coverage.
 
 ## Local curation amendment — 13 October 2026
 
