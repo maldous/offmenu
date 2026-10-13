@@ -23,3 +23,9 @@ test('personal recipe requires explicit review and does not alter the public sou
 test('portable export preserves instructions, credit and unknown yield',()=>{
  const exported=recipeJSONLD(record());assert.equal(exported.recipeYield,undefined);assert.equal(exported.creditText,'Recipe author');assert.equal(exported.recipeInstructions[0].text,'Boil rice.');assert.equal(exported.recipeIngredient[0],'100 g rice');
 });
+test('partial OCR extraction cannot claim pantry coverage or become a kitchen recipe',()=>{
+ const r=record();r.data.sourcePublisher='smithsonian-archive';r.data.ingredientExtractionComplete=false;
+ const match=matchRecipeStock(r.data,[{ingredient:'rice',quantity:100,unit:'g'}]);
+ assert.equal(match.quantitiesAvailable,false);assert.equal(match.coverage,0);assert.equal(match.incomplete,true);
+ assert.throws(()=>personallyReviewedRecipe(r,{servings:1,ingredients:[{name:'rice',amount:100,unit:'g',optional:false}],confirmed:true}),/complete historical OCR/);
+});

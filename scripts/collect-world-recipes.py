@@ -4,7 +4,7 @@ import argparse,collections,datetime,gzip,hashlib,json,re,urllib.parse
 from pathlib import Path
 import mwparserfromhell
 from recipe_format import ingredient,sections,text,number,norm,ALIASES,ING_HEAD,DIR_HEAD
-SOURCE='world-recipes';RELEASE='world-recipes-20261013'
+SOURCE='world-recipes';RELEASE='world-recipes-20261014'
 def attach_licenses(research, output, manifest):
  documents=[]
  for repo, filename, url in [('farcrak--unitools-recipes','CC-BY-SA-4.0.txt','https://creativecommons.org/licenses/by-sa/4.0/legalcode'),('recipecommons--openrecipe-spec','CC0-1.0.txt','https://creativecommons.org/publicdomain/zero/1.0/legalcode'),('Anduin2017--HowToCook','Unlicense.txt','https://unlicense.org/')]:
@@ -108,7 +108,7 @@ def collect(research,wikis,english,output):
       if line in seen_formula:continue
       seen_formula.add(line);ingredients.append(item)
     if not ingredients:continue
-    add('smithsonian-archive',acquisition['archiveId']+':'+str(start),title,body,language,'CC0-1.0','https://creativecommons.org/publicdomain/zero/1.0/',acquisition['archiveLinks'][0],acquisition['title']+'; Smithsonian Libraries and Archives',extra={'data':{'historical':True,'sourceBook':acquisition['title'],'sourceExtraction':'Uncorrected OCR; named culinary heading and explicit ingredient measures','sourceParagraphRange':[start,end],'sourceDocument':document['url']},'provenance':{'rightsEvidenceUrl':acquisition['url'],'sourceDate':acquisition.get('date'),'sourceDocumentSha256':document['sha256']}},parsed=(ingredients,[text(body)],None))
+    add('smithsonian-archive',acquisition['archiveId']+':'+str(start),title,body,language,'CC0-1.0','https://creativecommons.org/publicdomain/zero/1.0/',acquisition['archiveLinks'][0],acquisition['title']+'; Smithsonian Libraries and Archives',extra={'data':{'historical':True,'sourceBook':acquisition['title'],'ingredientExtractionComplete':False,'sourceExtraction':'Uncorrected OCR; named culinary heading and explicit ingredient measures; partial ingredient extraction, complete transcription required','sourceParagraphRange':[start,end],'sourceDocument':document['url']},'provenance':{'rightsEvidenceUrl':acquisition['url'],'sourceDate':acquisition.get('date'),'sourceDocumentSha256':document['sha256']}},parsed=(ingredients,[text(body)],None))
  output.mkdir(parents=True);rawsha=hashlib.sha256()
  with gzip.open(output/'normalized.jsonl.gz','wt',encoding='utf8',compresslevel=1) as f:
   for row in rows:

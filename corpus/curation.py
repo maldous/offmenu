@@ -100,7 +100,7 @@ def curate(rows, policy_version):
                 if not data.get('ingredients') or not data.get('directions'):
                     withheld.append({'id': row['id'], 'reason': 'recipe ingredients or instructions unavailable'})
                     continue
-                projected = {key: data[key] for key in ['recipeSchema', 'name', 'names', 'nativeName', 'languages', 'yield', 'ingredients', 'directions', 'directionsByLanguage', 'time', 'quantityCoverage', 'sourcePublisher', 'historical', 'sourceBook', 'sourcePublicationYear', 'sourceCulture', 'sourceOriginalLanguages', 'sourceCuisineCountry', 'sourceExtraction', 'sourceParagraphRange', 'sourceDocument', 'limitations'] if key in data}
+                projected = {key: data[key] for key in ['recipeSchema', 'name', 'names', 'nativeName', 'languages', 'yield', 'ingredients', 'directions', 'directionsByLanguage', 'time', 'quantityCoverage', 'sourcePublisher', 'historical', 'sourceBook', 'sourcePublicationYear', 'sourceCulture', 'sourceOriginalLanguages', 'sourceCuisineCountry', 'ingredientExtractionComplete', 'sourceExtraction', 'sourceParagraphRange', 'sourceDocument', 'limitations'] if key in data}
                 projected.update(reviewStatus='source-recipe-needs-personal-quantity-and-food-review', automaticPlanningEligible=False, qualificationStatus='unknown')
                 common['curation']['status'] = 'licensed-recipe-content'
                 result.append({**common, 'data': projected})
