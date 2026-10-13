@@ -26,7 +26,7 @@ test('cold Worker pages stay within 50 operations and resume sparse filters with
  globalThis.caches={default:{match:async()=>{count();return undefined;},put:async()=>{count();}}};
  try{for(const country of ['', 'AU']){
   const ids=[];let cursor='',pages=0;
-  do{operations=0;const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off',country,limit:100,cursor});assert.ok(operations<=50);ids.push(...result.records.map(r=>r.id));assert.notEqual(result.nextCursor,cursor);cursor=result.nextCursor;assert.ok(++pages<20);}while(cursor);
+  do{operations=0;const result=await corpusLookup({CURATED_CORPUS_ORIGIN:'https://offmenu-corpus.netlify.app'},{source:'off',country,limit:100,cursor});assert.ok(operations<=30);assert.ok(result.records.length<=20);ids.push(...result.records.map(r=>r.id));assert.notEqual(result.nextCursor,cursor);cursor=result.nextCursor;assert.ok(++pages<20);}while(cursor);
   assert.deepEqual(ids,entries.filter(e=>!country||e.countries.includes(country)).map(e=>e.key));
  }assert.ok(peak>1&&peak<=4,'Record fetches must overlap with bounded concurrency');}finally{globalThis.fetch=oldFetch;globalThis.caches=oldCaches;}
 });

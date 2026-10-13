@@ -9,7 +9,7 @@ const norm=value=>value.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase();
 function lineKey(line){const match=/^\s*\[\s*("(?:\\.|[^"\\])*")\s*,/.exec(line);if(!match)throw Error('Invalid curation partition line');return JSON.parse(match[1]);}
 import {assertCurated} from './assert-curated.mjs';
 export {assertCurated} from './assert-curated.mjs';
-export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
+export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntries=100}={}){
  const bytes=await readBlob('manifest.json');if(!bytes)throw Error('Curated release is not published');
  const manifest=JSON.parse(decoder.decode(bytes));
  if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.acquisitionAtRuntime!==false)throw Error('Unaccepted curation manifest');
@@ -29,7 +29,7 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
   const read=async key=>{if(reads>=maxBlobReads)throw Error('Search needs too many index reads; use fewer search terms.');reads++;return load(key);};
   const definition=manifest.sources[source];if(!definition)throw Error('Source absent from curated release');
   if(typeof query!=='string'||query.length>100||barcode&&!/^\d{4,32}$/.test(barcode)||country&&!/^[A-Z]{2}$/.test(country)||kind&&!/^[A-Za-z]+$/.test(kind)||cursor.length>600)throw Error('Invalid collection filter');
-  const size=Math.max(1,Math.min(100,Number(limit)||20));
+  const size=Math.max(1,Math.min(100,maxPageEntries,Number(limit)||20));
   const filters=await hash(JSON.stringify([source,query,barcode,kind,country]));
   let offset=0;
   if(cursor){let decoded;try{decoded=JSON.parse(atob(cursor.replaceAll('-','+').replaceAll('_','/')));}catch{throw Error('Invalid cursor');}

@@ -18,7 +18,7 @@ async function engine(env){
   else{manifest=JSON.parse(new TextDecoder().decode(bytes));if(manifest.format!=='offmenu-curated/1'||manifest.status!=='curated-release-ready'||manifest.privateProviderData!==false||manifest.curatedAcceptance?.status!=='all-curated-records-exercised'||!/^[-A-Za-z0-9.]+$/.test(manifest.releaseId))throw Error('Unaccepted OffMenu curation');}
   try{await cache?.put(cacheKey,new Response(bytes,{headers:{'Cache-Control':metadata?'public, max-age=86400':'public, max-age=60'}}));}catch{/* cache is optional */}
   return bytes;
- },{maxBlobReads:40});
+ },{maxBlobReads:24,maxPageEntries:20});
 }
 export async function corpusCoverage(env){const value=await engine(env);return value?Object.values(value.manifest.sources).map(s=>({source_id:s.sourceId,releaseId:value.manifest.releaseId,records:s.records,scope:'OffMenu selected facts and discovery references',normalizedLocalRecords:s.normalizedLocalRecords,rawSourcePayloadPublished:false,status:'published OffMenu curation',independentAcceptance:false,license:s.license})):[];}
 export async function corpusLookup(env,filters){
