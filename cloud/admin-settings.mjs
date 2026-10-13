@@ -21,7 +21,7 @@ export async function loadAdminRuntime(env){let fallback;try{fallback={services:
 function metadata(credentials,source,env={}){const allowEnvironment=source==='environment'||source==='stored';return CREDENTIALS.map(name=>{const stored=Object.hasOwn(credentials,name),value=stored?(credentials[name]||undefined):(allowEnvironment?env[name]:undefined);return {name,configured:typeof value==='string'&&value.length>0,source:stored?'stored':allowEnvironment?'environment':'disabled'};});}
 async function audit(env){const rows=await env.DB.prepare('SELECT actor_id,revision,paths_json,created_at FROM app_settings_audit ORDER BY revision DESC LIMIT 50').all();return rows.results.map(row=>({actor:row.actor_id,revision:row.revision,paths:JSON.parse(row.paths_json),at:row.created_at}));}
 export async function adminSettingsRoutes(request,env,{verifiedUser,boundedJSON,reply=replyFallback}){
- const url=new URL(request.url),path=url.pathname;if(!path.startsWith('/api/admin/'))return null;
+ const url=new URL(request.url),path=url.pathname;if(path!=='/api/admin/session'&&path!=='/api/admin/settings')return null;
  if(path!=='/api/admin/session'&&path!=='/api/admin/settings')return reply({error:'Not found'},404);
  if(request.method!=='GET'&&request.method!=='PUT')return reply({error:'Method not allowed'},405);
  if(request.method==='PUT'&&request.headers.get('Origin')!==url.origin)return reply({error:'Origin mismatch'},403);
