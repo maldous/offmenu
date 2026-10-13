@@ -1,5 +1,24 @@
 # Full collection execution checkpoint
 
+Latest expanded execution, 13 October 2026: `expanded-world-20261013` is live
+with 9,829,099 curated records from 14 sources. Complete local collections now
+include eight added national composition tables (AU, FR, GB, DE, NO, DK, CA, JP),
+the current 3,796-page Wikibooks recipe category, 1,505 Wikidata business
+references and 100 country guideline references. The original source archives
+remain local. Every curated record passed structural and consumer checks;
+country-matched examples and pagination passed through the live Worker.
+115 JavaScript tests, 17 Python tests and the build pass. Private state and
+the vault are preserved. The prior accepted static release is retained so
+cached manifests can finish requests across publication switches.
+
+All 1,303 registered source landing pages have been checked; 182 have download
+leads. The 249-country execution report distinguishes observed records from
+remaining source, access, rights and field gaps. These checks do not establish
+complete country coverage, verified ownership or diet qualification. See
+[expanded execution](expanded-execution-20261013.json) and
+[country execution](country-execution-20261013.json). Older checkpoints below
+retain investigation history and are superseded by this evidence.
+
 13 October 2026, Australia/Melbourne. Programme execution is in progress, not complete.
 
 **Later decision/checkpoint:** User requires source data only locally and static

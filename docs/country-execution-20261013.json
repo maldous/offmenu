@@ -37,7 +37,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 927,
+          "nutrientProfile": 556
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "AE",
@@ -85,7 +94,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 8317,
+          "nutrientProfile": 3097
+        },
+        "prices": {
+          "priceObservation": 15
+        }
+      }
     },
     {
       "iso2": "AF",
@@ -118,7 +139,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 207,
+          "nutrientProfile": 13
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "AG",
@@ -167,7 +200,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        }
+      }
     },
     {
       "iso2": "AI",
@@ -210,7 +248,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 20,
+          "nutrientProfile": 16
+        }
+      }
     },
     {
       "iso2": "AL",
@@ -250,7 +294,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 830,
+          "nutrientProfile": 337
+        },
+        "prices": {
+          "priceObservation": 50
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "AM",
@@ -302,7 +361,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 459,
+          "nutrientProfile": 167
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "AO",
@@ -335,7 +406,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 48,
+          "nutrientProfile": 26
+        }
+      }
     },
     {
       "iso2": "AQ",
@@ -363,7 +440,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "AR",
@@ -423,7 +501,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 14003,
+          "nutrientProfile": 4336
+        },
+        "prices": {
+          "priceObservation": 56
+        },
+        "wikidata-food-businesses": {
+          "organization": 9
+        }
+      }
     },
     {
       "iso2": "AS",
@@ -462,7 +555,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 25,
+          "nutrientProfile": 5
+        }
+      }
     },
     {
       "iso2": "AT",
@@ -506,7 +605,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 21130,
+          "nutrientProfile": 2
+        },
+        "prices": {
+          "priceObservation": 902
+        },
+        "wikidata-food-businesses": {
+          "organization": 10
+        }
+      }
     },
     {
       "iso2": "AU",
@@ -586,7 +700,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "afcd": {
+          "nutrientProfile": 1801
+        },
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 79950,
+          "nutrientProfile": 45489
+        },
+        "prices": {
+          "priceObservation": 92
+        },
+        "wikidata-food-businesses": {
+          "organization": 21
+        }
+      }
     },
     {
       "iso2": "AW",
@@ -618,7 +750,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 88,
+          "nutrientProfile": 48
+        }
+      }
     },
     {
       "iso2": "AX",
@@ -647,7 +785,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "nutrientProfile": 99,
+          "product": 153
+        }
+      }
     },
     {
       "iso2": "AZ",
@@ -696,7 +840,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 915,
+          "nutrientProfile": 53
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "BA",
@@ -729,7 +885,18 @@
         "food-composition",
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "prices": {
+          "priceObservation": 158
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "BB",
@@ -780,7 +947,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 207,
+          "nutrientProfile": 113
+        }
+      }
     },
     {
       "iso2": "BD",
@@ -841,7 +1017,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1140,
+          "nutrientProfile": 139
+        },
+        "prices": {
+          "priceObservation": 52
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "BE",
@@ -881,7 +1072,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 95797,
+          "nutrientProfile": 13
+        },
+        "prices": {
+          "priceObservation": 2249
+        }
+      }
     },
     {
       "iso2": "BF",
@@ -929,7 +1132,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 221,
+          "nutrientProfile": 68
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "BG",
@@ -974,7 +1186,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 14248,
+          "nutrientProfile": 5208
+        },
+        "prices": {
+          "priceObservation": 233
+        },
+        "wikidata-food-businesses": {
+          "organization": 10
+        }
+      }
     },
     {
       "iso2": "BH",
@@ -1018,7 +1245,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1377,
+          "nutrientProfile": 347
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "BI",
@@ -1050,7 +1286,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 19,
+          "nutrientProfile": 2
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "BJ",
@@ -1092,7 +1337,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 125,
+          "nutrientProfile": 60
+        }
+      }
     },
     {
       "iso2": "BL",
@@ -1135,7 +1389,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "BM",
@@ -1166,7 +1421,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 78,
+          "nutrientProfile": 43
+        },
+        "prices": {
+          "priceObservation": 2
+        }
+      }
     },
     {
       "iso2": "BN",
@@ -1198,7 +1462,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 395,
+          "nutrientProfile": 95
+        }
+      }
     },
     {
       "iso2": "BO",
@@ -1239,7 +1509,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 4096,
+          "nutrientProfile": 1421
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "BQ",
@@ -1281,7 +1566,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 12,
+          "nutrientProfile": 9
+        }
+      }
     },
     {
       "iso2": "BR",
@@ -1326,7 +1617,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 34996,
+          "nutrientProfile": 1
+        },
+        "prices": {
+          "priceObservation": 82
+        },
+        "wikidata-food-businesses": {
+          "organization": 22
+        }
+      }
     },
     {
       "iso2": "BS",
@@ -1361,7 +1667,15 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "BT",
@@ -1405,7 +1719,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 15,
+          "nutrientProfile": 6
+        }
+      }
     },
     {
       "iso2": "BV",
@@ -1441,7 +1761,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "nutrientProfile": 1,
+          "product": 1
+        }
+      }
     },
     {
       "iso2": "BW",
@@ -1482,7 +1808,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 61,
+          "nutrientProfile": 15
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "BY",
@@ -1528,7 +1863,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1139,
+          "nutrientProfile": 414
+        },
+        "prices": {
+          "priceObservation": 2
+        },
+        "wikidata-food-businesses": {
+          "organization": 15
+        }
+      }
     },
     {
       "iso2": "BZ",
@@ -1564,7 +1911,19 @@
         "recipes",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 214,
+          "nutrientProfile": 14
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "CA",
@@ -1615,7 +1974,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "cnf": {
+          "nutrientProfile": 5690
+        },
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 124813,
+          "nutrientProfile": 22
+        },
+        "prices": {
+          "priceObservation": 674
+        },
+        "wikidata-food-businesses": {
+          "organization": 57
+        }
+      }
     },
     {
       "iso2": "CC",
@@ -1646,7 +2023,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2,
+          "nutrientProfile": 2
+        }
+      }
     },
     {
       "iso2": "CD",
@@ -1678,7 +2061,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "CF",
@@ -1707,7 +2091,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 7,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "CG",
@@ -1746,7 +2136,12 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "CH",
@@ -1794,7 +2189,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 101244,
+          "nutrientProfile": 4
+        },
+        "prices": {
+          "priceObservation": 936
+        },
+        "wikidata-food-businesses": {
+          "organization": 13
+        }
+      }
     },
     {
       "iso2": "CI",
@@ -1840,7 +2250,15 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "CK",
@@ -1879,7 +2297,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 7,
+          "nutrientProfile": 2
+        },
+        "prices": {
+          "priceObservation": 5
+        }
+      }
     },
     {
       "iso2": "CL",
@@ -1926,7 +2353,18 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 6119
+        },
+        "prices": {
+          "priceObservation": 3
+        }
+      }
     },
     {
       "iso2": "CM",
@@ -1963,7 +2401,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 432,
+          "nutrientProfile": 176
+        },
+        "prices": {
+          "priceObservation": 10
+        }
+      }
     },
     {
       "iso2": "CN",
@@ -2019,7 +2466,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1372,
+          "nutrientProfile": 658
+        },
+        "prices": {
+          "priceObservation": 22
+        },
+        "wikidata-food-businesses": {
+          "organization": 20
+        }
+      }
     },
     {
       "iso2": "CO",
@@ -2077,7 +2539,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 8995,
+          "nutrientProfile": 3188
+        },
+        "prices": {
+          "priceObservation": 21
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "CR",
@@ -2129,7 +2606,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2532,
+          "nutrientProfile": 1267
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "CU",
@@ -2167,7 +2656,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1447,
+          "nutrientProfile": 1112
+        }
+      }
     },
     {
       "iso2": "CV",
@@ -2206,7 +2704,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 37,
+          "nutrientProfile": 23
+        }
+      }
     },
     {
       "iso2": "CW",
@@ -2240,7 +2744,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 94,
+          "nutrientProfile": 52
+        }
+      }
     },
     {
       "iso2": "CX",
@@ -2269,7 +2779,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "CY",
@@ -2321,7 +2832,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2324,
+          "nutrientProfile": 693
+        },
+        "prices": {
+          "priceObservation": 60
+        },
+        "wikidata-food-businesses": {
+          "organization": 6
+        }
+      }
     },
     {
       "iso2": "CZ",
@@ -2360,7 +2886,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 17373,
+          "nutrientProfile": 7771
+        },
+        "prices": {
+          "priceObservation": 209
+        },
+        "wikidata-food-businesses": {
+          "organization": 8
+        }
+      }
     },
     {
       "iso2": "DE",
@@ -2410,7 +2948,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "germany-bls": {
+          "nutrientProfile": 7140
+        },
+        "off": {
+          "product": 404843,
+          "nutrientProfile": 88
+        },
+        "prices": {
+          "priceObservation": 17112
+        },
+        "wikidata-food-businesses": {
+          "organization": 59
+        }
+      }
     },
     {
       "iso2": "DJ",
@@ -2438,7 +2994,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 52,
+          "nutrientProfile": 35
+        }
+      }
     },
     {
       "iso2": "DK",
@@ -2482,7 +3044,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "frida": {
+          "nutrientProfile": 1381
+        },
+        "off": {
+          "product": 20700,
+          "nutrientProfile": 11308
+        },
+        "prices": {
+          "priceObservation": 1971
+        },
+        "wikidata-food-businesses": {
+          "organization": 37
+        }
+      }
     },
     {
       "iso2": "DM",
@@ -2522,7 +3102,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 51,
+          "nutrientProfile": 9
+        }
+      }
     },
     {
       "iso2": "DO",
@@ -2561,7 +3150,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1479,
+          "nutrientProfile": 826
+        },
+        "prices": {
+          "priceObservation": 6
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "DZ",
@@ -2589,7 +3193,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 5024,
+          "nutrientProfile": 1966
+        },
+        "prices": {
+          "priceObservation": 19
+        }
+      }
     },
     {
       "iso2": "EC",
@@ -2644,7 +3257,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1993,
+          "nutrientProfile": 970
+        },
+        "prices": {
+          "priceObservation": 4
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "EE",
@@ -2691,7 +3319,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 5851,
+          "nutrientProfile": 3399
+        },
+        "prices": {
+          "priceObservation": 299
+        },
+        "wikidata-food-businesses": {
+          "organization": 7
+        }
+      }
     },
     {
       "iso2": "EG",
@@ -2731,7 +3374,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 3599,
+          "nutrientProfile": 1253
+        },
+        "prices": {
+          "priceObservation": 6
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "EH",
@@ -2754,7 +3409,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "ER",
@@ -2780,7 +3436,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 3,
+          "nutrientProfile": 2
+        }
+      }
     },
     {
       "iso2": "ES",
@@ -2821,7 +3483,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 337639,
+          "nutrientProfile": 37
+        },
+        "prices": {
+          "priceObservation": 1063
+        }
+      }
     },
     {
       "iso2": "ET",
@@ -2863,7 +3537,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 492,
+          "nutrientProfile": 88
+        }
+      }
     },
     {
       "iso2": "FI",
@@ -2911,7 +3594,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 19929,
+          "nutrientProfile": 12796
+        },
+        "prices": {
+          "priceObservation": 1115
+        },
+        "wikidata-food-businesses": {
+          "organization": 28
+        }
+      }
     },
     {
       "iso2": "FJ",
@@ -2963,7 +3661,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 76,
+          "nutrientProfile": 31
+        }
+      }
     },
     {
       "iso2": "FK",
@@ -2994,7 +3701,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4
+        }
+      }
     },
     {
       "iso2": "FM",
@@ -3032,7 +3744,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "FO",
@@ -3067,7 +3780,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 473,
+          "nutrientProfile": 367
+        }
+      }
     },
     {
       "iso2": "FR",
@@ -3128,7 +3847,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "ciqual": {
+          "nutrientProfile": 3484
+        },
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1140462,
+          "nutrientProfile": 131
+        },
+        "prices": {
+          "priceObservation": 208484
+        },
+        "wikidata-food-businesses": {
+          "organization": 27
+        }
+      }
     },
     {
       "iso2": "GA",
@@ -3168,7 +3905,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 250,
+          "nutrientProfile": 114
+        },
+        "prices": {
+          "priceObservation": 3
+        }
+      }
     },
     {
       "iso2": "GB",
@@ -3223,7 +3972,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "cofid": {
+          "nutrientProfile": 2887
+        },
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 178656,
+          "nutrientProfile": 14
+        },
+        "prices": {
+          "priceObservation": 2088
+        },
+        "wikidata-food-businesses": {
+          "organization": 43
+        }
+      }
     },
     {
       "iso2": "GD",
@@ -3262,7 +4029,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 38,
+          "nutrientProfile": 14
+        }
+      }
     },
     {
       "iso2": "GE",
@@ -3305,7 +4081,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1581,
+          "nutrientProfile": 742
+        },
+        "prices": {
+          "priceObservation": 2
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "GF",
@@ -3356,7 +4147,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 379,
+          "nutrientProfile": 137
+        }
+      }
     },
     {
       "iso2": "GG",
@@ -3388,7 +4185,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 145,
+          "nutrientProfile": 82
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "GH",
@@ -3447,7 +4253,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 340,
+          "nutrientProfile": 115
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 3
+        }
+      }
     },
     {
       "iso2": "GI",
@@ -3481,7 +4302,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 227,
+          "nutrientProfile": 162
+        }
+      }
     },
     {
       "iso2": "GL",
@@ -3520,7 +4347,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 111,
+          "nutrientProfile": 47
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "GM",
@@ -3554,7 +4390,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 6,
+          "nutrientProfile": 3
+        }
+      }
     },
     {
       "iso2": "GN",
@@ -3587,7 +4429,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 99,
+          "nutrientProfile": 46
+        }
+      }
     },
     {
       "iso2": "GP",
@@ -3638,7 +4486,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1658,
+          "nutrientProfile": 677
+        }
+      }
     },
     {
       "iso2": "GQ",
@@ -3668,7 +4522,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 16,
+          "nutrientProfile": 8
+        }
+      }
     },
     {
       "iso2": "GR",
@@ -3716,7 +4576,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 9751,
+          "nutrientProfile": 4238
+        },
+        "prices": {
+          "priceObservation": 66
+        },
+        "wikidata-food-businesses": {
+          "organization": 11
+        }
+      }
     },
     {
       "iso2": "GS",
@@ -3740,7 +4615,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "GT",
@@ -3795,7 +4671,19 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1031,
+          "nutrientProfile": 453
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "GU",
@@ -3845,7 +4733,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 228,
+          "nutrientProfile": 161
+        }
+      }
     },
     {
       "iso2": "GW",
@@ -3879,7 +4773,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "GY",
@@ -3917,7 +4816,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 85,
+          "nutrientProfile": 44
+        }
+      }
     },
     {
       "iso2": "HK",
@@ -3954,7 +4862,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "HM",
@@ -3984,7 +4893,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "HN",
@@ -4020,7 +4930,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1196,
+          "nutrientProfile": 360
+        }
+      }
     },
     {
       "iso2": "HR",
@@ -4063,7 +4982,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 6937,
+          "nutrientProfile": 2767
+        },
+        "prices": {
+          "priceObservation": 1112
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "HT",
@@ -4106,7 +5040,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 150,
+          "nutrientProfile": 71
+        },
+        "prices": {
+          "priceObservation": 2
+        }
+      }
     },
     {
       "iso2": "HU",
@@ -4143,7 +5086,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 10037,
+          "nutrientProfile": 5439
+        },
+        "prices": {
+          "priceObservation": 37
+        }
+      }
     },
     {
       "iso2": "ID",
@@ -4206,7 +5161,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 8483,
+          "nutrientProfile": 1062
+        },
+        "prices": {
+          "priceObservation": 27
+        },
+        "wikidata-food-businesses": {
+          "organization": 8
+        }
+      }
     },
     {
       "iso2": "IE",
@@ -4274,7 +5244,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 74880,
+          "nutrientProfile": 145
+        },
+        "prices": {
+          "priceObservation": 51
+        },
+        "wikidata-food-businesses": {
+          "organization": 6
+        }
+      }
     },
     {
       "iso2": "IL",
@@ -4340,7 +5325,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 8043,
+          "nutrientProfile": 4650
+        },
+        "prices": {
+          "priceObservation": 334
+        },
+        "wikidata-food-businesses": {
+          "organization": 10
+        }
+      }
     },
     {
       "iso2": "IM",
@@ -4366,7 +5366,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 137,
+          "nutrientProfile": 74
+        }
+      }
     },
     {
       "iso2": "IN",
@@ -4432,7 +5438,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 20935,
+          "nutrientProfile": 4557
+        },
+        "prices": {
+          "priceObservation": 402
+        },
+        "wikidata-food-businesses": {
+          "organization": 8
+        }
+      }
     },
     {
       "iso2": "IO",
@@ -4463,7 +5484,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "IQ",
@@ -4507,7 +5534,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4977,
+          "nutrientProfile": 580
+        },
+        "prices": {
+          "priceObservation": 4
+        }
+      }
     },
     {
       "iso2": "IR",
@@ -4561,7 +5597,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 452,
+          "nutrientProfile": 188
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 7
+        }
+      }
     },
     {
       "iso2": "IS",
@@ -4602,7 +5653,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2975,
+          "nutrientProfile": 1780
+        },
+        "prices": {
+          "priceObservation": 5
+        },
+        "wikidata-food-businesses": {
+          "organization": 5
+        }
+      }
     },
     {
       "iso2": "IT",
@@ -4638,7 +5704,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 260483,
+          "nutrientProfile": 29
+        },
+        "prices": {
+          "priceObservation": 1636
+        },
+        "wikidata-food-businesses": {
+          "organization": 64
+        }
+      }
     },
     {
       "iso2": "JE",
@@ -4682,7 +5763,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 224,
+          "nutrientProfile": 117
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "JM",
@@ -4724,7 +5814,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 497,
+          "nutrientProfile": 307
+        }
+      }
     },
     {
       "iso2": "JO",
@@ -4756,7 +5855,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1002,
+          "nutrientProfile": 411
+        }
+      }
     },
     {
       "iso2": "JP",
@@ -4805,7 +5910,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "mext": {
+          "nutrientProfile": 2538
+        },
+        "off": {
+          "product": 44803,
+          "nutrientProfile": 30700
+        },
+        "prices": {
+          "priceObservation": 642
+        },
+        "wikidata-food-businesses": {
+          "organization": 126
+        }
+      }
     },
     {
       "iso2": "KE",
@@ -4850,7 +5973,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 569,
+          "nutrientProfile": 234
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "KG",
@@ -4893,7 +6028,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 131,
+          "nutrientProfile": 51
+        }
+      }
     },
     {
       "iso2": "KH",
@@ -4930,7 +6071,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1146,
+          "nutrientProfile": 223
+        },
+        "prices": {
+          "priceObservation": 6
+        }
+      }
     },
     {
       "iso2": "KI",
@@ -4967,7 +6120,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "KM",
@@ -4995,7 +6149,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 187,
+          "nutrientProfile": 15
+        }
+      }
     },
     {
       "iso2": "KN",
@@ -5030,7 +6190,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        }
+      }
     },
     {
       "iso2": "KP",
@@ -5063,7 +6228,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 18,
+          "nutrientProfile": 17
+        }
+      }
     },
     {
       "iso2": "KR",
@@ -5110,7 +6281,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 3058,
+          "nutrientProfile": 2063
+        },
+        "prices": {
+          "priceObservation": 18
+        },
+        "wikidata-food-businesses": {
+          "organization": 14
+        }
+      }
     },
     {
       "iso2": "KW",
@@ -5146,7 +6332,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2735,
+          "nutrientProfile": 1326
+        }
+      }
     },
     {
       "iso2": "KY",
@@ -5179,7 +6371,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 46,
+          "nutrientProfile": 25
+        }
+      }
     },
     {
       "iso2": "KZ",
@@ -5217,7 +6415,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 624,
+          "nutrientProfile": 267
+        },
+        "prices": {
+          "priceObservation": 352
+        },
+        "wikidata-food-businesses": {
+          "organization": 3
+        }
+      }
     },
     {
       "iso2": "LA",
@@ -5258,7 +6468,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 39,
+          "nutrientProfile": 9
+        },
+        "prices": {
+          "priceObservation": 32
+        }
+      }
     },
     {
       "iso2": "LB",
@@ -5304,7 +6523,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 3413,
+          "nutrientProfile": 1177
+        },
+        "prices": {
+          "priceObservation": 2
+        }
+      }
     },
     {
       "iso2": "LC",
@@ -5339,7 +6570,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        }
+      }
     },
     {
       "iso2": "LI",
@@ -5373,7 +6609,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 121,
+          "nutrientProfile": 52
+        },
+        "prices": {
+          "priceObservation": 71
+        }
+      }
     },
     {
       "iso2": "LK",
@@ -5415,7 +6660,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 677,
+          "nutrientProfile": 114
+        },
+        "prices": {
+          "priceObservation": 5
+        },
+        "wikidata-food-businesses": {
+          "organization": 3
+        }
+      }
     },
     {
       "iso2": "LR",
@@ -5449,7 +6709,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 23,
+          "nutrientProfile": 3
+        }
+      }
     },
     {
       "iso2": "LS",
@@ -5480,7 +6746,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 5,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "LT",
@@ -5533,7 +6805,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 9321,
+          "nutrientProfile": 3762
+        },
+        "prices": {
+          "priceObservation": 308
+        },
+        "wikidata-food-businesses": {
+          "organization": 5
+        }
+      }
     },
     {
       "iso2": "LU",
@@ -5567,7 +6851,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 10859,
+          "nutrientProfile": 6954
+        },
+        "prices": {
+          "priceObservation": 21
+        },
+        "wikidata-food-businesses": {
+          "organization": 9
+        }
+      }
     },
     {
       "iso2": "LV",
@@ -5629,7 +6925,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 4312,
+          "nutrientProfile": 2152
+        },
+        "prices": {
+          "priceObservation": 346
+        },
+        "wikidata-food-businesses": {
+          "organization": 3
+        }
+      }
     },
     {
       "iso2": "LY",
@@ -5665,7 +6976,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 565,
+          "nutrientProfile": 222
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "MA",
@@ -5709,7 +7029,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 13915,
+          "nutrientProfile": 3587
+        },
+        "prices": {
+          "priceObservation": 100
+        },
+        "wikidata-food-businesses": {
+          "organization": 5
+        }
+      }
     },
     {
       "iso2": "MC",
@@ -5750,7 +7082,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 296,
+          "nutrientProfile": 146
+        },
+        "prices": {
+          "priceObservation": 208
+        }
+      }
     },
     {
       "iso2": "MD",
@@ -5791,7 +7132,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1289,
+          "nutrientProfile": 402
+        },
+        "prices": {
+          "priceObservation": 4
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "ME",
@@ -5825,7 +7181,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 555,
+          "nutrientProfile": 282
+        }
+      }
     },
     {
       "iso2": "MF",
@@ -5866,7 +7228,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "MG",
@@ -5899,7 +7262,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 406,
+          "nutrientProfile": 173
+        }
+      }
     },
     {
       "iso2": "MH",
@@ -5947,7 +7316,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "MK",
@@ -6000,7 +7375,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1302,
+          "nutrientProfile": 618
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "ML",
@@ -6036,7 +7426,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 159,
+          "nutrientProfile": 40
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "MM",
@@ -6080,7 +7479,12 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "MN",
@@ -6122,7 +7526,19 @@
         "recipes",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 196,
+          "nutrientProfile": 88
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "MO",
@@ -6162,7 +7578,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "MP",
@@ -6208,7 +7625,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 20,
+          "nutrientProfile": 7
+        }
+      }
     },
     {
       "iso2": "MQ",
@@ -6255,7 +7678,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1092,
+          "nutrientProfile": 371
+        }
+      }
     },
     {
       "iso2": "MR",
@@ -6294,7 +7723,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 124,
+          "nutrientProfile": 30
+        },
+        "prices": {
+          "priceObservation": 2
+        }
+      }
     },
     {
       "iso2": "MS",
@@ -6325,7 +7763,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 449,
+          "nutrientProfile": 11
+        }
+      }
     },
     {
       "iso2": "MT",
@@ -6368,7 +7812,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2052,
+          "nutrientProfile": 834
+        }
+      }
     },
     {
       "iso2": "MU",
@@ -6397,7 +7850,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1226,
+          "nutrientProfile": 617
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "MV",
@@ -6427,7 +7889,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 260,
+          "nutrientProfile": 66
+        }
+      }
     },
     {
       "iso2": "MW",
@@ -6460,7 +7928,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 30,
+          "nutrientProfile": 16
+        }
+      }
     },
     {
       "iso2": "MX",
@@ -6509,7 +7983,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 15961,
+          "nutrientProfile": 2
+        },
+        "prices": {
+          "priceObservation": 343
+        }
+      }
     },
     {
       "iso2": "MY",
@@ -6565,7 +8051,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 6789,
+          "nutrientProfile": 1504
+        },
+        "prices": {
+          "priceObservation": 103
+        },
+        "wikidata-food-businesses": {
+          "organization": 9
+        }
+      }
     },
     {
       "iso2": "MZ",
@@ -6614,7 +8115,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 69,
+          "nutrientProfile": 29
+        }
+      }
     },
     {
       "iso2": "NA",
@@ -6656,7 +8163,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 72,
+          "nutrientProfile": 31
+        }
+      }
     },
     {
       "iso2": "NC",
@@ -6700,7 +8216,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2380,
+          "nutrientProfile": 1175
+        }
+      }
     },
     {
       "iso2": "NE",
@@ -6732,7 +8254,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 71,
+          "nutrientProfile": 31
+        }
+      }
     },
     {
       "iso2": "NF",
@@ -6776,7 +8304,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "NG",
@@ -6827,7 +8356,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 744,
+          "nutrientProfile": 149
+        },
+        "prices": {
+          "priceObservation": 2
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "NI",
@@ -6861,7 +8405,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1537,
+          "nutrientProfile": 150
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "NL",
@@ -6908,7 +8461,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 107804,
+          "nutrientProfile": 27834
+        },
+        "prices": {
+          "priceObservation": 257
+        },
+        "wikidata-food-businesses": {
+          "organization": 84
+        }
+      }
     },
     {
       "iso2": "NO",
@@ -6953,7 +8521,25 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "matvaretabellen": {
+          "nutrientProfile": 2121
+        },
+        "off": {
+          "product": 26508,
+          "nutrientProfile": 12494
+        },
+        "prices": {
+          "priceObservation": 21712
+        },
+        "wikidata-food-businesses": {
+          "organization": 8
+        }
+      }
     },
     {
       "iso2": "NP",
@@ -6992,7 +8578,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 235,
+          "nutrientProfile": 81
+        },
+        "prices": {
+          "priceObservation": 1
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "NR",
@@ -7030,7 +8631,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1
+        }
+      }
     },
     {
       "iso2": "NU",
@@ -7062,7 +8668,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "NZ",
@@ -7123,7 +8730,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 15277,
+          "nutrientProfile": 8270
+        },
+        "prices": {
+          "priceObservation": 3
+        },
+        "wikidata-food-businesses": {
+          "organization": 10
+        }
+      }
     },
     {
       "iso2": "OM",
@@ -7159,7 +8781,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 745,
+          "nutrientProfile": 205
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "PA",
@@ -7202,7 +8836,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2320,
+          "nutrientProfile": 769
+        },
+        "prices": {
+          "priceObservation": 49
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "PE",
@@ -7251,7 +8900,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 2400,
+          "nutrientProfile": 1124
+        },
+        "prices": {
+          "priceObservation": 5
+        },
+        "wikidata-food-businesses": {
+          "organization": 9
+        }
+      }
     },
     {
       "iso2": "PF",
@@ -7294,7 +8958,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1715,
+          "nutrientProfile": 884
+        }
+      }
     },
     {
       "iso2": "PG",
@@ -7331,7 +9001,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 178,
+          "nutrientProfile": 7
+        }
+      }
     },
     {
       "iso2": "PH",
@@ -7385,7 +9061,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 8470,
+          "nutrientProfile": 2431
+        },
+        "prices": {
+          "priceObservation": 26
+        }
+      }
     },
     {
       "iso2": "PK",
@@ -7438,7 +9126,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1411,
+          "nutrientProfile": 430
+        },
+        "prices": {
+          "priceObservation": 8
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "PL",
@@ -7485,7 +9185,21 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 31576
+        },
+        "prices": {
+          "priceObservation": 2014
+        },
+        "wikidata-food-businesses": {
+          "organization": 15
+        }
+      }
     },
     {
       "iso2": "PM",
@@ -7526,7 +9240,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "PN",
@@ -7558,7 +9273,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "PR",
@@ -7599,7 +9315,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2934,
+          "nutrientProfile": 2177
+        }
+      }
     },
     {
       "iso2": "PS",
@@ -7642,7 +9364,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 720,
+          "nutrientProfile": 93
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "PT",
@@ -7692,7 +9423,21 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 18155
+        },
+        "prices": {
+          "priceObservation": 390
+        },
+        "wikidata-food-businesses": {
+          "organization": 6
+        }
+      }
     },
     {
       "iso2": "PW",
@@ -7732,7 +9477,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 7,
+          "nutrientProfile": 5
+        }
+      }
     },
     {
       "iso2": "PY",
@@ -7769,7 +9520,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1310,
+          "nutrientProfile": 523
+        },
+        "prices": {
+          "priceObservation": 11
+        }
+      }
     },
     {
       "iso2": "QA",
@@ -7812,7 +9575,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 5900,
+          "nutrientProfile": 996
+        },
+        "prices": {
+          "priceObservation": 2
+        }
+      }
     },
     {
       "iso2": "RE",
@@ -7849,7 +9624,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4226,
+          "nutrientProfile": 1996
+        }
+      }
     },
     {
       "iso2": "RO",
@@ -7900,7 +9681,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 40659,
+          "nutrientProfile": 6470
+        },
+        "prices": {
+          "priceObservation": 90
+        },
+        "wikidata-food-businesses": {
+          "organization": 9
+        }
+      }
     },
     {
       "iso2": "RS",
@@ -7941,7 +9737,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4127,
+          "nutrientProfile": 1833
+        },
+        "prices": {
+          "priceObservation": 22
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "RU",
@@ -7981,7 +9789,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 32307,
+          "nutrientProfile": 13469
+        },
+        "prices": {
+          "priceObservation": 530
+        },
+        "wikidata-food-businesses": {
+          "organization": 26
+        }
+      }
     },
     {
       "iso2": "RW",
@@ -8021,7 +9841,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 223,
+          "nutrientProfile": 36
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "SA",
@@ -8084,7 +9913,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 15160,
+          "nutrientProfile": 2781
+        },
+        "prices": {
+          "priceObservation": 4
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "SB",
@@ -8123,7 +9967,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4,
+          "nutrientProfile": 3
+        }
+      }
     },
     {
       "iso2": "SC",
@@ -8151,7 +10001,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 170,
+          "nutrientProfile": 89
+        }
+      }
     },
     {
       "iso2": "SD",
@@ -8186,7 +10045,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 36,
+          "nutrientProfile": 4
+        }
+      }
     },
     {
       "iso2": "SE",
@@ -8227,7 +10092,21 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 25996
+        },
+        "prices": {
+          "priceObservation": 5102
+        },
+        "wikidata-food-businesses": {
+          "organization": 12
+        }
+      }
     },
     {
       "iso2": "SG",
@@ -8279,7 +10158,19 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 11317,
+          "nutrientProfile": 3761
+        },
+        "prices": {
+          "priceObservation": 195
+        },
+        "wikidata-food-businesses": {
+          "organization": 3
+        }
+      }
     },
     {
       "iso2": "SH",
@@ -8306,7 +10197,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "SI",
@@ -8347,7 +10239,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 3924,
+          "nutrientProfile": 2077
+        },
+        "prices": {
+          "priceObservation": 18
+        },
+        "wikidata-food-businesses": {
+          "organization": 2
+        }
+      }
     },
     {
       "iso2": "SJ",
@@ -8371,7 +10278,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "SK",
@@ -8411,7 +10319,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 7823,
+          "nutrientProfile": 2479
+        },
+        "prices": {
+          "priceObservation": 19
+        },
+        "wikidata-food-businesses": {
+          "organization": 7
+        }
+      }
     },
     {
       "iso2": "SL",
@@ -8452,7 +10372,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 110,
+          "nutrientProfile": 17
+        }
+      }
     },
     {
       "iso2": "SM",
@@ -8480,7 +10409,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 94,
+          "nutrientProfile": 65
+        }
+      }
     },
     {
       "iso2": "SN",
@@ -8523,7 +10458,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 949,
+          "nutrientProfile": 408
+        },
+        "prices": {
+          "priceObservation": 5
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "SO",
@@ -8555,7 +10502,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 252,
+          "nutrientProfile": 24
+        }
+      }
     },
     {
       "iso2": "SR",
@@ -8587,7 +10540,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 313,
+          "nutrientProfile": 85
+        }
+      }
     },
     {
       "iso2": "SS",
@@ -8615,7 +10574,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 15,
+          "nutrientProfile": 7
+        }
+      }
     },
     {
       "iso2": "ST",
@@ -8656,7 +10621,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "SV",
@@ -8700,7 +10666,19 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1208,
+          "nutrientProfile": 474
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "SX",
@@ -8728,7 +10706,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 31,
+          "nutrientProfile": 15
+        }
+      }
     },
     {
       "iso2": "SY",
@@ -8760,7 +10744,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 151,
+          "nutrientProfile": 81
+        }
+      }
     },
     {
       "iso2": "SZ",
@@ -8801,7 +10791,15 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 11
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "TC",
@@ -8850,7 +10848,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TD",
@@ -8881,7 +10880,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 28,
+          "nutrientProfile": 9
+        }
+      }
     },
     {
       "iso2": "TF",
@@ -8909,7 +10914,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TG",
@@ -8946,7 +10952,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 94,
+          "nutrientProfile": 41
+        }
+      }
     },
     {
       "iso2": "TH",
@@ -8993,7 +11005,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 7959,
+          "nutrientProfile": 6525
+        },
+        "prices": {
+          "priceObservation": 48
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "TJ",
@@ -9033,7 +11060,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 25,
+          "nutrientProfile": 3
+        }
+      }
     },
     {
       "iso2": "TK",
@@ -9064,7 +11097,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TL",
@@ -9093,7 +11127,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 12
+        }
+      }
     },
     {
       "iso2": "TM",
@@ -9121,7 +11160,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TN",
@@ -9170,7 +11210,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 2941,
+          "nutrientProfile": 1183
+        },
+        "prices": {
+          "priceObservation": 54
+        }
+      }
     },
     {
       "iso2": "TO",
@@ -9216,7 +11265,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 3,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "TR",
@@ -9256,7 +11311,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1251,
+          "nutrientProfile": 43
+        },
+        "prices": {
+          "priceObservation": 28
+        },
+        "wikidata-food-businesses": {
+          "organization": 27
+        }
+      }
     },
     {
       "iso2": "TT",
@@ -9295,7 +11365,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TV",
@@ -9329,7 +11400,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "TW",
@@ -9384,7 +11456,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 3080,
+          "nutrientProfile": 1777
+        },
+        "prices": {
+          "priceObservation": 256
+        },
+        "wikidata-food-businesses": {
+          "organization": 8
+        }
+      }
     },
     {
       "iso2": "TZ",
@@ -9423,7 +11507,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 84,
+          "nutrientProfile": 24
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "UA",
@@ -9482,7 +11575,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 5580,
+          "nutrientProfile": 2382
+        },
+        "prices": {
+          "priceObservation": 381
+        },
+        "wikidata-food-businesses": {
+          "organization": 20
+        }
+      }
     },
     {
       "iso2": "UG",
@@ -9522,7 +11627,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 63,
+          "nutrientProfile": 18
+        }
+      }
     },
     {
       "iso2": "UM",
@@ -9556,7 +11667,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "US",
@@ -9597,7 +11709,23 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 964986,
+          "nutrientProfile": 672451
+        },
+        "prices": {
+          "priceObservation": 40674
+        },
+        "usda-files": {
+          "product": 2101270,
+          "nutrientProfile": 1924507
+        }
+      }
     },
     {
       "iso2": "UY",
@@ -9640,7 +11768,19 @@
         "recipes",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1826,
+          "nutrientProfile": 810
+        },
+        "wikidata-food-businesses": {
+          "organization": 17
+        }
+      }
     },
     {
       "iso2": "UZ",
@@ -9680,7 +11820,19 @@
         "recipes",
         "dietary-guidelines"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 1424,
+          "nutrientProfile": 70
+        },
+        "prices": {
+          "priceObservation": 3
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "VA",
@@ -9712,7 +11864,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4,
+          "nutrientProfile": 2
+        }
+      }
     },
     {
       "iso2": "VC",
@@ -9752,7 +11910,12 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        }
+      }
     },
     {
       "iso2": "VE",
@@ -9792,7 +11955,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1436,
+          "nutrientProfile": 543
+        },
+        "prices": {
+          "priceObservation": 2
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "VG",
@@ -9843,7 +12021,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 14,
+          "nutrientProfile": 10
+        },
+        "wikidata-food-businesses": {
+          "organization": 1
+        }
+      }
     },
     {
       "iso2": "VI",
@@ -9876,7 +12063,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "VN",
@@ -9942,7 +12130,22 @@
       "domainsWithoutLocalDatasetEvidence": [
         "recipes"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 1362,
+          "nutrientProfile": 774
+        },
+        "prices": {
+          "priceObservation": 2
+        },
+        "wikidata-food-businesses": {
+          "organization": 5
+        }
+      }
     },
     {
       "iso2": "VU",
@@ -9985,7 +12188,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 29,
+          "nutrientProfile": 12
+        }
+      }
     },
     {
       "iso2": "WF",
@@ -10042,7 +12251,8 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {}
     },
     {
       "iso2": "WS",
@@ -10083,7 +12293,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 4,
+          "nutrientProfile": 1
+        }
+      }
     },
     {
       "iso2": "YE",
@@ -10122,7 +12338,16 @@
         "dietary-guidelines",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 172,
+          "nutrientProfile": 21
+        },
+        "prices": {
+          "priceObservation": 1
+        }
+      }
     },
     {
       "iso2": "YT",
@@ -10157,7 +12382,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 67,
+          "nutrientProfile": 25
+        }
+      }
     },
     {
       "iso2": "ZA",
@@ -10201,7 +12432,22 @@
         "recipes",
         "producers"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 9603,
+          "nutrientProfile": 4347
+        },
+        "prices": {
+          "priceObservation": 11
+        },
+        "wikidata-food-businesses": {
+          "organization": 4
+        }
+      }
     },
     {
       "iso2": "ZM",
@@ -10245,7 +12491,16 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "dietary-guidelines": {
+          "sourceAssertion": 1
+        },
+        "off": {
+          "product": 287,
+          "nutrientProfile": 60
+        }
+      }
     },
     {
       "iso2": "ZW",
@@ -10278,7 +12533,13 @@
         "producers",
         "retailers-prices"
       ],
-      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage."
+      "completeness": "Not established. Records are source assertions; global unknown-country rows are not allocated to countries. Business P17 is not market or production-origin coverage.",
+      "acceptedCuratedRecordCounts": {
+        "off": {
+          "product": 53,
+          "nutrientProfile": 30
+        }
+      }
     }
   ],
   "countryCount": 249,
@@ -10469,5 +12730,8 @@
       "manifest": "/home/user/src/offmenu-data/wikibooks-2026-10-13-live/manifest.json"
     }
   ],
-  "publication": "See expanded release acceptance; local collection counts here do not mean independently accepted food identity or countrywide completeness."
+  "publication": "14-source curation published and live queries verified. Source-tagged country records are not complete national coverage.",
+  "curatedReleaseId": "expanded-world-20261013",
+  "curatedRecords": 9829099,
+  "curatedSourceCount": 14
 }
