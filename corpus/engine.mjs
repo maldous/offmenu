@@ -55,10 +55,14 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity}={}){
   }
   if(!examined&&offset<total)throw Error('Search needs too many index reads; use fewer search terms.');
   const buckets=new Map();for(const e of selected){if(!buckets.has(e.shard))buckets.set(e.shard,new Map());buckets.get(e.shard).set(e.key,e);}
-  const recordsByKey=new Map();
-  for(const [shard,keys] of buckets){const text=await read(`records/${source}/${shard}.jsonl.gz`);if(!text)throw Error('Record partition missing');
-   for(const line of text.split('\n')){if(!line)continue;const [key,records]=JSON.parse(line);if(keys.has(key))recordsByKey.set(key,records.map(assertCurated));}
-  }
+  const recordsByKey=new Map(),pending=[...buckets];let nextBucket=0;
+  // Four concurrent reads leave room beneath the Worker's connection ceiling.
+  // Response ordering remains the selected index order, not completion order.
+  await Promise.all(Array.from({length:Math.min(4,pending.length)},async()=>{
+   while(nextBucket<pending.length){const [shard,keys]=pending[nextBucket++],text=await read(`records/${source}/${shard}.jsonl.gz`);if(!text)throw Error('Record partition missing');
+    for(const line of text.split('\n')){if(!line)continue;const [key,records]=JSON.parse(line);if(keys.has(key))recordsByKey.set(key,records.map(assertCurated));}
+   }
+  }));
   const records=selected.flatMap(e=>{const rows=recordsByKey.get(e.key);if(!rows)throw Error('Record missing from curation partition');return rows.filter(r=>!kind||r.kind===kind);});
   if(encoder.encode(JSON.stringify(records)).byteLength>4*1024*1024)throw Error('Reduce page size: response exceeds limit');
   return {schemaVersion:'1.0',source,records,releaseId:manifest.releaseId,
