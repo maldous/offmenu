@@ -50,14 +50,17 @@
       "Canonical inventory digest and exact record correspondence",
       "Dictionary-testable retention tombstones"
     ],
-    "deploymentGate": "Sensitive document email requires the selected Brevo processor/contract, region and retention review before production activation. Explicit message preview/confirmation alone is not that review."
+    "deploymentGate": "Sensitive document email requires the selected Brevo processor/contract, region and retention review before production activation. Explicit message preview/confirmation alone is not that review.",
+    "finalVerdict": "clear; all reported material implementation findings resolved"
   },
   "productionReadback": {
     "readOnly": true,
     "workerVersion": "c776cb4e-15ff-4221-84f8-b100461f0df8",
     "deployment": "619b6162-8950-432e-8299-88f7fe16d689",
     "compatibilityDate": "2026-10-12",
-    "secretNames": ["PROVIDER_VAULT_KEY"],
+    "secretNames": [
+      "PROVIDER_VAULT_KEY"
+    ],
     "accounts": 1,
     "summedRevision": 2,
     "snapshotBytes": 821,
@@ -75,5 +78,11 @@
     "Status page/monitor and Google/Bing property verification; a status link does not create an uptime monitor.",
     "Snyk/Sonar configuration and explicit manual scan invocation; local validation is not a completed external scan.",
     "Native/partner/health/retailer workflows and new paid services remain gated by their own access and product requirements."
-  ]
+  ],
+  "sourceCommit": "34b33f0bab749aa48f5211d8299f3025e2489ee9",
+  "localRuntimeQualification": {
+    "miniflareCompatibilityDate": "2026-08-06",
+    "productionCompatibilityDateRetained": "2026-10-12",
+    "reason": "The repository-pinned local workerd supports August 6; no production compatibility setting changed."
+  }
 }
