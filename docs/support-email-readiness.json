@@ -21,13 +21,20 @@
     }
   },
   "supportAddress": {
-    "status": "awaiting_destination_and_bounded_native_intake",
-    "ruleCreated": false,
+    "status": "inbound_forwarding_enabled",
+    "ruleCreated": true,
     "mailboxCreated": false,
     "existingVerifiedDestinations": 1,
-    "destinationSelected": false,
+    "destinationSelected": true,
     "verificationOrTestEmailsSent": 0,
-    "destinationPurpose": "Minimal staff case notifications, not raw customer-body forwarding"
+    "destinationPurpose": "User-selected destination for manually handled inbound support correspondence",
+    "ruleId": "b89fe4caf0464ad686d0e7b9067e4ec5",
+    "enabled": true,
+    "destination": "matthew.aldous@gmail.com",
+    "destinationVerifiedAt": "2025-07-27T09:50:17.294187Z",
+    "authorization": "User supplied this inbox in response to the request for the support forwarding destination",
+    "nativeCaseIngestionImplemented": false,
+    "publicProductContactPublished": false
   },
   "outbound": {
     "status": "not_activated",
@@ -53,12 +60,16 @@
     "https://developers.cloudflare.com/email-service/configuration/subdomains/"
   ],
   "nextSteps": [
-    "User selects staff notification destination",
-    "Reuse verified destination or create verification request for the selected address",
-    "Implement bounded text-only native inbound case intake and verify sender/owner boundaries, staff access, retention and attachment rejection",
-    "Record current plans, included allocations, account-wide use and conservative numeric no-cost budgets",
-    "Verify parent SPF against real apex outbound senders",
-    "Create literal support-to-intake rule and verify rule/DNS; then publish branded support address",
-    "Qualify sender/reply path without paid upgrade or metered overage"
-  ]
+    "Configure a qualified zero-additional-cost outbound sender before sending as support@offmenu.aldous.info",
+    "Complete native case workflow; direct inbound correspondence currently stays in the selected mailbox",
+    "Implement sender verification, owner boundaries, staff access, retention and attachment rejection before automatic native ingestion",
+    "Record account-wide usage and conservative numeric no-cost sending/infrastructure budgets before application activation",
+    "Verify parent SPF against real apex outbound senders before wider contact publication"
+  ],
+  "verification": {
+    "routingRuleReadback": "enabled literal support@offmenu.aldous.info -> selected verified Gmail destination",
+    "publicDNS": "MX:3 and SPF:1 resolve through DNS-over-HTTPS with DNS status 0",
+    "originalOffMenuAAAAUnchanged": true,
+    "endToEndDeliveryTest": "not performed; no test email sent"
+  }
 }
