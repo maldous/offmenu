@@ -97,6 +97,7 @@ def compile_release(directories, output, version, policy_path):
             raise ValueError('Source not admitted and reconciled: ' + source)
         inputs = [directory / p['key'] for p in upstream.get('partitions', [])] or [directory / 'normalized.jsonl.gz']
         expected = upstream.get('normalizedRows', upstream.get('counts', {}).get('records'))
+        record_shard_length = 1 if expected <= 5000 else 2 if expected <= 100000 else SHARD_LENGTH
         count, curated_count, start, bundles = 0, 0, next_id, 0
         withheld_reasons = defaultdict(int)
         records = Partitions(blobs)
@@ -148,7 +149,7 @@ def compile_release(directories, output, version, policy_path):
                                 codes.add(str(ident['value']))
                         countries.update(row.get('countries', []))
                         kinds.add(row['kind'])
-                    record_shard = shard(key)
+                    record_shard = hashlib.sha256(key.encode()).hexdigest()[:record_shard_length]
                     records.write(f'records/{source}/{record_shard}.jsonl.gz', [key, rows])
                     search = normalized(' '.join(sorted(names)))
                     entry_batch.append((next_id, source, key, record_shard, compact(sorted(kinds)), compact(sorted(countries)), search))
@@ -166,7 +167,7 @@ def compile_release(directories, output, version, policy_path):
             raise ValueError('Full source reconciliation failed: ' + source)
         manifest['sources'][source] = {'sourceId': source, 'releaseId': upstream.get('releaseId', directory.name),
             'records': curated_count, 'normalizedLocalRecords': count, 'withheldRecords': count - curated_count,
-            'withheldReasons': dict(withheld_reasons), 'bundles': bundles, 'entryRange': [start, next_id],
+            'withheldReasons': dict(withheld_reasons), 'bundles': bundles, 'recordShardLength': record_shard_length, 'entryRange': [start, next_id],
             'scope': upstream['scope'], 'license': upstream['license'], 'attribution': upstream.get('attribution', source),
             'archiveSha256': upstream['archiveSha256'], 'rawSourcePayloadPublished': False,
             'rights': 'Original source licence/attribution retained; no private provider results',
