@@ -63,14 +63,25 @@ function output(value) {
   }
   return {numerator:value.n.toString(), denominator:value.d.toString(), decimal:text};
 }
+function observeAsync(value) {
+  // Locate the promise protocol without executing an evidence accessor. A foreign
+  // Promise is not instanceof this realm's Promise; assimilate its data method.
+  let object = value;
+  for (let depth = 0; object && (typeof object === 'object' || typeof object === 'function') && depth < 32; depth++) {
+    const field = Object.getOwnPropertyDescriptor(object, 'then');
+    if (field) {
+      if (!Object.hasOwn(field, 'value') || typeof field.value !== 'function') return false;
+      Promise.resolve({then(yes, no) { Reflect.apply(field.value, value, [yes, no]); }}).catch(() => {});
+      return true;
+    }
+    object = Object.getPrototypeOf(object);
+  }
+  return false;
+}
 function qualified(resolve, kind, binding) {
   try {
     const raw = resolve(immutable(capture({kind, binding})));
-    if (raw instanceof Promise) {
-      // A rejected accidental async hook must not become an unhandled rejection.
-      raw.catch(() => {});
-      return {ok:false, evidence:null, reason:'asynchronous-evidence'};
-    }
+    if (observeAsync(raw)) return {ok:false, evidence:null, reason:'asynchronous-evidence'};
     const evidence = raw == null ? null : capture(raw), p = evidence?.provenance;
     if (evidence?.then) return {ok:false, evidence:null, reason:'asynchronous-evidence'};
     const ok = evidence?.status === 'qualified' && same(evidence.binding, binding) && named(p?.sourceId) &&

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {runInNewContext} from 'node:vm';
 import {compareDatedCosts} from '../public/dated-cost-comparison-owner35.mjs';
 
 const clone = x => structuredClone(x);
@@ -129,6 +130,24 @@ test('qualification is exact-bound, rights-aware, conflict-aware and synchronous
 test('rejected accidental async evidence blocks without an unhandled rejection', async () => {
   const result = compareDatedCosts(fixture(), {resolveEvidence:async () => { throw Error('async authority unavailable'); }});
   assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
+  await new Promise(resolve => setImmediate(resolve));
+});
+test('foreign-realm rejected/fulfilled promises and thenables are observed but never qualified', async () => {
+  const foreignReject = runInNewContext('(async function(){throw Error("foreign authority unavailable");})');
+  const foreignFulfill = runInNewContext('(async function(){return {status:"qualified"};})');
+  for (const resolver of [() => foreignReject(), () => foreignFulfill(),
+    () => ({then(_yes, no){ no(Error('thenable unavailable')); }}),
+    () => ({then(){ throw Error('thenable failed'); }})]) {
+    const result = compareDatedCosts(fixture(), {resolveEvidence:resolver});
+    assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
+  }
+  let hits = 0;
+  const result = compareDatedCosts(fixture(), {resolveEvidence:x => {
+    const verdict = qualify(x);
+    Object.defineProperty(verdict, 'then', {get(){hits++; throw Error('getter must not execute');}, enumerable:true});
+    return verdict;
+  }});
+  assert.equal(result.status, 'blocked'); assert.equal(hits, 0);
   await new Promise(resolve => setImmediate(resolve));
 });
 test('input captured before resolver effects; frozen result and evidence detach in both directions', () => {

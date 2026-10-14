@@ -1,5 +1,21 @@
 # Worker 35: NORM-09 dated cost, FX and PPP boundary
 
+## PR 10 provider-review correction
+
+Provider review of 1c7da6cfaed4f8ede3c3e011ec5a49cd69d8f475 reported P2
+on foreign-realm rejected promises. The parent returns a blocked result but then
+exits Node with an unhandled rejection: its instanceof Promise guard is tied to
+one JavaScript realm. An isolated node:vm reproduction confirmed exit 1.
+
+The correction finds a data-method promise protocol without executing a then
+accessor, and adopts it through this realm's Promise.resolve rejection handler.
+Foreign promises and thenables remain denied; observation grants no evidence.
+New regression checks cover rejected/fulfilled foreign promises, rejecting/throwing
+thenables and an accessor that must not execute. Only Node builtins are added to
+the focused test closure (node:vm). The narrow correction requires new independent
+exact-pin review and root binding; earlier source/composition PASS does not approve
+the changed code. No merge or caller activation is claimed by this correction.
+
 Candidate for independent review, not full NORM-09 completion. No actual UI,
 provider, handler, schema, account, payment or purchase path is installed.
 Production STOP, source admission and whole105 acceptance remain withheld.
