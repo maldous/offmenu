@@ -1,0 +1,39 @@
+{
+  "source_pin": "53853acd35226ca7af591b978b72a92473c0b075",
+  "retained_helper_pin": "59d8bca52cc3281741862d17f2579668d6e6140d",
+  "verdict": "PASS_SCOPED_ADAPTER_CONTRACT",
+  "findings": [],
+  "author_checks": {
+    "passed": 6,
+    "failed": 0,
+    "command": "node worker-21-review/intake-53853acd/author-checks.mjs"
+  },
+  "independent_probes": {
+    "passed": 4,
+    "failed": 0,
+    "command": "node --test worker-21-review/intake-53853acd/sqlite-probes.mjs"
+  },
+  "production_status": "STOP; NOT_ADOPTED; session issuer, consent serialization and production store CAS remain owner dependencies",
+  "source_admission": "WITHHELD",
+  "whole_105_acceptance": "WITHHELD",
+  "worker21_lot_candidate": "PRESERVED_ASSIGNED_WAITING_WORKER35_REVIEW",
+  "custody": "PASS: HEAD, main ref, primary index, tracked/staged source unchanged",
+  "source_hashes": {
+    "cloud/intake-history-owner25.mjs": "6914c854bb5ec722442bdc487ec38e7070573f994c2a6a659e6a5b8039e88236",
+    "tests-web/intake-history-owner25.test.mjs": "8eef08951f37952eedc0b93774cc0fcb8eb3c4cdfc0dc7297b3dd1bfa0c1faa1",
+    "docs/intake-history-owner25.md": "41f1d73fb5a494991a7db66ceca16e3efd71b0a35f9f77cea7328686aa4ff6d5"
+  },
+  "artifacts": {
+    "custody-before.json": "cbee55aa87c77f564115b11fb7ffc2fa5df28e940fb5313aaba34ecd45e2e8c9",
+    "pdf-evidence.json": "8959d78b9822a64229037128a709f353bfb78b5645ce9c5d1815f24828225018",
+    "sqlite-probes.mjs": "d95e61012ee6053727b2497ad749f681e2a71d4b29e1ecc8d6ed4c5da92a282f",
+    "author-checks.mjs": "be96fcf9cc0e2bfba832b22de9c58260b4069e6e75bf21cfaaadfc5fd58b8738"
+  },
+  "limitations": [
+    "Author store is synthetic Map, independent probes use real disposable SQLite with synthetic authority in same serialized transaction",
+    "CAS/read transactions qualify injected contract only; not production D1/server session implementation",
+    "Adapter intentionally withholds denied source reads without deleting source records; retention integration remains open",
+    "Helper tested at exact pin as dependency, not independently certified in its entirety",
+    "Existing validateState typed-history drop reproduced; no central integration changes"
+  ]
+}
