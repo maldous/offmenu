@@ -196,6 +196,34 @@ class PlacesCheckpointTests(unittest.TestCase):
             p=next(source.rglob('*.gz'));p.write_bytes(p.read_bytes()[:-8])
             with self.assertRaisesRegex(ValueError,'input bytes'):places.align(source,root/'new',records_per_packet=1)
 
+    def test_inventory_discovers_only_matching_sibling_checkpoint(self):
+        import sqlite3
+        for kind in ['matching', 'absent', 'foreign', 'unsupported', 'invalid']:
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp) / 'out.partial'
+                if kind == 'matching':
+                    checkpoint = places.Checkpoint(root.with_name('out'), root,
+                        {'output': str(root.with_name('out').resolve()), 'createdAt': 'fixture'}, resume=False)
+                    checkpoint.close()
+                (root / 'packets').mkdir(parents=True)
+                # The obsolete in-directory path must never count as custody.
+                (root / 'checkpoint.json').write_text('{}')
+                sibling = root.with_name('out.checkpoint.sqlite')
+                if kind == 'invalid':
+                    sibling.write_bytes(b'not a checkpoint')
+                elif kind not in ['absent', 'matching']:
+                    with sqlite3.connect(sibling) as db:
+                        db.execute('CREATE TABLE state (id INTEGER PRIMARY KEY, payload TEXT)')
+                        payload = {'version': 2 if kind == 'unsupported' else 1,
+                                   'pins': {'output': str(root.with_name('other' if kind == 'foreign' else 'out').resolve())}}
+                        db.execute('INSERT INTO state VALUES (1,?)', (json.dumps(payload),))
+                before = {p: p.read_bytes() for p in root.parent.rglob('*') if p.is_file()}
+                result = preflight.inventory(root, 0, hash_limit=0)
+                self.assertEqual(result['checkpointExists'], kind == 'matching')
+                self.assertEqual(result['checkpointFileExists'], kind != 'absent')
+                self.assertEqual(result['checkpointPath'], str(sibling.resolve()))
+                self.assertEqual(before, {p: p.read_bytes() for p in root.parent.rglob('*') if p.is_file()})
+
     def test_inventory_and_storage_fail_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);(root/'packets').mkdir()
