@@ -1,5 +1,47 @@
 # P2-03 private bookmarks and family collections
 
+## Fresh standalone composition — 15 October 2026
+
+Root read Worker20 scoped PASS at
+docs/reviews/worker20-collections-c83fde9e in the reviewer checkout: original three
+P2 findings closed,12 author checks and15 independent scenarios passed. This is
+not full feature or source/rights acceptance.
+
+Composition branch `feature/private-collections-composition-25-20261015` starts
+from freshly locked fetched develop `4693cbc3fe17cdde2e292e6eb00cd83769ee45ae`,
+fetch exit0 at2026-10-14T17:23:47.153058+00:00. Normal attributed cherry-picks of
+bd51ca12 and c83fde9 applied without conflicts; prior source/review/PR7 refs remain
+intact. Only the three reserved paths enter the composition. Historical source
+sections below retain their original source base, not this fresh base.
+
+Exact SHA256 closure comparison to reviewed c83:
+
+- public/private-collections-owner25.mjs:
+  e47105dafcf3b55f5079c0c973ae4e3c7ee7ee5c7b5750e9bbe05c145c3092db
+- tests-web/private-collections-owner25.test.mjs:
+  753d3bb9c77dca501d8871cbdcf6670feb7ad7907388621fa52463049a961f31
+- public/sync-model.js:
+  ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3
+- package.json:
+  da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1
+
+All four bytes identical; no runtime/test dependency delta. Consumer and sync-model
+have no relative imports; focused test imports those two modules plus Node builtins.
+The four declared files were exported from the actual composition Git tree into
+an isolated temporary directory without .git, alternates, node_modules, inherited
+GIT_* or dependency links. node --test tests-web/private-collections-owner25.test.mjs
+passed12/12, no skips, exit0. Child test invoked no Git command or hidden object.
+This is actual declared-tree portability evidence, not a hermetic Node install or
+full npm suite. No broad campaign was run. Final doc-only receipt changes do not
+change that tested closure. Exact final head/tree/base/patch and private backup
+are reported separately to root to avoid self-referential commit metadata.
+
+SAME independent20 fresh-composition review and root acceptance remain required
+before normal PR. Actual schema/consent/source-policy atomic D1 composition,
+central endpoint adoption and durable withdrawal/deletion remain pending owner02
+human-answer prerequisites. No new producer/source/helper admission or full-feature
+acceptance is implied. Production STOP remains.
+
 READY FOR INDEPENDENT WORKER20 REVIEW. No PR or adoption before review/root gates.
 
 ## Source and custody
