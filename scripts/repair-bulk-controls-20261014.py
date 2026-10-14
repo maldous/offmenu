@@ -11,7 +11,9 @@ import copy
 import gzip
 import hashlib
 import json
+import os
 import shutil
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 
@@ -160,7 +162,43 @@ def normalize_input_coverage(value):
     }
 
 
-def repair(input_root, output_root):
+def repair_asset(input_root, output_root, entry):
+    """Repair one immutable asset through an atomic sibling temporary file."""
+    source = input_root / entry["key"]
+    target = output_root / entry["key"]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary = target.with_name(target.name + ".tmp." + str(os.getpid()))
+    if temporary.exists():
+        temporary.unlink()
+    changed = 0
+    try:
+        if not entry["key"].endswith(".jsonl.gz"):
+            shutil.copyfile(source, temporary)
+        else:
+            with gzip.open(source, "rt", encoding="utf8") as reader, temporary.open("wb") as raw:
+                with gzip.GzipFile(fileobj=raw, mode="wb", compresslevel=1, mtime=0) as writer:
+                    for line in reader:
+                        packet = json.loads(line)
+                        repaired, _ = repair_packet(packet)
+                        writer.write((compact(repaired) + "\n").encode("utf8"))
+                        changed += 1
+        data = temporary.read_bytes()
+        result = {
+            "key": entry["key"], "bytes": len(data), "sha256": sha(data),
+            **({"packets": entry["packets"]} if "packets" in entry else {}),
+        }
+        os.replace(temporary, target)
+        return result, changed
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+
+
+def repair_asset_task(task):
+    return repair_asset(*task)
+
+
+def repair(input_root, output_root, workers=6):
     manifest = read_manifest(input_root)
     verify_input(input_root, manifest)
     representatives = representative_checks(input_root, manifest)
@@ -170,26 +208,18 @@ def repair(input_root, output_root):
     repaired_files = []
     changed_packets = 0
     removed_ids = 0
-    for entry in manifest["files"]:
-        source = input_root / entry["key"]
-        target = output_root / entry["key"]
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if not entry["key"].endswith(".jsonl.gz"):
-            shutil.copyfile(source, target)
-        else:
-            with gzip.open(source, "rt", encoding="utf8") as reader, target.open("wb") as raw:
-                with gzip.GzipFile(fileobj=raw, mode="wb", compresslevel=1, mtime=0) as writer:
-                    for line in reader:
-                        packet = json.loads(line)
-                        repaired, _ = repair_packet(packet)
-                        writer.write((compact(repaired) + "\n").encode("utf8"))
-                        changed_packets += 1
-                        removed_ids += 1
-        data = target.read_bytes()
-        repaired_files.append({
-            "key": entry["key"], "bytes": len(data), "sha256": sha(data),
-            **({"packets": entry["packets"]} if "packets" in entry else {}),
-        })
+    task_args = [(input_root, output_root, entry) for entry in manifest["files"]]
+    if workers == 1:
+        results = [repair_asset(*task) for task in task_args]
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            # executor.map returns input order, making the final asset manifest
+            # deterministic even though files finish independently.
+            results = list(pool.map(repair_asset_task, task_args))
+    for asset, changed in results:
+        repaired_files.append(asset)
+        changed_packets += changed
+        removed_ids += changed
     repaired = {key: value for key, value in manifest.items() if key not in {"files", "manifestSha256", "releaseId", "status", "inputCoverage"}}
     repaired["releaseId"] = "bulk-food-common-semantic-final-20261014"
     repaired["status"] = "full-schema-identity-citation-public-scope-checked-semantic-control-repaired"
@@ -214,8 +244,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, default=OLD_ROOT)
     parser.add_argument("--output", type=Path, default=NEW_ROOT)
+    parser.add_argument("--workers", type=int, default=6)
     args = parser.parse_args()
-    result = repair(args.input, args.output)
+    if args.workers < 1:
+        parser.error("--workers must be positive")
+    result = repair(args.input, args.output, args.workers)
     print(json.dumps({"releaseId": result["releaseId"], "counts": result["counts"], "repair": result["repair"]}, ensure_ascii=False))
 
 

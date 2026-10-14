@@ -1,4 +1,5 @@
 import gzip
+import hashlib
 import importlib.util
 import json
 import tempfile
@@ -47,6 +48,24 @@ class BulkControlRecoveryTests(unittest.TestCase):
         self.assertTrue(normalized["complete"])
         self.assertEqual(normalized["expectedFiles"], 2)
         self.assertEqual(normalized["sources"], source_coverage)
+
+    def test_atomic_asset_repair_is_deterministic(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "source"
+            output = root / "output"
+            (source / "packets").mkdir(parents=True)
+            original = json.dumps(packet(), separators=(",", ":")) + "\n"
+            compressed = gzip.compress(original.encode(), mtime=0)
+            input_path = source / "packets" / "part-00000.jsonl.gz"
+            input_path.write_bytes(compressed)
+            entry = {"key": "packets/part-00000.jsonl.gz", "bytes": len(compressed), "sha256": hashlib.sha256(compressed).hexdigest(), "packets": 1}
+            first, count = repair.repair_asset(source, output, entry)
+            second_root = root / "output2"
+            second, second_count = repair.repair_asset(source, second_root, entry)
+            self.assertEqual(count, second_count)
+            self.assertEqual(first, second)
+            self.assertFalse(list(output.rglob("*.tmp.*")))
 
 
 if __name__ == "__main__":

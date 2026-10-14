@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "offmenu-custody-handover/1",
+  "checkedAtUtc": "2026-10-14T02:13:44.076342+00:00",
+  "sourceThread": "01a133a7-c84c-7401-9fca-6c370da24877",
+  "requestedBySetupThread": "01a137cf-2242-761d-8fd7-6e6fc5658013",
+  "status": "writers-quiesced-files-and-history-retained",
+  "repo": "/home/user/src/offmenu",
+  "branch": "main",
+  "precedingCheckpoint": "febd6e733c3cdb5e28d1213a28acea072e8561b6",
+  "dataRoot": "/home/user/src/offmenu-data",
+  "scope": "Dataset acquisition, common-schema alignment and static corpus publication. Application/i18n and third-party integration owned separately; Morgan owns scheduling and deliverable states. No Linear/Symphony.",
+  "currentTruth": [
+    "docs/common-corpus-expansion-20261014.json",
+    "docs/I18N_DATA_HANDOFF.json",
+    "corpus/common-data-contract.json",
+    "corpus/common-source-mappings.json",
+    "immutable local package manifests"
+  ],
+  "readyPackages": [
+    "common-data-reviewed-package-20261014",
+    "common-reference-delivery-final-20261014",
+    "common-national-semantic-final-20261014",
+    "measurement-terminology-final-qualified-20261014",
+    "recipe-expansion-final-qualified-20261014/common-graph",
+    "historical-recipe-quality-final-corrected-20261014"
+  ],
+  "readyCombinedProof": "/home/user/src/offmenu-data/common-ready-six-package-global-20261014.json",
+  "readyCombinedCounts": {
+    "assets": 1661,
+    "externalReferences": 1357438,
+    "packets": 120270,
+    "resources": 1107357,
+    "assertions": 4253530,
+    "relations": 1121221,
+    "translations": 3242
+  },
+  "technicalJobs": [
+    {
+      "pid": 203392,
+      "job": "bulk-control repair",
+      "state": "terminated by owning worker during authorized parallelization before custody request; no replacement launched",
+      "partial": "/home/user/src/offmenu-data/common-bulk-food-semantic-final-20261014",
+      "packetAssets": 414,
+      "complete": false,
+      "manifestExists": false,
+      "resumeConstraint": "Output exists and repair refuses overwrite. Preserve partial/evidence and choose explicit retained fresh output strategy under replacement custody before launching tested 6-worker implementation. Original immutable bulk package retained."
+    },
+    {
+      "pid": 209490,
+      "sessionId": 71687,
+      "job": "places alignment",
+      "state": "SIGSTOP suspended; ps status Ts verifies no execution/writes",
+      "partial": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial",
+      "packetAssets": 2393,
+      "complete": false,
+      "manifestExists": false,
+      "resumeConstraint": "Do not duplicate writer. Same-host retained process can continue only under replacement custody authorization; if host changes, preserve partial and decide recovery. Source is admitted curated input, no raw/private promotion."
+    },
+    {
+      "sessionId": 70411,
+      "job": "six-ready-package global proof",
+      "state": "completed successfully; exit0 expected from final proof"
+    },
+    {
+      "sessionId": 82296,
+      "job": "automatic final-global launcher",
+      "state": "stopped before final qualifier started; exit130",
+      "script": "/home/user/src/offmenu-data/run-final-qualification-20261014.py",
+      "resumeConstraint": "Do not restart unchanged 35GiB/45GiB minimum plan; independent capacity finding supersedes it."
+    }
+  ],
+  "children": {
+    "bulk_control_recovery": "quiesced; script/tests stable, 4 fixture tests passed; no live process",
+    "places_semantic_recovery": "quiesced; technical process suspended by root",
+    "independent_data_review": "quiesced read-only; capacity blocker retained",
+    "recipe_source_next_batch": "quiesced; no live process; partial acquisition retained; no public admission"
+  },
+  "blockingDependencies": [
+    "Complete food repair and places alignment",
+    "Secure actual final SQLite capacity; projected >35 GiB, likely >=60 GiB scratch plus 10 GiB free reserve after output creation",
+    "Independent final package review and all-eight-package global qualification",
+    "Assemble exact 22-collection/22,574,390-source-record coverage only from final qualified manifests"
+  ],
+  "newDiscovery": {
+    "directory": "/home/user/src/offmenu-data/recipe-source-next-batch-20261014",
+    "status": "partial local-only; intended report not written",
+    "sources": [
+      {
+        "repo": "tonyyet/recipes",
+        "commit": "898dc28c5ab67e7e4797f1f60d09da8e678bd8f3",
+        "rightsClaim": "root CC0-1.0 notice retained; independent review pending",
+        "sample": "Chinese ginger-yam-dessert: 300g sweet potato,60g sugar,5g ginger"
+      },
+      {
+        "repo": "jnny/cooking",
+        "commit": "1882656b6cfa60fd54994aafe861d8b9ff7c0d22",
+        "sample": "khao-poon with source quantities",
+        "rightsClaim": "root CC0-1.0 notice retained; independent review pending"
+      },
+      {
+        "repo": "KonkeyDong/recipes",
+        "commit": "201de1c1f5b261b64a06d129b71649fd2cc10e8b",
+        "sample": "Cholent and butter chicken curry",
+        "rightsClaim": "root CC0-1.0 notice retained; independent review pending"
+      }
+    ],
+    "exactAcquisitionError": "One optional jnny secondary URL returned HTTP404 due to mismatched filename; no incomplete file written."
+  },
+  "publication": {
+    "changed": false,
+    "netlifySite": "offmenu-corpus",
+    "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+    "liveCorpus": "https://offmenu-corpus.netlify.app",
+    "lastDeploy": "6acea54e7b6d662e6991719f",
+    "authorizedScope": "Previously authorized static data publication after qualification; custody request holds further publication until replacement activation/coordination. No application/Worker deployment in data scope.",
+    "credentials": "Existing local Netlify OAuth and Git SSH; preserve configured credential files without revealing values or reinstalling/restarting. Cloudflare app/provider state untouched."
+  },
+  "retention": {
+    "noResetCleanStashOrMigrationDeletion": true,
+    "originalArchivesPreserved": true,
+    "previousAuthorizedCleanupReceipt": "/home/user/src/offmenu-data/rejected-output-evidence-20261014/cleanup-receipt.json",
+    "ignoredEvidence": "Retain entire offmenu-data tree, logs, scratch/evidence, Netlify recovery loader, current ignored dist/curated-public and source session history.",
+    "otherWorktree": "/home/user/src/offmenu-third-party; third-party-services branch26829d4; outside this session ownership, do not stop/change its writers."
+  },
+  "coordination": {
+    "directMorganSendError": "Some requested entity was not found: thread not found",
+    "gateway": "01a130cd-91c1-73da-9978-889018a100dd",
+    "connectionAcknowledged": true,
+    "latestSubstantiveReportAcceptedByGateway": true,
+    "mainDeliveryOfLatestReportConfirmed": false
+  },
+  "nextOutput": "Replacement may resume only after acknowledging custody, single-writer ownership and resolving storage plan; then completed source manifests, final global proof, immutable master, static data-only publication and readback evidence."
+}
