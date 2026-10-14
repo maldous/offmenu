@@ -19,6 +19,29 @@ contract, so independent review must check parity as well as this new candidate.
 TBCA metadata is never automatic source admission. No prior untracked paths existed
 at pickup; prior data and receipts remain in their original immutable branch.
 
+## Standalone composition candidate — 15 October 2026
+
+Current branch: `feature/meal-preference-standalone-integration-20-20261015`.
+Fresh locked develop fetch exit 0 at `2026-10-14T14:30:29.514832+00:00`, base
+`5f5bdb6ae716cbf80fab1e174d1af2e354468ead`. Only this owned doc, the cloud module
+and focused test are carried from original candidate `8e07cffbb2889729ca7195a76757279b29a19e11`.
+Original branch, completed TBCA branch and all local review artifacts remain retained.
+
+Root confirms Worker13 scoped PASS on the original (8 author checks plus 6 independent
+probe groups) and selects DECLARED STANDALONE adapter code scope only. That receipt
+is dispatch-supplied, not a generic adoption approval. Different-reviewer fresh
+composition qualification remains required before PR/eligible develop progression.
+No PR, merge, handler/state/UI activation or production action is part of this turn.
+
+Full relative-import closure of module and focused test was rebound against the
+original exact pin: all captured file hashes match, including handler/state, source
+normalizers, catalogue and sync/household dependencies. No changed dependency was
+found in that closure. Node/runtime/provider/D1 hermeticity is not established by
+source hashes. Captured bindings are retained in the local preservation packet.
+Fresh inherited-GIT_*-stripped focused run: eight passed, zero failed, 45.127864 ms.
+Actual handler negative still proves preference loss, so adoption remains held.
+Below is the retained original implementation contract and historical pickup evidence.
+
 ## Concrete existing-source gap and actual entrypoint evidence
 
 `cloud/state.mjs` projects members without mealPreferences. `cloud/handler.mjs`
