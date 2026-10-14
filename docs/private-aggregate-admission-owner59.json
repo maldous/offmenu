@@ -1,0 +1,259 @@
+{
+  "schema": "offmenu-private-aggregate-admission-owner59/1",
+  "requirement": "CACHE-08",
+  "observedUtc": "2026-10-14T14:24:24.392232+00:00",
+  "clientDate": "2026-10-15",
+  "threadId": "01a139ab-ddf3-7471-8e79-6c327d19c2d7",
+  "cwd": "/home/user/src/offmenu-workers/worker-59",
+  "branch": "feature/aggregate-admission-owner59-20261015",
+  "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "fetch": {
+    "lockedPath": "/tmp/offmenu-develop-fetch.lock",
+    "utc": "2026-10-14T14:16:00.714020+00:00",
+    "exit": 0,
+    "remote": "origin/develop",
+    "sha": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead"
+  },
+  "priorRefs": {
+    "assessment": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
+    "capacity": "63fceac6563721c18f65a4790ff0a4df9a3a6148"
+  },
+  "sourcePins": [
+    {
+      "commit": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
+      "path": "docs/aggregate-privacy-owner59.json",
+      "sha256": "137fa17bb4b5e1180e198423752207ae607d48066ee94d61457db9805d9985d0",
+      "bytes": 40745,
+      "github": "https://github.com/maldous/offmenu/blob/f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6/docs/aggregate-privacy-owner59.json"
+    },
+    {
+      "commit": "bc7307f205db6438b121a640743826712296ea0d",
+      "path": "cloud/corpus-provenance-owner07.mjs",
+      "sha256": "81d614b86cb18709968fa7f1d3c17387b3279cc4acd22f5e02e07999fbb16a92",
+      "bytes": 11678,
+      "github": "https://github.com/maldous/offmenu/blob/bc7307f205db6438b121a640743826712296ea0d/cloud/corpus-provenance-owner07.mjs"
+    },
+    {
+      "commit": "bc7307f205db6438b121a640743826712296ea0d",
+      "path": "docs/corpus-provenance-owner07.md",
+      "sha256": "bf5f51d5a55ea1d1df4bbde4b8d209b003750ee3acb0079de82396930e341264",
+      "bytes": 11755,
+      "github": "https://github.com/maldous/offmenu/blob/bc7307f205db6438b121a640743826712296ea0d/docs/corpus-provenance-owner07.md"
+    },
+    {
+      "commit": "883cd3207db437fdf1103638c8a66725f3ecd9ab",
+      "path": "cloud/cache-invalidation-owner29.mjs",
+      "sha256": "879c6e5e215a9171c97641db9543c0ea5f62132c5494f4b7afa8651015b823a7",
+      "bytes": 7861,
+      "github": "https://github.com/maldous/offmenu/blob/883cd3207db437fdf1103638c8a66725f3ecd9ab/cloud/cache-invalidation-owner29.mjs"
+    },
+    {
+      "commit": "883cd3207db437fdf1103638c8a66725f3ecd9ab",
+      "path": "docs/worker-29-cache-invalidation-consumer.md",
+      "sha256": "bf836a54449f636effc798c9341754600161a8543f5697f99185a15d4a2e1590",
+      "bytes": 9295,
+      "github": "https://github.com/maldous/offmenu/blob/883cd3207db437fdf1103638c8a66725f3ecd9ab/docs/worker-29-cache-invalidation-consumer.md"
+    },
+    {
+      "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+      "path": "cloud/durable-budget-owner30.mjs",
+      "sha256": "292d117c5f4a59eb8b6803fa8669b29a19025033fddaa86c95b68ebba3cedd00",
+      "bytes": 5445,
+      "github": "https://github.com/maldous/offmenu/blob/da6d4817fef569bd7564f185702bb2d98f34754d/cloud/durable-budget-owner30.mjs"
+    },
+    {
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "docs/recommendation-delivery-register.json",
+      "sha256": "c6c6278544e1082462f307c637238d43541c3361c0ee6dd5bbe53da2025693b1",
+      "bytes": 81570,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/docs/recommendation-delivery-register.json"
+    },
+    {
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+      "bytes": 120855,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf"
+    }
+  ],
+  "originalRequirement": {
+    "pdf04PrintedPages": [
+      6,
+      7,
+      9
+    ],
+    "basis": "Separate aggregate admission, reviewed small-cell/contribution/cohort/intersection/differencing rules; separate purpose and source permission; current withdrawal at job/commit/serve and derived/restore treatment. No aggregation-alone anonymization inference."
+  },
+  "ownedFiles": [
+    "public/private-aggregate-admission-owner59.js",
+    "tests-web/private-aggregate-admission-owner59.test.mjs",
+    "docs/private-aggregate-admission-owner59.md",
+    "docs/private-aggregate-admission-owner59.json"
+  ],
+  "codeAndTestPins": [
+    {
+      "path": "public/private-aggregate-admission-owner59.js",
+      "sha256": "26f23b0d9f80ba5c9d55d07f98f60ff6a38ca7e90d6be8bfc68ca75800fa6498",
+      "bytes": 11967
+    },
+    {
+      "path": "tests-web/private-aggregate-admission-owner59.test.mjs",
+      "sha256": "6cc6090bc19597942e6013cf88d5124467a9d8189a82869745ce5def09112f93",
+      "bytes": 13243
+    }
+  ],
+  "implementation": {
+    "api": "createPrivateAggregateValidator({authority,getContext,clock,mode}).assess({selectionId})",
+    "input": "Only opaque selection ID; no caller evidence, audience or source rows. Authoritative rows are injected trusted capabilities.",
+    "eightReceipts": [
+      "producer",
+      "lineage",
+      "rights",
+      "contribution",
+      "cohort",
+      "composition",
+      "privacyBudget",
+      "revocation"
+    ],
+    "binding": "Exact receipt bytes/revisions/digests, exact selection revision and account/actor/session/purpose/market. Query/input graph/output/contribution snapshot/history/producer hashes must match in all receipts. Input graph canonical digest is recomputed.",
+    "currentGate": "Trusted authority.readIfCurrent conditionally reads all independently authoritative source/rights/contribution/withdrawal/history/budget rows at one current gate. Callback exactly once; authority mismatch, context change or expired asynchronous acknowledgement deny. No real store adapter supplied.",
+    "nonGuarantee": "Decision is at the conditional read point, not a lease or distributed transaction with a later read/write. No SQL, grant issuance, reservation charging, source acquisition or publication is performed. Caller must atomically couple its operation with a fresh gate; revocations after linearization require another gate.",
+    "syntheticMode": "Complete fixtures can return privateEligible:true but allowed:false, testOnly:true and publicationAllowed:false. Authoritative mode refuses synthetic evidence.",
+    "authoritativeMode": "May return current private-only allowed:true solely with independently-qualified, exact current receipts from a trusted store. No real receipt set supplied or qualified here.",
+    "publication": "Always false; no public audience accepted.",
+    "unknowns": "Default unqualified mode and all missing, stale, unreviewed, malformed, mismatched or unqualified evidence deny with fixed non-sensitive reason."
+  },
+  "actual07Probe": {
+    "fixturePin": "bc7307f205db6438b121a640743826712296ea0d:docs/corpus-provenance-owner07-fixture.json",
+    "fixtureSHA256": "81b1fc11fedc6c4a12fa8abc85c6ac81fd3feda046dc1ef91dc7609603f7a275",
+    "result": {
+      "fixtureTestOnly": true,
+      "result": {
+        "allowed": false,
+        "privateEligible": false,
+        "publicationAllowed": false,
+        "reason": "MISSING_STALE_OR_UNQUALIFIED_EVIDENCE"
+      },
+      "currentCalls": 0
+    },
+    "meaning": "Actual retained 07 fixture is synthetic display/transient metadata, not a qualified producer or aggregate receipt set. Denied before current authority gate."
+  },
+  "validation": {
+    "command": "node --test tests-web/private-aggregate-admission-owner59.test.mjs",
+    "authorTests": 24,
+    "passed": 24,
+    "failed": 0,
+    "additionalActual07Probe": "denied; no current gate calls",
+    "scope": "Synthetic isolated capability tests only, no actual private data, deployed authority, DB parity, aggregate algorithm, DP guarantee, producer qualification or application adoption.",
+    "finalCheckedUtc": "2026-10-14T14:27:06.956226+00:00",
+    "allSourceHashesAndPriorRefsPreserved": true
+  },
+  "coordinationByPinnedContract": {
+    "owner07": "Consume bc730 source-bound transport shape only as exact prior evidence. Actual producer/store/aggregate grants remain unavailable; no helper copied and no display/transient grant widened.",
+    "owner29": "Consume 883cd32 current-gate and expiry boundary. Future caller must map actual entitlement/contribution/purpose/withdrawal/store epochs; no guessed cache envelope conversion.",
+    "owner30": "Provider quota cannot substitute for privacyBudget receipt; actual disclosure reservation and composition ledger must share id/revision and exact output/history binding.",
+    "owner02": "No handler, private account routes, cache schemas or migrations edited. Central adoption remains separately owned and reviewed."
+  },
+  "acceptanceGaps": [
+    "Independent exact candidate/base/tree review.",
+    "Real source producer qualification, exact source/output graph and current source store with atomic conditional read semantics.",
+    "Source-specific private-aggregate purpose, rights and contribution decisions; unknown/not-applicable cases need new reviewed schema, not defaults.",
+    "Actual reviewed cohort/suppression/composition policy, query history and reserved privacy ledger; current numeric values in tests are synthetic only.",
+    "Atomic caller operation/read/store integration, withdrawal/deletion and restore replay qualification across actual derivatives.",
+    "No whole105/recipe production acceptance and no publication."
+  ],
+  "preservation": {
+    "primaryMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "primaryIndexSHA256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+    "priorDiscoveryReviewSHA256": "aca125a688e4cd834577735bacd4015aadfe5e69f361446cd9831b5e4ba763b7",
+    "secretsRawCorporaGeneratedCachesCommitted": false,
+    "unreviewedMerge": false
+  },
+  "backupEligibility": {
+    "repository": "maldous/offmenu",
+    "repositoryId": "1416253963",
+    "visibility": "private",
+    "proof": "GitHub connected get_repo metadata read in this turn; existing SSH origin unchanged. gh CLI lacks auth; no login or credential changes made.",
+    "plan": "Explicit four-file commit; push only unique task branch without force; exact remote SHA readback recorded separately after commit. No merge or release."
+  },
+  "controls": {
+    "suppliedFilesystem": "unrestricted/danger-full-access",
+    "network": "enabled",
+    "mandatoryReviewer": "auto_review preserved",
+    "separateApprovalPolicyValue": null,
+    "userConfiguration": null,
+    "CODEX_PERMISSION_PROFILE": null
+  },
+  "production": "STOP",
+  "publicationAllowed": false,
+  "newWorkersOrCoordinator": false,
+  "composition": {
+    "observedUtc": "2026-10-14T17:51:36.611510+00:00",
+    "source": "8ccbb1ecabfe2d27a9e8a7600084cfc6a9493dae",
+    "base": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+    "reviewCommit": "4fb7d697f848687d297565c4049dfe39ecbe1c9c",
+    "freshLockedFetchUtc": "2026-10-14T17:50:56.605668+00:00",
+    "branch": "feature/aggregate-admission-composition-owner59-20261015",
+    "runtimeClosure": [
+      {
+        "path": "package.json",
+        "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+        "blob": "562100ee1394f6a748ad7edb2fe3db5b44cd3e62"
+      },
+      {
+        "path": "public/private-aggregate-admission-owner59.js",
+        "sha256": "26f23b0d9f80ba5c9d55d07f98f60ff6a38ca7e90d6be8bfc68ca75800fa6498",
+        "blob": "137d4ae233b93cedda48259e6aef1f3a467ccc36"
+      },
+      {
+        "path": "tests-web/private-aggregate-admission-owner59.test.mjs",
+        "sha256": "6cc6090bc19597942e6013cf88d5124467a9d8189a82869745ce5def09112f93",
+        "blob": "d678b224dd281a3b98dd4f2df29179d51dae3caf"
+      }
+    ],
+    "independentProbeImports": [
+      {
+        "commit": "4fb7d697f848687d297565c4049dfe39ecbe1c9c",
+        "path": "docs/reviews/worker13-aggregate59-8ccbb1e/independent.test.mjs",
+        "sha256": "363be3bb52b4ab1200589a5e4ab694be8921e109f43d39ff00b9310793ccd827"
+      },
+      {
+        "commit": "4fb7d697f848687d297565c4049dfe39ecbe1c9c",
+        "path": "docs/reviews/worker13-aggregate59-8ccbb1e/authoritative-denial.test.mjs",
+        "sha256": "1672215d4cb8bb47e06d92b351cad49322bc97ba0d6048e158a5abac4b7f5681"
+      }
+    ],
+    "sourceAndAuthorTestsByteIdentical": true,
+    "portableProof": {
+      "gitPresent": false,
+      "nodeModulesPresent": false,
+      "externalSourceOrOwnerImports": false,
+      "authorPassed": 24,
+      "reviewerAuthoredProbeGroupsReplayedBy59": 12,
+      "freshIndependentReview": "PENDING SAME WORKER13 exact composition/base/tree; replay is not a fresh independent verdict"
+    },
+    "production": "STOP",
+    "publicationAllowed": false,
+    "reviewedAuthorScope": "Standalone mechanical validator only; no actual privacy judgment, authoritative registry, operation coupling, provider/caller/admission or publication clearance.",
+    "sourceReviewReceipt": {
+      "path": "/home/user/Documents/Codex/2026-10-15/worker13-aggregate59-8ccbb1e/receipt.json",
+      "sha256": "bef19bba4cdcc8def8eb0eab35076cfc3405f9d489945116d622d7c964406ef4",
+      "reviewedCandidate": "8ccbb1ecabfe2d27a9e8a7600084cfc6a9493dae",
+      "verdict": "PASS bounded validator contract; real admission/adoption HOLD"
+    },
+    "ownedChangeClosure": [
+      "public/private-aggregate-admission-owner59.js",
+      "tests-web/private-aggregate-admission-owner59.test.mjs",
+      "docs/private-aggregate-admission-owner59.md",
+      "docs/private-aggregate-admission-owner59.json"
+    ],
+    "fixtures": "All author fixtures embedded in the one owned test module. Independent reviewer probes exported from immutable 4fb7d697 only into disposable portable replay, not runtime/committed dependencies.",
+    "historicalEvidenceBoundary": "Top-level original author base/branch/test/07 fixture results are retained historical evidence. This composition does not run or require historical Git objects, owner checkouts, credentials, corpus or provider stores at runtime/test time.",
+    "pending": "SAME Worker13 exact composition/base/tree review; root decision before ordinary PR gates. No PR opened or merge performed.",
+    "primaryMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "primaryIndexSHA256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+    "originalAuthorBranch": "8ccbb1ecabfe2d27a9e8a7600084cfc6a9493dae",
+    "oldAssessmentRef": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
+    "oldCapacityRef": "63fceac6563721c18f65a4790ff0a4df9a3a6148"
+  }
+}
