@@ -1,0 +1,15 @@
+{
+  "base": "fc2733299e6fbcecf27fbda291ff968056cdfd36",
+  "selectedApp": "c996bb469621c57820007c261585aba5faddd519",
+  "selectedReview": "455fa95d6dffd555e81c80a1c97ead2d766425a6",
+  "selectedMock": "be166bb61483825498094d496e2caed9d8b775bb",
+  "priorProducer": "434b56c0200671debfceb03f7aed0889509c51be",
+  "lifecycleSource": "2c9b15bbd828de95752fa32343a4f5fb43ed147e",
+  "privateBranch": "codex/worker05-central-c996-20261015",
+  "newRuntimeOnly": true,
+  "production": "STOP",
+  "logicalApplicationBase": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "freshProducerBase": "fc2733299e6fbcecf27fbda291ff968056cdfd36",
+  "appArtifactSha256": "f826409ee9a5a69da2f786810e7252f7c0f2fd8c088f2b47dba97c6fa79baa24",
+  "inputsSha256": "5339a7ab27ccb35a3bd2afb7bc326bec34bb1d4bbf3b291bbc1c56c3380ea593"
+}
