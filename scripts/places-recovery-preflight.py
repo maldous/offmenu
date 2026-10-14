@@ -4,6 +4,8 @@ import argparse
 import json
 import math
 import shutil
+import sqlite3
+from contextlib import closing
 from pathlib import Path
 from places_checkpoint import digest
 
@@ -22,6 +24,29 @@ def storage_preflight(available, output, checkpoint, scratch, reserve):
             'rule': 'Incremental peak includes retained originals, no reclaim or hardlink discount; allocation/recovery/qualification approval remains required.'}
 
 
+def checkpoint_metadata(root):
+    """Report only a matching sibling checkpoint; this is not resume validation."""
+    output = root.with_name(root.name[:-len('.partial')]) if root.name.endswith('.partial') else root
+    checkpoint = output.with_name(output.name + '.checkpoint.sqlite')
+    result = {'checkpointPath': str(checkpoint.resolve()),
+              'checkpointFileExists': checkpoint.is_file(),
+              'checkpointExists': False, 'checkpointStatus': 'absent'}
+    if not result['checkpointFileExists']:
+        return result
+    try:
+        # Immutable read-only access cannot create SQLite journal/WAL sidecars.
+        # This metadata snapshot does not establish integrity or resumability.
+        with closing(sqlite3.connect(checkpoint.resolve().as_uri() + '?mode=ro&immutable=1', uri=True)) as db:
+            row = db.execute("SELECT json_extract(payload, '$.version'), json_extract(payload, '$.pins.output') FROM state WHERE id=1").fetchone()
+        if row and row[0] == 1 and row[1] == str(output.resolve()):
+            result.update(checkpointExists=True, checkpointStatus='matching-output-metadata')
+        else:
+            result['checkpointStatus'] = 'foreign-or-unsupported-metadata'
+    except sqlite3.Error:
+        result['checkpointStatus'] = 'unreadable-metadata'
+    return result
+
+
 def inventory(root, historical_count, hash_limit=14):
     if historical_count < 0 or not 0 <= hash_limit <= 32 or not root.is_dir():
         raise ValueError('existing root, nonnegative historical count and bounded hash limit required')
@@ -33,7 +58,7 @@ def inventory(root, historical_count, hash_limit=14):
             'listingSha256': hashlib.sha256(json.dumps(listing, sort_keys=True).encode()).hexdigest(),
             'retainedBytes': sum(r['bytes'] for r in listing),
             'manifestExists': (root / 'manifest.json').exists(),
-            'checkpointExists': (root / 'checkpoint.json').exists(),
+            **checkpoint_metadata(root),
             'boundedTailReceipts': [{'key': str(p.relative_to(root)), 'bytes': p.stat().st_size, 'sha256': digest(p)} for p in paths[-hash_limit:]] if hash_limit else [],
             'classification': 'Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed.'}
 
