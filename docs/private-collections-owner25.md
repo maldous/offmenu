@@ -45,13 +45,20 @@ No storage, timers, network or credentials are owned by the module.
 - Recipe references carry sourceId, recipeId, version, rightsVersion and HTTPS
   sourceUrl. resolveRecipe(reference,binding) must be authoritative, current and
   return the exact reference, explicit available/unavailable/withdrawn status and
-  lineage. Optional privateCopy is retained only for current available records,
+  lineage. References must have exactly the five declared fields; extra fields
+  reject on both commands and restored envelopes. Optional privateCopy is retained only for current available records,
   explicit privateCopyAllowed:true, matching account and personally-reviewed
-  source recipe/version review evidence. These assertions are supplied by the
+  source namespace/recipe/version/rightsVersion review evidence. Explicit copy,
+  review, copy-reference and recipe-provenance source/rights contradictions reject.
+  These assertions are supplied by the
   owner-controlled resolver, never trusted from user command flags.
 - read re-resolves status/visibility and withholds private copies when rights or
   availability are withdrawn. Stored original reference remains explicit, not a
-  silently substituted recipe. Rights and review provenance remain JSON snapshots.
+  silently substituted recipe. Read and mutation rebuild each bookmark from the
+  current resolver: absent private-copy permission, only bookmark ID, exact source
+  reference and explicit status survive. Arbitrary old or returned provenance/body
+  fields cannot bypass this boundary. Permitted copy review provenance remains
+  a JSON snapshot; reference rightsVersion remains an assertion selector, not a grant.
   Retention expiry/deletion of persisted source bodies is resolver/store-owner work;
   read withholding alone does not claim durable deletion.
 - commit({binding,operationId,expectedVersion,state}) is a primary atomic CAS+
@@ -61,7 +68,8 @@ No storage, timers, network or credentials are owned by the module.
   cannot race through a stale client precheck. Updated envelope revision is
   expectedVersion+1 only after commit; returned binding, operation ID, committed
   status and revision are verified. Conflict never auto-rebases. Transport/malformed
-  result or post-commit authority change gives unknown; status reconciliation under
+  result or post-commit authority change gives unknown; authority is also rechecked
+  after load before returning private conflict revision metadata. Status reconciliation under
   still-live authority is required before retry. No exactly-once claim by itself.
 
 Bounds: 100 collections and 100 bookmarks per collection; global JSON capture
@@ -112,3 +120,25 @@ Only the reserved three authored paths committed. Primary main remains
 Private-origin backup and independent remote readback accompany the handoff.
 Production STOP; no endpoint, provider, credentials, public sharing, source writes
 or new worker. Full implementation/provenance pin and patch hash reported to root.
+
+## Worker20 findings correction
+
+Original `bd51ca12d8b703ca77c7e5c3dc9e6d70d47210c7` remains the parent/recovery pin;
+its review is not a PASS. Read exact worker20 review.md/independent-probes.mjs under
+docs/reviews/worker20-collections-bd51ca12 in the reviewer checkout. Before edits,
+ran the exact seven probe scenarios against the immutable original module loaded
+from Git; removed only the review-output write so no reviewer artifacts changed.
+All three observations reproduced: extra reference.privateCopy content survived
+withdrawal; revoked load returned private conflict revision; explicitly conflicting
+copy namespace/rights/provenance survived.
+
+Successor changes only owned module/tests/note. Five-field reference rejection,
+rebuilt identifier/status-only unauthorized projections (also before persistence),
+post-load conflict authority recheck and exact review-source/rights guards address
+W20-C1/C2/C3. Twelve focused cases pass (eight prior plus four regression groups),
+including malicious command/restored references, restored/returned arbitrary body
+fields, live-vs-revoked conflict, and review/provenance mismatch negatives. Existing
+valid-copy author case exercises the strengthened exact namespace/rights binding.
+No D1/central admission proof or self-acceptance is added. Same independent20
+re-review is required before PR; successor pin and private backup/readback reported
+to root separately. Fixture hooks remain synthetic and bounded.

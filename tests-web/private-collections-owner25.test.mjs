@@ -4,11 +4,11 @@ import {createPrivateCollections} from '../public/private-collections-owner25.mj
 import {kitchenProjection} from '../public/sync-model.js';
 const reference={sourceId:'manual-source',recipeId:'recipe-one',version:'v1',rightsVersion:'policy1',sourceUrl:'https://example.test/recipe'};
 function fixture() {
-  let state={version:1,accountId:'a',revision:0,collections:[]},live=true,sourceStatus='available',copyAllowed=true,authBarrier,commitBarrier,lost=false;
+  let state={version:1,accountId:'a',revision:0,collections:[]},live=true,sourceStatus='available',copyAllowed=true,authBarrier,commitBarrier,lost=false,afterLoad,resolverPatch={};
   const auth={allowed:true,accountId:'a',sessionId:'session',epoch:1,realm:'realm',resource:'/private-collections',consent:{id:'consent',revision:1,granted:true,purpose:'private-recipe-collections'}};
   const resolved=()=>({status:sourceStatus,reference,provenance:{sourceId:reference.sourceId,license:'explicit-unknown',rightsVersion:'policy1'},privateCopyAllowed:copyAllowed,
-    privateCopy:{accountId:'a',review:{id:'review1',status:'personally-reviewed',sourceRecipeId:'recipe-one',sourceVersion:'v1'},recipe:{title:'Family recipe',ingredients:[],instructions:['Private note']}}});
-  const api=createPrivateCollections({authorize:async session=>{if(authBarrier)await authBarrier;if(session!=='verified'||!live)return {...auth,allowed:false};return structuredClone(auth);},load:async()=>structuredClone(state),resolveRecipe:async()=>resolved(),clock:()=> '2026-10-15T00:00:00Z',
+    privateCopy:{accountId:'a',review:{id:'review1',status:'personally-reviewed',sourceId:'manual-source',rightsVersion:'policy1',sourceRecipeId:'recipe-one',sourceVersion:'v1'},recipe:{title:'Family recipe',ingredients:[],instructions:['Private note']}},...resolverPatch});
+  const api=createPrivateCollections({authorize:async session=>{if(authBarrier)await authBarrier;if(session!=='verified'||!live)return {...auth,allowed:false};return structuredClone(auth);},load:async()=>{if(afterLoad)afterLoad();return structuredClone(state);},resolveRecipe:async()=>resolved(),clock:()=> '2026-10-15T00:00:00Z',
     commit:async request=>{
       if(commitBarrier)await commitBarrier;
       if(!live||request.binding.accountId!=='a')throw Error('Atomic admission denied');
@@ -19,7 +19,7 @@ function fixture() {
     }});
   let seq=0;
   const mutate=(type,extra={})=>api.mutate({session:'verified',accountId:'a',command:{type,operationId:'op'+(++seq),expectedVersion:state.revision,collectionId:'family',...extra}});
-  return {api,mutate,state:()=>structuredClone(state),revoke:()=>live=false,status:v=>sourceStatus=v,copy:v=>copyAllowed=v,authWait:p=>authBarrier=p,commitWait:p=>commitBarrier=p,lose:()=>lost=true};
+  return {api,mutate,state:()=>structuredClone(state),revoke:()=>live=false,status:v=>sourceStatus=v,copy:v=>copyAllowed=v,authWait:p=>authBarrier=p,commitWait:p=>commitBarrier=p,lose:()=>lost=true,afterLoad:f=>afterLoad=f,restore:s=>state=structuredClone(s),patch:p=>resolverPatch=p};
 }
 test('exported consumer add/bookmark/rename/unbookmark/remove/reset with revision receipts',async()=>{
   const f=fixture();assert.equal((await f.mutate('add',{name:'Family'})).revision,1);
@@ -65,4 +65,34 @@ test('actual kitchen projection omits collection names, private copies and bookm
   const f=fixture();await f.mutate('add',{name:'Family'});await f.mutate('bookmark',{bookmarkId:'b1',reference});
   const projected=kitchenProjection({inventory:[],products:{},recipes:[],profile:{privateCollections:f.state(),servings:2}});
   assert.equal(Object.hasOwn(projected.profile,'privateCollections'),false);assert.equal(JSON.stringify(projected).includes('Private note'),false);assert.deepEqual(projected.recipes,[]);
+});
+test('W20-C1 command and restored references reject embedded source content',async()=>{
+  for(const status of ['withdrawn','unavailable','available']) {
+    const f=fixture();await f.mutate('add',{name:'Family'});f.status(status);f.copy(false);
+    const bad={...reference,privateCopy:{instructions:['CALLER_SOURCE_BODY_MARKER']}};
+    await assert.rejects(f.mutate('bookmark',{bookmarkId:'b1',reference:bad}),/identifiers only/);
+    const state=f.state();state.collections[0].bookmarks.push({id:'restored',reference:bad,status});f.restore(state);
+    await assert.rejects(f.api.read({session:'verified',accountId:'a'}),/identifiers only/);
+  }
+});
+test('W20-C1 rebuilt projection and mutation remove old copy/provenance/extra content',async()=>{
+  const f=fixture();await f.mutate('add',{name:'Family'});await f.mutate('bookmark',{bookmarkId:'b1',reference});
+  const state=f.state();state.collections[0].bookmarks[0].provenance={instructions:['OLD_BODY']};state.collections[0].bookmarks[0].unknownBody=['EXTRA_BODY'];f.restore(state);
+  f.status('withdrawn');f.patch({provenance:{instructions:['RESOLVER_BODY']}});
+  const read=await f.api.read({session:'verified',accountId:'a'});
+  assert.deepEqual(Object.keys(read.collections[0].bookmarks[0]).sort(),['id','reference','status']);
+  await f.mutate('rename',{name:'New'});assert.deepEqual(Object.keys(f.state().collections[0].bookmarks[0]).sort(),['id','reference','status']);
+});
+test('W20-C2 load revocation suppresses conflict metadata; live conflict still works',async()=>{
+  const f=fixture();await f.mutate('add',{name:'Family'});
+  assert.equal((await f.mutate('rename',{name:'ignored',expectedVersion:0})).revision,1);
+  f.afterLoad(()=>f.revoke());await assert.rejects(f.mutate('rename',{name:'ignored',expectedVersion:0}),/access denied/);
+});
+test('W20-C3 source namespace and rights review/provenance mismatches reject',async()=>{
+  for(const field of ['sourceId','rightsVersion']) {
+    const f=fixture();await f.mutate('add',{name:'Family'});
+    const copy={accountId:'a',review:{id:'r',status:'personally-reviewed',sourceRecipeId:'recipe-one',sourceVersion:'v1',sourceId:'manual-source',rightsVersion:'policy1'},recipe:{provenance:{sourceId:'manual-source',rightsVersion:'policy1'},instructions:['Content']}};
+    copy.review[field]='OTHER';f.patch({privateCopy:copy});await assert.rejects(f.mutate('bookmark',{bookmarkId:'b',reference}),/mismatch/);
+    copy.review[field]=reference[field];copy.recipe.provenance[field]='OTHER';await assert.rejects(f.mutate('bookmark',{bookmarkId:'b',reference}),/lineage/);
+  }
 });

@@ -27,7 +27,9 @@ function id(v) {if(typeof v!=='string'||!v.trim()||v.length>200)throw Error('Inv
 function revision(v) {if(!Number.isSafeInteger(v)||v<0||v>=Number.MAX_SAFE_INTEGER)throw Error('Invalid revision');return v;}
 function ref(value) {
   const r=capture(value);
-  for(const key of ['sourceId','recipeId','version','rightsVersion'])id(r[key]);
+  const keys=['sourceId','recipeId','version','rightsVersion','sourceUrl'];
+  if(Object.keys(r).length!==keys.length||Object.keys(r).some(k=>!keys.includes(k)))throw Error('Reference identifiers only');
+  for(const key of keys)id(r[key]);
   const url=new URL(r.sourceUrl);if(url.protocol!=='https:'||url.username||url.password)throw Error('Invalid source URL');
   return r;
 }
@@ -66,27 +68,38 @@ export function createPrivateCollections({authorize,load,resolveRecipe,commit,cl
   async function resolve(reference,a) {
     const r=capture(await resolveRecipe(capture(reference),capture(binding(a))));
     if(!['available','unavailable','withdrawn'].includes(r.status)||identity(ref(r.reference))!==identity(reference)||r.reference.sourceUrl!==reference.sourceUrl)throw Error('Recipe identity unresolved');
-    const result={reference:capture(reference),status:r.status,provenance:r.provenance??null};
+    const result={reference:capture(reference),status:r.status};
+    const matches=(value={})=>{
+      const fields={sourceId:reference.sourceId,recipeId:reference.recipeId,sourceRecipeId:reference.recipeId,version:reference.version,sourceVersion:reference.version,rightsVersion:reference.rightsVersion,sourceUrl:reference.sourceUrl,url:reference.sourceUrl};
+      for(const [k,v] of Object.entries(fields))if(Object.hasOwn(value,k)&&value[k]!==v)throw Error('Conflicting source or rights lineage');
+    };
+    if(r.provenance!=null)matches(r.provenance);
     if(r.status==='available'&&r.privateCopyAllowed===true&&r.privateCopy) {
       const copy=r.privateCopy;
-      if(copy.accountId!==a.accountId||copy.review?.status!=='personally-reviewed'||copy.review.sourceRecipeId!==reference.recipeId||copy.review.sourceVersion!==reference.version)throw Error('Private reviewed copy mismatch');
+      if(copy.accountId!==a.accountId||copy.review?.status!=='personally-reviewed'||copy.review.sourceRecipeId!==reference.recipeId||copy.review.sourceVersion!==reference.version||copy.review.sourceId!==reference.sourceId||copy.review.rightsVersion!==reference.rightsVersion)throw Error('Private reviewed copy mismatch');
+      matches(copy);matches(copy.review);if(copy.recipe?.provenance!=null)matches(copy.recipe.provenance);
+      if(copy.reference!=null&&(identity(ref(copy.reference))!==identity(reference)||copy.reference.sourceUrl!==reference.sourceUrl))throw Error('Conflicting copy reference');
       id(copy.review.id);result.privateCopy=capture(copy);
     }
     return result;
   }
+  async function refresh(state,a) {
+    for(const c of state.collections) {
+      const bookmarks=[];
+      for(const b of c.bookmarks)bookmarks.push({id:b.id,...await resolve(b.reference,a)});
+      c.bookmarks=bookmarks;
+    }
+  }
   return {
     async read({session,accountId}) {
       session=capture(session);id(accountId);const a=await authority(session,accountId,'read'),state=envelope(await load(binding(a)),accountId);
-      for(const c of state.collections)for(const b of c.bookmarks) {
-        const current=await resolve(b.reference,a);
-        // Re-resolve visibility; never return retained private content after withdrawal.
-        Object.assign(b,current);delete b.privateCopy;if(current.privateCopy)b.privateCopy=current.privateCopy;
-      }
+      await refresh(state,a);
       await recheck(session,a,'read');return capture(state);
     },
     async mutate({session,accountId,command}) {
       session=capture(session);id(accountId);const cmd=capture(command);id(cmd.operationId);revision(cmd.expectedVersion);
       const a=await authority(session,accountId,'write'),state=envelope(await load(binding(a)),accountId);
+      await recheck(session,a,'write');
       if(state.revision!==cmd.expectedVersion)return {status:'conflict',operationId:cmd.operationId,revision:state.revision};
       const c=state.collections.find(c=>c.id===cmd.collectionId);
       switch(cmd.type) {
@@ -98,12 +111,13 @@ export function createPrivateCollections({authorize,load,resolveRecipe,commit,cl
         case 'bookmark': {
           if(!c)throw Error('Collection unavailable');id(cmd.bookmarkId);const reference=ref(cmd.reference);
           if(c.bookmarks.length>=100||c.bookmarks.some(b=>b.id===cmd.bookmarkId||identity(b.reference)===identity(reference)))throw Error('Duplicate or full bookmark');
-          c.bookmarks.push({id:cmd.bookmarkId,...await resolve(reference,a)});break;
+          c.bookmarks.push({id:cmd.bookmarkId,reference,status:'unavailable'});break;
         }
         case 'unbookmark':if(!c||!c.bookmarks.some(b=>b.id===cmd.bookmarkId))throw Error('Bookmark unavailable');c.bookmarks=c.bookmarks.filter(b=>b.id!==cmd.bookmarkId);break;
         case 'reset':state.collections=[];break;
         default:throw Error('Unknown collection operation');
       }
+      await refresh(state,a);
       const at=clock();if(typeof at!=='string'||!Number.isFinite(Date.parse(at)))throw Error('Invalid clock');state.updatedAt=at;
       await recheck(session,a,'write');
       // Owner adapter must atomically re-admit this exact binding/consent/source
