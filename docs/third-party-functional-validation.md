@@ -5,18 +5,25 @@ opt-in community profiles and trophies, owner-scoped personal AI preferences and
 MCP actions, and separately scoped administrator MCP operations. Canonical
 `cloud/schema.sql` includes the additive feature tables for a fresh database.
 
-Verification on 14 October 2026 (Melbourne): 253 JavaScript tests, four compiled
-Worker tests, and 36 Python tests pass. The compiled care test uses only the
+Verification on 14 October 2026 (Melbourne): 264 JavaScript tests, five compiled
+Worker tests, and 36 Python tests pass. The compiled care and MCP tests use only the
 canonical schema and verifies case ownership, staff authorization, owner replies,
-public recipe review, AI attribution, voting and self-vote rejection. Build and
-localization inventory checks pass. Arabic is incomplete: 376 of 2688 messages
+public recipe review, AI attribution, voting and self-vote rejection. Compiled MCP coverage verifies
+per-tool delegated scopes, current administrator roles, AI configuration/run
+controls and audited recipe-comment completion. Schema migration tests replay
+all ten additive scripts against the persisted pre-care baseline and preserve
+private sentinel data, without requiring Git history. Build and
+localization inventory checks pass. Arabic is incomplete: 376 of 2699 messages
 are translated; missing strings use explicit English fallback.
 
 The browser preview uses mocked identity and blocks external networking. Checks
 covered startup without JavaScript errors, opening the native care dialog,
-signing in, reviewing and submitting a request, and staff request detail. These
+signing in, reviewing and submitting a request, staff request detail, and
+persisting bounded correction evidence through a reviewed status update. These
 checks do not prove production identity provisioning or real email delivery.
 
+OAuth approval uses one shared absolute expiry for the sealed administrator proof
+and authorization code; a storage-delay regression verifies valid redemption.
 Account-bound fetch rejects writes when an asynchronous session refresh switches
 accounts. Personal assistant publication uses only the owner's explicitly chosen
 assistant name, never a private integration label. Staff may access submitted

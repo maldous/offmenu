@@ -1,6 +1,6 @@
 import {isAdministrator} from './admin-settings.mjs';
 import {moderateCommunityCandidate} from './care-community.mjs';
-import {moderateRecipeCandidate} from './recipe-community.mjs';
+import {moderateRecipeCandidate,moderateRecipeCommentCandidate} from './recipe-community.mjs';
 
 const response=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const object=x=>!!x&&typeof x==='object'&&!Array.isArray(x);
@@ -36,7 +36,7 @@ async function candidates(env,limit=RUN_BATCH_MAX,provider='mcp'){
    env.DB.prepare(eligible('recipe','community_recipes','id,recipe_json,revision')).bind(now,limit).all(),
    env.DB.prepare(eligible('topic','care_topics','id,title,body,revision')).bind(now,limit).all(),
    env.DB.prepare(eligible('reply','care_replies','id,body,revision')).bind(now,limit).all(),
-   provider==='mcp'?Promise.resolve({results:[]}):env.DB.prepare(eligible('recipe-comment','community_recipe_comments','id,body,revision')).bind(now,limit).all()
+   env.DB.prepare(eligible('recipe-comment','community_recipe_comments','id,body,revision')).bind(now,limit).all()
   ]);
   return roundRobin([(recipes.results||[]).map(row=>cleanCandidate('recipe',row)),(topics.results||[]).map(row=>cleanCandidate('topic',row)),(replies.results||[]).map(row=>cleanCandidate('reply',row)),(comments.results||[]).map(row=>cleanCandidate('recipe-comment',row))],limit);
  }catch{return [];}
@@ -72,11 +72,11 @@ async function applyIfSafe(env,candidate,outcome,actor){
  try{const result=await moderateCommunityCandidate(env,{kind:candidate.kind,id:candidate.id,revision:candidate.revision,action:'hide',actor:actor.id,reason:'automation:'+outcome.reason});return result.status===200;}catch{return false;}
 }
 export async function completeAwaitingAgentDecision(env,{kind,id:subject,revision,action,reason,actor}){
- if(!actor?.id||!isAdministrator(actor)||!['recipe','topic','reply'].includes(kind)||!id(subject)||!Number.isSafeInteger(revision)||revision<1||!['approve','hide','reject'].includes(action)||!safe(reason,500))return {completed:false,reason:'invalid-completion'};
+ if(!actor?.id||!isAdministrator(actor)||!['recipe','recipe-comment','topic','reply'].includes(kind)||!id(subject)||!Number.isSafeInteger(revision)||revision<1||!['approve','hide','reject'].includes(action)||!safe(reason,500))return {completed:false,reason:'invalid-completion'};
  const record=await env.DB.prepare("SELECT id FROM community_ai_decisions WHERE candidate_kind=? AND candidate_id=? AND candidate_revision=? AND state='awaiting_agent'").bind(kind,subject,revision).first().catch(()=>null);if(!record)return {completed:false,reason:'not-awaiting-agent'};
  if(!await markApplying(env,{kind,id:subject,revision},record.id,'awaiting_agent'))return {completed:false,reason:'finalization-unavailable'};
  try{
-  let result;if(kind==='recipe')result=await moderateRecipeCandidate(env,{id:subject,revision,action,actor,reason});else result=await moderateCommunityCandidate(env,{kind,id:subject,revision,action:action==='reject'?'hide':action,actor:actor.id,reason});
+  let result;if(kind==='recipe')result=await moderateRecipeCandidate(env,{id:subject,revision,action,actor,reason});else if(kind==='recipe-comment')result=await moderateRecipeCommentCandidate(env,{id:subject,revision,action,actor,reason});else result=await moderateCommunityCandidate(env,{kind,id:subject,revision,action:action==='reject'?'hide':action,actor:actor.id,reason});
   if(!result||(typeof result.status==='number'&&result.status!==200)){await finish(env,{kind,id:subject,revision},record.id,null,'mcp','held','applying');return {completed:false,reason:'moderation-not-applied'};}
   return await finish(env,{kind,id:subject,revision},record.id,{action,confidence:1,reason},'mcp','applied','applying')?{completed:true}:{completed:false,reason:'finalization-failed'};
  }catch{return {completed:false,reason:'moderation-not-applied'};}

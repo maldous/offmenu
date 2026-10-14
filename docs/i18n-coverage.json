@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2688,
+  "messages": 2699,
   "arabicTranslated": 376,
-  "arabicMissing": 2312,
+  "arabicMissing": 2323,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -1795,6 +1795,12 @@
       ],
       "arabic": false
     },
+    "Administrative scope is required.": {
+      "sources": [
+        "cloud/admin-mcp.mjs"
+      ],
+      "arabic": false
+    },
     "Administrative settings are incomplete.": {
       "sources": [
         "public/admin-model.js"
@@ -2168,6 +2174,12 @@
     "Apply a confirmed profile change": {
       "sources": [
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "Apply a confirmed revision-checked community AI configuration.": {
+      "sources": [
+        "cloud/admin-mcp.mjs"
       ],
       "arabic": false
     },
@@ -3724,6 +3736,12 @@
     "Confirm the ingredient amounts and cooking date. This consumes raw stock once and creates a cooked batch. Optional ingredients are omitted; edit the recipe to include substitutions.": {
       "sources": [
         "public/journey-ui.js"
+      ],
+      "arabic": false
+    },
+    "Confirm this reviewed case status update?": {
+      "sources": [
+        "public/care-ui.js"
       ],
       "arabic": false
     },
@@ -7676,6 +7694,12 @@
       ],
       "arabic": false
     },
+    "List bounded community AI decision metadata.": {
+      "sources": [
+        "cloud/admin-mcp.mjs"
+      ],
+      "arabic": false
+    },
     "List metadata for the authorised owner’s connected providers. Credentials are never returned.": {
       "sources": [
         "cloud/personal-ai.mjs"
@@ -10095,6 +10119,18 @@
       ],
       "arabic": false
     },
+    "Proposal evidence": {
+      "sources": [
+        "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Proposal evidence records this review. It does not publish a catalogue change.": {
+      "sources": [
+        "public/care-ui.js"
+      ],
+      "arabic": false
+    },
     "Proposal reference": {
       "sources": [
         "public/care-ui.js"
@@ -10133,9 +10169,21 @@
       ],
       "arabic": false
     },
+    "Provide a bounded release reference.": {
+      "sources": [
+        "public/care-ui.js"
+      ],
+      "arabic": false
+    },
     "Provide a subject and message.": {
       "sources": [
         "cloud/service-support.mjs"
+      ],
+      "arabic": false
+    },
+    "Provide bounded proposal source, digest, and reference.": {
+      "sources": [
+        "public/care-ui.js"
       ],
       "arabic": false
     },
@@ -10689,6 +10737,12 @@
       ],
       "arabic": false
     },
+    "Read the pinned community AI configuration metadata.": {
+      "sources": [
+        "cloud/admin-mcp.mjs"
+      ],
+      "arabic": false
+    },
     "Read this product page": {
       "sources": [
         "extension/popup.html"
@@ -11046,6 +11100,12 @@
     "Registered branded-product and GTIN data. User-owned approved credentials; adapter pending.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Release evidence": {
+      "sources": [
+        "public/care-ui.js"
       ],
       "arabic": false
     },
@@ -11588,6 +11648,12 @@
     "Rule and evidence JSON": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Run a confirmed bounded community AI review.": {
+      "sources": [
+        "cloud/admin-mcp.mjs"
       ],
       "arabic": false
     },

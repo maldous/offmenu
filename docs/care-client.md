@@ -26,3 +26,11 @@ must explicitly open a case through the staff-only detail route before viewing
 its selected context, visible thread, and staff internal notes or taking a case
 action. The same account/epoch guard drops delayed staff detail responses after
 logout, account change, or reset.
+
+A staff member records bounded proposal source, digest, and reference before
+moving a case to `proposed` or `reviewed`. A release requires its own bounded
+release reference and only records the case disposition; the interface states
+explicitly that it does not publish a catalogue change. Existing staff-detail
+proposal and release values are prefilled for review. Each status change needs
+an explicit confirmation and is still protected by the case revision and the
+account epoch.
