@@ -15,16 +15,17 @@ function bytesToBase64(text) { return Buffer.from(text).toString('base64'); }
 const state = () => ({inventory: [], products: {}, recipes: [], selections: [], profile: {country: 'AU', units: 'metric', servings: 2}});
 const command = (id = 'synthetic_operation_0001', version = 0) => ({operationId: id, expectedVersion: version, state: state()});
 async function fixture(t, authenticate = async req => ({id: req.subject})) {
+  let clock = 100;
   const db = new DatabaseSync(':memory:'); t.after(() => db.close());
   db.exec(readFileSync(new URL('../cloud/schema.sql', import.meta.url), 'utf8'));
   for (const sql of SESSION_STATE_DDL) db.exec(sql);
   const protocol = createSessionStateProtocol({store: createSqliteStateStore(db), authenticate,
     readSession: req => req.protectedSession, authorizeRequest: async () => true, authorizeEnrollment: async () => true,
-    audience: 'https://offmenu.test/api/state', realm: 'synthetic_realm_0001', ttlMs: 10000, now: () => 100});
+    audience: 'https://offmenu.test/api/state', realm: 'synthetic_realm_0001', ttlMs: 10000, now: () => clock});
   const alice = await protocol.enroll({subject: 'synthetic-alice'}), bob = await protocol.enroll({subject: 'synthetic-bob'});
   const request = (session = alice, subject = 'synthetic-alice') => ({subject, protectedSession: session});
   const bridge = (selected = protocol, binding = alice.binding) => createQueueStateBridge({protocol: selected, trustedBinding: () => binding});
-  return {db, protocol, alice, bob, request, bridge,
+  return {db, protocol, alice, bob, request, bridge, expire: () => { clock = 20000; },
     rows: () => db.prepare('SELECT count(*) n FROM owner04_state_operations').get().n,
     revision: () => db.prepare('SELECT revision FROM user_state WHERE user_id=?').get('synthetic-alice')?.revision || 0};
 }
@@ -111,4 +112,18 @@ test('demonstrated predecessor gap: valid-looking ACK with wrong digest passed c
   assert.equal((await old.flush()).status, 'acknowledged'); // Actual immutable predecessor observation.
   const selected = {...f.protocol, mutate: async () => damaged};
   assert.equal((await f.bridge(selected).submit(f.request(), command())).confirmed, false);
+});
+
+test('late ACK confirms earlier commit; expired grant denies a new send and body expiresAt is never authority', async t => {
+  const f = await fixture(t);
+  const delayed = {...f.protocol, async mutate(req, op) {
+    const committed = await f.protocol.mutate(req, op);
+    f.expire(); // Response arrives after server grant expiry, effect already committed.
+    return committed;
+  }};
+  assert.equal((await f.bridge(delayed).submit(f.request(), command())).acknowledged, true);
+  assert.equal((await f.bridge().submit(f.request(), command('synthetic_post_expiry', 1))).confirmed, false);
+  assert.equal((await f.bridge().recover(f.request(), command())).confirmed, false); // Status requires current authority.
+  await assert.rejects(f.bridge().submit(f.request(), {...command(), expiresAt: 999999}), /Invalid command/);
+  assert.equal(f.revision(), 1); assert.equal(f.rows(), 1);
 });
