@@ -167,9 +167,9 @@ export function createPrivateAggregateValidator({authority, getContext, clock, m
       const expected = {selectionId, revision: row.revision, document: row.document,
         receipts: structuredClone(receipts), context: structuredClone(context)};
       let calls = 0, validated = false, active = true;
-      let current;
+      let acknowledgement;
       try {
-        current = await authority.readIfCurrent(expected, rows => {
+        acknowledgement = authority.readIfCurrent(expected, rows => {
           requireThat(active && ++calls === 1, 'CONDITIONAL_CALLBACK');
           check();
           requireThat(same(rows, snapshot), 'AUTHORITY_CHANGED');
@@ -177,6 +177,8 @@ export function createPrivateAggregateValidator({authority, getContext, clock, m
           validated = true; return true;
         });
       } finally { active = false; }
+      // Close the synchronous invocation window BEFORE awaiting any adapter ACK.
+      const current = await acknowledgement;
       check();
       requireThat(current?.matched === true && calls === 1 && validated, 'CURRENT_GATE_REFUSED');
       requireThat(now() < deadline, 'RECEIPT_EXPIRED');

@@ -1,6 +1,19 @@
 # CACHE-08 private aggregate admission and withdrawal contract — Owner 59
 
-## Current-develop mechanical composition (15 October 2026)
+## Provider review correction — PR #12 (new exact-head review required)
+
+Provider review of `e174545c2ccba6c7bf2920e91820d3c23c99cd4d` completed at 2026-10-14T18:04:51Z and reported [P2 delayed callback boundary](https://github.com/maldous/offmenu/pull/12#discussion_r4274447850). Merge is HELD. The previous independent verdict covers that old head only, not this correction.
+
+Reproduction added a callback that awaits a microtask before invoking consume. The old active flag remained true across the awaited readIfCurrent acknowledgement, so fabricated authoritative-class capability could return allowed:true despite violating the required synchronous callback boundary. The targeted regression failed before the source change (exit 1); no actual producer, registry or private data was used.
+
+The correction captures the immediate return value of readIfCurrent, closes the active flag in its synchronous finally, then awaits the acknowledgement. Consume must run before the initial readIfCurrent invocation returns. Returning a Promise after synchronous consume remains supported, including the existing context/expiry checks after acknowledgement. Awaiting before consume is forbidden; an adapter that cannot supply the required synchronous boundary remains unqualified. No authority, receipt, privacy or publication rule is relaxed.
+
+Portable verification without .git or node_modules: **25 author tests pass**, including microtask and event-loop deferral in both synthetic mode and fabricated authoritative-class negative cases. The 12 unchanged independently authored groups also pass when replayed by Owner 59. That replay does not confer new independent acceptance. Ordinary synthetic mode continues to deny real use and publicationAllowed remains false in every result.
+
+Only the same four owned paths change. The old source, e174 composition, reviews, logs and branch history remain retained. Fresh SAME Worker 13 review of the exact successor/base/tree and renewed provider review are required before eligible merge. The source/test byte-equality statements below describe e174's retained pre-correction history and do not apply to this new correction.
+
+
+## Historical pre-correction composition e174545 (15 October 2026)
 
 Current composition branch: `feature/aggregate-admission-composition-owner59-20261015`; freshly fetched locked develop/base `4693cbc3fe17cdde2e292e6eb00cd83769ee45ae`, fetch exit 0 at 2026-10-14T17:50:56.605668Z. Source author candidate `8ccbb1ecabfe2d27a9e8a7600084cfc6a9493dae` and its branch remain untouched. Worker 13 review `4fb7d697f848687d297565c4049dfe39ecbe1c9c` passed the original bounded validator contract; this new composition still requires SAME Worker 13's exact commit/base/tree re-review and root selection before ordinary PR gates.
 

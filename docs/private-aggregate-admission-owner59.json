@@ -93,13 +93,13 @@
   "codeAndTestPins": [
     {
       "path": "public/private-aggregate-admission-owner59.js",
-      "sha256": "26f23b0d9f80ba5c9d55d07f98f60ff6a38ca7e90d6be8bfc68ca75800fa6498",
-      "bytes": 11967
+      "sha256": "1d9939d9e8d0533b2e9a74a413737dccfea14a5b302b6966665b0404483c36f6",
+      "bytes": 12104
     },
     {
       "path": "tests-web/private-aggregate-admission-owner59.test.mjs",
-      "sha256": "6cc6090bc19597942e6013cf88d5124467a9d8189a82869745ce5def09112f93",
-      "bytes": 13243
+      "sha256": "14dd028d8e12b1aa302b3beda628bba5732a8ed421df753958374f34c985c758",
+      "bytes": 13958
     }
   ],
   "implementation": {
@@ -254,6 +254,49 @@
     "primaryIndexSHA256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
     "originalAuthorBranch": "8ccbb1ecabfe2d27a9e8a7600084cfc6a9493dae",
     "oldAssessmentRef": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
-    "oldCapacityRef": "63fceac6563721c18f65a4790ff0a4df9a3a6148"
+    "oldCapacityRef": "63fceac6563721c18f65a4790ff0a4df9a3a6148",
+    "currentSuccessorNote": "Historical e174 composition and its closure byte-equality proof are superseded by providerReviewCorrection for current module/test. Fresh successor acceptance is pending."
+  },
+  "providerReviewCorrection": {
+    "observedUtc": "2026-10-14T18:06:57.464031+00:00",
+    "pr": "https://github.com/maldous/offmenu/pull/12",
+    "reviewedHead": "e174545c2ccba6c7bf2920e91820d3c23c99cd4d",
+    "providerReviewCompletedUtc": "2026-10-14T18:04:51.194204Z",
+    "finding": "https://github.com/maldous/offmenu/pull/12#discussion_r4274447850",
+    "priority": "P2",
+    "rootCause": "active callback window remained true across await of readIfCurrent acknowledgement, admitting deferred consume after synchronous invocation ended.",
+    "correction": "Capture readIfCurrent return value; close active in synchronous finally before awaiting acknowledgement. No receipt/admission rule relaxed.",
+    "reproduction": {
+      "command": "node --test --test-name-pattern=consume deferred until after readIfCurrent invocation is refused tests-web/private-aggregate-admission-owner59.test.mjs",
+      "beforeExit": 1,
+      "beforeObserved": "Fabricated authoritative-class capability returned allowed:true after microtask-deferred consume; complete synthetic fixtures also passed eligibility. No actual authority or private data used.",
+      "regressionCoverage": "Both authoritative-class fabricated labels and synthetic mode, with microtask and setImmediate deferral. All four now deny."
+    },
+    "checks": {
+      "portableNoGitNoNodeModules": true,
+      "authorTests": 25,
+      "authorFailed": 0,
+      "unchangedReviewerGroupsReplayedBy59": 12,
+      "reviewerReplayFailed": 0,
+      "freshIndependentSuccessorReview": "PENDING SAME13; old 24+12 and e174 review remain historical only.",
+      "renewedProviderReview": "PENDING after exact successor review/root binding; no merge attempted."
+    },
+    "logs": [
+      {
+        "path": "/home/user/Documents/Codex/2026-10-15/worker59-aggregate-pr12/callback-regression-before.log",
+        "sha256": "b20b9bd2c638a3726211d931fd69163d42e9c7051178f5996c23f29043c788a6"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-15/worker59-aggregate-pr12/callback-regression-after.log",
+        "sha256": "e8c4cf6eaa253f881fa06a696afd18f66fae6b6a3444d7b1044ed02a8cb01464"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-15/worker59-aggregate-pr12/reviewer-probe-replay-after.log",
+        "sha256": "7cc4e2b499c2966ef6d5950a7eae9e8ca1e4c450115788ee4b5ce3f0a34c0038"
+      }
+    ],
+    "authorityContract": "consume must execute before readIfCurrent returns from its initial synchronous invocation. An async acknowledgement may follow; awaiting prior to consume is invalid even if receipt bytes remain equal.",
+    "production": "STOP",
+    "publicationAllowed": false
   }
 }

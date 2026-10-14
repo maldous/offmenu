@@ -185,3 +185,19 @@ test('malformed, oversized, future and unknown evidence never becomes a default 
   }
   const f = await fixture(); f.setTime(NaN); denied(await f.evaluate());
 });
+test('consume deferred until after readIfCurrent invocation is refused', async () => {
+  for (const mode of ['authoritative', 'synthetic']) for (const defer of [() => Promise.resolve(), () => new Promise(resolve => setImmediate(resolve))]) {
+    const f = await fixture();
+    // Fabricated qualification labels test the boundary, not real evidence.
+    f.options.mode = mode;
+    if (mode === 'authoritative') {
+      for (const doc of Object.values(f.docs)) doc.evidenceClass = 'independently-qualified';
+      await f.seal();
+    }
+    f.setGate(async (expected, consume, snapshot) => {
+      await defer();
+      return {matched: true, value: consume(snapshot)};
+    });
+    denied(await f.evaluate());
+  }
+});
