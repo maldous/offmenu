@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {runInNewContext} from 'node:vm';
+import {spawnSync} from 'node:child_process';
 import {compareDatedCosts} from '../public/dated-cost-comparison-owner35.mjs';
 
 const clone = x => structuredClone(x);
@@ -26,183 +26,197 @@ function fixture(view = 'local') {
         value:i ? '2' : '1.5', purpose, series:'synthetic-series', component:'household-consumption', referenceYear:2026,
         methodology:'synthetic aggregate contextual measure', geography:{country:i ? 'US' : 'AU', region:'synthetic-region'}})) : []};
 }
-// Synthetic owner qualification ONLY. Production owner must independently verify
-// binding/rights; reflecting requests, as this fixture does, is not a production gate.
-const qualify = ({binding}) => ({status:'qualified', binding:clone(binding),
-  provenance:{sourceId:'synthetic-only-owner', version:'v1', sha256:'1'.repeat(64), rights:{derivedUse:true}}});
-const calculate = input => compareDatedCosts(input, {resolveEvidence:qualify});
+// Owned plain synthetic fixtures only. This is NOT an authenticated producer.
+const NOW = 1791979200000, OP = 'synthetic-operation';
+function receiptEnvelope(input) {
+  const {cohort} = input, receipts = [];
+  const append = (kind, binding) => receipts.push({kind, binding:clone(binding), status:'supported-claim',
+    operationId:OP, issuedAt:NOW - 1000, expiresAt:NOW + 1000,
+    provenance:{sourceId:'synthetic-only', version:'1', sha256:'1'.repeat(64), rights:{derivedUse:true}}});
+  for (const c of input.candidates) {
+    for (const line of c.lines) append('price', {purpose:input.purpose, cohort, candidateId:c.id,
+      geography:c.geography ?? null, date:c.date ?? null, period:c.period ?? null, outlet:c.outlet ?? null,
+      currency:c.currency ?? null, channel:c.channel ?? null, conditions:c.conditions ?? null, line});
+    for (const rate of input.rates.filter(r => r.from === c.currency && r.to === input.targetCurrency &&
+      (input.view !== 'ppp' || JSON.stringify(r.geography) === JSON.stringify(c.geography))))
+      append(input.view, {purpose:input.purpose, cohort, candidateId:c.id, geography:c.geography ?? null, date:c.date ?? null, rate});
+  }
+  if (cohort.denominator) append('denominator', {purpose:input.purpose, cohort, denominator:cohort.denominator});
+  return {schema:'dated-cost-receipts/2', operationId:OP, receipts};
+}
+const calculate = (input, envelope = receiptEnvelope(input)) => compareDatedCosts(JSON.stringify(input), JSON.stringify(envelope), NOW, OP);
+const amount = (r, i = 0) => r.conditionalArithmetic.values[i].amount;
+const groups = r => r.conditionalArithmetic.comparisonGroups;
 const reason = (r, value) => r.blockers.some(b => b.reason === value);
+function incomplete(result) {
+  assert.equal(groups(result), null); assert.equal(result.ranking, null);
+  assert.ok(result.conditionalArithmetic.values.every(row => row.amount === null));
+}
 
-test('same-specification dated pack costs retain separate g/ml coverage and exact order', () => {
+test('conditional exact same-specification arithmetic never authenticates receipts or releases ranking', () => {
   const input = fixture(), before = clone(input), result = calculate(input);
-  assert.equal(result.status, 'complete');
-  assert.deepEqual(result.ranking, [['b'], ['a']]);
-  assert.equal(result.rows[0].total.decimal, '10');
-  assert.equal(result.rows[1].total.decimal, '8');
+  assert.equal(result.version, 'dated-cost-comparison/2'); assert.equal(result.status, 'blocked');
+  assert.equal(result.authority.authenticated, false); assert.equal(result.authority.producerIntegration, 'not-implemented');
+  assert.equal(result.ranking, null); assert.ok(result.rows.every(row => row.total === null));
+  assert.equal(result.conditionalArithmetic.status, 'claims-complete');
+  assert.deepEqual(groups(result), [['b'], ['a']]); assert.equal(amount(result).decimal, '10'); assert.equal(amount(result,1).decimal, '8');
   assert.equal(result.rows[0].coverage.byUnit.g.required.decimal, '600');
   assert.equal(result.rows[0].coverage.byUnit.ml.required.decimal, '100');
   assert.deepEqual(result.sourceSnapshot, before); assert.deepEqual(input, before);
 });
-test('one unknown cost blocks ALL cohort totals and rank; exact known subtotal remains labelled', () => {
+test('default-denied receipt boundary cannot be activated by forged shape or client status', () => {
+  const input = fixture(), forged = receiptEnvelope(input); forged.authenticated = true; forged.admitted = true;
+  input.authenticated = true; input.approved = true;
+  const fake = calculate(input, forged); assert.equal(fake.authority.authenticated, false); assert.equal(fake.ranking, null);
+  const empty = compareDatedCosts(JSON.stringify(input), undefined, NOW, OP); incomplete(empty);
+  assert.equal(empty.rows[0].coverage.knownLines, 0);
+  assert.ok(empty.rows.every(row => row.total === null));
+});
+test('one missing claim/cost withholds all conditional cohort totals, preserving exact unknown coverage', () => {
   const input = fixture(); input.candidates[1].lines[1].cost.value = null;
-  const result = calculate(input);
-  assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
-  assert.ok(result.rows.every(r => r.total === null));
+  const result = calculate(input); incomplete(result);
   assert.equal(result.rows[1].knownSubtotal.value.decimal, '4');
+  assert.equal(result.rows[1].knownSubtotal.authority, 'unverified-receipt-claims');
   assert.deepEqual(result.rows[1].coverage.unknownLineIds, ['oil']);
   assert.equal(result.rows[1].coverage.byUnit.ml.known.decimal, '0');
   assert.equal(result.rows[1].coverage.byUnit.ml.required.decimal, '100');
+  const source = fixture(), receipts = receiptEnvelope(source); receipts.receipts = receipts.receipts.filter(r => r.kind !== 'price');
+  incomplete(calculate(source, receipts));
 });
-test('qualified observed zero cost is distinct from missing and no client flag qualifies prices', () => {
-  const input = fixture(); input.candidates[0].lines[0].cost.value = '0';
-  assert.equal(calculate(input).rows[0].total.decimal, '4');
-  input.candidates[0].lines[0].approved = true;
-  const result = compareDatedCosts(input);
-  assert.equal(result.ranking, null); assert.ok(reason(result, 'denominator-unqualified'));
-  assert.ok(result.rows.every(r => r.coverage.knownLines === 0));
+test('observed zero is distinct from missing, unsupported precision and nonfinite input', () => {
+  const zero = fixture(); zero.candidates[0].lines[0].cost.value = '0'; assert.equal(amount(calculate(zero)).decimal, '4');
+  for (const value of [null, '1.0000001', '01', '-1', 'NaN', 'Infinity', '1e10', 1]) {
+    const input = fixture(); input.candidates[0].lines[0].cost.value = value; incomplete(calculate(input));
+  }
+  assert.throws(() => compareDatedCosts('{"x":1e400}', '[]', NOW, OP), /finite/);
 });
-test('dated direct FX uses target-per-source; inverted, missing, stale and ambiguous rates block', () => {
-  assert.equal(calculate(fixture('fx')).rows[1].total.decimal, '12');
+test('direct dated FX multiplication retains direction/version/date/missing/ambiguity gates', () => {
+  assert.equal(amount(calculate(fixture('fx')),1).decimal, '12');
   for (const mutate of [x => x.rates = [], x => x.rates.push(clone(x.rates[0])),
     x => x.rates[0].direction = 'source-per-target', x => x.rates[0].date = '2026-10-11',
     x => x.rates[0].date = '2026-10-12T00:00:00Z', x => x.rates[0].version = null,
     x => x.rates[0].value = '0', x => x.rates[0].value = '1e3']) {
-    const input = fixture('fx'); mutate(input); const result = calculate(input);
-    assert.equal(result.ranking, null); assert.ok(result.rows.every(r => r.total === null));
+    const input = fixture('fx'); mutate(input); incomplete(calculate(input));
   }
 });
-test('PPP divides ONLY qualified aggregate contextual amounts; recurring precision stays exact', () => {
+test('PPP remains conditional aggregate context with exact recurring fractions and geography factors', () => {
   const result = calculate(fixture('ppp'));
-  assert.equal(result.currency, 'international-dollar'); assert.deepEqual(result.ranking, [['b'], ['a']]);
-  assert.deepEqual(result.rows[0].total, {numerator:'20', denominator:'3', decimal:null});
-  assert.equal(result.rows[1].total.decimal, '4');
+  assert.equal(result.currency, 'international-dollar'); assert.deepEqual(amount(result), {numerator:'20',denominator:'3',decimal:null});
+  assert.equal(amount(result,1).decimal, '4'); assert.equal(result.ranking, null);
   for (const mutate of [x => x.rates[0].referenceYear = 2025, x => x.rates[0].component = null,
     x => x.rates[0].methodology = null, x => x.rates[0].geography.country = 'US',
     x => x.rates[0].purpose = 'dated-price-comparison', x => x.rates[0].direction = 'target-per-source']) {
-    const input = fixture('ppp'); mutate(input); assert.equal(calculate(input).ranking, null);
+    const input = fixture('ppp'); mutate(input); incomplete(calculate(input));
   }
+  const shared = fixture('ppp'); shared.candidates[1].currency = 'AUD'; shared.rates[1].from = 'AUD';
+  for (const line of shared.candidates[1].lines) line.cost.currency = 'AUD';
+  assert.equal(amount(calculate(shared),1).decimal, '4');
   const checkout = fixture('ppp'); checkout.purpose = 'dated-price-comparison'; assert.throws(() => calculate(checkout));
   const sku = fixture('ppp'); sku.cohort.level = 'single-sku'; assert.throws(() => calculate(sku));
 });
-test('pack and consumed bases cannot mix; source quantities require same unit and value', () => {
+test('pack/consumed and exact quantity/unit/date/period/conditions distinctions survive the contract break', () => {
   for (const mutate of [x => x.candidates[1].lines[0].cost.basis = 'consumed',
     x => x.candidates[1].lines[0].quantity.unit = 'kg', x => x.candidates[1].lines[0].quantity.value = '500',
-    x => x.cohort.quantities[0].quantity.value = null]) {
-    const input = fixture(); mutate(input); assert.equal(calculate(input).ranking, null);
-  }
-  const missing = fixture(); missing.cohort.quantities[0].quantity.value = null;
-  assert.equal(calculate(missing).rows[0].coverage.byUnit.g.required, null);
-  assert.deepEqual(calculate(missing).rows[0].coverage.byUnit.g.unresolvedQuantityLineIds, ['rice']);
-});
-test('person-day/energy denominators require positive qualified consumed basis, never default one', () => {
-  const input = fixture(); input.cohort.amountBasis = 'consumed';
-  for (const c of input.candidates) for (const l of c.lines) l.cost.basis = 'consumed';
-  input.cohort.denominator = {kind:'person-days', unit:'person-day', value:'4'};
-  assert.equal(calculate(input).rows[0].total.decimal, '2.5');
-  input.cohort.denominator = {kind:'energy', unit:'kcal', value:'2000'};
-  assert.equal(calculate(input).rows[0].total.decimal, '5');
-  for (const denominator of [null, {kind:'energy', unit:'kcal', value:'0'}, {kind:'energy', unit:'kJ', value:'2000'}]) {
-    input.cohort.denominator = denominator; assert.equal(calculate(input).ranking, null);
-  }
-  const pack = fixture(); pack.cohort.denominator = {kind:'person-days', unit:'person-day', value:'4'};
-  assert.ok(reason(calculate(pack), 'denominator-missing-or-incompatible'));
-});
-test('different periods/observations/conditions/geography and currencies are incompatible', () => {
-  for (const mutate of [x => x.candidates[1].date = '2026-10-13',
+    x => x.cohort.quantities[0].quantity.value = null, x => x.candidates[1].date = '2026-10-13',
     x => x.candidates[1].period.end = '2026-10-13', x => x.candidates[1].conditions.tax = 'excluded',
     x => x.candidates[1].conditions.loyalty = 'membership-only', x => x.candidates[1].geography = null,
     x => x.candidates[1].currency = 'USD']) {
-    const input = fixture(); mutate(input); assert.equal(calculate(input).ranking, null);
+    const input = fixture(); mutate(input); incomplete(calculate(input));
   }
   const input = fixture(); input.cohort.date = '2026-02-30'; assert.throws(() => calculate(input));
+  const missing = fixture(); missing.cohort.quantities[0].quantity.value = null;
+  assert.equal(calculate(missing).rows[0].coverage.byUnit.g.required, null);
 });
-test('CPI weights and incompatible evidence tracks cannot become quantities or cost cohorts', () => {
-  const input = fixture(); input.cohort.evidenceTrack = 'cpi-expenditure-weights'; assert.throws(() => calculate(input));
-  const amounts = fixture(); amounts.cohort.quantities[0].quantity.unit = 'weight-percent';
-  assert.equal(calculate(amounts).ranking, null);
+test('person-day/energy denominator arithmetic requires positive consumed evidence and never defaults one', () => {
+  const input = fixture(); input.cohort.amountBasis = 'consumed';
+  for (const c of input.candidates) for (const l of c.lines) l.cost.basis = 'consumed';
+  input.cohort.denominator = {kind:'person-days',unit:'person-day',value:'4'}; assert.equal(amount(calculate(input)).decimal, '2.5');
+  input.cohort.denominator = {kind:'energy',unit:'kcal',value:'2000'}; assert.equal(amount(calculate(input)).decimal, '5');
+  for (const d of [null,{kind:'energy',unit:'kcal',value:'0'},{kind:'energy',unit:'kJ',value:'2000'}]) {input.cohort.denominator=d;incomplete(calculate(input));}
+  const pack = fixture(); pack.cohort.denominator = {kind:'person-days',unit:'person-day',value:'4'}; incomplete(calculate(pack));
 });
-test('qualification is exact-bound, rights-aware, conflict-aware and synchronous', () => {
-  for (const resolver of [x => ({...qualify(x), binding:{wrong:true}}), x => ({...qualify(x), status:'conflict'}),
-    x => {const r = qualify(x); r.provenance.rights.derivedUse = false; return r;}, async x => qualify(x)]) {
-    assert.equal(compareDatedCosts(fixture(), {resolveEvidence:resolver}).ranking, null);
+test('malformed JSON, duplicate keys, stale/future/conflicting/unbound/rights-denied receipt claims withhold', () => {
+  const input = fixture();
+  for (const text of ['{','null','[]','{"schema":"dated-cost-receipts/2","receipts":[],"receipts":[]}'])
+    incomplete(compareDatedCosts(JSON.stringify(input), text, NOW, OP));
+  for (const mutate of [e => e.operationId = 'other', e => e.receipts.push(clone(e.receipts[0])),
+    e => e.receipts[0].operationId = 'other', e => e.receipts[0].expiresAt = NOW,
+    e => e.receipts[0].issuedAt = NOW + 1, e => e.receipts[0].expiresAt = NOW + 900000,
+    e => e.receipts[0].status = 'conflict', e => e.receipts[0].status = 'qualified',
+    e => e.receipts[0].binding.candidateId = 'wrong', e => e.receipts[0].provenance.rights.derivedUse = false]) {
+    const e = receiptEnvelope(input); mutate(e); incomplete(calculate(input,e));
   }
+  assert.throws(() => compareDatedCosts('{"x":1,"x":2}', '{}', NOW, OP), /Duplicate/);
 });
-test('rejected accidental async evidence blocks without an unhandled rejection', async () => {
-  const result = compareDatedCosts(fixture(), {resolveEvidence:async () => { throw Error('async authority unavailable'); }});
-  assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
-  await new Promise(resolve => setImmediate(resolve));
+test('captured primitive time/operation and input/output bounds reject before arithmetic', () => {
+  const input = JSON.stringify(fixture()), receipts = JSON.stringify(receiptEnvelope(fixture()));
+  for (const now of [null,undefined,NaN,-1,1.5]) assert.throws(() => compareDatedCosts(input, receipts, now, OP));
+  for (const op of [null,'',{},()=>OP]) assert.throws(() => compareDatedCosts(input, receipts, NOW, op));
+  assert.throws(() => compareDatedCosts(' '.repeat(2000001), receipts, NOW, OP), /Bounded/);
+  assert.throws(() => compareDatedCosts('['.repeat(34)+'0'+']'.repeat(34),receipts,NOW,OP), /depth/);
+  const wrong = fixture(); wrong.cohort.evidenceTrack = 'cpi-expenditure-weights'; assert.throws(() => calculate(wrong));
+  const unit = fixture(); unit.cohort.quantities[0].quantity.unit = 'weight-percent'; incomplete(calculate(unit));
 });
-test('foreign promises are observed; malformed thenables are denied without callback execution', async () => {
-  const foreignReject = runInNewContext('(async function(){throw Error("foreign authority unavailable");})');
-  const foreignFulfill = runInNewContext('(async function(){return {status:"qualified"};})');
-  let thenCalls = 0;
-  for (const resolver of [() => foreignReject(), () => foreignFulfill(),
-    () => ({then(_yes, no){ thenCalls++; no(Error('thenable unavailable')); }}),
-    () => Object.create({then(){ thenCalls++; throw Error('thenable failed'); }})]) {
-    const result = compareDatedCosts(fixture(), {resolveEvidence:resolver});
-    assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
-  }
-  assert.equal(thenCalls, 0);
-  let hits = 0;
-  const result = compareDatedCosts(fixture(), {resolveEvidence:x => {
-    const verdict = qualify(x);
-    Object.defineProperty(verdict, 'then', {get(){hits++; throw Error('getter must not execute');}, enumerable:true});
-    return verdict;
-  }});
-  assert.equal(result.status, 'blocked'); assert.equal(hits, 0);
-  await new Promise(resolve => setImmediate(resolve));
+test('legacy callbacks and nonJSON objects are rejected without invoking functions/getters/stringification', () => {
+  let calls = 0; const callback = () => {calls++; throw Error('must not execute');};
+  const options = {}; Object.defineProperty(options,'resolveEvidence',{get(){calls++;return callback;}});
+  assert.throws(() => compareDatedCosts(fixture(),options));
+  assert.throws(() => compareDatedCosts(JSON.stringify(fixture()),options,NOW,OP));
+  assert.throws(() => compareDatedCosts(JSON.stringify(fixture()),callback,NOW,OP));
+  const dangerousFactory = () => {calls++; return Object.defineProperty(Promise.reject(Error('must never be created')),
+    'constructor',{get(){calls++;throw Error('must never read');}});};
+  assert.throws(() => compareDatedCosts(JSON.stringify(fixture()),{resolveEvidence:dangerousFactory},NOW,OP));
+  assert.throws(() => compareDatedCosts(JSON.stringify(fixture()),'{}',NOW,OP,callback));
+  const hostile = {toJSON(){calls++;throw Error('must not stringify');}};
+  assert.throws(() => compareDatedCosts(hostile,'{}',NOW,OP));
+  assert.throws(() => compareDatedCosts(Promise.resolve('{}'),'{}',NOW,OP));
+  assert.equal(calls,0);
 });
-test('native rejected promises with shadowed then are observed without consulting accessors', async () => {
-  let hits = 0;
-  const foreign = () => Object.defineProperty(runInNewContext('Promise.reject(Error("foreign shadow"))'),
-    'then', {get(){hits++; throw Error('untrusted then getter');}});
-  const local = () => Object.defineProperty(Promise.reject(Error('local shadow')), 'then', {value:null});
-  for (const resolver of [foreign, local]) {
-    const result = compareDatedCosts(fixture(), {resolveEvidence:resolver});
-    assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
-  }
-  await new Promise(resolve => setImmediate(resolve));
-  assert.equal(hits, 0);
+test('serialized snapshots and returned receipt claims detach and freeze with no caller-object mutation', () => {
+  const input = fixture('fx'), e = receiptEnvelope(input), before = clone({input,e});
+  const result = calculate(input,e); assert.deepEqual({input,e},before);
+  input.rates[0].value = '999'; e.receipts[0].provenance.sourceId = 'changed';
+  assert.equal(amount(result,1).decimal,'12'); assert.equal(result.sourceSnapshot.rates[0].value,'1.5');
+  assert.throws(() => {result.receiptSnapshot.receipts[0].provenance.sourceId='changed';},TypeError);
+  assert.throws(() => {result.rows[0].lines[0].source.cost.value='999';},TypeError);
 });
-test('input captured before resolver effects; frozen result and evidence detach in both directions', () => {
-  const input = fixture('fx'), before = clone(input), verdicts = [];
-  const result = compareDatedCosts(input, {resolveEvidence:x => {
-    input.rates[0].value = '999'; input.candidates[1].lines[0].cost.value = '999';
-    assert.ok(Object.isFrozen(x.binding)); const r = qualify(x); verdicts.push(r); return r;
-  }});
-  assert.equal(result.rows[1].total.decimal, '12'); assert.deepEqual(result.sourceSnapshot, before);
-  verdicts[0].provenance.sourceId = 'changed'; assert.equal(result.rows[0].lines[0].qualification.provenance.sourceId, 'synthetic-only-owner');
-  assert.throws(() => { result.rows[0].lines[0].source.cost.value = '100'; }, TypeError);
-  assert.throws(() => { result.sourceSnapshot.cohort.conditions.tax = 'excluded'; }, TypeError);
+test('aggregate/precision ceilings and conservative resolution groups remain exact conditional diagnostics', () => {
+  const huge = fixture('fx'); huge.rates[0].value='999999999999'; assert.ok(reason(calculate(huge),'aggregate-out-of-range'));
+  const sum=fixture();for(const l of sum.candidates[0].lines)l.cost.value='999999999999';incomplete(calculate(sum));
+  const qty=fixture();for(const q of qty.cohort.quantities)q.quantity={unit:'g',value:'999999999999'};
+  for(const c of qty.candidates)for(let i=0;i<c.lines.length;i++)c.lines[i].quantity=clone(qty.cohort.quantities[i].quantity);
+  assert.ok(reason(calculate(qty),'quantity-aggregate-out-of-range'));
+  const close=fixture();close.candidates[1].lines[0].cost.value='6.005';close.candidates[1].lines[1].cost.value='4';
+  assert.deepEqual(groups(calculate(close)),[['a','b']]);assert.equal(calculate(close).ranking,null);
 });
-test('bounded precision and aggregates block rather than round, overflow or coerce', () => {
-  for (const value of [null, '1.0000001', '01', '-1', 'NaN', 'Infinity', '1e10', 1]) {
-    const input = fixture(); input.candidates[0].lines[0].cost.value = value; assert.equal(calculate(input).ranking, null);
-  }
-  const huge = fixture('fx'); huge.rates[0].value = '999999999999';
-  assert.ok(reason(calculate(huge), 'aggregate-out-of-range'));
-  const sum = fixture(); for (const l of sum.candidates[0].lines) l.cost.value = '999999999999';
-  assert.ok(reason(calculate(sum), 'aggregate-out-of-range'));
-  const qty = fixture(); qty.cohort.quantities[0].quantity.value = '999999999999';
-  qty.cohort.quantities[1].quantity = {unit:'g', value:'999999999999'};
-  for (const c of qty.candidates) for (let i = 0; i < c.lines.length; i++) c.lines[i].quantity = clone(qty.cohort.quantities[i].quantity);
-  assert.ok(reason(calculate(qty), 'quantity-aggregate-out-of-range'));
+
+// Test-only parent containment adapter; no production producer/runtime is shipped.
+// Source strings are owned benign fixtures. Hostile child values are NEVER serialized
+// in this parent. Only successful bounded stdout text is parsed by the JSON boundary.
+function containedEnvelope(source) {
+  const child=spawnSync(process.execPath,['--unhandled-rejections=strict','--input-type=module','--eval',source],
+    {encoding:'utf8',timeout:1000,maxBuffer:32768,env:{}});
+  if(child.error||child.signal||child.status!==0)return {state:'unknown',reason:child.error?.code ?? child.signal ?? 'exit-'+child.status,text:'{"schema":"dated-cost-receipts/2","operationId":null,"receipts":[]}'};
+  try{const parsed=JSON.parse(child.stdout);if(!parsed||parsed.schema!=='dated-cost-receipts/2')throw Error('invalid');}
+  catch{return {state:'unknown',reason:'invalid-json',text:'{"schema":"dated-cost-receipts/2","operationId":null,"receipts":[]}'};}
+  return {state:'unverified-json',text:child.stdout};
+}
+test('disposable synthetic producer constructor/species rejection/crash cannot kill parent; result unknown', () => {
+  const cases=[
+    [`const p=Object.defineProperty(Promise.reject(Error('constructor-held')),'constructor',{get(){throw Error('constructor read');}});try{Promise.prototype.then.call(p,()=>{},()=>{});}catch{}`,'exit-1'],
+    [`import {runInNewContext} from 'node:vm';const p=runInNewContext('(class P extends Promise {static get [Symbol.species](){throw Error("species read");}}).reject(Error("species-held"))');try{Promise.prototype.then.call(p,()=>{},()=>{});}catch{}`,'exit-1'],
+    [`throw Error('producer crash');`,'exit-1'],
+    [`process.stdout.write('{');`,'invalid-json'],
+    [`process.stdout.write('x'.repeat(65536));`,'ENOBUFS'],
+    [`setInterval(()=>{},1000);`,'ETIMEDOUT']
+  ];
+  for(const [source,expected] of cases){const result=containedEnvelope(source);assert.equal(result.state,'unknown');assert.equal(result.reason,expected);
+    const projection=compareDatedCosts(JSON.stringify(fixture()),result.text,NOW,OP);incomplete(projection);assert.equal(projection.authority.authenticated,false);}
 });
-test('declared resolution groups close observed costs without a rounding-level winner', () => {
-  const input = fixture(); input.candidates[1].lines[0].cost.value = '6.005';
-  input.candidates[1].lines[1].cost.value = '4';
-  assert.deepEqual(calculate(input).ranking, [['a', 'b']]);
-});
-test('PPP factors are geography-specific even when two candidates share a local currency', () => {
-  const input = fixture('ppp'); input.candidates[1].currency = 'AUD'; input.rates[1].from = 'AUD';
-  for (const line of input.candidates[1].lines) line.cost.currency = 'AUD';
-  assert.equal(calculate(input).rows[1].total.decimal, '4');
-});
-test('sparse/cyclic/accessor inputs and excessive candidate count fail without invoking getters', () => {
-  const sparse = fixture(); sparse.candidates = Array(2); assert.throws(() => calculate(sparse), /Dense/);
-  const cycle = fixture(); cycle.self = cycle; assert.throws(() => calculate(cycle));
-  const many = fixture(); many.candidates = Array.from({length:51}, (_, i) => ({...many.candidates[0], id:String(i)})); assert.throws(() => calculate(many));
-  const hostile = fixture(); let hits = 0;
-  Object.defineProperty(hostile, 'cohort', {enumerable:true, get(){hits++; return {};}});
-  assert.throws(() => calculate(hostile)); assert.equal(hits, 0);
+test('successful bounded child JSON remains unverified; contained success is not authority admission', () => {
+  const text=JSON.stringify(receiptEnvelope(fixture()));
+  const result=containedEnvelope('process.stdout.write('+JSON.stringify(text)+');');
+  assert.equal(result.state,'unverified-json');const projection=compareDatedCosts(JSON.stringify(fixture()),result.text,NOW,OP);
+  assert.equal(projection.conditionalArithmetic.status,'claims-complete');assert.equal(projection.status,'blocked');
+  assert.equal(projection.ranking,null);assert.equal(projection.authority.authenticated,false);
 });
