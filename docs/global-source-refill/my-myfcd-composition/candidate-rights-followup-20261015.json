@@ -1,0 +1,157 @@
+{
+  "schema": "offmenu-myfcd-public-rights-followup/1",
+  "proposal_id": "my-myfcd-composition",
+  "owner": "Worker36",
+  "created_utc": "2026-10-14T16:04:21.305516+00:00",
+  "prior_candidate": {
+    "commit": "50cee704f25f3e1a361cc2ee001c4f7b0def1548",
+    "path": "docs/global-source-refill/my-myfcd-composition/candidate.json",
+    "sha256": "3ee74b87faddf820620002f7c65ee9b2eb0e0af4fcadcf787c81e3ed0918641f",
+    "preserved": true
+  },
+  "authorization_refinement": "Public primary-publisher copyright/permission/download metadata only; <=256KiB new bodies; no original food-table acquisition until reuse rights established.",
+  "access": {
+    "source": "my-myfcd-composition",
+    "requests": [
+      {
+        "url": "https://myfcd.moh.gov.my/index.php/about-us/history-of-food-composition-database.html",
+        "method": "GET",
+        "request_body_bytes": 0,
+        "utc": "2026-10-14T16:02:27.649622+00:00",
+        "body_cap": 131072,
+        "status": 200,
+        "final_url": "https://myfcd.moh.gov.my/index.php/about-us/history-of-food-composition-database.html",
+        "content_type": "text/html",
+        "complete": true,
+        "bytes": 18159,
+        "sha256": "15076c81efb2dd60ade5df742f6f5902304cdf0564a3e0be99ad1a772e44b905",
+        "local_reference": "/tmp/worker-36-myfcd-rights/history.html"
+      },
+      {
+        "url": "https://myfcd.moh.gov.my/index.php/disclaimer.html",
+        "method": "GET",
+        "request_body_bytes": 0,
+        "utc": "2026-10-14T16:02:29.357728+00:00",
+        "body_cap": 131072,
+        "status": 200,
+        "final_url": "https://myfcd.moh.gov.my/index.php/disclaimer.html",
+        "content_type": "text/html",
+        "complete": true,
+        "bytes": 11395,
+        "sha256": "17b039df6e45465111d1d35127ed34e1540ba7cd615c652900aa7a372547c931",
+        "local_reference": "/tmp/worker-36-myfcd-rights/disclaimer.html"
+      }
+    ],
+    "new_response_body_bytes": 29554,
+    "new_cap": 262144,
+    "prior_cumulative_body_bytes": 859477,
+    "cumulative_body_bytes": 889031,
+    "cumulative_cap": 3145728,
+    "food_table_requests": 0,
+    "rights_accepted": false,
+    "wire_measurement": "final response body read lengths only; redirect headers/intermediate bodies and TLS overhead not instrumented"
+  },
+  "evidence": [
+    {
+      "kind": "complete-publisher-history",
+      "url": "https://myfcd.moh.gov.my/index.php/about-us/history-of-food-composition-database.html",
+      "sha256": "15076c81efb2dd60ade5df742f6f5902304cdf0564a3e0be99ad1a772e44b905",
+      "body_bytes": 18159,
+      "findings": {
+        "historical_table_publication": 1988,
+        "historical_revision": 1997,
+        "historical_scope_claim": {
+          "foods": 783,
+          "nutrients": 19
+        },
+        "updated_scope_claim": {
+          "mandatory_nutrients": 29,
+          "optional_nutrients": 11,
+          "additional_raw_processed_foods": 441,
+          "additional_prepared_foods": 668
+        },
+        "method_programme": "Publisher describes sampling/method harmonisation, web database establishment and ongoing analysis; this is programme history, not a pinned current release.",
+        "nutrient_dictionary": "Table1 lists nutrient categories/names; no source units, denominators, current numeric-field dictionary or trace/NULL convention is established.",
+        "licence_grant_present": false
+      }
+    },
+    {
+      "kind": "complete-publisher-disclaimer",
+      "url": "https://myfcd.moh.gov.my/index.php/disclaimer.html",
+      "sha256": "17b039df6e45465111d1d35127ed34e1540ba7cd615c652900aa7a372547c931",
+      "body_bytes": 11395,
+      "finding": "Government liability disclaimer for information use; copyright footer names MyFCD Programme. Neither supplies explicit commercial reuse, retention, normalization or redistribution permission.",
+      "licence_grant_present": false
+    },
+    {
+      "kind": "retained-original-homepage-resource-metadata",
+      "path": "/home/user/src/offmenu-data/source-access-20261013/a7e745a57be5fb51b4ee8d83.html",
+      "sha256": "2905a404d84bf930b43ca582bbeb54a2e90392caa770e645d790089e198e333e",
+      "retrieved_utc": "2026-10-13T06:54:26.777382+00:00",
+      "ajax_routes": [
+        "https://myfcd.moh.gov.my/myfcdcurrent/index.php/ajax/datatable_data",
+        "https://myfcd.moh.gov.my/myfcd97/index.php/ajax/datatable_data",
+        "https://myfcd.moh.gov.my/myfcdindustri/static/DataTables-1.10.12/examples/server_side/scripts/server_processing.php"
+      ],
+      "visible_index_columns": [
+        "NDB No",
+        "Description",
+        "",
+        "Module"
+      ],
+      "detail_url_template": "https://myfcd.moh.gov.my/{full[3]}/index.php/site/detail_product/{data}/{pgNum}/{pgLen}/{searchTxt}/0/0/",
+      "resource_interpretation": "Current,1997 and industry AJAX tables are named in retained publisher JavaScript. Original table response, record/resource file, exact schema and current version remain unverified; no endpoint invoked.",
+      "bounded_access_limit": "Client code fetches table responses then applies search; no server-side <=3-record parameter verified. Do not assume pagination bounds acquisition.",
+      "protocol_metadata_link": "http://www.imr.gov.my/images/uploads/Protocol_Sampling_MY_FCD.pdf",
+      "protocol_is_original_table": false,
+      "protocol_downloaded": false
+    }
+  ],
+  "resolved_now": [
+    "Two complete current publisher metadata responses with exact byte hashes",
+    "Historical1988/1997 programme/revision context separated from current release identity",
+    "Exact current/1997/industry table endpoint names and visible index fields from retained homepage",
+    "Publisher disclaimer confirmed not a reuse grant"
+  ],
+  "not_resolved": {
+    "commercial_reuse_scope": null,
+    "normalization_retention_scope": null,
+    "redistribution_scope": null,
+    "grant_url": null,
+    "original_table_release_id": null,
+    "original_table_release_date": null,
+    "original_table_file_hash": null,
+    "nutrient_value_unit_dictionary": null,
+    "original_food_record_ids": [],
+    "original_food_record_hashes": []
+  },
+  "precise_blocker": "No explicit MyFCD dataset reuse grant or bounded original-table resource is exposed in the inspected public metadata. Current/1997 endpoints are identified but unrequested; food-table acquisition forbidden while rights remain unknown. Nutrient-name history is not actual food data or qualified column/basis evidence.",
+  "exact_request": [
+    "Publisher permission/licence explicitly covering local original-record retention/normalization and proposed commercial use/export, with full terms URL/date/hash",
+    "Publisher-pinned current-table release/version; documented free bounded <=3-record resource or existing licensed original subset",
+    "Actual original foodID/record columns, Malay-name/preparation fields, nutrient amount/unit/basis and trace/NULL definitions"
+  ],
+  "food_records_emitted": 0,
+  "food_table_requests": 0,
+  "new_adapter_or_fixture": false,
+  "independent_review": "pending owner01/63; no acceptance/admission",
+  "corpus_admitted": false,
+  "published": false,
+  "production": "STOP",
+  "mandatory_reviewer": "auto_review preserved",
+  "local_body_recovery": "Complete metadata response bodies referenced in /tmp/worker-36-myfcd-rights; hashes/findings committed, no rights-uncleared source text/raw food bodies committed",
+  "validation": {
+    "complete_primary_response_hashes_rechecked": true,
+    "prior_candidate_unchanged": true,
+    "retained_landing_hash_unchanged": true,
+    "budget_arithmetic_verified": true,
+    "no_food_regression_claimed": true
+  },
+  "preservation": {
+    "branch": "feature/source-my-myfcd-composition-20261015",
+    "prior_local_and_remote_checkpoint": "50cee704f25f3e1a361cc2ee001c4f7b0def1548",
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "original_TW_branch_preserved": true,
+    "only_owned_followup_authored": true
+  }
+}
