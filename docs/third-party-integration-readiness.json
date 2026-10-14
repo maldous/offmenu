@@ -31,6 +31,42 @@
       "compiledWorkerTests": 5,
       "pythonTests": 66,
       "scope": "Older committed main only; not current-main or production acceptance."
+    },
+    "pinnedSyntheticCompatibility": {
+      "checkedAt": "2026-10-14T05:37:28.752Z",
+      "mainCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+      "thirdPartyCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+      "report": "docs/third-party-pinned-compatibility.json",
+      "instructions": "docs/third-party-pinned-compatibility.md",
+      "state": "ready-for-morgan-review",
+      "freshChecks": {
+        "targeted-unit": {
+          "tests": 107,
+          "pass": 107,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "compiled-worker": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "pinned-main-replay-runtime": {
+          "tests": 2,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      "acceptedCurrentMainIntegration": false,
+      "scope": "Pinned synthetic schema/native runtime compatibility only; no merge, deployment, actual corpus or peer auth/mock composition acceptance."
     }
   },
   "latestReadOnlyQualification": {
