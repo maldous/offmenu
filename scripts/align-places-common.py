@@ -438,6 +438,10 @@ def align_owned(curated, output, records_per_packet, packets_per_file, limit, ma
             if limit and sum(input_counts.values()) >= limit:
                 break
         sink.flush_packet()
+        # Persist the final short buffer and its cursor/identities before its
+        # atomic close, so resume can verify the exact orphan if close succeeds
+        # but the subsequent receipt commit is interrupted.
+        save_cursor()
         sink.close()
         save_cursor()
         # Retain the Overture attribution/NOTICE texts with the graph.  They are

@@ -70,6 +70,63 @@ class PlacesCheckpointTests(unittest.TestCase):
             actual=places.align(source,out,records_per_packet=1,resume=True)
             self.assertEqual(actual['counts']['resources'],4)
 
+    def test_final_short_packet_close_resume_equals_uninterrupted(self):
+        # Four records: size 3 ends in a short second packet; size 5 never
+        # reaches a full packet. Interrupt after the final asset is durable.
+        for packet_size in [3, 5]:
+            with self.subTest(packet_size=packet_size), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                source = self.fixture(root)
+                output = root / 'out'
+                final_name = 'part-00001.jsonl.gz' if packet_size == 3 else 'part-00000.jsonl.gz'
+                original = places.atomic_bytes
+
+                def write_then_interrupt(path, raw):
+                    original(path, raw)
+                    if path.name == final_name:
+                        raise RuntimeError('interruption after final short asset')
+
+                with patch.object(places, 'atomic_bytes', write_then_interrupt):
+                    with self.assertRaisesRegex(RuntimeError, 'final short asset'):
+                        places.align(source, output, records_per_packet=packet_size)
+                retained = {p.name: p.read_bytes() for p in (root / 'out.partial').rglob('*.gz')}
+                import sqlite3
+                with sqlite3.connect(root / 'out.checkpoint.sqlite') as db:
+                    created = json.loads(db.execute('SELECT payload FROM state').fetchone()[0])['createdAt']
+                with patch.object(places.dt, 'datetime') as clock:
+                    clock.now.return_value.isoformat.return_value = created
+                    places.align(source, root / 'expected', records_per_packet=packet_size)
+                places.align(source, output, records_per_packet=packet_size, resume=True)
+                actual = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob('*') if p.is_file()}
+                expected_root = root / 'expected'
+                expected = {str(p.relative_to(expected_root)): p.read_bytes() for p in expected_root.rglob('*') if p.is_file()}
+                self.assertEqual(actual, expected)
+                for name, raw in retained.items():
+                    self.assertEqual((output / 'packets' / name).read_bytes(), raw)
+
+    def test_final_short_orphan_mismatch_stays_untouched_and_refused(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = self.fixture(root)
+            output = root / 'out'
+            original = places.atomic_bytes
+
+            def write_then_interrupt(path, raw):
+                original(path, raw)
+                if path.name == 'part-00000.jsonl.gz':
+                    raise RuntimeError('final short asset')
+
+            with patch.object(places, 'atomic_bytes', write_then_interrupt):
+                with self.assertRaises(RuntimeError):
+                    places.align(source, output, records_per_packet=5)
+            orphan = root / 'out.partial' / 'packets' / 'part-00000.jsonl.gz'
+            orphan.write_bytes(orphan.read_bytes()[:-8])
+            before = orphan.read_bytes()
+            with self.assertRaisesRegex(ValueError, 'uncheckpointed/missing'):
+                places.align(source, output, records_per_packet=5, resume=True)
+            self.assertEqual(orphan.read_bytes(), before)
+            self.assertFalse(output.exists())
+
     def test_mid_packet_failure_rolls_back_cursor_and_identity(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);source=self.fixture(root);out=root/'out'
