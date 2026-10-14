@@ -51,8 +51,8 @@ function envelope(value,accountId) {
   }
   return state;
 }
-export function createPrivateCollections({authorize,load,resolveRecipe,commit,clock}) {
-  if([authorize,load,resolveRecipe,commit,clock].some(f=>typeof f!=='function'))throw Error('Authoritative collection dependencies required');
+export function createPrivateCollections({authorize,authorizeRelease,load,resolveRecipe,commit,clock}) {
+  if([authorize,authorizeRelease,load,resolveRecipe,commit,clock].some(f=>typeof f!=='function'))throw Error('Authoritative collection dependencies required');
   async function authority(session,accountId,action) {
     const a=capture(await authorize(session,{accountId,action}));
     if(a.allowed!==true||a.accountId!==accountId||a.consent?.granted!==true||a.consent.purpose!=='private-recipe-collections')throw Error('Private collection access denied');
@@ -94,7 +94,13 @@ export function createPrivateCollections({authorize,load,resolveRecipe,commit,cl
     async read({session,accountId}) {
       session=capture(session);id(accountId);const a=await authority(session,accountId,'read'),state=envelope(await load(binding(a)),accountId);
       await refresh(state,a);
-      await recheck(session,a,'read');return capture(state);
+      await recheck(session,a,'read');
+      // Last awaited gate binds current account AND every source policy to this
+      // exact private projection. It cannot merely replay earlier resolver flags.
+      const sources=state.collections.flatMap(c=>c.bookmarks.map(b=>({reference:capture(b.reference),status:b.status,privateCopyIncluded:Object.hasOwn(b,'privateCopy')})));
+      const release=capture(await authorizeRelease(capture(session),{binding:binding(a),sources:capture(sources)}));
+      if(release?.allowed!==true||JSON.stringify(release.binding)!==JSON.stringify(binding(a)))throw Error('Current source/account release denied');
+      return capture(state);
     },
     async mutate({session,accountId,command}) {
       session=capture(session);id(accountId);const cmd=capture(command);id(cmd.operationId);revision(cmd.expectedVersion);
@@ -126,7 +132,7 @@ export function createPrivateCollections({authorize,load,resolveRecipe,commit,cl
       try {result=capture(await commit({binding:binding(a),operationId:cmd.operationId,expectedVersion:cmd.expectedVersion,state:capture(state)}));}
       catch {return {status:'unknown',operationId:cmd.operationId};}
       try {await recheck(session,a,'write');} catch {return {status:'unknown',operationId:cmd.operationId};}
-      if(result.status!=='committed'||result.acknowledged!==true||result.operationId!==cmd.operationId||result.revision!==cmd.expectedVersion+1||JSON.stringify(result.binding)!==JSON.stringify(binding(a)))return {status:'unknown',operationId:cmd.operationId};
+      if(result?.status!=='committed'||result.acknowledged!==true||result.operationId!==cmd.operationId||result.revision!==cmd.expectedVersion+1||JSON.stringify(result.binding)!==JSON.stringify(binding(a)))return {status:'unknown',operationId:cmd.operationId};
       return result;
     }
   };

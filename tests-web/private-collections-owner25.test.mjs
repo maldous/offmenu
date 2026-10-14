@@ -4,22 +4,25 @@ import {createPrivateCollections} from '../public/private-collections-owner25.mj
 import {kitchenProjection} from '../public/sync-model.js';
 const reference={sourceId:'manual-source',recipeId:'recipe-one',version:'v1',rightsVersion:'policy1',sourceUrl:'https://example.test/recipe'};
 function fixture() {
-  let state={version:1,accountId:'a',revision:0,collections:[]},live=true,sourceStatus='available',copyAllowed=true,authBarrier,commitBarrier,lost=false,afterLoad,resolverPatch={};
+  let state={version:1,accountId:'a',revision:0,collections:[]},live=true,sourceStatus='available',copyAllowed=true,authBarrier,commitBarrier,lost=false,afterLoad,resolverPatch={},afterResolve,beforeAuth,commitNull=false;
   const auth={allowed:true,accountId:'a',sessionId:'session',epoch:1,realm:'realm',resource:'/private-collections',consent:{id:'consent',revision:1,granted:true,purpose:'private-recipe-collections'}};
   const resolved=()=>({status:sourceStatus,reference,provenance:{sourceId:reference.sourceId,license:'explicit-unknown',rightsVersion:'policy1'},privateCopyAllowed:copyAllowed,
     privateCopy:{accountId:'a',review:{id:'review1',status:'personally-reviewed',sourceId:'manual-source',rightsVersion:'policy1',sourceRecipeId:'recipe-one',sourceVersion:'v1'},recipe:{title:'Family recipe',ingredients:[],instructions:['Private note']}},...resolverPatch});
-  const api=createPrivateCollections({authorize:async session=>{if(authBarrier)await authBarrier;if(session!=='verified'||!live)return {...auth,allowed:false};return structuredClone(auth);},load:async()=>{if(afterLoad)afterLoad();return structuredClone(state);},resolveRecipe:async()=>resolved(),clock:()=> '2026-10-15T00:00:00Z',
+  const api=createPrivateCollections({authorize:async session=>{if(authBarrier)await authBarrier;if(beforeAuth){const fn=beforeAuth;beforeAuth=null;fn();}if(session!=='verified'||!live)return {...auth,allowed:false};return structuredClone(auth);},
+    authorizeRelease:async(session,{binding,sources})=>({allowed:session==='verified'&&live&&sources.every(s=>!s.privateCopyIncluded||(sourceStatus==='available'&&copyAllowed)),binding}),
+    load:async()=>{if(afterLoad)afterLoad();return structuredClone(state);},resolveRecipe:async()=>{const result=resolved();if(afterResolve)beforeAuth=afterResolve;return result;},clock:()=> '2026-10-15T00:00:00Z',
     commit:async request=>{
       if(commitBarrier)await commitBarrier;
       if(!live||request.binding.accountId!=='a')throw Error('Atomic admission denied');
       if(request.expectedVersion!==state.revision)return {status:'conflict'};
       state={...structuredClone(request.state),revision:state.revision+1};
+      if(commitNull)return null;
       if(lost)throw Error('Lost acknowledgment');
       return {status:'committed',acknowledged:true,operationId:request.operationId,revision:state.revision,binding:request.binding};
     }});
   let seq=0;
   const mutate=(type,extra={})=>api.mutate({session:'verified',accountId:'a',command:{type,operationId:'op'+(++seq),expectedVersion:state.revision,collectionId:'family',...extra}});
-  return {api,mutate,state:()=>structuredClone(state),revoke:()=>live=false,status:v=>sourceStatus=v,copy:v=>copyAllowed=v,authWait:p=>authBarrier=p,commitWait:p=>commitBarrier=p,lose:()=>lost=true,afterLoad:f=>afterLoad=f,restore:s=>state=structuredClone(s),patch:p=>resolverPatch=p};
+  return {api,mutate,state:()=>structuredClone(state),revoke:()=>live=false,status:v=>sourceStatus=v,copy:v=>copyAllowed=v,authWait:p=>authBarrier=p,commitWait:p=>commitBarrier=p,lose:()=>lost=true,afterLoad:f=>afterLoad=f,restore:s=>state=structuredClone(s),patch:p=>resolverPatch=p,afterResolve:f=>afterResolve=f,nullAck:()=>commitNull=true};
 }
 test('exported consumer add/bookmark/rename/unbookmark/remove/reset with revision receipts',async()=>{
   const f=fixture();assert.equal((await f.mutate('add',{name:'Family'})).revision,1);
@@ -95,4 +98,13 @@ test('W20-C3 source namespace and rights review/provenance mismatches reject',as
     copy.review[field]='OTHER';f.patch({privateCopy:copy});await assert.rejects(f.mutate('bookmark',{bookmarkId:'b',reference}),/mismatch/);
     copy.review[field]=reference[field];copy.recipe.provenance[field]='OTHER';await assert.rejects(f.mutate('bookmark',{bookmarkId:'b',reference}),/lineage/);
   }
+});
+test('PR9 source withdrawal during final account check denies stale private copy release',async()=>{
+  const f=fixture();await f.mutate('add',{name:'Family'});await f.mutate('bookmark',{bookmarkId:'b',reference});
+  f.afterResolve(()=>f.status('withdrawn'));
+  await assert.rejects(f.api.read({session:'verified',accountId:'a'}),/release denied/);
+});
+test('PR9 null response after applied commit remains unknown, never throws or implies rollback',async()=>{
+  const f=fixture();f.nullAck();const result=await f.mutate('add',{name:'Family'});
+  assert.equal(result.status,'unknown');assert.equal(result.operationId,'op1');assert.equal(f.state().revision,1);
 });

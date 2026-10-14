@@ -1,5 +1,29 @@
 # P2-03 private bookmarks and family collections
 
+## PR9 provider-gated successor
+
+Normal PR9 provider review on accepted initial composition20a6ecdd raised two P2
+findings: discussion_r4274165885 source withdrawal between resolve and final account
+check could release an old privateCopy; discussion_r4274165894 null commit response
+threw instead of reporting unknown. Both new regression probes fail against the
+immutable initial module in an isolated declared-file tree (exit1, two failures).
+Corrected module passes14/14 focused cases, including these two regressions.
+
+New required authorizeRelease(session,{binding,sources}) is the last awaited read
+gate. Sources carry exact five-field references, resolved status and whether a
+private copy is included. Trusted owner callback must readmit current account,
+session, consent and every source/rights-policy version for this projection,
+returning allowed:true and the exact captured binding. Replaying saved resolver
+or client flags is not valid production admission. Denial withholds the projection.
+Producer/caller atomic release fencing remains unqualified; the synthetic fixture
+checks withdrawal control flow only. Commit adapter must still guard policies
+atomically with CAS/ledger. No central callback/schema is installed.
+
+Null/scalar/malformed commit responses remain unknown; an already applied state
+is not implied rolled back. This changes code/tests relative to20a6ecdd, so initial
+PASS/root acceptance below is historical and needs fresh Worker20 review/root
+acceptance at the successor before merge. Initial20a6/c83/bd51/reviews retained.
+
 ## Fresh standalone composition — 15 October 2026
 
 Root read Worker20 scoped PASS at
@@ -71,7 +95,8 @@ dataset4168ae2 and PR5/PR7 evidence remain retained.
 
 ## Exported consumer contract
 
-createPrivateCollections receives authorize, load, resolveRecipe, commit and clock.
+createPrivateCollections receives authorize, authorizeRelease, load, resolveRecipe,
+commit and clock.
 No storage, timers, network or credentials are owned by the module.
 
 - authorize(session,{accountId,action}) resolves trusted current account, session,
