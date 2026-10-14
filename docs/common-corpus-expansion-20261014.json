@@ -194,13 +194,13 @@
     "directSendError": "Some requested entity was not found: thread not found",
     "gatewayThread": "01a130cd-91c1-73da-9978-889018a100dd",
     "gatewayRelayRequestAccepted": true,
-    "managerDeliveryConfirmed": false,
+    "managerDeliveryConfirmed": true,
     "userDirection": "Continue remaining work in parallel while waiting",
     "gatewayConnectionConfirmed": true,
     "connectionNonce": "offmenu-source-20261014-check1",
     "managerAcknowledgementSourceMessage": "01a137c8-711a-7748-80d9-40d2dd8199e3",
     "latestDetailedReportAcceptedByGateway": true,
-    "deliveryNote": "Connection roundtrip acknowledged; latest substantive data report remains awaiting main-thread delivery confirmation."
+    "deliveryNote": "Gateway relayed Morgan acknowledgement of latest report, checkpoint and technical jobs."
   },
   "independentlyReviewedReadyPackages": [
     {
@@ -292,7 +292,7 @@
     "status": "standalone-global-qualified-and-independently-reviewed; not published"
   },
   "checkpointValidation": {
-    "pythonTestsPassed": 66,
+    "pythonTestsPassed": 67,
     "recipePublisherJavaScriptSyntax": "pass",
     "diffWhitespace": "pass",
     "publicReleaseChanged": false

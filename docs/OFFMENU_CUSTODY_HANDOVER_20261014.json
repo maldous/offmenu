@@ -54,12 +54,15 @@
       "packetAssets": 2393,
       "complete": false,
       "manifestExists": false,
-      "resumeConstraint": "Do not duplicate writer. Same-host retained process can continue only under replacement custody authorization; if host changes, preserve partial and decide recovery. Source is admitted curated input, no raw/private promotion."
+      "resumeConstraint": "Do not duplicate writer. Same-host retained process can continue only under replacement custody authorization; if host changes, preserve partial and decide recovery. Source is admitted curated input, no raw/private promotion.",
+      "birthUtc": "2026-10-14T01:59:28.660000+00:00",
+      "startTicksSinceBoot": 68051066,
+      "descendantPids": []
     },
     {
       "sessionId": 70411,
       "job": "six-ready-package global proof",
-      "state": "completed successfully; exit0 expected from final proof"
+      "state": "completed successfully; native session readback exit0"
     },
     {
       "sessionId": 82296,
@@ -127,7 +130,15 @@
     "gateway": "01a130cd-91c1-73da-9978-889018a100dd",
     "connectionAcknowledged": true,
     "latestSubstantiveReportAcceptedByGateway": true,
-    "mainDeliveryOfLatestReportConfirmed": false
+    "mainDeliveryOfLatestReportConfirmed": true,
+    "acknowledgement": "Gateway relayed Morgan acknowledgement incorporating checkpoint and reported technical jobs; no further broad report requested."
   },
-  "nextOutput": "Replacement may resume only after acknowledging custody, single-writer ownership and resolving storage plan; then completed source manifests, final global proof, immutable master, static data-only publication and readback evidence."
+  "nextOutput": "Replacement may resume only after acknowledging custody, single-writer ownership and resolving storage plan; then completed source manifests, final global proof, immutable master, static data-only publication and readback evidence.",
+  "positiveQuiescenceEvidence": "/home/user/src/offmenu-data/custody-positive-quiescence-20261014.json",
+  "latestCheckpoint": "aaa9376414ea487bf3019b44461cde264c553e80",
+  "validation": {
+    "pythonTestsPassed": 67,
+    "recipePublisherJavaScriptSyntax": "pass",
+    "diffWhitespace": "pass"
+  }
 }
