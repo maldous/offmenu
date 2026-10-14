@@ -22,6 +22,9 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import quote
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from places_checkpoint import Checkpoint, atomic_bytes, digest, writer_lock, sink_state, restore_sink
+
 import jsonschema_rs
 
 
@@ -238,6 +241,8 @@ class PacketSink:
         self.current = []
         self.files = []
         self.counts = Counter()
+        self.buffer = b""
+        self.file_packets = 0
 
     def add(self, row):
         resource, assertions, citation = packet_record(row)
@@ -272,42 +277,37 @@ class PacketSink:
             raise ValueError(
                 f"single packet exceeds {self.max_asset_bytes} byte limit before writing ({len(encoded)})"
             )
-        if (not hasattr(self, "handle") or self.file_packets >= self.packets_per_file
-                or self.file_bytes + len(encoded) > self.max_asset_bytes):
+        if self.file_packets >= self.packets_per_file or len(self.buffer) + len(encoded) > self.max_asset_bytes:
             self._close_file()
-            path = self.root / f"part-{self.file_index:05d}.jsonl.gz"
-            self.handle = path.open("wb")
-            self.path = path
-            self.file_packets = 0
-            self.file_bytes = 0
-            self.file_index += 1
-        self.handle.write(encoded)
-        self.file_bytes += len(encoded)
+        self.buffer += encoded
         self.file_packets += 1
 
     def _close_file(self):
-        if not hasattr(self, "handle"):
+        if not self.buffer:
             return
-        self.handle.close()
-        raw = self.path.read_bytes()
-        if len(raw) != self.file_bytes or len(raw) > self.max_asset_bytes:
-            raise ValueError(f"asset exceeds {self.max_asset_bytes} byte limit: {self.path} ({len(raw)})")
-        self.files.append({
-            "key": str(self.path.relative_to(self.root.parent)),
-            "bytes": len(raw),
-            "sha256": sha256_bytes(raw),
-            "packets": self.file_packets,
-        })
-        del self.handle
+        path = self.root / f"part-{self.file_index:05d}.jsonl.gz"
+        if path.exists():
+            if path.read_bytes() != self.buffer:
+                raise ValueError(f"uncheckpointed output mismatch: {path}")
+        else:
+            atomic_bytes(path, self.buffer)
+        self.files.append({"key": str(path.relative_to(self.root.parent)),
+                           "bytes": len(self.buffer), "sha256": sha256_bytes(self.buffer),
+                           "packets": self.file_packets})
+        self.file_index += 1
+        self.buffer = b""
+        self.file_packets = 0
 
     def close(self):
         self._close_file()
 
 
-def curated_rows(root, source_id, expected_assets=None):
+def curated_rows(root, source_id, expected_assets=None, cursor=None, with_cursor=False):
     record_dir = root / "records" / source_id
     for path in sorted(record_dir.glob("*.jsonl.gz")):
         relative_key = str(path.relative_to(root))
+        if cursor and relative_key < cursor["file"]:
+            continue
         if expected_assets is not None:
             expected = expected_assets.get(relative_key)
             if expected is None:
@@ -317,12 +317,15 @@ def curated_rows(root, source_id, expected_assets=None):
                 raise ValueError(f"{relative_key}: input bytes or SHA-256 does not match accepted curated manifest")
         with gzip.open(path, "rt", encoding="utf-8") as handle:
             for line_number, line in enumerate(handle, 1):
+                if cursor and relative_key == cursor["file"] and line_number <= cursor["line"]:
+                    continue
                 if not line.strip():
                     continue
                 entry = json.loads(line)
                 if not isinstance(entry, list) or len(entry) != 2 or not isinstance(entry[1], list) or len(entry[1]) != 1:
                     raise ValueError(f"{path}:{line_number}: expected curated [public-id,[record]]")
-                yield entry[1][0]
+                row = entry[1][0]
+                yield (row, {"source": source_id, "file": relative_key, "line": line_number}) if with_cursor else row
 
 
 def validate_row(row):
@@ -338,23 +341,50 @@ def validate_row(row):
         raise ValueError("missing data object")
 
 
-def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=None, max_asset_bytes=8 * 1024 * 1024):
+def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=None, max_asset_bytes=8 * 1024 * 1024, resume=False):
+    curated, output = Path(curated), Path(output)
     if output.exists():
         raise ValueError(f"immutable output already exists: {output}")
-    if records_per_packet < 1 or packets_per_file < 1:
+    if curated.resolve() == output.resolve() or curated.resolve() in output.resolve().parents or output.resolve() in curated.resolve().parents:
+        raise ValueError("input and output roots must be separate")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with writer_lock(output):
+        return align_owned(curated, output, records_per_packet, packets_per_file, limit, max_asset_bytes, resume)
+
+
+def align_owned(curated, output, records_per_packet, packets_per_file, limit, max_asset_bytes, resume):
+    if output.exists():
+        raise ValueError(f"immutable output already exists: {output}")
+    if records_per_packet < 1 or packets_per_file < 1 or max_asset_bytes < 1 or (limit is not None and limit < 1):
         raise ValueError("packet sizes must be positive")
     schema = json.loads((ROOT / "corpus/common-data.schema.json").read_text())
     validator = jsonschema_rs.Draft202012Validator(schema, validate_formats=True)
     partial = output.with_name(output.name + ".partial")
-    if partial.exists():
-        raise ValueError(f"partial output already exists: {partial}")
-    partial.mkdir(parents=True)
+    inputs = sorted(p for p in curated.rglob("*") if p.is_file())
+    pins = {"curated": str(curated.resolve()), "output": str(output.resolve()),
+            "inputs": {str(p.relative_to(curated)): {"bytes": p.stat().st_size, "sha256": digest(p)} for p in inputs},
+            "schema": digest(ROOT / "corpus/common-data.schema.json"),
+            "contract": digest(ROOT / "corpus/common-data-contract.json"),
+            "implementation": digest(Path(__file__)), "checkpointImplementation": digest(Path(__file__).with_name("places_checkpoint.py")),
+            "options": [records_per_packet, packets_per_file, limit, max_asset_bytes],
+            "createdAt": dt.datetime.now(dt.timezone.utc).isoformat()}
+    checkpoint = Checkpoint(output, partial, pins, resume)
+    partial.mkdir(parents=True, exist_ok=True)
     packet_dir = partial / "packets"
-    packet_dir.mkdir()
+    packet_dir.mkdir(exist_ok=True)
     sink = PacketSink(packet_dir, validator, packets_per_file, max_asset_bytes)
-    input_counts, type_counts, source_counts = Counter(), Counter(), Counter()
+    if checkpoint.value["sink"]:
+        restore_sink(sink, checkpoint.value["sink"])
+    input_counts = Counter(checkpoint.value["input_counts"])
+    type_counts = Counter(checkpoint.value["type_counts"])
+    source_counts = Counter(checkpoint.value["source_counts"])
     source_manifests = {}
-    seen = set()
+    cursor = checkpoint.value["cursor"]
+    def save_cursor():
+        checkpoint.value.update(cursor=cursor, input_counts=dict(input_counts),
+                                type_counts=dict(type_counts), source_counts=dict(source_counts),
+                                sink=sink_state(sink))
+        checkpoint.save()
     started = time.monotonic()
     try:
         curated_manifest = json.loads((curated / "manifest.json").read_text())
@@ -382,32 +412,45 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
                 "curatedManifestSha256": curated_manifest_sha256,
                 "rawSourcePayloadPublished": source["rawSourcePayloadPublished"],
             }
-            for row in curated_rows(curated, source_id, expected_assets):
+            sources = ("overture-food-places", "wikidata-food-businesses")
+            if cursor and sources.index(source_id) < sources.index(cursor["source"]):
+                continue
+            if limit and sum(input_counts.values()) >= limit:
+                continue
+            start_cursor = cursor if cursor and cursor["source"] == source_id else None
+            for row, row_cursor in curated_rows(curated, source_id, expected_assets, start_cursor, with_cursor=True):
                 validate_row(row)
                 provenance = row["provenance"]
                 key = (provenance["sourceId"], provenance["recordId"])
-                if key in seen:
-                    raise ValueError(f"duplicate normalized source identity: {key}")
-                seen.add(key)
+                if provenance["sourceId"] != source_id:
+                    raise ValueError("source identity does not match input partition")
+                checkpoint.add_identity(*key)
+                cursor = row_cursor
                 sink.add(row)
                 input_counts[provenance["sourceId"]] += 1
                 source_counts[provenance["sourceId"]] += 1
                 type_counts[TYPE_SITE if provenance["sourceId"] == "overture-food-places" else TYPE_ORGANIZATION] += 1
                 if len(sink.current) >= records_per_packet:
                     sink.flush_packet()
+                    save_cursor()
                 if limit and sum(input_counts.values()) >= limit:
                     break
             if limit and sum(input_counts.values()) >= limit:
                 break
         sink.flush_packet()
+        # Persist the final short buffer and its cursor/identities before its
+        # atomic close, so resume can verify the exact orphan if close succeeds
+        # but the subsequent receipt commit is interrupted.
+        save_cursor()
         sink.close()
+        save_cursor()
         # Retain the Overture attribution/NOTICE texts with the graph.  They are
         # tiny primary licence artifacts, not a duplicate of the source archive.
         notice_files = []
         notice_root = curated / "notices" / "overture-food-places" / source_manifests["overture-food-places"]["releaseId"]
         if notice_root.is_dir():
             destination = partial / "licenses" / "overture-food-places"
-            destination.mkdir(parents=True)
+            destination.mkdir(parents=True, exist_ok=True)
             for notice in sorted(notice_root.glob("*.txt")):
                 relative_notice_key = str(notice.relative_to(curated))
                 expected = expected_assets.get(relative_notice_key)
@@ -440,7 +483,7 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
             "status": "accepted-complete-schema-identity-citation-public-scope-checked" if limit is None else "benchmark-incomplete-not-for-publication",
             "complete": limit is None,
             "limit": limit,
-            "createdAt": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "createdAt": checkpoint.value["createdAt"],
             "packetDirectory": "packets",
             "recordsPerPacket": records_per_packet,
             "packetsPerFile": packets_per_file,
@@ -482,13 +525,12 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
         }
         payload = json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
         manifest["manifestPayloadSha256"] = sha256_bytes(payload)
-        (partial / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+        atomic_bytes(partial / "manifest.json", (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode())
         os.replace(partial, output)
         print(json.dumps({"status": "aligned", "output": str(output), "elapsedSeconds": round(time.monotonic() - started, 2), **manifest["counts"]}, sort_keys=True), flush=True)
         return manifest
-    except Exception:
-        sink.close()
-        raise
+    finally:
+        checkpoint.close()
 
 
 def main():
@@ -499,8 +541,9 @@ def main():
     parser.add_argument("--packets-per-file", type=int, default=1)
     parser.add_argument("--max-asset-bytes", type=int, default=8 * 1024 * 1024)
     parser.add_argument("--limit", type=int)
+    parser.add_argument("--resume", action="store_true", help="Resume only a matching pinned checkpoint, never a legacy partial")
     args = parser.parse_args()
-    align(args.curated, args.output, args.records_per_packet, args.packets_per_file, args.limit, args.max_asset_bytes)
+    align(args.curated, args.output, args.records_per_packet, args.packets_per_file, args.limit, args.max_asset_bytes, args.resume)
 
 
 if __name__ == "__main__":
