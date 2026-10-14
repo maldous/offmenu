@@ -1,0 +1,208 @@
+{
+  "schema": "offmenu-global-source-refill-candidate/1",
+  "proposal_id": "my-myfcd-composition",
+  "owner": "Worker36",
+  "thread_id": "01a13998-eb2d-7741-8765-6c570d934587",
+  "country": "MY",
+  "source_id": "discovery:S180",
+  "source_url": "https://myfcd.moh.gov.my/",
+  "status": "blocked-applicable-rights-and-original-records",
+  "created_utc": "2026-10-14T14:36:01.459471+00:00",
+  "task": {
+    "branch": "feature/source-my-myfcd-composition-20261015",
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "fetch_lock": "/tmp/offmenu-develop-fetch.lock",
+    "fetch_exit": 0,
+    "fetch_utc": "2026-10-14T14:34:44.153113+00:00",
+    "prior_branch": "feature/global-regional-36-tw-composition-20261015",
+    "prior_head": "8cfd0e8f9903dbf31b28fe4b4196c578132b9762",
+    "prior_status": "clean",
+    "prior_backup": "refs/heads/feature/global-regional-36-tw-composition-20261015 independently verified at prior HEAD",
+    "git_environment": "inherited GIT_* stripped"
+  },
+  "assignment": {
+    "proposal_commit": "2eba0586ce0f05285c8c3d8d624534f6f7851b68",
+    "proposal_path": "docs/global-source-refill-asia-oceania-owner17.json",
+    "proposal_sha256": "215d4ac38f323852ebdc0bd78bed718f3fd056e7063d8f7ebf49c722c24c30b7",
+    "country_source_key": "MY|https://myfcd.moh.gov.my/",
+    "exclusive_authored_path": "docs/global-source-refill/my-myfcd-composition/candidate.json"
+  },
+  "pdf_evidence": [
+    {
+      "path": "research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "page": 7,
+      "full_page_text_sha256": "498bc15855cf1e94f1f2c49291ae1c7366ad7e0dc2913ba6134a78bbe8985728",
+      "matches_abe0": true,
+      "role": "Regional composition/source-rights decisions; does not itself list this exact national feed"
+    },
+    {
+      "path": "research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "page": 9,
+      "full_page_text_sha256": "7af3205d7bb4b12e01c8b6d0a11c1f7c6529e2149a0e8e8a53689807c787c14a",
+      "matches_abe0": true,
+      "role": "Ingredient/composition and SourceAssertion model; units/basis/rights/lineage release gates"
+    },
+    {
+      "path": "research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "page": 55,
+      "full_page_text_sha256": "7175c7293a51594d3a839ddf1909e7317a8771c0cc4cd8743e353529f1294fe5",
+      "matches_abe0": true,
+      "role": "MY original enrichment country card; contextual provider fields, not composition dataset rights"
+    },
+    {
+      "path": "research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+      "sha256": "5d4795811f472d0255e4c287a3401a2dbbcbd3991c8516c85dbe5341e9083a19",
+      "page": 47,
+      "full_page_text_sha256": "bccada06ce62747ae13114207115773201055c4e0790b623ac0f0d47c31a2a07",
+      "matches_abe0": true,
+      "role": "MY original basket card; ingredient/country context, not admitted nutrition quantities"
+    }
+  ],
+  "pdf_limit": "Country/basket pages establish MY context only, not MyFCD-specific record schema or licence; S180 exact lead comes from original source register.",
+  "dedup": {
+    "ledger_matches": [
+      {
+        "sourceId": "discovery:S180",
+        "url": "https://myfcd.moh.gov.my/",
+        "status": "landing-page-access-checked"
+      }
+    ],
+    "paired_registers": [
+      {
+        "path": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+        "sha256": "bde659a82dc8014bf7a139b8ca53554e950293efaa42c544d4a78809860d1ead",
+        "rows": 48,
+        "matches": []
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-source-category-discovery-20261014.csv",
+        "sha256": "fd5f38641158e5f505fe7f67967908aa24e37e4cd108141eb614aa1d7b39d69c",
+        "rows": 28,
+        "matches": []
+      }
+    ],
+    "named_holdings": [],
+    "manifest_matches": [],
+    "scope": "Exact URL/source identity in ledger and checked registers; filenames and manifest content under offmenu-data, no opaque corpus scan",
+    "revision_dedup": "No actual MyFCD release ID/version/hash present to reconcile; cannot invent revision match",
+    "not_pricecatcher": "Composition scope differs from DOSM retailer/price data; no other-source assignment performed"
+  },
+  "retained_evidence": {
+    "html_path": "/home/user/src/offmenu-data/source-access-20261013/a7e745a57be5fb51b4ee8d83.html",
+    "html_bytes": 29365,
+    "html_sha256": "2905a404d84bf930b43ca582bbeb54a2e90392caa770e645d790089e198e333e",
+    "sidecar_path": "/home/user/src/offmenu-data/source-access-20261013/a7e745a57be5fb51b4ee8d83.json",
+    "sidecar_sha256": "03bc0e65c46bb0e5dbb6e35f32ce44897569254fe041c427df27a34375fb540c",
+    "checked_utc": "2026-10-13T06:54:26.777382+00:00",
+    "historical_http_status": 200,
+    "dataset_collected": false,
+    "rights_decision": "requires primary licence review",
+    "rights_links": [],
+    "custody": {
+      "mtime_ns": 1791874468238614662,
+      "inode": 16655771,
+      "before_after_hash_verified": true
+    },
+    "copyright_notice": "Copyright Malaysian Food Composition Database Programme; historical website footer 1997–2015 is not dataset release/version evidence"
+  },
+  "access": {
+    "new_requests": 0,
+    "new_request_bytes": 0,
+    "new_response_bytes": 0,
+    "network_body_cap_for_task": 524288,
+    "original_food_limit": 3,
+    "original_food_records": 0,
+    "known_cumulative_body_bytes": 859477,
+    "cumulative_cap": 3145728,
+    "remaining_known_body_bytes": 2286251,
+    "budget_anchor": {
+      "commit": "8cfd0e8f9903dbf31b28fe4b4196c578132b9762",
+      "path": "docs/global-data-validation/worker-36-regional.json",
+      "sha256": "7ce280404a2b842173f7d400ac739cf6697a78fc37616202e00c9aeb361c5f17"
+    },
+    "reason_no_fetch": "Explicit task rule: unknown applicable rights means no new source fetch. Retained metadata lacks data-specific grant."
+  },
+  "rights": {
+    "licence": null,
+    "licence_url": null,
+    "redistribution_scope": null,
+    "attribution_requirement": null,
+    "clearance": false,
+    "terms_accepted": false,
+    "credentials_or_payment_used": false
+  },
+  "release": {
+    "id": null,
+    "date": null,
+    "artifact_path": null,
+    "artifact_sha256": null,
+    "footer_is_version": false
+  },
+  "observations": {
+    "actual_columns": null,
+    "original_food_ids": [],
+    "source_record_hashes": [],
+    "records": [],
+    "numeric_lexemes": null,
+    "units": null,
+    "denominator": null,
+    "portion": null,
+    "preparation_state": null,
+    "trace_and_NULL_conventions": null,
+    "languages": "Malay original-label target from proposal; actual fields and language unobserved; no inferred labels"
+  },
+  "field_mapping": {
+    "status": "not implemented; actual rights-cleared records absent",
+    "targets_only": [
+      "Malay original food names and local synonyms, English names only if supplied",
+      "publisher foodID and food-group/classification",
+      "raw/cooked/drained or edible-portion state",
+      "nutrient original lexeme/unit/denominator and missing/trace markers",
+      "reference method, revision and row provenance"
+    ],
+    "source_columns_not_claimed": true,
+    "no_default_basis": "No default100g, unit/energy conversion, inferred preparation or cross-source nutrient equivalence",
+    "nutrition_equivalence": "not established"
+  },
+  "exact_missing_artifacts": {
+    "applicable_grant": "Publisher-specific MyFCD permission/licence covering at most3 original records, local normalization/retention and any proposed reuse/export, with official URL/date and retained complete rights evidence hash",
+    "release": "Exact publisher dataset revision/release date and source resource URL; source artifact hash, not footer date or homepage hash",
+    "resource": "Existing held release/subset path or an officially documented free bounded record route; no login/payment or bulk acceptance",
+    "columns": "Original food/sampleID; Malay name and publisher-supplied aliases/language; preparation/edible portion; analyteID/name; original numeric/trace/NULL lexical value; unit and denominator; method/revision/row citation",
+    "requested_retained_paths": [
+      "/home/user/src/offmenu-data/my-myfcd-composition/manifest.json",
+      "/home/user/src/offmenu-data/my-myfcd-composition/licensed-original-subset.json"
+    ],
+    "paths_are_requests_not_claimed_existing": true
+  },
+  "validation": {
+    "held_landing_matches_inventory": true,
+    "cited_pdf_hashes_match_proposal_and_abe0": true,
+    "paired_register_exact_url_matches": 0,
+    "new_food_fixture_tests": 0,
+    "adapter_authored": false,
+    "original_record_regression": "blocked: no licensed original records; no metadata-as-food fixture",
+    "schema_and_budget_checks": "passed"
+  },
+  "independent_review": "pending root01/63; no acceptance claim",
+  "develop_merge": null,
+  "corpus_admitted": false,
+  "publication": false,
+  "production": "STOP",
+  "controls": {
+    "filesystem": "danger-full-access; unrestricted; environment profile disabled",
+    "network": "enabled but zero source requests",
+    "mandatory_reviewer": "auto_review preserved",
+    "approval_policy_value": null,
+    "named_env_profile": null
+  },
+  "preservation": {
+    "prior_refs_code_receipts_and_sources": "untouched",
+    "only_owned_candidate": "authored",
+    "no_shared_importer_schema_central_writes": true,
+    "backup": "normal push of explicit task branch to verified private origin, followed by independent ls-remote; exact SHA reported externally to avoid self-reference"
+  }
+}
