@@ -56,6 +56,36 @@ class PlacesCheckpointTests(unittest.TestCase):
                 self.assertEqual(actual, expected)
                 self.assertEqual({p.name:p.read_bytes() for p in out.rglob('*.gz')}, {p.name:p.read_bytes() for p in (root/'expected').rglob('*.gz')})
 
+    def test_restored_limit_at_packet_boundary_matches_uninterrupted(self):
+        import sqlite3
+        for packet_size, limit in [(1, 1), (2, 2), (3, 3), (2, 4)]:
+            with self.subTest(packet_size=packet_size, limit=limit), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                source = self.fixture(root)  # Two pinned records in each of two sources.
+                output = root / 'out'
+                original = places.Checkpoint.save
+
+                def save_then_interrupt(checkpoint):
+                    original(checkpoint)
+                    if sum(checkpoint.value['input_counts'].values()) == limit:
+                        raise RuntimeError('interruption at committed limit')
+
+                with patch.object(places.Checkpoint, 'save', save_then_interrupt):
+                    with self.assertRaisesRegex(RuntimeError, 'committed limit'):
+                        places.align(source, output, records_per_packet=packet_size, limit=limit)
+                with sqlite3.connect(root / 'out.checkpoint.sqlite') as db:
+                    committed = json.loads(db.execute('SELECT payload FROM state').fetchone()[0])
+                self.assertEqual(sum(committed['input_counts'].values()), limit)
+                with patch.object(places.dt, 'datetime') as clock:
+                    clock.now.return_value.isoformat.return_value = committed['createdAt']
+                    expected_manifest = places.align(source, root / 'expected', records_per_packet=packet_size, limit=limit)
+                actual_manifest = places.align(source, output, records_per_packet=packet_size, limit=limit, resume=True)
+                self.assertEqual(actual_manifest, expected_manifest)
+                expected_root = root / 'expected'
+                self.assertEqual(
+                    {str(p.relative_to(output)): p.read_bytes() for p in output.rglob('*') if p.is_file()},
+                    {str(p.relative_to(expected_root)): p.read_bytes() for p in expected_root.rglob('*') if p.is_file()})
+
     def test_atomic_close_before_checkpoint_commit_is_recovered(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);source=self.fixture(root);out=root/'out'
@@ -195,6 +225,34 @@ class PlacesCheckpointTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'legacy'):places.align(source,out,resume=True)
             p=next(source.rglob('*.gz'));p.write_bytes(p.read_bytes()[:-8])
             with self.assertRaisesRegex(ValueError,'input bytes'):places.align(source,root/'new',records_per_packet=1)
+
+    def test_inventory_discovers_only_matching_sibling_checkpoint(self):
+        import sqlite3
+        for kind in ['matching', 'absent', 'foreign', 'unsupported', 'invalid']:
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp) / 'out.partial'
+                if kind == 'matching':
+                    checkpoint = places.Checkpoint(root.with_name('out'), root,
+                        {'output': str(root.with_name('out').resolve()), 'createdAt': 'fixture'}, resume=False)
+                    checkpoint.close()
+                (root / 'packets').mkdir(parents=True)
+                # The obsolete in-directory path must never count as custody.
+                (root / 'checkpoint.json').write_text('{}')
+                sibling = root.with_name('out.checkpoint.sqlite')
+                if kind == 'invalid':
+                    sibling.write_bytes(b'not a checkpoint')
+                elif kind not in ['absent', 'matching']:
+                    with sqlite3.connect(sibling) as db:
+                        db.execute('CREATE TABLE state (id INTEGER PRIMARY KEY, payload TEXT)')
+                        payload = {'version': 2 if kind == 'unsupported' else 1,
+                                   'pins': {'output': str(root.with_name('other' if kind == 'foreign' else 'out').resolve())}}
+                        db.execute('INSERT INTO state VALUES (1,?)', (json.dumps(payload),))
+                before = {p: p.read_bytes() for p in root.parent.rglob('*') if p.is_file()}
+                result = preflight.inventory(root, 0, hash_limit=0)
+                self.assertEqual(result['checkpointExists'], kind == 'matching')
+                self.assertEqual(result['checkpointFileExists'], kind != 'absent')
+                self.assertEqual(result['checkpointPath'], str(sibling.resolve()))
+                self.assertEqual(before, {p: p.read_bytes() for p in root.parent.rglob('*') if p.is_file()})
 
     def test_inventory_and_storage_fail_closed(self):
         with tempfile.TemporaryDirectory() as temp:
