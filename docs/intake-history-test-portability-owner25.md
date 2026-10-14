@@ -59,3 +59,16 @@ Original composition branch24d75fa, original candidate53853, helper59d8bca,
 dataset4168ae2, PR5 and review artifacts remain retained. No endpoint/schema/locale
 or session/consent adoption, production deployment or whole-feature acceptance.
 Result pin/backup/readback and review gate are reported separately to root.
+
+## Follow-up: CRLF checkout checksum
+
+PR7 automated review on original correction866cce8 found that core.autocrlf=true
+converts the fixture's working bytes and breaks its raw-byte checksum. The fixture
+Git blob remains exact source bytes. Test checksum now canonicalizes CRLF to LF
+before comparison; content changes remain detectable. No shared attributes or
+repository configuration are changed. The original accepted pin remains retained
+as parent; this follow-up requires a fresh independent review and root acceptance.
+An isolated published-branch sparse clone checked out with command-scoped
+core.autocrlf=true confirmed actual fixture CRLF. The original focused test exited
+1; applying only the corrected test (also CRLF) yielded nine passed, zero failed.
+Disposable checkout configuration did not change any owner/shared Git settings.

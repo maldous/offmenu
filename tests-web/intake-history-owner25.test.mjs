@@ -63,7 +63,8 @@ test('linearizable store serializes duplicate events with no lost update',async(
   assert.equal(results.filter(r=>r.status==='fulfilled').length,1);assert.equal(db.get('a').entries.length,1);
 });
 test('checked-in fixture is the exact declared source snapshot',()=>{
-  const bytes=readFileSync(new URL('./fixtures/intake-entry-model-owner25.mjs',import.meta.url));
+  // Git may check text out as CRLF; compare canonical LF source content.
+  const bytes=readFileSync(new URL('./fixtures/intake-entry-model-owner25.mjs',import.meta.url),'utf8').replace(/\r\n/g,'\n');
   assert.equal(createHash('sha256').update(bytes).digest('hex'),'eec623d6f49ac0b7a57f97af550198eed909347ff4ce9d4b3c327515d294655a');
 });
 test('fixture preserves explicit unknown and source lineage; it does not invent nutrient totals',()=>{
