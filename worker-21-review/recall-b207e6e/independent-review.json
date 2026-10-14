@@ -1,0 +1,72 @@
+{
+  "candidate": "b207e6e1ae9b59c5fe5bf283465fd8209b7cd2ec",
+  "helper": "643c130eed6d4d64a7e755d6c233128fa978aaa8",
+  "verdict": "PASS_SCOPED_CONSUMER_CONTRACT",
+  "findings": [],
+  "author_checks": {
+    "pass": 6,
+    "fail": 0
+  },
+  "independent_probes": {
+    "pass": 4,
+    "fail": 0
+  },
+  "worker14_partial_receipt": {
+    "path": "/home/user/Documents/Codex/2026-10-15/worker-14-recall-consumer-review-b207e6e/review-receipt.json",
+    "sha256": "fcad20af23317eb1365aa30d5061bbb080806291ff2a1d43d728c63282ee6008",
+    "state": "halted; snapshot only; preserved unchanged; no duplicated completed probes"
+  },
+  "pdf_evidence": [
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "pdf_sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "page": 3,
+      "text_sha256": "881dd7569d24d40b933d7c3505f2fd156bb73bcb2c1649b5015e056717b33bfb"
+    },
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "pdf_sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "page": 4,
+      "text_sha256": "f7b4fba094d14999d609dec7f96ea0a6e30b13b313c80cf6a584e8ce345e5033"
+    },
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "pdf_sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "page": 5,
+      "text_sha256": "acc87d2df6d54a9a965b952cf25d62a272ac9f4ef2cb230e29ab3bb900017106"
+    },
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "pdf_sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "page": 6,
+      "text_sha256": "1933a28909354e5a58e716251b4f0733847c1d7a3eb4812cc13065c2ab2de283"
+    },
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "pdf_sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "page": 6,
+      "text_sha256": "d1e8bed901b9d76856b2fcb717b1e101a54c1f0a2deb7c26fb2a3f55cc0a8320"
+    },
+    {
+      "pdf": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "pdf_sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "page": 11,
+      "text_sha256": "c8311871bed80c91bad2edfe3008e9d7f7630d1bc8cdc8e5aa6aaa369f7a6f88"
+    }
+  ],
+  "source_sha256": {
+    "public/recall-binding-owner26.mjs": "27c56364c4a7e904579082ed1dbc53cddbd78c422913ad24d66f2527bdc110c4",
+    "public/evidence-model.js": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+    "tests-web/recall-binding-owner26.test.mjs": "87f781e8c73aba888f228e70032928b61afd14287f68aef9795875bb08bc371f"
+  },
+  "scope": "Actual exported consumer + exact helper + actual rights admission; synthetic fixtures only, not deployed UI/handler",
+  "limitations": [
+    "Trusted owner-reviewed plain JSON projections and review authority remain upstream prerequisites",
+    "Acknowledgement independentlyReviewed=true is synthetic for testing, not a real acceptance receipt",
+    "No recall absence/exclusion implies safety; no feed exhaustive coverage established",
+    "Production consumer adoption, source grants and typed product/version issuer remain owner gates",
+    "Historical helper suite was not repeated; new consumer-boundary probes only"
+  ],
+  "production": "STOP",
+  "source_admission": "WITHHELD"
+}
