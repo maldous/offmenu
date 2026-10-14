@@ -45,6 +45,26 @@ class NationalCommonTests(unittest.TestCase):
         self.assertEqual(packet["resources"][0]["names"][0]["language"], "ja-JP")
         self.assertEqual(packet["resources"][2]["names"][0]["language"], "und")
 
+    def test_legal_notices_portions_and_descriptive_definitions_remain_source_text(self):
+        citation = "urn:test:citation"
+        for path, value in [
+            ("record:data:basis:portion", "source analysed edible portion"),
+            ("record:provenance:license", "FSANZ Data User Licence Agreement (CC BY-SA 3.0 AU based)"),
+            ("record:provenance:countryNotice", "Australian data may not be appropriate elsewhere."),
+            ("record:provenance:rights", "Normalized derivative data is distributed under source terms."),
+            ("record:data:nutrients:energy:definition", "AFCD-3:Energy with dietary fibre, equated"),
+        ]:
+            scalar = national.scalar(value, "und", path, citation)
+            self.assertEqual((scalar["kind"], scalar["language"]), ("text", "und"), path)
+        self.assertEqual(
+            national.scalar("ciqual:energy", "und", "record:data:nutrients:energy:definition", citation)["kind"],
+            "identifier",
+        )
+        self.assertEqual(
+            national.scalar("CC-BY-4.0", "und", "record:provenance:license", citation)["kind"],
+            "identifier",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

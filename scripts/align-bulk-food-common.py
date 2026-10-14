@@ -41,11 +41,11 @@ def typed(value, citation, path):
     # declarations, locations and category labels.  Keep them localisable text,
     # not immutable identifiers. Structured codes retain their source key context.
     if isinstance(value, str):
-        key=path.rsplit('.',1)[-1]
-        if value.startswith(('https://','http://')): return {'kind':'uri','value':value}
+        key=re.sub(r'\[\d+\]$','',path.rsplit('.',1)[-1])
+        if value.startswith(('https://','http://','urn:')): return {'kind':'uri','value':value}
         if re.fullmatch(r'\d{4}-\d\d-\d\d',value): return {'kind':'date','value':value}
         if re.fullmatch(r'\d{4}-\d\d-\d\dT[^\s]+',value): return {'kind':'datetime','value':value}
-        fixed={'system','value','unit','currency','nutritionId','sourceNutrientId','sourceMetricKey','definition','releaseId','sourceRow','proofId','availability','priceType','qualifier','method','state','preparationState','dataType','marketCountry','status','id','code'}
+        fixed={'system','value','unit','currency','nutritionId','sourceNutrientId','sourceMetricKey','definition','releaseId','sourceRow','proofId','availability','priceType','qualifier','method','state','preparationState','dataType','marketCountry','status','id','code','sourceId','recordId','schemaVersion','schema','policyVersion','sourceRecordReference','kind','visibility','archiveSha256','contentSha256','language','languageTag','countries'}
         if key in fixed or path.endswith(('.identifiers.system','.identifiers.value')): return {'kind':'identifier','value':value}
         return text(value, citation, path)
     if isinstance(value, list): return {'kind':'list','items':[typed(v,citation,path+f'[{i}]') for i,v in enumerate(value)]}
@@ -68,14 +68,16 @@ def unit_quantity(value, unit, *, currency=None, basis=None):
 
 def source_citation(record, source, source_manifest, record_id):
     p=record.get('provenance',{})
-    return {'id':urn('citation',source,record_id), 'sourceId':source, 'originalRecordId':str(record_id),
+    curation=record.get('curation',{}) if isinstance(record.get('curation'),dict) else {}
+    upstream_id=p.get('recordId') or record_id
+    return {'id':urn('citation',source,record_id), 'sourceId':source, 'originalRecordId':str(upstream_id),
             'originalUrl':p.get('url') or 'https://offmenu-corpus.netlify.app/',
             'revisionId':p.get('releaseId') or source_manifest.get('releaseId'), 'sourceDate':p.get('sourceDate'),
             'contentSha256':p.get('archiveSha256') or source_manifest.get('archiveSha256'),
             'license':p.get('license') or source_manifest.get('license') or 'Unknown source licence',
             'attribution':p.get('attribution') or source_manifest.get('attribution') or source,
             'rightsEvidenceUrl':p.get('url') or 'https://offmenu-corpus.netlify.app/',
-            'sourcePath':record.get('id',''), 'scope':scope()}
+            'sourcePath':curation.get('sourceRecordReference') or record.get('id',''), 'scope':scope()}
 
 def text(value, citation, identifier):
     return {'kind':'text','id':urn('text',citation,identifier,value),'language':'und','value':value,
@@ -94,6 +96,11 @@ def packet(record, source, source_manifest):
         assertions.append({'id':urn('assertion',rid,property_name,path),'subjectId':rid,'propertyId':'urn:offmenu:property:'+property_name,
                            'value':value,'status':'source-asserted','citationIds':[cid],'sourcePath':path,'scope':scope()})
     fact('originalSourceRecord',{'kind':'identifier','value':str(record_id)},'id')
+    # The accepted curation envelope is public evidence too: retain country,
+    # provenance, original source reference and curation policy/status without
+    # reopening withheld raw fields or private contributors.
+    context={k:v for k,v in record.items() if k!='data'}
+    fact('curatedRecordContext',typed(context,cid,'context'),'')
     # Nutrient numeric values are emitted below as typed quantity observations.
     # Excluding their duplicate raw tree keeps the complete accepted package
     # within its disk budget while retaining source value, unit, basis and

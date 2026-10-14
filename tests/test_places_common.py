@@ -49,12 +49,49 @@ class PlacesCommonTests(unittest.TestCase):
             record_facts = [a for packet in packets for a in packet["assertions"] if a["sourcePath"] == "$.sourceRecord"]
             nested_keys = {key for fact in record_facts for key in fact["value"]["fields"]}
             self.assertTrue({"data", "provenance", "countries"} <= nested_keys)
+            original_id = next(a for packet in packets for a in packet["assertions"] if a["sourcePath"] == "$.id")
+            self.assertEqual(original_id["value"]["kind"], "identifier")
             self.assertEqual(manifest["candidateRelationships"]["count"], 0)
             self.assertTrue(manifest["complete"])
             schema = json.loads((ROOT / "corpus/common-data.schema.json").read_text())
             validator = jsonschema_rs.Draft202012Validator(schema, validate_formats=True)
             for packet in packets:
                 validator.validate(packet)
+
+    def test_actual_source_envelopes_keep_controls_typed_and_labels_localizable(self):
+        curated = Path("/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs")
+        if not curated.is_dir():
+            self.skipTest("local curated places source is unavailable")
+        packets = {}
+        for source in ("overture-food-places", "wikidata-food-businesses"):
+            row = next(places.curated_rows(curated, source))
+            resource, assertions, citation = places.packet_record(row)
+            source_record = next(item for item in assertions if item["sourcePath"] == "$.sourceRecord")
+            packets[source] = source_record["value"]["fields"]
+            self.assertEqual(resource["type"], places.TYPE_SITE if source == "overture-food-places" else places.TYPE_ORGANIZATION)
+            self.assertEqual(citation["originalUrl"], row["provenance"]["url"])
+        overture_provenance = packets["overture-food-places"]["provenance"]["fields"]
+        wikidata_provenance = packets["wikidata-food-businesses"]["provenance"]["fields"]
+        self.assertEqual(overture_provenance["sourceDate"]["kind"], "datetime")
+        self.assertEqual(wikidata_provenance["sourceDate"]["kind"], "date")
+        self.assertEqual(overture_provenance["visibility"]["kind"], "identifier")
+        self.assertEqual(overture_provenance["licenseNotices"]["kind"], "list")
+        self.assertTrue(all(item["kind"] == "uri" for item in overture_provenance["licenseNotices"]["items"]))
+        self.assertEqual(overture_provenance["changes"]["kind"], "text")
+        self.assertEqual(overture_provenance["license"]["kind"], "text")
+        self.assertEqual(overture_provenance["attribution"]["kind"], "text")
+        overture_data = packets["overture-food-places"]["data"]["fields"]
+        self.assertEqual(overture_data["name"]["kind"], "text")
+        self.assertEqual(overture_data["taxonomy"]["fields"]["primary"]["kind"], "identifier")
+        self.assertEqual(overture_data["countryBasis"]["kind"], "text")
+        self.assertEqual(overture_data["locations"]["items"][0]["fields"]["locality"]["kind"], "text")
+        self.assertEqual(overture_data["locations"]["items"][0]["fields"]["country"]["kind"], "identifier")
+        self.assertEqual(overture_data["identifiers"]["items"][0]["fields"]["value"]["kind"], "identifier")
+        self.assertEqual(places.typed_value("a" * 64, "test", "archiveSha256")["kind"], "identifier")
+        self.assertEqual(places.typed_value("urn:test:unit", "test", "uri")["kind"], "uri")
+        self.assertEqual(places.typed_value("https://example.org/extension", "test", "unexpected")["kind"], "uri")
+        self.assertEqual(places.typed_value("2026-10-14T10:00:00Z", "test", "unexpected")["kind"], "datetime")
+        self.assertEqual(places.typed_value("ordinary wording", "test", "value")["kind"], "text")
 
 
 if __name__ == "__main__":

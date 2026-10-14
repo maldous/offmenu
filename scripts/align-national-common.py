@@ -64,38 +64,54 @@ def text(value, lang, key, citation_id, status='source-asserted'):
             'citationIds': [citation_id]}
 
 
-FIXED_PATH_TOKENS = {
-    'id', 'ids', 'identifier', 'identifiers', 'code', 'codes', 'status',
-    'schema', 'system', 'unit', 'units', 'release', 'version', 'record',
-    'records', 'component', 'column', 'reference', 'method', 'qualifier',
-    'definition', 'classification', 'group', 'source', 'transform',
-    'visibility', 'license', 'licence', 'rights', 'country', 'countries',
-    'type', 'indicator', 'index', 'portion', 'state', 'archive', 'content',
-    'hash', 'sha', 'locale', 'language', 'lang', 'format',
+FIXED_LEAVES = {
+    'id', 'recordid', 'sourceid', 'releaseid', 'schemaversion', 'version',
+    'archivesha256', 'contentsha256', 'sha256', 'archivehash', 'contenthash',
+    'system', 'code', 'codes', 'status', 'qualificationstatus', 'foodmatchstatus',
+    'unit', 'units', 'locale', 'language', 'lang', 'transform', 'visibility',
+    'type', 'method', 'qualifier', 'state', 'foodconceptid', 'nutritionid',
+    'sourcerecordreference', 'column', 'component', 'indicator',
 }
+IDENTIFIER_DEFINITION = re.compile(r'^[A-Za-z][A-Za-z0-9_.-]*:[A-Za-z0-9_.-]+$')
+SPDX_SHORTCODE = re.compile(
+    r'^(?:CC0-1\.0|CC-BY(?:-SA)?-[0-9]+\.[0-9]+(?:-[A-Z]{2})?|'
+    r'ODbL-1\.0|PDDL-1\.0|OGL-3\.0)$'
+)
+COUNTRY_CODE = re.compile(r'^[A-Z]{2,3}$')
 DATE_VALUE = re.compile(r'^\d{4}(?:-\d{2}(?:-\d{2})?)?$')
 DATETIME_VALUE = re.compile(r'^\d{4}-\d{2}-\d{2}T')
 
 
-def path_tokens(path):
-    """Keep parent context across lists and split camelCase source fields."""
-    segments = []
-    for part in re.split(r'[:.\[\]_/\-]+', str(path)):
-        part = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', part)
-        segment = {token.casefold() for token in re.findall(r'[A-Za-z]+', part)}
-        if segment:
-            segments.append(segment)
-    return segments
+def path_components(path):
+    """Return source field components while retaining the nearest parent."""
+    return [part for part in re.split(r'[:.\[\]_/\-]+', str(path)) if part and not part.isdigit()]
 
 
-def fixed_path(path):
-    # A broad ancestor such as record must not make every descendant prose
-    # field an identifier. Inspect the leaf and its immediate semantic parent.
-    segments = path_tokens(path)
-    if not segments:
+def fixed_path(path, value):
+    """Use field-first policies; prose must not inherit an ancestor's type."""
+    components = path_components(path)
+    if not components:
         return False
-    relevant = segments[-1] | (segments[-2] if len(segments) > 1 else set())
-    return bool(relevant & FIXED_PATH_TOKENS)
+    leaf = components[-1].casefold()
+    parent = components[-2].casefold() if len(components) > 1 else ''
+    if leaf in FIXED_LEAVES:
+        return True
+    # Identifier list members retain the issuer/value pair even though the
+    # terminal key itself is simply "value".
+    if leaf == 'value' and parent in {'identifiers', 'codes', 'ids'}:
+        return True
+    # Countries are codes only in an explicitly named country/countries field.
+    if leaf in {'country', 'countries'} and isinstance(value, str) and COUNTRY_CODE.fullmatch(value):
+        return True
+    # Definitions are often source namespace handles, but can also be human
+    # prose. Preserve only compact namespace handles as fixed identifiers.
+    if leaf == 'definition' and isinstance(value, str) and IDENTIFIER_DEFINITION.fullmatch(value):
+        return True
+    # A full legal title is source text. Only a known compact SPDX expression
+    # becomes an identifier.
+    if leaf in {'license', 'licence'} and isinstance(value, str) and SPDX_SHORTCODE.fullmatch(value):
+        return True
+    return False
 
 
 def scalar(value, lang, key, citation_id):
@@ -121,7 +137,7 @@ def scalar(value, lang, key, citation_id):
     # Native field labels and values are distinct: codes, controlled values,
     # schema/release metadata and provenance handles are fixed identifiers, not
     # translation candidates.  Text remains text only for human wording.
-    if fixed_path(key):
+    if fixed_path(key, value):
         return {'kind': 'identifier', 'value': str(value)}
     return text(value, lang, key, citation_id)
 

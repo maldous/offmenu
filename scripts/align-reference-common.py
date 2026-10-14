@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Align retained guideline and cookbook discovery records; no dietary qualification."""
-import argparse,gzip,hashlib,json,collections,urllib.parse
+import argparse,gzip,hashlib,json,collections,urllib.parse,re
 from pathlib import Path
 import jsonschema_rs
 ROOT=Path(__file__).resolve().parents[1]
@@ -36,10 +36,14 @@ def align(data_root,output):
      if isinstance(v,(float,int)):return {'kind':'number','value':v}
      if isinstance(v,list):return {'kind':'list','items':[typed(x,path+'.'+str(i)) for i,x in enumerate(v)]}
      if isinstance(v,dict):return {'kind':'structure','fields':{k:typed(x,path+'.'+k) for k,x in v.items()}}
-     if path.split('.')[-1] in ['id','kind','schemaVersion','sourceId','recordId','revisionId','releaseId','transform','visibility','referenceType','reviewStatus','qualificationStatus','unit']:return {'kind':'identifier','value':str(v)}
+     parts=[x for x in path.split('.') if not x.isdigit()];field=parts[-1]
+     if field in ['status','reviewStatus','qualificationStatus']:
+      return {'kind':'identifier','value':str(v)} if re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_:./-]*',v) else text(v,path)
+     if field in ['id','kind','schemaVersion','schema','policyVersion','sourceRecordReference','sourceId','recordId','revisionId','releaseId','transform','visibility','referenceType','unit','archiveSha256','contentSha256','originalContentSha256','sourceTextSha256','language','languages','locale','locales']:return {'kind':'identifier','value':str(v)}
      if path.startswith('countries'):return {'kind':'identifier','value':v}
-     if path.split('.')[-1] in ['fetchedAt','sourceDate']:return {'kind':'datetime' if 'T' in v else 'date','value':v}
-     if 'url' in path.lower() and v.startswith(('http://','https://')):return {'kind':'uri','value':v}
+     if re.fullmatch(r'\d{4}-\d{2}-\d{2}T[^\s]+',v):return {'kind':'datetime','value':v}
+     if re.fullmatch(r'\d{4}-\d{2}-\d{2}',v):return {'kind':'date','value':v}
+     if v.startswith(('http://','https://','urn:')) and not re.search(r'\s',v):return {'kind':'uri','value':v}
      return text(v,path)
     assertions=[]
     for key,v in row.items():

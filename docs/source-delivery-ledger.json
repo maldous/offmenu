@@ -43780,11 +43780,19 @@
   },
   "developmentExpansion": {
     "date": "2026-10-14",
-    "status": "in-progress-local-only",
+    "status": "semantic-recovery-running-local-only",
     "scope": "Common graph representations of already admitted projections plus bounded new source acquisitions; discovery landing-page checks are not dataset collection",
     "evidence": "docs/common-corpus-expansion-20261014.json",
     "newReadyAcquisition": "QUDT v3.5.2: 56 source unit definitions, independently reviewed local package",
     "derivedRecovery": "5 historical recipe variants from existing source holdings, not five new original source works",
-    "publicServingReleaseChanged": false
+    "publicServingReleaseChanged": false,
+    "mappedCollectionCount": 22,
+    "mappedSourceRecords": 22574390,
+    "qualifiedLocalNationalRecords": 36737,
+    "qualifiedLocalReferenceRecords": 3896,
+    "additionalRecipeSourceRecords": 42,
+    "qualifiedUnitDefinitions": 56,
+    "historicalRecoveryRepresentations": 5,
+    "combinedReleaseQualified": false
   }
 }

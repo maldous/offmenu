@@ -48,3 +48,27 @@ class BulkFoodCommonTests(unittest.TestCase):
     self.assertEqual(a['resources'][0]['names'][0]['value'],'Sample food')
     self.assertNotEqual(a['resources'][0]['names'][0]['id'],b['resources'][0]['names'][0]['id'])
     self.assertNotEqual(a['resources'][0]['names'][0]['citationIds'],b['resources'][0]['names'][0]['citationIds'])
+
+  def test_upstream_record_id_and_accepted_curation_envelope_are_retained(self):
+    row=profile('offmenu:nutrientProfile:abc',{})
+    row['provenance']['recordId']='4099200009834'
+    row['countries']=['FR']
+    row['curation']={'sourceRecordReference':'off:nutrientProfile:4099200009834','status':'selected-source-facts','humanReviewed':False,'automaticDietQualification':False,'rawSourcePayloadPublished':False}
+    packet=MOD.packet(row,'usda-files',MANIFEST)
+    citation=packet['citations'][0]
+    self.assertEqual(citation['originalRecordId'],'4099200009834')
+    self.assertEqual(citation['sourcePath'],'off:nutrientProfile:4099200009834')
+    context=facts(packet,'curatedRecordContext')[0]['value']['fields']
+    self.assertEqual(context['countries']['items'][0]['value'],'FR')
+    self.assertEqual(context['curation']['fields']['humanReviewed'],{'kind':'boolean','value':False})
+    self.assertEqual(context['curation']['fields']['sourceRecordReference']['value'],'off:nutrientProfile:4099200009834')
+
+  def test_accepted_envelope_control_handles_are_fixed_and_uris_stay_uris(self):
+    c='urn:offmenu:bulk:citation:controls'
+    controls={'sourceId':'off','recordId':'4099200009834','schemaVersion':'1.0','schema':'offmenu-curation/1','policyVersion':'offmenu-curation/1','sourceRecordReference':'off:product:4099200009834','kind':'product','visibility':'public','archiveSha256':'a'*64,'languageTag':'fr','countries':['FR'],'ontology':'urn:foodon:0001','rights':'Human-readable licence notice'}
+    fields=MOD.typed(controls,c,'context')['fields']
+    for name in ('sourceId','recordId','schemaVersion','schema','policyVersion','sourceRecordReference','kind','visibility','archiveSha256','languageTag'):
+      self.assertEqual(fields[name]['kind'],'identifier',name)
+    self.assertEqual(fields['countries']['items'][0]['kind'],'identifier')
+    self.assertEqual(fields['ontology'],{'kind':'uri','value':'urn:foodon:0001'})
+    self.assertEqual(fields['rights']['kind'],'text')

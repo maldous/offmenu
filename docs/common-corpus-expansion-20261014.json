@@ -171,8 +171,8 @@
   "sourceContract": "corpus/common-data-contract.json",
   "fullGlobalQualifier": "scripts/qualify-common-expansion.py",
   "globalPilot": "/home/user/src/offmenu-data/common-core-reference-global-v2-20261014.json",
-  "acceptedReferencePackage": "/home/user/src/offmenu-data/common-reference-schema-20261014",
-  "globalQualificationStatus": "Core plus curated reference package passed full streaming global checks (83,430 packets); other packages not yet admitted.",
+  "acceptedReferencePackage": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+  "globalQualificationStatus": "National and reference final packages independently reviewed and standalone qualified. Final all-eight-package global qualification awaits bulk semantic repair and full places completion; earlier foundation proofs used superseded reference input and cannot authorize final assembly.",
   "diskPlan": {
     "startingFreeGiB": 98,
     "sourceLaneMaximumGiB": {
@@ -187,14 +187,19 @@
     "minimumFreeGiB": 10,
     "assembly": "Immutable hard links avoid duplicate data copies; actual measured usage and projections gate full runs, not summed theoretical maxima."
   },
-  "checkedAtUtc": "2026-10-13T22:59:07.888342+00:00",
+  "checkedAtUtc": "2026-10-14T02:07:02.270371+00:00",
   "coordination": {
     "managerMainThread": "01a128b3-8520-70a7-abb3-c88498aae0db",
     "directSendError": "Some requested entity was not found: thread not found",
     "gatewayThread": "01a130cd-91c1-73da-9978-889018a100dd",
     "gatewayRelayRequestAccepted": true,
     "managerDeliveryConfirmed": false,
-    "userDirection": "Continue remaining work in parallel while waiting"
+    "userDirection": "Continue remaining work in parallel while waiting",
+    "gatewayConnectionConfirmed": true,
+    "connectionNonce": "offmenu-source-20261014-check1",
+    "managerAcknowledgementSourceMessage": "01a137c8-711a-7748-80d9-40d2dd8199e3",
+    "latestDetailedReportAcceptedByGateway": true,
+    "deliveryNote": "Connection roundtrip acknowledged; latest substantive data report remains awaiting main-thread delivery confirmation."
   },
   "independentlyReviewedReadyPackages": [
     {
@@ -255,7 +260,8 @@
       "translations": 3242
     },
     "schemaAndContractBytesPinned": true,
-    "allIngredientReferencesResolved": true
+    "allIngredientReferencesResolved": true,
+    "scope": "Earlier five-package evidence proves ingredient references resolve against full core, but its reference package is superseded. Not final release qualification."
   },
   "boundedAdditionalDiscovery": {
     "evidence": "docs/global-recipe-source-discovery-20261014.json",
@@ -270,11 +276,11 @@
     "replacement": "/home/user/src/offmenu-data/common-bulk-food-20261014"
   },
   "nationalReadyPackage": {
-    "directory": "/home/user/src/offmenu-data/common-national-final-qualified-20261014",
-    "evidence": "/home/user/src/offmenu-data/common-national-final-qualified-20261014-admission.json",
+    "directory": "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+    "evidence": "/home/user/src/offmenu-data/common-national-semantic-final-20261014-admission.json",
     "records": 36737,
     "sources": 11,
-    "manifestByteSha256": "d9058ea933554064699690007ee33e2c9bcb5335b3ee7b629839a350c876d157",
+    "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
     "counts": {
       "packets": 36737,
       "resources": 661266,
@@ -282,12 +288,42 @@
       "relations": 661266,
       "translations": 0
     },
-    "status": "standalone-global-qualified; independent review of fresh final replacement pending"
+    "status": "standalone-global-qualified-and-independently-reviewed; not published"
   },
   "checkpointValidation": {
-    "pythonTestsPassed": 59,
+    "pythonTestsPassed": 66,
     "recipePublisherJavaScriptSyntax": "pass",
     "diffWhitespace": "pass",
     "publicReleaseChanged": false
+  },
+  "referenceReadyPackage": {
+    "directory": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+    "records": 3896,
+    "sources": 2,
+    "counts": {
+      "packets": 3896,
+      "resources": 3896,
+      "assertions": 31168,
+      "relations": 0,
+      "translations": 0
+    },
+    "status": "standalone-global-qualified-and-independently-reviewed; not published"
+  },
+  "activeLargePackages": {
+    "bulkFood": {
+      "directory": "/home/user/src/offmenu-data/common-bulk-food-semantic-final-20261014",
+      "records": 9796656,
+      "status": "original assets verified before narrowly scoped control typing repair; incomplete and not publishable"
+    },
+    "places": {
+      "directory": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial",
+      "records": 12682613,
+      "status": "full alignment running; 1000-record source fidelity benchmark independently reviewed; incomplete and not publishable"
+    }
+  },
+  "abandonedOutputCleanup": {
+    "receipt": "/home/user/src/offmenu-data/rejected-output-evidence-20261014/cleanup-receipt.json",
+    "bytesReclaimed": 10697457827,
+    "scope": "Four abandoned generated partial directories; first packet samples and source-file hashes retained. Original source archives and completed bulk input preserved."
   }
 }

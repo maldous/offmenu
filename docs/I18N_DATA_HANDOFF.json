@@ -112,10 +112,19 @@
     "workerDeploymentOfI18nPerformed": false
   },
   "developmentExpansion": {
-    "status": "parallel-source-alignment-in-progress-not-published",
+    "status": "semantic-recovery-running-local-only",
     "evidence": "docs/common-corpus-expansion-20261014.json",
     "registeredTypes": 110,
     "newType": "UnitDefinition",
-    "countingRule": "Existing acceptance and hosted checksums above describe the published core. Development graph source coverage and extra recipes must pass independent combined validation before replacing it."
+    "countingRule": "Existing acceptance and hosted checksums above describe the published core. Development graph source coverage and extra recipes must pass independent combined validation before replacing it.",
+    "mappedCollectionCount": 22,
+    "mappedSourceRecords": 22574390,
+    "qualifiedLocalNationalRecords": 36737,
+    "qualifiedLocalReferenceRecords": 3896,
+    "additionalRecipeSourceRecords": 42,
+    "qualifiedUnitDefinitions": 56,
+    "historicalRecoveryRepresentations": 5,
+    "combinedReleaseQualified": false,
+    "publicServingReleaseChanged": false
   }
 }

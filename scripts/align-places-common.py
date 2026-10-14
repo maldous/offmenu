@@ -17,6 +17,7 @@ import os
 import shutil
 import sys
 import time
+import re
 from collections import Counter
 from pathlib import Path
 from urllib.parse import quote
@@ -60,16 +61,28 @@ def text_value(value, assertion_id):
     }
 
 
+# This is intentionally a small, explicit vocabulary.  It covers machine controls
+# present in the public normalized projection.  Human descriptions such as
+# countryBasis, attribution, copyright, licence strings and provider names do not
+# belong here: they remain cited, language-undetermined source text.
 FIXED_IDENTIFIER_KEYS = {
-    "id", "ids", "schemaVersion", "kind", "sourceId", "recordId", "releaseId",
-    "transform", "system", "sourceVersion", "country", "countries", "countryBasis",
-    "sourceCountryTags", "countryMappingStatus", "status", "policyVersion", "schema",
-    "sourceRecordReference", "value",
+    "schemaVersion", "kind", "sourceId", "recordId", "releaseId", "transform",
+    "system", "sourceVersion", "country", "countries", "sourceCountryTags",
+    "countryMappingStatus", "status", "policyVersion", "schema",
+    "sourceRecordReference", "archiveSha256", "contentSha256", "visibility",
+    "geometryType", "geometryTypes", "unit", "units", "language", "languages",
+    "languageCode", "languageCodes", "locale", "locales", "region",
+    "role", "roles", "taxonomy", "primary", "hierarchy", "alternates",
+    "basicCategory", "sourceReportedOperatingStatus", "inventoryAvailability",
+    "dietQualification", "reviewStatus",
 }
-URI_KEYS = {"url", "licenseUrl", "website", "websites"}
+URI_KEYS = {"url", "licenseUrl", "website", "websites", "licenseNotices", "sourceUrl", "sourceUrls", "uri", "uris", "iri", "iris"}
+DATE_TIME_KEYS = {"sourceDate", "fetchedAt", "retrievedAt", "createdAt", "updatedAt", "publishedAt"}
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+DATETIME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$")
 
 
-def typed_value(value, assertion_id, field_name=""):
+def typed_value(value, assertion_id, field_name="", identifier_context=False):
     """Represent every JSON source value without coercing its semantics."""
     if value is None:
         return {"kind": "null", "value": None}
@@ -84,21 +97,32 @@ def typed_value(value, assertion_id, field_name=""):
             return text_value(str(value), assertion_id)
         return {"kind": "number", "value": value}
     if isinstance(value, str):
-        if field_name in FIXED_IDENTIFIER_KEYS:
-            return {"kind": "identifier", "value": value}
-        if field_name in URI_KEYS and "://" in value:
+        # These lexical forms are identities regardless of the enclosing field
+        # name.  This prevents a valid URL, IRI or ISO timestamp in a provider
+        # extension from becoming localizable display text.
+        if value.startswith(("http://", "https://", "urn:")):
             return {"kind": "uri", "value": value}
+        if DATE_RE.fullmatch(value):
+            return {"kind": "date", "value": value}
+        if DATETIME_RE.fullmatch(value):
+            return {"kind": "datetime", "value": value}
+        if identifier_context or field_name in FIXED_IDENTIFIER_KEYS:
+            return {"kind": "identifier", "value": value}
         return text_value(value, assertion_id)
     if isinstance(value, list):
         return {
             "kind": "list",
-            "items": [typed_value(item, f"{assertion_id}:item:{index}", field_name) for index, item in enumerate(value)],
+            "items": [typed_value(item, f"{assertion_id}:item:{index}", field_name, identifier_context) for index, item in enumerate(value)],
         }
     if isinstance(value, dict):
+        # Only explicit identifier objects give their ``value`` a machine-code
+        # interpretation.  Do not infer that interpretation from a generic
+        # ancestor or from a field merely named ``value``.
+        child_identifier_context = identifier_context or field_name in {"identifier", "identifiers"}
         return {
             "kind": "structure",
             "fields": {
-                str(key): typed_value(item, f"{assertion_id}:field:{quote(str(key), safe='-._~')}", str(key))
+                str(key): typed_value(item, f"{assertion_id}:field:{quote(str(key), safe='-._~')}", str(key), child_identifier_context)
                 for key, item in sorted(value.items(), key=lambda item: str(item[0]))
             },
         }
@@ -108,7 +132,8 @@ def typed_value(value, assertion_id, field_name=""):
 def assertion(resource_id, citation_id, source_id, record_id, path, value, property_id=None):
     property_id = property_id or source_property(path)
     assertion_id = stable_id("assertion", source_id, record_id, path, property_id)
-    typed = typed_value(value, assertion_id)
+    leaf = path.rsplit(".", 1)[-1].lstrip("$")
+    typed = typed_value(value, assertion_id, leaf, identifier_context=(path == "$.id"))
     # Text fields refer to their own source citation as required by the schema.
     def attach_citation(node):
         if isinstance(node, dict):
@@ -279,9 +304,17 @@ class PacketSink:
         self._close_file()
 
 
-def curated_rows(root, source_id):
+def curated_rows(root, source_id, expected_assets=None):
     record_dir = root / "records" / source_id
     for path in sorted(record_dir.glob("*.jsonl.gz")):
+        relative_key = str(path.relative_to(root))
+        if expected_assets is not None:
+            expected = expected_assets.get(relative_key)
+            if expected is None:
+                raise ValueError(f"{relative_key}: missing input asset manifest entry")
+            raw = path.read_bytes()
+            if len(raw) != expected["bytes"] or sha256_bytes(raw) != expected["sha256"]:
+                raise ValueError(f"{relative_key}: input bytes or SHA-256 does not match accepted curated manifest")
         with gzip.open(path, "rt", encoding="utf-8") as handle:
             for line_number, line in enumerate(handle, 1):
                 if not line.strip():
@@ -326,6 +359,18 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
     try:
         curated_manifest = json.loads((curated / "manifest.json").read_text())
         curated_manifest_sha256 = sha256_bytes((curated / "manifest.json").read_bytes())
+        expected_assets = {
+            file["key"]: {"bytes": file["bytes"], "sha256": file["sha256"]}
+            for file in curated_manifest.get("files", [])
+        }
+        expected_assets.update({
+            notice["key"]: {"bytes": notice["bytes"], "sha256": notice["sha256"]}
+            for notice in curated_manifest.get("notices", [])
+        })
+        if not expected_assets:
+            # Isolated unit fixtures intentionally contain only a tiny source
+            # manifest.  Real accepted inputs must carry per-asset digests.
+            expected_assets = None
         for source_id in ("overture-food-places", "wikidata-food-businesses"):
             source = curated_manifest["sources"][source_id]
             source_manifests[source_id] = {
@@ -337,7 +382,7 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
                 "curatedManifestSha256": curated_manifest_sha256,
                 "rawSourcePayloadPublished": source["rawSourcePayloadPublished"],
             }
-            for row in curated_rows(curated, source_id):
+            for row in curated_rows(curated, source_id, expected_assets):
                 validate_row(row)
                 provenance = row["provenance"]
                 key = (provenance["sourceId"], provenance["recordId"])
@@ -364,6 +409,13 @@ def align(curated, output, records_per_packet=1000, packets_per_file=1, limit=No
             destination = partial / "licenses" / "overture-food-places"
             destination.mkdir(parents=True)
             for notice in sorted(notice_root.glob("*.txt")):
+                relative_notice_key = str(notice.relative_to(curated))
+                expected = expected_assets.get(relative_notice_key)
+                if expected is None:
+                    raise ValueError(f"{relative_notice_key}: missing input asset manifest entry")
+                source_raw = notice.read_bytes()
+                if len(source_raw) != expected["bytes"] or sha256_bytes(source_raw) != expected["sha256"]:
+                    raise ValueError(f"{relative_notice_key}: input bytes or SHA-256 does not match accepted curated manifest")
                 target = destination / notice.name
                 shutil.copyfile(notice, target)
                 raw = target.read_bytes()
