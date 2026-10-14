@@ -1,5 +1,9 @@
 // Publish only a fully exercised recipe curation, alongside existing accepted static data.
 import {readFile,writeFile,mkdir,copyFile,realpath,readdir} from 'node:fs/promises';import {resolve,dirname,sep,relative} from 'node:path';import {createHash} from 'node:crypto';import {gunzipSync,gzipSync} from 'node:zlib';import {assertCurated} from '../corpus/assert-curated.mjs';import {recipeJSONLD} from '../public/recipe-library-model.js';
+import {execFileSync} from 'node:child_process';
+// Common-package payload digests use the original Python serializer, including
+// ASCII escaping and floating-point spellings. Verify with that same producer.
+function commonPayloadDigest(bytes){return execFileSync('python3',['-c',"import sys,json,hashlib; m=json.load(sys.stdin); m.pop('manifestSha256',None); print(hashlib.sha256(json.dumps(m,ensure_ascii=True,separators=(',',':')).encode('utf8')).hexdigest())"],{input:bytes,encoding:'utf8',maxBuffer:1024}).trim();}
 const [recipeRelease,baseRelease,retainedRelease]=process.argv.slice(2);if(!retainedRelease)throw Error('Recipe, accepted base and retained release directories required');const target=resolve('dist/curated-public');
 const current=JSON.parse(await readFile(resolve(target,'manifest.json'))),base=JSON.parse(await readFile(resolve(baseRelease,'blobs/manifest.json')));if(current.manifestSha256!==base.manifestSha256)throw Error('Existing serving manifest differs from accepted base');
 const precedingAllowed=new Set(['manifest.json','index.html','_headers']);
@@ -18,13 +22,24 @@ try{await verifyPrecedingRecipe(JSON.parse(await readFile(resolve(target,'recipe
 for(const path of process.argv.slice(5))await verifyPrecedingRecipe(JSON.parse(await readFile(path)));
 try{
  const common=JSON.parse(await readFile(resolve(target,'common-data/manifest.json')));
- if(common.status!=='all-packets-schema-identity-citation-and-scope-checked'||!/^[-A-Za-z0-9.]+$/.test(common.releaseId))throw Error('Unaccepted common-data publication');
+ if(!['all-packets-schema-identity-citation-and-scope-checked','all-source-packages-qualified-and-file-digests-checked'].includes(common.status)||!/^[-A-Za-z0-9.]+$/.test(common.releaseId))throw Error('Unaccepted common-data publication');
  const prefix='common-data/releases/'+common.releaseId+'/';
  for(const f of common.files){if(!/^[-A-Za-z0-9/.]+$/.test(f.key)||f.key.split('/').includes('..'))throw Error('Invalid common-data path');const key=prefix+f.key;const bytes=await readFile(resolve(target,key));if(bytes.length!==f.bytes||digest(bytes)!==f.sha256)throw Error('Common-data checksum mismatch');precedingAllowed.add(key);}
  for(const key of ['schema.json','contract.json','source-mappings.json']){const f=common.files.find(f=>f.key===key);if(!f)throw Error('Missing common-data contract');const bytes=await readFile(resolve(target,'common-data',key));if(bytes.length!==f.bytes||digest(bytes)!==f.sha256)throw Error('Common-data alias checksum mismatch');precedingAllowed.add('common-data/'+key);}
  const originalBytes=await readFile(resolve(target,prefix,'manifest.json'));const original=JSON.parse(originalBytes);if(original.status!==common.status||JSON.stringify(original.files)!==JSON.stringify(common.files.map(({url,...f})=>f)))throw Error('Common-data package manifest differs');precedingAllowed.add(prefix+'manifest.json');precedingAllowed.add('common-data/manifest.json');
  const checks=JSON.parse(await readFile(resolve(target,'common-data/manifest-checksums.json')));
- for(const f of checks.files){if(!['common-data/manifest.json',prefix+'manifest.json'].includes(f.key))throw Error('Invalid manifest checksum path');const bytes=await readFile(resolve(target,f.key));if(bytes.length!==f.bytes||digest(bytes)!==f.byteSha256)throw Error('Manifest byte checksum mismatch');const sidecar=await readFile(resolve(target,f.key+'.sha256'),'utf8');if(sidecar!==f.byteSha256+'  manifest.json\n')throw Error('Manifest sidecar mismatch');precedingAllowed.add(f.key+'.sha256');}
+ for(const f of checks.files){
+  if(f.key!=='common-data/manifest.json'&&!/^common-data\/releases\/[-A-Za-z0-9.]+\/manifest\.json$/.test(f.key))throw Error('Invalid manifest checksum path');
+  const bytes=await readFile(resolve(target,f.key));if(bytes.length!==f.bytes||digest(bytes)!==f.byteSha256)throw Error('Manifest byte checksum mismatch');
+  const payload=commonPayloadDigest(bytes);if(payload!==f.payloadSha256||payload!==JSON.parse(bytes).manifestSha256)throw Error('Manifest payload checksum mismatch');
+  const sidecar=await readFile(resolve(target,f.key+'.sha256'),'utf8');if(sidecar!==f.byteSha256+'  manifest.json\n')throw Error('Manifest sidecar mismatch');precedingAllowed.add(f.key+'.sha256');
+  if(f.key!== 'common-data/manifest.json'&&f.key!==prefix+'manifest.json'){
+   const retained=JSON.parse(bytes);if(!['all-packets-schema-identity-citation-and-scope-checked','all-source-packages-qualified-and-file-digests-checked'].includes(retained.status)||f.key!=='common-data/releases/'+retained.releaseId+'/manifest.json')throw Error('Invalid retained common-data manifest');
+   const retainedPrefix='common-data/releases/'+retained.releaseId+'/';
+   for(const item of retained.files){if(!/^[-A-Za-z0-9/.]+$/.test(item.key)||item.key.split('/').includes('..'))throw Error('Invalid retained common-data asset');const key=retainedPrefix+item.key;const asset=await readFile(resolve(target,key));if(asset.length!==item.bytes||digest(asset)!==item.sha256)throw Error('Retained common-data checksum mismatch');precedingAllowed.add(key);}
+   precedingAllowed.add(f.key);
+  }
+ }
  precedingAllowed.add('common-data/manifest-checksums.json');
 }catch(e){if(e.code!=='ENOENT')throw e;}
 for(const entry of await readdir(target,{recursive:true,withFileTypes:true})){if(entry.isFile()&&!precedingAllowed.has(relative(target,resolve(entry.parentPath,entry.name))))throw Error('Unlisted file in preceding publication: '+entry.name);if(entry.isSymbolicLink())throw Error('Symlink in publication');}

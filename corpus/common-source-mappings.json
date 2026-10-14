@@ -2,7 +2,7 @@
   "schemaVersion": "offmenu-common-source-mappings/1",
   "checkedAt": "2026-10-13T20:03:03.023614+00:00",
   "contractVersion": "offmenu-common-contract/1",
-  "contractSha256": "c7d1ff1646848b8df2fda3672058c534da63ecae539df338b3f2e9aba01fb749",
+  "contractSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
   "fieldMappings": {
     "id": {
       "target": "SourceRecord.identifier",
@@ -432,10 +432,53 @@
       "mapping": "Own-namespace source classes and all direct annotations/expressions; imported ontology identities stay references",
       "identityDefault": "Source ontology class identified by original URI; ingredient/diet equivalence not inferred",
       "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "qudt-measurement-definitions",
+      "sourceRecords": 56,
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "canonicalTypes": [
+        "UnitDefinition"
+      ],
+      "originalSource": "https://github.com/qudt/qudt-public-repo/tree/v3.5.2",
+      "sourceManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+      "licence": "CC-BY-4.0",
+      "attribution": "QUDT.org",
+      "mapping": "Pinned source unit definitions and dimension-specific conversion metadata; conventional variants retained distinctly",
+      "identityDefault": "Original QUDT unit URI; no ingredient density, portion yield or ambiguous recipe-measure equivalence inferred",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "recipe-expansion-20261014",
+      "sourceRecords": 42,
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "canonicalTypes": [
+        "RecipeVariant",
+        "RecipeStep",
+        "IngredientMention",
+        "CulturalRepresentation"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+      "licence": "Per-record pinned repository CC0-1.0 / Unlicense dedications and attribution",
+      "mapping": "Source-scoped complete recipe statements and candidate measure/ingredient mappings; pinned original content and title provenance",
+      "publisherCoverage": {
+        "lvisintini/recetasdemami": 33,
+        "Remarknl/Indisch-eten": 1,
+        "chefdelakarma/libre_cuisine": 6,
+        "clicat/Ricette": 2,
+        "rochacbruno/vegan_recipes": 0
+      },
+      "languages": {
+        "es": 33,
+        "nl": 7,
+        "it": 2
+      },
+      "identityDefault": "Source recipe identity, with ingredient matches candidate only; no country, diet, translation or cross-recipe identity inferred",
+      "originalRecordsPreserved": true
     }
   ],
-  "sourceRecordTotal": 22574292,
-  "sourceCount": 20,
+  "sourceRecordTotal": 22574390,
+  "sourceCount": 22,
   "privateAndLocalCompanions": {
     "Fineli-20.0-reference-tables": [
       "RecipeFormula",
@@ -475,5 +518,6 @@
     }
   },
   "countryLanguageRule": "Sources contribute to global canonical resources; source country and language are assertion context, not silo keys.",
-  "implementationStatus": "Declarative data mapping; full application migration and localization implemented by the separate i18n agent."
+  "implementationStatus": "Declarative data mapping. The separate i18n implementation was merged to main at 776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f; application migration is outside this acquisition deliverable.",
+  "publicProjectionRule": "sourceRecords counts the admitted public curated projection, not every raw normalized archive row. Native archive counts and withheld reasons remain separately retained; aligning the corpus does not promote withheld raw/private fields."
 }

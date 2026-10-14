@@ -43777,5 +43777,14 @@
     "status": "all-native-and-common-data-downloads-live-verified",
     "note": "Source-directory research entries are not acquired corpus sources. All new acquisitions must map to the common contract or retain typed unmapped facts and an extension proposal. Fully aligned graphs currently cover recipes, terminology and FoodOn; other legacy sources are declaratively mapped.",
     "verification": "docs/common-data-publication-verification-20261014.json"
+  },
+  "developmentExpansion": {
+    "date": "2026-10-14",
+    "status": "in-progress-local-only",
+    "scope": "Common graph representations of already admitted projections plus bounded new source acquisitions; discovery landing-page checks are not dataset collection",
+    "evidence": "docs/common-corpus-expansion-20261014.json",
+    "newReadyAcquisition": "QUDT v3.5.2: 56 source unit definitions, independently reviewed local package",
+    "derivedRecovery": "5 historical recipe variants from existing source holdings, not five new original source works",
+    "publicServingReleaseChanged": false
   }
 }

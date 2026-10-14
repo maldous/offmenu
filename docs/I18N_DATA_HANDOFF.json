@@ -104,5 +104,18 @@
   "manifestChecksumDeployment": {
     "id": "6acea54e7b6d662e6991719f",
     "immutableChecksumReceipt": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
+  },
+  "implementationLifecycle": {
+    "status": "merged-to-main-and-conversation-archived",
+    "mergeCommit": "776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f",
+    "branchAndWorktreeClosed": true,
+    "workerDeploymentOfI18nPerformed": false
+  },
+  "developmentExpansion": {
+    "status": "parallel-source-alignment-in-progress-not-published",
+    "evidence": "docs/common-corpus-expansion-20261014.json",
+    "registeredTypes": 110,
+    "newType": "UnitDefinition",
+    "countingRule": "Existing acceptance and hosted checksums above describe the published core. Development graph source coverage and extra recipes must pass independent combined validation before replacing it."
   }
 }

@@ -93,6 +93,29 @@
       ],
       "sourceAnomalies": 4,
       "decision": "Four prose definitions declared as xsd:anyURI remain preserved in originalRdfNotation; their text interpretations are candidate assertions. Strict IRI validation remains enabled."
+    },
+    {
+      "source": "QUDT official v3.5.2 measurement vocabulary",
+      "types": [
+        "UnitDefinition"
+      ],
+      "decision": "Register source-defined units as subtype of Unit. Preserve dimensional context, normative symbols/factors and conventions separately from ambiguous recipe notations; no mass-volume, density, yield or historical default inferred."
+    },
+    {
+      "source": "Wellcome pinned cookbook work and IIIF manifest metadata",
+      "evidence": "docs/global-recipe-source-discovery-20261014.json",
+      "status": "local metadata acquisition only; no recipe text admitted",
+      "proposals": [
+        "DigitisedWorkAndCanvasEvidence",
+        "ProviderRightsAssertionScope",
+        "BilingualEditionRelationship"
+      ],
+      "existingRepresentation": {
+        "workAndCanvas": "SourceDocument / SourceRecord with fixed IIIF IDs and cited typed canvas metadata",
+        "rightsScope": "ReusePermission / SourceLicenceNotice plus cited provider statement; jurisdiction and conflicting edition notices retained",
+        "editionContext": "SourceAssertion / CulturalRepresentation with source-declared edition context; translationOf requires separately verified text equivalence"
+      },
+      "decision": "Use existing registered source and rights types for the retained metadata. Keep proposed more specific types for review when page or text extraction introduces an actual additional semantic need. Provider PDM statements do not imply independently verified worldwide clearance."
     }
   ]
 }

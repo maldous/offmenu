@@ -439,6 +439,12 @@
     "SourceAnomaly": {
       "id": "urn:offmenu:type:SourceAnomaly",
       "description": "Original source declared an invalid identifier or datatype. Preserve original attributes/lexical form and mark interpretation candidate rather than fabricating a valid link."
+    },
+    "UnitDefinition": {
+      "id": "urn:offmenu:type:UnitDefinition",
+      "description": "A source-identified normative unit definition with cited dimensional context, symbols and source conversion parameters. Distinct from a recipe notation or food-specific conversion.",
+      "parentType": "urn:offmenu:type:Unit",
+      "qualificationRule": "Unit conventions remain distinct; a source factor does not choose an ambiguous recipe unit or establish density, yield or food equivalence."
     }
   },
   "legacyKindMappings": {
@@ -947,5 +953,6 @@
     "identifier": "A fixed namespace/code, never replaced by translated display labels.",
     "uri": "Fixed URI or internationalized resource identifier (IRI), including multilingual source URLs; preserve the original identifier rather than translating it."
   },
-  "normalizationEvidenceRule": "Normalizer-derived quantities and default scaling are candidates/derivations, not independently verified source claims. Keep source statements and derivation input/method/review status."
+  "normalizationEvidenceRule": "Normalizer-derived quantities and default scaling are candidates/derivations, not independently verified source claims. Keep source statements and derivation input/method/review status.",
+  "textIdentityRule": "A text identifier can be reused in multiple projections of the same original text (for example a resource name and the original data.name field). Repeated definitions must have identical language, value, source-text hash and citation set; conflicts are rejected. Source edition language is not proof of each embedded quoted string language; uncertain fields use und."
 }
