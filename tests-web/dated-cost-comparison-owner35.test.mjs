@@ -132,15 +132,17 @@ test('rejected accidental async evidence blocks without an unhandled rejection',
   assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
   await new Promise(resolve => setImmediate(resolve));
 });
-test('foreign-realm rejected/fulfilled promises and thenables are observed but never qualified', async () => {
+test('foreign promises are observed; malformed thenables are denied without callback execution', async () => {
   const foreignReject = runInNewContext('(async function(){throw Error("foreign authority unavailable");})');
   const foreignFulfill = runInNewContext('(async function(){return {status:"qualified"};})');
+  let thenCalls = 0;
   for (const resolver of [() => foreignReject(), () => foreignFulfill(),
-    () => ({then(_yes, no){ no(Error('thenable unavailable')); }}),
-    () => ({then(){ throw Error('thenable failed'); }})]) {
+    () => ({then(_yes, no){ thenCalls++; no(Error('thenable unavailable')); }}),
+    () => Object.create({then(){ thenCalls++; throw Error('thenable failed'); }})]) {
     const result = compareDatedCosts(fixture(), {resolveEvidence:resolver});
     assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
   }
+  assert.equal(thenCalls, 0);
   let hits = 0;
   const result = compareDatedCosts(fixture(), {resolveEvidence:x => {
     const verdict = qualify(x);
@@ -149,6 +151,18 @@ test('foreign-realm rejected/fulfilled promises and thenables are observed but n
   }});
   assert.equal(result.status, 'blocked'); assert.equal(hits, 0);
   await new Promise(resolve => setImmediate(resolve));
+});
+test('native rejected promises with shadowed then are observed without consulting accessors', async () => {
+  let hits = 0;
+  const foreign = () => Object.defineProperty(runInNewContext('Promise.reject(Error("foreign shadow"))'),
+    'then', {get(){hits++; throw Error('untrusted then getter');}});
+  const local = () => Object.defineProperty(Promise.reject(Error('local shadow')), 'then', {value:null});
+  for (const resolver of [foreign, local]) {
+    const result = compareDatedCosts(fixture(), {resolveEvidence:resolver});
+    assert.equal(result.status, 'blocked'); assert.equal(result.ranking, null);
+  }
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(hits, 0);
 });
 test('input captured before resolver effects; frozen result and evidence detach in both directions', () => {
   const input = fixture('fx'), before = clone(input), verdicts = [];

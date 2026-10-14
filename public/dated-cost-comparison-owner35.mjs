@@ -63,20 +63,14 @@ function output(value) {
   }
   return {numerator:value.n.toString(), denominator:value.d.toString(), decimal:text};
 }
+const promiseThen = Promise.prototype.then;
 function observeAsync(value) {
-  // Locate the promise protocol without executing an evidence accessor. A foreign
-  // Promise is not instanceof this realm's Promise; assimilate its data method.
-  let object = value;
-  for (let depth = 0; object && (typeof object === 'object' || typeof object === 'function') && depth < 32; depth++) {
-    const field = Object.getOwnPropertyDescriptor(object, 'then');
-    if (field) {
-      if (!Object.hasOwn(field, 'value') || typeof field.value !== 'function') return false;
-      Promise.resolve({then(yes, no) { Reflect.apply(field.value, value, [yes, no]); }}).catch(() => {});
-      return true;
-    }
-    object = Object.getPrototypeOf(object);
-  }
-  return false;
+  try {
+    // The intrinsic checks genuine Promise internal slots across realms before
+    // using its handlers. Never look up value.then or assimilate plain thenables.
+    Reflect.apply(promiseThen, value, [() => {}, () => {}]);
+    return true;
+  } catch { return false; }
 }
 function qualified(resolve, kind, binding) {
   try {

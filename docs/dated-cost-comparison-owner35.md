@@ -7,14 +7,22 @@ on foreign-realm rejected promises. The parent returns a blocked result but then
 exits Node with an unhandled rejection: its instanceof Promise guard is tied to
 one JavaScript realm. An isolated node:vm reproduction confirmed exit 1.
 
-The correction finds a data-method promise protocol without executing a then
-accessor, and adopts it through this realm's Promise.resolve rejection handler.
-Foreign promises and thenables remain denied; observation grants no evidence.
-New regression checks cover rejected/fulfilled foreign promises, rejecting/throwing
-thenables and an accessor that must not execute. Only Node builtins are added to
-the focused test closure (node:vm). The narrow correction requires new independent
-exact-pin review and root binding; earlier source/composition PASS does not approve
-the changed code. No merge or caller activation is claimed by this correction.
+The first correction b2529ab15f73a2bd2c028fbf47b10b99b0cde2b5 fixed ordinary
+foreign promises but SAME Worker41 found residual P2 W41-DATED35-SHADOWED-PROMISE:
+an own then accessor or then:null shadow bypassed observation. The exact retained
+reviewer child-process probe reproduced both strict-mode failures with getter
+hits zero. That head was NOT accepted and remains preserved in history.
+
+The successor uses the captured Promise.prototype.then intrinsic to observe
+genuine native promises across realms without consulting their shadowed then
+properties. Plain malformed thenables are not assimilated and their callbacks
+never run. All async/malformed evidence remains denied; observation grants no
+source evidence. Regression checks cover rejected/fulfilled foreign promises,
+native shadowed then descriptors, plain/inherited thenables and accessor
+nonexecution. Only Node builtins are used in the test closure (node:vm).
+This narrow successor requires SAME41 independent exact-pin review, root binding
+and provider recheck. Earlier PASS does not approve changed code; no merge or
+caller activation is claimed here.
 
 Candidate for independent review, not full NORM-09 completion. No actual UI,
 provider, handler, schema, account, payment or purchase path is installed.
