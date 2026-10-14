@@ -1,0 +1,116 @@
+{
+  "candidate": "14b7b7af37f1be842913d0f0c923c8a1c1df1147",
+  "verdict": "PASS_SCOPED_SI_UNIT_STAGING_CONTRACT",
+  "findings": [],
+  "independent_checks": {
+    "passed": 5,
+    "failed": 0,
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 worker-21-review/quantity-14b7b7a/probes.py"
+  },
+  "author_suite": "Eight claimed author checks inspected, not repeated; targeted independent probes executed instead",
+  "helper": "3f9dafb75088437dda59668f5b70f967693bf0bb",
+  "helper_sha256": "f39fd8d9395bc5a7259b632f3c09e9bfe2208399fa29a6bc212ca327dec443c9",
+  "retained_source": {
+    "path": "/home/user/src/offmenu-data/recipe-expansion-20261014/normalized.jsonl.gz",
+    "first_line_sha256": "2a9905c4b18a93447d00bd3e9ad7e5b8c5f6caeb1f48a369a7de4a5f51200c24",
+    "record_id": "recipe-expansion:recipe:77ddfd877294a450d404a043",
+    "stat_unchanged": true,
+    "scope": "exact reference readback, not rights or source admission"
+  },
+  "pdf_evidence": [
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 2,
+      "text_sha256": "3cb7d097edead84db928497c08742f90421f60e09b992c4a7ef00210382b5695"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 3,
+      "text_sha256": "df83c9f5c9bb7152bb9dae5fd7b067f6c8fa6a199ee4592d6224cf63ab24be35"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 4,
+      "text_sha256": "ddf207a3f8f4bfe6452b43894de44837888fd8938733b4a13601987e977eefe7"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 5,
+      "text_sha256": "b3044d9ffeb2f72a1366b4cf120a637fee119195c36a4f91f48f139e71f7d2eb"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 6,
+      "text_sha256": "5ee148008825959b5f1064b109f56829bf57812a7dde1be0e1578ff2ed3eda4a"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 7,
+      "text_sha256": "eea0a4da44898e4c374a9db07aeef26bf9855d45b7b34f41a505f282162d6b75"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 8,
+      "text_sha256": "1c42d358d5ac0d3116490665d636fa881e338202d88a66d38f03474d187516dc"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 9,
+      "text_sha256": "ec339f12d4b4475664d0ecb2d85c3e3d2f179238a60762cdf02fd35e856b1df8"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 10,
+      "text_sha256": "618761bdf57c90c8b2eaecd56cab4a7f222a6686e35614d2f0ca0b6dea66d99f"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 11,
+      "text_sha256": "37a7c0b44d45347ca2305a5a4018158e530ca10891768c025325a58bdeb656b4"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 12,
+      "text_sha256": "04bdacafc8509eb3386373d0233662743edf99c041141df4bff9c4f4a98c1834"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "pdf_sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "page": 13,
+      "text_sha256": "e694c0dc637bac8c050d11b17137d35210ba6426330e4d3bced8c45fa68cb928"
+    },
+    {
+      "path": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "pdf_sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "page": 5,
+      "text_sha256": "e857ffa7f5540bb60744d2a2d3a682396f336ab6a89a56c29e99a51e6e190227"
+    }
+  ],
+  "source_sha256": {
+    "scripts/recipe-quantity-owner15.py": "3a2b124fde43d04de4894469fd522b5f70454ff3aae7d5f14deb8b6f7d0a5709",
+    "tests/test_recipe_quantity_owner15.py": "d21788ba939bcb883e3c9b279ab844963c2348b1cda4293f564589e5abf8b06b",
+    "docs/recipe-quantity-owner15.md": "98623c7ebdbe962f673f655196769d857ac368c3ffb79e852232b7b933e20103"
+  },
+  "actual_entrypoint": "normalize_recipe(record, ReviewedConverter); projection fields amount/unit, not a literal canonicalAmount API",
+  "limits": [
+    "Only SI unit scales: measured regional cup/count remain unresolved even with evidence",
+    "Known gross grams are not edible/drained equivalence; preparation/basis metadata is not reconciled by this adapter",
+    "No density application, serving/yield/nutrient transfer or automatic planning eligibility",
+    "Shared importer has no adoption; helper byte pin is not production authority",
+    "No existing author basket tests, broad corpus or real providers executed"
+  ],
+  "production": "STOP",
+  "source_admission": "WITHHELD",
+  "whole105_acceptance": "WITHHELD"
+}
