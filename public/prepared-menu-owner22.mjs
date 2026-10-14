@@ -2,7 +2,24 @@
 export const PREPARED_MENU_VERSION = 'prepared-menu/1';
 const named = x => typeof x === 'string' && x.trim().length > 0 && x.length <= 500;
 const versioned = x => named(x) || (Number.isSafeInteger(x) && x >= 0);
-const equal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+// Only finite, plain data can bind scope. Order of object keys has no meaning.
+function equal(a, b, depth = 0) {
+  if (depth > 32 || typeof a !== typeof b) return false;
+  if (a === null || b === null) return a === b;
+  if (typeof a === 'number') return Number.isFinite(a) && Number.isFinite(b) && a === b;
+  if (typeof a === 'string' || typeof a === 'boolean') return a === b;
+  if (typeof a !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a) && (a.length > 1000 || a.length !== b.length ||
+      Object.keys(a).length !== a.length || Object.keys(b).length !== b.length ||
+      !Array.from({length:a.length}, (_, i) => i).every(i => Object.hasOwn(a, i) && Object.hasOwn(b, i)))) return false;
+  if (!Array.isArray(a) && [a, b].some(x => ![Object.prototype, null].includes(Object.getPrototypeOf(x)))) return false;
+  const x = Object.keys(a).sort(), y = Object.keys(b).sort();
+  if (x.length > 1000 || x.length !== y.length || x.some((key, i) => key !== y[i])) return false;
+  return x.every(key => {
+    const left = Object.getOwnPropertyDescriptor(a, key), right = Object.getOwnPropertyDescriptor(b, key);
+    return Object.hasOwn(left, 'value') && Object.hasOwn(right, 'value') && equal(left.value, right.value, depth + 1);
+  });
+}
 const clone = x => structuredClone(x);
 
 function qualification(resolveScope, kind, binding, candidate, eligible) {
@@ -11,10 +28,12 @@ function qualification(resolveScope, kind, binding, candidate, eligible) {
   if (verdict?.then) throw new TypeError('Scope resolver must be synchronous');
   const scope = kind === 'serving' ? 'portion-fraction' : 'culinary-function';
   const bound = verdict?.binding && Object.entries(binding).every(([key, value]) => equal(verdict.binding[key], value));
-  const supported = verdict?.status === 'supported' && verdict.scope === scope && bound &&
+  const qualified = verdict?.scope === scope && bound &&
     named(verdict.provenance?.sourceId) && named(verdict.provenance?.url);
-  return {status:supported ? 'supported' : verdict?.status === 'conflict' ? 'conflict' : 'unknown',
-    scope:supported ? scope : null, reason:supported ? null : 'No exact owner-qualified scope evidence',
+  const status = qualified && ['supported', 'conflict'].includes(verdict.status) ? verdict.status : 'unknown';
+  return {status,
+    scope:status !== 'unknown' ? scope : null,
+    reason:status === 'supported' ? null : status === 'conflict' ? 'Exact owner-qualified scope evidence conflicts' : 'No exact owner-qualified scope evidence',
     evidence:verdict ? clone(verdict) : null};
 }
 

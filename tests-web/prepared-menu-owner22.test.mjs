@@ -113,3 +113,25 @@ test('bounded unique proposals, synchronous evidence and resolver mutation isola
   const before=clone(r);preparedMenuComposition(r,{substitutions:[p],resolveScope:x=>{x.candidate.replacement.name='mutated';return null;}});
   assert.deepEqual(r,before);
 });
+
+test('provider P2: binding ignores key order but never equates NaN with null',()=>{
+  const reordered=preparedMenuComposition(syntheticContext(),{substitutions:[proposal()],resolveScope:x=>({
+    ...scoped(x),binding:{...x.binding,replacementQuantity:{unit:'g',value:80}}})});
+  assert.equal(reordered.lines[0].substitution.status,'supported');
+  const p=proposal();p.replacement.quantity.value=NaN;
+  const invalid=preparedMenuComposition(syntheticContext(),{substitutions:[p],resolveScope:x=>({
+    ...scoped(x),binding:{...x.binding,replacementQuantity:{value:null,unit:'g'}}})});
+  assert.equal(invalid.lines[0].substitution.status,'unknown');
+});
+
+test('provider P2: conflict needs the exact scope, binding and provenance',()=>{
+  const conflict=x=>({...scoped(x),status:'conflict'});
+  assert.equal(preparedMenuComposition(syntheticContext(),{substitutions:[proposal()],resolveScope:conflict}).lines[0].substitution.status,'conflict');
+  for(const resolver of [x=>({...conflict(x),binding:{...x.binding,recipeId:'other'}}),
+    x=>({...conflict(x),scope:'unrelated'}),x=>({...conflict(x),provenance:null})]) {
+    assert.equal(preparedMenuComposition(syntheticContext(),{substitutions:[proposal()],resolveScope:resolver}).lines[0].substitution.status,'unknown');
+  }
+  const r=syntheticContext(), serving={recipeId:r.id,recipeVersion:r.provenance.revisionId,fraction:0.25,form:'cooked',basis:'recipe-batch'};
+  assert.equal(preparedMenuComposition(r,{serving,resolveScope:conflict}).serving.status,'conflict');
+  assert.equal(preparedMenuComposition(r,{serving,resolveScope:x=>({...conflict(x),binding:{...x.binding,fraction:0.5}})}).serving.status,'unknown');
+});

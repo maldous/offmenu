@@ -1,5 +1,28 @@
 # Worker 22 NORM-06 prepared-menu source adapter
 
+## PR 8 provider-review correction (fresh exact review pending)
+
+Previous accepted composition4d2541834cb3101ea59cb36d0762e562fa313c37 remains
+immutable, but its provider review reported two P2 findings. The corrected adapter
+is no longer byte-identical to the standalone pin; earlier byte-equality statements
+below describe the previous composition only and do not qualify this correction.
+
+Provider findings: https://github.com/maldous/offmenu/pull/8#discussion_r4273387129
+and https://github.com/maldous/offmenu/pull/8#discussion_r4273387136.
+JSON serialization made quantity comparison key-order dependent and collapsed
+nonfinite numbers to null. Replaced it with bounded structural comparison of plain,
+finite data, preserving null distinctions and rejecting unsupported/sparse shapes.
+Conflict verdicts now require the same exact binding, scope and provenance gates as
+supported verdicts; stale/unrelated conflicts remain unknown for both substitutions
+and portions. These changes confer no source admission, nutrient or identity equivalence.
+
+Before correction: eight passed/two failing regressions. After correction:
+ten passed/zero failed, exit0, 48.305096ms. A fresh declared-files-only portability
+run and existing13 exact-pin review/root acceptance are required. Provider review
+must also be read at the corrected head. No merge attempted at the old accepted pin.
+Only owner adapter/tests/docs change; no shared hook or production activation.
+
+
 ## Current-develop composition (15 October 2026)
 
 Branch: feature/prepared-menu-composition22-20261015; base: 148fec8102ee64ec6801d4df96dfeb9a946ac619.
@@ -159,3 +182,6 @@ mandatory auto_review; separate approval policy unavailable. Routine preservatio
 file list: public/prepared-menu-owner22.mjs, tests-web/prepared-menu-owner22.test.mjs,
 docs/prepared-menu-owner22.md. Recovery: checkout this branch/pin and rerun the focused
 checks against the retained checksum fixture. No new worker/coordinator/session.
+
+Correction declared-files export: 10 passed/0 failed, 39.483177ms; output SHA-256
+a847da300f2714d908df8a80ab64dc8afc473289eca327ff98cdb2c3f40be648.
