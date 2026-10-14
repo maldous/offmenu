@@ -1,0 +1,29 @@
+{
+  "candidate": "dcc9b50ee837a6099f4e18cac7712f2084f3728a",
+  "parent": "b086c941cc3de3c6da126e15c650f2cd544686c2",
+  "verdict": "PASS_EXACT_W21_REGIONAL_F1_CORRECTION",
+  "finding": "W21-REGIONAL-F1 resolved at exact correction pin",
+  "checks": {
+    "passed": 3,
+    "failed": 0,
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 worker-21-review/regional-dcc9b50/recheck.py",
+    "scope": [
+      "Original list/object reproducer reused unchanged except source pin",
+      "Malformed/string-subclass units unknown, no coercion/hash hook or authority calls, source retained",
+      "Valid gross chain/projection control unchanged"
+    ]
+  },
+  "correction_paths": [
+    "docs/regional-quantity-owner15.md",
+    "scripts/regional-quantity-owner15.py",
+    "tests/global-data-validation/test_regional_quantity_owner15.py"
+  ],
+  "correction_diff_sha256": "549a01145c242941ac2471911f44ec2b906bf10d01428caa5104b9699119ebb8",
+  "module_sha256": "1eb20b74f5ca1efaab70c4dfe6053382f6c2db4da581c756c17f163d81e23455",
+  "prior_review": "worker-21-review/regional-b086c94/independent-review.json retained unchanged",
+  "scope_limits": "Focused correction recheck only; prior SI14b7 scoped PASS unchanged; no broad author/consumer rerun",
+  "issuer_permission": "synthetic fixture only, not actual source admission",
+  "adoption": "WITHHELD owner integration/source authority gates",
+  "production": "STOP",
+  "whole105_acceptance": "WITHHELD"
+}
