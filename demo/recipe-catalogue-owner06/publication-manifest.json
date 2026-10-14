@@ -1,0 +1,1885 @@
+{
+  "schema": "offmenu-recipe-publication-proposal/1",
+  "status": "FROZEN LOCAL PROPOSAL; NOT UPLOADED; specific disclosure approval required",
+  "source": {
+    "path": "/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz",
+    "sha256": "90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73",
+    "bytes": 19589524,
+    "actualRecipeRecords": 25135,
+    "directEOFVerified": true
+  },
+  "projectedRecords": 24878,
+  "excludedCounts": {
+    "schema-example-fixture": 1,
+    "incomplete-OCR-candidate-detail-scope": 256
+  },
+  "sourceLicenceDistribution": {
+    "CC BY-SA 4.0": 17880,
+    "Unlicense": 806,
+    "Unlicense adaptation; original work public domain": 6192
+  },
+  "privacyDistribution": {
+    "sourceDeclaredPublicIncluded": 24878,
+    "personalIncluded": 0,
+    "internalOperationalIncluded": 0,
+    "schemaFixtureIncluded": 0,
+    "incompleteOCRIncluded": 0
+  },
+  "destination": {
+    "existingSite": "offmenu-corpus",
+    "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+    "teamId": "6949661f255143bbcf578c0e",
+    "mode": "manual isolated DRAFT deploy ID permalink only",
+    "productionPublish": false,
+    "productionOverwrite": false,
+    "newSite": false,
+    "visibility": "public URL; existing destination has no password/SSO protection"
+  },
+  "fields": {
+    "index": [
+      "key",
+      "title",
+      "origin",
+      "language",
+      "licence",
+      "review",
+      "ingredient/direction counts",
+      "part/item pointer"
+    ],
+    "record": [
+      "source-scoped id",
+      "name",
+      "languages",
+      "yield",
+      "ingredients: original text/name/amount/unit/optional/source quantity/food-match qualifier",
+      "directions",
+      "quantity/review/qualification/limitation fields",
+      "planning disabled"
+    ],
+    "provenance": [
+      "source/origin IDs",
+      "record ID",
+      "public source URL",
+      "revision/history",
+      "licence URI and label",
+      "attribution",
+      "source change notices",
+      "presentation change notice"
+    ],
+    "noInferredFields": [
+      "allergens",
+      "dietary suitability",
+      "nutrition",
+      "origin",
+      "complete/accepted recipe guarantee"
+    ]
+  },
+  "excluded": [
+    "3796live-Wikibooks additional snapshot",
+    "42 expansion",
+    "70 editorial/internal app recipes",
+    "5 corrected historical",
+    "54843 raw historical-labelled objects",
+    "Fineli formula references",
+    "all personal/account data, credentials, private SQLite/index/source paths/PIDs/runtime receipts",
+    "raw full normalized corpus/archive/images/media and additional source files"
+  ],
+  "artifactRoot": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview",
+  "allowlist": [
+    {
+      "path": "_headers",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/_headers",
+      "bytes": 281,
+      "sha256": "fad317586559882a327ce31a367441d8efe040e7ba903a4eeed3a7017a275bc2",
+      "classification": "original UI/public presentation code"
+    },
+    {
+      "path": "app.js",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/app.js",
+      "bytes": 6814,
+      "sha256": "3b3790c7e71bc0cab69b3b777d05e1b61a90f0d35977366dcbbb4ec107e951f7",
+      "classification": "original UI/public presentation code"
+    },
+    {
+      "path": "catalogue-index.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/catalogue-index.json.gz",
+      "bytes": 1458700,
+      "sha256": "609bebd086e823dc6c556d9d853c3bc5d8aed8a27866c7d932df44df786d39bb",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "index.html",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/index.html",
+      "bytes": 2033,
+      "sha256": "09f09671527163fe6d8e941e9b692cf5eb5d1f74c37bfa6283f08e3babf0f425",
+      "classification": "original UI/public presentation code"
+    },
+    {
+      "path": "recipes/part-0000.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0000.json.gz",
+      "bytes": 54582,
+      "sha256": "008a4f7400beea9c9c92ec09367092c6d178cd11ca9421d89c305ff389e19f96",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0001.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0001.json.gz",
+      "bytes": 55853,
+      "sha256": "1640ea505afcee37e239dcec52d180b0548bcc3b2f59a923a092b6cbfd8ebe99",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0002.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0002.json.gz",
+      "bytes": 58359,
+      "sha256": "21a1ca80c9fefaed4da9ab1243f7815030280117b921ef1ceb227b8c1a2a9b27",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0003.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0003.json.gz",
+      "bytes": 54997,
+      "sha256": "5e7a8c2c4cbc2fe18ebefdf893c5cd30ff00ac6eea0194d192ef1da1989d85b0",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0004.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0004.json.gz",
+      "bytes": 50208,
+      "sha256": "32236cc6345690a49bd2c8ccb353f0a8b68d258a60d09722b169df4c4d71fa97",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0005.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0005.json.gz",
+      "bytes": 53237,
+      "sha256": "13284e29adb066d5c11434d7483f57f67853a8b4f5fe47630c56921f76debc86",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0006.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0006.json.gz",
+      "bytes": 57050,
+      "sha256": "8d3a1ec7517dca2ab210d318b5c95384f33dcab3e1223f465c907c0d118e028b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0007.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0007.json.gz",
+      "bytes": 58568,
+      "sha256": "9c18448ab9e2ea8d44f45ea28aa39be7755810d3dd2ecd9efa4ec596c94b2bac",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0008.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0008.json.gz",
+      "bytes": 51944,
+      "sha256": "ea7033373284671513520a04e8d14993d06df07dec639ce12e4e06e6a02caef3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0009.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0009.json.gz",
+      "bytes": 49743,
+      "sha256": "b233a5babf05aafe4e816579cfba4f824a42b5ccfec134b9705cec12ff50118f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0010.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0010.json.gz",
+      "bytes": 54345,
+      "sha256": "1aabef9393fd50f8203feba8a9c125683ff3d73bd9eb88cdc0aee3f741c46e11",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0011.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0011.json.gz",
+      "bytes": 50613,
+      "sha256": "ff7fedb56eebbea4aabd25256ca7aecfec47039da20d51ccf57d88296d606665",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0012.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0012.json.gz",
+      "bytes": 52468,
+      "sha256": "80032d6356d7acfcfc69f0bfabc8504ba5ccfd82ced03cf14148b4e441d58f17",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0013.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0013.json.gz",
+      "bytes": 59996,
+      "sha256": "1a71b9051b44c254d8371f32990059c361559be63d8560445cf7caa4635b3561",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0014.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0014.json.gz",
+      "bytes": 56108,
+      "sha256": "5a6f22f9869bdf964876ce9341fdd11863e6afef91ddcda288063b069df9aa01",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0015.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0015.json.gz",
+      "bytes": 57383,
+      "sha256": "9843373d1b255ea33614936e284968d8618784b57fafcbbac3c288fd78f7c1cd",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0016.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0016.json.gz",
+      "bytes": 53735,
+      "sha256": "c7174a6e721beaebe511e8e10bf58b9cf35b205f09fe879426085fdfe52c5515",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0017.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0017.json.gz",
+      "bytes": 52772,
+      "sha256": "2108fb4b38237e6be1cba9b9d2a2c099482df4613dc1a334b3b85cf8be9f7c48",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0018.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0018.json.gz",
+      "bytes": 51212,
+      "sha256": "cffd17a81f4678ad363eaafd699046d4f34a1ba89cca99580388fc10e9f46b9b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0019.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0019.json.gz",
+      "bytes": 54359,
+      "sha256": "d726ff72a8dfcd2d7cddf8efcd76a984bfa54827a7d97d48eff2ab7e987d5440",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0020.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0020.json.gz",
+      "bytes": 55098,
+      "sha256": "934a4baca29e45f4201ccc2be5f21b910afc792d8e98fc238b0865cd1b97f124",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0021.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0021.json.gz",
+      "bytes": 59578,
+      "sha256": "8558e48fd0afe1d5861a6da8bf40b39c6df935402f0c2add240684f5431badb1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0022.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0022.json.gz",
+      "bytes": 54352,
+      "sha256": "e6b44364b6837553abd3154a8349c7b8effd435020a527c30b1d02624f20748b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0023.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0023.json.gz",
+      "bytes": 56430,
+      "sha256": "42f7cb0520aab147a68288e68e7c35331d866f29a065c00a6529d83e2af7c860",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0024.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0024.json.gz",
+      "bytes": 57423,
+      "sha256": "6356b47da9d7e0ef6786ced731f0f20beacaf187515eb62b07515d76e26e6ce6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0025.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0025.json.gz",
+      "bytes": 49108,
+      "sha256": "97a362ab231805856ffc9210583432660f255477be49bdc4d8d67db825dbe601",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0026.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0026.json.gz",
+      "bytes": 52110,
+      "sha256": "da7820f9e961b312c6b028a36244ce71826e32647a808cb99234c6829373d3cf",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0027.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0027.json.gz",
+      "bytes": 51843,
+      "sha256": "5d751f4e57a37f4728d9be425534b0ee39f230baab9b6e1f365802a0ee0fe68b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0028.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0028.json.gz",
+      "bytes": 53320,
+      "sha256": "b593fc6b61fc55404e2f9f49db11e314c417b78f94787b4a2aa313e19f9d4f67",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0029.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0029.json.gz",
+      "bytes": 55289,
+      "sha256": "fa08fa6a04fae7f629a41e392c9bbab362c51e4e5c16107a41f15dbb65d421e2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0030.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0030.json.gz",
+      "bytes": 56903,
+      "sha256": "2b360f338873150a1e7cc396b6467594db6a0fb0d5b9b5c5335a3d65263fc8e5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0031.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0031.json.gz",
+      "bytes": 55962,
+      "sha256": "6c3d2db2bf0f7a898a484a6f2f035f9842a0bbd01e095f0c79b20503a7203369",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0032.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0032.json.gz",
+      "bytes": 54747,
+      "sha256": "74b01301935ec4e83c926ed83b3633cc907ec02200e40e60fb5851918bdc1d74",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0033.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0033.json.gz",
+      "bytes": 65256,
+      "sha256": "802e3206de78a0688f629815fb628223745de29714600a58f285a56bf850c797",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0034.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0034.json.gz",
+      "bytes": 64175,
+      "sha256": "e49187035ba90b319710bfa09210d7d6829389bcabb37dd22a884dff526cc722",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0035.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0035.json.gz",
+      "bytes": 61181,
+      "sha256": "12866112ab7c2c4bf4334d598a17a9f56e44263f8820518fbe6563c92489b1b6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0036.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0036.json.gz",
+      "bytes": 67569,
+      "sha256": "783994c8d7fb62d2b95547a94ec3f707d2f7dca8dbe9c42aa7fbbb97a6f65576",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0037.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0037.json.gz",
+      "bytes": 89048,
+      "sha256": "a7d1c06e7260bcca29fc306c49246ef37474de01847fc0aea9ffcb50dbd15274",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0038.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0038.json.gz",
+      "bytes": 110215,
+      "sha256": "26aea9d507d3bbbdd20f8c67cd111e092128fdf92ecd6f1dc1f47c19a0ec927e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0039.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0039.json.gz",
+      "bytes": 94897,
+      "sha256": "0c2b26fd74fd270f961f51fdc4edcc82ad66f0834d049587f836aaf9e1e6b7fa",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0040.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0040.json.gz",
+      "bytes": 110559,
+      "sha256": "2b6b50772fc8c7768426cfc541e90d81372188883888a2a645fd1de9a0c5f0b7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0041.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0041.json.gz",
+      "bytes": 61169,
+      "sha256": "94917d1a9944b3b4685da494bc135fb12affe9e35cc1792ac0ec8e8a1e5573d7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0042.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0042.json.gz",
+      "bytes": 61389,
+      "sha256": "24335a40d5dfd6f7885c4e8959dc22ef92d24789be6c456988856a5b8c7f38ef",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0043.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0043.json.gz",
+      "bytes": 56588,
+      "sha256": "b6ee6e6b4c3f73b7fb268674606f64a1bc8f11d78b925adc85ffc63ce817e0b3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0044.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0044.json.gz",
+      "bytes": 58776,
+      "sha256": "8ad2270047d5aae50a46ec1029b2789efd08de877243ef43b25b31d58d2f3c3d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0045.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0045.json.gz",
+      "bytes": 55487,
+      "sha256": "bb59df965adbfd38577829b01f34bdfa078e45ab96e81f34025f18e2aa21f118",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0046.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0046.json.gz",
+      "bytes": 75568,
+      "sha256": "872a7ee9ce4dac53467cab4eb7323951bb27ad563163ffc03ebd345841b240a0",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0047.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0047.json.gz",
+      "bytes": 51493,
+      "sha256": "2454933305626325375f6f25232de092ac43d32020166abe3e31959c4833edfb",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0048.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0048.json.gz",
+      "bytes": 60338,
+      "sha256": "147ff4f5b55f201d853ee094f60483446de7c6e5ee918cc20c49503e0cc0f9d1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0049.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0049.json.gz",
+      "bytes": 55048,
+      "sha256": "35c447262bbd26e389f5bc62d34ba22ad2e4a98765ea50b9b676ec9a587acc03",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0050.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0050.json.gz",
+      "bytes": 64342,
+      "sha256": "6e66d9927076430c5b91c4bdd839b36c5ebd03202ff70c9996e5b66470350431",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0051.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0051.json.gz",
+      "bytes": 47132,
+      "sha256": "1e483c0651d7a4c1f92aff1c80540c431fed4d10a4b7ed140112072f9d2991a5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0052.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0052.json.gz",
+      "bytes": 52314,
+      "sha256": "686853ce6355940225dba4d5e23b796b80ca7ef6c36f377a6ca93cb044907528",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0053.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0053.json.gz",
+      "bytes": 38609,
+      "sha256": "801449ae565a74f1ff0fb25c418cd322bf648a7ed53a376c83f3920f4f11d590",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0054.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0054.json.gz",
+      "bytes": 25490,
+      "sha256": "2436e94a0251aacfabee61a93685b2cc6200aac547803301c6d526b44c0d7430",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0055.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0055.json.gz",
+      "bytes": 43929,
+      "sha256": "9038cb6cbf85c341a206ed5628aa75bf2388b7e493146f029a5f2e45285d8439",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0056.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0056.json.gz",
+      "bytes": 55811,
+      "sha256": "9669ab8cb0db4f9ee1f9936a7b1f3bc9575cf1d8198e2483a9a0764c83dd0cb5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0057.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0057.json.gz",
+      "bytes": 49062,
+      "sha256": "0c62eb732a9b545dfec56ce34d1dfd7d92bd188bf353b67ab47ed05f5f64a8b0",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0058.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0058.json.gz",
+      "bytes": 56198,
+      "sha256": "dcabee56c798c2e6d78123ec27548bcc8cc85a08666a008e5c90b0c03ced3058",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0059.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0059.json.gz",
+      "bytes": 50920,
+      "sha256": "8577af18573095ab44c95d74792082e95d7677e427d763d548a5c12ea82f066c",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0060.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0060.json.gz",
+      "bytes": 55019,
+      "sha256": "c9c1fcf778ced3ebf41d509d95a8cc2c63e24c28f949496a44eddf6d8f4b1a62",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0061.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0061.json.gz",
+      "bytes": 57456,
+      "sha256": "401eaa4998db37d82d0e5893394adc5622f1abb049081a9cf4415403c0b6e05c",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0062.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0062.json.gz",
+      "bytes": 58234,
+      "sha256": "e4f37bcaad4b46c653d76af763fb8e7887f4052cd0a6c6b0eea90cd4126743dc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0063.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0063.json.gz",
+      "bytes": 46614,
+      "sha256": "76004c697e2a1752a6dac0b852fcf3022d3a23933b8efb446df3a4573ce563e2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0064.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0064.json.gz",
+      "bytes": 41799,
+      "sha256": "5cc92bbb93e6cca31ee5d858a01eb9259863da7b4a40564d8e92b36e02cf8b52",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0065.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0065.json.gz",
+      "bytes": 34067,
+      "sha256": "e51c872a01dd239141debab769a1cfba7566725f9feca788c4402c0b86f54d3e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0066.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0066.json.gz",
+      "bytes": 48461,
+      "sha256": "fd6380dfc80dec416667da3a74a5b4f8ce801da65251cceb329b29af883f3927",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0067.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0067.json.gz",
+      "bytes": 44886,
+      "sha256": "6bd1a0ae4adbc2146a1bbbffa7e6de2e22fe5532316a8ddc976e50d287c69c22",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0068.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0068.json.gz",
+      "bytes": 47359,
+      "sha256": "ee746112431adfd7a810b2f9184ecfb3a245b3eefaa18e42fe76ee57c3ce92b2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0069.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0069.json.gz",
+      "bytes": 47089,
+      "sha256": "9a3c87a1649fe15304b72ff1facad3d725ceb08a7f0326870550375b42fae1b2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0070.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0070.json.gz",
+      "bytes": 42426,
+      "sha256": "5cc6bb3173d878ad3679f09e01b9982f6289c1483aace043279d337ef6e3c31b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0071.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0071.json.gz",
+      "bytes": 46083,
+      "sha256": "4e396a4c57d01f26e1209dfb4ec60248401b410373ff087f44243fbf56178a6f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0072.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0072.json.gz",
+      "bytes": 62491,
+      "sha256": "b96094a3d318f52ec38b2c993a517b7e3fbda4bb9973bbd9fe01724e59cb2c2b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0073.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0073.json.gz",
+      "bytes": 61172,
+      "sha256": "d399d06ddacd48db17f443c5621bbdf564e8469aca1021b0ff382c9284dfa0ac",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0074.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0074.json.gz",
+      "bytes": 54165,
+      "sha256": "e265dd20c1a4b8e7abddc6642aaa3135a87302e3c2b5d7ee59f83447ff447310",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0075.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0075.json.gz",
+      "bytes": 43279,
+      "sha256": "9202ec0eb935bb19e2d84e53630da3b479ccad3e1afbc8b4c6bb1de89774b435",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0076.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0076.json.gz",
+      "bytes": 41811,
+      "sha256": "b73bb87a2814c807c2f96eb2f1e7dd81b96a7c83a0759f8b4eda193b2fd7aa40",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0077.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0077.json.gz",
+      "bytes": 32571,
+      "sha256": "19a8bdbc63df4b7e19c94dbe6ea1845a7a360e463159ff27b4e2659da0e01195",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0078.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0078.json.gz",
+      "bytes": 41211,
+      "sha256": "e5c610635e96a4dff1177a84250430c7806321da1d9a72c8fd444a62d0f18622",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0079.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0079.json.gz",
+      "bytes": 43784,
+      "sha256": "a7decdb0fc232390fde852115db1e98350f1532a677a84c57e3ac62b519bacb3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0080.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0080.json.gz",
+      "bytes": 42308,
+      "sha256": "745152bc80665cded0b7c9a41f837b6a2b8dc32de2edf7fb52d7260bfff86479",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0081.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0081.json.gz",
+      "bytes": 45501,
+      "sha256": "b8fd7e965f7df7ac4394296255d8f28154e8a56e30d9738439a8659ec2dcc697",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0082.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0082.json.gz",
+      "bytes": 38334,
+      "sha256": "b2d736037ac0d2722e916671eb869a8fc8b6666d4304db5922a56370bb03ed17",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0083.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0083.json.gz",
+      "bytes": 39520,
+      "sha256": "02b9c79263f5dd60083108d32b390dc0ff660c8a3746da7066c530cea11cf8e2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0084.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0084.json.gz",
+      "bytes": 52449,
+      "sha256": "5166a8cf1e32a1696871970a2fe68c0c311618065e33001809c8885f5f664c93",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0085.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0085.json.gz",
+      "bytes": 47461,
+      "sha256": "690e242127f6cc3a23fad07f6bf9d615ec59bd5debcdc692d1c08085ce21998d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0086.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0086.json.gz",
+      "bytes": 45022,
+      "sha256": "952bf32fde831e8de0323ca4c3443057d264e28e1ceb0b7713d1da301e5e468a",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0087.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0087.json.gz",
+      "bytes": 55049,
+      "sha256": "e83bb47eadabe7b681555ae1f6055bbd50de404a0586bf33297fd59a7293877d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0088.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0088.json.gz",
+      "bytes": 50830,
+      "sha256": "9b3ea15afb05583a76ac547829200c4e2597f8c7b052c3f54cfb603d65b71a6d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0089.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0089.json.gz",
+      "bytes": 50072,
+      "sha256": "36ee205d6b5a75374333da0455a99b239982aa85a805dfd38b2b45376b304f55",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0090.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0090.json.gz",
+      "bytes": 47908,
+      "sha256": "276f9a66ccafdbc45f8a5c50088e06911ea6291635b917e8430f7cdfdbddf0a8",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0091.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0091.json.gz",
+      "bytes": 52376,
+      "sha256": "1d37d9fa0f99cb702deac91587958dfdb49453aa500f9aa6f8bbc9b1e2924e2b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0092.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0092.json.gz",
+      "bytes": 45462,
+      "sha256": "cb9eab5ce6679359c80c4ceffc42d768e94df2ab4b692af406f9b9a45f69d9af",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0093.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0093.json.gz",
+      "bytes": 46793,
+      "sha256": "7353b7da049b9f84ffb47bad2738baec567b177caa0344ee3a1806e409e0f857",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0094.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0094.json.gz",
+      "bytes": 48265,
+      "sha256": "43977ecc735324995f9ecef02215c36ac8deb33a6a465d3467ac3664279a02a7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0095.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0095.json.gz",
+      "bytes": 50579,
+      "sha256": "8668335d7f105e4805d4484acb0ffbbabd0b873aa1725dff81b7dfc7819d5195",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0096.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0096.json.gz",
+      "bytes": 34793,
+      "sha256": "fc14628beb5b09fc7dbc587f67515c4418df3d52ce9a6279458befeb510acfb9",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0097.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0097.json.gz",
+      "bytes": 42694,
+      "sha256": "5bf11c078a65ae54f79f334947dc825c5e2e1fc3e19b01f172a2f6029ff4aff1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0098.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0098.json.gz",
+      "bytes": 46882,
+      "sha256": "c20b1d527cb075d44545e68151014070a6c99d37106358c131d3ab531b1a5c06",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0099.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0099.json.gz",
+      "bytes": 51436,
+      "sha256": "620e4db6b2cf736380e8e23a0c3adbc0025d36bf1d0790ffabccf65667d37d12",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0100.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0100.json.gz",
+      "bytes": 35708,
+      "sha256": "651002b8b7ac1fc1eab208c85f69d2e92ccc9ee0bcd244a65062b9551f63824e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0101.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0101.json.gz",
+      "bytes": 52047,
+      "sha256": "00e2245563eae9e4a3710d0fff2284d6a945e956739a05b68cd58aa4011d8f7b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0102.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0102.json.gz",
+      "bytes": 46051,
+      "sha256": "f6c36168343c3dc9d1dcbfbf95c6e134ac5b316632cddcfffb6a61d0b67785a5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0103.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0103.json.gz",
+      "bytes": 53332,
+      "sha256": "32fd76f00ab3e97f44a9067d3dcc53bede1906e9dc535d81c85f021777c78136",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0104.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0104.json.gz",
+      "bytes": 58395,
+      "sha256": "4fe66396d968fc0ef65ae37bc1c420fa422ca95d18ef2faf90ce43446b714011",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0105.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0105.json.gz",
+      "bytes": 52308,
+      "sha256": "2d9400101afcb569bdd87410ad87c6f1880d115fd6e9776366d92cec216d160f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0106.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0106.json.gz",
+      "bytes": 61440,
+      "sha256": "d963ab9be9c5c2d07f3fb9e4699e9878f959f1020e97078ff5c1484e2e3dd6bc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0107.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0107.json.gz",
+      "bytes": 57536,
+      "sha256": "4e1a13ece24b77eae0d75f282eb6cb4f4ac466e84eecd85aa49d51c1745846b3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0108.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0108.json.gz",
+      "bytes": 51682,
+      "sha256": "afcbeff25342c9f8a1978f5f319204b40be09f0648b0881f8045652457b07578",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0109.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0109.json.gz",
+      "bytes": 46651,
+      "sha256": "bbc0e37af18276589fcccacca1cf59a2a00510e57af15467af960765634abb7b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0110.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0110.json.gz",
+      "bytes": 44523,
+      "sha256": "38f07ccbf9414f013fca106d51909a8f9cf1171cf1ed7151158a9d132380e8bf",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0111.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0111.json.gz",
+      "bytes": 34776,
+      "sha256": "3314bae02ebca62c20fffadaef09595fed66d8413c177a73b692e806b988ed60",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0112.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0112.json.gz",
+      "bytes": 38685,
+      "sha256": "21933bef74828b5f958de661249c243b049386ed7df4ba039b411d64b340d7d7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0113.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0113.json.gz",
+      "bytes": 61508,
+      "sha256": "28645be549f35dbeeda21cb4338a06b492db60d7bf41785ee38299d2c45c9364",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0114.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0114.json.gz",
+      "bytes": 35327,
+      "sha256": "28f9cc22e41ccbabab8a856d60d3da5d332e664b265619bff9e5ac27dd526e2f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0115.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0115.json.gz",
+      "bytes": 52286,
+      "sha256": "877c68c65a16a9e2b94ba30e3a1bbe8500c9ae45d65e3e32f224223cd8b29b14",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0116.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0116.json.gz",
+      "bytes": 49188,
+      "sha256": "8760c3ea8373d48c53d749a900ef3f84231f1bc05b2d87fd6334b0c638d6988b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0117.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0117.json.gz",
+      "bytes": 53694,
+      "sha256": "18ee11b5a94d03a9848eae6916e71a64e8d1cc838a41bd10194257ce822ebfc0",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0118.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0118.json.gz",
+      "bytes": 50592,
+      "sha256": "aa091f45c6f66ca09fcff3ea66374e3f70ca83436fae1ecd71ebed05c2b84ecc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0119.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0119.json.gz",
+      "bytes": 51431,
+      "sha256": "e74d459615314a73c474d753f552895f549cfa6ec260e5955161ee29a8e15fa7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0120.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0120.json.gz",
+      "bytes": 51649,
+      "sha256": "df4fa7e28d21a49b0861a894b12754cbfeb6122ed27d65f2d641a5f90c9d776d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0121.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0121.json.gz",
+      "bytes": 54213,
+      "sha256": "3ffc2c45e2fa60fea12bbf33f502f75b4604ec1720b92e55d06fde87b81ec767",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0122.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0122.json.gz",
+      "bytes": 44467,
+      "sha256": "55d12634a4d9af0d8bcf3793df160f60e1b322f38558c4e7f8d46b35b543c352",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0123.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0123.json.gz",
+      "bytes": 46521,
+      "sha256": "8ab6199058cf1e65be944bbcafa571f3296ed520e584c5eda3ae8cf126c2cd60",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0124.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0124.json.gz",
+      "bytes": 52094,
+      "sha256": "b809c774701f0c92ddeb25a46860803b3a23d050e3ed2eade75c90e32a21eaf2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0125.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0125.json.gz",
+      "bytes": 41854,
+      "sha256": "3fea6bfd03fe88237ebd416e2afce89a5915880195dd5066b5173d721fdc0d17",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0126.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0126.json.gz",
+      "bytes": 41982,
+      "sha256": "1a8e1be556c5348ea35dafaf283f5e032893650b0e48d91da9c62cc69af01dc6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0127.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0127.json.gz",
+      "bytes": 56882,
+      "sha256": "d978d60707654471367da93655b637170de5290beb92ea1e47b6c715c00915ac",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0128.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0128.json.gz",
+      "bytes": 55212,
+      "sha256": "0afbfe50863737191261c7dcfdb038171294825029b544fd665f545ca1111f65",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0129.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0129.json.gz",
+      "bytes": 43536,
+      "sha256": "0cbbe41221480dbfb6350ccb8a5d8d43f153b74738851fb8db77181802b38b8a",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0130.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0130.json.gz",
+      "bytes": 31203,
+      "sha256": "bc832946e42f7bb02710c18b03517bd2023e5dfc4c1faa2fe1e1c1f4e20046bc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0131.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0131.json.gz",
+      "bytes": 34128,
+      "sha256": "3f12f28d763e488bffe6405d3eee214421599f6facb706ec32a9bb5d9e3692df",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0132.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0132.json.gz",
+      "bytes": 41914,
+      "sha256": "9c74fb2d237a526626976223b1eecc7585b758ce6ef562ab6cf024325c7dca6d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0133.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0133.json.gz",
+      "bytes": 31787,
+      "sha256": "a2bac677a9fbaee340972a2b0f18f6fce0197a25d5a643e3f6bb5be3192a8ac3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0134.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0134.json.gz",
+      "bytes": 34038,
+      "sha256": "055e0c872817a36d0a869fbff09b81b00ce3835d6cf5f6b29c7361372faa2720",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0135.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0135.json.gz",
+      "bytes": 37932,
+      "sha256": "e56bcd38bbd7d78daa7f16a0582ac8b1a78ce1eced59613c6434593ecac10374",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0136.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0136.json.gz",
+      "bytes": 52855,
+      "sha256": "9c6436408eba7e97b9bb066e239eeb7184c00c81bb728281ae6414b85cd6dd92",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0137.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0137.json.gz",
+      "bytes": 58256,
+      "sha256": "d31cf01cde0a207fd97bebebb9a109b951f420654927e6fd486906f80bea8dc3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0138.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0138.json.gz",
+      "bytes": 63203,
+      "sha256": "156aba89e04549f171bbb3f1a8d06119f553368814d5b126a6ff1bd469771bf9",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0139.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0139.json.gz",
+      "bytes": 54144,
+      "sha256": "ae1a37838e528245496685f22bb31cb48e9fd74d3c4b82aba48ae26b9f17c829",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0140.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0140.json.gz",
+      "bytes": 57985,
+      "sha256": "7c0f684a5602475326e12cce5df90accde8fcf820418191296d382b2d4d41229",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0141.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0141.json.gz",
+      "bytes": 51876,
+      "sha256": "c94f64e9fdef0a6676380c592855c708e60b6b3243da12c106d81eed5eea7885",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0142.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0142.json.gz",
+      "bytes": 60939,
+      "sha256": "329f614658d99c5ce8565f3e6d3ce24d4b14320926899dbb5f61fee46331851b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0143.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0143.json.gz",
+      "bytes": 61488,
+      "sha256": "cf3c2a799c23f7330ecddd6a91b7bc30d05a5cf20d7de39d43e10f2ca59cd174",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0144.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0144.json.gz",
+      "bytes": 40160,
+      "sha256": "462fd6e9310936d76d2f9368b076523f4c9469fc0fed5929b19166839ed8ae2d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0145.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0145.json.gz",
+      "bytes": 52506,
+      "sha256": "2797c8b8234e12d9b0f4d891a4b3b156a269b734488cad4d42662a2552eb7a8e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0146.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0146.json.gz",
+      "bytes": 53633,
+      "sha256": "ae0d575088237538b4537b1286f4a27f0bf01de575dbf3edb8868d9ac171f1be",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0147.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0147.json.gz",
+      "bytes": 51890,
+      "sha256": "0c610982d18812fd1e4531beeb34d5529b011f28eed47e0629eae8c57be53dfa",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0148.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0148.json.gz",
+      "bytes": 57723,
+      "sha256": "e065afdb87a4eb28d45a1f4258783e88ea299946f043eb1b6eb80afe121b53fb",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0149.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0149.json.gz",
+      "bytes": 52871,
+      "sha256": "ad60e03cf1e64c2fca6eca49d1f4c63ff2c4f004b26c06411fce7f6d63df8094",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0150.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0150.json.gz",
+      "bytes": 53670,
+      "sha256": "23d957abdbe2904fa30c4e0014a6eaabaf644724f63fd53fab965b629a43c11f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0151.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0151.json.gz",
+      "bytes": 58174,
+      "sha256": "b088f5658cd0cf2c0e0b46c49d82451b0918d68bbf4de1e63bde3cda79b1dae4",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0152.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0152.json.gz",
+      "bytes": 51249,
+      "sha256": "696a294d7778c83869f76cd419a145ea0df05a538d99ac2f75aeb9809c09909e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0153.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0153.json.gz",
+      "bytes": 48415,
+      "sha256": "9968709e29f4c49a9eed54b7073024a4a5bfbd385917294454daa7048cba86dd",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0154.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0154.json.gz",
+      "bytes": 45239,
+      "sha256": "63e950a6b0683ef4bc9f83440541dc8d4261393429157390362679a68a3aa072",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0155.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0155.json.gz",
+      "bytes": 47070,
+      "sha256": "7a4f09d7088b1583294bdc73852005a65c320812265f34fbac5eb6254f5c6dda",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0156.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0156.json.gz",
+      "bytes": 48983,
+      "sha256": "d7af37effc18c1e1b61a2e759ecff1e7e4dd88995f89c1f4dccb67b68c33be2d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0157.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0157.json.gz",
+      "bytes": 49960,
+      "sha256": "72f40a87a050cbd3561a4d245f367d0778fb4c30fc51b891b7b34824571e4386",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0158.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0158.json.gz",
+      "bytes": 58559,
+      "sha256": "8848e27802fe393277127b4f1b51e2cef3aa606f930ae796ff1bbd687d5409c7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0159.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0159.json.gz",
+      "bytes": 45295,
+      "sha256": "0e8533a1def15b6dcf2c0ee61e854809b2875010e1f8975d951ac4cb3e344ddf",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0160.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0160.json.gz",
+      "bytes": 48601,
+      "sha256": "2fa9433dad6708390b36c3af24bb39a6aa2962f6011930b466aed5c80d30426a",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0161.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0161.json.gz",
+      "bytes": 48168,
+      "sha256": "1e8e6a382c5ef30e4facd4596544a1926692ac5d990f5305d6bad6958f331400",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0162.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0162.json.gz",
+      "bytes": 59033,
+      "sha256": "a8100c6d4015fe3e417aba815e4f026b9443bf6e087e0ad41a13596c25f310b7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0163.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0163.json.gz",
+      "bytes": 71578,
+      "sha256": "76d2ba305d9e3bcc262317701dd6d0d5775e7b1d10c63acbc15fb0dbb47d7440",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0164.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0164.json.gz",
+      "bytes": 72428,
+      "sha256": "d51743df79e8a90c42e5a57cf2e4e7862c4b682097d904cf60a9b231f1a3dda2",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0165.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0165.json.gz",
+      "bytes": 66190,
+      "sha256": "dd51be347b9f1684332e93305585678d28f685440ff4edc6c2381ebb8d15ff08",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0166.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0166.json.gz",
+      "bytes": 55834,
+      "sha256": "e93e304f65a17cd884d0fa712209cd99c18e0aa31e5718f1c56b3dc6f3ba1694",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0167.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0167.json.gz",
+      "bytes": 84342,
+      "sha256": "e09b2691d379b138990c3094fdbe121d793de49c0641f2e9dcaf13fc2b98e768",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0168.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0168.json.gz",
+      "bytes": 56555,
+      "sha256": "d1e203a263eae69dad27ec78b624efa768014b319f97923fb27b3ad737b89f92",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0169.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0169.json.gz",
+      "bytes": 49255,
+      "sha256": "2338242b96bebc74d9d12122c567192a89491de281c2672b6db0b8b600454821",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0170.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0170.json.gz",
+      "bytes": 50269,
+      "sha256": "b3f846f7c3276c5d6b708453e2a8e26366dabafdc3d8f40b631794a79ea98ad4",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0171.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0171.json.gz",
+      "bytes": 45962,
+      "sha256": "bed8bbd9b564e73501a19253a271569de50c5c66666f87a57e14e724707073b6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0172.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0172.json.gz",
+      "bytes": 49964,
+      "sha256": "d38d74f833285326ae44584672ca2025f206e3b7194771ce44b3aa1caefcd561",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0173.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0173.json.gz",
+      "bytes": 55405,
+      "sha256": "7326753eae6491d9f042930ec68deebd911d067d8c476cdf436a2381a6ccf3f1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0174.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0174.json.gz",
+      "bytes": 52796,
+      "sha256": "31901ecf77d9b91fd24df8dbe5e8c8652656c7dd9c43186ebb6d7da2b6a3ed49",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0175.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0175.json.gz",
+      "bytes": 47676,
+      "sha256": "f71717a5f7d1ed19b94ae946aa662df7f2544f416be3b0eea582ef5d8c6c5714",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0176.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0176.json.gz",
+      "bytes": 46964,
+      "sha256": "6d50481ac1f82a22776507032624f3b8bbac5da1d72a690d6b35a2f004e6fa3f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0177.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0177.json.gz",
+      "bytes": 49741,
+      "sha256": "766a6e10381b313c815ac2218c7eb5d3829c88320570b064052cdc392a0a2ffa",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0178.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0178.json.gz",
+      "bytes": 59143,
+      "sha256": "cc8cdf0216e184b446ae73470ec60d2e023472bebb553b7119ae33e1164af1ab",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0179.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0179.json.gz",
+      "bytes": 84491,
+      "sha256": "1173fef3081abd1c1a4b19f6c7241768ac8938c63a0e8616840b334ecf69612e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0180.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0180.json.gz",
+      "bytes": 107952,
+      "sha256": "d408b46afafb7ac1a2a388e4142ebcd64eb2e43b9facba6c2cd91e2e5a42a398",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0181.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0181.json.gz",
+      "bytes": 96182,
+      "sha256": "25b88decf5371a0f1f504a3ee6ff68ee15bc0516cede1b11431481f9ec4dc9c4",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0182.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0182.json.gz",
+      "bytes": 67823,
+      "sha256": "d4ad04aee2cb8fe0abcfa69bd87837919f8b1f4ea7a6a288c6387a6530cd9c9c",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0183.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0183.json.gz",
+      "bytes": 55992,
+      "sha256": "9b35c9f7578aa6b67fe149a1b0106e7784e9cd151e7dceb3e11ca9b1642f0e76",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0184.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0184.json.gz",
+      "bytes": 59960,
+      "sha256": "d7eafe1eb8a2e2f6eb128f52eaeb6d2954565f82e1a31e5d8eda64837e0ee60b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0185.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0185.json.gz",
+      "bytes": 56868,
+      "sha256": "c5aa4fb058949f481f6f58489c52abfc463f63df69f203936aabd6d2625f9dff",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0186.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0186.json.gz",
+      "bytes": 54468,
+      "sha256": "328904ea175bfce0826e5f538c3caf95006ab4c0678fbeee9473b494e70e8334",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0187.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0187.json.gz",
+      "bytes": 43811,
+      "sha256": "c07b3062a3038b626375ffc493390786a6bf6a7346240174a23016e38141cd18",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0188.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0188.json.gz",
+      "bytes": 46220,
+      "sha256": "d8455416abc6aa61aa8e14f1e2b7c40ee665b5f62a446ba91bbd9aa0b6fb6205",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0189.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0189.json.gz",
+      "bytes": 41510,
+      "sha256": "e2841ffd3b73f5e720748819945978dc695828050202e594a635f6cf4b67f82f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0190.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0190.json.gz",
+      "bytes": 44846,
+      "sha256": "5f379667410cc16cea2519cb6a381212a0c1304e6387ed8fd3d70be239782737",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0191.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0191.json.gz",
+      "bytes": 46782,
+      "sha256": "fb3c562707efe60bff7f1f2bf4dba14c7883b6c0b0f7e5644c8c18499cdabc6d",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0192.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0192.json.gz",
+      "bytes": 48439,
+      "sha256": "63bfc5c9dedc6e745ef49b16f218298ad8a8a4c72e8047df738a8a1cd043d8bd",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0193.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0193.json.gz",
+      "bytes": 43426,
+      "sha256": "e09110c343baad2c772f9799b0a91d21bc0d8ccf2f2dbec6c322e5be467fd4fd",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0194.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0194.json.gz",
+      "bytes": 46689,
+      "sha256": "3265c9f2ff2f7ee103c9b10d36673e3b31815613804604239321606e8941f791",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0195.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0195.json.gz",
+      "bytes": 40950,
+      "sha256": "6092c7c62d8495149bb5d5233256f0f572b3a5e232bb1ddd222fa3d3a02ec7be",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0196.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0196.json.gz",
+      "bytes": 36930,
+      "sha256": "edb58aeda991dcb16f6be2cf0694361b12323e64bd0a37873277ba477dfc6101",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0197.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0197.json.gz",
+      "bytes": 34358,
+      "sha256": "94bce2be027b1f2120d67712a1f75a1a8040061a1b30950e29c3be4dcc12855e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0198.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0198.json.gz",
+      "bytes": 37687,
+      "sha256": "bc65f88bf19dfb843a6a3647bd3c73548bd64b9c2d126a5e0fcc6b1f4d1e0665",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0199.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0199.json.gz",
+      "bytes": 36682,
+      "sha256": "126114c900c39e0209059d211c1a061b5aaa408d7127019378e6399ba4fa4b22",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0200.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0200.json.gz",
+      "bytes": 37541,
+      "sha256": "2cbddd2f4ee068fdfe73f1f07a9738f37df007fd13016243b7692f60df2bdbbc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0201.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0201.json.gz",
+      "bytes": 38794,
+      "sha256": "5202aedb3f149c73c79f45eae6fd7fb30e4a3bea6c357d02f6b4fafce3ec6a02",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0202.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0202.json.gz",
+      "bytes": 39444,
+      "sha256": "d6ea359fc954691a5b0ff80488778e98efb79c8d5f158647daab674f73390ad3",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0203.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0203.json.gz",
+      "bytes": 38211,
+      "sha256": "9d8f4b1e71b40ebc4de96a02ad261fe7dcc3cca208b235acd2f904cb9cc7e2bb",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0204.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0204.json.gz",
+      "bytes": 39467,
+      "sha256": "55943e5a5e28360e3638eedd6160eab2b6c8c29a947c7945fdb26f648cd77cdf",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0205.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0205.json.gz",
+      "bytes": 37497,
+      "sha256": "68c50f6ad2f5419f04198d8e6b2b93751e334814c46d06e42b0a7b869f6dbb29",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0206.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0206.json.gz",
+      "bytes": 36814,
+      "sha256": "fba14f6f5299e93ae114f8ff5c222d3133ec435ca72629e3719402c8175b3599",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0207.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0207.json.gz",
+      "bytes": 37095,
+      "sha256": "19666bbbecf71b01ee2ae9282cb89418dad98beec07803f111b019c222804da8",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0208.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0208.json.gz",
+      "bytes": 41127,
+      "sha256": "f7aa8c9b574b3b414d9ca97903f19c23861ace11b0ca4eb5b595547acc18b97f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0209.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0209.json.gz",
+      "bytes": 42281,
+      "sha256": "fa2537259ddd6aa92f27ac26184e2dcbfd8012daa753dfc6d82f9d97762908ea",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0210.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0210.json.gz",
+      "bytes": 33999,
+      "sha256": "2a15f892535e3c75b4c131683ef54c7fd4487b24d41e4090adcd75a946c916e0",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0211.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0211.json.gz",
+      "bytes": 31218,
+      "sha256": "aa7c9da507f6e650ef67b62ddf48698097626d724211b4f8cf1cd46224c85169",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0212.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0212.json.gz",
+      "bytes": 38020,
+      "sha256": "1ddfd220b38000e2d61a177330a7e5db55db72077b385790b84082a19abb03fc",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0213.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0213.json.gz",
+      "bytes": 34451,
+      "sha256": "a7729a88f3623973764c7de5c4584edf98c01ebb910df66e69352141cda52d3c",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0214.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0214.json.gz",
+      "bytes": 29132,
+      "sha256": "ededf38dcf532d7f3e70e6489a169e0821202b684daafcafd7b33cb341b4a324",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0215.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0215.json.gz",
+      "bytes": 35967,
+      "sha256": "87760979447c33774886cfe93cc22b2090b8788e97239ddf9f7ac94be1bc1382",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0216.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0216.json.gz",
+      "bytes": 29142,
+      "sha256": "17da8e85b5aeb11b57ce830e82dfa287d31f178d2a8d1864e14be21e5069fa12",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0217.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0217.json.gz",
+      "bytes": 32913,
+      "sha256": "6a52679ca23c4100d1b983e00da21816d650889ba8ec3ef1646e682008b6c27c",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0218.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0218.json.gz",
+      "bytes": 35388,
+      "sha256": "d662408461035cafb287c38c753f3a96782c7286ba5697c7d22a59a1c73f4552",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0219.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0219.json.gz",
+      "bytes": 31980,
+      "sha256": "4b8ef3a28c1146a80a9ad48191323161fb6cc57ac735c0ecbfe6050820687d44",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0220.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0220.json.gz",
+      "bytes": 28339,
+      "sha256": "7a5bc63b5dab4fa56760639d56b77e6dfed15df58a3a598104e4454dcdb9531e",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0221.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0221.json.gz",
+      "bytes": 35866,
+      "sha256": "d09546482078c7fded6ec988bac14074553182d63d26e5b071500a4a21c06413",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0222.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0222.json.gz",
+      "bytes": 34229,
+      "sha256": "22da074a249fa067717e52aa7d64465a63105e3d698468d1a4e70377414cad96",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0223.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0223.json.gz",
+      "bytes": 38540,
+      "sha256": "59ed3d26c00a8947565acb22467ba20d284aeec6d4bf5ae3a43d0fe8fa2c2948",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0224.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0224.json.gz",
+      "bytes": 26567,
+      "sha256": "7c44843c315c81ed8f680ee09d5e01bf972de54313e193c8d539a724de2c34f6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0225.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0225.json.gz",
+      "bytes": 35683,
+      "sha256": "4db36200662f1bc2e68fa93e0b04c69c8910a96a601c5edd7ddfafa5a0c337ef",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0226.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0226.json.gz",
+      "bytes": 33438,
+      "sha256": "5dfc1f2605ed80963d806509d02fbe20a37ae5f14fa0fb94772f467526392550",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0227.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0227.json.gz",
+      "bytes": 34533,
+      "sha256": "f0202a7f1991d2eede48790ed28440569d9f2554534bb3959e7008e2ff9df95f",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0228.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0228.json.gz",
+      "bytes": 30582,
+      "sha256": "2ab6b74aece1ea835bb527cb1e4a4063141d238e679fbab40fc6afb2f1f2c8ac",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0229.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0229.json.gz",
+      "bytes": 33175,
+      "sha256": "e54dd3ccbd6f88ea8a393d882d84c84a69642d7860743028c5fd9f48a7a83d26",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0230.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0230.json.gz",
+      "bytes": 35049,
+      "sha256": "64a4114993dca745bcd4f20f949ea763e6d1b53ea44e75da635eeab1fee14210",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0231.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0231.json.gz",
+      "bytes": 36482,
+      "sha256": "9e4f55ff1a7442810d15696955de5bb9cf7ee3818d6d67f06e3a14b03ae3bb63",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0232.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0232.json.gz",
+      "bytes": 31883,
+      "sha256": "1405dcbb6923310cd04269b674fb0c447086c03de84d351b76f2f28ecc6debf1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0233.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0233.json.gz",
+      "bytes": 32066,
+      "sha256": "cbcdc44f421a9c3ada16966cc5d5de69925b83e0c9ac9d3b867a30b4e5ff4263",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0234.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0234.json.gz",
+      "bytes": 38095,
+      "sha256": "221f420efa6ccd7217fe2cbc5348ef97d357401fb411b10250fbeb599d38ac28",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0235.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0235.json.gz",
+      "bytes": 35327,
+      "sha256": "16985f95c6241f4f2c0528298cb38ee7613e9368631a171553ff3ef7540345df",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0236.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0236.json.gz",
+      "bytes": 32724,
+      "sha256": "bad9d8a9e447da69eb69a23ab5892d77a09302df8510a39a4f9621e40f35da43",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0237.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0237.json.gz",
+      "bytes": 33273,
+      "sha256": "22ff694a27732d5193b129b836126ddced7e3135101b1c8ae3695958b9842656",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0238.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0238.json.gz",
+      "bytes": 32232,
+      "sha256": "f49ab82a96c6ba64dace10eb0e44d5997207851f6b34b7249212ef1e0e1e0b55",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0239.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0239.json.gz",
+      "bytes": 31671,
+      "sha256": "f2f6c055a60fb1b345d1a30d98044c93761c58f9a88c1f8e623e36aa5f99eea7",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0240.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0240.json.gz",
+      "bytes": 36429,
+      "sha256": "71821091464eb008122dc1e9b233d0a91dcb24a23ebc07eb437076ff17cb58d5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0241.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0241.json.gz",
+      "bytes": 34352,
+      "sha256": "024bbe75f8b23433a3cbf3891bd07fb36a754f708dc14341c2bdda2bba2cd8f6",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0242.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0242.json.gz",
+      "bytes": 32360,
+      "sha256": "58fa75b8fd304808056f64ad2b20bab97ef8f4c17106dfa4cb3cfda5a3486cec",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0243.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0243.json.gz",
+      "bytes": 35146,
+      "sha256": "9fa83a7309289abbc61e89f8ad7cb509aea4ba77260091cde4245863142f4870",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0244.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0244.json.gz",
+      "bytes": 37099,
+      "sha256": "6b9e07fb1faf3da8d8686835d169bb10d31e2df1645e146c469487fb6d038437",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0245.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0245.json.gz",
+      "bytes": 42334,
+      "sha256": "c43f8f450a90a7e4ab1cbb193ae718540e9e4e9d8a6422bdea6bd394248aa95b",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0246.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0246.json.gz",
+      "bytes": 33840,
+      "sha256": "04505445d06637d2abfff54076416a419a55e69c389b3dac51d4abb25c118f79",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0247.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0247.json.gz",
+      "bytes": 38738,
+      "sha256": "094ef9f63082bc3db3eac2cf231b8cd75ac1eb8c7f71f26d3595c5ae34b9deaa",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "recipes/part-0248.json.gz",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/recipes/part-0248.json.gz",
+      "bytes": 28072,
+      "sha256": "6aa0d50112ead7d5044a6a137d1f888e74d5d2e3dc87ea2cb0069089a49b16b1",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "rights-notices.json",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/rights-notices.json",
+      "bytes": 1091,
+      "sha256": "e7c24a2a91994a891e218679d2cc9611c6bd6c6110a4d479edf8e5877ec5d2d5",
+      "classification": "derived retained-public real-recipe content and source rights notices; additional disclosure pending approval"
+    },
+    {
+      "path": "style.css",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/style.css",
+      "bytes": 3093,
+      "sha256": "c1c8f7bbaa0ad22cb6195fc5fd3b6477d5a25894672ffb524894ccee7f6bd51d",
+      "classification": "original UI/public presentation code"
+    }
+  ],
+  "totalFiles": 255,
+  "totalBytes": 13711271,
+  "allowlistSha256": "bdd7ca740eaff6379d6a476ea970938b837fd5038beec2315bc3ae0a16d02a23",
+  "deployMethod": "Installed Netlify CLI23.13 authenticated read-only listSites. Manual deploy explicit --dir/--site/no production flag; no build hooks or AgentRunner. No linked-site/settings modification needed.",
+  "costFacts": {
+    "existingPlan": "nf_team_pro from connected site readback",
+    "paidBuildOrAgentRunnerRequested": false,
+    "accountCreditsBandwidthOrDeployCostLimits": "unavailable; no new limit/spend setting inferred"
+  },
+  "approvalQuestion": "Approve a public, isolated manual DRAFT snapshot on existing offmenu-corpus site a1df1508-4bb9-4b55-ab1f-88611e456e61 containing exactly these 255 files/13711271 bytes and 24878 projected recipe records from the pinned 25,135 main input, with listed exclusions and retained source rights/attribution? Production and supplementary holdings remain excluded."
+}

@@ -1,0 +1,12 @@
+/*
+  Cache-Control: public, max-age=60
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Content-Security-Policy: default-src 'none'; style-src 'self'
+
+/recipes/
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+/recipes/index.html
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'
+/recipes/gallery/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'

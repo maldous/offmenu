@@ -1,0 +1,51 @@
+{
+  "schema": "offmenu-publication-cancellation/1",
+  "atUtc": "2026-10-14T11:09:42.971507+00:00",
+  "humanInstruction": "Matt cancelled production changes after successful demo; all prior publication authority superseded",
+  "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+  "production": {
+    "currentPublishedDeployId": "6acea54e7b6d662e6991719f",
+    "publishedAt": "2026-10-13T21:41:09.039Z",
+    "allExisting92835FileDigestsUnchanged": true,
+    "recipeGalleryProductionPublished": false
+  },
+  "alreadyCompletedDraft": {
+    "id": "6acf61fbc339faabe3f3d7ec",
+    "state": "ready",
+    "publishedAt": null,
+    "context": "deploy-preview",
+    "url": "https://6acf61fbc339faabe3f3d7ec--offmenu-corpus.netlify.app",
+    "uploadedPaths": [
+      "/_headers",
+      "/recipes/gallery/app.js",
+      "/recipes/gallery/style.css",
+      "/recipes/index.html"
+    ],
+    "uploadedBytes": 17926,
+    "newRecipeDataUploaded": 0,
+    "status": "Completed before cancellation readback; retained, not promoted/deleted/rolled back"
+  },
+  "inFlightReadback": {
+    "ownedDeploymentCoordinatorsFound": 0,
+    "signalsSent": 0,
+    "furtherApiMutationsInitiatedAfterCancellation": false
+  },
+  "localCatalogue": {
+    "url": "http://127.0.0.1:19166",
+    "pid": 855715,
+    "birthTicks": "2135723",
+    "runId": "00c45b7bc2e14fc587bebc6625c8cca5",
+    "port": 19166,
+    "mainSourceIdentityCount": 25135,
+    "remainsLive": true,
+    "coverage": "Verified main set; additional holdings and broader/all recipe classification follow owner07 evidence",
+    "followUp": "LOCALONLY quantity/classification/public-snapshot wording corrections; no production continuation"
+  },
+  "preserved": [
+    "AFCDbranch2bd5061",
+    "mockbranch9b31f7d/JAR/custody",
+    "Worker05 preview/source/processes/overlay",
+    "all local catalogue/source/index/candidate/provider receipts"
+  ],
+  "noNewSiteNoDeleteNoRollback": true
+}

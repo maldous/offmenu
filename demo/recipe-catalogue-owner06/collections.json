@@ -1,0 +1,10 @@
+{
+  "schema":"offmenu-held-recipe-collections/1",
+  "scope":"Provisional directly inspected collections; Worker07 reconciliation pending. Not ALL held recipes.",
+  "collections":[
+    {"id":"global-qualified","path":"/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz","format":"jsonl-gzip","priority":100,"declaredClass":"retained-public-licensed-with-record-review-qualifiers","inventoryProof":"Worker07 streamed25135recipe records to gzip EOF; distinct source identity25135; not global ALL"},
+    {"id":"live-wikibooks","path":"/home/user/src/offmenu-data/wikibooks-2026-10-13-live/normalized.jsonl.gz","format":"jsonl-gzip","priority":90,"declaredClass":"retained-public-source-content-needs-review","inventoryProof":"Worker07 streamed3796recipe records to gzip EOF; unique(sourceId,id)3796; overlap pending"},
+    {"id":"qualified-expansion","path":"/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/normalized.jsonl.gz","format":"jsonl-gzip","priority":110,"declaredClass":"retained-source-qualified-not-global-release-certified","inventoryProof":"42manifest records; direct source identities indexed locally; Worker07 reconciliation pending"},
+    {"id":"app-starter-pack","path":"/home/user/src/offmenu-workers/worker-06/public/recipes.json","format":"json-array","priority":10,"declaredClass":"original-or-source-attributed-app-content-not-personal","inventoryProof":"70actual app records; separate facet in the same catalogue, never labelled ALL"}
+  ]
+}
