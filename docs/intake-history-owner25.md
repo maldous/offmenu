@@ -1,5 +1,25 @@
 # Worker 25 intake persistence candidate
 
+## Fresh composition — 15 October 2026 Melbourne
+
+Root confirmed Worker21 scoped PASS for original `53853acd35226ca7af591b978b72a92473c0b075`
+(six author checks and four SQLite review checks). Standalone adapter scope only
+is selected for progression; metadata-preserving session/consent/caller adoption
+remains held. No central handler/schema edit is included.
+
+Composition branch: `feature/intake-history-composition-25-20261015`.
+Fresh locked origin/develop fetch exited 0 at 2026-10-14T14:30:22.861032+00:00,
+base `5f5bdb6ae716cbf80fab1e174d1af2e354468ead`. Original commit was cherry-picked
+with source attribution (`-x`), without conflicts. The six focused author checks
+pass against this fresh base; no broad campaign was run. Adapter/test content is
+unchanged from the scoped PASS pin. Historical sections below describe the
+original candidate; their old base is not this composition base.
+
+Original branch, helper and dataset remain retained. A different existing reviewer
+must review this exact fresh composition before any PR/develop merge. The final
+composition pin, patch hash and independent remote backup readback are reported
+to root separately to avoid a self-referential commit receipt.
+
 READY FOR MORGAN REVIEW; not adopted or shipped.
 
 Branch `feature/intake-history-consumer-25-20261014` starts at freshly fetched
