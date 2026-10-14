@@ -1,18 +1,18 @@
 {
   "schemaVersion": "offmenu-corpus-document-index/1",
   "checkedAt": "2026-10-14T08:45:49.973834+00:00",
-  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
   "branch": "feature/offmenu-corpus-document-index-20261014",
   "publication": {
     "repository": "maldous/offmenu",
     "privateAuthenticationRequired": true,
-    "advertisedRemoteMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
-    "advertisedRemoteDevelop": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
     "thisIndexPublished": false,
-    "worker14MappingPublishedAtBase": false,
     "githubManifestConnectorVerified": true,
     "ghCLIAuthentication": "unavailable; no login/configuration change attempted",
-    "canonicalRegisterAndSourceLedgerConnectorVerified": true
+    "canonicalRegisterAndSourceLedgerConnectorVerified": true,
+    "historicalAdvertisedRemoteMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "historicalAdvertisedRemoteDevelop": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "historicalRemoteRefsCheckedAtUTC": "2026-10-14T08:41:10.145121+00:00",
+    "worker14MappingPublishedAtHistoricalSnapshot": false
   },
   "countsChecked": {
     "sourcePDFs": 5,
@@ -519,5 +519,15 @@
     "No complete corpus, whole-release/country completeness, provider admission or app acceptance claim",
     "New index and Worker 14 mapping have no published Android URL at these pins; no push performed"
   ],
-  "githubVerification": "Repository links resolved against exact GitHub-advertised remote commit/tree after authenticated SSH fetch; manifest and canonical requirement/source-ledger files additionally verified via GitHub connector. Private authentication required; no Android browser trial. CLI authentication unavailable and unchanged."
+  "githubVerification": "Repository links resolved against exact GitHub-advertised remote commit/tree after authenticated SSH fetch; manifest and canonical requirement/source-ledger files additionally verified via GitHub connector. Private authentication required; no Android browser trial. CLI authentication unavailable and unchanged.",
+  "historicalSnapshotCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "historicalSnapshotCheckedAtUTC": "2026-10-14T08:48:40.725173+00:00",
+  "currentIntegrationTarget": {
+    "commit": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+    "fetchedAtUTC": "2026-10-14T09:07:16.203531+00:00",
+    "fetchExit": 0,
+    "mergeCommit": "27f2f251c59e974b568e09b1e580cf7b4b6072bd",
+    "meaning": "Last freshly fetched locked origin/develop target, normally merged into the existing index feature; immutable reference URLs/pins remain at the historical snapshot."
+  },
+  "statusScope": "Reference publication/capability/status statements describe the historical snapshot and retained receipts, not an assertion of the current remote branch tip; currentIntegrationTarget is the separately fetched integration pin."
 }

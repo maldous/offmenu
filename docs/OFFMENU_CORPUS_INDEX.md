@@ -1,10 +1,12 @@
 # OffMenu corpus and research index
 
-Checked 14 October 2026 (Melbourne). Navigation and integrity references only; no complete-corpus or app-acceptance claim. Exact base: `abe0ddc9db357b1e8d0d61825392d6b9923352f0` (published `origin/develop`); observed remote `main`: `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`. This new index is local and **not pushed**.
+Navigation and integrity references only; no complete-corpus or app-acceptance claim. **HISTORICAL published snapshot:** `abe0ddc9db357b1e8d0d61825392d6b9923352f0`, advertised as `origin/develop` at `2026-10-14T08:41:10.145121+00:00`; its reference hashes were checked at `2026-10-14T08:48:40.725173+00:00`. Observed remote `main` at that historical check: `8652b312ce7989c5e4f2d49ae765d5d8daf5841d`.
+
+**Current integration target at the last fresh fetch:** `908ca373dfc918f2e33fd5e44260879577bed5c5` (`2026-10-14T09:07:16.203531+00:00`, fetch exit 0), normally merged into this existing feature. The immutable links below intentionally remain at the historical `abe0` snapshot; they are not labels for the current branch tip. Changes brought in by develop belong to their original owner, not this documentation task. This new index is local and **not pushed**.
 
 ## Start here on Android
 
-**Sign in to GitHub with access to the private `maldous/offmenu` repository.** These links point to existing blobs at the published base, not this unpublished index. Paths/blob IDs were checked against that exact remotely advertised Git tree; research manifest, canonical register and source ledger were also fetched through the connected GitHub service. This is link/source verification, not a device trial.
+**Sign in to GitHub with access to the private `maldous/offmenu` repository.** These links point to existing blobs at the historical published snapshot, not this unpublished index. Paths/blob IDs were checked against that exact remotely advertised Git tree; research manifest, canonical register and source ledger were also fetched through the connected GitHub service. This is link/source verification, not a device trial.
 
 All five authoritative source PDFs (PDF previews/downloads require repository access):
 
@@ -26,13 +28,13 @@ The five PDF/four register SHA-256 values match [the preservation audit](https:/
 ## Requirements and discovery authority
 
 - [Canonical 105-ID requirement register](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/recommendation-delivery-register.json): actual local path `/home/user/src/offmenu-workers/worker-07/docs/recommendation-delivery-register.json`; 105 unique IDs verified. [Delivery reconciliation](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/delivery-reconciliation.json) is historical status/evidence, explicitly `programmeComplete=false`.
-- Worker 14 secondary mapping: immutable `cd27c470a3671261651c7a42e884d9dda4bdf341`. Read `git show cd27c470a3671261651c7a42e884d9dda4bdf341:docs/worker-14-backlog.json` (and `.md`). Its 105 IDs match the canonical set. Those files are absent at the published base; no published URL is claimed. This index does not replace or modify Worker 14 consolidation.
+- Worker 14 secondary mapping: immutable `cd27c470a3671261651c7a42e884d9dda4bdf341`. Read `git show cd27c470a3671261651c7a42e884d9dda4bdf341:docs/worker-14-backlog.json` (and `.md`). Its 105 IDs match the canonical set. Those files are absent at the historical published snapshot; no published URL is claimed. This index does not replace or modify Worker 14 consolidation.
 - [Source delivery ledger](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/source-delivery-ledger.json): 1,303 entries verified; [country matrix](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/country-delivery-matrix.json): 249 unique ISO2 queues verified. Landing-page discovery, a download lead, or a country queue does not establish ingestion, matching, permission or operational coverage. The global register alone lists 365 sources; the combined ledger is the 1,303-entry reference.
 
 ## Capabilities: accepted scope versus pending work
 
 - [Published provider code](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/cloud/provider-data.mjs) supports personal USDA/Edamam lookups and bounded public OFF/Open Prices/FSA/openFDA samples. [GLEIF/Wikidata enrichment](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/cloud/enrichment.mjs) produces candidates, not verified ownership or ingredient origin. [Catalogue labels](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/public/sources.js) are not proof of active connectors or grants. No provider requests, credentials or permissions were exercised here.
-- Retained Worker 02 candidate `49c6ed037a0c506dc2e71a7c8ef40d423d6f46d0` has ledger-recorded acceptance of bounded source/synthetic compatibility only; it is not integrated at this base or published. See local candidate receipt in the JSON references.
+- Retained Worker 02 candidate `49c6ed037a0c506dc2e71a7c8ef40d423d6f46d0` has ledger-recorded acceptance of bounded source/synthetic compatibility only; it is not integrated in the indexed historical snapshot or published. See local candidate receipt in the JSON references.
 - Pending catalogue capabilities include WhichGrocer/Spoonacular/Instacart adapters, Kroger OAuth/cart, Health Connect/HealthKit native bridges and Strava OAuth. Live grants, market/plan limits, clinical/culinary review, host wiring and release acceptance are separate gates.
 
 ## Local normalized, curated and common data
@@ -59,11 +61,11 @@ The six proof-listed common manifest byte hashes were independently matched to t
 
 Each common directory uses `offmenu-common-package/1` packet delivery; public scope preserves citations, source text, Unicode IRIs, licence/attribution and unresolved joins. Different manifests can carry the same release ID: pin exact bytes, not the ID alone. No separately named CherryPick manifest was established by this check; use the exact retained curated paths above rather than assuming an additional package.
 
-## Fresh hosting check and rights boundary
+## Timestamped hosting check and rights boundary
 
 At `2026-10-14T08:43:26.316324+00:00`, [hosted common manifest](https://offmenu-corpus.netlify.app/common-data/manifest.json) returned **HTTP 200**, 53,572 bytes, exact SHA-256 `a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867`, matching [the historical byte receipt](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/common-data-manifest-checksum-verification-20261014.json). Root curation and recipe manifests exceeded the 1 MiB bounded read; their complete current hashes were not established. Three explicit manifest GETs only; no data partitions downloaded.
 
-[The historical all-file publication receipt](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/common-data-publication-verification-20261014.json) is historical package/native-download evidence. This fresh check proves one manifest is still available and byte-identical; it does not revalidate all files, whole data coverage, country completeness, app behavior or producer admission. Legacy embedded manifest payload digests are distinct from exact file-byte hashes.
+[The historical all-file publication receipt](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/common-data-publication-verification-20261014.json) is historical package/native-download evidence. That timestamped check proves one manifest is still available and byte-identical; it does not revalidate all files, whole data coverage, country completeness, app behavior or producer admission. Legacy embedded manifest payload digests are distinct from exact file-byte hashes.
 
 Original archives, normalized inputs, common/public projections, personal provider responses and private accounts are distinct. Public accessibility is not redistribution permission. Per-citation licence/share-alike/attribution, owner scope, source plan, retention/revocation and independent admission still apply; private provider/account data must never be promoted to commons by this index. See [the common rights contract](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/corpus/common-data-contract.json) and [curation boundaries](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/curation-architecture.md).
 
