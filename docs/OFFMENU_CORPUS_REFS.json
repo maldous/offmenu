@@ -5,22 +5,63 @@
   "publication": {
     "repository": "maldous/offmenu",
     "privateAuthenticationRequired": true,
-    "thisIndexPublished": false,
     "githubManifestConnectorVerified": true,
     "ghCLIAuthentication": "unavailable; no login/configuration change attempted",
     "canonicalRegisterAndSourceLedgerConnectorVerified": true,
     "historicalAdvertisedRemoteMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
     "historicalAdvertisedRemoteDevelop": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
     "historicalRemoteRefsCheckedAtUTC": "2026-10-14T08:41:10.145121+00:00",
-    "worker14MappingPublishedAtHistoricalSnapshot": false
+    "worker14MappingPublishedAtHistoricalSnapshot": false,
+    "prePublicationObservation": {
+      "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+      "thisIndexPublished": false,
+      "scope": "Operator observation before root authorized the push; historical only, superseded by currentGitHubObservation for availability."
+    },
+    "currentGitHubObservation": {
+      "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+      "publishedCommit": "b637424f53ceef2010b6d3465f9fb39e59a2878d",
+      "reviewBranch": "feature/offmenu-corpus-document-index-20261014",
+      "pullRequestUrl": "https://github.com/maldous/offmenu/pull/4",
+      "pullRequestState": "open",
+      "mergedIntoDevelop": false,
+      "privateAuthenticationRequired": true,
+      "artifacts": {
+        "index": {
+          "published": true,
+          "gitPath": "docs/OFFMENU_CORPUS_INDEX.md",
+          "gitBlob": "c695512261a24ca5946d8613199a78563e779041",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/OFFMENU_CORPUS_INDEX.md"
+        },
+        "refs": {
+          "published": true,
+          "gitPath": "docs/OFFMENU_CORPUS_REFS.json",
+          "gitBlob": "f4e10f99ceaaf813c9e6e59965bc1c7ae45bc83b",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/OFFMENU_CORPUS_REFS.json"
+        },
+        "csv": {
+          "published": true,
+          "gitPath": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+          "gitBlob": "ad5d0e7c27e31e4c77a602d99b352a03fc9e8d8b",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv"
+        },
+        "receipt": {
+          "published": true,
+          "gitPath": "docs/dataset-discovery/consolidation-receipt.json",
+          "gitBlob": "1b66ba3b8447dd0efe77dd9720fbe922ca4a9de7",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/dataset-discovery/consolidation-receipt.json"
+        }
+      },
+      "verification": "Connected GitHub PR metadata plus successful file reads returning exact blob IDs for all four paths at the published commit. Timestamped availability observation, not an evergreen branch-tip claim.",
+      "scope": "Private GitHub review publication only; not corpus/source admission, whole-release acceptance, app deployment or production publication. This later local correction is not yet pushed."
+    }
   },
   "countsChecked": {
     "sourcePDFs": 5,
     "researchRegisters": 4,
     "canonicalRequirementIDs": 105,
-    "secondaryMappingIDsMatch": true,
     "sourceLedgerEntries": 1303,
-    "countryMatrixUniqueISO2": 249
+    "countryMatrixUniqueISO2": 249,
+    "historicalLocalSecondaryMappingIDsMatch": true
   },
   "refs": [
     {
@@ -290,24 +331,30 @@
     {
       "id": "worker14-json",
       "path": "/home/user/src/offmenu-workers/worker-07/docs/worker-14-backlog.json",
-      "scope": "secondary immutable backlog mapping; not integrated/published at this base; Worker 14 consolidation remains authoritative for its own mapping",
+      "scope": "Secondary operator-local historical backlog mapping only; source hashes retained for custody, not an externally reproducible comparison. Use the published requirements and reconciliation refs instead; Worker 14 evidence is not republished or modified.",
       "gitCommit": "cd27c470a3671261651c7a42e884d9dda4bdf341",
       "gitPath": "docs/worker-14-backlog.json",
       "sha256": "69997199776f89981606b7b8ad35ed7081a8901df7e3c45b343aa87970257347",
       "bytes": 982362,
-      "published": false,
-      "readCommand": "git show cd27c470a3671261651c7a42e884d9dda4bdf341:docs/worker-14-backlog.json"
+      "availability": {
+        "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+        "scope": "Operator-local retained Git artifact; not part of the approved four-file PR tree. Do not assume this commit is reachable in an external clone. No GitHub link or external git-show instruction is provided.",
+        "includedInApprovedPublication": false
+      }
     },
     {
       "id": "worker14-md",
       "path": "/home/user/src/offmenu-workers/worker-07/docs/worker-14-backlog.md",
-      "scope": "secondary immutable backlog mapping; not integrated/published at this base; Worker 14 consolidation remains authoritative for its own mapping",
+      "scope": "Secondary operator-local historical backlog mapping only; source hashes retained for custody, not an externally reproducible comparison. Use the published requirements and reconciliation refs instead; Worker 14 evidence is not republished or modified.",
       "gitCommit": "cd27c470a3671261651c7a42e884d9dda4bdf341",
       "gitPath": "docs/worker-14-backlog.md",
       "sha256": "8f468c7e147efa59a60474e3a42ae6b05745df2f7b4270b42911a928f95a27a4",
       "bytes": 8654,
-      "published": false,
-      "readCommand": "git show cd27c470a3671261651c7a42e884d9dda4bdf341:docs/worker-14-backlog.md"
+      "availability": {
+        "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+        "scope": "Operator-local retained Git artifact; not part of the approved four-file PR tree. Do not assume this commit is reachable in an external clone. No GitHub link or external git-show instruction is provided.",
+        "includedInApprovedPublication": false
+      }
     },
     {
       "id": "six-package-qualification",
@@ -517,7 +564,7 @@
     "Only local manifest/metadata hashes checked; source records, archives, packets and runtime not replayed",
     "Private provider/account data never become commons merely by normalization or public source visibility",
     "No complete corpus, whole-release/country completeness, provider admission or app acceptance claim",
-    "New index and Worker 14 mapping have no published Android URL at these pins; no push performed"
+    "Published b637424 index/batch availability is timestamped separately from pre-publication history; Worker 14 mapping remains operator-local and no external clone command is promised. This correction is not yet pushed."
   ],
   "githubVerification": "Repository links resolved against exact GitHub-advertised remote commit/tree after authenticated SSH fetch; manifest and canonical requirement/source-ledger files additionally verified via GitHub connector. Private authentication required; no Android browser trial. CLI authentication unavailable and unchanged.",
   "historicalSnapshotCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
@@ -540,7 +587,12 @@
       "bytes": 166719,
       "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
       "sourceGitBlob": "ad5d0e7c27e31e4c77a602d99b352a03fc9e8d8b",
-      "published": false
+      "prePublicationObservation": {
+        "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+        "published": false,
+        "scope": "Historical observation before root push, not current availability."
+      },
+      "currentPublicationStateRef": "#/publication/currentGitHubObservation/artifacts/csv"
     },
     "receipt": {
       "path": "/home/user/src/offmenu-workers/worker-07/docs/dataset-discovery/consolidation-receipt.json",
@@ -549,7 +601,12 @@
       "bytes": 491555,
       "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
       "sourceGitBlob": "1b66ba3b8447dd0efe77dd9720fbe922ca4a9de7",
-      "published": false
+      "prePublicationObservation": {
+        "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+        "published": false,
+        "scope": "Historical observation before root push, not current availability."
+      },
+      "currentPublicationStateRef": "#/publication/currentGitHubObservation/artifacts/receipt"
     },
     "columns": 31,
     "rows": 48,
@@ -562,7 +619,17 @@
       "sha256": "9ccc3091509ffcb94b883da8ea5d21e000694ac8cf751879d1b94ead90b059f2",
       "scope": "Root and Worker 34 bounded provenance/structure review; no independent licence/source admission upgrade"
     },
-    "publication": "Index and batch remain local pending Worker 34 final re-review and root-approved normal PR/develop publication, subject to mandatory platform gates; no push by Worker 07",
-    "android": "After approved publication, follow repository-relative index links while authenticated to private GitHub. Source branch/commit provenance may remain local-only; it is not represented as published Android-accessible history."
+    "publication": "The exact four-file b637424 candidate is available in private GitHub PR 4 as observed in publication.currentGitHubObservation; PR remains open/unmerged. This local correction awaits Worker 34 re-review and root normal PR update/merge under mandatory platform gates.",
+    "android": "Authenticated Android readers can open the published b637424 index, CSV and receipt via currentGitHubObservation URLs now. Source provenance commits may remain operator-local; no whole-corpus availability or source admission is implied."
+  },
+  "externallyReproducibleRequirementComparison": {
+    "checkedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+    "publishedSnapshotCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "canonicalRefId": "requirements",
+    "comparisonRefId": "reconciliation",
+    "canonicalUniqueIds": 105,
+    "comparisonUniqueIds": 105,
+    "sameIdSet": true,
+    "scope": "Both documents are reachable at published immutable abe0 URLs. This checks ID preservation, not delivery/acceptance; no local-only Worker 14 objects are required."
   }
 }
