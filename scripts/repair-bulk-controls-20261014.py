@@ -15,6 +15,7 @@ import os
 import shutil
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
+from itertools import zip_longest
 
 
 OLD_ROOT = Path("/home/user/src/offmenu-data/common-bulk-food-20261014")
@@ -49,10 +50,63 @@ def read_manifest(root):
 def verify_input(root, manifest):
     """Verify every pre-repair asset before any repaired file is made."""
     for entry in manifest["files"]:
-        path = root / entry["key"]
+        path = asset_path(root, entry["key"])
         data = path.read_bytes()
         if len(data) != entry["bytes"] or sha(data) != entry["sha256"]:
             raise ValueError("input asset digest mismatch: " + entry["key"])
+
+
+def asset_path(root, key):
+    relative = Path(key)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError("unsafe asset key: " + key)
+    path = root / relative
+    if not path.resolve().is_relative_to(root.resolve()):
+        raise ValueError("asset escapes root: " + key)
+    return path
+
+
+def checkpoint_pins(input_root):
+    root = Path(__file__).resolve().parents[1]
+    return {
+        "inputManifestByteSha256": sha((input_root / "manifest.json").read_bytes()),
+        "schemaByteSha256": sha((root / "corpus/common-data.schema.json").read_bytes()),
+        "contractByteSha256": sha((root / "corpus/common-data-contract.json").read_bytes()),
+        "repairImplementationByteSha256": sha(Path(__file__).read_bytes()),
+        "sourceDirectory": str(input_root.resolve()),
+    }
+
+
+def write_checkpoint(path, value):
+    temporary = path.with_name(path.name + ".writing")
+    with temporary.open("w", encoding="utf8") as handle:
+        handle.write(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary, path)
+
+
+def verify_retained_asset(input_root, output_root, entry):
+    """Reconcile an atomic output against source, including unjournaled work."""
+    source = asset_path(input_root, entry["key"])
+    target = asset_path(output_root, entry["key"])
+    changed = 0
+    if not entry["key"].endswith(".jsonl.gz"):
+        if source.read_bytes() != target.read_bytes():
+            raise ValueError("retained auxiliary differs from original")
+    else:
+        with gzip.open(source, "rt", encoding="utf8") as left, gzip.open(target, "rt", encoding="utf8") as right:
+            for original, retained in zip_longest(left, right):
+                if original is None or retained is None:
+                    raise ValueError("retained/source packet count mismatch")
+                expected, _ = repair_packet(json.loads(original))
+                if json.loads(retained) != expected:
+                    raise ValueError("retained packet differs from authorized repair")
+                changed += 1
+        if changed != entry["packets"]:
+            raise ValueError("retained packet count differs from input manifest")
+    data = target.read_bytes()
+    return {"key": entry["key"], "bytes": len(data), "sha256": sha(data), **({"packets": entry["packets"]} if "packets" in entry else {})}, changed
 
 
 def control_node(packet):
@@ -164,8 +218,8 @@ def normalize_input_coverage(value):
 
 def repair_asset(input_root, output_root, entry):
     """Repair one immutable asset through an atomic sibling temporary file."""
-    source = input_root / entry["key"]
-    target = output_root / entry["key"]
+    source = asset_path(input_root, entry["key"])
+    target = asset_path(output_root, entry["key"])
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_name(target.name + ".tmp." + str(os.getpid()))
     if temporary.exists():
@@ -176,7 +230,7 @@ def repair_asset(input_root, output_root, entry):
             shutil.copyfile(source, temporary)
         else:
             with gzip.open(source, "rt", encoding="utf8") as reader, temporary.open("wb") as raw:
-                with gzip.GzipFile(fileobj=raw, mode="wb", compresslevel=1, mtime=0) as writer:
+                with gzip.GzipFile(filename="", fileobj=raw, mode="wb", compresslevel=1, mtime=0) as writer:
                     for line in reader:
                         packet = json.loads(line)
                         repaired, _ = repair_packet(packet)
@@ -198,24 +252,89 @@ def repair_asset_task(task):
     return repair_asset(*task)
 
 
-def repair(input_root, output_root, workers=6):
+def repair(input_root, output_root, workers=6, resume=False):
+    """Own one repair writer; stale locks require explicit custody reconciliation."""
+    if input_root.resolve() == output_root.resolve():
+        raise ValueError("immutable input cannot be output")
+    output_root.parent.mkdir(parents=True, exist_ok=True)
+    lock = output_root.with_name(output_root.name + ".repair.lock")
+    try:
+        descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as error:
+        raise ValueError("repair writer lock exists; reconcile live or stale ownership explicitly: " + str(lock)) from error
+    identity = os.fstat(descriptor)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf8") as handle:
+            handle.write(json.dumps({"pid": os.getpid(), "input": str(input_root.resolve()), "output": str(output_root.resolve())}) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        return repair_owned(input_root, output_root, workers, resume)
+    finally:
+        if lock.exists() and (lock.stat().st_dev, lock.stat().st_ino) == (identity.st_dev, identity.st_ino):
+            lock.unlink()  # Only this invocation's ephemeral ownership lock.
+
+
+def repair_owned(input_root, output_root, workers=6, resume=False):
     manifest = read_manifest(input_root)
+    if len({entry["key"] for entry in manifest["files"]}) != len(manifest["files"]):
+        raise ValueError("duplicate source asset keys")
+    if input_root.resolve() == output_root.resolve():
+        raise ValueError("immutable input cannot be output")
+    checkpoint_path = output_root / "checkpoint.json"
+    pins = checkpoint_pins(input_root)
+    if output_root.exists():
+        if not resume:
+            raise ValueError("output already exists: " + str(output_root))
+        if (output_root / "manifest.json").exists():
+            raise ValueError("completed immutable output cannot be resumed")
+        if not checkpoint_path.is_file():
+            raise ValueError("legacy partial has no pinned checkpoint; recovery inspection required")
+        checkpoint = json.loads(checkpoint_path.read_text())
+        if checkpoint.get("schemaVersion") != "offmenu-bulk-repair-checkpoint/1" or checkpoint.get("pins") != pins:
+            raise ValueError("checkpoint source/schema/contract/implementation pins changed")
+    else:
+        if resume:
+            raise ValueError("resume output does not exist")
+        checkpoint = {"schemaVersion": "offmenu-bulk-repair-checkpoint/1", "complete": False, "pins": pins, "assets": {}}
     verify_input(input_root, manifest)
     representatives = representative_checks(input_root, manifest)
-    if output_root.exists():
-        raise ValueError("output already exists: " + str(output_root))
-    output_root.mkdir(parents=True)
+    output_root.mkdir(parents=True, exist_ok=True)
+    write_checkpoint(checkpoint_path, checkpoint)
     repaired_files = []
     changed_packets = 0
     removed_ids = 0
-    task_args = [(input_root, output_root, entry) for entry in manifest["files"]]
+    entries = {entry["key"]: entry for entry in manifest["files"]}
+    if any(key not in entries for key in checkpoint["assets"]):
+        raise ValueError("checkpoint contains unlisted asset")
+    results_by_key = {}
+    task_args = []
+    def record_result(result):
+        asset, changed = result
+        results_by_key[asset["key"]] = result
+        checkpoint["assets"][asset["key"]] = {"asset": asset, "changedPackets": changed}
+        write_checkpoint(checkpoint_path, checkpoint)
+    # Atomic files written before a lost parent receipt are source-compared too.
+    # Corrupt retained files fail closed and remain untouched for explicit recovery.
+    for entry in manifest["files"]:
+        key = entry["key"]
+        if asset_path(output_root, key).exists():
+            result = verify_retained_asset(input_root, output_root, entry)
+            previous = checkpoint["assets"].get(key)
+            if previous and previous != {"asset": result[0], "changedPackets": result[1]}:
+                raise ValueError("checkpoint asset receipt mismatch: " + key)
+            record_result(result)
+        elif key in checkpoint["assets"]:
+            raise ValueError("checkpoint completed asset is missing: " + key)
+        else:
+            task_args.append((input_root, output_root, entry))
     if workers == 1:
-        results = [repair_asset(*task) for task in task_args]
+        for task in task_args:
+            record_result(repair_asset(*task))
     else:
         with ProcessPoolExecutor(max_workers=workers) as pool:
-            # executor.map returns input order, making the final asset manifest
-            # deterministic even though files finish independently.
-            results = list(pool.map(repair_asset_task, task_args))
+            for result in pool.map(repair_asset_task, task_args):
+                record_result(result)
+    results = [results_by_key[entry["key"]] for entry in manifest["files"]]
     for asset, changed in results:
         repaired_files.append(asset)
         changed_packets += changed
@@ -234,9 +353,12 @@ def repair(input_root, output_root, workers=6):
         "representativePreflight": representatives,
         "inputAssetsVerified": len(manifest["files"]),
         "streaming": True,
+        "pinnedCheckpointVersion": checkpoint["schemaVersion"],
     }
     repaired["manifestSha256"] = manifest_payload_digest(repaired)
-    (output_root / "manifest.json").write_text(json.dumps(repaired, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+    write_checkpoint(output_root / "manifest.json", repaired)
+    checkpoint["complete"] = True
+    write_checkpoint(checkpoint_path, checkpoint)
     return repaired
 
 
@@ -245,10 +367,11 @@ def main():
     parser.add_argument("--input", type=Path, default=OLD_ROOT)
     parser.add_argument("--output", type=Path, default=NEW_ROOT)
     parser.add_argument("--workers", type=int, default=6)
+    parser.add_argument("--resume", action="store_true", help="Resume only an existing pinned checkpoint; legacy partials are refused")
     args = parser.parse_args()
     if args.workers < 1:
         parser.error("--workers must be positive")
-    result = repair(args.input, args.output, args.workers)
+    result = repair(args.input, args.output, args.workers, args.resume)
     print(json.dumps({"releaseId": result["releaseId"], "counts": result["counts"], "repair": result["repair"]}, ensure_ascii=False))
 
 
