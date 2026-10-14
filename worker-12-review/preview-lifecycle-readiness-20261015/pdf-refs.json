@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+    "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+    "pages": [
+      8,
+      9
+    ],
+    "matchesABE0": true
+  },
+  {
+    "path": "/home/user/src/offmenu/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+    "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+    "pages": [
+      1,
+      10
+    ],
+    "matchesABE0": true
+  }
+]

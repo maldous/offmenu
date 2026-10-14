@@ -1,0 +1,23 @@
+{
+  "candidate": "606b231f68f18ec5920977323f6da61e84138365",
+  "supplementaryCandidate": "27169ac47167a456e6d0f46572af66500069d01e",
+  "verdict": "CORRECTIONS_REQUIRED",
+  "findings": [
+    {
+      "id": "L12-01",
+      "severity": "P2",
+      "file": "worker05-lifecycle/lease.mjs",
+      "line": 11,
+      "trigger": "Inert argv runner tag passes live command identity and control admission",
+      "reproducer": "command-boundary-probe.mjs"
+    }
+  ],
+  "ownerOperationAssertionsRecorded": 44,
+  "ownerOperationHTTPRecorded": 12,
+  "supplementaryHTTPRecorded": 4,
+  "reviewerLifecycleOperations": 0,
+  "old434PASSPreserved": true,
+  "sourceTransport": "ASSIGNED-WAITING",
+  "fullDeletionRestoreQualification": false,
+  "production": "STOP"
+}
