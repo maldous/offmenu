@@ -416,7 +416,9 @@ def align_owned(curated, output, records_per_packet, packets_per_file, limit, ma
             if cursor and sources.index(source_id) < sources.index(cursor["source"]):
                 continue
             if limit and sum(input_counts.values()) >= limit:
-                continue
+                # Stop at the restored source just as the uninterrupted outer
+                # loop does; later source metadata changes coverage/manifest.
+                break
             start_cursor = cursor if cursor and cursor["source"] == source_id else None
             for row, row_cursor in curated_rows(curated, source_id, expected_assets, start_cursor, with_cursor=True):
                 validate_row(row)

@@ -56,6 +56,36 @@ class PlacesCheckpointTests(unittest.TestCase):
                 self.assertEqual(actual, expected)
                 self.assertEqual({p.name:p.read_bytes() for p in out.rglob('*.gz')}, {p.name:p.read_bytes() for p in (root/'expected').rglob('*.gz')})
 
+    def test_restored_limit_at_packet_boundary_matches_uninterrupted(self):
+        import sqlite3
+        for packet_size, limit in [(1, 1), (2, 2), (3, 3), (2, 4)]:
+            with self.subTest(packet_size=packet_size, limit=limit), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                source = self.fixture(root)  # Two pinned records in each of two sources.
+                output = root / 'out'
+                original = places.Checkpoint.save
+
+                def save_then_interrupt(checkpoint):
+                    original(checkpoint)
+                    if sum(checkpoint.value['input_counts'].values()) == limit:
+                        raise RuntimeError('interruption at committed limit')
+
+                with patch.object(places.Checkpoint, 'save', save_then_interrupt):
+                    with self.assertRaisesRegex(RuntimeError, 'committed limit'):
+                        places.align(source, output, records_per_packet=packet_size, limit=limit)
+                with sqlite3.connect(root / 'out.checkpoint.sqlite') as db:
+                    committed = json.loads(db.execute('SELECT payload FROM state').fetchone()[0])
+                self.assertEqual(sum(committed['input_counts'].values()), limit)
+                with patch.object(places.dt, 'datetime') as clock:
+                    clock.now.return_value.isoformat.return_value = committed['createdAt']
+                    expected_manifest = places.align(source, root / 'expected', records_per_packet=packet_size, limit=limit)
+                actual_manifest = places.align(source, output, records_per_packet=packet_size, limit=limit, resume=True)
+                self.assertEqual(actual_manifest, expected_manifest)
+                expected_root = root / 'expected'
+                self.assertEqual(
+                    {str(p.relative_to(output)): p.read_bytes() for p in output.rglob('*') if p.is_file()},
+                    {str(p.relative_to(expected_root)): p.read_bytes() for p in expected_root.rglob('*') if p.is_file()})
+
     def test_atomic_close_before_checkpoint_commit_is_recovered(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);source=self.fixture(root);out=root/'out'
