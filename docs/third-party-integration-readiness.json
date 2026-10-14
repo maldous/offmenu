@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-14T03:09:58.972135+00:00",
+  "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+  "branch": "third-party-services",
+  "mockHandoverCommit": "4f0f083ef72a60705d43face355ccf08c59f69ad",
+  "state": "implemented-in-branch-integration-and-rollout-pending",
+  "programmeComplete": false,
+  "implementation": {
+    "nativeCareCommunity": true,
+    "recipeCommentsVotesRanksProfilesTrophies": true,
+    "ownerScopedPersonalAI": true,
+    "freshRoleAdminMCP": true,
+    "serviceSettingsAndProviderPrivacy": true,
+    "evidence": "docs/third-party-functional-validation.md"
+  },
+  "retainedVerification": {
+    "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+    "javascriptTests": 264,
+    "compiledWorkerTests": 5,
+    "pythonTests": 36,
+    "newTestsRunForThisDocumentUpdate": false
+  },
+  "integration": {
+    "currentObservedMain": "a08c120085fe97f1cc54811b4221233560fb61fa",
+    "acceptedCurrentMainIntegration": false,
+    "priorDisposablePreview": {
+      "mainCommit": "febd6e733c3cdb5e28d1213a28acea072e8561b6",
+      "previewCommit": "1104e45e6fc1ff965e798f7f9bee3ff3e0bb56c6",
+      "javascriptTests": 264,
+      "compiledWorkerTests": 5,
+      "pythonTests": 66,
+      "scope": "Older committed main only; not current-main or production acceptance."
+    },
+    "pinnedSyntheticCompatibility": {
+      "checkedAt": "2026-10-14T05:37:28.752Z",
+      "mainCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+      "thirdPartyCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+      "report": "docs/third-party-pinned-compatibility.json",
+      "instructions": "docs/third-party-pinned-compatibility.md",
+      "state": "ready-for-morgan-review",
+      "freshChecks": {
+        "targeted-unit": {
+          "tests": 107,
+          "pass": 107,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "compiled-worker": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "pinned-main-replay-runtime": {
+          "tests": 2,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      "acceptedCurrentMainIntegration": false,
+      "scope": "Pinned synthetic schema/native runtime compatibility only; no merge, deployment, actual corpus or peer auth/mock composition acceptance."
+    }
+  },
+  "latestReadOnlyQualification": {
+    "checkedAt": "2026-10-14T02:33:52Z",
+    "scope": "Authenticated read-only checks; no production or credential changes.",
+    "cloudflare": {
+      "identityRoutesVerified": 2,
+      "workerMetadataHTTP": 200,
+      "workerSettingsHTTP": 200,
+      "d1ListAndMetadataHTTP": 200,
+      "databaseSizeBytes": 5406720,
+      "databaseTables": 24,
+      "subscriptionsError": "Error: Cloudflare API error: 10000: Authentication error",
+      "emailSendingLimitsHTTP": 200,
+      "emailQuota": null,
+      "emailUsage": null
+    },
+    "netlify": {
+      "authenticatedOwnerRead": true,
+      "offMenuProjectMetadataRead": true,
+      "identitySettingsHTTP": 200,
+      "emailLogin": true,
+      "googleLogin": true,
+      "autoconfirm": false,
+      "reportedExistingPlan": "nf_team_pro"
+    },
+    "github": {
+      "authenticatedOwnerRead": true,
+      "offMenuRepositoryMetadataRead": true
+    },
+    "publicRuntime": {
+      "healthHTTP": 403,
+      "servicesHTTP": 403,
+      "transport": "Unauthenticated runner HTTP; separate from management API authentication."
+    },
+    "qualified": {
+      "allEndpoints": false,
+      "billingAndHeadroom": false,
+      "outboundSending": false,
+      "appAdministratorRole": false,
+      "newFeatureRuntime": false
+    },
+    "supersedes": "Earlier broad access-unknown wording is now endpoint-specific; preserve earlier observations as dated evidence."
+  },
+  "allocationGaps": [
+    {
+      "requirement": "P1-01",
+      "gap": "Receipt/label OCR, duplicate detection, field review and image-retention pipeline; barcode scan and historical recipe OCR are not receipt capture.",
+      "ownership": "Morgan allocation required; not Third-party or Mock Services implementation."
+    },
+    {
+      "requirement": "P1-02",
+      "gap": "Reusable weeks, lunchboxes, richer time/equipment/budget planning and full end-to-end acceptance; existing attendance/batch/reservation overlap is partial.",
+      "ownership": "Morgan allocation required; application planning owner."
+    },
+    {
+      "requirement": "TRUST-07",
+      "gap": "Only 376 of 2699 source-checkpoint messages translated; licensed/vendor consent-language gate, source translation accuracy and real RTL acceptance remain.",
+      "ownership": "Morgan allocation required for translation/i18n acceptance; UIUX owns presentation assessment."
+    },
+    {
+      "requirement": "corpus-transport",
+      "gap": "Latest common/static corpus and current-main transport/recipe-consumer acceptance; origin HTTP403 prevents this runner verifying the live service.",
+      "ownership": "DatasetCollation owns data; Development Environment owns preview/data wiring. Main/provider access ownership coordinated by Morgan."
+    },
+    {
+      "requirement": "acceptance",
+      "gap": "Real-device camera/audio/accessibility, two-device/offline sync, independent recipe/nutrition review, external MCP client, trusted production admin role and current-main integration acceptance.",
+      "ownership": "Morgan allocation required across specialist/acceptance owners."
+    },
+    {
+      "requirement": "P2-12",
+      "gap": "Sponsorship disclosure, richer creator packs/challenges and partnership workflows; native community is already implemented but not integrated/deployed.",
+      "ownership": "Morgan allocation required for remaining scope; no competing community rewrite."
+    }
+  ],
+  "owners": {
+    "Third-party": "Integration/access/capacity/readiness; no mock or Google writer.",
+    "Mock Services": "Executable WireMock HTTP contracts/fixtures/adapters; draft checkpoint 4f0f083 is not accepted executable coverage.",
+    "Development Environment": "Preview composition, dev builds, isolated dev data and start/stop; consumes mock pack.",
+    "Google IDP": "Google sign-in/callback and auth-specific seams.",
+    "DatasetCollation": "Data acquisition/alignment only.",
+    "UIUX": "UI assessment/tool choice/presentation.",
+    "Morgan": "Scheduling, deliverable allocation and integration/rollout decisions."
+  },
+  "notAuthorizedByThisUpdate": [
+    "Production deployment or schema migration",
+    "New credential grants or paid services",
+    "Competing mock/Google/data/planning implementation",
+    "Destructive cleanup or new sessions"
+  ]
+}

@@ -14,4 +14,10 @@ cloud/generated.mjs
 
 .playwright-cli/
 output/playwright/
+output/third-party-compatibility/
 netlify-return/i18n.js
+
+.env
+.env.*
+.dev.vars
+.dev.vars.*

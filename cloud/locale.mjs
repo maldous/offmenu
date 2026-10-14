@@ -1,4 +1,5 @@
 import {acceptLanguages,excludedLocales,cookieValue,LOCALE_COOKIE,ACCOUNT_LOCALE_COOKIE,negotiateLocale,providerLocale,supportedLocale} from '../public/locale-negotiation.js';
+import {parseGlobalSettings} from './global-settings.mjs';
 import {t,hasTranslation,languageDirection} from '../public/i18n.js';
 
 export async function requestLocale(request,env={},verifyUser) {
@@ -16,7 +17,8 @@ export async function requestLocale(request,env={},verifyUser) {
   }
   const country=/^[A-Z]{2}$/.test(request.cf?.country||'')?request.cf.country:null;
   const accepted=request.headers.get('Accept-Language'),excluded=excludedLocales(accepted);
-  return {...negotiateLocale({explicit,cookie:saved,profile,provider,accepted:acceptLanguages(accepted),excluded,country}),country,excluded};
+  const defaultLocale=parseGlobalSettings(JSON.parse(env.SERVICE_GLOBAL_SETTINGS||'{}')).defaults.uiLanguage;
+  return {...negotiateLocale({explicit,cookie:saved,profile,provider,accepted:acceptLanguages(accepted),excluded,country,defaultLocale}),country,excluded,defaultLocale};
 }
 
 export function localizedHTML(response,decision) {
@@ -31,6 +33,7 @@ export function localizedHTML(response,decision) {
   const rewrite=new HTMLRewriter().on('html',{element(element){
     element.setAttribute('lang',locale);element.setAttribute('dir',languageDirection(locale));
     element.setAttribute('data-offmenu-locale',locale);element.setAttribute('data-offmenu-locale-source',source);
+    element.setAttribute('data-offmenu-default-locale',decision.defaultLocale||locale);
     element.setAttribute('data-offmenu-excluded-locales',(decision.excluded||[]).join(','));
     if(country)element.setAttribute('data-offmenu-country',country);
   }}).on('[data-i18n]',{element(element){
