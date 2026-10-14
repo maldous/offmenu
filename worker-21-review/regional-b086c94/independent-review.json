@@ -1,0 +1,37 @@
+{
+  "candidate": "b086c941cc3de3c6da126e15c650f2cd544686c2",
+  "verdict": "CHANGES_REQUESTED",
+  "finding": {
+    "id": "W21-REGIONAL-F1",
+    "priority": "P2",
+    "path": "scripts/regional-quantity-owner15.py",
+    "lines": [
+      59,
+      68,
+      128
+    ],
+    "trigger": "truthy list/dict source.unit; otherwise valid source with exact synthetic authorization",
+    "observed": "TypeError unhashable list/dict escapes instead of unknown",
+    "impact": "per-observation malformed evidence may abort consumer/batch; no unsafe conversion or authority bypass established",
+    "requested_fix": "Validate nonempty string unit before graph creation, retain malformed source in unknown; regress both cases"
+  },
+  "checks": {
+    "independent_pass": 5,
+    "independent_error": 1,
+    "isolated_reproductions": [
+      "list:TypeError",
+      "dict:TypeError"
+    ],
+    "author_suite": "8 claimed passing checks inspected; not repeated"
+  },
+  "source_sha256": {
+    "scripts/regional-quantity-owner15.py": "0e616d6337ccba9fea6828692647c1891bafd3885105742a64baf57e6ad2e4f4",
+    "tests/global-data-validation/test_regional_quantity_owner15.py": "65605f2f71c99be7650a9f716c6397e6a351ec9f8bac0439096dfc561c88f7dc",
+    "docs/regional-quantity-owner15.md": "cdc1291f7cd9c114216d4ee26951b1032b2a6690ee4221a517e9695c6eabe49c"
+  },
+  "research_reference": "worker-21-review/quantity-14b7b7a/independent-review.json original PDF01pp2-13 and PDF02p5 exact-page/hash evidence reused",
+  "authority": "Synthetic issuer fixtures only; no actual source permission established",
+  "prior_SI_verdict": "14b7 scoped PASS unchanged; not all P0-03",
+  "production": "STOP",
+  "adoption": "WITHHELD pending owner15 correction and exact-pin recheck"
+}
