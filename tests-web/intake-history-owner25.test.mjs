@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {readFileSync} from 'node:fs';
 import {createIntakeHistory} from '../cloud/intake-history-owner25.mjs';
 import {validateState} from '../cloud/state.mjs';
-const pin = '59d8bca52cc3281741862d17f2579668d6e6140d';
-const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
-const source = execFileSync('git', ['show', `${pin}:public/intake-entry-model.js`], {env, encoding: 'utf8'});
-const entryModel = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+// Test-only exact snapshot of 59d8bca52cc3281741862d17f2579668d6e6140d:
+// public/intake-entry-model.js. No Git object access or production model adoption.
+import * as entryModel from './fixtures/intake-entry-model-owner25.mjs';
 const consent = {id:'c1',purpose:'intake-recording',granted:true};
 const input = (id, state='unknown-consumed') => ({id,accountId:'a',memberId:'m',date:'2026-10-14',kind:'restaurant',state,
   quantity:{value:state==='unknown-consumed'?null:20,unit:'g'},consent,
@@ -61,4 +61,20 @@ test('source permission is checked on writes and reads, not inferred from rights
 test('linearizable store serializes duplicate events with no lost update',async()=>{
   const {api,db}=fixture();const results=await Promise.allSettled([1,2].map(()=>api.append({session:'verified',accountId:'a',input:input('same')})));
   assert.equal(results.filter(r=>r.status==='fulfilled').length,1);assert.equal(db.get('a').entries.length,1);
+});
+test('checked-in fixture is the exact declared source snapshot',()=>{
+  const bytes=readFileSync(new URL('./fixtures/intake-entry-model-owner25.mjs',import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),'eec623d6f49ac0b7a57f97af550198eed909347ff4ce9d4b3c327515d294655a');
+});
+test('fixture preserves explicit unknown and source lineage; it does not invent nutrient totals',()=>{
+  const value=input('unknown');const entry=entryModel.createIntakeEntry(value,{accountId:'a',clock:()=> '2026-10-14T10:00:00.000Z'});
+  assert.equal(entry.quantity.value,null);assert.deepEqual(entry.food,value.food);assert.equal(Object.hasOwn(entry,'totals'),false);
+  assert.throws(()=>entryModel.createIntakeEntry({...value,quantity:{value:0,unit:'g'}},{accountId:'a',clock:()=> '2026-10-14T10:00:00.000Z'}));
+  assert.throws(()=>entryModel.createIntakeEntry({...value,totals:{}},{accountId:'a',clock:()=> '2026-10-14T10:00:00.000Z'}));
+});
+test('fixture partitions plans and consumed zero without confusing either with unknown intake',()=>{
+  const create=v=>entryModel.createIntakeEntry(v,{accountId:'a',clock:()=> '2026-10-14T10:00:00.000Z'});
+  const entries=[create(input('plan','planned')),create({...input('zero','consumed'),quantity:{value:0,unit:'g'}}),create(input('unknown'))];
+  const buckets=entryModel.partitionIntakeEntries(entries,{accountId:'a'});
+  assert.equal(buckets.planned.length,1);assert.equal(buckets.consumed[0].quantity.value,0);assert.equal(buckets.unknownConsumed[0].quantity.value,null);
 });
