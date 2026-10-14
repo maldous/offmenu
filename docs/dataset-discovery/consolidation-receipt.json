@@ -1,10 +1,10 @@
 {
   "schema": "offmenu-dataset-consolidation/1",
   "mode": "refresh",
-  "observedAtUTC": "2026-10-14T08:36:04.104Z",
+  "observedAtUTC": "2026-10-14T08:45:36.799Z",
   "consolidator": 14,
   "outputPath": "/home/user/src/offmenu-workers/worker-14/docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
-  "sha256": "f06f812f49997ed229e0457741d276da3e02fa3b49ff0afd2ae831306ed8bf61",
+  "sha256": "bde659a82dc8014bf7a139b8ca53554e950293efaa42c544d4a78809860d1ead",
   "rowCount": 48,
   "headerCount": 31,
   "targetCount": 25,
@@ -247,6 +247,10 @@
       "bytes": 3711,
       "observedBranch": "feature/dataset-france-ciqual-20261014",
       "observedHEAD": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-03/source.csv",
+      "sourceCSVGitBlob": "90f5c20ea7d995a4894260ca21f805f985d13b74",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "d3250fca994501be60c8ba159c0bf9635b91dc17",
       "receiptPath": "/home/user/src/offmenu-workers/worker-03/docs/dataset-discovery/worker-03/receipt.json",
       "receiptSHA256": "dad145f002846d16bbf3febfb5ef9c4423332bbfc970f3f5e6cbe57a66741761",
       "rowCount": 1,
@@ -572,10 +576,16 @@
           "stagedChangesBeforeCommit": ""
         }
       },
-      "finalObservedHEAD": "d3250fca994501be60c8ba159c0bf9635b91dc17",
-      "finalObservedBranch": "feature/dataset-france-ciqual-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-03/receipt.json",
+      "receiptGitBlob": "154dbbad57e20228187485c0e6c2d6395f8d915a",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.092Z",
+        "workingCSVHash": "160f4ea33ad0492567a1e90eb274114a3a27a125c2956ed0813d0885de60d765",
+        "workingReceiptHash": "dad145f002846d16bbf3febfb5ef9c4423332bbfc970f3f5e6cbe57a66741761",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 4,
@@ -585,6 +595,10 @@
       "bytes": 3677,
       "observedBranch": "feature/dataset-norway-matvaretabellen-20261014",
       "observedHEAD": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-04/source.csv",
+      "sourceCSVGitBlob": "23b2afc33c1bac450d5a2da8ff789a822e9b9239",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
       "receiptPath": "/home/user/src/offmenu-workers/worker-04/docs/dataset-discovery/worker-04/receipt.json",
       "receiptSHA256": "2a0a2007f22302e6132df5e15f39fca760f90b6549a5f86e3920e748777a03b6",
       "rowCount": 1,
@@ -860,10 +874,16 @@
           "policy": "Existing ignored browser evidence left in place; no before hash comparison claimed"
         }
       },
-      "finalObservedHEAD": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
-      "finalObservedBranch": "feature/dataset-norway-matvaretabellen-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-04/receipt.json",
+      "receiptGitBlob": "952ac3b37f16d155c2f3698b56e4c4636dc74859",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.113Z",
+        "workingCSVHash": "6aedfd1543f70e045651a8e9ec3a88f7f2adff69c06063cb814c5a9e2737e739",
+        "workingReceiptHash": "2a0a2007f22302e6132df5e15f39fca760f90b6549a5f86e3920e748777a03b6",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 5,
@@ -872,7 +892,11 @@
       "sha256": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
       "bytes": 4169,
       "observedBranch": "feature/dataset-swiss-composition-20261014",
-      "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "observedHEAD": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-05/source.csv",
+      "sourceCSVGitBlob": "85654e5b1e66e90e6a7e1811ed4be324827bf2b9",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
       "receiptPath": "/home/user/src/offmenu-workers/worker-05/docs/dataset-discovery/worker-05/receipt.json",
       "receiptSHA256": "fb03e3fa77e3f1990f9a26bc940bbc58e90e28842f153d3ac7410031fb437c05",
       "rowCount": 1,
@@ -1133,227 +1157,31 @@
         },
         "note_sha256": "c44e43ef48a716a6481ae5d0bec2974c36f3217a19e42a4af4831be83e58a7ba"
       },
-      "earlierReceiptSHA256": "d6be4384c6163ccf4caead10a5421d7754f6f445082c74b014a32874b109ccaa",
-      "earlierReceiptSnapshot": {
-        "schema": "offmenu-dataset-discovery-receipt/1",
-        "dataset_id": "swiss-composition",
-        "worker_id": "05",
-        "branch": "feature/dataset-swiss-composition-20261014",
-        "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-        "pickup_head": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-        "custody_before": {
-          "session_id": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
-          "prior_branch": "worker/05/dev-environment-20261014",
-          "prior_head": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
-          "prior_status": "?? node_modules",
-          "prior_common_dir": "/home/user/src/offmenu/.git",
-          "untracked": [
-            "node_modules"
-          ],
-          "node_modules_target": "/home/user/src/offmenu/node_modules",
-          "removed_inherited_git_names": [
-            "GIT_PAGER"
-          ]
-        },
-        "primary_before": {
-          "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
-          "main_ref": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
-          "index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
-        },
-        "fetch": {
-          "started_utc": "2026-10-14T08:27:27.791537+00:00",
-          "completed_utc": "2026-10-14T08:27:30.327189+00:00",
-          "exit_code": 0,
-          "origin_develop_sha": "abe0ddc9db357b1e8d0d61825392d6b9923352f0"
-        },
-        "custody_assertions": {
-          "prior_branch_head_preserved": true,
-          "prior_untracked_symlink_preserved": true,
-          "primary_head_main_index_unchanged": true
-        },
-        "network_source_byte_cap": 3145728,
-        "sample_record_cap": 3,
-        "status": "ready-for-review; metadata-only; sample admission blocked",
-        "acquired_bytes": 362285,
-        "network_evidence": [
-          {
-            "requested_url": "https://www.naehrwertdaten.ch/en/downloads/",
-            "accessed_utc": "2026-10-14T08:29:00.924582+00:00",
-            "final_url": "https://www.naehrwertdaten.ch/en/downloads/",
-            "status": 200,
-            "bytes": 62410,
-            "sha256": "50d70ffe5d14356e1e559b5d752f2318cf0d096a85662a558270412c989dcd72",
-            "content_type": "text/html; charset=UTF-8",
-            "truncated": false
-          },
-          {
-            "requested_url": "https://www.naehrwertdaten.ch/en/legal-information/",
-            "accessed_utc": "2026-10-14T08:29:03.426176+00:00",
-            "final_url": "https://www.naehrwertdaten.ch/en/legal-information/",
-            "status": 200,
-            "bytes": 65152,
-            "sha256": "4cb29ac5c383c74176cacb543a1f24eadf5a218866c3c0a1b827509e9c95fa76",
-            "content_type": "text/html; charset=UTF-8",
-            "truncated": false
-          },
-          {
-            "requested_url": "https://www.naehrwertdaten.ch/en/",
-            "accessed_utc": "2026-10-14T08:29:05.442619+00:00",
-            "final_url": "https://www.naehrwertdaten.ch/en/",
-            "status": 200,
-            "bytes": 73783,
-            "sha256": "fe17ac74c42a9f94358fe04e90aad0d0736619103c232d0452f0f764bf9ed14b",
-            "content_type": "text/html; charset=UTF-8",
-            "truncated": false
-          },
-          {
-            "requested_url": "https://www.naehrwertdaten.ch/en/versions-and-updates/",
-            "accessed_utc": "2026-10-14T08:31:23.166823+00:00",
-            "status": 200,
-            "final_url": "https://www.naehrwertdaten.ch/en/versions-and-updates/",
-            "bytes": 97424,
-            "sha256": "7b6ed8332128d83e31d8b47e5cfc6688564810e9f4c9da090a53d4ed1c4c327a",
-            "truncated": false
-          },
-          {
-            "requested_url": "https://www.naehrwertdaten.ch/en/interpretation-of-food-composition-data/",
-            "accessed_utc": "2026-10-14T08:31:25.503331+00:00",
-            "status": 200,
-            "final_url": "https://www.naehrwertdaten.ch/en/interpretation-of-food-composition-data/",
-            "bytes": 63516,
-            "sha256": "dea9de89603c2bb2a9e1f5af95e75f6ff30544b0391136b05cc399ac7bfb16e1",
-            "truncated": false
-          }
-        ],
-        "network_accounting": "identity-encoded response-body bytes, bounded streamed aggregate; no source workbook/archive requested",
-        "accessed_utc": "2026-10-14T08:35:11.943996+00:00",
-        "work_scope": "RIGHTS/VERSION/MAPPING ENRICHMENT of existing S062, not new acquisition",
-        "sample_records": 0,
-        "admitted_records": 0,
-        "source_data_bytes": 0,
-        "workbook_downloaded": false,
-        "api_called": false,
-        "licence_name": "Custom FSVO data-use permission with attribution; reproduction scope unresolved",
-        "licence_urls": [
-          "https://www.naehrwertdaten.ch/en/downloads/",
-          "https://www.naehrwertdaten.ch/en/legal-information/"
-        ],
-        "source_urls": [
-          "https://www.naehrwertdaten.ch/en/downloads/",
-          "https://www.naehrwertdaten.ch/en/legal-information/",
-          "https://www.naehrwertdaten.ch/en/",
-          "https://www.naehrwertdaten.ch/en/versions-and-updates/",
-          "https://www.naehrwertdaten.ch/en/interpretation-of-food-composition-data/"
-        ],
-        "prior_inventory_matches": [
-          {
-            "file": "docs/source-delivery-ledger.json",
-            "json_path": "$.sources[60]",
-            "sourceId": "discovery:S062",
-            "status": "landing-page-access-checked",
-            "prior_checked_utc": "2026-10-13T06:54:01.205315+00:00",
-            "prior_landing_sha256": "6bc44164eaea637b3c7c401bb74a9a0a744d1e662eaf90d037e8fb20de03c320"
-          },
-          {
-            "file": "research/OffMenu_Global_Data_Source_Register.json",
-            "json_path": "$.sources[60]",
-            "id": "S062"
-          },
-          {
-            "file": "research/OffMenu_Global_Data_Source_Register.json",
-            "json_path": "$.countries[42].composition",
-            "name": "Swiss Food Composition Database v7.1"
-          }
-        ],
-        "dedup": {
-          "route_already_registered": true,
-          "retained_source_file_matches": [],
-          "scopes": [
-            "source delivery ledger",
-            "research source register",
-            "docs/collections",
-            "global recipe discovery metadata",
-            "retained source filenames and manifest/receipt/discovery metadata under /home/user/src/offmenu-data"
-          ],
-          "not_a_match": [
-            "recipe swiss_chard_tacos.md",
-            "recipe base_layers/swiss_chard.md",
-            "Canadian CNF food names mentioning Swiss cheese"
-          ],
-          "limitation": "No named Swiss workbook or Swiss source collection metadata found in searched retained inventories; this is not a byte-level scan of every unnamed corpus file. No second workbook download performed."
-        },
-        "disk_before_acquisition": {
-          "total": 1964627075072,
-          "used": 1643615858688,
-          "free": 221138128896
-        },
-        "disk_after_metadata": {
-          "total": 1964627075072,
-          "used": 1643650379776,
-          "free": 221103607808
-        },
-        "rights_assessment": {
-          "specific_data_use": "Official downloads/home allow commercial and scientific data use with source acknowledgment. No standard open-licence identifier is named.",
-          "general_reproduction": "The general legal page requires advance written permission for reproduction; it does not distinguish dataset redistribution from other site material.",
-          "decision": "Do not treat commercial/scientific use permission as blanket redistribution permission. Resolve applicable dataset redistribution terms before samples/curation.",
-          "conflict": "Specific data-use permission versus general reproduction restriction",
-          "no_legal_clearance_claim": true
-        },
-        "primary_metadata": {
-          "publisher": "Federal Food Safety and Veterinary Office FSVO",
-          "version": "7.1",
-          "release_date": "2026-07-01",
-          "release_date_evidence": "https://www.naehrwertdaten.ch/en/versions-and-updates/",
-          "foodstuff_count": 1246,
-          "languages": [
-            "en",
-            "de",
-            "fr",
-            "it"
-          ],
-          "coverage": "foods available in Switzerland; not proof of production origin",
-          "default_basis": "100 g edible portion",
-          "optional_liquid_view": "100 ml; conversion requires density evidence",
-          "values": "average; individual variations and calculated recipe values occur",
-          "new_7_1_definition": "niacin equivalents; do not silently equate with niacin",
-          "source_download_candidate": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
-          "api_documentation_pointer": "https://naehrwertdaten.ch/wp-content/uploads/2025/07/The-Swiss-Food-Composition-Database-API-descripton_V3-separate-API-prod.docx",
-          "pointers_not_downloaded": true
-        },
-        "blockers": [
-          "Dataset redistribution/reproduction scope not resolved from the conflicting official statements.",
-          "No record-level IDs, nutrient units, measured/calculated/trace qualifiers or API schema inspected.",
-          "No retained Swiss sample identified; complete workbook acquisition prohibited by this task."
-        ],
-        "task_head_semantics": "CSV task_head is the pre-commit observation HEAD/base. The resulting immutable commit is reported in the task result; it cannot be self-embedded in its own CSV/receipt.",
-        "consolidator": "Worker 14 only; shared register and consolidated CSV unchanged",
-        "retained_reference_hashes": {
-          "corpus/common-data.schema.json": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
-          "corpus/common-data-contract.json": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
-          "docs/source-delivery-ledger.json": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf",
-          "research/OffMenu_Global_Data_Source_Register.json": "ee3b5a6a2e29f4a13c2864195d5a9a861330fcd8a9639acb89a8b3fa54347c37"
-        },
-        "source_csv_sha256": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
-        "csv_header_count": 31,
-        "csv_metadata_rows": 1,
-        "csv_sample_rows": 0
-      },
-      "receiptDriftNote": "Source owner finalized receipt after consolidation read; CSV bytes unchanged. Earlier receipt snapshot and digest preserved.",
-      "finalObservedHEAD": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
-      "finalObservedBranch": "feature/dataset-swiss-composition-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-05/receipt.json",
+      "receiptGitBlob": "3c4ad06338723c78ae9a81378b14a5a141b444a9",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.134Z",
+        "workingCSVHash": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
+        "workingReceiptHash": "fb03e3fa77e3f1990f9a26bc940bbc58e90e28842f153d3ac7410031fb437c05",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 6,
       "dataset": "australia-afcd",
       "path": "/home/user/src/offmenu-workers/worker-06/docs/dataset-discovery/worker-06/source.csv",
-      "sha256": "489dad55efdfaee67d85194c658f1acb2cb7211c0b9c27f72f891b5a8b66739f",
-      "bytes": 21752,
+      "sha256": "a9d8e89598fa743d42078a4beae8d4ea1881f13dde147a4ca8bb59d5764635a8",
+      "bytes": 21608,
       "observedBranch": "feature/dataset-australia-afcd-20261014",
-      "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "observedHEAD": "2bd5061f55979024cdc25626e500927daadeb9e0",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-06/source.csv",
+      "sourceCSVGitBlob": "e1c3b40b794292ac0d1a2dbfe36699dffeda8b6f",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "2bd5061f55979024cdc25626e500927daadeb9e0",
       "receiptPath": "/home/user/src/offmenu-workers/worker-06/docs/dataset-discovery/worker-06/receipt.json",
-      "receiptSHA256": "3eaadfac77b86cfee40981cfd3f71a6f8b8222f651d968013cb0f31bf2002937",
+      "receiptSHA256": "35e1cb8205a01750d6993da828f0391c97e0874a1bb31aa433f3cded60fced07",
       "rowCount": 4,
       "sampleRows": 3,
       "workerReceipt": {
@@ -1730,9 +1558,10 @@
           "rows": 4,
           "metadataRows": 1,
           "sampleRows": 3,
-          "bytes": 21752,
-          "sha256": "489dad55efdfaee67d85194c658f1acb2cb7211c0b9c27f72f891b5a8b66739f",
-          "format": "UTF-8 RFC4180; JSON fields quoted; CRLF row endings"
+          "bytes": 21608,
+          "sha256": "a9d8e89598fa743d42078a4beae8d4ea1881f13dde147a4ca8bb59d5764635a8",
+          "format": "UTF-8 RFC4180; JSON fields quoted; CRLF row endings",
+          "timestampHandling": "original ISO UTC source evidence string preserved across automatic workbook date coercion"
         },
         "noteSha256": "659ce537bf2bb94cef5c60a38bcf3318f9d8ca90a173b3115e811a2f694f2632",
         "independentValidation": {
@@ -1749,8 +1578,19 @@
           "mainRefHeadIndexUnchanged": true,
           "noCuratedAdmissions": true,
           "networkWithin3MiB": true,
-          "freeDiskBytesAtValidation": 221089255424
+          "freeDiskBytesAtValidation": 221089255424,
+          "utcTimestampPreserved": true
         }
+      },
+      "receiptGitPath": "docs/dataset-discovery/worker-06/receipt.json",
+      "receiptGitBlob": "a1d190ea35e0c5612abf6371f999c498280ba9fc",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "2bd5061f55979024cdc25626e500927daadeb9e0",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.157Z",
+        "workingCSVHash": "a9d8e89598fa743d42078a4beae8d4ea1881f13dde147a4ca8bb59d5764635a8",
+        "workingReceiptHash": "35e1cb8205a01750d6993da828f0391c97e0874a1bb31aa433f3cded60fced07",
+        "workingReceiptEqualsCommittedBlob": true
       },
       "sampleHashes": [
         {
@@ -1789,393 +1629,7 @@
           "verification": "exact retained file bytes; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "earlierReceiptSHA256": "73c472a5479b939d462d4034657adec7ae4301a72b53bbd7c5b3a6976242a133",
-      "earlierReceiptSnapshot": {
-        "schema": "offmenu-dataset-discovery-receipt/1",
-        "dataset": "australia-afcd",
-        "worker": "06",
-        "sessionId": "01a138a5-afff-7282-acd3-3a457bb91d24",
-        "disposition": "READY FOR REVIEW; enrichment only, no admission",
-        "bootstrap": {
-          "custodyBefore": {
-            "at": "2026-10-14T08:26:58.730852+00:00",
-            "cwd": "/home/user/src/offmenu-workers/worker-06",
-            "branch": "worker/06/mock-services-20261014",
-            "head": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d",
-            "status": "?? .venv\n?? node_modules",
-            "staged": "",
-            "tracked": "",
-            "commonDir": "/home/user/src/offmenu/.git",
-            "primary": {
-              "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
-              "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
-              "indexSha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
-            },
-            "retainedDirectories": [
-              {
-                "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime",
-                "files": 1869,
-                "bytes": 8125706,
-                "manifestSha256": "64fe260ecc860d7b027e7552d4c1639487ef4f3fb7676d97d90a55e37cab42af"
-              },
-              {
-                "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache",
-                "files": 1,
-                "bytes": 19530671,
-                "manifestSha256": "93800fd4014bc61b18735f24c647fb13132976d1153d9e3ca2390d46eb9847ce"
-              }
-            ],
-            "untrackedSymlinks": {
-              "node_modules": {
-                "target": "/home/user/src/offmenu-third-party/node_modules",
-                "exists": true
-              },
-              ".venv": {
-                "target": "/home/user/src/offmenu-third-party/.venv",
-                "exists": true
-              }
-            },
-            "freeDiskBytes": 221133189120
-          },
-          "fetch": {
-            "atUtc": "2026-10-14T08:26:58.812021+00:00",
-            "exitCode": 0,
-            "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-            "ref": "origin/develop",
-            "lock": "/tmp/offmenu-develop-fetch.lock"
-          },
-          "branch": "feature/dataset-australia-afcd-20261014",
-          "head": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-          "postSwitchStatus": "?? .venv\n?? dev/\n?? node_modules"
-        },
-        "sourceEvidence": {
-          "landing": {
-            "requestedUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd",
-            "finalUrl": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
-            "bytes": 162137,
-            "sha256": "30a7c48b7d96db27a408ca8f349b35da81e61a9b0fd9161595cdfe524e79e42e",
-            "observedFoods": 1588,
-            "lastUpdated": "2026-05-18"
-          },
-          "pages": [
-            {
-              "requestedUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
-              "finalUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
-              "status": 200,
-              "bytes": 164101,
-              "sha256": "7c4fa7044d82ac5f1a917ba258a3800edfc8c0315fbbc5ba0cec7ea3d105ec3d",
-              "atUtc": "2026-10-14T08:29:45.862470+00:00"
-            },
-            {
-              "requestedUrl": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files",
-              "finalUrl": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files",
-              "status": 200,
-              "bytes": 164397,
-              "sha256": "6f50104934acbcbdde52ab48988df6aadd93dc99c5ea89626f4688157edaf644",
-              "atUtc": "2026-10-14T08:29:45.881530+00:00"
-            }
-          ],
-          "licenceReading": {
-            "requestedUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
-            "status": 200,
-            "bytes": 164101,
-            "sha256": "7c4fa7044d82ac5f1a917ba258a3800edfc8c0315fbbc5ba0cec7ea3d105ec3d",
-            "atUtc": "2026-10-14T08:30:21.722023+00:00"
-          },
-          "licenceInterpretation": {
-            "grant": "clauses 3A/3B permit reproduction/collection/derivatives/distribution subject to terms",
-            "restrictions": "clauses 4A/4B/4C require the agreement, attribution/copyright, change notices, limitations and country notice; collection independent material is not automatically relicensed",
-            "thirdParty": "clause 5 covers licensed third-party material; rights/accuracy warranties are not supplied",
-            "limits": "data average/variability and cross-country suitability warnings retained; no logo/endorsement",
-            "licence": "FSANZ Data User Licence Agreement; based on CC BY-SA 3.0 AU, not generic site-footer licence"
-          },
-          "networkAccounting": {
-            "actualSourceBytes": 983234,
-            "capBytes": 3145728,
-            "datasetDownloadBytes": 0,
-            "requests": 6,
-            "explanation": "three initial metadata pages (490635 bytes), two recovery reads (328498 bytes), final licence-clause read (164101 bytes); all counted. Initial tool-output truncation recovered via native history. No workbook/archive/corpus requests."
-          },
-          "dataVersion": "Release 3",
-          "pageUpdated": "2025-12-23",
-          "releaseDate": "unknown; page update/date path not treated as publication date"
-        },
-        "priorInventory": [
-          "docs/source-delivery-ledger.json:sources/discovery:S063",
-          "docs/source-delivery-ledger.json:sources/discovery:S327",
-          "research/OffMenu_Global_Data_Source_Register.json:S063/S327/AU",
-          "/home/user/src/offmenu-data/afcd-3/manifest.json",
-          "/home/user/src/offmenu-data/national-originals/afcd",
-          "/home/user/src/offmenu-data/curated-national-20261013/blobs/records/afcd"
-        ],
-        "retainedOriginals": [
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Food group information.xlsx",
-            "bytes": 904432,
-            "sha256": "e2d0507394ce5c2abe1f186d36058affa6d532c0d50ea18cf98908e368e17e90",
-            "matchesPriorManifest": true
-          },
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Food-Details.xlsx",
-            "bytes": 1137444,
-            "sha256": "69aa096c45cb0699db60a9c544442312e9ff09af587b99c42dc78bc26f689629",
-            "matchesPriorManifest": true
-          },
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Nutrient-details.xlsx",
-            "bytes": 107383,
-            "sha256": "7c455129a90e65d29840ecd188fa223cca8bdf0729b21efebc286884d69fafaa",
-            "matchesPriorManifest": true
-          },
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Nutrient-profiles.xlsx",
-            "bytes": 2107021,
-            "sha256": "14cb3e73dbf58987b440e6299624c0fefd7a4e61591fc1f753995d9534e0efc9",
-            "matchesPriorManifest": true
-          },
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Recipes.xlsx",
-            "bytes": 109100,
-            "sha256": "81925cd790b4d914e9016fe71e273e4b5823cbcea7d6aafc277ebbc160e762ef",
-            "matchesPriorManifest": true
-          },
-          {
-            "path": "/home/user/src/offmenu-data/national-originals/afcd/Reference List.xlsx",
-            "bytes": 69194,
-            "sha256": "970bd41a4a85f172ca152c61561027c7970c70ed179e757a7b3c541e02497160",
-            "matchesPriorManifest": true
-          }
-        ],
-        "sampleCount": 3,
-        "samples": [
-          {
-            "sourceRecordId": "F002258",
-            "sourceSheet": "All solids & liquids per 100 g",
-            "foodDetailsSheet": "Food details",
-            "rowIdentity": "Public Food Key",
-            "basis": {
-              "amount": 100,
-              "unit": "g"
-            },
-            "copiedNutrientColumns": 12,
-            "originalFoodDetails": {
-              "Public Food Key": "F002258",
-              "Classification": "31302",
-              "Derivation": "Borrowed",
-              "Food Name": "Cardamom seed, dried, ground",
-              "Food Description": "Ground spice commonly used in Indian cooking and drinks, in Middle Eastern cooking and in Scandinavian baking",
-              "Sampling Details": "The majority of nutrient data were borrowed from USDA SR Legacy, FDC ID 170919 - Spices, cardamom. Proximates (starch, sugars), vitamins (alpha-tocopherol, beta-carotene, folate) and Se were borrowed from Indian Food Composition Tables 2017, G020 - Cardamom, green. Dry matter adjustment was applied to starch and sugar. Tryptophan was imputed from dried fenugreek seed. Alcohol, vitamins (B12, folic acid, retinol, D), I, caffeine and cholesterol were imputed zero. Note low sum of proximates - data should be used with caution.",
-              "Nitrogen Factor": 6.25,
-              "Fat Factor": 0.956,
-              "Specific Gravity": 0,
-              "Analysed Portion": "100%",
-              "Unanalysed Portion": "0%"
-            }
-          },
-          {
-            "sourceRecordId": "F002963",
-            "sourceSheet": "All solids & liquids per 100 g",
-            "foodDetailsSheet": "Food details",
-            "rowIdentity": "Public Food Key",
-            "basis": {
-              "amount": 100,
-              "unit": "g"
-            },
-            "copiedNutrientColumns": 12,
-            "originalFoodDetails": {
-              "Public Food Key": "F002963",
-              "Classification": "31302",
-              "Derivation": "Borrowed",
-              "Food Name": "Cinnamon, dried, ground",
-              "Food Description": "Dried and ground bark or quills of Cinnamomum verum, C. zeylanicum or C. aromaticum, used as a spice.",
-              "Sampling Details": "The majority of nutrient data were borrowed from USDA SR Legacy, FDC ID 171320 - Spices, cinnamon, ground. Iodine was borrowed from NZ Food Composition Database, ID P29 Spice, cinnamon, ground. Alcohol, vitamins (B12, folic acid, retinol, D), caffeine and cholesterol were imputed zero.",
-              "Nitrogen Factor": 6.25,
-              "Fat Factor": 0.956,
-              "Specific Gravity": 0,
-              "Analysed Portion": "100%",
-              "Unanalysed Portion": "0%"
-            }
-          },
-          {
-            "sourceRecordId": "F002893",
-            "sourceSheet": "All solids & liquids per 100 g",
-            "foodDetailsSheet": "Food details",
-            "rowIdentity": "Public Food Key",
-            "basis": {
-              "amount": 100,
-              "unit": "g"
-            },
-            "copiedNutrientColumns": 12,
-            "originalFoodDetails": {
-              "Public Food Key": "F002893",
-              "Classification": "31302",
-              "Derivation": "Borrowed",
-              "Food Name": "Chilli (chili), dried, ground",
-              "Food Description": "Dried and ground red pepper, characterised by a hot sensation when consumed as a spice.",
-              "Sampling Details": "The majority of nutrient data were borrowed from NZ Food Composition Database, ID P28 Spice, chilli powder. Fatty acids and tryptophan were borrowed from USDA SR Legacy, FDC ID 171319 - Spices, chili powder. Na was borrowed from USDA SR Legacy, FDC ID 171329 - Spices, paprika. Alcohol, vitamin D, folic acid, caffeine and cholesterol were imputed zero. Note low sum of proximates - use data with caution.\n\n",
-              "Nitrogen Factor": 6.25,
-              "Fat Factor": 0.8,
-              "Specific Gravity": 0,
-              "Analysed Portion": "100%",
-              "Unanalysed Portion": "0%"
-            }
-          }
-        ],
-        "mapping": {
-          "status": "proposal-only-not-admitted",
-          "datasetType": "urn:offmenu:type:SourceDataset",
-          "recordType": "urn:offmenu:type:SourceRecord",
-          "compositionType": "urn:offmenu:type:FoodCompositionObservation",
-          "identityStatus": "source-scoped",
-          "sourceIdentity": "AFCD Release 3/Public Food Key + sheet basis",
-          "nutrientDefinition": "source column label and original unit; no equivalence assertion",
-          "unmapped": "sampling/source derivation retained as typed UnmappedSourceFact when no registered property exists",
-          "quantity": "separate magnitude, unit, denominator, preparation and derivation; no g/mL conversion",
-          "citation": "original workbook hash + sheet + record key; licence and notices per assertion"
-        },
-        "sourceNotices": {
-          "licenceUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
-          "attribution": "© Food Standards Australia New Zealand — Australian Food Composition Database Release 3; changes: three retained rows selected and source fields serialized to CSV JSON, without nutrient conversion; no endorsement implied",
-          "limitationStatement": "There are limitations associated with food composition databases. Food composition data used in the database or databases may represent an average of the nutrient content of a particular sample of foods and ingredients, determined at a particular time. The nutrient composition of foods and ingredients can vary substantially between batches and brands because of a number of factors, including changes in season, processing practices and ingredient source, and methods of calculation.",
-          "countryNotice": "This work is based on Australian data. Australian data may not be appropriate for use in other countries.",
-          "changes": "three-row extraction + serialization only; no nutrient conversion; originals external"
-        },
-        "reviewGates": [
-          "source-specific nutrient definitions/method joins remain unqualified",
-          "no country-of-origin/dietary/allergen inference",
-          "no new curated record IDs",
-          "broader rights/canonical admission remains owner-controlled",
-          "entire release not requalified"
-        ],
-        "taskHeadMeaning": "CSV task_head is the actual extraction/pre-commit task HEAD (fresh origin/develop base). Result commit is supplied in final handoff; not embedded circularly in its own files.",
-        "ownedOutputs": [
-          "docs/dataset-discovery/worker-06/source.csv",
-          "docs/dataset-discovery/worker-06/receipt.json",
-          "docs/dataset-discovery/worker-06/note.md"
-        ],
-        "currentReadback": {
-          "hostname": "foo",
-          "cwd": "/home/user/src/offmenu-workers/worker-06",
-          "branch": "feature/dataset-australia-afcd-20261014",
-          "head": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-          "originDevelop": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-          "registration": [
-            "worktree /home/user/src/offmenu-workers/worker-06\nHEAD abe0ddc9db357b1e8d0d61825392d6b9923352f0\nbranch refs/heads/feature/dataset-australia-afcd-20261014"
-          ],
-          "threadId": "01a138a5-afff-7282-acd3-3a457bb91d24",
-          "permissionProfileEnv": null,
-          "gitEnvironment": "inherited GIT_* removed; optional locks disabled explicitly"
-        },
-        "controls": {
-          "suppliedActive": {
-            "filesystemSandbox": "danger-full-access",
-            "filesystemAccess": "unrestricted; no filesystem sandbox",
-            "network": "enabled",
-            "approvalPolicy": "not separately exposed; do not infer AskForApproval from reviewer",
-            "mandatoryReviewer": "auto_review",
-            "escalations": "tool-defined require_escalated actions reviewed by auto_review"
-          },
-          "userSuppliedConfiguration": {
-            "permissionProfile": "disabled",
-            "fileSystem": "unrestricted"
-          },
-          "environment": {
-            "CODEX_PERMISSION_PROFILE": "unset",
-            "CODEX_THREAD_ID": "01a138a5-afff-7282-acd3-3a457bb91d24"
-          },
-          "basis": "controls quoted from active supplied developer permissions; configuration and successful commands are not proof of active controls"
-        },
-        "retainedEvidence": [
-          {
-            "path": "/home/user/src/offmenu-data/afcd-3/manifest.json",
-            "bytes": 1795,
-            "sha256": "ff4a6ab34b8ae56e58c021af62424851063692d886502f30bc17d416fd90a80a"
-          },
-          {
-            "path": "/home/user/src/offmenu-data/afcd-3/normalized.jsonl.gz",
-            "bytes": 12456282,
-            "sha256": "a9f139768cb6f3ae721ae384b147f4d3f2bb537d11bb2d29b20dd2bde813e2fe"
-          },
-          {
-            "path": "docs/source-delivery-ledger.json",
-            "bytes": 1701843,
-            "sha256": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf"
-          },
-          {
-            "path": "research/OffMenu_Global_Data_Source_Register.json",
-            "bytes": 329897,
-            "sha256": "ee3b5a6a2e29f4a13c2864195d5a9a861330fcd8a9639acb89a8b3fa54347c37"
-          },
-          {
-            "path": "docs/global-recipe-source-discovery-20261014.json",
-            "bytes": 5480,
-            "sha256": "33cc9921ec43aedaa093a21962f84fae091fc3e006cd3db56e203046d050b84c"
-          },
-          {
-            "path": "corpus/common-data.schema.json",
-            "bytes": 17632,
-            "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
-          },
-          {
-            "path": "corpus/common-data-contract.json",
-            "bytes": 46420,
-            "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
-          },
-          {
-            "path": "scripts/import-afcd.py",
-            "bytes": 8308,
-            "sha256": "8907dd7b53321f7cbbd17afccb1fa896392bd594749176ddffcf909476ac8917"
-          }
-        ],
-        "csv": {
-          "headers": [
-            "dataset_id",
-            "worker_id",
-            "record_type",
-            "source_record_id",
-            "source_name",
-            "source_url",
-            "country_coverage",
-            "version_date",
-            "accessed_utc",
-            "licence",
-            "licence_url",
-            "redistribution_status",
-            "attribution",
-            "inventory_match_refs",
-            "work_scope",
-            "canonical_mapping_json",
-            "observed_values_json",
-            "observed_units_json",
-            "quantity_basis",
-            "dietary_allergen_uncertainty",
-            "origin_uncertainty",
-            "quality_flags",
-            "missing_flags",
-            "conflict_flags",
-            "curated_record_refs",
-            "sample_evidence_path",
-            "sample_sha256",
-            "task_branch",
-            "task_head",
-            "acquired_bytes",
-            "qualification_status"
-          ],
-          "rows": 4,
-          "metadataRows": 1,
-          "sampleRows": 3,
-          "bytes": 21752,
-          "sha256": "489dad55efdfaee67d85194c658f1acb2cb7211c0b9c27f72f891b5a8b66739f",
-          "format": "UTF-8 RFC4180; JSON fields quoted; CRLF row endings"
-        },
-        "noteSha256": "659ce537bf2bb94cef5c60a38bcf3318f9d8ca90a173b3115e811a2f694f2632"
-      },
-      "receiptDriftNote": "Source owner finalized receipt after consolidation read; CSV bytes unchanged. Earlier receipt snapshot and digest preserved.",
-      "finalObservedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
-      "finalObservedBranch": "feature/dataset-australia-afcd-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": false,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 8,
@@ -2185,6 +1639,10 @@
       "bytes": 3522,
       "observedBranch": "feature/dataset-netherlands-nevo-20261014",
       "observedHEAD": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-08/source.csv",
+      "sourceCSVGitBlob": "c6df5be97dd814e032f636913dad6e43b86e0e63",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
       "receiptPath": "/home/user/src/offmenu-workers/worker-08/docs/dataset-discovery/worker-08/receipt.json",
       "receiptSHA256": "9eb59d2543272cd11db641cb28f380abf216d03add44e5048611e9a03c42c429",
       "rowCount": 1,
@@ -2456,10 +1914,16 @@
           "only_owned_untracked_artifacts_added": true
         }
       },
-      "finalObservedHEAD": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
-      "finalObservedBranch": "feature/dataset-netherlands-nevo-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-08/receipt.json",
+      "receiptGitBlob": "cd49f673a4401a52ff2bca67fcfd4e3edf6e5c53",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.197Z",
+        "workingCSVHash": "2466df299c2b789cab36f7aefd1dcaacc01c8e9400426d6d70e22d5f507a2132",
+        "workingReceiptHash": "9eb59d2543272cd11db641cb28f380abf216d03add44e5048611e9a03c42c429",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 11,
@@ -2468,7 +1932,11 @@
       "sha256": "2364bcd14857c77b443d008de067ab1793a8014df259e8393e395957f3ff52c1",
       "bytes": 3286,
       "observedBranch": "feature/dataset-italy-crea-20261014",
-      "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "observedHEAD": "770c0b57eff70aa23c329c6026ba87086671f020",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-11/source.csv",
+      "sourceCSVGitBlob": "314468c17ccfdf3e2e66a2afaed419c28997f926",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "770c0b57eff70aa23c329c6026ba87086671f020",
       "receiptPath": "/home/user/src/offmenu-workers/worker-11/docs/dataset-discovery/worker-11/receipt.json",
       "receiptSHA256": "3b5e86143fb6c236d416c21aef840b2520db937e37c6ccac777a2dcdd3d0ae40",
       "rowCount": 1,
@@ -3468,10 +2936,16 @@
           "fetchedTaskBase": "abe0ddc9db357b1e8d0d61825392d6b9923352f0"
         }
       },
-      "finalObservedHEAD": "770c0b57eff70aa23c329c6026ba87086671f020",
-      "finalObservedBranch": "feature/dataset-italy-crea-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-11/receipt.json",
+      "receiptGitBlob": "44c205c0524bc9307aeb80d4ec1576d6978b8670",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "770c0b57eff70aa23c329c6026ba87086671f020",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.224Z",
+        "workingCSVHash": "2364bcd14857c77b443d008de067ab1793a8014df259e8393e395957f3ff52c1",
+        "workingReceiptHash": "3b5e86143fb6c236d416c21aef840b2520db937e37c6ccac777a2dcdd3d0ae40",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 12,
@@ -3481,6 +2955,10 @@
       "bytes": 4437,
       "observedBranch": "feature/dataset-portugal-portfir-20261014",
       "observedHEAD": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-12/source.csv",
+      "sourceCSVGitBlob": "cff99ca18b1d0cec170aa62a1103e02c43708f65",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
       "receiptPath": "/home/user/src/offmenu-workers/worker-12/docs/dataset-discovery/worker-12/receipt.json",
       "receiptSHA256": "48588980ffb5d99eb8c321da8762c4a54822595fcc7ae018f5489fb6014750f6",
       "rowCount": 1,
@@ -4039,10 +3517,16 @@
         },
         "custodyValidationStage": "after fetch/branch/output, before artifact commit; postcommit readback reported in final"
       },
-      "finalObservedHEAD": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
-      "finalObservedBranch": "feature/dataset-portugal-portfir-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-12/receipt.json",
+      "receiptGitBlob": "b07ecf47b1025b9bcd061d6ab37e16efcf9a6885",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.249Z",
+        "workingCSVHash": "6bb1938922318a70f309adabfffbcdb26cc066ce6f8f079d51b1c847eb04b6e2",
+        "workingReceiptHash": "48588980ffb5d99eb8c321da8762c4a54822595fcc7ae018f5489fb6014750f6",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 15,
@@ -4052,6 +3536,10 @@
       "bytes": 13472,
       "observedBranch": "feature/dataset-japan-mext-20261014",
       "observedHEAD": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-15/source.csv",
+      "sourceCSVGitBlob": "d2c7305a02b381085a1fdecf1ba51fdc89966bbe",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
       "receiptPath": "/home/user/src/offmenu-workers/worker-15/docs/dataset-discovery/worker-15/receipt.json",
       "receiptSHA256": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832",
       "rowCount": 4,
@@ -4314,6 +3802,16 @@
           "raw_source_documents_written": false
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-15/receipt.json",
+      "receiptGitBlob": "f83a794a901412e7d48e82522b500dc53eb666de",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.267Z",
+        "workingCSVHash": "47f77229610bf4b1a6318cfe6057cd99db85dcac1e9a623e5d5433612b6aa6e9",
+        "workingReceiptHash": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx",
@@ -4351,11 +3849,7 @@
           "verification": "exact retained file bytes; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
-      "finalObservedBranch": "feature/dataset-japan-mext-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 16,
@@ -4365,6 +3859,10 @@
       "bytes": 3458,
       "observedBranch": "feature/dataset-canada-cnf-20261014",
       "observedHEAD": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-16/source.csv",
+      "sourceCSVGitBlob": "40783df6309acb65b33536b7a4033e4ff8dc9873",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
       "receiptPath": "/home/user/src/offmenu-workers/worker-16/docs/dataset-discovery/worker-16/receipt.json",
       "receiptSHA256": "f93b7c66daa71a05a11f4a86f3904a301484cc4351dae5a91f9cf83174bf53d6",
       "rowCount": 1,
@@ -4546,10 +4044,16 @@
           "inherited_GIT_removed": true
         }
       },
-      "finalObservedHEAD": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
-      "finalObservedBranch": "feature/dataset-canada-cnf-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-16/receipt.json",
+      "receiptGitBlob": "4ddb574a5ed7ad67c964e404b3f4c84ebf420951",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.293Z",
+        "workingCSVHash": "acba382923196f5d11c0a73f20ca79983978e146c078cee42b6f9213a7e22269",
+        "workingReceiptHash": "f93b7c66daa71a05a11f4a86f3904a301484cc4351dae5a91f9cf83174bf53d6",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 17,
@@ -4559,6 +4063,10 @@
       "bytes": 11114,
       "observedBranch": "feature/dataset-denmark-frida-20261014",
       "observedHEAD": "7658953a0b6d05958406fd22fd6bee556472fb36",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-17/source.csv",
+      "sourceCSVGitBlob": "f614d910c75d3ea93a1fd28dae2f6228342fc38a",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "7658953a0b6d05958406fd22fd6bee556472fb36",
       "receiptPath": "/home/user/src/offmenu-workers/worker-17/docs/dataset-discovery/worker-17/receipt.json",
       "receiptSHA256": "c4ebd22a0ae2d487e0dcd566fb8526ad80baad9989b3370712fbdd694ec9f03e",
       "rowCount": 4,
@@ -5035,6 +4543,16 @@
           "diff_check": "Default check reports RFC4180 CRLF as trailing whitespace; command-scoped git -c core.whitespace=cr-at-eol diff --cached --check passes. No repository settings altered."
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-17/receipt.json",
+      "receiptGitBlob": "607d0b5ac5d3c053b87431b5252cd1bd2f525e15",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "7658953a0b6d05958406fd22fd6bee556472fb36",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.311Z",
+        "workingCSVHash": "3ab6dd38a8d59dc7aba0b7c1d5b3ab2f31763dea7dd8f44e173e707d4f32e16e",
+        "workingReceiptHash": "c4ebd22a0ae2d487e0dcd566fb8526ad80baad9989b3370712fbdd694ec9f03e",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-data/national-originals/frida/Frida_5.5_Dataset.xlsx",
@@ -5072,11 +4590,7 @@
           "verification": "declared observed-row hash plus exact retained file digest; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "7658953a0b6d05958406fd22fd6bee556472fb36",
-      "finalObservedBranch": "feature/dataset-denmark-frida-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 18,
@@ -5086,6 +4600,10 @@
       "bytes": 14139,
       "observedBranch": "feature/dataset-uk-cofid-20261014",
       "observedHEAD": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-18/source.csv",
+      "sourceCSVGitBlob": "f1d296f8ec1cc5eb477c02ba3e2c0440f060e3de",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
       "receiptPath": "/home/user/src/offmenu-workers/worker-18/docs/dataset-discovery/worker-18/receipt.json",
       "receiptSHA256": "7fde08b1aea5834688b57b6b602f35cd6de1f9360546918ee4df446e16aa57d7",
       "rowCount": 4,
@@ -5364,6 +4882,16 @@
           "inherited_GIT_environment_stripped": true
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-18/receipt.json",
+      "receiptGitBlob": "1e0cd2a521c32f7960a52847ec44ee6501da0186",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.361Z",
+        "workingCSVHash": "0049575634ed04d830b570affb2881061938a59e345f34a83e3abfb73dfdb9b4",
+        "workingReceiptHash": "7fde08b1aea5834688b57b6b602f35cd6de1f9360546918ee4df446e16aa57d7",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-data/national-originals/cofid/cofid2021.xlsx",
@@ -5401,11 +4929,7 @@
           "verification": "declared observed-row hash plus exact retained file digest; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
-      "finalObservedBranch": "feature/dataset-uk-cofid-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 19,
@@ -5415,6 +4939,10 @@
       "bytes": 15389,
       "observedBranch": "feature/dataset-germany-bls-20261014",
       "observedHEAD": "9e077eebec180b2f200e617ce723af2449de6a33",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-19/source.csv",
+      "sourceCSVGitBlob": "7405e684f2d28ced4406891bbdefa30905f21336",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "9e077eebec180b2f200e617ce723af2449de6a33",
       "receiptPath": "/home/user/src/offmenu-workers/worker-19/docs/dataset-discovery/worker-19/receipt.json",
       "receiptSHA256": "1d51897b2725c00dc4f4f10d8e4a7d7ab5ee4530f77a3ef83c954c6b7ea4e42f",
       "rowCount": 4,
@@ -5646,6 +5174,16 @@
           "whitespace": "Default diff --check flagged RFC4180 CRLF; command-scoped core.whitespace=cr-at-eol check passes without changing settings."
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-19/receipt.json",
+      "receiptGitBlob": "0a1fc4ad736453ebbebb551a6ec0504966bd44db",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "9e077eebec180b2f200e617ce723af2449de6a33",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.392Z",
+        "workingCSVHash": "f1840042fa58df01ff24b39ac6f12da9f6b98f9698c6e0fc3d716a2dc43242ad",
+        "workingReceiptHash": "1d51897b2725c00dc4f4f10d8e4a7d7ab5ee4530f77a3ef83c954c6b7ea4e42f",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-data/national-originals/bls/BLS_4_0_2025_DE/BLS_4_0_Daten_2025_DE.xlsx",
@@ -5683,11 +5221,7 @@
           "verification": "exact retained file bytes; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "9e077eebec180b2f200e617ce723af2449de6a33",
-      "finalObservedBranch": "feature/dataset-germany-bls-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 20,
@@ -5697,6 +5231,10 @@
       "bytes": 2730,
       "observedBranch": "feature/dataset-brazil-tbca-20261014",
       "observedHEAD": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-20/source.csv",
+      "sourceCSVGitBlob": "c78289a31b90ec1b6a1da5a39284e11e44668afb",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
       "receiptPath": "/home/user/src/offmenu-workers/worker-20/docs/dataset-discovery/worker-20/receipt.json",
       "receiptSHA256": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866",
       "rowCount": 1,
@@ -5855,10 +5393,16 @@
           "no_tracked_or_staged_change_before_add": true
         }
       },
-      "finalObservedHEAD": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
-      "finalObservedBranch": "feature/dataset-brazil-tbca-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-20/receipt.json",
+      "receiptGitBlob": "87bf96c57f2547c0d1ff8b845faafec96d1f9ac6",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.453Z",
+        "workingCSVHash": "8f5f314e54d055e5651538608882a9471c126e1bc08f4d92717126b75b0b8a70",
+        "workingReceiptHash": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 21,
@@ -5868,6 +5412,10 @@
       "bytes": 2612,
       "observedBranch": "feature/dataset-india-ifct-20261014",
       "observedHEAD": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-21/source.csv",
+      "sourceCSVGitBlob": "6f612e1976f7730438aeebcb03c68680a5730e60",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
       "receiptPath": "/home/user/src/offmenu-workers/worker-21/docs/dataset-discovery/worker-21/receipt.json",
       "receiptSHA256": "a5189c2e0cb20100678180cf00230a3b00850d10a40c6eedff5a2a89c5d974d9",
       "rowCount": 1,
@@ -6165,10 +5713,16 @@
           "note.md": "53ed04c257883cd80677fd54eaefa763f597fe24596f8e6f948319353bf2dab1"
         }
       },
-      "finalObservedHEAD": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
-      "finalObservedBranch": "feature/dataset-india-ifct-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-21/receipt.json",
+      "receiptGitBlob": "de641d2fe4ef12d2e692a8d120ff91809f74e6e1",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.475Z",
+        "workingCSVHash": "376c2647f73359175cd247e54af58ce79412f30023169a678261694c2fbfcc59",
+        "workingReceiptHash": "a5189c2e0cb20100678180cf00230a3b00850d10a40c6eedff5a2a89c5d974d9",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 22,
@@ -6178,6 +5732,10 @@
       "bytes": 3966,
       "observedBranch": "feature/dataset-south-africa-samrc-20261014",
       "observedHEAD": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-22/source.csv",
+      "sourceCSVGitBlob": "6391aa27280d3ba0343f93f1be1fa1b4af5e2cb5",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
       "receiptPath": "/home/user/src/offmenu-workers/worker-22/docs/dataset-discovery/worker-22/receipt.json",
       "receiptSHA256": "e807a287c1fca0d5860263efc304fce592c9cbe466d8a9cf0c0ef4c4a5056cf9",
       "rowCount": 1,
@@ -6460,10 +6018,16 @@
           "gitDiffCheck": "passed with command-scoped cr-at-eol; RFC4180 CRLF preserved; repository configuration unchanged"
         }
       },
-      "finalObservedHEAD": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
-      "finalObservedBranch": "feature/dataset-south-africa-samrc-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-22/receipt.json",
+      "receiptGitBlob": "bdf0d5ed71d3baf84391c111942028813ff51eb3",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.497Z",
+        "workingCSVHash": "96b29132363755a0947343aab738aca1ee4a42f10b9e6698757df18675c02853",
+        "workingReceiptHash": "e807a287c1fca0d5860263efc304fce592c9cbe466d8a9cf0c0ef4c4a5056cf9",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 23,
@@ -6473,6 +6037,10 @@
       "bytes": 3745,
       "observedBranch": "feature/dataset-kenya-composition-20261014",
       "observedHEAD": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-23/source.csv",
+      "sourceCSVGitBlob": "67dd375c566359e54b23e10995fdefde42628276",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
       "receiptPath": "/home/user/src/offmenu-workers/worker-23/docs/dataset-discovery/worker-23/receipt.json",
       "receiptSHA256": "0a3c6f4a6ae73b905b1f9032c9a0ef4b2bd6f88b97098ba364a295afe137d28b",
       "rowCount": 1,
@@ -6950,10 +6518,16 @@
           "diff_check": "Default check flagged only RFC4180 CRLF endings; command-scoped core.whitespace=cr-at-eol check passed. Git configuration unchanged."
         }
       },
-      "finalObservedHEAD": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
-      "finalObservedBranch": "feature/dataset-kenya-composition-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-23/receipt.json",
+      "receiptGitBlob": "a63c079c8718de35901b05c494602f119b4c1b01",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.519Z",
+        "workingCSVHash": "a967d7d1e6da5579c53f184a199601db020dbcc0085f3432ee1b27a93c13b2ed",
+        "workingReceiptHash": "0a3c6f4a6ae73b905b1f9032c9a0ef4b2bd6f88b97098ba364a295afe137d28b",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 24,
@@ -6963,6 +6537,10 @@
       "bytes": 2307,
       "observedBranch": "feature/dataset-west-africa-fao-20261014",
       "observedHEAD": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-24/source.csv",
+      "sourceCSVGitBlob": "e58efb50af6ac83793d9fe819d25cfe39b06a826",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
       "receiptPath": "/home/user/src/offmenu-workers/worker-24/docs/dataset-discovery/worker-24/receipt.json",
       "receiptSHA256": "4944148c02c9beef671f3c2f3122d7e852daa878c4cb45be7b458ad4a74a16e5",
       "rowCount": 1,
@@ -7058,10 +6636,16 @@
         "csvSha256": "fa6f0cb63a7e693655bc3c5283a84e7d228fcd6b78aa150388e983e4a1adf648",
         "taskHeadMeaning": "task_head is pickup/base pin; final result commit is reported externally to avoid self-referential commit hash"
       },
-      "finalObservedHEAD": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
-      "finalObservedBranch": "feature/dataset-west-africa-fao-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-24/receipt.json",
+      "receiptGitBlob": "f17255255e06d833d4136c0275f391518ca6d054",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.540Z",
+        "workingCSVHash": "fa6f0cb63a7e693655bc3c5283a84e7d228fcd6b78aa150388e983e4a1adf648",
+        "workingReceiptHash": "4944148c02c9beef671f3c2f3122d7e852daa878c4cb45be7b458ad4a74a16e5",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 25,
@@ -7071,6 +6655,10 @@
       "bytes": 1731,
       "observedBranch": "feature/dataset-congo-basin-fao-20261014",
       "observedHEAD": "4168ae2c8be6f535193df92d595b4e944748720e",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-25/source.csv",
+      "sourceCSVGitBlob": "e98245f60c523e73e7491fd93eb76cd04ea8efe6",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "4168ae2c8be6f535193df92d595b4e944748720e",
       "receiptPath": "/home/user/src/offmenu-workers/worker-25/docs/dataset-discovery/worker-25/receipt.json",
       "receiptSHA256": "99212157c74e96d0305fa8436bb4c5e0180967d21e7197758df9c919d3666120",
       "rowCount": 1,
@@ -7193,10 +6781,16 @@
           "custody_before_commit_verified": true
         }
       },
-      "finalObservedHEAD": "4168ae2c8be6f535193df92d595b4e944748720e",
-      "finalObservedBranch": "feature/dataset-congo-basin-fao-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-25/receipt.json",
+      "receiptGitBlob": "fe04276e82fb3b9f144f233bb6e6db997fbd640f",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "4168ae2c8be6f535193df92d595b4e944748720e",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.562Z",
+        "workingCSVHash": "36dee7f56ce237bde19d90aae0abfda9817ffcc8fdd378b20884ef358e447f26",
+        "workingReceiptHash": "99212157c74e96d0305fa8436bb4c5e0180967d21e7197758df9c919d3666120",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 26,
@@ -7206,6 +6800,10 @@
       "bytes": 2279,
       "observedBranch": "feature/dataset-pacific-pndb-20261014",
       "observedHEAD": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-26/source.csv",
+      "sourceCSVGitBlob": "22b3489719a26106e0e0421431ed8661315c6e93",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
       "receiptPath": "/home/user/src/offmenu-workers/worker-26/docs/dataset-discovery/worker-26/receipt.json",
       "receiptSHA256": "734c7e95f1f21757c5908761791d9632b0ee7ab425b99d62bb111dae72ec3a81",
       "rowCount": 1,
@@ -7335,10 +6933,16 @@
           "Retained exact landing bytes reused by reference; no second landing download"
         ]
       },
-      "finalObservedHEAD": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
-      "finalObservedBranch": "feature/dataset-pacific-pndb-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-26/receipt.json",
+      "receiptGitBlob": "34760a72023705e9d83ed0a6c746aaafaf820b46",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.584Z",
+        "workingCSVHash": "bda4e1b65cc01a23c63bd7d8c248b421644e7eb6d3357e7e4a0a976653aabfe3",
+        "workingReceiptHash": "734c7e95f1f21757c5908761791d9632b0ee7ab425b99d62bb111dae72ec3a81",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 27,
@@ -7348,6 +6952,10 @@
       "bytes": 1724,
       "observedBranch": "feature/dataset-indonesia-tkpi-20261014",
       "observedHEAD": "38ff7e45179e4eefae4af0f637c5262869db4968",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-27/source.csv",
+      "sourceCSVGitBlob": "a6d631f8d6b215da506f1dd35071526cf47336f6",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "38ff7e45179e4eefae4af0f637c5262869db4968",
       "receiptPath": "/home/user/src/offmenu-workers/worker-27/docs/dataset-discovery/worker-27/receipt.json",
       "receiptSHA256": "8e906b6d0d16649c550e2f1bbcb204729dc602ac5eca6c6d7c777bd247930804",
       "rowCount": 1,
@@ -7487,10 +7095,16 @@
           "note.md": "ab88fe8422b469705f6fb62cfb76f1d83bc70de2cb667ade7cc797cfebbc8f64"
         }
       },
-      "finalObservedHEAD": "38ff7e45179e4eefae4af0f637c5262869db4968",
-      "finalObservedBranch": "feature/dataset-indonesia-tkpi-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-27/receipt.json",
+      "receiptGitBlob": "e0fc04f0a767e8cfac3c9cc908e63601a8332836",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "38ff7e45179e4eefae4af0f637c5262869db4968",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.606Z",
+        "workingCSVHash": "d887324feab366e8886dbbbb6690473c448f1e827d1462fbb4369ab75b2e2b19",
+        "workingReceiptHash": "8e906b6d0d16649c550e2f1bbcb204729dc602ac5eca6c6d7c777bd247930804",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 28,
@@ -7500,6 +7114,10 @@
       "bytes": 2471,
       "observedBranch": "feature/dataset-korea-rda-20261014",
       "observedHEAD": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-28/source.csv",
+      "sourceCSVGitBlob": "7a50da175b75dfe8abd82574d1b187a7a2f645a7",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
       "receiptPath": "/home/user/src/offmenu-workers/worker-28/docs/dataset-discovery/worker-28/receipt.json",
       "receiptSHA256": "9d5977258099cd29f6dba3d492859c336f2739051482d6a263414b43afd08b06",
       "rowCount": 1,
@@ -7639,10 +7257,16 @@
         },
         "head_semantics": "CSV task_head and artifact_input_head are the inspected pre-artifact pickup SHA, not a circular self-referential result-commit field. Final result commit is reported in the handoff."
       },
-      "finalObservedHEAD": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
-      "finalObservedBranch": "feature/dataset-korea-rda-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      "receiptGitPath": "docs/dataset-discovery/worker-28/receipt.json",
+      "receiptGitBlob": "ea014d7ce9db5c6385660182db4da473f73e4cf6",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.628Z",
+        "workingCSVHash": "c833f745d9a00a9c446c3570154fbe8a6fb3c742d3743f8c7ef56fa6172d2096",
+        "workingReceiptHash": "9d5977258099cd29f6dba3d492859c336f2739051482d6a263414b43afd08b06",
+        "workingReceiptEqualsCommittedBlob": true
+      }
     },
     {
       "worker": 29,
@@ -7652,6 +7276,10 @@
       "bytes": 14572,
       "observedBranch": "feature/dataset-malaysia-pricecatcher-20261014",
       "observedHEAD": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-29/source.csv",
+      "sourceCSVGitBlob": "8e1b5ae5fd55764328ab1d7c77851b0f94cc3ca4",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
       "receiptPath": "/home/user/src/offmenu-workers/worker-29/docs/dataset-discovery/worker-29/receipt.json",
       "receiptSHA256": "c96f8f7eb44da965f0ded3f4b58f5d644c0c302df5122d7769472a707fefcb86",
       "rowCount": 4,
@@ -7828,6 +7456,16 @@
           "current_release_verification": "not verified; explicit blocker"
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-29/receipt.json",
+      "receiptGitBlob": "f95423f6fb8474dfe4c250805e311245661915d0",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.650Z",
+        "workingCSVHash": "49d34b70c15cff42f365b0b2a8844f0a22049d3f618865cc47914083640b0582",
+        "workingReceiptHash": "c96f8f7eb44da965f0ded3f4b58f5d644c0c302df5122d7769472a707fefcb86",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-data/source-access-20261013/b4433fc5d660acb17b37a6a8.html",
@@ -7865,11 +7503,7 @@
           "verification": "declared observed-row hash plus exact retained file digest; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
-      "finalObservedBranch": "feature/dataset-malaysia-pricecatcher-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 30,
@@ -7879,6 +7513,10 @@
       "bytes": 14270,
       "observedBranch": "feature/dataset-us-openfda-recalls-20261014",
       "observedHEAD": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-30/source.csv",
+      "sourceCSVGitBlob": "2ffbef3b45386b0fb594edf56a7917d34c1f2806",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "eb47657e703c5f7f5c128182bc37f639b46a020a",
       "receiptPath": "/home/user/src/offmenu-workers/worker-30/docs/dataset-discovery/worker-30/receipt.json",
       "receiptSHA256": "718447d356fbd6c9111590cda9768c0ea6d8e257e8ffea71dc80000e37f0e9c4",
       "rowCount": 2,
@@ -8108,6 +7746,16 @@
           "review_limit": "Separate read-only validation invocation by same worker, not independent human acceptance"
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-30/receipt.json",
+      "receiptGitBlob": "03a087b3e8daea78202a17d2b5858f03c2dafa63",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.671Z",
+        "workingCSVHash": "c39f3082c59439f929b23e45f4a0e5026ab9564845613537d6d1c4d63751a310",
+        "workingReceiptHash": "718447d356fbd6c9111590cda9768c0ea6d8e257e8ffea71dc80000e37f0e9c4",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-workers/worker-30/docs/dataset-discovery/worker-30/source.csv",
@@ -8121,11 +7769,7 @@
           "verification": "declared observed-row hash plus exact retained file digest; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "eb47657e703c5f7f5c128182bc37f639b46a020a",
-      "finalObservedBranch": "feature/dataset-us-openfda-recalls-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 31,
@@ -8135,6 +7779,10 @@
       "bytes": 5797,
       "observedBranch": "feature/dataset-uk-fsa-alerts-20261014",
       "observedHEAD": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-31/source.csv",
+      "sourceCSVGitBlob": "adda678cde6193b11baecb43f7d858cd89c09053",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
       "receiptPath": "/home/user/src/offmenu-workers/worker-31/docs/dataset-discovery/worker-31/receipt.json",
       "receiptSHA256": "90abf1dffdb947ec4d6416f1012cd1f1c2921f02336d8b5c026375d8f60504fb",
       "rowCount": 2,
@@ -8251,6 +7899,16 @@
           "note.md": "5d062ac322ad4f4e3855408ef93af9347e6bc83e356c80215e8e501a839a7a62"
         }
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-31/receipt.json",
+      "receiptGitBlob": "bb7765be5c1719db7f109d70407210b77a3ce523",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.693Z",
+        "workingCSVHash": "e5416a05a1134118cfac38c186a474f44b50c17552fb67b8f2e4bfabbc8d6731",
+        "workingReceiptHash": "90abf1dffdb947ec4d6416f1012cd1f1c2921f02336d8b5c026375d8f60504fb",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/home/user/src/offmenu-workers/worker-31/docs/dataset-discovery/worker-31/source.csv",
@@ -8264,11 +7922,7 @@
           "verification": "declared observed-row hash plus exact retained file digest; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
-      "finalObservedBranch": "feature/dataset-uk-fsa-alerts-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     },
     {
       "worker": 32,
@@ -8278,6 +7932,10 @@
       "bytes": 16749,
       "observedBranch": "feature/dataset-france-rappelconso-20261014",
       "observedHEAD": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+      "sourceCSVGitPath": "docs/dataset-discovery/worker-32/source.csv",
+      "sourceCSVGitBlob": "465be91c6a32419911f165dc5c861ace83f4cb2f",
+      "sourceCSVCommittedAtObservedHEAD": true,
+      "immutableCandidateHEAD": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
       "receiptPath": "/home/user/src/offmenu-workers/worker-32/docs/dataset-discovery/worker-32/receipt.json",
       "receiptSHA256": "3ec25e3f2f37fc61641d2cfd7d0e5d0b0d56170a6fa711488fcf8faeb3b67b14",
       "rowCount": 4,
@@ -8499,6 +8157,16 @@
         ],
         "status": "READY FOR MORGAN REVIEW — bounded discovery only"
       },
+      "receiptGitPath": "docs/dataset-discovery/worker-32/receipt.json",
+      "receiptGitBlob": "61778f12f74b13014f8644bec7d159d0a3a4c4d3",
+      "receiptCommittedAtObservedHEAD": true,
+      "receiptCommit": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+      "controlReadback": {
+        "observedAtUTC": "2026-10-14T08:45:36.714Z",
+        "workingCSVHash": "90b2c41f55168bfe4aac5992863aa0e1333f34b24e73dc82f85df166800d6dd6",
+        "workingReceiptHash": "3ec25e3f2f37fc61641d2cfd7d0e5d0b0d56170a6fa711488fcf8faeb3b67b14",
+        "workingReceiptEqualsCommittedBlob": true
+      },
       "sampleHashes": [
         {
           "path": "/tmp/worker32-rappel-sample-unfiltered.response",
@@ -8536,11 +8204,7 @@
           "verification": "exact retained file bytes; fragment preserved",
           "rawWorksheetRowIndependentlyCompared": false
         }
-      ],
-      "finalObservedHEAD": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
-      "finalObservedBranch": "feature/dataset-france-rappelconso-20261014",
-      "sourceCSVCommittedAtFinalObservedHEAD": true,
-      "commitProofLimit": "CSV task_head is source authoring/base pin; artifact hash and observed result HEAD recorded separately."
+      ]
     }
   ],
   "planPath": "/home/user/Documents/Codex/2026-10-14/task-2/dataset-refill-plan.json",
@@ -8583,7 +8247,7 @@
     }
   },
   "ownBranch": "feature/dataset-sheet-consolidation-20261014",
-  "ownHEADAtBuild": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "ownHEADAtBuild": "11798b80fa88e91f969f54d6e4c7d58efec2ffaa",
   "priorOutputs": [
     {
       "observedAtUTC": "2026-10-14T08:28:14.801Z",
@@ -8705,6 +8369,38 @@
         "uk-fsa-alerts",
         "france-rappelconso"
       ]
+    },
+    {
+      "observedAtUTC": "2026-10-14T08:36:04.104Z",
+      "sha256": "f06f812f49997ed229e0457741d276da3e02fa3b49ff0afd2ae831306ed8bf61",
+      "rowCount": 48,
+      "receivedDatasets": [
+        "france-ciqual",
+        "norway-matvaretabellen",
+        "swiss-composition",
+        "australia-afcd",
+        "netherlands-nevo",
+        "italy-crea",
+        "portugal-portfir",
+        "japan-mext",
+        "canada-cnf",
+        "denmark-frida",
+        "uk-cofid",
+        "germany-bls",
+        "brazil-tbca",
+        "india-ifct",
+        "south-africa-samrc",
+        "kenya-composition",
+        "west-africa-fao",
+        "congo-basin-fao",
+        "pacific-pndb",
+        "indonesia-tkpi",
+        "korea-rda",
+        "malaysia-pricecatcher",
+        "us-openfda-recalls",
+        "uk-fsa-alerts",
+        "france-rappelconso"
+      ]
     }
   ],
   "checks": {
@@ -8720,38 +8416,686 @@
     "primaryHEADIndexUnchanged": true
   },
   "blockers": [
-    "All25 source sheets received. Source-specific rights/access/current-release/mapping blockers remain exactly as reported in source rows and sourcePins.workerReceipt.",
-    "Hash validation does not independently qualify publisher rights or compare every workbook row; canonical observed-row hash semantics and file/fragment pins retained explicitly.",
-    "No source download, sample curation/admission, bulk acquisition, application/schema change or deployment performed by consolidator."
+    "Pending/rejected sources are explicit placeholders.",
+    "Licence/access/version assertions remain source-worker evidence, not independent producer or release qualification.",
+    "No source downloads or corpus admission performed by consolidator."
   ],
   "rootCopies": {
     "csv": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-dataset-discovery-20261014.csv",
     "receipt": "/home/user/Documents/Codex/2026-10-14/task-2/dataset-discovery-consolidation-receipt.json"
   },
+  "provenanceCorrection": {
+    "observedAtUTC": "2026-10-14T08:46:22.856419+00:00",
+    "reason": "Initial sourcePins included precommit/base captures. All25 now bind source CSV and receipt byte hashes to exact immutable Git blobs at recorded observedHEAD.",
+    "historicalSnapshots": {
+      "commit": "11798b80fa88e91f969f54d6e4c7d58efec2ffaa",
+      "csvGitPath": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+      "csvGitBlob": "8f6755fa63a14c7f97522c5f0d6fc41af05e0e30",
+      "csvSHA256": "f06f812f49997ed229e0457741d276da3e02fa3b49ff0afd2ae831306ed8bf61",
+      "receiptGitPath": "docs/dataset-discovery/consolidation-receipt.json",
+      "receiptGitBlob": "9b845198a4001fb3819151b9d6507d88e7ffa8c5",
+      "receiptSHA256": "e839dfc788694a724dd5aa42ce6bde1804f0baf9bbd34fa5446673adc058b139",
+      "rootCopyHistoricalContent": "Prior root CSV and receipt copies were byte-identical outputs of this historical commit; originals remain retrievable through these immutable Git objects."
+    },
+    "priorCapturedHEADs": {
+      "3": {
+        "observedHEAD": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+        "finalObservedHEAD": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+        "sourceCSV_SHA256": "160f4ea33ad0492567a1e90eb274114a3a27a125c2956ed0813d0885de60d765",
+        "receiptSHA256": "dad145f002846d16bbf3febfb5ef9c4423332bbfc970f3f5e6cbe57a66741761"
+      },
+      "4": {
+        "observedHEAD": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+        "finalObservedHEAD": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+        "sourceCSV_SHA256": "6aedfd1543f70e045651a8e9ec3a88f7f2adff69c06063cb814c5a9e2737e739",
+        "receiptSHA256": "2a0a2007f22302e6132df5e15f39fca760f90b6549a5f86e3920e748777a03b6"
+      },
+      "5": {
+        "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "finalObservedHEAD": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
+        "sourceCSV_SHA256": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
+        "receiptSHA256": "fb03e3fa77e3f1990f9a26bc940bbc58e90e28842f153d3ac7410031fb437c05"
+      },
+      "6": {
+        "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "finalObservedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "sourceCSV_SHA256": "489dad55efdfaee67d85194c658f1acb2cb7211c0b9c27f72f891b5a8b66739f",
+        "receiptSHA256": "3eaadfac77b86cfee40981cfd3f71a6f8b8222f651d968013cb0f31bf2002937"
+      },
+      "8": {
+        "observedHEAD": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+        "finalObservedHEAD": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+        "sourceCSV_SHA256": "2466df299c2b789cab36f7aefd1dcaacc01c8e9400426d6d70e22d5f507a2132",
+        "receiptSHA256": "9eb59d2543272cd11db641cb28f380abf216d03add44e5048611e9a03c42c429"
+      },
+      "11": {
+        "observedHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "finalObservedHEAD": "770c0b57eff70aa23c329c6026ba87086671f020",
+        "sourceCSV_SHA256": "2364bcd14857c77b443d008de067ab1793a8014df259e8393e395957f3ff52c1",
+        "receiptSHA256": "3b5e86143fb6c236d416c21aef840b2520db937e37c6ccac777a2dcdd3d0ae40"
+      },
+      "12": {
+        "observedHEAD": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+        "finalObservedHEAD": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+        "sourceCSV_SHA256": "6bb1938922318a70f309adabfffbcdb26cc066ce6f8f079d51b1c847eb04b6e2",
+        "receiptSHA256": "48588980ffb5d99eb8c321da8762c4a54822595fcc7ae018f5489fb6014750f6"
+      },
+      "15": {
+        "observedHEAD": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+        "finalObservedHEAD": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+        "sourceCSV_SHA256": "47f77229610bf4b1a6318cfe6057cd99db85dcac1e9a623e5d5433612b6aa6e9",
+        "receiptSHA256": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832"
+      },
+      "16": {
+        "observedHEAD": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+        "finalObservedHEAD": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+        "sourceCSV_SHA256": "acba382923196f5d11c0a73f20ca79983978e146c078cee42b6f9213a7e22269",
+        "receiptSHA256": "f93b7c66daa71a05a11f4a86f3904a301484cc4351dae5a91f9cf83174bf53d6"
+      },
+      "17": {
+        "observedHEAD": "7658953a0b6d05958406fd22fd6bee556472fb36",
+        "finalObservedHEAD": "7658953a0b6d05958406fd22fd6bee556472fb36",
+        "sourceCSV_SHA256": "3ab6dd38a8d59dc7aba0b7c1d5b3ab2f31763dea7dd8f44e173e707d4f32e16e",
+        "receiptSHA256": "c4ebd22a0ae2d487e0dcd566fb8526ad80baad9989b3370712fbdd694ec9f03e"
+      },
+      "18": {
+        "observedHEAD": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+        "finalObservedHEAD": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+        "sourceCSV_SHA256": "0049575634ed04d830b570affb2881061938a59e345f34a83e3abfb73dfdb9b4",
+        "receiptSHA256": "7fde08b1aea5834688b57b6b602f35cd6de1f9360546918ee4df446e16aa57d7"
+      },
+      "19": {
+        "observedHEAD": "9e077eebec180b2f200e617ce723af2449de6a33",
+        "finalObservedHEAD": "9e077eebec180b2f200e617ce723af2449de6a33",
+        "sourceCSV_SHA256": "f1840042fa58df01ff24b39ac6f12da9f6b98f9698c6e0fc3d716a2dc43242ad",
+        "receiptSHA256": "1d51897b2725c00dc4f4f10d8e4a7d7ab5ee4530f77a3ef83c954c6b7ea4e42f"
+      },
+      "20": {
+        "observedHEAD": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+        "finalObservedHEAD": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+        "sourceCSV_SHA256": "8f5f314e54d055e5651538608882a9471c126e1bc08f4d92717126b75b0b8a70",
+        "receiptSHA256": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866"
+      },
+      "21": {
+        "observedHEAD": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+        "finalObservedHEAD": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+        "sourceCSV_SHA256": "376c2647f73359175cd247e54af58ce79412f30023169a678261694c2fbfcc59",
+        "receiptSHA256": "a5189c2e0cb20100678180cf00230a3b00850d10a40c6eedff5a2a89c5d974d9"
+      },
+      "22": {
+        "observedHEAD": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+        "finalObservedHEAD": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+        "sourceCSV_SHA256": "96b29132363755a0947343aab738aca1ee4a42f10b9e6698757df18675c02853",
+        "receiptSHA256": "e807a287c1fca0d5860263efc304fce592c9cbe466d8a9cf0c0ef4c4a5056cf9"
+      },
+      "23": {
+        "observedHEAD": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+        "finalObservedHEAD": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+        "sourceCSV_SHA256": "a967d7d1e6da5579c53f184a199601db020dbcc0085f3432ee1b27a93c13b2ed",
+        "receiptSHA256": "0a3c6f4a6ae73b905b1f9032c9a0ef4b2bd6f88b97098ba364a295afe137d28b"
+      },
+      "24": {
+        "observedHEAD": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+        "finalObservedHEAD": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+        "sourceCSV_SHA256": "fa6f0cb63a7e693655bc3c5283a84e7d228fcd6b78aa150388e983e4a1adf648",
+        "receiptSHA256": "4944148c02c9beef671f3c2f3122d7e852daa878c4cb45be7b458ad4a74a16e5"
+      },
+      "25": {
+        "observedHEAD": "4168ae2c8be6f535193df92d595b4e944748720e",
+        "finalObservedHEAD": "4168ae2c8be6f535193df92d595b4e944748720e",
+        "sourceCSV_SHA256": "36dee7f56ce237bde19d90aae0abfda9817ffcc8fdd378b20884ef358e447f26",
+        "receiptSHA256": "99212157c74e96d0305fa8436bb4c5e0180967d21e7197758df9c919d3666120"
+      },
+      "26": {
+        "observedHEAD": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+        "finalObservedHEAD": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+        "sourceCSV_SHA256": "bda4e1b65cc01a23c63bd7d8c248b421644e7eb6d3357e7e4a0a976653aabfe3",
+        "receiptSHA256": "734c7e95f1f21757c5908761791d9632b0ee7ab425b99d62bb111dae72ec3a81"
+      },
+      "27": {
+        "observedHEAD": "38ff7e45179e4eefae4af0f637c5262869db4968",
+        "finalObservedHEAD": "38ff7e45179e4eefae4af0f637c5262869db4968",
+        "sourceCSV_SHA256": "d887324feab366e8886dbbbb6690473c448f1e827d1462fbb4369ab75b2e2b19",
+        "receiptSHA256": "8e906b6d0d16649c550e2f1bbcb204729dc602ac5eca6c6d7c777bd247930804"
+      },
+      "28": {
+        "observedHEAD": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+        "finalObservedHEAD": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+        "sourceCSV_SHA256": "c833f745d9a00a9c446c3570154fbe8a6fb3c742d3743f8c7ef56fa6172d2096",
+        "receiptSHA256": "9d5977258099cd29f6dba3d492859c336f2739051482d6a263414b43afd08b06"
+      },
+      "29": {
+        "observedHEAD": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+        "finalObservedHEAD": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+        "sourceCSV_SHA256": "49d34b70c15cff42f365b0b2a8844f0a22049d3f618865cc47914083640b0582",
+        "receiptSHA256": "c96f8f7eb44da965f0ded3f4b58f5d644c0c302df5122d7769472a707fefcb86"
+      },
+      "30": {
+        "observedHEAD": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+        "finalObservedHEAD": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+        "sourceCSV_SHA256": "c39f3082c59439f929b23e45f4a0e5026ab9564845613537d6d1c4d63751a310",
+        "receiptSHA256": "718447d356fbd6c9111590cda9768c0ea6d8e257e8ffea71dc80000e37f0e9c4"
+      },
+      "31": {
+        "observedHEAD": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+        "finalObservedHEAD": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+        "sourceCSV_SHA256": "e5416a05a1134118cfac38c186a474f44b50c17552fb67b8f2e4bfabbc8d6731",
+        "receiptSHA256": "90abf1dffdb947ec4d6416f1012cd1f1c2921f02336d8b5c026375d8f60504fb"
+      },
+      "32": {
+        "observedHEAD": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+        "finalObservedHEAD": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+        "sourceCSV_SHA256": "90b2c41f55168bfe4aac5992863aa0e1333f34b24e73dc82f85df166800d6dd6",
+        "receiptSHA256": "3ec25e3f2f37fc61641d2cfd7d0e5d0b0d56170a6fa711488fcf8faeb3b67b14"
+      }
+    },
+    "correctedSourceAuthorCells": [
+      {
+        "dataset": "australia-afcd",
+        "source_record_id": "",
+        "field": "accessed_utc",
+        "prior": "Wed Oct 14 2026 19:30:21 GMT+1100 (Australian Eastern Daylight Time)",
+        "current": "2026-10-14T08:30:21.722023+00:00"
+      },
+      {
+        "dataset": "australia-afcd",
+        "source_record_id": "F002258",
+        "field": "accessed_utc",
+        "prior": "Wed Oct 14 2026 19:30:21 GMT+1100 (Australian Eastern Daylight Time)",
+        "current": "2026-10-14T08:30:21.722023+00:00"
+      },
+      {
+        "dataset": "australia-afcd",
+        "source_record_id": "F002963",
+        "field": "accessed_utc",
+        "prior": "Wed Oct 14 2026 19:30:21 GMT+1100 (Australian Eastern Daylight Time)",
+        "current": "2026-10-14T08:30:21.722023+00:00"
+      },
+      {
+        "dataset": "australia-afcd",
+        "source_record_id": "F002893",
+        "field": "accessed_utc",
+        "prior": "Wed Oct 14 2026 19:30:21 GMT+1100 (Australian Eastern Daylight Time)",
+        "current": "2026-10-14T08:30:21.722023+00:00"
+      }
+    ],
+    "CSVChangeAuthority": "Only actual committed Worker06 source content changes propagated: four full-precision ISO accessed_utc values. All other cells unchanged.",
+    "exactImmutableSourceAndReceiptChecks": [
+      {
+        "worker": 3,
+        "dataset": "france-ciqual",
+        "commit": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+        "sourceCSVGitBlob": "90f5c20ea7d995a4894260ca21f805f985d13b74",
+        "sourceCSV_SHA256": "160f4ea33ad0492567a1e90eb274114a3a27a125c2956ed0813d0885de60d765",
+        "receiptGitBlob": "154dbbad57e20228187485c0e6c2d6395f8d915a",
+        "receiptSHA256": "dad145f002846d16bbf3febfb5ef9c4423332bbfc970f3f5e6cbe57a66741761",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.092Z",
+          "workingCSVHash": "160f4ea33ad0492567a1e90eb274114a3a27a125c2956ed0813d0885de60d765",
+          "workingReceiptHash": "dad145f002846d16bbf3febfb5ef9c4423332bbfc970f3f5e6cbe57a66741761",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 4,
+        "dataset": "norway-matvaretabellen",
+        "commit": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+        "sourceCSVGitBlob": "23b2afc33c1bac450d5a2da8ff789a822e9b9239",
+        "sourceCSV_SHA256": "6aedfd1543f70e045651a8e9ec3a88f7f2adff69c06063cb814c5a9e2737e739",
+        "receiptGitBlob": "952ac3b37f16d155c2f3698b56e4c4636dc74859",
+        "receiptSHA256": "2a0a2007f22302e6132df5e15f39fca760f90b6549a5f86e3920e748777a03b6",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.113Z",
+          "workingCSVHash": "6aedfd1543f70e045651a8e9ec3a88f7f2adff69c06063cb814c5a9e2737e739",
+          "workingReceiptHash": "2a0a2007f22302e6132df5e15f39fca760f90b6549a5f86e3920e748777a03b6",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 5,
+        "dataset": "swiss-composition",
+        "commit": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
+        "sourceCSVGitBlob": "85654e5b1e66e90e6a7e1811ed4be324827bf2b9",
+        "sourceCSV_SHA256": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
+        "receiptGitBlob": "3c4ad06338723c78ae9a81378b14a5a141b444a9",
+        "receiptSHA256": "fb03e3fa77e3f1990f9a26bc940bbc58e90e28842f153d3ac7410031fb437c05",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.134Z",
+          "workingCSVHash": "a3c186f650a246c7f2b7eb736b3346da35de0d3ddb2fbddf59b6b98469d6b233",
+          "workingReceiptHash": "fb03e3fa77e3f1990f9a26bc940bbc58e90e28842f153d3ac7410031fb437c05",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 6,
+        "dataset": "australia-afcd",
+        "commit": "2bd5061f55979024cdc25626e500927daadeb9e0",
+        "sourceCSVGitBlob": "e1c3b40b794292ac0d1a2dbfe36699dffeda8b6f",
+        "sourceCSV_SHA256": "a9d8e89598fa743d42078a4beae8d4ea1881f13dde147a4ca8bb59d5764635a8",
+        "receiptGitBlob": "a1d190ea35e0c5612abf6371f999c498280ba9fc",
+        "receiptSHA256": "35e1cb8205a01750d6993da828f0391c97e0874a1bb31aa433f3cded60fced07",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.157Z",
+          "workingCSVHash": "a9d8e89598fa743d42078a4beae8d4ea1881f13dde147a4ca8bb59d5764635a8",
+          "workingReceiptHash": "35e1cb8205a01750d6993da828f0391c97e0874a1bb31aa433f3cded60fced07",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 8,
+        "dataset": "netherlands-nevo",
+        "commit": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+        "sourceCSVGitBlob": "c6df5be97dd814e032f636913dad6e43b86e0e63",
+        "sourceCSV_SHA256": "2466df299c2b789cab36f7aefd1dcaacc01c8e9400426d6d70e22d5f507a2132",
+        "receiptGitBlob": "cd49f673a4401a52ff2bca67fcfd4e3edf6e5c53",
+        "receiptSHA256": "9eb59d2543272cd11db641cb28f380abf216d03add44e5048611e9a03c42c429",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.197Z",
+          "workingCSVHash": "2466df299c2b789cab36f7aefd1dcaacc01c8e9400426d6d70e22d5f507a2132",
+          "workingReceiptHash": "9eb59d2543272cd11db641cb28f380abf216d03add44e5048611e9a03c42c429",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 11,
+        "dataset": "italy-crea",
+        "commit": "770c0b57eff70aa23c329c6026ba87086671f020",
+        "sourceCSVGitBlob": "314468c17ccfdf3e2e66a2afaed419c28997f926",
+        "sourceCSV_SHA256": "2364bcd14857c77b443d008de067ab1793a8014df259e8393e395957f3ff52c1",
+        "receiptGitBlob": "44c205c0524bc9307aeb80d4ec1576d6978b8670",
+        "receiptSHA256": "3b5e86143fb6c236d416c21aef840b2520db937e37c6ccac777a2dcdd3d0ae40",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.224Z",
+          "workingCSVHash": "2364bcd14857c77b443d008de067ab1793a8014df259e8393e395957f3ff52c1",
+          "workingReceiptHash": "3b5e86143fb6c236d416c21aef840b2520db937e37c6ccac777a2dcdd3d0ae40",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 12,
+        "dataset": "portugal-portfir",
+        "commit": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+        "sourceCSVGitBlob": "cff99ca18b1d0cec170aa62a1103e02c43708f65",
+        "sourceCSV_SHA256": "6bb1938922318a70f309adabfffbcdb26cc066ce6f8f079d51b1c847eb04b6e2",
+        "receiptGitBlob": "b07ecf47b1025b9bcd061d6ab37e16efcf9a6885",
+        "receiptSHA256": "48588980ffb5d99eb8c321da8762c4a54822595fcc7ae018f5489fb6014750f6",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.249Z",
+          "workingCSVHash": "6bb1938922318a70f309adabfffbcdb26cc066ce6f8f079d51b1c847eb04b6e2",
+          "workingReceiptHash": "48588980ffb5d99eb8c321da8762c4a54822595fcc7ae018f5489fb6014750f6",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 15,
+        "dataset": "japan-mext",
+        "commit": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+        "sourceCSVGitBlob": "d2c7305a02b381085a1fdecf1ba51fdc89966bbe",
+        "sourceCSV_SHA256": "47f77229610bf4b1a6318cfe6057cd99db85dcac1e9a623e5d5433612b6aa6e9",
+        "receiptGitBlob": "f83a794a901412e7d48e82522b500dc53eb666de",
+        "receiptSHA256": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.267Z",
+          "workingCSVHash": "47f77229610bf4b1a6318cfe6057cd99db85dcac1e9a623e5d5433612b6aa6e9",
+          "workingReceiptHash": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 16,
+        "dataset": "canada-cnf",
+        "commit": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+        "sourceCSVGitBlob": "40783df6309acb65b33536b7a4033e4ff8dc9873",
+        "sourceCSV_SHA256": "acba382923196f5d11c0a73f20ca79983978e146c078cee42b6f9213a7e22269",
+        "receiptGitBlob": "4ddb574a5ed7ad67c964e404b3f4c84ebf420951",
+        "receiptSHA256": "f93b7c66daa71a05a11f4a86f3904a301484cc4351dae5a91f9cf83174bf53d6",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.293Z",
+          "workingCSVHash": "acba382923196f5d11c0a73f20ca79983978e146c078cee42b6f9213a7e22269",
+          "workingReceiptHash": "f93b7c66daa71a05a11f4a86f3904a301484cc4351dae5a91f9cf83174bf53d6",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 17,
+        "dataset": "denmark-frida",
+        "commit": "7658953a0b6d05958406fd22fd6bee556472fb36",
+        "sourceCSVGitBlob": "f614d910c75d3ea93a1fd28dae2f6228342fc38a",
+        "sourceCSV_SHA256": "3ab6dd38a8d59dc7aba0b7c1d5b3ab2f31763dea7dd8f44e173e707d4f32e16e",
+        "receiptGitBlob": "607d0b5ac5d3c053b87431b5252cd1bd2f525e15",
+        "receiptSHA256": "c4ebd22a0ae2d487e0dcd566fb8526ad80baad9989b3370712fbdd694ec9f03e",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.311Z",
+          "workingCSVHash": "3ab6dd38a8d59dc7aba0b7c1d5b3ab2f31763dea7dd8f44e173e707d4f32e16e",
+          "workingReceiptHash": "c4ebd22a0ae2d487e0dcd566fb8526ad80baad9989b3370712fbdd694ec9f03e",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 18,
+        "dataset": "uk-cofid",
+        "commit": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+        "sourceCSVGitBlob": "f1d296f8ec1cc5eb477c02ba3e2c0440f060e3de",
+        "sourceCSV_SHA256": "0049575634ed04d830b570affb2881061938a59e345f34a83e3abfb73dfdb9b4",
+        "receiptGitBlob": "1e0cd2a521c32f7960a52847ec44ee6501da0186",
+        "receiptSHA256": "7fde08b1aea5834688b57b6b602f35cd6de1f9360546918ee4df446e16aa57d7",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.361Z",
+          "workingCSVHash": "0049575634ed04d830b570affb2881061938a59e345f34a83e3abfb73dfdb9b4",
+          "workingReceiptHash": "7fde08b1aea5834688b57b6b602f35cd6de1f9360546918ee4df446e16aa57d7",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 19,
+        "dataset": "germany-bls",
+        "commit": "9e077eebec180b2f200e617ce723af2449de6a33",
+        "sourceCSVGitBlob": "7405e684f2d28ced4406891bbdefa30905f21336",
+        "sourceCSV_SHA256": "f1840042fa58df01ff24b39ac6f12da9f6b98f9698c6e0fc3d716a2dc43242ad",
+        "receiptGitBlob": "0a1fc4ad736453ebbebb551a6ec0504966bd44db",
+        "receiptSHA256": "1d51897b2725c00dc4f4f10d8e4a7d7ab5ee4530f77a3ef83c954c6b7ea4e42f",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.392Z",
+          "workingCSVHash": "f1840042fa58df01ff24b39ac6f12da9f6b98f9698c6e0fc3d716a2dc43242ad",
+          "workingReceiptHash": "1d51897b2725c00dc4f4f10d8e4a7d7ab5ee4530f77a3ef83c954c6b7ea4e42f",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 20,
+        "dataset": "brazil-tbca",
+        "commit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+        "sourceCSVGitBlob": "c78289a31b90ec1b6a1da5a39284e11e44668afb",
+        "sourceCSV_SHA256": "8f5f314e54d055e5651538608882a9471c126e1bc08f4d92717126b75b0b8a70",
+        "receiptGitBlob": "87bf96c57f2547c0d1ff8b845faafec96d1f9ac6",
+        "receiptSHA256": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.453Z",
+          "workingCSVHash": "8f5f314e54d055e5651538608882a9471c126e1bc08f4d92717126b75b0b8a70",
+          "workingReceiptHash": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 21,
+        "dataset": "india-ifct",
+        "commit": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+        "sourceCSVGitBlob": "6f612e1976f7730438aeebcb03c68680a5730e60",
+        "sourceCSV_SHA256": "376c2647f73359175cd247e54af58ce79412f30023169a678261694c2fbfcc59",
+        "receiptGitBlob": "de641d2fe4ef12d2e692a8d120ff91809f74e6e1",
+        "receiptSHA256": "a5189c2e0cb20100678180cf00230a3b00850d10a40c6eedff5a2a89c5d974d9",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.475Z",
+          "workingCSVHash": "376c2647f73359175cd247e54af58ce79412f30023169a678261694c2fbfcc59",
+          "workingReceiptHash": "a5189c2e0cb20100678180cf00230a3b00850d10a40c6eedff5a2a89c5d974d9",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 22,
+        "dataset": "south-africa-samrc",
+        "commit": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+        "sourceCSVGitBlob": "6391aa27280d3ba0343f93f1be1fa1b4af5e2cb5",
+        "sourceCSV_SHA256": "96b29132363755a0947343aab738aca1ee4a42f10b9e6698757df18675c02853",
+        "receiptGitBlob": "bdf0d5ed71d3baf84391c111942028813ff51eb3",
+        "receiptSHA256": "e807a287c1fca0d5860263efc304fce592c9cbe466d8a9cf0c0ef4c4a5056cf9",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.497Z",
+          "workingCSVHash": "96b29132363755a0947343aab738aca1ee4a42f10b9e6698757df18675c02853",
+          "workingReceiptHash": "e807a287c1fca0d5860263efc304fce592c9cbe466d8a9cf0c0ef4c4a5056cf9",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 23,
+        "dataset": "kenya-composition",
+        "commit": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+        "sourceCSVGitBlob": "67dd375c566359e54b23e10995fdefde42628276",
+        "sourceCSV_SHA256": "a967d7d1e6da5579c53f184a199601db020dbcc0085f3432ee1b27a93c13b2ed",
+        "receiptGitBlob": "a63c079c8718de35901b05c494602f119b4c1b01",
+        "receiptSHA256": "0a3c6f4a6ae73b905b1f9032c9a0ef4b2bd6f88b97098ba364a295afe137d28b",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.519Z",
+          "workingCSVHash": "a967d7d1e6da5579c53f184a199601db020dbcc0085f3432ee1b27a93c13b2ed",
+          "workingReceiptHash": "0a3c6f4a6ae73b905b1f9032c9a0ef4b2bd6f88b97098ba364a295afe137d28b",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 24,
+        "dataset": "west-africa-fao",
+        "commit": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+        "sourceCSVGitBlob": "e58efb50af6ac83793d9fe819d25cfe39b06a826",
+        "sourceCSV_SHA256": "fa6f0cb63a7e693655bc3c5283a84e7d228fcd6b78aa150388e983e4a1adf648",
+        "receiptGitBlob": "f17255255e06d833d4136c0275f391518ca6d054",
+        "receiptSHA256": "4944148c02c9beef671f3c2f3122d7e852daa878c4cb45be7b458ad4a74a16e5",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.540Z",
+          "workingCSVHash": "fa6f0cb63a7e693655bc3c5283a84e7d228fcd6b78aa150388e983e4a1adf648",
+          "workingReceiptHash": "4944148c02c9beef671f3c2f3122d7e852daa878c4cb45be7b458ad4a74a16e5",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 25,
+        "dataset": "congo-basin-fao",
+        "commit": "4168ae2c8be6f535193df92d595b4e944748720e",
+        "sourceCSVGitBlob": "e98245f60c523e73e7491fd93eb76cd04ea8efe6",
+        "sourceCSV_SHA256": "36dee7f56ce237bde19d90aae0abfda9817ffcc8fdd378b20884ef358e447f26",
+        "receiptGitBlob": "fe04276e82fb3b9f144f233bb6e6db997fbd640f",
+        "receiptSHA256": "99212157c74e96d0305fa8436bb4c5e0180967d21e7197758df9c919d3666120",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.562Z",
+          "workingCSVHash": "36dee7f56ce237bde19d90aae0abfda9817ffcc8fdd378b20884ef358e447f26",
+          "workingReceiptHash": "99212157c74e96d0305fa8436bb4c5e0180967d21e7197758df9c919d3666120",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 26,
+        "dataset": "pacific-pndb",
+        "commit": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+        "sourceCSVGitBlob": "22b3489719a26106e0e0421431ed8661315c6e93",
+        "sourceCSV_SHA256": "bda4e1b65cc01a23c63bd7d8c248b421644e7eb6d3357e7e4a0a976653aabfe3",
+        "receiptGitBlob": "34760a72023705e9d83ed0a6c746aaafaf820b46",
+        "receiptSHA256": "734c7e95f1f21757c5908761791d9632b0ee7ab425b99d62bb111dae72ec3a81",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.584Z",
+          "workingCSVHash": "bda4e1b65cc01a23c63bd7d8c248b421644e7eb6d3357e7e4a0a976653aabfe3",
+          "workingReceiptHash": "734c7e95f1f21757c5908761791d9632b0ee7ab425b99d62bb111dae72ec3a81",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 27,
+        "dataset": "indonesia-tkpi",
+        "commit": "38ff7e45179e4eefae4af0f637c5262869db4968",
+        "sourceCSVGitBlob": "a6d631f8d6b215da506f1dd35071526cf47336f6",
+        "sourceCSV_SHA256": "d887324feab366e8886dbbbb6690473c448f1e827d1462fbb4369ab75b2e2b19",
+        "receiptGitBlob": "e0fc04f0a767e8cfac3c9cc908e63601a8332836",
+        "receiptSHA256": "8e906b6d0d16649c550e2f1bbcb204729dc602ac5eca6c6d7c777bd247930804",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.606Z",
+          "workingCSVHash": "d887324feab366e8886dbbbb6690473c448f1e827d1462fbb4369ab75b2e2b19",
+          "workingReceiptHash": "8e906b6d0d16649c550e2f1bbcb204729dc602ac5eca6c6d7c777bd247930804",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 28,
+        "dataset": "korea-rda",
+        "commit": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+        "sourceCSVGitBlob": "7a50da175b75dfe8abd82574d1b187a7a2f645a7",
+        "sourceCSV_SHA256": "c833f745d9a00a9c446c3570154fbe8a6fb3c742d3743f8c7ef56fa6172d2096",
+        "receiptGitBlob": "ea014d7ce9db5c6385660182db4da473f73e4cf6",
+        "receiptSHA256": "9d5977258099cd29f6dba3d492859c336f2739051482d6a263414b43afd08b06",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.628Z",
+          "workingCSVHash": "c833f745d9a00a9c446c3570154fbe8a6fb3c742d3743f8c7ef56fa6172d2096",
+          "workingReceiptHash": "9d5977258099cd29f6dba3d492859c336f2739051482d6a263414b43afd08b06",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 29,
+        "dataset": "malaysia-pricecatcher",
+        "commit": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+        "sourceCSVGitBlob": "8e1b5ae5fd55764328ab1d7c77851b0f94cc3ca4",
+        "sourceCSV_SHA256": "49d34b70c15cff42f365b0b2a8844f0a22049d3f618865cc47914083640b0582",
+        "receiptGitBlob": "f95423f6fb8474dfe4c250805e311245661915d0",
+        "receiptSHA256": "c96f8f7eb44da965f0ded3f4b58f5d644c0c302df5122d7769472a707fefcb86",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.650Z",
+          "workingCSVHash": "49d34b70c15cff42f365b0b2a8844f0a22049d3f618865cc47914083640b0582",
+          "workingReceiptHash": "c96f8f7eb44da965f0ded3f4b58f5d644c0c302df5122d7769472a707fefcb86",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 30,
+        "dataset": "us-openfda-recalls",
+        "commit": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+        "sourceCSVGitBlob": "2ffbef3b45386b0fb594edf56a7917d34c1f2806",
+        "sourceCSV_SHA256": "c39f3082c59439f929b23e45f4a0e5026ab9564845613537d6d1c4d63751a310",
+        "receiptGitBlob": "03a087b3e8daea78202a17d2b5858f03c2dafa63",
+        "receiptSHA256": "718447d356fbd6c9111590cda9768c0ea6d8e257e8ffea71dc80000e37f0e9c4",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.671Z",
+          "workingCSVHash": "c39f3082c59439f929b23e45f4a0e5026ab9564845613537d6d1c4d63751a310",
+          "workingReceiptHash": "718447d356fbd6c9111590cda9768c0ea6d8e257e8ffea71dc80000e37f0e9c4",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 31,
+        "dataset": "uk-fsa-alerts",
+        "commit": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+        "sourceCSVGitBlob": "adda678cde6193b11baecb43f7d858cd89c09053",
+        "sourceCSV_SHA256": "e5416a05a1134118cfac38c186a474f44b50c17552fb67b8f2e4bfabbc8d6731",
+        "receiptGitBlob": "bb7765be5c1719db7f109d70407210b77a3ce523",
+        "receiptSHA256": "90abf1dffdb947ec4d6416f1012cd1f1c2921f02336d8b5c026375d8f60504fb",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.693Z",
+          "workingCSVHash": "e5416a05a1134118cfac38c186a474f44b50c17552fb67b8f2e4bfabbc8d6731",
+          "workingReceiptHash": "90abf1dffdb947ec4d6416f1012cd1f1c2921f02336d8b5c026375d8f60504fb",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      },
+      {
+        "worker": 32,
+        "dataset": "france-rappelconso",
+        "commit": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+        "sourceCSVGitBlob": "465be91c6a32419911f165dc5c861ace83f4cb2f",
+        "sourceCSV_SHA256": "90b2c41f55168bfe4aac5992863aa0e1333f34b24e73dc82f85df166800d6dd6",
+        "receiptGitBlob": "61778f12f74b13014f8644bec7d159d0a3a4c4d3",
+        "receiptSHA256": "3ec25e3f2f37fc61641d2cfd7d0e5d0b0d56170a6fa711488fcf8faeb3b67b14",
+        "exactCSVBlobHashMatches": true,
+        "exactReceiptBlobHashMatches": true,
+        "consolidatedRowsLiteralEqual": true,
+        "controlReadback": {
+          "observedAtUTC": "2026-10-14T08:45:36.714Z",
+          "workingCSVHash": "90b2c41f55168bfe4aac5992863aa0e1333f34b24e73dc82f85df166800d6dd6",
+          "workingReceiptHash": "3ec25e3f2f37fc61641d2cfd7d0e5d0b0d56170a6fa711488fcf8faeb3b67b14",
+          "workingReceiptEqualsCommittedBlob": true
+        }
+      }
+    ],
+    "all25CSVAndReceiptPinsPass": true,
+    "immutableCaptureHEADIsNotSourceCSVTaskHead": "CSV task_head retained verbatim as authoring/base metadata; observedHEAD/immutableCandidateHEAD identify committed artifacts.",
+    "externalPostCommitControlReceipts": [],
+    "primaryHEADIndexUnchanged": true,
+    "publicationPerformed": false,
+    "poolBootstrapStarted": false
+  },
   "finalValidation": {
-    "observedAtUTC": "2026-10-14T08:38:24.476264+00:00",
-    "independentCSVParser": "Bundled Python csv RFC4180 reader",
-    "exactHeaderCount": 31,
-    "targetDatasets": 25,
-    "receivedDatasets": 25,
+    "exactHeaders": 31,
+    "dataRows": 48,
     "metadataRows": 25,
     "sampleRows": 23,
-    "dataRows": 48,
-    "sourceCSVsHashRechecked": 25,
-    "receiptHashesRefreshedWithDriftRetained": [
-      5,
-      6
-    ],
-    "allOriginalSourceRowsLiteralEqual": true,
-    "JSONFieldsParse": true,
-    "uncertaintyAndObservedUnitsPreserved": true,
-    "curatedRecordRefsAllBlank": true,
+    "receivedDatasets": 25,
     "missingWorkers": [],
     "rejectedSources": [],
-    "priorBacklogBranchCommitPreserved": true,
+    "exactCommittedSourceCSVBlobsChecked": 25,
+    "exactSamePinReceiptBlobsChecked": 25,
+    "allConsolidatedRowsLiteralEqualToImmutableSources": true,
+    "onlyFourActualSourceAuthorTimestampCellsChanged": true,
+    "observedUnitsAndUncertaintyPreserved": true,
+    "priorConsolidationCommitRetained": true,
+    "priorBacklogCommitRetained": true,
     "primaryHEADIndexUnchanged": true,
-    "sourceDownloadsByConsolidator": 0,
-    "samplesAdmitted": 0,
-    "authoring": "Artifact-tool explicit-text prefix reversed at CSV serialization; microsecond timestamps and leading-zero IDs preserved. Flat CSV only; no workbook formatting or XLSX exported."
+    "independentLicenceQualification": false,
+    "sampleAdmission": false
   }
 }
