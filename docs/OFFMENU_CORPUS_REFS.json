@@ -529,5 +529,40 @@
     "mergeCommit": "27f2f251c59e974b568e09b1e580cf7b4b6072bd",
     "meaning": "Last freshly fetched locked origin/develop target, normally merged into the existing index feature; immutable reference URLs/pins remain at the historical snapshot."
   },
-  "statusScope": "Reference publication/capability/status statements describe the historical snapshot and retained receipts, not an assertion of the current remote branch tip; currentIntegrationTarget is the separately fetched integration pin."
+  "statusScope": "Reference publication/capability/status statements describe the historical snapshot and retained receipts, not an assertion of the current remote branch tip; currentIntegrationTarget is the separately fetched integration pin.",
+  "boundedDiscoveryBatch": {
+    "scope": "ONE bounded 25-source discovery/enrichment batch, not all source data, not ingested/curated/admitted whole releases or app acceptance",
+    "consolidationCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+    "csv": {
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+      "gitPath": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+      "sha256": "bde659a82dc8014bf7a139b8ca53554e950293efaa42c544d4a78809860d1ead",
+      "bytes": 166719,
+      "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+      "sourceGitBlob": "ad5d0e7c27e31e4c77a602d99b352a03fc9e8d8b",
+      "published": false
+    },
+    "receipt": {
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/dataset-discovery/consolidation-receipt.json",
+      "gitPath": "docs/dataset-discovery/consolidation-receipt.json",
+      "sha256": "28c109d7ed49cba73f802bdebd835b2b1362ae33bd1e50f5f4d7cdf655b5dad3",
+      "bytes": 491555,
+      "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+      "sourceGitBlob": "1b66ba3b8447dd0efe77dd9720fbe922ca4a9de7",
+      "published": false
+    },
+    "columns": 31,
+    "rows": 48,
+    "metadataRows": 25,
+    "sampleRows": 23,
+    "immutableSourceCSVReceiptPairs": 25,
+    "unchangedSampleSemantics": "Original units, attribution, rights restrictions, uncertainty and no-admission statuses retained byte-for-byte; samples are existing bounded references, not newly collected raw source archives",
+    "independentEvidence": {
+      "rootValidationPath": "/home/user/Documents/Codex/2026-10-14/task-2/dataset-independent-consolidation-validation.json",
+      "sha256": "9ccc3091509ffcb94b883da8ea5d21e000694ac8cf751879d1b94ead90b059f2",
+      "scope": "Root and Worker 34 bounded provenance/structure review; no independent licence/source admission upgrade"
+    },
+    "publication": "Index and batch remain local pending Worker 34 final re-review and root-approved normal PR/develop publication, subject to mandatory platform gates; no push by Worker 07",
+    "android": "After approved publication, follow repository-relative index links while authenticated to private GitHub. Source branch/commit provenance may remain local-only; it is not represented as published Android-accessible history."
+  }
 }

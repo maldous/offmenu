@@ -25,6 +25,14 @@ All four unchanged machine-readable research registers/specification:
 
 The five PDF/four register SHA-256 values match [the preservation audit](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/research-audit.json). [Research metadata](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/manifest.json) records discovery scope and limits. The basket specification is one of the four register/specification inputs; it is not an ingested food database.
 
+## Bounded dataset-discovery batch (review candidate)
+
+[Open the 25-source CSV](dataset-discovery/offmenu-dataset-discovery-20261014.csv) · [Consolidation/provenance receipt](dataset-discovery/consolidation-receipt.json).
+
+This **single bounded batch** has 31 columns and 48 rows: 25 metadata rows plus 23 existing samples. It is not all-corpus collection, ingestion, curation or admission. Original rights restrictions, attribution, units, uncertainty and no-admission statuses remain unchanged. CSV SHA-256: `bde659a82dc8014bf7a139b8ca53554e950293efaa42c544d4a78809860d1ead`.
+
+The batch is normally merged from accepted consolidation `2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27`; root/Worker 34 review covered 25 exact committed source-CSV/receipt provenance pairs. This index and batch are **not yet published**. After approved publication, authenticated Android readers can follow these relative links in private GitHub. Source branch/commit references in the receipt may remain local-only and are not claimed as published URLs. Root owns normal PR/develop publication after Worker 34 final re-review and mandatory platform gates; no raw source archives or private account/provider-response datasets are included.
+
 ## Requirements and discovery authority
 
 - [Canonical 105-ID requirement register](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/recommendation-delivery-register.json): actual local path `/home/user/src/offmenu-workers/worker-07/docs/recommendation-delivery-register.json`; 105 unique IDs verified. [Delivery reconciliation](https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/delivery-reconciliation.json) is historical status/evidence, explicitly `programmeComplete=false`.
