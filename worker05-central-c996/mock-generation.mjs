@@ -1,0 +1,44 @@
+import path from 'node:path';
+import {readFileSync,readlinkSync} from 'node:fs';
+import {mkdir,writeFile,symlink,readFile,open} from 'node:fs/promises';
+import {execFileSync,spawn} from 'node:child_process';
+import {createHash,randomUUID} from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+import assert from 'node:assert/strict';
+import {ownerThread,sourceRoot,externalRoot,processBirth} from '../dev-lifecycle.mjs';
+import {cleanEnv} from '../interactive-preview.mjs';
+export const selectedMock='be166bb61483825498094d496e2caed9d8b775bb';
+const git=(...a)=>execFileSync('git',a,{cwd:sourceRoot,env:cleanEnv(),maxBuffer:16*1024*1024});
+const hash=(b,alg='sha256')=>createHash(alg).update(b).digest('hex');
+const sha=p=>hash(readFileSync(p));
+const put=(p,b)=>writeFile(p,b,{flag:'wx'});
+export async function prepare(){
+ assert.equal(process.env.CODEX_THREAD_ID,ownerThread);
+ const root=path.join(externalRoot,'workers/worker-05/mock-preparation',randomUUID());await mkdir(root,{recursive:true});await mkdir(path.join(root,'dev/wiremock'),{recursive:true});
+ const names=git('ls-tree','-r','--name-only',selectedMock,'--','dev/wiremock').toString().trim().split('\n').filter(p=>/\.(mjs|json|md)$/.test(p));names.push('package.json','package-lock.json');
+ let bytes=0;const files=[];
+ for(const name of names){const meta=git('ls-tree',selectedMock,'--',name).toString().trim().split(/\s+/);assert.ok(['100644','100755'].includes(meta[0])&&meta[1]==='blob');const b=git('show',selectedMock+':'+name);bytes+=b.length;assert.ok(bytes<2*1024*1024);await put(path.join(root,name),b);files.push({path:name,blob:meta[2],sha256:hash(b),bytes:b.length});}
+ await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'node_modules'),'dir');
+ const m={schema:'offmenu-owner05-selected-mock-inputs/1',ownerThread,root,sourceOwner:'06',sourceCommit:selectedMock,tree:git('rev-parse',selectedMock+'^{tree}').toString().trim(),files,sourceBytes:bytes,dependencies:'Reference to retained node_modules; no install/copy',selectionSourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',scope:'Fresh local mock qualification only; central successor remains unselected; production STOP'};
+ const p=path.join(root,'inputs.json');await put(p,JSON.stringify(m,null,2)+'\n');return {path:p,sha256:sha(p)};
+}
+export function verify(ref){assert.equal(sha(ref.path),ref.sha256);const m=JSON.parse(readFileSync(ref.path));assert.equal(m.ownerThread,ownerThread);assert.equal(m.sourceCommit,selectedMock);assert.ok(m.root.startsWith(path.join(externalRoot,'workers/worker-05/mock-preparation')+'/'));for(const f of m.files){assert.equal(sha(path.join(m.root,f.path)),f.sha256);assert.equal(hash(git('cat-file','blob',f.blob)),f.sha256);assert.equal(git('rev-parse',selectedMock+':'+f.path).toString().trim(),f.blob);}return m;}
+export async function qualify(ref,port=19077){
+ assert.equal(process.env.CODEX_THREAD_ID,ownerThread);const m=verify(ref),runtimePath=path.join(m.root,'dev/wiremock/runtime.mjs'),jar='/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar';
+ const lock=JSON.parse(readFileSync(path.join(m.root,'dev/wiremock/runtime-lock.json')));assert.equal(hash(readFileSync(jar),'sha512'),lock.sha512);
+ const log=path.join(m.root,'startup.log'),fd=await open(log,'wx');const proc=spawn(process.execPath,[runtimePath,'start',String(port),jar],{cwd:m.root,env:cleanEnv(),stdio:['ignore',fd.fd,fd.fd]});proc.once('exit',()=>fd.close());
+ let ready;for(let i=0;i<150;i++){for(const line of (await readFile(log,'utf8')).split('\n'))try{const v=JSON.parse(line);if(v.ready)ready=v;}catch{}if(ready)break;assert.equal(proc.exitCode,null,'Native controller exited; evidence retained');await new Promise(r=>setTimeout(r,100));}assert.ok(ready,'Native readiness absent; evidence retained');
+ const custody=JSON.parse(readFileSync(ready.custody)),runtime=await import(pathToFileURL(runtimePath));await runtime.assertOwner(custody);
+ const identityModule=await import(pathToFileURL(path.join(m.root,'dev/wiremock/identity-validation.mjs')));const identity=await identityModule.validateIdentityRuntime('http://127.0.0.1:'+port);const reset=await runtime.operate('reset',ready.custody),resetCheck=await identityModule.validateIdentityReset('http://127.0.0.1:'+port);
+ const callback=await import(pathToFileURL(path.join(m.root,'dev/wiremock/callback-source-contract.mjs'))),adapterModule=await import(pathToFileURL(path.join(m.root,'dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.root,'dev/wiremock/fixtures.mjs'))),adapter=adapterModule.createOutboundAdapter({wiremockOrigin:'http://127.0.0.1:'+port});
+ const observations=[];let assertions=0;const check=(a,b)=>{assert.equal(a,b);assertions++;};
+ async function call(p,options){await runtime.assertOwner(custody);const r=await adapter(new Request('https://offmenu-accounts.netlify.app/.netlify/identity/'+p,options));const body=await r.text();observations.push({path:p,method:options.method||'GET',status:r.status,responseSha256:hash(body)});return {status:r.status,body};}
+ for(const id of ['alice','bob','admin']){const request=callback.callbackSourceTokenRequest(id),a=fixtures.ACTORS[id];let token=await call('token',request);check(token.status,200);const validated=callback.validateCallbackSourceReply(id,JSON.parse(token.body),{httpStatus:token.status,localOrigin:'http://127.0.0.1:'+port});check(validated.currentSessionVerified,false);check(validated.providerAcceptance,false);const auth={authorization:'Bearer '+a.token};check((await call('user',{headers:auth})).status,200);const refresh={method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'refresh_token',refresh_token:a.refreshToken}).toString()};check((await call('token',refresh)).status,200);check((await call('logout',{method:'POST',headers:auth})).status,200);check((await call('user',{headers:auth})).status,401);check((await call('token',refresh)).status,401);check((await call('token',request)).status,200);}
+ const audit=await runtime.operate('audit',ready.custody),a=JSON.parse(readFileSync(audit.receipt));check(a.result.unmatched.length,0);
+ await runtime.assertOwner(custody);verify(ref);assert.equal(readlinkSync('/proc/'+custody.pid+'/cwd'),m.root);
+ const execution={schema:'offmenu-owner05-selected-mock-execution/1',sourceCommit:selectedMock,ownerThread,custody,identity,reset,resetCheck,callback:{assertions,observations,providerAcceptance:false,scope:'Actual native password/user/refresh/revocation/re-login with pure callback reply validation. No Worker04 SDK/same-tab guard or real Google certification.'},audit,completedAt:new Date().toISOString()};const ep=path.join(custody.root,'qualification-execution.json');await put(ep,JSON.stringify(execution,null,2)+'\n');
+ const packet={schema:'offmenu-owner05-mock-preparation/1',ownerThread,producerCommit:git('rev-parse','HEAD').toString().trim(),inputs:ref,sourceCommit:selectedMock,nativeCustody:{path:ready.custody,sha256:sha(ready.custody)},birth:processBirth(custody.pid),pid:custody.pid,port,cwd:m.root,runtimeSource:{path:runtimePath,sha256:sha(runtimePath)},jar:{path:jar,version:lock.version,sha512:lock.sha512},execution:{path:ep,sha256:sha(ep)},qualifiedAt:new Date().toISOString(),centralApplication:{selected:false,reason:'Exact successor review required; current18797/d100/9b31 unchanged'},realGoogleAccepted:false,production:'STOP',controls:{filesystem:'danger-full-access; no restrictions',network:'enabled',mandatoryReviewer:'auto_review',approvalPolicy:null,namedProfile:null}};
+ const qp=path.join(custody.root,'qualification.json');await put(qp,JSON.stringify(packet,null,2)+'\n');console.log(JSON.stringify({packet:{path:qp,sha256:sha(qp)},pid:custody.pid,port,producer:packet.producerCommit,mockSource:selectedMock,identityAssertions:identity.assertions,resetAssertions:resetCheck.assertions,callbackAssertions:assertions}));return packet;
+}
+if(process.argv[2]==='prepare')console.log(JSON.stringify(await prepare()));
+if(process.argv[2]==='qualify')await qualify({path:process.argv[3],sha256:process.argv[4]},Number(process.argv[5]));
