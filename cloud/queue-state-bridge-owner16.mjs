@@ -90,3 +90,47 @@ export function createQueueStateBridge({protocol, trustedBinding}) {
   }
   return {submit: (request, command) => run(request, command, false), recover: (request, command) => run(request, command, true)};
 }
+
+/** Prepared private-v2 HTTP seam only. No central routing or unreviewed D1 import.
+ * Root must select the qualified protocol, enrollment/CSRF/credential policies and
+ * endpoint before adoption. Existing protocol policies still authorize every call.
+ * Exact Request headers are captured synchronously before body-reading awaits.
+ */
+export function createQueueStateHttpHandler({bridge, origin, path = '/api/private/v2/state', maxBytes = 2000000}) {
+  const configured = new URL(origin);
+  if (configured.protocol !== 'https:' || configured.origin !== origin || !bridge?.submit || !bridge?.recover ||
+      typeof path !== 'string' || !/^\/api\/[A-Za-z0-9_/-]+$/.test(path) || path.endsWith('/') ||
+      !Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > 2000000) throw Error('Invalid HTTP bridge configuration');
+  const reply = (body, status) => Response.json(body, {status, headers: {'Cache-Control': 'private, no-store'}});
+  return async request => {
+    // Transfer the request body instead of teeing it with clone(): cancellation
+    // of a tee can wait forever for the unused original branch to finish.
+    const selected = new Request(request, {headers: new Headers(request.headers)}), url = new URL(selected.url);
+    const recovery = url.pathname === path + '/status';
+    if (url.origin !== origin || url.search || (!recovery && url.pathname !== path)) return reply({error: 'Not found'}, 404);
+    if (selected.method !== (recovery ? 'POST' : 'PUT')) return reply({error: 'Method not allowed'}, 405);
+    if (selected.headers.get('Origin') !== origin) return reply({error: 'Origin mismatch'}, 403);
+    if (selected.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'application/json') return reply({error: 'JSON required'}, 415);
+    const reader = selected.body?.getReader();
+    if (!reader) return reply({error: 'Body required'}, 400);
+    const chunks = []; let size = 0;
+    try {
+      for (;;) {
+        const {value, done} = await reader.read(); if (done) break;
+        size += value.byteLength;
+        if (size > maxBytes) { await reader.cancel(); return reply({error: 'Body too large'}, 413); }
+        chunks.push(value);
+      }
+      const bytes = new Uint8Array(size); let offset = 0;
+      for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+      const command = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes));
+      let result;
+      try { result = await (recovery ? bridge.recover(selected, command) : bridge.submit(selected, command)); }
+      catch { return reply({status: 'unknown', acknowledged: false, confirmed: false}, 503); }
+      if (result?.status === 'committed' && result.confirmed === true && result.acknowledged === true) return reply(result, 200);
+      if (result?.status === 'conflict' && result.confirmed === true && result.acknowledged === false) return reply(result, 409);
+      return reply({status: 'unknown', acknowledged: false, confirmed: false}, 503);
+    } catch { return reply({error: 'Invalid command'}, 400); }
+    finally { reader.releaseLock(); }
+  };
+}
