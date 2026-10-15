@@ -18,14 +18,20 @@ reproducer landed with it).
    error: Segmentation fault` at `json/decoder.py:353 raw_decode` ←
    `representative_checks` line 182 (`packet = json.loads(line)`), relaunched
    PID 2423767, 2026-10-15 12:43 local. **Not a JSONDecodeError.** The stack
-   proves `verify_input` had completed (9,797 assets hash-verified that run)
-   before the fault hit during representative scanning.
+   proves `verify_input` had completed (all listed input entries hash-verified
+   that run) before the fault hit during representative scanning.  The
+   9,797-asset figure is **source-pinned** to the authoritative input manifest
+   `/home/user/src/offmenu-data/common-bulk-food-20261014/manifest.json`:
+   9,797 `.jsonl.gz` packet assets plus 3 auxiliary JSON entries
+   (`schema.json`, `contract.json`, `source-mappings.json`) = 9,800 `files`
+   entries that `verify_input` verifies (review finding M2).
 
 ## Evidence (paths and findings)
 
 - `/home/user/src/offmenu-data/logs/bulkfood-semantic-recovery-20261015.log` —
   fatal stacks for incidents 1 and 3.
-- `repair-hang-evidence-20261015.json` — incident 2 hang evidence.
+- `/home/user/src/offmenu-data/logs/repair-hang-evidence-20261015.json` —
+  incident 2 hang evidence (full retained path; review finding M3).
 - Kernel log (read-only, 2026-10-15): `09:51:48 basic-memory[…]: segfault at ip
   0000000000000000 … in python3.12`; `10:23:05 python general protection fault …
   in python3.12`; `10:04:37 codebufffreebuff-desktop trap int3`; **zero**
@@ -71,10 +77,17 @@ exit / signal) instead of being conflated with a data-format error.
 Checks run: focused suites `tests.test_bulk_control_recovery` +
 `tests.test_bulk_recovery_inspection` + `tests.test_representative_preflight_determinism`
 = **17/17 OK** on the unchanged pinned script; full `unittest discover -s tests`
-= **92/92 OK** (exit 0) under an isolated `/tmp/offmenu-w62-testvenv` with the
-pyproject-pinned test extras (system Python is PEP 668 externally managed; the
-12 loader errors under system Python are missing optional extras
+= **92/92 OK** (exit 0) under a dependency venv at `/tmp/offmenu-w62-testvenv`
+with the pyproject-pinned test extras (system Python is PEP 668 externally
+managed; the 12 loader errors under system Python are missing optional extras
 `jsonschema_rs`/`openpyxl`/`mwparserfromhell`, pre-existing and unrelated).
+**Checkout layout requirement (review finding M1):** the pinned script's
+`checkpoint_pins()` reads `corpus/common-data.schema.json` and
+`corpus/common-data-contract.json` from the checkout root
+(`Path(__file__).resolve().parents[1]`), so the committed suite passes only in
+a complete-layout checkout that contains `corpus/` beside `scripts/` — the
+venv supplies dependencies only, not layout; a scripts-only clone is not a
+valid test host without materializing those corpus pins.
 
 ## Fault-rate reproduction results (2026-10-15, same stage)
 
