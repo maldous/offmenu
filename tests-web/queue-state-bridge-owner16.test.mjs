@@ -1,23 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
-import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
+import {DatabaseSync} from 'node:sqlite';
 import {createQueueStateBridge} from '../cloud/queue-state-bridge-owner16.mjs';
-const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
-const bytes = execFileSync('git', ['show', '25543bd75c3812a203e0d3b865d51302bfe1854d:cloud/session-state-owner04.mjs'], {env});
-assert.equal(createHash('sha256').update(bytes).digest('hex'), '4520436816c70f93028fbbef38fdec572018dd507a8489c9027bb528af6f0be5');
-assert.equal(createHash('sha256').update(readFileSync(new URL('../cloud/state.mjs', import.meta.url))).digest('hex'), '801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b');
-const source = bytes.toString().replace("'./state.mjs'", JSON.stringify(new URL('../cloud/state.mjs', import.meta.url).href));
-const {createSessionStateProtocol, createSqliteStateStore, SESSION_STATE_DDL} = await import('data:text/javascript;base64,' + bytesToBase64(source));
-function bytesToBase64(text) { return Buffer.from(text).toString('base64'); }
+import {verifyFixtures} from './fixtures/queue-state-owner16/verify.mjs';
+import {createSessionStateProtocol, createSqliteStateStore, SESSION_STATE_DDL} from './fixtures/queue-state-owner16/sqlite04/cloud/session-state-owner04.mjs';
+import {createStateQueueClient} from './fixtures/queue-state-owner16/predecessor16/public/durable-queue-owner16.mjs';
+import {createDurableOperationQueue as createQueue} from './fixtures/queue-state-owner16/queue12/public/durable-operation-queue.js';
+verifyFixtures();
 const state = () => ({inventory: [], products: {}, recipes: [], selections: [], profile: {country: 'AU', units: 'metric', servings: 2}});
 const command = (id = 'synthetic_operation_0001', version = 0) => ({operationId: id, expectedVersion: version, state: state()});
 async function fixture(t, authenticate = async req => ({id: req.subject})) {
   let clock = 100;
   const db = new DatabaseSync(':memory:'); t.after(() => db.close());
-  db.exec(readFileSync(new URL('../cloud/schema.sql', import.meta.url), 'utf8'));
+  db.exec(readFileSync(new URL('./fixtures/queue-state-owner16/sqlite04/cloud/schema.sql', import.meta.url), 'utf8'));
   for (const sql of SESSION_STATE_DDL) db.exec(sql);
   const protocol = createSessionStateProtocol({store: createSqliteStateStore(db), authenticate,
     readSession: req => req.protectedSession, authorizeRequest: async () => true, authorizeEnrollment: async () => true,
@@ -84,6 +80,21 @@ test('wrong digest/ID/version or reordered equal binding: new ACK boundary probe
   const reordered = Object.fromEntries(Object.entries(good.binding).reverse());
   assert.equal((await f.bridge({...f.protocol, mutate: async () => ({...good, binding: reordered})}).submit(f.request(), command())).confirmed, true);
 });
+test('malformed and accessor outcomes stay unknown without invoking getters', async t => {
+  const f = await fixture(t), good = await f.protocol.mutate(f.request(), command());
+  let calls = 0;
+  const accessor = {...good};
+  Object.defineProperty(accessor, 'digest', {enumerable: true, get() { calls++; return good.digest; }});
+  for (const damaged of [null, [], {}, {...good, digest: null}, {...good, digest: ''}, accessor]) {
+    const selected = {...f.protocol, mutate: async () => damaged, status: async () => damaged};
+    for (const method of ['submit', 'recover']) {
+      const result = await f.bridge(selected)[method](f.request(), command());
+      assert.equal(result.status, 'unknown');
+      assert.equal(result.confirmed, false); assert.equal(result.acknowledged, false);
+    }
+  }
+  assert.equal(calls, 0); assert.equal(f.rows(), 1); assert.equal(f.revision(), 1);
+});
 test('credentials/command are captured before auth awaits; getters never run', async t => {
   let hold = false, release, entered;
   const waiting = new Promise(resolve => { release = resolve; }), started = new Promise(resolve => { entered = resolve; });
@@ -100,10 +111,6 @@ test('credentials/command are captured before auth awaits; getters never run', a
 test('demonstrated predecessor gap: valid-looking ACK with wrong digest passed consumer but bridge refuses', async t => {
   const f = await fixture(t), good = await f.protocol.mutate(f.request(), command());
   const damaged = {...good, digest: '0'.repeat(64)};
-  const oldSource = execFileSync('git', ['show', '61192ddba1c40747b974a45d5ed2fdad368d6c3d:public/durable-queue-owner16.mjs'], {env, encoding: 'utf8'});
-  const queueSource = execFileSync('git', ['show', '0e7279a7b3ba9e8d68f5aba546d2404fc3fc99a9:public/durable-operation-queue.js'], {env, encoding: 'utf8'});
-  const {createStateQueueClient} = await import('data:text/javascript;base64,' + bytesToBase64(oldSource));
-  const {createDurableOperationQueue: createQueue} = await import('data:text/javascript;base64,' + bytesToBase64(queueSource));
   const records = new Map();
   const old = createStateQueueClient({createQueue, publicBinding: f.alice.binding, now: () => 100,
     storage: {load: async key => records.get(key), save: async (key, value) => records.set(key, value)},

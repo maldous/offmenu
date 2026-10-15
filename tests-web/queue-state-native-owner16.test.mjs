@@ -1,18 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';
-import {execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
-import {posix} from 'node:path';
-const require = createRequire('/home/user/src/offmenu-third-party/package.json');
-const {Miniflare} = require('miniflare'), {build} = require('esbuild');
-const pin = 'f88902e87baa4e901006ec87083080c5188d06dd';
-const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
-const immutable = path => execFileSync('git', ['show', pin + ':' + path], {env, encoding: 'utf8'});
-assert.equal(createHash('sha256').update(immutable('cloud/session-state-d1-owner04.mjs')).digest('hex'), '1dc8633974f83f643d13b27cdeb44f3e4a4c3093c487583ff8719fefa574d12a');
+import {Miniflare} from 'miniflare';
+import {build} from 'esbuild';
+import {fileURLToPath} from 'node:url';
+import {verifyFixtures} from './fixtures/queue-state-owner16/verify.mjs';
+verifyFixtures();
 const origin = 'https://offmenu.test', audience = origin + '/api/state';
 const script = `
-import {createD1SessionStateProtocol,SESSION_STATE_D1_DDL} from 'selected04:cloud/session-state-d1-owner04.mjs';
+import {createD1SessionStateProtocol,SESSION_STATE_D1_DDL} from './tests-web/fixtures/queue-state-owner16/d104/cloud/session-state-d1-owner04.mjs';
 import {createQueueStateWorker} from './cloud/queue-state-entry-owner16.mjs';
 const origin=${JSON.stringify(origin)},audience=${JSON.stringify(audience)},realm='local_owner16_native_realm';
 // Explicit synthetic HTTP credentials only, never body-selected auth.
@@ -44,12 +39,7 @@ export default {async fetch(request,env){
   }});
  return worker.fetch(request,env);
 }};`;
-const bundled = await build({stdin: {contents: script, resolveDir: process.cwd(), sourcefile: 'owner16-native-http-fixture.mjs'}, bundle: true, write: false, platform: 'browser', format: 'esm',
-  plugins: [{name: 'immutable04', setup(builder) {
-    builder.onResolve({filter: /^selected04:/}, args => ({path: args.path.slice(11), namespace: 'immutable04'}));
-    builder.onResolve({filter: /^\./, namespace: 'immutable04'}, args => ({path: posix.normalize(posix.join(posix.dirname(args.importer), args.path)), namespace: 'immutable04'}));
-    builder.onLoad({filter: /.*/, namespace: 'immutable04'}, args => ({contents: immutable(args.path), loader: 'js'}));
-  }}]});
+const bundled = await build({stdin: {contents: script, resolveDir: fileURLToPath(new URL('../', import.meta.url)), sourcefile: 'owner16-native-http-fixture.mjs'}, bundle: true, write: false, platform: 'browser', format: 'esm'});
 const state = () => ({inventory: [], products: {}, recipes: [], selections: [], profile: {country: 'AU', units: 'metric', servings: 2}});
 const command = (operationId = 'native_operation_0001', expectedVersion = 0) => ({operationId, expectedVersion, state: state()});
 async function fixture(t) {
