@@ -1,0 +1,99 @@
+================================================================================
+MORGAN-COFID-BATCH PHASE 04 — BEFORE/AFTER PHASE REPORT
+CoFID batch: /home/user/src/offmenu-workers/worker-61
+Generated: 2026-10-15T06:05Z
+================================================================================
+
+BEFORE (pre-fix state)
+--------------------------------------------------------------------------------
+Known issue in scripts/cofid_old_foods_normalization.py:
+  - Header row parsing used regex header_cells = re.findall(r'<c r="([A-Z]+)1"[^>]*>(?:<v>(\d+)</v>)?', header_raw)
+    which captured RAW shared string indices (e.g., "0", "1", "935") instead of
+    resolved string text ("Food Code", "Food Name", ...).
+  - Nutrient column names in partition_*.json showed raw column letters/indices
+    instead of CoFID header text.
+  - Source: each sheet's headers were shared strings (t="s") — the data cells
+    had t="s" too, and the data parser resolved them inline, but the header
+    parser did not. Result: inconsistent header mapping.
+
+Root cause: two parallel regex paths — data inline resolution vs. header
+pass-through — were inconsistent. The header pass-through stored shared string
+indices instead of resolving them via the shared-strings table.
+
+ACTION TAKEN (this batch):
+  - Patched header-cell parsing in scripts/cofid_old_foods_normalization.py to
+    resolve shared strings against the shared-strings table for header cells.
+  - Data-cell inline resolution unchanged (already correct).
+  - Regenerated: partition_sheet{3..15}.json, manifest.json,
+    reconciliation.json, units_and_unmapped.json in
+    /home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/
+    source-next-20261015/cofid-old-foods-normalized-candidate/
+
+AFTER (post-fix state — verified)
+--------------------------------------------------------------------------------
+1. Source integrity:
+   input_sha256 = b3f74af4016e14ebbe41590dc12221ba71c03e316dd0e61d7c96a4c869dc0ca1
+   input_bytes   = 649329
+   expected      = b3f74af4016e14ebbe41590dc12221ba71c03e316dd0e61d7c96a4c869dc0ca1
+   sha_match     = true
+   size_match    = true
+
+2. Output counts:
+   distinct_foods         = 393
+   distinct_nutrients     = 75
+   total_nutrient_values  = 5688
+   source_rows            = 5109
+   partitions             = 13 (sheets 3–15)
+
+3. Food-code quality:
+   - Partition files now contain real CoFID codes like "16-250" (Abalone),
+     "16-241", "16-250", "17-001", etc.
+   - No shared-string indices in food_code fields.
+
+4. Nutrient-name quality:
+   - Sheet 4 nutrient names resolved to proper CoFID headers:
+       "Cholesterol (mg)", "Mono FA /100g food (g)", "Poly FA /100g food (g)",
+       "Satd FA /100g food (g)", ...
+   - No longer raw column letters (H, I, J, K) or integer indices.
+
+5. Zero unmapped semantics — all 75 CoFID nutrient names matched the known
+   CoFID nutrient-name set in the script (unmapped_semantics_counts = {}).
+
+6. OGL v3 attribution retained in all derived artifacts.
+
+================================================================================
+IMmutable local handoff
+================================================================================
+Target deliverable:
+  /home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/
+  source-next-20261015/cofid-old-foods-normalized-candidate/
+    ├── partition_sheet3.json
+    ├── partition_sheet4.json
+    ├── partition_sheet5.json
+    ├── partition_sheet6.json
+    ├── partition_sheet7.json
+    ├── partition_sheet8.json
+    ├── partition_sheet9.json
+    ├── partition_sheet10.json
+    ├── partition_sheet11.json
+    ├── partition_sheet12.json
+    ├── partition_sheet13.json
+    ├── partition_sheet14.json
+    ├── partition_sheet15.json
+    ├── manifest.json
+    ├── reconciliation.json
+    └── units_and_unmapped.json
+
+Source script:
+  /home/user/src/offmenu-workers/worker-61/scripts/cofid_old_foods_normalization.py
+
+Git: /home/user/src/offmenu-workers/worker-61 (worker-61 task branch)
+Commit: parser fix + phase report (separate commit)
+
+CoFID task slot: MORGAN-COFID-WORKTREE-AND-PHASE-RECOVERY-W04
+G1-G3 metadata correction: deferred, must not derail current data work.
+
+GLOSSARY:
+  CoFID  = Composition of Foods Integrated Dataset (UK Government old foods)
+  OGL v3 = Open Government Licence v3 (reuse with attribution)
+================================================================================
