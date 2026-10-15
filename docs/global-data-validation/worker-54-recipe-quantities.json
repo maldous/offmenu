@@ -10013,5 +10013,76 @@
     "reviewer": 45,
     "acceptance": "SAME45 exact successor delta review pending; no general parser acceptance or whole-recipe/source admission",
     "completed_utc": "2026-10-15T11:54:28.467054+00:00"
+  },
+  "pr24_supported_locale_delta": {
+    "base": "b132392338de2d206eeab65e75a6ab9525a26939",
+    "prior_owner_custody": {
+      "head": "47351facce9fd9bdd2694e4a9607b8eea8bab520",
+      "branch": "feature/owner54-quantity-f6-review45-20261015"
+    },
+    "finding_url": "https://github.com/maldous/offmenu/pull/24#discussion_r4284316000",
+    "before": [
+      {
+        "text": "2 tasses ou une tasse de lait",
+        "locale": "fr",
+        "status": "candidate",
+        "value": "2"
+      },
+      {
+        "text": "2 tazas o una taza de leche",
+        "locale": "es",
+        "status": "candidate",
+        "value": "2"
+      },
+      {
+        "text": "2 tazas u otra taza de leche",
+        "locale": "es",
+        "status": "candidate",
+        "value": "2"
+      }
+    ],
+    "source_replay": false,
+    "reviewer": 45,
+    "status": "SAME45 exact successor independent delta review pending",
+    "after": [
+      {
+        "text": "2 tasses ou une tasse de lait",
+        "locale": "fr",
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "additional numeric basis or alternative measure requires review"
+      },
+      {
+        "text": "2 tazas o una taza de leche",
+        "locale": "es",
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "additional numeric basis or alternative measure requires review"
+      },
+      {
+        "text": "2 tazas u otra taza de leche",
+        "locale": "es",
+        "status": "UNKNOWN",
+        "value": null,
+        "reason": "additional numeric basis or alternative measure requires review"
+      }
+    ],
+    "parser_version": "worker54-quantity/5",
+    "completed_utc": "2026-10-15T15:43:05.983748+00:00",
+    "correction": "Locale-scoped French ou/soit/fois and Spanish o/u/veces are unresolved markers; no number-word parsing, additional unit/language support, conversion or scaling",
+    "focused_checks": {
+      "passed": 9,
+      "failed": 0,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/global-data-validation -p test_worker54_recipe_quantities.py -k SyntheticQuantityCases -v",
+      "scope": "synthetic grammar class only; original-record suites not replayed; existing limit test verifies release hash without record parsing"
+    },
+    "fixture_sha256": "2929338f99631e2d039c0a3fa8b5882df833d4ed2fed719a1eebf836144f2f56",
+    "changed_paths": [
+      "scripts/global-data-validation/worker-54-recipe-quantities.py",
+      "tests/global-data-validation/test_worker54_recipe_quantities.py",
+      "docs/global-data-validation/worker-54-recipe-quantities.json",
+      "docs/global-data-validation/worker-54-recipe-quantities.md"
+    ],
+    "holds": "Candidate-only semantics preserved; prior review/source states historical; no source admission, caller or production acceptance"
   }
 }

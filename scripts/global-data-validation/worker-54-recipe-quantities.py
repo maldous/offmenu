@@ -7,7 +7,7 @@ import re
 import unicodedata
 from fractions import Fraction
 
-PARSER_VERSION = 'worker54-quantity/4'
+PARSER_VERSION = 'worker54-quantity/5'
 DEFAULT = '/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz'
 EXPECTED = '90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73'
 FRACTIONS = {'½': '1/2', '¼': '1/4', '¾': '3/4', '⅓': '1/3', '⅔': '2/3', '⅛': '1/8'}
@@ -68,7 +68,12 @@ def parse(text, locale='und', coordinate=None, provenance=None):
         r'\b(?:or|plus|x|times|half|halves|quarter|quarters|third|thirds|'
         r'double|triple|twice|once|zero|one|two|three|four|five|six|seven|'
         r'eight|nine|ten|eleven|twelve|hundred|thousand)\b|[+×*]', rest, re.I)
-    if any(char.isnumeric() for char in rest) or alternative:
+    # Only already-supported French/Spanish syntax: block unresolved alternatives
+    # and multiplicity markers without interpreting words or converting measures.
+    language = locale.lower().replace('_', '-').split('-')[0]
+    locale_markers = {'fr': r'\b(?:ou|soit|fois)\b', 'es': r'\b(?:o|u|veces)\b'}
+    locale_alternative = language in locale_markers and re.search(locale_markers[language], rest, re.I)
+    if any(char.isnumeric() for char in rest) or alternative or locale_alternative:
         result['reason']='additional numeric basis or alternative measure requires review';return result
     result.update(status='candidate',value=str(low) if high is None else None,
                   range=[str(low),str(high)] if high is not None else None,
