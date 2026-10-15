@@ -174,6 +174,45 @@ runs on online CPUs to a fresh output root under the `/proc` watchdog; the
 pinned per-asset checkpoint journal bounds a stochastic fault to one asset and
 `--resume` continues from it; orphaned-lock custody must be decided first.
 
+## Bounded kernel-history appendix (review finding N1, 2026-10-15)
+
+Scope: multi-day, cross-process kernel evidence for the hardware hypothesis,
+correcting the earlier "faults in one day" framing.  Attribution classes are
+kept strictly separate.
+
+**Explicitly CPU-10-attributed** (kernel line carries "likely on CPU 10
+(core 20, socket 0)"): 16 entries in the retained `/var/log/kern.log`
+spanning 2026-10-11T01:26 → 2026-10-15T14:43 (+11:00), across heterogeneous
+programs: `python3` / `python3.12` / `python`, `basic-memory`, and the
+non-python `ChatGPT` desktop app (2026-10-15T00:25 segfault at ip …809f1).
+The 2026-10-15T14:43:57 harness-child crash (fixed ip …586d84, second
+occurrence of that instruction) is among them.  Worker 06's review (N1)
+reports the same-CPU pattern extending back to Oct 4 across further programs
+(clickhouse/RuntimeData, CIX bridge, squash-contract) — recorded here as a
+cross-referenced finding of that review, not re-verified in this pass.
+
+**Explicitly UNATTRIBUTED — must not be conflated with the above:**
+2026-10-11T11:12 python3 GPF (ip …4adb1, no CPU line); 2026-10-15T01:05
+**xz GPF in liblzma.so.5.4.5** (no CPU line); 2026-10-15T10:23 python GPF —
+the repair-run GPF (no CPU line); 2026-10-15T10:04 desktop `trap int3`
+(debug-trap class, not a fault).  These events sit in the same time window but
+carry no CPU-10 attribution.
+
+**Topology source (review finding L1):** pre-offline CPU10/11 topology is
+evidenced by the controller precheck
+`/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/cpu-containment-precheck.json`
+at 2026-10-15T03:50:02Z (both CPUs then online, `onlineValue 1`, not
+writable): cpu10 and cpu11 share `core_id 20`, `socket 0`, `siblings 10-11`.
+Sysfs topology files are empty while the CPUs are offline, so this precheck is
+the authoritative record.  Provenance note (review finding P1): the commit
+series carries the shared "Freebuff Corpus Manager" author identity; series
+attribution relies on chain position and timestamps.
+
+**Hypothesis status unchanged: UNPROVEN.** The multi-day CPU-10 concentration
+strengthens the core-20 hardware hypothesis but does not prove it; the
+fixed-IP CPython scanner defect alternative remains live; no fault tests were
+run in this correction pass.
+
 ## Pin custody (final verification, 2026-10-15)
 
 The crashed run executed `/home/user/src/offmenu-freebuff/scripts/repair-bulk-controls-20261014.py`
