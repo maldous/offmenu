@@ -5,11 +5,10 @@ import hashlib
 import itertools
 import json
 from pathlib import Path
-import subprocess
-import os
 
 RECIPE_COMMIT = '8d468982f7bc905af01d5262c8eabb8db7051e96'
 FOODON_COMMIT = '3e7b381'
+DEFAULT_EVIDENCE = Path(__file__).resolve().parents[2] / 'docs/global-data-validation/worker-42-culinary-names.json'
 LOCALES = {'hi', 'ar', 'cs', 'el', 'fa', 'zh'}
 
 
@@ -18,9 +17,20 @@ def sha(path):
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
 
-def git_json(commit, path):
-    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
-    return json.loads(subprocess.check_output(['git', 'show', commit + ':' + path], env=env))
+def load_inputs(evidence_path):
+    """Tracked body-free metadata; retained original files are supplied explicitly."""
+    return json.loads(Path(evidence_path).read_text(encoding='utf-8'))['portable_inputs']
+
+
+def source_path(root, relative):
+    root = Path(root).resolve()
+    path = Path(relative)
+    if path.is_absolute() or not path.parts:
+        raise ValueError('Evidence source paths must be relative to source_root')
+    resolved = (root / path).resolve()
+    if not resolved.is_relative_to(root):
+        raise ValueError('Evidence source path escapes source_root')
+    return resolved
 
 
 def assertion(row, item, coordinate, concepts, original_body_verified=False):
@@ -59,11 +69,12 @@ def pointer(value, coordinate):
     return value
 
 
-def original_proofs():
-    proof = git_json(ORIGINAL_PROOF_COMMIT, 'docs/global-data-validation/worker-53-original-proof.json')
+def original_proofs(proof, source_root):
     verified = {}
     for record in proof['records']:
-        original, rights = record['original'], record['rights']
+        original, rights = dict(record['original']), dict(record['rights'])
+        original['path'] = str(source_path(source_root, original['path']))
+        rights['path'] = str(source_path(source_root, rights['path']))
         if sha(original['path']) != original['file_sha256'] or sha(rights['path']) != rights['sha256']:
             raise ValueError('Original body or publisher rights file custody mismatch')
         raw = json.loads(Path(original['path']).read_text())
@@ -105,8 +116,9 @@ def validate_attachment(row, evidence):
             raise ValueError('Normalized ' + field + ' does not match original proof')
 
 
-def run(recipe_root, foodon_root):
-    reference = git_json(RECIPE_COMMIT, 'docs/global-data-validation/worker-53.json')
+def run(recipe_root, foodon_root, *, source_root, evidence_path=DEFAULT_EVIDENCE):
+    inputs = load_inputs(evidence_path)
+    reference = inputs['recipe_reference']
     refs = reference['census']['selected_refs'] + reference['census']['representative_source_refs']
     wanted = {(r['line'], r['index']): r for r in refs if set(r['coverage']['language']) & LOCALES}
     if not wanted:
@@ -123,7 +135,7 @@ def run(recipe_root, foodon_root):
     expected = next(f['sha256'] for f in manifest['files'] if f['key'] == paths[3].name)
     if before[3]['sha256'] != expected or manifest['licence'] != 'CC-BY-4.0':
         raise ValueError('FoodOn rights/release digest mismatch')
-    body_proofs = original_proofs()
+    body_proofs = original_proofs(inputs['original_proof'], source_root)
     concepts = []
     with gzip.open(paths[3], 'rt') as f:
         for line in itertools.islice(f, 1000 - len(wanted) - len(body_proofs)):
@@ -181,7 +193,9 @@ def run(recipe_root, foodon_root):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--recipes', type=Path, default=Path('/home/user/src/offmenu-data/world-recipes-global-final-20261014'))
-    p.add_argument('--foodon', type=Path, default=Path('/home/user/src/offmenu-data/foodon-common-accepted-20261014'))
+    p.add_argument('--recipes', type=Path, required=True, help='Retained recipe release directory')
+    p.add_argument('--foodon', type=Path, required=True, help='Retained FoodOn release directory')
+    p.add_argument('--source-root', type=Path, required=True, help='Root containing metadata-relative original/rights files')
+    p.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE, help='Body-free pinned input metadata JSON')
     a = p.parse_args()
-    print(json.dumps(run(a.recipes, a.foodon), ensure_ascii=False, indent=2))
+    print(json.dumps(run(a.recipes, a.foodon, source_root=a.source_root, evidence_path=a.evidence), ensure_ascii=False, indent=2))

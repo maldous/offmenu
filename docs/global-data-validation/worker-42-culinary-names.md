@@ -1,3 +1,22 @@
+# Current portable invocation (PR15 follow-up)
+
+The executable now reads body-free `portable_inputs` from the tracked report adjacent to this document. Historical commit IDs below are provenance labels, not required Git objects. No Git subprocess is executed. Original recipe bodies and rights files remain external and are never uploaded by this change.
+
+```
+python3 -B scripts/global-data-validation/worker-42-culinary-names.py --recipes /your/retained/recipe-release --foodon /your/retained/foodon-release --source-root /your/retained/root
+python3 -B -m unittest discover -s tests/global-data-validation -p test_worker42_culinary_names.py
+```
+
+All three data paths are explicit; `--evidence` optionally selects another pinned metadata bundle. Source/rights paths within that bundle must be relative to source-root; absolute paths and traversal/symlink escapes are rejected. Missing files raise a path-specific error. Source hashes, original body/revision/page/date/locale attachment and rights-witness checks remain mandatory. Supplying a path or a synthetic fixture grants no source qualification.
+
+The nine focused tests use test-authored temporary synthetic bodies, rights witnesses, normalized records and FoodOn packets. They need neither private Git objects nor fixed workstation data, and cover positive execution, all five attachment mismatch fields, missing fields, locale, custody/rights tampering, source path confinement and missing dependencies. They do not claim to qualify any real release. The retained historical report below remains bounded evidence, not a new run or future-head acceptance.
+
+Both pre-fix issues were reproduced against merged PR15 bytes: a standalone initialized snapshot failed5 tests with6 errors on hidden Git evidence; supplying original metadata but denying the fixed external corpus caused a targeted FileNotFoundError. This does not prove absence from every repository ref. After-fix checks run the focused suite in a standalone snapshot using only the four declared paths. No broad suite, workflow/dependency changes or OCR tests. Worker18 owns its separate explicit OCR workflow invocation.
+
+SAME52 independent review remains required for the new immutable candidate. The sole integration writer controls any PR/develop change; no adoption, deployment or source admission is authorized here.
+
+---
+
 # Worker 42 culinary name assertions
 
 Fresh locked develop base 5f5bdb6ae716cbf80fab1e174d1af2e354468ead; branch feature/culinary-names-42-20261015. Old source/qualification/local-validation branches remain preserved.
