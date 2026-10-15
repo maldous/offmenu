@@ -30,11 +30,13 @@ export function providerLocale(user) {
   }
   return null;
 }
-export function negotiateLocale({explicit,device,cookie,profile,provider,accepted=[],excluded=[],country}={}) {
+export function negotiateLocale({explicit,device,cookie,profile,provider,accepted=[],excluded=[],country,defaultLocale}={}) {
   for(const [source,value] of [['url',explicit],['device',device],['cookie',cookie],['profile',profile],['provider',provider]]){
     const locale=supportedLocale(value);if(locale)return {locale,source};
   }
   for(const value of accepted){const locale=supportedLocale(value);if(locale)return {locale,source:'accept-language'};}
   if(!excluded.includes('ar')&&ARABIC_COUNTRIES.has(String(country||'').toUpperCase()))return {locale:'ar',source:'geoip'};
-  return {locale:'en',source:'default'};
+  const configured=supportedLocale(defaultLocale);
+  const fallback=configured&&!excluded.includes(configured)?configured:SUPPORTED_LOCALES.find(locale=>!excluded.includes(locale));
+  return {locale:fallback||'en',source:'default'};
 }

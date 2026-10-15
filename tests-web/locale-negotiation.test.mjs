@@ -57,3 +57,11 @@ test('account interface locale survives validation and is excluded from shared k
   assert.equal(validateState(state).profile.uiLanguage,'ar');assert.equal(kitchenProjection(state).profile.uiLanguage,undefined);
   assert.throws(()=>validateState({...state,profile:{...state.profile,uiLanguage:'invalid'}}),/interface language/);
 });
+test('configured defaults never choose an explicitly excluded locale when another supported locale is available',async()=>{
+ for(const [defaultLocale,header,wanted] of [['ar','fr, ar;q=0','en'],['en','fr, en;q=0','ar'],['ar','fr','ar']]){
+  const request=new Request('https://offmenu.test/',{headers:{'Accept-Language':header}});
+  const decision=await requestLocale(request,{SERVICE_GLOBAL_SETTINGS:JSON.stringify({defaults:{uiLanguage:defaultLocale}})});
+  assert.equal(decision.locale,wanted);assert.equal(decision.source,'default');
+ }
+ assert.deepEqual(negotiateLocale({explicit:'ar',excluded:['ar'],defaultLocale:'en'}),{locale:'ar',source:'url'});
+});
