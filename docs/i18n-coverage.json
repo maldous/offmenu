@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2744,
+  "messages": 2759,
   "arabicTranslated": 376,
-  "arabicMissing": 2368,
+  "arabicMissing": 2383,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -841,7 +841,8 @@
     "./record-policy.js": {
       "sources": [
         "public/data-ui.js",
-        "public/recipe-review.js"
+        "public/recipe-review.js",
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -4640,6 +4641,12 @@
       ],
       "arabic": false
     },
+    "Distinct original and candidate records required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Do another shelf ↗": {
       "sources": [
         "public/index.html"
@@ -4820,6 +4827,12 @@
     "Duplicate serving events": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate source record ID": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -5381,9 +5394,21 @@
       ],
       "arabic": false
     },
+    "Explicit calendar interval required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit confirmation and a supported public license are required.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Explicit confirmation of the current scoped proposal required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -6690,6 +6715,12 @@
       ],
       "arabic": false
     },
+    "Injected clock required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Inspection-date ratings for UK food businesses; not a food nutrition or stock feed.": {
       "sources": [
         "public/sources.js"
@@ -7200,6 +7231,12 @@
     "Invalid notification update.": {
       "sources": [
         "cloud/care-updates.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid numeric value": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -8863,6 +8900,12 @@
       ],
       "arabic": false
     },
+    "No inferred availability, expiry, ownership, allergy or nutrition equivalence": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "No known ingredient conflict for the selected diners": {
       "sources": [
         "public/app.js"
@@ -8909,6 +8952,12 @@
     "No open redistribution licence verified": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "No purchase authority": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -10009,6 +10058,12 @@
       ],
       "arabic": true
     },
+    "Plain JSON required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Plan a meal in My week, or add a shopping item below.": {
       "sources": [
         "public/insights-ui.js"
@@ -10354,6 +10409,12 @@
       ],
       "arabic": false
     },
+    "Proposal detail required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Proposal digest": {
       "sources": [
         "public/care-ui.js"
@@ -10369,6 +10430,12 @@
     "Proposal evidence records this review. It does not publish a catalogue change.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Proposal exceeds bounds": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -13387,6 +13454,12 @@
       ],
       "arabic": true
     },
+    "Supply 1–100 source records": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Support email": {
       "sources": [
         "cloud/service-config.mjs",
@@ -14220,6 +14293,12 @@
     "Unsupported privacy policy language.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsupported proposal kind": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -16588,6 +16667,12 @@
       ],
       "arabic": false
     },
+    "source identity": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "source policy expired": {
       "sources": [
         "public/evidence-model.js"
@@ -16597,6 +16682,12 @@
     "source policy unavailable": {
       "sources": [
         "public/evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "source record ID": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
