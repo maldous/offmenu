@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "semantic/delta-series-review-receipt/0",
+  "schemaVersion": "semantic/delta-series-review-receipt/0.1",
   "reviewId": "OFFMENU-REPAIR-DIAGNOSIS-DELTAS-REVIEW-W03",
   "order": "MORGAN-COHERENT-BACKLOG-20261015-W06 item3 (item2 blocked: no Worker04 new commit; language candidate stays 3f0bf8c9)",
   "reviewer": {
@@ -29,7 +29,7 @@
     },
     "5d8b24e_containment": {
       "verdict": "ALIGNED_AND_VERIFIED_READ_ONLY",
-      "detail": "sysfs online=0-9,12-31, cpu10/online=0, cpu11/online=0 (read-only observation by this review; no re-enable/tested); invalid-control interpretation of taskset-10/11 correct (both are SMT siblings of suspect core 20 — kernel attribution 'CPU 10 (core 20, socket 0)' plus cpu12→core_id 24 / siblings 12-13 shows n,n+1 core pairing permitting offlined cores' topology files being empty); queued CPU10-vs-CPU12 run withdrawn, not picked up; 'precautionary containment, NOT proven hardware failure' framing preserved."
+      "detail": "sysfs online=0-9,12-31, cpu10/online=0, cpu11/online=0 (read-only observation by this review; no re-enable/tested); CPU-10/core-20 relationship CITED, not inferred, from the controller pre-offline topology receipt w02-repair-diagnosis-stage-receipt-20261015.json (sha256 27ea9250ecdc2802…): logical CPUs 10 and 11 are the two SMT siblings of physical core 20 (socket 0), so taskset -c 10 and -c 11 both ran on the suspect core and neither was a valid control; the queued CPU10-vs-CPU12 run was withdrawn, not picked up; 'precautionary containment, NOT proven hardware failure' framing preserved."
     }
   },
   "findings": [
@@ -37,9 +37,9 @@
       "id": "N1",
       "class": "kernel-evidence scope",
       "severity": "medium",
-      "observed": "The diagnosis record frames the hardware hypothesis around 'five python3.12 C-level faults in one day'. The retained /var/log/kern.log shows a multi-day chronic pattern of C-level faults attributed to CPU 10 (core 20) across heterogeneous programs (python3, ChatGPT desktop, clickhouse/RuntimeData, CIX bridge, squash-contract — Oct 4 through Oct 15), plus Oct-15 same-day non-python faults (00:25 ChatGPT segfault and 01:05 xz GPF) not mentioned in the record.",
+      "observed": "The diagnosis record frames the hardware hypothesis around 'five python3.12 C-level faults in one day'. The retained /var/log/kern.log shows a multi-day chronic pattern of C-level faults attributed to CPU 10 (core 20) across heterogeneous programs (python3, ChatGPT desktop, clickhouse/RuntimeData, CIX bridge, squash-contract - Oct 4 through Oct 15). Same-day non-python events: 00:25:30 ChatGPT segfault carries CPU-10 attribution ('likely on CPU 10 (core 20, socket 0)'); the 01:05:04 xz general-protection-fault line in liblzma.so.5.4.5 carries NO CPU attribution and is therefore NOT counted as a CPU-10 observation (v2 correction).",
       "impact": "UNDERSTATED context: strengthens the core-20 hardware hypothesis and matters for a root-cause verdict; also the two same-day non-python events are same-CPU observations the record omits.",
-      "correctionRequest": "Add a bounded kernel-history appendix (multi-day, cross-process CPU-10 attribution incl. Oct-15 non-python events) to the diagnosis record in Worker05's next candidate commit."
+      "correctionRequest": "Add a bounded kernel-history appendix (multi-day, cross-process CPU-10-ATTRIBUTED faults incl. the 00:25 ChatGPT segfault, and explicitly noting the unattributed 01:05 xz GPF) to the diagnosis record in Worker05's next candidate commit."
     },
     {
       "id": "L1",
@@ -61,5 +61,16 @@
   "laterCommitNonApproval": {
     "status": "5d8b24e is branch tip at review time; nothing after it was approved; these findings are for Worker05, no Morgan verdict"
   },
-  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00"
+  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00",
+  "revision": 2,
+  "supersedes": "semantic/reviews/20261015-repair-diagnosis-deltas-review-W03.json",
+  "supersedesSha256": "83e821d9fcb34d07cd5fdeba85b7d37721e3b483876960db482ef99a05d99d32",
+  "correctionNote": "v2 corrects two attribution defects in v1 per MORGAN-BOUNDED-SEMANTIC-EXACT-REVIEW-YIELD-20261015-W06 Task 1: (a) the CPU-10/core-20 containment fact is now cited to the controller's pre-offline topology receipt (w02-repair-diagnosis-stage-receipt-20261015.json) instead of being inferred from an n,n+1 core-pairing pattern; (b) the 01:05 xz general-protection-fault line carries NO CPU attribution and is no longer grouped as a CPU-10 observation. The finding itself (multi-day, cross-process CPU-10 C-level fault history) stands on the attributed lines only.",
+  "controllerTopologyAuthority": {
+    "receipt": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-repair-diagnosis-stage-receipt-20261015.json",
+    "receiptSha256": "27ea9250ecdc280276d5dffb7c87aac2b998ea8b2ea8be5c16eb03da4dcf5cd2",
+    "quotedStatement": "logical CPUs 10 and 11 (SMT siblings of physical core 20, socket 0) OFFLINE via supported Linux CPU hotplug; online list 0-9,12-31 (verified read-only: /sys/devices/system/cpu/online, cpu10/online=0, cpu11/online=0)",
+    "meaning": "logical CPUs 10/11 are the two SMT siblings of physical core 20; taskset -c 10 and -c 11 both confined work to the suspect core, so neither was a valid control"
+  },
+  "reviewedAtUTC": "2026-10-15T04:35:17.938527+00:00"
 }

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "semantic/delta-series-review-receipt/0",
+  "reviewId": "OFFMENU-REPAIR-DIAGNOSIS-DELTAS-REVIEW-W03",
+  "order": "MORGAN-COHERENT-BACKLOG-20261015-W06 item3 (item2 blocked: no Worker04 new commit; language candidate stays 3f0bf8c9)",
+  "reviewer": {
+    "agentIdentity": "OffMenu — Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, GLM5.3Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 on feature/63/freebuff-semantic-candidates-20261015 (slot63 is NOT an agent identity)"
+  },
+  "scopeAndOwnershipReconciliation": "Delta series lives on Worker05's branch bugfix/62/freebuff-repair-diagnosis-20261015 (slot62) inside canonical /home/user/src/offmenu (read-only to me). Commit author identity for the whole series is the shared 'Freebuff Corpus Manager' — commits are attributed by chain position + timestamps, a provenance limitation noted (P1). Retained data/logs/diagnosis evidence in /home/user/src/offmenu-data is read-only shared evidence. NO native fault reproduction, NO suspect-core probing, NO containment changes were performed by this review.",
+  "chain": [
+    "59cd03a (already reviewed at its own SHA)",
+    "8e09c3b",
+    "8d12ffb",
+    "a1571b8",
+    "5d8b24e (branch tip)"
+  ],
+  "perCommitFindings": {
+    "8e09c3b_pin_custody": {
+      "verdict": "ALL_OWNER_CLAIMS_VERIFIED_BYTE_EXACT",
+      "detail": "crashed copy sha 6b547f82… and branch copy 2c025c07… recorded correctly; only NEW_ROOT (line 22) differs (…recovery-20261015 vs …semantic-final-20261014); crash region lines 171-202 byte-identical; log re-verification claim matches actual log lines 60-70 stack exactly; 'no pin substituted' honest."
+    },
+    "8d12ffb_harness": {
+      "verdict": "SOUND_BY_STATIC_REVIEW_NO_EXECUTION",
+      "detail": "harness bounded by design: 3 named small assets only, arg validation (no path escape), no writes outside stdout, child timeout with read-only /proc snapshot then kill, stops at first fault; run records corroborated by retained receipts (batch3 235 runs/1 abnormal/1-235 faultRate; stall ≥120s hang; taskset cpu10/cpu11 0/300 each)."
+    },
+    "a1571b8_provenance_correction": {
+      "verdict": "HONEST_DISCLOSURE_VERIFIED",
+      "detail": "batch-1 raw report absence in retained receipts confirmed on disk (no *batch1* files); result preserved only via stage receipt/transcript — disclosed, not fabricated."
+    },
+    "5d8b24e_containment": {
+      "verdict": "ALIGNED_AND_VERIFIED_READ_ONLY",
+      "detail": "sysfs online=0-9,12-31, cpu10/online=0, cpu11/online=0 (read-only observation by this review; no re-enable/tested); invalid-control interpretation of taskset-10/11 correct (both are SMT siblings of suspect core 20 — kernel attribution 'CPU 10 (core 20, socket 0)' plus cpu12→core_id 24 / siblings 12-13 shows n,n+1 core pairing permitting offlined cores' topology files being empty); queued CPU10-vs-CPU12 run withdrawn, not picked up; 'precautionary containment, NOT proven hardware failure' framing preserved."
+    }
+  },
+  "findings": [
+    {
+      "id": "N1",
+      "class": "kernel-evidence scope",
+      "severity": "medium",
+      "observed": "The diagnosis record frames the hardware hypothesis around 'five python3.12 C-level faults in one day'. The retained /var/log/kern.log shows a multi-day chronic pattern of C-level faults attributed to CPU 10 (core 20) across heterogeneous programs (python3, ChatGPT desktop, clickhouse/RuntimeData, CIX bridge, squash-contract — Oct 4 through Oct 15), plus Oct-15 same-day non-python faults (00:25 ChatGPT segfault and 01:05 xz GPF) not mentioned in the record.",
+      "impact": "UNDERSTATED context: strengthens the core-20 hardware hypothesis and matters for a root-cause verdict; also the two same-day non-python events are same-CPU observations the record omits.",
+      "correctionRequest": "Add a bounded kernel-history appendix (multi-day, cross-process CPU-10 attribution incl. Oct-15 non-python events) to the diagnosis record in Worker05's next candidate commit."
+    },
+    {
+      "id": "L1",
+      "class": "review-method note",
+      "severity": "info",
+      "observed": "cpu10/11 topology (core_id/siblings) is unreadable while offline; SMT-sibling/core-20 claims are corroborated indirectly via kernel attribution lines and the n,n+1 pairing pattern seen on online cores (cpu12→core24/siblings 12-13)."
+    },
+    {
+      "id": "P1",
+      "class": "provenance limitation",
+      "severity": "info",
+      "observed": "Shared commit author identity 'Freebuff Corpus Manager' across the whole Worker05 series — attribution relies on chain position/timestamps/branch, not author identity."
+    }
+  ],
+  "verification": {
+    "tool": "reviews/5d8b24e/verify-repair-diagnosis-deltas.py — 10/10 MATCH, DELTAS_REVIEW_REPRODUCED exit 0",
+    "cores": "physical cores 10/11 (SMT CPUs 10/11 of core 20) remain OFFLINE — honored, never probed or re-enabled"
+  },
+  "laterCommitNonApproval": {
+    "status": "5d8b24e is branch tip at review time; nothing after it was approved; these findings are for Worker05, no Morgan verdict"
+  },
+  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00"
+}

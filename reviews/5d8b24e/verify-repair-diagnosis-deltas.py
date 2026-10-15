@@ -113,7 +113,34 @@ def main() -> int:
            b3.get('runsCompleted') == 235 and b3.get('abnormalRuns') == 1 and b3.get('faultRate') == '1/235'
            and c10.get('faultRate') == '0/300' and c11.get('faultRate') == '0/300'
            and len(b3.get('assets', [])) == 3,
-           "batch3 1/235 on part-00413 lineage; taskset 0/300 x2 (both on suspect core 20)")
+           "batch3 1/235 on part-00413 lineage; taskset 0/300 x2, both pinned to suspect core 20 "
+           "(per controller pre-offline topology receipt, not inferred pairing)")
+
+    # v2 correction: the CPU-10/core-20 relationship must be CITED to the controller's
+    # pre-offline topology receipt, not inferred from an n,n+1 core-pairing pattern.
+    stage_receipt = rdir / 'w02-repair-diagnosis-stage-receipt-20261015.json'
+    stage_sha = hashlib.sha256(stage_receipt.read_bytes()).hexdigest()
+    stage_text = stage_receipt.read_text()
+    # The receipt copy lives next to THIS script (worktree-local), never in the
+    # canonical read-only repo: resolve relative to __file__ so the check is not
+    # coupled to a particular checkout layout.
+    here = Path(__file__).resolve()
+    cited = None
+    citation_source = 'absent'
+    candidates = [here.parent / 'deltas-receipt.json',
+                  Path('/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/'
+                       '20261015-repair-diagnosis-deltas-review-W03-v2.json')]
+    for candidate in candidates:
+        if candidate.exists():
+            try:
+                cited = json.loads(candidate.read_text()).get('controllerTopologyAuthority', {}).get('receiptSha256')
+                citation_source = candidate.name
+            except json.JSONDecodeError:
+                cited = None
+            break
+    record("controller_preoffline_topology_receipt_cited",
+           'SMT siblings of physical core 20' in stage_text and cited == stage_sha,
+           f"stage receipt {stage_sha[:16]}…; cited by {citation_source}: {'yes' if cited == stage_sha else 'no'}")
 
     batch1_missing = not list(rdir.glob('*batch1*')) and not list(rdir.glob('*batch-1*'))
     record("batch1_raw_report_absent_as_disclosed", batch1_missing, "a1571b8: overwritten by failed batch-2 run; not preserved; result recorded in stage receipt")
