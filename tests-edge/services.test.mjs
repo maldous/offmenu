@@ -20,7 +20,12 @@ test('compiled Worker uses canonical additive schema and exposes only configured
   const csrf=await worker.dispatchFetch('https://offmenu.test/api/services/support',{method:'POST',headers:{Origin:'https://other.test','Content-Type':'application/json'},body:JSON.stringify({confirmed:true})});assert.equal(csrf.status,403);
   const anonymous=await worker.dispatchFetch('https://offmenu.test/api/services/support');assert.equal(anonymous.status,401);
   assert.equal((await db.prepare("SELECT COUNT(*) AS count FROM service_requests").first()).count,0);
+  const now=Date.now();for(const [table,key] of [['admin_mcp_proofs','token_id'],['oauth_admin_proofs','code_hash']]){
+   await db.prepare(`INSERT INTO ${table}(${key},sealed,expires_at) VALUES(?,?,?)`).bind('expired','synthetic expired proof',now-60000).run();
+   await db.prepare(`INSERT INTO ${table}(${key},sealed,expires_at) VALUES(?,?,?)`).bind('live','synthetic live proof',now+60000).run();
+  }
   await (await worker.getWorker()).scheduled();
+  for(const table of ['admin_mcp_proofs','oauth_admin_proofs'])assert.deepEqual((await db.prepare(`SELECT sealed FROM ${table}`).all()).results.map(row=>row.sealed),['synthetic live proof']);
   assert.equal((await db.prepare('SELECT COUNT(*) AS count FROM user_state').first()).count,0);
  } finally {await worker.dispose();}
 });

@@ -36,5 +36,7 @@ export function negotiateLocale({explicit,device,cookie,profile,provider,accepte
   }
   for(const value of accepted){const locale=supportedLocale(value);if(locale)return {locale,source:'accept-language'};}
   if(!excluded.includes('ar')&&ARABIC_COUNTRIES.has(String(country||'').toUpperCase()))return {locale:'ar',source:'geoip'};
-  return {locale:supportedLocale(defaultLocale)||'en',source:'default'};
+  const configured=supportedLocale(defaultLocale);
+  const fallback=configured&&!excluded.includes(configured)?configured:SUPPORTED_LOCALES.find(locale=>!excluded.includes(locale));
+  return {locale:fallback||'en',source:'default'};
 }

@@ -448,6 +448,7 @@
     },
     "./admin-mcp.mjs": {
       "sources": [
+        "cloud/handler.mjs",
         "cloud/integrations.mjs"
       ],
       "arabic": false

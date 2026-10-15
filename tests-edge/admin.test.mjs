@@ -27,6 +27,7 @@ test('compiled administrator controls preserve private ownership, fresh roles, C
   assert.equal((await db.prepare('SELECT count(*) AS n FROM app_settings_audit').first()).n,1);
   const config=await(await request('/api/services')).json();assert.equal(config.globalDefaults.country,'AU');assert.equal(config.services.find(x=>x.id==='support').status,'setup_required');assert(!JSON.stringify(config).includes('environment-secret-key'));
   const html=await worker.dispatchFetch('https://offmenu.test/');assert.equal(html.headers.get('Content-Language'),'ar');assert((await html.text()).includes('admin-property'));
+  const excludedDefault=await worker.dispatchFetch('https://offmenu.test/',{headers:{'Accept-Language':'fr,ar;q=0'}});assert.equal(excludedDefault.headers.get('Content-Language'),'en');assert.match(await excludedDefault.text(),/<html[^>]*lang="en"/);
   const edit={...body,revision:1,settings:{...settings,global:{defaults:{country:'GB'}}}};
   const race=await Promise.all([request('/api/admin/settings','admin',edit),request('/api/admin/settings','admin',edit)]);assert.deepEqual(race.map(x=>x.status).sort(),[200,409]);assert.equal((await db.prepare('SELECT count(*) AS n FROM app_settings_audit').first()).n,2);
   const sourceResult=await(await request('/api/admin/sources')).json(),gleif=sourceResult.sources.find(x=>x.id==='gleif');assert(gleif);
