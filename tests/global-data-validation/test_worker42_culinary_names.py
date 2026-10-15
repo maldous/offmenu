@@ -28,54 +28,128 @@ class CulinaryNames(unittest.TestCase):
         with self.assertRaises(IndexError):
             m.pointer(value, '/query/pages/1')
 
-class RetainedAttachmentRejections(unittest.TestCase):
-    """Exercise the actual run path with in-memory mutations of retained source rows."""
-    def test_run_rejects_conflicting_provenance(self):
-        import gzip
-        import io
+
+class PortableAttachmentRejections(unittest.TestCase):
+    """Synthetic test-owned bytes exercise the real adapter without retained corpora or Git."""
+    def setUp(self):
+        import tempfile
         import json
+        import hashlib
+        import gzip
+        self.temp = tempfile.TemporaryDirectory(prefix='culinary42-test-')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.recipes, self.foodon = self.root / 'recipes', self.root / 'foodon'
+        self.recipes.mkdir()
+        self.foodon.mkdir()
+        self.evidence = self.root / 'evidence.json'
+        self.dump = lambda p, v: p.write_text(json.dumps(v, ensure_ascii=False), encoding='utf-8')
+        # Invented test-only publisher body and IDs; not a copied source or qualification.
+        body = 'test-only ingredient: ملح'
+        revision = {'revid': 7, 'timestamp': '2001-01-01T00:00:00Z',
+                    'slots': {'main': {'content': body}}}
+        raw = {'query': {'pages': [{'pageid': 42, 'revisions': [revision]}]}}
+        self.dump(self.root / 'original.json', raw)
+        rights = {'url': 'urn:test:licence', 'text': 'test-only rights witness'}
+        self.dump(self.root / 'rights.json', {'query': {'rightsinfo': rights}})
+        provenance = {'originSourceId': 'wikibooks:ar', 'recordId': '42', 'revisionId': 7,
+                      'sourceDate': revision['timestamp'],
+                      'originalContentSha256': hashlib.sha256(body.encode()).hexdigest(),
+                      'license': 'CC BY-SA 4.0', 'rightsEvidenceUrl': 'urn:test:licence'}
+        self.row = {'id': 'urn:test:recipe', 'provenance': provenance,
+                    'data': {'languages': ['ar'], 'ingredients': [{'name': 'ملح', 'originalText': 'ملح'}]}}
+        self.proof = {'records': [{'normalized_coordinate': {'line': 1, 'index': 0},
+            'language': 'ar', 'provenance': provenance.copy(),
+            'original': {'path': 'original.json', 'file_sha256': m.sha(self.root / 'original.json'),
+                'coordinate': '/query/pages/0/revisions/0/slots/main/content',
+                'body_sha256': provenance['originalContentSha256'], 'recordId': '42',
+                'revisionId': 7, 'timestamp': revision['timestamp']},
+            'rights': {'path': 'rights.json', 'sha256': m.sha(self.root / 'rights.json'),
+                       'coordinate': '/query/rightsinfo', 'publisher_declared': rights}}]}
+        self.dump(self.recipes / 'manifest.json', {'releaseId': 'test-only'})
+        packet = {'resources': [{'id': 'http://purl.obolibrary.org/obo/FOODON_TEST',
+                    'names': [{'language': 'ar', 'value': 'ملح'}], 'citationIds': ['urn:test:foodon']}],
+                  'citations': [{'license': 'CC-BY-4.0', 'revisionId': 'test-revision'}]}
+        with gzip.open(self.foodon / 'foodon-common.jsonl.gz', 'wt', encoding='utf-8') as f:
+            f.write(json.dumps(packet, ensure_ascii=False) + '\n')
+        self.dump(self.foodon / 'manifest.json', {'licence': 'CC-BY-4.0', 'revision': 'test-revision',
+            'files': [{'key': 'foodon-common.jsonl.gz', 'sha256': m.sha(self.foodon / 'foodon-common.jsonl.gz')}]})
+        self.write_recipe()
+
+    def write_recipe(self):
+        import gzip
+        import json
+        with gzip.open(self.recipes / 'normalized.jsonl.gz', 'wt', encoding='utf-8') as f:
+            f.write(json.dumps([self.row], ensure_ascii=False) + '\n')
+        reference = {'census': {'before_sha256': m.sha(self.recipes / 'normalized.jsonl.gz'),
+            'selected_refs': [{'id': self.row['id'], 'line': 1, 'index': 0,
+                               'coverage': {'language': ['ar']}}], 'representative_source_refs': []}}
+        self.dump(self.evidence, {'portable_inputs': {'recipe_reference': reference, 'original_proof': self.proof}})
+
+    def run_adapter(self):
+        return m.run(self.recipes, self.foodon, source_root=self.root, evidence_path=self.evidence)
+
+    def test_positive_run_without_git_or_workstation_paths(self):
         from unittest.mock import patch
-        recipes = Path('/home/user/src/offmenu-data/world-recipes-global-final-20261014')
-        foodon = Path('/home/user/src/offmenu-data/foodon-common-accepted-20261014')
-        real_open = gzip.open
-        # Mutations leave the actual source files, file hashes, body hash and revision intact.
+        with patch('subprocess.check_output', side_effect=AssertionError('No Git subprocess permitted')):
+            result = self.run_adapter()
+        self.assertEqual(result['recipe_records'], 1)
+        self.assertEqual(result['before'], result['after'])
+        a = result['assertions'][0]
+        self.assertIsNotNone(a['original_body_reference'])
+        self.assertEqual(a['candidate_concept_ids'], ['http://purl.obolibrary.org/obo/FOODON_TEST'])
+        self.assertIsNone(a['source_original_lexeme'])
+        self.assertIsNone(a['ingredient_identity'])
+        self.assertFalse(a['automaticPlanningEligible'])
+
+    def test_run_rejects_conflicting_provenance(self):
+        import copy
+        original = copy.deepcopy(self.row)
         fields = {'recordId': 'wrong-page', 'sourceDate': '1900-01-01T00:00:00Z',
-                  'originSourceId': 'wikibooks:en', 'originalContentSha256': '0' * 64,
-                  'revisionId': -1}
+                  'originSourceId': 'wikibooks:en', 'originalContentSha256': '0' * 64, 'revisionId': -1}
         for field, wrong in fields.items():
             with self.subTest(field=field):
-                def mutated(path, *args, **kwargs):
-                    if Path(path) != recipes / 'normalized.jsonl.gz':
-                        return real_open(path, *args, **kwargs)
-                    # The first bound coordinate is Arabic at line3310; stop as soon as it rejects.
-                    with real_open(path, *args, **kwargs) as f:
-                        lines = []
-                        for number, line in enumerate(f, 1):
-                            if number == 3310:
-                                rows = json.loads(line)
-                                rows[0]['provenance'][field] = wrong
-                                lines.append(json.dumps(rows, ensure_ascii=False) + '\n')
-                                break
-                            lines.append('\n')  # run skips unselected lines before this coordinate
-                    return io.StringIO(''.join(lines))
-                with patch.object(m.gzip, 'open', mutated):
-                    with self.assertRaisesRegex(ValueError, field):
-                        m.run(recipes, foodon)
+                self.row = copy.deepcopy(original)
+                self.row['provenance'][field] = wrong
+                self.write_recipe()  # Pin synthetic file; original witness is deliberately unchanged.
+                with self.assertRaisesRegex(ValueError, field):
+                    self.run_adapter()
 
-    def test_missing_field_and_conflicting_locale_rejected(self):
+    def test_missing_fields_and_locale_rejected(self):
         import copy
-        proof = next(iter(m.original_proofs().values()))
-        original = proof['original']
-        row = {'provenance': {'recordId': original['recordId'], 'sourceDate': original['timestamp'],
-               'originSourceId': proof['source_id'], 'revisionId': original['revisionId'],
-               'originalContentSha256': original['body_sha256']},
-               'data': {'languages': [proof['language']]}}
-        m.validate_attachment(row, proof)
+        original = copy.deepcopy(self.row)
         for field in ['recordId', 'sourceDate', 'originSourceId']:
-            changed = copy.deepcopy(row)
-            del changed['provenance'][field]
-            with self.subTest(missing=field), self.assertRaises(ValueError):
-                m.validate_attachment(changed, proof)
-        row['data']['languages'] = ['en']
+            with self.subTest(missing=field):
+                self.row = copy.deepcopy(original)
+                del self.row['provenance'][field]
+                self.write_recipe()
+                with self.assertRaises(ValueError):
+                    self.run_adapter()
+        self.row = copy.deepcopy(original)
+        self.row['data']['languages'] = ['en']
+        self.write_recipe()
         with self.assertRaisesRegex(ValueError, 'locale'):
-            m.validate_attachment(row, proof)
+            self.run_adapter()
+
+    def test_original_body_and_rights_tampering_rejected(self):
+        import json
+        path = self.root / 'original.json'
+        original = path.read_bytes()
+        path.write_bytes(original + b' ')
+        with self.assertRaisesRegex(ValueError, 'custody'):
+            self.run_adapter()
+        path.write_bytes(original)
+        self.proof['records'][0]['rights']['publisher_declared']['text'] = 'wrong'
+        self.write_recipe()
+        with self.assertRaisesRegex(ValueError, 'rights declaration'):
+            self.run_adapter()
+
+    def test_source_path_escape_rejected(self):
+        for path in ['/absolute/original.json', '../outside.json']:
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                m.source_path(self.root, path)
+
+    def test_missing_dependency_has_explicit_path(self):
+        (self.recipes / 'manifest.json').unlink()
+        with self.assertRaisesRegex(FileNotFoundError, 'manifest.json'):
+            self.run_adapter()
