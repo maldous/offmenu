@@ -318,11 +318,27 @@
     "Some citation pointers reference semantic lane artifacts read-only; this lane does not republish or modify those artifacts."
   ],
   "terminologyAlignment": {
-    "storeLanguageLocaleInventorySha256": "613779e916c9257ed0def660e73f95465abc719aeb9df18897d4779913b4ac4c",
+    "storeLanguageLocaleInventorySha256": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
     "storeLanguageLocaleInventoryPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-language-locale-inventory.json",
     "storeLanguageLocaleInventoryGeneratedAt": "2026-10-15T01:51:40.637777+00:00",
-    "bcp47ExtractionManifestSha256": "a121589fbcc7b179f825f9fc067ee9af339a8aba057b32b8e549fa85576fa96f",
+    "bcp47ExtractionManifestSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
     "bcp47ExtractionManifestPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json"
   },
-  "updatedAt": "2026-10-15T01:52:21.208681+00:00"
+  "updatedAt": "2026-10-15T04:20:46.643699+00:00",
+  "allowedExtensions": {
+    "note": "Contract-level enumeration of known optional extensions permitted beyond required keys. Absence of this list means no extensions are authorized; presence means only listed keys are allowed as extras.",
+    "version": "1",
+    "allowed": [
+      {
+        "key": "terminologyAlignment",
+        "purpose": "Cross-reference to store language locale inventory and BCP47 extraction manifest for QA tie-out",
+        "introducedIn": "offmenu-terminology-contract/1"
+      },
+      {
+        "key": "updatedAt",
+        "purpose": "Audit timestamp for contract-level changes",
+        "introducedIn": "offmenu-terminology-contract/1"
+      }
+    ]
+  }
 }

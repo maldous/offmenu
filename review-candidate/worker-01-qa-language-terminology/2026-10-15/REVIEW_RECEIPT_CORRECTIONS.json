@@ -1,0 +1,79 @@
+{
+  "receiptId": "worker-01-qa-language-terminology-corrections-20261015",
+  "worker": "worker-01",
+  "taskBranch": "feature/61/freebuff-language-qa-20261015",
+  "baseCommit": "3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+  "reviewedCommit": null,
+  "note": "Corrections are NOT yet an approved review. Independent re-review required. Do not claim the earlier review approves this revised candidate.",
+  "priorReview": {
+    "receipt": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-language-terminology-review-W03.json",
+    "sha256": "05c1d395380056dc753f7ca18a361d547f0a20fe8f6e85b9a4bb3bdfff7e0cf3",
+    "pinnedCandidate": "frozen earlier candidate @ 3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+    "scope": "reviewed the frozen candidate only; does NOT approve this revised candidate"
+  },
+  "reconciliation": {
+    "method": "each D1-D6 finding re-observed against immutable commit 3f0bf8c and against live lane bytes before editing",
+    "pinsPreserved": true,
+    "sourceProvenancePreserved": true
+  },
+  "corrections": {
+    "D1_slovenia_unresolved_caption": {
+      "defect": "Apple Slovenia caption dropped from inventory",
+      "fix": "Retained as explicit row with evidenceKind=unresolvedCaption; sl base is a Google-explicit 'Slovenian'->sl cross-reference, NOT an Apple canonical tag; literal 'Slovenia' preserved in sourceListTextExcerpt",
+      "regression": "D1 Apple inventory retains Slovenia caption row; evidenceKind==unresolvedCaption; cross-ref note present; literal in excerpt"
+    },
+    "D2_count_separation": {
+      "defect": "stale canonical count conflated resolved tags with unresolved rows",
+      "fix": "apple canonicalBcp47TagCount=49 (resolved only), unresolvedCaptionRowCount=1, itemsCount=50, with countSeparationNote; google 86/0/86",
+      "regression": "D2 canonical==resolved distinct; unresolved==1; items==total; items==canonical+unresolved"
+    },
+    "D3_tieout_hash_equality": {
+      "defect": "stale contract tie-out hashes with presence-only QA",
+      "fix": "terminologyAlignment hashes updated to computed sha256; QA asserts equality not presence; allowedExtensions enumerated",
+      "regression": "D3 inventorySha256==computed; extractionSha256==computed"
+    },
+    "D4_union_recompute": {
+      "defect": "union pruned store-only bases; en-x-simple not collapsed to base; stale counters 8/45",
+      "fix": "union rebuilt from inputs (observed bases | store canonical bases, en-x-simple->en) = 74; counters corrected to 86/49",
+      "regression": "D4 union==recomputed(observed|store); recomputed size==declared(74); google counter==86; apple counter==49"
+    },
+    "D5_parser_guard": {
+      "defect": "fix-store-bcp-tags.py cannot reproduce candidate byte-semantics and defaults DEST to authoritative candidate file (destructive)",
+      "fix": "added runtime guard: refuses (exit 64) without FIX_STORE_BCP_TAGS_ALLOW=1; refuses lane DEST (exit 65) without FIX_STORE_BCP_TAGS_ALLOW_LANE_OVERWRITE=1; NON_AUTHORITATIVE marker; QA regression asserts guard defaults",
+      "evidence": "both refusals executed; candidate extraction sha unchanged (a48639ba...)"
+    },
+    "D6_nonself_pin": {
+      "defect": "stale STATUS self-hashes",
+      "fix": "removed STATUS.json self-hash and STATUS_sha256_after_run; fileHashes excludes STATUS.json; pinManifest points to external non-self-referential language-review-pins.json",
+      "regression": "D6 no self-hash; no STATUS_sha256_after_run; pinManifest present"
+    }
+  },
+  "verification": {
+    "laneQaExit": 0,
+    "candidateQaExit": 0,
+    "candidateAssertions": 226,
+    "failures": 0,
+    "compileCheck": "py_compile clean for qa/test_terminology_qa.py and qa/fix-store-bcp-tags.py",
+    "guardProbes": {
+      "noEnvExit": 64,
+      "laneDestExit": 65,
+      "candidateBytesUnchanged": true
+    }
+  },
+  "files": {
+    "LANGUAGE_TARGETS.json": "04c25612d1cfb42b344e4378e3d1534998d7a5d13bbba0656568321bb928d539",
+    "store-language-locale-inventory.json": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+    "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "terminology-contract.json": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+    "terminology-fixtures.jsonl": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+    "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+    "app-store-locale-snapshot.json": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+    "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
+    "STATUS.json": "cf6cd9fae0729b817dc3de7cc869d478f595a62fee785abae503fc8c1d866268",
+    "qa/test_terminology_qa.py": "cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9",
+    "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855"
+  },
+  "noPushUploadPrMerge": true,
+  "generatedAt": "2026-10-15T04:28:18.377109+00:00"
+}

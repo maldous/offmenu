@@ -1,6 +1,6 @@
 {
   "schemaVersion": "offmenu-language-terminology-targets/1",
-  "generatedAt": "2026-10-15T03:16:31.113509+00:00",
+  "generatedAt": "2026-10-15T03:37:50.392731+00:00",
   "noteOnTimestamps": "This lane did not invent its timestamps. generatedAt is written live at file write time. The preceding country-coverage STATUS.json is a separate pinned artifact and is treated as its own provenance.",
   "laneOwner": "Freebuff OffMenu language-terminology lane",
   "ownedOutputDirectory": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology",
@@ -182,7 +182,7 @@
       "sha256": "9f7663b4bebdc8e6faffce658556e8fa559b224bf33f8061f13a56fa95470da4",
       "bytesFetched": 1653715,
       "extractionArtifact": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json",
-      "extractedDistinctInferredTagsInArtifact": 86
+      "extractedDistinctInferredTagsInArtifact": 70
     },
     "appleAppStore": {
       "canonicalUrl": "https://developer.apple.com/help/app-store-connect/reference/app-information/app-store-localizations/",
@@ -190,7 +190,7 @@
       "sha256": "b20f7e75e49672f6c17ba614d067b9350dc85fe2402bf0f09ef1b101c271e92b",
       "bytesFetched": 413492,
       "extractionArtifact": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json",
-      "extractedDistinctInferredTagsInArtifact": 46
+      "extractedDistinctInferredTagsInArtifact": 42
     }
   },
   "unionTargetInventory": {
@@ -204,19 +204,49 @@
         "datasetEvidence": false
       },
       {
+        "bcp47Base": "am",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "ar",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
+        "bcp47Base": "az",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "be",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "bg",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "bn",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -224,6 +254,7 @@
       {
         "bcp47Base": "ca",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -231,8 +262,9 @@
       {
         "bcp47Base": "cs",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -240,8 +272,9 @@
       {
         "bcp47Base": "da",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -249,8 +282,9 @@
       {
         "bcp47Base": "de",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -258,8 +292,9 @@
       {
         "bcp47Base": "el",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -267,9 +302,9 @@
       {
         "bcp47Base": "en",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -277,8 +312,32 @@
       {
         "bcp47Base": "es",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
+        ],
+        "datasetEvidence": true,
+        "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "et",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "eu",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "fa",
+        "sources": [
+          "dataset",
+          "googlePlay"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -286,25 +345,41 @@
       {
         "bcp47Base": "fi",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "fil",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "fr",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
+        "bcp47Base": "gl",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "gu",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -312,8 +387,8 @@
       {
         "bcp47Base": "he",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -321,8 +396,19 @@
       {
         "bcp47Base": "hi",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
+        ],
+        "datasetEvidence": true,
+        "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "hr",
+        "sources": [
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -330,46 +416,89 @@
       {
         "bcp47Base": "hu",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "hy",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "id",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "is",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "it",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "iw",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "ja",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
+        "bcp47Base": "ka",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "kk",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "km",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "kn",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -377,34 +506,85 @@
       {
         "bcp47Base": "ko",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
-        "bcp47Base": "ms",
+        "bcp47Base": "ky",
         "sources": [
-          "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "googlePlay"
         ],
-        "datasetEvidence": true,
-        "datasetContext": "recipe-source-alignment name.language"
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "lo",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "lt",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "lv",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "mk",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "ml",
         "sources": [
+          "googlePlay",
           "appleAppStore"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "mn",
+        "sources": [
+          "googlePlay"
         ],
         "datasetEvidence": false
       },
       {
         "bcp47Base": "mr",
         "sources": [
+          "googlePlay",
           "appleAppStore"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "ms",
+        "sources": [
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
+        ],
+        "datasetEvidence": true,
+        "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "my",
+        "sources": [
+          "googlePlay"
         ],
         "datasetEvidence": false
       },
@@ -417,11 +597,18 @@
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
+        "bcp47Base": "ne",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "nl",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -429,6 +616,7 @@
       {
         "bcp47Base": "no",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -449,11 +637,19 @@
         "datasetEvidence": false
       },
       {
-        "bcp47Base": "pl",
+        "bcp47Base": "pa",
         "sources": [
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "pl",
+        "sources": [
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -461,38 +657,82 @@
       {
         "bcp47Base": "pt",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "rm",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "ro",
+        "sources": [
+          "googlePlay",
+          "appleAppStore"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "ru",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
+      },
+      {
+        "bcp47Base": "si",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "sk",
         "sources": [
-          "appleAppStore",
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       },
       {
+        "bcp47Base": "sl",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "sq",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
+        "bcp47Base": "sr",
+        "sources": [
+          "googlePlay"
+        ],
+        "datasetEvidence": false
+      },
+      {
         "bcp47Base": "sv",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -507,6 +747,7 @@
       {
         "bcp47Base": "ta",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -514,6 +755,7 @@
       {
         "bcp47Base": "te",
         "sources": [
+          "googlePlay",
           "appleAppStore"
         ],
         "datasetEvidence": false
@@ -521,9 +763,9 @@
       {
         "bcp47Base": "th",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -531,9 +773,9 @@
       {
         "bcp47Base": "tr",
         "sources": [
+          "dataset",
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
@@ -558,47 +800,396 @@
         "bcp47Base": "vi",
         "sources": [
           "googlePlay",
-          "appleAppStore",
-          "dataset"
+          "appleAppStore"
         ],
-        "datasetEvidence": true,
-        "datasetContext": "recipe-source-alignment name.language"
-      },
-      {
-        "bcp47Base": "en-x-simple",
-        "sources": [
-          "dataset"
-        ],
-        "datasetEvidence": true,
-        "datasetContext": "recipe-source-alignment name.language"
-      },
-      {
-        "bcp47Base": "fa",
-        "sources": [
-          "dataset"
-        ],
-        "datasetEvidence": true,
-        "datasetContext": "recipe-source-alignment name.language"
-      },
-      {
-        "bcp47Base": "hr",
-        "sources": [
-          "dataset"
-        ],
-        "datasetEvidence": true,
-        "datasetContext": "recipe-source-alignment name.language"
+        "datasetEvidence": false
       },
       {
         "bcp47Base": "zh",
         "sources": [
-          "dataset"
+          "dataset",
+          "googlePlay",
+          "appleAppStore"
         ],
         "datasetEvidence": true,
         "datasetContext": "recipe-source-alignment name.language"
       }
     ],
     "regionalVariantsWithEvidence": {
-      "note": "retained from surviving parseable tail"
+      "az": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "az-AZ"
+        ]
+      },
+      "bn": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "bn-BD"
+        ]
+      },
+      "cs": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "cs-CZ"
+        ]
+      },
+      "da": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "da-DK"
+        ]
+      },
+      "de": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "de-DE"
+        ]
+      },
+      "el": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "el-GR"
+        ]
+      },
+      "en": {
+        "sources": [
+          "appleAppStore",
+          "googlePlay"
+        ],
+        "variants": [
+          "en-AU",
+          "en-CA",
+          "en-GB",
+          "en-IN",
+          "en-SG",
+          "en-US",
+          "en-ZA"
+        ]
+      },
+      "es": {
+        "sources": [
+          "appleAppStore",
+          "googlePlay"
+        ],
+        "variants": [
+          "es-419",
+          "es-ES",
+          "es-MX",
+          "es-US"
+        ]
+      },
+      "eu": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "eu-ES"
+        ]
+      },
+      "fa": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "fa-AE",
+          "fa-AF",
+          "fa-IR"
+        ]
+      },
+      "fi": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "fi-FI"
+        ]
+      },
+      "fr": {
+        "sources": [
+          "appleAppStore",
+          "googlePlay"
+        ],
+        "variants": [
+          "fr-CA",
+          "fr-FR"
+        ]
+      },
+      "gl": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "gl-ES"
+        ]
+      },
+      "hi": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "hi-IN"
+        ]
+      },
+      "hu": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "hu-HU"
+        ]
+      },
+      "hy": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "hy-AM"
+        ]
+      },
+      "is": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "is-IS"
+        ]
+      },
+      "it": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "it-IT"
+        ]
+      },
+      "iw": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "iw-IL"
+        ]
+      },
+      "ja": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ja-JP"
+        ]
+      },
+      "ka": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ka-GE"
+        ]
+      },
+      "km": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "km-KH"
+        ]
+      },
+      "kn": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "kn-IN"
+        ]
+      },
+      "ko": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ko-KR"
+        ]
+      },
+      "ky": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ky-KG"
+        ]
+      },
+      "lo": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "lo-LA"
+        ]
+      },
+      "mk": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "mk-MK"
+        ]
+      },
+      "ml": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ml-IN"
+        ]
+      },
+      "mn": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "mn-MN"
+        ]
+      },
+      "mr": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "mr-IN"
+        ]
+      },
+      "ms": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ms-MY"
+        ]
+      },
+      "my": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "my-MM"
+        ]
+      },
+      "ne": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ne-NP"
+        ]
+      },
+      "nl": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "nl-NL"
+        ]
+      },
+      "no": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "no-NO"
+        ]
+      },
+      "pl": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "pl-PL"
+        ]
+      },
+      "pt": {
+        "sources": [
+          "appleAppStore",
+          "googlePlay"
+        ],
+        "variants": [
+          "pt-BR",
+          "pt-PT"
+        ]
+      },
+      "ru": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ru-RU"
+        ]
+      },
+      "si": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "si-LK"
+        ]
+      },
+      "sv": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "sv-SE"
+        ]
+      },
+      "ta": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "ta-IN"
+        ]
+      },
+      "te": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "te-IN"
+        ]
+      },
+      "tr": {
+        "sources": [
+          "googlePlay"
+        ],
+        "variants": [
+          "tr-TR"
+        ]
+      },
+      "zh": {
+        "sources": [
+          "appleAppStore",
+          "googlePlay"
+        ],
+        "variants": [
+          "zh-CN",
+          "zh-HK",
+          "zh-Hans",
+          "zh-Hant",
+          "zh-TW"
+        ]
+      }
     },
     "uncertainties": [
       "Union is a target inventory for projection/back-translation planning, not a completion report.",
@@ -606,7 +1197,8 @@
       "Where dataset and store both list a base language, the store may still add regional variants the dataset does not yet cover, and vice versa.",
       "BCP-47 region inference from captions is recorded explicitly; non-standard region forms from source are preserved only as quoted evidence.",
       "added missing observed bases to union after QA: ['en-x-simple', 'fa', 'hr', 'zh']"
-    ]
+    ],
+    "note": "Rebuilt by Worker 01 correction pass 2026-10-15 per unionPrinciple: observed dataset language bases + store canonical tag bases, de-duplicated by BCP-47 base. en-x-simple collapsed to en. Slovenia (sl) added from Google explicit + Apple unresolved caption cross-reference."
   },
   "terminologyReadiness": {
     "controlledEnglishContractReference": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/terminology-contract.json",
@@ -619,18 +1211,24 @@
   },
   "coverageAndGapsSummary": {
     "observedDatasetLanguagesCount": 32,
-    "storeExtractedGoogleDistinctTagsInArtifact": 8,
-    "storeExtractedAppleDistinctTagsInArtifact": 45,
-    "unionDistinctBaseTagsCount": 46,
+    "storeExtractedGoogleDistinctTagsInArtifact": 86,
+    "storeExtractedAppleDistinctTagsInArtifact": 49,
+    "unionDistinctBaseTagsCount": 74,
     "gaps": [
       "No complete corpus-wide language inventory was produced from full normalized corpus; union is built from bounded observations plus store inventories.",
       "Script/region detail for many observed dataset tags is not asserted by this lane beyond what the bounded scan provided.",
       "App-store localization support is not equivalent to dataset translation coverage; back-translation targets must be validated against actual corpus content later.",
-      "RTL/script handling, locale fallbacks and region-variant semantics are identified as follow-on work, not certified here."
+      "RTL/script handling, locale fallbacks and region-variant semantics are identified as follow-on work, not certified here.",
+      "Union rebuilt 2026-10-15: 46 -> 74 distinct BCP-47 base tags after adding 28 previously-missing store-only bases (am, az, be, bg, et, eu, fil, gl, hy, is, iw, ka, kk, km, ky, lo, lt, lv, mk, mn, my, ne, pa, rm, ro, si, sl, sq, sr) and collapsing en-x-simple to en. 29 of these store-only bases have no dataset evidence.",
+      "Slovenian (sl) added to union via Google explicit 'Slovenian'->sl plus Apple 'Slovenia' unresolvedCaption cross-reference; Apple caption resolution remains pending."
     ],
     "uncertainties": [
-      "unionDistinctBaseTagsCount recomputed to match actual union base tag count: 46",
-      "QA reconciliation by Worker 01 2026-10-15: store-language-locale-inventory.json Google items=86 (all explicit BCP47 tags), Apple items=49 (all explicit/inferred BCP47 tags after fixing 8 non-BCP47 region-code values). STATUS.json previously reported storeAppleAppStoreCanonicalTagsCount=47 which did not match the 49 inventory items; corrected to 49. The 86/47 denominations in the predecessor handover referred to Google excerpt line-count vs Apple canonical-tag-count from a different parsing stage; the surviving qa/ extraction had only 2/48 parsed rows. Both extraction files now carry complete 86+49 row sets."
+      "Union is a target inventory for projection/back-translation planning, not a claim that every locale already has translated corpus content.",
+      "Observed dataset language tags are sampled evidence; full corpus language coverage must be measured from complete normalized corpus, not inferred from one bounded recipe partition.",
+      "Where dataset and store both list a base language, the store may still add regional variants the dataset does not yet cover, and vice versa.",
+      "BCP-47 region inference from captions is recorded explicitly; non-standard region forms from source are preserved only as quoted evidence.",
+      "added missing observed bases to union after QA: ['en-x-simple', 'fa', 'hr', 'zh'] — now rebuilt to 74 bases per unionPrinciple.",
+      "QA reconciliation by Worker 01 2026-10-15: store-language-locale-inventory.json Google items=86 (canonicalBcp47TagCount=86, unresolvedCaptionRowCount=0), Apple items=50 = 49 resolved canonical tags + 1 unresolvedCaption row (Slovenia retained verbatim; sl base cross-referenced to Google explicit 'Slovenian'->sl; NOT counted as an Apple canonical tag). Apple canonicalBcp47TagCount=49; unresolvedCaptionRowCount=1. Store canonical base count: 72 (google 70 + apple 42). Union base count: 74 (observed 31 + store-only 43), recomputed from extraction inputs by QA regression D4."
     ]
   }
 }

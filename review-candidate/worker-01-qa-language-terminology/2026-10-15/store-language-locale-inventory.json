@@ -1,6 +1,6 @@
 {
   "schemaVersion": "offmenu-store-language-locale-inventory/1",
-  "generatedAt": "2026-10-15T03:16:13.444541+00:00",
+  "generatedAt": "2026-10-15T03:37:09.042260+00:00",
   "noteOnTimestamps": "generatedAt is written live at file write time. The canonical source content used here is the already-retained app-store-locale-snapshot.json; no new network fetch is performed by this computation.",
   "sourceSnapshot": {
     "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/app-store-locale-snapshot.json",
@@ -883,7 +883,9 @@
       }
     ],
     "canonicalBcp47TagCount": 86,
-    "sourceExcerptSha256": "7c4f8ee656693c8176bc707b619fa06cf81940d72e4f7d3ebdb63339b7cb43de"
+    "sourceExcerptSha256": "7c4f8ee656693c8176bc707b619fa06cf81940d72e4f7d3ebdb63339b7cb43de",
+    "unresolvedCaptionRowCount": 0,
+    "itemsCount": 86
   },
   "appleAppStore": {
     "sourceListTextExcerpt": "Arabic, Bangla, Catalan, Chinese (Simplified), Chinese (Traditional), Croatian, Czech, Danish, Dutch, English (Australia), English (Canada), English (U.K.), English (U.S.), Finnish, French, French (Canada), German, Greek, Gujarati, Hebrew, Hindi, Hungarian, Indonesian, Italian, Japanese, Kannada, Korean, Malay, Malayalam, Marathi, Norwegian, Odia, Polish, Portuguese (Brazil), Portuguese (Portugal), Punjabi, Romanian, Russian, Slovak, Slovenia, Spanish (Mexico), Spanish (Spain), Swedish, Tamil, Telugu, Thai, Turkish, Ukrainian, Urdu, Vietnamese.",
@@ -1280,6 +1282,21 @@
         "evidenceKind": "inferredFromStoreCaption"
       },
       {
+        "sourceCaption": "Slovenia",
+        "caption": "Slovenia",
+        "regionToken": null,
+        "explicitTag": null,
+        "inferredTag": "sl",
+        "canonicalBcp47": "sl",
+        "note": "inferredFromStoreCaption; unresolved — Apple page lists 'Slovenia' between Slovak and Spanish (Mexico); mapped to sl base per Google explicit 'Slovenian'->sl cross-reference (googlePlay items); Apple page itself may render 'Slovenian' (not verifiable from retained excerpts alone)",
+        "evidenceKind": "unresolvedCaption",
+        "captionProvenance": {
+          "appleExcerptPosition": "between 'Slovak' and 'Spanish (Mexico)' in sourceListTextExcerpt",
+          "googleCrossReference": "Google explicit 'Slovenian' -> sl (googlePlay items)",
+          "resolution": "pending — retain sl base with unresolvedCaption flag; do not silently infer from country alone"
+        }
+      },
+      {
         "sourceCaption": "Spanish (Mexico)",
         "caption": "Spanish",
         "regionToken": "Mexico",
@@ -1380,8 +1397,11 @@
         "evidenceKind": "inferredFromStoreCaption"
       }
     ],
-    "canonicalBcp47TagCount": 47,
-    "sourceExcerptSha256": "31ffa4d0c54670e8f8a577100b0b504eea4e821b6316e2b65d0001854af81414"
+    "canonicalBcp47TagCount": 49,
+    "sourceExcerptSha256": "31ffa4d0c54670e8f8a577100b0b504eea4e821b6316e2b65d0001854af81414",
+    "itemsCount": 50,
+    "unresolvedCaptionRowCount": 1,
+    "countSeparationNote": "itemsCount counts all retained caption rows; canonicalBcp47TagCount counts only rows with evidenceKind != unresolvedCaption; unresolvedCaptionRowCount counts rows retained verbatim without an Apple-established language (Slovenia -> sl base is a Google-explicit cross-reference, not an Apple canonical tag)."
   },
   "canonicalBcp47Mapping": {
     "note": "Canonical BCP-47 tags are derived deterministically from each store caption using the retained caption map and explicit region/script cues. Google Play explicit tags in the excerpt (for example 'Afrikaans - af') are authoritative and used directly; Apple App Store captions are normalized to canonical BCP-47 using the caption map plus explicit region/script cues only where the cue maps to a standard subregion or script code; non-standard source region forms such as 'Slovenia' or 'U.K.' are preserved as quoted source evidence in sourceCaption/regionToken and are not silently promoted to ISO 3166-1 alpha-2 codes without evidence.",
