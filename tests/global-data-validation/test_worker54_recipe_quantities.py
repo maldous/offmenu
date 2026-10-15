@@ -42,6 +42,18 @@ class SyntheticQuantityCases(unittest.TestCase):
         self.assertEqual(w.parse_yield('4 servings or half batch','en')['status'],'UNKNOWN')
         for text in ['2 g salt','2 cups flour','4 servings']:
             self.assertEqual(w.parse(text,'en')['status'],'candidate',text)
+    def test_supported_french_spanish_written_alternatives(self):
+        # Synthetic PR24 witnesses; no new unit/language coverage or word-number interpretation.
+        for text,locale in [('2 tasses ou une tasse de lait','fr'),('2 TASSES OU UNE TASSE DE LAIT','fr-FR'),('2 tasses fois deux paquets','fr'),('2 tazas o una taza de leche','es'),('2 tazas u otra taza de leche','es-MX'),('2 tazas veces dos paquetes','es')]:
+            result=w.parse(text,locale,{'line':3},{'revisionId':9})
+            self.assertEqual(result['status'],'UNKNOWN',text)
+            self.assertIsNone(result['value']);self.assertIsNone(result['range'])
+            self.assertEqual(result['originalLexeme'],text)
+            self.assertEqual(result['coordinate'],{'line':3})
+            self.assertEqual(result['provenance'],{'revisionId':9})
+        for text,locale,value in [('2 tasses de lait','fr','2'),('1,5 tasses de lait','fr','3/2'),('2 tazas de leche','es','2'),('2 g chocolate','es','2'),('2 g chou','fr','2')]:
+            result=w.parse(text,locale)
+            self.assertEqual(result['status'],'candidate',text);self.assertEqual(result['value'],value)
     def test_yield(self):
         self.assertEqual(w.parse_yield()['status'],'UNKNOWN');self.assertEqual(w.parse_yield('4 servings','en')['value'],'4');self.assertEqual(w.parse_yield('500 g cake','en')['status'],'UNKNOWN')
     def test_limits(self):
