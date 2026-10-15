@@ -71,3 +71,19 @@ Root selected source7d2c61b after SAME25 narrow12-check scoped PASS, review5a901
 DELIVERY-20261015-OWNER18 composes the preserved three-file candidate998f76e302400298ac1b2600e7c1f792c4924069 onto locally available merged develop46b989ac1ec93e3483b36f64b8a267e5a60ac528. Source commits are replayed with attribution; corrected runtime/test bytes remain identical to source7d2c61b3f69754179f1b6c64dd46df5d03c2a046. Earlier base/publication records above remain historical. Independent review of this new candidate is required.
 
 Portable validation selects the six injected-extractor tests, including current admission/revocation regression; it excludes test_one_actual_synthetic_receipt explicitly. Native extraction is not qualified by that selection. Pillow remains required even for injected image decoding; native extraction additionally requires Tesseract, eng trained data and the declared font. Existing post-execution TSV cap is not an OS resource quota. No provider jobs, real images, user data, helper lookup, stock adoption, permission expansion, deployment or source-rights grant is involved. All authoritative owner, private admission, retention, atomic ledger and distributed revocation integration obligations above remain in force. Exact validation results are supplied with the candidate handoff.
+
+## PR16 discovery correction
+
+Standard root unittest discovery does not recurse into the non-package global-data-validation directory. The third-party-services workflow now explicitly runs the six portable ReceiptImage methods below after installing the test extra, which now declares Pillow for image decoding. It leaves ordinary discovery and other nested suites unchanged. No private dataset, historical Git object, native engine, font or trained language data is required by this invocation.
+
+```sh
+python3 -B tests/global-data-validation/test_receipt_image_ocr_owner18.py -v \
+  ReceiptImage.test_bounds_scope_and_explicit_review \
+  ReceiptImage.test_capture_and_current_recheck \
+  ReceiptImage.test_duplicate_image_receipt_and_account_scope \
+  ReceiptImage.test_permissions_precede_extraction \
+  ReceiptImage.test_retention \
+  ReceiptImage.test_unknown_source_and_user_corrections
+```
+
+The native test_one_actual_synthetic_receipt is intentionally excluded. Its historical evidence does not qualify this correction's native environment. The explicit method list fails if a selected method disappears; new portable tests must also be added to the CI list. No runtime, rights, admission or caller-adoption changes are made.
