@@ -85,7 +85,9 @@ three small retained assets only — read-only, no full-corpus scan, no bulk
 output.
 
 - Batch 1 (30 fresh processes × 3,000 lines): **0/30 faults**, identical
-  results (90,000 clean parses).
+  results (90,000 clean parses).  The raw batch-1 report file was overwritten
+  by the failed batch-2 run and is **not preserved**; the result survives in
+  the stage receipt and session transcript only.
 - Batch 2 (500 requested): one child **stalled ≥120 s on a 0.17 s workload**
   (hang signature — recorded as a separate observation from the SIGSEGV, not
   conflated); the un-hardened harness then crashed on the unhandled timeout
