@@ -76,15 +76,57 @@ pyproject-pinned test extras (system Python is PEP 668 externally managed; the
 12 loader errors under system Python are missing optional extras
 `jsonschema_rs`/`openpyxl`/`mwparserfromhell`, pre-existing and unrelated).
 
-## Bounded next tests (prepared, not executed this stage)
+## Fault-rate reproduction results (2026-10-15, same stage)
 
-1. Repeated-subprocess `representative_checks` fault-rate loop over the real
-   manifest *prefix only* (no full 9,797-asset scan) to measure fault rate and
-   localize any triggering row; if found, pin its hash as a retained fixture.
+Harness `scripts/diagnose-representative-faultrate-20261015.py` (watchdog-hardened:
+abnormal child exits are recorded; stalls are recorded as timeout runs with a
+read-only `/proc` snapshot before the child is killed).  All runs parse the
+three small retained assets only — read-only, no full-corpus scan, no bulk
+output.
+
+- Batch 1 (30 fresh processes × 3,000 lines): **0/30 faults**, identical
+  results (90,000 clean parses).
+- Batch 2 (500 requested): one child **stalled ≥120 s on a 0.17 s workload**
+  (hang signature — recorded as a separate observation from the SIGSEGV, not
+  conflated); the un-hardened harness then crashed on the unhandled timeout
+  (harness defect, fixed).  System load 0.50 / MemAvailable 41 GB at the time
+  → not CPU or memory contention.
+- Batch 3 (300 fresh processes): **fault reproduced** — run 235 died with
+  **SIGSEGV (exit −11)** while parsing `part-00413.jsonl.gz`, after the same
+  bytes had parsed clean in the other 234 fresh processes.  Stochastic fault
+  rate ≈ **1/235 fresh processes** (~705,000 line parses); a deterministic
+  data trigger is ruled out at run level.
+- Kernel correlation: `14:43:57 python3[2456598]: segfault at 2332 ip
+  0000000000586d84 error 4 … likely on CPU 10 (core 20, socket 0)` — **same
+  instruction pointer** as the 14:15:00 fault (`segfault at 4489 ip …586d84`),
+  and **all five** of the day's python3.12 C-level faults report "likely on CPU
+  10 (core 20)" (03:30 basic-memory, 04:12 python3, 09:51 basic-memory, 14:15
+  python3, 14:43 harness child; the 10:23 repair GPF did not report a CPU).
+- CPU-pinned comparison (bounded follow-up): `taskset -c 10` → 0/300,
+  `taskset -c 11` → 0/300 — **inconclusive**: at the observed rate ~1.3 faults
+  per 300 runs are expected, so two clean batches neither confirm nor refute
+  the core-20 localization.  Larger pinned samples are the bounded next test.
+
+Hypothesis status updated: native-fault recurrence at the crash workload is
+now **observed** (stochastic, not deterministic).  Leading hypothesis remains
+a hardware fault (core-20 localization suggested by the kernel reports but not
+confirmed by the pinned comparison); a fixed-IP defect in CPython 3.12.3
+(same crash IP `…586d84` twice) remains a live alternative.  **Still no fix
+invented** — the pinned implementation is unchanged.
+
+## Bounded next tests (status after the reproduction results)
+
+1. ~~Repeated-subprocess fault-rate loop~~ — **EXECUTED** (above): fault
+   reproduced at ≈1/235 processes on `part-00413.jsonl.gz`.  Row-level
+   localization is a repeated-parse bisect of that file only (the fault is
+   stochastic, so a single triggering row is not assumed).
 2. Bounded non-destructive memory-health check to test the hardware hypothesis
-   (proper RAM testing needs a non-installed tool or a reboot — gate noted).
-3. If unreproducible, run the repair under a watchdog that snapshots `/proc` on
-   freeze/crash.
+   (proper RAM testing needs a non-installed tool or a reboot — gate noted);
+   larger CPU-pinned fault-rate samples (CPU 10 vs control) are the cheaper
+   first step toward confirming or refuting the core-20 localization.
+3. Repair relaunch remains gated: if resumed, run under a watchdog that
+   snapshots `/proc` on freeze/crash (the harness already demonstrates the
+   pattern) to a fresh output root with Morgan's explicit go.
 
 ## Pin custody (final verification, 2026-10-15)
 
