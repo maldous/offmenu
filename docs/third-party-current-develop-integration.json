@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "state": "ready-for-worker13-independent-review-and-morgan-verdict",
+  "branch": "feature/third-party-current-develop-integration-20261014",
+  "target": "develop",
+  "fetch": {
+    "exitCode": 0,
+    "completedAtUTC": "2026-10-14T08:16:29.336853+00:00",
+    "stdout": "",
+    "stderr": "",
+    "developSHA": "abe0ddc9db357b1e8d0d61825392d6b9923352f0"
+  },
+  "acceptedSource": "1469cea8b6c91f705de9c4c8aee91c4c4d723660",
+  "implementationBase": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+  "preservedPriorCandidate": {
+    "branch": "feature/third-party-compatibility-integration-20261014",
+    "sha": "49c6ed037a0c506dc2e71a7c8ef40d423d6f46d0",
+    "receipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-develop-candidate-receipt.json"
+  },
+  "normalMerge": {
+    "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "source": "1469cea8b6c91f705de9c4c8aee91c4c4d723660",
+    "exitCode": 0,
+    "conflicts": []
+  },
+  "expectedParents": [
+    "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "1469cea8b6c91f705de9c4c8aee91c4c4d723660"
+  ],
+  "compositionBeforeReviewDocumentation": {
+    "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "source": "1469cea8b6c91f705de9c4c8aee91c4c4d723660",
+    "commonAncestor": "776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f",
+    "leafCount": 379,
+    "compositionManifestSHA256": "c2359b057c616921060e61e5352bc323fb0b90562e28ceaaf079e0eb0d9b1ffb",
+    "conflicts": [],
+    "workingBytesEqualExpectedIndex": true,
+    "acceptedHarnessFilesMatched": 3,
+    "testedFixtureInputsMatched": 124,
+    "retainedPlacesProvenance": [
+      {
+        "path": "docs/places-checkpoint-recovery.md",
+        "developBlob": "73f67a6d163f7c09b426e3a65257ad169819ec52",
+        "candidateBlob": "73f67a6d163f7c09b426e3a65257ad169819ec52"
+      },
+      {
+        "path": "docs/places-recovery-preflight-20261014.json",
+        "developBlob": "77991d82476c378b23d96eef60fd0be152b6322a",
+        "candidateBlob": "77991d82476c378b23d96eef60fd0be152b6322a"
+      },
+      {
+        "path": "scripts/align-places-common.py",
+        "developBlob": "66b3152dd6fb96994b0e05a6206550fd6779d431",
+        "candidateBlob": "66b3152dd6fb96994b0e05a6206550fd6779d431"
+      },
+      {
+        "path": "scripts/places-recovery-preflight.py",
+        "developBlob": "ac7eea681bd45b5264057761eb84cf8987eae004",
+        "candidateBlob": "ac7eea681bd45b5264057761eb84cf8987eae004"
+      },
+      {
+        "path": "scripts/places_checkpoint.py",
+        "developBlob": "36bc294a545f64411f8c007d243c4b903b986fc0",
+        "candidateBlob": "36bc294a545f64411f8c007d243c4b903b986fc0"
+      },
+      {
+        "path": "tests/test_places_checkpoint.py",
+        "developBlob": "7e28c7cc18fed9dde782fd7f088d7b1367d67771",
+        "candidateBlob": "7e28c7cc18fed9dde782fd7f088d7b1367d67771"
+      }
+    ]
+  },
+  "runnerFilesSHA256": {
+    "scripts/run-third-party-compatibility.mjs": "5084a942a42c779d8f4541c0aa418848d0feb5f7481f4798a7123453775ef019",
+    "scripts/lib/third-party-compatibility.mjs": "b3ca9174e15a0d36452a555b5705eb4509a436cbd177c55d89c7b4fbc268c213",
+    "tests-compat/pinned-schema-runtime.test.mjs": "01988d49c3ddcd4f45702e9f547e820dafcba1c4daacfec925e8deef4847a042"
+  },
+  "exactAcceptedHarness": true,
+  "candidateFixtureInputsEqualAcceptedPinnedInputs": 124,
+  "nativeRuntimeScope": "Accepted runner still pins main8652b312 and third-party84c4732; all124 fixture inputs equal the new candidate. Six places recovery changes from develop are separately preserved and synthetically tested, not a whole-app or live corpus qualification.",
+  "D1Limitation": "Raw SQL replay in SQLite, then reconstructed sqlite_master DDL with IF NOT EXISTS in local D1. Compiled Worker is checked against reconstructed migrated D1 schema, not unchanged raw D1 replay; this is a scope limitation, not an added blocker for the accepted result.",
+  "execution": {
+    "inheritedGITVariables": "Stripped for every Git and Node/Python check subprocess",
+    "node": {
+      "node": "v24.16.0",
+      "platform": "linux",
+      "architecture": "x64"
+    },
+    "sharedDependenciesHermetic": false,
+    "dependencyLinks": {
+      "node_modules": {
+        "target": "/home/user/src/offmenu-third-party/node_modules",
+        "resolved": "/home/user/src/offmenu-third-party/node_modules",
+        "exists": true
+      },
+      ".venv": {
+        "target": "/home/user/src/offmenu-third-party/.venv",
+        "resolved": "/home/user/src/offmenu-third-party/.venv",
+        "exists": true
+      }
+    },
+    "dependencyVersions": {
+      "esbuild": {
+        "version": "0.25.12",
+        "packageJSONSHA256": "cb7d5b1fe478f8cbaae566a86031b6fdf5f7d444354f35d1cb3cba9adf6d2935"
+      },
+      "miniflare": {
+        "version": "4.20260730.0",
+        "packageJSONSHA256": "f0025bdc4b9b70199ea393572c23ca35ea58efa3d81b270f19f5e8c8d27771f4"
+      },
+      "workerd": {
+        "version": "1.20260730.1",
+        "packageJSONSHA256": "5edae90469333c86e194a75358e80dbe5b1d3c259860794850e53ce8f240f762"
+      }
+    },
+    "primaryHEADAndIndexPreserved": true,
+    "gitMutatingFixturesRun": false
+  },
+  "checks": {
+    "native": {
+      "checkedAt": "2026-10-14T08:17:26.922Z",
+      "command": [
+        "node",
+        "scripts/run-third-party-compatibility.mjs",
+        "--report",
+        "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-compatibility-checks.json"
+      ],
+      "results": [
+        {
+          "name": "targeted-unit",
+          "counts": {
+            "tests": 107,
+            "pass": 107,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "passed": true,
+          "log": "output/third-party-compatibility/0a2b1d91-01b2-4aaf-98cb-d9efefdc501b/targeted-unit.tap",
+          "logSHA256": "97caffc9c28982b0402f9bc628d2dd543743e39ba9a64c48508b834dfb64b62a"
+        },
+        {
+          "name": "compiled-worker",
+          "counts": {
+            "tests": 5,
+            "pass": 5,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "passed": true,
+          "log": "output/third-party-compatibility/0a2b1d91-01b2-4aaf-98cb-d9efefdc501b/compiled-worker.tap",
+          "logSHA256": "0588af6a65881c61b4198f5764069e1717c44d0242cedeea6bd1b9565e2c9048"
+        },
+        {
+          "name": "pinned-main-replay-runtime",
+          "counts": {
+            "tests": 2,
+            "pass": 2,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "passed": true,
+          "log": "output/third-party-compatibility/0a2b1d91-01b2-4aaf-98cb-d9efefdc501b/pinned-main-replay-runtime.tap",
+          "logSHA256": "1844284125e3cba7a84c2f1d4ddf6c1d13ebf79c1e3999efb7e1de72b8b573cb"
+        }
+      ],
+      "bundleSHA256": "cc19003a18494fcb01912b3adf71f9e6e86986805fef95379fc89441aa99be14"
+    },
+    "composition": {
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "tests-web/pinned-third-party-compatibility.test.mjs"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-composition-tests.tap",
+      "logSHA256": "cb8f3b9b175ec3ec5db28c88a477b0c74caeeed8d90a5c1d3331491a2cdd8620"
+    },
+    "placesCheckpoint": {
+      "command": [
+        "/home/user/src/offmenu-workers/worker-02/.venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_places_checkpoint.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-places-checkpoint-venv-tests.log",
+      "logSHA256": "e098489574299a684b51b6e2eae37648e977adbfcebf9ad0788a41da348eee58",
+      "python": "/usr/bin/python3.12",
+      "priorSystemPythonAttempt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-places-checkpoint-tests.json",
+      "scope": "Synthetic temp-directory checkpoint/recovery fixtures; no Git mutations or real corpus jobs.",
+      "passed": 10,
+      "failed": 0
+    },
+    "systemPythonAttempt": {
+      "exitCode": 1,
+      "reason": "System Python lacks jsonschema_rs; retained virtualenv passed without installing anything.",
+      "receipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-places-checkpoint-tests.json"
+    }
+  },
+  "documentationDelta": [
+    "docs/third-party-pinned-compatibility.md clarifies accepted D1 limitation; executable harness unchanged",
+    "This current-develop integration receipt"
+  ],
+  "custodyReceipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-current-develop-custody.json",
+  "externalGates": [
+    "No branch merge or deployment acceptance.",
+    "Google IDP and Mock Services peer changes are not composed.",
+    "Actual corpus transport/data, scanner binaries, extension package and real browser/device flows are not qualified.",
+    "Local runtime compatibility date 2026-08-06; deployed 2026-10-12 runtime remains unqualified.",
+    "Live origin access, subscriptions/billing/headroom, outbound sender/quota and trusted production admin role remain external gates."
+  ],
+  "publication": "No push, PR, develop update, main/tag/deploy or GitHub Actions performed. Worker13 independent review and Morgan verdict remain pending; root owns subsequent publication.",
+  "diffValidation": {
+    "wholeCandidateExitCode": 2,
+    "inheritedWarning": "dev/wiremock/.gitignore:3: new blank line at EOF.",
+    "acceptedMockBytesUnchanged": true,
+    "newDocumentationExitCode": 0
+  }
+}
