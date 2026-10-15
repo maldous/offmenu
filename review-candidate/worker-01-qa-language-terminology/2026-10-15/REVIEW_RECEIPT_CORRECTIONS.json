@@ -69,8 +69,8 @@
     "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
     "app-store-locale-snapshot.json": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
     "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
-    "STATUS.json": "cf6cd9fae0729b817dc3de7cc869d478f595a62fee785abae503fc8c1d866268",
-    "qa/test_terminology_qa.py": "cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9",
+    "STATUS.json": "1381a38739e691a2094fb74105122e97ed8750be326265d30c37a1e6e0e19dc2",
+    "qa/test_terminology_qa.py": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
     "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
     "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855"
   },
@@ -94,5 +94,38 @@
     "supersededBy": "REVIEW_RECEIPT_CORRECTIONS.json 'files' map",
     "reviewContinuityNote": "Frozen pre-correction candidate remains available at immutable base commit 3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22 for diff-against-base."
   },
-  "qaPostCorrectionResult": "PASS 0 failures (lane QA exit 0; candidate QA exit 0; HEAD-tree QA exit 0; 226 assertions)"
+  "qaPostCorrectionResult": "PASS 0 failures (lane QA exit 0; candidate QA exit 0; HEAD-tree QA exit 0; 226 assertions)",
+  "deltaVerificationD7F4": {
+    "review05FrozenManifestRef": "4f8eb6a8... (reviewer05 frozen 5ac 14-file manifest; namespace not rewritten by this correction)",
+    "base": "5ac7d9aa502ecadfd657911f159b2823f5633ac5",
+    "changes": {
+      "qa/test_terminology_qa.py": {
+        "what": "F4: input-root selection prefers candidate ROOT when it holds required inputs; live-lane root only via explicit env TERMINOLOGY_QA_ALLOW_LIVE_ROOT=1, never silent fallback; added focused isolation check (synthetic temp ROOT sentinel vs distinct live alternative)",
+        "qaExit": 0,
+        "pass": 228,
+        "fail": 0,
+        "newChecks": [
+          "F4 isolation: candidate ROOT preferred over distinct live alternative",
+          "F4 isolation: live alternative was distinct from synthetic candidate"
+        ],
+        "rootSelectionMode": "candidate-root"
+      },
+      "REVIEW_RECEIPT.json": {
+        "what": "D7: marked HISTORICAL/SUPERSEDED with provenanceStatus + supersededBy; task.headFull placeholder 'b458b64abcdef' -> evidenced real SHA b458b64cd465aecf37e60b530031c6cceaa5b0f2; 4/9 stale reviewFiles relabeled historical-at-pickup with staleVsCurrent + currentAuthoritativeSha256; PENDING/PRE-CORRECTION confined to *Historical fields",
+        "staleReviewFiles": [
+          "store-language-locale-inventory.json",
+          "LANGUAGE_TARGETS.json",
+          "terminology-contract.json",
+          "qa/test_terminology_qa.py"
+        ],
+        "headFullPlaceholderResolved": true
+      }
+    },
+    "notClaimed": [
+      "No independent approval or signed verdict.",
+      "Old 226-PASS run did NOT test the new QA code; the 228-PASS/0-FAIL run above is the post-change author evidence.",
+      "CoFID raw custody + larger backlog remain deferred."
+    ],
+    "authorEvidenceOnly": true
+  }
 }

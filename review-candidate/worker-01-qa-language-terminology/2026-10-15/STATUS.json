@@ -62,7 +62,7 @@
     "terminology-contract.json": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
     "terminology-fixtures.jsonl": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
     "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
-    "qa/test_terminology_qa.py": "cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9",
+    "qa/test_terminology_qa.py": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
     "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
     "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855"
   },

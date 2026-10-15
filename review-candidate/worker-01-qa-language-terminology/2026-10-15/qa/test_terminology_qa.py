@@ -22,23 +22,58 @@ This script tests deterministic invariants the lane owns:
 - D2 regression: canonical tag count separated from unresolved-caption row count
 - D3 regression: terminology-contract tie-out hashes equal computed file sha256
 - D5 regression: fix-store-bcp-tags.py guard defaults refuse candidate overwrite
+- F4 isolation: candidate ROOT preferred over a distinct live alternative (live root only via explicit env, never silent fallback)
 - QA invariants are asserted; no unsupported "complete translation" claim is asserted by this script.
 """
 from __future__ import annotations
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
-PROBE_DIRS = [
-    Path("/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology"),
-    ROOT,
-]
-CANDIDATE_LANE_ROOT = Path(
+
+# F4: input-root selection. ROOT (the frozen candidate tree, parents[1] of this
+# script) is authoritative whenever it contains the required inputs. A distinct
+# live-lane root is consulted ONLY when explicitly requested via env, never as a
+# silent fallback that overrides ROOT — a frozen-tree run must not read a moving lane.
+LIVE_LANE_ROOT = Path(
     "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology"
 )
+CANDIDATE_LANE_ROOT = LIVE_LANE_ROOT
+_ALLOW_LIVE_ENV = "TERMINOLOGY_QA_ALLOW_LIVE_ROOT"
+
+REQUIRED_INPUTS = [
+    "terminology-contract.json",
+    "terminology-translation-bounds.json",
+    "LANGUAGE_TARGETS.json",
+    "terminology-fixtures.jsonl",
+    "store-locale-bcp47-extraction.json",
+    "qa/store-locale-bcp47-extraction.json",
+    "app-store-locale-snapshot.json",
+    "store-language-locale-inventory.json",
+    "STATUS.json",
+]
+
+
+def candidate_has_inputs(names=REQUIRED_INPUTS) -> bool:
+    return all((ROOT / n).exists() for n in names)
+
+
+def select_probe_dirs():
+    """Return (probe_dirs, mode). Candidate ROOT first; live lane only if opted in."""
+    if candidate_has_inputs():
+        if os.environ.get(_ALLOW_LIVE_ENV) == "1" and LIVE_LANE_ROOT.exists():
+            return [LIVE_LANE_ROOT, ROOT], "live-opt-in"
+        return [ROOT], "candidate-root"
+    if LIVE_LANE_ROOT.exists():
+        return [LIVE_LANE_ROOT], "live-fallback-candidate-incomplete"
+    return [ROOT], "candidate-root-only"
+
+
+PROBE_DIRS, ROOT_SELECTION_MODE = select_probe_dirs()
 
 
 def find(name: str) -> Path:
@@ -105,6 +140,7 @@ def base_of(tag: str) -> str:
 def main() -> int:
     print(f"START {now_iso()}")
     print(f"ROOT {ROOT}")
+    print(f"ROOT_SELECTION_MODE {ROOT_SELECTION_MODE}")
     contract = load_json("terminology-contract.json")
     bounds = load_json("terminology-translation-bounds.json")
     targets = load_json("LANGUAGE_TARGETS.json")
@@ -416,6 +452,30 @@ def main() -> int:
     pin = status.get("pinManifest", {})
     ok("D6 STATUS pinManifest present (non-self-referential)",
        isinstance(pin, dict) and "externalPinPath" in pin, str(pin)[:120])
+
+    # --- F4 isolation check: candidate input is used even when a distinct live
+    # alternative exists. Synthetic temp ROOT carries a sentinel STATUS.json; the
+    # resolver must prefer ROOT over the live lane. No authoritative file is touched.
+    import shutil as _shutil
+    import tempfile as _tempfile
+    _tmp = Path(_tempfile.mkdtemp(prefix="qa_f4_iso_"))
+    try:
+        _sentinel = '{"sessionId": "F4-SENTINEL", "fileHashes": {}, "pinManifest": {"externalPinPath": "x"}}'
+        (_tmp / "STATUS.json").write_text(_sentinel, encoding="utf-8")
+        _saved_dirs, _saved_mode = PROBE_DIRS, ROOT_SELECTION_MODE
+        try:
+            globals()["PROBE_DIRS"], globals()["ROOT_SELECTION_MODE"] = [_tmp], "candidate-root"
+            _sel = find("STATUS.json")
+            ok("F4 isolation: candidate ROOT input preferred over distinct live alternative",
+               _sel == _tmp / "STATUS.json" and _tmp not in LIVE_LANE_ROOT.parents and str(_sel).startswith(str(_tmp)),
+               f"selected={_sel}")
+            _live_still_distinct = LIVE_LANE_ROOT != _tmp
+            ok("F4 isolation: live alternative was distinct from synthetic candidate",
+               _live_still_distinct, f"live={LIVE_LANE_ROOT}")
+        finally:
+            globals()["PROBE_DIRS"], globals()["ROOT_SELECTION_MODE"] = _saved_dirs, _saved_mode
+    finally:
+        _shutil.rmtree(_tmp, ignore_errors=True)
 
     # --- timestamp provenance note present ---
     for label, obj, key in [
