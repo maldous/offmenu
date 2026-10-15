@@ -11,13 +11,43 @@ function explicitInstant(value) {
   const day = Date.parse(match[1] + 'T00:00:00Z');
   return Number.isFinite(day) && new Date(day).toISOString().slice(0, 10) === match[1] && Number.isFinite(Date.parse(value));
 }
+function plainCopy(value, depth = 0, budget = {nodes: 0}, active = new WeakSet()) {
+  if (++budget.nodes > 10000 || depth > 20) throw Error('Proposal exceeds bounds');
+  if (value === null || typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    if (value.length > 65536) throw Error('Proposal exceeds bounds');
+    return value;
+  }
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value)) throw Error('Invalid numeric value');
+    return value;
+  }
+  if (!value || typeof value !== 'object') throw Error('Plain JSON required');
+  const array = Array.isArray(value), prototype = Object.getPrototypeOf(value);
+  if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) throw Error('Plain JSON required');
+  if (active.has(value)) throw Error('Plain JSON required');
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  const length = array ? descriptors.length.value : 0;
+  if (length > 10000) throw Error('Proposal exceeds bounds');
+  // Null prototypes prevent inherited toJSON execution on the detached copy.
+  const out = array ? Object.setPrototypeOf(new Array(length), null) : Object.create(null);
+  active.add(value);
+  let count = 0;
+  for (const key of Reflect.ownKeys(descriptors)) {
+    if (array && key === 'length') continue;
+    const descriptor = descriptors[key];
+    if (typeof key !== 'string' || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) throw Error('Plain JSON required');
+    if (array && (!/^(0|[1-9]\d*)$/.test(key) || Number(key) >= length)) throw Error('Plain JSON required');
+    out[key] = plainCopy(descriptor.value, depth + 1, budget, active);
+    count++;
+  }
+  if (array && count !== length) throw Error('Plain JSON required');
+  active.delete(value);
+  return out;
+}
 function snapshot(value) {
-  // Accept bounded plain JSON only, without converting unknown numeric values to null.
-  const encoded = JSON.stringify(value, (_key, item) => {
-    if (typeof item === 'number' && !Number.isFinite(item)) throw Error('Invalid numeric value');
-    if (item === undefined || typeof item === 'function' || typeof item === 'symbol' || typeof item === 'bigint') throw Error('Plain JSON required');
-    return item;
-  });
+  // Inspect descriptors before serialization: a replacer runs after getters/toJSON.
+  const encoded = JSON.stringify(plainCopy(value));
   if (!encoded || encoded.length > 65536) throw Error('Proposal exceeds bounds');
   return JSON.parse(encoded);
 }
