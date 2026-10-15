@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "offmenu/a3-checkpoint-exact-review-receipt/0",
+  "reviewId": "OFFMENU-A3-PLACES-CHECKPOINT-EXACT-REVIEW-W06",
+  "order": "MORGAN-BOUNDED-A3-CHECKPOINT-REVIEW-W06",
+  "atUTC": "2026-10-15T05:28:21.972725+00:00",
+  "reviewer": {
+    "identity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWrites": "reviews/a3-checkpoint-75130f0f/ only (slot 63); all peer/canonical paths read-only"
+  },
+  "existingReviewSearch": {
+    "question": "does a completed independent review of these exact bytes already exist?",
+    "method": "searched my review custody index, every file under reviews/, every coordinator receipt, and the coordinator task dir for the three blob hashes and for places_checkpoint/places-checkpoint",
+    "result": "NO completed independent review exists. The only hits for the exact blob hashes 36bc294a/6748269e/73f67a6d are in worker-03-latest.json, where they are the transcript of MY OWN reconnaissance command from this session; the coordinator task dir contains only queue LABELS ('Independent places checkpoint contract review') and the author's own test-status claim. My own REVIEW_CUSTODY_INDEX.json contains no A2/A3 entry.",
+    "consequence": "proceeded on the 'otherwise' branch: freeze exact bytes in slot63 and review them"
+  },
+  "immutableInputs": {
+    "slot62Head": {
+      "commit": "75130f0f4da4a599b02e518f3da8a6d8e3e2516b",
+      "branch": "bugfix/62/freebuff-repair-diagnosis-20261015"
+    },
+    "frozenFiles": {
+      "deps/align-places-common.py": {
+        "bytes": 27888,
+        "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f"
+      },
+      "deps/places-recovery-preflight.py": {
+        "bytes": 4945,
+        "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+      },
+      "deps/test_places_common.py": {
+        "bytes": 6855,
+        "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+      },
+      "places-checkpoint-recovery.md": {
+        "bytes": 4553,
+        "sha256": "3e59cc88e27d215354f735ccb58ff1efb3cdfee2eaddc77f5ead47338a0b210c"
+      },
+      "places_checkpoint.py": {
+        "bytes": 5632,
+        "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+      },
+      "test_places_checkpoint.py": {
+        "bytes": 16930,
+        "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2"
+      }
+    },
+    "blobIdsAtHead": {
+      "scripts/places_checkpoint.py": "36bc294a545f64411f8c007d243c4b903b986fc0",
+      "tests/test_places_checkpoint.py": "6748269edadcd96ecae9b56728b8285a512c6dfc",
+      "docs/places-checkpoint-recovery.md": "73f67a6d163f7c09b426e3a65257ad169819ec52"
+    },
+    "byteEquality": "all six frozen files re-derived from the commit and verified byte-identical (6/6 MATCH)",
+    "essentialDepsJustification": "test_places_checkpoint imports test_places_common (module alias `places` = scripts/align-places-common.py) and execs scripts/places-recovery-preflight.py; the checkpoint module is imported by align-places-common.py via sys.path. No other dependency is needed to exercise the reviewed behavior.",
+    "notReviewedHere": "Worker 05's separate NEW A3 projection candidate (moving/unpublished) and the CoFID lane are out of scope"
+  },
+  "axes": {
+    "cursor_checkpoint_atomicity": {
+      "verdict": "SOUND (mechanism verified and independently demonstrated)",
+      "mechanism": "data-before-metadata ordering: PacketSink writes the packet file through atomic_bytes (exclusive .pending -> write -> fsync(file) -> os.replace -> fsync(dir)) and only then does the caller commit cursor + identities + sink state in ONE SQLite transaction (INSERT OR REPLACE + single commit, PRAGMA synchronous=FULL).",
+      "invariant": "PacketSink._append_packet closes the PREVIOUS file before appending the new packet (align-places-common.py:280-281 vs 285-299), so the buffer committed by every save_cursor() is exactly the content of the file that will be closed next. That is why the single-file `allowed_orphan` test in the resume gate (places_checkpoint.py:84-87) is sufficient rather than optimistic.",
+      "finalClose": "double-protected: save_cursor() before sink.close() persists the exact final buffer, then sink.close() writes it, then save_cursor() records it (align-places-common.py:446-448).",
+      "identitiesWithCursor": "add_identity deliberately does NOT commit (places_checkpoint.py:98-102), so uncommitted identities roll back together with the cursor; the resume gate cross-checks COUNT(identities) == sum(input_counts) (places_checkpoint.py:93-96).",
+      "independentDemonstration": "see adversarialFixture below — a crash in the close->commit window on a NON-FIRST file recovered byte-identically."
+    },
+    "duplicate_identity_across_restart": {
+      "verdict": "SOUND (fail-closed)",
+      "evidence": "identities live in the same SQLite file as the cursor with PRIMARY KEY(source, record); add_identity maps sqlite3.IntegrityError to ValueError naming the (source, record) key. A replay after resume therefore still raises, and the gateway check refuses a DB whose identity count does not match the recorded input counts, so a partially committed or foreign DB fails closed.",
+      "note": "rejection aborts the run rather than skipping the record — consistent with the doc's 'persisted duplicate rejection'. The check is per-checkpoint (global), not per input file (N2)."
+    },
+    "source_pin_binding": {
+      "verdict": "SOUND",
+      "evidence": "pins bind curated root, EVERY input file's bytes+sha256, output path, schema digest, contract digest, implementation digest (align-places-common.py), checkpointImplementation digest (places_checkpoint.py) and the packet options plus createdAt (align-places-common.py:364-370); resume compares the whole dict and refuses on any mismatch (places_checkpoint.py:71-74). Any byte change to either implementation invalidates resume, which is precisely why these immutable bytes matter. Input files are re-hashed and per-asset digests re-verified before use.",
+      "residual": "P1 (latent, no live impact)"
+    },
+    "interruption_corruption_handling": {
+      "verdict": "SOUND / fail-closed",
+      "evidence": "missing, extra, truncated and corrupt retained assets are each refused by the resume gate; a leftover .pending in packets/ is enumerated by the 'all files' scan, is not the allowed orphan key, and therefore fails closed with 'explicit recovery required' and is never deleted (the untested half of the doc's claim, verified by code reading); the writer lock uses O_EXCL and unlinks only after an (st_dev, st_ino) identity check, so a replaced lock is never removed by a stale holder; legacy partials without a pinned checkpoint are refused; previously accepted packages are immutable.",
+      "scopeLimit": "the lock guards ONE destination, as the doc itself discloses; one-writer discipline across paths remains a coordinator obligation."
+    }
+  },
+  "adversarialFixture": {
+    "whyOneFixture": "one concrete uncertainty was not resolvable by reading alone and is NOT covered by the author's suite: does the close->commit window stay byte-exact for a NON-FIRST file at CLI defaults (packets_per_file=1, records_per_packet=1), including manifest equality? The author's tests cover part-00000 with a count assertion only.",
+    "artifact": "reviews/a3-checkpoint-75130f0f/adversarial-fixture-close-window.py (log: adversarial-fixture-run.log)",
+    "executedBytes": {
+      "align-places-common.py": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f",
+      "places_checkpoint.py": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+    },
+    "procedure": "sandbox with the documented M1 layout (scripts/ beside corpus/) built from the frozen bytes; 2 sources x 2 records; interrupt by raising immediately AFTER the atomic rename of part-00002 (close->commit window); resume; compare against an uninterrupted reference run held to the same clock.",
+    "result": "ALL CHECKS PASSED",
+    "exitCode": 0,
+    "checks": [
+      "interruption raised in the intended window",
+      "the non-first file part-00002 was left on disk uncheckpointed",
+      "the resumed run reused those exact orphan bytes unchanged (sha256 d88197a2... identical before and after resume)",
+      "resumed package byte-identical to the uninterrupted run (no differing keys)",
+      "resumed manifest identical (counts, files[].sha256/bytes/packets, coverage, guarantees)",
+      "no checkpoint/lock/.pending artifact leaked into the final package"
+    ],
+    "notDone": "the author's 12 passing tests were NOT re-executed (per the order); the fixture is a new scenario, not a re-run."
+  },
+  "findings": [
+    {
+      "id": "D1",
+      "severity": "low (documentation accuracy)",
+      "where": "docs/places-checkpoint-recovery.md, 'Validation and next gate' section",
+      "observed": "the doc says the named command `python -m unittest discover -s tests -p 'test_places*.py' -v` 'passes ten tests'. At these exact bytes that discovery matches two files containing 12 (tests/test_places_checkpoint.py) + 2 (tests/test_places_common.py) = 14 test methods, so it cannot total ten.",
+      "corroboration": "the coordinator's own queue note records 'focused 12/12' for the checkpoint file, matching my static count of 12.",
+      "assessment": "stale count, not a coverage defect: the enumerated coverage areas do match the real tests.",
+      "evidenceMethod": "static count of `def test` methods in the frozen/committed files; the suite was deliberately NOT executed.",
+      "request": "update the count (or drop the number) so the doc's validation claim matches the file it names."
+    },
+    {
+      "id": "P1",
+      "severity": "low (latent API hazard)",
+      "where": "scripts/places_checkpoint.py:66 and :71",
+      "observed": "the fresh path builds value['pins'] as the CALLER's dict and then pops createdAt out of it; the resume path pops from the same object again. The caller's dict is mutated in place and value['pins'] aliases it.",
+      "trigger": "any future caller that re-serializes, persists or re-compares its `pins` dict after constructing a Checkpoint loses `createdAt` and would compute a pin set that no longer matches the stored one.",
+      "liveImpact": "NONE today: align-places-common.py constructs the dict at line 364 and only passes it at line 371 (the only two occurrences of `pins` in the reviewed caller), so nothing observes the mutation.",
+      "request": "pop createdAt from a shallow copy (e.g. pin_copy = {k: v for k, v in pins.items() if k != 'createdAt'}) so the object cannot mutate caller state."
+    },
+    {
+      "id": "N2",
+      "severity": "info",
+      "where": "scripts/places_checkpoint.py:98-102 + align-places-common.py:426-429",
+      "observed": "the duplicate-identity rejection is per-checkpoint and global, not scoped to the partition being read; a legitimate identical (sourceId, recordId) appearing in two files of one source aborts the run.",
+      "assessment": "safe (fail-closed) and consistent with the documented intent; noted only so an operator reading an abort message knows it may indicate a duplicated input record rather than a resume error.",
+      "request": "none; optional message clarification only."
+    },
+    {
+      "id": "D2",
+      "severity": "info (documentation precision)",
+      "where": "docs/places-checkpoint-recovery.md, checkpoint contract paragraph",
+      "observed": "the doc states a closed file 'is reusable only if it equals the exact saved buffer', which reads as conditional. By construction the saved buffer is ALWAYS exactly the next file to be closed (one-packet lag), so that window is normally recoverable; the word 'only if' understates the guarantee that the fixture demonstrates.",
+      "assessment": "wording only; the safety claim is correct and conservative.",
+      "request": "optional: state that the saved buffer is by construction the pending file's content."
+    },
+    {
+      "id": "O3",
+      "severity": "info (verification ergonomics)",
+      "where": "align-places-common.py:529-531 + places_checkpoint.py:57",
+      "observed": "createdAt is deliberately retained across resume, and manifestPayloadSha256 is a digest over a payload that includes createdAt, so an otherwise-identical resumed run and fresh run never share manifest bytes or a payload digest (fixture observation: differences limited to manifest.json / manifestPayloadSha256 / createdAt).",
+      "assessment": "intended behaviour, not a defect; recorded because a reviewer comparing two runs without holding the clock constant would wrongly read the digest difference as nondeterminism.",
+      "request": "none; the checkpoint retention is the documented design."
+    }
+  ],
+  "positiveVerifications": [
+    "checkpoint sidecars stay outside the final package: the fixture's package contains only manifest.json and packets/*.jsonl.gz",
+    "gzip packet encoding is deterministic (mtime=0, fixed separators) so re-closed or reused bytes match exactly",
+    "the resume gate re-verifies size and sha256 of every receipted asset before continuing",
+    "no silent adoption path exists for legacy partials: a partial without a sibling pinned checkpoint is refused"
+  ],
+  "verdict": {
+    "status": "EXACT-VERIFIED - implementation sound on all four review axes",
+    "scope": "scripts/places_checkpoint.py + tests/test_places_checkpoint.py + docs/places-checkpoint-recovery.md at slot62 HEAD 75130f0f, with scripts/align-places-common.py and tests/test_places_common.py and scripts/places-recovery-preflight.py as essential context",
+    "defects": "1 low documentation-accuracy defect (D1: doc test count) + 1 latent API hazard with no live impact (P1) + 3 info notes",
+    "notInherited": "no approval is inherited by these bytes from any other review; my earlier RS/P2 review ae11ae0 covered different artifacts and is not duplicated here",
+    "noAcceptance": "no acceptance, no integration, no corpus/full-run authorization, no merge/push; peer and canonical paths unmodified"
+  },
+  "scopedRecommendationForMorgan": "Treat the A3 checkpoint implementation at 75130f0f as exact-verified for checkpoint/cursor atomicity, cross-restart duplicate identity, source-pin binding and fail-closed interruption handling, with the one low documentation defect D1 to correct and the latent hazard P1 worth a one-line hardening. This says nothing about Worker 05's separate A3 projection candidate, about running any real places alignment, or about host health: the doc's own limits (storage allocation approval, bounded legacy source comparison, fresh-run custody, and the all-eight-package acceptance gate) remain open and are NOT advanced by this review.",
+  "limits": [
+    "no test-suite re-execution (per instruction); all suite facts here are static or from the author's own recorded runs",
+    "one new adversarial fixture only, small synthetic inputs, no fault/repair/full-data/corpus runs",
+    "no live curated places corpus or production-scale behavior was exercised",
+    "filesystem power-loss semantics and production-scale SQLite behaviour remain unqualified, as the doc itself states",
+    "one reviewer's receipt; Morgan's verdict is separate"
+  ],
+  "nextAction": "CoFID exact review when Worker 04 publishes an immutable candidate; A3 does not need another checkpoint pass from me",
+  "generatedAtUTC": "2026-10-15T05:28:21.972725+00:00"
+}
