@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2699,
+  "messages": 2724,
   "arabicTranslated": 376,
-  "arabicMissing": 2323,
+  "arabicMissing": 2348,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -908,6 +908,7 @@
       "sources": [
         "cloud/handler.mjs",
         "cloud/kitchens.mjs",
+        "cloud/meal-preference-owner20.mjs",
         "cloud/personal-ai.mjs"
       ],
       "arabic": false
@@ -4187,6 +4188,12 @@
       ],
       "arabic": false
     },
+    "Current intake consent required": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
     "Current offmenu coverage": {
       "sources": [
         "public/data-ui.js",
@@ -4758,6 +4765,18 @@
     "Duplicate food log IDs.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate household member ID.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Duplicate intake event": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
       ],
       "arabic": false
     },
@@ -5343,6 +5362,18 @@
       ],
       "arabic": false
     },
+    "Explicit preference consent required.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Explicit preference scope required.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
     "Explore & enrich your food data.": {
       "sources": [
         "public/index.html"
@@ -5743,6 +5774,12 @@
     "Foods + nutrient profiles": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Foreign intake record in account store": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
       ],
       "arabic": false
     },
@@ -6236,6 +6273,12 @@
       ],
       "arabic": false
     },
+    "Household member not found.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
     "Household menus & recipe booklet": {
       "sources": [
         "public/documents.js",
@@ -6628,15 +6671,51 @@
       ],
       "arabic": false
     },
+    "Intake access denied": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
+    "Intake account mismatch": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
     "Intake by day": {
       "sources": [
         "public/index.html"
       ],
       "arabic": false
     },
+    "Intake consent revoked": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
+    "Intake dependencies required": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
+    "Intake history full": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
     "Intake quantity is unknown. Serving recorded; no zero-intake claim.": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Intake source permission required": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
       ],
       "arabic": false
     },
@@ -6983,6 +7062,18 @@
       ],
       "arabic": false
     },
+    "Invalid intake scope ID": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid intake store": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid interface language.": {
       "sources": [
         "cloud/personal-ai.mjs",
@@ -7102,6 +7193,42 @@
     "Invalid planned meal.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference action.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference field.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference record.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference reset field.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference term.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid preference terms.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
       ],
       "arabic": false
     },
@@ -7299,9 +7426,21 @@
       ],
       "arabic": false
     },
+    "Invalid spice preference.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid staff message.": {
       "sources": [
         "cloud/care-cases.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid stored preference field.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
       ],
       "arabic": false
     },
@@ -9872,6 +10011,12 @@
       ],
       "arabic": false
     },
+    "Preference scope/version mismatch.": {
+      "sources": [
+        "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
     "Preferences": {
       "sources": [
         "public/care-ui.js"
@@ -11618,6 +11763,12 @@
     "Reviewed {v0} public contributions: {v1}.": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Revocation ledger full": {
+      "sources": [
+        "cloud/intake-history-owner25.mjs"
       ],
       "arabic": false
     },
