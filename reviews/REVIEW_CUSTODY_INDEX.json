@@ -1,7 +1,7 @@
 {
   "schemaVersion": "semantic/review-custody-index/0",
   "holder": "Worker 06 (UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff), worktree slot63 feature/63/freebuff-semantic-candidates-20261015",
-  "updatedAtUTC": "2026-10-15T04:36:18.051780+00:00",
+  "updatedAtUTC": "2026-10-15T04:39:58.747184+00:00",
   "entries": [
     {
       "review": "semantic-lane candidate handoff (author)",
@@ -67,6 +67,15 @@
         "32ad083c39f6ab4b"
       ],
       "correctionStatus": "W1 retracted as unevidenced (no retained receipt corroborates 'source-pinned-adoptable'); W2 six-class enumeration; W3 exact alias wording; W4 lineage limitation recorded; counts preserved 78/58/20 and labels 23/35; post-freeze deltas — Worker 05 re-review at corrected hashes STATUS 6be5e0ca… / HANDOFF 201b0d31…"
+    },
+    {
+      "review": "Worker05 a49d3729 M1-M3 exact commit review",
+      "exactBase": "a49d3729fb86db4de79b16e5fb968090a1de88e0 (parent 72d4a09; doc blob == 5d8b24e's)",
+      "receipt": [
+        "semantic/reviews/20261015-a49d3729-m1m3-exact-review-W06.json",
+        "882a898d677e4747"
+      ],
+      "correctionStatus": "M1/M2/M3 CONFIRMED exact; disclosures confirmed; precision notes P2 (EDAC wording), P3 (interposed commit), P4 (later commits db07b5b/53e4b34 uncovered)"
     }
   ],
   "dGate": {

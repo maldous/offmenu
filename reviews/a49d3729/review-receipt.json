@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "semantic/exact-commit-review-receipt/0",
+  "reviewId": "OFFMENU-A49D3729-M1M3-EXACT-REVIEW-W06",
+  "order": "MORGAN-BOUNDED-SEMANTIC-EXACT-REVIEW-YIELD-20261015-W06 Task 2",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff; session resumed on DeepSeek V4 Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63 is NOT an agent identity), branch feature/63/freebuff-semantic-candidates-20261015"
+  },
+  "candidate": {
+    "commit": "a49d3729fb86db4de79b16e5fb968090a1de88e0",
+    "subject": "Apply review M1-M3: pin layout note, source-pinned asset count, exact log path",
+    "branch": "bugfix/62/freebuff-repair-diagnosis-20261015 (slot62, canonical /home/user/src/offmenu READ-ONLY to me)",
+    "parent": "72d4a09438ec72793c739625ad2d2b2127e1f3c8",
+    "changedPaths": [
+      "docs/repair-diagnosis-20261015.md"
+    ],
+    "diffStat": "1 file changed, 19 insertions(+), 6 deletions(-)",
+    "reviewedBytes": {
+      "path": "repair-diagnosis-20261015.md",
+      "sha256": "d089a910dac5f4719a7201cbed9c8fff5bfd486aa532c906ebaa61b255829ae5"
+    },
+    "baseRelationship": "parent 72d4a09 is the coordinator's verifier commit (+201 lines, review-verify-semantic-candidate-20261015.py only); its doc blob equals 5d8b24e's, so a49d3729's doc delta is exact against the doc reviewed at 5d8b24e, but a49d3729 is NOT a direct child of 5d8b24e and the earlier delta-series receipt does not extend to it automatically"
+  },
+  "verifiedClaims": {
+    "M1_layout_qualification": "CONFIRMED against source: scripts/repair-bulk-controls-20261014.py line 69 def checkpoint_pins(input_root); line 70 root = Path(__file__).resolve().parents[1]; lines 73-74 read corpus/common-data.schema.json and corpus/common-data-contract.json from that root. The doc's complete-layout requirement (corpus/ beside scripts/) is accurate; the venv supplies dependencies only. Pinned implementation blob unchanged vs base 4693cbc3 (7403673ab334).",
+    "M2_asset_count": "CONFIRMED exactly: /home/user/src/offmenu-data/common-bulk-food-20261014/manifest.json has 9800 files entries = 9797 'packets/*.jsonl.gz' + 3 aux ['schema.json','contract.json','source-mappings.json']. The doc's 9,797 + 3 = 9,800 statement and its manifest citation are exact.",
+    "M3_retained_log_path": "CONFIRMED: /home/user/src/offmenu-data/logs/repair-hang-evidence-20261015.json exists at the full retained path (3857 B, sha256 1ef540b0...); the prior bare-filename reference is fixed.",
+    "incidentDisclosures": "CONFIRMED (kernel log read-only): 09:51:48 basic-memory segfault; 10:23:05 python general protection fault; 10:04:37 codebuff trap int3 - each present exactly once. All five claimed Oct-15 CPU-10-attributed faults at 03:30/04:12/09:51/14:15/14:43 present (1/1 each). The 10:23 GPF carries no CPU attribution, as the doc states.",
+    "orphanedLockCustody": "CONFIRMED: lock present 174 B with pid 2423767, '.reconciled-20261015T013540Z' sibling present, output directory absent => zero repair output; nothing deleted or reclaimed by this review.",
+    "boundedFixtureClaim": "CONFIRMED by one bounded pass: 3 named retained assets x first 1000 lines, fresh interpreters => OK 1000 each, exit 0. No fault-rate batch, no suspect-core probe, no fault reproduction attempted.",
+    "notReRun": "The doc's 17/17 focused-suite and 92/92 full-suite claims were NOT re-run (out of this batch's scope; previously recorded as a limitation). The bounded fixture pass above is the only execution performed."
+  },
+  "precisionFindings": [
+    {
+      "id": "P2",
+      "severity": "info",
+      "where": "doc 'Kernel log (read-only, 2026-10-15)' bullet",
+      "message": "The claim 'zero MCE/EDAC/memory-error entries' is substantively true, but the retained kern.log does contain one EDAC line: '2026-10-14T15:45:38 ... EDAC MC: Ver: 3.0.0' (driver version banner, not an error report). Suggested wording: 'zero MCE/EDAC error entries (only the EDAC driver version banner is present)'."
+    },
+    {
+      "id": "P3",
+      "severity": "info",
+      "where": "commit chain",
+      "message": "a49d3729 does not descend directly from 5d8b24e: the coordinator's 72d4a09 is interposed and touches only the review verifier. The doc blob is unchanged across it (94f1415...)."
+    },
+    {
+      "id": "P4",
+      "severity": "info",
+      "where": "branch head",
+      "message": "Branch bugfix/62 has moved past this commit: 53e4b34 (repair-subset builder, already designated the next deferred review) and db07b5b ('Add bounded kernel-history appendix per review N1 and cite precheck topology' - Worker05's own response to my N1). Neither is reviewed or approved by this receipt."
+    },
+    {
+      "id": "P5",
+      "severity": "info",
+      "where": "review method",
+      "message": "Self-recorded: my first two bounded checks in this review failed on MY harness errors, not repo defects - a wrong shell-quoting of the child parser, then an asset path that omitted the manifest's 'packets/' prefix. Both were corrected; no claim above depends on them."
+    }
+  ],
+  "nonApproval": {
+    "laterCommits": "db07b5b and 53e4b34 on the same branch remain unreviewed by this receipt and NOT approved",
+    "scope": "this receipt verifies only the a49d3729 doc delta against immutable bytes and retained evidence; there is no Morgan acceptance, no corpus admission, no merge"
+  },
+  "checksRun": {
+    "verifier": "reviews/a49d3729/verify-a49d3729.py - 14/14 MATCH, A49D3729_REVIEW_REPRODUCED, exit 0",
+    "limits": "no fault-rate harness, no suspect-core probing, CPUs 10/11 untouched (online list 0-9,12-31 unchanged), no writes to other owners' paths"
+  },
+  "generatedAtUTC": "2026-10-15T04:39:58.747184+00:00"
+}
