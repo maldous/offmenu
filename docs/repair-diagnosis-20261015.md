@@ -86,6 +86,23 @@ pyproject-pinned test extras (system Python is PEP 668 externally managed; the
 3. If unreproducible, run the repair under a watchdog that snapshots `/proc` on
    freeze/crash.
 
+## Pin custody (final verification, 2026-10-15)
+
+The crashed run executed `/home/user/src/offmenu-freebuff/scripts/repair-bulk-controls-20261014.py`
+(SHA-256 `6b547f82d6a3b6dbdc94f28d226d08f4df5a0dcef2122308e2c3be0c3284be14`),
+which differs from this branch's copy (SHA-256
+`2c025c07f0561d2ca0ac161778ca4ec98b0593b7c70b570ae53577a698c5bb4c`)
+**only** in the `NEW_ROOT` default output path (line 22:
+`…-semantic-final-recovery-20261015` vs `…-semantic-final-20261014`).  The
+crash region `representative_checks` (lines 171–202, including line 182) is
+byte-identical between the two copies.  The fatal stack cited above was
+re-verified directly against `bulkfood-semantic-recovery-20261015.log` (log
+lines 60–70: `Segmentation fault` ← `json/decoder.py:353 raw_decode` ←
+`repair-bulk-controls-20261014.py:182 in representative_checks` ←
+`repair_owned:300` ← `repair:271` ← `main:374`) in final checks.  No pin was
+substituted; both hashes are recorded so neither copy is silently assumed to be
+the other.
+
 ## Progress/DAG claim updates (this task branch; canonical DAG is in a read-only
 checkout)
 
