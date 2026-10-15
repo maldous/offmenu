@@ -5,11 +5,15 @@ import hashlib
 import itertools
 import json
 from pathlib import Path
-import subprocess
-import os
 
-RECIPE_COMMIT = '8d468982f7bc905af01d5262c8eabb8db7051e96'
-FOODON_COMMIT = '3e7b381'
+# Historical origins are recognized only for these reviewed metadata contents.
+CANONICAL_PROVENANCE = {
+    'recipe_reference': ('06fe2ac95c41dec5415dfc82d79773559ff553465c4d9140b02e33787e06029a',
+                         'reference_commit', '8d468982f7bc905af01d5262c8eabb8db7051e96'),
+    'original_proof': ('e064b5dcc205e058922dd5d926759ab98950c25292afb251d055d4e3177d4d81',
+                       'original_proof_commit', '6bf021a81d7660ae48b3eeba3656aa656f3553bf'),
+}
+DEFAULT_EVIDENCE = Path(__file__).resolve().parents[2] / 'docs/global-data-validation/worker-42-culinary-names.json'
 LOCALES = {'hi', 'ar', 'cs', 'el', 'fa', 'zh'}
 
 
@@ -18,9 +22,42 @@ def sha(path):
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
 
-def git_json(commit, path):
-    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
-    return json.loads(subprocess.check_output(['git', 'show', commit + ':' + path], env=env))
+def load_inputs(evidence_path):
+    """Tracked body-free metadata; retained original files are supplied explicitly."""
+    data = Path(evidence_path).read_bytes()
+    inputs = json.loads(data)['portable_inputs']
+    declared = inputs.get('provenance', {})
+    verified, digests = {}, {}
+    for section, (expected, key, commit) in CANONICAL_PROVENANCE.items():
+        encoded = json.dumps(inputs[section], sort_keys=True, ensure_ascii=False,
+                             separators=(',', ':')).encode()
+        digests[section] = hashlib.sha256(encoded).hexdigest()
+        claim = declared.get(key)
+        if claim is not None:
+            if digests[section] != expected or claim != commit:
+                raise ValueError('Unsupported evidence provenance: ' + key)
+            verified[key] = claim
+    unsupported = [key for key in declared if key.endswith('_commit') and
+                   key not in {value[1] for value in CANONICAL_PROVENANCE.values()}]
+    if unsupported:
+        raise ValueError('Unsupported evidence provenance: ' + ', '.join(unsupported))
+    # Do not trust caller-provided binding fields in a supplied bundle.
+    inputs['verified_provenance'] = verified
+    inputs['evidence_binding'] = {'sha256': hashlib.sha256(data).hexdigest(),
+        'metadata_sha256': digests, 'verified_commit_provenance': verified,
+        'verification': 'Only digest-matched reviewed metadata origins; external sources checked separately'}
+    return inputs
+
+
+def source_path(root, relative):
+    root = Path(root).resolve()
+    path = Path(relative)
+    if path.is_absolute() or not path.parts:
+        raise ValueError('Evidence source paths must be relative to source_root')
+    resolved = (root / path).resolve()
+    if not resolved.is_relative_to(root):
+        raise ValueError('Evidence source path escapes source_root')
+    return resolved
 
 
 def assertion(row, item, coordinate, concepts, original_body_verified=False):
@@ -49,9 +86,6 @@ def assertion(row, item, coordinate, concepts, original_body_verified=False):
             'qualification': 'source-scoped-assertion-proposal; independent-review-required'}
 
 
-ORIGINAL_PROOF_COMMIT = '6bf021a81d7660ae48b3eeba3656aa656f3553bf'
-
-
 def pointer(value, coordinate):
     for token in coordinate.strip('/').split('/'):
         token = token.replace('~1', '/').replace('~0', '~')
@@ -59,11 +93,12 @@ def pointer(value, coordinate):
     return value
 
 
-def original_proofs():
-    proof = git_json(ORIGINAL_PROOF_COMMIT, 'docs/global-data-validation/worker-53-original-proof.json')
+def original_proofs(proof, source_root, *, proof_commit=None):
     verified = {}
     for record in proof['records']:
-        original, rights = record['original'], record['rights']
+        original, rights = dict(record['original']), dict(record['rights'])
+        original['path'] = str(source_path(source_root, original['path']))
+        rights['path'] = str(source_path(source_root, rights['path']))
         if sha(original['path']) != original['file_sha256'] or sha(rights['path']) != rights['sha256']:
             raise ValueError('Original body or publisher rights file custody mismatch')
         raw = json.loads(Path(original['path']).read_text())
@@ -81,7 +116,7 @@ def original_proofs():
         if sha(original['path']) != original['file_sha256'] or sha(rights['path']) != rights['sha256']:
             raise ValueError('Original custody changed during read')
         c = record['normalized_coordinate']
-        verified[(c['line'], c['index'])] = {'proof_commit': ORIGINAL_PROOF_COMMIT,
+        verified[(c['line'], c['index'])] = {'proof_commit': proof_commit,
             'language': record['language'], 'source_id': record['provenance']['originSourceId'],
             'original': original, 'rights': rights, 'status': 'exact-body-page-revision-hash-verified; lexeme-crosswalk-review-pending'}
     return verified
@@ -105,8 +140,9 @@ def validate_attachment(row, evidence):
             raise ValueError('Normalized ' + field + ' does not match original proof')
 
 
-def run(recipe_root, foodon_root):
-    reference = git_json(RECIPE_COMMIT, 'docs/global-data-validation/worker-53.json')
+def run(recipe_root, foodon_root, *, source_root, evidence_path=DEFAULT_EVIDENCE):
+    inputs = load_inputs(evidence_path)
+    reference = inputs['recipe_reference']
     refs = reference['census']['selected_refs'] + reference['census']['representative_source_refs']
     wanted = {(r['line'], r['index']): r for r in refs if set(r['coverage']['language']) & LOCALES}
     if not wanted:
@@ -123,7 +159,8 @@ def run(recipe_root, foodon_root):
     expected = next(f['sha256'] for f in manifest['files'] if f['key'] == paths[3].name)
     if before[3]['sha256'] != expected or manifest['licence'] != 'CC-BY-4.0':
         raise ValueError('FoodOn rights/release digest mismatch')
-    body_proofs = original_proofs()
+    body_proofs = original_proofs(inputs['original_proof'], source_root,
+        proof_commit=inputs['verified_provenance'].get('original_proof_commit'))
     concepts = []
     with gzip.open(paths[3], 'rt') as f:
         for line in itertools.islice(f, 1000 - len(wanted) - len(body_proofs)):
@@ -167,7 +204,8 @@ def run(recipe_root, foodon_root):
     after = [{'path': str(p), 'sha256': sha(p)} for p in paths]
     if before != after:
         raise ValueError('Held custody changed')
-    return {'worker53_commit': RECIPE_COMMIT, 'worker56_commit': FOODON_COMMIT,
+    return {'worker53_commit': inputs['verified_provenance'].get('reference_commit'),
+            'worker56_commit': None, 'evidence_binding': inputs['evidence_binding'],
             'before': before, 'after': after, 'foodon_revision': manifest['revision'],
             'original_body_records': len(body_proofs), 'recipe_records': len(record_pins), 'foodon_records': len(concepts),
             'record_pins': record_pins, 'assertions': assertions,
@@ -181,7 +219,9 @@ def run(recipe_root, foodon_root):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--recipes', type=Path, default=Path('/home/user/src/offmenu-data/world-recipes-global-final-20261014'))
-    p.add_argument('--foodon', type=Path, default=Path('/home/user/src/offmenu-data/foodon-common-accepted-20261014'))
+    p.add_argument('--recipes', type=Path, required=True, help='Retained recipe release directory')
+    p.add_argument('--foodon', type=Path, required=True, help='Retained FoodOn release directory')
+    p.add_argument('--source-root', type=Path, required=True, help='Root containing metadata-relative original/rights files')
+    p.add_argument('--evidence', type=Path, default=DEFAULT_EVIDENCE, help='Body-free pinned input metadata JSON')
     a = p.parse_args()
-    print(json.dumps(run(a.recipes, a.foodon), ensure_ascii=False, indent=2))
+    print(json.dumps(run(a.recipes, a.foodon, source_root=a.source_root, evidence_path=a.evidence), ensure_ascii=False, indent=2))
