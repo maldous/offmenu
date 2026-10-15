@@ -12,6 +12,7 @@ for(const entry of arabicTree.body[0].declaration.declarations[0].init.arguments
 const decode = value => value.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
 const add = (key, file) => { if (key?.trim()) { if (!messages.has(key)) messages.set(key,new Set()); messages.get(key).add(file); } };
 const files = (await readdir('public')).filter(file => file.endsWith('.js') && !['i18n.js','content-locale.js','scanner-worker.js'].includes(file)).map(file => 'public/'+file);
+files.push('public/integration-owner03.mjs');
 files.push('extension/popup-source.js');
 files.push(...(await readdir('cloud')).filter(file=>file.endsWith('.mjs')&&file!=='generated.mjs').map(file=>'cloud/'+file));
 for (const file of files) {

@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2724,
+  "messages": 2784,
   "arabicTranslated": 376,
-  "arabicMissing": 2348,
+  "arabicMissing": 2408,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -297,6 +297,12 @@
       "sources": [
         "cloud/service-config.mjs",
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "(CAST(strftime('%s','now') AS INTEGER)*1000+CAST(substr(strftime('%f','now'),4,3) AS INTEGER))": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -664,6 +670,7 @@
         "public/ingredients.js",
         "public/insights-model.js",
         "public/insights-ui.js",
+        "public/integration-owner03.mjs",
         "public/journey-ui.js",
         "public/model.js",
         "public/personal-ai-ui.js",
@@ -835,7 +842,8 @@
     "./record-policy.js": {
       "sources": [
         "public/data-ui.js",
-        "public/recipe-review.js"
+        "public/recipe-review.js",
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -909,7 +917,8 @@
         "cloud/handler.mjs",
         "cloud/kitchens.mjs",
         "cloud/meal-preference-owner20.mjs",
-        "cloud/personal-ai.mjs"
+        "cloud/personal-ai.mjs",
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -930,6 +939,12 @@
     "./unified-data.js": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "./waste-analysis-model.js": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -2265,6 +2280,18 @@
       ],
       "arabic": false
     },
+    "At most 100 pack options required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
+    "At most 1000 waste records required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Atomic D1 batch unavailable": {
       "sources": [
         "cloud/admin-settings.mjs"
@@ -2280,6 +2307,12 @@
     "Australian Food Composition Database": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Authoritative observation read context unavailable.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -2510,6 +2543,24 @@
     "Body metrics are recorded for reviewing your plan. Portions are user-selected; this document does not prescribe energy or weight-loss targets.": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Body required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Body too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Bounded explicit insight dates required.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -3430,6 +3481,12 @@
       ],
       "arabic": false
     },
+    "Command too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Comment": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -4009,6 +4066,12 @@
     "Correct {v0}": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Cost snapshots are not admitted by this observation contract; waste value remains unknown.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -4615,6 +4678,12 @@
       ],
       "arabic": false
     },
+    "Distinct original and candidate records required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Do another shelf ↗": {
       "sources": [
         "public/index.html"
@@ -4786,6 +4855,12 @@
       ],
       "arabic": false
     },
+    "Duplicate observation identity.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Duplicate or missing ": {
       "sources": [
         "public/common-corpus-locale.js"
@@ -4795,6 +4870,12 @@
     "Duplicate serving events": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate source record ID": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -4814,6 +4895,12 @@
     "EU RASFF": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "EXISTS(SELECT 1 FROM owner04_d1_operations o WHERE o.session_id=? AND o.subject=? AND o.realm=? AND o.epoch=? AND o.operation_id=? AND o.commit_token=? AND json_extract(o.result_json,'$.status')='committed')": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -5344,15 +5431,39 @@
       ],
       "arabic": true
     },
+    "Explicit account required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit basis amount, g/ml, preparation state, units and source/derived method; null is unknown.": {
       "sources": [
         "cloud/provider-data.mjs"
       ],
       "arabic": false
     },
+    "Explicit calendar interval required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit confirmation and a supported public license are required.": {
       "sources": [
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Explicit confirmation of the current scoped proposal required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit measured zero preserved; positive-only analysis helper cannot aggregate it.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -5371,6 +5482,12 @@
     "Explicit preference scope required.": {
       "sources": [
         "cloud/meal-preference-owner20.mjs"
+      ],
+      "arabic": false
+    },
+    "Explicit realm and bounded server TTL required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -5649,6 +5766,12 @@
     "Five public recipes": {
       "sources": [
         "cloud/recipe-community.mjs"
+      ],
+      "arabic": false
+    },
+    "Fixed canonical HTTPS state audience required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -6647,6 +6770,12 @@
       ],
       "arabic": false
     },
+    "Injected clock required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Inspection-date ratings for UK food businesses; not a food nutrition or stock feed.": {
       "sources": [
         "public/sources.js"
@@ -6783,6 +6912,18 @@
       ],
       "arabic": false
     },
+    "Invalid HTTP bridge configuration": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid JSON tree": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid administrative authority.": {
       "sources": [
         "cloud/admin-mcp.mjs"
@@ -6837,6 +6978,12 @@
       ],
       "arabic": false
     },
+    "Invalid binding": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid care case.": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -6864,6 +7011,12 @@
     "Invalid cleanup history.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid command": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7136,6 +7289,12 @@
       ],
       "arabic": false
     },
+    "Invalid numeric value": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid numeric value.": {
       "sources": [
         "public/unified-data.js"
@@ -7316,6 +7475,12 @@
       ],
       "arabic": false
     },
+    "Invalid resource": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid restriction.": {
       "sources": [
         "cloud/care-community.mjs",
@@ -7368,6 +7533,12 @@
     "Invalid served portions.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid server selector": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7534,6 +7705,12 @@
     "Items in scope": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "JSON required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -8267,6 +8444,12 @@
       ],
       "arabic": false
     },
+    "Measured quantity exceeds confirmed source or is unsupported.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Measured yield required": {
       "sources": [
         "public/basket-model.js"
@@ -8365,6 +8548,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-config.mjs",
         "cloud/service-observability.mjs",
@@ -8618,6 +8802,12 @@
       ],
       "arabic": false
     },
+    "Native D1 and trusted server hooks required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "Native bridge pending": {
       "sources": [
         "public/sources.js"
@@ -8771,6 +8961,12 @@
       ],
       "arabic": false
     },
+    "No inferred availability, expiry, ownership, allergy or nutrition equivalence": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "No known ingredient conflict for the selected diners": {
       "sources": [
         "public/app.js"
@@ -8817,6 +9013,12 @@
     "No open redistribution licence verified": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "No purchase authority": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -8949,6 +9151,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs"
       ],
       "arabic": false
@@ -9134,6 +9337,30 @@
     "Observation date": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Observation history exceeds bounded consumer limit.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation history is unavailable; missing history does not mean zero waste.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation scope/provenance incomplete.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation time is invalid.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -9529,6 +9756,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -9549,6 +9777,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -9587,6 +9816,12 @@
     "Original source terms govern reuse; normalization does not relicense the data.": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Overlapping observations require owner reconciliation.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -9653,6 +9888,12 @@
     "Parse error": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Partial recorded observations only; not all waste or person-level attribution.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -9913,6 +10154,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Plain JSON required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
     },
     "Plan a meal in My week, or add a shopping item below.": {
       "sources": [
@@ -10259,6 +10506,12 @@
       ],
       "arabic": false
     },
+    "Proposal detail required": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Proposal digest": {
       "sources": [
         "public/care-ui.js"
@@ -10274,6 +10527,12 @@
     "Proposal evidence records this review. It does not publish a catalogue change.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Proposal exceeds bounds": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -10589,6 +10848,12 @@
     "Qualified HTTPS endpoint": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Qualified protocol and server binding hook required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -11185,6 +11450,12 @@
     "Record retention or access expired": {
       "sources": [
         "public/record-policy.js"
+      ],
+      "arabic": false
+    },
+    "Recorded cleanup evidence": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -12328,6 +12599,12 @@
       ],
       "arabic": false
     },
+    "Selected protocol and server transport hooks required": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Self-reported; not a validated health claim.": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -12916,6 +13193,12 @@
       ],
       "arabic": false
     },
+    "Source and receipt identities required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Source assertion": {
       "sources": [
         "public/common-corpus-locale.js",
@@ -13075,6 +13358,12 @@
       ],
       "arabic": false
     },
+    "Stable confirmed receipt/source binding unavailable.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Staff": {
       "sources": [
         "public/care-ui.js"
@@ -13147,6 +13436,12 @@
     "Steps · count": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Stock removal is not a measured-waste or cost observation.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -13279,6 +13574,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Supply 1–100 source records": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
     },
     "Support email": {
       "sources": [
@@ -14116,6 +14417,12 @@
       ],
       "arabic": false
     },
+    "Unsupported proposal kind": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "Up vote": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -14444,6 +14751,18 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Waste account mismatch": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
+    "Waste aggregate overflow": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
     },
     "Week architect": {
       "sources": [
@@ -15328,6 +15647,12 @@
       ],
       "arabic": false
     },
+    "coalesce(u.revision,0)=?": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "coalesce(v.down_votes,0)": {
       "sources": [
         "cloud/recipe-community.mjs"
@@ -15730,7 +16055,9 @@
       "sources": [
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/service-config.mjs",
+        "cloud/session-state-d1-owner04.mjs",
         "public/data-ui.js",
         "public/unified-data.js"
       ],
@@ -16230,7 +16557,9 @@
     },
     "private, no-store": {
       "sources": [
-        "cloud/locale.mjs"
+        "cloud/locale.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -16411,6 +16740,12 @@
       ],
       "arabic": false
     },
+    "s.id=? AND s.subject=? AND s.secret_hash=? AND s.realm=? AND s.audience=? AND s.scope=?": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "scanner.wasm": {
       "sources": [
         "cloud/handler.mjs"
@@ -16465,6 +16800,12 @@
       ],
       "arabic": false
     },
+    "source identity": {
+      "sources": [
+        "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
     "source policy expired": {
       "sources": [
         "public/evidence-model.js"
@@ -16474,6 +16815,12 @@
     "source policy unavailable": {
       "sources": [
         "public/evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "source record ID": {
+      "sources": [
+        "public/shopping-handoff-model.js"
       ],
       "arabic": false
     },
@@ -16522,6 +16869,12 @@
     "starter:": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "state:read-write": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -16693,6 +17046,24 @@
     "{\"rule\":{\"predicate\":\"manufactured-in\",\"operator\":\"exclude\",\"value\":\"CN\"},\"market\":\"AU\",\"evidence\":[]}": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "{quantity} {unit} · partial measured observations": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{receipts} cleanup receipts · {items} recorded stock-removal items": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{unqualified} items without usable measured-waste coverage · {unknown} items with unknown waste value": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
