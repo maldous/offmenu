@@ -1,0 +1,26 @@
+{
+  "scope": "Actual disposable Git index/checkout line ending regression only; not Windows native runtime qualification.",
+  "cases": [
+    {
+      "case": "predecessor without attributes",
+      "directory": "/tmp/owner16-fixture-lf-before-huw1j9e2",
+      "checkout": "git -c core.autocrlf=true checkout-index --all --force",
+      "fixturesWithCRLF": 29,
+      "fixtureCount": 29,
+      "verifierExit": 1,
+      "stderr": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: sqlite04/cloud/session-state-owner04.mjs\n+ actual - expected\n\n+ '2ed7cea95172b27dc1677bd6550f6a7e1be54b116360b77985f59ce43fc65adb'\n- '4520436816c70f93028fbbef38fdec572018dd507a8489c9027bb528af6f0be5'\n\n    at verifyFixtures (file:///tmp/owner16-fixture-lf-before-huw1j9e2/fixtures/verify.mjs:7:12)\n    at file:///tmp/owner16-fixture-lf-before-huw1j9e2/[eval1]:1:55\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:230:26\n    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:227:20)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: '2ed7cea95172b27dc1677bd6550f6a7e1be54b116360b77985f59ce43fc65adb',\n  expected: '4520436816c70f93028fbbef38fdec572018dd507a8489c9027bb528af6f0be5',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.16.0\n"
+    },
+    {
+      "case": "scoped LF attributes",
+      "directory": "/tmp/owner16-fixture-lf-fixed-oruag12e",
+      "checkout": "git -c core.autocrlf=true checkout-index --all --force",
+      "fixturesWithCRLF": 0,
+      "fixtureCount": 29,
+      "verifierExit": 0,
+      "stderr": "",
+      "mutationVerifierExit": 1,
+      "mutationRejected": true,
+      "allReviewedHashesMatch": true
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Preserve byte-exact LF checksums from the reviewed Git source snapshots.
+* text eol=lf

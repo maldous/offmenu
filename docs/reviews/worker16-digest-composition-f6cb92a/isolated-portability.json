@@ -1,0 +1,17 @@
+{
+  "exportedClosure": "/tmp/offmenu-owner16-published-closure-jndnck1o",
+  "gitRepository": false,
+  "inheritedGitEnvironment": false,
+  "dependencyInstallation": "npm ci --ignore-scripts --no-audit --no-fund, own package.json/package-lock.json",
+  "testCwd": "/tmp",
+  "command": [
+    "node",
+    "--test",
+    "/tmp/offmenu-owner16-published-closure-jndnck1o/tests-web/queue-state-bridge-owner16.test.mjs",
+    "/tmp/offmenu-owner16-published-closure-jndnck1o/tests-web/queue-state-http-owner16.test.mjs",
+    "/tmp/offmenu-owner16-published-closure-jndnck1o/tests-web/queue-state-native-owner16.test.mjs"
+  ],
+  "exitCode": 0,
+  "stdout": "\u2714 bridge verifies exact digest, version and server binding; replay one effect and terminal stale conflict (7.540801ms)\n\u2714 lost acknowledgement is unconfirmed; status reconciles exact operation/digest, not another payload (2.080015ms)\n\u2714 real SQLite rollback on failed ledger insertion leaves neither state nor ACK (1.386636ms)\n\u2714 revoke-first rejects queued work/status; commit-first remains stored but revoked replay unconfirmed (2.063463ms)\n\u2714 cross-account binding and body authority cannot confer ACK or authorize other account state (2.248908ms)\n\u2714 wrong digest/ID/version or reordered equal binding: new ACK boundary probes (1.436064ms)\n\u2714 malformed and accessor outcomes stay unknown without invoking getters (1.808036ms)\n\u2714 credentials/command are captured before auth awaits; getters never run (4.522111ms)\n\u2714 demonstrated predecessor gap: valid-looking ACK with wrong digest passed consumer but bridge refuses (2.685843ms)\n\u2714 late ACK confirms earlier commit; expired grant denies a new send and body expiresAt is never authority (1.445917ms)\n\u2714 HTTP seam forwards exact metadata and cloned headers, with explicit confirmed ACK response (16.460252ms)\n\u2714 HTTP-like success without qualified ACK remains unknown; conflicts do not become successful queue ACKs (2.373001ms)\n\u2714 status HTTP request forwards the original command for digest recovery, not a bare operation lookup (0.493925ms)\n\u2714 wrong origin/method/route, invalid JSON and byte cap stop before protocol dispatch (1.957217ms)\n\u2714 actual HTTP\u2192native D1 commit/ledger/digest ACK, retry once and concurrent CAS conflict (318.011067ms)\n\u2714 before/after native outcome: committed damaged/lost ACK is unknown; exact HTTP recovery confirms (198.6962ms)\n\u2714 native account/epoch/capability/revocation and authoritative expiry deny new sends (229.216234ms)\n\u2714 native HTTP rollback and metadata rejection preserve state/ledger without legacy projection (237.139498ms)\n\u2714 native late committed ACK confirms despite subsequent expiry; new send/status cannot regain authority (217.455318ms)\n\u2139 tests 19\n\u2139 suites 0\n\u2139 pass 19\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 1401.367579\n",
+  "stderr": ""
+}
