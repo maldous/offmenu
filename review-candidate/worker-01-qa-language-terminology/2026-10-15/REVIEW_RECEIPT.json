@@ -10,7 +10,9 @@
       "correctionStatus.newLaneHashes (historical; superseded by the successor receipt 'files' map)",
       "correctionStatus.note (historical wording; the candidate dir now holds the SYNCED corrected copy, not a pre-correction frozen copy)",
       "qaPostCorrectionResult (historical PENDING; superseded — see successor receipt verification block)",
-      "reviewFiles hashes (historical-at-pickup; 4 of 9 predate the D1-D6 corrections)"
+      "reviewFiles hashes (historical-at-pickup; 4 of 9 predate the D1-D6 corrections)",
+      "filesChangedFromBaseline hashes (historical-baseline; the 'currentHash' fields in that block are superseded by the successor receipt 'files' map and must not be read as current)",
+      "unchangedPrerequisites hashes (historical-choice; the stored 'hash' values are superseded by the successor receipt 'files' map for terminology-contract.json and do not change unchanged status of other entries)"
     ]
   },
   "generatedAt": "2026-10-15T03:23:06.543934+00:00",
@@ -97,12 +99,11 @@
       "staleVsCurrent": false
     },
     {
-      "path": "qa/test_terminology_qa.py",
-      "sha256": "29aff3a642d0a05433285ecbb707db76b488f6f2bd4b25d889bbe4c7431becf9",
-      "sizeBytes": 16267,
-      "hashScope": "historical-at-pickup",
-      "currentAuthoritativeSha256": "cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9",
-      "staleVsCurrent": true
+      "path": "qa/test_terminology_qa.py","sha256": "29aff3a642d0a05433285ecbb707db76b488f6f2bd4b25d889bbe4c7431becf9",
+        "sizeBytes": 16267,
+        "hashScope": "historical-at-pickup",
+        "currentAuthoritativeSha256": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
+        "staleVsCurrent": true
     }
   ],
   "baselineReferences": {
@@ -194,8 +195,8 @@
       "note": "Source snapshot unchanged - authoritative store excerpt source"
     },
     "terminology-contract.json": {
-      "hash": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554",
-      "note": "Contract unchanged - schema authority"
+      "hash": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+      "note": "Contract unchanged - schema authority (corrected current bytes)"
     },
     "terminology-translation-bounds.json": {
       "hash": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
@@ -245,7 +246,7 @@
     },
     "newLaneHashesAuthority": "superseded: see REVIEW_RECEIPT_CORRECTIONS.json -> files (12 entries, verified against committed candidate bytes)"
   },
-  "reviewFilesHashScopeNote": "reviewFiles hashes are the HISTORICAL pickup-time values. 4 of 9 predate the D1-D6 corrections and are marked staleVsCurrent=true. The authoritative current map is REVIEW_RECEIPT_CORRECTIONS.json -> files.",
+  "reviewFilesHashScopeNote": "reviewFiles hashes are the HISTORICAL pickup-time values. 4 of 9 predate the D1-D6 corrections and are marked staleVsCurrent=true. The authoritative current map is REVIEW_RECEIPT_CORRECTIONS.json -> files. The following hash-bearing blocks are HISTORICAL and must not be read as current: filesChangedFromBaseline (the currentHash fields are superseded by REVIEW_RECEIPT_CORRECTIONS.json -> files), unchangedPrerequisites (the hash values are superseded by REVIEW_RECEIPT_CORRECTIONS.json -> files for terminology-contract.json and are historical-choice for other entries), correctionStatus.newLaneHashesHistorical (superseded by REVIEW_RECEIPT_CORRECTIONS.json -> files via newLaneHashesAuthority), and qaPostCorrectionResult historical fields (superseded by qaPostCorrectionResultCurrent).",
   "qaPostCorrectionResultHistorical": "PENDING — QA rerun after corrections",
   "qaPostCorrectionResultCurrent": "PASS 0 failures on the SYNCED corrected candidate (see REVIEW_RECEIPT_CORRECTIONS.json -> verification). Author evidence only; NOT independent acceptance."
 }
