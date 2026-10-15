@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2759,
+  "messages": 2784,
   "arabicTranslated": 376,
-  "arabicMissing": 2383,
+  "arabicMissing": 2408,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -670,6 +670,7 @@
         "public/ingredients.js",
         "public/insights-model.js",
         "public/insights-ui.js",
+        "public/integration-owner03.mjs",
         "public/journey-ui.js",
         "public/model.js",
         "public/personal-ai-ui.js",
@@ -938,6 +939,12 @@
     "./unified-data.js": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "./waste-analysis-model.js": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -2273,6 +2280,18 @@
       ],
       "arabic": false
     },
+    "At most 100 pack options required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
+    "At most 1000 waste records required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Atomic D1 batch unavailable": {
       "sources": [
         "cloud/admin-settings.mjs"
@@ -2288,6 +2307,12 @@
     "Australian Food Composition Database": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Authoritative observation read context unavailable.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -2530,6 +2555,12 @@
     "Body too large": {
       "sources": [
         "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Bounded explicit insight dates required.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -4038,6 +4069,12 @@
       ],
       "arabic": false
     },
+    "Cost snapshots are not admitted by this observation contract; waste value remains unknown.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Count": {
       "sources": [
         "public/data-workspace.js"
@@ -4818,6 +4855,12 @@
       ],
       "arabic": false
     },
+    "Duplicate observation identity.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Duplicate or missing ": {
       "sources": [
         "public/common-corpus-locale.js"
@@ -5388,6 +5431,12 @@
       ],
       "arabic": true
     },
+    "Explicit account required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit basis amount, g/ml, preparation state, units and source/derived method; null is unknown.": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -5409,6 +5458,12 @@
     "Explicit confirmation of the current scoped proposal required": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit measured zero preserved; positive-only analysis helper cannot aggregate it.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -8389,6 +8444,12 @@
       ],
       "arabic": false
     },
+    "Measured quantity exceeds confirmed source or is unsupported.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Measured yield required": {
       "sources": [
         "public/basket-model.js"
@@ -9279,6 +9340,30 @@
       ],
       "arabic": false
     },
+    "Observation history exceeds bounded consumer limit.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation history is unavailable; missing history does not mean zero waste.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation scope/provenance incomplete.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation time is invalid.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "OffMenu property verification must be configured.": {
       "sources": [
         "cloud/service-config.mjs"
@@ -9734,6 +9819,12 @@
       ],
       "arabic": false
     },
+    "Overlapping observations require owner reconciliation.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Overture food shops and venues": {
       "sources": [
         "public/sources.js"
@@ -9797,6 +9888,12 @@
     "Parse error": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Partial recorded observations only; not all waste or person-level attribution.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -11353,6 +11450,12 @@
     "Record retention or access expired": {
       "sources": [
         "public/record-policy.js"
+      ],
+      "arabic": false
+    },
+    "Recorded cleanup evidence": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -13090,6 +13193,12 @@
       ],
       "arabic": false
     },
+    "Source and receipt identities required": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
     "Source assertion": {
       "sources": [
         "public/common-corpus-locale.js",
@@ -13249,6 +13358,12 @@
       ],
       "arabic": false
     },
+    "Stable confirmed receipt/source binding unavailable.": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
     "Staff": {
       "sources": [
         "public/care-ui.js"
@@ -13321,6 +13436,12 @@
     "Steps · count": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Stock removal is not a measured-waste or cost observation.": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
@@ -14630,6 +14751,18 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Waste account mismatch": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
+    },
+    "Waste aggregate overflow": {
+      "sources": [
+        "public/waste-analysis-model.js"
+      ],
+      "arabic": false
     },
     "Week architect": {
       "sources": [
@@ -16913,6 +17046,24 @@
     "{\"rule\":{\"predicate\":\"manufactured-in\",\"operator\":\"exclude\",\"value\":\"CN\"},\"market\":\"AU\",\"evidence\":[]}": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "{quantity} {unit} · partial measured observations": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{receipts} cleanup receipts · {items} recorded stock-removal items": {
+      "sources": [
+        "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "{unqualified} items without usable measured-waste coverage · {unknown} items with unknown waste value": {
+      "sources": [
+        "public/integration-owner03.mjs"
       ],
       "arabic": false
     },
