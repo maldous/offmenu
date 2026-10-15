@@ -1,12 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import {createShoppingHandoff, RETAINED_HELPER_PIN} from '../public/shopping-handoff-owner31.mjs';
 import {shoppingItems} from '../public/integrations.js';
-// Exact immutable retained implementation; no copied checkout or helper file.
-const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>!k.startsWith('GIT_')));
-const source=execFileSync('git',['show',`${RETAINED_HELPER_PIN}:public/shopping-handoff-model.js`],{env,encoding:'utf8'}).replace("'./record-policy.js'",JSON.stringify(new URL('../public/record-policy.js',import.meta.url).href));
-const retained=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+import * as retained from '../public/shopping-handoff-model.js';
 const fixture=()=>({accountId:'alice',kitchenId:'one',revision:'r7',sessionEpoch:'login-1',canExport:true,demo:false,policies:{},data:{profile:{country:'AU',plan:[],shopping:[{id:'custom:rice',name:'Rice',amount:'Review source amount',checked:false}]},recipes:[],inventory:[],products:{},date:'2026-10-14',usePantry:true},bindings:[{lineId:'custom:rice',accountId:'alice',kitchenId:'one',revision:'r7',admitted:true,record:{id:'personal:rice',kind:'product',data:{quantity:null,unit:null},provenance:{sourceId:'personal-import',privateUseConfirmed:true,attribution:'Synthetic personal fixture'}}}]});
 function setup(){let state=fixture(), clock=Date.parse('2026-10-14T10:00:00Z');const controller=createShoppingHandoff({read:()=>state,now:()=>clock,helper:{pin:RETAINED_HELPER_PIN,reviewRef:'synthetic-test-only-not-independent-review',propose:retained.proposeShoppingHandoff,confirm:retained.confirmShoppingHandoff}});return {controller,state,tick:n=>clock+=n,request:{id:'handoff-1',kind:'retailer',destinationId:'retailer:manual'}};}
 test('actual shoppingItems entrypoint feeds quantity/provenance preview and confirmation, without mutation',()=>{

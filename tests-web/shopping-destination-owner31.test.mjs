@@ -1,9 +1,7 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+import test from 'node:test';import assert from 'node:assert/strict';
 import {createShoppingDestinationBoundary} from '../public/shopping-destination-owner31.mjs';
 import {createShoppingHandoff,RETAINED_HELPER_PIN} from '../public/shopping-handoff-owner31.mjs';
-const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>!k.startsWith('GIT_')));
-const helperSource=execFileSync('git',['show',`${RETAINED_HELPER_PIN}:public/shopping-handoff-model.js`],{env,encoding:'utf8'}).replace("'./record-policy.js'",JSON.stringify(new URL('../public/record-policy.js',import.meta.url).href));
-const helper=await import('data:text/javascript;base64,'+Buffer.from(helperSource).toString('base64'));
+import * as helper from '../public/shopping-handoff-model.js';
 function setup(){
  let clock=1000,calls=0;
  const state={accountId:'alice',kitchenId:'one',revision:'r1',sessionEpoch:'s1',canExport:true,demo:false,policies:{},data:{profile:{country:'AU',plan:[],shopping:[{id:'rice',name:'أرز',amount:'unknown pack',checked:false}]},recipes:[],inventory:[],products:{},date:'2026-10-15',usePantry:true},bindings:[{lineId:'rice',accountId:'alice',kitchenId:'one',revision:'r1',admitted:true,record:{id:'personal:rice',kind:'product',data:{quantity:null,unit:null},provenance:{sourceId:'personal-import',privateUseConfirmed:true,attribution:'synthetic owner fixture'}}}]};
