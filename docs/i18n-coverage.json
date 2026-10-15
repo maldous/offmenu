@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2784,
+  "messages": 2799,
   "arabicTranslated": 376,
-  "arabicMissing": 2408,
+  "arabicMissing": 2423,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -2286,6 +2286,12 @@
       ],
       "arabic": false
     },
+    "At most 100 records per preview": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "At most 1000 waste records required": {
       "sources": [
         "public/waste-analysis-model.js"
@@ -2982,6 +2988,7 @@
     },
     "Check measurement units": {
       "sources": [
+        "cloud/health-import-owner28.mjs",
         "public/health-model.js"
       ],
       "arabic": false
@@ -4270,6 +4277,12 @@
       ],
       "arabic": false
     },
+    "Current scoped private consent required": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Current source results are cached by OffMenu. Name matches remain candidates; corporate country is not food origin.": {
       "sources": [
         "public/data-workspace.html"
@@ -4873,6 +4886,12 @@
       ],
       "arabic": false
     },
+    "Duplicate source identity or record ID": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Duplicate source record ID": {
       "sources": [
         "public/shopping-handoff-model.js"
@@ -5236,6 +5255,12 @@
     "Entity and relationship candidates require scope and date verification. Country is not product manufacturing or ingredient origin.": {
       "sources": [
         "cloud/enrichment.mjs"
+      ],
+      "arabic": false
+    },
+    "Envelope must be JSON within 64 KiB": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -6918,6 +6943,12 @@
       ],
       "arabic": false
     },
+    "Invalid JSON": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid JSON tree": {
       "sources": [
         "cloud/queue-state-bridge-owner16.mjs"
@@ -7454,6 +7485,12 @@
     "Invalid record field.": {
       "sources": [
         "public/unified-data.js"
+      ],
+      "arabic": false
+    },
+    "Invalid record identity or fields": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -8805,6 +8842,12 @@
     "Native D1 and trusted server hooks required": {
       "sources": [
         "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
+    "Native Health Connect/HealthKit requires separately qualified device bridge; browser OAuth is insufficient": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -11453,6 +11496,12 @@
       ],
       "arabic": false
     },
+    "Record type not consented": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Recorded cleanup evidence": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -12506,6 +12555,12 @@
       ],
       "arabic": false
     },
+    "Schema, account or revision mismatch": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Scope missing": {
       "sources": [
         "cloud/integrations.mjs"
@@ -12674,6 +12729,12 @@
     "Separate meal needed for {v0}": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Separate sources retained; never sum overlapping observations": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -13221,6 +13282,12 @@
     "Source directory": {
       "sources": [
         "public/data-workspace.html"
+      ],
+      "arabic": false
+    },
+    "Source identity required": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -14048,6 +14115,12 @@
       ],
       "arabic": true
     },
+    "Trusted account context required": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Trusted administrator required.": {
       "sources": [
         "cloud/recipe-community.mjs"
@@ -14175,6 +14248,12 @@
     "Unaccepted recipe collection": {
       "sources": [
         "public/recipe-library-ui.js"
+      ],
+      "arabic": false
+    },
+    "Unambiguous nonfuture UTC timestamp required": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
@@ -14420,6 +14499,18 @@
     "Unsupported proposal kind": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Unsupported record type": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsupported unit or value": {
+      "sources": [
+        "cloud/health-import-owner28.mjs"
       ],
       "arabic": false
     },
