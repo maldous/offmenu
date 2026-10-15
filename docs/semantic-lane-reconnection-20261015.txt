@@ -1,0 +1,33 @@
+Semantic lane bounded stage — review candidate
+
+Verified assigned slot63 checkout / feature/63/freebuff-semantic-candidates-20261015.
+The handover retains role06 identity and legacy semantic lane03; historical attribution is unchanged.
+
+New read-only inventory: scripts/semantic-candidate-inventory.py
+Focused negative-boundary tests: tests-semantic-candidate/test_inventory.py (5 passed).
+It reconciles queue/checkpoint/judgment IDs and the retained checker report, pins135 input files,
+checks the W1-W4 documentary generation, and refuses inconsistent identities or changed bytes.
+It does not rerun semantic judgment or grant admission.
+
+Current sampled state:78 items,58 done,20 blocked;23 placeholder +35 noncanonical model labels
+remain provisional;73 done fields (63original,2proposed,4unknown,4conflict);4 glossary proposals.
+W1-W4 documentary corrections were accepted in retained Morgan evidence; no broader acceptance.
+The live accepted documentary bytes, correction manifest and independent review receipt match.
+Historical STATUS/HANDOFF were preserved, with this separate overlay avoiding hash invalidation.
+Derived-pin item sq:f9afd2d81c0e2d63cc1098af remains blocked under unchanged contract.
+
+Inventory: /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/handover-20261015-reconnection/candidate-inventory.json
+SHA256: b98da8903f8d455d6bfa57f28954c99c10f25fe5b2ab0a6b5406f8cea876be0e
+Stage receipt: /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/handover-20261015-reconnection/stage-receipt.json
+SHA256: 5c0c14aa6deafbd9e189cf9afc2094cae2035a9beed7cb0a40442c2141e67694
+
+Commands: PYTHONDONTWRITEBYTECODE=1 python -B -m unittest discover -s tests-semantic-candidate -v
+python -B scripts/semantic-candidate-inventory.py --lane /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic
+git diff --check
+
+Delivery blocker: fresh develop fetch failed (bad local Codex checkpoint ref object; exact error in receipt).
+Cached develop4693cbc3fe17cdde2e292e6eb00cd83769ee45ae is not fresh evidence. No ref repair attempted.
+Next: distinct independent exact review, authorized shared-object/ref repair and fresh develop reconciliation,
+then Morgan verdict/custody. No push, PR, merge or production authorization inferred.
+Basic Memory: unrelated Paperly results/no recent activity; H5I: uninitialized/no results.
+MemPalace,Weave,native to-do: no callable tools exposed; no fabricated usage.
