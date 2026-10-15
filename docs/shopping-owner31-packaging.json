@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Portable packaging of previously reviewed standalone shopping proposals; no central activation",
+  "reviewedSource": "82721a960fa05c053b5103a5b2ebebe2f1562f9d",
+  "actualBase": "426a62c39e3ff30edfe8397b5bd8d4ae1f233dbb",
+  "originalSixSHA256": {
+    "docs/shopping-destination-owner31.md": "cb4f89fb43a410a9afe2ea3d32ef5f9c926fb5d04d2b2cd93343c3eb79c8dbe8",
+    "docs/shopping-handoff-consumer-owner31.md": "1016c25d01f37557a0ccf2f2f680802decc587c987c1bae6b22cd65b41a7ecb1",
+    "public/shopping-destination-owner31.mjs": "bef4f4a43e842cec56d2e8e7815668ed388eeef9d97ad7ea0a6fa343c8996119",
+    "public/shopping-handoff-owner31.mjs": "603aa5115fa15de9e6d6324b9c6c782553326094f03a01b35601f3d5b2f5e2ac",
+    "tests-web/shopping-destination-owner31.test.mjs": "22276a8809a1f4c5bb1e12a36aa0da8055a2e7c5f33bdfd42e210063a4375422",
+    "tests-web/shopping-handoff-owner31.test.mjs": "8c31d9312a7d40546e7756211c79419445cebe707c74fed5e17fd45515a57857"
+  },
+  "packagedHelper": {
+    "source": "ac19b0c863ca486b9e6139cd2cad8497694fa368:public/shopping-handoff-model.js",
+    "sha256": "9c36e79e5d22d65ad5dc7887ea967569785b4bf7d250aa96042371f808f8a74f",
+    "unchangedBytes": true,
+    "runtimeDependency": "./record-policy.js"
+  },
+  "reviewedBaseDependenciesSHA256": {
+    "public/integrations.js": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+    "public/record-policy.js": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+    "public/sources.js": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+    "public/menu-model.js": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+    "public/model.js": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+    "public/checkout-model.js": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+    "public/i18n.js": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+    "public/ingredients.js": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+    "public/locales/ar.js": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+    "public/locale-negotiation.js": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+  },
+  "testLoaderDelta": {
+    "tests-web/shopping-handoff-owner31.test.mjs": {
+      "originalSHA256": "8c31d9312a7d40546e7756211c79419445cebe707c74fed5e17fd45515a57857",
+      "packagedSHA256": "99037b17c3b0605ac30901ba73a02c6c9ca9315e59a21ae0cd85a4f06290c10f",
+      "unchangedBodySHA256": "e22042b94f210a4536bc7b11831760e0dc03f938ce623c08242ab7a5cc2a19a1",
+      "bodyStartsWith": "const fixture="
+    },
+    "tests-web/shopping-destination-owner31.test.mjs": {
+      "originalSHA256": "22276a8809a1f4c5bb1e12a36aa0da8055a2e7c5f33bdfd42e210063a4375422",
+      "packagedSHA256": "a6bd7f3351a2dc082bf7bc3a3c7e2676eb6bf2f9b1b78c029907e22e78244148",
+      "unchangedBodySHA256": "fff2cd21cf6d3d099b580972c6f278c29c92a3d623f4e0cb9b2a339c83570f5a",
+      "bodyStartsWith": "function setup(){"
+    }
+  },
+  "packaging": "Ordinary relative namespace imports replace git-show/environment/data-URL helper loading; all test bodies/assertions and production consumer/helper bytes preserved. Manifest hashes describe canonical repository blob bytes, not CRLF-converted working copies. No runtime raw-byte hash guard is introduced.",
+  "priorAcceptance": [
+    "bounded in-memory composition/fresh-confirmation only",
+    "bounded local destination-approved proposal only"
+  ],
+  "limits": [
+    "Both consumer boundaries require retailer kind; generic helper proposal kinds preserved without behavior changes",
+    "No calendar consumer/navigation/purchase/share/clipboard/provider transport or central wiring",
+    "No authenticated scope producer/source rights/safe endpoint/SSRF/DNS/remote revocation qualification",
+    "No production deployment or release qualification"
+  ]
+}
