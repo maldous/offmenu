@@ -9955,5 +9955,63 @@
         "sha256": "2929338f99631e2d039c0a3fa8b5882df833d4ed2fed719a1eebf836144f2f56"
       }
     ]
+  },
+  "worker45_trailing_measure_correction": {
+    "prior_candidate": "72ef1bbaa89ce7bd5d17412f3991a9759e6c1e17",
+    "base": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+    "parser_version": "worker54-quantity/4",
+    "review_path": "/home/user/Documents/Codex/2026-10-15/worker45-review54-72ef1bba/review-evidence.json",
+    "review_sha256": "5a0a7c07a8bbbdb196d6f0151a429efefd8ab225ede000d51b81933e8350862b",
+    "previous_verdict": "HOLD general parser qualification; PASS bounded retained-body custody/UNKNOWN preservation",
+    "reproduced_before": "all five exact probes collapsed to leading amount",
+    "after": [
+      {
+        "synthetic_lexeme": "2 g + ⅕ g salt",
+        "status": "UNKNOWN",
+        "value": null,
+        "yield_status": null
+      },
+      {
+        "synthetic_lexeme": "4 servings + ⅕ servings",
+        "status": "UNKNOWN",
+        "value": null,
+        "yield_status": "UNKNOWN"
+      },
+      {
+        "synthetic_lexeme": "2 cups or half litre milk",
+        "status": "UNKNOWN",
+        "value": null,
+        "yield_status": null
+      },
+      {
+        "synthetic_lexeme": "2 g X two packages",
+        "status": "UNKNOWN",
+        "value": null,
+        "yield_status": null
+      },
+      {
+        "synthetic_lexeme": "2 g × two packages",
+        "status": "UNKNOWN",
+        "value": null,
+        "yield_status": null
+      }
+    ],
+    "implementation": "Trailing Unicode isnumeric detection plus conservative case-insensitive written alternative/multiplicity and plus/multiply markers; no number-word parsing, sums, conversions or normalization",
+    "focused_checks": {
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/global-data-validation -p test_worker54_recipe_quantities.py -v"
+    },
+    "source_custody": "Unmodified fixture; six pinned originals and all UNKNOWN bullet results verified by actual-source regression. Existing76-span and review receipts preserved. No source body copies/download/census.",
+    "fixture_sha256": "2929338f99631e2d039c0a3fa8b5882df833d4ed2fed719a1eebf836144f2f56",
+    "historical_manifest_notice": "Earlier unchanged-runtime and PASS metadata apply to their exact historical commits; parser/test hashes changed in this successor. This block describes the latest delta.",
+    "runtime_sha256": {
+      "scripts/global-data-validation/worker-54-recipe-quantities.py": "ee4c0e9b466d3c16b8e51f9c1ccfbc0eb4ff47dd47b0d45ef6c9a07e91047d22",
+      "tests/global-data-validation/test_worker54_recipe_quantities.py": "d7eba1c5f05b6ce4bfebf476fe23108934653971beac370576676954b6fbc1d5"
+    },
+    "reviewer": 45,
+    "acceptance": "SAME45 exact successor delta review pending; no general parser acceptance or whole-recipe/source admission",
+    "completed_utc": "2026-10-15T11:54:28.467054+00:00"
   }
 }

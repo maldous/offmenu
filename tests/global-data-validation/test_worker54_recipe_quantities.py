@@ -24,6 +24,24 @@ class SyntheticQuantityCases(unittest.TestCase):
             self.assertEqual(result['originalLexeme'],text)
         for text,unit in [('2g salt','g'),('2千克 米','kg'),('250克 糖','g'),('2g (salt)','g'),('2g\tflour','g')]:
             result=w.parse(text,'en');self.assertEqual(result['unit'],unit);self.assertEqual(result['status'],'candidate')
+    def test_trailing_unicode_numeric_measures(self):
+        # Synthetic grammar witnesses; never simplify multiple measures to one.
+        for text in ['2 g + ⅕ g salt','2 g ⅖ g salt','2 g ⅐ g salt','2 g ² packages','2 g Ⅴ packages','2 g ٣ packages']:
+            result=w.parse(text,'en',{'line':7})
+            self.assertEqual(result['status'],'UNKNOWN',text)
+            self.assertIsNone(result['value']);self.assertIsNone(result['range'])
+            self.assertEqual(result['originalLexeme'],text)
+            self.assertEqual(result['coordinate'],{'line':7})
+        self.assertEqual(w.parse_yield('4 servings + ⅕ servings','en')['status'],'UNKNOWN')
+    def test_written_alternatives_and_multiplicities(self):
+        # Word/symbol recognition is an unresolved marker, never number-word parsing.
+        for text in ['2 cups or half litre milk','2 cups OR HALF litre milk','2 g X two packages','2 g × two packages','2 g times two packages','2 g double packages','2 g plus half gram salt']:
+            result=w.parse(text,'en')
+            self.assertEqual(result['status'],'UNKNOWN',text)
+            self.assertIsNone(result['value']);self.assertEqual(result['originalLexeme'],text)
+        self.assertEqual(w.parse_yield('4 servings or half batch','en')['status'],'UNKNOWN')
+        for text in ['2 g salt','2 cups flour','4 servings']:
+            self.assertEqual(w.parse(text,'en')['status'],'candidate',text)
     def test_yield(self):
         self.assertEqual(w.parse_yield()['status'],'UNKNOWN');self.assertEqual(w.parse_yield('4 servings','en')['value'],'4');self.assertEqual(w.parse_yield('500 g cake','en')['status'],'UNKNOWN')
     def test_limits(self):

@@ -7,7 +7,7 @@ import re
 import unicodedata
 from fractions import Fraction
 
-PARSER_VERSION = 'worker54-quantity/3'
+PARSER_VERSION = 'worker54-quantity/4'
 DEFAULT = '/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz'
 EXPECTED = '90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73'
 FRACTIONS = {'½': '1/2', '¼': '1/4', '¾': '3/4', '⅓': '1/3', '⅔': '2/3', '⅛': '1/8'}
@@ -62,7 +62,13 @@ def parse(text, locale='und', coordinate=None, provenance=None):
     except (ValueError,ZeroDivisionError):return result
     rest=tail[unit.end():]
     # Multiple measures/pack multiplicities cannot safely be reduced to the first amount.
-    if re.search(r'\d|[½¼¾⅓⅔⅛]|\b(?:x|times)\b',rest):
+    # Numeric continuations include every Unicode numeric character, not just the
+    # leading grammar's supported fractions. Do not normalize or combine measures.
+    alternative = re.search(
+        r'\b(?:or|plus|x|times|half|halves|quarter|quarters|third|thirds|'
+        r'double|triple|twice|once|zero|one|two|three|four|five|six|seven|'
+        r'eight|nine|ten|eleven|twelve|hundred|thousand)\b|[+×*]', rest, re.I)
+    if any(char.isnumeric() for char in rest) or alternative:
         result['reason']='additional numeric basis or alternative measure requires review';return result
     result.update(status='candidate',value=str(low) if high is None else None,
                   range=[str(low),str(high)] if high is not None else None,
