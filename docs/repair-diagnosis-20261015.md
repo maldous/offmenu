@@ -104,10 +104,15 @@ output.
   and **all five** of the day's python3.12 C-level faults report "likely on CPU
   10 (core 20)" (03:30 basic-memory, 04:12 python3, 09:51 basic-memory, 14:15
   python3, 14:43 harness child; the 10:23 repair GPF did not report a CPU).
-- CPU-pinned comparison (bounded follow-up): `taskset -c 10` → 0/300,
-  `taskset -c 11` → 0/300 — **inconclusive**: at the observed rate ~1.3 faults
-  per 300 runs are expected, so two clean batches neither confirm nor refute
-  the core-20 localization.  Larger pinned samples are the bounded next test.
+- CPU-pinned comparison — **interpretation corrected 2026-10-15 per
+  containment instruction**: `taskset -c 10` → 0/300 and `taskset -c 11` →
+  0/300 were **both executed on the suspect physical core 20** (CPUs 10 and 11
+  are SMT siblings of core 20, socket 0), so the run labeled "control" was an
+  **invalid control**.  Both results are preserved as observations but can
+  neither confirm nor refute the core-20 localization.  The valid design
+  (suspect core vs a different physical core) was queued as
+  `27a68576-8390-4df3-8579-a1b07f050824` and **withdrawn before pickup** under
+  the containment instruction — do not run it.
 
 Hypothesis status updated: native-fault recurrence at the crash workload is
 now **observed** (stochastic, not deterministic).  Leading hypothesis remains
@@ -123,12 +128,38 @@ invented** — the pinned implementation is unchanged.
    localization is a repeated-parse bisect of that file only (the fault is
    stochastic, so a single triggering row is not assumed).
 2. Bounded non-destructive memory-health check to test the hardware hypothesis
-   (proper RAM testing needs a non-installed tool or a reboot — gate noted);
-   larger CPU-pinned fault-rate samples (CPU 10 vs control) are the cheaper
-   first step toward confirming or refuting the core-20 localization.
-3. Repair relaunch remains gated: if resumed, run under a watchdog that
-   snapshots `/proc` on freeze/crash (the harness already demonstrates the
-   pattern) to a fresh output root with Morgan's explicit go.
+   (proper RAM testing needs a non-installed tool or a reboot — gate noted).
+   CPU-pinned fault-rate comparisons against the suspect core are withdrawn;
+   any future diagnosis runs only on currently online CPUs.
+3. Repair relaunch remains gated: if resumed, run on online CPUs under a
+   watchdog that snapshots `/proc` on freeze/crash (the harness demonstrates
+   the pattern) to a fresh output root with Morgan's explicit go; the pinned
+   implementation's per-asset checkpoint journal already bounds loss to one
+   asset and supports `--resume` once the first checkpoint exists.
+
+## Precautionary runtime containment (2026-10-15, authoritative instruction)
+
+At Matt's explicit request, logical CPUs **10 and 11** (SMT siblings of
+physical core 20, socket 0) are **offline** via supported Linux CPU hotplug;
+the online list is `0-9,12-31` (verified read-only:
+`/sys/devices/system/cpu/online`, `cpu10/online=0`, `cpu11/online=0`).
+Constrains for all subsequent work:
+
+- no further tests on the excluded/suspect core; no re-enabling cores; no
+  global settings changes;
+- the queued CPU10-vs-CPU12 comparison (`27a68576-8390-4df3-8579-a1b07f050824`)
+  is withdrawn — not to be picked up;
+- existing observations are preserved unchanged; only their interpretation is
+  corrected (see the CPU-pinned comparison bullet above);
+- this is **precautionary containment, NOT proven hardware failure** — the
+  hypothesis remains unproven either way;
+- no confidence-only fault-rate batches: further batches must answer a
+  decision-driving question or not run.
+
+Containment-aware relaunch posture (for Morgan's verdict): any repair relaunch
+runs on online CPUs to a fresh output root under the `/proc` watchdog; the
+pinned per-asset checkpoint journal bounds a stochastic fault to one asset and
+`--resume` continues from it; orphaned-lock custody must be decided first.
 
 ## Pin custody (final verification, 2026-10-15)
 
