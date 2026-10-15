@@ -1,3 +1,13 @@
+# Alternate evidence provenance correction (PR19 follow-up)
+
+Supplied evidence now carries a measured input-file SHA256 and canonical JSON component digests. An alternate bundle without historical commit claims emits null worker/proof commit IDs; it cannot inherit the reviewed historical origins. If a bundle claims historical origins, both its declaration and component digest must match the reviewed canonical metadata pins or loading fails before original files are read. No arbitrary alternate commit ID is treated as verified. Caller-supplied computed binding fields are overwritten. FoodOn manifest/revision/file and citation checks still apply; the worker56 commit label is null because no separately verified input binding is supplied.
+
+The synthetic fixture reproduced the old false worker53/proof commit labels. Eleven focused portable tests now pass, including null labels and exact input digest for synthetic metadata, rejection of canonical IDs pasted onto alternate metadata, rejection of altered canonical metadata, and acceptance of unaltered canonical pins. Existing source attachment/Unicode/rights/custody/unknown tests remain. No private original acquisition or replay is needed to test this correction.
+
+This branch starts from acf3a1931b019e64ade62373be3bf37e1b467744. PR19 merge a01a16cb78856b9130fdda560c85f599a2f70bb2 is not in local Git; no shared fetch/ref repair was attempted. Sole integration writer must compose the frozen delta on the selected current base. SAME52 review remains required. Historical report evidence below is preserved; neither an input digest nor a metadata provenance pin establishes source rights, ingredient equivalence, original lexeme qualification, corpus admission or production authority.
+
+---
+
 # Current portable invocation (PR15 follow-up)
 
 The executable now reads body-free `portable_inputs` from the tracked report adjacent to this document. Historical commit IDs below are provenance labels, not required Git objects. No Git subprocess is executed. Original recipe bodies and rights files remain external and are never uploaded by this change.

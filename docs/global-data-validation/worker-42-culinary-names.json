@@ -5356,5 +5356,28 @@
     },
     "review": "SAME52 pending exact immutable head",
     "coordination": "18 separate OCR workflow/dependency ownership; no workflow edits here"
+  },
+  "alternate_evidence_provenance_followup": {
+    "generated_utc": "2026-10-15T13:42:51.870927+00:00",
+    "base": "acf3a1931b019e64ade62373be3bf37e1b467744",
+    "merged_PR19": "a01a16cb78856b9130fdda560c85f599a2f70bb2",
+    "merged_commit_local": "unavailable; no shared fetch; sole integration writer must rebind",
+    "review_comment": "https://github.com/maldous/offmenu/pull/19#discussion_r4283474356",
+    "before": {
+      "worker53_commit": "8d468982f7bc905af01d5262c8eabb8db7051e96",
+      "proof_commit": "6bf021a81d7660ae48b3eeba3656aa656f3553bf",
+      "synthetic_fixture": true
+    },
+    "after": {
+      "alternate_unclaimed_metadata": "exact bundle and component digests emitted; historical worker/proof IDs null",
+      "canonical_metadata": "historical IDs retained only if declaration and reviewed canonical component digest match",
+      "unsupported_alternate_commit_claim": "rejected before original access",
+      "foodon": "actual manifest/revision/digest checks retained; historical worker56 commit null because no supplied verified binding"
+    },
+    "tests": {
+      "command": "python3 -B -m unittest discover -s tests/global-data-validation -p test_worker42_culinary_names.py",
+      "result": "11 focused tests passed; no source network/private original replay"
+    },
+    "review": "SAME52 pending immutable candidate; no admission/publication"
   }
 }
