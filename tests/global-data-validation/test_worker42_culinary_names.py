@@ -97,6 +97,11 @@ class PortableAttachmentRejections(unittest.TestCase):
         self.assertEqual(result['before'], result['after'])
         a = result['assertions'][0]
         self.assertIsNotNone(a['original_body_reference'])
+        self.assertIsNone(a['original_body_reference']['proof_commit'])
+        self.assertIsNone(result['worker53_commit'])
+        self.assertIsNone(result['worker56_commit'])
+        self.assertEqual(result['evidence_binding']['sha256'], m.sha(self.evidence))
+        self.assertEqual(result['evidence_binding']['verified_commit_provenance'], {})
         self.assertEqual(a['candidate_concept_ids'], ['http://purl.obolibrary.org/obo/FOODON_TEST'])
         self.assertIsNone(a['source_original_lexeme'])
         self.assertIsNone(a['ingredient_identity'])
@@ -153,3 +158,30 @@ class PortableAttachmentRejections(unittest.TestCase):
         (self.recipes / 'manifest.json').unlink()
         with self.assertRaisesRegex(FileNotFoundError, 'manifest.json'):
             self.run_adapter()
+
+    def test_alternate_bundle_cannot_claim_canonical_history(self):
+        import json
+        for key, commit in [('reference_commit', '8d468982f7bc905af01d5262c8eabb8db7051e96'),
+                            ('original_proof_commit', '6bf021a81d7660ae48b3eeba3656aa656f3553bf'),
+                            ('reference_commit', 'other-history')]:
+            with self.subTest(key=key, commit=commit):
+                self.write_recipe()
+                bundle = json.loads(self.evidence.read_text())
+                bundle['portable_inputs']['provenance'] = {key: commit}
+                self.dump(self.evidence, bundle)
+                with self.assertRaisesRegex(ValueError, 'Unsupported evidence provenance'):
+                    self.run_adapter()
+
+    def test_canonical_metadata_labels_are_digest_verified(self):
+        import copy
+        import json
+        canonical = m.load_inputs(m.DEFAULT_EVIDENCE)
+        self.assertEqual(canonical['verified_provenance']['reference_commit'],
+                         '8d468982f7bc905af01d5262c8eabb8db7051e96')
+        self.assertEqual(canonical['verified_provenance']['original_proof_commit'],
+                         '6bf021a81d7660ae48b3eeba3656aa656f3553bf')
+        changed = copy.deepcopy(canonical)
+        changed['original_proof']['records'][0]['original']['recordId'] = 'changed'
+        self.dump(self.evidence, {'portable_inputs': changed})
+        with self.assertRaisesRegex(ValueError, 'original_proof_commit'):
+            m.load_inputs(self.evidence)
