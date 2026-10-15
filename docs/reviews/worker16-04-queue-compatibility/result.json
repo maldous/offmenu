@@ -1,0 +1,13 @@
+{
+  "command": "node --test tests-web/queue-d1-compatibility-owner16.test.mjs",
+  "passed": 3,
+  "failed": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "logSHA256": "0e92011e079bb5571504e9e33e617cb4b8444587442b0da971999ae71780f966",
+  "nodeVersion": "v24.16.0",
+  "miniflareVersion": "4.20260730.0",
+  "esbuildVersion": "0.25.12",
+  "inputManifestSHA256": "c464ab8e439b6d9da11edc432d9707e36ee773835cae93e2d8d2019629c5aaed",
+  "scope": "Three synthetic actual local D1 compatibility witness groups; no old-suite replay or adoption."
+}

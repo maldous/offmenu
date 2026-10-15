@@ -1,0 +1,100 @@
+{
+  "purpose": "Synthetic local compatibility witness only; reused exact reviewed fixtures, no adapter adoption.",
+  "queueCommit": "e4c87278bf94f791b0dd7f30672b65edf992317e",
+  "d1Commit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+  "reviewReceipt": "/home/user/Documents/Codex/2026-10-15/worker13-d1-38a7d0b-review/receipt.json",
+  "reviewReceiptSHA256": "5afc88a12e6ed8d6ab4de6c0ef2a4b03c6fac5f6ddb6d7aae7b4cd8dc09c86fb",
+  "hashRepresentation": "LF Git-source bytes; runtime witness compares canonical LF text to tolerate CRLF checkout without ignoring semantic changes.",
+  "files": [
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "cloud/session-state-d1-owner04.mjs",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/cloud/session-state-d1-owner04.mjs",
+      "sha256": "1dc8633974f83f643d13b27cdeb44f3e4a4c3093c487583ff8719fefa574d12a"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "cloud/state.mjs",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/cloud/state.mjs",
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/cooking-model.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/cooking-model.js",
+      "sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/i18n.js",
+      "localPath": "tests-web/fixtures/queue-d1-compatibility-owner16/public/i18n.js",
+      "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/locales/ar.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/locale-negotiation.js",
+      "localPath": "tests-web/fixtures/queue-d1-compatibility-owner16/public/locale-negotiation.js",
+      "sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/checkout-model.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/checkout-model.js",
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/model.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/model.js",
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/ingredients.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/ingredients.js",
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/menu-model.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/menu-model.js",
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/unified-data.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/unified-data.js",
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/countries.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/countries.js",
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+    },
+    {
+      "inputCommit": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+      "sourcePath": "public/insights-model.js",
+      "localPath": "tests-web/fixtures/queue-state-owner16/d104/public/insights-model.js",
+      "sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9"
+    },
+    {
+      "inputCommit": "e4c87278bf94f791b0dd7f30672b65edf992317e",
+      "sourcePath": "cloud/queue-state-bridge-owner16.mjs",
+      "localPath": "cloud/queue-state-bridge-owner16.mjs",
+      "sha256": "fb898a59e7c6589b3cea90057a4a5ec4e60fd897ef0539c10d07ec8909c9d9dc"
+    },
+    {
+      "inputCommit": "e4c87278bf94f791b0dd7f30672b65edf992317e",
+      "sourcePath": "cloud/queue-state-entry-owner16.mjs",
+      "localPath": "cloud/queue-state-entry-owner16.mjs",
+      "sha256": "d4d9b86588f14f6183c802c3f9f5b9d6fa915c0a77dcbffabb04057f3d9428b3"
+    }
+  ]
+}
