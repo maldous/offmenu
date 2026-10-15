@@ -5,7 +5,8 @@
   "atUTC": "2026-10-15T04:57:52.585607+00:00",
   "reviewer": {
     "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
-    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63); writes only reviews/archive-pin-f9/"
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63); writes only reviews/archive-pin-f9/",
+    "writeScope": "worktree /home/user/src/offmenu-workers/worker-63: reviews/archive-pin-f9/ only. External one-writer lane copy: /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-archive-pin-f9-wikibooks-6dfe6948-recovery-W06.json (my own assigned lane output). No author artifact (STATUS.json, HANDOFF.txt, admission/, queue/, checkpoint/) was written or modified."
   },
   "item": {
     "itemId": "sq:f9afd2d81c0e2d63cc1098af",
@@ -72,8 +73,10 @@
     "No lane artifact was mutated: semantic STATUS/HANDOFF/admission/queue are untouched by this receipt; counts remain 58 done / 20 terminal-blocked / 23+35 model labels.",
     "Whether the lane may ADOPT a derived scoped pin (vs the historical archiveSha256) is a contract/convention decision for Worker 02/Morgan - this receipt deliberately does not decide it and does not propose substituting the normalized-package hash.",
     "The package-level efadf48d... derivation remains unverified; a reviewer should not treat it as this record's pin.",
-    "Not verified here: that the originals capture is complete for the release (only this record's page was located), or that no later revision superseded revid 4525797 in the capture (the capture is a dated retrieval by its own manifest wording)."
+    "Not verified here: that the originals capture is complete for the release (only this record's page was located), or that no later revision superseded revid 4525797 in the capture (the capture is a dated retrieval by its own manifest wording).",
+    "Write scope (explicit): the only paths written by this task are the two receipt copies above; the lane's author artifacts were verified unchanged after the task (STATUS 6be5e0ca..., HANDOFF 201b0d31..., queue-state 2c126335..., admission 47cc09ac...)."
   ],
   "minimalNextAction": "Queue a bounded correction decision for the 20 blocked items: for each, check whether retained originals exist and, if so, re-author as NEW qualified judgments carrying an explicitly declared derived scoped pin (parent-file pin + offset/length + span sha) with independent review; if originals are absent, keep terminal-blocked. No fabricated archive hashes anywhere.",
-  "noAdmission": true
+  "noAdmission": true,
+  "receiptNote": "revised immediately after creation to make the write scope explicit; the earlier copy said only 'writes only reviews/archive-pin-f9/'"
 }
