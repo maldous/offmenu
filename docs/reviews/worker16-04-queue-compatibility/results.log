@@ -1,0 +1,11 @@
+✔ exact selected 04 D1 and integrated queue agree on binding, digest, version and ACK (263.402756ms)
+✔ selected pair withholds damaged contract ACKs and recovers only the exact committed command (517.71521ms)
+✔ matching selector grants no authority; late committed ACK survives expiry while new requests deny (270.800283ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1232.068219

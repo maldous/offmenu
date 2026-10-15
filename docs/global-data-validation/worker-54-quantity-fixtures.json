@@ -1,0 +1,307 @@
+{
+  "schema": "worker54-portable-fixtures/1",
+  "source_custody_commit": "1ab53c0c97ad6f99502b1bd26f03191f78b1c36d",
+  "normalized_sha256": "90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73",
+  "records": [
+    {
+      "language": "hi",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/hi/revisions-0.json",
+        "file_sha256": "72be2574689773a3e5ab488a08a819e3583d61c9a7f16e8349597bb0a93c6fd7",
+        "coordinate": "/query/pages/0/revisions/0/slots/main/content",
+        "body_sha256": "c391bdbb67e7ebaeb046223f47f613ddcf1f75391a67257b7af15571fa5a979a",
+        "body_bytes": 1008,
+        "timestamp": "2017-08-21T18:40:22Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "रसोई:तले फल का छिल्का",
+        "revisionId": 11675,
+        "recordId": "4091"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:hi",
+        "recordId": "4091",
+        "url": "https://hi.wikibooks.org/wiki/%E0%A4%B0%E0%A4%B8%E0%A5%8B%E0%A4%88:%E0%A4%A4%E0%A4%B2%E0%A5%87_%E0%A4%AB%E0%A4%B2_%E0%A4%95%E0%A4%BE_%E0%A4%9B%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%95%E0%A4%BE",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "hi Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "c391bdbb67e7ebaeb046223f47f613ddcf1f75391a67257b7af15571fa5a979a",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2017-08-21T18:40:22Z",
+        "revisionId": 11675,
+        "historyUrl": "https://hi.wikibooks.org/wiki/%E0%A4%B0%E0%A4%B8%E0%A5%8B%E0%A4%88:%E0%A4%A4%E0%A4%B2%E0%A5%87_%E0%A4%AB%E0%A4%B2_%E0%A4%95%E0%A4%BE_%E0%A4%9B%E0%A4%BF%E0%A4%B2%E0%A5%8D%E0%A4%95%E0%A4%BE?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.hi"
+      },
+      "normalized_coordinate": {
+        "line": 6364,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/hi/site-and-root.json",
+        "sha256": "f042efdbbd1e72badd2667e462a2b3eac19a4801f5640955e3da2880b0a02efc",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.hi",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    },
+    {
+      "language": "ar",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/ar/revisions-0.json",
+        "file_sha256": "7fba5b1d18f9e0410abef1be37a76d5118048905c16b4904a15c6d7a67596db9",
+        "coordinate": "/query/pages/2/revisions/0/slots/main/content",
+        "body_sha256": "fd6ca93c3240ebd7c73a2d40a756d96a0c2bb989969cc2c7248f3986b4f25ce1",
+        "body_bytes": 5103,
+        "timestamp": "2026-08-23T13:02:24Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "كتاب الطبخ/مقلوبة",
+        "revisionId": 227045,
+        "recordId": "927"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:ar",
+        "recordId": "927",
+        "url": "https://ar.wikibooks.org/wiki/%D9%83%D8%AA%D8%A7%D8%A8_%D8%A7%D9%84%D8%B7%D8%A8%D8%AE/%D9%85%D9%82%D9%84%D9%88%D8%A8%D8%A9",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "ar Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "fd6ca93c3240ebd7c73a2d40a756d96a0c2bb989969cc2c7248f3986b4f25ce1",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2026-08-23T13:02:24Z",
+        "revisionId": 227045,
+        "historyUrl": "https://ar.wikibooks.org/wiki/%D9%83%D8%AA%D8%A7%D8%A8_%D8%A7%D9%84%D8%B7%D8%A8%D8%AE/%D9%85%D9%82%D9%84%D9%88%D8%A8%D8%A9?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.ar"
+      },
+      "normalized_coordinate": {
+        "line": 3310,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/ar/site-and-root.json",
+        "sha256": "4cd7557e9a311943aad73f77fcb35a6accee119bf898c0c37a96a8f3aec7b6fd",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.ar",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    },
+    {
+      "language": "cs",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/cs/revisions-4.json",
+        "file_sha256": "2eff1f1f0c2ec08837c1da8fd5616f176e52c6b4db74604dcf681faf3f13625c",
+        "coordinate": "/query/pages/3/revisions/0/slots/main/content",
+        "body_sha256": "d469a1197f7939ac9410615aac94b248e19538210acea478d17be0c622f11b3b",
+        "body_bytes": 2370,
+        "timestamp": "2023-10-27T03:07:39Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "Wikikuchařka/Pampeliškový med",
+        "revisionId": 51712,
+        "recordId": "6835"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:cs",
+        "recordId": "6835",
+        "url": "https://cs.wikibooks.org/wiki/Wikikucha%C5%99ka/Pampeli%C5%A1kov%C3%BD_med",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "cs Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "d469a1197f7939ac9410615aac94b248e19538210acea478d17be0c622f11b3b",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2023-10-27T03:07:39Z",
+        "revisionId": 51712,
+        "historyUrl": "https://cs.wikibooks.org/wiki/Wikikucha%C5%99ka/Pampeli%C5%A1kov%C3%BD_med?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.cs"
+      },
+      "normalized_coordinate": {
+        "line": 4431,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/cs/site-and-root.json",
+        "sha256": "6618ac37b88ac7754d890555b70fd9c9025728c61386b9ba3d42edb7924af9c1",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.cs",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    },
+    {
+      "language": "el",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/el/linked-revisions-3d51ac6b86a27424.json",
+        "file_sha256": "4d0f19c34979d2777b0977c08ce96de7053d3ce67c622257340c62e98e2a8e92",
+        "coordinate": "/query/pages/1/revisions/0/slots/main/content",
+        "body_sha256": "c3825bbf542b66163ed9a62c9863173cc0238cb76a64463332e72cabd1736d5c",
+        "body_bytes": 5659,
+        "timestamp": "2017-02-25T07:11:35Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "Βιβλίο μαγειρικής:Χούμους",
+        "revisionId": 46307,
+        "recordId": "4964"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:el",
+        "recordId": "4964",
+        "url": "https://el.wikibooks.org/wiki/%CE%92%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF_%CE%BC%CE%B1%CE%B3%CE%B5%CE%B9%CF%81%CE%B9%CE%BA%CE%AE%CF%82:%CE%A7%CE%BF%CF%8D%CE%BC%CE%BF%CF%85%CF%82",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "el Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "c3825bbf542b66163ed9a62c9863173cc0238cb76a64463332e72cabd1736d5c",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2017-02-25T07:11:35Z",
+        "revisionId": 46307,
+        "historyUrl": "https://el.wikibooks.org/wiki/%CE%92%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF_%CE%BC%CE%B1%CE%B3%CE%B5%CE%B9%CF%81%CE%B9%CE%BA%CE%AE%CF%82:%CE%A7%CE%BF%CF%8D%CE%BC%CE%BF%CF%85%CF%82?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.el"
+      },
+      "normalized_coordinate": {
+        "line": 5081,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/el/site-and-root.json",
+        "sha256": "9fe92a4abefc4da8a059c0f8c401b3dd740f2fb32ea5363c324723974a4fd117",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.el",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    },
+    {
+      "language": "fa",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/fa/revisions-0.json",
+        "file_sha256": "b4f794cf6ddcff09e6a6b590f176efbe0e3d435a71075c627cae0c0bcc80f6ea",
+        "coordinate": "/query/pages/30/revisions/0/slots/main/content",
+        "body_sha256": "8bf6ab94f9818ad0e4670487f5e3bcf44fd25f35d027b110e80c887ed1309139",
+        "body_bytes": 15233,
+        "timestamp": "2023-09-02T21:53:50Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "کتاب آشپزی/خورش قورمه سبزی",
+        "revisionId": 123128,
+        "recordId": "2036"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:fa",
+        "recordId": "2036",
+        "url": "https://fa.wikibooks.org/wiki/%DA%A9%D8%AA%D8%A7%D8%A8_%D8%A2%D8%B4%D9%BE%D8%B2%DB%8C/%D8%AE%D9%88%D8%B1%D8%B4_%D9%82%D9%88%D8%B1%D9%85%D9%87_%D8%B3%D8%A8%D8%B2%DB%8C",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "fa Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "8bf6ab94f9818ad0e4670487f5e3bcf44fd25f35d027b110e80c887ed1309139",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2023-09-02T21:53:50Z",
+        "revisionId": 123128,
+        "historyUrl": "https://fa.wikibooks.org/wiki/%DA%A9%D8%AA%D8%A7%D8%A8_%D8%A2%D8%B4%D9%BE%D8%B2%DB%8C/%D8%AE%D9%88%D8%B1%D8%B4_%D9%82%D9%88%D8%B1%D9%85%D9%87_%D8%B3%D8%A8%D8%B2%DB%8C?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.fa"
+      },
+      "normalized_coordinate": {
+        "line": 5111,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/fa/site-and-root.json",
+        "sha256": "dc738caad60d2d8aec81c0d858ed6542a30eb84b574e96c653883a5835722c3f",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.fa",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    },
+    {
+      "language": "zh",
+      "original": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/zh/revisions-0.json",
+        "file_sha256": "e88fad3334393a1c5e3cf8b54b57f60edf947277bf8a8ac1fc4fd87d94dbcb52",
+        "coordinate": "/query/pages/7/revisions/0/slots/main/content",
+        "body_sha256": "f10d45e8b4ec0f21669a556c700f1fbfc7e0986e8ec21b6a8aa87eb881e68277",
+        "body_bytes": 390,
+        "timestamp": "2010-09-02T15:09:47Z",
+        "contentmodel": "wikitext",
+        "contentformat": "text/x-wiki",
+        "title": "食谱/糖醋松鼠魚",
+        "revisionId": 45849,
+        "recordId": "7160"
+      },
+      "provenance": {
+        "sourceId": "world-recipes",
+        "originSourceId": "wikibooks:zh",
+        "recordId": "7160",
+        "url": "https://zh.wikibooks.org/wiki/%E9%A3%9F%E8%B0%B1/%E7%B3%96%E9%86%8B%E6%9D%BE%E9%BC%A0%E9%AD%9A",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "attribution": "zh Wikibooks contributors",
+        "visibility": "public",
+        "fetchedAt": "2026-10-13T19:34:26.454395+00:00",
+        "releaseId": "world-recipes-global-20261014",
+        "transform": "offmenu-recipe-normalizer/1",
+        "originalContentSha256": "f10d45e8b4ec0f21669a556c700f1fbfc7e0986e8ec21b6a8aa87eb881e68277",
+        "changes": "Recipe sections extracted; quantities parsed conservatively; original ingredient wording and source units retained; media and unrelated prose omitted.",
+        "recipeReuse": "licensed-full-recipe-content",
+        "sourceDate": "2010-09-02T15:09:47Z",
+        "revisionId": 45849,
+        "historyUrl": "https://zh.wikibooks.org/wiki/%E9%A3%9F%E8%B0%B1/%E7%B3%96%E9%86%8B%E6%9D%BE%E9%BC%A0%E9%AD%9A?action=history",
+        "rightsEvidenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.zh"
+      },
+      "normalized_coordinate": {
+        "line": 17362,
+        "index": 0
+      },
+      "rights": {
+        "path": "/home/user/src/offmenu-data/recipe-wikis-20261013/zh/site-and-root.json",
+        "sha256": "b99fceb0098b08c3b88394bbd018a5b8a09da5e7a0fdd785ad3af30a3a1fc11c",
+        "coordinate": "/query/rightsinfo",
+        "publisher_declared": {
+          "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.zh",
+          "text": "Creative Commons Attribution-Share Alike 4.0"
+        },
+        "scope": "retained publisher API declaration; text only; image rights separate; independent scope review pending"
+      }
+    }
+  ]
+}
