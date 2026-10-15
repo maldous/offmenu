@@ -1,0 +1,133 @@
+{
+  "format": "offmenu-external-source-proposal-handoff/1",
+  "owner": 56,
+  "integrationBase": "eb32c83a6e284cfced6fc1b509d9b07b99a0f741",
+  "scope": "METADATA ONLY; external source proposals remain external; no runtime consumer or canonical admission",
+  "externalCandidate": {
+    "kind": "immutable external artifact SHA256; no Git candidate commit created",
+    "fullCandidateSHA256": "b0df942a7f75e71cf157ed3aefedb7ca080265ea2136488792850c1564287bd6",
+    "manifest": {
+      "path": "/home/user/src/offmenu-data/owner-56-normalization/SOURCE-PROPOSAL-20261016-OWNER56-V2/manifest.json",
+      "sha256": "b0df942a7f75e71cf157ed3aefedb7ca080265ea2136488792850c1564287bd6",
+      "bytes": 11098
+    },
+    "bundle": {
+      "path": "/home/user/src/offmenu-data/owner-56-normalization/SOURCE-PROPOSAL-20261016-OWNER56-V2/source-proposals.json",
+      "sha256": "7dff66be08e1b0161223bd360ec9596e1dde28230bea578182947fb7833438a4",
+      "bytes": 449202
+    },
+    "gitCommit": null
+  },
+  "completionHandoff": {
+    "path": "/home/user/src/offmenu-data/owner-56-normalization/SOURCE-PROPOSAL-20261016-OWNER56-V2/completion-handoff.json",
+    "sha256": "e3d06fc5d9012766b8491b73d56a951b77c28948cde129e5e5c9625277e01c12",
+    "bytes": 4942
+  },
+  "existingReview": {
+    "receipt": {
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-source-proposals-v2-20261016/review-receipt.json",
+      "sha256": "e2264ce3d345a91e8a5d6ce946f48da22a8071d934b258d0a4fb2945bd549f79",
+      "bytes": 1568
+    },
+    "reviewer": 11,
+    "verdict": "PASS_SOURCE_PROPOSAL_BUNDLE_V2_METADATA_DELTA_ONLY",
+    "scope": "V2 collision-metadata delta only; existing full88-proposal source review reused",
+    "newReviewRequested": false,
+    "findings": []
+  },
+  "sourceCandidateLineage": [
+    {
+      "sourceId": "DOSM:cpi_2d",
+      "country": "MY",
+      "category": "CPI publisher English division labels",
+      "releaseIdentity": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+      "rights": "Exact retained metadata CC-BY-4.0 attribution DOSM; no new rights expansion",
+      "sourceCandidate": "b40a208f1d47f0cff2b4c2208f69c6bf7aa5f3fd",
+      "inputProposals": 14
+    },
+    {
+      "sourceId": "fineli",
+      "release": "20.0",
+      "country": "FI",
+      "category": "component terminology/unit/basis proposals",
+      "rights": {
+        "licence": "CC BY4.0",
+        "evidence": "original descript.txt pinned below",
+        "attribution": "THL Fineli Release20.0; owner49 candidate overlays are transformations; no endorsement"
+      },
+      "parentCandidate": "6725e849f3e3d634d9eeb382fbd8c963e74e53cd",
+      "inputProposals": 74
+    }
+  ],
+  "changeList": {
+    "bundlePointers": [
+      "/version",
+      "/exactLiteralCollisions"
+    ],
+    "collisionCount": {
+      "before": 0,
+      "after": 1
+    },
+    "collision": {
+      "language": "sv",
+      "literal": "fiber, totalt",
+      "distinctIdentities": [
+        "fineli:20.0:component:FIBC",
+        "fineli:20.0:component:FIBT"
+      ],
+      "originalTable": "eufdname_SV.csv",
+      "originalTableSHA256": "6aa5f2461d4e7583910e7a77936b8803acbf31663bd898b1fc0c518309ebbeda",
+      "originalRows": [
+        23,
+        24
+      ]
+    },
+    "manifestTopLevelMetadataChanges": [
+      "correction",
+      "counts",
+      "createdUTC",
+      "outputs",
+      "parentVersion",
+      "review",
+      "version"
+    ],
+    "semanticPayloadChanges": 0
+  },
+  "preserved": {
+    "proposalEnvelopesAndPayloads": 88,
+    "CPI": 14,
+    "Fineli": 74,
+    "distinctFineliUnitCodes": 4,
+    "sourceRightsReviewPinsUnknowns": "unchanged per existing independent review",
+    "frozenMaster": {
+      "path": "/home/user/src/offmenu-data/owner-56-normalization/DATA-NORMALIZE-20261015-A-20261015T110701Z/freeze-manifest.json",
+      "sha256": "6e290fe026c4748e9b278a71e8db973f235aa95ef617733c8fc9151ceb5afeb7",
+      "bytes": 28601
+    },
+    "ontologyHash": "695be834082396e2c0e600dd16a839f3bea17cb2e720a3e7a096e918d73548e7",
+    "parentArtifacts": {
+      "path": "/home/user/src/offmenu-data/owner-56-normalization/SOURCE-PROPOSAL-20261016-OWNER56-V1/manifest.json",
+      "sha256": "4a1778fa6c4971a97eebf0ff731adb8769246e0d9eba3f45fa55962388f26447",
+      "bytes": 9751
+    },
+    "equivalenceAccepted": false,
+    "goldMembershipChanged": false,
+    "canonicalAcceptance": false,
+    "translatedAcceptance": false
+  },
+  "hostAvailability": "Absolute external paths are host-local evidence references. Sole integration writer must verify availability, bytes and SHA256 before use; this Git commit contains no proposal payloads.",
+  "acceptanceBoundary": {
+    "proposals": 88,
+    "CPI": 14,
+    "Fineli": 74,
+    "literalCollisionGroups": 1,
+    "bundleReview": "Completed SAME11 scoped metadata-delta PASS; earlier88-payload checks reused",
+    "semanticGold": false,
+    "canonicalAdmission": false,
+    "equivalenceAcceptance": false,
+    "translationAcceptance": false,
+    "reviewReplayed": false
+  },
+  "integrationInstructions": "Integrate these two metadata paths only. No payload import, freeze edit, schema/app/corpus wiring, merge or deployment authority is conferred.",
+  "mandatoryReviewer": "auto_review preserved"
+}
