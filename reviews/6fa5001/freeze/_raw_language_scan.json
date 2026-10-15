@@ -1,0 +1,73 @@
+{
+  "method": "bounded scan of recipe-source-alignment.jsonl.gz name.language field (first matching language per record; records with no name.language fall back to top-level language/lang)",
+  "primaryBoundedEvidence": {
+    "path": "/home/user/src/offmenu-data/common-recipes-final-20261014/recipe-source-alignment.jsonl.gz",
+    "note": "full scan of 25135-record licensed recipe corpus partition"
+  },
+  "total_lines": 25135,
+  "tagged_records": 25135,
+  "distinct_first_tags": 32,
+  "top_first_tags": {
+    "en": 10201,
+    "hu": 6402,
+    "bn": 1103,
+    "ru": 1082,
+    "fr": 1074,
+    "id": 1003,
+    "pl": 868,
+    "de": 637,
+    "it": 597,
+    "nl": 505,
+    "zh": 380,
+    "sv": 350,
+    "ja": 300,
+    "he": 154,
+    "tr": 128,
+    "nb": 71,
+    "th": 46,
+    "pt": 36,
+    "ms": 33,
+    "ko": 27,
+    "es": 21,
+    "sk": 19,
+    "ar": 18,
+    "fi": 14,
+    "hr": 14,
+    "da": 11,
+    "fa": 11,
+    "el": 9,
+    "oc": 7,
+    "en-x-simple": 6,
+    "hi": 5,
+    "cs": 3
+  },
+  "samples": [
+    {
+      "tag": "en",
+      "count": 10201,
+      "note": "first-match-per-record count"
+    },
+    {
+      "tag": "hu",
+      "count": 6402,
+      "note": "first-match-per-record count"
+    },
+    {
+      "tag": "bn",
+      "count": 1103,
+      "note": "first-match-per-record count"
+    },
+    {
+      "tag": "ru",
+      "count": 1082,
+      "note": "first-match-per-record count"
+    },
+    {
+      "tag": "fr",
+      "count": 1074,
+      "note": "first-match-per-record count"
+    }
+  ],
+  "generatedAt": "2026-10-15T03:15:26.749626+00:00",
+  "note": "Rebuilt by Worker 01 QA repair on 2026-10-15. Predecessor _raw_language_scan.json reported 0 tagged records / 0 distinct tags due to a scan failure. Actual full scan finds all 25135 records have language tags. Counts here use first-match-per-record aggregation. LANGUAGE_TARGETS.json observedTagsFromBoundedScan used a different aggregation (likely counting all names per record, yielding higher counts like 87367 for en); that discrepancy is noted in LANGUAGE_TARGETS.json uncertainties."
+}

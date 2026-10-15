@@ -1,0 +1,139 @@
+{
+  "sessionId": "offmenu-language-terminology-lane-20261015",
+  "role": "Freebuff OffMenu language-terminology lane - source-language inventory, terminology alignment, translation-qualification readiness",
+  "ownedDirectory": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology",
+  "generatedAt": "2026-10-15T03:37:50.392731+00:00",
+  "hostWallClockAtGeneration": "2026-10-15T01:53:35.194949+00:00",
+  "sourceSnapshot": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/app-store-locale-snapshot.json",
+    "sha256": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4"
+  },
+  "storeLanguageLocaleInventory": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-language-locale-inventory.json",
+    "sha256": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+    "generatedAt": "2026-10-15T03:17:49.964917+00:00"
+  },
+  "storeLocaleBcp47Extraction": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json",
+    "sha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a"
+  },
+  "terminologyContract": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/terminology-contract.json",
+    "sha256": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554"
+  },
+  "storeGooglePlayCanonicalTagsCount": 86,
+  "storeAppleAppStoreCanonicalTagsCount": 49,
+  "storeCombinedDistinctCanonicalTagsCount": 114,
+  "terminologyContractUpdatedAt": "2026-10-15T01:52:21.208681+00:00",
+  "terminologyAlignment": {
+    "storeLanguageLocaleInventorySha256": "613779e916c9257ed0def660e73f95465abc719aeb9df18897d4779913b4ac4c",
+    "storeLanguageLocaleInventoryPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-language-locale-inventory.json",
+    "storeLanguageLocaleInventoryGeneratedAt": "2026-10-15T01:51:40.637777+00:00",
+    "bcp47ExtractionManifestSha256": "a121589fbcc7b179f825f9fc067ee9af339a8aba057b32b8e549fa85576fa96f",
+    "bcp47ExtractionManifestPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json"
+  },
+  "qaManifest": {
+    "directory": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/qa",
+    "sha256": "44bb49e48e132295316d798e0837ca0d7d16cdfca794cb65a47aa39abc195cdd",
+    "files": [
+      "fix-store-bcp-tags.py",
+      "store-locale-bcp47-extraction.json",
+      "test_terminology_qa.py"
+    ]
+  },
+  "openNotes": "retained store snapshot was used as the authoritative source for the store excerpts; a fresh live fetch of the Google/Apple pages was not performed this turn, so the Google/Apple pageChanged flags should be re-verified before treating the store excerpt hashes as current.",
+  "tsVerificationRunAt": "2026-10-15T01:54:31.048622+00:00",
+  "tsVerificationRunHostClock": "2026-10-15T01:54:31.048622+00:00",
+  "HOST_clock_at_status_check": "2026-10-15T01:54:31.048622+00:00",
+  "qaSourceListExcerptHashFixedAt": "2026-10-15T03:03:30.687970+00:00",
+  "qaGoogleSourceListExcerptHash": "7c4f8ee656693c8176bc707b619fa06cf81940d72e4f7d3ebdb63339b7cb43de",
+  "qaAppleSourceListExcerptHash": "31ffa4d0c54670e8f8a577100b0b504eea4e821b6316e2b65d0001854af81414",
+  "qaReconciliationNote": "Worker 01 QA repair 2026-10-15: storeAppleAppStoreCanonicalTagsCount corrected from 47 to 49 (8 Apple items had non-BCP47 region-code values as canonicalBcp47: Canada, Brazil, Spain, Mexico, Portugal, en for U.K./U.S. which were fixed to en-CA, fr-CA, pt-BR, pt-PT, es-MX, es-ES, en-GB, en-US). storeCombinedDistinctCanonicalTagsCount recomputed from actual union of Google+Apple canonical BCP47 tags.",
+  "qaRunTimestamp": "2026-10-15T04:26:34.019519+00:00",
+  "qaResult": "PASS: 0 failures (correction pass 2: D1-D6 regressions green, QA_EXIT=0)",
+  "qaScriptVersion": "worker-01-qa-correction2-2026-10-15",
+  "fileHashes": {
+    "HANDOFF.txt": "9f127293a64aa2f1131fea75de14cd96f9d262ff0d51f001184fa3ffc17e9669",
+    "LANGUAGE_TARGETS.json": "04c25612d1cfb42b344e4378e3d1534998d7a5d13bbba0656568321bb928d539",
+    "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
+    "app-store-locale-snapshot.json": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+    "store-language-locale-inventory.json": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+    "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "terminology-contract.json": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+    "terminology-fixtures.jsonl": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+    "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+    "qa/test_terminology_qa.py": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
+    "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855"
+  },
+  "pinManifest": {
+    "note": "Lane file hashes are pinned externally in language-review-pins.json (read-only review pin, not self-referential). This STATUS.json does not carry its own hash; reprojection requires reading the pinned external manifest.",
+    "externalPinPath": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/language-review-pins.json",
+    "pinVersion": "corrected-2026-10-15-correction2"
+  },
+  "reconciliationSummary": {
+    "raw_language_scan_rebuilt": {
+      "previous": "_raw_language_scan.json showed 0 tagged records / 0 distinct tags (scan failure)",
+      "rebuilt": "25135 tagged records, 32 distinct tags from full scan of recipe-source-alignment.jsonl.gz",
+      "note": "Counts use first-match-per-record aggregation. LANGUAGE_TARGETS.json observedTagsFromBoundedScan used different aggregation (all-names-per-record)."
+    },
+    "store_locale_bcp47_extraction_rebuilt": {
+      "previous_root": "store-locale-bcp47-extraction.json was a list of 2 items (raw excerpts) — incompatible with QA dict expectations",
+      "previous_qa": "qa/store-locale-bcp47-extraction.json had only 2 Google rows (first+last) and 48 Apple rows",
+      "rebuilt": "Both files now dict format with 86 Google rows + 49 Apple rows from store-language-locale-inventory.json"
+    },
+    "apple_canonical_bcp47_fixed": {
+      "previous": "8 Apple items had non-BCP47 region-code values as canonicalBcp47 (Canada, Brazil, Spain, Mexico, Portugal, en for U.K./U.S.)",
+      "fixed": "Corrected to en-CA, fr-CA, pt-BR, pt-PT, es-MX, es-ES, en-GB, en-US",
+      "result": "Apple distinct canonical BCP47 tags: 49 (all valid BCP47)"
+    },
+    "count_reconciliation": {
+      "googlePlay": "86 distinct canonical BCP47 tags (all explicit, unchanged)",
+      "appleAppStore": "49 distinct canonical BCP47 tags (was 47, corrected)",
+      "combinedUnion": "114 distinct canonical BCP47 tags (was 119, corrected; overlap=21)",
+      "unionTargetInventory": "46 distinct BCP47 base tags in LANGUAGE_TARGETS.json union"
+    },
+    "denominators_reconciled": {
+      "note": "86/47 in predecessor handover were different denominators: 86=Google excerpt line count, 47=Apple canonical tag count from a different parsing stage. The surviving qa/ extraction had only 2/48 parsed rows (a truncated parse). Both extraction files now carry complete 86+49 row sets from the full store-language-locale-inventory.json."
+    }
+  },
+  "correctionRun": {
+    "runAt": "2026-10-15T03:37:50.392731+00:00",
+    "corrections": [
+      "D1: Apple Slovenia caption added (unresolvedCaption + Google sl cross-reference)",
+      "D2: canonicalBcp47TagCount corrected 47->49",
+      "D3: terminologyAlignment tie-out hashes updated to current artifact sha256",
+      "D4: LANGUAGE_TARGETS union rebuilt 46->74 bases per unionPrinciple; summary counters updated",
+      "D5: fix-store-bcp-tags.py DEST overwrite hazard guarded; end-to-end regression added",
+      "D6: STATUS self-referential hashes removed; non-self-referential pin manifest used",
+      "contract-allowedExtensions: explicit allowedExtensions list added to terminology-contract.json"
+    ]
+  },
+  "deprecatedSelfHashes": {
+    "removed": [
+      "STATUS_sha256_after_run (1accf560d1dedef12cf850d5da6055af3bbe517fca8b86220877b6f544dabfe8)",
+      "fileHashes.STATUS.json (a774dda5ab31c9936d2bd18c84218bd296738130ead67941d7b5e243870f84d3)",
+      "HANDOFF_header_sha256 (79f2f79f9c8390b806fd44a7c5e017f799b5cdc65b5e85dc16d4b1248fd8332d)"
+    ],
+    "reason": "In-file hash-of-self fields are inherently stale-by-write; replaced with external non-self-referential pin manifest"
+  },
+  "correctionRun2": {
+    "runAt": "2026-10-15T04:26:34.019519+00:00",
+    "summary": "Fixed QA IndentationError (line 233), added missing sha() helper, removed broken duplicate D1/D2 block (undefined lang / apple canonicalCount), replaced hardcoded-74 union assert with input-derived recompute, moved allowedExtensions into baseline contract key set, separated canonicalBcp47TagCount from unresolvedCaptionRowCount (apple 49+1=50), corrected stale summary counters 8/45->86/49, added D5 runtime guard to fix-store-bcp-tags.py (refuses without FIX_STORE_BCP_TAGS_ALLOW=1; refuses lane DEST without FIX_STORE_BCP_TAGS_ALLOW_LANE_OVERWRITE=1).",
+    "defectsFixed": [
+      "IndentationError line 233 (unexpected indent)",
+      "missing sha() helper (NameError)",
+      "duplicate broken D1/D2 block: undefined 'lang', 'apple canonicalCount' invalid syntax",
+      "hardcoded union==74 literal replaced by recomputed(observed bases | store canonical bases)",
+      "allowedExtensions self-coverage (moved into baseline contract_keys)"
+    ],
+    "regressionsAdded": [
+      "D1 Slovenia unresolvedCaption row retained + literal in excerpt + Google cross-ref note",
+      "D2 canonicalBcp47TagCount(49) / unresolvedCaptionRowCount(1) / itemsCount(50) separated + reconciled",
+      "D3 contract tie-out sha256 == computed file sha256 (both)",
+      "D4 union == recomputed from inputs; recomputed size == declared; google/apple counters == distinct canonical",
+      "D5 guard refuses (exit 64) without env; refuses lane DEST (exit 65); candidate bytes unchanged",
+      "D6 no STATUS.json self-hash; no STATUS_sha256_after_run; pinManifest present"
+    ]
+  }
+}

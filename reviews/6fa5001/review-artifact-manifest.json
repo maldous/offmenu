@@ -1,0 +1,27 @@
+{
+  "reviewId": "OFFMENU-6FA5001-QA-LANGUAGE-TERMINOLOGY-EXACT-REVIEW-W06",
+  "reviewedCommit": "6fa50017cb9af3cee3c2c15e51f3e92f5265a16e",
+  "baseCommit": "5ac7d9aa502ecadfd657911f159b2823f5633ac5",
+  "artifacts": {
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w06-qa6fa-review-language-terminology-6fa5001-20261015.json",
+      "sha256": "fe667591540dc45b3cb1e411fa13bcb2f54836368769f9d3a077519fda8b718a"
+    },
+    "localReceipt": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/6fa5001/review-receipt.json",
+      "sha256": "fe667591540dc45b3cb1e411fa13bcb2f54836368769f9d3a077519fda8b718a"
+    },
+    "freezeManifest": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/6fa5001/freeze/commit-tree-manifest.json",
+      "sha256": "81f039f4ea7c6fcaf001b8600f09ce509155148a838530094c9ceafa82e0aa11"
+    },
+    "frozenHashManifest": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/6fa5001/frozen-hash-manifest.json",
+      "sha256": "2fe570d6642f7e4af06737e48bc037ec37007f0c6d7b0ce3f5183558e00c4d62"
+    },
+    "qaRunLog": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/6fa5001/qa-run.log",
+      "sha256": "d6e1a159050fd5620de3007613967501e43c466a10c1edad2d2c93a9fc2d3e25"
+    }
+  }
+}

@@ -1,0 +1,1250 @@
+{
+  "schemaVersion": "store-locale-bcp47-extraction/1",
+  "generatedAt": "2026-10-15T03:16:31.113509+00:00",
+  "sourceSnapshot": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/app-store-locale-snapshot.json",
+    "googlePlay": {
+      "canonicalUrl": "https://support.google.com/googleplay/android-developer/answer/9844778",
+      "fetchedUtc": "2026-10-15T00:19:22.103550+00:00",
+      "sha256": "9f7663b4bebdc8e6faffce658556e8fa559b224bf33f8061f13a56fa95470da4",
+      "bytesFetched": 1653715
+    },
+    "appleAppStore": {
+      "canonicalUrl": "https://developer.apple.com/help/app-store-connect/reference/app-information/app-store-localizations/",
+      "fetchedUtc": "2026-10-15T00:19:22.236445+00:00",
+      "sha256": "b20f7e75e49672f6c17ba614d067b9350dc85fe2402bf0f09ef1b101c271e92b",
+      "bytesFetched": 413492
+    }
+  },
+  "googlePlay": {
+    "sourceListTextExcerpt": "Afrikaans – af Albanian – sq Amharic – am Arabic – ar Armenian – hy-AM Azerbaijani – az-AZ Bangla – bn-BD Basque – eu-ES Belarusian – be Bulgarian – bg Burmese – my-MM Catalan – ca Chinese (Hong Kong) – zh-HK Chinese (Simplified) – zh-CN Chinese (Traditional) – zh-TW Croatian – hr Czech – cs-CZ Danish – da-DK Dutch – nl-NL English (Australia) – en-AU English (Canada) – en-CA English (United States) – en-US English (United Kingdom) – en-GB English – en-IN English – en-SG English – en-ZA Estonian – et Filipino – fil Finnish – fi-FI French (Canada) – fr-CA French (France) – fr-FR Galician – gl-ES Georgian – ka-GE German – de-DE Greek – el-GR Gujarati – gu Hebrew – iw-IL Hindi – hi-IN Hungarian – hu-HU Icelandic – is-IS Indonesian – id Italian – it-IT Japanese – ja-JP Kannada – kn-IN Kazakh – kk Khmer – km-KH Korean – ko-KR Kyrgyz – ky-KG Lao – lo-LA Latvian – lv Lithuanian – lt Macedonian – mk-MK Malay (Malaysia) – ms-MY Malay – ms Malayalam – ml-IN Marathi – mr-IN Mongolian – mn-MN Nepali – ne-NP Norwegian – no-NO Persian – fa Persian – fa-AE Persian – fa-AF Persian – fa-IR Polish – pl-PL Portuguese (Brazil) – pt-BR Portuguese (Portugal) – pt-PT Punjabi – pa Romanian – ro Romansh – rm Russian – ru-RU Serbian – sr Sinhala – si-LK Slovak – sk Slovenian – sl Spanish (Latin America) – es-419 Spanish (Spain) – es-ES Spanish (United States) – es-US Swahili – sw Swedish – sv-SE Tamil – ta-IN Telugu – te-IN Thai – th Turkish – tr-TR Ukrainian – uk Urdu – ur Vietnamese – vi",
+    "rows": [
+      {
+        "caption": "Afrikaans",
+        "regionToken": null,
+        "sourceCaption": "Afrikaans",
+        "explicitTag": "af",
+        "inferredTag": "af",
+        "canonicalBcp47": "af",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Albanian",
+        "regionToken": null,
+        "sourceCaption": "Albanian",
+        "explicitTag": "sq",
+        "inferredTag": "sq",
+        "canonicalBcp47": "sq",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Amharic",
+        "regionToken": null,
+        "sourceCaption": "Amharic",
+        "explicitTag": "am",
+        "inferredTag": "am",
+        "canonicalBcp47": "am",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Arabic",
+        "regionToken": null,
+        "sourceCaption": "Arabic",
+        "explicitTag": "ar",
+        "inferredTag": "ar",
+        "canonicalBcp47": "ar",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Armenian",
+        "regionToken": null,
+        "sourceCaption": "Armenian",
+        "explicitTag": "hy-AM",
+        "inferredTag": "hy-AM",
+        "canonicalBcp47": "hy-AM",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Azerbaijani",
+        "regionToken": null,
+        "sourceCaption": "Azerbaijani",
+        "explicitTag": "az-AZ",
+        "inferredTag": "az-AZ",
+        "canonicalBcp47": "az-AZ",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Bangla",
+        "regionToken": null,
+        "sourceCaption": "Bangla",
+        "explicitTag": "bn-BD",
+        "inferredTag": "bn-BD",
+        "canonicalBcp47": "bn-BD",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Basque",
+        "regionToken": null,
+        "sourceCaption": "Basque",
+        "explicitTag": "eu-ES",
+        "inferredTag": "eu-ES",
+        "canonicalBcp47": "eu-ES",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Belarusian",
+        "regionToken": null,
+        "sourceCaption": "Belarusian",
+        "explicitTag": "be",
+        "inferredTag": "be",
+        "canonicalBcp47": "be",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Bulgarian",
+        "regionToken": null,
+        "sourceCaption": "Bulgarian",
+        "explicitTag": "bg",
+        "inferredTag": "bg",
+        "canonicalBcp47": "bg",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Burmese",
+        "regionToken": null,
+        "sourceCaption": "Burmese",
+        "explicitTag": "my-MM",
+        "inferredTag": "my-MM",
+        "canonicalBcp47": "my-MM",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Catalan",
+        "regionToken": null,
+        "sourceCaption": "Catalan",
+        "explicitTag": "ca",
+        "inferredTag": "ca",
+        "canonicalBcp47": "ca",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Chinese",
+        "regionToken": "Hong Kong",
+        "sourceCaption": "Chinese (Hong Kong)",
+        "explicitTag": "zh-HK",
+        "inferredTag": "zh-HK",
+        "canonicalBcp47": "zh-HK",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Chinese",
+        "regionToken": "Simplified",
+        "sourceCaption": "Chinese (Simplified)",
+        "explicitTag": "zh-CN",
+        "inferredTag": "zh-CN",
+        "canonicalBcp47": "zh-CN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Chinese",
+        "regionToken": "Traditional",
+        "sourceCaption": "Chinese (Traditional)",
+        "explicitTag": "zh-TW",
+        "inferredTag": "zh-TW",
+        "canonicalBcp47": "zh-TW",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Croatian",
+        "regionToken": null,
+        "sourceCaption": "Croatian",
+        "explicitTag": "hr",
+        "inferredTag": "hr",
+        "canonicalBcp47": "hr",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Czech",
+        "regionToken": null,
+        "sourceCaption": "Czech",
+        "explicitTag": "cs-CZ",
+        "inferredTag": "cs-CZ",
+        "canonicalBcp47": "cs-CZ",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Danish",
+        "regionToken": null,
+        "sourceCaption": "Danish",
+        "explicitTag": "da-DK",
+        "inferredTag": "da-DK",
+        "canonicalBcp47": "da-DK",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Dutch",
+        "regionToken": null,
+        "sourceCaption": "Dutch",
+        "explicitTag": "nl-NL",
+        "inferredTag": "nl-NL",
+        "canonicalBcp47": "nl-NL",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": "Australia",
+        "sourceCaption": "English (Australia)",
+        "explicitTag": "en-AU",
+        "inferredTag": "en-AU",
+        "canonicalBcp47": "en-AU",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": "Canada",
+        "sourceCaption": "English (Canada)",
+        "explicitTag": "en-CA",
+        "inferredTag": "en-CA",
+        "canonicalBcp47": "en-CA",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": "United States",
+        "sourceCaption": "English (United States)",
+        "explicitTag": "en-US",
+        "inferredTag": "en-US",
+        "canonicalBcp47": "en-US",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": "United Kingdom",
+        "sourceCaption": "English (United Kingdom)",
+        "explicitTag": "en-GB",
+        "inferredTag": "en-GB",
+        "canonicalBcp47": "en-GB",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": null,
+        "sourceCaption": "English",
+        "explicitTag": "en-IN",
+        "inferredTag": "en-IN",
+        "canonicalBcp47": "en-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": null,
+        "sourceCaption": "English",
+        "explicitTag": "en-SG",
+        "inferredTag": "en-SG",
+        "canonicalBcp47": "en-SG",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "English",
+        "regionToken": null,
+        "sourceCaption": "English",
+        "explicitTag": "en-ZA",
+        "inferredTag": "en-ZA",
+        "canonicalBcp47": "en-ZA",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Estonian",
+        "regionToken": null,
+        "sourceCaption": "Estonian",
+        "explicitTag": "et",
+        "inferredTag": "et",
+        "canonicalBcp47": "et",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Filipino",
+        "regionToken": null,
+        "sourceCaption": "Filipino",
+        "explicitTag": "fil",
+        "inferredTag": "fil",
+        "canonicalBcp47": "fil",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Finnish",
+        "regionToken": null,
+        "sourceCaption": "Finnish",
+        "explicitTag": "fi-FI",
+        "inferredTag": "fi-FI",
+        "canonicalBcp47": "fi-FI",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "French",
+        "regionToken": "Canada",
+        "sourceCaption": "French (Canada)",
+        "explicitTag": "fr-CA",
+        "inferredTag": "fr-CA",
+        "canonicalBcp47": "fr-CA",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "French",
+        "regionToken": "France",
+        "sourceCaption": "French (France)",
+        "explicitTag": "fr-FR",
+        "inferredTag": "fr-FR",
+        "canonicalBcp47": "fr-FR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Galician",
+        "regionToken": null,
+        "sourceCaption": "Galician",
+        "explicitTag": "gl-ES",
+        "inferredTag": "gl-ES",
+        "canonicalBcp47": "gl-ES",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Georgian",
+        "regionToken": null,
+        "sourceCaption": "Georgian",
+        "explicitTag": "ka-GE",
+        "inferredTag": "ka-GE",
+        "canonicalBcp47": "ka-GE",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "German",
+        "regionToken": null,
+        "sourceCaption": "German",
+        "explicitTag": "de-DE",
+        "inferredTag": "de-DE",
+        "canonicalBcp47": "de-DE",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Greek",
+        "regionToken": null,
+        "sourceCaption": "Greek",
+        "explicitTag": "el-GR",
+        "inferredTag": "el-GR",
+        "canonicalBcp47": "el-GR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Gujarati",
+        "regionToken": null,
+        "sourceCaption": "Gujarati",
+        "explicitTag": "gu",
+        "inferredTag": "gu",
+        "canonicalBcp47": "gu",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Hebrew",
+        "regionToken": null,
+        "sourceCaption": "Hebrew",
+        "explicitTag": "iw-IL",
+        "inferredTag": "iw-IL",
+        "canonicalBcp47": "iw-IL",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Hindi",
+        "regionToken": null,
+        "sourceCaption": "Hindi",
+        "explicitTag": "hi-IN",
+        "inferredTag": "hi-IN",
+        "canonicalBcp47": "hi-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Hungarian",
+        "regionToken": null,
+        "sourceCaption": "Hungarian",
+        "explicitTag": "hu-HU",
+        "inferredTag": "hu-HU",
+        "canonicalBcp47": "hu-HU",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Icelandic",
+        "regionToken": null,
+        "sourceCaption": "Icelandic",
+        "explicitTag": "is-IS",
+        "inferredTag": "is-IS",
+        "canonicalBcp47": "is-IS",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Indonesian",
+        "regionToken": null,
+        "sourceCaption": "Indonesian",
+        "explicitTag": "id",
+        "inferredTag": "id",
+        "canonicalBcp47": "id",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Italian",
+        "regionToken": null,
+        "sourceCaption": "Italian",
+        "explicitTag": "it-IT",
+        "inferredTag": "it-IT",
+        "canonicalBcp47": "it-IT",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Japanese",
+        "regionToken": null,
+        "sourceCaption": "Japanese",
+        "explicitTag": "ja-JP",
+        "inferredTag": "ja-JP",
+        "canonicalBcp47": "ja-JP",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Kannada",
+        "regionToken": null,
+        "sourceCaption": "Kannada",
+        "explicitTag": "kn-IN",
+        "inferredTag": "kn-IN",
+        "canonicalBcp47": "kn-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Kazakh",
+        "regionToken": null,
+        "sourceCaption": "Kazakh",
+        "explicitTag": "kk",
+        "inferredTag": "kk",
+        "canonicalBcp47": "kk",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Khmer",
+        "regionToken": null,
+        "sourceCaption": "Khmer",
+        "explicitTag": "km-KH",
+        "inferredTag": "km-KH",
+        "canonicalBcp47": "km-KH",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Korean",
+        "regionToken": null,
+        "sourceCaption": "Korean",
+        "explicitTag": "ko-KR",
+        "inferredTag": "ko-KR",
+        "canonicalBcp47": "ko-KR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Kyrgyz",
+        "regionToken": null,
+        "sourceCaption": "Kyrgyz",
+        "explicitTag": "ky-KG",
+        "inferredTag": "ky-KG",
+        "canonicalBcp47": "ky-KG",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Lao",
+        "regionToken": null,
+        "sourceCaption": "Lao",
+        "explicitTag": "lo-LA",
+        "inferredTag": "lo-LA",
+        "canonicalBcp47": "lo-LA",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Latvian",
+        "regionToken": null,
+        "sourceCaption": "Latvian",
+        "explicitTag": "lv",
+        "inferredTag": "lv",
+        "canonicalBcp47": "lv",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Lithuanian",
+        "regionToken": null,
+        "sourceCaption": "Lithuanian",
+        "explicitTag": "lt",
+        "inferredTag": "lt",
+        "canonicalBcp47": "lt",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Macedonian",
+        "regionToken": null,
+        "sourceCaption": "Macedonian",
+        "explicitTag": "mk-MK",
+        "inferredTag": "mk-MK",
+        "canonicalBcp47": "mk-MK",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Malay",
+        "regionToken": "Malaysia",
+        "sourceCaption": "Malay (Malaysia)",
+        "explicitTag": "ms-MY",
+        "inferredTag": "ms-MY",
+        "canonicalBcp47": "ms-MY",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Malay",
+        "regionToken": null,
+        "sourceCaption": "Malay",
+        "explicitTag": "ms",
+        "inferredTag": "ms",
+        "canonicalBcp47": "ms",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Malayalam",
+        "regionToken": null,
+        "sourceCaption": "Malayalam",
+        "explicitTag": "ml-IN",
+        "inferredTag": "ml-IN",
+        "canonicalBcp47": "ml-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Marathi",
+        "regionToken": null,
+        "sourceCaption": "Marathi",
+        "explicitTag": "mr-IN",
+        "inferredTag": "mr-IN",
+        "canonicalBcp47": "mr-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Mongolian",
+        "regionToken": null,
+        "sourceCaption": "Mongolian",
+        "explicitTag": "mn-MN",
+        "inferredTag": "mn-MN",
+        "canonicalBcp47": "mn-MN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Nepali",
+        "regionToken": null,
+        "sourceCaption": "Nepali",
+        "explicitTag": "ne-NP",
+        "inferredTag": "ne-NP",
+        "canonicalBcp47": "ne-NP",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Norwegian",
+        "regionToken": null,
+        "sourceCaption": "Norwegian",
+        "explicitTag": "no-NO",
+        "inferredTag": "no-NO",
+        "canonicalBcp47": "no-NO",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Persian",
+        "regionToken": null,
+        "sourceCaption": "Persian",
+        "explicitTag": "fa",
+        "inferredTag": "fa",
+        "canonicalBcp47": "fa",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Persian",
+        "regionToken": null,
+        "sourceCaption": "Persian",
+        "explicitTag": "fa-AE",
+        "inferredTag": "fa-AE",
+        "canonicalBcp47": "fa-AE",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Persian",
+        "regionToken": null,
+        "sourceCaption": "Persian",
+        "explicitTag": "fa-AF",
+        "inferredTag": "fa-AF",
+        "canonicalBcp47": "fa-AF",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Persian",
+        "regionToken": null,
+        "sourceCaption": "Persian",
+        "explicitTag": "fa-IR",
+        "inferredTag": "fa-IR",
+        "canonicalBcp47": "fa-IR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Polish",
+        "regionToken": null,
+        "sourceCaption": "Polish",
+        "explicitTag": "pl-PL",
+        "inferredTag": "pl-PL",
+        "canonicalBcp47": "pl-PL",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Portuguese",
+        "regionToken": "Brazil",
+        "sourceCaption": "Portuguese (Brazil)",
+        "explicitTag": "pt-BR",
+        "inferredTag": "pt-BR",
+        "canonicalBcp47": "pt-BR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Portuguese",
+        "regionToken": "Portugal",
+        "sourceCaption": "Portuguese (Portugal)",
+        "explicitTag": "pt-PT",
+        "inferredTag": "pt-PT",
+        "canonicalBcp47": "pt-PT",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Punjabi",
+        "regionToken": null,
+        "sourceCaption": "Punjabi",
+        "explicitTag": "pa",
+        "inferredTag": "pa",
+        "canonicalBcp47": "pa",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Romanian",
+        "regionToken": null,
+        "sourceCaption": "Romanian",
+        "explicitTag": "ro",
+        "inferredTag": "ro",
+        "canonicalBcp47": "ro",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Romansh",
+        "regionToken": null,
+        "sourceCaption": "Romansh",
+        "explicitTag": "rm",
+        "inferredTag": "rm",
+        "canonicalBcp47": "rm",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Russian",
+        "regionToken": null,
+        "sourceCaption": "Russian",
+        "explicitTag": "ru-RU",
+        "inferredTag": "ru-RU",
+        "canonicalBcp47": "ru-RU",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Serbian",
+        "regionToken": null,
+        "sourceCaption": "Serbian",
+        "explicitTag": "sr",
+        "inferredTag": "sr",
+        "canonicalBcp47": "sr",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Sinhala",
+        "regionToken": null,
+        "sourceCaption": "Sinhala",
+        "explicitTag": "si-LK",
+        "inferredTag": "si-LK",
+        "canonicalBcp47": "si-LK",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Slovak",
+        "regionToken": null,
+        "sourceCaption": "Slovak",
+        "explicitTag": "sk",
+        "inferredTag": "sk",
+        "canonicalBcp47": "sk",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Slovenian",
+        "regionToken": null,
+        "sourceCaption": "Slovenian",
+        "explicitTag": "sl",
+        "inferredTag": "sl",
+        "canonicalBcp47": "sl",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Spanish",
+        "regionToken": "Latin America",
+        "sourceCaption": "Spanish (Latin America)",
+        "explicitTag": "es-419",
+        "inferredTag": "es-419",
+        "canonicalBcp47": "es-419",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Spanish",
+        "regionToken": "Spain",
+        "sourceCaption": "Spanish (Spain)",
+        "explicitTag": "es-ES",
+        "inferredTag": "es-ES",
+        "canonicalBcp47": "es-ES",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Spanish",
+        "regionToken": "United States",
+        "sourceCaption": "Spanish (United States)",
+        "explicitTag": "es-US",
+        "inferredTag": "es-US",
+        "canonicalBcp47": "es-US",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Swahili",
+        "regionToken": null,
+        "sourceCaption": "Swahili",
+        "explicitTag": "sw",
+        "inferredTag": "sw",
+        "canonicalBcp47": "sw",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Swedish",
+        "regionToken": null,
+        "sourceCaption": "Swedish",
+        "explicitTag": "sv-SE",
+        "inferredTag": "sv-SE",
+        "canonicalBcp47": "sv-SE",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Tamil",
+        "regionToken": null,
+        "sourceCaption": "Tamil",
+        "explicitTag": "ta-IN",
+        "inferredTag": "ta-IN",
+        "canonicalBcp47": "ta-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Telugu",
+        "regionToken": null,
+        "sourceCaption": "Telugu",
+        "explicitTag": "te-IN",
+        "inferredTag": "te-IN",
+        "canonicalBcp47": "te-IN",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Thai",
+        "regionToken": null,
+        "sourceCaption": "Thai",
+        "explicitTag": "th",
+        "inferredTag": "th",
+        "canonicalBcp47": "th",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Turkish",
+        "regionToken": null,
+        "sourceCaption": "Turkish",
+        "explicitTag": "tr-TR",
+        "inferredTag": "tr-TR",
+        "canonicalBcp47": "tr-TR",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Ukrainian",
+        "regionToken": null,
+        "sourceCaption": "Ukrainian",
+        "explicitTag": "uk",
+        "inferredTag": "uk",
+        "canonicalBcp47": "uk",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Urdu",
+        "regionToken": null,
+        "sourceCaption": "Urdu",
+        "explicitTag": "ur",
+        "inferredTag": "ur",
+        "canonicalBcp47": "ur",
+        "tagInferenceNote": "explicit tag"
+      },
+      {
+        "caption": "Vietnamese",
+        "regionToken": null,
+        "sourceCaption": "Vietnamese",
+        "explicitTag": "vi",
+        "inferredTag": "vi",
+        "canonicalBcp47": "vi",
+        "tagInferenceNote": "explicit tag"
+      }
+    ],
+    "sourceListExcerptHash": "7c4f8ee656693c8176bc707b619fa06cf81940d72e4f7d3ebdb63339b7cb43de",
+    "rowsCount": 86
+  },
+  "appleAppStore": {
+    "sourceListTextExcerpt": "Arabic, Bangla, Catalan, Chinese (Simplified), Chinese (Traditional), Croatian, Czech, Danish, Dutch, English (Australia), English (Canada), English (U.K.), English (U.S.), Finnish, French, French (Canada), German, Greek, Gujarati, Hebrew, Hindi, Hungarian, Indonesian, Italian, Japanese, Kannada, Korean, Malay, Malayalam, Marathi, Norwegian, Odia, Polish, Portuguese (Brazil), Portuguese (Portugal), Punjabi, Romanian, Russian, Slovak, Slovenia, Spanish (Mexico), Spanish (Spain), Swedish, Tamil, Telugu, Thai, Turkish, Ukrainian, Urdu, Vietnamese.",
+    "rows": [
+      {
+        "caption": "Arabic",
+        "regionToken": null,
+        "sourceCaption": "Arabic",
+        "explicitTag": null,
+        "inferredTag": "ar",
+        "canonicalBcp47": "ar",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Bangla",
+        "regionToken": null,
+        "sourceCaption": "Bangla",
+        "explicitTag": null,
+        "inferredTag": "bn",
+        "canonicalBcp47": "bn",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Catalan",
+        "regionToken": null,
+        "sourceCaption": "Catalan",
+        "explicitTag": null,
+        "inferredTag": "ca",
+        "canonicalBcp47": "ca",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Chinese",
+        "regionToken": "Simplified",
+        "sourceCaption": "Chinese (Simplified)",
+        "explicitTag": null,
+        "inferredTag": "zh",
+        "canonicalBcp47": "zh-Hans",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Chinese",
+        "regionToken": "Traditional",
+        "sourceCaption": "Chinese (Traditional)",
+        "explicitTag": null,
+        "inferredTag": "zh",
+        "canonicalBcp47": "zh-Hant",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Croatian",
+        "regionToken": null,
+        "sourceCaption": "Croatian",
+        "explicitTag": null,
+        "inferredTag": "hr",
+        "canonicalBcp47": "hr",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Czech",
+        "regionToken": null,
+        "sourceCaption": "Czech",
+        "explicitTag": null,
+        "inferredTag": "cs",
+        "canonicalBcp47": "cs",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Danish",
+        "regionToken": null,
+        "sourceCaption": "Danish",
+        "explicitTag": null,
+        "inferredTag": "da",
+        "canonicalBcp47": "da",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Dutch",
+        "regionToken": null,
+        "sourceCaption": "Dutch",
+        "explicitTag": null,
+        "inferredTag": "nl",
+        "canonicalBcp47": "nl",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "English",
+        "regionToken": "Australia",
+        "sourceCaption": "English (Australia)",
+        "explicitTag": null,
+        "inferredTag": "en",
+        "canonicalBcp47": "en-AU",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "English",
+        "regionToken": "Canada",
+        "sourceCaption": "English (Canada)",
+        "explicitTag": null,
+        "inferredTag": "en-Canada",
+        "canonicalBcp47": "en-CA",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "English",
+        "regionToken": "U.K",
+        "sourceCaption": "English (U.K.)",
+        "explicitTag": null,
+        "inferredTag": "en",
+        "canonicalBcp47": "en-GB",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "English",
+        "regionToken": "U.S",
+        "sourceCaption": "English (U.S.)",
+        "explicitTag": null,
+        "inferredTag": "en",
+        "canonicalBcp47": "en-US",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Finnish",
+        "regionToken": null,
+        "sourceCaption": "Finnish",
+        "explicitTag": null,
+        "inferredTag": "fi",
+        "canonicalBcp47": "fi",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "French",
+        "regionToken": null,
+        "sourceCaption": "French",
+        "explicitTag": null,
+        "inferredTag": "fr",
+        "canonicalBcp47": "fr",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "French",
+        "regionToken": "Canada",
+        "sourceCaption": "French (Canada)",
+        "explicitTag": null,
+        "inferredTag": "fr-Canada",
+        "canonicalBcp47": "fr-CA",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "German",
+        "regionToken": null,
+        "sourceCaption": "German",
+        "explicitTag": null,
+        "inferredTag": "de",
+        "canonicalBcp47": "de",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Greek",
+        "regionToken": null,
+        "sourceCaption": "Greek",
+        "explicitTag": null,
+        "inferredTag": "el",
+        "canonicalBcp47": "el",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Gujarati",
+        "regionToken": null,
+        "sourceCaption": "Gujarati",
+        "explicitTag": null,
+        "inferredTag": "gu",
+        "canonicalBcp47": "gu",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Hebrew",
+        "regionToken": null,
+        "sourceCaption": "Hebrew",
+        "explicitTag": null,
+        "inferredTag": "he",
+        "canonicalBcp47": "he",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Hindi",
+        "regionToken": null,
+        "sourceCaption": "Hindi",
+        "explicitTag": null,
+        "inferredTag": "hi",
+        "canonicalBcp47": "hi",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Hungarian",
+        "regionToken": null,
+        "sourceCaption": "Hungarian",
+        "explicitTag": null,
+        "inferredTag": "hu",
+        "canonicalBcp47": "hu",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Indonesian",
+        "regionToken": null,
+        "sourceCaption": "Indonesian",
+        "explicitTag": null,
+        "inferredTag": "id",
+        "canonicalBcp47": "id",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Italian",
+        "regionToken": null,
+        "sourceCaption": "Italian",
+        "explicitTag": null,
+        "inferredTag": "it",
+        "canonicalBcp47": "it",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Japanese",
+        "regionToken": null,
+        "sourceCaption": "Japanese",
+        "explicitTag": null,
+        "inferredTag": "ja",
+        "canonicalBcp47": "ja",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Kannada",
+        "regionToken": null,
+        "sourceCaption": "Kannada",
+        "explicitTag": null,
+        "inferredTag": "kn",
+        "canonicalBcp47": "kn",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Korean",
+        "regionToken": null,
+        "sourceCaption": "Korean",
+        "explicitTag": null,
+        "inferredTag": "ko",
+        "canonicalBcp47": "ko",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Malay",
+        "regionToken": null,
+        "sourceCaption": "Malay",
+        "explicitTag": null,
+        "inferredTag": "ms",
+        "canonicalBcp47": "ms",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Malayalam",
+        "regionToken": null,
+        "sourceCaption": "Malayalam",
+        "explicitTag": null,
+        "inferredTag": "ml",
+        "canonicalBcp47": "ml",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Marathi",
+        "regionToken": null,
+        "sourceCaption": "Marathi",
+        "explicitTag": null,
+        "inferredTag": "mr",
+        "canonicalBcp47": "mr",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Norwegian",
+        "regionToken": null,
+        "sourceCaption": "Norwegian",
+        "explicitTag": null,
+        "inferredTag": "no",
+        "canonicalBcp47": "no",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Odia",
+        "regionToken": null,
+        "sourceCaption": "Odia",
+        "explicitTag": null,
+        "inferredTag": "or",
+        "canonicalBcp47": "or",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Polish",
+        "regionToken": null,
+        "sourceCaption": "Polish",
+        "explicitTag": null,
+        "inferredTag": "pl",
+        "canonicalBcp47": "pl",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Portuguese",
+        "regionToken": "Brazil",
+        "sourceCaption": "Portuguese (Brazil)",
+        "explicitTag": null,
+        "inferredTag": "pt-Brazil",
+        "canonicalBcp47": "pt-BR",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Portuguese",
+        "regionToken": "Portugal",
+        "sourceCaption": "Portuguese (Portugal)",
+        "explicitTag": null,
+        "inferredTag": "pt-Portugal",
+        "canonicalBcp47": "pt-PT",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Punjabi",
+        "regionToken": null,
+        "sourceCaption": "Punjabi",
+        "explicitTag": null,
+        "inferredTag": "pa",
+        "canonicalBcp47": "pa",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Romanian",
+        "regionToken": null,
+        "sourceCaption": "Romanian",
+        "explicitTag": null,
+        "inferredTag": "ro",
+        "canonicalBcp47": "ro",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Russian",
+        "regionToken": null,
+        "sourceCaption": "Russian",
+        "explicitTag": null,
+        "inferredTag": "ru",
+        "canonicalBcp47": "ru",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Slovak",
+        "regionToken": null,
+        "sourceCaption": "Slovak",
+        "explicitTag": null,
+        "inferredTag": "sk",
+        "canonicalBcp47": "sk",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Spanish",
+        "regionToken": "Mexico",
+        "sourceCaption": "Spanish (Mexico)",
+        "explicitTag": null,
+        "inferredTag": "es-Mexico",
+        "canonicalBcp47": "es-MX",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Spanish",
+        "regionToken": "Spain",
+        "sourceCaption": "Spanish (Spain)",
+        "explicitTag": null,
+        "inferredTag": "es-Spain",
+        "canonicalBcp47": "es-ES",
+        "tagInferenceNote": "inferred base+region"
+      },
+      {
+        "caption": "Swedish",
+        "regionToken": null,
+        "sourceCaption": "Swedish",
+        "explicitTag": null,
+        "inferredTag": "sv",
+        "canonicalBcp47": "sv",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Tamil",
+        "regionToken": null,
+        "sourceCaption": "Tamil",
+        "explicitTag": null,
+        "inferredTag": "ta",
+        "canonicalBcp47": "ta",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Telugu",
+        "regionToken": null,
+        "sourceCaption": "Telugu",
+        "explicitTag": null,
+        "inferredTag": "te",
+        "canonicalBcp47": "te",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Thai",
+        "regionToken": null,
+        "sourceCaption": "Thai",
+        "explicitTag": null,
+        "inferredTag": "th",
+        "canonicalBcp47": "th",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Turkish",
+        "regionToken": null,
+        "sourceCaption": "Turkish",
+        "explicitTag": null,
+        "inferredTag": "tr",
+        "canonicalBcp47": "tr",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Ukrainian",
+        "regionToken": null,
+        "sourceCaption": "Ukrainian",
+        "explicitTag": null,
+        "inferredTag": "uk",
+        "canonicalBcp47": "uk",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Urdu",
+        "regionToken": null,
+        "sourceCaption": "Urdu",
+        "explicitTag": null,
+        "inferredTag": "ur",
+        "canonicalBcp47": "ur",
+        "tagInferenceNote": "inferred base language"
+      },
+      {
+        "caption": "Vietnamese",
+        "regionToken": null,
+        "sourceCaption": "Vietnamese",
+        "explicitTag": null,
+        "inferredTag": "vi",
+        "canonicalBcp47": "vi",
+        "tagInferenceNote": "inferred base language"
+      }
+    ],
+    "sourceListExcerptHash": "31ffa4d0c54670e8f8a577100b0b504eea4e821b6316e2b65d0001854af81414",
+    "rowsCount": 49
+  },
+  "updatedAt": "2026-10-15T03:16:31.113509+00:00",
+  "note": "Rebuilt by Worker 01 QA repair. Apple canonicalBcp47 values corrected (en-GB, en-US, en-CA, fr-CA, pt-BR, pt-PT, es-MX, es-ES). 86 Google rows + 49 Apple rows."
+}

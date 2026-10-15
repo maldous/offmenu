@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "offmenu-terminology-contract/1",
+  "generatedAt": "2026-10-15T00:31:00Z",
+  "noteOnTimestamps": "This lane did not invent its timestamps. generatedAt is written live at file write time. The preceding country-coverage STATUS.json generatedUTC is a separately pinned artifact and is treated as its own provenance, not as contemporaneous with this lane.",
+  "laneOwner": "Freebuff OffMenu language-terminology lane",
+  "purpose": "Candidate controlled-English terminology contract plus immutable-native-name mapping rules for the OffMenu corpus language/terminology work. This is a readiness contract and seed, not a frozen glossary and not a completed translation.",
+  "conceptIdSpace": {
+    "rule": "Use stable concept/entity IDs. A single shared word may have different senses; synonyms may be different words; regional semantics must be preserved.",
+    "idScheme": "lane-local prefixed ids for seeds (langterm:<domain>:<stablelocal>) until coordinator-issued global concept IDs exist",
+    "idStabilityNote": "IDs are stable even if preferred labels/aliases change; labels/aliases/definitions/relations are versioned separately.",
+    "identityInferenceRule": "Do not merge concepts on name similarity alone; merge only evidence-backed identity with provenance."
+  },
+  "domains": [
+    {
+      "domain": "ingredient",
+      "notes": "distinguish food identity, cultivar, cut, preservation, cooked/raw/prepared state, edible fraction; generic flour is not automatically wheat flour"
+    },
+    {
+      "domain": "food",
+      "notes": "food identity vs ingredient composition; product identity is not ingredient origin"
+    },
+    {
+      "domain": "recipeInstruction",
+      "notes": "preserve ordering, safety-relevant temperature/time, quantities, yield, equipment references"
+    },
+    {
+      "domain": "preparation",
+      "notes": "preserve prepared/raw/cooked/preserved state and edible fraction context"
+    },
+    {
+      "domain": "quantity",
+      "notes": "preserve units, dimensions, basis/denominator; never invent conversions without cited method"
+    },
+    {
+      "domain": "nutrientDietaryCertification",
+      "notes": "preserve verified/conflict/unknown; similar names or translated labels do not certify allergy/halal/kosher/therapeutic suitability"
+    },
+    {
+      "domain": "businessIdentity",
+      "notes": "merge only evidence-backed entity identity; preserve corporate registration, dates, brands, facilities, markets, relationships; GTIN prefix is not origin/ownership"
+    },
+    {
+      "domain": "recall",
+      "notes": "preserve authoritative dated notices, source-native notice IDs, jurisdiction/markets, product/brand, affected batch/lot/GTIN, reason/status/period; translation is not proof a recall applies worldwide"
+    },
+    {
+      "domain": "priceUnit",
+      "notes": "preserve currency, geography/retailer, timestamp, package size, unit basis, observed vs converted; FX is dated evidence and conversion separate"
+    },
+    {
+      "domain": "producerSupplierRetailer",
+      "notes": "entity identity, role types, relationships, facilities, markets; no origin inference from barcode prefix alone"
+    }
+  ],
+  "nativeNameCategories": {
+    "rule": "When a native term is in one of these categories, preserve the native form as an immutable alias/note and keep any English gloss separate and labeled as interpretation.",
+    "categories": [
+      {
+        "category": "brand",
+        "examplesFromCitedEvidence": [],
+        "note": "brand names are identity, not translatable generic terms"
+      },
+      {
+        "category": "scientific/botanical",
+        "examplesFromCitedEvidence": [],
+        "note": "scientific names are identifiers, not localizable labels"
+      },
+      {
+        "category": "cultivar/variety",
+        "examplesFromCitedEvidence": [],
+        "note": "cultivar names are identity-bearing"
+      },
+      {
+        "category": "traditional dish name",
+        "examplesFromCitedEvidence": [
+          "museau de boeuf"
+        ],
+        "note": "native dish names may be the culturally meaningful term; English gloss is separate"
+      },
+      {
+        "category": "culturally meaningful untranslatable term",
+        "examplesFromCitedEvidence": [
+          "museau de boeuf"
+        ],
+        "note": "some native terms need a gloss but must remain native as primary identity"
+      },
+      {
+        "category": "legal/authority name",
+        "examplesFromCitedEvidence": [],
+        "note": "legal/authority names and official notice titles are identity/citation, not localizable semantics"
+      },
+      {
+        "category": "source-original ingredient wording",
+        "examplesFromCitedEvidence": [],
+        "note": "original ingredient wording can be evidence; preserve it"
+      },
+      {
+        "category": "native script form",
+        "examplesFromCitedEvidence": [],
+        "note": "where script is identity-relevant, preserve script form"
+      }
+    ]
+  },
+  "terminologySeedFixtures": {
+    "note": "These are representative cited fixtures from the semantic lane and from retained manifests, used to anchor the contract. They are seeds, not complete coverage.",
+    "records": [
+      {
+        "id": "langterm:ingredient:museau-boeuf-fr",
+        "domain": "ingredient",
+        "nativeText": "museau de boeuf",
+        "nativeLanguage": "fr",
+        "nativeCategory": "traditional dish name",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "beef muzzle (edible cattle snout cut used in French charcuterie)",
+        "englishGlossStatus": "proposed",
+        "aliasKind": "exact",
+        "regionContext": "fr",
+        "rationale": "'Museau' denotes the cattle (bovine) edible muzzle/snout cut; 'ox muzzle' is a literal truthful rendering; do not normalize to generic beef without cut-level evidence.",
+        "citations": [
+          "semantic lane judgment: ciqual-term-25610-museau (terminology-en + translation-stage); source: ciqual-2025"
+        ],
+        "confidence": 0.85,
+        "reviewOutcome": "pending",
+        "sourceEvidencePointer": "read-only cross-reference to semantic lane judgment artifacts; this lane does not republish their exact bytes"
+      },
+      {
+        "id": "langterm:food:taboule-fr",
+        "domain": "food",
+        "nativeText": "taboule",
+        "nativeLanguage": "fr",
+        "nativeCategory": "traditional dish name",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "tabouleh (parsley-and-wheat salad; regional variants exist)",
+        "englishGlossStatus": "proposed",
+        "aliasKind": "exact",
+        "regionContext": "fr",
+        "rationale": "Traditional dish name with regional variants; preserve native term; gloss is interpretive.",
+        "citations": [
+          "semantic lane judgment: ciqual-term-25608-taboule"
+        ],
+        "confidence": 0.8,
+        "reviewOutcome": "pending",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:ingredient:piemontaise-fr",
+        "domain": "ingredient",
+        "nativeText": "piemontaise",
+        "nativeLanguage": "fr",
+        "nativeCategory": "traditional dish name",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "piémontaise (a named French regional preparation; exact composition must be sourced)",
+        "englishGlossStatus": "proposed",
+        "aliasKind": "candidate",
+        "regionContext": "fr",
+        "rationale": "Regional named preparation; keep native term; composition must not be invented.",
+        "citations": [
+          "semantic lane judgment: ciqual-term-25609-piemontaise"
+        ],
+        "confidence": 0.75,
+        "reviewOutcome": "pending",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:ingredient:appertisee-fr",
+        "domain": "preparation",
+        "nativeText": "appertisée",
+        "nativeLanguage": "fr",
+        "nativeCategory": "preparation",
+        "nativeIsImmutableCategory": false,
+        "englishGloss": "preserved/pasteurized (prepared state)",
+        "englishGlossStatus": "proposed",
+        "aliasKind": "related",
+        "regionContext": "fr",
+        "rationale": "Preparation state term; treat as localizable text but preserve source wording.",
+        "citations": [
+          "semantic lane judgment: ciqual-term-25614-appertisee"
+        ],
+        "confidence": 0.82,
+        "reviewOutcome": "pending",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:food:vegetarian-translation-border",
+        "domain": "nutrientDietaryCertification",
+        "nativeText": "Salade de pâtes au fromage et légumes, avec sauce",
+        "nativeLanguage": "fr",
+        "nativeCategory": "source-original ingredient wording",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "Pasta salad, with cheese and vegetables, with sauce",
+        "englishGlossStatus": "proposed",
+        "aliasKind": "exact",
+        "regionContext": "fr",
+        "rationale": "An English rendering inserted 'vegetarian' where the source name did not state it; dietary claim is a separate interpretation from a name; proposed correction replaces the inserted dietary paraphrase with a composition-preserving rendering; original remains intact.",
+        "citations": [
+          "semantic lane judgment: ciqual-translation-25615-vegetarian (translation-stage + terminology-en + dietary)"
+        ],
+        "confidence": 0.72,
+        "reviewOutcome": "pending-review",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:ingredient:vinalla-ocr",
+        "domain": "ingredient",
+        "nativeText": "vinalla",
+        "nativeLanguage": "en",
+        "nativeCategory": "source-original ingredient wording",
+        "nativeIsImmutableCategory": false,
+        "englishGloss": "suspected OCR/typo artifact; native text preserved; correction candidate quarantined",
+        "englishGlossStatus": "unknown",
+        "aliasKind": "candidate",
+        "regionContext": "en",
+        "rationale": "OCR/name evidence artifact; preserve original token; correction is quarantined pending review and source comparison.",
+        "citations": [
+          "semantic lane judgment: off-ocr-name-typo-vinalla"
+        ],
+        "confidence": 0.5,
+        "reviewOutcome": "pending",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:business:ownership-inference-border",
+        "domain": "businessIdentity",
+        "nativeText": "Buitoni",
+        "nativeLanguage": "it",
+        "nativeCategory": "brand",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "Buitoni (brand name; do not infer corporate ownership from name similarity alone)",
+        "englishGlossStatus": "accepted",
+        "aliasKind": "exact",
+        "regionContext": "it",
+        "rationale": "Brand identity preserved; ownership/relationship claims require separate evidence, not name similarity.",
+        "citations": [
+          "semantic lane judgment: wd-buitoni-no-ownership-inference"
+        ],
+        "confidence": 0.9,
+        "reviewOutcome": "accepted",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:recall:noticeIdRule",
+        "domain": "recall",
+        "nativeText": "source-native recall notice identifiers are not translated",
+        "nativeLanguage": "protocol",
+        "nativeCategory": "legal/authority name",
+        "nativeIsImmutableCategory": true,
+        "englishGloss": "Recall identifiers, jurisdiction/markets, lot/GTIN and dates remain source values; English rendering is a separate interpretative layer only where applicable.",
+        "englishGlossStatus": "accepted",
+        "aliasKind": "exact",
+        "regionContext": "multi",
+        "rationale": "Translate only interpretative text; recall identifiers are identity/citation, not localizable semantics.",
+        "citations": [
+          "contract rule: recall exact-match conditions; semantic lane stage: recall (no retained recall source found in corpus at judgment time)"
+        ],
+        "confidence": 0.95,
+        "reviewOutcome": "accepted",
+        "sourceEvidencePointer": "contract + semantic lane recall-stage-gap record; no recall corpus content asserted by this lane"
+      },
+      {
+        "id": "langterm:price:observedNotConvertedRule",
+        "domain": "priceUnit",
+        "nativeText": "observed price is preserved as observed; conversion is separate",
+        "nativeLanguage": "protocol",
+        "nativeCategory": "priceUnit",
+        "nativeIsImmutableCategory": false,
+        "englishGloss": "Preserve observed amount, currency, geography/retailer, timestamp, package size, unit basis, promotion/availability; computed min/average/max are only for explicitly defined compatible cohorts; FX is dated evidence.",
+        "englishGlossStatus": "accepted",
+        "aliasKind": "related",
+        "regionContext": "multi",
+        "rationale": "Price semantics must keep observed vs converted distinct; conversions are dated and cohort-specific.",
+        "citations": [
+          "semantic lane judgment: prices-5848-observed-not-converted, prices-85893-promotion-consistent, prices-1039-currency-context"
+        ],
+        "confidence": 0.92,
+        "reviewOutcome": "accepted",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      },
+      {
+        "id": "langterm:unit:ingredient-servingBasis",
+        "domain": "quantity",
+        "nativeText": "ingredient serving/per-100 basis distinction preserved",
+        "nativeLanguage": "protocol",
+        "nativeCategory": "quantity",
+        "nativeIsImmutableCategory": false,
+        "englishGloss": "Preserve nutrient/nutrient-per-serving/per-100g basis; do not silently reinterpret denominators.",
+        "englishGlossStatus": "accepted",
+        "aliasKind": "related",
+        "regionContext": "multi",
+        "rationale": "Quantity basis is semantic; denominator changes alter meaning.",
+        "citations": [
+          "semantic lane judgment: off-value-seltzer-zeros-real, off-value-chips-carbs-conflict, off-value-onions-carbs-conflict, ciqual-unit-8406, ciqual-unit-8407, ciqual-unit-24999, ciqual-unit-25600, ciqual-value-25601-galactose"
+        ],
+        "confidence": 0.9,
+        "reviewOutcome": "accepted",
+        "sourceEvidencePointer": "read-only cross-reference; not republished here"
+      }
+    ]
+  },
+  "proposalGovernance": {
+    "rule": "Every proposal must carry native text, native language/script/locale, nativeCategory, nativeIsImmutableCategory, englishGloss, englishGlossStatus, aliasKind, regionContext, rationale, citations, confidence, reviewOutcome and a sourceEvidencePointer.",
+    "evidenceRule": "Proposals never overwrite native text; they are interpretations with review status.",
+    "quarantineRule": "Unsupported or ambiguous corrections remain unknown/quarantined; ambiguity never authorizes invented values.",
+    "reviewRule": "Independent review is required for difficult/sensitive terms; model self-confidence and two models agreeing are not sufficient for sensitive facts.",
+    "citationRule": "Every proposal cites source pointers with archive hash/version/date where applicable."
+  },
+  "qaChecksThisContractEnables": {
+    "identityPreservation": "fixed identifiers and native immutable terms must not change between proposal versions",
+    "unitAndDimensionPreservation": "quantity unitId/dimension must remain preserved; no silent unit reinterpretation",
+    "negationQualifierPreservation": "negation and qualifiers in localizable text must not be dropped/flipped in glosses",
+    "allergenDietaryClaimBoundary": "dietary/allergen claims must remain evidence-backed; glosses cannot invent them",
+    "nativeAliasPreservation": "native terms in immutable categories must survive as aliases/notes alongside glosses",
+    "proposalIntegrity": "every proposal must have complete required fields and a non-empty sourceEvidencePointer for evidence-backed proposals",
+    "translationBoundaryConformance": "no doNotTranslate field may appear in a localizable translation payload"
+  },
+  "uncertainties": [
+    "This contract is a lane seed; global concept IDs and final glossary version must be issued/frozen by coordinator integration.",
+    "These fixtures are representative, not exhaustive; full corpus terminology coverage is a later stage.",
+    "Some citation pointers reference semantic lane artifacts read-only; this lane does not republish or modify those artifacts."
+  ],
+  "terminologyAlignment": {
+    "storeLanguageLocaleInventorySha256": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+    "storeLanguageLocaleInventoryPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-language-locale-inventory.json",
+    "storeLanguageLocaleInventoryGeneratedAt": "2026-10-15T01:51:40.637777+00:00",
+    "bcp47ExtractionManifestSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "bcp47ExtractionManifestPath": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json"
+  },
+  "updatedAt": "2026-10-15T04:20:46.643699+00:00",
+  "allowedExtensions": {
+    "note": "Contract-level enumeration of known optional extensions permitted beyond required keys. Absence of this list means no extensions are authorized; presence means only listed keys are allowed as extras.",
+    "version": "1",
+    "allowed": [
+      {
+        "key": "terminologyAlignment",
+        "purpose": "Cross-reference to store language locale inventory and BCP47 extraction manifest for QA tie-out",
+        "introducedIn": "offmenu-terminology-contract/1"
+      },
+      {
+        "key": "updatedAt",
+        "purpose": "Audit timestamp for contract-level changes",
+        "introducedIn": "offmenu-terminology-contract/1"
+      }
+    ]
+  }
+}
