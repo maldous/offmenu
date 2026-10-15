@@ -1,0 +1,63 @@
+{
+  "releaseId": "places-projection-fixture-20261015",
+  "note": "Two byte-preserved normalized rows (first line of each accepted curated record file, curated release expanded-country-search-20261013) plus ONE explicitly synthetic edge-case row (coordinates + explicit nulls; retained normalized rows omit geometry by upstream curation policy). Fixture for the A3 dataset-projection integration seam; NOT an acquisition, NOT a bulk run",
+  "sources": {
+    "overture-food-places": {
+      "releaseId": "expanded-country-search-20261013",
+      "records": 2,
+      "license": "Per-record CDLA-Permissive-2.0 / Apache-2.0 (see per-record sourceLicenses)",
+      "attribution": "Overture Maps Foundation and original providers",
+      "rawSourcePayloadPublished": false,
+      "origin": [
+        {
+          "file": "000.jsonl.gz",
+          "line": 1,
+          "curatedFile": "records/overture-food-places/000.jsonl.gz",
+          "real": true
+        },
+        {
+          "file": "001.jsonl.gz",
+          "line": 1,
+          "syntheticFixtureRow": true
+        }
+      ]
+    },
+    "wikidata-food-businesses": {
+      "releaseId": "expanded-country-search-20261013",
+      "records": 1,
+      "license": "CC0 1.0",
+      "attribution": "Wikidata contributors",
+      "rawSourcePayloadPublished": false,
+      "origin": [
+        {
+          "file": "0.jsonl.gz",
+          "line": 1,
+          "curatedFile": "records/wikidata-food-businesses/0.jsonl.gz",
+          "real": true
+        }
+      ]
+    }
+  },
+  "files": [
+    {
+      "key": "records/overture-food-places/000.jsonl.gz",
+      "bytes": 1061,
+      "sha256": "83dd244ad82252a6bb78e3a77b69a34fc75554dd2afc4bdf6e2afed605f6732f"
+    },
+    {
+      "key": "records/overture-food-places/001.jsonl.gz",
+      "bytes": 534,
+      "sha256": "0c52a764a1903b705574708c802b3649c9c823d203dc00fd2031934215785d4d"
+    },
+    {
+      "key": "records/wikidata-food-businesses/0.jsonl.gz",
+      "bytes": 603,
+      "sha256": "de454b6fe688cae11c54a749c025625e375620fe79ac5b59b9909526cbfc087d"
+    }
+  ],
+  "lineSha256": {
+    "records/overture-food-places/000.jsonl.gz": "b617f3e923c6ce4d35c119f75e59a929854ab3593e5dcd434f4bad7fc6ddcce4",
+    "records/overture-food-places/001.jsonl.gz": "1fb1ba3e061b2e4a25c62d1184f06107a3a51798d322d9d164e3b38b1815aeda",
+    "records/wikidata-food-businesses/0.jsonl.gz": "35152832ffb57f4d9db52e3021eb79e1562bccad7fcc202400aeb80e8462fab6"
+  }
+}
