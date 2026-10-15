@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "semantic/review-freeze-manifest/0",
+  "root": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015",
+  "fileCount": 24,
+  "files": [
+    {
+      "rel": "SUBSET-DECLARATION.json",
+      "bytes": 1520,
+      "sha256": "48111391df1a29cbfc092603cc763d53282f3b9e9a449d8c16d8306b05d4cfc8"
+    },
+    {
+      "rel": "input/manifest.json",
+      "bytes": 1400,
+      "sha256": "78f7625bbb71acf6ecb6f0a5ea6ff8fbec5684bfaeded13b6a6900496e637498"
+    },
+    {
+      "rel": "input/packets/part-00000.jsonl.gz",
+      "bytes": 1163998,
+      "sha256": "bd32d73c3eb3e3dd6719d187b64064f21208af47c26362e2b13c26ad3c9462b8"
+    },
+    {
+      "rel": "input/packets/part-05500.jsonl.gz",
+      "bytes": 1882701,
+      "sha256": "2b49b00c27fd44b065f4b60a37442475a4ed0967b9e6300b82b99c21123db8a7"
+    },
+    {
+      "rel": "input/packets/part-09500.jsonl.gz",
+      "bytes": 728341,
+      "sha256": "38bdbd6387baaa69e577bfa8d7d5a6e799b582d559f52e925dbcd4f8c1829906"
+    },
+    {
+      "rel": "output/checkpoint.json",
+      "bytes": 1442,
+      "sha256": "df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6"
+    },
+    {
+      "rel": "output/manifest.json",
+      "bytes": 2793,
+      "sha256": "7dddf6d1a371022c1be7dbaa3b35fc66c1a0fd95dec5417e5bfe0126ab76d7bc"
+    },
+    {
+      "rel": "output/packets/part-00000.jsonl.gz",
+      "bytes": 1129074,
+      "sha256": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342"
+    },
+    {
+      "rel": "output/packets/part-05500.jsonl.gz",
+      "bytes": 1861696,
+      "sha256": "91aa9005047bcaa45ebc71f3c9286355b2d7f1ff25e8395b618de84ef5f591cf"
+    },
+    {
+      "rel": "output/packets/part-09500.jsonl.gz",
+      "bytes": 696727,
+      "sha256": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    },
+    {
+      "rel": "output-corrupt/checkpoint.json",
+      "bytes": 1442,
+      "sha256": "df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6"
+    },
+    {
+      "rel": "output-corrupt/manifest.json",
+      "bytes": 2793,
+      "sha256": "7dddf6d1a371022c1be7dbaa3b35fc66c1a0fd95dec5417e5bfe0126ab76d7bc"
+    },
+    {
+      "rel": "output-corrupt/packets/part-00000.jsonl.gz",
+      "bytes": 1129074,
+      "sha256": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342"
+    },
+    {
+      "rel": "output-corrupt/packets/part-05500.jsonl.gz",
+      "bytes": 1861680,
+      "sha256": "59d877d6754d1d32c04b14362bb25f5cf0b4fd07b68838fa41c25050f48e28be"
+    },
+    {
+      "rel": "output-corrupt/packets/part-09500.jsonl.gz",
+      "bytes": 696727,
+      "sha256": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    },
+    {
+      "rel": "output-corrupt2/checkpoint.json",
+      "bytes": 1442,
+      "sha256": "df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6"
+    },
+    {
+      "rel": "output-corrupt2/packets/part-00000.jsonl.gz",
+      "bytes": 1129074,
+      "sha256": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342"
+    },
+    {
+      "rel": "output-corrupt2/packets/part-05500.jsonl.gz",
+      "bytes": 1861680,
+      "sha256": "59d877d6754d1d32c04b14362bb25f5cf0b4fd07b68838fa41c25050f48e28be"
+    },
+    {
+      "rel": "output-corrupt2/packets/part-09500.jsonl.gz",
+      "bytes": 696727,
+      "sha256": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    },
+    {
+      "rel": "output-partial/checkpoint.json",
+      "bytes": 1442,
+      "sha256": "df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6"
+    },
+    {
+      "rel": "output-partial/manifest.json",
+      "bytes": 2793,
+      "sha256": "7dddf6d1a371022c1be7dbaa3b35fc66c1a0fd95dec5417e5bfe0126ab76d7bc"
+    },
+    {
+      "rel": "output-partial/packets/part-00000.jsonl.gz",
+      "bytes": 1129074,
+      "sha256": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342"
+    },
+    {
+      "rel": "output-partial/packets/part-05500.jsonl.gz",
+      "bytes": 1861696,
+      "sha256": "91aa9005047bcaa45ebc71f3c9286355b2d7f1ff25e8395b618de84ef5f591cf"
+    },
+    {
+      "rel": "output-partial/packets/part-09500.jsonl.gz",
+      "bytes": 696727,
+      "sha256": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    }
+  ]
+}

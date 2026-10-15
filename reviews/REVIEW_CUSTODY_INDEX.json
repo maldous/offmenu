@@ -1,7 +1,7 @@
 {
   "schemaVersion": "semantic/review-custody-index/0",
   "holder": "Worker 06 (UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff), worktree slot63 feature/63/freebuff-semantic-candidates-20261015",
-  "updatedAtUTC": "2026-10-15T04:39:58.747184+00:00",
+  "updatedAtUTC": "2026-10-15T04:46:50.378807+00:00",
   "entries": [
     {
       "review": "semantic-lane candidate handoff (author)",
@@ -76,6 +76,25 @@
         "882a898d677e4747"
       ],
       "correctionStatus": "M1/M2/M3 CONFIRMED exact; disclosures confirmed; precision notes P2 (EDAC wording), P3 (interposed commit), P4 (later commits db07b5b/53e4b34 uncovered)"
+    },
+    {
+      "review": "Worker05 53e4b344 subset-builder + candidate namespace",
+      "exactBase": "53e4b344fc096cc54670cb945526223ae7929a97 (parent a49d3729) + /home/user/src/offmenu-data/worker-062-repair-candidate-20261015 (24-file freeze)",
+      "receipt": [
+        "semantic/reviews/20261015-53e4b344-subset-builder-exact-review-W06.json",
+        "c339537cfa47ab1d"
+      ],
+      "correctionStatus": "pins/copy/3000 packets/unchanged repair/3-of-3 source comparison/guard/fail-closed/byte-determinism VERIFIED; findings RS-1 (receipt pin citation), RS-2 (checkpoint preconditions not retained), RS-3/4 (info)"
+    },
+    {
+      "review": "Worker05 db07b5b N1 kernel-history appendix (doc delta)",
+      "exactBase": "db07b5b0902fe1dc687258000b307849501b0039 (parent 53e4b344; doc delta base == a49-reviewed doc blob d4f6389)",
+      "receipt": [
+        "semantic/reviews/20261015-db07b5b-n1-appendix-exact-review-W06.json",
+        "14781caa51d4f96e",
+        "addendum: 20261015-repair-diagnosis-deltas-review-W03-v2-addendum1.json"
+      ],
+      "correctionStatus": "16 attributed entries/span/process set, 4 unattributed classes, precheck topology values, UNPROVEN discipline all CONFIRMED; DB-1 P2 wording still open, DB-2 citation scope, DB-3 timestamp lineage"
     }
   ],
   "dGate": {

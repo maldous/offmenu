@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "semantic/receipt-addendum/0",
+  "addendumTo": "semantic/reviews/20261015-repair-diagnosis-deltas-review-W03-v2.json",
+  "addendumToSha256": "eafc58fa294f25a271c67ce518979db83cfe29564380667b0d8cb66d9b99e50e",
+  "issuedAtUTC": "2026-10-15T04:46:50.378807+00:00",
+  "issuedBy": "Worker 06 (same reviewer as the amended receipt)",
+  "correction": "N1's span/program clause is substantiated but its citation was imprecise. Corrected citation: the multi-day CPU-10 pattern is evidenced across the kernel-log FAMILY - /var/log/kern.log spans 2026-10-10..10-15 (16 CPU-10-attributed fault lines, earliest 2026-10-11T01:26), and the ROTATED /var/log/kern.log.1 spans 2026-10-04T00:46:15+10:00..2026-10-08T09:30:04+11:00 with 11 further CPU-10-attributed lines across python3 (6), RuntimeData (2), cix (2), squash-contract (1). Nothing in the finding changes: the span 2026-10-04..10-15 and the cross-process attribution hold; only the file citation is refined (v2's phrase 'the retained /var/log/kern.log' should read 'the retained kernel-log family (kern.log + kern.log.1)').",
+  "verifiedAtUTC": "2026-10-15T04:46:50.378807+00:00"
+}

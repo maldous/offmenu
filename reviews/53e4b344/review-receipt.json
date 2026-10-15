@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "semantic/exact-commit-review-receipt/0",
+  "reviewId": "OFFMENU-53E4B344-SUBSET-BUILDER-EXACT-REVIEW-W06",
+  "order": "MORGAN-BOUNDED-SUBSET53-DB07-REVIEWS-W06 Task 1",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63); Worker05 author paths READ-ONLY"
+  },
+  "inputs": {
+    "commit": "53e4b344fc096cc54670cb945526223ae7929a97",
+    "commitParent": "a49d3729fb86db4de79b16e5fb968090a1de88e0",
+    "commitScope": "1 file, scripts/build-repair-subset-candidate-20261015.py (+105), new file",
+    "builderBlobSha256": "42bcf89ae57fb36a2a905d542c962050971a52291c5f245aef2ffca49b5e6578",
+    "candidateNamespace": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015",
+    "freezeManifest": "reviews/53e4b344/freeze/candidate-manifest.json",
+    "freezeManifestFiles": 24,
+    "freezeBeforeInspection": true,
+    "authorReceipt": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-repair-subset-candidate-receipt-20261015.json",
+    "authorReceiptSha256": "2fb8a923b39f1ae8b72f84560b694fefe7b40697260d17bee67603c5f57eba4a",
+    "storageReceiptSha256": "ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e",
+    "hashMismatchBlocker": "NONE - both receipt SHAs matched the values supplied for this review exactly"
+  },
+  "verifiedClaims": {
+    "subsetScope": "3/9797 packet assets (declared denominator) and 3000 packets verified by counting: input packets 1000+1000+1000=3000, output packets 3000; all lines parse as JSON.",
+    "pinsVerbatim": "all 3 selected asset sha256+bytes equal the authoritative source manifest entries (bd32d73c/2b49b00c/38bdbd63); source manifest byte sha256 = 5b88f9e3... as declared.",
+    "copyByteExact": "candidate input/packets are BYTE-IDENTICAL to /home/user/src/offmenu-data/common-bulk-food-20261014/packets for all 3 assets (3/3).",
+    "builderLogic": "pin check BEFORE copy (size+sha vs manifest entry, SystemExit on mismatch), copyfile, then byte-exact read-back comparison (SystemExit on mismatch); keys and packets copied verbatim from the manifest; read-only toward the source package; writes only inside the owned candidate namespace.",
+    "subsetManifest": "input/manifest.json subsetOf.manifestByteSha256 = 5b88f9e3... and manifestSha256 = 8d33a1f4... both reproduce; counts.packets 3000; inputCoverage 3/3.",
+    "repairImplementationUnchanged": "scripts/repair-bulk-controls-20261014.py at 53e4b344 = 2c025c07f0561d2c... = the checkpoint pin = the branch copy (unchanged; the crashed offmenu-freebuff copy 6b547f82 remains a distinct pinned artifact).",
+    "corpusContractLineage": "checkpoint pins schemaByteSha256 89ff7014... and contractByteSha256 b4fa5afb... both equal the canonical corpus files byte-for-byte; inputManifestByteSha256 78f7625b... equals the candidate input manifest.",
+    "selfReportIntegrity": "output checkpoint journal sha = output manifest entry sha = actual file sha for all 3 assets.",
+    "sourceComparison3of3": "independently reproduced with the UNCHANGED read-only inspector (same commit bytes) over the 3 assets: exit 0, status 'bounded-source-comparison-not-package-qualification', inspected 3 / usableAssets 3, each 'source-compared-complete-asset' with verifiedPackets 1000; retained hashes match the author receipt exactly; complete=false by design (matches the claim).",
+    "guardAndFailClosed": "static verification of the exact commit bytes: completed-output refusal at repair_owned ('completed immutable output cannot be resumed') and legacy-partial refusal are present; the retained corruption cases are fail-closed: a truncated asset (59d877d6..., 16 bytes short) is still present/unrepaired, one scenario has NO manifest written.",
+    "deterministicResumeOutcome": "output-partial and output are byte-identical for all 3 packet assets AND for checkpoint.json => the resumed run reproduced the uninterrupted run byte-for-byte (the claimed outcome).",
+    "disclosureAndSanity": "receipt discloses the partial as SYNTHETIC (built from the completed run's journal), not a natural interruption; timestamps carry an explicit correction lineage with filesystem-mtime evidence; original orphaned lock and legacy 414-file partial verified untouched elsewhere; storage receipt records the candidate at 18 MB and free space stable."
+  },
+  "findings": [
+    {
+      "id": "RS-1",
+      "severity": "low",
+      "where": "author receipt subset.assetPinsVerbatimFrom",
+      "message": "It cites '/home/user/src/offmenu-data/common-bulk-food-20261014/manifest.json (byte sha256 78f7625bbb71acf6...)' but 78f7625b... is the CANDIDATE input manifest (also the repair's inputManifestByteSha256), not the source package manifest, whose byte sha256 is 5b88f9e3... (that value is used correctly in the subset manifest and declaration).",
+      "request": "correct the citation (naming or hash) so the source-pin provenance is unambiguous; no data is affected."
+    },
+    {
+      "id": "RS-2",
+      "severity": "medium-low",
+      "where": "author receipt resumabilityEvidence.disclosedSyntheticPartial / corruptionEvidence.case2",
+      "message": "The retained checkpoints do not match the described preconditions: output-partial/checkpoint.json and output-corrupt2/checkpoint.json are each byte-identical to the COMPLETE checkpoint (df39b145..., complete=true, all 3 assets journaled). (a) The pre-resume trimmed state (complete=false, first asset only) is not retained, so the resume path cannot be independently re-derived from retained bytes - only its byte-identical outcome is evidenced. (b) The case-2 wording 'partial state + truncated UNJOURNALED asset' is not corroborated: the retained checkpoint HAS packets/part-05500.jsonl.gz journaled with the good sha and marks the run complete, so on the retained state the documented completed-output/legacy-partial refusals - not an unjournaled-asset EOFError - are what the code would take first. The observed fail-closed outcomes (exit 1, corrupt file untouched, no manifest) remain consistent.",
+      "request": "retain the true intermediate states (or state explicitly that they were not retained) and correct the case-2 precondition wording; the demonstrated outcome is not in question."
+    },
+    {
+      "id": "RS-3",
+      "severity": "info",
+      "where": "author receipt subset.builder description",
+      "message": "The builder's post-copy check is byte-exactness against the in-memory, pin-verified source bytes - not a second verification against manifest pins; 'verifies pins before and after copy' slightly overstates. The pin chain still holds transitively.",
+      "request": "optional wording fix."
+    },
+    {
+      "id": "RS-4",
+      "severity": "info",
+      "where": "review method",
+      "message": "The retained read-only inspector requires the M1 checkout layout (scripts/ beside corpus/): running it from a bare directory fails with '/scripts/...' and then 'corpus/common-data.schema.json' lookups until the layout is materialized. Same documented M1 class; recorded so reviewers do not mistake it for a data defect."
+    }
+  ],
+  "limits": [
+    "No repair re-run and no fault batch: the only execution was the unchanged read-only inspector over the 3 declared assets (writes only its own receipt in my worktree), plus bounded counting/parsing of 6,000 packet lines.",
+    "Host health NOT certified by this review or by the author's bounded clean run; root cause of the preflight SIGSEGV remains unproven.",
+    "Scope strictly 3/9,797 assets: NOT full repair, NOT package qualification, NOT corpus admission or integration.",
+    "Native-asset-identity interpretation: verified as 'keys and pin values carried verbatim from the authoritative manifest', which is what the builder implements; no separate native-ID registry was consulted."
+  ],
+  "recommendation": {
+    "status": "REVIEWED - mechanically sound at bounded scope, findings RS-1..RS-4 documentary/retention only",
+    "meaning": "authored and delivered by Worker05; independently reviewed here; NOT Morgan-accepted, NOT integrated; expansion past 3/9,797 remains gated as the receipt states"
+  },
+  "generatedAtUTC": "2026-10-15T04:44:58.215052+00:00"
+}

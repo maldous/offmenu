@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "semantic/exact-commit-review-receipt/0",
+  "reviewId": "OFFMENU-DB07B5B-N1-APPENDIX-EXACT-REVIEW-W06",
+  "order": "MORGAN-BOUNDED-SUBSET53-DB07-REVIEWS-W06 Task 2",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63); Worker05 author paths READ-ONLY"
+  },
+  "inputs": {
+    "commit": "db07b5b0902fe1dc687258000b307849501b0039",
+    "parent": "53e4b344fc096cc54670cb945526223ae7929a97",
+    "scope": "docs/repair-diagnosis-20261015.md only, +39 lines (pure appendix insertion)",
+    "reviewedDocSha256": "d25deb9c6448c16059f9e240a714220a80f20bff60b164864f5273bf0f4b3242",
+    "docBlobLineage": "53e4b344 doc blob d4f6389... == a49d3729 doc blob d4f6389... (the earlier-reviewed doc); db07b5b doc blob adc82606... = delta base is therefore the a49-reviewed doc unchanged",
+    "committerUTC": "2026-10-15T04:32:30Z (commit %cI 2026-10-15T15:32:30+11:00)"
+  },
+  "verifiedClaims": {
+    "explicitlyAttributedClass": "CONFIRMED exactly: 16 CPU-10-attributed fault lines in the retained /var/log/kern.log, earliest 2026-10-11T01:26:50.108981+11:00 -> latest 2026-10-15T14:43:57.560516+11:00; process set python3 x9, python3.12 x1, python x1, basic-memory x4, ChatGPT x1 (non-python) - identical to the appendix's stated categories and span.",
+    "unattributedClass": "CONFIRMED, zero CPU-10 attribution on each: 2026-10-11T11:12 python3 GPF; 2026-10-15T01:05 xz GPF in liblzma.so.5.4.5; 2026-10-15T10:23 python GPF; 2026-10-15T10:04 desktop trap int3. The appendix's separation of these from the attributed set is accurate.",
+    "topologyCitation": "CONFIRMED exactly against the cited precheck: /home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/cpu-containment-precheck.json at 2026-10-15T03:50:02Z, cpus 10 and 11 core_id 20, socket 0, siblings 10-11, onlineValue 1, writable false. Offline sysfs emptiness is the documented reason this precheck is the authority; consistent with my L1 note.",
+    "hypothesisDiscipline": "CONFIRMED: appendix states 'Hypothesis status unchanged: UNPROVEN', that the multi-day concentration strengthens but does not prove the core-20 hardware hypothesis, keeps the fixed-IP CPython scanner alternative live, and records that no fault tests were run in the correction pass. No root-cause overclaim.",
+    "attributionHonesty": "CONFIRMED: P1 (shared 'Freebuff Corpus Manager' author identity) is carried into the appendix; the Oct-4 cross-reference to my N1 is explicitly marked as that review's finding, not re-verified in this pass.",
+    "n1CrossReferenceNowVerified": "Worker06 verified the cross-referenced claim independently in the ROTATED logs: /var/log/kern.log.1 holds 11 CPU-10-attributed lines spanning 2026-10-04T00:46:15+10:00 -> 2026-10-08T09:30:04+11:00 across python3 x6, RuntimeData x2, cix x2, squash-contract x1 (clickhouse/'RuntimeData' 4 lines of which 2 attributed). The Oct-4..8 span and program list in my N1 are therefore substantiated; see addendum for the citation refinement."
+  },
+  "findings": [
+    {
+      "id": "DB-1",
+      "severity": "low",
+      "where": "doc line 38 (unchanged by db07b5b)",
+      "message": "P2 remains OPEN: the document still states the kernel log shows 'zero MCE/EDAC/memory-error entries', while the retained kern.log contains 'EDAC MC: Ver: 3.0.0' - an EDAC driver version banner, not an error entry. The claim is substantively true but the wording is still ambiguous; this commit (appendix insertion only) did not address it.",
+      "request": "wording fix at the next correction boundary: 'zero MCE/EDAC ERROR entries (only the EDAC driver version banner is present)', or an equivalent explicit note."
+    },
+    {
+      "id": "DB-2",
+      "severity": "info",
+      "where": "kernel-log citation scope (appendix + my own N1 wording)",
+      "message": "The appendix's 16-entry count is exactly right FOR /var/log/kern.log, which currently spans only 2026-10-10..10-15 (log rotation: kern.log.1 -> Oct 10, kern.log.2.gz -> Oct 4). My own N1 receipt says 'the retained /var/log/kern.log shows ... Oct 4 through Oct 15', which is imprecise: the pre-Oct-11 evidence lives in the rotated file. Corrected by addendum; recommend the appendix cite the kernel-log FAMILY (kern.log + kern.log.1) if it is ever extended backwards."
+    },
+    {
+      "id": "DB-3",
+      "severity": "info",
+      "where": "receipt timestamp lineage",
+      "message": "The corrected timestamps are corroborated: the receipt's correctedAtUTC 2026-10-15T04:32:30Z equals this commit's committer time exactly, and the 'no nominal future timestamp' correction is consistent. Limitation: the PRE-correction filesystem mtimes (15:24:04 / 15:26:17 local) cannot be re-verified now that the files were rewritten, so that specific evidence clause rests on the author's record."
+    }
+  ],
+  "limits": [
+    "No repeated fault test, no repair run, no author changes: only read-only inspection of retained bytes, kernel-log reads (incl. rotated files) and the cited precheck receipt.",
+    "Root cause of the preflight SIGSEGV remains UNPROVEN; nothing here certifies host health.",
+    "This review covers the doc delta at db07b5b only; later commits would need their own exact review."
+  ],
+  "recommendation": {
+    "status": "REVIEWED - appendix accurate, disciplined and non-overclaiming; one stale wording item (DB-1) outstanding",
+    "meaning": "authored and delivered by Worker05 in response to N1; independently reviewed here; NOT Morgan-accepted, NOT integrated; no new candidate is approved by this review."
+  },
+  "generatedAtUTC": "2026-10-15T04:46:50.378807+00:00"
+}
