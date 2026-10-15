@@ -1,0 +1,187 @@
+"""Read-only source-scoped culinary name assertions. No translation or equivalence."""
+import argparse
+import gzip
+import hashlib
+import itertools
+import json
+from pathlib import Path
+import subprocess
+import os
+
+RECIPE_COMMIT = '8d468982f7bc905af01d5262c8eabb8db7051e96'
+FOODON_COMMIT = '3e7b381'
+LOCALES = {'hi', 'ar', 'cs', 'el', 'fa', 'zh'}
+
+
+def sha(path):
+    with Path(path).open('rb') as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
+
+
+def git_json(commit, path):
+    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+    return json.loads(subprocess.check_output(['git', 'show', commit + ':' + path], env=env))
+
+
+def assertion(row, item, coordinate, concepts, original_body_verified=False):
+    p, d = row['provenance'], row['data']
+    locales = d.get('languages') or ['und']
+    lexeme = item.get('name')
+    if not isinstance(lexeme, str):
+        lexeme = None
+    rights = p.get('license') == 'CC BY-SA 4.0' and bool(p.get('rightsEvidenceUrl'))
+    # Exact original Unicode and locale only. No transliteration/fuzzy alias identity.
+    candidates = sorted({c['id'] for c in concepts if any(
+        t.get('value') == lexeme and t.get('language') in locales for t in c['names'])}) if lexeme else []
+    return {'coordinate': coordinate, 'source_id': p.get('originSourceId'),
+            'original_record_id': p.get('recordId'), 'revision': p.get('revisionId'),
+            'source_content_sha256_claim': p.get('originalContentSha256'),
+            'source_url': p.get('url'), 'licence': p.get('license'),
+            'rights_evidence_url': p.get('rightsEvidenceUrl'), 'attribution': p.get('attribution'),
+            'original_lexeme': lexeme if rights else None, 'source_original_lexeme': None, 'lexeme_status': 'retained normalized name; not original-body verified',
+            'original_statement_sha256': hashlib.sha256(item.get('originalText', '').encode()).hexdigest(),
+            'locales': locales, 'candidate_concept_ids': candidates,
+            'crosswalk_status': 'candidate-only' if candidates else 'unresolved-no-exact-locale-match',
+            'ingredient_identity': None, 'culinary_equivalence': None,
+            'origin': None, 'automaticPlanningEligible': False,
+            'blockers': ([] if rights else ['source-specific-rights-unverified']) +
+                        ([] if original_body_verified else ['original-publisher-body-not-verified']),
+            'qualification': 'source-scoped-assertion-proposal; independent-review-required'}
+
+
+ORIGINAL_PROOF_COMMIT = '6bf021a81d7660ae48b3eeba3656aa656f3553bf'
+
+
+def pointer(value, coordinate):
+    for token in coordinate.strip('/').split('/'):
+        token = token.replace('~1', '/').replace('~0', '~')
+        value = value[int(token)] if isinstance(value, list) else value[token]
+    return value
+
+
+def original_proofs():
+    proof = git_json(ORIGINAL_PROOF_COMMIT, 'docs/global-data-validation/worker-53-original-proof.json')
+    verified = {}
+    for record in proof['records']:
+        original, rights = record['original'], record['rights']
+        if sha(original['path']) != original['file_sha256'] or sha(rights['path']) != rights['sha256']:
+            raise ValueError('Original body or publisher rights file custody mismatch')
+        raw = json.loads(Path(original['path']).read_text())
+        body = pointer(raw, original['coordinate'])
+        revision_coordinate = original['coordinate'].split('/slots/')[0]
+        revision = pointer(raw, revision_coordinate)
+        page = pointer(raw, revision_coordinate.split('/revisions/')[0])
+        if (hashlib.sha256(body.encode()).hexdigest() != original['body_sha256'] or
+                revision['revid'] != original['revisionId'] or revision['timestamp'] != original['timestamp'] or
+                str(page['pageid']) != original['recordId']):
+            raise ValueError('Original page/revision/body identity mismatch')
+        declaration = pointer(json.loads(Path(rights['path']).read_text()), rights['coordinate'])
+        if declaration != rights['publisher_declared']:
+            raise ValueError('Publisher rights declaration mismatch')
+        if sha(original['path']) != original['file_sha256'] or sha(rights['path']) != rights['sha256']:
+            raise ValueError('Original custody changed during read')
+        c = record['normalized_coordinate']
+        verified[(c['line'], c['index'])] = {'proof_commit': ORIGINAL_PROOF_COMMIT,
+            'language': record['language'], 'source_id': record['provenance']['originSourceId'],
+            'original': original, 'rights': rights, 'status': 'exact-body-page-revision-hash-verified; lexeme-crosswalk-review-pending'}
+    return verified
+
+
+def validate_attachment(row, evidence):
+    """Bind normalized provenance to the verified publisher witness before using it."""
+    p, original = row.get('provenance', {}), evidence['original']
+    expected = {
+        'originalContentSha256': original['body_sha256'],
+        'revisionId': original['revisionId'],
+        'recordId': original['recordId'],
+        'sourceDate': original['timestamp'],
+        'originSourceId': evidence['source_id'],
+    }
+    if (evidence['source_id'] != 'wikibooks:' + evidence['language'] or
+            evidence['language'] not in row.get('data', {}).get('languages', [])):
+        raise ValueError('Normalized source locale does not match original proof')
+    for field, value in expected.items():
+        if p.get(field) != value:
+            raise ValueError('Normalized ' + field + ' does not match original proof')
+
+
+def run(recipe_root, foodon_root):
+    reference = git_json(RECIPE_COMMIT, 'docs/global-data-validation/worker-53.json')
+    refs = reference['census']['selected_refs'] + reference['census']['representative_source_refs']
+    wanted = {(r['line'], r['index']): r for r in refs if set(r['coverage']['language']) & LOCALES}
+    if not wanted:
+        raise ValueError('Missing Worker53 multilingual held coordinates')
+    paths = [recipe_root / 'manifest.json', recipe_root / 'normalized.jsonl.gz',
+             foodon_root / 'manifest.json', foodon_root / 'foodon-common.jsonl.gz']
+    for p in paths:
+        if not p.is_file():
+            raise FileNotFoundError('Missing held path: ' + str(p))
+    before = [{'path': str(p), 'sha256': sha(p)} for p in paths]
+    if before[1]['sha256'] != reference['census']['before_sha256']:
+        raise ValueError('Worker53 release hash mismatch')
+    manifest = json.loads(paths[2].read_text())
+    expected = next(f['sha256'] for f in manifest['files'] if f['key'] == paths[3].name)
+    if before[3]['sha256'] != expected or manifest['licence'] != 'CC-BY-4.0':
+        raise ValueError('FoodOn rights/release digest mismatch')
+    body_proofs = original_proofs()
+    concepts = []
+    with gzip.open(paths[3], 'rt') as f:
+        for line in itertools.islice(f, 1000 - len(wanted) - len(body_proofs)):
+            packet = json.loads(line)
+            resource = packet['resources'][0]
+            if not resource['id'].startswith('http://purl.obolibrary.org/obo/FOODON_'):
+                continue
+            if not packet['citations'] or any(c.get('license') != 'CC-BY-4.0' or
+                    c.get('revisionId') != manifest['revision'] for c in packet['citations']):
+                raise ValueError('FoodOn citation qualification missing')
+            concepts.append({'id': resource['id'], 'names': resource['names'],
+                             'revision': manifest['revision'], 'citationIds': resource['citationIds']})
+    assertions, record_pins, found = [], [], set()
+    with gzip.open(paths[1], 'rt') as f:
+        for line_no, line in enumerate(f, 1):
+            indices = [index for number, index in wanted if number == line_no]
+            if not indices:
+                continue  # Traverse line bytes; parse only selected records' lines.
+            rows = json.loads(line)
+            for index in indices:
+                row = rows[index]
+                if row['id'] != wanted[(line_no, index)]['id']:
+                    raise ValueError('Retained record coordinate identity mismatch')
+                found.add((line_no, index))
+                record_pins.append({'id': row['id'], 'line': line_no, 'index': index,
+                    'record_sha256': hashlib.sha256(json.dumps(row, sort_keys=True, ensure_ascii=False).encode()).hexdigest()})
+                for ingredient_index, item in enumerate(row['data'].get('ingredients', [])):
+                    evidence = body_proofs.get((line_no, index))
+                    if evidence:
+                        validate_attachment(row, evidence)
+                    a = assertion(row, item, {'line': line_no, 'index': index,
+                        'ingredient_index': ingredient_index}, concepts, bool(evidence))
+                    a['original_body_reference'] = evidence
+                    if evidence:
+                        a['blockers'].append('original-ingredient-lexeme-crosswalk-not-verified')
+                    assertions.append(a)
+            if found == set(wanted):
+                break
+    if found != set(wanted):
+        raise ValueError('Missing requested retained coordinates')
+    after = [{'path': str(p), 'sha256': sha(p)} for p in paths]
+    if before != after:
+        raise ValueError('Held custody changed')
+    return {'worker53_commit': RECIPE_COMMIT, 'worker56_commit': FOODON_COMMIT,
+            'before': before, 'after': after, 'foodon_revision': manifest['revision'],
+            'original_body_records': len(body_proofs), 'recipe_records': len(record_pins), 'foodon_records': len(concepts),
+            'record_pins': record_pins, 'assertions': assertions,
+            'candidate_matches': sum(bool(a['candidate_concept_ids']) for a in assertions),
+            'limitations': ['normalized name is not original publisher lexeme verification',
+                            'original body and rights must be independently qualified',
+                            'FoodOn bounded prefix is not a complete lexical index',
+                            'no translation, similar-name identity or locale-to-origin inference'],
+            'network_bytes': 0, 'admitted': 0, 'production_recipe_stop': 'preserved'}
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--recipes', type=Path, default=Path('/home/user/src/offmenu-data/world-recipes-global-final-20261014'))
+    p.add_argument('--foodon', type=Path, default=Path('/home/user/src/offmenu-data/foodon-common-accepted-20261014'))
+    a = p.parse_args()
+    print(json.dumps(run(a.recipes, a.foodon), ensure_ascii=False, indent=2))
