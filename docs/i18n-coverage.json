@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2724,
+  "messages": 2736,
   "arabicTranslated": 376,
-  "arabicMissing": 2348,
+  "arabicMissing": 2360,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -2513,6 +2513,18 @@
       ],
       "arabic": false
     },
+    "Body required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Body too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Bowl, top shelf, door…": {
       "sources": [
         "public/index.html"
@@ -3427,6 +3439,12 @@
       "sources": [
         "public/app.js",
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Command too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -6783,6 +6801,18 @@
       ],
       "arabic": false
     },
+    "Invalid HTTP bridge configuration": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid JSON tree": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid administrative authority.": {
       "sources": [
         "cloud/admin-mcp.mjs"
@@ -6837,6 +6867,12 @@
       ],
       "arabic": false
     },
+    "Invalid binding": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid care case.": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -6864,6 +6900,12 @@
     "Invalid cleanup history.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid command": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7316,6 +7358,12 @@
       ],
       "arabic": false
     },
+    "Invalid resource": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid restriction.": {
       "sources": [
         "cloud/care-community.mjs",
@@ -7368,6 +7416,12 @@
     "Invalid served portions.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid server selector": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7534,6 +7588,12 @@
     "Items in scope": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "JSON required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -8365,6 +8425,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-config.mjs",
         "cloud/service-observability.mjs",
@@ -8949,6 +9010,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs"
       ],
       "arabic": false
@@ -9529,6 +9591,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -9549,6 +9612,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -10589,6 +10653,12 @@
     "Qualified HTTPS endpoint": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Qualified protocol and server binding hook required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -12325,6 +12395,12 @@
     "Selected day": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Selected protocol and server transport hooks required": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -15730,6 +15806,7 @@
       "sources": [
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/service-config.mjs",
         "public/data-ui.js",
         "public/unified-data.js"
@@ -16230,7 +16307,9 @@
     },
     "private, no-store": {
       "sources": [
-        "cloud/locale.mjs"
+        "cloud/locale.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
