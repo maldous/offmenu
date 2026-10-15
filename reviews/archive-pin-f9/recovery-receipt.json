@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "semantic/archive-pin-recovery-receipt/0",
+  "receiptId": "OFFMENU-ARCHIVE-PIN-F9-WIKIBOOKS-6DFE6948-W06",
+  "order": "MORGAN-BOUNDED-ONE-ARCHIVE-PIN-RECOVERY-F9-W06 (item5 fallback)",
+  "atUTC": "2026-10-15T04:57:52.585607+00:00",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63 (slot63); writes only reviews/archive-pin-f9/"
+  },
+  "item": {
+    "itemId": "sq:f9afd2d81c0e2d63cc1098af",
+    "dataset": "wikibooks-2026-10-13-live",
+    "recordId": "wikibooks:recipe:6dfe69487265dcbf6a27bfdf",
+    "stage": "value",
+    "recordSha256": "075327c0f11a11936ae95d35d9f989076931f39cc4152c9b82b63242a654e907",
+    "queueRow": "queue/wikibooks-2026-10-13-live.queue.jsonl line 12",
+    "sample": "samples/wikibooks-2026-10-13-live/recipe-discovery-6dfe69487265dcbf6a27bfdf.json",
+    "sampleSha256": "4a56c3615ff21d3f88463204a8c2084dd41861dc3275394a2d8c3c5c2e18fa79",
+    "blockedDispositionNow": "checkpoint/queue-state.json byItem: status blocked, file null, blockReason 'null archiveSha256 in sample; checker requires valid 64-char hex' (unchanged by this receipt)",
+    "admissionRecord": "admission/all.admission.json failed entry retains 6 error classes incl. 'citation archiveSha256 format' and 'citation archiveSha256 != sample sourceFileSha256 pin'"
+  },
+  "referencedLocationsInspected": [
+    {
+      "path": "/home/user/src/offmenu-data/wikibooks-2026-10-13-live/ (retained normalized package referenced by docs/sampling.md)",
+      "scope": "manifest.json + originals/ (77 raw API capture files); no other package byte was read"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/docs/sampling.md (+ scripts/extract_samples.py)",
+      "scope": "the lane's declared sampling/source contract explaining sourceFileSha256 as the acquired-package pin"
+    }
+  ],
+  "observed": {
+    "originalsRetained": "the record's ORIGINAL bytes are retained: originals/revisions-0.json contains page 'Cookbook:Albanian Meat with Walnuts' (pageid 18873) whose single revision is revid 4525797, parentid 4512149, timestamp 2025-07-21T19:40:56Z, contentmodel wikitext, slot content embedded verbatim.",
+    "parentFilePin": {
+      "path": "originals/revisions-0.json",
+      "bytes": 171740,
+      "sha256": "ff3c21af0585304ee2e357d512782ad14e19fff6d303b2ac14e2f748cb4bd957"
+    },
+    "storedSpanPin": {
+      "offset": 12011,
+      "length": 2926,
+      "sha256": "a8dd1017b62adec74fbe3f3cfa5f477e0919d00f4cd31cb4ec946e17a49c566f",
+      "note": "exact stored byte span of the page object inside the parent file; the span is NOT equal to a re-serialized object (verified), so this is the original stored bytes, not a normalized reconstruction"
+    },
+    "contentPin": {
+      "sha256": "64ff156f0e81143267722f2c3108503c54b7600e45b5a7f0b87c7a78a46c1baa",
+      "what": "sha256 of the revision's wikitext content bytes (utf-8)"
+    },
+    "identityAndVersion": "pageid 18873 == sample provenance.recordId '18873'; revid 4525797 == sample provenance.revisionId; timestamp 2025-07-21T19:40:56Z == sample provenance.sourceDate; title/ns 102/Cookbook match the sample's sourceUrl target.",
+    "sourceRelation": "the retained original wikitext content equals the sample record's data.originalTextLines (normalized line endings) line-for-line - the sampled record demonstrably derives from these retained original bytes.",
+    "rights": "CC BY-SA 4.0 with licenseUrl/attribution recorded in the sample provenance; package manifest scope states 'All current pages in English Wikibooks Category:Recipes ... A dated retrieval, not a transactionally frozen dump'; visibility public.",
+    "packageLevelArchivePin": "the package manifest.json carries archiveSha256 efadf48d40d6a8e6f67f13c3c0dd66a07feaff5f8c294eda34292045326d8f88; its derivation is UNDESCRIBED in the retained artifacts and was NOT reproducible from any single originals file nor from tested deterministic concatenations.",
+    "whyTheLaneBlocked": "the upstream transform recorded archiveSha256 = null in this record's provenance, so the sampler fell back to sourceFileSha256 = 1bf9dfc9... which is the hash of /home/user/src/offmenu-data/wikibooks-2026-10-13-live/normalized.jsonl.gz (VERIFIED equal, 4,487,113 bytes) - a normalized-package pin, not the historical archive pin."
+  },
+  "inferred": [
+    "The historical per-record archiveSha256 the pipeline would have recorded does NOT exist anywhere in the retained artifacts; the null in provenance is the upstream gap, not a lane omission (inference from the extract_samples.py fallback logic + the observed null).",
+    "The package-level efadf48d... most plausibly pins the collection's raw capture set, but since its derivation is undocumented and unreproduced it is NOT used here as this record's pin (inference/limitation, not evidence)."
+  ],
+  "outcome": {
+    "class": "RECOVERED-CANDIDATE (original retained bytes exist with evidenced identity/version/rights/source relation)",
+    "reviewCandidatePin": {
+      "derivationContract": "sha256 of the exact stored byte span of the record's page object within originals/revisions-0.json, identified by parent-file sha256 + byte offset + length; declared as a DERIVED scoped pin, not a historical archive hash",
+      "parentFile": "originals/revisions-0.json (sha256 ff3c21af0585304ee2e357d512782ad14e19fff6d303b2ac14e2f748cb4bd957, 171740 bytes)",
+      "span": "offset 12011, length 2926",
+      "sha256": "a8dd1017b62adec74fbe3f3cfa5f477e0919d00f4cd31cb4ec946e17a49c566f",
+      "contentSha256": "64ff156f0e81143267722f2c3108503c54b7600e45b5a7f0b87c7a78a46c1baa"
+    },
+    "label": "REVIEW CANDIDATE ONLY - this is a scoped derivation from retained original bytes; it is NOT the historical archive pin, NOT a fabricated hash, and NOT admission"
+  },
+  "qualificationsAndLimits": [
+    "Only two explicitly referenced retained locations were inspected (the package dir incl. manifest+originals, and the lane's sampling doc/script). No wide data/home/log search, no URL fetch, no download, no reacquisition, no test or fault batch was performed.",
+    "No lane artifact was mutated: semantic STATUS/HANDOFF/admission/queue are untouched by this receipt; counts remain 58 done / 20 terminal-blocked / 23+35 model labels.",
+    "Whether the lane may ADOPT a derived scoped pin (vs the historical archiveSha256) is a contract/convention decision for Worker 02/Morgan - this receipt deliberately does not decide it and does not propose substituting the normalized-package hash.",
+    "The package-level efadf48d... derivation remains unverified; a reviewer should not treat it as this record's pin.",
+    "Not verified here: that the originals capture is complete for the release (only this record's page was located), or that no later revision superseded revid 4525797 in the capture (the capture is a dated retrieval by its own manifest wording)."
+  ],
+  "minimalNextAction": "Queue a bounded correction decision for the 20 blocked items: for each, check whether retained originals exist and, if so, re-author as NEW qualified judgments carrying an explicitly declared derived scoped pin (parent-file pin + offset/length + span sha) with independent review; if originals are absent, keep terminal-blocked. No fabricated archive hashes anywhere.",
+  "noAdmission": true
+}
