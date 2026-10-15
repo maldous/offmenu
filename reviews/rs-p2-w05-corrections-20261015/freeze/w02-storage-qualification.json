@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "offmenu-storage-qualification/1",
+  "atUTC": "2026-10-15T04:26:17Z",
+  "atUTCCorrection": {
+    "correctedFrom": "2026-10-15T04:45:00Z",
+    "evidence": "filesystem mtime of this receipt before correction: 2026-10-15 15:26:17.466153839 +1100 = 2026-10-15T04:26:17Z",
+    "reason": "previous value was a nominal stamp that post-dated the write (future timestamp); corrected to filesystem-evidenced write time",
+    "correctedAtUTC": "2026-10-15T04:32:30Z",
+    "correctedAtUTCEvidence": "evidenced as committer time of doc commit db07b5b (2026-10-15T15:32:30+11:00) that accompanied these receipt corrections; an earlier in-receipt nominal value 04:55:00Z over-stated the time and is itself corrected here",
+    "lineage": "correction requested by MORGAN-BOUNDED-DIAGNOSIS-RECEIPT-YIELD-20261015-W05 (receipt precision, task 2 narrowed); original value retained here verbatim; no measurements were repeated"
+  },
+  "owner": "Worker 05 (worktree slot 62)",
+  "purpose": "whole-plan retained/raw/temp/final peak-storage qualification from actual retained inputs; evidence for A3 places expansion gating and repair relaunch sizing; NOT permission for mass acquisition; no deletion or reclaim assumed anywhere",
+  "method": "read-only metadata measurement (du -sm on repair-relevant trees, df), reconciled against retained artifact freebuff-storage-recalc-20261015.json (measuredUTC 2026-10-14T23:16:32Z); output/input compression ratio measured on the real 3-asset repair candidate (3,000 packets)",
+  "filesystem": {
+    "nowFreeGiB": 116,
+    "usedPercent": 94,
+    "retainedRecalcFreeGiB": 115.45,
+    "retainedRecalcTotalGiB": 1829.7,
+    "note": "free space stable since the retained recalc; total offmenu-data at recalc 179.96 GiB with originals 128.85 GB as the largest immutable store"
+  },
+  "measuredTrees": {
+    "common-bulk-food-20261014 (immutable repair input)": "13,553 MB",
+    "common-bulk-food-semantic-final-20261014 (legacy 414-file partial, HELD untouched)": "449 MB",
+    "common-bulk-food-semantic-final-recovery-20261015 (failed recovery output)": "ABSENT — zero bytes produced",
+    "worker-062-repair-candidate-20261015 (bounded candidate incl. outputs)": "18 MB",
+    "freebuff-parallel-20261015 (semantic lane)": "3 MB"
+  },
+  "measuredRatio": {
+    "sample": "3 real assets / 3,000 packets from the candidate (part-00000 0.970, part-05500 0.989, part-09500 0.957)",
+    "outputOverInput": 0.9768,
+    "interpretation": "compact-JSON + removed-text-id savings slightly exceed the level-1 gzip penalty on this sample; 3/9,797 coverage only, so apply a band, not a point estimate"
+  },
+  "fullRepairPeakBudget": {
+    "centralEstimate": "output ≈ 0.98 × 13,553 MB ≈ 13.3 GB; conservative band 0.95–1.30× = 12.9–17.6 GB",
+    "tempFiles": "one atomic sibling temp per in-flight asset; workers=6 default ⇒ ≈ 6 × largest asset; allow 0.6 GB headroom (worst-case 100 MB/asset)",
+    "checkpointAndManifest": "negligible (<1 MB)",
+    "peakAdditionalStorage": "≈ 13.5–18.2 GB on top of retained input; retained input (13.5 GB) and legacy partial (449 MB) remain in place",
+    "fitsAvailable": "YES — 116 GiB free leaves ≈ 98–102 GiB margin after a worst-case full-repair output",
+    "authorization": "capacity fits is NOT authorization: full repair remains gated on Morgan verdict + orphaned-lock custody + independent review of the subset candidate"
+  },
+  "concurrencyBudget": {
+    "repairWorkers": "6 default (1 used for the bounded candidate); IO-bound gzip streams; peak disk = output + ≤ workers × largest asset",
+    "otherLanes": "semantic MB-scale; fault-rate/diagnostic runs produce no bulk output; CPUs 10/11 offline (containment) reduces schedulable parallelism — prefer workers ≤ available logical CPUs",
+    "recommendation": "workers=4–6 for any future approved full run; one writer per output namespace (writer locks are per-namespace and were never reclaimed)"
+  },
+  "acceptedVsBlocked": {
+    "acceptedWithinCapacity": [
+      "full bulk-food repair output (13–18 GB peak) whenever its gates clear",
+      "bounded candidates and review artifacts (MB-scale)",
+      "semantic lane working set (MB-scale)"
+    ],
+    "blockedWithoutSeparateDecision": [
+      "mass re-acquisition or sources expansion beyond ~90 GiB free-after-reserve — not permitted by this qualification",
+      "A3 places national expansion: storage projection still UNQUALIFIED (its dataset projection not yet declared/measured) — this receipt supplies the free-capacity envelope only",
+      "any deletion/reclaim of originals (128.85 GB immutable retained) or of the legacy 414-file partial (449 MB) — explicitly out of scope"
+    ]
+  },
+  "nextAction": "A3 places expansion planning may proceed against the free-capacity envelope once its own dataset projection is declared; repair sizing evidence attached to the subset-candidate review package"
+}
