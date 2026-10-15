@@ -1,0 +1,201 @@
+{
+  "version": "reference-discovery-owner40/1",
+  "owner": 40,
+  "thread": "01a1399b-579c-7200-b679-0c4df8ce5afb",
+  "base": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+  "branch": "feature/reference-discovery-40-20261015",
+  "decision": "reuse existing complete admitted normalized reference/discovery output; no duplicate dataset or schema created",
+  "normalizer": {
+    "path": "scripts/align-reference-common.py",
+    "sha256": "47af1e4e228107ca0a65c4cb88837fd2754d304c4e155caf300092a80fbb2886"
+  },
+  "retained_manifest": {
+    "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/manifest.json",
+    "sha256": "05e31c4fcc3758d5b54b299d08b8b60d0481ac94a2cfa81c9e95eff40a92a69f",
+    "release": "common-references-20261014"
+  },
+  "admission": {
+    "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014-admission.json",
+    "sha256": "b1d841aa425ca0224501dc8891cfc59775b85fce6081907085a66939f67ae839",
+    "status": "all-packages-streamed-global-identities-references-and-provenance-checked",
+    "limits": "identity/citation/public-scope package qualification; not source entitlement or linked document/recipe acceptance"
+  },
+  "packet_files": [
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/dietary-guidelines/part-0000.jsonl.gz",
+      "bytes": 55436,
+      "sha256": "e3ec30882e2d6471a970a87d99117b7682497a5adaa1bfe32cdfaab72e42aad8",
+      "packets": 100
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0000.jsonl.gz",
+      "bytes": 296168,
+      "sha256": "84aba9507f326ae8587c9fbb996e774d6f415f09640b5792ae6ff9e72a311db6",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0001.jsonl.gz",
+      "bytes": 296785,
+      "sha256": "c2d8129b4605e04848b1eaa7ce23564b9192a1a44e75e14c3b901f1e1f73d1af",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0002.jsonl.gz",
+      "bytes": 297062,
+      "sha256": "85189567099d3a7c54926b537e28303397831297fa1dd8044399da6d09011b0b",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0003.jsonl.gz",
+      "bytes": 296887,
+      "sha256": "11b10669c31bd5b96f12125a1802e8f4ccf6695c0548912e9c94825ebece29cb",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0004.jsonl.gz",
+      "bytes": 297398,
+      "sha256": "76aca84d238ebd9238d41b7edf9c9e47bbae0555c37d279b884c8989508c39aa",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0005.jsonl.gz",
+      "bytes": 296609,
+      "sha256": "1517a28ee2ff8aedff21864815e3ef441f9424a851c1238921f1218a3da7a272",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0006.jsonl.gz",
+      "bytes": 296466,
+      "sha256": "decaa91f504946fbade0c1af04a478ce7bc969879abc5c878014445780408a24",
+      "packets": 500
+    },
+    {
+      "path": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0007.jsonl.gz",
+      "bytes": 176162,
+      "sha256": "bc1dcf75a5c0d672b314d07fc01f59f0addd3be332233ad2c034c89748b9ff20",
+      "packets": 296
+    }
+  ],
+  "observed_records": {
+    "dietary-guidelines": 100,
+    "wikibooks": 3796
+  },
+  "total": 3896,
+  "name_label_languages": {
+    "en": 3896
+  },
+  "representative_original_metadata": {
+    "dietary-guidelines": {
+      "packet_file": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/dietary-guidelines/part-0000.jsonl.gz",
+      "line_1based": 1,
+      "packet_line_sha256": "f108b26b0babce955c2534c919f709bb60c0e60bc68b2dc375412f8db68cfd88",
+      "resource_id": "urn:offmenu:retained-source-resource:d3eeae81c70ac18db30a8ef8e35a2988",
+      "type": "urn:offmenu:type:SourceAssertion",
+      "citation": {
+        "id": "urn:offmenu:retained-source-citation:d3eeae81c70ac18db30a8ef8e35a2988",
+        "sourceId": "dietary-guidelines",
+        "originalRecordId": "BG",
+        "originalUrl": "https://www.fao.org/nutrition/education/dietary-guidelines/regions/en/",
+        "license": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights",
+        "attribution": "OffMenu reference index; FAO dietary-guidelines country directory",
+        "scope": {
+          "visibility": "public",
+          "reuseScope": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights"
+        },
+        "sourcePath": "curated-expanded-country-search-20261013:offmenu:sourceAssertion:f9484c022170cac748b741c7",
+        "sourceDate": "2026-10-13"
+      },
+      "typed_data_fields": [
+        "contentPermission",
+        "directoryUrl",
+        "name",
+        "qualificationStatus",
+        "referenceType",
+        "referenceUrl",
+        "reviewStatus"
+      ],
+      "jurisdiction": "unknown; country association is not legal jurisdiction",
+      "document_language": "unknown; name label language is not linked document language",
+      "issuer_numeric_targets": "not supplied"
+    },
+    "wikibooks": {
+      "packet_file": "/home/user/src/offmenu-data/common-reference-semantic-final-20261014/wikibooks/part-0000.jsonl.gz",
+      "line_1based": 1,
+      "packet_line_sha256": "c148cb7087a9d7959e797e11bfd912a7ff3033de53417995d651cb1e125cb4fe",
+      "resource_id": "urn:offmenu:retained-source-resource:eb01554f3c1d5b5fe50b5cef87112d4a",
+      "type": "urn:offmenu:type:RecipeDiscoveryReference",
+      "citation": {
+        "id": "urn:offmenu:retained-source-citation:eb01554f3c1d5b5fe50b5cef87112d4a",
+        "sourceId": "wikibooks",
+        "originalRecordId": "4696",
+        "originalUrl": "https://en.wikibooks.org/wiki/Cookbook:1-2-3-4_Cake",
+        "license": "CC BY-SA 4.0",
+        "attribution": "Wikibooks contributors; page history linked from source",
+        "scope": {
+          "visibility": "public",
+          "reuseScope": "CC BY-SA 4.0"
+        },
+        "sourcePath": "curated-expanded-country-search-20261013:offmenu:recipe:7c76f50d455f644a0506d690",
+        "sourceDate": "2025-12-21T02:33:30Z",
+        "rightsEvidenceUrl": "https://en.wikibooks.org/wiki/Wikibooks:Copyrights"
+      },
+      "typed_data_fields": [
+        "automaticPlanningEligible",
+        "directions",
+        "ingredients",
+        "limitations",
+        "name",
+        "reviewStatus",
+        "sourceIngredientCount",
+        "yield"
+      ],
+      "jurisdiction": "unknown; country association is not legal jurisdiction",
+      "document_language": "unknown; name label language is not linked document language",
+      "issuer_numeric_targets": "not supplied"
+    }
+  },
+  "semantic_checks": [
+    "all source/public/citation IDs resolved for inspected records; originalRecordId, URL, licence and attribution retained",
+    "guideline data fields restricted to seven reference/permission metadata fields; no issuer numeric targets",
+    "recipe ingredients/directions empty and automaticPlanningEligible false on all3796 records",
+    "automaticDietQualification false and humanReviewed false on all3896 records",
+    "document language unknown independently of English metadata labels; original typed fields retained",
+    "country association not legal jurisdiction; no national-document coverage asserted"
+  ],
+  "rights": [
+    {
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "records": 100,
+      "sourceNormalizedArchiveSha256": "5fd9e0bae196ff4bb347d9036a0d3e735f19329e13eb67b9aa5e309ceec0ce5d",
+      "licence": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights",
+      "type": "SourceAssertion",
+      "nativeNormalizedRecords": 100,
+      "publicCuratedRecords": 100,
+      "withheldRecords": 0
+    },
+    {
+      "sourceId": "wikibooks",
+      "releaseId": "2026-10-13-live",
+      "records": 3796,
+      "sourceNormalizedArchiveSha256": "1bf9dfc95093f73803cdae3bb2c00da8073ff49575fa93f9f5f9a2d681ec6fd7",
+      "licence": "CC BY-SA 4.0",
+      "type": "RecipeDiscoveryReference",
+      "nativeNormalizedRecords": 3796,
+      "publicCuratedRecords": 3796,
+      "withheldRecords": 0
+    }
+  ],
+  "output_scope": "existing normalized bytes referenced; not republished or relicensed; linked national documents and original recipe source rights remain separate",
+  "reviewer": "Worker47",
+  "verdict": "pending exact evidence review",
+  "production": "no integration or deployment; whole105/recipe STOP maintained",
+  "controls": {
+    "filesystem": "unrestricted danger-full-access",
+    "network": "enabled, no source request",
+    "reviewer": "mandatory auto_review preserved",
+    "named_env_profile": null,
+    "approval_policy_value": null
+  },
+  "completed_utc": "2026-10-15T11:26:17.550980+00:00"
+}
