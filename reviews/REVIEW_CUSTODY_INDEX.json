@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "semantic/review-custody-index/0",
+  "holder": "Worker 06 (UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff), worktree slot63 feature/63/freebuff-semantic-candidates-20261015",
+  "updatedAtUTC": "2026-10-15T04:18:27.706040+00:00",
+  "entries": [
+    {
+      "review": "semantic-lane candidate handoff (author)",
+      "exactBase": "lane artifacts @ writer",
+      "receipt": [
+        "semantic/STATUS.json",
+        "110226ac6375da819"
+      ],
+      "correctionStatus": "posted by coordinator into review-freeze-semantic-20261015 (Worker04/Worker02 basis)",
+      "gates": "B NOT complete; C-G not started"
+    },
+    {
+      "review": "language-terminology QA base review",
+      "exactBase": "pins language-review-pins.json 6-entry generation",
+      "receipt": [
+        "semantic/reviews/20261015-language-terminology-review-W03.json",
+        "05c1d395380056dc"
+      ],
+      "correctionStatus": "D1-D3 resolved + D4 partial + D6 removed in corrected lane; D5 unguarded script; D7 carry-forward; next: NEW immutable Worker04 commit"
+    },
+    {
+      "review": "language-terminology delta review",
+      "exactBase": "commit 3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+      "receipt": [
+        "semantic/reviews/20261015-language-terminology-delta-review-W03.json",
+        "7e40ee62dedd28aa"
+      ],
+      "correctionStatus": "D1-D4 remain at that SHA; D5/D6 not carried; D7 in candidate receipt; Worker05 re-review verdict outsides this receipt"
+    },
+    {
+      "review": "corrected-lane audit",
+      "exactBase": "moving lane state @ audit time (per-file hashes inside)",
+      "receipt": [
+        "semantic/reviews/20261015-corrected-lane-audit-W03.json",
+        "e76f3abc55b44b56"
+      ],
+      "correctionStatus": "read-only, not a verdict"
+    },
+    {
+      "review": "repair-diagnosis base review (Worker05)",
+      "exactBase": "commit 59cd03a110b7a127179a0af53532cf91715d6ecb (parent=base 4693cbc3)",
+      "receipt": [
+        "semantic/reviews/20261015-diagnosis-reproducer-review-W03.json",
+        "6968fffd9eb40578"
+      ],
+      "correctionStatus": "M1-M3 findings for Worker05; branch commit 66ac7708 (tooling); later commits NOT approved by it"
+    },
+    {
+      "review": "repair-diagnosis delta series (Worker05)",
+      "exactBase": "8e09c3b…5d8b24e on bugfix/62 (chain from 59cd03a)",
+      "receipt": [
+        "semantic/reviews/20261015-repair-diagnosis-deltas-review-W03.json",
+        "83e821d9fcb34d07"
+      ],
+      "correctionStatus": "worker-owner claims verified byte-exact; N1 kernel-history scope finding; tool reviews/5d8b24e/verify-repair-diagnosis-deltas.py 10/10 MATCH exit 0"
+    }
+  ],
+  "dGate": {
+    "stagesC": "canonical English not started (only sampled stage-B terminology reconciliation; 4 unfrozen glossary seeds)",
+    "stagesD-G": "not started",
+    "note": "gates exposed for Worker02/Morgan; no rollout or new upload"
+  },
+  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00"
+}
