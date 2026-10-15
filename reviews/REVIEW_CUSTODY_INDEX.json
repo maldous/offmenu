@@ -1,7 +1,7 @@
 {
   "schemaVersion": "semantic/review-custody-index/0",
   "holder": "Worker 06 (UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff), worktree slot63 feature/63/freebuff-semantic-candidates-20261015",
-  "updatedAtUTC": "2026-10-15T04:46:50.378807+00:00",
+  "updatedAtUTC": "2026-10-15T05:29:35.245029+00:00",
   "entries": [
     {
       "review": "semantic-lane candidate handoff (author)",
@@ -95,6 +95,24 @@
         "addendum: 20261015-repair-diagnosis-deltas-review-W03-v2-addendum1.json"
       ],
       "correctionStatus": "16 attributed entries/span/process set, 4 unattributed classes, precheck topology values, UNPROVEN discipline all CONFIRMED; DB-1 P2 wording still open, DB-2 citation scope, DB-3 timestamp lineage"
+    },
+    {
+      "review": "Worker05 RS-1..RS-4 + P2 correction delta re-review (W06)",
+      "exactBase": "author receipt 92366d29 (delta vs 2fb8a923) + doc blob a4ff0712 (delta vs d25deb9c) @ manifest bd17f325",
+      "receipt": [
+        "coordinator-receipts-freebuff-20261015/w06-rs-p2-correction-rereview-20261015.json",
+        "51deb57e70ccd1e1"
+      ],
+      "correctionStatus": "EXACT-VERIFIED, all five corrections true as written (byte-equality conventions reproduced, not corruption); residual S1 naming (prior versions hash-recorded, not byte-retained), S2 no-diff limitation, S3 builder docstring; local commit ae11ae0; collected by Morgan"
+    },
+    {
+      "review": "A3 places-checkpoint implementation (W06, first independent review)",
+      "exactBase": "slot62 HEAD 75130f0f: scripts/places_checkpoint.py 3d6de6b3 / tests/test_places_checkpoint.py 8b17619f / docs/places-checkpoint-recovery.md 3e59cc88 + deps align-places-common.py 955c382f, test_places_common.py 6d63e623, places-recovery-preflight.py 2f31e36a",
+      "receipt": [
+        "coordinator-receipts-freebuff-20261015/w06-a3-places-checkpoint-exact-review-20261015.json",
+        "cf9077c8a8f7c438"
+      ],
+      "correctionStatus": "EXACT-VERIFIED on atomicity / cross-restart duplicate identity / source-pin binding / fail-closed interruption; one new adversarial fixture passed byte-identically; findings D1 (doc test count: claims ten, discovery matches 14 = 12+2 static), P1 (latent pins aliasing, no live impact), N2/D2/O3 info; local commit b91582c; gates NOT advanced: storage allocation, bounded legacy comparison, fresh-run custody, all-eight-package acceptance"
     }
   ],
   "dGate": {
@@ -102,5 +120,6 @@
     "stagesD-G": "not started",
     "note": "gates exposed for Worker02/Morgan; no rollout or new upload"
   },
-  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00"
+  "generatedAtUTC": "2026-10-15T04:18:27.706040+00:00",
+  "indexNote": "entries appended for the RS/P2 correction re-review and the first A3 places-checkpoint review; both are single-reviewer receipts, no self-acceptance, no gate advancement"
 }
