@@ -176,5 +176,30 @@
     "result": "PASS 0 failures",
     "exitCode": 0,
     "note": "Verified on review candidate with improved schema authority check (formal allowlist)"
-  }
+  },
+  "correctionStatus": {
+    "correctedBy": "Worker 01 correction pass 2026-10-15",
+    "reviewReceipt": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-language-terminology-review-W03.json",
+    "reviewSha256": "05c1d395380056dc753f7ca18a361d547f0a20fe8f6e85b9a4bb3bdfff7e0cf3",
+    "correctionsApplied": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "contract-allowedExtensions"
+    ],
+    "note": "Lane files (source of truth) corrected per Worker03 review. Review candidate directory retains PRE-CORRECTION frozen copy for review continuity.",
+    "newLaneHashes": {
+      "store-language-locale-inventory.json": "370f916f0d8702dd54303e2debee462f58ec6e1b4025e97c73295a38edcfc203",
+      "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "terminology-contract.json": "28521f6ab1892059e5e2891b0f4c68c05b201f884d5c1b5361747cc5e441bc8e",
+      "LANGUAGE_TARGETS.json": "dcc69ab2427c1b6e4c1d17e157d7a3c2445c8097c66ad2c6c41d7884a074ae3e",
+      "STATUS.json": "46dec1a78afa8ea233cdb94b24a161dc1e1f0e5544531ecc38f9bfab293096af",
+      "HANDOFF.txt": "9f127293a64aa2f1131fea75de14cd96f9d262ff0d51f001184fa3ffc17e9669",
+      "qa/test_terminology_qa.py": "283c2dd37bff8cec8c8430130a63537183108029220b238f2a3f42d4f33c3086"
+    }
+  },
+  "qaPostCorrectionResult": "PENDING — QA rerun after corrections"
 }
