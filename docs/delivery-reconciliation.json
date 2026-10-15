@@ -9,8 +9,8 @@
     "external-acceptance-required": 1,
     "verified-prototype": 2,
     "partially-verified": 50,
-    "not-implemented": 3,
-    "partially-implemented": 21,
+    "not-implemented": 2,
+    "partially-implemented": 22,
     "external-access-and-mobile-build-required": 2,
     "external-governance-required": 1,
     "verified-named-local-release": 1,
@@ -341,11 +341,32 @@
       "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
       "sourceSection": "Expansion opportunities, page 6",
       "status": "partially-implemented",
-      "remainingAcceptance": "Complete the remaining product capability and exercise its specified acceptance; do not treat directory or schema support as implementation.",
+      "remainingAcceptance": "Owner-scoped personal AI and fresh-role administrator MCP read/write/management tools are implemented and locally tested at 65805762. Main integration, production acceptance and a sustained qualified administrator automation identity remain pending. Calendar, shortcuts, voice, Home Assistant and household-display integrations are not implemented by these primitives.",
       "evidence": [
-        "docs/acceptance-register.md"
+        "docs/acceptance-register.md",
+        "cloud/personal-ai.mjs",
+        "cloud/admin-mcp.mjs",
+        "cloud/community-ai.mjs",
+        "cloud/integrations.mjs",
+        "tests-web/personal-ai.test.mjs",
+        "tests-edge/admin-mcp.test.mjs"
       ],
-      "independentAcceptanceClaimed": false
+      "independentAcceptanceClaimed": false,
+      "branchImplementation": {
+        "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+        "branch": "third-party-services",
+        "implementedScope": "Scoped personal and administrator AI/MCP primitives",
+        "integrationAccepted": false,
+        "productionDeploymentVerified": false,
+        "evidence": [
+          "cloud/personal-ai.mjs",
+          "cloud/admin-mcp.mjs",
+          "cloud/community-ai.mjs",
+          "cloud/integrations.mjs",
+          "tests-web/personal-ai.test.mjs",
+          "tests-edge/admin-mcp.test.mjs"
+        ]
+      }
     },
     {
       "id": "P2-11",
@@ -364,12 +385,35 @@
       "title": "Moderated creator/community/partnership features with rights and sponsorship",
       "sourceReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
       "sourceSection": "Expansion opportunities, page 6",
-      "status": "not-implemented",
-      "remainingAcceptance": "Implement moderated creator sharing, sponsorship disclosure and rights review; licensed recipe acquisition alone does not deliver a community.",
+      "status": "partially-implemented",
+      "remainingAcceptance": "Native reviewed recipe sharing, comments, votes/ranks, opt-in community profiles/trophies and community moderation are implemented and locally tested on third-party-services at 65805762. Main-branch integration, production schema/feature deployment and live acceptance remain pending. Sponsorship disclosure, richer creator packs/challenges and external partnership workflows are not implemented. Licensed source acquisition is separate from these native community features.",
       "evidence": [
-        "docs/acceptance-register.md"
+        "docs/acceptance-register.md",
+        "cloud/recipe-community.mjs",
+        "cloud/care-community.mjs",
+        "public/recipe-community-ui.js",
+        "public/care-ui.js",
+        "tests-web/recipe-community.test.mjs",
+        "tests-web/care-community.test.mjs",
+        "tests-edge/care.test.mjs"
       ],
-      "independentAcceptanceClaimed": false
+      "independentAcceptanceClaimed": false,
+      "branchImplementation": {
+        "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+        "branch": "third-party-services",
+        "implementedScope": "Native community functionality",
+        "integrationAccepted": false,
+        "productionDeploymentVerified": false,
+        "evidence": [
+          "cloud/recipe-community.mjs",
+          "cloud/care-community.mjs",
+          "public/recipe-community-ui.js",
+          "public/care-ui.js",
+          "tests-web/recipe-community.test.mjs",
+          "tests-web/care-community.test.mjs",
+          "tests-edge/care.test.mjs"
+        ]
+      }
     },
     {
       "id": "DATA-01",
@@ -1461,5 +1505,14 @@
     "status": "published-download-and-consumer-gates-verified",
     "independentCulinaryOrDietaryAcceptance": false,
     "limitation": "Complete source text does not establish complete measurements, reviewed culinary identities or dietary suitability."
+  },
+  "thirdPartyBranchReconciliation": {
+    "checkedAt": "2026-10-14T03:09:58.972135+00:00",
+    "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+    "scope": [
+      "P2-10",
+      "P2-12"
+    ],
+    "note": "Branch implementation evidence only. Original runtime/live evidence and original research recommendations remain historical; this update is not deployment or full-programme acceptance."
   }
 }

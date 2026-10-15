@@ -1,0 +1,100 @@
+{
+  "checkedAt": "2026-10-14T02:08:12Z",
+  "scope": "Read-only qualification. No mail, account, DNS, routing, role, subscription, or provider mutation was performed.",
+  "publicOrigin": "https://offmenu.aldous.info",
+  "publicChecks": {
+    "health": {
+      "status": 200,
+      "endpoint": "GET https://offmenu.aldous.info/api/health",
+      "result": "ok",
+      "cloudStorage": true,
+      "releaseMetadataPresent": true
+    },
+    "servicesConfiguration": {
+      "status": 404,
+      "endpoint": "GET https://offmenu.aldous.info/api/services",
+      "qualified": false,
+      "reason": "The public deployed Worker did not expose /api/services at the checked release; service configuration and optional-service readiness cannot be inferred."
+    },
+    "netlifyIdentitySettings": {
+      "status": 200,
+      "endpoint": "GET https://offmenu.aldous.info/.netlify/identity/settings",
+      "emailLogin": true,
+      "googleLogin": true,
+      "signupDisabled": false,
+      "autoConfirm": false,
+      "qualified": "Public identity settings only; no users, tokens, email templates, or sender settings were read."
+    }
+  },
+  "cloudflareReadOnly": {
+    "worker": {
+      "offmenuScriptPresent": true,
+      "scriptCount": 1
+    },
+    "emailRouting": {
+      "accountDestinationAddressCount": 1,
+      "accountRuleCount": 6,
+      "aldousInfoEnabled": true,
+      "aldousInfoDnsRecordCount": 5,
+      "aldousInfoRuleCount": 3,
+      "aldousInfoEnabledRuleCount": 2,
+      "targetedSupportRule": {
+        "checkedAt": "2026-10-14T02:08:12Z",
+        "endpoint": "GET /zones/{aldous.info zone}/email/routing/rules/b89fe4caf0464ad686d0e7b9067e4ec5",
+        "supportAddressMatch": true,
+        "enabled": true,
+        "recipientMatchSelectedDestination": true,
+        "destinationVerificationState": "not_exposed_by_rule_read"
+      },
+      "qualified": "The specified support rule is enabled and targets the selected operations destination. Destination-address verification state is not exposed by this rule response."
+    }
+  },
+  "notQualified": [
+    "Brevo sender/API key, support recipient, and actual forwarding destination were not exposed publicly and were not read as secrets.",
+    "Cloudflare Email Sending was not enabled, provisioned, or priced; existing routing does not establish transactional sending readiness.",
+    "Sentry, consent, feedback, advertising, analytics, search, and uptime configuration remain unqualified because public service metadata was unavailable.",
+    "No additional-cost capability was started or changed."
+  ],
+  "followUpAuthenticationVerification": {
+    "checkedAt": "2026-10-14T02:33:52Z",
+    "scope": "Authenticated read-only checks; no production or credential changes.",
+    "cloudflare": {
+      "identityRoutesVerified": 2,
+      "workerMetadataHTTP": 200,
+      "workerSettingsHTTP": 200,
+      "d1ListAndMetadataHTTP": 200,
+      "databaseSizeBytes": 5406720,
+      "databaseTables": 24,
+      "subscriptionsError": "Error: Cloudflare API error: 10000: Authentication error",
+      "emailSendingLimitsHTTP": 200,
+      "emailQuota": null,
+      "emailUsage": null
+    },
+    "netlify": {
+      "authenticatedOwnerRead": true,
+      "offMenuProjectMetadataRead": true,
+      "identitySettingsHTTP": 200,
+      "emailLogin": true,
+      "googleLogin": true,
+      "autoconfirm": false,
+      "reportedExistingPlan": "nf_team_pro"
+    },
+    "github": {
+      "authenticatedOwnerRead": true,
+      "offMenuRepositoryMetadataRead": true
+    },
+    "publicRuntime": {
+      "healthHTTP": 403,
+      "servicesHTTP": 403,
+      "transport": "Unauthenticated runner HTTP; separate from management API authentication."
+    },
+    "qualified": {
+      "allEndpoints": false,
+      "billingAndHeadroom": false,
+      "outboundSending": false,
+      "appAdministratorRole": false,
+      "newFeatureRuntime": false
+    },
+    "supersedes": "Earlier broad access-unknown wording is now endpoint-specific; preserve earlier observations as dated evidence."
+  }
+}

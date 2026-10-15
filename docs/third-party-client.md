@@ -1,0 +1,19 @@
+# Third-party client consent boundary
+
+`public/services-ui.js` fetches the public, sanitised `/api/services` configuration and stores device choices only under `offmenu-third-party-consent-v1`. This record is separate from the pantry, profile, account and health stores. Every optional category is off initially: privacy CMP, analytics, diagnostics, support and advertising.
+
+The client accepts only schema version 1 and numeric vendor IDs. It can load only these fixed URLs after the matching choice:
+
+- iubenda: `https://cdn.iubenda.com/cs/iubenda_cs.js`, with numeric `siteId`, `cookiePolicyId` and a configured vendor-supported policy language (`en-GB` and `pt-BR` use their canonical hyphenated wire values). Unsupported policy languages fall back to `en`; the local app choices remain independently localized.
+- Sleekplan: `https://client.sleekplan.com/sdk/e.js`, with a numeric product ID exposed as `SLEEK_PRODUCT_ID`.
+- AdSense: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js`, with approved numeric client and slot IDs.
+
+Zaraz tracking receives only a coarse allowlisted action name, only after its configured Zaraz consent purpose exists and is `true`. The client calls the Zaraz Consent API when choices change and denies tracking when that API or purpose is unavailable. Diagnostics posts one allowlisted enum code to same-origin `/api/services/diagnostics`; browser error messages, stacks, URLs, user identity, pantry, food and health data are never sent.
+
+Advertising additionally requires all of: the local advertising choice, configured approved AdSense IDs, `client.consent.tcfEnabled`, and a successful TCF v2 `__tcfapi` event with `eventStatus` `tcloaded` or `useractioncomplete`, Purpose 1 and Google vendor 755 consent. Configured personalised ads also require Purposes 3 and 4. It sets `requestNonPersonalizedAds=1`, creates one configured ad slot only after the loader resolves and rechecks consent before pushing it. Missing, malformed or later revoked TCF consent is a denial. Revoking removes listeners, hides/removes the ad slot and client-injected scripts. A loaded vendor may retain in-memory state, so the UI tells the person to reload if a provider panel remains visible.
+
+`setupServices()` returns `track(name)` for existing app code. Accepted names are `account_opened`, `backup_exported`, `recipe_opened`, `scan_completed` and `support_opened`. No caller may attach properties.
+
+The support UI appears only when the support service is configured and requires sign-in, an explicit preview and confirmation before it posts the person’s subject and message to same-origin `/api/services/support`. It uses one cryptographically random idempotency key for retries of that unchanged preview, and blocks replay after an unknown delivery result. The optional email-copy choice calls same-origin `/api/services/email`; once support succeeds, a failed or unknown copy is reported separately and the form resets so it cannot resubmit the support request. The service delivers only to the verified account email address. A feedback-board link opens only after support consent.
+
+`emailDocument({title, text, confirmed:true})` is provided for the existing document preview flow. It requires a signed-in account, configured Brevo service, support consent and an already confirmed native document preview. Its session record is isolated by account and retains only a SHA-256 hash, idempotency key and pending/unknown status—never document title or text. Unknown outcomes are returned as `{status:'unknown', blocked:true}` and are not replayed automatically; a definitive provider failure clears the attempt so a later explicit confirmation receives a fresh key. A configured feedback board remains separately available with support consent even where support email is not configured.

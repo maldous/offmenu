@@ -1,0 +1,10 @@
+export const CARE_DRAFT_KEY='offmenu-care-draft-v1';
+export const CARE_CATEGORIES=Object.freeze(['support','recipe','translation','feature']);
+export function cleanContext(value={}){const keys=['resourceId','sourceId','sourceVersion','fieldId','locale','observed','proposed'];const out={};for(const key of keys)if(typeof value[key]==='string'&&value[key].length<=2000)out[key]=value[key];return out;}
+export function newIdempotencyKey(){const key=globalThis.crypto?.randomUUID?.();if(!key)throw Error('Secure request delivery is unavailable.');return key;}
+export function cleanCaseDraft(value){if(!value||!CARE_CATEGORIES.includes(value.category)||typeof value.title!=='string'||typeof value.message!=='string')throw Error('Review the request before sending.');const title=value.title.trim(),message=value.message.trim();if(!title||title.length>160||!message||message.length>10000)throw Error('Review the request before sending.');return {category:value.category,title,message,context:cleanContext(value.context)};}
+const bounded=(value,min,max)=>typeof value==='string'&&value.trim().length>=min&&value.trim().length<=max;
+export function cleanCommunityDraft(value){if(!value||!['discussion','suggestion'].includes(value.category)||!bounded(value.alias,2,40)||!bounded(value.title,3,160)||!bounded(value.body,3,10000))throw Error('Review the public post before sending.');return {alias:value.alias.trim(),title:value.title.trim(),body:value.body.trim(),category:value.category};}
+export function cleanReplyDraft(value){if(!value||!bounded(value.alias,2,40)||!bounded(value.body,1,10000))throw Error('Review the public reply before sending.');return {alias:value.alias.trim(),body:value.body.trim()};}
+export function cleanPreferences(value){const keys=['caseNotifications','communityNotifications','updateNotifications','emailUpdates'];if(!value||Object.keys(value).length!==keys.length||keys.some(key=>typeof value[key]!=='boolean'))throw Error('Review preferences before saving.');return Object.fromEntries(keys.map(key=>[key,value[key]]));}
+export function accountKey(user){return CARE_DRAFT_KEY+':'+String(user?.id||'guest');}

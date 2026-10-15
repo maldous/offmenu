@@ -105,7 +105,7 @@ export function browserLocaleDecision(root=globalThis.document,storage,browser=g
   return negotiateLocale({explicit:requested,device:saved,cookie:cookieValue(root?.cookie,LOCALE_COOKIE),
     profile:source==='profile'?hint:null,
     provider:source==='provider'?hint:null,
-    accepted:[...accepted,...(boot.offmenuLocaleSource==='accept-language'?[boot.offmenuLocale]:[])],excluded:(boot.offmenuExcludedLocales||'').split(','),country:boot.offmenuCountry});
+    accepted:[...accepted,...(boot.offmenuLocaleSource==='accept-language'?[boot.offmenuLocale]:[])],excluded:(boot.offmenuExcludedLocales||'').split(','),country:boot.offmenuCountry,defaultLocale:boot.offmenuDefaultLocale});
 }
 export function applyAccountLanguage({user,profile,isDemo=false,root=globalThis.document,storage,browser=globalThis.navigator,reload=()=>globalThis.location?.reload()}={}){
   if(isDemo)return false;
