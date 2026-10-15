@@ -23,5 +23,16 @@
       "path": "/home/user/src/offmenu-workers/worker-63/reviews/6fa5001/qa-run.log",
       "sha256": "d6e1a159050fd5620de3007613967501e43c466a10c1edad2d2c93a9fc2d3e25"
     }
-  }
+  },
+  "publishedExternal": {
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w06-qa6fa-review-language-terminology-6fa5001-20261015.json",
+      "sha256": "fe667591540dc45b3cb1e411fa13bcb2f54836368769f9d3a077519fda8b718a"
+    },
+    "frozenHashManifest": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w06-qa6fa-frozen-hash-manifest-6fa5001-20261015.json",
+      "sha256": "2fe570d6642f7e4af06737e48bc037ec37007f0c6d7b0ce3f5183558e00c4d62"
+    }
+  },
+  "note": "Data archives and coordinator receipts live outside Git; the tracked copy here records the exact published bytes so Morgan can verify without my worktree."
 }
