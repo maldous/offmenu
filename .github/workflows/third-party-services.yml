@@ -39,6 +39,15 @@ jobs:
       - run: npm run test:locale-edge
       - run: python -m pip install -e '.[test]'
       - run: python3 -m unittest discover -s tests -v
+      - name: Portable receipt OCR admission checks
+        run: >-
+          python3 -B tests/global-data-validation/test_receipt_image_ocr_owner18.py -v
+          ReceiptImage.test_bounds_scope_and_explicit_review
+          ReceiptImage.test_capture_and_current_recheck
+          ReceiptImage.test_duplicate_image_receipt_and_account_scope
+          ReceiptImage.test_permissions_precede_extraction
+          ReceiptImage.test_retention
+          ReceiptImage.test_unknown_source_and_user_corrections
 
   snyk:
     name: Optional Snyk scan
