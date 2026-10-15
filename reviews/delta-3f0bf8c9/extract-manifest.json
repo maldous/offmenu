@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "review/extract-manifest/0",
+  "reviewId": "OFFMENU-DELTA-REVIEW-20261015-language-terminology-W03",
+  "commit": {
+    "sha": "3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+    "repo": "/home/user/src/offmenu",
+    "parent": "b458b64cd465aecf37e60b530031c6cceaa5b0f2",
+    "author": "Freebuff Corpus Manager <freebuff-corpus-manager@offmenu.local>",
+    "commitdate": "2026-10-15T14:23:42+11:00",
+    "subject": "Worker 01 QA repair review candidate for independent review"
+  },
+  "extractionMethod": "git show COMMIT:path (byte-exact; commit tree blob ids below) into reviews/delta-3f0bf8c9/extracted/",
+  "files": {
+    "LANGUAGE_TARGETS.json": {
+      "blobId": "10c04976611e2e278097e9297de63989cb332526",
+      "contentSha256": "dc76ab2ed94d2e2e6353be397527e88eb9e38ddc07ed5d3a8dad14c61283e28f"
+    },
+    "REVIEW_RECEIPT.json": {
+      "blobId": "9091e6cb817fefd428a0e578f14c427d975f4046",
+      "contentSha256": "4851035de2578724298ff3574b53afbd30a00b7a32b4ce721cf923be48376cfe"
+    },
+    "app-store-locale-snapshot.json": {
+      "blobId": "4633f3c9d39e4134f712e58c0c7e75828ddec8a7",
+      "contentSha256": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4"
+    },
+    "qa/store-locale-bcp47-extraction.json": {
+      "blobId": "414a40b54b253d11645046d756c807a235c7244c",
+      "contentSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a"
+    },
+    "qa/test_terminology_qa.py": {
+      "blobId": "901badf500a16f1d1eda42813c71e039eaacedc2",
+      "contentSha256": "29aff3a642d0a05433285ecbb707db76b488f6f2bd4b25d889bbe4c7431becf9"
+    },
+    "store-language-locale-inventory.json": {
+      "blobId": "5e2bcd2e8c2c7c478738c29afdb6481997d1e44c",
+      "contentSha256": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631"
+    },
+    "store-locale-bcp47-extraction.json": {
+      "blobId": "414a40b54b253d11645046d756c807a235c7244c",
+      "contentSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a"
+    },
+    "terminology-contract.json": {
+      "blobId": "bcf6a2063b2fb6b8b63bad4b58c38dbd3d203bc5",
+      "contentSha256": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554"
+    },
+    "terminology-fixtures.jsonl": {
+      "blobId": "e84d2e2dbab348976384b86340ac46057e61c252",
+      "contentSha256": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7"
+    },
+    "terminology-translation-bounds.json": {
+      "blobId": "a7f253728e63836f3aee0e06cedc010e50d6545d",
+      "contentSha256": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca"
+    }
+  },
+  "reviewOnlyFixtures": {
+    "prior_pinned_qa_447f6781.py": "447f6781a60dd335cff160668756a72011adca5f410e976ea87b4d11470d29eb"
+  },
+  "priorPinnedBasis": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/language-review-pins.json as issued for the earlier-pin review (6 entries); NOTE re-issued during delta review with 8 current-lane entries - both generations recorded in the delta receipt",
+  "generatedAtUTC": "2026-10-15T03:40:59.164403+00:00"
+}
