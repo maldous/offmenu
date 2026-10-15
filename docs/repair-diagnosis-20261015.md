@@ -35,7 +35,9 @@ reproducer landed with it).
 - Kernel log (read-only, 2026-10-15): `09:51:48 basic-memory[…]: segfault at ip
   0000000000000000 … in python3.12`; `10:23:05 python general protection fault …
   in python3.12`; `10:04:37 codebufffreebuff-desktop trap int3`; **zero**
-  MCE/EDAC/memory-error entries.
+  MCE/EDAC *error* entries (review finding P2: the only EDAC line in the retained
+  log is the driver version banner `2026-10-14T15:45:38 … EDAC MC: Ver: 3.0.0`,
+  not an error report; it is not counted as an error).
 - Bounded fixture parse (predecessor, fresh interpreters): part-00000,
   part-00244 (first-ever JSON parse of the hang-time file), part-00413 —
   **1000/1000 lines parse clean each**; the earlier "676 then truncated EOF"
