@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2724,
+  "messages": 2744,
   "arabicTranslated": 376,
-  "arabicMissing": 2348,
+  "arabicMissing": 2368,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -297,6 +297,12 @@
       "sources": [
         "cloud/service-config.mjs",
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "(CAST(strftime('%s','now') AS INTEGER)*1000+CAST(substr(strftime('%f','now'),4,3) AS INTEGER))": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -909,7 +915,8 @@
         "cloud/handler.mjs",
         "cloud/kitchens.mjs",
         "cloud/meal-preference-owner20.mjs",
-        "cloud/personal-ai.mjs"
+        "cloud/personal-ai.mjs",
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -2513,6 +2520,18 @@
       ],
       "arabic": false
     },
+    "Body required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Body too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Bowl, top shelf, door…": {
       "sources": [
         "public/index.html"
@@ -3427,6 +3446,12 @@
       "sources": [
         "public/app.js",
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Command too large": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -4817,6 +4842,12 @@
       ],
       "arabic": false
     },
+    "EXISTS(SELECT 1 FROM owner04_d1_operations o WHERE o.session_id=? AND o.subject=? AND o.realm=? AND o.epoch=? AND o.operation_id=? AND o.commit_token=? AND json_extract(o.result_json,'$.status')='committed')": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "EXPLORE YOUR DEMO MENUS": {
       "sources": [
         "public/app.js"
@@ -5374,6 +5405,12 @@
       ],
       "arabic": false
     },
+    "Explicit realm and bounded server TTL required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "Explore & enrich your food data.": {
       "sources": [
         "public/index.html"
@@ -5649,6 +5686,12 @@
     "Five public recipes": {
       "sources": [
         "cloud/recipe-community.mjs"
+      ],
+      "arabic": false
+    },
+    "Fixed canonical HTTPS state audience required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -6783,6 +6826,18 @@
       ],
       "arabic": false
     },
+    "Invalid HTTP bridge configuration": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid JSON tree": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid administrative authority.": {
       "sources": [
         "cloud/admin-mcp.mjs"
@@ -6837,6 +6892,12 @@
       ],
       "arabic": false
     },
+    "Invalid binding": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid care case.": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -6864,6 +6925,12 @@
     "Invalid cleanup history.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid command": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7316,6 +7383,12 @@
       ],
       "arabic": false
     },
+    "Invalid resource": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
     "Invalid restriction.": {
       "sources": [
         "cloud/care-community.mjs",
@@ -7368,6 +7441,12 @@
     "Invalid served portions.": {
       "sources": [
         "public/insights-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid server selector": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -7534,6 +7613,12 @@
     "Items in scope": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "JSON required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -8365,6 +8450,7 @@
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-config.mjs",
         "cloud/service-observability.mjs",
@@ -8615,6 +8701,12 @@
     "Native Apple companion with explicit user consent; not browser-accessible.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Native D1 and trusted server hooks required": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
@@ -8949,6 +9041,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs"
       ],
       "arabic": false
@@ -9529,6 +9622,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -9549,6 +9643,7 @@
         "cloud/kitchens.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/recipe-community.mjs",
         "cloud/service-observability.mjs",
         "cloud/service-support.mjs"
@@ -10589,6 +10684,12 @@
     "Qualified HTTPS endpoint": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Qualified protocol and server binding hook required": {
+      "sources": [
+        "cloud/queue-state-bridge-owner16.mjs"
       ],
       "arabic": false
     },
@@ -12325,6 +12426,12 @@
     "Selected day": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Selected protocol and server transport hooks required": {
+      "sources": [
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -15328,6 +15435,12 @@
       ],
       "arabic": false
     },
+    "coalesce(u.revision,0)=?": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "coalesce(v.down_votes,0)": {
       "sources": [
         "cloud/recipe-community.mjs"
@@ -15730,7 +15843,9 @@
       "sources": [
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
         "cloud/service-config.mjs",
+        "cloud/session-state-d1-owner04.mjs",
         "public/data-ui.js",
         "public/unified-data.js"
       ],
@@ -16230,7 +16345,9 @@
     },
     "private, no-store": {
       "sources": [
-        "cloud/locale.mjs"
+        "cloud/locale.mjs",
+        "cloud/queue-state-bridge-owner16.mjs",
+        "cloud/queue-state-entry-owner16.mjs"
       ],
       "arabic": false
     },
@@ -16411,6 +16528,12 @@
       ],
       "arabic": false
     },
+    "s.id=? AND s.subject=? AND s.secret_hash=? AND s.realm=? AND s.audience=? AND s.scope=?": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
     "scanner.wasm": {
       "sources": [
         "cloud/handler.mjs"
@@ -16522,6 +16645,12 @@
     "starter:": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "state:read-write": {
+      "sources": [
+        "cloud/session-state-d1-owner04.mjs"
       ],
       "arabic": false
     },
