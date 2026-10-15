@@ -70,8 +70,9 @@
     },
     {
       "path": "semantic/CONTRACT.md",
-      "line": 78,
-      "rule": "hard rule 3: 'Every judgment cites at least the pinned sample file and the source release/archive hash recorded in it.' For this sample the only recorded hash is sourceFileSha256."
+      "line": 96,
+      "rule": "hard rule 3 (CONTRACT.md:96): 'Every judgment cites at least the pinned sample file and the source release/archive hash recorded in it.' For this sample the only recorded hash is sourceFileSha256.",
+      "citationCorrection": "line corrected from an inferred 78 (which is inside the example code block) to the grepped line 96"
     },
     {
       "path": "corpus/common-data-contract.json",
@@ -112,5 +113,6 @@
   ],
   "recommendation": "Option A (no change) unless Morgan explicitly wants the bounded contract extension in Option B; a derived pin must never be introduced by an author-side workaround.",
   "noAdmission": true,
-  "generatedAtUTC": "2026-10-15T05:02:50.339204+00:00"
+  "generatedAtUTC": "2026-10-15T05:02:50.339204+00:00",
+  "receiptNote": "revised after a self-check: one CONTRACT.md line citation corrected from 78 to 96 (verified by grep). No verdict, rule content or decision changed."
 }
