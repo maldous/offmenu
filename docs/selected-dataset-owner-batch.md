@@ -8,72 +8,122 @@ owner terminal, run this one command with the supplied full 40-character commit:
 /usr/bin/python3 -I -B scripts/run-selected-dataset-grant.py --expected-commit FULL_REVIEWED_COMMIT
 ```
 
-The wrapper requires normal-user execution, isolated Python, `/usr/bin/git`,
-`/usr/bin/gh` and `/usr/bin/sudo`. It uses the owner's existing standard GitHub CLI
-authentication, including existing `GH_TOKEN`/`GITHUB_TOKEN` or supported gh config
-overrides only for fixed gh subprocesses, and checks both login `maldous` and immutable user ID `6347545`.
-It does not create credentials or read credentials into a report. Custom GitHub
-hosts, repository settings and Git configuration paths are ignored. Existing gh
-auth/config environment values never reach sudo, the projector or other children,
-and are never printed, captured or serialized into reports. No automatic checkout, pull, package install or helper retry
-occurs. The sudo password prompt remains on the owner's terminal.
+This is a single self-diagnosing batch; no separate manual pre-auth probe is needed.
+It records runtime/terminal availability, fixed tool availability, checkout evidence,
+independent projector inventory, owner authentication, grant outcome and publication
+outcome. A later failure does not discard completed evidence. It performs no automatic
+checkout, pull, package install or helper retry.
 
-Before privilege, it verifies Git HEAD equals the supplied commit, the wrapper and
-three dependency files equal that exact Git tree, and each dependency matches its
-fixed SHA-256. The root invocation is `/usr/bin/sudo -n /usr/bin/python3 -I -B -c`
-with a fixed loader, the exact helper filename/digest, and `--apply`. That loader
-bounds the file read, checks the hash and executes those same bytes. The helper
-independently pins and executes only its already-verified inspector dependency.
-The source-only snapshot, permission checks, limits, rollback and dedicated service
-scope are described in [selected-dataset-access.md](selected-dataset-access.md).
+## Tool and authorization gates
 
-Before the grant, an independent unprivileged child inventories six fixed historical
-projector Python files. It checks their known hashes and reports only bounded
-identifier-level static syntax for exact matches. It never executes or uploads
-those six source bodies. This child is capped at 90 seconds wall-clock, 60 seconds
-CPU and 256 MiB address space. Missing projector files do not block the grant; a blocked
-grant does not discard the projector result. There are no arbitrary source-path,
-report-file, repository, PR or privilege options.
+Normal-user execution and isolated Python remain required. Tool preflight checks
+`/usr/bin/git`, `/usr/bin/python3`, `/usr/bin/sudo`, then the two supported GitHub CLI
+locations in deterministic order: `/usr/bin/gh`, `/usr/local/bin/gh`. The first safe
+candidate is selected; arbitrary `PATH` entries are never searched. A gh executable
+and every directory in its full ancestry must be root-owned, not group/other-writable
+and not a symlink. The file must be a regular executable, singly linked, and have no
+setuid/setgid bits. These checks repeat immediately before each credential-bearing
+child. An unsafe or absent candidate is reported without running it.
 
-Grant/projector stdout/stderr is captured incrementally into a new private mode-0700
-temporary directory, with mode-0600 files and at most 64 KiB retained per stream
-(less for the projector). Raw grant/projector output remains local. Raw gh streams
-are never saved to disk: the bounded owner response stays in memory until identity
-validation, and comment output/errors are discarded after determining the outcome. The stdout
-grant receipt must be at most 16 KiB and pass the closed schema, version, enums,
-bounds and nested inspector sanitizer. The projector receipt passes its separate
-fixed schema and 12 KiB bound. Invalid output is marked `unverified`; arbitrary
-content and raw exception text are never posted.
+The wrapper reuses existing GitHub CLI authentication, including existing
+`GH_TOKEN`/`GITHUB_TOKEN` and supported gh config overrides, only in those verified gh
+children. It fixes the host to `github.com` and requires both login `maldous` and
+immutable user ID `6347545`. Tokens/config overrides never reach sudo, the projector,
+git or other children. Custom host/repository/Git environment overrides are ignored.
+No credentials or raw exception messages are put in diagnostics or reports. Raw gh
+stdout/stderr is bounded in memory and never saved to disk.
 
-The wrapper makes one comment attempt on `https://github.com/maldous/offmenu`,
-PR 30, containing a sanitized JSON envelope no larger than 32 KiB:
+Before privilege, Git HEAD must equal the supplied commit. The wrapper and three
+dependencies must equal that exact Git tree; each dependency must also match its
+unchanged fixed SHA-256. Only after this checkout validation, an independent
+unprivileged child inventories six fixed historical projector Python files. It runs
+even if gh is missing, owner authentication fails, or sudo is unavailable. An invalid
+checkout never runs the inventory. Missing/invalid projector evidence does not
+block an otherwise authorized grant. Ctrl-C during the inventory cancels the batch
+before owner authentication or sudo. The inventory checks known hashes and reports
+bounded identifier-level static syntax for exact matches, never executing or
+uploading the six source bodies. Limits are 90 seconds wall-clock, 60 seconds CPU
+and 256 MiB address space. If standard Python is unavailable, this is explicitly
+reported without inventing an inventory result.
+
+The grant still requires verified owner authentication, an interactive terminal and
+successful `/usr/bin/sudo -v`. The password prompt remains on the owner's terminal.
+The root invocation is `/usr/bin/sudo -n /usr/bin/python3 -I -B -c` with the unchanged
+fixed loader, exact helper filename/digest, and `--apply`. The loader bounds the file
+read, checks the hash and executes those same bytes. The helper independently pins
+and executes only its already-verified inspector dependency. Source access,
+permission checks, snapshot limits, rollback and dedicated service scope remain as
+described in [selected-dataset-access.md](selected-dataset-access.md).
+
+## Reports and terminal diagnosis
+
+Every invocation attempts to save `sanitized-report.json` in a new mode-0700 private
+`/tmp/offmenu-owner-batch-*` directory, including invalid arguments, runtime failures,
+checkout failures and pre-auth failures. It saves before privilege, before publication,
+and again with the final publication outcome. JSON updates are atomic, mode 0600,
+and bounded to 32 KiB. The terminal prints the private directory; that path is never
+included in the GitHub receipt. If local storage cannot be created or written, the
+terminal explicitly says `localReportStatus: write-failed`, includes a fixed diagnosis
+and the sanitized report itself. Failure to save the pre-grant snapshot blocks the
+grant. A previously saved report can be stale after a final write failure; use the
+terminal's publication and grant outcomes in that case.
+
+Terminal JSON includes:
+
+- `phase`, fixed `errorCode`, numeric `errno` or null, and fixed `recovery` guidance
+- `grantStatus`, `helperExitCode`, `helperReportStatus`, `helperErrorCode`
+- `projectorStatus` and any separate projector diagnosis
+- `publication`, plus a separate publication diagnosis when necessary
+- `localReportStatus`, plus a separate local-storage diagnosis when necessary
+- runtime/interactive-terminal checks and fixed tool/candidate statuses
+- the preflight `batchBlocker` where applicable
+
+Unknown exception text is never copied into these fields. A reported blocked helper
+has `errorCode: grant-blocked` and its sanitized helper error, rather than a misleading
+success-like terminal summary. A non-TTY runtime is visible even if authentication
+fails first. Read the saved JSON for complete independent inventory/grant evidence.
+
+Grant/projector stdout/stderr stays local, captured incrementally into mode-0600
+files with at most 64 KiB per stream (less for the projector). The grant receipt must
+be at most 16 KiB and pass the closed schema, fixed enums, numeric bounds and nested
+inspector sanitizer. The projector receipt passes its separate fixed schema and
+12 KiB bound. Invalid evidence is `unverified`; arbitrary output is never posted.
+
+## Single publication and honest outcomes
+
+After owner authentication, the wrapper prepares one sanitized comment on
+`https://github.com/maldous/offmenu`, PR 30. Its snapshot has:
 
 - schemaVersion: `offmenu-owner-dataset-batch/1`
 - reportKind: `owner-dataset-grant-batch`; batchVersion: 1
-- expectedCommit and fixed artifact hashes
-- grant: reported receipt, unverified, unknown-outcome, or not-started
-- projector: independently reported receipt or unverified/not-started
-- a fixed local blocker code when preflight cannot proceed
+- expected commit and fixed dependency hashes
+- independently sanitized grant/projector evidence and fixed diagnoses
 
-A failed or timed-out comment is `uncertain-no-retry`: it may already exist remotely.
-The helper is never automatically repeated. The actual helper exit status is
-preserved even if posting fails; pre-helper blockers use 2, an unknown timed-out
-helper uses 124, and signal exits use 128 plus the signal number. Consequently,
-exit 0 alone is insufficient to establish a verified grant: check the emitted
-`grantStatus` and the posted receipt. No queued job is authorized by this wrapper.
+No comment is attempted without verified owner authentication. A failure preparing
+its local body or a proven failure to launch gh is `not-attempted`. Once gh launches,
+a failed/ambiguous response or timeout is `uncertain-no-retry`: a comment may already
+exist remotely. The final local JSON records that outcome; the posted snapshot
+necessarily predates its own publication result. No comment/helper retry is automatic.
 
-The root loader sets a 15-minute interrupt timer, allowing the helper's controlled
-rollback handler to run. The wrapper waits up to 20 minutes; if the result is still
-unknown, it does not claim to kill the root child or restore the service. Keep the
-queue quiet and review the private local records before any retry. The wrapper
-prints their local directory to stderr but never adds that path to GitHub.
+The actual helper exit is preserved even if publication or final local persistence
+fails. Pre-helper blockers use 2; a launched helper with unknown outcome uses 124;
+signals use 128 plus the signal number. A malformed receipt with real exit 0 stays
+exit 0 and `unverified`, requiring review before any retry. Consequently exit 0 alone
+never establishes a verified grant. A proven process-launch failure is `not-started`,
+while post-launch capture failure stays `unknown-outcome`.
+
+The root loader retains its 15-minute interrupt timer for controlled rollback. The
+wrapper waits up to 20 minutes. If the outcome remains unknown, it never claims to
+kill the root child, restore service, or authorize the job queue. Keep the queue quiet
+and review the local evidence before retrying. When publication alone is uncertain,
+check PR 30 before any later publication attempt.
 
 ## Cloud fixture checks
 
 ```sh
-python3 -B -m unittest discover -s tests -p test_selected_dataset_owner_batch.py
+python3 -B -m unittest discover -s tests
 ```
 
-Tests replace authentication, sudo, GitHub and actual host grants with fixtures.
-Only small unprivileged subprocesses test capture limits and the verified-byte
-loader. These tests do not establish foo readiness or authorize a live grant.
+Fixtures replace owner authentication, sudo, GitHub publication and real host grants.
+Only small unprivileged subprocesses test bounded capture and the verified-byte
+loader. Tests do not establish host readiness or authorize a live grant.

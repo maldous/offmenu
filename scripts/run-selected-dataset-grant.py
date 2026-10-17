@@ -3,6 +3,7 @@
 import argparse
 import ast
 import hashlib
+import errno
 import json
 import math
 import os
@@ -51,7 +52,91 @@ exec(compile(body,path,'exec'),{'__name__':'__main__','__file__':path})
 PROJECTOR_LOADER='import resource\nresource.setrlimit(resource.RLIMIT_AS,(256*1024*1024,256*1024*1024))\nresource.setrlimit(resource.RLIMIT_CPU,(60,60))\n'+ROOT_LOADER
 
 
-class Invalid(Exception):pass
+GH_CANDIDATES=('/usr/bin/gh','/usr/local/bin/gh')
+ERROR_CODES={
+    'invalid-arguments','invalid-commit','normal-user-isolated-python-required',
+    'artifact-invalid','artifact-pin-mismatch','checkout-mismatch','checkout-bytes-mismatch',
+    'invalid-json','invalid-grant-report','projector-unverified','owner-auth-unavailable',
+    'owner-auth-mismatch','interactive-sudo-required','sudo-auth-unavailable',
+    'git-unavailable','python-unavailable','sudo-unavailable','gh-unavailable','gh-unsafe',
+    'tool-missing','tool-unsafe','tool-not-executable','tool-io-error',
+    'command-launch-failed','command-timeout','command-interrupted','capture-io-error',
+    'output-limit-exceeded','command-exit-failed','publication-unverified',
+    'grant-blocked','batch-report-limit','local-report-write-failed','local-records-unavailable',
+    'io-error','interrupted','batch-unverified',
+}
+
+
+class Invalid(Exception):
+    def __init__(self,code,number=None):
+        super().__init__(code)
+        self.errno=number
+
+
+def safe_errno(value):
+    return value if type(value) is int and 0<=value<=4096 else None
+
+
+def diagnostic(phase,exc=None,code=None,recovery='correct-blocker-and-rerun-batch'):
+    if code is None:
+        if isinstance(exc,Invalid) and exc.args and type(exc.args[0]) is str and exc.args[0] in ERROR_CODES:code=exc.args[0]
+        elif isinstance(exc,OSError):code='io-error'
+        elif isinstance(exc,KeyboardInterrupt):code='interrupted'
+        else:code='batch-unverified'
+    if code not in ERROR_CODES:code='batch-unverified'
+    return {'phase':phase,'errorCode':code,'errno':safe_errno(getattr(exc,'errno',None)),
+            'recovery':recovery}
+
+
+def verify_gh(path):
+    """Only two root-controlled, nonsymlink executable locations may receive auth."""
+    if path not in GH_CANDIDATES:raise Invalid('gh-unsafe')
+    candidate=Path(path)
+    for part in [*reversed(candidate.parents),candidate]:
+        info=part.lstat()
+        if info.st_uid!=0 or info.st_mode&0o022 or stat.S_ISLNK(info.st_mode):raise Invalid('tool-unsafe')
+        if part!=candidate:
+            if not stat.S_ISDIR(info.st_mode):raise Invalid('tool-unsafe')
+        elif not stat.S_ISREG(info.st_mode) or info.st_mode&0o6000 or info.st_nlink!=1:
+            raise Invalid('tool-unsafe')
+    if not info.st_mode&0o111 or not os.access(path,os.X_OK):raise Invalid('tool-not-executable')
+    return path
+
+
+def tool_preflight():
+    """Fixed order and paths; never search PATH or execute a discovery command."""
+    result={}
+    for name,path in (('git','/usr/bin/git'),('python','/usr/bin/python3'),('sudo','/usr/bin/sudo')):
+        try:
+            info=os.stat(path)
+            if not stat.S_ISREG(info.st_mode) or not os.access(path,os.X_OK):raise Invalid('tool-not-executable')
+            result[name]={'status':'ready','path':path}
+        except (OSError,Invalid) as exc:
+            code='tool-missing' if isinstance(exc,FileNotFoundError) else 'tool-io-error'
+            if isinstance(exc,Invalid):code=exc.args[0]
+            result[name]={'status':'blocked','path':path,'errorCode':code,'errno':safe_errno(getattr(exc,'errno',None))}
+    candidates=[];selected=None
+    for path in GH_CANDIDATES:
+        try:
+            verify_gh(path)
+            candidates.append({'path':path,'status':'ready'})
+            if selected is None:selected=path
+        except (OSError,Invalid) as exc:
+            code='tool-missing' if isinstance(exc,FileNotFoundError) else 'tool-io-error'
+            if isinstance(exc,Invalid):code=exc.args[0]
+            candidates.append({'path':path,'status':'blocked','errorCode':code,'errno':safe_errno(getattr(exc,'errno',None))})
+    result['gh']={'status':'ready' if selected else 'blocked','path':selected,'candidates':candidates}
+    return result
+
+
+def require_tool(preflight,name):
+    item=preflight[name]
+    if item['status']!='ready':
+        number=item.get('errno')
+        if name=='gh':
+            number=next((x.get('errno') for x in item['candidates'] if x.get('errno') is not None),None)
+        raise Invalid(name+'-unavailable',number)
+    return item['path']
 
 
 def strict_json(body):
@@ -92,53 +177,75 @@ def environment(for_github=False):
 
 
 def capture(args,directory,label,cap=MAX_CAPTURE,timeout=90,privileged=False):
-    """Incrementally bounded private capture. Never claim to kill a root child."""
+    """Bounded private capture with launch state; never claim to kill a root child."""
     stdout=directory/(label+'.stdout');stderr=directory/(label+'.stderr')
-    # gh may echo auth-related data on error: never persist either raw stream.
-    is_github=args[0]=='/usr/bin/gh'
-    fds=[None,None] if is_github else [os.open(p,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600) for p in (stdout,stderr)]
-    proc=None;selector=selectors.DefaultSelector();chunks=[bytearray(),bytearray()]
-    # Reuse bootstrap's same-session/separate-process-group sudo pattern.
+    is_github=args[0] in GH_CANDIDATES
+    fds=[None,None];proc=None;selector=None;chunks=[bytearray(),bytearray()]
     process_options={'start_new_session':not privileged}
     if privileged:
         if sys.version_info >= (3,11):process_options['process_group']=0
         else:process_options['preexec_fn']=os.setpgrp
-    overflow=False;unknown=False;deadline=time.monotonic()+timeout
+    overflow=False;unknown=False;launch_attempted=False;failure=None;number=None;deadline=time.monotonic()+timeout
     try:
+        # Recheck the complete trusted ancestry immediately before passing credentials.
+        if is_github:verify_gh(args[0])
+        else:
+            for index,path in enumerate((stdout,stderr)):
+                fds[index]=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+        selector=selectors.DefaultSelector()
+        launch_attempted=True
         proc=subprocess.Popen(args,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
                               env=environment(for_github=is_github),**process_options)
         selector.register(proc.stdout,selectors.EVENT_READ,0);selector.register(proc.stderr,selectors.EVENT_READ,1)
         while selector.get_map():
             left=deadline-time.monotonic()
-            if left<=0:unknown=True;break
+            if left<=0:unknown=True;failure='command-timeout';break
             for key,_ in selector.select(min(left,1)):
                 part=os.read(key.fileobj.fileno(),8192)
                 if not part:selector.unregister(key.fileobj);continue
                 index=key.data;allowed=max(0,cap-len(chunks[index]));kept=part[:allowed]
                 chunks[index].extend(kept)
-                if kept and fds[index] is not None:os.write(fds[index],kept)
+                if kept and fds[index] is not None:
+                    if os.write(fds[index],kept)!=len(kept):raise OSError(errno.EIO,'short-write')
                 if len(kept)!=len(part):overflow=True
         if not unknown:
             try:proc.wait(timeout=max(0.01,deadline-time.monotonic()))
-            except subprocess.TimeoutExpired:unknown=True
-    except (KeyboardInterrupt,OSError):
-        if proc is None:raise
-        unknown=True
+            except subprocess.TimeoutExpired:unknown=True;failure='command-timeout'
+    except (KeyboardInterrupt,OSError,Invalid) as exc:
+        # Popen can be interrupted after fork/exec but before returning a handle.
+        # Only its explicit missing/denied executable errors prove no launch.
+        unknown=proc is not None or (launch_attempted and not isinstance(exc,(FileNotFoundError,PermissionError)))
+        number=safe_errno(getattr(exc,'errno',None))
+        if isinstance(exc,Invalid):failure=diagnostic('capture',exc)['errorCode']
+        elif isinstance(exc,KeyboardInterrupt):failure='command-interrupted'
+        else:failure='capture-io-error' if unknown else 'command-launch-failed'
     finally:
-        selector.close()
+        if selector is not None:
+            try:selector.close()
+            except OSError as exc:
+                unknown=unknown or proc is not None;failure=failure or 'capture-io-error';number=number or safe_errno(exc.errno)
         for fd in fds:
             if fd is None:continue
             try:os.close(fd)
-            except OSError:unknown=True
+            except OSError as exc:unknown=unknown or proc is not None;failure=failure or 'capture-io-error';number=number or safe_errno(exc.errno)
         if proc is not None:
-            if unknown and not privileged and proc.poll() is None:
-                proc.kill();proc.wait()
+            try:
+                if unknown and not privileged and proc.poll() is None:
+                    proc.kill();proc.wait()
+            except OSError as exc:
+                unknown=True;failure=failure or 'capture-io-error';number=number or safe_errno(exc.errno)
             for pipe in (proc.stdout,proc.stderr):
                 if pipe is not None:
                     try:pipe.close()
-                    except OSError:unknown=True
-    return {'exitCode':None if unknown else proc.returncode,'stdout':bytes(chunks[0]),
-            'overflow':overflow,'outcome':'unknown' if unknown else 'finished'}
+                    except OSError as exc:unknown=True;failure=failure or 'capture-io-error';number=number or safe_errno(exc.errno)
+    if overflow and failure is None:failure='output-limit-exceeded'
+    return {'exitCode':None if unknown or proc is None else proc.returncode,'stdout':bytes(chunks[0]),
+            'overflow':overflow,'outcome':'unknown' if unknown else 'not-started' if proc is None else 'finished',
+            'launched':True if proc is not None else None if unknown else False,'errorCode':failure,'errno':number}
+
+
+def command_failure(result,default):
+    return Invalid(result.get('errorCode') or default,result.get('errno'))
 
 
 def git(root,*args):
@@ -147,13 +254,15 @@ def git(root,*args):
 
 def verify_checkout(root,commit,directory):
     result=capture(git(root,'rev-parse','--verify','HEAD'),directory,'git-head')
-    if result['exitCode']!=0 or result['overflow'] or result['stdout'].decode('ascii','strict').strip()!=commit:raise Invalid('checkout-mismatch')
+    if result['exitCode']!=0 or result['overflow']:raise command_failure(result,'checkout-mismatch')
+    if result['stdout'].decode('ascii','strict').strip()!=commit:raise Invalid('checkout-mismatch')
     bodies={}
     for index,relative in enumerate([SELF,*PINS]):
         body=read_file(root/relative)
         if relative in PINS and hashlib.sha256(body).hexdigest()!=PINS[relative]:raise Invalid('artifact-pin-mismatch')
         result=capture(git(root,'show',commit+':'+relative),directory,'git-file-'+str(index))
-        if result['exitCode']!=0 or result['overflow'] or result['stdout']!=body:raise Invalid('checkout-bytes-mismatch')
+        if result['exitCode']!=0 or result['overflow']:raise command_failure(result,'checkout-bytes-mismatch')
+        if result['stdout']!=body:raise Invalid('checkout-bytes-mismatch')
         bodies[relative]=body
     return bodies
 
@@ -205,84 +314,179 @@ def sanitize_grant(value,inspector,errors):
     return out
 
 
-def verified_owner(directory):
-    result=capture(['/usr/bin/gh','api','--hostname','github.com','user','--jq','{login: .login, id: .id}'],directory,'github-owner',cap=4096)
-    if result['exitCode']!=0 or result['overflow']:raise Invalid('owner-auth-unavailable')
+def verified_owner(directory,gh='/usr/bin/gh'):
+    result=capture([gh,'api','--hostname','github.com','user','--jq','{login: .login, id: .id}'],directory,'github-owner',cap=4096)
+    if result['exitCode']!=0 or result['overflow']:raise command_failure(result,'owner-auth-unavailable')
     value=strict_json(result['stdout'])
     if value!={'login':'maldous','id':6347545}:raise Invalid('owner-auth-mismatch')
 
 
-def publish(report,directory):
-    body=json.dumps(report,sort_keys=True,separators=(',',':'))
-    if len(body.encode())>32768:raise Invalid('batch-report-limit')
-    path=directory/'sanitized-report.md'
-    fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
-    with os.fdopen(fd,'w') as stream:stream.write('OffMenu owner dataset batch\n\n```json\n'+body+'\n```\n')
-    # One attempt only. A timeout or failed response may have posted successfully.
-    result=capture(['/usr/bin/gh','pr','comment','30','--repo','https://github.com/maldous/offmenu','--body-file',str(path)],directory,'github-comment')
-    return 'posted' if result['exitCode']==0 and not result['overflow'] else 'uncertain-no-retry'
+def report_bytes(report):
+    body=json.dumps(report,sort_keys=True,separators=(',',':')).encode()
+    if len(body)>32768:raise Invalid('batch-report-limit')
+    return body
 
 
-def run(commit):
-    if not HEX40.fullmatch(commit):raise Invalid('invalid-commit')
-    if os.geteuid()==0 or not sys.flags.isolated:raise Invalid('normal-user-isolated-python-required')
-    root=Path(__file__).resolve().parents[1]
-    directory=Path(tempfile.mkdtemp(prefix='offmenu-owner-batch-'));directory.chmod(0o700)
-    report={'schemaVersion':SCHEMA,'reportKind':'owner-dataset-grant-batch','batchVersion':1,
-            'expectedCommit':commit,'artifactSha256':dict(PINS),'grant':{'status':'not-started'},'projector':{'status':'not-started'}}
-    authenticated=False;exitcode=2
+def persist_report(report,directory):
+    """Atomic private snapshot, independent of authentication and publication."""
+    body=report_bytes(report)
+    fd=None;temporary=None
     try:
-        bodies=verify_checkout(root,commit,directory)
-        inspector=namespace(bodies[INSPECTOR],root/INSPECTOR)
+        fd,name=tempfile.mkstemp(prefix='.report-',dir=directory);temporary=Path(name)
+        with os.fdopen(fd,'wb') as stream:
+            fd=None;stream.write(body+b'\n');stream.flush();os.fsync(stream.fileno())
+        os.replace(temporary,directory/'sanitized-report.json');temporary=None
+    finally:
+        if fd is not None:os.close(fd)
+        if temporary is not None:temporary.unlink(missing_ok=True)
+
+
+def publish(report,directory,gh='/usr/bin/gh'):
+    body=report_bytes(report)
+    path=directory/'sanitized-report.md'
+    fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+    with os.fdopen(fd,'wb') as stream:stream.write(b'OffMenu owner dataset batch\n\n```json\n'+body+b'\n```\n')
+    # One attempt only. A timeout or failed response may have posted successfully.
+    try:
+        result=capture([gh,'pr','comment','30','--repo','https://github.com/maldous/offmenu','--body-file',str(path)],directory,'github-comment')
+        if result.get('outcome')=='not-started':
+            return {'status':'not-attempted','diagnostic':diagnostic('publication',command_failure(result,'publication-unverified'))}
+        if result['exitCode']==0 and not result['overflow']:return {'status':'posted'}
+        exc=command_failure(result,'publication-unverified')
+    except (Exception,KeyboardInterrupt) as error:exc=error
+    return {'status':'uncertain-no-retry','diagnostic':diagnostic('publication',exc,recovery='check-pr30-before-retrying-publication')}
+
+
+
+def inspect_projector(root,bodies,directory):
+    try:
         projector=namespace(bodies[PROJECTOR],root/PROJECTOR)
-        verified_owner(directory);authenticated=True
-        # This independent normal-user check still runs when the grant is blocked.
         observed=capture(['/usr/bin/python3','-I','-S','-B','-c',PROJECTOR_LOADER,str(root/PROJECTOR),PINS[PROJECTOR]],directory,'projector',cap=16384,timeout=90)
-        try:
-            if observed['exitCode'] not in (0,2) or observed['overflow']:raise Invalid('projector-unverified')
-            evidence=projector['sanitize_report'](strict_json(observed['stdout']))
-            if observed['exitCode']!=(0 if evidence['status']=='complete' else 2):raise Invalid('projector-unverified')
-            report['projector']={'status':'reported','exitCode':observed['exitCode'],'report':evidence}
-        except (Invalid,ValueError,TypeError,KeyError):report['projector']={'status':'unverified'}
-        if not sys.stdin.isatty():raise Invalid('interactive-sudo-required')
-        # The password prompt stays on the owner's terminal, never in a log.
+        if observed['exitCode'] not in (0,2) or observed['overflow']:raise command_failure(observed,'projector-unverified')
+        evidence=projector['sanitize_report'](strict_json(observed['stdout']))
+        if observed['exitCode']!=(0 if evidence['status']=='complete' else 2):raise Invalid('projector-unverified')
+        return {'status':'reported','exitCode':observed['exitCode'],'report':evidence}
+    except (Exception,KeyboardInterrupt) as exc:
+        return {'status':'unverified','diagnostic':diagnostic('projector',exc,recovery='review-projector-evidence')}
+
+
+def run(commit,argument_error=False):
+    valid_commit=type(commit) is str and HEX40.fullmatch(commit) is not None
+    report={'schemaVersion':SCHEMA,'reportKind':'owner-dataset-grant-batch','batchVersion':1,
+            'expectedCommit':commit if valid_commit else None,'artifactSha256':dict(PINS),
+            'grant':{'status':'not-started'},'projector':{'status':'not-started'},
+            'publication':{'status':'not-attempted'},'localReportStatus':'pending'}
+    authenticated=False;exitcode=2;directory=None;phase='local-records';gh=None
+    try:
+        directory=Path(tempfile.mkdtemp(prefix='offmenu-owner-batch-',dir='/tmp'));directory.chmod(0o700)
+        phase='local-report';persist_report(report,directory)
+        phase='runtime'
+        report['runtime']={'normalUser':os.geteuid()!=0,'isolatedPython':bool(sys.flags.isolated),
+                           'interactiveTerminal':bool(sys.stdin.isatty())}
+        if argument_error:raise Invalid('invalid-arguments')
+        if not valid_commit:raise Invalid('invalid-commit')
+        if not report['runtime']['normalUser'] or not report['runtime']['isolatedPython']:raise Invalid('normal-user-isolated-python-required')
+        root=Path(__file__).resolve().parents[1]
+        phase='tool-preflight';report['tools']=tool_preflight()
+        require_tool(report['tools'],'git')
+        phase='checkout';bodies=verify_checkout(root,commit,directory)
+        inspector=namespace(bodies[INSPECTOR],root/INSPECTOR)
+        # This independent unprivileged result survives missing gh/auth and sudo.
+        phase='projector'
+        if report['tools']['python']['status']=='ready':report['projector']=inspect_projector(root,bodies,directory)
+        else:report['projector']={'status':'not-started','diagnostic':diagnostic(phase,code='python-unavailable',recovery='restore-standard-python-and-rerun-batch')}
+        if report['projector'].get('diagnostic',{}).get('errorCode') in {'interrupted','command-interrupted'}:
+            raise Invalid('interrupted')
+        phase='github-owner';gh=require_tool(report['tools'],'gh')
+        verified_owner(directory,gh);authenticated=True
+        phase='sudo-auth'
+        require_tool(report['tools'],'python');require_tool(report['tools'],'sudo')
+        if not report['runtime']['interactiveTerminal']:raise Invalid('interactive-sudo-required')
+        # Save completed independent evidence before any privilege or changes.
+        phase='local-report';persist_report(report,directory)
+        phase='sudo-auth'
         auth=subprocess.run(['/usr/bin/sudo','-v'],env=environment(),check=False)
         if auth.returncode:raise Invalid('sudo-auth-unavailable')
-        # Any post-launch capture/cleanup failure leaves conservative state.
+        phase='grant'
+        # Any unexpected post-launch failure must stay conservative.
         report['grant']={'status':'unknown-outcome','exitCode':124};exitcode=124
         result=capture(['/usr/bin/sudo','-n','/usr/bin/python3','-I','-B','-c',ROOT_LOADER,str(root/HELPER),PINS[HELPER],'--apply'],directory,'grant',cap=MAX_CAPTURE,timeout=1200,privileged=True)
+        if result['outcome']=='not-started':
+            report['grant']={'status':'not-started'};exitcode=2
+            raise command_failure(result,'command-launch-failed')
         exitcode=result['exitCode'] if result['exitCode'] is not None else 124
         if exitcode<0:exitcode=128-exitcode
         report['grant']={'status':'unknown-outcome' if result['outcome']=='unknown' else 'unverified','exitCode':exitcode}
+        if result['outcome']=='unknown':raise command_failure(result,'batch-unverified')
+        if result['overflow'] or len(result['stdout'])>16384:raise Invalid('invalid-grant-report')
         try:
-            if result['overflow'] or len(result['stdout'])>16384:raise Invalid('invalid-grant-report')
             evidence=sanitize_grant(strict_json(result['stdout']),inspector,grant_error_codes(bodies[HELPER]))
             expected=2 if evidence['status']=='blocked' else 0
             if result['exitCode']!=expected:raise Invalid('invalid-grant-report')
-            report['grant']={'status':'reported','exitCode':exitcode,'report':evidence}
-        except (Invalid,ValueError,TypeError,KeyError):pass
-    except (Invalid,OSError,UnicodeError,KeyboardInterrupt) as exc:
-        # Only locally defined codes are emitted. Never include raw exceptions.
-        report['batchBlocker']=str(exc) if isinstance(exc,Invalid) else 'batch-unverified'
-    publication='not-attempted'
+        except (Exception,KeyboardInterrupt):raise Invalid('invalid-grant-report') from None
+        report['grant']={'status':'reported','exitCode':exitcode,'report':evidence}
+        if evidence['status']=='blocked':
+            report['diagnostic']=diagnostic('grant',code='grant-blocked',recovery='review-grant-blocker-before-retry')
+        phase='complete'
+    except (Exception,KeyboardInterrupt) as exc:
+        recovery='keep-queue-quiet-review-before-retry' if report['grant']['status'] in {'unknown-outcome','unverified'} else 'correct-blocker-and-rerun-batch'
+        code='local-records-unavailable' if phase=='local-records' else 'local-report-write-failed' if phase=='local-report' else None
+        report['diagnostic']=diagnostic(phase,exc,code,recovery)
+        report['batchBlocker']=report['diagnostic']['errorCode']
+    # This local snapshot exists before any remote attempt; publication is optional.
+    try:
+        if directory is None:raise Invalid('local-records-unavailable')
+        report['localReportStatus']='saved';persist_report(report,directory)
+    except (Exception,KeyboardInterrupt) as exc:
+        report['localReportStatus']='write-failed'
+        report['localReportDiagnostic']=diagnostic('local-report',exc,'local-report-write-failed',recovery='retain-terminal-outcome-and-review-local-storage')
     if authenticated:
-        try:publication=publish(report,directory)
-        except (Invalid,OSError,KeyboardInterrupt):publication='uncertain-no-retry'
-    print(json.dumps({'schemaVersion':SCHEMA,'reportKind':'owner-batch-outcome','grantStatus':report['grant']['status'],'helperExitCode':exitcode,'publication':publication,'privateLogsRetained':True},sort_keys=True))
-    # This private local path is never put into the GitHub receipt.
-    print('Private batch records: '+str(directory),file=sys.stderr)
-    if report['grant']['status']=='unknown-outcome':print('Grant outcome is unknown. Keep the job queue quiet and request review before retrying.',file=sys.stderr)
+        try:report['publication']=publish(report,directory,gh)
+        except (Exception,KeyboardInterrupt) as exc:
+            # Exceptions outside capture occur while preparing the body, before launch.
+            report['publication']={'status':'not-attempted','diagnostic':diagnostic('publication',exc,recovery='retain-local-report-and-review-publication')}
+    # Include the final publication outcome in the private JSON, even on failure.
+    if directory is not None:
+        try:
+            report['localReportStatus']='saved';report.pop('localReportDiagnostic',None)
+            persist_report(report,directory)
+        except (Exception,KeyboardInterrupt) as exc:
+            report['localReportStatus']='write-failed'
+            report['localReportDiagnostic']=diagnostic('local-report',exc,'local-report-write-failed',recovery='retain-terminal-outcome-and-review-local-storage')
+    diag=report.get('diagnostic') or report.get('localReportDiagnostic') or report['publication'].get('diagnostic')
+    if diag is None:
+        recovery='review-grant-receipt-before-queue' if report['grant']['status']=='reported' else 'correct-blocker-and-rerun-batch'
+        diag={'phase':'complete','errorCode':None,'errno':None,'recovery':recovery}
+    outcome={'schemaVersion':SCHEMA,'reportKind':'owner-batch-outcome',**diag,
+             'grantStatus':report['grant']['status'],'projectorStatus':report['projector']['status'],
+             'helperExitCode':exitcode,'publication':report['publication']['status'],
+             'localReportStatus':report['localReportStatus'],'privateLogsRetained':directory is not None,
+             'batchBlocker':report.get('batchBlocker')}
+    if 'tools' in report:outcome['tools']=report['tools']
+    if 'runtime' in report:outcome['runtime']=report['runtime']
+    outcome['helperReportStatus']=report['grant'].get('report',{}).get('status')
+    outcome['helperErrorCode']=report['grant'].get('report',{}).get('errorCode')
+    if 'diagnostic' in report['projector']:outcome['projectorDiagnostic']=report['projector']['diagnostic']
+    if report['localReportStatus']=='write-failed':outcome['sanitizedReport']=report
+    if 'diagnostic' in report['publication']:outcome['publicationDiagnostic']=report['publication']['diagnostic']
+    if 'localReportDiagnostic' in report:outcome['localReportDiagnostic']=report['localReportDiagnostic']
+    print(json.dumps(outcome,sort_keys=True))
+    if directory is not None:print('Private batch records: '+str(directory),file=sys.stderr)
+    if report['grant']['status'] in {'unknown-outcome','unverified'}:
+        print('Grant evidence needs review. Keep the job queue quiet and request review before retrying.',file=sys.stderr)
     return exitcode
 
 
+class Arguments(argparse.ArgumentParser):
+    def error(self,message):raise Invalid('invalid-arguments')
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__)
+    parser=Arguments(description=__doc__)
     parser.add_argument('--expected-commit',required=True)
-    args=parser.parse_args()
-    try:return run(args.expected_commit)
-    except (Invalid,OSError):
-        print(json.dumps({'schemaVersion':SCHEMA,'reportKind':'owner-batch-outcome','grantStatus':'not-started','helperExitCode':2,'publication':'not-attempted','privateLogsRetained':False},sort_keys=True))
-        return 2
+    try:args=parser.parse_args()
+    except Invalid:return run(None,argument_error=True)
+    return run(args.expected_commit)
 
 
 if __name__=='__main__':sys.exit(main())
