@@ -147,9 +147,15 @@ class SelectedMetadataTests(unittest.TestCase):
         original=m.os.read
         def read(fd,n):
             chunk=original(fd,n)
-            p.write_bytes(b'def')
+            # Grow the file: mtime/ctime may share a coarse filesystem tick.
+            p.write_bytes(b'defg')
             return chunk
-        with patch.object(m.os,'read',side_effect=read):r=m.inspect(str(self.root))
+        # Deliberately suppress clock fields to prove this is portable to
+        # filesystems whose timestamps do not change within one write tick.
+        def coarse_signature(info):
+            return (info.st_dev,info.st_ino,info.st_size,info.st_mode,info.st_nlink)
+        with patch.object(m.os,'read',side_effect=read), patch.object(m,'signature',side_effect=coarse_signature):
+            r=m.inspect(str(self.root))
         self.assertEqual('changed',r['assets']['NO_EN_FOODS']['status'])
         self.assertNotIn('sha256',r['assets']['NO_EN_FOODS'])
 
