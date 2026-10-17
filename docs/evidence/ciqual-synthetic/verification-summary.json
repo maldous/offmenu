@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "offmenu-ciqual-repository-verification/1",
+  "scope": "synthetic-only-additive-integration",
+  "baseCommit": "c1f80fe606933b429170d29cb5363f18a4bf2bb1",
+  "baseTree": "1a3ba0f39c3c56ccfe5bbfe6ebbf10645cc16730",
+  "sourceArtifact": {
+    "revision": 3,
+    "manifest": "docs/evidence/ciqual-synthetic/artifact-manifest.json",
+    "manifestSha256": "b5e5fd80357a3fecbc0ba16393766782ca2e25423984522ec4cc34eb1fff9fcf",
+    "originalEntriesVerified": 36,
+    "includedEntries": 20,
+    "omittedEntries": 16,
+    "includedEntriesByteIdentical": 19,
+    "testPathOnlyAdjustment": "tests/test_ciqual_adapter.py uses ciqual_fixture_factory and tests/fixtures/ciqual-reference."
+  },
+  "independentCandidateReview": {
+    "status": "approved-for-authored-synthetic-only-scope",
+    "nonLegacyTestsNormalPassed": 60,
+    "nonLegacyTestsOptimizedPassed": 60,
+    "malformedInputProbesHeld": 12,
+    "independentRerenderMatchesFinalV3": true
+  },
+  "implementationPins": [
+    {
+      "bytes": 84,
+      "path": "offmenu_ciqual/__init__.py",
+      "sha256": "bf5378e2f3a3ddb59907e3bbeea08d0b53c5eccd9dcf162b17181c7549a04b2d"
+    },
+    {
+      "bytes": 20510,
+      "path": "offmenu_ciqual/adapter.py",
+      "sha256": "e03806266867a124eeddadfc1bbd37150261bd78d68e9a3f76009741675778b3"
+    },
+    {
+      "bytes": 18570,
+      "path": "offmenu_ciqual/xmlxlsx.py",
+      "sha256": "96ba971dbae538c93c873ce5b31a11291ea63e54273f53a7f4471fae9277baed"
+    },
+    {
+      "bytes": 14547,
+      "path": "offmenu_ciqual/contract.json",
+      "sha256": "f48ebfacd71ff2be2fadf7a1fefe47b037137ec128f847cbec8b4ebf71f125f2"
+    }
+  ],
+  "runtime": {
+    "expat": "expat_2.8.3",
+    "implementation": "CPython",
+    "python": "3.12.14",
+    "xlsxReader": "bounded-stdlib-ooxml/1",
+    "zlib": "1.3.2"
+  },
+  "buildKey": "007129238509641f44733b89f3665c959f1bdbbbe252fb38599f2b72595869d3",
+  "inputBundleSha256": "8e1c9e8d98859d83d90a5800b57bea38a0c3000787a250e440a0aba9781ce6ce",
+  "checks": {
+    "adapterTestsPassed": 61,
+    "integrationTestsPassed": 10,
+    "focusedNormalTestsPassed": 71,
+    "focusedOptimizedTestsPassed": 71,
+    "twoFreshCandidatesMatchFinalGoldenBytes": true,
+    "defaultCliAndIdenticalRetryPassed": true,
+    "wheelAndSdistContainExactCiqualAndNorwayImplementationAndContracts": true,
+    "isolatedExtractedWheelCombinedImportsAndRendersPass": true,
+    "materializedBaselineFilesVerified": 159,
+    "materializedBaselineFilesUnchanged": 158,
+    "onlyExistingFileChange": "Append include offmenu_ciqual/contract.json to MANIFEST.in while retaining the Norway line.",
+    "fullBaseTreeBlobCountCheckedForCollisions": 547
+  },
+  "baselineCompatibility": {
+    "baselineDefinedMethods": 349,
+    "combinedDefinedMethods": 420,
+    "baselinePassed": 306,
+    "combinedPassed": 377,
+    "unchangedSkipped": 1,
+    "unchangedDependencyBlockedMethods": 42,
+    "unchangedModuleImportErrors": 8,
+    "missingExistingOptionalDependencies": [
+      "mwparserfromhell==0.7.2",
+      "jsonschema-rs==0.58.6"
+    ],
+    "newFailures": 0,
+    "fullDefaultSuitePassed": false
+  },
+  "resolvedDefects": [
+    "Ambiguous or duplicate semantic containers and nested scalars fail closed.",
+    "Consumed cell containers and rich runs reject discarded non-whitespace mixed text and tails.",
+    "Package content types and root/workbook dependency relationships are validated.",
+    "Aggregate archive XML element count is bounded.",
+    "Gzip OS header is canonicalized to 255."
+  ],
+  "limits": [
+    "Authored synthetic fixture bodies only; historical scope remains blocked before reads.",
+    "Real workbook headers, XML envelope, source-use rights and dictionary mappings remain unverified for historical use.",
+    "Synthetic scope and fixture-lock helpers are trusted-caller declarations, not proof of origin or permission.",
+    "No source acquisition, host access, shared-runner integration, rights grant, acceptance, public export, deployment or production activation.",
+    "Country coverage, common-data consumers and curation are unqualified; Fineli access/zero-semantics and Danish definition/basis holds remain unchanged.",
+    "No OS network/DNS sandbox, complete Excel support, hostile-output-filesystem confinement, power-loss durability or full interpreter-distribution lock is claimed.",
+    "Only 159 Python-relevant baseline files were materialized and tested; all 547 base blobs were checked for overlay collisions.",
+    "The local synthetic Git baseline exists only for compatibility tests; it is not upstream history or a publication artifact.",
+    "The CLI is source-checkout-only; package requirements and installed console commands are unchanged."
+  ]
+}

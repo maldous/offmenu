@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ALIMENTS>
+  <ALIMENT><alim_code>001</alim_code><alim_nom_fr>Pomme synthetique</alim_nom_fr><alim_grp_nom_fr>Groupe fictif</alim_grp_nom_fr><alim_nom_sci>Species fictive</alim_nom_sci></ALIMENT>
+  <ALIMENT><alim_code>2</alim_code><alim_nom_fr>Poire synthetique</alim_nom_fr></ALIMENT>
+  <ALIMENT><alim_code>3</alim_code><alim_nom_fr>Aliment fictif trois</alim_nom_fr></ALIMENT>
+</ALIMENTS>
