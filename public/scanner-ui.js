@@ -1,16 +1,16 @@
 import {NATIVE_FORMATS, retailCode, createPresentationGate, cameraError} from './scanner-model.js';
 
-export function setupScanner({canScan,onCode,onStream,onStartGesture}) {
+export function setupScanner({canScan,onCode,onStream,onStartGesture,storage=localStorage}) {
   const $=id=>document.getElementById(id), video=$('video'), canvas=document.createElement('canvas');
   const context=canvas.getContext('2d',{willReadFrequently:true});
   const gate=createPresentationGate();
   let stream=null, token=0, timer=null, worker=null, pending=null, job=0, native=null, wake=null;
   let running=false, lastFrame=-1, attempts=0, started=0, lastRead=0, lastCodes=[], track=null;
   let preferences={mode:'bench',camera:'user',mirror:true,rotate:false,enhance:true};
-  try { preferences={...preferences,...JSON.parse(localStorage.getItem('offmenu-scanner-v2')||'{}')}; } catch {}
+  try { preferences={...preferences,...JSON.parse(storage.getItem('offmenu-scanner-v2')||'{}')}; } catch {}
   if(!['handheld','bench','stand'].includes(preferences.mode)) preferences.mode='bench';
   const status=text=>{$('scanner-status').textContent=text;};
-  const save=()=>{try{localStorage.setItem('offmenu-scanner-v2',JSON.stringify(preferences));}catch{}};
+  const save=()=>{try{storage.setItem('offmenu-scanner-v2',JSON.stringify(preferences));}catch{}};
   const range=cap=>cap && Number.isFinite(cap.min) && Number.isFinite(cap.max) && cap.max>cap.min;
   const caps=()=>{try{return track?.getCapabilities?.()||{};}catch{return {};}};
   function preview() {

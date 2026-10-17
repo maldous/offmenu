@@ -1,0 +1,2285 @@
+{
+  "schema": "offmenu-data-browser/1",
+  "generatedUTC": "2026-10-16T01:10:51.762621+00:00",
+  "types": [
+    {
+      "id": "ingredients",
+      "label": "Ingredients",
+      "pages": [
+        {
+          "url": "/record-pages/owner-900-ingredients-recipe-ingredient-occurrence-0000.json",
+          "records": 100,
+          "countries": [
+            "unassigned"
+          ],
+          "sourceKey": "Recipe ingredient occurrences"
+        },
+        {
+          "url": "/record-pages/owner-982-ingredients-recipe-ingredient-occurrence-1994.json",
+          "records": 82,
+          "countries": [
+            "unassigned"
+          ],
+          "sourceKey": "Recipe ingredient occurrences"
+        }
+      ],
+      "indexedRecords": 182,
+      "countries": [
+        "unassigned"
+      ],
+      "sources": [
+        {
+          "name": "Recipe ingredient occurrences",
+          "indexedRecords": 182,
+          "sourceRecordsReported": 199482,
+          "scope": "Recipe ingredient occurrences.",
+          "pointerIndexedRecords": 199482,
+          "countBasis": "Measured selected source-pointer enumeration",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Ingredients record browser"
+          ],
+          "requestTimeRecords": 199482
+        }
+      ],
+      "remoteCollections": [
+        {
+          "sourceKey": "Recipe ingredient occurrences",
+          "records": 199482,
+          "countries": [
+            "unassigned"
+          ],
+          "query": {
+            "type": "ingredients",
+            "source": "world-recipes",
+            "recordClass": "recipe-ingredient-occurrence"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 199482
+    },
+    {
+      "id": "recipes",
+      "label": "Recipes",
+      "pages": [
+        {
+          "url": "/record-pages/owner-700-recipes-body-record-reference-0000.json",
+          "records": 100,
+          "countries": [
+            "unassigned"
+          ],
+          "sourceKey": "Retained recipe body references"
+        }
+      ],
+      "indexedRecords": 100,
+      "countries": [
+        "unassigned"
+      ],
+      "sources": [
+        {
+          "name": "Retained recipe body references",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 25135,
+          "scope": "Retained recipe body references.",
+          "pointerIndexedRecords": 25135,
+          "countBasis": "Measured selected source-pointer enumeration",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Recipes record browser"
+          ],
+          "requestTimeRecords": 25135
+        }
+      ],
+      "remoteCollections": [
+        {
+          "sourceKey": "Retained recipe body references",
+          "records": 25135,
+          "countries": [
+            "unassigned"
+          ],
+          "query": {
+            "type": "recipes",
+            "source": "world-recipes",
+            "recordClass": "body-record-reference"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 25135
+    },
+    {
+      "id": "nutrition",
+      "label": "Nutrition",
+      "pages": [
+        {
+          "url": "/record-pages/nutrition-afcd-3-0000.json",
+          "records": 50,
+          "countries": [
+            "AU"
+          ],
+          "sourceKey": "afcd-3"
+        },
+        {
+          "url": "/record-pages/nutrition-ciqual-2025-0000.json",
+          "records": 50,
+          "countries": [
+            "FR"
+          ],
+          "sourceKey": "ciqual-2025"
+        },
+        {
+          "url": "/record-pages/nutrition-cofid-2021-0000.json",
+          "records": 50,
+          "countries": [
+            "GB"
+          ],
+          "sourceKey": "cofid-2021"
+        },
+        {
+          "url": "/record-pages/nutrition-cnf-2015-0000.json",
+          "records": 50,
+          "countries": [
+            "CA"
+          ],
+          "sourceKey": "cnf-2015"
+        },
+        {
+          "url": "/record-pages/nutrition-germany-bls-4.0-0000.json",
+          "records": 50,
+          "countries": [
+            "DE"
+          ],
+          "sourceKey": "germany-bls-4.0"
+        },
+        {
+          "url": "/record-pages/nutrition-matvaretabellen-2026-0000.json",
+          "records": 50,
+          "countries": [
+            "NO"
+          ],
+          "sourceKey": "matvaretabellen-2026"
+        },
+        {
+          "url": "/record-pages/nutrition-frida-5.5-0000.json",
+          "records": 50,
+          "countries": [
+            "DK"
+          ],
+          "sourceKey": "frida-5.5"
+        },
+        {
+          "url": "/record-pages/nutrition-foodfiles-2024-v01-0000.json",
+          "records": 50,
+          "countries": [
+            "NZ"
+          ],
+          "sourceKey": "foodfiles-2024-v01"
+        },
+        {
+          "url": "/record-pages/nutrition-sweden-food-2026-07-01-0000.json",
+          "records": 50,
+          "countries": [
+            "SE"
+          ],
+          "sourceKey": "sweden-food-2026-07-01"
+        },
+        {
+          "url": "/record-pages/owner-992-nutrition-FI-0000.json",
+          "records": 10,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner-1002-nutrition-JP-0000.json",
+          "records": 10,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-FI-0010.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-FI-0035.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-FI-0060.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-FI-0085.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-JP-0010.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-JP-0035.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-JP-0060.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-v2-nutrition-JP-0085.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0110.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0135.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0160.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0185.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0110.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0135.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0160.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0185.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0210.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0235.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0260.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-fineli-offset0285.json",
+          "records": 25,
+          "countries": [
+            "FI"
+          ],
+          "sourceKey": "Fineli profiles \u00b7 FI"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0210.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0235.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0260.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        },
+        {
+          "url": "/record-pages/owner13-mext-offset0285.json",
+          "records": 25,
+          "countries": [
+            "JP"
+          ],
+          "sourceKey": "MEXT profiles \u00b7 JP"
+        }
+      ],
+      "indexedRecords": 1070,
+      "countries": [
+        "AU",
+        "CA",
+        "DE",
+        "DK",
+        "FI",
+        "FR",
+        "GB",
+        "JP",
+        "NO",
+        "NZ",
+        "SE"
+      ],
+      "sources": [
+        {
+          "name": "afcd-3",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 1801,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "ciqual-2025",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 3484,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "cofid-2021",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 2887,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "cnf-2015",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 5690,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "germany-bls-4.0",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 7140,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "matvaretabellen-2026",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 2121,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "frida-5.5",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 1381,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "foodfiles-2024-v01",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 2857,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "sweden-food-2026-07-01",
+          "indexedRecords": 50,
+          "sourceRecordsReported": 2606,
+          "scope": "First 50 retained normalized food profiles; source qualifiers and basis retained."
+        },
+        {
+          "name": "Fineli profiles \u00b7 FI",
+          "indexedRecords": 310,
+          "sourceRecordsReported": 4238,
+          "scope": "Publisher nutrition profiles.",
+          "pointerIndexedRecords": 4238,
+          "countBasis": "Selected source pointer enumeration",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Nutrition record browser"
+          ],
+          "requestTimeRecords": 4238
+        },
+        {
+          "name": "MEXT profiles \u00b7 JP",
+          "indexedRecords": 310,
+          "sourceRecordsReported": 2538,
+          "scope": "Publisher nutrition profiles.",
+          "pointerIndexedRecords": 2538,
+          "countBasis": "Selected source pointer enumeration",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Nutrition record browser"
+          ],
+          "requestTimeRecords": 2538
+        }
+      ],
+      "remoteCollections": [
+        {
+          "sourceKey": "Fineli profiles \u00b7 FI",
+          "records": 4238,
+          "countries": [
+            "FI"
+          ],
+          "query": {
+            "type": "nutrition",
+            "source": "fineli"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "MEXT profiles \u00b7 JP",
+          "records": 2538,
+          "countries": [
+            "JP"
+          ],
+          "query": {
+            "type": "nutrition",
+            "source": "mext"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 7226
+    },
+    {
+      "id": "retailers",
+      "label": "Retailers & providers",
+      "pages": [
+        {
+          "url": "/record-pages/retailers-Wikidata-food-businesses-0000.json",
+          "records": 50,
+          "countries": [
+            "AU",
+            "BR",
+            "CH",
+            "DE",
+            "DK",
+            "FR",
+            "GB",
+            "IR",
+            "IT",
+            "JP",
+            "LT",
+            "LV",
+            "NL",
+            "NO",
+            "NP",
+            "NZ",
+            "SE",
+            "TR",
+            "TW",
+            "UZ",
+            "unassigned"
+          ],
+          "sourceKey": "Wikidata-food-businesses"
+        },
+        {
+          "url": "/record-pages/retailers-Wikidata-food-businesses-0001.json",
+          "records": 50,
+          "countries": [
+            "AR",
+            "AU",
+            "BY",
+            "CA",
+            "CH",
+            "CN",
+            "DE",
+            "FR",
+            "GB",
+            "IT",
+            "JP",
+            "MY",
+            "NG",
+            "RO",
+            "SE",
+            "SG",
+            "SI",
+            "SK",
+            "TR",
+            "TW",
+            "UA",
+            "UY",
+            "VE",
+            "VN",
+            "unassigned"
+          ],
+          "sourceKey": "Wikidata-food-businesses"
+        },
+        {
+          "url": "/record-pages/owner-100-retailers-providers-AD-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "AD"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 AD"
+        },
+        {
+          "url": "/record-pages/owner-200-retailers-providers-AE-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "AE"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 AE"
+        },
+        {
+          "url": "/record-pages/owner-300-retailers-providers-AF-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "AF"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 AF"
+        },
+        {
+          "url": "/record-pages/owner-400-retailers-providers-GL-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "GL"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 GL"
+        },
+        {
+          "url": "/record-pages/owner-500-retailers-providers-SR-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "SR"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 SR"
+        },
+        {
+          "url": "/record-pages/owner-600-retailers-providers-ZM-first100-v2.json",
+          "records": 100,
+          "countries": [
+            "ZM"
+          ],
+          "sourceKey": "Overture candidate records \u00b7 ZM"
+        }
+      ],
+      "indexedRecords": 700,
+      "countries": [
+        "AD",
+        "AE",
+        "AF",
+        "AR",
+        "AU",
+        "BR",
+        "BY",
+        "CA",
+        "CH",
+        "CN",
+        "DE",
+        "DK",
+        "FR",
+        "GB",
+        "GL",
+        "IR",
+        "IT",
+        "JP",
+        "LT",
+        "LV",
+        "MY",
+        "NG",
+        "NL",
+        "NO",
+        "NP",
+        "NZ",
+        "RO",
+        "SE",
+        "SG",
+        "SI",
+        "SK",
+        "SR",
+        "TR",
+        "TW",
+        "UA",
+        "UY",
+        "UZ",
+        "VE",
+        "VN",
+        "ZM",
+        "unassigned"
+      ],
+      "sources": [
+        {
+          "name": "Wikidata-food-businesses",
+          "indexedRecords": 100,
+          "sourceRecordsReported": null,
+          "scope": "First 100 retained food-business records. Country is the source assertion, not a store-location census."
+        },
+        {
+          "name": "Overture candidate records \u00b7 AD",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 830,
+          "scope": "Retained candidate output for AD.",
+          "pointerIndexedRecords": 830,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 830
+        },
+        {
+          "name": "Overture candidate records \u00b7 AE",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 27494,
+          "scope": "Retained candidate output for AE.",
+          "pointerIndexedRecords": 27494,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 27494
+        },
+        {
+          "name": "Overture candidate records \u00b7 AF",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 514,
+          "scope": "Retained candidate output for AF.",
+          "pointerIndexedRecords": 514,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 514
+        },
+        {
+          "name": "Overture candidate records \u00b7 GL",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 146,
+          "scope": "Retained candidate output for GL.",
+          "pointerIndexedRecords": 146,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 146
+        },
+        {
+          "name": "Overture candidate records \u00b7 SR",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 1200,
+          "scope": "Retained candidate output for SR.",
+          "pointerIndexedRecords": 1200,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 1200
+        },
+        {
+          "name": "Overture candidate records \u00b7 ZM",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 1898,
+          "scope": "Retained candidate output for ZM.",
+          "pointerIndexedRecords": 1898,
+          "countBasis": "Exact candidate enumeration for selected country output",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Retailers & providers record browser"
+          ],
+          "requestTimeRecords": 1898
+        }
+      ],
+      "remoteCollections": [
+        {
+          "sourceKey": "Overture candidate records \u00b7 AD",
+          "records": 830,
+          "countries": [
+            "AD"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "AD"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "Overture candidate records \u00b7 AE",
+          "records": 27494,
+          "countries": [
+            "AE"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "AE"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "Overture candidate records \u00b7 AF",
+          "records": 514,
+          "countries": [
+            "AF"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "AF"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "Overture candidate records \u00b7 GL",
+          "records": 146,
+          "countries": [
+            "GL"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "GL"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "Overture candidate records \u00b7 SR",
+          "records": 1200,
+          "countries": [
+            "SR"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "SR"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        },
+        {
+          "sourceKey": "Overture candidate records \u00b7 ZM",
+          "records": 1898,
+          "countries": [
+            "ZM"
+          ],
+          "query": {
+            "type": "retailers/providers",
+            "source": "overture",
+            "country": "ZM"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 32182
+    },
+    {
+      "id": "prices",
+      "label": "Prices & baskets",
+      "pages": [
+        {
+          "url": "/record-pages/prices-WFP-Libya-0000.json",
+          "records": 50,
+          "countries": [
+            "LY"
+          ],
+          "sourceKey": "WFP-Libya"
+        },
+        {
+          "url": "/record-pages/prices-WFP-Libya-0001.json",
+          "records": 50,
+          "countries": [
+            "LY"
+          ],
+          "sourceKey": "WFP-Libya"
+        },
+        {
+          "url": "/record-pages/prices-Jersey-RPI-0000.json",
+          "records": 50,
+          "countries": [
+            "JE"
+          ],
+          "sourceKey": "Jersey-RPI"
+        },
+        {
+          "url": "/record-pages/prices-Jersey-RPI-0001.json",
+          "records": 50,
+          "countries": [
+            "JE"
+          ],
+          "sourceKey": "Jersey-RPI"
+        },
+        {
+          "url": "/record-pages/prices-Jersey-RPI-0002.json",
+          "records": 5,
+          "countries": [
+            "JE"
+          ],
+          "sourceKey": "Jersey-RPI"
+        },
+        {
+          "url": "/record-pages/owner-1202-prices-LY-lines-00102-00201.json",
+          "records": 100,
+          "countries": [
+            "LY"
+          ],
+          "sourceKey": "WFP-Libya"
+        }
+      ],
+      "indexedRecords": 305,
+      "countries": [
+        "JE",
+        "LY"
+      ],
+      "sources": [
+        {
+          "name": "WFP-Libya",
+          "indexedRecords": 200,
+          "sourceRecordsReported": 69474,
+          "scope": "First retained CSV observations; source dates and units preserved.",
+          "pointerIndexedRecords": 69474,
+          "countBasis": "Full CSV line/offset enumeration; includes shared first 100 once",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "requestTimeRecords": 69474
+        },
+        {
+          "name": "Jersey-RPI",
+          "indexedRecords": 105,
+          "sourceRecordsReported": 105,
+          "scope": "All 105 rows in this retained finite resource. Index points, not item prices."
+        }
+      ],
+      "remoteCollections": [
+        {
+          "sourceKey": "WFP-Libya",
+          "records": 69474,
+          "countries": [
+            "LY"
+          ],
+          "query": {
+            "type": "prices",
+            "source": "wfp-libya"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 69579
+    },
+    {
+      "id": "dietary",
+      "label": "Dietary references",
+      "pages": [
+        {
+          "url": "/record-pages/owner-1102-dietary-references-0000.json",
+          "records": 100,
+          "countries": [
+            "AE",
+            "AF",
+            "AG",
+            "AL",
+            "AR",
+            "AT",
+            "AU",
+            "BA",
+            "BB",
+            "BD",
+            "BE",
+            "BG",
+            "BJ",
+            "BO",
+            "BR",
+            "BS",
+            "BZ",
+            "CA",
+            "CH",
+            "CL",
+            "CN",
+            "CO",
+            "CR",
+            "CU",
+            "CY",
+            "DE",
+            "DK",
+            "DM",
+            "DO",
+            "EC",
+            "EE",
+            "ES",
+            "ET",
+            "FI",
+            "FJ",
+            "FR",
+            "GA",
+            "GB",
+            "GD",
+            "GE",
+            "GH",
+            "GR",
+            "GT",
+            "GY",
+            "HN",
+            "HR",
+            "HU",
+            "ID",
+            "IE",
+            "IL",
+            "IN",
+            "IR",
+            "IS",
+            "IT",
+            "JM",
+            "JP",
+            "KE",
+            "KH",
+            "KN",
+            "KR",
+            "LB",
+            "LC",
+            "LK",
+            "LV",
+            "MD",
+            "MK",
+            "MN",
+            "MT",
+            "MX",
+            "MY",
+            "NA",
+            "NG",
+            "NL",
+            "NO",
+            "NP",
+            "NZ",
+            "OM",
+            "PA",
+            "PE",
+            "PH",
+            "PL",
+            "PT",
+            "PY",
+            "QA",
+            "RO",
+            "SA",
+            "SC",
+            "SE",
+            "SI",
+            "SL",
+            "SV",
+            "TH",
+            "TR",
+            "US",
+            "UY",
+            "VC",
+            "VE",
+            "VN",
+            "ZA",
+            "ZM"
+          ],
+          "sourceKey": "Dietary guideline directory references"
+        }
+      ],
+      "indexedRecords": 100,
+      "countries": [
+        "AE",
+        "AF",
+        "AG",
+        "AL",
+        "AR",
+        "AT",
+        "AU",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BG",
+        "BJ",
+        "BO",
+        "BR",
+        "BS",
+        "BZ",
+        "CA",
+        "CH",
+        "CL",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CY",
+        "DE",
+        "DK",
+        "DM",
+        "DO",
+        "EC",
+        "EE",
+        "ES",
+        "ET",
+        "FI",
+        "FJ",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GH",
+        "GR",
+        "GT",
+        "GY",
+        "HN",
+        "HR",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IN",
+        "IR",
+        "IS",
+        "IT",
+        "JM",
+        "JP",
+        "KE",
+        "KH",
+        "KN",
+        "KR",
+        "LB",
+        "LC",
+        "LK",
+        "LV",
+        "MD",
+        "MK",
+        "MN",
+        "MT",
+        "MX",
+        "MY",
+        "NA",
+        "NG",
+        "NL",
+        "NO",
+        "NP",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PH",
+        "PL",
+        "PT",
+        "PY",
+        "QA",
+        "RO",
+        "SA",
+        "SC",
+        "SE",
+        "SI",
+        "SL",
+        "SV",
+        "TH",
+        "TR",
+        "US",
+        "UY",
+        "VC",
+        "VE",
+        "VN",
+        "ZA",
+        "ZM"
+      ],
+      "sources": [
+        {
+          "name": "Dietary guideline directory references",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 100,
+          "scope": "Directory references with original source links.",
+          "pointerIndexedRecords": 100,
+          "countBasis": "Selected source pointer enumeration",
+          "completionState": "Pointer index complete; display pages partially connected",
+          "whereUsed": [
+            "Dietary references record browser"
+          ]
+        }
+      ],
+      "remoteCollections": [],
+      "availableRecords": 100
+    },
+    {
+      "id": "recipe-titles",
+      "label": "Recipe discovery titles",
+      "pages": [
+        {
+          "url": "/record-pages/owner-800-recipes-title-only-discovery-0000.json",
+          "records": 100,
+          "countries": [
+            "unassigned"
+          ],
+          "sourceKey": "Title-only recipe concepts"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Title-only recipe concepts",
+          "indexedRecords": 100,
+          "sourceRecordsReported": 24988,
+          "scope": "Title-only recipe concepts.",
+          "pointerIndexedRecords": 24988,
+          "countBasis": "Measured selected source-pointer enumeration",
+          "completionState": "Named collection connected for request-time pages of at most 25; each page materializes when requested",
+          "whereUsed": [
+            "Recipe discovery titles record browser"
+          ],
+          "requestTimeRecords": 24988
+        }
+      ],
+      "countries": [
+        "unassigned"
+      ],
+      "indexedRecords": 100,
+      "remoteCollections": [
+        {
+          "sourceKey": "Title-only recipe concepts",
+          "records": 24988,
+          "countries": [
+            "unassigned"
+          ],
+          "query": {
+            "type": "recipes",
+            "source": "recipe-concepts",
+            "recordClass": "title-only-discovery"
+          },
+          "snapshot": "25d82b9050364cc860691367060433946f63c54d85263cc7b952f5e352602aa1"
+        }
+      ],
+      "availableRecords": 24988
+    }
+  ],
+  "countries": [
+    {
+      "code": "AF",
+      "name": "Afghanistan"
+    },
+    {
+      "code": "AL",
+      "name": "Albania"
+    },
+    {
+      "code": "DZ",
+      "name": "Algeria"
+    },
+    {
+      "code": "AS",
+      "name": "American Samoa"
+    },
+    {
+      "code": "AD",
+      "name": "Andorra"
+    },
+    {
+      "code": "AO",
+      "name": "Angola"
+    },
+    {
+      "code": "AI",
+      "name": "Anguilla"
+    },
+    {
+      "code": "AQ",
+      "name": "Antarctica"
+    },
+    {
+      "code": "AG",
+      "name": "Antigua and Barbuda"
+    },
+    {
+      "code": "AR",
+      "name": "Argentina"
+    },
+    {
+      "code": "AM",
+      "name": "Armenia"
+    },
+    {
+      "code": "AW",
+      "name": "Aruba"
+    },
+    {
+      "code": "AU",
+      "name": "Australia"
+    },
+    {
+      "code": "AT",
+      "name": "Austria"
+    },
+    {
+      "code": "AZ",
+      "name": "Azerbaijan"
+    },
+    {
+      "code": "BS",
+      "name": "Bahamas"
+    },
+    {
+      "code": "BH",
+      "name": "Bahrain"
+    },
+    {
+      "code": "BD",
+      "name": "Bangladesh"
+    },
+    {
+      "code": "BB",
+      "name": "Barbados"
+    },
+    {
+      "code": "BY",
+      "name": "Belarus"
+    },
+    {
+      "code": "BE",
+      "name": "Belgium"
+    },
+    {
+      "code": "BZ",
+      "name": "Belize"
+    },
+    {
+      "code": "BJ",
+      "name": "Benin"
+    },
+    {
+      "code": "BM",
+      "name": "Bermuda"
+    },
+    {
+      "code": "BT",
+      "name": "Bhutan"
+    },
+    {
+      "code": "BO",
+      "name": "Bolivia"
+    },
+    {
+      "code": "BQ",
+      "name": "Bonaire Sint Eustatius Saba"
+    },
+    {
+      "code": "BA",
+      "name": "Bosnia and Herzegovina"
+    },
+    {
+      "code": "BW",
+      "name": "Botswana"
+    },
+    {
+      "code": "BV",
+      "name": "Bouvet Island"
+    },
+    {
+      "code": "BR",
+      "name": "Brazil"
+    },
+    {
+      "code": "IO",
+      "name": "British Indian Ocean Territory"
+    },
+    {
+      "code": "BN",
+      "name": "Brunei"
+    },
+    {
+      "code": "BG",
+      "name": "Bulgaria"
+    },
+    {
+      "code": "BF",
+      "name": "Burkina Faso"
+    },
+    {
+      "code": "BI",
+      "name": "Burundi"
+    },
+    {
+      "code": "CV",
+      "name": "Cabo Verde"
+    },
+    {
+      "code": "KH",
+      "name": "Cambodia"
+    },
+    {
+      "code": "CM",
+      "name": "Cameroon"
+    },
+    {
+      "code": "CA",
+      "name": "Canada"
+    },
+    {
+      "code": "KY",
+      "name": "Cayman Islands"
+    },
+    {
+      "code": "CF",
+      "name": "Central African Republic"
+    },
+    {
+      "code": "TD",
+      "name": "Chad"
+    },
+    {
+      "code": "CL",
+      "name": "Chile"
+    },
+    {
+      "code": "CN",
+      "name": "China"
+    },
+    {
+      "code": "CX",
+      "name": "Christmas Island"
+    },
+    {
+      "code": "CC",
+      "name": "Cocos (Keeling) Islands"
+    },
+    {
+      "code": "CO",
+      "name": "Colombia"
+    },
+    {
+      "code": "KM",
+      "name": "Comoros"
+    },
+    {
+      "code": "CK",
+      "name": "Cook Islands"
+    },
+    {
+      "code": "CR",
+      "name": "Costa Rica"
+    },
+    {
+      "code": "HR",
+      "name": "Croatia"
+    },
+    {
+      "code": "CU",
+      "name": "Cuba"
+    },
+    {
+      "code": "CW",
+      "name": "Cura\u00e7ao"
+    },
+    {
+      "code": "CY",
+      "name": "Cyprus"
+    },
+    {
+      "code": "CZ",
+      "name": "Czechia"
+    },
+    {
+      "code": "CI",
+      "name": "C\u00f4te d'Ivoire"
+    },
+    {
+      "code": "CD",
+      "name": "Democratic Republic of the Congo"
+    },
+    {
+      "code": "DK",
+      "name": "Denmark"
+    },
+    {
+      "code": "DJ",
+      "name": "Djibouti"
+    },
+    {
+      "code": "DM",
+      "name": "Dominica"
+    },
+    {
+      "code": "DO",
+      "name": "Dominican Republic"
+    },
+    {
+      "code": "EC",
+      "name": "Ecuador"
+    },
+    {
+      "code": "EG",
+      "name": "Egypt"
+    },
+    {
+      "code": "SV",
+      "name": "El Salvador"
+    },
+    {
+      "code": "GQ",
+      "name": "Equatorial Guinea"
+    },
+    {
+      "code": "ER",
+      "name": "Eritrea"
+    },
+    {
+      "code": "EE",
+      "name": "Estonia"
+    },
+    {
+      "code": "SZ",
+      "name": "Eswatini"
+    },
+    {
+      "code": "ET",
+      "name": "Ethiopia"
+    },
+    {
+      "code": "FK",
+      "name": "Falkland Islands"
+    },
+    {
+      "code": "FO",
+      "name": "Faroe Islands"
+    },
+    {
+      "code": "FJ",
+      "name": "Fiji"
+    },
+    {
+      "code": "FI",
+      "name": "Finland"
+    },
+    {
+      "code": "FR",
+      "name": "France"
+    },
+    {
+      "code": "GF",
+      "name": "French Guiana"
+    },
+    {
+      "code": "PF",
+      "name": "French Polynesia"
+    },
+    {
+      "code": "TF",
+      "name": "French Southern Territories"
+    },
+    {
+      "code": "GA",
+      "name": "Gabon"
+    },
+    {
+      "code": "GM",
+      "name": "Gambia"
+    },
+    {
+      "code": "GE",
+      "name": "Georgia"
+    },
+    {
+      "code": "DE",
+      "name": "Germany"
+    },
+    {
+      "code": "GH",
+      "name": "Ghana"
+    },
+    {
+      "code": "GI",
+      "name": "Gibraltar"
+    },
+    {
+      "code": "GR",
+      "name": "Greece"
+    },
+    {
+      "code": "GL",
+      "name": "Greenland"
+    },
+    {
+      "code": "GD",
+      "name": "Grenada"
+    },
+    {
+      "code": "GP",
+      "name": "Guadeloupe"
+    },
+    {
+      "code": "GU",
+      "name": "Guam"
+    },
+    {
+      "code": "GT",
+      "name": "Guatemala"
+    },
+    {
+      "code": "GG",
+      "name": "Guernsey"
+    },
+    {
+      "code": "GN",
+      "name": "Guinea"
+    },
+    {
+      "code": "GW",
+      "name": "Guinea-Bissau"
+    },
+    {
+      "code": "GY",
+      "name": "Guyana"
+    },
+    {
+      "code": "HT",
+      "name": "Haiti"
+    },
+    {
+      "code": "HM",
+      "name": "Heard Island and McDonald Islands"
+    },
+    {
+      "code": "HN",
+      "name": "Honduras"
+    },
+    {
+      "code": "HK",
+      "name": "Hong Kong"
+    },
+    {
+      "code": "HU",
+      "name": "Hungary"
+    },
+    {
+      "code": "IS",
+      "name": "Iceland"
+    },
+    {
+      "code": "IN",
+      "name": "India"
+    },
+    {
+      "code": "ID",
+      "name": "Indonesia"
+    },
+    {
+      "code": "IR",
+      "name": "Iran"
+    },
+    {
+      "code": "IQ",
+      "name": "Iraq"
+    },
+    {
+      "code": "IE",
+      "name": "Ireland"
+    },
+    {
+      "code": "IM",
+      "name": "Isle of Man"
+    },
+    {
+      "code": "IL",
+      "name": "Israel"
+    },
+    {
+      "code": "IT",
+      "name": "Italy"
+    },
+    {
+      "code": "JM",
+      "name": "Jamaica"
+    },
+    {
+      "code": "JP",
+      "name": "Japan"
+    },
+    {
+      "code": "JE",
+      "name": "Jersey"
+    },
+    {
+      "code": "JO",
+      "name": "Jordan"
+    },
+    {
+      "code": "KZ",
+      "name": "Kazakhstan"
+    },
+    {
+      "code": "KE",
+      "name": "Kenya"
+    },
+    {
+      "code": "KI",
+      "name": "Kiribati"
+    },
+    {
+      "code": "KW",
+      "name": "Kuwait"
+    },
+    {
+      "code": "KG",
+      "name": "Kyrgyzstan"
+    },
+    {
+      "code": "LA",
+      "name": "Laos"
+    },
+    {
+      "code": "LV",
+      "name": "Latvia"
+    },
+    {
+      "code": "LB",
+      "name": "Lebanon"
+    },
+    {
+      "code": "LS",
+      "name": "Lesotho"
+    },
+    {
+      "code": "LR",
+      "name": "Liberia"
+    },
+    {
+      "code": "LY",
+      "name": "Libya"
+    },
+    {
+      "code": "LI",
+      "name": "Liechtenstein"
+    },
+    {
+      "code": "LT",
+      "name": "Lithuania"
+    },
+    {
+      "code": "LU",
+      "name": "Luxembourg"
+    },
+    {
+      "code": "MO",
+      "name": "Macau"
+    },
+    {
+      "code": "MG",
+      "name": "Madagascar"
+    },
+    {
+      "code": "MW",
+      "name": "Malawi"
+    },
+    {
+      "code": "MY",
+      "name": "Malaysia"
+    },
+    {
+      "code": "MV",
+      "name": "Maldives"
+    },
+    {
+      "code": "ML",
+      "name": "Mali"
+    },
+    {
+      "code": "MT",
+      "name": "Malta"
+    },
+    {
+      "code": "MH",
+      "name": "Marshall Islands"
+    },
+    {
+      "code": "MQ",
+      "name": "Martinique"
+    },
+    {
+      "code": "MR",
+      "name": "Mauritania"
+    },
+    {
+      "code": "MU",
+      "name": "Mauritius"
+    },
+    {
+      "code": "YT",
+      "name": "Mayotte"
+    },
+    {
+      "code": "MX",
+      "name": "Mexico"
+    },
+    {
+      "code": "FM",
+      "name": "Micronesia"
+    },
+    {
+      "code": "MD",
+      "name": "Moldova"
+    },
+    {
+      "code": "MC",
+      "name": "Monaco"
+    },
+    {
+      "code": "MN",
+      "name": "Mongolia"
+    },
+    {
+      "code": "ME",
+      "name": "Montenegro"
+    },
+    {
+      "code": "MS",
+      "name": "Montserrat"
+    },
+    {
+      "code": "MA",
+      "name": "Morocco"
+    },
+    {
+      "code": "MZ",
+      "name": "Mozambique"
+    },
+    {
+      "code": "MM",
+      "name": "Myanmar (Burma)"
+    },
+    {
+      "code": "NA",
+      "name": "Namibia"
+    },
+    {
+      "code": "NR",
+      "name": "Nauru"
+    },
+    {
+      "code": "NP",
+      "name": "Nepal"
+    },
+    {
+      "code": "NL",
+      "name": "Netherlands"
+    },
+    {
+      "code": "NC",
+      "name": "New Caledonia"
+    },
+    {
+      "code": "NZ",
+      "name": "New Zealand"
+    },
+    {
+      "code": "NI",
+      "name": "Nicaragua"
+    },
+    {
+      "code": "NE",
+      "name": "Niger"
+    },
+    {
+      "code": "NG",
+      "name": "Nigeria"
+    },
+    {
+      "code": "NU",
+      "name": "Niue"
+    },
+    {
+      "code": "NF",
+      "name": "Norfolk Island"
+    },
+    {
+      "code": "KP",
+      "name": "North Korea"
+    },
+    {
+      "code": "MK",
+      "name": "North Macedonia"
+    },
+    {
+      "code": "MP",
+      "name": "Northern Mariana Islands"
+    },
+    {
+      "code": "NO",
+      "name": "Norway"
+    },
+    {
+      "code": "OM",
+      "name": "Oman"
+    },
+    {
+      "code": "PK",
+      "name": "Pakistan"
+    },
+    {
+      "code": "PW",
+      "name": "Palau"
+    },
+    {
+      "code": "PS",
+      "name": "Palestine"
+    },
+    {
+      "code": "PA",
+      "name": "Panama"
+    },
+    {
+      "code": "PG",
+      "name": "Papua New Guinea"
+    },
+    {
+      "code": "PY",
+      "name": "Paraguay"
+    },
+    {
+      "code": "PE",
+      "name": "Peru"
+    },
+    {
+      "code": "PH",
+      "name": "Philippines"
+    },
+    {
+      "code": "PN",
+      "name": "Pitcairn"
+    },
+    {
+      "code": "PL",
+      "name": "Poland"
+    },
+    {
+      "code": "PT",
+      "name": "Portugal"
+    },
+    {
+      "code": "PR",
+      "name": "Puerto Rico"
+    },
+    {
+      "code": "QA",
+      "name": "Qatar"
+    },
+    {
+      "code": "CG",
+      "name": "Republic of the Congo"
+    },
+    {
+      "code": "RO",
+      "name": "Romania"
+    },
+    {
+      "code": "RU",
+      "name": "Russia"
+    },
+    {
+      "code": "RW",
+      "name": "Rwanda"
+    },
+    {
+      "code": "RE",
+      "name": "R\u00e9union"
+    },
+    {
+      "code": "BL",
+      "name": "Saint Barth\u00e9lemy"
+    },
+    {
+      "code": "SH",
+      "name": "Saint Helena Ascension Tristan da Cunha"
+    },
+    {
+      "code": "KN",
+      "name": "Saint Kitts and Nevis"
+    },
+    {
+      "code": "LC",
+      "name": "Saint Lucia"
+    },
+    {
+      "code": "MF",
+      "name": "Saint Martin"
+    },
+    {
+      "code": "PM",
+      "name": "Saint Pierre and Miquelon"
+    },
+    {
+      "code": "VC",
+      "name": "Saint Vincent and the Grenadines"
+    },
+    {
+      "code": "WS",
+      "name": "Samoa"
+    },
+    {
+      "code": "SM",
+      "name": "San Marino"
+    },
+    {
+      "code": "ST",
+      "name": "Sao Tome and Principe"
+    },
+    {
+      "code": "SA",
+      "name": "Saudi Arabia"
+    },
+    {
+      "code": "SN",
+      "name": "Senegal"
+    },
+    {
+      "code": "RS",
+      "name": "Serbia"
+    },
+    {
+      "code": "SC",
+      "name": "Seychelles"
+    },
+    {
+      "code": "SL",
+      "name": "Sierra Leone"
+    },
+    {
+      "code": "SG",
+      "name": "Singapore"
+    },
+    {
+      "code": "SX",
+      "name": "Sint Maarten"
+    },
+    {
+      "code": "SK",
+      "name": "Slovakia"
+    },
+    {
+      "code": "SI",
+      "name": "Slovenia"
+    },
+    {
+      "code": "SB",
+      "name": "Solomon Islands"
+    },
+    {
+      "code": "SO",
+      "name": "Somalia"
+    },
+    {
+      "code": "ZA",
+      "name": "South Africa"
+    },
+    {
+      "code": "GS",
+      "name": "South Georgia and the South Sandwich Islands"
+    },
+    {
+      "code": "KR",
+      "name": "South Korea"
+    },
+    {
+      "code": "SS",
+      "name": "South Sudan"
+    },
+    {
+      "code": "ES",
+      "name": "Spain"
+    },
+    {
+      "code": "LK",
+      "name": "Sri Lanka"
+    },
+    {
+      "code": "SD",
+      "name": "Sudan"
+    },
+    {
+      "code": "SR",
+      "name": "Suriname"
+    },
+    {
+      "code": "SJ",
+      "name": "Svalbard and Jan Mayen"
+    },
+    {
+      "code": "SE",
+      "name": "Sweden"
+    },
+    {
+      "code": "CH",
+      "name": "Switzerland"
+    },
+    {
+      "code": "SY",
+      "name": "Syria"
+    },
+    {
+      "code": "TW",
+      "name": "Taiwan"
+    },
+    {
+      "code": "TJ",
+      "name": "Tajikistan"
+    },
+    {
+      "code": "TZ",
+      "name": "Tanzania"
+    },
+    {
+      "code": "TH",
+      "name": "Thailand"
+    },
+    {
+      "code": "TL",
+      "name": "Timor-Leste"
+    },
+    {
+      "code": "TG",
+      "name": "Togo"
+    },
+    {
+      "code": "TK",
+      "name": "Tokelau"
+    },
+    {
+      "code": "TO",
+      "name": "Tonga"
+    },
+    {
+      "code": "TT",
+      "name": "Trinidad and Tobago"
+    },
+    {
+      "code": "TN",
+      "name": "Tunisia"
+    },
+    {
+      "code": "TM",
+      "name": "Turkmenistan"
+    },
+    {
+      "code": "TC",
+      "name": "Turks and Caicos Islands"
+    },
+    {
+      "code": "TV",
+      "name": "Tuvalu"
+    },
+    {
+      "code": "TR",
+      "name": "T\u00fcrkiye"
+    },
+    {
+      "code": "UG",
+      "name": "Uganda"
+    },
+    {
+      "code": "UA",
+      "name": "Ukraine"
+    },
+    {
+      "code": "AE",
+      "name": "United Arab Emirates"
+    },
+    {
+      "code": "GB",
+      "name": "United Kingdom"
+    },
+    {
+      "code": "US",
+      "name": "United States"
+    },
+    {
+      "code": "UM",
+      "name": "United States Minor Outlying Islands"
+    },
+    {
+      "code": "UY",
+      "name": "Uruguay"
+    },
+    {
+      "code": "UZ",
+      "name": "Uzbekistan"
+    },
+    {
+      "code": "VU",
+      "name": "Vanuatu"
+    },
+    {
+      "code": "VA",
+      "name": "Vatican City"
+    },
+    {
+      "code": "VE",
+      "name": "Venezuela"
+    },
+    {
+      "code": "VN",
+      "name": "Vietnam"
+    },
+    {
+      "code": "VG",
+      "name": "Virgin Islands (UK)"
+    },
+    {
+      "code": "VI",
+      "name": "Virgin Islands (US)"
+    },
+    {
+      "code": "WF",
+      "name": "Wallis and Futuna"
+    },
+    {
+      "code": "EH",
+      "name": "Western Sahara"
+    },
+    {
+      "code": "YE",
+      "name": "Yemen"
+    },
+    {
+      "code": "ZM",
+      "name": "Zambia"
+    },
+    {
+      "code": "ZW",
+      "name": "Zimbabwe"
+    },
+    {
+      "code": "AX",
+      "name": "\u00c5land Islands"
+    }
+  ],
+  "counts": {
+    "countries": 249,
+    "assigned": 160,
+    "unassigned": 89,
+    "acquiredRecords": null,
+    "normalizedRecords": null,
+    "goldRecords": null,
+    "translatedRecords": null
+  },
+  "allocationAsOf": "2026-10-15T23:53:22.465196+00:00",
+  "currentWork": [
+    {
+      "owner": "UI Gateway",
+      "task": "Request-time paging connected for selected retained collections; one page loads per navigation action"
+    },
+    {
+      "owner": 59,
+      "task": "Libya price rows and market-ID joins"
+    },
+    {
+      "owner": 14,
+      "task": "New country evidence and source-provenance corrections"
+    },
+    {
+      "owner": 13,
+      "task": "MQ/MR/MS/MT/MU retained-source reconciliation and metadata discovery"
+    }
+  ],
+  "nextSteps": [
+    "Bind latest country receipts into summary",
+    "Qualify exact Libya observation semantics",
+    "Resolve source-specific reuse questions where evidence is available"
+  ],
+  "exportAsOf": "2026-10-16T00:06:32.645085+00:00",
+  "pointerContract": "CLI materializers exist locally. Current dev app serves only the explicitly connected display pages; no per-request CLI adapter is installed.",
+  "manifestPins": [
+    {
+      "owner": 6,
+      "sha256": "dd843463c4b851c4328f579a8d27d0d4c777c81507fc4d64940c3650a7badee8"
+    },
+    {
+      "owner": 12,
+      "sha256": "9f2469bbb47e0fd604ef7a8066df4c01d1bd95e68c7a1365091b30b6be58b49c"
+    },
+    {
+      "owner": 13,
+      "sha256": "121abd5b2306e68f4e4b9814634f189cb302856a2215e586110c4a04ebdf7cce"
+    },
+    {
+      "owner": 59,
+      "sha256": "712c28c6a566c53df29ad401d7b60b389f51d0a913ce433c4467ba2386e53d3f"
+    }
+  ],
+  "nutritionDeltaPin": "4d86cf555126f7f054a244b619f7ab47a0684409b627d28f85c20e98c098e07f",
+  "localMaterialization": {
+    "owner": 13,
+    "source": "mext",
+    "offset": 210,
+    "limit": 100,
+    "nextOffsets": {
+      "fineli": 310,
+      "mext": 310
+    },
+    "requestAdapter": "No existing implementation in Worker13 assessment; activation needs a supported live host hook or authorized runtime handover."
+  },
+  "projectionVersion": "nutrition-source-qualified-v2",
+  "requestTimePagingAsOf": "2026-10-16T01:42:56Z",
+  "navigationVersion": "request-time-pages-v1"
+}
