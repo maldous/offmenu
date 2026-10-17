@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "offmenu-type-discovery/1",
+  "scope": "Acquisition/schema requirements; not application code",
+  "discoveries": [
+    {
+      "source": "Fineli Release 20.0 reference tables",
+      "types": [
+        "RecipeFormula",
+        "IngredientComponentRow",
+        "ProcessYieldFactor",
+        "DietFlagAssertion"
+      ],
+      "evidence": "Complete retained source tables: 2,032 formulae / 11,138 component rows and 27,536 diet flags.",
+      "decision": "Register formula/process-factor types. Amounts and source diet flags do not become independently qualified ready-to-cook recipes or dietary certifications."
+    },
+    {
+      "source": "UniTools 501 recipes",
+      "url": "https://github.com/farcrak/unitools-recipes",
+      "types": [
+        "IngredientScalingRule",
+        "IngredientAlternative",
+        "RecipeStep",
+        "Translation"
+      ],
+      "decision": "Preserve linear/damped/fixed scaling, optionality, bilingual names and aligned source-published steps. Do not silently replace scaling with linear arithmetic."
+    },
+    {
+      "source": "Smithsonian / Archive.org cookbook OCR",
+      "types": [
+        "HistoricalRecipeCandidate",
+        "TextExtractionCandidate",
+        "SourceDocument",
+        "MeasurementNotation"
+      ],
+      "decision": "Preserve original document hash and paragraph locator. Partial ingredient extraction is explicit and excluded from stock sufficiency/planning."
+    },
+    {
+      "source": "National composition tables / FoodFiles / Fineli / Sweden",
+      "types": [
+        "MetricBasisDefinition",
+        "StatisticalMetricDefinition",
+        "MeasurementMethod",
+        "FoodCompositionObservation"
+      ],
+      "decision": "Component vs whole-food denominators, qualifiers, analytical/source definitions and preparation states stay distinct."
+    },
+    {
+      "source": "Overture / Wikidata food businesses",
+      "types": [
+        "Producer",
+        "Supplier",
+        "Retailer",
+        "RetailOutlet",
+        "Site",
+        "CrosswalkAssertion",
+        "SourceLicenceNotice"
+      ],
+      "decision": "Separate company/site roles and candidate identities from verified ownership, production origin and inventory availability."
+    },
+    {
+      "source": "Usenet recipes / restaurant-SMB reports",
+      "types": [
+        "DiscussionPosting",
+        "ReusePermission",
+        "SourceDocument"
+      ],
+      "decision": "Retain permission evidence and source locators. Noncommercial-only or unidentified content licences do not permit unrestricted corpus redistribution."
+    },
+    {
+      "source": "FoodOn 2026-09-20 pinned at cd73540243a84bcd511a500d9a497d12d7dc02f6",
+      "sourceRecords": 29255,
+      "types": [
+        "OntologyClass",
+        "OntologyAxiom",
+        "OntologyAnnotation",
+        "FormalExpression",
+        "ExternalConceptReference",
+        "LanguageTagCrosswalk"
+      ],
+      "decision": "Keep fixed RDF identifiers, original attributes/lexical forms and formal RDF/XML expressions; localize display labels separately. Source language-tag irregularities remain visible; imported class URIs do not establish ingredient, nutrition or dietary equivalence."
+    },
+    {
+      "source": "FoodOn multilingual source URLs",
+      "types": [
+        "IRIReference"
+      ],
+      "decision": "Schema identifiers/links accept Unicode IRIs under RFC 3987; source identities are retained, never translated into replacement identifiers."
+    },
+    {
+      "source": "FoodOn original anyURI annotations",
+      "types": [
+        "SourceAnomaly"
+      ],
+      "sourceAnomalies": 4,
+      "decision": "Four prose definitions declared as xsd:anyURI remain preserved in originalRdfNotation; their text interpretations are candidate assertions. Strict IRI validation remains enabled."
+    },
+    {
+      "source": "QUDT official v3.5.2 measurement vocabulary",
+      "types": [
+        "UnitDefinition"
+      ],
+      "decision": "Register source-defined units as subtype of Unit. Preserve dimensional context, normative symbols/factors and conventions separately from ambiguous recipe notations; no mass-volume, density, yield or historical default inferred."
+    },
+    {
+      "source": "Wellcome pinned cookbook work and IIIF manifest metadata",
+      "evidence": "docs/global-recipe-source-discovery-20261014.json",
+      "status": "local metadata acquisition only; no recipe text admitted",
+      "proposals": [
+        "DigitisedWorkAndCanvasEvidence",
+        "ProviderRightsAssertionScope",
+        "BilingualEditionRelationship"
+      ],
+      "existingRepresentation": {
+        "workAndCanvas": "SourceDocument / SourceRecord with fixed IIIF IDs and cited typed canvas metadata",
+        "rightsScope": "ReusePermission / SourceLicenceNotice plus cited provider statement; jurisdiction and conflicting edition notices retained",
+        "editionContext": "SourceAssertion / CulturalRepresentation with source-declared edition context; translationOf requires separately verified text equivalence"
+      },
+      "decision": "Use existing registered source and rights types for the retained metadata. Keep proposed more specific types for review when page or text extraction introduces an actual additional semantic need. Provider PDM statements do not imply independently verified worldwide clearance."
+    }
+  ]
+}

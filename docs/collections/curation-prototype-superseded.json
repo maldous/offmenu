@@ -1,0 +1,34 @@
+{
+  "format": "offmenu-curated/1",
+  "releaseId": "2026-10-13-1",
+  "status": "superseded-unpublished-prototype",
+  "reason": "Normalized source projection is not the requested hosted OffMenu curation; never uploaded.",
+  "records": 14138785,
+  "fileCount": 19519,
+  "sourceSummary": {
+    "wikibooks": {
+      "records": 3895,
+      "bundles": 3895,
+      "scope": "Every recipe row in recipes_parsed.json, 2024-07-31 scrape; not the current live cookbook",
+      "license": "CC BY-SA 4.0"
+    },
+    "prices": {
+      "records": 317898,
+      "bundles": 317898,
+      "scope": "All prices, locations and proof metadata rows; images and contributor identities excluded from public projection",
+      "license": "ODbL"
+    },
+    "usda-files": {
+      "records": 4202558,
+      "bundles": 2101279,
+      "scope": "Every CSV table and supporting workbook in the supplied archive",
+      "license": "USDA FoodData Central public domain / CC0"
+    },
+    "off": {
+      "records": 9614434,
+      "bundles": 4807217,
+      "scope": "All product rows in the full JSONL export; original fields retained in archive",
+      "license": "ODbL / DbCL; images CC BY-SA"
+    }
+  }
+}

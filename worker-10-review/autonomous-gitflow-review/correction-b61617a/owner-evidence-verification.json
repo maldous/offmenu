@@ -1,0 +1,37 @@
+{
+  "before": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/before-reproductions.json",
+    "sha256": "e270d1f6abc86adab2cda4e4c10f0ad9069272eb6ba28d814ec932802a523ce6",
+    "matchesOwnerManifest": true
+  },
+  "after": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/after-reproduction.json",
+    "sha256": "32dcc584c58ffe4a706fde02c8a4e7225849a1ffdcf78580e04574490d0e68ee",
+    "matchesOwnerManifest": true
+  },
+  "delta": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/F5-correction.patch",
+    "sha256": "8605777f5f16b1c5c852706a7f1c85fe2853e39d542a0ddb1bd5db7631b27189",
+    "matchesOwnerManifest": true
+  },
+  "complete": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/complete-candidate.patch",
+    "sha256": "910fd1d69eb564bdeb2061f9be70e26781cd9e58ad88043d803153315732b89d",
+    "matchesOwnerManifest": true
+  },
+  "owner_suite": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/focused-tests.log",
+    "sha256": "14298e765cf83c412cbcba44f3417998e2a56c7520c654344d160618441c92da",
+    "matchesOwnerManifest": true
+  },
+  "owner_run_review_probe_results": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/binding-results.json",
+    "sha256": "c187a11de4bf4f6d5cebe9ef6c96e9ddb737cfeceb3b4b6e258d107a74b5ece4",
+    "matchesOwnerManifest": true
+  },
+  "isolation_proof": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/isolation-proof.json",
+    "sha256": "ddc5e370b5f597c7c18f5ec860fb91a74adda25ed5802cf4259d19709f44fbea",
+    "matchesOwnerManifest": true
+  }
+}

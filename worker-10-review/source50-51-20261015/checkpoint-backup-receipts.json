@@ -1,0 +1,53 @@
+[
+  {
+    "owner": 50,
+    "worktree": "/home/user/src/offmenu-workers/worker-50",
+    "actualHead": "140fbf7507d17eda01800e2e38a6318be5169c3b",
+    "branch": "feature/global-data-50-tbca-20261015",
+    "reviewedPin": "140fbf7507d17eda01800e2e38a6318be5169c3b",
+    "uncommittedStatus": "",
+    "backupRemoteSHA": null,
+    "backupReadbackExit": 2,
+    "exactActualHeadBackedUp": false,
+    "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+    "reviewerEvidence": null,
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "commonDir": "/home/user/src/offmenu/.git",
+    "localOnly": true,
+    "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+  },
+  {
+    "owner": 51,
+    "worktree": "/home/user/src/offmenu-workers/worker-51",
+    "actualHead": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+    "branch": "feature/global-data-51-japan-20261015",
+    "reviewedPin": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+    "uncommittedStatus": "",
+    "backupRemoteSHA": null,
+    "backupReadbackExit": 2,
+    "exactActualHeadBackedUp": false,
+    "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+    "reviewerEvidence": null,
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "commonDir": "/home/user/src/offmenu/.git",
+    "localOnly": true,
+    "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+  },
+  {
+    "owner": 10,
+    "worktree": "/home/user/src/offmenu-workers/worker-10",
+    "actualHead": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "branch": "feature/checkpoint-correction-review-20261014",
+    "reviewedPin": null,
+    "uncommittedStatus": "?? worker-10-review/\n",
+    "backupRemoteSHA": null,
+    "backupReadbackExit": 2,
+    "exactActualHeadBackedUp": false,
+    "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+    "reviewerEvidence": "local-only untracked explicitly owned review directory",
+    "base": "existing reviewer checkout; no new authored code",
+    "commonDir": "/home/user/src/offmenu/.git",
+    "localOnly": true,
+    "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+  }
+]

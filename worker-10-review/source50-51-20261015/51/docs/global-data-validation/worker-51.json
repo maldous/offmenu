@@ -1,0 +1,1897 @@
+{
+  "schema": "offmenu-global-data-worker51/1",
+  "worker": 51,
+  "assignment": "Japan food composition and multilingual labels",
+  "created_utc": "2026-10-14T13:48:48.482141+00:00",
+  "pickup": {
+    "prior": {
+      "cwd": "/home/user/src/offmenu-workers/worker-51",
+      "head": "fbf61c268afee32992d080908545f3b371687f30",
+      "branch": "feature/source-qualification-51-20261014",
+      "status": "",
+      "index_sha256": "1c4722ac6cd390af2e5acd649be572ff12c98036517145d92992a1a574584ceb"
+    },
+    "main": {
+      "cwd": "/home/user/src/offmenu",
+      "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+      "branch": "main",
+      "status": "",
+      "index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+    },
+    "fetch": {
+      "start": "2026-10-14T13:40:37.510123+00:00",
+      "end": "2026-10-14T13:40:39.911859+00:00",
+      "exit": 0,
+      "sha": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead"
+    },
+    "branch": "feature/global-data-51-japan-20261015",
+    "thread_id": "01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a",
+    "profile": null,
+    "hostname": "foo",
+    "common_directory": "/home/user/src/offmenu/.git"
+  },
+  "pdf_requirements": [
+    {
+      "path": "/home/user/src/offmenu-workers/worker-51/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "bytes": 129890,
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "pages": [
+        {
+          "page": 7,
+          "extraction": "pdftotext -layout, complete page",
+          "text_bytes": 5051,
+          "text_sha256": "498bc15855cf1e94f1f2c49291ae1c7366ad7e0dc2913ba6134a78bbe8985728"
+        },
+        {
+          "page": 9,
+          "extraction": "pdftotext -layout, complete page",
+          "text_bytes": 3565,
+          "text_sha256": "7af3205d7bb4b12e01c8b6d0a11c1f7c6529e2149a0e8e8a53689807c787c14a"
+        }
+      ],
+      "requirement": [
+        "source-specific rights and national composition staging",
+        "original identity/raw-cooked form/edible portion/units/basis; similar names do not establish nutrient equivalence; uncertain mapping review"
+      ],
+      "source_selection": "requirements support regional/national composition generally; these cited pages do not specifically name MEXT. Publisher/workbook identity comes from retained acquisition evidence."
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-51/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "bytes": 611508,
+      "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "pages": [
+        {
+          "page": 8,
+          "extraction": "pdftotext -layout, complete page",
+          "text_bytes": 4771,
+          "text_sha256": "fad15d2b7512ec2f0832b604d56b3af7830c47031796d5a51e621d877a562995"
+        }
+      ],
+      "requirement": [
+        "exact licence/version/field coverage/freshness and re-publication before adoption; food identity/units/market joins retain evidence"
+      ],
+      "source_selection": "requirements support regional/national composition generally; these cited pages do not specifically name MEXT. Publisher/workbook identity comes from retained acquisition evidence."
+    }
+  ],
+  "retained_inputs_before": [
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+      "bytes": 1973402,
+      "sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
+      "bytes": 4239,
+      "sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
+      "bytes": 4348,
+      "sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/source-page.html",
+      "bytes": 10340,
+      "sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/normalized.jsonl.gz",
+      "bytes": 1899918,
+      "sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1"
+    }
+  ],
+  "retained_inputs_after": [
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+      "bytes": 1973402,
+      "sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
+      "bytes": 4239,
+      "sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
+      "bytes": 4348,
+      "sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/source-page.html",
+      "bytes": 10340,
+      "sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/normalized.jsonl.gz",
+      "bytes": 1899918,
+      "sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1"
+    }
+  ],
+  "source": {
+    "publisher": "MEXT Japan",
+    "source_url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+    "release": "2023-corrected-20260327-main",
+    "workbook_member_pins": [
+      {
+        "worksheet": "1穀類",
+        "member": "xl/worksheets/sheet2.xml",
+        "sha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      },
+      {
+        "worksheet": "6野菜類",
+        "member": "xl/worksheets/sheet7.xml",
+        "sha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      },
+      {
+        "worksheet": "9藻類",
+        "member": "xl/worksheets/sheet10.xml",
+        "sha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      },
+      {
+        "worksheet": "10魚介類",
+        "member": "xl/worksheets/sheet11.xml",
+        "sha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      },
+      {
+        "worksheet": "11肉類",
+        "member": "xl/worksheets/sheet12.xml",
+        "sha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      },
+      {
+        "worksheet": "13乳類",
+        "member": "xl/worksheets/sheet14.xml",
+        "sha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "component_schema_sha256": "dc74a45824c938831325e301b577d1151b26a1f8c3db6ad5e88052887d1f0355",
+        "basis_header": "可　　食　　部　　 100　　g　　当　　た　　り"
+      }
+    ],
+    "manifest_status": "retained local normalized release; its accepted count is historical publisher-pipeline bookkeeping, not this author or independent admission",
+    "bounded_records": 192,
+    "selected_sheets": [
+      "1穀類",
+      "6野菜類",
+      "9藻類",
+      "10魚介類",
+      "11肉類",
+      "13乳類"
+    ],
+    "records_per_sheet": 32,
+    "max_records": 1000,
+    "source_worksheet_rows": "first 32 five-digit food-code rows in each selected sheet; not globally representative random sampling",
+    "no_new_source_acquisition": true
+  },
+  "proof": {
+    "schema": "offmenu-global-japan-proof/1",
+    "workbookSha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+    "release": "2023-corrected-20260327-main",
+    "recordCount": 192,
+    "recordPins": [
+      {
+        "code": "01001",
+        "sheet": "1穀類",
+        "row": 13,
+        "sourceCellsSha256": "c89534a82b0f660918ea4d1d918f6b1fc1d9919594c6f80d80001a439d38e531",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "ed1f0fe3984653b92e69b6e350c66648448a552b0d438073f2db510789e73730"
+      },
+      {
+        "code": "01002",
+        "sheet": "1穀類",
+        "row": 14,
+        "sourceCellsSha256": "4561c79192344ed06cf78d6d3c4bb16a48c8e880dc0bef225a798536f99d17d7",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "6b1623d2600ed8840919b440f4a4c85cd1a525431cb5637766dd1cfb9a6c4041"
+      },
+      {
+        "code": "01003",
+        "sheet": "1穀類",
+        "row": 15,
+        "sourceCellsSha256": "1dee8d6f6e1b7cc0a229fdf00ded4c3cea7ef56005543255e1bbfddfc8ef95f1",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "11dbbc92cff0648c9b2a211b6dad3a4d10ab220fe16603d869f1090724d39ab0"
+      },
+      {
+        "code": "01004",
+        "sheet": "1穀類",
+        "row": 16,
+        "sourceCellsSha256": "ce7a88b9b2f48c23992a14cb9c7d9a21dc8a06a999d0d2437541d6c84984f696",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "8b5f1118fa05dec1158064f49cd5f6ed322744812046bc916fd453f67a636da9"
+      },
+      {
+        "code": "01005",
+        "sheet": "1穀類",
+        "row": 17,
+        "sourceCellsSha256": "4cff4ff059d153bd452f01102aafd7e47ac5849bd93d9a0ebd49d680f618678a",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "761c0e2ad6220cae5dd6e6373f0d28546abeedf73066701ce0526f1e32ac8e6b"
+      },
+      {
+        "code": "01006",
+        "sheet": "1穀類",
+        "row": 18,
+        "sourceCellsSha256": "0bd7b91024fc2c357f6be3a777a1baa28058c42714ea273303a4ae72bc1866cd",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "59892d31541ae2897e45f3eb62a2091ba46f12f6f18dc683f9b215d54d74ed8a"
+      },
+      {
+        "code": "01170",
+        "sheet": "1穀類",
+        "row": 19,
+        "sourceCellsSha256": "5475e5ac3837ba99521de7266c79450b3cad39d6a330d08f01127d67e3bcb662",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "8b6be3aba3821640bd2370f0c1354ea939b0c864655a6a1194c50232438d1278"
+      },
+      {
+        "code": "01007",
+        "sheet": "1穀類",
+        "row": 20,
+        "sourceCellsSha256": "1933ac9e23d3ebced46688180162b243007b27a0a1dc70983a0cfa592aae18fb",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "b09c76d82e5c2056967a4171d89d83103c2d3ec73297ff53491f3fb95465942a"
+      },
+      {
+        "code": "01008",
+        "sheet": "1穀類",
+        "row": 21,
+        "sourceCellsSha256": "7bf1ac55a182f6e83ed3bdff12cf541d02ac2428350de663f254fa98667724ac",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "fd9532a73512e91161900a294134cbbbbdd625b36cea46a1d5e9b19f457c3d79"
+      },
+      {
+        "code": "01009",
+        "sheet": "1穀類",
+        "row": 22,
+        "sourceCellsSha256": "8a7f4730817b8d9481244bf856bf545e60e75e5d4b201d51abf3e0328b72c4b8",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "a646cec15bfcaa315435cf86022567229ac8996a40ecf1bf28050abb3b476bc8"
+      },
+      {
+        "code": "01010",
+        "sheet": "1穀類",
+        "row": 23,
+        "sourceCellsSha256": "861dc5d272ba3058133a77bab32e460fc0f9beb4789179bfcbff52d08ef9391b",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "cc1f900c5d8d4f9bd94a8ffe99d1df7c7154db093ac75b554439a2bc5a914df0"
+      },
+      {
+        "code": "01167",
+        "sheet": "1穀類",
+        "row": 24,
+        "sourceCellsSha256": "abec042500b822150450bc16f633ad04a4d72e7d155517cd51b3235b63a6bec4",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "52e4b989ae0ae79888a3a7ccc6037fe20fbcb19e23d5c2f2964f2e1fd47d29c3"
+      },
+      {
+        "code": "01011",
+        "sheet": "1穀類",
+        "row": 25,
+        "sourceCellsSha256": "7568d8bb1756c9ad34cbb1964ba8ff73151eb722f4d705083a6f5502c604644e",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "2ae486b179b5288196cb62a8b071e69178094ac31ec8c00f910eaccc44c6bfcb"
+      },
+      {
+        "code": "01012",
+        "sheet": "1穀類",
+        "row": 26,
+        "sourceCellsSha256": "3959376b5226ce10b1d678d367b1d7f90b67b17feef7029f662c44a37604ea26",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "fe964801bffb9d76f2b984b8d6968271cec731b41fe70746a82c3a05cc047660"
+      },
+      {
+        "code": "01013",
+        "sheet": "1穀類",
+        "row": 27,
+        "sourceCellsSha256": "0bb8267d37ca351959e79dc801c21bcc7493d955ce8e66dcf0fdd6b34a345e38",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "dd184196156c21bfac76869c60b40b163a62ff203a85f8386bbc2c991191b654"
+      },
+      {
+        "code": "01014",
+        "sheet": "1穀類",
+        "row": 28,
+        "sourceCellsSha256": "e5bc9eaa2a411341ef58a7f6c84edd3c94abf41a0c80976ff080c1e2f8ce53f8",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "c7f05c4118e8fe807acf3b20da456784eba08bf857634233ce39ced51071f703"
+      },
+      {
+        "code": "01015",
+        "sheet": "1穀類",
+        "row": 29,
+        "sourceCellsSha256": "597ef7ce4337cb612b4813f23d9e5d7dc012fd62d06a700261baafb4b672e695",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "e2e828b76b7180d2405c7d0fe44e5020e0ee6b344a61689a1d022a94168fa2a9"
+      },
+      {
+        "code": "01016",
+        "sheet": "1穀類",
+        "row": 30,
+        "sourceCellsSha256": "3dcf65ab5e0bc7a7fed4a036f8ebc91a38f3baf79c024613d89177484e1c8fc1",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "88f2f6e63eeda9fa1a04d92ed93704a993a170f3cc905b33777f80473575ffd3"
+      },
+      {
+        "code": "01018",
+        "sheet": "1穀類",
+        "row": 31,
+        "sourceCellsSha256": "9d82dd76cda99cdc9f31aed82b0a0abbf44a219dc076efb58aef9b235ee027d3",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "708c5748135b4eb66feabd6651f1d7779d0cb8459a83a1e5875b96dedece6a24"
+      },
+      {
+        "code": "01019",
+        "sheet": "1穀類",
+        "row": 32,
+        "sourceCellsSha256": "12581f1458e151f40f93c05258fb3b30cbd04f9f08941985c080024a080f71f1",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "d8090571dfc9608a58518594a0c9b29db367bd81146b1c7f8e03b9c53de3c2d1"
+      },
+      {
+        "code": "01020",
+        "sheet": "1穀類",
+        "row": 33,
+        "sourceCellsSha256": "786d9af991eeb1894dd383c128f3c14d4fd5cdabc146a8db36e3c382e55ab491",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "c27a65ba2c0035b5b718e05d72811c2c46be785bbd08584fd23be7df60d95389"
+      },
+      {
+        "code": "01021",
+        "sheet": "1穀類",
+        "row": 34,
+        "sourceCellsSha256": "42906e6ebbb46ecd39ec7157b5efae9888f51af30163be18a7cb42de299dcd9d",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "7c98a292b48314603a7fe2ddfdf1bbf895aafd0610366b70b82a7eebe759373e"
+      },
+      {
+        "code": "01023",
+        "sheet": "1穀類",
+        "row": 35,
+        "sourceCellsSha256": "44b095b510616c38d1ecbc01887eb99496ac73a97b96ed88c531ac5638520c84",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "acfbd42854b3747248c10a85c03402d6b040e137a9ed3704880757caa93175fb"
+      },
+      {
+        "code": "01146",
+        "sheet": "1穀類",
+        "row": 36,
+        "sourceCellsSha256": "13dddfb0720f89193c35c3f58ba1a589c7508b3821001cd0aa348c4cc7ce0e26",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "400c8a578df8de8f453398601341ca126450b2cf968710a9267ec2317d0946b1"
+      },
+      {
+        "code": "01024",
+        "sheet": "1穀類",
+        "row": 37,
+        "sourceCellsSha256": "0172574d113e61d8ff7341b028c5bba0406330709dd5742592f07fb43b3d7634",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "ffa118fed9b02ab7b739fa7aec42d02e293c52f573b2d4d5b0d1a9e612c2e55d"
+      },
+      {
+        "code": "01147",
+        "sheet": "1穀類",
+        "row": 38,
+        "sourceCellsSha256": "da05ab7aa6c3df6404af56d6f978059b62616139be36fce6001ca37c4819e41a",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "d72ae922cf7fb501df8f0c88e336adf0a5354fc9762073c0ff7dcebc18e89f5a"
+      },
+      {
+        "code": "01025",
+        "sheet": "1穀類",
+        "row": 39,
+        "sourceCellsSha256": "785c7236a00e24f9163207eabb066785d62877877d6eaa8f64dd45f1dc164d76",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "3ef981a9acae8c11e6cf839dbec05166ac6d3ca5cb506307d0f0ffc37b864b3f"
+      },
+      {
+        "code": "01171",
+        "sheet": "1穀類",
+        "row": 40,
+        "sourceCellsSha256": "6f48ad7f49feffda7e57b8282296fbf2bea2415fd943081fd225da262dbc4f1a",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "e22f29d5ee1b2b486455f5e981e68de65f52a6e3baeabbaaff182e78eb38a529"
+      },
+      {
+        "code": "01172",
+        "sheet": "1穀類",
+        "row": 41,
+        "sourceCellsSha256": "ec90642a495f57b1dfc5a247e4233f528be70281ca2f2d9f66fd1467fa0638c9",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "c63cd7b217e90619b66b02195d9eb23526a4162f9c0f790157063640a87a038b"
+      },
+      {
+        "code": "01026",
+        "sheet": "1穀類",
+        "row": 42,
+        "sourceCellsSha256": "da2701215413753f21bce4ff195874eaa96dafa2a8c3800a4973f4bbb1a9bf94",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "b7a165de848f74d837a7649cc7541e70856dfc605ed0d523ddd4b9d008ea2526"
+      },
+      {
+        "code": "01174",
+        "sheet": "1穀類",
+        "row": 43,
+        "sourceCellsSha256": "dfaf85b4d44c7c467b39f777e75630bc08be56786974545c9551be11089adcb3",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "f705ed5d3d85d6e19ed5f7b845336f88ad7cb0e0a955b27e0362c1bba5690860"
+      },
+      {
+        "code": "01175",
+        "sheet": "1穀類",
+        "row": 44,
+        "sourceCellsSha256": "7b84f4e70751ca2ba98a87d27f3331e6df6f15f393151b8a16eeef56c089d6d8",
+        "memberSha256": "9cb9d251261c37d09607142f5b0d29e78addabd389cc4580665b55ec860c976e",
+        "adaptedSha256": "1fd6b6cb61b1059726dcdde3ea5fd9c398459022631484a5d3052b492ee3d3b0"
+      },
+      {
+        "code": "06001",
+        "sheet": "6野菜類",
+        "row": 13,
+        "sourceCellsSha256": "d2fcf0c1c4c6b1f363cba4c999530f15d0b48636e0930551f95304fe27939a35",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "8c0cb96491b87a619e9d6c3ce1f0e6092e3e2a29b72452739162efb4751eb12d"
+      },
+      {
+        "code": "06002",
+        "sheet": "6野菜類",
+        "row": 14,
+        "sourceCellsSha256": "2a8709c204503965653a55565f0460d5577e7264c1532ac542f87234cba8a5f7",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "48c89bf33dd69044c5a889e8ecf449ad9c1fe702a96a8b75eb22e343de2eb592"
+      },
+      {
+        "code": "06402",
+        "sheet": "6野菜類",
+        "row": 15,
+        "sourceCellsSha256": "ca79c5eb048e33e18330e43e0a9acff795f55acd6bde790b70e1f704803c9a38",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "3fdddbc16b626dce458dc6daf4fb572356085ed4c25f48b6bb83e9459f02f295"
+      },
+      {
+        "code": "06003",
+        "sheet": "6野菜類",
+        "row": 16,
+        "sourceCellsSha256": "53c9138224fcd982635906124b8b14b29113f3b6679cf4d9328b400de2ef098c",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "33f2896c5c9291bc97fba39accdd7406c0f65159e0dec76ee93383c7bec2e769"
+      },
+      {
+        "code": "06004",
+        "sheet": "6野菜類",
+        "row": 17,
+        "sourceCellsSha256": "1efa48a9179557110383c700ff9e194722e1f97047747cf2f69d9d04acc61b68",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "06066d2e23ca9f5a4a0ce2f4d8d26ccb77b8d174dac2fee3225ff95af981fb35"
+      },
+      {
+        "code": "06005",
+        "sheet": "6野菜類",
+        "row": 18,
+        "sourceCellsSha256": "f382e16fd0b119db0e6a4bb2d61618d7c31057eddce594d539cd441ee5f8dfef",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "c1fb16d340bee67a6b30f1edc3d633335ebb9f7f39ae0e064fdaed815d715902"
+      },
+      {
+        "code": "06006",
+        "sheet": "6野菜類",
+        "row": 19,
+        "sourceCellsSha256": "70b921e43543852bf28eda67674d48be1767318b535b2d7632eeaa0c092abcfe",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "b5492f259f85cdc362e0a08ec89576f7275072deeb57dc67deeb380af20f29e2"
+      },
+      {
+        "code": "06007",
+        "sheet": "6野菜類",
+        "row": 20,
+        "sourceCellsSha256": "4ab7fa4daa61d9d3984b95e1e49d23af42c6b8e622623a3b3927185e56170395",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "0a464db7e194ce59a95779679f4b9358bf7fe51c8123d5b0dbb9e887b44556c8"
+      },
+      {
+        "code": "06008",
+        "sheet": "6野菜類",
+        "row": 21,
+        "sourceCellsSha256": "416348ec4217748972081d5b84a9613291870237a1deeaa0eaf0ac7ae48bdcdf",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "943f692c3b9fcaa42b0c78ae092d35a41ec45c3e015932a87c63d14d1813be40"
+      },
+      {
+        "code": "06327",
+        "sheet": "6野菜類",
+        "row": 22,
+        "sourceCellsSha256": "3485746a666c61bab84d691d07fb26f921bbaa8798f4a58d7f913b4d8440c4a9",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "59de7293937eada52e871e061fd0014c7aec793d4b0d5d067224479e97749d27"
+      },
+      {
+        "code": "06009",
+        "sheet": "6野菜類",
+        "row": 23,
+        "sourceCellsSha256": "4177a8ec70392601bc7ca9c7c291a6fc9c1f0b52dccbe58d2cb77e9a6f726f3f",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "eb432792f5bfd513828e39f8870aea81f8b4143e3c48ea71d25d023f6294e423"
+      },
+      {
+        "code": "06328",
+        "sheet": "6野菜類",
+        "row": 24,
+        "sourceCellsSha256": "1f76b53ce1559ee5b6ece2786e49fb0c682697cfa2b023cd51a9cc002e0b6d1f",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "29b92f151700588c7abc10f82600f1b988829f735a29ae892e11d01b1f724347"
+      },
+      {
+        "code": "06010",
+        "sheet": "6野菜類",
+        "row": 25,
+        "sourceCellsSha256": "6c96ef0857d3eb708767fdf15e9795c9fec888f8347adec53294e4d96099c880",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "cbfbd45b1f4b32b85786ef7e7c3986c3eabee7986806d6c24cc8bb422204f5e2"
+      },
+      {
+        "code": "06011",
+        "sheet": "6野菜類",
+        "row": 26,
+        "sourceCellsSha256": "f7f1eaf21f6bbffee6b3fdc6781859a21facc67c6b612b14294eb02f58fafb56",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "6c73f9aebc5a154bd3990814144e222f9cc2dd1132ee2dbbe1595cb7616b2451"
+      },
+      {
+        "code": "06012",
+        "sheet": "6野菜類",
+        "row": 27,
+        "sourceCellsSha256": "eb349dc683bdff70bc275ed2165b84e652c611663954e2a9ece05f6d2e118096",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "aee72a1d2229defda53c70015d5fa5e55c1ae356da16da4f52ff0b74deddf474"
+      },
+      {
+        "code": "06013",
+        "sheet": "6野菜類",
+        "row": 28,
+        "sourceCellsSha256": "9730a265635279aac41d49e70d66f378f5ec1b885ce4333108d58ec63d510f1f",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "6136791992dbcc93652bcc50e88afc33ccfc1d53d21949e0cdfe8d0edd9f87a2"
+      },
+      {
+        "code": "06014",
+        "sheet": "6野菜類",
+        "row": 29,
+        "sourceCellsSha256": "0a29a9d0af984130fdaab325fe0f41cabf7f076006b40032f05458e70ecf58f0",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "3bab4d9bd7bf3429b633e17beacd51a27163034fdc6dae63ff1e145a7bc0aeec"
+      },
+      {
+        "code": "06363",
+        "sheet": "6野菜類",
+        "row": 30,
+        "sourceCellsSha256": "b0dbdc6334de259a2f87f78894d2a5a19315583f9f9a373458323fa0e62e8543",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "22694274b898f0f8e2ab673ec1f3bc8c92699fe7128426cdb144573467fe3c08"
+      },
+      {
+        "code": "06015",
+        "sheet": "6野菜類",
+        "row": 31,
+        "sourceCellsSha256": "590ca2ccc603a428169c964266e20a7c1d5a53d752ea2d9d31532394c2fa7d06",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "68d92854e937ae1ccb74c195e624b37612d21a6177694c90c1368b5d01548903"
+      },
+      {
+        "code": "06016",
+        "sheet": "6野菜類",
+        "row": 32,
+        "sourceCellsSha256": "180d3062975de490a512883f6f46dd489913f9566aa6c1204e46ec749789e27c",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "38c411aed6a9309671a4aebd5e281066f964b4392627a54372aebf4e31c1ac4d"
+      },
+      {
+        "code": "06017",
+        "sheet": "6野菜類",
+        "row": 33,
+        "sourceCellsSha256": "4e5b58d0b5151723006dc9ef78d5c6a5b892e33b7c504ba1bebc98230e45c699",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "e36f3c1edb334ff7523b721cc9ef51862c02fbc9726dd2c7706c3719c5037e51"
+      },
+      {
+        "code": "06018",
+        "sheet": "6野菜類",
+        "row": 34,
+        "sourceCellsSha256": "7f9bf1c59325c35a938fd6ffce9582f6172f523cfe036cd7cd44c37d0f311ace",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "04b7b3c1e9219447173fcd4f583e325e5632ea5e0aeae1c18a4c404933bacdcc"
+      },
+      {
+        "code": "06019",
+        "sheet": "6野菜類",
+        "row": 35,
+        "sourceCellsSha256": "d15a2f16046d2d914ae047d661cf512dbe0e60eb837e089c61a0d57ecf96e269",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "1bbd6fddb0615df74801947df42bdbd2db13ed6ecd7f215e45d263503577ed78"
+      },
+      {
+        "code": "06329",
+        "sheet": "6野菜類",
+        "row": 36,
+        "sourceCellsSha256": "d1894c616850dbf9529d8470259968a58990a5ba81f71a73d9e443a3356f0734",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "a7fd32e4cc8b6694161c7f3ac75cf76ae3c651ce9f4874ff30fb757f45244a2a"
+      },
+      {
+        "code": "06330",
+        "sheet": "6野菜類",
+        "row": 37,
+        "sourceCellsSha256": "df16413353034ab6cee0b7479d457edf4991f757ed47d08ff459fc98050eef26",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "d42fe6e3ec09cc29ed9268f2f2236880cdb72ec88e8d4aab0b65d107aa89c7a0"
+      },
+      {
+        "code": "06331",
+        "sheet": "6野菜類",
+        "row": 38,
+        "sourceCellsSha256": "1aa876ba73e5a9e230cbaca7554a14fcf0066cd014de812e0094b1fee00bb3d0",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "2421f1a79304add0671d586bc7cb7218149017a74595cac3ab7b939feb98dbc9"
+      },
+      {
+        "code": "06020",
+        "sheet": "6野菜類",
+        "row": 39,
+        "sourceCellsSha256": "e3eb6693ca909b86eea0f7fe568dbadc88d7508f4fdb8c5b6eeae07f72339497",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "effdaedc0dfd2e0d20a87676dfdc70870e3339747e28a7b9d4475f3b3fa61f9e"
+      },
+      {
+        "code": "06021",
+        "sheet": "6野菜類",
+        "row": 40,
+        "sourceCellsSha256": "5c29fcf5736572f17cbda342f9479463831eb91ff02617212d9ba1ba2dd5b298",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "d1a18afe2f5566ec7538c7a982e8b2f033642291390671666e7f44cae67acd3f"
+      },
+      {
+        "code": "06022",
+        "sheet": "6野菜類",
+        "row": 41,
+        "sourceCellsSha256": "491cdbd391dbdcd82f2dfd3068ea38af4024fd7d0b9d78bbf8a8ca4bffaba3be",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "18b77a454b4b2bcb96f9bc2505354a897b9720ebab0ad3213ca59c5bba366b2b"
+      },
+      {
+        "code": "06023",
+        "sheet": "6野菜類",
+        "row": 42,
+        "sourceCellsSha256": "e9d148d7cbc8502fd9ab2f6e58b9a0c7adb35358d079ff2238fd4f51b4f16fb1",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "ce65909b7027f9f2d0f3dc3d701e977a7407af9f7521bfa3d7c01c42274a59e6"
+      },
+      {
+        "code": "06024",
+        "sheet": "6野菜類",
+        "row": 43,
+        "sourceCellsSha256": "1ad774f0eed625e18a227f9323ca4c2135d323b5061b8a131cdf29de2973f17f",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "57967e0057ffda38b645047c7a02eaee05bf4501481bbfb67f1c80eccf1fc1b7"
+      },
+      {
+        "code": "06025",
+        "sheet": "6野菜類",
+        "row": 44,
+        "sourceCellsSha256": "340c0d67047bb5151db2ad80b6a1d8d82e47152bb4cc8e81d6da5035ff7da683",
+        "memberSha256": "e3f4207f8c5dfd87d92448842eeeba84f2a2c11fa977cc9c4a05708a57c0c3f3",
+        "adaptedSha256": "290c391a13b5baafb510cc0c7e5a06d0a00858d522250e7f1312fd5488b94205"
+      },
+      {
+        "code": "09001",
+        "sheet": "9藻類",
+        "row": 13,
+        "sourceCellsSha256": "e40945e0c98fd9999a11dd353281686eef4cded0f938fb7e9c6af21c16d9c9f7",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "7ea725dc1f159d5468b3e75a25882526d409b66c682600416ae42979f2b4c75f"
+      },
+      {
+        "code": "09002",
+        "sheet": "9藻類",
+        "row": 14,
+        "sourceCellsSha256": "b6075685b15351293959bbe874a06c1e6ad94bdd628242bd84de1c9d656e13c9",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "c23c6a6ba28cd8ff4b9b4e665500d754b50b0db0cb97c53fdf3ea374982f0b9a"
+      },
+      {
+        "code": "09003",
+        "sheet": "9藻類",
+        "row": 15,
+        "sourceCellsSha256": "3575845177b7339cf7f726effb77beab5441edf70c04fb530471440eca150deb",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "f03d42a3625f5ad9ab6e8e91ff75e274ecc5ceb11d305631fb24e654a0d259d4"
+      },
+      {
+        "code": "09004",
+        "sheet": "9藻類",
+        "row": 16,
+        "sourceCellsSha256": "348fbd4267ff37174af9986d072887a50b9174259080de857f52858b1819cdcf",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "61b0390e3bb9ced7dc612e591d6ac46a5e2df540fc7352605919ff0eeab91c84"
+      },
+      {
+        "code": "09005",
+        "sheet": "9藻類",
+        "row": 17,
+        "sourceCellsSha256": "2088a4ad7c19394dde6e3fae09fba6f7325d9b2be034d98ad89f3e88fced06f6",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "1f2dd87886957d3fbbb0145feb5f1f213eaeebd718c0e368106328d8d6dc4ff4"
+      },
+      {
+        "code": "09006",
+        "sheet": "9藻類",
+        "row": 18,
+        "sourceCellsSha256": "79bd7fda38091195bdbdefcf7bde6924fbf396d465fb59191ffc158170f48520",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "7ebd3911d47a6e8067955e340534675f6cdd1e35d4cb8201871d6a1c255a399b"
+      },
+      {
+        "code": "09007",
+        "sheet": "9藻類",
+        "row": 19,
+        "sourceCellsSha256": "3176e2c51b2008b674f38f98ef391f972b0f0a2d955e8f56db9a59a3261434df",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "ce140f6a708de799ada020985d646f06088cac74814786dfcf372849472bd72f"
+      },
+      {
+        "code": "09012",
+        "sheet": "9藻類",
+        "row": 20,
+        "sourceCellsSha256": "99601a88a183083d89d7e0ee93bed44a06e7ba71a0814dad8c3aa0bc304651f2",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "2a414246bc219e5cf7aeb69de1c87051c543e04c7e37dc2e72b4ec6f67cbc53a"
+      },
+      {
+        "code": "09008",
+        "sheet": "9藻類",
+        "row": 21,
+        "sourceCellsSha256": "039f2f75e2fd0c7bb3d01f92dd446cb133b08435232cf5f58045a7977b7d4b9d",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "f8e2d7604d031417122daf8af39ae46bbb3117af5407758f6abd7e54877d1355"
+      },
+      {
+        "code": "09009",
+        "sheet": "9藻類",
+        "row": 22,
+        "sourceCellsSha256": "2a721c08436c7cb1b94c22f4b3d0e143f30090622c195406b4e9d14a4bdaca78",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "d5108dc1f679d104e29f42a27fc2a31318152aebcea38494fe0739ef97a94adb"
+      },
+      {
+        "code": "09010",
+        "sheet": "9藻類",
+        "row": 23,
+        "sourceCellsSha256": "5811c09e1d99817492e6d82464cb28969714b1bd14921e1bdc5bb9200c96a4ef",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "c1c60a4bbd87c5816c848bebcf1ea3acd2a9ac423d4a9c3953bab47ac22be759"
+      },
+      {
+        "code": "09011",
+        "sheet": "9藻類",
+        "row": 24,
+        "sourceCellsSha256": "a72a1198ecfae4166d38c4daea5eeb8195b0aed0c966a761aa5045a038c43d5b",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "1a7319f3f8e92461843547b0f4cdf39bd369e7f912fc80dbc5003678cd31a8df"
+      },
+      {
+        "code": "09013",
+        "sheet": "9藻類",
+        "row": 25,
+        "sourceCellsSha256": "2d107c7e2d66b3abaaedbd930b2bc63f13554df4328d31e99f4d5b199ccdb1cc",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "d7ab4ae5f87d0d6627b96bbcbbace2efb2e9d1e1b77e5463437934c772a28fb0"
+      },
+      {
+        "code": "09014",
+        "sheet": "9藻類",
+        "row": 26,
+        "sourceCellsSha256": "4d4b3455b75c5dd3a745a7e42effb12b7fbfe78ae46f032cfe5630beeaa1fce4",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "8d22321e352c6ba45e4b2cc9fa9880ffc425ce356806d9cfdbb3d09b874ea0ca"
+      },
+      {
+        "code": "09015",
+        "sheet": "9藻類",
+        "row": 27,
+        "sourceCellsSha256": "9c2ad3b65a9970c6c4889c5a2b4cb863715bfce3ab032da4d92b9935120bdd72",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "e1cc6bb931969a8ce11fe6ddd1bdca2b5eadc2da2715702d78b3d33ebc18039c"
+      },
+      {
+        "code": "09016",
+        "sheet": "9藻類",
+        "row": 28,
+        "sourceCellsSha256": "ba8ece946a70a8f1ecab1771e24d8b4ad2e6b3c69801b5e0384fe73221ca925e",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "1cc8f92f432a04b9946e4a63940ac8286ec499128cfae12adaf7ac20845482e8"
+      },
+      {
+        "code": "09017",
+        "sheet": "9藻類",
+        "row": 29,
+        "sourceCellsSha256": "ab697ad5267e4e616247f1387af13f6045a800059123f12392da7f71ff267c14",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "b668e0f3034d32d1e3c3b663346c2c9b228b7e04e95099dc2760c6360e8dd206"
+      },
+      {
+        "code": "09056",
+        "sheet": "9藻類",
+        "row": 30,
+        "sourceCellsSha256": "2a825a7c802323a2c9af4961abd2d576eb3ef8508b55c3104915aed32781a9b1",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "965122fbe74858d1c48d30793c459bf556bf285545651d48414d4b810c9410d7"
+      },
+      {
+        "code": "09018",
+        "sheet": "9藻類",
+        "row": 31,
+        "sourceCellsSha256": "335c2b1276a91937aa992178765e668d4e7dc26fcfbb5a341e54c7ae6f1934fa",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "e03084bd96818c7825d68638431ea8263df21a1356c8b2a98d6356853a89c5d5"
+      },
+      {
+        "code": "09019",
+        "sheet": "9藻類",
+        "row": 32,
+        "sourceCellsSha256": "6d07f9a2238dba6ff4886952cc880ff3a895cbeb4cb3c290ab3cf54a7c43261d",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "a6ca2916e18d2ecf7dc692352e8b19bc2c9aa634c60919279e12789d129c8690"
+      },
+      {
+        "code": "09020",
+        "sheet": "9藻類",
+        "row": 33,
+        "sourceCellsSha256": "abe550d035af424bc7004c9518e26065f245fe5f69b2a34b427611fab7594220",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "6be0f9f4057a8defd679615842b6ed3147dcc2bd651d7be574cd696b27f59168"
+      },
+      {
+        "code": "09021",
+        "sheet": "9藻類",
+        "row": 34,
+        "sourceCellsSha256": "dba8ffabdf098f7e0658ccd7c59a1060c9cfaa6d596ccbb52f06b61cefae60dc",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "ec2fad2a063e257305ac57455b6a44bac057912ef52bf980eb214ab25fde245d"
+      },
+      {
+        "code": "09022",
+        "sheet": "9藻類",
+        "row": 35,
+        "sourceCellsSha256": "d619e62ba0b44a9500574d78544c507a3e9660543077821cc934bedb86fb3786",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "7e5035544dd143213c392c68d4b2d173cd845daa9c05275357c7ab5f3c381896"
+      },
+      {
+        "code": "09023",
+        "sheet": "9藻類",
+        "row": 36,
+        "sourceCellsSha256": "016a4602daf5e144e04f0fc05a8b93cc09a17a19db88f306f8634e887f0b9b77",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "72008ae8028883094e50f07c7fceeca0ac5b57e08e060cb803e5947834133641"
+      },
+      {
+        "code": "09024",
+        "sheet": "9藻類",
+        "row": 37,
+        "sourceCellsSha256": "e373d0b15ecbd42560da86b986cf63c2dfacb4f29c3c4567bffeee2b122e5752",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "8febef2865db3177fa5ba30b2300ca023004c2f1946c062c95e19e6b052db085"
+      },
+      {
+        "code": "09025",
+        "sheet": "9藻類",
+        "row": 38,
+        "sourceCellsSha256": "c29dd720d3ea42d39770f1d79de542ec5f97bae98f80e7b09c3e9ecad79452a2",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "fad42f6ea70667be04ec78fcbc111fe6f7a610b0a46938a25875b0e7690f9114"
+      },
+      {
+        "code": "09026",
+        "sheet": "9藻類",
+        "row": 39,
+        "sourceCellsSha256": "52bd54f93f5820ce253661ff822b781d3f959e9641f5e7ffe6b5c42e36e5fb3d",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "a642e2723650b29be5c34f9714211c8dc0122539e55cd6f1600c3a0df489a419"
+      },
+      {
+        "code": "09027",
+        "sheet": "9藻類",
+        "row": 40,
+        "sourceCellsSha256": "3f8b89a7895d7e008a02b67e3e65e880e58012e19e780ac80bf79d0a740289c6",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "7bf3053f0551a8e86086b4df6da86960281700c9150e22b426bbfe983fd9da65"
+      },
+      {
+        "code": "09028",
+        "sheet": "9藻類",
+        "row": 41,
+        "sourceCellsSha256": "bf68250f57039a204ae14c24ae2e63ca0915f294f1e95a2a14e1d2aaed2a2f37",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "9ca2ec1ea6e43c06584f19c617cf2f36a670a5c0cf0ce4cd290a60e6ab333683"
+      },
+      {
+        "code": "09049",
+        "sheet": "9藻類",
+        "row": 42,
+        "sourceCellsSha256": "48a10617fff165d42818fd5a18a1cd06dd331920a2f059915a36ed4beef8e8d8",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "a79b1332524272efc93151209e58174fd581f25df06847903593ba7d1feafa47"
+      },
+      {
+        "code": "09029",
+        "sheet": "9藻類",
+        "row": 43,
+        "sourceCellsSha256": "34b21196e4868f1dc79c4538d9dd0bf6eae92c354d18a65f2c6f7f64c96ac8b9",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "ef2f7c19a6d7d631b17c8712666cb7829ac77acdbe6858653191a8ec79331974"
+      },
+      {
+        "code": "09030",
+        "sheet": "9藻類",
+        "row": 44,
+        "sourceCellsSha256": "64fd70b434d55fc45c81e6e40f3172708ece109073098c65eba7370d947eba4b",
+        "memberSha256": "4aec45a0814f028e0f2ef2811837ca7ed87190185a8de7cf06fbd5eecc2a5f9d",
+        "adaptedSha256": "c3a8fcd9029de9dfb3af35da142761cef22f020e2a52dd1e497bac7ef59edd0a"
+      },
+      {
+        "code": "10001",
+        "sheet": "10魚介類",
+        "row": 13,
+        "sourceCellsSha256": "b6ba2415faaf3430cbece2d7950bec9c5e581db5a1c3ba55f2f20e6dff051563",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "9b3c2ad69e46754d71b241e45163a96d5ea9053c35869743462794dfb7ea9537"
+      },
+      {
+        "code": "10002",
+        "sheet": "10魚介類",
+        "row": 14,
+        "sourceCellsSha256": "73f43ae64e1604ec9ed630d3fe5d6a6b105aa57482aee37dea9a2711f4d9b4e6",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "90d082f5e859a4c2e1ea4a85b69be953cbc27f10b76c93d909713f34ff578478"
+      },
+      {
+        "code": "10003",
+        "sheet": "10魚介類",
+        "row": 15,
+        "sourceCellsSha256": "f476aa7806eae5fc9711276311564837fd4cf853f01d7fba420ad8615d59bbd7",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "23e2f60be85f22417d79794f4d72d0ad392dcc863111329b80a2ef059aa0b16e"
+      },
+      {
+        "code": "10389",
+        "sheet": "10魚介類",
+        "row": 16,
+        "sourceCellsSha256": "abc900c49814734a6c09948076db28a11db11a05762c19c7b4f234bf362d729f",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "e21a40be1791862f768cc6aca6a71f21d403db5140bf7ba18e7b807e6c2e6558"
+      },
+      {
+        "code": "10004",
+        "sheet": "10魚介類",
+        "row": 17,
+        "sourceCellsSha256": "75f56daa8dd209f82443448efe6ee3ccc917cfa876c509678e2f62097035ee88",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "ed1421864054c593bae30655ef67d013af70ff342dee58a9cadf944112338ba5"
+      },
+      {
+        "code": "10005",
+        "sheet": "10魚介類",
+        "row": 18,
+        "sourceCellsSha256": "290bc6123c52db1c678ab3f21568c75ecba67b76627592cd5decb7919b00df69",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "104ac19cb6d83f6ea60a3520f6aa468dbe979767fe008450b8b4d4474027b0e2"
+      },
+      {
+        "code": "10390",
+        "sheet": "10魚介類",
+        "row": 19,
+        "sourceCellsSha256": "291e13133dc33c2da8b1991ce3978c8d2a5c3c1193e97b54cb12d9388b4ce4c3",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "c3e2ba5a02711faa4dc26625f8a189f51a118904a0b847fae9356668c13b68ba"
+      },
+      {
+        "code": "10006",
+        "sheet": "10魚介類",
+        "row": 20,
+        "sourceCellsSha256": "10072a31d657d8c92950cc4865bae117721555f9e00f9fc1af328e478ac7016a",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "aeea1573dbbd4df8874efb66748ec099aa754128ae0a253a37ef7780e6d1e5d7"
+      },
+      {
+        "code": "10007",
+        "sheet": "10魚介類",
+        "row": 21,
+        "sourceCellsSha256": "2e450668c3e49f22144d7fdd9b3c97cd782fd53931eeb83a973840e4666076f1",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "5ff69aa6444685f744df47a7c72946e59dc4ef82d6bec947940b307eec3447e4"
+      },
+      {
+        "code": "10391",
+        "sheet": "10魚介類",
+        "row": 22,
+        "sourceCellsSha256": "97cd41b5472282b5e6ba8354d730f9b30c87a58ab65f949ebdc12ec76f82142d",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "8a1d6545bd96b814f63189ebf11acdbaf99025002ca9dcb46f3eef16b3578daa"
+      },
+      {
+        "code": "10392",
+        "sheet": "10魚介類",
+        "row": 23,
+        "sourceCellsSha256": "5b753b16b81ee0d583ddcf24ad8d898d326a64c46719d766253bc4fb480ef765",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "47f3bf762da3e891c954a3174ee90ce30a75b138010dd0b4aae75782f691c905"
+      },
+      {
+        "code": "10393",
+        "sheet": "10魚介類",
+        "row": 24,
+        "sourceCellsSha256": "0f789e8600d07017a629ca2e57f9f544064dc09414f061d674a79811e81bb117",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "110a4d31994bb2f130a2f385b9873a339eca43d2c378e30ecaa4f67fa5902f36"
+      },
+      {
+        "code": "10394",
+        "sheet": "10魚介類",
+        "row": 25,
+        "sourceCellsSha256": "9a4813ec9a2c5837b188698905352b0ffbba5333a885ce7185ced9e8d897411f",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "56603537f46d80f3220ccf08c40726bd2a5132353eb2f0d03b6bd1cb374b0fad"
+      },
+      {
+        "code": "10008",
+        "sheet": "10魚介類",
+        "row": 26,
+        "sourceCellsSha256": "597b6e992ad54b3ae60799d009f7c92e3f5354c281eef1f26dd18f961e477522",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "63c39ebc57e3e11ca26b5df1980ec1693d5510115122e031b259738c33071188"
+      },
+      {
+        "code": "10009",
+        "sheet": "10魚介類",
+        "row": 27,
+        "sourceCellsSha256": "564dc43329f41287e9523ffebfe96fde170c6c9f308e0fbbde0f37458b25d1e3",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "75bf689a4ec65c9425a856293f1aac0fe4b27b43618bd7684dbf3b86b51dd681"
+      },
+      {
+        "code": "10010",
+        "sheet": "10魚介類",
+        "row": 28,
+        "sourceCellsSha256": "10ffd176b7a789aa9fe75f942ba08a59ec7d9345af0200caf33bf9930ded3f16",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "f316238f452488383928995514d3c99a2afff4d72648bf2096e70bc46a0f1a6a"
+      },
+      {
+        "code": "10457",
+        "sheet": "10魚介類",
+        "row": 29,
+        "sourceCellsSha256": "8c79f77a645bbd8a288919f3bd66497afcce08b4d2935cc5fb809fe277de1280",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "5d7402a7326b5785b1b84a7deaa1b44f94ec0802a55839d65f2fa5672611c4a5"
+      },
+      {
+        "code": "10458",
+        "sheet": "10魚介類",
+        "row": 30,
+        "sourceCellsSha256": "6cc54f960abb58bd0432f88950c5e7e3ec053698b448cbc139ba5c64776b58ca",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "6d6a737f98c26d4efc8a9a2fd9138d2072a39d8dae91b8ed10cde42024d3991c"
+      },
+      {
+        "code": "10011",
+        "sheet": "10魚介類",
+        "row": 31,
+        "sourceCellsSha256": "7765aac4b4f9567af41fc094539624df1fa84a2a77daafa12fc55a4a47b820ab",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "e71dd8e9b65ec0ebd4d57c90cd70df569be0c5d802a787f07cf4f09fe926e4f0"
+      },
+      {
+        "code": "10012",
+        "sheet": "10魚介類",
+        "row": 32,
+        "sourceCellsSha256": "334ce51eba5bdf007c01cd3df09cdfd9f23fc5b72a65188eb56218a5d9dcae0a",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "ad7dc29f78995d8d9b4f5f2b3a9a2cc0f5e286b1ec2b75bd342b55aed2336284"
+      },
+      {
+        "code": "10013",
+        "sheet": "10魚介類",
+        "row": 33,
+        "sourceCellsSha256": "b90d34f4e39f9a347289676214958932736702414a6f3dbb20abdb6fc32f87b0",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "6c3d40a0da97648c0598f0bbf37bf435bcde76b0472c9caf78bd647757d15ea8"
+      },
+      {
+        "code": "10014",
+        "sheet": "10魚介類",
+        "row": 34,
+        "sourceCellsSha256": "6fef5b1bb16de0b82373cc35106613967bbb34af5771d090d9bb5791d8a7d992",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "dd7b8e580e4c27b7dad079f304c156a6fa60bdf270bedba9bc15d0af98607547"
+      },
+      {
+        "code": "10015",
+        "sheet": "10魚介類",
+        "row": 35,
+        "sourceCellsSha256": "1a5914bf18f6e56761f60ec94af68df904761e1957800f1f10e993631d1cdcf7",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "fb058c2f1e6e502c310ea8478893be5e6ec24e8813c8136015ccc7d390117405"
+      },
+      {
+        "code": "10016",
+        "sheet": "10魚介類",
+        "row": 36,
+        "sourceCellsSha256": "20596838255a13d4030bd67241ca797995e6978d8e9d6f75faf9e36e7af585c6",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "393a9b468d6345cbd02062ba49ead1f6f9e3bfc8c91bd862f661a25cb9b9ab1d"
+      },
+      {
+        "code": "10017",
+        "sheet": "10魚介類",
+        "row": 37,
+        "sourceCellsSha256": "cacef1d17a62ce974419a16cac6bad2c6beb1483892c7adb25bbf78e76786a70",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "365e95e1ebdfa3b40aff900069bdaead03342a670d147f9c8783a42cd9d82831"
+      },
+      {
+        "code": "10018",
+        "sheet": "10魚介類",
+        "row": 38,
+        "sourceCellsSha256": "cdda123b21917e9720c8da3604ed87cf6413b10f4cf6db27743e1f65458cf700",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "79f4cdee843229b2eed843a9295bf2d8cc0f486e551987cc2015175fe1cb8cfd"
+      },
+      {
+        "code": "10019",
+        "sheet": "10魚介類",
+        "row": 39,
+        "sourceCellsSha256": "a74a531d73755c90da18ecabc69c30c495e4b5a6d48fdb9743574ddddb90e7a4",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "ba84322aec64a45de735f7888229ab27b7dba48b78d0652ce57c88095fee4194"
+      },
+      {
+        "code": "10020",
+        "sheet": "10魚介類",
+        "row": 40,
+        "sourceCellsSha256": "b4d2a2783c60c20b301ed3bcfd3d5208d688fcabfd24bc80b98ec344b02593a6",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "8a5bc00e2c42290f524839e979b04773bae54892fe723532ba174cf12c062ff0"
+      },
+      {
+        "code": "10021",
+        "sheet": "10魚介類",
+        "row": 41,
+        "sourceCellsSha256": "c19d8eba2cd96cfd1b37499d3c7db10d53af3723b48fbf505701fe15ff993886",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "600761a520e39d96ae923112eb7ab7ca7b1bee577e95f669b3bf54be2885ae90"
+      },
+      {
+        "code": "10022",
+        "sheet": "10魚介類",
+        "row": 42,
+        "sourceCellsSha256": "ab04b7af61c2f5f524e1b7d8ef7a228b9c98f1c86bdace97aa4a5340e8454afa",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "508a0e34c46df065e258d92120efb3cdad2b7df91c0a3571973771223b5fe15b"
+      },
+      {
+        "code": "10023",
+        "sheet": "10魚介類",
+        "row": 43,
+        "sourceCellsSha256": "13c4c813ccfe313fe7eaccedc6db584adb86c5ccc5017e187a8bebeaa7f82baf",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "75861250c2c321f611c699587dfc8c3d0cead56aa770e08579734a24b56c4a9a"
+      },
+      {
+        "code": "10024",
+        "sheet": "10魚介類",
+        "row": 44,
+        "sourceCellsSha256": "1dff0ea0b330e4c8a9d3bdd28a6a3d0572fc679c3f79e460ed80fee7a6323cc6",
+        "memberSha256": "a1549f090cc118cc3bdf572b3081f6578917ac6a8e415bf743f94fb90b859c31",
+        "adaptedSha256": "452da23e87e5291e46c7036d4ae01cbcc5fea1e3eadd2e40ab2d4bd34aed5c95"
+      },
+      {
+        "code": "11001",
+        "sheet": "11肉類",
+        "row": 13,
+        "sourceCellsSha256": "80d0cd114dc319283da7e97b0f8083d31dfd45d60717d943a23f8a69b3952f11",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "d0b14d1f9cb13c98c90661eeccce20ba89fbe403de8b3a555e8c2a5bf64fe9f2"
+      },
+      {
+        "code": "11002",
+        "sheet": "11肉類",
+        "row": 14,
+        "sourceCellsSha256": "5182c5d738da72dc0402092df7c2b979ddb653d9f6b439674142d952d6e0def8",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "74c17271665ca99639aac5c1d0e1c9338b71ff047ff0053f0e4e48457b2313ff"
+      },
+      {
+        "code": "11003",
+        "sheet": "11肉類",
+        "row": 15,
+        "sourceCellsSha256": "c714c114447d2d004221443c7c901907fff6d933ed6fab7b3271fa17239f5edb",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "977a4a0dcc908d8e7ecaefadb7dce0624343471318723dabdb0fd182b05ce529"
+      },
+      {
+        "code": "11004",
+        "sheet": "11肉類",
+        "row": 16,
+        "sourceCellsSha256": "9eca4272fe94f148d1649ff88dd93dae0b5870da46ce6de0998ee3f8d5b37fce",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "874d55e246f1b7f5e4a713cc7a01d3931e9464d29132b4db974b4c35d0a0c670"
+      },
+      {
+        "code": "11005",
+        "sheet": "11肉類",
+        "row": 17,
+        "sourceCellsSha256": "500912b6e6ab3414f5851f36e2ab342a17ec3489b5b3880b5da62f4ebed56853",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "68f3c8b1511c57679387c77bc4598e5e07a81b4f2c91b4891f746396418959ce"
+      },
+      {
+        "code": "11006",
+        "sheet": "11肉類",
+        "row": 18,
+        "sourceCellsSha256": "f15a061b716428206b6a1de81012629c641c43627d2237cf6199b74a506e27a0",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "1d02464f39a4301c2a06ca1893c77d8cd53cd208736c65fc4dc57b845d0dbf80"
+      },
+      {
+        "code": "11007",
+        "sheet": "11肉類",
+        "row": 19,
+        "sourceCellsSha256": "8b5511944b5ac717420e08d6ee8536fe1ae4c58e7543064f6185219831be83f2",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "0da1403ca9fb57a76fd932d73cd675354d13cdf77404c2904ed907f74d553941"
+      },
+      {
+        "code": "11008",
+        "sheet": "11肉類",
+        "row": 20,
+        "sourceCellsSha256": "a5718998762708773c94a40405d6a8ae9360f16f0f450378443d4a504e242b6a",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "cb8dd0454ff4c7d0bd58a91608013bab459ab64492296c1b78f3e84e08241124"
+      },
+      {
+        "code": "11009",
+        "sheet": "11肉類",
+        "row": 21,
+        "sourceCellsSha256": "57e82498be5b667686cd3076d9ecf2b42ae1fb638601a6f269170fc70103bb84",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "f3bab0a8061652470b50dc59ff7e3528b97d21374e26c54ee5bb941d12f54374"
+      },
+      {
+        "code": "11010",
+        "sheet": "11肉類",
+        "row": 22,
+        "sourceCellsSha256": "2e60c7d6ce6a84957342e80c179d7dd016c4d21d0dea0bc108114eb35255b592",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "348df55127125482cdfda2b780705d911dfc3a8ad8eddd23ce46acf7838a1813"
+      },
+      {
+        "code": "11011",
+        "sheet": "11肉類",
+        "row": 23,
+        "sourceCellsSha256": "4e2a101766552b104a6ad6e4bb98479ab8a27e2e403750414f2b7d647b02986a",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "8f534bfbfd27d100daa7ff6ecfb8b7e4193cd1ff417e6bd30522887b86b55cf8"
+      },
+      {
+        "code": "11249",
+        "sheet": "11肉類",
+        "row": 24,
+        "sourceCellsSha256": "250e2c9bca658ce609cbd4657c049101d201acb3faa60f3659548a08088183d7",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "bfaa5c1bd9096506ade52e80dbabf4f25cb833cd152fe130c155dfd5acff7462"
+      },
+      {
+        "code": "11248",
+        "sheet": "11肉類",
+        "row": 25,
+        "sourceCellsSha256": "dce4867451f52be8e823286413716c1b1c7b788c9088f552a39f23ae0e28e945",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "1d4c6dc271e407c83909a401fb3ab92562ca3a376f829043db3990f693f6d856"
+      },
+      {
+        "code": "11012",
+        "sheet": "11肉類",
+        "row": 26,
+        "sourceCellsSha256": "a290125c97def4ebc57588aecebd66c144a930a5f0105ffe3a1aadb392da6c30",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "b7d741953e8fda6e1127020e4dc7c8361b0f1d7b7f70ce33abbd6ae8df6c02fe"
+      },
+      {
+        "code": "11013",
+        "sheet": "11肉類",
+        "row": 27,
+        "sourceCellsSha256": "acb4964a97b5673d8ad396a171f5b5ced3782c0fa4aeda4af7f379df03f7aea3",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "f70c74f4028ce9f15da43ace5fc3f0abd0a455105758417f3da2b2ea4d5952c4"
+      },
+      {
+        "code": "11014",
+        "sheet": "11肉類",
+        "row": 28,
+        "sourceCellsSha256": "0776c8c0d515c10089dbd6e475f1bbf2f5e785eee995ea4d19787e63c7d2039b",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "5314fb208d07d524b6b0ee7ae3fd2a8ca1194e1566d5781375d850ded1efb6e6"
+      },
+      {
+        "code": "11015",
+        "sheet": "11肉類",
+        "row": 29,
+        "sourceCellsSha256": "8f01a66d79552117e5b566cf95ff0668cdcc2865d58ed9005ba3a192336d4e4f",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "be56d2bf451f4f225d3d3337cdb2f7415136dcc6295a97282b9ec186951c8b6d"
+      },
+      {
+        "code": "11016",
+        "sheet": "11肉類",
+        "row": 30,
+        "sourceCellsSha256": "4a36078e4d959cfd46a90b09346fce30befcdc98b68df751d1879d9b10887203",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "0d2d8f6ec612f38773f8cb2002043adc3936a00cc1b0b9badc904277d373fb72"
+      },
+      {
+        "code": "11017",
+        "sheet": "11肉類",
+        "row": 31,
+        "sourceCellsSha256": "1cbcb28ae721f3c508db9917bc3b55dafcda8c8bd5eb843900eaec642bfcb3a3",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "f1ec253d73458d41a9fca60f5627394badf31bd833b4a166635aa43f6282b75a"
+      },
+      {
+        "code": "11018",
+        "sheet": "11肉類",
+        "row": 32,
+        "sourceCellsSha256": "3bc8c47bfb374b7f4328f99e4bf900078df3765317a5bafa9aba304e51270510",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "9b3e523be50336a22c97f7fc46b266b6a2ab01b33ece16b2a3f6503d8b73ba23"
+      },
+      {
+        "code": "11019",
+        "sheet": "11肉類",
+        "row": 33,
+        "sourceCellsSha256": "38076380f0a320363dff9eef4d28ae267234eafef40003c67830f0cfe7125853",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "9783832fe529cdf27542039513d6217e206bcfb92d434f737b21e99e48caa6aa"
+      },
+      {
+        "code": "11020",
+        "sheet": "11肉類",
+        "row": 34,
+        "sourceCellsSha256": "a7eeee7d9c8050e5f30ba7925fc7b3afc2a1c28bec0e321bfccbd98aef9bb31c",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "1f05a11c5814dce3c3b3fb196fbe13b1483cf9ad52e6ef08798d350452ce13ab"
+      },
+      {
+        "code": "11251",
+        "sheet": "11肉類",
+        "row": 35,
+        "sourceCellsSha256": "1a6d43e2d84c669e6affa7a1ed44805d401c9f9711062ebaca4b608e7c58b1cf",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "cb1cd90101bf2a078b26a7c9bdb7ee65a0b2b0477ed574d37550ff94c84e3e9e"
+      },
+      {
+        "code": "11250",
+        "sheet": "11肉類",
+        "row": 36,
+        "sourceCellsSha256": "d51bc898d4b496bd6adf6b2930a2d354f21f215497ea6aaec2040aa4090bc470",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "4d0b26b199165ecd04ff96f06e66b5878f827522da8c3f3b9f20c1e11003f21e"
+      },
+      {
+        "code": "11021",
+        "sheet": "11肉類",
+        "row": 37,
+        "sourceCellsSha256": "83b9570de637c0508e579d4ca9462e6e677ab84e897ec59467cde22f283aad4a",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "5b22d612f2e1f5eeb9cb9979f9839bee43bd0dc776a396eb2722f624a3a0aa3b"
+      },
+      {
+        "code": "11022",
+        "sheet": "11肉類",
+        "row": 38,
+        "sourceCellsSha256": "970cabc8658a809e60b214ad065655d146787dc00fbfff72b236bc0cd47be5a6",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "c634833eb295520da32d6a6c2fb767a9a112b7351d212139bcd7f2cf07135abc"
+      },
+      {
+        "code": "11023",
+        "sheet": "11肉類",
+        "row": 39,
+        "sourceCellsSha256": "60b9b18b54baf3ce746b2b71a8811b68522d99d19759df963231713437d3365e",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "f5ef66bba5b5dd1b3aff4d9ccc4dcba926a911601eacd1eb91ce68c807171083"
+      },
+      {
+        "code": "11024",
+        "sheet": "11肉類",
+        "row": 40,
+        "sourceCellsSha256": "b292a06becf0e4017a308c75ac4f1b32f876fd50cd96cebceddfbae7d73c9328",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "dd5b140e5f51c159a5e7b3a34470f0157bdb7b25c3c154500495ed95213f005f"
+      },
+      {
+        "code": "11025",
+        "sheet": "11肉類",
+        "row": 41,
+        "sourceCellsSha256": "dcfe868e1d259e4c5fdea80aac0ad5c83540951476e3dcabace51c59701df590",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "25c23a4cb31228fc2b99f376707b775d0e111ffbe303cceae607bad42a205d8c"
+      },
+      {
+        "code": "11026",
+        "sheet": "11肉類",
+        "row": 42,
+        "sourceCellsSha256": "5d4ca76f4947dd6d150bdd54960dae2a5c7a1558ebf3bc975313b0f0e9571512",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "7386fffc9b4dfed968a86d1af9f761add841fbd92a43e0b01ee8206df01b2275"
+      },
+      {
+        "code": "11027",
+        "sheet": "11肉類",
+        "row": 43,
+        "sourceCellsSha256": "c7d37a13d2c4739c6df5010b0569d22dd679333c90add70520d1623bbe522ef6",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "1c5df73310b398f8e6ab4cd09d75581ed4eb932aa977883281c0abd93e7e3381"
+      },
+      {
+        "code": "11028",
+        "sheet": "11肉類",
+        "row": 44,
+        "sourceCellsSha256": "d630b672d51e3befb29211f1974dd3b6f7bb09c84dc973c994b7527737ae4dd7",
+        "memberSha256": "7016b82d7685c872f5ec2952ab38cfe9bb20ff3d1636d5cda757d772f6d16ce6",
+        "adaptedSha256": "aa80acf952831ff323459cee12c710be281d286ed45ac1ecfeeef3ae06ebf19f"
+      },
+      {
+        "code": "13001",
+        "sheet": "13乳類",
+        "row": 13,
+        "sourceCellsSha256": "fef6a6c77da7e4b04e638db80eca6059a9144951e6047863e75f6b23a782dbc0",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "24d528c04e25f24b22653902ef394a42074dc9a6fc30f1b6fad30a039a650634"
+      },
+      {
+        "code": "13002",
+        "sheet": "13乳類",
+        "row": 14,
+        "sourceCellsSha256": "6c8f788c5a595c22ed75ef05e8f3046983d29ee77c51c8c542c200343b3617ae",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "a5fa69a828e98e1f5be8d8f8c68c8de5a46164fd3533374fa45231a00ce4f9b7"
+      },
+      {
+        "code": "13003",
+        "sheet": "13乳類",
+        "row": 15,
+        "sourceCellsSha256": "abc529d2d0d14f333b1ad7db7ba8763553c9a797b651c9dcc61ac69714b2f4ba",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "81c7b008a39913075c31289d66e9a672cf6f402a768924600b81397064945b43"
+      },
+      {
+        "code": "13006",
+        "sheet": "13乳類",
+        "row": 16,
+        "sourceCellsSha256": "fd0aa4652d56752f2aa64f3db8ca22d0735643e7e586eace82fd87ac5d1db048",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "818565d9d53cecf50f9cde70853f14579ec443ab7641304f41da799933d2f50e"
+      },
+      {
+        "code": "13004",
+        "sheet": "13乳類",
+        "row": 17,
+        "sourceCellsSha256": "b2648ef9817ca7c92d2b7671a20214be8f1711ee2a5601986617d3e878c01d4f",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "aa353bdb92620dbaf35dd74673a92f6cd6d809f9f363aa177f2b25bfc6325555"
+      },
+      {
+        "code": "13005",
+        "sheet": "13乳類",
+        "row": 18,
+        "sourceCellsSha256": "0e76ab546baf8d1d72fa5f4df2ce23a299e7785a97a9220a45a77ac9b9004eea",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "fc68b2fc12405f2b6924a36b9360474f9b5be7be8460c362a6416ae6f22c4f2f"
+      },
+      {
+        "code": "13059",
+        "sheet": "13乳類",
+        "row": 19,
+        "sourceCellsSha256": "5c9869a9488fba312b2bdc2e956e5f59dda0f59805a029251aed25ba4a31336f",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "532cb160480f4141dab3017fe3da5c754c84ae131c1c9c2a3c4c15d76780d16c"
+      },
+      {
+        "code": "13007",
+        "sheet": "13乳類",
+        "row": 20,
+        "sourceCellsSha256": "3b202418026b0f6a8181204e341b4105879077a1d435b21af6c02960bcda1f2d",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "f8a45ccbecacb7acd10b5303e3d696c700b025448a09e2981f7b1585aa13de4e"
+      },
+      {
+        "code": "13008",
+        "sheet": "13乳類",
+        "row": 21,
+        "sourceCellsSha256": "beffd9345baa9ca2b1475d5f2d52f081770f1f4794126ecc1fd10ba243719baf",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "9c6a6a3afa27d2157902a8f4daed89269564b1dff72d43f7da4ec7a357e74c13"
+      },
+      {
+        "code": "13009",
+        "sheet": "13乳類",
+        "row": 22,
+        "sourceCellsSha256": "d3ffcd12129df00ee5b3b124c56b93ba71f2b4ff5d3f9b85ec15cfe21814a0de",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "34bb32df0e4783e9cad969cc514e1e6efbbe76972a760fead2a1203cccf520f7"
+      },
+      {
+        "code": "13010",
+        "sheet": "13乳類",
+        "row": 23,
+        "sourceCellsSha256": "f8e908028723ef111aa5ff828f23a0d1fa421d9111fb659f09cae643b11dfe1f",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "136eab0971f67840def07d4f39f38e82e0513260eedeaedf4db8d8e4d1b61ede"
+      },
+      {
+        "code": "13011",
+        "sheet": "13乳類",
+        "row": 24,
+        "sourceCellsSha256": "b936c30b5401bd8827b55c4d0e3d04180264d47486d0364eb7e315d4305b2179",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "589927d4b8f316f4a6d6440e82efd4665798295ab0a43baab9aaeae9276080f3"
+      },
+      {
+        "code": "13012",
+        "sheet": "13乳類",
+        "row": 25,
+        "sourceCellsSha256": "6832759a6ea9c4c3499e84e216221d40f43a24841aac869229dbeaf1e2d4f47a",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "fb3e0ea8182dc12a474bcbf34412275785175226d9b6f1dfdb5cd097dbe0749a"
+      },
+      {
+        "code": "13013",
+        "sheet": "13乳類",
+        "row": 26,
+        "sourceCellsSha256": "08553b78aaef972645f71d7ae2beda33275d28f437ce5fd0efdb5d1737f29c12",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "39ab0095add15a2501b29a49521fdd91ae19254788faa0d866186c279fadcf99"
+      },
+      {
+        "code": "13014",
+        "sheet": "13乳類",
+        "row": 27,
+        "sourceCellsSha256": "519200b066645c03c74f889cfbbaf47b3a2c0914bd0de5ea045f10612e53f653",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "8622488d476d6ab9828053e14a5bad509c3533c288e7ec1f008df7b61f47fe5d"
+      },
+      {
+        "code": "13015",
+        "sheet": "13乳類",
+        "row": 28,
+        "sourceCellsSha256": "70e0054042f9f3560bde7385e87aa55ddf55d21c9f4f0b1a542f2ca96da74c1f",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "d4266e4478f8acfd3db4fa4946e8dc427f964305b0e5a78d7ee47f5d438e765f"
+      },
+      {
+        "code": "13016",
+        "sheet": "13乳類",
+        "row": 29,
+        "sourceCellsSha256": "691fc83f0788b58cbf3103a39e8c76b54dba563cae701cf623aa7ef23e88eb7b",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "52af99c3451b2d70431b3f1abb9467c4141d571289a3b0438464964f194f9477"
+      },
+      {
+        "code": "13017",
+        "sheet": "13乳類",
+        "row": 30,
+        "sourceCellsSha256": "e5f2556ceb6cca8abb5781f1b6b2b3ab58e5b95160bcbfbab3720317b9127e9a",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "4f6099f21d07840933464d5db050246794731768d71e76abb130be35f5080d60"
+      },
+      {
+        "code": "13018",
+        "sheet": "13乳類",
+        "row": 31,
+        "sourceCellsSha256": "9ed194d7b3fd143c132b8c853e7e212049fd91353108ab4c79b4ea17d4a04adc",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "0a631ce187f8dbf949e43ef1c6ead1f1739d08d18c304f841db5c113b19f44ab"
+      },
+      {
+        "code": "13019",
+        "sheet": "13乳類",
+        "row": 32,
+        "sourceCellsSha256": "66da1bb50acf842aca6db5cb15bc21eb1caabeda155093368e44d4ba68b13671",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "cdd52a33babaa46a6e99b591d51d5eb88bd46dd17f332f6d6ffbfaab036a4ae1"
+      },
+      {
+        "code": "13020",
+        "sheet": "13乳類",
+        "row": 33,
+        "sourceCellsSha256": "df8cf85b68d428bbb7b376013a81f9d4c95bb640a9087c0f12c1e7a10c1acb02",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "a22e059e13b5d9c9a64f7cdbfd5cf2ad12c13ea6a6aecaaa3d7282c30aabfa9a"
+      },
+      {
+        "code": "13021",
+        "sheet": "13乳類",
+        "row": 34,
+        "sourceCellsSha256": "30c70cc360b36ca81ce639d486d598ecaf40454dfab143e06353d71da7289863",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "9681dfaac5f9681d5a32bbc8c5be61d8e9d9cbcb9ee4b934dce90550a719b907"
+      },
+      {
+        "code": "13022",
+        "sheet": "13乳類",
+        "row": 35,
+        "sourceCellsSha256": "12aa85b9398a1ac3aef17f685de5aa5f1a0272e57671dcfb513f603228525c65",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "e1a07e818816f82d94861f677accd1f81bed6308baffd2dffdbe7d90276219fd"
+      },
+      {
+        "code": "13023",
+        "sheet": "13乳類",
+        "row": 36,
+        "sourceCellsSha256": "a1fd36689c45b6823a28f96c22d4f16bd7c6322580d049de9363f23fc45adc66",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "1bbb9f5e40dd7de0021bbf0abec3feb5151663916e4df4d15e84aa11afd79bda"
+      },
+      {
+        "code": "13024",
+        "sheet": "13乳類",
+        "row": 37,
+        "sourceCellsSha256": "3b01df009d7bc98562b09224b2705539c6130bef9eda3cfb0fa50e5b5d19e13a",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "234d632e42ae77a72c7a4ecf90ddfc5d4344f420b375c45fe554d9ba6381c92f"
+      },
+      {
+        "code": "13025",
+        "sheet": "13乳類",
+        "row": 38,
+        "sourceCellsSha256": "8ef81286170c372f506e4e357565007783ab9b14099268ac033636143dba51a9",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "577dbb61be0af8fee636341bcce51407770f8270d298c6a10a4bf8f4ac6cb29c"
+      },
+      {
+        "code": "13053",
+        "sheet": "13乳類",
+        "row": 39,
+        "sourceCellsSha256": "4be68a21b9568d17662447966537f0907fd6aadd3e380e05a13be9d5d65634b6",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "7e70366f99fc12a7d349498cfe6aca4792c68b96c3cb688f7c8d0906fed391a0"
+      },
+      {
+        "code": "13054",
+        "sheet": "13乳類",
+        "row": 40,
+        "sourceCellsSha256": "db85841d6e0df2ae20d687134b606d3f3a771a89eb2206a5ed373f2a44b66a19",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "d25cd04ccf647dedab1ba711a979bd90ea4bd1521d5be2bb24ae6c78d00beb0e"
+      },
+      {
+        "code": "13026",
+        "sheet": "13乳類",
+        "row": 41,
+        "sourceCellsSha256": "b3fe4ed44b4c8beb07f8009bd7db199e23a771cbe333f18acdddfa4a154bf37e",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "a9b3752f65cdd82e8e8061322026b2403bb0c1c58e9b86670b599ba72a9aeefc"
+      },
+      {
+        "code": "13027",
+        "sheet": "13乳類",
+        "row": 42,
+        "sourceCellsSha256": "d012082afc6eb7bdb66132383f346834c4d380cd499487b04a20d4eb45d03366",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "d33696e0495127b4e23624b29dcdbec1e70c8270194f0da2c4d5592b7890b16a"
+      },
+      {
+        "code": "13028",
+        "sheet": "13乳類",
+        "row": 43,
+        "sourceCellsSha256": "5825b203237cd1f49673d0c5ff4ec939688ba0ef6b5df11859613ae0c6ad9380",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "473a1959d0d66a93dbd31a034cc375b02b8b0f96b093cf42e3a227b24b311db0"
+      },
+      {
+        "code": "13029",
+        "sheet": "13乳類",
+        "row": 44,
+        "sourceCellsSha256": "39d0e8580f555a0038bb453e1627f06b03882038c50bbfed4f573e8fe240bcb5",
+        "memberSha256": "263bf8c654addbc7c14e9965dae5fe5d42546dce63c5de17840fe01806a6a333",
+        "adaptedSha256": "a2732d62d9ec5b0b68f34340520b2670462ae903aa0e28ae018bf627a3bfbf66"
+      }
+    ],
+    "qualifierCounts": {
+      "source-reported": 7783,
+      "source-parenthesized-unresolved": 960,
+      "unknown": 1301,
+      "trace": 324
+    },
+    "japaneseLabels": 192,
+    "englishLabels": 0,
+    "roundtrip": "passed exact source-cell lexical/digest checks",
+    "recordSetSha256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
+    "networkBytes": 0,
+    "admitted": false
+  },
+  "prior_japan_discovery": {
+    "source_csv_pin": {
+      "commit": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+      "path": "docs/dataset-discovery/worker-15/source.csv",
+      "bytes": 13472,
+      "sha256": "47f77229610bf4b1a6318cfe6057cd99db85dcac1e9a623e5d5433612b6aa6e9",
+      "git_blob": "d2c7305a02b381085a1fdecf1ba51fdc89966bbe"
+    },
+    "receipt_pin": {
+      "commit": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+      "path": "docs/dataset-discovery/worker-15/receipt.json",
+      "bytes": 12022,
+      "sha256": "2bf2fe696a2b223ec2a3ec66f77995ce69e1b29b2eb234f05c0aab6c69623832",
+      "git_blob": "f83a794a901412e7d48e82522b500dc53eb666de"
+    },
+    "rights": {
+      "url": "https://www.mext.go.jp/b_menu/1351168.htm",
+      "revised": "2026-08-17",
+      "policy": "MEXT website usage rules; compatible with CC BY 4.0 for content within scope",
+      "scope": "MEXT-owned website content; numerical data and simple tables separately described as outside copyright; no blanket third-party permission",
+      "conditions": [
+        "Attribute MEXT and source URL",
+        "Describe processing/modification; do not imply MEXT authorship or endorsement of this export",
+        "Respect separately stated terms and third-party rights",
+        "Logos/symbols/characters excluded; external API provider terms remain separate"
+      ],
+      "sample_rights": "Three small numerical observations and associated MEXT table labels for local review only; no third-party-labelled material copied, no external publication"
+    },
+    "remaining_blockers": [
+      "No complete release freshness verification beyond checked landing-page correction notice and file links",
+      "Third-party/excluded-content rights not audited across full release",
+      "Component method/analytical/calculated distinctions need source documentation review",
+      "Canonical food/ingredient/state equivalence unresolved",
+      "Tiny local samples not curated/admitted; curated_record_refs blank",
+      "Bulk recovery/resource/admission gates remain outstanding"
+    ],
+    "reuse": "prior owner/files preserved; only source references"
+  },
+  "rights": {
+    "policy_url": "https://www.mext.go.jp/b_menu/1351168.htm",
+    "retained_rights_evidence": "immutable Worker15 receipt; no independent captured policy body found in inspected national-originals directory",
+    "status": "claims preserved for local validation; redistribution/publication not qualified here",
+    "attribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan; Standard Tables 2023 corrected 27 March 2026; source URL and modification notice",
+    "modification": "Bounded selected worksheets parsed to source-labelled staging records; decimal lexicals, unit header provenance, preparation tokens and per-record cell pins added; not authored or endorsed by MEXT",
+    "scope_exclusions": [
+      "third-party material and marks require separate evidence",
+      "no images or copyrighted narrative copied into report",
+      "companion amino acid/fat/carbohydrate workbooks not interpreted as 100g edible food"
+    ],
+    "original_record_scope": "192 already-retained records read locally by reference; no newly fetched licensed records; no corpus copy committed"
+  },
+  "adapter": {
+    "path": "scripts/global-data-validation/worker-51.py",
+    "format": "source-specific staging JSON; not canonical production schema",
+    "roundtrip": "JSON serialization/deserialization preserves exact source-cell strings/None and record digest; source identity, unit schema, quantity basis and component mutations rejected",
+    "Japanese": "OOXML direct/rich-run display text retained; phonetic rPh reading annotations excluded from display; source strings remain in retained workbook",
+    "English": "none present in inspected workbook; no generated translation, phonetic text or component identifiers used as English food label",
+    "food_code": "five-character source identifier including leading zeros; exact release-scoped identity, no nutritional equivalence",
+    "forms": "source Japanese preparation tokens retained; canonical cooking state remains null pending reviewed mapping",
+    "components": "distinct source codes retained, including ID iodine, RETOL retinol and VITA_RAE; header-derived µg units with source header cell/lexical retained",
+    "qualifiers": "trace/unknown/parenthesized unresolved remain null; actual zero distinct; source floats represented by exact OOXML decimal lexicals, not rounded or silently reinterpreted",
+    "basis": "100g edible portion, preparation as described. REFUSE percentage is whole-food discard observation, not edible nutrient mass. No companion table denominator assumed",
+    "unmapped": "all non-component source cells retained in bounded in-memory staging roundtrip; companion-marker columns never discarded or inferred"
+  },
+  "adoption_delta": {
+    "worker01": {
+      "files_to_review": [
+        "scripts/global-data-validation/worker-51.py",
+        "tests/test_global_data_worker51.py"
+      ],
+      "integration_contract": "Call read_records only for this exact workbook SHA and bounded sheet selection; retain SourceRecord citation with release/worksheet/member/row/cell digest. Translate exact valueDecimal to production numeric type only for source-reported qualifiers; preserve lexical/qualifier/unit/basis and component code. Keep unresolved values null. Include ja source labels only; obtain separately pinned English publication before adding en. Do not alias different component definitions or raw/cooked food codes. No importer/schema edits in this candidate.",
+      "validation_command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_global_data_worker51.py -v",
+      "blocking_gate": "right-to-publish primary evidence plus independent review; companion denominators/methods/food-equivalence unresolved"
+    },
+    "worker63": {
+      "prior_admission_candidate": {
+        "commit": "04db1e91f57b95257d23cac8ebe109ee3eb5ed32",
+        "path": "docs/dataset-admission-worker63-20261014.json",
+        "bytes": 736861,
+        "sha256": "32d85d16a12be55dfdd76b1004b73d30a7a7624e74850425e2ac052d0ff883f7",
+        "git_blob": "8ec28d65e27c320f5de154b5389dfde1f20e9a5d"
+      },
+      "delta": "Attach exact report, script and test blobs plus retained workbook/member/record pins to japan-mext gates. Identity, typed source component units, preparation lexical evidence and bounded reconciliation now reproducible from actual bytes; rights/analytical-method/food-equivalence and release adoption still require explicit independent review. Do not change prior admitted-discovery-custody-only into corpus admission automatically.",
+      "requested_review_scope": "exact author commit to be reported after commit; all 192 row pins and seven actual-source regressions; no source copies or independent admission claimed"
+    }
+  },
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_global_data_worker51.py -v",
+    "count": 7,
+    "result": "7 passed after final source-cell, basis and preparation guards",
+    "actual_source": "one bounded six-sheet pass per test run; no heavyweight repeated workbook scan or dependencies",
+    "cases": [
+      "actual iodine2200µg at AH13 seaweed09001",
+      "retinol51 vs RAE53µg milk13001",
+      "raw/cooked vegetable06001/06002 labels/codes distinct",
+      "trace/parenthesized/unknown/zero distinction",
+      "source phonetic annotations excluded",
+      "discard percent vs edible100g basis",
+      "all192 JSON roundtrips and corruption/cap checks"
+    ]
+  },
+  "network": {
+    "source_requests": 0,
+    "source_bytes": 0,
+    "new_sample_records": 0,
+    "remaining_prior_cumulative_budget": "unknown exact; no fetching",
+    "git_fetch": "source-control only, not data source bytes"
+  },
+  "controls": {
+    "filesystem": "unrestricted; sandbox danger-full-access; supplied permission_profile disabled",
+    "network": "enabled; Git fetch succeeded; no source access requested",
+    "mandatory_reviewer": "auto_review preserved",
+    "approval_policy": "unavailable in supplied context",
+    "CODEX_PERMISSION_PROFILE": null,
+    "named_profile": "unavailable; not inferred",
+    "git": "all inherited GIT_* stripped; GIT_OPTIONAL_LOCKS=0 scoped"
+  },
+  "custody": {
+    "main_HEAD_index_unchanged": true,
+    "prior_branch_HEAD_preserved": true,
+    "previous_source_branch_and_receipts": "no edits, references only",
+    "other_owners": "no worker01 importer/schema, worker02 app/handler, Worker14 consolidation, dependency, server, production or release writes",
+    "owned_paths": [
+      "scripts/global-data-validation/worker-51.py",
+      "tests/test_global_data_worker51.py",
+      "docs/global-data-validation/worker-51.json",
+      "docs/global-data-validation/worker-51.md"
+    ]
+  },
+  "blockers": [
+    "Independent immutable candidate review pending",
+    "Full source-specific publication/redistribution scope and captured licence evidence not independently resolved",
+    "No sourced English food labels in inspected workbook; separately pinned English source required",
+    "Canonical preparation/food equivalence and analytical-method semantics unresolved; lexical evidence only"
+  ],
+  "admission": false,
+  "publication": false,
+  "production": "STOP",
+  "validation": {
+    "author_checks": "passed: seven actual-source tests, exact source/input after hashes, scoped Git files, prior branch and main HEAD/index preserved",
+    "independent_review": "pending exact immutable author commit",
+    "files_sha256": {
+      "scripts/global-data-validation/worker-51.py": "42b01f3399c5bf72a4dc5c61c35da4954e6fe438efcd043160e0ffc46da9bbe5",
+      "tests/test_global_data_worker51.py": "3b49a59c2531dfb8247fbba2bde7879831c2fc4b2867329e3f13a8e27b7036b2",
+      "docs/global-data-validation/worker-51.md": "b3f74ab032e9126410809502d6e294da374625a5eb230bf4894292ea7c61f552"
+    },
+    "commit_binding": "report commit/blob hashes reported externally after commit to avoid self-reference"
+  }
+}

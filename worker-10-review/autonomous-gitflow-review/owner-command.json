@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests-gitflow",
+    "-v"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot",
+  "exitCode": 0,
+  "logSha256": "f84ee8ff7d8f75d43a988eb7ec7c59f2292e48583a8c35c3d958c2478a06d1c6",
+  "GitFixturePolicy": "Inherited GIT_* removed. Fixture-specific local origin lock; no real origin/ref mutations. No production hook installs/bypass."
+}

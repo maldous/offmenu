@@ -1,0 +1,12 @@
+test_cap_and_duplicate_sheet_fail_before_source_read (test_global_data_worker51.JapanActualSourceTests.test_cap_and_duplicate_sheet_fail_before_source_read) ... ok
+test_original_labels_code_and_raw_cooked_forms_do_not_join (test_global_data_worker51.JapanActualSourceTests.test_original_labels_code_and_raw_cooked_forms_do_not_join) ... ok
+test_real_iodine_retinol_units_and_retinol_equivalent_are_separate (test_global_data_worker51.JapanActualSourceTests.test_real_iodine_retinol_units_and_retinol_equivalent_are_separate) ... ok
+test_record_unit_qualifier_identity_and_translation_mutations_fail (test_global_data_worker51.JapanActualSourceTests.test_record_unit_qualifier_identity_and_translation_mutations_fail) ... ok
+test_script_json_roundtrip_all_actual_records (test_global_data_worker51.JapanActualSourceTests.test_script_json_roundtrip_all_actual_records) ... ok
+test_source_trace_parentheses_missing_and_zero_remain_distinct (test_global_data_worker51.JapanActualSourceTests.test_source_trace_parentheses_missing_and_zero_remain_distinct) ... ok
+test_whole_food_discard_basis_is_not_edible_nutrient_basis (test_global_data_worker51.JapanActualSourceTests.test_whole_food_discard_basis_is_not_edible_nutrient_basis) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.303s
+
+OK

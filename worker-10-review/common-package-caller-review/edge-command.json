@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-cases.mjs"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review",
+  "exitCode": 1,
+  "logSha256": "a1911f8100b3fb9f1ac68bd6d2478f1c6707d22c442127f9622050ec3ec6b93b"
+}

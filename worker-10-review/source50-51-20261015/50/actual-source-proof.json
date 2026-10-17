@@ -1,0 +1,41 @@
+{
+  "schema": "offmenu-tbca-local-validation/1",
+  "context": {
+    "source_id": "discovery:S217",
+    "source_url": "https://www.tbca.net.br/base-dados/composicao_estatistica.php",
+    "snapshot_sha256": "22e29f1fae3c4c9a13e61c27308a177de2edac93661807af818b2232ce158ace",
+    "snapshot_bytes": 82840,
+    "sidecar_sha256": "82fbf54aea9d9e769ee7fce208b9f0807548370435647248580e51d33b3bca26",
+    "accessed_utc": "2026-10-13T06:54:34.437665+00:00",
+    "release_id": null,
+    "licence": null,
+    "redistribution_verified": false,
+    "rights_decision": "requires primary licence review",
+    "retained_path": "/home/user/src/offmenu-data/source-access-20261013/8e4df41bbcc357bfe69bef73.html",
+    "row_limit": 100,
+    "excluded_rows": 0
+  },
+  "identity_rows_checked": 100,
+  "composition_rows_checked": 0,
+  "records_exported": 0,
+  "corpus_admitted": false,
+  "names_with_diacritics": 33,
+  "literal_form_counts": {
+    "congelada": 4,
+    "cozida": 3,
+    "cozido": 4,
+    "cru": 3,
+    "crua": 4,
+    "drenado": 1,
+    "industrializada": 3,
+    "industrializado": 1,
+    "integral": 4,
+    "preparado": 10,
+    "seco": 1
+  },
+  "names_preserved_exactly": true,
+  "all_component_ids_units_basis_unknown": true,
+  "in_memory_projection_sha256": "5dd38d2603bb66c2aa31e72318cd5dbf9dfc0e42e541e81cd76821cc45b83c00",
+  "projection_digest_scope": "diagnostic projection only; not a dataset/release hash",
+  "source_unchanged": true
+}

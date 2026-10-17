@@ -1,0 +1,37 @@
+[
+  {
+    "mutation": "release",
+    "value": "unreviewed-other-release",
+    "proofAccepted": true,
+    "proofClaimedRelease": "2023-corrected-20260327-main",
+    "proofClaimedWorkbook": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+  },
+  {
+    "mutation": "workbookSha256",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000",
+    "proofAccepted": true,
+    "proofClaimedRelease": "2023-corrected-20260327-main",
+    "proofClaimedWorkbook": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+  },
+  {
+    "mutation": "memberSha256",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000",
+    "proofAccepted": true,
+    "proofClaimedRelease": "2023-corrected-20260327-main",
+    "proofClaimedWorkbook": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+  },
+  {
+    "mutation": "sheet",
+    "value": "other-worksheet",
+    "proofAccepted": true,
+    "proofClaimedRelease": "2023-corrected-20260327-main",
+    "proofClaimedWorkbook": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+  },
+  {
+    "mutation": "url",
+    "value": "https://example.invalid/other",
+    "proofAccepted": true,
+    "proofClaimedRelease": "2023-corrected-20260327-main",
+    "proofClaimedWorkbook": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c"
+  }
+]

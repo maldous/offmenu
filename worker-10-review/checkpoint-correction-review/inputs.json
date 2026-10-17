@@ -1,0 +1,14 @@
+{
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "metadataParent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+  "candidate": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+  "actualChangedPaths": [
+    "scripts/align-places-common.py",
+    "scripts/places-recovery-preflight.py",
+    "tests/test_places_checkpoint.py"
+  ],
+  "metadataDeltaSha256": "6260e5dac320145456300ae3604683925e21b1bbdb10fb353ee0c1da5c687a80",
+  "limitDeltaSha256": "3a5da6d6f2d08bf96c2c0f402cf7a4cfbda8a43d19621634d5077e977383da5c",
+  "chainSha256": "904ed8c8dfac4e80ac913e8113227fb21adb40feeadaa31e0f4e0701318ea674",
+  "sourceBytes": 126302
+}

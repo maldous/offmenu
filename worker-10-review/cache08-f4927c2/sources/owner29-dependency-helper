@@ -1,0 +1,78 @@
+// Pure withholding plan only. The owner supplies current rights decisions;
+// stored dependency.allowed flags are never authority. No storage or transport.
+const identityFields = ['owner', 'sourceId', 'id', 'predicate', 'version'];
+const reference = row => Object.fromEntries(identityFields.map(field => [field, row[field]]));
+function key(row) {
+  if (!row || identityFields.some(field => typeof row[field] !== 'string' || !row[field] || row[field].length > 256)) {
+    throw new TypeError('Explicit bounded assertion identity and version required');
+  }
+  return JSON.stringify(identityFields.map(field => row[field]));
+}
+
+/**
+ * Each node represents ONE field assertion, with dependencies: [] for a known
+ * root, or exact {owner, sourceId, id, predicate, version} references.
+ * permit(node, {now}) must synchronously apply the caller's current rights,
+ * audience/action/market/account/consent gates. It must not mutate its inputs.
+ * Allowed here means dependencies permit reuse, never evidence qualification.
+ */
+export function evaluateAssertionDependencies(assertions, {clock, permit, withdrawn = []} = {}) {
+  if (typeof clock !== 'function' || typeof permit !== 'function') throw new TypeError('Clock and current permission callback required');
+  if (!Array.isArray(assertions) || assertions.length > 256 || !Array.isArray(withdrawn) || withdrawn.length > 256) {
+    throw new RangeError('At most 256 assertions and withdrawal references');
+  }
+  const now = clock();
+  if (!Number.isFinite(now)) throw new TypeError('Finite clock required');
+  const nodes = new Map(), dependencies = new Map();
+  let edges = 0;
+  for (const node of assertions) {
+    const id = key(node);
+    if (nodes.has(id)) throw new TypeError('Duplicate assertion reference');
+    if (!Array.isArray(node.dependencies)) throw new TypeError('Explicit dependency list required');
+    edges += node.dependencies.length;
+    if (edges > 2048) throw new RangeError('At most 2048 dependency references');
+    nodes.set(id, node);
+    dependencies.set(id, node.dependencies.map(dep => ({id: key(dep), ref: reference(dep)})));
+  }
+  const removed = new Set(withdrawn.map(key)), decisions = new Map(), visiting = new Set();
+  const denied = (reason, blockedBy = []) => ({allowed: false, reason, blockedBy});
+  function visit(id) {
+    if (decisions.has(id)) return decisions.get(id);
+    if (visiting.has(id)) return denied('dependency cycle', [reference(nodes.get(id))]);
+    const node = nodes.get(id);
+    if (removed.has(id) || ['withdrawn', 'quarantined'].includes(node.status)) {
+      const result = denied('assertion unavailable', [reference(node)]);
+      decisions.set(id, result);
+      return result;
+    }
+    // Malformed explicit retention is unavailable, not an unbounded grant.
+    if (node.retainUntil != null && (!Number.isFinite(Date.parse(node.retainUntil)) || Date.parse(node.retainUntil) <= now)) {
+      const result = denied('retention unavailable', [reference(node)]);
+      decisions.set(id, result);
+      return result;
+    }
+    const permission = permit(node, {now});
+    if (permission?.allowed !== true) {
+      const result = denied('current permission denied', [reference(node)]);
+      decisions.set(id, result);
+      return result;
+    }
+    visiting.add(id);
+    const blocked = [];
+    for (const dep of dependencies.get(id)) {
+      if (dep.ref.owner !== node.owner && dep.ref.owner !== 'public') {
+        blocked.push({ref: dep.ref, reason: 'private account mismatch'});
+      } else if (!nodes.has(dep.id)) {
+        blocked.push({ref: dep.ref, reason: 'exact dependency unavailable'});
+      } else {
+        const result = visit(dep.id);
+        if (!result.allowed) blocked.push({ref: dep.ref, reason: result.reason});
+      }
+    }
+    visiting.delete(id);
+    const result = blocked.length ? denied('dependency unavailable', blocked) : {allowed: true, reason: 'dependencies permitted', blockedBy: []};
+    decisions.set(id, result);
+    return result;
+  }
+  return assertions.map(node => ({ref: reference(node), ...visit(key(node))}));
+}

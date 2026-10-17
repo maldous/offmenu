@@ -1,0 +1,90 @@
+{
+  "schema": "offmenu-worker10-independent-review/1",
+  "utc": "2026-10-14T10:21:37.509856+00:00",
+  "reviewer": "Worker10",
+  "authorWorker": "Worker09",
+  "authoredBase": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "previousPin": "60c6c01142fa903b8a9b6d4658f5c91085409baa",
+  "reviewedPin": "58c5f051d037eb02582a83a0e7107d907b1f401e",
+  "reviewedBranch": "feature/autonomous-gitflow-review-20261014",
+  "verdict": "REQUEST_CHANGES_FOR_FULL_BINDING_SCOPE",
+  "branchRedirectionCorrection": "PASS; W10-GITFLOW-F4 closed at exact pin",
+  "normalProviderCycle": "PASS; linked normal merge receipt -> safe disposable task branch retirement -> fresh dispatch on actual merge base; no accepted release baseline invented",
+  "findings": [
+    {
+      "id": "W10-GITFLOW-F5",
+      "priority": "P2",
+      "title": "Retained local integration route skips new owner and authored-task bindings",
+      "source": "scripts/offmenu-gitflow.py",
+      "locations": [
+        {
+          "line": 478,
+          "endLine": 479
+        },
+        {
+          "line": 557,
+          "endLine": 558
+        }
+      ],
+      "description": "The new task_ready_binding is used for normal provider receipt attachment and retirement, but integrate still uses the old field comparison, omitting owner and generated authored branch identity. A READY with a different owner, or a consistently rehashed start/READY pair pointing at a same-HEAD alias whose branch is incompatible with its task id, is still allowed by integrate --check-only. In retirement_integration, the local integrate operation returns immediately after read_receipt; the read verifies schema/status/operation/repo but not worker or owner. An otherwise genuine local integrate receipt with only worker=8 or owner=different-owner is accepted by retire --check-only for worker9. This leaves the requested all-route owner/task receipt consistency unverified despite the normal provider correction.",
+      "reproductionCases": [
+        "local-integrate-receipt-worker-mismatch",
+        "local-integrate-receipt-owner-mismatch",
+        "local-integrate-ready-owner-mismatch",
+        "local-integrate-rehashed-start-alias-task-mismatch"
+      ],
+      "actual": "All four negative probes return exit0/status allowed rather than a retained blocked receipt.",
+      "impact": "Managed integration/retirement gates accept contradictory author or integrator custody metadata. These probes do not demonstrate another branch being retired: current authored branch selection and exact Morgan retirement branch/owner/worktree checks continue to hold.",
+      "regressionClassification": "Remaining coverage gap in the retained local integrate path; those validation branches are unchanged by the 60c6->58c5 delta.",
+      "recommendation": "Use task_ready_binding(start, ready, ready.start_receipt, worker) in integrate without requiring current_task=True (the legitimate current checkout there is the target line). Before the local integrate receipt adapter returns, validate its worker and owner against the authored start/current policy along with the existing canonical repo, source/task/ready, exact review, ancestry and current-branch gates. Keep legacy incompatible receipts as evidence and block their cleanup qualification.",
+      "validation": "Require the four supplied negatives to produce exit2/status blocked, retaining normal provider and local integration positive paths and the temporary-retirement->fresh-dispatch sequence."
+    }
+  ],
+  "tests": {
+    "ownerSuite": {
+      "command": "python3 -B -m unittest discover -s tests-gitflow -v",
+      "tests": 50,
+      "exitCode": 0,
+      "log": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-suite.log"
+    },
+    "retainedIndependentProbes": {
+      "cases": 49,
+      "passed": 49,
+      "failed": 0
+    },
+    "expandedBindingProbes": {
+      "cases": 47,
+      "passed": 43,
+      "failed": 4
+    },
+    "uncertifiedRoutineCycle": "PASS; release/hotfix without accepted baseline remain blocked"
+  },
+  "ownerManifestAllHashesMatch": true,
+  "ownerDeltaMatchesPinnedGitDiff": true,
+  "preservation": {
+    "protectedFilesUnchanged": true,
+    "hooksPreserved": 14,
+    "existingEvidenceFilesPreserved": 189,
+    "worker10HeadAndBranchUnchanged": true,
+    "worker09ExactPinUnchanged": true,
+    "snapshotMatchesPin": true,
+    "registrationTopologyUnchanged": true,
+    "otherWorktreeHeadBranchChangesObserved": 21,
+    "registrationObservation": "Other existing worktrees advanced or switched concurrently. No review command registered, removed, or changed any actual worktree or branch. Before/after inventory retained."
+  },
+  "controls": {
+    "filesystem": "unrestricted/danger-full-access",
+    "network": "enabled; synthetic local bare origins only in tests",
+    "mandatoryReviewer": "auto_review",
+    "separateApprovalPolicy": "unavailable",
+    "CODEX_PERMISSION_PROFILE": "unset; no named profile inference",
+    "changed": false
+  },
+  "limits": [
+    "Independent client-metadata consistency review, not receipt authentication/signature validation.",
+    "Failed negative probes used check-only and deleted no branches. Rejected branch-redirection execution also preserved both disposable branches. Positive retirement deleted only its disposable fixture branch.",
+    "No actual push, merge, branch deletion, trigger/hook/security/settings activation, install, server, agent, or additional managed worktree.",
+    "Morgan owns dispatch/review acceptance. This report qualifies only the exact reviewed pin and does not accept a release or activate proposals."
+  ],
+  "artifactDirectory": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0"
+}

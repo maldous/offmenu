@@ -1,0 +1,57 @@
+[
+  {
+    "case": "release",
+    "blocked": true,
+    "error": "Conflicting source release/workbook/document provenance"
+  },
+  {
+    "case": "workbookSha256",
+    "blocked": true,
+    "error": "Conflicting source release/workbook/document provenance"
+  },
+  {
+    "case": "memberSha256",
+    "blocked": true,
+    "error": "Conflicting worksheet/member/header provenance"
+  },
+  {
+    "case": "sheet",
+    "blocked": true,
+    "error": "Worksheet is not in pinned workbook"
+  },
+  {
+    "case": "url",
+    "blocked": true,
+    "error": "Conflicting source release/workbook/document provenance"
+  },
+  {
+    "case": "publisher",
+    "blocked": true,
+    "error": "Conflicting source release/workbook/document provenance"
+  },
+  {
+    "case": "basisHeaderLexical",
+    "blocked": true,
+    "error": "Conflicting worksheet/member/header provenance"
+  },
+  {
+    "case": "componentSchemaSha256",
+    "blocked": true,
+    "error": "Conflicting worksheet/member/header provenance"
+  },
+  {
+    "case": "row",
+    "blocked": true,
+    "error": "Identity or label changed"
+  },
+  {
+    "case": "consistent-raw-value-component-and-row-digest-rehash",
+    "blocked": true,
+    "error": "Record cells differ from pinned worksheet row"
+  },
+  {
+    "case": "consistent-component-unit-and-schema-digest-rehash",
+    "blocked": true,
+    "error": "Conflicting worksheet/member/header provenance"
+  }
+]

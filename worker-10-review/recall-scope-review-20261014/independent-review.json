@@ -1,0 +1,529 @@
+{
+  "schema": "offmenu.worker10.recall-scope-independent-review/1",
+  "createdAt": "2026-10-14T07:24:44.610717+00:00",
+  "reviewer": {
+    "worker": 10,
+    "threadId": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+    "checkout": "/home/user/src/offmenu-workers/worker-10",
+    "actualBranch": "feature/recall-scope-review-20261014",
+    "actualHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "baseline": "provisional; no release or current-task freshness certification inferred"
+  },
+  "candidate": {
+    "base": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "result": "adf42e947b21c2d5441fcb69b683c931d726e31c",
+    "diffSha256": "944fecd9cd50595f6fc371712d0baa14e19dbab079a04ed6720bce83783b224d",
+    "sourceBytes": 25945
+  },
+  "sourceReceipts": [
+    {
+      "file": "public/recall-scope-model.js",
+      "bytes": 4548,
+      "sha256": "add959bd489e5ec0dd68a28d7cd927b8b791b315d58eee9e24a7ca32bb384b71",
+      "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+    },
+    {
+      "file": "public/evidence-model.js",
+      "bytes": 4860,
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+    },
+    {
+      "file": "tests-web/recall-scope-model.test.mjs",
+      "bytes": 8777,
+      "sha256": "29d3f7701e02debce572b5102809031d4f43fade1468de2d194b67f30938021f",
+      "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+    },
+    {
+      "file": "docs/worker-26-recall-scope.md",
+      "bytes": 7051,
+      "sha256": "516aa06c546a7f86ae4518adadadfe2d298d5c7836bee8b8b4d3ea1248575253",
+      "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+    },
+    {
+      "file": "package.json",
+      "bytes": 709,
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+    }
+  ],
+  "disposition": "One P2 temporal precision finding; focused author tests reproduced, other bounded edges pass. Recommend correction or an explicit narrower admitted timestamp format before owner integration. Morgan owns verdict and priority; Dataset01 retains source authority.",
+  "accepted": false,
+  "integrated": false,
+  "regulatoryOrMedicalCertification": false,
+  "findings": [
+    {
+      "id": "W10-RECALL-F1",
+      "severity": "P2",
+      "title": "Admitted submillisecond timestamps lose ordering in Date.parse comparisons",
+      "resultCommit": "adf42e947b21c2d5441fcb69b683c931d726e31c",
+      "locations": [
+        {
+          "file": "public/recall-scope-model.js",
+          "line": 8
+        },
+        {
+          "file": "public/recall-scope-model.js",
+          "line": 54
+        },
+        {
+          "file": "public/recall-scope-model.js",
+          "line": 59
+        },
+        {
+          "file": "public/recall-scope-model.js",
+          "line": 62
+        }
+      ],
+      "trigger": "Owner-projected UTC timestamps include more than three fractional digits. instant() accepts arbitrary digit precision, while Date.parse compares millisecond values.",
+      "impact": "The model can return evidenceStatus=current and applicability=matched even when validFrom is later than asOf/retrievedAt or retrieval is still in the future within the same millisecond. It can also prematurely return unknown before freshUntil. This violates the documented temporal admission order. No deployed recall/safety decision is claimed: there is no application caller in this candidate, and automaticSelection remains false.",
+      "evidence": [
+        {
+          "case": "submillisecond-effective-after-asof-and-retrieval",
+          "asOf": "2026-10-14T06:00:00.0005Z",
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-14T06:00:00.0009Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "retrievedAt": "2026-10-14T06:00:00.0001Z",
+          "expected": "unknown",
+          "actual": "matched",
+          "evidenceStatus": "current",
+          "reasons": []
+        },
+        {
+          "case": "submillisecond-retrieval-in-future",
+          "asOf": "2026-10-14T06:00:00.0001Z",
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "retrievedAt": "2026-10-14T06:00:00.0009Z",
+          "expected": "unknown",
+          "actual": "matched",
+          "evidenceStatus": "current",
+          "reasons": []
+        },
+        {
+          "case": "submillisecond-freshness-before-actual-expiry",
+          "asOf": "2026-10-14T06:00:00.0001Z",
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-14T06:00:00.0009Z"
+          },
+          "retrievedAt": "2026-10-14T05:00:00Z",
+          "expected": "matched",
+          "actual": "unknown",
+          "evidenceStatus": "unknown",
+          "reasons": [
+            "evidence-unknown"
+          ]
+        }
+      ],
+      "reproduction": "Run node edge-cases.mjs from this review artifact; exact inputs/results in edge-results.json. Three failed conformance expectations share this one root cause. A millisecond-only future-retrieval control passes (unknown).",
+      "repairRecommendation": "Either constrain admitted fractional precision to what the comparator preserves (at most three digits), explicitly document unsupported precision as unknown, and reject rather than truncate it; or compare valid UTC instants at their full admitted fractional precision. Add effective/retrieval/freshUntil/validUntil submillisecond boundary tests. Keep original source timestamps/provenance intact.",
+      "origin": "New model and new timestamp format in this immutable candidate; not an inherited caller regression."
+    }
+  ],
+  "authorReportedChecks": {
+    "source": "docs/worker-26-recall-scope.md in candidate",
+    "focusedTests": 14,
+    "note": "Author reports are separated from fresh reviewer commands/results."
+  },
+  "reviewerActualChecks": {
+    "focusedAuthorTestsPassed": 14,
+    "focusedAuthorTestsFailed": 0,
+    "independentEdges": 37,
+    "independentEdgesPassed": 34,
+    "independentEdgesFailed": 3,
+    "additionalIntegrationPreconditionProbes": 5,
+    "commands": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "tests-web/recall-scope-model.test.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot",
+        "exitCode": 0,
+        "logSha256": "3713cc9e9c5142b06e2f475fe91fa64461826b00829de025acbac975b03d7a49"
+      },
+      {
+        "command": [
+          "node",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-cases.mjs"
+        ],
+        "exitCode": 1,
+        "logSha256": "60f7f7976d437fe045b0cea9a007f65892e7013fa259069abae9f7159886a9c3"
+      }
+    ],
+    "authorTestLog": "author-tests.log",
+    "edgeEvidence": "edge-results.json",
+    "edgeLog": "edge-tests.log",
+    "suiteScope": "Only focused recall-scope tests and reviewer pure-model probes; no broad suites or runtime/network calls."
+  },
+  "behaviorReviewed": {
+    "currentVersusHistorical": "Historical kind and missing/current-invalid freshness yield unknown current applicability while preserving scopeMatch and provenance/action snapshots. Explicit inspection/noncompliance/undeclared actions do not establish recall applicability.",
+    "identity": "Valid string GTIN equivalence preserves leading-zero canonical equivalence; numeric, fullwidth/Arabic-Indic/zero-width barcode forms are unknown. Lot/market/label membership uses exact code-point equality, with no silent case folding, trimming or Unicode normalization.",
+    "unicodeEdges": "ASCII spacing, case changes, zero-width/null characters, fullwidth and Cyrillic lookalikes are distinct lot identities. Precomposed \u00e9 vs decomposed e+combining accent is distinct; identical opaque Japanese lot strings match. This is the documented owner-normalized exact-match contract; upstream identity ambiguity must be resolved or retained unknown by Dataset01.",
+    "scope": "Market remains required even allBatches. allBatches plus lots is unknown; optional malformed label restrictions unknown; date fields are distinct and inclusive calendar bounds validated. Proven scope exclusion takes precedence over missing fields and excludes only this notice.",
+    "temporality": "Invalid/non-leap/reversed dates and millisecond-scale chronology/freshness conflicts are refused. F1 identifies precision lost for finer admitted timestamps.",
+    "snapshots": "Provenance/action cloned, input objects unchanged across all 37 probes; automaticSelection false throughout."
+  },
+  "callerAndWiringAssessment": {
+    "staticSearchCommand": [
+      "git",
+      "grep",
+      "-n",
+      "-E",
+      "evaluateRecallScope|matchRecall|recall-scope-model",
+      "adf42e947b21c2d5441fcb69b683c931d726e31c",
+      "--",
+      "public",
+      "cloud",
+      "scripts",
+      "tests-web"
+    ],
+    "evidence": "caller-search.log",
+    "actualNewEvaluatorCalls": "Only tests-web/recall-scope-model.test.mjs; public/recall-scope-model.js exports the function. No production public/cloud/script importer or caller found.",
+    "legacyMatcher": "public/evidence-model.js:30 still exports matchRecall; uses found in tests-web/global-data.test.mjs and the focused test. This candidate does not replace legacy behavior or change ingestion/UI/application wiring.",
+    "integrationScope": "Pure opt-in model as author explicitly documents; not evidence of implemented user-facing recall behavior or exhaustive recall coverage.",
+    "ownerPreconditions": [
+      "Dataset01 must own/source-review identity mappings, declared action, temporal lifecycle, current-vs-historical admission, scope completeness and evidence conflicts before a notice projection reaches this function.",
+      "The model evaluates one notice, not conflicts among multiple source notices. No cross-source/action reconciliation is implemented here.",
+      "Optional label/date field omission means an owner-established absence of restriction; dropping unparsed scope text would make a broad false projection. Integration must preserve that distinction.",
+      "Provenance text fields are not regulator/source authentication or URL validity checks.",
+      "Future callers must preserve unknowns and user review, and distinguish notice exclusion from a food-safety assurance."
+    ]
+  },
+  "conflictPreconditionObservations": {
+    "probes": [
+      {
+        "id": "withdrawn-flag-outside-projection-schema",
+        "inputNotice": {
+          "id": "reviewer-notice",
+          "action": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z",
+            "status": "withdrawn"
+          },
+          "scope": {
+            "gtin": "4006381333931",
+            "markets": [
+              "AU"
+            ],
+            "lots": [
+              "A"
+            ],
+            "labelVersions": [
+              "v1"
+            ],
+            "dateRange": {
+              "field": "bestBefore",
+              "from": "2026-10-01",
+              "through": "2026-10-31"
+            }
+          }
+        },
+        "result": {
+          "noticeId": "reviewer-notice",
+          "applicability": "matched",
+          "scopeMatch": "matched",
+          "evidenceStatus": "current",
+          "reasons": [],
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "declaredAction": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "automaticSelection": false
+        },
+        "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+      },
+      {
+        "id": "contradictory-action-original-text",
+        "inputNotice": {
+          "id": "reviewer-notice",
+          "action": {
+            "type": "recall",
+            "regulator": "reviewer-regulator",
+            "originalText": "Synthetic original says inspection, not recall"
+          },
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "scope": {
+            "gtin": "4006381333931",
+            "markets": [
+              "AU"
+            ],
+            "lots": [
+              "A"
+            ],
+            "labelVersions": [
+              "v1"
+            ],
+            "dateRange": {
+              "field": "bestBefore",
+              "from": "2026-10-01",
+              "through": "2026-10-31"
+            }
+          }
+        },
+        "result": {
+          "noticeId": "reviewer-notice",
+          "applicability": "matched",
+          "scopeMatch": "matched",
+          "evidenceStatus": "current",
+          "reasons": [],
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "declaredAction": {
+            "type": "recall",
+            "regulator": "reviewer-regulator",
+            "originalText": "Synthetic original says inspection, not recall"
+          },
+          "automaticSelection": false
+        },
+        "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+      },
+      {
+        "id": "source-regulator-disagreement",
+        "inputNotice": {
+          "id": "reviewer-notice",
+          "action": {
+            "type": "recall",
+            "regulator": "synthetic-regulator-A"
+          },
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z",
+            "regulator": "synthetic-regulator-B"
+          },
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "scope": {
+            "gtin": "4006381333931",
+            "markets": [
+              "AU"
+            ],
+            "lots": [
+              "A"
+            ],
+            "labelVersions": [
+              "v1"
+            ],
+            "dateRange": {
+              "field": "bestBefore",
+              "from": "2026-10-01",
+              "through": "2026-10-31"
+            }
+          }
+        },
+        "result": {
+          "noticeId": "reviewer-notice",
+          "applicability": "matched",
+          "scopeMatch": "matched",
+          "evidenceStatus": "current",
+          "reasons": [],
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z",
+            "regulator": "synthetic-regulator-B"
+          },
+          "declaredAction": {
+            "type": "recall",
+            "regulator": "synthetic-regulator-A"
+          },
+          "automaticSelection": false
+        },
+        "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+      },
+      {
+        "id": "conflicting-top-level-date",
+        "inputNotice": {
+          "id": "reviewer-notice",
+          "action": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "scope": {
+            "gtin": "4006381333931",
+            "markets": [
+              "AU"
+            ],
+            "lots": [
+              "A"
+            ],
+            "labelVersions": [
+              "v1"
+            ],
+            "dateRange": {
+              "field": "bestBefore",
+              "from": "2026-10-01",
+              "through": "2026-10-31"
+            }
+          },
+          "validUntil": "2026-10-12T00:00:00Z"
+        },
+        "result": {
+          "noticeId": "reviewer-notice",
+          "applicability": "matched",
+          "scopeMatch": "matched",
+          "evidenceStatus": "current",
+          "reasons": [],
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "https://source.invalid/notice",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "declaredAction": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "automaticSelection": false
+        },
+        "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+      },
+      {
+        "id": "non-url-provenance-text",
+        "inputNotice": {
+          "id": "reviewer-notice",
+          "action": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "synthetic-not-a-url",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "evidence": {
+            "kind": "current",
+            "validFrom": "2026-10-13T00:00:00Z",
+            "freshUntil": "2026-10-15T00:00:00Z"
+          },
+          "scope": {
+            "gtin": "4006381333931",
+            "markets": [
+              "AU"
+            ],
+            "lots": [
+              "A"
+            ],
+            "labelVersions": [
+              "v1"
+            ],
+            "dateRange": {
+              "field": "bestBefore",
+              "from": "2026-10-01",
+              "through": "2026-10-31"
+            }
+          }
+        },
+        "result": {
+          "noticeId": "reviewer-notice",
+          "applicability": "matched",
+          "scopeMatch": "matched",
+          "evidenceStatus": "current",
+          "reasons": [],
+          "provenance": {
+            "sourceId": "reviewer-source",
+            "recordId": "reviewer-record",
+            "url": "synthetic-not-a-url",
+            "retrievedAt": "2026-10-14T05:00:00Z"
+          },
+          "declaredAction": {
+            "type": "recall",
+            "regulator": "reviewer-regulator"
+          },
+          "automaticSelection": false
+        },
+        "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+      }
+    ],
+    "interpretation": "Adding withdrawn status, contradictory original action text, differing provenance regulator, a conflicting top-level date, or a non-URL text provenance value still allows matched because these fields/conflicts are outside this model projection schema. This is a concrete caller/owner admission gap, not a claim that recognized schema fields were ignored or a second bug. Do not feed unresolved raw/conflicting evidence into the owner-reviewed projection; no source authenticity was inferred."
+  },
+  "preservation": {
+    "sharedAndWorker10IdentityEqual": true,
+    "immutableSourceHashesEqual": true,
+    "worker10Status": "## feature/recall-scope-review-20261014\n?? worker-10-review/\n",
+    "newLocalArtifact": "worker-10-review/recall-scope-review-20261014; untracked reviewer artifact only",
+    "gitWritingFixtureCommands": "none",
+    "runtimeOrNetworkCalls": "none; pure model tests only"
+  },
+  "controls": {
+    "filesystem": "supplied unrestricted controls retained",
+    "network": "enabled controls retained; no network/tool/provider calls used for this pure code/model review",
+    "mandatoryReviewer": "auto_review",
+    "separateApprovalPolicy": "unavailable",
+    "namedPermissionProfile": "CODEX_PERMISSION_PROFILE unset; no named-profile inference"
+  },
+  "limitations": [
+    "No live official feed/provider/medical/regulatory verification, publication, credential use, legal rules or source-policy changes.",
+    "No corpus/dependency copies, installs, Git writing fixture/repository/worktree, extra agents/workers/sessions or servers. Snapshot is 25,945 bytes of exact tracked code/test/docs/package metadata.",
+    "No ingestion, UI, consumer or combined application acceptance executed; source-projection consistency/permissions remain Dataset01 authority.",
+    "The Unicode boundary expectations use exact owner-normalized matching; no assumption that visually similar strings identify the same lot.",
+    "Cross-source/raw action/status/date conflict probes are integration precondition evidence, not authenticated notices or source-policy decisions.",
+    "Artifact is new untracked local reviewer output; source branches, HEAD/index state and author bytes were unchanged."
+  ],
+  "recommendedMorganNextStep": "Request F1 correction or precise timestamp-admission constraint, then rerun these focused boundary cases. Treat this as a bounded opt-in model and separately assign Dataset01 projection/admission and application wiring before any product acceptance.",
+  "idleAvailable": true,
+  "evidenceIndex": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/evidence-index.json",
+    "files": 18,
+    "sha256": "6449448ffa78e827aac007723a7be8626b94a4c7810d6d238f7a4ce7d8cc3902"
+  }
+}

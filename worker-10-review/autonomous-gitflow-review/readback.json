@@ -1,0 +1,15 @@
+{
+  "mainWorker10HeadIndexEqual": true,
+  "worker09HeadUnchanged": true,
+  "all14HookHashModeSizeEqual": true,
+  "sourceBytesUnchanged": true,
+  "ownerEvidenceHashesVerified": 15,
+  "stockSuiteSentinelAndMainProofVerified": true,
+  "gitFixtureLock": "per-local-bare-origin/offmenu-fetch.lock, not real shared pool lock",
+  "diffCheck": {
+    "exitCode": 0,
+    "output": ""
+  },
+  "worker10Status": "## feature/checkpoint-correction-review-20261014\n?? worker-10-review/\n",
+  "reviewerBranchSwitch": false
+}

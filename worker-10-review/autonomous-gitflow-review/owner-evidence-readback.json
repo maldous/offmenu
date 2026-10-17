@@ -1,0 +1,77 @@
+[
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/prior-custody.json",
+    "expected": "2631a5790de7be91f2528ad0488efad57bd35ca473a700b015b45954b95e0b2c",
+    "actual": "2631a5790de7be91f2528ad0488efad57bd35ca473a700b015b45954b95e0b2c"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/fresh-develop-fetch.json",
+    "expected": "15ac344f1c67ea9a10c57ef25b573bae405c45e75c621e543bb34d053b8837c5",
+    "actual": "15ac344f1c67ea9a10c57ef25b573bae405c45e75c621e543bb34d053b8837c5"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/candidate.patch",
+    "expected": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb",
+    "actual": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/client-delta.patch",
+    "expected": "46a58964409caaf2b2206e4a862abba15881bb284a08241325414716e66b583c",
+    "actual": "46a58964409caaf2b2206e4a862abba15881bb284a08241325414716e66b583c"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/delta-from-reviewed-helper.patch",
+    "expected": "8203c0b1e0e41752d2544cfd1abff27d52c0915aaebea52add4c855747ebd47f",
+    "actual": "8203c0b1e0e41752d2544cfd1abff27d52c0915aaebea52add4c855747ebd47f"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/isolation-proof.json",
+    "expected": "b6de2c2a70c8cf7798312ee4dfd35bb39b4bbca5955c70f853a58ad61c2cebac",
+    "actual": "b6de2c2a70c8cf7798312ee4dfd35bb39b4bbca5955c70f853a58ad61c2cebac"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/standing-authority.json",
+    "expected": "465d97aefc84358a608ae4846b02b060171bb5984bb2bffd504d2c8e76987ce4",
+    "actual": "465d97aefc84358a608ae4846b02b060171bb5984bb2bffd504d2c8e76987ce4"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/hooks-preserved.json",
+    "expected": "71f3d1134922f7cdfcdf7200b2c8e1c7ba212db2397083554b211042052d5e4e",
+    "actual": "71f3d1134922f7cdfcdf7200b2c8e1c7ba212db2397083554b211042052d5e4e"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/client-authority.json",
+    "expected": "326aa9e3c9a9c2a077d8ddb31e64f06c8aa49ff25bd25d3533457eab05a4ce13",
+    "actual": "326aa9e3c9a9c2a077d8ddb31e64f06c8aa49ff25bd25d3533457eab05a4ce13"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/pr2-guard.json",
+    "expected": "78269cd389d93b421cb81704037be84a11908eed7058bf071070306a4f8a1745",
+    "actual": "78269cd389d93b421cb81704037be84a11908eed7058bf071070306a4f8a1745"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-info.json",
+    "expected": "b2cf870dc8f83244aab95be8f443a129db581fb492fcacc9f6a2da1742c77b54",
+    "actual": "b2cf870dc8f83244aab95be8f443a129db581fb492fcacc9f6a2da1742c77b54"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-reviews.json",
+    "expected": "7218dec0044b2e9b3b52c10314d8b147cb33de7e5c504ad167ff4ef614087ae1",
+    "actual": "7218dec0044b2e9b3b52c10314d8b147cb33de7e5c504ad167ff4ef614087ae1"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-comments.json",
+    "expected": "d69e4e6adf40f6e3b766030707383700ad6aa0f9439920b3d5c1c802357849ed",
+    "actual": "d69e4e6adf40f6e3b766030707383700ad6aa0f9439920b3d5c1c802357849ed"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-13-review/worker-02-current-develop-review/review-receipt.json",
+    "expected": "c70c62c9bfa96e2789f3ddabce0d64e325d0c8b3b36f5e004fbc2c56a9f143a7",
+    "actual": "c70c62c9bfa96e2789f3ddabce0d64e325d0c8b3b36f5e004fbc2c56a9f143a7"
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/worker02-root-acceptance-reported.json",
+    "expected": "fa3c94dcbe2e2700e8ed7dc4732d3f2b393a35a1d65867b506d0c4e362198acc",
+    "actual": "fa3c94dcbe2e2700e8ed7dc4732d3f2b393a35a1d65867b506d0c4e362198acc"
+  }
+]

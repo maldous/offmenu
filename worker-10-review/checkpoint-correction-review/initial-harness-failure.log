@@ -1,0 +1,23 @@
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-6lkcverd/uninterrupted", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-6lkcverd/resumed", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-gmijyhcn/uninterrupted", "packets": 2, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-gmijyhcn/resumed", "packets": 2, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-26mb7f6e/uninterrupted", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-26mb7f6e/resumed", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-bizyr_v2/uninterrupted", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-bizyr_v2/resumed", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-50es8go5/uninterrupted", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-50es8go5/resumed", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-xy8sgivh/uninterrupted", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-xy8sgivh/resumed", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 10, "elapsedSeconds": 0.02, "output": "/tmp/worker10-reached-limit-p9ck0v7q/uninterrupted", "packets": 5, "relations": 0, "resources": 5, "status": "aligned", "translations": 0}
+{"assertions": 10, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-p9ck0v7q/resumed", "packets": 5, "relations": 0, "resources": 5, "status": "aligned", "translations": 0}
+{"assertions": 12, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-w5uku2i3/uninterrupted", "packets": 2, "relations": 0, "resources": 6, "status": "aligned", "translations": 0}
+{"assertions": 12, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-w5uku2i3/resumed", "packets": 2, "relations": 0, "resources": 6, "status": "aligned", "translations": 0}
+Traceback (most recent call last):
+  File "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-probes.py", line 49, in <module>
+    source=fixture(root);c=places.Checkpoint(output,partial,{'output':str(output.resolve()),'createdAt':'synthetic'},resume=False);c.close()
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/scripts/places_checkpoint.py", line 59, in __init__
+    raise ValueError('partial or checkpoint already exists; explicit resume required')
+ValueError: partial or checkpoint already exists; explicit resume required

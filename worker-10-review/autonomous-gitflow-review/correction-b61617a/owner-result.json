@@ -1,0 +1,69 @@
+{
+  "schema": "offmenu-local-integrate-F5-correction/1",
+  "utc": "2026-10-14T10:40:03.862863+00:00",
+  "branch": "feature/autonomous-gitflow-review-20261014",
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "head": "b61617a6d5896c2ea11bf81c4a3cfa4f93c130bf",
+  "corrected_review_pin": "58c5f051d037eb02582a83a0e7107d907b1f401e",
+  "finding": "W10-GITFLOW-F5",
+  "status": "ready_for_same_worker10_exact_rereview",
+  "binding_verdict": "withheld pending independent rereview/Morgan verdict",
+  "before": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/before-reproductions.json",
+    "sha256": "e270d1f6abc86adab2cda4e4c10f0ad9069272eb6ba28d814ec932802a523ce6"
+  },
+  "after": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/after-reproduction.json",
+    "sha256": "32dcc584c58ffe4a706fde02c8a4e7225849a1ffdcf78580e04574490d0e68ee"
+  },
+  "delta": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/F5-correction.patch",
+    "sha256": "8605777f5f16b1c5c852706a7f1c85fe2853e39d542a0ddb1bd5db7631b27189"
+  },
+  "complete": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/complete-candidate.patch",
+    "sha256": "910fd1d69eb564bdeb2061f9be70e26781cd9e58ad88043d803153315732b89d"
+  },
+  "owner_suite": {
+    "utc": "2026-10-14T10:38:24.541616+00:00",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests-gitflow",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 52,
+    "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/focused-tests.log",
+    "sha256": "14298e765cf83c412cbcba44f3417998e2a56c7520c654344d160618441c92da",
+    "real_retirement_push_activation": false
+  },
+  "owner_run_review_probe_results": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/binding-results.json",
+    "sha256": "c187a11de4bf4f6d5cebe9ef6c96e9ddb737cfeceb3b4b6e258d107a74b5ece4"
+  },
+  "owner_probe_limit": "Owner run of Worker10 source probes with module path/current pin label adapted;47/47, not an independent rereview",
+  "isolation_proof": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/local-route-binding/isolation-proof.json",
+    "sha256": "ddc5e370b5f597c7c18f5ec860fb91a74adda25ed5802cf4259d19709f44fbea"
+  },
+  "correction": [
+    "Local integrate calls canonical task_ready_binding without source-checkout requirement; legitimate current checkout remains exact target line at freshly fetched base",
+    "Local completed receipt pins integrator worker/owner/worktree, source/task/branch/start path/digest, ready path/digest and observed target checkout/base",
+    "Local retirement adapter rejects conflicting/missing worker/owner/start/ready/source/task/target metadata and revalidates actual candidate/base/source ancestry before integration proof returns"
+  ],
+  "compatibility": "Genuine managed local integration/retirement path and normal provider path still pass. Missing legacy binding cannot be silently upgraded into cleanup authority.",
+  "preservation": {
+    "main_primary_index": true,
+    "existing_hooks": 14,
+    "old58c60ce9_history_reports": true,
+    "real_retirement_push_activation": false,
+    "security_trigger_permission_changes": false,
+    "lean_proposal_artifact_only": true
+  },
+  "next_action": "Same Worker10 reviews exact new pin/F5 delta and before-after evidence; Morgan full binding verdict remains pending. No real publication, cleanup, activation or trigger application authorized by this owner result."
+}

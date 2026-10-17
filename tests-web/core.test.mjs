@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateState} from '../cloud/state.mjs';
+import {matchMeals,normalize} from '../public/model.js';
+const state=()=>({inventory:[],products:{},recipes:[],selections:[],profile:{country:'AU',units:'metric',servings:2}});
+test('profile and barcode cache retained',()=>assert.deepEqual(validateState(state()),state()));
+test('invalid country rejected',()=>assert.throws(()=>validateState({...state(),profile:{country:'Australia',servings:2}})));
+test('duplicate lot identifiers rejected',()=>{const lot={id:'same',barcode:'0000000000001',name:'Milk',ingredient:'milk',quantity:100,unit:'ml'};assert.throws(()=>validateState({...state(),inventory:[lot,lot]}));});
+test('repeated ingredient quantities summed',()=>{const recipe={servings:2,ingredients:[{ingredient:'rice',quantity:100,unit:'g'},{ingredient:'rice',quantity:100,unit:'g'}]};assert.equal(matchMeals([{ingredient:'rice',quantity:150,unit:'g'}],[recipe],2,'2026-10-12')[0].missing[0].quantity,50);});
+test('ingredient whitespace normalized',()=>assert.equal(normalize(' Coconut   MILK '),'coconut milk'));

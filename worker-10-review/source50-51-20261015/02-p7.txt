@@ -1,0 +1,66 @@
+ OFFMENU / PRODUCT STRATEGY / 07
+
+
+
+ Expand the data that improves
+ decisions
+ Separate product identification, ingredient identity, composition, recipes, offers and safety information. No single database
+ supplies all six reliably.
+
+   Source / opportunity            Recommended use                               Rights and operating decision
+
+   Open Food Facts [8]             Primary packaged-product lookup;              ODbL database / DbCL contents; images have
+                                   country-specific working set; taxonomy        separate rights. Preserve provenance and
+                                   and correction feedback.                      required attribution/share-alike. Measure
+                                                                                 Australian scan hit rate.
+
+   FSANZ AFCD [10, 11]             Primary Australian generic-food               Use the database-specific licence, not the
+                                   composition: produce, raw ingredients         website footer. Preserve limitations,
+                                   and unbranded foods.                          Australian-data notice and derivative
+                                                                                 obligations. Stage a useful subset first.
+
+   USDA FoodData Central           Generic fallback and US-market                Public domain/CC0. API requires a key; bulk
+   [12]                            expansion; nutrient and food identity         downloads are also available. Preserve
+                                   crosswalks.                                   dataset/type/version and market differences.
+
+   Authored recipes +              A small reliable starter catalogue, then      Current imported dataset declares CC BY-SA
+   Wikibooks [13]                  attributed cultural variety.                  4.0. Preserve original recipe identity,
+                                                                                 authorship, changes and licence; verify
+                                                                                 image rights separately.
+
+   GS1 NPC / Trusted Content       Supplier-maintained product identity          Commercial/permission-based access inquiry.
+   [17]                            and richer Australian label content.          Confirm consumer-app display, redistribution,
+                                                                                 retention and supplier publication rights.
+
+   Open Prices [9]                 Dated price observations and personal         ODbL; location/time provenance essential.
+                                   receipt comparison.                           Coverage is uneven and not a stock or
+                                                                                 checkout-price service.
+
+   CoFID / Ciqual / NZ             Future regional composition packs             Different national definitions and terms; do
+   FOODfiles [18-20]               selected by actual users.                     not treat every “free download” as the same
+                                                                                 licence. NZ terms need a complete access
+                                                                                 review.
+
+   FatSecret / Edamam /            Optional coverage benchmark or                FatSecret free editions are US-only in the
+   Spoonacular [14-16]             contracted service where it improves a        reviewed table. Edamam restricts caching;
+                                   measured gap.                                 Spoonacular restricts transformed storage
+                                                                                 and competing use. No mirror by default.
+
+   FSANZ recalls /                 Recall references; attributed storage         Verify feed, reuse and geographic
+   FoodKeeper [30, 31]             guidance and check reminders.                 applicability. Storage guidance never
+                                                                                 overrides the package or actual handling
+                                                                                 conditions.
+
+   User and manufacturer           Corrected labels, private recipes,            Private by default; explicit contribution
+   input                           portions, receipts, preferences and           consent for publishing. Verify contributor
+                                   product changes.                              rights before sharing images or recipes.
+
+ RecipeNLG and generic scraped recipe dumps are not approved here for promotional/commercial use: a dataset title or
+ research licence is not sufficient clearance. Large recipe volume is a poor success metric when quantities and rights remain
+ unresolved.
+
+
+
+
+OFFMENU / PRODUCT REVIEW / 12 OCT 2026                                                                                           7
+

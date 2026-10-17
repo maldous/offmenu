@@ -1,0 +1,369 @@
+{
+  "schema": "offmenu-global-data-worker50/1",
+  "worker": 50,
+  "assigned_source": "Brazil TBCA ingredient identities and composition",
+  "created_utc": "2026-10-14T13:45:22.650848+00:00",
+  "pickup": {
+    "actual_cwd": "/home/user/src/offmenu-workers/worker-50",
+    "prior_branch": "feature/source-qualification-50-20261014",
+    "prior_head": "454f5bcdf98985d3f508b15e9494c02454808b88",
+    "prior_status": "clean",
+    "fetch_utc": "2026-10-14T13:40:00.557756+00:00",
+    "fetch_exit": 0,
+    "lock": "/tmp/offmenu-develop-fetch.lock",
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "branch": "feature/global-data-50-tbca-20261015"
+  },
+  "pdf_requirement": {
+    "original_pdf_pins": [
+      {
+        "path": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+        "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+        "byte_identical_to_abe0": true
+      },
+      {
+        "path": "/home/user/src/offmenu/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+        "sha256": "5d4795811f472d0255e4c287a3401a2dbbcbd3991c8516c85dbe5341e9083a19",
+        "byte_identical_to_abe0": true
+      }
+    ],
+    "page_extract_pins": [
+      {
+        "path": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-pdf-refill-evidence/02-OffMenu_Product_Review_and_Plan-1--p7.txt",
+        "sha256": "498bc15855cf1e94f1f2c49291ae1c7366ad7e0dc2913ba6134a78bbe8985728"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-pdf-refill-evidence/02-OffMenu_Product_Review_and_Plan-1--p9.txt",
+        "sha256": "7af3205d7bb4b12e01c8b6d0a11c1f7c6529e2149a0e8e8a53689807c787c14a"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-pdf-refill-evidence/05-OffMenu_Global_Shopping_Baskets-p4.txt",
+        "sha256": "273dcc658026ad976608fb6c0bc3a35374970fbc081d42d80f9e60979c658a4b"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-pdf-refill-evidence/05-OffMenu_Global_Shopping_Baskets-p5.txt",
+        "sha256": "4b2f13b5e7315e523aa5bcd5cc01933d66a31ac84eabe5f17ee93c671b6ad57d"
+      }
+    ],
+    "requirements": [
+      "02 p7: separate ingredient identity and composition, preserve source-specific rights",
+      "02 p9: ingredient form, edible portion, nutrient units/basis, licence/version and auditable staging",
+      "05 p4: retain local food names and raw/cooked state; substitutions require review",
+      "05 p5: country generic names do not establish intake quantities, nutritional adequacy or product identity"
+    ]
+  },
+  "source20_pins": [
+    {
+      "commit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+      "path": "docs/dataset-discovery/worker-20/source.csv",
+      "blob": "c78289a31b90ec1b6a1da5a39284e11e44668afb",
+      "sha256": "8f5f314e54d055e5651538608882a9471c126e1bc08f4d92717126b75b0b8a70",
+      "bytes": 2730
+    },
+    {
+      "commit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+      "path": "docs/dataset-discovery/worker-20/receipt.json",
+      "blob": "87bf96c57f2547c0d1ff8b845faafec96d1f9ac6",
+      "sha256": "813efa6b3306dfb8bfcb8b9cd08f26746f14848830a9b1d2e704659ee01c7866",
+      "bytes": 6992
+    },
+    {
+      "commit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+      "path": "docs/dataset-discovery/worker-20/note.md",
+      "blob": "2512867968b43b13da47ec17016066c6ecca205e",
+      "sha256": "5f5e1ceb3023794b728111c593dbe21f66dbd4bbdad143bf3fb275cb814073cd",
+      "bytes": 3159
+    }
+  ],
+  "before": {
+    "source20_status": "METADATA_ONLY_BLOCKED_RIGHTS_VERSION_AND_EVIDENCE",
+    "source20_metadata_rows": 1,
+    "source20_samples": 0,
+    "existing_normalized_output": null,
+    "comparison_status": "no retained TBCA source in inspected normalized manifests; no rowwise normalized baseline available",
+    "manifest_inspection_scope": "top-level */blobs/manifest.json source keys only; absence outside scope not claimed",
+    "manifest_refs": [
+      {
+        "path": "/home/user/src/offmenu-data/curated-ca-jp-20261013/blobs/manifest.json",
+        "sha256": "defef81e90cbde609fae55221ffe8419165581ccceb7116e48b055999f4ca932",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-compact-national-20261013/blobs/manifest.json",
+        "sha256": "d78f41ddf36f7a3f23aac5c02e4f8b6eb7b7501291be6e1258213a3e8fb75651",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-enrichment-20261013/blobs/manifest.json",
+        "sha256": "288ddd59ddcc908e1e28092acffbb4569ec19ecf3cb778a9a15aaa1a4e74809f",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-expanded-20261013/blobs/manifest.json",
+        "sha256": "b8068b6480298403e79831f5c3044c4b193a05bd8e4b28d2899640f57241d02c",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-expanded-ca-jp-20261013/blobs/manifest.json",
+        "sha256": "a385fedb8d26847d0cc46b1a2c7e4df1b3e883e54d7b854ab0a0250e511c4ccc",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs/manifest.json",
+        "sha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-expanded-places-national-20261013/blobs/manifest.json",
+        "sha256": "ec6c1e03aa3b76dcef58970e6031e2206344200f45813da3a2a98dcaf2d6cdac",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-expanded-world-20261013/blobs/manifest.json",
+        "sha256": "5df6c0f88ded4d93187c4ea9dfbf2975f49b5d5422108bc65cec8d832471be4d",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-global-20261013/blobs/manifest.json",
+        "sha256": "ef48a1a8ad66825aab2749dd032e6de09386804ea934902c6c20d4abe02c5463",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-national-20261013/blobs/manifest.json",
+        "sha256": "6141338afaf6675983cc1db4ceae24d7956e62e834d3653ab5e4e22857f43d2d",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-next-national-20261013/blobs/manifest.json",
+        "sha256": "ff93ef067edb1eb3172c4811a16447693cf9257a71e70d33bf42aa77ec94c3d6",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-overture-country-20261013/blobs/manifest.json",
+        "sha256": "26a9008289e2eed979b8c01c34d0b223569226a38140ff77df05b6f7ca45c974",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-recipes-20261013/blobs/manifest.json",
+        "sha256": "50ba6bc86061547dbfcba3faf8bb31f3f1194d3d301ba2db045eb97526521dda",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-recovery-20261013/blobs/manifest.json",
+        "sha256": "53ea2584b670c049a312a96631767d960b545291472f85f3ec40397afda4d343",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-20261013/blobs/manifest.json",
+        "sha256": "94d1c6d79ac1f3e61a7a3793c110c074ffe80b3b0a8aad5b0908895925046043",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-common-20261014/blobs/manifest.json",
+        "sha256": "179a5f98ff4859dbf6a652cd8b2a56daa657ce7f81f5133d61d201145f045cc2",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-delivery-20261013/blobs/manifest.json",
+        "sha256": "d37727d47915594b8cb6e7ed564540cc46f807c2dff103e4ed2d6f86692470c9",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-global-20261014/blobs/manifest.json",
+        "sha256": "5dc6f4b73862266a448eb70265a40a055e13e6675bae8d52f958f74146673c84",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-licensed-20261013/blobs/manifest.json",
+        "sha256": "5d5289f0ad567baee7454590da4b10f426eb685068443aa4439034dd6e698a6b",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-quality-20261014/blobs/manifest.json",
+        "sha256": "c5cffe0c9939a0891247142837308b1cc19a89d62481aac571cb890ad4ddd3c1",
+        "matching_tbca_source_keys": []
+      },
+      {
+        "path": "/home/user/src/offmenu-data/curated-world-recipes-release-20261013/blobs/manifest.json",
+        "sha256": "2455a1dc00bd1b4eb232a1890fc710ef9a6ec68fcf402e3f09614758cbc9ddf6",
+        "matching_tbca_source_keys": []
+      }
+    ]
+  },
+  "after": {
+    "schema": "offmenu-tbca-local-validation/1",
+    "context": {
+      "source_id": "discovery:S217",
+      "source_url": "https://www.tbca.net.br/base-dados/composicao_estatistica.php",
+      "snapshot_sha256": "22e29f1fae3c4c9a13e61c27308a177de2edac93661807af818b2232ce158ace",
+      "snapshot_bytes": 82840,
+      "sidecar_sha256": "82fbf54aea9d9e769ee7fce208b9f0807548370435647248580e51d33b3bca26",
+      "accessed_utc": "2026-10-13T06:54:34.437665+00:00",
+      "release_id": null,
+      "licence": null,
+      "redistribution_verified": false,
+      "rights_decision": "requires primary licence review",
+      "retained_path": "/home/user/src/offmenu-data/source-access-20261013/8e4df41bbcc357bfe69bef73.html",
+      "row_limit": 100,
+      "excluded_rows": 0
+    },
+    "identity_rows_checked": 100,
+    "composition_rows_checked": 0,
+    "records_exported": 0,
+    "corpus_admitted": false,
+    "names_with_diacritics": 33,
+    "literal_form_counts": {
+      "congelada": 4,
+      "cozida": 3,
+      "cozido": 4,
+      "cru": 3,
+      "crua": 4,
+      "drenado": 1,
+      "industrializada": 3,
+      "industrializado": 1,
+      "integral": 4,
+      "preparado": 10,
+      "seco": 1
+    },
+    "names_preserved_exactly": true,
+    "all_component_ids_units_basis_unknown": true,
+    "in_memory_projection_sha256": "5dd38d2603bb66c2aa31e72318cd5dbf9dfc0e42e541e81cd76821cc45b83c00",
+    "projection_digest_scope": "diagnostic projection only; not a dataset/release hash",
+    "source_unchanged": true
+  },
+  "before_after_source_hashes": {
+    "before": "22e29f1fae3c4c9a13e61c27308a177de2edac93661807af818b2232ce158ace",
+    "after": "22e29f1fae3c4c9a13e61c27308a177de2edac93661807af818b2232ce158ace",
+    "sidecar_before": "82fbf54aea9d9e769ee7fce208b9f0807548370435647248580e51d33b3bca26",
+    "sidecar_after": "82fbf54aea9d9e769ee7fce208b9f0807548370435647248580e51d33b3bca26"
+  },
+  "field_mapping": {
+    "code": "namespaced statistical-index source record ID; not canonical food identity",
+    "name": "exact decoded Portuguese string incl accents and internal spaces; no transliteration",
+    "scientific_name": "original string including source spelling; missing is null",
+    "group": "original source classification; no nutrient equivalence",
+    "brand": "source assertion only; not physical producer ownership",
+    "food_form": "literal tokens retained with full original description; not inferred synonym substitution",
+    "component_ids": "null: no detail records retained",
+    "units": "null: no nutrient values retained",
+    "portion_or_100g_basis": "null: index does not state an observation basis; no 100g default",
+    "release": "null: fetch time is snapshot time, not release version",
+    "licence": "null: source20 has not verified redistribution",
+    "row_digest": "SHA256 of five decoded strings; not raw detail bytes",
+    "coverage_origin": "BR coverage never establishes selected batch origin"
+  },
+  "test_evidence": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_global_data_worker_50.py -v",
+    "tests_passed": 9,
+    "data": "exact retained statistical HTML and sidecar; mutation tests only modify in-memory copies",
+    "failure_mode": "missing retained evidence fails rather than skipping source tests",
+    "coverage": [
+      "100 unique IDs; 5-row limit excludes 95",
+      "33 diacritic names and original whitespace",
+      "actual raw/cooked rice separate",
+      "actual botanical typo preserved",
+      "all components/units/bases remain unknown",
+      "conflicting links/missing source IDs rejected",
+      "snapshot pin and <=1000 limit enforced",
+      "CLI exports aggregate validation only"
+    ]
+  },
+  "adoption_delta": {
+    "worker01": {
+      "candidate_paths": [
+        "scripts/global-data-validation/worker-50.py",
+        "tests/test_global_data_worker_50.py"
+      ],
+      "proposed_use": "Run aggregate audit against pinned local snapshot; reusable read_index/normalize_identity only for source-labelled local diagnostic staging. No shared importer edit included.",
+      "eligible_now": "validation helper only pending independent review",
+      "not_eligible": "ingredient equivalence, composition crosswalk, portion scaling, source admission or published records"
+    },
+    "worker63": {
+      "candidate_scope": "evidence-only local identity validation; source20 corpus gates remain blocked",
+      "required_update": "Pin this candidate script/tests/proof and source20 receipt; treat old sample digest as landing/index evidence, not composition record evidence. Review snapshot and row-digest scope separately.",
+      "missing_artifacts": [
+        "retained lawful TBCA composition detail bytes and sidecar with explicit food/component IDs",
+        "source-observed component values, units, qualifiers and explicit 100g edible-portion or declared portion denominator",
+        "database edition/revision identity and source-specific permitted redistribution evidence",
+        "rowwise existing normalized baseline if comparison is required",
+        "independent candidate review against PDF requirements and source admission gates"
+      ]
+    }
+  },
+  "network_budget": {
+    "additional_source_bytes": 0,
+    "worker50_prior_source_bytes": 301126,
+    "worker50_remaining_bytes": 2844602,
+    "source20_charged_upper_bound": 402642,
+    "source20_actual_total": null,
+    "conservative_combined_prior_charge": 703768,
+    "conservative_combined_remaining_bytes": 2441960,
+    "cap_bytes": 3145728,
+    "samples_acquired": 0,
+    "reason_not_fetching": "No verified redistribution grant; no lawful record fetch authorized by source terms. Local retained index is sufficient for bounded validation."
+  },
+  "preservation": {
+    "prior_worker50_artifact_pins": [
+      {
+        "commit": "9a0f80bababb4fa34ef8ee9f3d03bcd5079b2095",
+        "path": "docs/dataset-discovery/worker-50/source.csv",
+        "blob": "ec399ba5023d0584bb3aeb3adade76a1c3ae8e05",
+        "sha256": "a33a2e60a316a33e1ff4900351e422a9940e7fea75b0b0dd59f75c5c7c73ddad",
+        "bytes": 3221
+      },
+      {
+        "commit": "9a0f80bababb4fa34ef8ee9f3d03bcd5079b2095",
+        "path": "docs/dataset-discovery/worker-50/receipt.json",
+        "blob": "79165f00f2a58c2569d8ed9eaae40f48c7be4530",
+        "sha256": "3abd07a2c7691046619011c371b72e47ae513fa0c87fddde241d9573c4557ed7",
+        "bytes": 6894
+      },
+      {
+        "commit": "9a0f80bababb4fa34ef8ee9f3d03bcd5079b2095",
+        "path": "docs/dataset-discovery/worker-50/note.md",
+        "blob": "2736b8cadb393bc4a8b69f9c573fe1aaf651ccdb",
+        "sha256": "94d715df41c05c248c8a5df926aa77a263c8b1d76d7a6e0ed0c2b020a474ea71",
+        "bytes": 2257
+      },
+      {
+        "commit": "454f5bcdf98985d3f508b15e9494c02454808b88",
+        "path": "docs/source-qualification/worker-50.json",
+        "blob": "6d16c0dc82a68452da991efa60a379b7dfaba51d",
+        "sha256": "48f3d5512ab5636ccd820312ad4cb94e567361bc77dc2e37462ba77c9ec5123d",
+        "bytes": 18854
+      },
+      {
+        "commit": "454f5bcdf98985d3f508b15e9494c02454808b88",
+        "path": "docs/source-qualification/worker-50.md",
+        "blob": "80f87d99abe443c8856125d6851e80e4e592b03d",
+        "sha256": "b54971883671e95f8cdaaef5ae364438b6b9ab4f9905386eb8d041e47646a6bb",
+        "bytes": 3280
+      }
+    ],
+    "main_head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "main_index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+    "source20_unchanged": true,
+    "dependencies_changed": false,
+    "raw_source_copies": 0,
+    "records_published": 0,
+    "new_workers": 0
+  },
+  "controls": {
+    "hostname": "foo",
+    "actual_cwd": "/home/user/src/offmenu-workers/worker-50",
+    "CODEX_THREAD_ID": "01a139a5-da98-7d32-ba15-a517eb284913",
+    "filesystem": "unrestricted; sandbox disabled; danger-full-access",
+    "network": "enabled",
+    "mandatory_reviewer": "auto_review preserved",
+    "approval_policy_value": "unavailable",
+    "user_configuration": "unavailable",
+    "CODEX_PERMISSION_PROFILE": "unavailable (unset/empty)",
+    "git": "inherited GIT_* stripped; GIT_OPTIONAL_LOCKS=0 command-scoped"
+  },
+  "limits": [
+    "only 100 retained statistical-index identities; no full TBCA coverage claim",
+    "No actual composition records available; component IDs, units and portion/100g basis not tested against source observations",
+    "No rights-cleared normalized corpus exists in inspected manifests; before/after comparison unavailable, not invented",
+    "No admission/publication/production actions; independent review required"
+  ]
+}

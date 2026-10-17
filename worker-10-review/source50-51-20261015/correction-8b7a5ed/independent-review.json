@@ -1,0 +1,34 @@
+{
+  "schema": "offmenu-worker10-mext-delta-review/1",
+  "utc": "2026-10-14T14:52:13.799059+00:00",
+  "reviewer": "Worker10",
+  "worktree": "/home/user/src/offmenu-workers/worker-10",
+  "previousPin": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+  "reviewedPin": "8b7a5edb8412c8f3e2573ac99faef203e61fd969",
+  "verdict": "PASS_FOR_PROVENANCE_CORRECTION_AND_BOUNDED_STAGING_SCOPE",
+  "closedFinding": "W10-MEXT-F1",
+  "findings": [],
+  "validation": {
+    "ownerSuiteIndependentlyExecuted": "9/9",
+    "independentProvenanceMutations": "11/11 blocked including the original five, publisher/header/schema/row contradictions and self-consistent raw-value/schema rehashes",
+    "actualRecords": 192,
+    "priorRecordSetSHA256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
+    "currentRecordSetSHA256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
+    "originalRecordDigestUnchanged": true,
+    "JapaneseLabelsEnglishAbsenceUnitsQualifiersRawCooked": "preserved; inherited actual-source regressions pass"
+  },
+  "assessment": "Trusted index derives worksheet/member hashes from the exact workbook and pins release/acquisition manifests. roundtrip now validates publisher/release/URL/workbook/member/header/schema provenance; proof checks raw cells against actual retained worksheet rows, rejecting self-rehashed fabricated values. Legitimate actual records still pass.",
+  "preservation": {
+    "changedPaths": [],
+    "reviewerHEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "authorHEAD": "8b7a5edb8412c8f3e2573ac99faef203e61fd969"
+  },
+  "history": "Original review, finding, mutation evidence, source snapshots and checkpoint receipts retained unchanged; correction evidence is a separate child directory.",
+  "limits": [
+    "No source admission, rights qualification, translation/equivalence/method qualification, full-country coverage or production approval.",
+    "Read-only candidate and actual-source tests only; no network calls, source fetches/copies, installs, private records or author/source edits.",
+    "No production recipe action. Production STOP remains.",
+    "No new backup readback in this no-network correction turn; preceding backup receipts remain historical, not current backup qualification."
+  ],
+  "readyForDistinctNextReview": true
+}

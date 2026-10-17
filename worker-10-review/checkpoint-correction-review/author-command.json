@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/home/user/src/offmenu/.venv/bin/python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_places_checkpoint.py",
+    "-v"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot",
+  "exitCode": 0,
+  "logSha256": "4b103160ee9d8d149d23277ff37d0ce62a3c6e160a272ae26c7791f30f2dd32c"
+}

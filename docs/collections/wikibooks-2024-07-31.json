@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "wikibooks",
+  "releaseId": "2024-07-31",
+  "archiveSha256": "e41fdc713ea3b1ae74437fcaa783274161664926ba5f8f4769905b22879bc073",
+  "license": "CC BY-SA 4.0",
+  "attribution": "Wikibooks contributors; dataset Gosse Minnema, July 2024",
+  "url": "https://huggingface.co/datasets/gossminn/wikibooks-cookbook",
+  "scope": "Every recipe row in recipes_parsed.json, 2024-07-31 scrape; not the current live cookbook",
+  "counts": {
+    "raw": 3895,
+    "accepted": 3895,
+    "duplicates": 0,
+    "quarantined": 0,
+    "excluded": 0,
+    "records": 3895
+  },
+  "featureExercises": [],
+  "publication": "Wikibooks imported and active in isolated public D1; Worker binding pending",
+  "status": "normalized"
+}

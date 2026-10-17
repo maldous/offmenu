@@ -1,0 +1,76 @@
+{
+  "schema": "offmenu-authored-branch-retirement-correction/1",
+  "utc": "2026-10-14T09:59:18.982350+00:00",
+  "branch": "feature/autonomous-gitflow-review-20261014",
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "head": "58c5f051d037eb02582a83a0e7107d907b1f401e",
+  "corrected_review_pin": "60c6c01142fa903b8a9b6d4658f5c91085409baa",
+  "status": "ready_for_root10_exact_rereview",
+  "Morgan_verdict": "pending; prior changed-head review invalidated",
+  "before": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/before-reproduction.json",
+    "sha256": "ec08e80eab0f834506a504f72484d491cb9e2e49473e311a5839eab2d6a0a5a7"
+  },
+  "after": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/after-reproduction.json",
+    "sha256": "b6090b9a31ae9b4a78d3d405a700b9c33efb5d53ffd5e1b0b93650a52cff01b3"
+  },
+  "delta": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/correction.patch",
+    "sha256": "8b2efcbedee14d220dca39733ccc094a853a66aa7fd8e580a16d19d3d89c5614"
+  },
+  "complete_candidate": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/complete-candidate.patch",
+    "sha256": "0f84662bf38e4aafb1c475c2d2955871dbeb5b59284d104c88f3d4fa24b8b7db"
+  },
+  "owner_checks": {
+    "utc": "2026-10-14T09:58:15.173731+00:00",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests-gitflow",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 50,
+    "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/focused-tests.log",
+    "sha256": "22e7abba4e87574efb5b3f708f161f83bbbd5d70faee6683340c65952dda1b4e",
+    "all_GIT_vars_removed": true,
+    "real_branch_deletion": false,
+    "synthetic_positive_retirement_only": true
+  },
+  "isolation_proof": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/isolation-proof.json",
+    "sha256": "28cec146365c82ccddd79208ed71413ea6867ba824d890094e55f1affeb0d8cf"
+  },
+  "binding": [
+    "authored start owner/worktree/task/kind/base/branch plus generated task identity or separately authorized historical exception",
+    "ready owner/worktree/branch/task/kind/base/start path and digest must match authored start",
+    "current registered worktree must be on exact authored branch at ready source SHA before cleanup/check-only",
+    "normal provider preflight and snapshot actual source ref matches authored branch; link includes source task start, owner/worktree/branch",
+    "retirement selects authored-start branch and exact Morgan branch/owner/worktree verdict; sameHEAD alias or consistently rehashed mutable ready is not ownership"
+  ],
+  "negatives": [
+    "sameHEAD aliased READY and consistently updated normal receipt digest",
+    "task id, owner and worktree redirected ready/link fields",
+    "sameHEAD different current checkout alias",
+    "forged authored-start alias with rehashed ready/link",
+    "provider source-ref alias with same head cannot attach original task"
+  ],
+  "preserved": {
+    "main_primary_index": true,
+    "existing_hooks": 14,
+    "prior_source_branch_history": true,
+    "60c6_e9_6b_ae_commits_reports": true,
+    "real_branch_deletions": false,
+    "permission_changes": false,
+    "trigger_changes": false,
+    "lean_policy_artifact_only": true
+  },
+  "trust_limit": "Client metadata consistency, not authentication/signatures; bypassable outside managed workflow. Older missing owner/source bindings remain evidence, not auto cleanup approval.",
+  "next_action": "Root10 re-review exact new head/delta and meaningful before/after probes, then Morgan verdict. No actual permanent branch cleanup now."
+}

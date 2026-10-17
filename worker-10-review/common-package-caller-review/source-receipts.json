@@ -1,0 +1,104 @@
+[
+  {
+    "file": "package.json",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 709,
+    "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+  },
+  {
+    "file": "tests-web/common-package-caller.test.mjs",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 17267,
+    "sha256": "66d7fba9af8c876f32e67a2ce9d1bbefe5be64bcd6b530301bf273235012b8ae"
+  },
+  {
+    "file": "public/i18n.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 8341,
+    "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe"
+  },
+  {
+    "file": "public/locale-negotiation.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 2675,
+    "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009"
+  },
+  {
+    "file": "public/locales/ar.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 27728,
+    "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+  },
+  {
+    "file": "public/content-locale.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 5887,
+    "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+  },
+  {
+    "file": "public/common-corpus-transport.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 20118,
+    "sha256": "6cea7d8c1801c27588d04e87580cf29fcf7220fe5a623333e0933f565d826903"
+  },
+  {
+    "file": "public/common-corpus-locale.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 11250,
+    "sha256": "9b7d585fab32aa842bf552108e0cff448e99042858ac069976a0910349464f01"
+  },
+  {
+    "file": "public/data-ui.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 30032,
+    "sha256": "738e1c597bcfa0069872df4ed0500860562cb0cbf2d6932cb0ac5c95d892d2a2"
+  },
+  {
+    "file": "public/unified-data.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 14640,
+    "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+  },
+  {
+    "file": "public/menu-model.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 3306,
+    "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+  },
+  {
+    "file": "public/checkout-model.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 3416,
+    "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+  },
+  {
+    "file": "public/model.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 4450,
+    "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+  },
+  {
+    "file": "public/ingredients.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 5143,
+    "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+  },
+  {
+    "file": "public/countries.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 1497,
+    "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+  },
+  {
+    "file": "public/sources.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 17882,
+    "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+  },
+  {
+    "file": "public/record-policy.js",
+    "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "bytes": 2329,
+    "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc"
+  }
+]

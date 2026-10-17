@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests-web/recall-scope-model.test.mjs"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot",
+  "exitCode": 0,
+  "logSha256": "0fd1d4262edad549285176785e3cda95b426c3935f0428a5980c1683a93841b5"
+}

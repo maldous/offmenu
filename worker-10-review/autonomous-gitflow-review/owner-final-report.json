@@ -1,0 +1,139 @@
+{
+  "schema": "offmenu-autonomous-gitflow-review/1",
+  "utc": "2026-10-14T08:44:28.170887+00:00",
+  "branch": "feature/autonomous-gitflow-review-20261014",
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "head": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "prior_branch": "worker/09/gitflow-enforcement-20261014",
+  "prior_head": "ae7f1a5a2e44a857c2683adf32180e821c0bfd54",
+  "prior_custody": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/prior-custody.json",
+    "sha256": "2631a5790de7be91f2528ad0488efad57bd35ca473a700b015b45954b95e0b2c"
+  },
+  "fresh_fetch": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/fresh-develop-fetch.json",
+    "sha256": "15ac344f1c67ea9a10c57ef25b573bae405c45e75c621e543bb34d053b8837c5"
+  },
+  "changes": {
+    "candidate_diff": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/candidate.patch",
+      "sha256": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb"
+    },
+    "client_delta": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/client-delta.patch",
+      "sha256": "46a58964409caaf2b2206e4a862abba15881bb284a08241325414716e66b583c"
+    },
+    "delta_from_reviewed_helper": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/delta-from-reviewed-helper.patch",
+      "sha256": "8203c0b1e0e41752d2544cfd1abff27d52c0915aaebea52add4c855747ebd47f"
+    }
+  },
+  "tests": {
+    "utc": "2026-10-14T08:39:56.847066+00:00",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests-gitflow",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 42,
+    "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/focused-tests.log",
+    "sha256": "3b3e30be1063a512d9f90b5383e90126d7846f8de79d9f29ba67cb57f33266d7"
+  },
+  "isolation_proof": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/isolation-proof.json",
+    "sha256": "b6de2c2a70c8cf7798312ee4dfd35bb39b4bbca5955c70f853a58ad61c2cebac"
+  },
+  "pr1": {
+    "url": "https://github.com/maldous/offmenu/pull/1",
+    "state": "merged",
+    "base_ref": "develop",
+    "head_ref": "feature/places-recovery-integration-20261014",
+    "head": "7beffdc390826ee68e99031ef6fe735efce9d2c9",
+    "base": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "owner": "worker01",
+    "requirements_status": "historical requirements unavailable; current branch protection disabled",
+    "required_reviews": [],
+    "required_checks": [],
+    "advisory_reviews": [
+      {
+        "reviewer": "GitHub Codex",
+        "state": "COMMENTED",
+        "submitted_utc": "2026-10-14T08:10:09Z",
+        "open_findings": 1
+      }
+    ],
+    "independent_review": {
+      "evidence_reference": "worker-13-review/places-followup/review-receipt.json; pre-merge independent local acceptance, not later GitHub review"
+    },
+    "merge": {
+      "sha": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "utc": "2026-10-14T08:07:47Z"
+    }
+  },
+  "worker02": "historical unpublished snapshot retained in prior result; now PR2 published and bounded composition locally accepted, with later normal corrections/security disposition outstanding",
+  "authority": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/standing-authority.json",
+    "sha256": "465d97aefc84358a608ae4846b02b060171bb5984bb2bffd504d2c8e76987ce4"
+  },
+  "status": "ready_for_independent_review",
+  "Morgan_verdict": "pending for this exact new candidate",
+  "operational": [
+    "PR1 independent scoped review, prior explicit acceptance, PR publication and normal develop merge witnessed; parents/tree/readback and custody receipt retained",
+    "Current develop fetch and normal feature checkout witnessed in the same native Worker09 path",
+    "GitHub Codex later COMMENTED/P2 feedback observed; never relabeled as pre-merge approval",
+    "Current branch protected=false and status enforcement off; detailed protection/rules unavailable, historical requiredness not reconstructed",
+    "Matt client-enforcement authority explicitly recorded; unavailable origin protection is not itself a delivery hold",
+    "Actual bound Worker09 launcher/PR2 preflight ran: fresh head/base and independent local acceptance verified; later findings blocked delivery",
+    "14 existing hook files preserved by hash/mode, no hook overwritten or disabled"
+  ],
+  "staged": [
+    "Latest helper/launcher/runbook commit needs exact independent review and Morgan verdict before its own routine PR delivery",
+    "Client controls are bypassable outside workflow; no origin protection, coordinator, Actions or pool-wide hook install claimed",
+    "Main/tag/release/hotfix controls remain certification gated; no real main promotion/tag/backmerge/deployment performed",
+    "No destructive retirement of prior branches/reports/owners was performed"
+  ],
+  "next_action": "Morgan dispatches existing independent reviewer on exact e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442 and current diffs. Normal correction/re-review of observed PR1/PR2 feedback stays with source owners; known PR2 security alert requires actual mandatory disposition. No repeat human routine authority or origin-protection entitlement is required.",
+  "supersedes_candidate": "6b2edabd56d4de4506b36ddcbcbc61baeaa09ba5",
+  "hooks_preserved": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/hooks-preserved.json",
+    "sha256": "71f3d1134922f7cdfcdf7200b2c8e1c7ba212db2397083554b211042052d5e4e"
+  },
+  "client_enforcement_authority": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/client-authority.json",
+    "sha256": "326aa9e3c9a9c2a077d8ddb31e64f06c8aa49ff25bd25d3533457eab05a4ce13"
+  },
+  "pr2_guard": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/pr2-guard.json",
+    "sha256": "78269cd389d93b421cb81704037be84a11908eed7058bf071070306a4f8a1745"
+  },
+  "pr2_current_facts": {
+    "API": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-info.json",
+      "sha256": "b2cf870dc8f83244aab95be8f443a129db581fb492fcacc9f6a2da1742c77b54"
+    },
+    "reviews": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-reviews.json",
+      "sha256": "7218dec0044b2e9b3b52c10314d8b147cb33de7e5c504ad167ff4ef614087ae1"
+    },
+    "comments": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/connector-pr2-comments.json",
+      "sha256": "d69e4e6adf40f6e3b766030707383700ad6aa0f9439920b3d5c1c802357849ed"
+    },
+    "local_independent_review": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-13-review/worker-02-current-develop-review/review-receipt.json",
+      "sha256": "c70c62c9bfa96e2789f3ddabce0d64e325d0c8b3b36f5e004fbc2c56a9f143a7"
+    },
+    "local_acceptance_reported": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/worker02-root-acceptance-reported.json",
+      "sha256": "fa3c94dcbe2e2700e8ed7dc4732d3f2b393a35a1d65867b506d0c4e362198acc"
+    },
+    "later_findings": "3 Codex P2s at08:33:13\u201314UTC; GitGuardian alert at08:30:10UTC; no disposition inferred",
+    "guard_result": "explicit client-enforced origin-unavailable mode verified, then blocked on known later findings; no origin-protection hold"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "65805762cf398202a765d1dc9d8ec26cfe035348",
+  "scenarios": ["success", "empty", "error", "timeout", "rate-limit", "auth", "unknown-barcode"],
+  "http": [
+    {"id":"identity","hosts":["offmenu-accounts.netlify.app"],"paths":["^/\\.netlify/identity/(settings|token|signup|user|verify|recover|logout|authorize|callback)$"],"methods":["GET","POST","PUT"],"source":"cloud/handler.mjs:21,43-49","kind":"backend","credentials":"synthetic Identity actors/tokens only"},
+    {"id":"off","hosts":["world.openfoodfacts.org"],"paths":["^/api/v2/product/[0-9]{4,32}\\.json$"],"methods":["GET"],"source":"cloud/handler.mjs:69;cloud/provider-data.mjs:27","kind":"backend"},
+    {"id":"prices","hosts":["prices.openfoodfacts.org"],"paths":["^/api/v1/prices$"],"methods":["GET"],"source":"cloud/handler.mjs:69;cloud/provider-data.mjs:27","kind":"backend"},
+    {"id":"usda","hosts":["api.nal.usda.gov"],"paths":["^/fdc/v1/foods/search$"],"methods":["GET"],"source":"cloud/provider-data.mjs:34","kind":"backend","credentials":"api_key=fixture-usda"},
+    {"id":"edamam","hosts":["api.edamam.com"],"paths":["^/api/food-database/v2/parser$"],"methods":["GET"],"source":"cloud/provider-data.mjs:34","kind":"backend","credentials":"app_id=fixture-edamam-id;app_key=fixture-edamam-key"},
+    {"id":"fsa-alerts","hosts":["data.food.gov.uk"],"paths":["^/food-alerts/id$"],"methods":["GET"],"source":"cloud/provider-data.mjs:28","kind":"backend"},
+    {"id":"fsa-ratings","hosts":["api.ratings.food.gov.uk"],"paths":["^/Establishments$"],"methods":["GET"],"source":"cloud/provider-data.mjs:29","kind":"backend"},
+    {"id":"fda","hosts":["api.fda.gov"],"paths":["^/food/enforcement\\.json$"],"methods":["GET"],"source":"cloud/provider-data.mjs:30","kind":"backend"},
+    {"id":"gleif","hosts":["api.gleif.org"],"paths":["^/api/v1/lei-records$"],"methods":["GET"],"source":"cloud/enrichment.mjs:14","kind":"backend"},
+    {"id":"wikidata","hosts":["www.wikidata.org"],"paths":["^/wiki/Special:EntityData/Q[0-9]+\\.json$"],"methods":["GET"],"source":"cloud/enrichment.mjs:14","kind":"backend"},
+    {"id":"corpus","hosts":["offmenu-corpus.netlify.app"],"paths":["^/manifest\\.json$","^/recipes/manifest\\.json$","^/releases/[^?#]*$","^/common-data/[^?#]*$"],"methods":["GET"],"source":"cloud/corpus.mjs:5-20;public/data-ui.js","kind":"both","note":"Exact common-data fixtures must be coordinated with Dataset/Dev owners; unseeded paths remain visibly unmatched."},
+    {"id":"brevo","hosts":["api.brevo.com"],"paths":["^/v3/smtp/email$"],"methods":["POST"],"source":"cloud/service-support.mjs:4,22","kind":"backend","credentials":"api-key:fixture-brevo"},
+    {"id":"sentry","hostPattern":"^o[0-9]+\\.ingest\\.sentry\\.io$","paths":["^/api/[0-9]+/envelope/$"],"methods":["POST"],"source":"cloud/service-observability.mjs","kind":"backend","note":"Development DSN only; technical envelopes must exclude private content."},
+    {"id":"community-ai","hosts":["ai.offmenu.test"],"paths":["^/review$"],"methods":["POST"],"source":"cloud/community-ai.mjs:66","kind":"backend","credentials":"Bearer fixture-ai","note":"Reserved .test origin configured only in synthetic development bindings; no hosted model calls."},
+    {"id":"iubenda","hosts":["cdn.iubenda.com"],"paths":["^/cs/iubenda_cs\\.js$"],"methods":["GET"],"source":"public/services-model.js:64","kind":"browser"},
+    {"id":"sleekplan","hosts":["client.sleekplan.com"],"paths":["^/sdk/e\\.js$"],"methods":["GET"],"source":"public/services-model.js:65","kind":"browser","note":"Native care bypasses this legacy seam."},
+    {"id":"adsense","hosts":["pagead2.googlesyndication.com"],"paths":["^/pagead/js/adsbygoogle\\.js$"],"methods":["GET"],"source":"public/services-model.js:66","kind":"browser"}
+  ],
+  "notHttpOrNotMocked": [
+    "D1: Development Environment owns isolated local SQLite and seed/reset; never production D1.",
+    "caches.default/service-worker/browser storage: local runtime substitutes and fresh browser context required.",
+    "Scheduled cleanup: development explicit invocation; no production cron or durable administrator delegation.",
+    "No R2/Queues/Durable Objects are current community dependencies; do not invent them from future upload proposals.",
+    "Google browser OAuth/callback/consent: separate Google IDP owner; synthetic password/token fixture is not Google acceptance.",
+    "Camera/audio/haptics and operating-system health bridges: device boundaries, not HTTP mocks.",
+    "Map/retailer/provider-dashboard external navigation: browser audit blocks by default; not a fabricated data connector.",
+    "CI/provider-management APIs are engineering tooling, not runtime application traffic."
+  ]
+}

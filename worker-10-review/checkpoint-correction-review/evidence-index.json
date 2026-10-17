@@ -1,0 +1,162 @@
+[
+  {
+    "path": "author-command.json",
+    "bytes": 395,
+    "sha256": "0d5a2937bc06b3125d5fe160b6012aa2fb49f0eb0d206bcdf5ced9319b886b53"
+  },
+  {
+    "path": "author-receipts.json",
+    "bytes": 2639,
+    "sha256": "6e8b0ae346d8edc4aec57279580c355c476f39e99ad59b2456ee40fc055d7c78"
+  },
+  {
+    "path": "author-tests.log",
+    "bytes": 5233,
+    "sha256": "4b103160ee9d8d149d23277ff37d0ce62a3c6e160a272ae26c7791f30f2dd32c"
+  },
+  {
+    "path": "immutable.patch",
+    "bytes": 9088,
+    "sha256": "904ed8c8dfac4e80ac913e8113227fb21adb40feeadaa31e0f4e0701318ea674"
+  },
+  {
+    "path": "independent-command.json",
+    "bytes": 285,
+    "sha256": "b8a9af998bc5678948d91b099519cee2ba8e0e5e0d70cfe7f84d33a434b28d44"
+  },
+  {
+    "path": "independent-probes.log",
+    "bytes": 3128,
+    "sha256": "9c8864f07a492bd178a251e779b64b6a417042f5c298c69e3b894146c7aada46"
+  },
+  {
+    "path": "independent-probes.py",
+    "bytes": 6478,
+    "sha256": "66664c9b3bbf31912e8bf846f8673c61a0fd23e7d4b3d85fc2e72679ee21539d"
+  },
+  {
+    "path": "independent-results.json",
+    "bytes": 19187,
+    "sha256": "5836c624021662ee69b560e05fb32429eb5702b196c25f31f5cfee92e704daaf"
+  },
+  {
+    "path": "initial-harness-failure.json",
+    "bytes": 387,
+    "sha256": "c1858c375c17864c873288c27233c2bc3a96ce9ff1e1286c18d22b47852d0dea"
+  },
+  {
+    "path": "initial-harness-failure.log",
+    "bytes": 3793,
+    "sha256": "545c2ca64d666f8f08d67973381ab3e52f634189545aaf06da8958b6097435a2"
+  },
+  {
+    "path": "inputs.json",
+    "bytes": 624,
+    "sha256": "216de1287a13f9769403bef8f6820c47ac1a1f4fdaa5ef31df4bdd7877bf1c78"
+  },
+  {
+    "path": "parent-control-command.json",
+    "bytes": 288,
+    "sha256": "59e86938ef7868eafbd96621cd20371a0e20773ae0fdf68692d7941972be5288"
+  },
+  {
+    "path": "parent-limit-controls.json",
+    "bytes": 895,
+    "sha256": "c90a955089b4b1ce95b879b56de88bc07452580a5eae87ea136380b4d9eea243"
+  },
+  {
+    "path": "parent-limit-controls.log",
+    "bytes": 1669,
+    "sha256": "8d9beda6006e1ebecb056145b85b8028626438494ec3105c3dbb20ab4d5d7790"
+  },
+  {
+    "path": "parent-limit-controls.py",
+    "bytes": 3616,
+    "sha256": "0c8ac63602667793a4bd61c71acd4424f9c1191389398d77b9466c83ebccbdbe"
+  },
+  {
+    "path": "parent-snapshot/corpus/common-data-contract.json",
+    "bytes": 46420,
+    "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+  },
+  {
+    "path": "parent-snapshot/corpus/common-data.schema.json",
+    "bytes": 17632,
+    "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  {
+    "path": "parent-snapshot/scripts/align-places-common.py",
+    "bytes": 27735,
+    "sha256": "1bbf1aae52769139c3625b801ac6e3dcc0e7c8ec4788fcffd05aea86bae8384a"
+  },
+  {
+    "path": "parent-snapshot/scripts/places-recovery-preflight.py",
+    "bytes": 4945,
+    "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+  },
+  {
+    "path": "parent-snapshot/scripts/places_checkpoint.py",
+    "bytes": 5632,
+    "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+  },
+  {
+    "path": "parent-snapshot/tests/test_places_checkpoint.py",
+    "bytes": 14883,
+    "sha256": "f262fb6cb6021c91c5c3824d590da9c0bded1fe31a577926be2d792713009505"
+  },
+  {
+    "path": "parent-snapshot/tests/test_places_common.py",
+    "bytes": 6855,
+    "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+  },
+  {
+    "path": "parent-source-receipts.json",
+    "bytes": 1502,
+    "sha256": "e861e1f11f3e05819e3d36c52908ff08a4702c7dd8f440d032e9f3f13854ee03"
+  },
+  {
+    "path": "readback.json",
+    "bytes": 530,
+    "sha256": "00a4a537a1a24dba1fa1fdc91fbd0fc2959dd53d1c85146bba65b439cbaa23e7"
+  },
+  {
+    "path": "snapshot/corpus/common-data-contract.json",
+    "bytes": 46420,
+    "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+  },
+  {
+    "path": "snapshot/corpus/common-data.schema.json",
+    "bytes": 17632,
+    "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  {
+    "path": "snapshot/scripts/align-places-common.py",
+    "bytes": 27888,
+    "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f"
+  },
+  {
+    "path": "snapshot/scripts/places-recovery-preflight.py",
+    "bytes": 4945,
+    "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+  },
+  {
+    "path": "snapshot/scripts/places_checkpoint.py",
+    "bytes": 5632,
+    "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+  },
+  {
+    "path": "snapshot/tests/test_places_checkpoint.py",
+    "bytes": 16930,
+    "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2"
+  },
+  {
+    "path": "snapshot/tests/test_places_common.py",
+    "bytes": 6855,
+    "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+  },
+  {
+    "path": "source-receipts.json",
+    "bytes": 1502,
+    "sha256": "1ad8d02999f67641f5b4febb593782b41b828eaae85293b870509c629990f660"
+  }
+]

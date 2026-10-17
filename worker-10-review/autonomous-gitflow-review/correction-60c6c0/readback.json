@@ -1,0 +1,16 @@
+{
+  "primaryMainWorker10HeadIndexEqual": true,
+  "all14HooksEqual": true,
+  "worker09ExactHeadPreserved": true,
+  "allOldEvidenceIndexHashesEqual": true,
+  "candidateSourceHashesEqual": true,
+  "triggerProposalUnchangedUnapproved": true,
+  "stockSuiteGitIsolationProofVerified": true,
+  "worker10Status": "## feature/checkpoint-correction-review-20261014\n?? worker-10-review/\n",
+  "diffCheck": {
+    "exitCode": 0,
+    "output": ""
+  },
+  "realBranchCleanup": false,
+  "fixtureBranchCleanupOnly": true
+}

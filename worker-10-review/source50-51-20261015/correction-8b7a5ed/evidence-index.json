@@ -1,0 +1,13 @@
+{
+  "actual-source-proof.json": "1875bd26b65f1d7f537f5917fddd503b42dbe5a13dc663f7696f026c59399be6",
+  "after.json": "cb46ba15cecd3f5aad006d5e0d0bcbfa77e76e7d8c7e0cab19fa93d23f81de47",
+  "before.json": "c1745eb291effaf20658ccdadab42d057b40b1f0095004e2318c9d20f2da8ade",
+  "docs/global-data-validation/worker-51-provenance-fix.json": "e84d350e1c82fc4e96f0fe24dd16dc0ae945bfaaa2ded65d445f65d3789342ca",
+  "docs/global-data-validation/worker-51-provenance-fix.md": "b23d15ed85082e6ae378735fa66c32658f142522604dfdcaea813ed022a9f0b5",
+  "independent-mutation-results.json": "65f177206e354e10c9185535581d1dbadf0df6a61a03a48d5e33be14165553b5",
+  "independent-review.json": "68d9c674902e898ce9a1ad8ff474b5aeef8766719f27bcec22fc5bd8370bce26",
+  "reviewed-delta.patch": "e80c6d9c85ec96905ad9f1f440f4ab390a2d6398a62206559be04124c26859c2",
+  "scripts/global-data-validation/worker-51.py": "c67aa7e9256a1ec305e9e013e4e1c97c147a8174187e94504bb3ebbb5aaeea09",
+  "tests/test_global_data_worker51.py": "4f5cdcf5b19e708113a2087f5cb1047c8eacad337677bf1943b48ba15a0eac7c",
+  "tests.log": "da6328d06f1a2e9737ce0df5e977420c15ff5f54cfe6530c62bcc0be4edbc6e2"
+}

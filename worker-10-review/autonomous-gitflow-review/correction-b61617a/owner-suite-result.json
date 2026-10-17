@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests-gitflow",
+    "-v"
+  ],
+  "exitCode": 0,
+  "inheritedGitVariablesRemoved": true,
+  "isolationProof": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-suite-isolation.json"
+}

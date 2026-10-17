@@ -1,0 +1,14 @@
+test_audit_exports_only_aggregates (test_global_data_worker_50.RetainedTBCARegression.test_audit_exports_only_aggregates) ... ok
+test_botanical_source_typo_not_silently_corrected (test_global_data_worker_50.RetainedTBCARegression.test_botanical_source_typo_not_silently_corrected) ... ok
+test_conflicting_source_link_is_rejected (test_global_data_worker_50.RetainedTBCARegression.test_conflicting_source_link_is_rejected) ... ok
+test_index_never_becomes_composition_or_portion (test_global_data_worker_50.RetainedTBCARegression.test_index_never_becomes_composition_or_portion) ... ok
+test_missing_source_code_is_not_replaced_by_food_name (test_global_data_worker_50.RetainedTBCARegression.test_missing_source_code_is_not_replaced_by_food_name) ... ok
+test_original_diacritics_and_spacing_not_folded (test_global_data_worker_50.RetainedTBCARegression.test_original_diacritics_and_spacing_not_folded) ... ok
+test_pinned_source_and_resource_bounds_fail_closed (test_global_data_worker_50.RetainedTBCARegression.test_pinned_source_and_resource_bounds_fail_closed) ... ok
+test_raw_and_cooked_rice_remain_separate_source_identities (test_global_data_worker_50.RetainedTBCARegression.test_raw_and_cooked_rice_remain_separate_source_identities) ... ok
+test_snapshot_shape_and_bounded_record_set (test_global_data_worker_50.RetainedTBCARegression.test_snapshot_shape_and_bounded_record_set) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.023s
+
+OK

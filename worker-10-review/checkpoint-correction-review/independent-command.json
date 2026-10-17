@@ -1,0 +1,8 @@
+{
+  "command": [
+    "/home/user/src/offmenu/.venv/bin/python",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-probes.py"
+  ],
+  "exitCode": 0,
+  "logSha256": "9c8864f07a492bd178a251e779b64b6a417042f5c298c69e3b894146c7aada46"
+}

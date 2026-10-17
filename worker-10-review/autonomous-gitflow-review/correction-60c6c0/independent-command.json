@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-probes.py"
+  ],
+  "exitCode": 1,
+  "logSha256": "e35009971b9821cd4e5829bbc0287fa601698e33edbe73bbb78959a03dadca92"
+}

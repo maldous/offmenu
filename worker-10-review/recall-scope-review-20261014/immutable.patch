@@ -1,0 +1,378 @@
+diff --git a/docs/worker-26-recall-scope.md b/docs/worker-26-recall-scope.md
+new file mode 100644
+index 0000000..19045dd
+--- /dev/null
++++ b/docs/worker-26-recall-scope.md
+@@ -0,0 +1,115 @@
++# Worker 26: scoped recall applicability
++
++## Custody and scope
++
++One deliverable on `feature/recall-scope-20261014`, based on provisional
++`8652b312ce7989c5e4f2d49ae765d5d8daf5841d`. Morgan dispatch reports successful
++fetch at `2026-10-14T06:48:50.753283+00:00`; Worker 26 verified its HEAD and
++branch before editing. This records supplied fetch custody, not an independently
++repeated fetch or release certification. Development START is already granted.
++Morgan review/integration remains required. Dataset01 retains source ownership.
++
++Only `public/recall-scope-model.js`, `tests-web/recall-scope-model.test.mjs` and
++this document are assigned. No collector, provider access, personal data, UI,
++storage guidance, legal-rule engine, source-policy change or ownership change.
++
++## Requirement and existing behavior evidence
++
++The full relevant product-review pages 6–9 and normalization pages A10–A11
++were read locally, alongside register entries and the delivery plan:
++
++- **P2-09**, product review page 6: country notices, batch/date matching,
++  source links and user review; incomplete identification yields potential
++  matches and coverage must never be described as exhaustive.
++- **DATA-09**, product review page 7 (source assertion contract on page 9):
++  official recall references and attributed storage guidance require reuse
++  and geographic review; storage guidance cannot override packaging or handling.
++  This deliverable implements only a recall scope projection, not that whole requirement.
++- **NORM-11**, normalization A10: valid canonical GTIN with original identity,
++  market/product label version, lot/date scope; historical brand recalls must
++  not be generalized. A11 requires unknowns and scoped qualification claims.
++- `docs/research-delivery-plan.md` recalls row explicitly separates historical
++  openFDA research from current alerts and requires regulator/event/product/
++  GTIN/lot/market dates and action links.
++
++`public/evidence-model.js:matchRecall` already handles valid GTIN equivalence,
++known market mismatch, explicit all batches, lot membership and absent lot
++(`possible`). Its existing global-data test covers leading zeros/all batches/
++missing lot. It is unchanged and reused through `canonicalGTIN`, not copied.
++
++Concrete missing case: `{gtin, market:'AU', lots:['A']}` matches lot A with the
++same valid barcode and **no market**. It also ignores label/date restrictions
++and action/evidence lifecycle. The new tests demonstrate the legacy behavior
++and the new `unknown` result. A same-GTIN all-batch record must not bypass
++market, label or date restrictions or promote historical/inspection evidence.
++
++## Owner integration contract
++
++Import `evaluateRecallScope(notice, lot, {asOf})` from the new module. This is a
++pure opt-in model; existing callers and ingestion are unchanged. Source owner
++must first review permissions, identity mapping, actual declared action,
++scope completeness and freshness. The evaluator cannot authenticate a regulator
++or infer a recall from a feed name, inspection, noncompliance, brand or keywords.
++
++Owner-reviewed notice projection:
++
++- `id`: retained notice identity.
++- `action`: `{type:'recall', regulator, ...}`; preserve original action wording
++  and links. Other/absent actions cannot establish current recall applicability.
++- `provenance`: `{sourceId, recordId, url, retrievedAt, ...}`; retain licence,
++  attribution, source version and transformations. Metadata is cloned intact,
++  not a permission grant or a source authenticity check.
++- `evidence`: `{kind:'current'|'historical', validFrom, freshUntil, validUntil?}`.
++  Explicit UTC timestamps with `Z`, mandatory caller `asOf`; current requires
++  `validFrom <= retrievedAt <= asOf < freshUntil`, and `asOf < validUntil`
++  if present. Freshness bounds are owner supplied, never guessed. Stale,
++  malformed, future or absent bounds yield unknown. Historical stays historical.
++- `scope`: `{gtin, markets, allBatches:true}` **or** `{gtin, markets, lots}`,
++  plus optional `labelVersions` and `dateRange:{field,from,through}`. Nonempty
++  exact string lists, valid GTIN strings, explicit batch scope. All-batches
++  plus a lot list is unresolved. Date fields are `bestBefore`, `useBy` or
++  `productionDate`, using valid ISO calendar dates with inclusive endpoints.
++  Missing label/date restrictions mean the owner has established that the
++  notice contains no such restriction; do not drop unparsed scope text.
++- Lot: `{barcode, market, lotCode?, labelVersion?, bestBefore?, useBy?,
++  productionDate?}`. Market/lot/label values require exact owner-normalized
++  matches. Date types cannot substitute for each other. GS1/Digital Link parsing
++  remains upstream; this module validates the resulting GTIN string only.
++
++Result includes `scopeMatch` and `applicability` (`matched`, `not-matched`,
++`unknown`), `evidenceStatus`, machine-readable reasons, notice identity and
++independent provenance/action snapshots. A proven scope exclusion wins over
++other missing fields; invalid identifiers are unknown rather than proof of an
++exclusion. Scope matches with historical or unresolved evidence have unknown
++current applicability. `matched` means only this declared current notice
++matches these dimensions. `not-matched` excludes only this notice scope; it
++does not establish food safety or complete recall coverage. `automaticSelection`
++is always false. Preserve unknowns, original source links and user review in any
++future UI; source owners must integrate and independently accept that behavior.
++
++## Validation and handoff
++
++Run `node --test tests-web/recall-scope-model.test.mjs`. Synthetic `.invalid`
++URLs and invented source/action identifiers only; no networking, process spawning
++inside tests or Git fixtures. One test-runner child, within the two-child ceiling.
++Cases cover legacy gap, all scope dimensions, date boundaries/types, malformed
++scope/GTIN, historical and non-recall evidence, lifecycle/freshness/provenance,
++exclusion precedence and input/output isolation.
++
++Observed focused result: **14 tests passed, 0 failed** on Node `v24.16.0`.
++No tests create Git fixtures or spawn child processes. Shared main controls
++captured before editing and confirmed unchanged immediately before commit:
++
++| Shared Git file | SHA-256 |
++| --- | --- |
++| `.git/index` | `4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389` |
++| `.git/HEAD` | `28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80` |
++| `.git/refs/heads/main` | `4b9c51c3f104ae9af331274450d8d1fa2cf3b06df913f45339abc4a5536e408e` |
++
++Git writing commands strip inherited `GIT_*` and use this explicit checkout;
++no Git-writing fixtures exist, so no temporary repository is needed. Commit
++only these three paths with command-scoped Worker 26 identity. Shared main
++HEAD/ref/index hashes are compared before and after. Review the immutable commit
++and its parent diff; Morgan owns integration onto freshly fetched provisional
++`develop` with recorded SHA/custody/review. No delivery register completion or
++accepted release is claimed by this isolated model/test result.
+diff --git a/public/recall-scope-model.js b/public/recall-scope-model.js
+new file mode 100644
+index 0000000..13ab83c
+--- /dev/null
++++ b/public/recall-scope-model.js
+@@ -0,0 +1,85 @@
++import { canonicalGTIN } from './evidence-model.js';
++
++const text = value => typeof value === 'string' && value.trim().length > 0;
++const list = value => Array.isArray(value) && value.length > 0 && value.every(text);
++const day = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
++  && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
++const instant = value => typeof value === 'string'
++  && /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?Z$/.test(value)
++  && day(value.slice(0, 10)) && Number.isFinite(Date.parse(value));
++const dateFields = new Set(['useBy', 'bestBefore', 'productionDate']);
++
++// Evaluate an owner-reviewed projection, never raw provider data or a legal/safety rule.
++// Omitting an optional label/date restriction means the owner established no such restriction.
++export function evaluateRecallScope(notice = {}, lot = {}, { asOf } = {}) {
++  notice ??= {};
++  lot ??= {};
++  const reasons = [];
++  const unknown = [];
++  const excluded = [];
++  const compare = (dimension, valid, known, matches) => {
++    if (!valid || !known) unknown.push(dimension);
++    else if (!matches) excluded.push(dimension);
++  };
++  const scope = notice.scope ?? {};
++  const gtin = typeof scope.gtin === 'string' ? canonicalGTIN(scope.gtin) : null;
++  const barcode = typeof lot.barcode === 'string' ? canonicalGTIN(lot.barcode) : null;
++  compare('gtin', !!gtin, !!barcode, gtin === barcode);
++  compare('market', list(scope.markets), text(lot.market),
++    list(scope.markets) && scope.markets.includes(lot.market));
++
++  const hasLots = Object.hasOwn(scope, 'lots');
++  const allBatches = scope.allBatches === true;
++  if (allBatches && !hasLots) {
++    // All batches bypasses only the lot-code dimension, never market/label/date gates.
++  } else if (!allBatches && list(scope.lots) && [false, undefined].includes(scope.allBatches)) {
++    compare('lot', true, text(lot.lotCode), scope.lots.includes(lot.lotCode));
++  } else unknown.push('lot-scope');
++
++  if (Object.hasOwn(scope, 'labelVersions')) {
++    compare('label-version', list(scope.labelVersions), text(lot.labelVersion),
++      list(scope.labelVersions) && scope.labelVersions.includes(lot.labelVersion));
++  }
++  if (Object.hasOwn(scope, 'dateRange')) {
++    const range = scope.dateRange ?? {};
++    const valid = dateFields.has(range.field) && day(range.from) && day(range.through)
++      && range.from <= range.through;
++    const value = lot[range.field];
++    compare('date', valid, day(value), value >= range.from && value <= range.through);
++  }
++
++  const provenance = notice.provenance ?? {};
++  const backed = text(provenance.sourceId) && text(provenance.recordId)
++    && text(provenance.url) && instant(provenance.retrievedAt)
++    && instant(asOf) && Date.parse(provenance.retrievedAt) <= Date.parse(asOf);
++  const evidence = notice.evidence ?? {};
++  let evidenceStatus = 'unknown';
++  if (evidence.kind === 'historical') evidenceStatus = 'historical';
++  else if (evidence.kind === 'current' && backed && instant(evidence.validFrom)
++    && instant(evidence.freshUntil) && Date.parse(evidence.validFrom) <= Date.parse(asOf)
++    && Date.parse(evidence.validFrom) <= Date.parse(provenance.retrievedAt)
++    && Date.parse(provenance.retrievedAt) < Date.parse(evidence.freshUntil)
++    && Date.parse(asOf) < Date.parse(evidence.freshUntil)
++    && (!Object.hasOwn(evidence, 'validUntil') || (instant(evidence.validUntil)
++      && Date.parse(evidence.validFrom) < Date.parse(evidence.validUntil)
++      && Date.parse(asOf) < Date.parse(evidence.validUntil)))) evidenceStatus = 'current';
++  if (!backed) reasons.push('source-provenance-unresolved');
++  if (evidenceStatus !== 'current') reasons.push(`evidence-${evidenceStatus}`);
++  const declaredRecall = notice.action?.type === 'recall' && text(notice.action.regulator);
++  if (!declaredRecall) reasons.push('declared-recall-action-unresolved');
++  reasons.push(...excluded.map(d => `outside-${d}`), ...unknown.map(d => `unresolved-${d}`));
++  const scopeMatch = excluded.length ? 'not-matched' : unknown.length ? 'unknown' : 'matched';
++  const applicability = scopeMatch === 'not-matched' ? 'not-matched'
++    : scopeMatch === 'matched' && backed && declaredRecall && evidenceStatus === 'current'
++      ? 'matched' : 'unknown';
++  return {
++    noticeId: notice.id ?? null,
++    applicability,
++    scopeMatch,
++    evidenceStatus,
++    reasons,
++    provenance: structuredClone(notice.provenance ?? null),
++    declaredAction: structuredClone(notice.action ?? null),
++    automaticSelection: false,
++  };
++}
+diff --git a/tests-web/recall-scope-model.test.mjs b/tests-web/recall-scope-model.test.mjs
+new file mode 100644
+index 0000000..24b0e2c
+--- /dev/null
++++ b/tests-web/recall-scope-model.test.mjs
+@@ -0,0 +1,160 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { matchRecall } from '../public/evidence-model.js';
++import { evaluateRecallScope } from '../public/recall-scope-model.js';
++
++const asOf = '2026-10-14T06:00:00Z';
++const notice = () => ({
++  id: 'synthetic-notice',
++  action: { type: 'recall', regulator: 'synthetic-regulator', originalText: 'Synthetic declared recall', url: 'https://regulator.invalid/action' },
++  provenance: { sourceId: 'synthetic-source', recordId: 'synthetic-record', url: 'https://regulator.invalid/notice', retrievedAt: '2026-10-14T05:00:00Z', license: 'synthetic-only', attribution: 'Synthetic fixture', transformation: ['reviewed-projection'] },
++  evidence: { kind: 'current', validFrom: '2026-10-13T00:00:00Z', freshUntil: '2026-10-15T00:00:00Z' },
++  scope: { gtin: '4006381333931', markets: ['AU'], lots: ['A'], labelVersions: ['v1'], dateRange: { field: 'bestBefore', from: '2026-10-01', through: '2026-10-31' } },
++});
++const lot = () => ({ barcode: '04006381333931', market: 'AU', lotCode: 'A', labelVersion: 'v1', bestBefore: '2026-10-14' });
++const evaluate = (n = notice(), l = lot(), clock = asOf) => evaluateRecallScope(n, l, { asOf: clock });
++
++test('legacy matcher already covers known GTIN/market/lot cases; missing market is the actual gap', () => {
++  const legacy = { gtin: notice().scope.gtin, market: 'AU', lots: ['A'] };
++  assert.equal(matchRecall(legacy, lot()), 'matched');
++  assert.equal(matchRecall(legacy, { ...lot(), market: 'NZ' }), 'not-matched');
++  assert.equal(matchRecall(legacy, { ...lot(), lotCode: 'B' }), 'not-matched');
++  assert.equal(matchRecall(legacy, { ...lot(), lotCode: undefined }), 'possible');
++  assert.equal(matchRecall(legacy, { ...lot(), market: undefined }), 'matched');
++  assert.equal(evaluate(notice(), { ...lot(), market: undefined }).applicability, 'unknown');
++});
++
++test('exact current scoped evidence matches with canonical leading-zero GTIN', () => {
++  const result = evaluate();
++  assert.equal(result.applicability, 'matched');
++  assert.equal(result.evidenceStatus, 'current');
++  assert.deepEqual(result.reasons, []);
++  assert.equal(result.automaticSelection, false);
++});
++
++test('each declared scope dimension independently excludes; exclusions are not a safety pass', () => {
++  for (const [field, value, reason] of [
++    ['barcode', '96385074', 'gtin'], ['market', 'NZ', 'market'], ['lotCode', 'B', 'lot'],
++    ['labelVersion', 'v2', 'label-version'], ['bestBefore', '2026-11-01', 'date'],
++  ]) {
++    const result = evaluate(notice(), { ...lot(), [field]: value });
++    assert.equal(result.applicability, 'not-matched', field);
++    assert.ok(result.reasons.includes(`outside-${reason}`));
++    assert.equal(result.automaticSelection, false);
++  }
++});
++
++test('missing scoped identity is unknown, invalid GTIN is never a proven mismatch', () => {
++  for (const field of ['barcode', 'market', 'lotCode', 'labelVersion', 'bestBefore']) {
++    assert.equal(evaluate(notice(), { ...lot(), [field]: undefined }).applicability, 'unknown', field);
++  }
++  assert.equal(evaluate(notice(), { ...lot(), barcode: '4006381333932' }).applicability, 'unknown');
++  assert.equal(evaluate(notice(), { ...lot(), barcode: 4006381333931 }).applicability, 'unknown');
++});
++
++test('all batches bypasses only lot code; market, date and label still constrain', () => {
++  const n = notice(); delete n.scope.lots; n.scope.allBatches = true;
++  assert.equal(evaluate(n, { ...lot(), lotCode: undefined }).applicability, 'matched');
++  for (const field of ['market', 'labelVersion', 'bestBefore']) {
++    assert.equal(evaluate(n, { ...lot(), [field]: undefined }).applicability, 'unknown');
++  }
++  assert.equal(evaluate(n, { ...lot(), bestBefore: '2026-11-01' }).applicability, 'not-matched');
++  n.scope.lots = ['A'];
++  assert.equal(evaluate(n).applicability, 'unknown');
++});
++
++test('date range is inclusive and date types are never substituted', () => {
++  for (const value of ['2026-10-01', '2026-10-31']) {
++    assert.equal(evaluate(notice(), { ...lot(), bestBefore: value }).applicability, 'matched');
++  }
++  assert.equal(evaluate(notice(), { ...lot(), bestBefore: '2026-09-30' }).applicability, 'not-matched');
++  assert.equal(evaluate(notice(), { ...lot(), bestBefore: undefined, useBy: '2026-10-14' }).applicability, 'unknown');
++  for (const field of ['useBy', 'productionDate']) {
++    const n = notice(); n.scope.dateRange.field = field;
++    assert.equal(evaluate(n, { ...lot(), [field]: '2026-10-14' }).applicability, 'matched');
++  }
++});
++
++test('malformed or incomplete notice scope remains unknown', () => {
++  for (const patch of [
++    { gtin: null }, { markets: [] }, { markets: 'AU' }, { markets: {} }, { lots: [] }, { lots: null },
++    { labelVersions: [] }, { labelVersions: {} }, { dateRange: null },
++    { dateRange: { field: 'expiry', from: '2026-10-01', through: '2026-10-31' } },
++    { dateRange: { field: 'bestBefore', from: '2026-11-01', through: '2026-10-31' } },
++    { dateRange: { field: 'bestBefore', from: '2026-02-30', through: '2026-10-31' } },
++  ]) {
++    const n = notice(); Object.assign(n.scope, patch);
++    assert.equal(evaluate(n).applicability, 'unknown', JSON.stringify(patch));
++  }
++  const n = notice(); delete n.scope.lots;
++  assert.equal(evaluate(n).applicability, 'unknown');
++  assert.equal(evaluate(notice(), { ...lot(), bestBefore: '2026-02-30' }).applicability, 'unknown');
++});
++
++test('owner-reviewed unrestricted label/date fields need no invented restriction', () => {
++  const n = notice(); delete n.scope.labelVersions; delete n.scope.dateRange;
++  assert.equal(evaluate(n, { ...lot(), labelVersion: undefined, bestBefore: undefined }).applicability, 'matched');
++});
++
++test('historical scope matches stay historical and never become current applicability', () => {
++  const n = notice(); n.evidence.kind = 'historical';
++  const result = evaluate(n);
++  assert.equal(result.scopeMatch, 'matched');
++  assert.equal(result.evidenceStatus, 'historical');
++  assert.equal(result.applicability, 'unknown');
++  assert.ok(result.reasons.includes('evidence-historical'));
++});
++
++test('inspection, noncompliance or undeclared action is not inferred to be a recall', () => {
++  for (const action of [undefined, { type: 'inspection', regulator: 'synthetic' }, { type: 'noncompliance', regulator: 'synthetic' }, { type: 'recall' }]) {
++    const result = evaluate({ ...notice(), action });
++    assert.equal(result.scopeMatch, 'matched');
++    assert.equal(result.applicability, 'unknown');
++    assert.ok(result.reasons.includes('declared-recall-action-unresolved'));
++  }
++});
++
++test('missing, stale, future or invalid temporal evidence cannot yield a current match', () => {
++  for (const patch of [
++    { kind: undefined }, { freshUntil: undefined }, { freshUntil: asOf },
++    { validFrom: '2026-10-15T00:00:00Z' }, { validUntil: asOf }, { validUntil: null },
++    { validFrom: '2026-02-30T00:00:00Z' }, { freshUntil: 'not-a-date' },
++    { freshUntil: '2026-10-14T24:00:00Z' },
++  ]) {
++    const n = notice(); Object.assign(n.evidence, patch);
++    assert.equal(evaluate(n).applicability, 'unknown', JSON.stringify(patch));
++  }
++  assert.equal(evaluateRecallScope(notice(), lot()).applicability, 'unknown');
++  assert.equal(evaluate(notice(), lot(), 'invalid').applicability, 'unknown');
++  const n = notice(); n.evidence.validUntil = '2026-10-14T06:00:01Z';
++  assert.equal(evaluate(n).applicability, 'matched');
++});
++
++test('unresolved provenance, future retrieval or retrieval preceding effective evidence stays unknown', () => {
++  for (const field of ['sourceId', 'recordId', 'url', 'retrievedAt']) {
++    const n = notice(); delete n.provenance[field];
++    assert.equal(evaluate(n).applicability, 'unknown', field);
++  }
++  for (const retrievedAt of ['2026-10-15T00:00:00Z', '2026-10-12T00:00:00Z']) {
++    const n = notice(); n.provenance.retrievedAt = retrievedAt;
++    assert.equal(evaluate(n).applicability, 'unknown');
++  }
++});
++
++test('known exclusion takes precedence over missing scope but claims only this notice', () => {
++  const result = evaluate(notice(), { ...lot(), market: 'NZ', lotCode: undefined });
++  assert.equal(result.applicability, 'not-matched');
++  assert.ok(result.reasons.includes('outside-market'));
++  assert.ok(result.reasons.includes('unresolved-lot'));
++});
++
++test('inputs stay unchanged and returned provenance/action are independent snapshots', () => {
++  const n = notice(), l = lot(), before = structuredClone({ n, l });
++  const result = evaluate(n, l);
++  assert.deepEqual(result.provenance, n.provenance);
++  assert.deepEqual(result.declaredAction, n.action);
++  result.provenance.transformation.push('changed-output');
++  result.declaredAction.originalText = 'changed-output';
++  assert.deepEqual({ n, l }, before);
++  assert.equal(evaluateRecallScope(null, null).applicability, 'unknown');
++});

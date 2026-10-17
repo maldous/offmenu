@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "offmenu-historical-recovery-quality/1",
+  "releaseId": "historical-recipe-quality-20261014",
+  "scope": "Bounded recovery from 256 existing Smithsonian/Archive.org OCR candidates. This artifact adds separate recovery variants and does not change the existing candidates.",
+  "source": {
+    "archiveId": "royalno10cookbo00temp",
+    "title": "The Royal No. 10 cook book",
+    "publisher": "Smithsonian Libraries and Archives",
+    "license": "CC0-1.0",
+    "rightsEvidenceUrl": "https://library.si.edu/digital-library/book/royalno10cookbo00temp",
+    "retainedDocument": "/home/user/src/offmenu-data/recipe-research-20261013/smithsonian/royalno10cookbo00temp/royalno10cookbo00temp_djvu.txt",
+    "retainedDocumentSha256": "5548186fe021b26e25191b8f5a13f97177873154135fe89d96f4a6ccb9fd54e2"
+  },
+  "results": {
+    "existingPartialOcrCandidates": 256,
+    "completed": 5,
+    "held": 251,
+    "completedSourceCandidates": [
+      "world-recipes:recipe:f642d5b96f0d89783db3a9b6",
+      "world-recipes:recipe:f890d2ea9af4fa0120c9f160",
+      "world-recipes:recipe:3d27d52d440812b96102d760",
+      "world-recipes:recipe:a7700d91154e2cf72283f750",
+      "world-recipes:recipe:d175c49ca0d4cedf3754f504"
+    ],
+    "admissionRule": "A named recipe and its full transcribed passage had to be found in a bounded line range of the retained, checksum-verified OCR text."
+  },
+  "preservation": {
+    "sourceInstructionText": "Retained as an OCR transcription with source line range and source-document checksum.",
+    "ingredientStatements": "Preserved as observed OCR notation; ambiguous fractions and measures remain unparsed. Ingredient boundaries normalize only surrounding whitespace; retained line-break hyphens are not dehyphenated.",
+    "notInferred": ["quantity conversion", "density", "yield", "servings", "food identity", "diet", "country", "translation", "cooking safety"],
+    "sourceOptionality": "Only the Cream of Tomato Soup parsley and celery additions are source-asserted optional, from the retained ‘If desired’ clause; all other optionality remains a candidate rather than an assumption.",
+    "planning": "Every recovery record remains automaticPlanningEligible=false and requires personal culinary review."
+  },
+  "deliverables": {
+    "outputDirectory": "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014",
+    "nativeRecords": "normalized.jsonl.gz",
+    "commonSchemaPackets": "recipe-source-alignment.jsonl.gz",
+    "decisions": "decisions.jsonl",
+    "manifest": "manifest.json"
+  },
+  "validation": {
+    "commonDataSchema": "5/5 packets passed Draft 2020-12 schema validation with IRI format checks, including a candidate derivedFrom relation to each existing core HistoricalRecipeCandidate resource.",
+    "sourceBoundary": "5/5 declared title/boundary pairs were checked against the retained OCR text.",
+    "nativeSchema": "5/5 records conform to the local recipe schema."
+  }
+}

@@ -1,0 +1,349 @@
+diff --git a/docs/OFFMENU_GITFLOW.md b/docs/OFFMENU_GITFLOW.md
+index 56ec974..68766e0 100644
+--- a/docs/OFFMENU_GITFLOW.md
++++ b/docs/OFFMENU_GITFLOW.md
+@@ -156,7 +156,8 @@ approval is refused. It freshly fetches canonical develop and verifies merge
+ ancestry, exactly ordered base/head parents and the approved candidate tree.
+ A differing merge blocks cleanup and retains evidence; no force/reset repair.
+ The merged JSON carries `state: merged`, `base_ref: develop`, `url`, `head`, `base`,
+-`merge_sha`, `normal_merge: true`, `merged_at`, and `provider_evidence` file reference.
++`merge_sha`, `head_ref` (exact observed source ref), `normal_merge: true`,
++`merged_at`, and `provider_evidence` file reference.
+ For task retirement, pass `--ready EXACT_OWNER_READY_RECEIPT` when creating the
+ normal merge receipt. The helper binds its worker/task/source and readiness digest
+ to the immutable task start, checks and actual allowed preflight. An unlinked
+@@ -170,6 +171,23 @@ retirement. Feature/bugfix retirement can use the explicitly reviewed routine
+ develop line without inventing a certified release. All existing custody/openPR/
+ ignored/untracked/dependency/ownership checks still apply; only a disposable test
+ branch was retired in regression tests, never a real permanent worker branch.
++Retirement selects the target branch from the authored start, never from mutable
++ready metadata. Start/ready must agree on worker, recorded owner, worktree, branch,
++task, kind, base and base-line plus the original start path/digest. Normal starts
++bind branch identity to the task's generated name; explicit historical exceptions
++must match their separately authorized source record. The current registered
++worktree must be checked out on that exact authored task branch at its ready SHA
++before even check-only cleanup can qualify. A same-HEAD alias is not task ownership.
++The normal provider preflight/snapshot source ref must also match the authored
++branch. Its task linkage records owner/worktree/branch and source-task-start
++path/digest, which retirement revalidates alongside provider evidence. The exact
++Morgan retirement verdict additionally pins branch, owner and worktree. Consistent
++rehashing of redirected ready metadata cannot substitute another branch.
++Older records without these owner/source bindings remain historical evidence;
++no fabricated fields or approval are backfilled to make cleanup pass. Explicit
++owner/custody review is required before any eligible cleanup. These are client
++record consistency controls, not authenticated signatures or new permissions;
++controls remain bypassable outside the managed workflow.
+ Malformed review/evidence shapes fail closed with retained blocked receipts.
+ This receipt establishes integration, not release certification or automatic retirement.
+ Continue explicit owner/dirty/untracked/ignored/PR/dependency checks, preserve the
+diff --git a/scripts/offmenu-gitflow.py b/scripts/offmenu-gitflow.py
+index e9cb14a..299492b 100644
+--- a/scripts/offmenu-gitflow.py
++++ b/scripts/offmenu-gitflow.py
+@@ -117,6 +117,7 @@ class Gitflow:
+             need(w.get(field) == [], f'outstanding or unspecified {field}')
+         self.clean()
+         self.receipt['worker'] = worker
++        self.receipt['owner'] = w['owner']
+         self.receipt['head_before'] = self.sha('HEAD')
+         return w
+ 
+@@ -218,7 +219,7 @@ class Gitflow:
+         need(confirmation.get('state') == 'confirmed' and confirmation.get('head') == head
+              and confirmation.get('base') == base, 'mandatory platform confirmation pending/stale')
+         self.proof(confirmation.get('evidence'))
+-        self.receipt.update(candidate=head, base=base, pr=snapshot.get('url'),
++        self.receipt.update(candidate=head, base=base, source_branch=head_ref, pr=snapshot.get('url'),
+                             next_action='normal provider merge with expected head; re-read exact base immediately before call',
+                             meaning='preflight allowed only; no PR creation/push/merge performed')
+         return 'allowed'
+@@ -237,7 +238,8 @@ class Gitflow:
+         need(isinstance(snapshot, dict), 'merge snapshot must be a JSON object')
+         head, base, merged = snapshot.get('head'), snapshot.get('base'), snapshot.get('merge_sha')
+         need(snapshot.get('state') == 'merged' and snapshot.get('base_ref') == 'develop'
+-             and snapshot.get('url') == gate.get('pr') and snapshot.get('normal_merge') is True,
++             and snapshot.get('url') == gate.get('pr') and snapshot.get('normal_merge') is True
++             and snapshot.get('head_ref') == gate.get('source_branch'),
+              'actual normal merged develop PR required')
+         need(head == gate.get('candidate') and base == gate.get('base'), 'merged head/base differs from preflight')
+         self.proof(snapshot.get('provider_evidence'))
+@@ -262,11 +264,13 @@ class Gitflow:
+             need(ready.get('worker') == a.worker and ready.get('candidate') == head,
+                  'normal merge task readiness owner/head mismatch')
+             start = self.read_receipt(ready.get('start_receipt', ''), 'start')
+-            need(digest(ready['start_receipt']) == ready.get('start_sha256')
+-                 and all(ready.get(k) == start.get(k) for k in ('worker', 'branch', 'task', 'kind', 'base', 'base_line')),
+-                 'normal merge task start/ready custody mismatch')
++            self.task_ready_binding(start, ready, ready['start_receipt'], a.worker)
++            need(gate.get('source_branch') == start['branch'], 'provider PR branch differs from authored source task')
+             self.proof(ready.get('checks'))
+-            linkage = {'worker': a.worker, 'task': ready['task'], 'source': head,
++            linkage = {'worker': a.worker, 'owner': start['owner'], 'repo': start['repo'],
++                       'branch': start['branch'], 'source_task_start': str(Path(ready['start_receipt']).resolve()),
++                       'source_task_start_sha256': digest(ready['start_receipt']),
++                       'task': ready['task'], 'source': head,
+                        'ready_sha256': digest(a.ready), 'ready_receipt': str(Path(a.ready).resolve())}
+         self.receipt.update(candidate=head, base=base, merge_sha=merged, merge_parents=parents, tree=tree,
+                             merged_at=snapshot['merged_at'], preflight_receipt=str(preflight_path),
+@@ -358,6 +362,34 @@ class Gitflow:
+              'missing completed receipt for this permanent worker')
+         return r
+ 
++    def task_start_binding(self, start, worker):
++        need(start.get('worker') == worker and start.get('repo') == str(self.repo)
++             and isinstance(start.get('owner'), str) and start['owner'] == self.receipt.get('owner'),
++             'authored task start owner/worktree mismatch')
++        task, kind = start.get('task'), start.get('kind')
++        need(isinstance(task, str) and re.fullmatch(r'[a-z0-9][a-z0-9-]{0,79}', task)
++             and kind in ('feature', 'bugfix', 'release', 'hotfix'), 'malformed authored task identity')
++        if start.get('exception') is True:
++            exception = self.policy.get('base_exceptions', {}).get(str(worker), {})
++            need(isinstance(exception, dict) and exception.get('branch') == start.get('branch')
++                 and exception.get('task') == task and exception.get('base') == start.get('base')
++                 and exception.get('authorization') in ('Matt', 'Morgan'), 'exception authored branch custody mismatch')
++            self.proof(exception.get('evidence'))
++        else:
++            need(start.get('branch') == f'{kind}/{worker:02d}/{task}', 'branch does not match authored source task identity')
++
++    def task_ready_binding(self, start, ready, start_path, worker, current_task=False):
++        self.task_start_binding(start, worker)
++        need(all(ready.get(k) == start.get(k) for k in
++                 ('worker', 'owner', 'repo', 'branch', 'task', 'kind', 'base', 'base_line')),
++             'ready metadata differs from authored source task start')
++        need(Path(ready.get('start_receipt', '')).resolve() == Path(start_path).resolve()
++             and ready.get('start_sha256') == digest(start_path), 'canonical authored start/ready custody mismatch')
++        need(self.sha('refs/heads/' + start['branch']) == ready.get('candidate'), 'authored task branch changed after readiness')
++        if current_task:
++            need(self.git('branch', '--show-current').stdout.strip() == start['branch']
++                 and self.sha('HEAD') == ready['candidate'], 'current worktree is not on its authored task branch')
++
+     def start(self, a):
+         self.context(a.worker)
+         line = 'main' if a.kind == 'hotfix' else 'develop'
+@@ -405,7 +437,7 @@ class Gitflow:
+     def ready(self, a):
+         self.context(a.worker)
+         start = self.read_receipt(a.start, 'start')
+-        need(start.get('worker') == a.worker, 'wrong task owner')
++        self.task_start_binding(start, a.worker)
+         need(self.git('branch', '--show-current').stdout.strip() == start['branch'], 'wrong task branch')
+         sha = self.sha('HEAD')
+         need(self.ancestor(start['base'], sha), 'task lost original base custody')
+@@ -517,6 +549,7 @@ class Gitflow:
+         return 'allowed' if a.check_only else 'completed'
+ 
+     def retirement_integration(self, path, start, ready, ready_path):
++        self.task_ready_binding(start, ready, ready['start_receipt'], start['worker'])
+         raw_path = Path(path).resolve()
+         need(raw_path.parent == self.evidence, 'integration receipt outside canonical custody')
+         raw = json.loads(raw_path.read_text())
+@@ -526,6 +559,10 @@ class Gitflow:
+         normal = self.read_receipt(path, 'merge_receipt')
+         link = normal.get('task_linkage', {})
+         need(isinstance(link, dict) and normal.get('worker') == link.get('worker') == start.get('worker') == ready.get('worker')
++             and link.get('owner') == normal.get('owner') == start.get('owner')
++             and link.get('repo') == start.get('repo') and link.get('branch') == start.get('branch')
++             and Path(link.get('source_task_start', '')).resolve() == Path(ready['start_receipt']).resolve()
++             and link.get('source_task_start_sha256') == ready.get('start_sha256')
+              and link.get('task') == start.get('task') == ready.get('task')
+              and link.get('source') == ready.get('candidate')
+              and link.get('ready_sha256') == digest(ready_path)
+@@ -538,6 +575,7 @@ class Gitflow:
+         need(isinstance(gate, dict) and gate.get('schema') == 'offmenu-gitflow-receipt/1'
+              and gate.get('operation') == 'delivery' and gate.get('status') == 'allowed'
+              and gate.get('repo') == str(self.repo) and gate.get('worker') == link['worker']
++             and gate.get('owner') == start.get('owner') and gate.get('source_branch') == start.get('branch')
+              and gate.get('candidate') == link['source']
+              and gate.get('base') == normal.get('base'), 'normal merge preflight facts mismatch')
+         self.proof(normal.get('provider_evidence'))
+@@ -564,12 +602,12 @@ class Gitflow:
+         start = self.read_receipt(a.start, 'start')
+         ready = self.read_receipt(a.ready, 'ready')
+         need(start.get('worker') == a.worker == ready.get('worker') and start['task'] == ready['task'], 'wrong retirement task')
+-        need(ready.get('start_sha256') == digest(a.start), 'start/ready custody mismatch')
++        self.task_ready_binding(start, ready, a.start, a.worker, current_task=True)
+         need(w.get('active_task') == start['task'], 'retirement owner/task not established')
+         need(w.get('ignored_custody') == 'preserved', 'ignored-file custody must be explicitly preserved')
+         self.proof(w.get('ignored_evidence'))
+         source = ready['candidate']
+-        branch = ready['branch']
++        branch = start['branch']
+         need(self.sha('refs/heads/' + branch) == source, 'branch changed after review')
+         self.proof(ready['checks'])
+         target = self.fetch('develop')
+@@ -589,7 +627,8 @@ class Gitflow:
+         reviewed_candidate = source if review_operation == 'deliver-develop' else integration['candidate']
+         self.exact_review(review_operation, reviewed_candidate, integration['base'], source)
+         retirement = w.get('retirement', {})
+-        self.verdict(retirement, source=source, task=start['task'])
++        self.verdict(retirement, source=source, task=start['task'], branch=start['branch'],
++                     owner=start['owner'], repo=str(self.repo))
+         inventory = self.git('worktree', 'list', '--porcelain').stdout.split('\n\n')
+         for entry in inventory:
+             if f'branch refs/heads/{branch}\n' in entry + '\n':
+diff --git a/tests-gitflow/test_offmenu_gitflow.py b/tests-gitflow/test_offmenu_gitflow.py
+index 6f5077d..a930e28 100644
+--- a/tests-gitflow/test_offmenu_gitflow.py
++++ b/tests-gitflow/test_offmenu_gitflow.py
+@@ -228,13 +228,14 @@ class FlowTest(unittest.TestCase):
+         self.git('merge', '--no-ff', head, '-m', 'normal provider fixture')
+         merged = self.git('rev-parse', 'HEAD').strip()
+         self.git('push', 'origin', 'develop')
+-        after = {'state': 'merged', 'base_ref': 'develop', 'url': snap['url'], 'head': head,
++        after = {'state': 'merged', 'head_ref': branch, 'base_ref': 'develop', 'url': snap['url'], 'head': head,
+                  'base': self.base, 'merge_sha': merged, 'normal_merge': True, 'merged_at': m.utc(),
+                  'provider_evidence': self.reference()}
+         path = self.root / 'provider-merge.json';path.write_text(json.dumps(after))
+         self.policy['lines']['develop'] = self.verdict(line='develop', sha=merged)
+         self.policy['workers']['9'].update(active_task='fixture', ignored_custody='preserved',
+-                                          ignored_evidence=self.reference(), retirement=self.verdict(source=head, task='fixture'))
++                                          ignored_evidence=self.reference(), retirement=self.verdict(source=head, task='fixture', branch=branch, owner='fixture-worker09', repo=str(self.repo)))
++        self.git('switch', branch)
+         return start, ready, gate, path, head, merged
+ 
+     def test_normal_provider_receipt_can_retire_exact_task_then_fresh_dispatch(self):
+@@ -267,6 +268,90 @@ class FlowTest(unittest.TestCase):
+         forged.write_text(json.dumps(raw));self.command(*args, str(forged), ok=False)
+         self.assertEqual(self.git('rev-parse', 'feature/09/fixture').strip(), head)
+ 
++    def test_rehashed_ready_alias_task_owner_or_worktree_cannot_redirect_cleanup(self):
++        start, ready, gate, path, source, merged = self.normal_retirement_fixture()
++        normal, _ = self.command('merge_receipt', '--worker', '9', '--snapshot', str(path),
++                                 '--preflight', gate['receipt'], '--ready', ready['receipt'])
++        alias = 'feature/09/unrelated-same-head'
++        self.git('branch', alias, source)
++        original_ready = json.loads(Path(ready['receipt']).read_text())
++        original_normal = json.loads(Path(normal['receipt']).read_text())
++        variants = [('branch', alias), ('task', 'other-task'), ('owner', 'different-owner'),
++                    ('repo', str(self.root / 'different-worker-path'))]
++        for field, value in variants:
++            with self.subTest(field=field):
++                forged_ready = self.ev / ('ready-' + field + '.json')
++                r = dict(original_ready);r[field] = value;forged_ready.write_text(json.dumps(r))
++                n = json.loads(json.dumps(original_normal))
++                n['task_linkage']['ready_receipt'] = str(forged_ready)
++                n['task_linkage']['ready_sha256'] = hashlib.sha256(forged_ready.read_bytes()).hexdigest()
++                n['task_linkage'][field] = value
++                forged_normal = self.ev / ('normal-' + field + '.json');forged_normal.write_text(json.dumps(n))
++                out, receipt = self.command('retire', '--worker', '9', '--start', start['receipt'],
++                    '--ready', str(forged_ready), '--integration', str(forged_normal), '--check-only', ok=False)
++                self.assertEqual(receipt['status'], 'blocked')
++                self.assertEqual(receipt['fetches'], [])
++                self.assertEqual(self.git('rev-parse', alias).strip(), source)
++                self.assertEqual(self.git('rev-parse', 'feature/09/fixture').strip(), source)
++                self.assertEqual(self.git('branch', '--show-current').strip(), 'feature/09/fixture')
++
++    def test_same_head_checkout_alias_is_not_authored_worktree_task(self):
++        start, ready, gate, path, source, merged = self.normal_retirement_fixture()
++        normal, _ = self.command('merge_receipt', '--worker', '9', '--snapshot', str(path),
++                                 '--preflight', gate['receipt'], '--ready', ready['receipt'])
++        alias = 'feature/09/checked-out-alias';self.git('switch', '-c', alias, source)
++        _, r = self.command('retire', '--worker', '9', '--start', start['receipt'], '--ready', ready['receipt'],
++                            '--integration', normal['receipt'], '--check-only', ok=False)
++        self.assertIn('current worktree', r['error'])
++        self.assertEqual(r['fetches'], [])
++        self.assertEqual(self.git('branch', '--show-current').strip(), alias)
++        self.assertEqual(self.git('rev-parse', 'feature/09/fixture').strip(), source)
++
++    def test_rehashed_start_branch_alias_cannot_change_authored_task_identity(self):
++        start, ready, gate, path, source, merged = self.normal_retirement_fixture()
++        normal, _ = self.command('merge_receipt', '--worker', '9', '--snapshot', str(path),
++                                 '--preflight', gate['receipt'], '--ready', ready['receipt'])
++        alias = 'feature/09/not-the-task';self.git('branch', alias, source)
++        original = json.loads(Path(start['receipt']).read_text());original['branch'] = alias
++        forged_start = self.ev / 'alternate-source-start.json';forged_start.write_text(json.dumps(original))
++        r = json.loads(Path(ready['receipt']).read_text());r.update(branch=alias, start_receipt=str(forged_start),
++            start_sha256=hashlib.sha256(forged_start.read_bytes()).hexdigest())
++        forged_ready = self.ev / 'alternate-ready.json';forged_ready.write_text(json.dumps(r))
++        n = json.loads(Path(normal['receipt']).read_text());n['task_linkage'].update(branch=alias,
++            source_task_start=str(forged_start), source_task_start_sha256=r['start_sha256'],
++            ready_receipt=str(forged_ready), ready_sha256=hashlib.sha256(forged_ready.read_bytes()).hexdigest())
++        forged_normal = self.ev / 'alternate-normal.json';forged_normal.write_text(json.dumps(n))
++        _, r = self.command('retire', '--worker', '9', '--start', str(forged_start), '--ready', str(forged_ready),
++                            '--integration', str(forged_normal), '--check-only', ok=False)
++        self.assertIn('authored source task identity', r['error'])
++        self.assertEqual(self.git('rev-parse', alias).strip(), source)
++
++    def test_provider_same_head_alias_cannot_attach_another_source_task(self):
++        start, _ = self.start();source = self.commit('provider alias case');ready, _ = self.ready(start)
++        branch = 'feature/09/fixture';alias = 'feature/09/provider-alias'
++        self.git('branch', alias, source);self.git('push', 'origin', branch, alias)
++        self.policy['routine_delivery'] = {'authorizer': 'Matt', 'project': 'OffMenu',
++            'scope': 'normal-qualified-gitflow', 'evidence': self.reference()}
++        self.policy['reviews'] = [self.verdict(operation='deliver-develop', candidate=source, base=self.base, source=source)]
++        snap = {'state': 'open', 'base_ref': 'develop', 'head_ref': alias, 'head': source, 'base': self.base,
++            'owner': 'worker09', 'url': 'https://example.invalid/alias-pr',
++            'independent_review': {'state': 'passed', 'reviewer': 'worker13', 'head': source,
++                'base': self.base, 'evidence': self.reference()}, 'requirements_status': 'known',
++            'required_reviews': [], 'required_checks': [], 'advisory_reviews': [], 'security_alerts': [],
++            'platform_confirmation': {'state': 'confirmed', 'head': source, 'base': self.base, 'evidence': self.reference()}}
++        gate, _ = self.delivery_command(source, snap)
++        self.git('switch', 'develop');self.git('merge', '--no-ff', source, '-m', 'alias provider merge')
++        merged = self.git('rev-parse', 'HEAD').strip();self.git('push', 'origin', 'develop')
++        after = {'state': 'merged', 'head_ref': alias, 'base_ref': 'develop', 'url': snap['url'],
++            'head': source, 'base': self.base, 'merge_sha': merged, 'normal_merge': True,
++            'merged_at': m.utc(), 'provider_evidence': self.reference()}
++        path = self.root / 'alias-provider.json';path.write_text(json.dumps(after))
++        _, r = self.command('merge_receipt', '--worker', '9', '--snapshot', str(path), '--preflight', gate['receipt'],
++                            '--ready', ready['receipt'], ok=False)
++        self.assertIn('provider PR branch', r['error'])
++        self.assertEqual(self.git('rev-parse', branch).strip(), source)
++        self.assertEqual(self.git('rev-parse', alias).strip(), source)
++
+     def test_known_security_alert_requires_separate_exact_disposition(self):
+         head, snapshot = self.delivery_fixture();snapshot['security_alerts'] = ['synthetic scanner alert']
+         _, r = self.delivery_command(head, snapshot, ok=False)
+@@ -284,7 +369,7 @@ class FlowTest(unittest.TestCase):
+         self.git('merge', '--no-ff', head, '-m', 'normal fixture merge')
+         merged = self.git('rev-parse', 'HEAD').strip()
+         self.git('push', 'origin', 'develop')
+-        after = {'url': snapshot['url'], 'state': 'merged', 'base_ref': 'develop', 'head': head,
++        after = {'url': snapshot['url'], 'head_ref': snapshot['head_ref'], 'state': 'merged', 'base_ref': 'develop', 'head': head,
+             'base': self.base, 'merge_sha': merged, 'normal_merge': True, 'merged_at': m.utc(),
+             'provider_evidence': self.reference()}
+         path = self.root / 'merge-snapshot.json';path.write_text(json.dumps(after))
+@@ -369,7 +454,7 @@ class FlowTest(unittest.TestCase):
+         (self.repo / 'collision').write_text('ignored retirement owner bytes')
+         w = self.policy['workers']['9']
+         w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
+-                 retirement=self.verdict(source=source, task='fixture'))
++                 retirement=self.verdict(source=source, task='fixture', branch=json.loads(Path(ready['receipt']).read_text())['branch'], owner='fixture-worker09', repo=str(self.repo)))
+         _, r = self.command('retire', '--worker', '9', '--start', start['receipt'],
+                             '--ready', ready['receipt'], '--integration', integration['receipt'], ok=False)
+         self.assertIn('switch failed', r['error'])
+@@ -802,6 +887,7 @@ class FlowTest(unittest.TestCase):
+ 
+     def test_retire_requires_review_integration_custody_and_preserves_path(self):
+         start, ready, integrated, source = self.integrated_fixture()
++        self.git('switch', 'feature/09/fixture')
+         args = ['retire', '--worker', '9', '--start', start['receipt'], '--ready', ready['receipt'],
+                 '--integration', integrated['receipt']]
+         self.command(*args, ok=False)
+@@ -809,7 +895,7 @@ class FlowTest(unittest.TestCase):
+         self.policy['lines']['develop'] = self.verdict(line='develop', sha=source)
+         w = self.policy['workers']['9']
+         w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
+-                 retirement=self.verdict(source=source, task='fixture'))
++                 retirement=self.verdict(source=source, task='fixture', branch=json.loads(Path(ready['receipt']).read_text())['branch'], owner='fixture-worker09', repo=str(self.repo)))
+         w['open_prs'] = ['PR fixture']
+         self.command(*args, ok=False)
+         w['open_prs'] = []
+@@ -829,15 +915,17 @@ class FlowTest(unittest.TestCase):
+         self.policy['lines']['main'] = self.verdict(line='main', sha=source)
+         w = self.policy['workers']['9']
+         w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
+-                 retirement=self.verdict(source=source, task='fixture'))
++                 retirement=self.verdict(source=source, task='fixture', branch=json.loads(Path(ready['receipt']).read_text())['branch'], owner='fixture-worker09', repo=str(self.repo)))
+         args = ['retire', '--worker', '9', '--start', start['receipt'], '--ready', ready['receipt'],
+                 '--integration', integrated['receipt']]
++        self.git('switch', 'hotfix/09/fixture')
+         _, r = self.command(*args, ok=False)
+         self.assertIn('not integrated', r['error'])
+         self.git('switch', 'develop')
+         self.git('merge', '--ff-only', source)
+         self.git('push', 'origin', 'develop')
+         self.policy['lines']['develop'] = self.verdict(line='develop', sha=source)
++        self.git('switch', json.loads(Path(ready['receipt']).read_text())['branch'])
+         self.command(*args)
+ 
+ 

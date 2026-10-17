@@ -1,0 +1,64 @@
+{
+  "cases": 26,
+  "passed": 24,
+  "failed": 2,
+  "failedCases": [
+    {
+      "id": "receipt-sparse-row",
+      "expectedRejected": true,
+      "rejected": false,
+      "passed": false,
+      "visibleRows": 1,
+      "notice": "تم تحميل بيانات المجموعة للمعاينة المحلية. تبقى هويات المصادر والاستشهادات والكميات كما هي؛ لم تُحفظ أي تغييرات.",
+      "sideEffects": [],
+      "saveDisabled": true,
+      "exportDisabled": true,
+      "transportCalls": 2,
+      "receiptLength": 1,
+      "receiptOwnIndexes": []
+    },
+    {
+      "id": "permission-policy-change-with-shared-mutable-decision",
+      "expectedRejected": true,
+      "rejected": false,
+      "passed": false,
+      "visibleRows": 1,
+      "notice": "تم تحميل بيانات المجموعة للمعاينة المحلية. تبقى هويات المصادر والاستشهادات والكميات كما هي؛ لم تُحفظ أي تغييرات.",
+      "sideEffects": [],
+      "saveDisabled": true,
+      "exportDisabled": true,
+      "transportCalls": 2,
+      "initialPolicyId": "synthetic-caller-display-only/1",
+      "confirmedPolicyId": "changed-policy",
+      "authorizerReturnsSharedObject": true
+    }
+  ],
+  "integration": [
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": false,
+      "visibleRows": 2,
+      "alicePrivateTextStillRendered": true,
+      "globalResolverRetainsAlicePrivateText": true,
+      "sideEffects": [],
+      "interpretation": "No active account/policy recheck on cached locale rendering; host identity reset remains required."
+    },
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": true,
+      "visibleRows": 0,
+      "alicePrivateTextStillRendered": false,
+      "globalResolverRetainsAlicePrivateText": false,
+      "sideEffects": [],
+      "interpretation": "Existing host reset hook clears the cached reader/resolver."
+    },
+    {
+      "case": "rights-revoked-after-successful-load",
+      "authorizeCalls": 2,
+      "visibleRows": 1,
+      "translationStillRendered": true,
+      "sideEffects": [],
+      "interpretation": "Post-load cache uses a load-time authorization snapshot; no policy recheck on later locale render. Future host needs explicit invalidation or caller needs ongoing recheck if that is the intended contract."
+    }
+  ]
+}

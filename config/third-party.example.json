@@ -1,0 +1,18 @@
+{
+  "client": {
+    "diagnostics": { "enabled": false },
+    "analytics": { "enabled": false, "provider": "zaraz", "purposeId": "" },
+    "consent": { "siteId": "", "cookiePolicyId": "", "tcfEnabled": false, "policyLanguage": "en" },
+    "feedback": { "productId": "", "boardUrl": "" },
+    "ads": { "client": "", "slot": "", "approved": false }
+  },
+  "links": {
+    "status": "",
+    "privacy": "",
+    "source": "https://github.com/maldous/offmenu"
+  },
+  "seo": {
+    "googleSiteVerification": "",
+    "bingSiteVerification": ""
+  }
+}

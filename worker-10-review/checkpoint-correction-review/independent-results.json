@@ -1,0 +1,504 @@
+{
+  "candidate": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+  "status": "passed",
+  "cases": 18,
+  "results": [
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 1,
+      "limit": 1,
+      "packetsPerFile": 1,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "overture-food-places",
+        "file": "records/overture-food-places/00.jsonl.gz",
+        "line": 1
+      },
+      "committedRows": 1,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "d331660c62814f0e344cb1a718b05b5f671b8e9204d68bdb71bbc6d9d280daa1",
+          "expectedSha256": "d331660c62814f0e344cb1a718b05b5f671b8e9204d68bdb71bbc6d9d280daa1",
+          "bytes": 3191
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "902dea7b59209bed512b5191b5d1edfba67cfc723005f1b00533c6e5d440eeb1",
+          "expectedSha256": "902dea7b59209bed512b5191b5d1edfba67cfc723005f1b00533c6e5d440eeb1",
+          "bytes": 1115
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 1,
+      "limit": 2,
+      "packetsPerFile": 1,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "overture-food-places",
+        "file": "records/overture-food-places/00.jsonl.gz",
+        "line": 2
+      },
+      "committedRows": 2,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "ef6331b4fc4d9f984720237737367f528b8121068f6dbe9d71af453aa88cff40",
+          "expectedSha256": "ef6331b4fc4d9f984720237737367f528b8121068f6dbe9d71af453aa88cff40",
+          "bytes": 3372
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "902dea7b59209bed512b5191b5d1edfba67cfc723005f1b00533c6e5d440eeb1",
+          "expectedSha256": "902dea7b59209bed512b5191b5d1edfba67cfc723005f1b00533c6e5d440eeb1",
+          "bytes": 1115
+        },
+        {
+          "key": "packets/part-00001.jsonl.gz",
+          "actualSha256": "644ab73406fc8c9fb6c047412f08eb58f03c8f92309343b312b1b94bb7f852a4",
+          "expectedSha256": "644ab73406fc8c9fb6c047412f08eb58f03c8f92309343b312b1b94bb7f852a4",
+          "bytes": 1119
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 2,
+      "limit": 2,
+      "packetsPerFile": 1,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "overture-food-places",
+        "file": "records/overture-food-places/00.jsonl.gz",
+        "line": 2
+      },
+      "committedRows": 2,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "9a115fc8b7cf5a4af294480ede68cd8142b0ef1bc53d984fe1ad01e5d36c1e5e",
+          "expectedSha256": "9a115fc8b7cf5a4af294480ede68cd8142b0ef1bc53d984fe1ad01e5d36c1e5e",
+          "bytes": 3191
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "expectedSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "bytes": 1484
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 2,
+      "limit": 2,
+      "packetsPerFile": 3,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "overture-food-places",
+        "file": "records/overture-food-places/00.jsonl.gz",
+        "line": 2
+      },
+      "committedRows": 2,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "c7d9566bf227d33cd7d73799f38ad7185b71b49be47c72521c198eb6ec3ba9f9",
+          "expectedSha256": "c7d9566bf227d33cd7d73799f38ad7185b71b49be47c72521c198eb6ec3ba9f9",
+          "bytes": 3191
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "expectedSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "bytes": 1484
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 3,
+      "limit": 3,
+      "packetsPerFile": 1,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "overture-food-places",
+        "file": "records/overture-food-places/00.jsonl.gz",
+        "line": 3
+      },
+      "committedRows": 3,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "0150ad4e6cc6af8d44e77db1529e20a1f136c776ac912d77aafe49afb86b6591",
+          "expectedSha256": "0150ad4e6cc6af8d44e77db1529e20a1f136c776ac912d77aafe49afb86b6591",
+          "bytes": 3191
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "e331006a7002c2b4d0af8dfe58a11723104e58aa6ba4224cc8cc0ef59c492990",
+          "expectedSha256": "e331006a7002c2b4d0af8dfe58a11723104e58aa6ba4224cc8cc0ef59c492990",
+          "bytes": 1802
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 2,
+      "limit": 4,
+      "packetsPerFile": 1,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "wikidata-food-businesses",
+        "file": "records/wikidata-food-businesses/00.jsonl.gz",
+        "line": 1
+      },
+      "committedRows": 4,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places",
+        "wikidata-food-businesses"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "e6cbc2df249a7b05343fb480d7ec94db2331bdb2091ecb54344acff080de0394",
+          "expectedSha256": "e6cbc2df249a7b05343fb480d7ec94db2331bdb2091ecb54344acff080de0394",
+          "bytes": 3835
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "expectedSha256": "5f933a255329c02a9a04d19377fd965cd035faf968166bb4153364c7b4437dc5",
+          "bytes": 1484
+        },
+        {
+          "key": "packets/part-00001.jsonl.gz",
+          "actualSha256": "3287fbca855093b826b65dd2ab2b9382d0e3474463c48f78d3531e0c3a633f96",
+          "expectedSha256": "3287fbca855093b826b65dd2ab2b9382d0e3474463c48f78d3531e0c3a633f96",
+          "bytes": 1565
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 1,
+      "limit": 5,
+      "packetsPerFile": 3,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "wikidata-food-businesses",
+        "file": "records/wikidata-food-businesses/00.jsonl.gz",
+        "line": 2
+      },
+      "committedRows": 5,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places",
+        "wikidata-food-businesses"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "38c4fc10c524145de3f676c629deb8317163ef8cfe329663c7481daaa2cb44dc",
+          "expectedSha256": "38c4fc10c524145de3f676c629deb8317163ef8cfe329663c7481daaa2cb44dc",
+          "bytes": 3837
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "1af87ae567ef00ffae978e49618d9d5c077c56ea40eacf36c913f1ddf4becdcb",
+          "expectedSha256": "1af87ae567ef00ffae978e49618d9d5c077c56ea40eacf36c913f1ddf4becdcb",
+          "bytes": 3347
+        },
+        {
+          "key": "packets/part-00001.jsonl.gz",
+          "actualSha256": "bc3aa97278c2e739c3e83cdb8bbaa316e98dbe66d8e0ff6d45224a4b9de0c541",
+          "expectedSha256": "bc3aa97278c2e739c3e83cdb8bbaa316e98dbe66d8e0ff6d45224a4b9de0c541",
+          "bytes": 2257
+        }
+      ]
+    },
+    {
+      "kind": "reached-limit",
+      "recordsPerPacket": 3,
+      "limit": 6,
+      "packetsPerFile": 3,
+      "inputRecordsPerSource": 3,
+      "cursor": {
+        "source": "wikidata-food-businesses",
+        "file": "records/wikidata-food-businesses/00.jsonl.gz",
+        "line": 3
+      },
+      "committedRows": 6,
+      "byteIdentical": true,
+      "manifestSources": [
+        "overture-food-places",
+        "wikidata-food-businesses"
+      ],
+      "metadataReadOnly": true,
+      "files": [
+        {
+          "key": "manifest.json",
+          "actualSha256": "04a4d1a0da977b8b0b2e52a88f113b1b7f2171a93cfcd7f0a1fe023249deb983",
+          "expectedSha256": "04a4d1a0da977b8b0b2e52a88f113b1b7f2171a93cfcd7f0a1fe023249deb983",
+          "bytes": 3656
+        },
+        {
+          "key": "packets/part-00000.jsonl.gz",
+          "actualSha256": "63c72beaec07f689b8ccd5cd3d1d635b4171cf51ca858a54af8f2fbe56a77d8a",
+          "expectedSha256": "63c72beaec07f689b8ccd5cd3d1d635b4171cf51ca858a54af8f2fbe56a77d8a",
+          "bytes": 3609
+        }
+      ]
+    },
+    {
+      "kind": "metadata",
+      "case": "actual-writer",
+      "expectedStatus": "matching-output-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-j2ei0epg/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-j2ei0epg/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": true,
+        "checkpointStatus": "matching-output-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "absent",
+      "expectedStatus": "absent",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-vbtl9vf7/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-vbtl9vf7/out.checkpoint.sqlite",
+        "checkpointFileExists": false,
+        "checkpointExists": false,
+        "checkpointStatus": "absent",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "legacy-only",
+      "expectedStatus": "absent",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-nm4o8dzx/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-nm4o8dzx/out.checkpoint.sqlite",
+        "checkpointFileExists": false,
+        "checkpointExists": false,
+        "checkpointStatus": "absent",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "foreign",
+      "expectedStatus": "foreign-or-unsupported-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-hr7uasqz/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-hr7uasqz/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "foreign-or-unsupported-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "unsupported",
+      "expectedStatus": "foreign-or-unsupported-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-soi8qcge/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-soi8qcge/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "foreign-or-unsupported-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "invalid-db",
+      "expectedStatus": "unreadable-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-ds5qpuzi/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-ds5qpuzi/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "unreadable-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "malformed-json",
+      "expectedStatus": "unreadable-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-gvq6iwlh/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-gvq6iwlh/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "unreadable-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "missing-state",
+      "expectedStatus": "unreadable-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-o0mc78fh/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-o0mc78fh/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "unreadable-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "missing-row",
+      "expectedStatus": "foreign-or-unsupported-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-gwoq6zqk/out.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-gwoq6zqk/out.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": false,
+        "checkpointStatus": "foreign-or-unsupported-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    },
+    {
+      "kind": "metadata",
+      "case": "encoded-path",
+      "expectedStatus": "matching-output-metadata",
+      "actual": {
+        "root": "/tmp/worker10-checkpoint-metadata-0ubce8nh/out ? \u9921.partial",
+        "historicalCount": 0,
+        "currentCount": 0,
+        "countDifference": 0,
+        "listingSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "retainedBytes": 0,
+        "manifestExists": false,
+        "checkpointPath": "/tmp/worker10-checkpoint-metadata-0ubce8nh/out ? \u9921.checkpoint.sqlite",
+        "checkpointFileExists": true,
+        "checkpointExists": true,
+        "checkpointStatus": "matching-output-metadata",
+        "boundedTailReceipts": [],
+        "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+      },
+      "completeFileFootprintEqual": true,
+      "noJournalOrWALCreated": true
+    }
+  ]
+}

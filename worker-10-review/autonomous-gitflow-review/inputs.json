@@ -1,0 +1,9 @@
+{
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "parent": "6b2edabd56d4de4506b36ddcbcbc61baeaa09ba5",
+  "candidate": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "chainSha256": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb",
+  "deltaSha256": "46a58964409caaf2b2206e4a862abba15881bb284a08241325414716e66b583c",
+  "ownerFinalReportSha256": "088e971fde89b32fbc3c178979c7fab32fa4d2621ae13d543653f00a560535e4",
+  "sourceBytes": 109808
+}

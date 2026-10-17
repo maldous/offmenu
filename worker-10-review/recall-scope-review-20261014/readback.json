@@ -1,0 +1,8 @@
+{
+  "sharedAndWorker10IdentityEqual": true,
+  "immutableSourceHashesEqual": true,
+  "worker10Status": "## feature/recall-scope-review-20261014\n?? worker-10-review/\n",
+  "newLocalArtifact": "worker-10-review/recall-scope-review-20261014; untracked reviewer artifact only",
+  "gitWritingFixtureCommands": "none",
+  "runtimeOrNetworkCalls": "none; pure model tests only"
+}

@@ -1,0 +1,44 @@
+{
+  "mainHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "mainRef": "refs/heads/main",
+  "workerHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "workerRef": "refs/heads/feature/recall-scope-review-20261014",
+  "identities": [
+    {
+      "path": "/home/user/src/offmenu/.git/HEAD",
+      "dev": 64512,
+      "ino": 14868439,
+      "size": 21,
+      "mode": 33204,
+      "mtimeNs": 1791868083845924473,
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/index",
+      "dev": 64512,
+      "ino": 14868426,
+      "size": 27304,
+      "mode": 33204,
+      "mtimeNs": 1791957650613992637,
+      "sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/worktrees/worker-10/index",
+      "dev": 64512,
+      "ino": 17843844,
+      "size": 27304,
+      "mode": 33204,
+      "mtimeNs": 1791962322061430630,
+      "sha256": "6007e3e2a4fff081930c39e2c434bdecf7edcb163bd8e4fa4d46956953ffe8f4"
+    }
+  ],
+  "priorIncident": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-10-review/isolation-incident.json",
+    "dev": 64512,
+    "ino": 7792364,
+    "size": 945,
+    "mode": 33204,
+    "mtimeNs": 1791957650615992661,
+    "sha256": "1a58a5f0cd4f27b08edaf2d9d8f435399456dddf6594382741e1424a36a43615"
+  }
+}

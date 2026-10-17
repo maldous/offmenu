@@ -1,0 +1,6 @@
+{
+  "scope": "reviewer next-claim fixture setup",
+  "cause": "Next-claim fixture added routine_delivery but omitted required routine_develop record, so it hit dispatch-line gate before intended active-history gate.",
+  "correction": "Supply exact current synthetically reviewed routine_develop line evidence before probing active-task history.",
+  "candidateSourceChanged": false
+}

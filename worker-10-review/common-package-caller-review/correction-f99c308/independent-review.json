@@ -1,0 +1,407 @@
+{
+  "schema": "offmenu.worker10.common-package-caller-correction-review/1",
+  "createdAt": "2026-10-14T08:23:44.556123+00:00",
+  "reviewerThread": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+  "candidate": {
+    "base": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "candidate": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+    "deltaSha256": "c1f989e373bc4ff4f4649ffba5633cf567cb927950b5748154f7b2a609703e35",
+    "matchesSuppliedDelta": true
+  },
+  "sourceHashes": [
+    {
+      "file": "package.json",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 709,
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+    },
+    {
+      "file": "tests-web/common-package-caller.test.mjs",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 19742,
+      "sha256": "74cb50ec9fcac58183db220267d4adab05e466c2dd7958844addcb171f6d0295"
+    },
+    {
+      "file": "public/i18n.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 8341,
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe"
+    },
+    {
+      "file": "public/locale-negotiation.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 2675,
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009"
+    },
+    {
+      "file": "public/locales/ar.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "file": "public/content-locale.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 5887,
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+    },
+    {
+      "file": "public/common-corpus-transport.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 20118,
+      "sha256": "6cea7d8c1801c27588d04e87580cf29fcf7220fe5a623333e0933f565d826903"
+    },
+    {
+      "file": "public/common-corpus-locale.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 11250,
+      "sha256": "9b7d585fab32aa842bf552108e0cff448e99042858ac069976a0910349464f01"
+    },
+    {
+      "file": "public/data-ui.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 30781,
+      "sha256": "7bd92653a59239c2948278fff43746daf9660b73c37fda80d3f690be1234c72a"
+    },
+    {
+      "file": "public/unified-data.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 14640,
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+    },
+    {
+      "file": "public/menu-model.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 3306,
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+    },
+    {
+      "file": "public/checkout-model.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 3416,
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+    },
+    {
+      "file": "public/model.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 4450,
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+    },
+    {
+      "file": "public/ingredients.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 5143,
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+    },
+    {
+      "file": "public/countries.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 1497,
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+    },
+    {
+      "file": "public/sources.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 17882,
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+    },
+    {
+      "file": "public/record-policy.js",
+      "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "bytes": 2329,
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc"
+    }
+  ],
+  "disposition": "Both W10-C1-F1/F2 corrections independently reproduced at exact f99c308. No new finding demonstrated in bounded caller checks. Recommend Morgan resolve these two P2s within this local caller scope; no host activation/real-release acceptance or production/browser qualification inferred.",
+  "accepted": false,
+  "integrated": false,
+  "hostActivated": false,
+  "realReleaseQualified": false,
+  "browserQualified": false,
+  "resolutions": [
+    {
+      "id": "W10-C1-F1",
+      "originalCandidate": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "correctedCandidate": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "location": "public/data-ui.js:65",
+      "correction": "Numeric file loop enforces own index and non-null/non-array object row with own key/hash/compressedBytes/packetIndexes before exact pinned equality. Sparse and inherited slots cannot skip validation.",
+      "reviewerProof": [
+        {
+          "id": "receipt-sparse-row",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection.",
+          "receiptOwnIndexes": null
+        },
+        {
+          "id": "correction-receipt-array-row",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection."
+        },
+        {
+          "id": "correction-receipt-inherited-index",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection."
+        },
+        {
+          "id": "correction-receipt-inherited-row-fields",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection."
+        },
+        {
+          "id": "correction-receipt-primitive-row",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection."
+        },
+        {
+          "id": "correction-receipt-missing-own-byte-field",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Common package loader receipt does not match the explicit selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Common package loader receipt does not match the explicit selection."
+        }
+      ]
+    },
+    {
+      "id": "W10-C1-F2",
+      "originalCandidate": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "correctedCandidate": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+      "location": "public/data-ui.js:53",
+      "correction": "Authorization captures/freeze independent primitive allowed/account/policyId/ownerId/selectionStamp. Loader receives a separate readerOptions object. Confirmed values compare against the captured admission, not the capability-owned object.",
+      "reviewerProof": [
+        {
+          "id": "permission-policy-change-with-shared-mutable-decision",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission changed while loading.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission changed while loading.",
+          "initialPolicyId": "synthetic-caller-display-only/1",
+          "confirmedPolicyId": "changed-policy",
+          "authorizerReturnsSharedObject": true
+        },
+        {
+          "id": "scope-change-with-shared-mutable-decision",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission changed while loading.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission changed while loading."
+        },
+        {
+          "id": "correction-mutable-grant-scope-and-options",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission changed while loading.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission changed while loading."
+        },
+        {
+          "id": "correction-mutable-grant-account",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission is unavailable for this profile and selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission is unavailable for this profile and selection."
+        },
+        {
+          "id": "correction-mutable-grant-allowed",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission is unavailable for this profile and selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission is unavailable for this profile and selection."
+        },
+        {
+          "id": "correction-mutable-grant-selection",
+          "expectedRejected": true,
+          "rejected": true,
+          "passed": true,
+          "visibleRows": 0,
+          "notice": "Selected common package permission is unavailable for this profile and selection.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2,
+          "error": "Selected common package permission is unavailable for this profile and selection."
+        },
+        {
+          "id": "correction-stable-shared-decision",
+          "expectedRejected": false,
+          "rejected": false,
+          "passed": true,
+          "visibleRows": 1,
+          "notice": "\u062a\u0645 \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u062c\u0645\u0648\u0639\u0629 \u0644\u0644\u0645\u0639\u0627\u064a\u0646\u0629 \u0627\u0644\u0645\u062d\u0644\u064a\u0629. \u062a\u0628\u0642\u0649 \u0647\u0648\u064a\u0627\u062a \u0627\u0644\u0645\u0635\u0627\u062f\u0631 \u0648\u0627\u0644\u0627\u0633\u062a\u0634\u0647\u0627\u062f\u0627\u062a \u0648\u0627\u0644\u0643\u0645\u064a\u0627\u062a \u0643\u0645\u0627 \u0647\u064a\u061b \u0644\u0645 \u062a\u064f\u062d\u0641\u0638 \u0623\u064a \u062a\u063a\u064a\u064a\u0631\u0627\u062a.",
+          "sideEffects": [],
+          "saveDisabled": true,
+          "exportDisabled": true,
+          "transportCalls": 2
+        }
+      ]
+    }
+  ],
+  "actualTests": {
+    "authorChecksPassed": 39,
+    "authorChecksFailed": 0,
+    "reviewerEdgesPassed": 37,
+    "reviewerEdgesFailed": 0,
+    "commands": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "tests-web/common-package-caller.test.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot",
+        "exitCode": 0,
+        "logSha256": "109a228349aaa6617d010499c729b7c6ba39a83566b6a9392a06f584f20c866b"
+      },
+      {
+        "command": [
+          "node",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/edge-cases.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308",
+        "exitCode": 0,
+        "logSha256": "3ebfb01bdee50eaf4f676e66f85470a603099b650e0f9fbb0114c4ff9334bef2"
+      }
+    ],
+    "originalReproductions": "Both retained original trigger expectations now reject; visibleRows=0, save/export disabled, no ambient/provider/persistence/download effects. Prior failing source/outputs remain byte-identical in parent artifact.",
+    "additionalEdges": "Inherited array slot, inherited row fields/one byte field, array/string/null/undefined rows; shared/cloned policy changes; shared mutable scope plus readerOptions, account, allowed and selection changes; immutable receipt expectations despite loader option changes; stable shared decision positive.",
+    "reusedAuthorFixtures": "Only source helper prefix creates tiny synthetic gzip and minimal DOM; source result code is immutable. Independent reviewer cases/expectations retained.",
+    "noBroadTransportRerun": true
+  },
+  "newFindings": [],
+  "integrationRequirementsUnchanged": [
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": false,
+      "visibleRows": 2,
+      "alicePrivateTextStillRendered": true,
+      "globalResolverRetainsAlicePrivateText": true,
+      "sideEffects": [],
+      "interpretation": "No active account/policy recheck on cached locale rendering; host identity reset remains required."
+    },
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": true,
+      "visibleRows": 0,
+      "alicePrivateTextStillRendered": false,
+      "globalResolverRetainsAlicePrivateText": false,
+      "sideEffects": [],
+      "interpretation": "Existing host reset hook clears the cached reader/resolver."
+    },
+    {
+      "case": "rights-revoked-after-successful-load",
+      "authorizeCalls": 2,
+      "visibleRows": 1,
+      "translationStillRendered": true,
+      "sideEffects": [],
+      "interpretation": "Post-load cache uses a load-time authorization snapshot; no policy recheck on later locale render. Future host needs explicit invalidation or caller needs ongoing recheck if that is the intended contract."
+    }
+  ],
+  "remainingQualification": [
+    "Trusted authorizer is still responsible for independent producer rights/schema/contract/release qualification; descriptor claims and injected loader alone are insufficient.",
+    "public/app.js still does not inject descriptor/capability or invoke the package action. No host entry activation was changed by this two-file fix.",
+    "Host identity reset remains required for cached private readers; actual app switchAccount hook calls dataUi.reset(). Getter change without that hook retains cached private rows.",
+    "After successful load, later locale render does not reauthorize revoked policy. Host invalidation/current-policy semantics remain a separate activation requirement, outside these two P2 fixes.",
+    "No browser/secure-context/CORS/hosting/real corpus/release/live provider qualification."
+  ],
+  "preservation": {
+    "mainWorker10HeadIndexIdentityEqual": true,
+    "before": "before.json",
+    "after": "after.json",
+    "allParentEvidenceIndexHashesEqual": true,
+    "priorReviewOriginalEdgesAndPR1ReadbackEqual": true,
+    "selectedSourceHashesEqual": true,
+    "branchUnchanged": "refs/heads/feature/common-package-caller-review-20261014",
+    "HEADUnchanged": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "status": "## feature/common-package-caller-review-20261014\n?? worker-10-review/\n",
+    "noAuthorSourceChanges": true,
+    "noGitWritingFixture": true,
+    "noExtraAgentSessionWorktreeServerPublishingPRMerge": true,
+    "diffCheck": {
+      "exitCode": 0,
+      "output": ""
+    }
+  },
+  "controls": "Supplied filesystem/network preserved; mandatory reviewer auto_review, separate approval policy unavailable; no named permission-profile inference. Git read subprocesses strip inherited GIT_* and reintroduce only explicit safe config/prompt/optional-lock policy.",
+  "MorganVerdict": "pending",
+  "idleAvailable": true,
+  "evidenceIndex": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/evidence-index.json",
+    "files": 29,
+    "sha256": "099b4fa18ac37eae6d188a7c0ddd1dacd11f12c6ebd8c69da2f0a0faa12bf9c5"
+  }
+}

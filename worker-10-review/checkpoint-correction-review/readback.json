@@ -1,0 +1,15 @@
+{
+  "primaryMainAndIndexPreserved": true,
+  "worker10IndexStableAfterAuthorizedBranchSwitch": true,
+  "all104PriorUntrackedFilesPreserved": true,
+  "oldBranchPreserved": true,
+  "authorReceiptHashesPreserved": true,
+  "allCandidateAndParentSnapshotHashesEqual": true,
+  "HEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "branch": "feature/checkpoint-correction-review-20261014",
+  "status": "## feature/checkpoint-correction-review-20261014\n?? worker-10-review/\n",
+  "diffCheck": {
+    "exitCode": 0,
+    "output": ""
+  }
+}

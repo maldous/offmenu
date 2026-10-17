@@ -1,0 +1,17 @@
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-drb69u2c/uninterrupted", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-drb69u2c/resumed", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-n1kgk527/uninterrupted", "packets": 2, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-n1kgk527/resumed", "packets": 2, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-soctse5c/uninterrupted", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-soctse5c/resumed", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-9z5jqgq2/uninterrupted", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-9z5jqgq2/resumed", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-qcshyf7e/uninterrupted", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-qcshyf7e/resumed", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-iyglj5b_/uninterrupted", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-iyglj5b_/resumed", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 10, "elapsedSeconds": 0.02, "output": "/tmp/worker10-reached-limit-hhxvaoue/uninterrupted", "packets": 5, "relations": 0, "resources": 5, "status": "aligned", "translations": 0}
+{"assertions": 10, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-hhxvaoue/resumed", "packets": 5, "relations": 0, "resources": 5, "status": "aligned", "translations": 0}
+{"assertions": 12, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-037ul2cq/uninterrupted", "packets": 2, "relations": 0, "resources": 6, "status": "aligned", "translations": 0}
+{"assertions": 12, "elapsedSeconds": 0.01, "output": "/tmp/worker10-reached-limit-037ul2cq/resumed", "packets": 2, "relations": 0, "resources": 6, "status": "aligned", "translations": 0}
+Independent cases passed: 18 limit cases 8; metadata cases 10; all byte/footprint comparisons exact

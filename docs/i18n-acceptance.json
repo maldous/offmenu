@@ -1,0 +1,110 @@
+{
+  "schema": "offmenu-i18n-acceptance/1",
+  "date": "2026-10-14",
+  "branch": "codex/offmenu-i18n",
+  "baseCommit": "ac2df94",
+  "tests": {
+    "javascriptPassed": 144,
+    "pythonPassed": 36,
+    "inventoryCheck": "passed",
+    "placeholderAndDuplicateKeys": "passed",
+    "build": "passed",
+    "completeArabicReleaseGate": "expected failure: untranslated messages",
+    "workersRuntimePassed": 1
+  },
+  "coverage": {
+    "candidateMessages": 2074,
+    "arabicTranslated": 376,
+    "arabicMissing": 1698
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:8787",
+    "interfaceLocales": [
+      "en",
+      "ar"
+    ],
+    "rtlWidthsWithoutPageOverflow": [
+      390,
+      1280
+    ],
+    "offlineLanguageQuerySwitch": "passed",
+    "canonicalMealSlotValues": "passed",
+    "dataWorkspaceUnknownValueTable": "passed",
+    "syntheticFrenchGraphEnglishProjectionInArabicUI": "passed",
+    "nativeTextLanguage": "fr",
+    "commonGraphPreviewWriteControlsDisabled": true
+  },
+  "realCorpusSamples": {
+    "terminology": {
+      "path": "/home/user/src/offmenu-data/common-terminology-20261014/ingredient-resources.jsonl.gz",
+      "sample": "first packet only",
+      "status": "accepted",
+      "resources": 1,
+      "assertions": 17
+    },
+    "recipe": {
+      "path": "/home/user/src/offmenu-data/common-recipes-accepted-20261014/recipe-source-alignment.jsonl.gz",
+      "sample": "first packet only",
+      "status": "accepted",
+      "resources": 33,
+      "assertions": 105,
+      "relations": 34
+    }
+  },
+  "limitations": [
+    "Arabic catalogue is a preview and needs completion and language review.",
+    "Source translations are consumed when supplied and reviewed; no automatic translation service is enabled.",
+    "Common graphs are local previews or supplied by an existing API response; no new corpus publication endpoint is implemented.",
+    "No authenticated or production write flows were tested or deployed.",
+    "Entire corpus packages have not been validated by this UI task."
+  ],
+  "localeIntegration": {
+    "provider": "Cloudflare request.cf.country",
+    "googleLocale": "optional Identity metadata; no additional scope",
+    "weightedAcceptLanguage": "passed",
+    "geoipBelowExplicitPreferences": "passed",
+    "profileField": "uiLanguage",
+    "privateAccountPreferenceExcludedFromSharedKitchen": "passed",
+    "localizedHTMLAndHeaders": "Workers-runtime integration passed",
+    "sharedHTMLCache": "private, no-store",
+    "browserSavedSelectionNextLanding": "passed at localhost:8789 with synthetic EG country",
+    "liveOAuthTested": false,
+    "deploymentPerformed": false
+  },
+  "reviewedCorpusPackage": {
+    "manifest": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014/manifest.json",
+    "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+    "readerPacketsTested": 521,
+    "filesWithVerifiedManifestHash": 12,
+    "publishedTranslationProjection": "English to Russian",
+    "fixedExpressionsPreserved": true,
+    "foreignSourcePublishedEnglishTranslationFound": false,
+    "wholePackageReaderValidation": false,
+    "evidence": "i18n-corpus-compatibility.json"
+  },
+  "hostedCorpusHandoff": {
+    "evidence": "i18n-hosted-handoff.json",
+    "hostedManifestsVerified": 2,
+    "fileEntriesMatchLocalPackage": 170,
+    "representativePublishedFileHash": "passed",
+    "embeddedPayloadHashes": "passed; excludes own field",
+    "exactBytesManifestSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+    "applicationDeployed": false
+  },
+  "integration": {
+    "date": "2026-10-14",
+    "target": "main",
+    "mainParent": "1da1cc5",
+    "i18nParent": "a4d8f48",
+    "validatedCombinedTree": "af747912460b29459efef7cdcd0c2a8ba8689db6",
+    "checks": [
+      "144 JavaScript tests",
+      "36 Python tests",
+      "catalogue drift/placeholder/duplicate-key checks",
+      "application build",
+      "compiled Worker locale integration test",
+      "git diff --check"
+    ],
+    "deploymentPerformed": false
+  }
+}

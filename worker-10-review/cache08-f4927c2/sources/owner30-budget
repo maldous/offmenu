@@ -1,0 +1,81 @@
+// Owner-controlled migration prerequisite; never executed automatically.
+export const budgetDDL = `CREATE TABLE IF NOT EXISTS provider_budget_owner30 (
+ scope TEXT PRIMARY KEY, version INTEGER NOT NULL, document TEXT NOT NULL)`;
+const int = (v, name, min = 0) => {
+  if (!Number.isSafeInteger(v) || v < min) throw Error(`Invalid ${name}`);
+  return v;
+};
+// Compatible with 00d07283 createRequestBudget's storage.atomic contract.
+// Each successful compare-and-swap is one SQLite transaction. Callbacks may rerun.
+export function durableBudgetStorage(db, {attempts = 16} = {}) {
+  int(attempts, 'attempts', 1);
+  if (attempts > 64) throw Error('Too many attempts');
+  return {async atomic(scope, update) {
+    if (typeof scope !== 'string' || !scope || scope.length > 200) throw Error('Invalid scope');
+    for (let n = 0; n < attempts; n++) {
+      const row = await db.prepare('SELECT version,document FROM provider_budget_owner30 WHERE scope=?').bind(scope).first();
+      if (row) int(row.version + 1, 'next version', 1);
+      const result = update(row ? JSON.parse(row.document) : undefined);
+      if (!result || result.then || !Object.hasOwn(result, 'state')) throw Error('Synchronous state transition required');
+      const document = JSON.stringify(result.state);
+      if (typeof document !== 'string' || document.length > 65536) throw Error('Invalid or oversized state');
+      const written = row
+        ? await db.prepare('UPDATE provider_budget_owner30 SET version=version+1,document=? WHERE scope=? AND version=? RETURNING version').bind(document, scope, int(row.version, 'stored version')).first()
+        : await db.prepare('INSERT INTO provider_budget_owner30(scope,version,document) VALUES(?,0,?) ON CONFLICT(scope) DO NOTHING RETURNING version').bind(scope, document).first();
+      if (written) return result.value;
+    }
+    throw Error('Budget contention; no reservation granted');
+  }};
+}
+
+// Reservation-only consumer. Only dispatch:true permits ONE outbound attempt.
+// Never refund ambiguous/crashed attempts. This is not exactly-once transport.
+export function durableQuota({storage, scope, clock, windowMs, maxRequests, maxSpend, receiptTTL, maxReceipts = 128}) {
+  int(windowMs, 'windowMs', 1); int(maxRequests, 'maxRequests'); int(maxSpend, 'maxSpend');
+  int(receiptTTL, 'receiptTTL', windowMs); int(maxReceipts, 'maxReceipts', 1);
+  if (maxReceipts > 128 || typeof clock !== 'function' || typeof storage?.atomic !== 'function') throw Error('Invalid adapter');
+  const config = JSON.stringify([windowMs, maxRequests, maxSpend, receiptTTL, maxReceipts]);
+  const change = fn => storage.atomic(scope, previous => {
+    const now = int(clock(), 'clock');
+    if (previous) {
+      for (const k of ['start', 'requests', 'spend', 'pauseUntil', 'last']) int(previous[k], 'stored ' + k);
+      if (!Array.isArray(previous.receipts) || previous.receipts.length > maxReceipts || previous.requests > maxRequests || previous.spend > maxSpend) throw Error('Invalid stored budget');
+      for (const r of previous.receipts) {
+        int(r.expires, 'stored expiry'); int(r.spend, 'stored price');
+        if (typeof r.id !== 'string' || typeof r.fingerprint !== 'string') throw Error('Invalid stored receipt');
+      }
+    }
+    if (previous && (previous.config !== config || previous.last > now)) throw Error('Configuration changed or clock regressed');
+    const start = Math.floor(now / windowMs) * windowMs;
+    int(start + windowMs, 'window end');
+    const state = previous || {config, start, requests: 0, spend: 0, pauseUntil: 0, last: now, receipts: []};
+    if (state.start !== start) { state.start = start; state.requests = 0; state.spend = 0; }
+    state.receipts = state.receipts.filter(r => r.expires > now);
+    state.last = now;
+    return {state, value: fn(state, now)};
+  });
+  return {
+    async reserve({attemptId, fingerprint, spend} = {}) {
+      int(spend, 'known upper-bound spend');
+      if (![attemptId, fingerprint].every(x => typeof x === 'string' && x.length > 0 && x.length <= 128)) throw Error('Opaque attempt ID and request fingerprint required');
+      return change((s, now) => {
+        const prior = s.receipts.find(r => r.id === attemptId);
+        if (prior) {
+          if (prior.fingerprint !== fingerprint || prior.spend !== spend) throw Error('Attempt identity conflict');
+          return {dispatch: false, reason: 'already-reserved', expires: prior.expires};
+        }
+        if (s.pauseUntil > now) return {dispatch: false, reason: 'provider-backoff', retryAfter: s.pauseUntil};
+        if (s.requests >= maxRequests || spend > maxSpend - s.spend) return {dispatch: false, reason: 'provider-budget', retryAfter: s.start + windowMs};
+        if (s.receipts.length >= maxReceipts) return {dispatch: false, reason: 'receipt-capacity'};
+        const expires = int(now + receiptTTL, 'receipt expiry');
+        s.requests++; s.spend += spend;
+        s.receipts.push({id: attemptId, fingerprint, spend, expires});
+        return {dispatch: true, expires};
+      });
+    },
+    // Absolute provider-authoritative deadline; never shorten an existing pause.
+    async pauseUntil(deadline) { int(deadline, 'pause deadline'); return change(s => {s.pauseUntil = Math.max(s.pauseUntil, deadline); return {pauseUntil: s.pauseUntil};}); },
+    // Linearizable read-back through the same CAS path, no allowance refund.
+    async readback() { return change(s => structuredClone(s)); }
+  };
+}

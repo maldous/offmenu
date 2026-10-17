@@ -1,0 +1,130 @@
+{
+  "schema": "offmenu-worker10-source50-51-independent-review/1",
+  "utc": "2026-10-14T14:14:55.149449+00:00",
+  "actualPickup": {
+    "host": "foo",
+    "cwd": "/home/user/src/offmenu-workers/worker-10",
+    "thread": "01a138ed-be8c-7340-b25e-87bee9272d7e"
+  },
+  "candidates": [
+    {
+      "owner": 50,
+      "pin": "140fbf7507d17eda01800e2e38a6318be5169c3b",
+      "tree": "f6f25c0a65136897bcf70bcedec02826fe760194",
+      "verdict": "PASS_FOR_BOUNDED_IDENTITY_DIAGNOSTIC_ONLY",
+      "tests": 9,
+      "identityRows": 100,
+      "compositionRows": 0,
+      "admitted": false,
+      "assessment": "Portuguese labels/diacritics/source identity and literal raw/cooked evidence retained; composition, component IDs/units, portion/100g, release and license remain unknown. No nutritional equivalence or grant inferred. CLI does not export record strings."
+    },
+    {
+      "owner": 51,
+      "pin": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+      "tree": "4cabc6447752e8979081d6e7d2bccfd2b0836f38",
+      "verdict": "REQUEST_CHANGES_FOR_PROVENANCE_PROOF",
+      "tests": 7,
+      "actualRows": 192,
+      "admitted": false,
+      "assessment": "Actual Japanese display labels, five-digit codes, lexical raw/cooked tokens, component units and typed qualifiers pass bounded source regressions. Iodine/retinol/RAE remain distinct, REFUSE basis differs from edible portion. English mapping, semantic equivalence, methods, rights capture and full admission remain unqualified. Provenance proof finding requires correction."
+    }
+  ],
+  "findings": [
+    {
+      "id": "W10-MEXT-F1",
+      "priority": "P2",
+      "file": "scripts/global-data-validation/worker-51.py",
+      "line": 154,
+      "secondaryLine": 231,
+      "title": "Reject conflicting release and workbook provenance before issuing source proof",
+      "description": "roundtrip validates self-carried raw-cell and schema digests but never checks source.release, workbookSha256, URL, worksheet or member digest against the pinned workbook. proof then unconditionally emits global RELEASE and SHA256. Independent actual-source mutations of each of these five fields still pass proof. In particular a record labelled unreviewed-other-release or carrying workbookSha256=all-zero returns a proof claiming the original 2023-corrected-20260327-main release and original workbook. This can misattribute source-labelled staging after JSON record handling; it does not establish a production leak or admitted dataset.",
+      "evidence": "independent-provenance-probes.json",
+      "recommendation": "Bind source release/workbook/URL constants and worksheet/member/digest against a trusted index derived from the exact retained workbook before returning roundtrip/proof; preserve original row/cell/schema checks. Require conflicting provenance to fail rather than relabel evidence with hard-coded proof fields.",
+      "acceptance": "The five retained mutation probes must reject; the 192 actual records and existing 7 tests must still pass."
+    }
+  ],
+  "pdfEvidence": {
+    "02": {
+      "path": "/home/user/src/offmenu-workers/worker-10/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "pages": [
+        7,
+        9
+      ],
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c"
+    },
+    "03": {
+      "path": "/home/user/src/offmenu-workers/worker-10/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "pages": [
+        8
+      ],
+      "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567"
+    },
+    "verified": "Original PDF hashes, full-page text and rendered pages independently inspected. Source-specific staging/rights/version/unit requirements support this review; national country labels establish no admission."
+  },
+  "preservation": {
+    "changedProtectedPaths": [],
+    "protectedFiles": 290,
+    "reviewerHeadUnchanged": true,
+    "commonMainIndexAnd14HooksPreserved": true,
+    "sourceReads": "exact retained files only; no new network source access, edits or copies",
+    "authorSourceAndTrackedStatus": "both exact author heads retained and clean at checkpoint readback"
+  },
+  "checkpointBackupReceipts": [
+    {
+      "owner": 50,
+      "worktree": "/home/user/src/offmenu-workers/worker-50",
+      "actualHead": "140fbf7507d17eda01800e2e38a6318be5169c3b",
+      "branch": "feature/global-data-50-tbca-20261015",
+      "reviewedPin": "140fbf7507d17eda01800e2e38a6318be5169c3b",
+      "uncommittedStatus": "",
+      "backupRemoteSHA": null,
+      "backupReadbackExit": 2,
+      "exactActualHeadBackedUp": false,
+      "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+      "reviewerEvidence": null,
+      "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "commonDir": "/home/user/src/offmenu/.git",
+      "localOnly": true,
+      "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+    },
+    {
+      "owner": 51,
+      "worktree": "/home/user/src/offmenu-workers/worker-51",
+      "actualHead": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+      "branch": "feature/global-data-51-japan-20261015",
+      "reviewedPin": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+      "uncommittedStatus": "",
+      "backupRemoteSHA": null,
+      "backupReadbackExit": 2,
+      "exactActualHeadBackedUp": false,
+      "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+      "reviewerEvidence": null,
+      "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "commonDir": "/home/user/src/offmenu/.git",
+      "localOnly": true,
+      "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+    },
+    {
+      "owner": 10,
+      "worktree": "/home/user/src/offmenu-workers/worker-10",
+      "actualHead": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "branch": "feature/checkpoint-correction-review-20261014",
+      "reviewedPin": null,
+      "uncommittedStatus": "?? worker-10-review/\n",
+      "backupRemoteSHA": null,
+      "backupReadbackExit": 2,
+      "exactActualHeadBackedUp": false,
+      "backupMutation": "none; readback only; reviewer owns no tracked code changes",
+      "reviewerEvidence": "local-only untracked explicitly owned review directory",
+      "base": "existing reviewer checkout; no new authored code",
+      "commonDir": "/home/user/src/offmenu/.git",
+      "localOnly": true,
+      "recovery": "existing immutable Git commit plus retained per-file reviewer snapshot and evidence-index; no raw corpus copied"
+    }
+  ],
+  "backupScope": "Read-only review owns no tracked code to commit or push. No source-author branches or untracked review/private/raw artifacts pushed. Exact remote branch readback exit2: branch missing, no remote SHA asserted. Existing authorized source owners must qualify backup/adoption separately.",
+  "production": "RECIPE STOP",
+  "fullSourceAdmission": "NOT QUALIFIED",
+  "controls": "Filesystem unrestricted, network enabled, mandatory reviewer auto_review preserved; separate approval policy unavailable; no named profile inferred.",
+  "readyForDistinctNextReview": true
+}

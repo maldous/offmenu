@@ -1,0 +1,838 @@
+{
+  "schema": "offmenu-aggregate-privacy-owner59/1",
+  "requirement": "CACHE-08",
+  "title": "Separate aggregate privacy assessment and anti-reidentification rules",
+  "assessedAtUtc": "2026-10-14T13:22:31.882797+00:00",
+  "clientDate": "2026-10-15",
+  "timezone": "Australia/Melbourne",
+  "actualPickup": {
+    "thread": "01a139ab-ddf3-7471-8e79-6c327d19c2d7",
+    "cwd": "/home/user/src/offmenu-workers/worker-59",
+    "hostname": "foo"
+  },
+  "git": {
+    "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "branch": "feature/aggregate-privacy-owner59-20261014",
+    "freshLockedFetchUtc": "2026-10-14T13:18:55.513680+00:00",
+    "fetchExit": 0,
+    "lock": "/tmp/offmenu-develop-fetch.lock",
+    "priorCapacityCommit": "63fceac6563721c18f65a4790ff0a4df9a3a6148",
+    "priorDiscoveryReviewSHA256": "aca125a688e4cd834577735bacd4015aadfe5e69f361446cd9831b5e4ba763b7"
+  },
+  "sourceRequirement": {
+    "pdf": "/home/user/src/offmenu-workers/worker-59/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+    "pdfSHA256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+    "originalSection": "Section 5, printed page 6; choices/rechecks page 7; stage4/release/deletion acceptance page 9; design status page10",
+    "originalTextEvidence": "Aggregate observations need separate privacy assessment, aggregation rules and provider permission (page1). Page6 requires measure allowlist, coarse time/location, contribution limits, small-cell suppression, repeated-query differencing protection and risk-derived thresholds; fixed cohort size is not proof. Page7 separates activity contribution and queued job rechecks.",
+    "coverageSnapshot": {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker17-current-deliverable-coverage-update.json",
+      "sha256": "d14a9d70afcce97ed81e6fb3b3816d21f24d427fed2c3e0b301848d5593e0808",
+      "observedUtc": "2026-10-14T12:49:32.423934+00:00",
+      "requirement": {
+        "requirement_id": "CACHE-08",
+        "title": "Separate aggregate privacy assessment and anti-reidentification rules",
+        "source_pdf": {
+          "filename": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "path": "/home/user/src/offmenu/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+          "pages": 10,
+          "evidence": "retained UI03 original PDF extraction/page review; hash reverified only; no re-extraction"
+        },
+        "page_or_section": "Architecture, rights, privacy and acceptance, pages 1–9",
+        "later_direction_refs": [
+          "L-PRODUCTION-STOP",
+          "L-LOCAL-DELIVERY"
+        ],
+        "owner_touchpoint_worker_ids": [],
+        "owner_refs": [],
+        "whole_requirement_assignment": "Not established solely by touchpoints; see existing owner reservations/dependencies. No assignment made here.",
+        "dependencies": [
+          "TRUST-02",
+          "CACHE-01"
+        ],
+        "evidence_stages": {
+          "documented": {
+            "status": "present",
+            "refs": [
+              "canonical105-register",
+              "retained-ui105",
+              "backlog105-cd27"
+            ]
+          },
+          "implemented": {
+            "status": "partial-retained-evidence",
+            "existing_behavior": "Sensitive kinds excluded from generic data routes/private projection",
+            "source_refs": [
+              "8652b312:public/evidence-model.js",
+              "8652b312:public/record-policy.js",
+              "8652b312:cloud/provider-data.mjs",
+              "8652b312:cloud/enrichment.mjs",
+              "8652b312:public/health-model.js",
+              "8652b312:public/data-workspace.js",
+              "8652b312:cloud/catalogue.mjs"
+            ],
+            "helper_pins": []
+          },
+          "independently_qualified": {
+            "status": "whole-requirement-not-established",
+            "bounded_reported_evidence": [],
+            "not_newly_replayed": true
+          },
+          "integrated_acceptance": {
+            "status": "not-established-by-this-reconciliation",
+            "owner03_app_acceptance_flags": [],
+            "root_current_verdict_precedence": true
+          }
+        },
+        "genuine_gap": {
+          "historical_assessment": "partial_implementation_with_scoped_gap",
+          "confirmed_missing_behavior": "No reviewed anti-reidentification aggregate release policy; publication must remain gated",
+          "acceptance_still_required": "Aggregation is disabled until the specific privacy/reidentification assessment and source permissions pass.",
+          "narrow_scope": "Separate anti-reidentification/privacy decision before any aggregate publication; requirement-specific remaining work: No reviewed anti-reidentification aggregate release policy; publication must remain gated",
+          "gap_kind": "governance-gated",
+          "dispatchable_without_owner_reconciliation": false
+        },
+        "acceptance_criteria": "Independent privacy assessment defines cohort/suppression/retention/attacks before aggregate output",
+        "candidate_paths_not_reservations": [
+          "docs/aggregate-privacy-assessment.json"
+        ],
+        "limitations": [
+          "Historical code/test references are not fresh execution or delivery certification.",
+          "Source appendices remain discovery; records/rights/nutrition equivalence not admitted."
+        ],
+        "owner03_original_source": {
+          "reportFile": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "sectionOrPageReference": "Architecture, rights, privacy and acceptance, pages 1–9",
+          "retainedEvidencePaths": [
+            "public/record-policy.js",
+            "cloud/enrichment.mjs",
+            "tests-web/continuation.test.mjs"
+          ],
+          "sourcePointer": "/home/user/.codex/visualizations/2026/10/14/01a13827-384e-7f20-857c-daf328abd2ec/offmenu-workflow-toolkit-coverage.json#/requirements/89",
+          "locatorNote": "Retained original locator, not newly audited per-assertion page proof."
+        }
+      }
+    }
+  },
+  "verdict": {
+    "aggregatePublication": "HELD",
+    "production": "STOP",
+    "safePublicationCertified": false,
+    "anonymizationEstablished": false,
+    "requirementFullyImplemented": false,
+    "independentAssessmentReview": "pending-exact-assessment-pin",
+    "rightsOrLegalClearance": false
+  },
+  "evidence": [
+    {
+      "id": "canonical-CACHE08",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "docs/recommendation-delivery-register.json",
+      "blob": "bc90c983d8a8ce3e2b3c8ca235c612d207d18a53",
+      "sha256": "c6c6278544e1082462f307c637238d43541c3361c0ee6dd5bbe53da2025693b1",
+      "bytes": 81570,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/docs/recommendation-delivery-register.json",
+      "locators": [
+        {
+          "token": "\"CACHE-08\"",
+          "line": 1253
+        }
+      ]
+    },
+    {
+      "id": "generic-admission",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/evidence-model.js",
+      "blob": "a32bf846fde7d67346223bd3f8e15ed79f2fcdd3",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "bytes": 4860,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/public/evidence-model.js",
+      "locators": [
+        {
+          "token": "export function admission",
+          "line": 3
+        },
+        {
+          "token": "audience==='public'",
+          "line": 12
+        },
+        {
+          "token": "action==='promote'",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "id": "generic-record-policy",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/record-policy.js",
+      "blob": "c7fdc08e9075ef4b9e71dee0676e54cc4da97106",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "bytes": 2329,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/public/record-policy.js",
+      "locators": [
+        {
+          "token": "SENSITIVE_KINDS",
+          "line": 5
+        },
+        {
+          "token": "export function recordPermission",
+          "line": 7
+        },
+        {
+          "token": "openSources.has",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "id": "personal-catalogue-settings",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/catalogue.mjs",
+      "blob": "e85fbb878f79b1a91136aa5b2a0cf2fd68920522",
+      "sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7",
+      "bytes": 8863,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/catalogue.mjs",
+      "locators": [
+        {
+          "token": "export async function documentPage",
+          "line": 8
+        },
+        {
+          "token": "/api/catalogue/coverage",
+          "line": 14
+        },
+        {
+          "token": "const user=await verifiedUser",
+          "line": 21
+        },
+        {
+          "token": "kind==='statistics'",
+          "line": 23
+        },
+        {
+          "token": "aggregateActivity:false",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "id": "private-provider-records",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/provider-data.mjs",
+      "blob": "77156d0a0ad254fce1a6c0b1e4785acfb4baf773",
+      "sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "bytes": 15641,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/provider-data.mjs",
+      "locators": [
+        {
+          "token": "privateRecordsPage",
+          "line": 16
+        },
+        {
+          "token": "/api/data/connections",
+          "line": 33
+        },
+        {
+          "token": "/api/data/lookup",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "id": "household-projection",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/sync-model.js",
+      "blob": "11a9ad5b07226d881a7542f63ef58c6bd63b2596",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "bytes": 3990,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/public/sync-model.js",
+      "locators": [
+        {
+          "token": "export function kitchenProjection",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "id": "authenticated-kitchen",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/kitchens.mjs",
+      "blob": "d540071640d11b36bc758e4485922e60fa3b5ca2",
+      "sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+      "bytes": 5532,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/kitchens.mjs",
+      "locators": [
+        {
+          "token": "export function validateKitchen",
+          "line": 6
+        },
+        {
+          "token": "const user=await verifiedUser",
+          "line": 7
+        },
+        {
+          "token": "kitchenProjection(JSON.parse",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "id": "state-validation",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/state.mjs",
+      "blob": "8b302dd39f9edfe093b8070508ac9a4c61034449",
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "bytes": 6238,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/state.mjs",
+      "locators": [
+        {
+          "token": "export function validateState",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "id": "personal-statistics",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/health-model.js",
+      "blob": "355f0d6a845c134da3ef53b87af4d0411b32a8f8",
+      "sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "bytes": 2090,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/public/health-model.js",
+      "locators": [
+        {
+          "token": "export function healthStatistics",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "id": "private-browser-export",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/data-workspace.js",
+      "blob": "5313551fc310f068d436878479f5bce6606e7268",
+      "sha256": "aaa2e7c1d0e8cf3102dd2a5d645261213aff2d1161423afd7a23b98542abdae6",
+      "bytes": 8123,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/public/data-workspace.js",
+      "locators": [
+        {
+          "token": "action('health-export'",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "id": "existing-enrichment-resolver",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/enrichment.mjs",
+      "blob": "7a4c8d61e6db6325f8e2921438e6e0829c852358",
+      "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "bytes": 6561,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/enrichment.mjs",
+      "locators": [
+        {
+          "token": "export async function",
+          "line": 10
+        },
+        {
+          "token": "const ip=request.headers",
+          "line": 12
+        },
+        {
+          "token": "const key=await hash",
+          "line": 13
+        },
+        {
+          "token": "const operation=",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "id": "existing-handler",
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "cloud/handler.mjs",
+      "blob": "5cd2f8ad4dc0eaef5a89493e35ad1499ecff35d0",
+      "sha256": "1317a4a436d46ce9a7d761dec09e3342a3efaf4069b9d760228ddfd2a66c0027",
+      "bytes": 10198,
+      "github": "https://github.com/maldous/offmenu/blob/5f5bdb6ae716cbf80fab1e174d1af2e354468ead/cloud/handler.mjs",
+      "locators": [
+        {
+          "token": "async function verifiedUser",
+          "line": 14
+        },
+        {
+          "token": "async scheduled",
+          "line": 15
+        },
+        {
+          "token": "/api/state",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "id": "owner07-retained-producer-path",
+      "commit": "45080c376be9a91faf0d9846a82447931676a10f",
+      "path": "cloud/corpus.mjs",
+      "blob": "58e2084813acf66229d5e5e4938f77755642a7b1",
+      "sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5",
+      "bytes": 4051,
+      "github": "https://github.com/maldous/offmenu/blob/45080c376be9a91faf0d9846a82447931676a10f/cloud/corpus.mjs",
+      "locators": [
+        {
+          "token": "export async function corpusLookup",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "id": "owner29-adapter",
+      "commit": "5a33fe809c07ffd439378d24dc31c057da8d7e89",
+      "path": "cloud/cache-invalidation-owner29.mjs",
+      "blob": "195e5ac5f9521c9509faa5e541835f976ac73a66",
+      "sha256": "afae73c7e55cdbee725a8a9cd59bf7150bfd3f6636313f2268ea998a9d72b193",
+      "bytes": 6634,
+      "github": "https://github.com/maldous/offmenu/blob/5a33fe809c07ffd439378d24dc31c057da8d7e89/cloud/cache-invalidation-owner29.mjs",
+      "locators": [
+        {
+          "token": "async function key",
+          "line": 7
+        },
+        {
+          "token": "async function validate",
+          "line": 12
+        },
+        {
+          "token": "const decisions=evaluateDependencies",
+          "line": 32
+        },
+        {
+          "token": "async function publish",
+          "line": 66
+        },
+        {
+          "token": "async function resolve",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "id": "owner29-caller-contract",
+      "commit": "5a33fe809c07ffd439378d24dc31c057da8d7e89",
+      "path": "docs/worker-29-cache-invalidation-consumer.md",
+      "blob": "72c727b91555fbbfd237dbe6fdf016c07e4c9b28",
+      "sha256": "05f34b58cdcc82a93a5e3da73f5bed9582301750d626ba9b3bb8b9d3b7b37475",
+      "bytes": 6079,
+      "github": "https://github.com/maldous/offmenu/blob/5a33fe809c07ffd439378d24dc31c057da8d7e89/docs/worker-29-cache-invalidation-consumer.md",
+      "locators": [
+        {
+          "token": "Existing enrichment",
+          "line": 32
+        },
+        {
+          "token": "Existing enrichment does not yet emit",
+          "line": null
+        },
+        {
+          "token": "producer must bind",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "id": "owner29-dependency-helper",
+      "commit": "f2e195bdcc5f00c0bccf1c4a475255b9211e5184",
+      "path": "public/assertion-dependency-model.js",
+      "blob": "f5b2b8ecbc430e487d633f9f647394f4066f5d8b",
+      "sha256": "a7a7bbcc468dadb156bfb36f282577f11d03e5c294548e949499703c79b0fdea",
+      "bytes": 4064,
+      "github": "https://github.com/maldous/offmenu/blob/f2e195bdcc5f00c0bccf1c4a475255b9211e5184/public/assertion-dependency-model.js",
+      "locators": [
+        {
+          "token": "export function evaluateAssertionDependencies",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "id": "owner30-budget",
+      "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+      "path": "cloud/durable-budget-owner30.mjs",
+      "blob": "0f02492aaff38bf6c3b6ba43bf90c976f7da1f1f",
+      "sha256": "292d117c5f4a59eb8b6803fa8669b29a19025033fddaa86c95b68ebba3cedd00",
+      "bytes": 5445,
+      "github": "https://github.com/maldous/offmenu/blob/da6d4817fef569bd7564f185702bb2d98f34754d/cloud/durable-budget-owner30.mjs",
+      "locators": [
+        {
+          "token": "export function durableBudgetStorage",
+          "line": 10
+        },
+        {
+          "token": "export function durableQuota",
+          "line": 33
+        },
+        {
+          "token": "async reserve",
+          "line": 58
+        },
+        {
+          "token": "async pauseUntil",
+          "line": 77
+        }
+      ]
+    },
+    {
+      "id": "owner30-caller-contract",
+      "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+      "path": "docs/durable-budget-owner30.md",
+      "blob": "b2e3b36c56645a6d076bfcd0255d313e32ea2848",
+      "sha256": "6edf1b6b9ea2ca0373f945b6aef06b41ecd72a6db27a2b78cb7d8e1974bee5f8",
+      "bytes": 8033,
+      "github": "https://github.com/maldous/offmenu/blob/da6d4817fef569bd7564f185702bb2d98f34754d/docs/durable-budget-owner30.md",
+      "locators": [
+        {
+          "token": "Account scopes",
+          "line": 44
+        },
+        {
+          "token": "Owner02 integration",
+          "line": 53
+        },
+        {
+          "token": "Fingerprint",
+          "line": 50
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "control": "Aggregate activity setting forced false",
+      "status": "implemented-at-selected-base",
+      "evidence": [
+        "personal-catalogue-settings"
+      ],
+      "limit": "Saved preference path only. No whole-runtime or future publication certification."
+    },
+    {
+      "control": "Authenticated owner-bound personal reads and no-store replies",
+      "status": "implemented-at-selected-base",
+      "evidence": [
+        "personal-catalogue-settings",
+        "private-provider-records",
+        "existing-handler"
+      ],
+      "limit": "Private statistics include exact series/latest/min/max, safe only inside authorized private purpose; no k/suppression layer."
+    },
+    {
+      "control": "Sensitive generic kinds excluded and household projection removes named private fields",
+      "status": "implemented-at-selected-base-and-synthetic-replayed",
+      "evidence": [
+        "generic-record-policy",
+        "household-projection",
+        "authenticated-kitchen"
+      ],
+      "limit": "Projection keeps shared inventory, recipes, dates, locations and plan data; household authorization is not a public release permission or de-identification."
+    },
+    {
+      "control": "Public source-policy/rights and explicit personal marker checks",
+      "status": "implemented-at-selected-base-and-synthetic-replayed",
+      "evidence": [
+        "generic-admission"
+      ],
+      "limit": "One-node value count=1 may pass generic permission if no personal marker. Metadata flag and source licence are insufficient for aggregate risk review."
+    },
+    {
+      "control": "Scope/producerEpoch/policy/assertion gates at cache SQL boundary",
+      "status": "implemented-in-owner29-candidate-not-proven-integrated",
+      "evidence": [
+        "owner29-adapter",
+        "owner29-caller-contract"
+      ],
+      "limit": "64KiB/256 assertion bounds; producer/caller must bind every payload field and authoritative scope. No suppression, query history, noise or privacy accounting."
+    },
+    {
+      "control": "CAS quota/cost/idempotent reservation/backoff",
+      "status": "implemented-in-owner30-candidate-not-proven-integrated",
+      "evidence": [
+        "owner30-budget",
+        "owner30-caller-contract"
+      ],
+      "limit": "Provider-account request/spend allowance is not epsilon/delta disclosure accounting. Multiple allowed queries can still difference; synthetic memory test is not durable-store qualification."
+    },
+    {
+      "control": "Complete producer graph and aggregate lineage contract",
+      "status": "missing-identified-pin-and-integration",
+      "evidence": [
+        "owner07-retained-producer-path",
+        "owner29-caller-contract"
+      ],
+      "limit": "Coverage observed owner07=45080c3 is a recipe inventory; selected tree cloud/corpus.mjs is retained curated reader, no authoritative aggregate producer contract. Root must supply exact producer commit/path before composition review."
+    },
+    {
+      "control": "Suppression/complement/differencing/rare-attribute/temporal controls and separate aggregate purpose/rights",
+      "status": "required-proposal-not-implemented-in-selected-surfaces",
+      "evidence": [
+        "canonical-CACHE08"
+      ],
+      "limit": "No selected aggregate release gate, reviewed thresholds, privacy budget or approval receipt found; targeted scope only, not exhaustive repository/runtime absence proof."
+    }
+  ],
+  "flow": [
+    "Selected public curated reader/source normalizer -> intended complete assertion graph producer (missing pin/contract) -> Owner29 trusted scope+policy/assertion validation -> Owner30 provider-account reservation -> bounded fetch/produce -> repeated Owner29 commit/read gate -> owner02 route response. This is proposed composition, not observed integrated handler.",
+    "At selected base enrichment still uses public source policy, hashed query/cache key, IP rate bucket, lease and backoff. It does not import owner29/30 modules.",
+    "Authenticated personal documents/records and exact health statistics remain separate private paths; household projection is separately authenticated and is not a public aggregate path.",
+    "A new behavioral aggregate release would require distinct reviewed contribution purpose/rights, minimization/cohort mechanism and query/release accounting before entering any shared cache/output. No such acceptance is established."
+  ],
+  "syntheticProbes": {
+    "testCount": 17,
+    "results": [
+      {
+        "id": "C1-private-owner-mismatch",
+        "observed": false,
+        "expected": false,
+        "scope": "actual pinned admission function"
+      },
+      {
+        "id": "C2-explicit-personal-public-denied",
+        "observed": false,
+        "expected": false,
+        "scope": "actual pinned admission function"
+      },
+      {
+        "id": "C3-sensitive-kind-generic-denied",
+        "observed": false,
+        "expected": false,
+        "scope": "actual pinned recordPermission"
+      },
+      {
+        "id": "C4-revoked-policy-denied",
+        "observed": false,
+        "expected": false,
+        "scope": "actual pinned admission"
+      },
+      {
+        "id": "G1-count-shape-no-risk-check",
+        "observed": true,
+        "expected": true,
+        "scope": "actual generic admission; not an aggregate-release gate"
+      },
+      {
+        "id": "G2-open-source-not-aggregate-gate",
+        "observed": true,
+        "expected": true,
+        "scope": "actual private-use helper; must not grant aggregate release"
+      },
+      {
+        "id": "C5-kitchen-sensitive-fields-removed",
+        "observed": {
+          "members": null,
+          "health": null,
+          "selectionCount": 0,
+          "nutriments": null,
+          "planMembers": [],
+          "adjustments": []
+        },
+        "expected": {
+          "members": null,
+          "health": null,
+          "selectionCount": 0,
+          "nutriments": null,
+          "planMembers": [],
+          "adjustments": []
+        },
+        "scope": "actual pinned household projection, synthetic input; not anonymization"
+      },
+      {
+        "id": "A1-small-cell",
+        "observed": 1,
+        "expected": 1,
+        "scope": "synthetic toy output: one distinct contributor exposed; must withhold"
+      },
+      {
+        "id": "A2-large-marginals-single-intersection",
+        "observed": {
+          "a": 5,
+          "b": 5,
+          "intersection": 1
+        },
+        "expected": {
+          "a": 5,
+          "b": 5,
+          "intersection": 1
+        },
+        "scope": "synthetic only; five is illustrative and not a chosen safety threshold"
+      },
+      {
+        "id": "A3-overlapping-query-differencing",
+        "observed": 75,
+        "expected": 75,
+        "scope": "synthetic totals from 11 and 10 contributors disclose excluded contribution"
+      },
+      {
+        "id": "A4-complementary-suppression",
+        "observed": 1,
+        "expected": 1,
+        "scope": "synthetic published total/complement recover suppressed cell"
+      },
+      {
+        "id": "A5-rare-sensitive-homogeneity",
+        "observed": 1,
+        "expected": 1,
+        "scope": "synthetic same sensitive attribute in ten-person cohort; cardinality alone insufficient"
+      },
+      {
+        "id": "A6-temporal-single-event",
+        "observed": 1,
+        "expected": 1,
+        "scope": "synthetic adjacent snapshot counts identify a single new event with outside timing"
+      },
+      {
+        "id": "A7-stable-hash-linkability",
+        "observed": true,
+        "expected": true,
+        "scope": "synthetic stable pseudonyms link releases; digest is not anonymization"
+      },
+      {
+        "id": "A8-withdrawal-recompute-difference",
+        "observed": 23,
+        "expected": 23,
+        "scope": "synthetic before/after withdrawal recomputation reveals removed contribution; re-release needs review"
+      },
+      {
+        "id": "A9-event-count-not-contributor-count",
+        "observed": {
+          "events": 100,
+          "contributors": 1
+        },
+        "expected": {
+          "events": 100,
+          "contributors": 1
+        },
+        "scope": "synthetic contribution bounding requirement"
+      },
+      {
+        "id": "A10-provider-budget-allows-two-differencing-queries",
+        "observed": [
+          true,
+          true
+        ],
+        "expected": [
+          true,
+          true
+        ],
+        "scope": "actual pinned quota with synthetic memory store; no durable SQLite/production proof, no disclosure-accounting gate"
+      }
+    ],
+    "meaning": "Synthetic deterministic assertions only; identified attacks are hypothetical release failures, not observed publication. No aggregate algorithm, DP threshold, legal clearance, actual users or deployment validated."
+  },
+  "syntheticProbeProgram": "import assert from 'node:assert/strict';\nlet input='';for await(const s of process.stdin)input+=s;const modules=JSON.parse(input);\nconst load=async k=>import('data:text/javascript;base64,'+Buffer.from(modules[k]).toString('base64'));\nconst {admission}=await load('admission'),{recordPermission}=await load('record'),{kitchenProjection}=await load('projection'),{durableQuota}=await load('quota');\nconst results=[];const test=(id,observed,expected,scope)=>{assert.deepEqual(observed,expected);results.push({id,observed,expected,scope});};\nconst now=2000000,policy={active:true,actions:['display','aggregate','promote'],audiences:['public','private'],sharedFields:['count']};\ntest('C1-private-owner-mismatch',admission(policy,{owner:'synthetic-A'},{owner:'synthetic-B',audience:'private',now}).allowed,false,'actual pinned admission function');\ntest('C2-explicit-personal-public-denied',admission(policy,{personal:true,matchStatus:'verified'},{audience:'public',now}).allowed,false,'actual pinned admission function');\ntest('C3-sensitive-kind-generic-denied',recordPermission({kind:'healthObservation',provenance:{sourceId:'off'}},{action:'aggregate',now}).allowed,false,'actual pinned recordPermission');\ntest('C4-revoked-policy-denied',admission({...policy,active:false},{matchStatus:'verified'},{action:'aggregate',audience:'public',now}).allowed,false,'actual pinned admission');\ntest('G1-count-shape-no-risk-check',admission(policy,{owner:'public',predicate:'count',value:1,matchStatus:'verified'},{action:'aggregate',audience:'public',now}).allowed,true,'actual generic admission; not an aggregate-release gate');\ntest('G2-open-source-not-aggregate-gate',recordPermission({kind:'product',provenance:{sourceId:'off'}},{action:'aggregate',now}).allowed,true,'actual private-use helper; must not grant aggregate release');\nconst projected=kitchenProjection({inventory:[],products:{'1234':{name:'Synthetic product',nutriments:{protein:3},nutritionProvenance:{visibility:'private'}}},recipes:[],selections:['private-selection'],profile:{country:'AU',members:[{id:'member-A',restrictions:['synthetic']}],healthRecords:[{value:1}],plan:[{id:'plan-A',memberIds:['member-A'],adjustments:['private-note']}],batches:[]}});\ntest('C5-kitchen-sensitive-fields-removed',{members:projected.profile.members??null,health:projected.profile.healthRecords??null,selectionCount:projected.selections.length,nutriments:projected.products['1234'].nutriments??null,planMembers:projected.profile.plan[0].memberIds,adjustments:projected.profile.plan[0].adjustments},{members:null,health:null,selectionCount:0,nutriments:null,planMembers:[],adjustments:[]},'actual pinned household projection, synthetic input; not anonymization');\ntest('A1-small-cell',1,1,'synthetic toy output: one distinct contributor exposed; must withhold');\nconst cohortA=new Set(['H1','H2','H3','H4','H5']),cohortB=new Set(['H1','H6','H7','H8','H9']);\ntest('A2-large-marginals-single-intersection',{a:cohortA.size,b:cohortB.size,intersection:[...cohortA].filter(x=>cohortB.has(x)).length},{a:5,b:5,intersection:1},'synthetic only; five is illustrative and not a chosen safety threshold');\ntest('A3-overlapping-query-differencing',1250-1175,75,'synthetic totals from 11 and 10 contributors disclose excluded contribution');\ntest('A4-complementary-suppression',10-9,1,'synthetic published total/complement recover suppressed cell');\ntest('A5-rare-sensitive-homogeneity',new Set(Array(10).fill('synthetic-sensitive-category')).size,1,'synthetic same sensitive attribute in ten-person cohort; cardinality alone insufficient');\ntest('A6-temporal-single-event',21-20,1,'synthetic adjacent snapshot counts identify a single new event with outside timing');\nconst digest=x=>crypto.subtle.digest('SHA-256',new TextEncoder().encode(x)).then(v=>Buffer.from(v).toString('hex'));\ntest('A7-stable-hash-linkability',(await digest('synthetic-household-A'))===(await digest('synthetic-household-A')),true,'synthetic stable pseudonyms link releases; digest is not anonymization');\ntest('A8-withdrawal-recompute-difference',100-77,23,'synthetic before/after withdrawal recomputation reveals removed contribution; re-release needs review');\ntest('A9-event-count-not-contributor-count',{events:100,contributors:new Set(Array(100).fill('synthetic-household-A')).size},{events:100,contributors:1},'synthetic contribution bounding requirement');\nlet stored;const q=durableQuota({storage:{async atomic(scope,fn){const r=fn(stored?structuredClone(stored):undefined);stored=r.state;return r.value;}},scope:'synthetic-provider-account',clock:()=>now,windowMs:1000,maxRequests:60,maxSpend:100,receiptTTL:1000});\nconst d1=await q.reserve({attemptId:'synthetic-request-1',fingerprint:'different-cohort-1',spend:1}),d2=await q.reserve({attemptId:'synthetic-request-2',fingerprint:'different-cohort-2',spend:1});\ntest('A10-provider-budget-allows-two-differencing-queries',[d1.dispatch,d2.dispatch],[true,true],'actual pinned quota with synthetic memory store; no durable SQLite/production proof, no disclosure-accounting gate');\nconsole.log(JSON.stringify({testCount:results.length,results,meaning:'Synthetic deterministic assertions only; identified attacks are hypothetical release failures, not observed publication. No aggregate algorithm, DP threshold, legal clearance, actual users or deployment validated.'}));",
+  "syntheticProgramSHA256": "f6eb13565ac716da156af50d97f56fe51f72597ae209c90584819c3f4894f2dc",
+  "probeModules": {
+    "admission": {
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/evidence-model.js",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9"
+    },
+    "record": {
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/record-policy.js",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc"
+    },
+    "projection": {
+      "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+      "path": "public/sync-model.js",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+    },
+    "quota": {
+      "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+      "path": "cloud/durable-budget-owner30.mjs",
+      "sha256": "292d117c5f4a59eb8b6803fa8669b29a19025033fddaa86c95b68ebba3cedd00"
+    }
+  },
+  "correctionAndAcceptanceGates": [
+    {
+      "id": "G1",
+      "owner": "07 producer with 02 integration owner",
+      "correction": "Supply exact immutable producer path and complete output-to-input assertion lineage. Classify behavioral observations separately from product facts; prohibit household IDs, raw timestamps, fine location, stable contributor keys in public payload.",
+      "acceptance": "Synthetic malicious payload containing a private trip field despite public assertion graph is withheld; changed producer epoch invalidates caches; no unknown/missing lineage promotes."
+    },
+    {
+      "id": "G2",
+      "owner": "02 policy/caller owner plus source rights custodian",
+      "correction": "Separate aggregate action, purpose, audience, territory and source derivative permission from private/promotion rights; gate all HTTP/export/MCP/background/cache paths. Default disabled.",
+      "acceptance": "Setting true or permissive provider licence alone cannot publish; unknown rights, personal data marker omission and missing purpose/decision all deny. No credentials or actual private records in tests."
+    },
+    {
+      "id": "G3",
+      "owner": "02 aggregate implementation owner; independent privacy reviewer accepts parameters",
+      "correction": "Define allowlisted measures, population/unit (distinct contributors or households), contribution clipping, approved bucket widths, risk-derived suppression plus complementary suppression, restricted dimension/intersection catalogue.",
+      "acceptance": "A1/A2/A4/A5/A9 fixtures withhold or coarsen; identical sensitive values and rare outside joins are assessed. Thresholds are unassigned; k alone never passes."
+    },
+    {
+      "id": "G4",
+      "owner": "02 release caller with 30 accounting owner for separate privacy ledger",
+      "correction": "Bound query composition across accounts, windows, audiences and releases; prohibit arbitrary adaptive queries. If a DP mechanism is selected, independently specify adjacency, clipping, epsilon/delta, composition, correlated caching and fail-closed exhaustion.",
+      "acceptance": "A3/A6/A10 remain protected under distributed retries/cache hits/account rotation, window rollover and concurrent queries; provider budget does not reset disclosure cost; no invented DP guarantee."
+    },
+    {
+      "id": "G5",
+      "owner": "29 dependency/invalidation owner plus 02 store/serving owner",
+      "correction": "Include contribution choice/purpose/entitlement epoch in authoritative graph; recheck at job start, commit and serve. Inventory derivative cache/search/export/embedding stores, pending jobs and backup restore replay; distinguish retention expiry from freshness.",
+      "acceptance": "Rights narrowing or withdrawal during fetch/reserve/write/serve returns no new output; revoked dependency cannot survive warm cache or restore; independent public evidence must have separate valid lineage. Recomputed release must pass A8 differencing review."
+    },
+    {
+      "id": "G6",
+      "owner": "02 account/household boundary owner; 29 key/ledger owner",
+      "correction": "Keep contributor linkage in restricted purpose-bound ledger with specified retention; apply authorization and purpose limits to query logs, metrics, cache keys, fingerprints and quota readbacks. No public stable contributor identifier.",
+      "acceptance": "A7 demonstrates link risk; account B and household role never grant private health or provider account access. Query errors, timing/hit state and logs are checked for membership inference before widening."
+    },
+    {
+      "id": "G7",
+      "owner": "existing independent reviewer assigned by root; production decision remains root",
+      "correction": "Review exact assessment and subsequent implementation pins, independent synthetic attack replay, applicable provider decisions and intended information environment; time-bound review to intended recipients and outputs.",
+      "acceptance": "No safe-publication/anonymization/release certification from this assessment. Review broader auxiliary data, small producers/children/sensitive cohorts and later audiences; production STOP persists until separately authorized qualified acceptance."
+    }
+  ],
+  "parametersNotChosen": [
+    "cohort threshold",
+    "coarse time/location bucket widths",
+    "contribution caps",
+    "suppression/complement rules",
+    "retention and contributor linkage lifetime",
+    "privacy query budget",
+    "epsilon/delta/adjacency if differential privacy chosen",
+    "approved audiences and auxiliary dataset assumptions"
+  ],
+  "limits": [
+    "Read-only targeted source assessment, not repository-wide security/legal audit or current deployed runtime proof.",
+    "No actual private records, provider credentials, source acquisition, SQL store writes or private telemetry used. Git fetch was explicitly required source freshness bookkeeping only.",
+    "Synthetic attacks are counterexamples to naive aggregation, not evidence of an existing public data leak; no aggregate publication endpoint was exercised.",
+    "Owner29/30 authority callbacks and producer provenance are unqualified in composition; prior helper tests were not rerun or promoted to whole-application acceptance."
+  ],
+  "controlsSupplied": {
+    "filesystem": "unrestricted/danger-full-access",
+    "network": "enabled",
+    "mandatoryReviewer": "auto_review preserved",
+    "separateApprovalPolicyValue": null,
+    "persistedUserConfiguration": null,
+    "CODEX_PERMISSION_PROFILE": null
+  },
+  "mutationScope": "Only unique assessment branch/fetch bookkeeping and docs/aggregate-privacy-owner59.md plus .json. No source/policy/settings/schema edits, no deployments/publication, no workers/sessions.",
+  "validation": {
+    "atUtc": "2026-10-14T13:24:31.167803+00:00",
+    "all18PinnedSourceHashesMatch": true,
+    "syntheticReplay": "17/17; exact same result object on second independent invocation",
+    "primaryMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "primaryIndexSHA256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+    "priorCapacityBranch": "63fceac6563721c18f65a4790ff0a4df9a3a6148",
+    "priorDiscoveryReviewUnchanged": true,
+    "onlyOwnedFiles": [
+      "docs/aggregate-privacy-owner59.json",
+      "docs/aggregate-privacy-owner59.md"
+    ],
+    "testsNotClaimed": "No full handler/29/30 integration, D1 store, provider runtime, actual private data, privacy mechanism or safe-publication qualification performed."
+  }
+}

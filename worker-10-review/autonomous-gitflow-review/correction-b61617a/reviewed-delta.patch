@@ -1,0 +1,131 @@
+diff --git a/docs/OFFMENU_GITFLOW.md b/docs/OFFMENU_GITFLOW.md
+index 68766e0..d4b8481 100644
+--- a/docs/OFFMENU_GITFLOW.md
++++ b/docs/OFFMENU_GITFLOW.md
+@@ -188,6 +188,17 @@ no fabricated fields or approval are backfilled to make cleanup pass. Explicit
+ owner/custody review is required before any eligible cleanup. These are client
+ record consistency controls, not authenticated signatures or new permissions;
+ controls remain bypassable outside the managed workflow.
++The retained local `integrate` compatibility path applies the same canonical
++start/ready worker/owner/worktree/authored-task binding as the provider path.
++Its legitimate current checkout is the exact target line at fresh base, so it
++validates source custody without treating the target checkout as the source task.
++The completed local receipt pins source branch, authored start path/digest,
++ready path/digest, worker/owner and observed target checkout/base. Its retirement
++adapter must revalidate those facts and actual candidate/base/source ancestry
++before returning integration proof. Contradictory integrator worker/owner or
++legacy receipts missing these bindings fail closed; historical evidence is not
++rewritten or silently upgraded. Retirement still requires the actual authored
++source task checkout and exact Morgan branch/owner/worktree verdict.
+ Malformed review/evidence shapes fail closed with retained blocked receipts.
+ This receipt establishes integration, not release certification or automatic retirement.
+ Continue explicit owner/dirty/untracked/ignored/PR/dependency checks, preserve the
+diff --git a/scripts/offmenu-gitflow.py b/scripts/offmenu-gitflow.py
+index 299492b..b1531cb 100644
+--- a/scripts/offmenu-gitflow.py
++++ b/scripts/offmenu-gitflow.py
+@@ -474,9 +474,7 @@ class Gitflow:
+         ready = self.read_receipt(a.ready, 'ready')
+         need(ready.get('worker') == a.worker, 'wrong ready receipt owner')
+         start = self.read_receipt(ready.get('start_receipt', ''), 'start')
+-        need(digest(ready['start_receipt']) == ready.get('start_sha256'), 'start receipt custody mismatch')
+-        need(all(ready.get(k) == start.get(k) for k in ('worker', 'branch', 'task', 'kind', 'base', 'base_line')),
+-             'ready/start task metadata mismatch')
++        self.task_ready_binding(start, ready, ready['start_receipt'], a.worker)
+         source = ready['candidate']
+         need(a.line != 'main' or ready.get('kind') == 'hotfix', 'only reviewed hotfixes integrate directly to main; releases use promote')
+         need(self.sha('refs/heads/' + ready['branch']) == source, 'task changed after review readiness')
+@@ -493,7 +491,10 @@ class Gitflow:
+         need(self.git('branch', '--show-current').stdout.strip() == a.line, 'target line must be explicitly checked out')
+         need(self.sha('HEAD') == base, 'local target differs from freshly fetched canonical line')
+         self.receipt.update(candidate=candidate, source=source, base=base, line=a.line,
+-                            task=ready['task'], ready_sha256=digest(a.ready))
++                            task=ready['task'], source_branch=start['branch'], target_branch=a.line,
++                            source_task_start=str(Path(ready['start_receipt']).resolve()),
++                            source_task_start_sha256=digest(ready['start_receipt']),
++                            ready_receipt=str(Path(a.ready).resolve()), ready_sha256=digest(a.ready))
+         if not a.check_only:
+             self.git('merge', '--no-overwrite-ignore', '--ff-only', candidate)
+         return 'allowed' if a.check_only else 'completed'
+@@ -555,7 +556,25 @@ class Gitflow:
+         raw = json.loads(raw_path.read_text())
+         need(isinstance(raw, dict), 'integration receipt must be a JSON object')
+         if raw.get('operation') == 'integrate':
+-            return self.read_receipt(path, 'integrate'), 'integrate-' + raw.get('line', '')
++            local = self.read_receipt(path, 'integrate')
++            need(local.get('worker') == start['worker'] == ready['worker']
++                 and local.get('owner') == start['owner'] == ready['owner']
++                 and local.get('repo') == start['repo'], 'local integration worker/owner/worktree binding mismatch')
++            need(local.get('task') == start['task'] and local.get('source_branch') == start['branch']
++                 and local.get('source') == ready['candidate']
++                 and Path(local.get('source_task_start', '')).resolve() == Path(ready['start_receipt']).resolve()
++                 and local.get('source_task_start_sha256') == ready['start_sha256']
++                 and Path(local.get('ready_receipt', '')).resolve() == Path(ready_path).resolve()
++                 and local.get('ready_sha256') == digest(ready_path), 'local integration authored start/ready/task binding mismatch')
++            line = local.get('line')
++            need(line in ('develop', 'main') and local.get('target_branch') == line
++                 and local.get('head_before') == local.get('base')
++                 and (line != 'main' or start['kind'] == 'hotfix'), 'local integration target checkout binding mismatch')
++            candidate, base, source = local.get('candidate'), local.get('base'), local['source']
++            need(candidate == self.sha(candidate) and base == self.sha(base)
++                 and self.ancestor(base, candidate) and self.ancestor(source, candidate),
++                 'local integration actual candidate/base/source facts mismatch')
++            return local, 'integrate-' + line
+         normal = self.read_receipt(path, 'merge_receipt')
+         link = normal.get('task_linkage', {})
+         need(isinstance(link, dict) and normal.get('worker') == link.get('worker') == start.get('worker') == ready.get('worker')
+diff --git a/tests-gitflow/test_offmenu_gitflow.py b/tests-gitflow/test_offmenu_gitflow.py
+index a930e28..fd228d6 100644
+--- a/tests-gitflow/test_offmenu_gitflow.py
++++ b/tests-gitflow/test_offmenu_gitflow.py
+@@ -352,6 +352,50 @@ class FlowTest(unittest.TestCase):
+         self.assertEqual(self.git('rev-parse', branch).strip(), source)
+         self.assertEqual(self.git('rev-parse', alias).strip(), source)
+ 
++    def test_local_integrate_rejects_contradictory_ready_owner_and_rehashed_task_alias(self):
++        start, original_start = self.start();source = self.commit('local binding source')
++        ready, original_ready = self.ready(start)
++        alias = 'feature/09/not-authored-task';self.git('branch', alias, source)
++        self.git('switch', 'develop');self.review('develop', source, source)
++        cases = []
++        r = dict(original_ready);r['owner'] = 'different-owner';cases.append(('owner', r))
++        ss = dict(original_start);ss['branch'] = alias
++        fake_start = self.ev / 'alias-local-start.json';fake_start.write_text(json.dumps(ss))
++        r = dict(original_ready);r.update(branch=alias, start_receipt=str(fake_start),
++            start_sha256=hashlib.sha256(fake_start.read_bytes()).hexdigest());cases.append(('task-alias', r))
++        for name, value in cases:
++            path = self.ev / (name + '-local-ready.json');path.write_text(json.dumps(value))
++            _, rec = self.command('integrate', '--worker', '9', '--ready', str(path),
++                '--candidate', source, '--check-only', ok=False)
++            self.assertEqual(rec['status'], 'blocked')
++            self.assertEqual(rec['fetches'], [])
++            self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++            self.assertEqual(self.git('rev-parse', alias).strip(), source)
++        self.command('integrate', '--worker', '9', '--ready', ready['receipt'],
++                     '--candidate', source, '--check-only')
++
++    def test_local_integration_receipt_owner_worker_and_link_updates_block_retirement(self):
++        start, ready, integration, source = self.integrated_fixture()
++        self.git('push', 'origin', 'develop');self.git('switch', 'feature/09/fixture')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=source)
++        self.policy['workers']['9'].update(active_task='fixture', ignored_custody='preserved',
++            ignored_evidence=self.reference(), retirement=self.verdict(source=source, task='fixture',
++                branch='feature/09/fixture', owner='fixture-worker09', repo=str(self.repo)))
++        raw = json.loads(Path(integration['receipt']).read_text())
++        variants = [('worker', 8), ('owner', 'different-owner'), ('source_branch', 'feature/09/other'),
++                    ('target_branch', 'main'), ('task', 'different-task'),
++                    ('source_task_start_sha256', '0' * 64), ('ready_receipt', str(self.ev / 'missing-ready.json'))]
++        for field, value in variants:
++            with self.subTest(field=field):
++                changed = dict(raw);changed[field] = value
++                path = self.ev / ('changed-local-' + field + '.json');path.write_text(json.dumps(changed))
++                _, rec = self.command('retire', '--worker', '9', '--start', start['receipt'],
++                    '--ready', ready['receipt'], '--integration', str(path), '--check-only', ok=False)
++                self.assertEqual(rec['status'], 'blocked')
++                self.assertEqual(self.git('rev-parse', 'feature/09/fixture').strip(), source)
++        self.command('retire', '--worker', '9', '--start', start['receipt'],
++            '--ready', ready['receipt'], '--integration', integration['receipt'], '--check-only')
++
+     def test_known_security_alert_requires_separate_exact_disposition(self):
+         head, snapshot = self.delivery_fixture();snapshot['security_alerts'] = ['synthetic scanner alert']
+         _, r = self.delivery_command(head, snapshot, ok=False)

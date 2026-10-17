@@ -1,0 +1,49 @@
+{
+  "schema": "offmenu.worker10.gitflow-trigger-proposal/1",
+  "status": "proposal-only; no activation or source changes",
+  "candidate": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "owner": "Morgan; implementation remains Worker09",
+  "scope": "Managed per-worker invocations in the existing fixed pool, not a scheduler/orchestrator/Actions/hooks installer",
+  "prerequisites": [
+    "Resolve launcher binding and durable malformed-input handling findings.",
+    "Define verified normal-merge receipt to task-retirement transition; do not fabricate an integrate receipt.",
+    "Preserve exact source/target/custody/review evidence and mandatory platform/security disposition."
+  ],
+  "triggers": [
+    {
+      "event": "Morgan assigns existing idle permanent worker",
+      "invocation": "existing launcher -> start",
+      "guards": "Fresh locked target fetch, existing owner/path/common-dir/origin, clean preserved custody, exact reviewed/provisional line evidence appropriate to task kind, no active receipt history, unique task ID. Release/hotfix requires certified baseline/tag; feature/bugfix routine line is release-uncertified."
+    },
+    {
+      "event": "Owner completes candidate checks",
+      "invocation": "ready",
+      "guards": "Actual completed start receipt, same owner/branch/base lineage, exact immutable task commit and checks reference. Output is ready-for-review only."
+    },
+    {
+      "event": "Independent review/Morgan exact verdict and live PR facts available",
+      "invocation": "delivery",
+      "guards": "Exact live PR head/fresh develop base, distinct exact independent review, Morgan verdict, explicit required/advisory inventories. Accepted client-enforcement authority permits origin-unavailable mode but does not substitute for platform/security confirmation or zero unresolved findings."
+    },
+    {
+      "event": "Head/base advances or findings/security state changes",
+      "invocation": "block existing delivery; owner correction/review refresh by refs",
+      "guards": "Invalidate old head/base verdict/confirmations. Pending advisory is disclosed; known findings block. Actual mandatory alert disposition is retained separately. Never infer approval from a merged PR/empty API list."
+    },
+    {
+      "event": "Normal provider merge actually completes",
+      "invocation": "merge_receipt",
+      "guards": "Actual allowed preflight precedes merge; exact PR/head/base, provider evidence, ordered two parents, reviewed tree, canonical develop ancestry. Receipt integrates only; no release certification."
+    },
+    {
+      "event": "Owner requests safe retirement/next claim",
+      "invocation": "retire then fresh start, only after receipt-compatibility correction or explicit supported manual gate",
+      "guards": "Bind normal merge evidence to current start/ready/task/source and target, fresh qualified required lines, Morgan retirement, preserved ignored/dependency/PR custody, other-worktree refusal and branch-d deletion only. Do not free active history just because merge succeeded."
+    }
+  ],
+  "negativeRequirements": [
+    "No real trigger execution, new coordinator, worker/session/worktree, hook bypass/install, server protection change, GitHub action, push/PR/merge or publication proposed as performed.",
+    "No auto-dismissal of scanner feedback or approval-state rewriting.",
+    "Proposal does not grant source/qualification authority or alter standing normal Gitflow authority."
+  ]
+}

@@ -1,0 +1,1895 @@
+diff --git a/docs/OFFMENU_GITFLOW.md b/docs/OFFMENU_GITFLOW.md
+new file mode 100644
+index 0000000..b31b209
+--- /dev/null
++++ b/docs/OFFMENU_GITFLOW.md
+@@ -0,0 +1,484 @@
++# OffMenu managed Gitflow
++
++The original helper at `ae7f1a5a2e44a857c2683adf32180e821c0bfd54`
++was a preserved foundation implementation exception from cached main. Its
++independent review and prior task history remain retained. The current audit
++uses `feature/autonomous-gitflow-review-20261014`, freshly based on develop
++`abe0ddc9db357b1e8d0d61825392d6b9923352f0` in the same Worker09 path.
++The helper source is carried by immutable reference from the reviewed original;
++that does not retroactively qualify its old task base or certify a release.
++A preserved capture-ref incident was repaired separately by its owner; this
++helper neither repairs nor bypasses auxiliary refs. Use actual receipts for
++current fetch, review, acceptance and custody status.
++
++The fixed local pool is 32 permanent worker paths. Do not provision an extra
++worker/worktree/session for task dispatch. An idle checkout is a provisioning
++snapshot, not proof of task freshness. Mandatory `auto_review` remains in force;
++it is not evidence of a separately configured approval policy.
++
++## Routine autonomous delivery authority
++
++Matt authorizes the normal qualified OffMenu Gitflow lifecycle: routine reviewed
++PR-to-develop delivery, certification-gated main promotion and immutable tag,
++release fixes back to persistent develop, and reviewed hotfixes from freshly
++fetched released main back to both lines. Do not ask again for routine actions
++inside that standing authority. Product START, production deployment, paid
++sources, credentials and mandatory platform/security confirmations remain
++separate. This authority changes no GitHub protection, setting or Action.
++The previous blanket ledger gate requiring a fresh human approval for every
++routine PR is superseded by this explicit instruction; preserve its history.
++
++Use the existing native fixed pool under direct Morgan ownership. Observed
++checkout behavior is a registered permanent Git worktree and a normal unique
++feature branch created from a successful locked develop fetch in the same path.
++Do not infer Symfony, Linear or scheduler behavior. No app handoff was performed
++or verified here; Git checkout does not prove app-level handoff. No scheduler,
++coordinator or additional worker is installed by this workflow.
++
++The sequence is immutable candidate -> independent exact review -> corrections
++and re-review -> Morgan verdict -> normal PR to develop -> exact live head/base
++and platform checks -> normal merge -> durable merge/custody receipt -> safe
++retirement -> fresh assignment. Never self-accept. A prior task receipt must pin
++its branch/HEAD, tracked/staged/untracked and ignored custody, symlinks/owners,
++immutable outputs and pending review/integration state before reuse. An explicit
++new assignment may preserve and defer the old branch; it does not fabricate old
++acceptance or grant cleanup. Delete no permanent checkout and preserve retained
++reports and dependency symlinks.
++
++### Routine preflight helper
++
++`delivery --worker N --snapshot LIVE_SNAPSHOT_JSON --head FULL_SHA --base FULL_SHA`
++uses the same common global options as other commands. It does not create a PR,
++push or merge. Policy `routine_delivery` pins `authorizer: Matt`, `project: OffMenu`,
++`scope: normal-qualified-gitflow` and an actual standing-authority evidence
++reference. Policy `reviews` must contain an exact `deliver-develop` Morgan verdict
++for candidate/head, base and source/head; a release tag is not a prerequisite for
++ordinary reviewed development integration. Ordinary dispatch can use
++`routine_develop` with Morgan `reviewed-integration-line`, the exact freshly fetched
++SHA and preserved line evidence; this does not certify a release. Existing
++release promotion, tags, main/hotfix and backmerge qualifications remain enforced.
++
++The live snapshot must include explicit `security_alerts`. Any known alert also
++requires `security_confirmation` with confirmed exact head/base and actual
++disposition evidence, separate from platform or routine authority. A stale or
++missing disposition blocks; the helper never dismisses a scanner finding.
++
++The live snapshot must have `state: open`, `base_ref: develop`, `head_ref`, exact
++`head` and `base`, owner and URL. `independent_review` pins distinct reviewer,
++`state: passed`, exact head/base and actual evidence. `requirements_status: known`
++and explicit `required_reviews`, `required_checks`, `advisory_reviews` inventories
++are required. Required reviews must be APPROVED at that head; required checks
++completed/success at that head. Unknown requirements without explicit client authority, stale evidence or pending
++required gates block. Matt explicitly accepts client-side enforcement because
++private origin entitlement/managed-app Administration access does not support
++server protection inspection/enforcement. Keep origin private and do not upgrade
++or add admin credentials. With snapshot `requirements_status:
++origin-unavailable-client-enforced` and policy `client_enforcement` containing
++`accepted_by: Matt`, `origin_protection: unavailable`,
++`bypassable_outside_workflow: true` and an actual evidence reference, unavailable
++origin protection does not hold delivery. Explicit client required-review/check
++inventories and platform/security confirmation still apply; never label origin
++protected or silently invent origin requirements. Advisory pending state is disclosed in the receipt and is
++not substituted for approval. Every advisory entry records `open_findings`; known
++findings require ordinary corrections and fresh review. `platform_confirmation`
++must explicitly record confirmed head/base plus actual evidence. Do not synthesize
++that confirmation from standing authority or infer requirements from an empty API
++result. Snapshot records/evidence remain trusted Morgan custody, not independently
++authenticated signatures or automatic API collection.
++
++The helper reads the live branch head and freshly fetches develop under the
++shared flock. A changed head or base invalidates the candidate. Before invoking
++the normal provider merge, re-read exact PR head/base and pass the expected head
++to the provider; serialize Morgan's develop deliveries. This is a local preflight,
++not an atomic server base lock or branch protection. Verify the normal merge's
++parents/tree afterward against approved head/base, fetch canonical develop and
++retain API and Git receipts. A mismatch is an incident and blocks retirement;
++never reset a public merge to hide it. A normal merge receipt does not certify a
++release. App/API mandatory confirmation cannot be bypassed by helper output.
++
++### Witnessed PR1 and next candidate
++
++PR1 was opened at 2026-10-14 08:06:38 UTC and merged at 08:07:47 UTC:
++head `7beffdc390826ee68e99031ef6fe735efce9d2c9`, base
++`8652b312ce7989c5e4f2d49ae765d5d8daf5841d`, normal merge
++`abe0ddc9db357b1e8d0d61825392d6b9923352f0`. Its preserved independent local
++review/correction and specific Matt acceptance preceded the merge. The normal
++merge receipt pins both parents and the accepted tree; primary main/index and
++old branches were preserved. This witnesses review, acceptance, PR and normal
++merge plus custody evidence. Destructive retirement was not performed; no complete
++cleanup/new-assignment cycle is inferred from a merged PR alone.
++
++GitHub Codex's summary was created at 08:06:54 UTC; its eventual COMMENTED review
++was submitted at 08:10:09 UTC and P2 comment at 08:10:10 UTC, after merge.
++The summary now reports completed at 08:10:12.673230 UTC. That eventual state does
++not prove approval at merge time. The P2 concerns resumed `--limit` iteration
++changing source/manifest metadata and needs normal owner correction and independent
++review. Do not relabel this later automated suggestion as pre-merge acceptance.
++GitGuardian's observed check completed/success at 08:06:43 UTC. Current develop
++branch metadata reports `protected: false` and required status enforcement `off`;
++detailed protection read returned 403 and rules API was unavailable. These current
++facts do not reconstruct historical requirements or imply all unknown reviews
++are advisory. Never alter protections to make a gate pass.
++
++Worker02 PR2 is now published at https://github.com/maldous/offmenu/pull/2:
++head `933346d6a2197b7b6e66aa480728b467963f17a6`, base `abe0ddc9`.
++Morgan reports independent13 no scoped findings and bounded composition accepted
++before publication; that acceptance is the local evidence, not a later bot state.
++At 08:30:10 UTC the then-empty Codex review list did not imply completed approval.
++A later read shows COMMENTED at 08:33:13 UTC with three P2 findings concerning
++expired administrator proofs, static asset settings reads and excluded locales.
++A GitGuardian alert was also posted at 08:30:10 UTC on historical commit
++`34b33f0bab749aa48f5211d8299f3025e2489ee9`, `cloud/service-config.mjs`.
++These observed later findings require normal owner correction/re-review and the
++mandatory security disposition; no secret value was read, no history was rewritten,
++and no finding was dismissed. The observed PR2 API state was open/not merged.
++Coordinate by refs and existing receipts only; preserve Worker02 ownership.
++
++### Per-worker launch and normal merge receipts
++
++From the existing permanent worker path, use
++`python3 -B /path/to/reviewed/scripts/offmenu-gitflow-launch.py --policy POLICY
++--evidence-dir RECEIPTS delivery --snapshot SNAPSHOT --head SHA --base SHA`.
++The launcher derives worker01–32 from the current path, refuses repo/worker
++argument overrides, strips inherited Git variables and delegates one command.
++It creates no scheduler or owner handoff. Common-dir/origin/path/custody validation
++remains in the helper. Existing hooks were inventoried read-only; no existing
++hook was overwritten, disabled or installed by this change. This is explicit
++managed invocation, and all client controls are bypassable outside the workflow.
++Pool-wide activation is not inferred from this Worker09 source commit.
++
++After a normal provider merge, `merge_receipt --worker N --snapshot MERGED_JSON
++--preflight EXACT_ALLOWED_DELIVERY_RECEIPT` verifies the actual pre-merge gate,
++PR URL/head/base, normal merged state, provider evidence and merge UTC. Posthoc
++approval is refused. It freshly fetches canonical develop and verifies merge
++ancestry, exactly ordered base/head parents and the approved candidate tree.
++A differing merge blocks cleanup and retains evidence; no force/reset repair.
++The merged JSON carries `state: merged`, `base_ref: develop`, `url`, `head`, `base`,
++`merge_sha`, `normal_merge: true`, `merged_at`, and `provider_evidence` file reference.
++This receipt establishes integration, not release certification or retirement.
++Continue explicit owner/dirty/untracked/ignored/PR/dependency checks, preserve the
++immutable history, then obtain the next fresh assignment. Release/main/tag and
++released-main hotfix controls remain certification/review gated as above; no real
++main/release action or deployment was performed by this audit.
++
++Current audit evidence resides under
++`/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow`.
++The helper/runbook changes on the fresh Worker09 feature branch are staged for
++independent review, not installed server enforcement or deployed automation.
++
++## Supported workflow
++
++Use `python3 -B scripts/offmenu-gitflow.py --repo WORKER_PATH --policy POLICY
++--evidence-dir RECEIPTS COMMAND ...` on Linux with Python 3.10 or newer and Git.
++There are no package installs or external Python dependencies. Child Git commands
++and synthetic test helpers remove **all inherited `GIT_*` variables**, including
++repository paths, object/namespace overrides and config injection, from child
++environments. They explicitly restore only optional-lock and noninteractive-prompt
++settings so the explicit repository path
++controls custody. Parent environment variables and permission controls stay intact. POLICY and the
++canonical RECEIPTS directory are retained outside the worker checkout. Each
++attempt writes an exclusive JSON receipt, including blocked attempts. A local
++advisory lock serializes managed operations in that directory. Keep one canonical
++receipt directory; changing/deleting it defeats custody and is not supported.
++
++`--check-only` runs real fetch/validation and writes evidence but does not create,
++switch, merge, tag or delete a branch. A zero exit means `allowed` for a check or
++`completed` for execution. A blocked gate exits 2. JSON stdout gives the exact
++receipt path and error. Git commands time out at 45 seconds, use no terminal
++credential prompt, and do not retry using a cached base. A timeout records exit
++as unavailable, never success. Successful fetch records the actual exit code,
++UTC times, exact command and full SHA of the explicitly fetched canonical
++tracking ref under `/tmp/offmenu-develop-fetch.lock`. Fetch uses
++`--no-write-fetch-head` and does not depend on shared FETCH_HEAD. A busy shared
++lock fails closed without cached fallback. Disposable local bare fixture origins
++use their own per-origin lock and do not contend with the live native pool. Branch names/HEAD remain unchanged on validation failure.
++Fetch itself can write objects/tracking refs/FETCH_HEAD; it is not a read-only
++network probe.
++
++### Dispatch
++
++```sh
++python3 -B scripts/offmenu-gitflow.py --repo /home/user/src/offmenu-workers/worker-09 \
++  --policy /absolute/retained/policy.json --evidence-dir /absolute/retained/receipts \
++  start --worker 9 --kind feature --task unique-task-20261014 --check-only
++```
++
++Remove `--check-only` only for an authorized dispatch. `feature`, `bugfix` and
++`release` normally require a fresh successful canonical develop fetch, a qualified exact
++integration SHA, and an accepted pinned release ancestor. The explicit provisional
++exception below permits feature/bugfix development before the first certified release;
++it does not apply to release branches. `hotfix` fetches main
++and additionally requires that exact main to be accepted and released at a pinned
++canonical immutable tag. Missing/deleted/moved tags fail closed. No feature or
++bugfix starts from cached main. No inferred acceptance from build success,
++branch name, historical live receipts or provisioning status.
++
++The owner, permanent registered path, common Git directory and canonical origin
++must match. Dirty tracked or untracked files block dispatch. Switches and merges use
++`--no-overwrite-ignore`, so incoming tracked paths cannot overwrite ignored owner
++files. A collision fails closed; owner-reviewed preservation/removal is separate. Explicit preserved
++custody must be documented and the checkout made clean by its owner before this
++implementation proceeds; it never stashes or overwrites dirty work. Ignored
++files require explicit preserved evidence before retirement. Open PRs, recovery
++dependencies and evidence dependencies must be explicitly empty. Prior active
++tasks block reuse both in policy and completed receipt history. A task identifier
++is never reused, even after retirement. Check-only receipts do not consume an ID.
++Execution creates `KIND/NN/unique-task` directly from the fetched full SHA in the
++same worker path. It never forces, resets or rebases any branch.
++
++### Explicit provisional bootstrap dispatch
++
++Morgan enacted persistent local/origin develop at
++`8652b312ce7989c5e4f2d49ae765d5d8daf5841d` on 14 October 2026. Its verdict is
++**PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE**, not a certified release.
++The retained authority and actual normal fetch/push/fetch evidence are in
++`/home/user/Documents/Codex/2026-10-14/task-2/provisional-develop-receipt.json`.
++Do not repeat initialization or repair refs, and do not label this seed accepted.
++
++With `develop_initialized: true`, policy may contain an explicit
++`provisional_bootstrap` record:
++
++```json
++{
++  "reviewer": "Morgan",
++  "authorization": "ordinary-development-start",
++  "verdict": "PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE",
++  "qualification": "unqualified",
++  "line": "develop",
++  "sha": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
++  "utc": "2026-10-14T06:22:24.762642Z",
++  "evidence": {
++    "path": "/home/user/Documents/Codex/2026-10-14/task-2/provisional-develop-receipt.json",
++    "sha256": "INSERT_ACTUAL_RECEIPT_SHA256"
++  }
++}
++```
++
++This authorization permits `start --kind feature` and `start --kind bugfix` at
++that **exact freshly fetched origin/develop SHA**, without an accepted first
++release or tag. The referenced `offmenu-provisional-develop/1` bootstrap receipt
++must match the seed, local develop and fetched develop, and explicitly record
++`releaseCertified`, `tagCreated` and `mainChanged` as false. Evidence bytes and
++valid non-future authorization UTC are checked. Missing/unapproved authorization,
++changed evidence or a later fetched develop SHA fail closed. Morgan must review
++and issue updated evidence when the line advances; ancestry alone never extends
++this bootstrap exception. Remove the exception under Morgan custody when moving
++to qualified dispatch; a stale exception does not silently fall back to another
++qualification path.
++
++Ownership, clean/preserved custody, unique tasks, same permanent path and active
++task retirement checks still apply. Start/readiness receipts carry the provisional
++verdict and exact authorization: development readiness does not claim acceptance.
++This exception is used only by ordinary dispatch. It does **not** qualify
++integration, release branch dispatch, hotfix dispatch, promotion, backmerge or
++retirement. Those exact Morgan review/qualification gates remain enforced.
++Worker09 continues its existing foundation task; this authorization does not
++create a second task or retire that task automatically.
++
++### Completion and integration
++
++Write an actual check output file and a small JSON reference containing its
++absolute `path` and `sha256`. Pass that reference to `ready`:
++
++```sh
++python3 -B scripts/offmenu-gitflow.py --repo WORKER_PATH --policy POLICY --evidence-dir RECEIPTS \
++  ready --worker 9 --start EXACT_START_RECEIPT --checks CHECK_OUTPUT_REFERENCE_JSON
++```
++
++This pins the exact task commit, start receipt digest and check output digest.
++Completion means `ready_for_Morgan_review`; it does not produce acceptance.
++Morgan must review an **immutable prepared integration candidate**, the exact
++source commit and the freshly fetched target SHA. Candidate preparation and
++conflict resolution are separate authorized work; this tool does not guess a
++merge or resolve conflicts. A candidate must contain both source and target
++history. A fast-forward candidate is supported as well as a separately prepared
++merge commit. Qualified evidence must cover the entire candidate, not only the
++worker diff. Morgan-controlled policy has exactly one verdict for that triple.
++
++After preserving readiness, an explicitly authorized owner checks out the local
++target line in the same permanent worker. Never override Git's other-worktree
++ownership refusal. The local target must equal the freshly fetched canonical SHA.
++
++```sh
++python3 -B scripts/offmenu-gitflow.py --repo WORKER_PATH --policy POLICY --evidence-dir RECEIPTS \
++  integrate --worker 9 --ready EXACT_READY_RECEIPT --line develop \
++  --candidate FULL_REVIEWED_CANDIDATE_SHA --check-only
++```
++
++Execution uses only `merge --ff-only FULL_SHA`. Exact candidate or task changes,
++wrong reviewers, unqualified candidates and target movement fail closed. Only
++hotfixes can use `--line main`; releases use promotion and ordinary changes go to
++develop. Update line qualification only after actual reviewed integration and
++canonical publication by Morgan's separately authorized process. No pushes,
++force pushes, Actions, deployments or account changes are implemented here.
++
++Policy must retain exceptions for workers **01–08**. Their migration/cached-main
++bases remain preserved; never silently relabel them as develop starts. Record a preserved exception with
++`exception --worker N --task EXISTING_TASK` under explicit Matt/Morgan authorization
++and active-task custody. This does not fetch, create or switch a branch; it writes
++a completed start receipt labeled `unqualified-base-exception`, with
++`base_line: preserved-exception`. Pass that receipt to `ready`. The exception
++policy entry must pin `branch`, full `base`, `task`, `kind` (feature/bugfix only),
++`authorization` (Matt/Morgan), and an `evidence` file reference. This path also
++records the explicitly authorized Worker09 foundation exception. It does not
++qualify develop, release or integration. Before
++integration, if the current develop is not an ancestor of the immutable source,
++Morgan must supply a qualified reconciliation pinned to both the source and the
++new develop SHA. Any later develop advance invalidates that reconciliation.
++This applies to old base exceptions, releases and hotfix back-merges too.
++
++### Persistent develop, releases and hotfixes
++
++`initialize --worker 9 [--check-only]` is a one-time local proposal gated by a
++fresh main fetch equal to the accepted release, a canonical pinned accepted tag,
++an explicit Morgan `initialize-develop` verdict, explicit
++`develop_initialized: false`, and proven remote/local/tracking absence of develop.
++It creates a local branch only, without switching or pushing. Preserve the
++completed initialization receipt and set `develop_initialized: true` under
++Morgan custody before publishing develop. Never recreate develop each release,
++never clear initialization history to recover a deleted line. Recover that line
++through Morgan review. **Do not repeat real initialization:** Morgan has enacted the persistent line
++under the explicit provisional bootstrap above. Its release qualification remains
++unqualified; this command does not re-seed or certify that line.
++
++Release branches start from qualified freshly fetched develop. Reviewed release
++fixes must return to qualified canonical develop before main promotion. Use
++`integrate --line develop` with exact candidate and reconciliation as needed.
++Then Morgan's `promote-release` verdict must match candidate, fresh main base,
++and current qualified develop SHA. Promotion requires a completed release start
++receipt, exact release branch SHA, ancestry from the start base and released main,
++and candidate ancestry in develop. It requires main explicitly checked out at the
++fresh main SHA. The tag must be new both locally and on canonical origin.
++
++```sh
++python3 -B scripts/offmenu-gitflow.py --repo WORKER_PATH --policy POLICY --evidence-dir RECEIPTS \
++  promote --worker 9 --start EXACT_RELEASE_START_RECEIPT \
++  --candidate FULL_ACCEPTED_RELEASE_SHA --tag v1.2.0 --check-only
++```
++
++Execution fast-forwards local main and creates an annotated tag without force.
++No tag overwrite or remote publication exists in this script. Main/tag are two
++Git operations: if tag creation fails after main advances, the blocked receipt
++records `main_promoted`; preserve that state and ask Morgan to review recovery.
++There is no automatic rollback/reset. Morgan must preserve the acceptance verdict,
++qualification checks and tag object, publish through the authorized process, and
++update the released-main/line records before the next hotfix or release.
++
++Hotfixes start from fresh accepted/released main, require exact Morgan integration
++review, and return to **both main and develop** with reviewed candidates. Hotfix
++release/tag qualification remains Morgan-owned; this script's `promote` is for
++release branches. A hotfix cannot retire while absent from either canonical line.
++
++### Retirement
++
++```sh
++python3 -B scripts/offmenu-gitflow.py --repo WORKER_PATH --policy POLICY --evidence-dir RECEIPTS \
++  retire --worker 9 --start EXACT_START_RECEIPT --ready EXACT_READY_RECEIPT \
++  --integration EXACT_COMPLETED_INTEGRATION_RECEIPT --check-only
++```
++
++Requires unchanged task SHA; correct owner/active task; start, ready, checks and
++integration custody; exact Morgan integration verdict; source and integration
++candidate ancestry in qualified freshly fetched develop; both lines for release
++and hotfix; explicit preserved ignored-file inventory; no dirty/untracked files,
++open PRs or recovery/evidence dependencies; and an exact Morgan retirement verdict.
++Branches owned by another registered worktree are refused. Execution may detach
++this worker to the proven integration SHA, then deletes **only the named task
++branch** with `branch -d`. The permanent worker path is never removed. A completed
++retirement receipt must be preserved before clearing the active task record.
++
++PR retirement is a manual Morgan action after this evidence gate; the script has
++no provider API and cannot close/delete PRs. Its `open_prs` and ownership inventory
++are explicit, current Morgan custody attestations, not live GitHub API queries.
++There is no blanket cleanup, worktree removal, ref pruning, reset or branch reuse.
++
++## Policy contract and trust
++
++Policy is an explicit Morgan-controlled local record, **not a cryptographic
++identity system or server branch protection**. It must be reviewed and protected
++by existing custody. The script checks exact values and evidence byte hashes; it
++cannot prove an author called Morgan actually authored a hand-edited JSON file,
++that declared checks were sufficient, or that a PR inventory is truthful. Direct
++Git commands can bypass it. This is managed-command enforcement only; server
++protection, permissions and approval policy remain outside this scope.
++
++Every verdict has `reviewer: "Morgan"`, `verdict: "accepted"`,
++`qualification: "qualified"`, a valid non-future UTC `utc`, exact fields described
++below, and `evidence: {"path": "/absolute/receipt", "sha256": "FULL_SHA256"}`.
++No command self-accepts or writes policy. Do not use the placeholders below as
++qualification; fill them only from actual Morgan verdicts and preserved evidence.
++
++```json
++{
++  "schema": "offmenu-gitflow-policy/1",
++  "pool_limit": 32,
++  "common_dir": "/home/user/src/offmenu/.git",
++  "origin": "git@github.com:maldous/offmenu.git",
++  "evidence_dir": "/absolute/retained/receipts",
++  "develop_initialized": false,
++  "baseline": {},
++  "released_main": {},
++  "lines": {},
++  "workers": {
++    "9": {
++      "path": "/home/user/src/offmenu-workers/worker-09",
++      "owner": "01a138ed-75f5-7511-af10-48685045d280",
++      "custody": "clear",
++      "evidence": {"path": "/absolute/custody-receipt", "sha256": "ACTUAL_HASH"},
++      "active_task": null,
++      "open_prs": [],
++      "recovery_dependencies": [],
++      "evidence_dependencies": []
++    }
++  },
++  "base_exceptions": {
++    "1": {"status": "preserved migration exception"},
++    "2": {"status": "preserved migration exception"},
++    "3": {"status": "preserved migration exception"},
++    "4": {"status": "preserved migration exception"},
++    "5": {"status": "preserved migration exception"},
++    "6": {"status": "preserved migration exception"},
++    "7": {"status": "preserved cached-main exception"},
++    "8": {"status": "preserved cached-main exception"}
++  },
++  "reviews": [],
++  "reconciliations": []
++}
++```
++
++For `baseline` and `released_main`, add verdict fields, exact `sha`, `tag` and
++`tag_object` (full tag object ID, including an annotated tag's separate object).
++Local tag commit and canonical remote object/peeled commit must match. Each
++`lines.develop`/`lines.main` entry is a verdict with `line` and exact `sha`.
++`reviews` entries use `operation`, `candidate`, `base`, `source`: operations are
++`initialize-develop`, `integrate-develop`, `integrate-main`, or `promote-release`.
++Initialization uses baseline for all three SHA fields; release promotion uses
++current develop as source. `reconciliations` entries use `source` and `develop`.
++Workers retiring tasks additionally need `ignored_custody: "preserved"`, an
++`ignored_evidence` file reference and `retirement` verdict with `source` and `task`.
++
++The existing deliverable ledger remains the assignment/review record:
++`/home/user/Documents/Codex/2026-10-14/task-2/offmenu-deliverable-ledger.json`.
++Gate policy/receipts complement it; workers may update only their own result/check
++receipt entry. Workers do not accept their own changes, edit other assignments,
++clear dependencies or invent missing baseline qualification. Source corpora stay
++referenced at their existing roots and are never copied by this tooling.
++
++## Verification
++
++```sh
++PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s tests-gitflow -v
++```
++
++Tests additionally exercise positive provisional feature/bugfix dispatch with no
++release/tag, unapproved or stale provisional authorization, changed bootstrap
++evidence, and refusal to use provisional status for release/hotfix/integration.
++
++Tests create small disposable synthetic repositories under the system temporary
++directory. All test remote pushes/ref operations stay within those repositories.
++They exercise actual Git operations and negative gates, including missing develop,
++stale qualification, broken capture refs, exact review/source mismatch, dirty and
++untracked custody, tag availability, reconciliation after develop advances,
++release backmerge and tag immutability, hotfix both-line retirement, one-time
++initialization, unique task/custody reuse and permanent worktree survival. No real
++OffMenu branch is switched, merged, seeded, tagged, retired or pushed by testing.
+diff --git a/scripts/offmenu-gitflow-launch.py b/scripts/offmenu-gitflow-launch.py
+new file mode 100644
+index 0000000..7eb64e6
+--- /dev/null
++++ b/scripts/offmenu-gitflow-launch.py
+@@ -0,0 +1,28 @@
++#!/usr/bin/env python3
++"""One-command per-worker launcher; no scheduler, hook installation or owner handoff."""
++import os
++from pathlib import Path
++import re
++import subprocess
++import sys
++
++
++def main():
++    repo = Path.cwd().resolve()
++    match = re.fullmatch(r'worker-(0[1-9]|[12][0-9]|3[0-2])', repo.name)
++    if not match:
++        print('Run from an existing permanent worker-01..worker-32 path.', file=sys.stderr)
++        return 2
++    args = sys.argv[1:]
++    if any(a.split('=', 1)[0] in ('--repo', '--worker') for a in args):
++        print('Launcher binds --repo and --worker to the current permanent path.', file=sys.stderr)
++        return 2
++    helper = Path(__file__).with_name('offmenu-gitflow.py').resolve()
++    env = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
++    p = subprocess.run([sys.executable, '-B', str(helper), '--repo', str(repo), *args,
++                        '--worker', str(int(match.group(1)))], env=env)
++    return p.returncode
++
++
++if __name__ == '__main__':
++    sys.exit(main())
+diff --git a/scripts/offmenu-gitflow.py b/scripts/offmenu-gitflow.py
+new file mode 100644
+index 0000000..0229e05
+--- /dev/null
++++ b/scripts/offmenu-gitflow.py
+@@ -0,0 +1,613 @@
++#!/usr/bin/env python3
++"""Local managed Gitflow gates; no push, reset, rebase, worktree removal or certification."""
++import argparse
++import hashlib
++import fcntl
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import sys
++from datetime import datetime, timezone
++from uuid import uuid4
++
++
++class GateError(Exception):
++    pass
++
++
++def need(condition, message):
++    if not condition:
++        raise GateError(message)
++
++
++def utc():
++    return datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
++
++
++def git_environment():
++    # Bind child Git commands to --repo/-C, never inherited alternate custody.
++    env = {key: value for key, value in os.environ.items() if not key.startswith('GIT_')}
++    env.update(GIT_OPTIONAL_LOCKS='0', GIT_TERMINAL_PROMPT='0')
++    return env
++
++
++def digest(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++class Gitflow:
++    def __init__(self, repo, policy, evidence):
++        self.repo = Path(repo).resolve()
++        self.policy_path = Path(policy).resolve()
++        self.policy = json.loads(self.policy_path.read_text())
++        self.evidence = Path(evidence).resolve()
++        need(not self.evidence.is_relative_to(self.repo), 'receipts must be outside the tracked worker checkout')
++        self.receipt = {'schema': 'offmenu-gitflow-receipt/1', 'utc': utc(),
++                        'repo': str(self.repo), 'policy_sha256': digest(self.policy_path),
++                        'fetches': [], 'status': 'blocked'}
++
++    def git(self, *args, check=True):
++        env = git_environment()
++        try:
++            p = subprocess.run(['git', '-C', str(self.repo), *args], env=env,
++                               text=True, capture_output=True, timeout=45)
++        except subprocess.TimeoutExpired as e:
++            raise GateError('Git command timed out; no successful fetch receipt') from e
++        if check:
++            need(p.returncode == 0, f'git {args[0]} failed ({p.returncode}): {p.stderr.strip()}')
++        return p
++
++    def sha(self, ref):
++        value = self.git('rev-parse', '--verify', ref + '^{commit}').stdout.strip()
++        need(bool(re.fullmatch(r'[0-9a-f]{40}', value)), 'expected full immutable SHA')
++        return value
++
++    def ancestor(self, a, b):
++        return self.git('merge-base', '--is-ancestor', a, b, check=False).returncode == 0
++
++    def clean(self):
++        status = self.git('status', '--porcelain=v1', '--untracked-files=all').stdout
++        need(not status, 'dirty or untracked custody: preserve evidence and clean explicitly before proceeding')
++
++    def proof(self, value):
++        need(isinstance(value, dict), 'missing preserved evidence reference')
++        path = Path(value.get('path', ''))
++        need(path.is_absolute() and path.is_file(), 'evidence must be an existing absolute file')
++        need(digest(path) == value.get('sha256'), 'evidence digest mismatch')
++
++    def verdict(self, record, **exact):
++        need(isinstance(record, dict), 'missing Morgan verdict')
++        need(record.get('reviewer') == 'Morgan' and record.get('verdict') == 'accepted',
++             'Morgan accepted verdict required')
++        need(record.get('qualification') == 'qualified', 'unqualified baseline/candidate')
++        try:
++            stamp = datetime.fromisoformat(record['utc'].replace('Z', '+00:00'))
++            need(stamp.tzinfo is not None and stamp <= datetime.now(timezone.utc), 'invalid verdict UTC')
++        except (KeyError, ValueError, TypeError) as e:
++            raise GateError('verdict requires a valid UTC receipt') from e
++        for key, val in exact.items():
++            need(record.get(key) == val, f'Morgan verdict does not match exact {key}')
++        self.proof(record.get('evidence'))
++
++    def context(self, worker):
++        p = self.policy
++        need(p.get('evidence_dir') == str(self.evidence), 'use the canonical preserved receipt directory')
++        need(p.get('schema') == 'offmenu-gitflow-policy/1' and p.get('pool_limit') == 32,
++             'policy schema/fixed ceiling32 required')
++        need(1 <= worker <= 32, 'worker outside fixed ceiling32')
++        common = Path(self.git('rev-parse', '--git-common-dir').stdout.strip())
++        if not common.is_absolute():
++            common = self.repo / common
++        need(str(common.resolve()) == p.get('common_dir'), 'wrong repository common-dir')
++        need(self.git('remote', 'get-url', 'origin').stdout.strip() == p.get('origin'),
++             'canonical origin mismatch')
++        w = p.get('workers', {}).get(str(worker), {})
++        need(w.get('path') == str(self.repo), 'must use the SAME registered permanent worker path')
++        inventory = self.git('worktree', 'list', '--porcelain').stdout
++        need(f'worktree {self.repo}\n' in inventory, 'worker path is not registered')
++        need(w.get('owner') and w.get('custody') == 'clear', 'ambiguous or outstanding custody')
++        self.proof(w.get('evidence'))
++        for field in ('open_prs', 'recovery_dependencies', 'evidence_dependencies'):
++            need(w.get(field) == [], f'outstanding or unspecified {field}')
++        self.clean()
++        self.receipt['worker'] = worker
++        self.receipt['head_before'] = self.sha('HEAD')
++        return w
++
++    def fetch(self, line):
++        need(line in ('develop', 'main'), 'unsupported canonical line')
++        command = ['fetch', '--no-tags', '--no-write-fetch-head', 'origin',
++                   f'refs/heads/{line}:refs/remotes/origin/{line}']
++        # Disposable local bare origins get a per-origin lock, keeping fixtures
++        # out of the real pool's fetch coordination. Network origin uses the
++        # fixed shared OffMenu lock, with no environment/policy override.
++        origin_path = Path(self.policy.get('origin', ''))
++        lock_path = origin_path / 'offmenu-fetch.lock' if (origin_path.is_absolute()
++            and (origin_path / 'HEAD').is_file() and (origin_path / 'objects').is_dir()) else Path('/tmp/offmenu-develop-fetch.lock')
++        r = {'command': ['git', *command], 'started_utc': utc(), 'line': line,
++             'lock': str(lock_path), 'exit_code': None, 'sha': None}
++        self.receipt['fetches'].append(r)
++        with Path(r['lock']).open('a') as lock:
++            try:
++                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            except BlockingIOError as e:
++                raise GateError('shared canonical fetch lock is busy; no cached-base fallback') from e
++            try:
++                p = self.git(*command, check=False)
++            except GateError:
++                r.update(completed_utc=utc(), error='timeout; exit unavailable')
++                raise
++            r.update(exit_code=p.returncode, completed_utc=utc(), stdout=p.stdout, stderr=p.stderr)
++            need(p.returncode == 0, f'canonical {line} fetch failed ({p.returncode}): {p.stderr.strip()}')
++            # Capture the explicitly fetched tracking line while holding the shared
++            # lock. Never rely on the shared FETCH_HEAD or a cached local branch.
++            sha = self.sha(f'refs/remotes/origin/{line}')
++            r['sha'] = sha
++            return sha
++
++    def routine_authority(self):
++        authority = self.policy.get('routine_delivery', {})
++        need(authority.get('authorizer') == 'Matt'
++             and authority.get('scope') == 'normal-qualified-gitflow'
++             and authority.get('project') == 'OffMenu', 'Matt routine Gitflow authority required')
++        self.proof(authority.get('evidence'))
++        self.receipt['routine_authority'] = authority
++
++    def delivery(self, a):
++        self.context(a.worker)
++        self.routine_authority()
++        snapshot_path = Path(a.snapshot)
++        snapshot = json.loads(snapshot_path.read_text())
++        self.receipt['snapshot_sha256'] = digest(snapshot_path)
++        need(snapshot.get('base_ref') == 'develop' and snapshot.get('state') == 'open',
++             'routine delivery requires an open develop PR; historical merge is not a new approval')
++        head, base = snapshot.get('head'), snapshot.get('base')
++        need(head == a.head == self.sha(a.head) and base == a.base == self.sha(a.base),
++             'PR head/base differs from exact immutable candidate')
++        head_ref = snapshot.get('head_ref', '')
++        need(self.git('check-ref-format', 'refs/heads/' + head_ref, check=False).returncode == 0, 'explicit PR head ref required')
++        remote = self.git('ls-remote', '--exit-code', '--heads', 'origin', 'refs/heads/' + head_ref, check=False)
++        need(remote.returncode == 0 and remote.stdout.split() == [head, 'refs/heads/' + head_ref],
++             'live PR head changed or unavailable; collect a fresh snapshot')
++        self.receipt['live_head_readback'] = remote.stdout
++        current = self.fetch('develop')
++        need(current == base, 'develop advanced; reconcile and review a new exact candidate')
++        need(self.ancestor(base, head), 'candidate must contain freshly fetched develop')
++        review = snapshot.get('independent_review', {})
++        need(review.get('state') == 'passed' and review.get('head') == head and review.get('base') == base
++             and review.get('reviewer') and review.get('reviewer') != snapshot.get('owner'),
++             'independent review of exact head/base is pending or stale')
++        self.proof(review.get('evidence'))
++        self.exact_review('deliver-develop', head, base, head)
++        if snapshot.get('requirements_status') != 'known':
++            controls = self.policy.get('client_enforcement', {})
++            need(snapshot.get('requirements_status') == 'origin-unavailable-client-enforced'
++                 and controls.get('accepted_by') == 'Matt' and controls.get('origin_protection') == 'unavailable'
++                 and controls.get('bypassable_outside_workflow') is True,
++                 'platform requirements unavailable without explicit Matt client-enforcement authority')
++            self.proof(controls.get('evidence'))
++            self.receipt['enforcement'] = controls
++            self.receipt['origin_protected'] = False
++        for field in ('required_reviews', 'required_checks', 'advisory_reviews'):
++            need(isinstance(snapshot.get(field), list), f'explicit {field} inventory required')
++        for r in snapshot['required_reviews']:
++            need(r.get('head') == head and r.get('state') == 'APPROVED', 'required review pending/failed/stale')
++        for c in snapshot['required_checks']:
++            need(c.get('head') == head and c.get('status') == 'completed' and c.get('conclusion') == 'success',
++                 'required check pending/failed/stale')
++        advisory = snapshot['advisory_reviews']
++        need(all(r.get('open_findings') == 0 for r in advisory), 'known later findings require normal correction and re-review')
++        self.receipt['advisory_disclosures'] = advisory
++        need(isinstance(snapshot.get('security_alerts'), list), 'explicit security alert inventory required')
++        if snapshot['security_alerts']:
++            security = snapshot.get('security_confirmation', {})
++            need(security.get('state') == 'confirmed' and security.get('head') == head
++                 and security.get('base') == base, 'mandatory security disposition pending/stale')
++            self.proof(security.get('evidence'))
++            self.receipt['security_confirmation'] = security
++        confirmation = snapshot.get('platform_confirmation', {})
++        need(confirmation.get('state') == 'confirmed' and confirmation.get('head') == head
++             and confirmation.get('base') == base, 'mandatory platform confirmation pending/stale')
++        self.proof(confirmation.get('evidence'))
++        self.receipt.update(candidate=head, base=base, pr=snapshot.get('url'),
++                            next_action='normal provider merge with expected head; re-read exact base immediately before call',
++                            meaning='preflight allowed only; no PR creation/push/merge performed')
++        return 'allowed'
++
++    def merge_receipt(self, a):
++        self.context(a.worker)
++        self.routine_authority()
++        preflight_path = Path(a.preflight).resolve()
++        need(preflight_path.parent == self.evidence, 'retain the actual pre-merge gate in canonical receipts')
++        gate = json.loads(preflight_path.read_text())
++        need(gate.get('schema') == 'offmenu-gitflow-receipt/1' and gate.get('operation') == 'delivery'
++             and gate.get('status') == 'allowed' and gate.get('repo') == str(self.repo),
++             'actual allowed pre-merge gate required; never fabricate historical approval')
++        snapshot = json.loads(Path(a.snapshot).read_text())
++        head, base, merged = snapshot.get('head'), snapshot.get('base'), snapshot.get('merge_sha')
++        need(snapshot.get('state') == 'merged' and snapshot.get('base_ref') == 'develop'
++             and snapshot.get('url') == gate.get('pr') and snapshot.get('normal_merge') is True,
++             'actual normal merged develop PR required')
++        need(head == gate.get('candidate') and base == gate.get('base'), 'merged head/base differs from preflight')
++        self.proof(snapshot.get('provider_evidence'))
++        try:
++            merge_time = datetime.fromisoformat(snapshot['merged_at'].replace('Z', '+00:00'))
++            gate_time = datetime.fromisoformat(gate['utc'].replace('Z', '+00:00'))
++            need(merge_time.tzinfo is not None and gate_time <= merge_time <= datetime.now(timezone.utc),
++                 'preflight must precede actual merge; no posthoc acceptance')
++        except (KeyError, ValueError, TypeError) as e:
++            raise GateError('normal merge UTC evidence required') from e
++        self.exact_review('deliver-develop', head, base, head)
++        current = self.fetch('develop')
++        need(merged == self.sha(merged) and self.ancestor(merged, current), 'normal merge absent from canonical develop')
++        parents = self.git('show', '-s', '--format=%P', merged).stdout.strip().split()
++        need(parents == [base, head], 'normal merge parents differ; preserve state and block cleanup')
++        tree = self.git('show', '-s', '--format=%T', merged).stdout.strip()
++        need(tree == self.git('show', '-s', '--format=%T', head).stdout.strip(),
++             'merged tree differs from exact reviewed candidate; incident, no automatic reset')
++        self.receipt.update(candidate=head, base=base, merge_sha=merged, merge_parents=parents, tree=tree,
++                            preflight_sha256=digest(preflight_path), provider_evidence=snapshot['provider_evidence'],
++                            meaning='normal merge witnessed; retirement still requires owner/custody/dependency/PR checks')
++        return 'completed'
++
++    def released_tag(self, record, sha):
++        tag = record.get('tag', '')
++        need(self.git('check-ref-format', 'refs/tags/' + tag, check=False).returncode == 0, 'invalid accepted release tag')
++        need(self.sha('refs/tags/' + tag) == sha, 'accepted immutable release tag missing/mismatch')
++        tag_object = self.git('rev-parse', '--verify', 'refs/tags/' + tag).stdout.strip()
++        need(record.get('tag_object') == tag_object, 'accepted tag object not pinned/mismatch')
++        p = self.git('ls-remote', '--exit-code', '--tags', 'origin', 'refs/tags/' + tag, 'refs/tags/' + tag + '^{}', check=False)
++        self.receipt.setdefault('tag_checks', []).append({'tag': tag, 'exit_code': p.returncode,
++                                                        'utc': utc(), 'stdout': p.stdout, 'stderr': p.stderr})
++        need(p.returncode == 0, 'canonical accepted release tag unavailable')
++        refs = dict((ref, value) for value, ref in (line.split() for line in p.stdout.splitlines()))
++        need(refs.get('refs/tags/' + tag) == tag_object, 'canonical release tag object changed')
++        need(refs.get('refs/tags/' + tag + '^{}', tag_object) == sha, 'canonical release tag commit mismatch')
++
++    def baseline(self):
++        b = self.policy.get('baseline', {})
++        sha = b.get('sha', '')
++        need(bool(re.fullmatch(r'[0-9a-f]{40}', sha)), 'no accepted release baseline')
++        self.verdict(b, sha=sha)
++        self.released_tag(b, sha)
++        return sha
++
++    def qualified(self, line, sha):
++        baseline = self.baseline()
++        self.verdict(self.policy.get('lines', {}).get(line), sha=sha, line=line)
++        need(self.ancestor(baseline, sha), 'canonical line does not descend from accepted baseline')
++        if line == 'main':
++            release = self.policy.get('released_main', {})
++            self.verdict(release, sha=sha)
++            self.released_tag(release, sha)
++
++    def dispatch_base(self, kind, line, sha):
++        if kind in ('feature', 'bugfix') and self.policy.get('routine_delivery') is not None:
++            self.routine_authority()
++            record = self.policy.get('routine_develop', {})
++            need(record.get('reviewer') == 'Morgan' and record.get('verdict') == 'reviewed-integration-line'
++                 and record.get('sha') == sha and line == 'develop',
++                 'fresh develop integration-line custody is missing or stale')
++            self.proof(record.get('evidence'))
++            self.receipt.update(dispatch_base=sha, dispatch_qualification='reviewed-integration-line; release uncertified')
++            return
++        provisional = self.policy.get('provisional_bootstrap')
++        if kind not in ('feature', 'bugfix') or provisional is None:
++            self.qualified(line, sha)
++            self.receipt['dispatch_qualification'] = 'qualified'
++            return
++        need(isinstance(provisional, dict), 'invalid provisional bootstrap record')
++        need(line == 'develop' and self.policy.get('develop_initialized') is True,
++             'provisional exception requires persistent initialized develop')
++        need(provisional.get('reviewer') == 'Morgan'
++             and provisional.get('authorization') == 'ordinary-development-start'
++             and provisional.get('verdict') == 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE'
++             and provisional.get('qualification') == 'unqualified',
++             'explicit Morgan provisional development authorization required')
++        need(provisional.get('line') == line and provisional.get('sha') == sha,
++             'stale provisional baseline: freshly fetched develop SHA differs')
++        try:
++            stamp = datetime.fromisoformat(provisional['utc'].replace('Z', '+00:00'))
++            need(stamp.tzinfo is not None and stamp <= datetime.now(timezone.utc), 'invalid provisional authorization UTC')
++        except (KeyError, ValueError, TypeError) as e:
++            raise GateError('provisional authorization requires a valid UTC receipt') from e
++        self.proof(provisional.get('evidence'))
++        bootstrap = json.loads(Path(provisional['evidence']['path']).read_text())
++        need(bootstrap.get('schema') == 'offmenu-provisional-develop/1'
++             and bootstrap.get('verdict') == 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE'
++             and bootstrap.get('seed') == sha and bootstrap.get('localDevelop') == sha
++             and bootstrap.get('fetchedDevelop') == sha,
++             'provisional bootstrap receipt does not match exact dispatched SHA')
++        need(bootstrap.get('releaseCertified') is False and bootstrap.get('tagCreated') is False
++             and bootstrap.get('mainChanged') is False,
++             'provisional bootstrap must not claim release/tag/main promotion')
++        self.receipt.update(dispatch_qualification='PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE',
++                            dispatch_base=sha, provisional_authorization=provisional)
++
++    def read_receipt(self, path, operation):
++        need(Path(path).resolve().parent == self.evidence, 'receipt must be retained in canonical evidence directory')
++        r = json.loads(Path(path).read_text())
++        need(r.get('schema') == 'offmenu-gitflow-receipt/1' and r.get('operation') == operation
++             and r.get('status') == 'completed' and r.get('repo') == str(self.repo),
++             'missing completed receipt for this permanent worker')
++        return r
++
++    def start(self, a):
++        self.context(a.worker)
++        line = 'main' if a.kind == 'hotfix' else 'develop'
++        sha = self.fetch(line)
++        self.dispatch_base(a.kind, line, sha)
++        w = self.policy['workers'][str(a.worker)]
++        need(w.get('active_task') is None, 'previous task must be reviewed/integrated/retired before reuse')
++        need(bool(re.fullmatch(r'[a-z0-9][a-z0-9-]{0,79}', a.task)), 'invalid unique task identifier')
++        branch = f'{a.kind}/{a.worker:02d}/{a.task}'
++        need(self.git('check-ref-format', '--branch', branch, check=False).returncode == 0, 'invalid branch')
++        need(self.git('show-ref', '--quiet', '--verify', f'refs/heads/{branch}', check=False).returncode == 1,
++             'task branch already exists; never reuse/reset')
++        history = [json.loads(path.read_text()) for path in self.evidence.glob('*.json')]
++        starts = [r for r in history if r.get('operation') == 'start' and r.get('status') == 'completed']
++        retired = {r.get('task') for r in history if r.get('operation') == 'retire' and r.get('status') == 'completed'}
++        need(not any(r.get('task') == a.task for r in starts), 'task identifier already used; never reuse')
++        need(not any(r.get('worker') == a.worker and r.get('task') not in retired for r in starts),
++             'retained receipt history has an active task; review/integrate/retire before reuse')
++        self.receipt.update(task=a.task, branch=branch, kind=a.kind, base=sha, base_line=line)
++        if not a.check_only:
++            # Git refuses unsafe switch; no reset, stash or forced checkout fallback.
++            self.git('switch', '--no-overwrite-ignore', '-c', branch, sha)
++            need(self.sha('HEAD') == sha, 'created branch SHA mismatch')
++        return 'allowed' if a.check_only else 'completed'
++
++    def exception(self, a):
++        self.context(a.worker)
++        exception = self.policy.get('base_exceptions', {}).get(str(a.worker), {})
++        need(exception.get('authorization') in ('Matt', 'Morgan'), 'explicit preserved base exception authorization required')
++        self.proof(exception.get('evidence'))
++        branch = self.git('branch', '--show-current').stdout.strip()
++        need(exception.get('branch') == branch and exception.get('task') == a.task, 'exception branch/task mismatch')
++        base = exception.get('base', '')
++        need(base == self.sha(base) and self.ancestor(base, self.sha('HEAD')), 'exception base custody mismatch')
++        need(exception.get('kind') in ('feature', 'bugfix'), 'exception cannot imply released main or release qualification')
++        history = [json.loads(path.read_text()) for path in self.evidence.glob('*.json')]
++        need(not any(r.get('operation') == 'start' and r.get('status') == 'completed'
++                     and r.get('worker') == a.worker for r in history), 'exception already recorded or worker already managed')
++        need(self.policy['workers'][str(a.worker)].get('active_task') == a.task, 'exception active-task custody required')
++        self.receipt.update(operation='start', task=a.task, branch=branch, kind=exception['kind'],
++                            base=base, base_line='preserved-exception', exception=True,
++                            qualification='unqualified-base-exception', authorization=exception['authorization'])
++        return 'completed'
++
++    def ready(self, a):
++        self.context(a.worker)
++        start = self.read_receipt(a.start, 'start')
++        need(start.get('worker') == a.worker, 'wrong task owner')
++        need(self.git('branch', '--show-current').stdout.strip() == start['branch'], 'wrong task branch')
++        sha = self.sha('HEAD')
++        need(self.ancestor(start['base'], sha), 'task lost original base custody')
++        self.proof(json.loads(Path(a.checks).read_text()))
++        self.receipt.update(task=start['task'], branch=start['branch'], candidate=sha,
++                            base=start['base'], kind=start['kind'], base_line=start['base_line'], checks=json.loads(Path(a.checks).read_text()),
++                            start_sha256=digest(a.start), start_receipt=str(Path(a.start).resolve()),
++                            exception=start.get('exception', False),
++                            dispatch_qualification=start.get('dispatch_qualification', 'unqualified-base-exception'),
++                            provisional_authorization=start.get('provisional_authorization'), completion='ready_for_Morgan_review')
++        return 'completed'
++
++    def exact_review(self, operation, candidate, base, source):
++        matches = [r for r in self.policy.get('reviews', []) if
++                   (r.get('operation'), r.get('candidate'), r.get('base'), r.get('source')) ==
++                   (operation, candidate, base, source)]
++        need(len(matches) == 1, 'one Morgan exact candidate/base/source verdict required')
++        self.verdict(matches[0], candidate=candidate, base=base, source=source, operation=operation)
++
++    def reconcile(self, source, base):
++        exceptions = self.policy.get('base_exceptions', {})
++        need(set(str(i) for i in range(1, 9)).issubset(exceptions), '01–08 transition exceptions must be recorded')
++        if not self.ancestor(base, source):
++            records = self.policy.get('reconciliations', [])
++            matches = [r for r in records if r.get('source') == source and r.get('develop') == base]
++            need(len(matches) == 1, 'develop advanced or exceptional base: exact reconciliation required')
++            self.verdict(matches[0], source=source, develop=base)
++
++    def integrate(self, a):
++        self.context(a.worker)
++        ready = self.read_receipt(a.ready, 'ready')
++        need(ready.get('worker') == a.worker, 'wrong ready receipt owner')
++        start = self.read_receipt(ready.get('start_receipt', ''), 'start')
++        need(digest(ready['start_receipt']) == ready.get('start_sha256'), 'start receipt custody mismatch')
++        need(all(ready.get(k) == start.get(k) for k in ('worker', 'branch', 'task', 'kind', 'base', 'base_line')),
++             'ready/start task metadata mismatch')
++        source = ready['candidate']
++        need(a.line != 'main' or ready.get('kind') == 'hotfix', 'only reviewed hotfixes integrate directly to main; releases use promote')
++        need(self.sha('refs/heads/' + ready['branch']) == source, 'task changed after review readiness')
++        self.proof(ready['checks'])
++        base = self.fetch(a.line)
++        self.qualified(a.line, base)
++        candidate = self.sha(a.candidate)
++        need(a.candidate == candidate, 'candidate must be full immutable SHA')
++        need(self.ancestor(base, candidate) and self.ancestor(source, candidate), 'candidate loses target/source history')
++        if a.line == 'develop':
++            self.reconcile(source, base)
++        self.exact_review('integrate-' + a.line, candidate, base, source)
++        # Integration must operate on an explicitly owned checkout of the target line.
++        need(self.git('branch', '--show-current').stdout.strip() == a.line, 'target line must be explicitly checked out')
++        need(self.sha('HEAD') == base, 'local target differs from freshly fetched canonical line')
++        self.receipt.update(candidate=candidate, source=source, base=base, line=a.line,
++                            task=ready['task'], ready_sha256=digest(a.ready))
++        if not a.check_only:
++            self.git('merge', '--no-overwrite-ignore', '--ff-only', candidate)
++        return 'allowed' if a.check_only else 'completed'
++
++    def initialize(self, a):
++        self.context(a.worker)
++        main = self.fetch('main')
++        baseline = self.baseline()
++        need(main == baseline, 'initialize only from exact freshly fetched accepted release')
++        # Confirm absence remotely; failure is never interpreted as absence.
++        p = self.git('ls-remote', '--exit-code', '--heads', 'origin', 'refs/heads/develop', check=False)
++        need(p.returncode == 2 and not p.stdout, 'develop exists or remote absence was not established')
++        need(self.policy.get('develop_initialized') is False, 'develop initialization must be explicitly one-time; no recreation')
++        need(self.git('show-ref', '--quiet', '--verify', 'refs/remotes/origin/develop', check=False).returncode == 1,
++             'persistent develop tracking history exists; never recreate it')
++        need(self.git('show-ref', '--quiet', '--verify', 'refs/heads/develop', check=False).returncode == 1,
++             'persistent develop already exists; never recreate it')
++        history = [json.loads(path.read_text()) for path in self.evidence.glob('*.json')]
++        need(not any(r.get('operation') == 'initialize' and r.get('status') == 'completed' for r in history),
++             'preserved initialization receipt exists; persistent develop cannot be recreated')
++        self.exact_review('initialize-develop', baseline, main, baseline)
++        self.receipt.update(candidate=baseline, base=main, line='develop')
++        if not a.check_only:
++            self.git('branch', 'develop', baseline)
++        return 'allowed' if a.check_only else 'completed'
++
++    def promote(self, a):
++        self.context(a.worker)
++        develop, main = self.fetch('develop'), self.fetch('main')
++        self.qualified('develop', develop)
++        self.qualified('main', main)
++        candidate = self.sha(a.candidate)
++        need(candidate == a.candidate, 'candidate must be full immutable SHA')
++        start = self.read_receipt(a.start, 'start')
++        need(start.get('kind') == 'release' and start.get('worker') == a.worker, 'release start receipt required')
++        need(self.sha('refs/heads/' + start['branch']) == candidate, 'release branch/candidate mismatch')
++        need(self.ancestor(start['base'], candidate) and self.ancestor(main, candidate), 'release lineage mismatch')
++        # Any release fixes must already be back-merged into the current qualified develop.
++        need(self.ancestor(candidate, develop), 'release fixes must be reviewed and back-merged into develop')
++        self.exact_review('promote-release', candidate, main, develop)
++        need(re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+(?:-[a-z0-9.-]+)?', a.tag), 'invalid immutable release tag')
++        need(self.git('show-ref', '--quiet', '--verify', 'refs/tags/' + a.tag, check=False).returncode == 1, 'tag already exists')
++        remote = self.git('ls-remote', '--exit-code', '--tags', 'origin', 'refs/tags/' + a.tag, check=False)
++        need(remote.returncode == 2 and not remote.stdout, 'remote tag exists or absence unproven')
++        need(self.git('branch', '--show-current').stdout.strip() == 'main' and self.sha('HEAD') == main,
++             'main must be explicitly checked out at fetched SHA')
++        self.receipt.update(candidate=candidate, base=main, develop=develop, tag=a.tag)
++        if not a.check_only:
++            self.git('merge', '--no-overwrite-ignore', '--ff-only', candidate)
++            self.receipt['main_promoted'] = candidate
++            self.git('tag', '-a', a.tag, candidate, '-m', f'Morgan accepted release {candidate}')
++            self.receipt['tag_created'] = a.tag
++        return 'allowed' if a.check_only else 'completed'
++
++    def retire(self, a):
++        w = self.context(a.worker)
++        start = self.read_receipt(a.start, 'start')
++        ready = self.read_receipt(a.ready, 'ready')
++        need(start.get('worker') == a.worker == ready.get('worker') and start['task'] == ready['task'], 'wrong retirement task')
++        need(ready.get('start_sha256') == digest(a.start), 'start/ready custody mismatch')
++        need(w.get('active_task') == start['task'], 'retirement owner/task not established')
++        need(w.get('ignored_custody') == 'preserved', 'ignored-file custody must be explicitly preserved')
++        self.proof(w.get('ignored_evidence'))
++        source = ready['candidate']
++        branch = ready['branch']
++        need(self.sha('refs/heads/' + branch) == source, 'branch changed after review')
++        self.proof(ready['checks'])
++        target = self.fetch('develop')
++        self.qualified('develop', target)
++        need(self.ancestor(source, target), 'task not integrated into canonical develop')
++        if start['kind'] in ('hotfix', 'release'):
++            main = self.fetch('main')
++            self.qualified('main', main)
++            need(self.ancestor(source, main), 'hotfix/release must return to both lines')
++        integration = self.read_receipt(a.integration, 'integrate')
++        need(integration.get('source') == source and integration.get('task') == start['task']
++             and integration.get('ready_sha256') == digest(a.ready), 'integration proof mismatch')
++        need(self.ancestor(integration['candidate'], target), 'integration receipt absent from develop')
++        self.exact_review('integrate-' + integration['line'], integration['candidate'], integration['base'], source)
++        retirement = w.get('retirement', {})
++        self.verdict(retirement, source=source, task=start['task'])
++        inventory = self.git('worktree', 'list', '--porcelain').stdout.split('\n\n')
++        for entry in inventory:
++            if f'branch refs/heads/{branch}\n' in entry + '\n':
++                need(entry.startswith(f'worktree {self.repo}\n'), 'branch has another worktree owner')
++        self.receipt.update(task=start['task'], branch=branch, source=source, develop=target,
++                            integration_sha256=digest(a.integration))
++        if not a.check_only:
++            if self.git('branch', '--show-current').stdout.strip() == branch:
++                self.git('switch', '--no-overwrite-ignore', '--detach', target)
++            self.git('branch', '-d', branch)
++        return 'allowed' if a.check_only else 'completed'
++
++    def save(self):
++        self.evidence.mkdir(parents=True, exist_ok=True)
++        name = f"{self.receipt.get('task', 'gate')}-{self.receipt['operation']}-{uuid4().hex}.json"
++        path = self.evidence / name
++        # Exclusive creation: never overwrite an earlier receipt, including failed attempts.
++        with path.open('x') as f:
++            json.dump(self.receipt, f, indent=2)
++            f.write('\n')
++        return path
++
++
++def parser():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--repo', default='.')
++    p.add_argument('--policy', required=True, help='Morgan-controlled explicit qualification/custody JSON')
++    p.add_argument('--evidence-dir', required=True, help='retained receipts outside tracked checkout')
++    sub = p.add_subparsers(dest='operation', required=True)
++    for name in ('start', 'exception', 'ready', 'delivery', 'merge_receipt', 'integrate', 'initialize', 'promote', 'retire'):
++        s = sub.add_parser(name)
++        s.add_argument('--worker', required=True, type=int)
++        if name not in ('ready', 'exception', 'delivery', 'merge_receipt'):
++            s.add_argument('--check-only', action='store_true')
++        if name == 'merge_receipt':
++            s.add_argument('--snapshot', required=True)
++            s.add_argument('--preflight', required=True)
++        if name == 'delivery':
++            s.add_argument('--snapshot', required=True)
++            s.add_argument('--head', required=True)
++            s.add_argument('--base', required=True)
++        if name == 'exception':
++            s.add_argument('--task', required=True)
++        if name == 'start':
++            s.add_argument('--kind', choices=['feature', 'bugfix', 'release', 'hotfix'], required=True)
++            s.add_argument('--task', required=True)
++        if name in ('ready', 'promote', 'retire'):
++            s.add_argument('--start', required=True)
++        if name == 'ready':
++            s.add_argument('--checks', required=True, help='JSON file containing path+sha256 of actual check receipt')
++        if name in ('integrate', 'retire'):
++            s.add_argument('--ready', required=True)
++        if name == 'integrate':
++            s.add_argument('--line', choices=['develop', 'main'], default='develop')
++        if name in ('integrate', 'promote'):
++            s.add_argument('--candidate', required=True)
++        if name == 'promote':
++            s.add_argument('--tag', required=True)
++        if name == 'retire':
++            s.add_argument('--integration', required=True)
++    return p
++
++
++def main():
++    a = parser().parse_args()
++    g = None
++    try:
++        g = Gitflow(a.repo, a.policy, a.evidence_dir)
++        g.receipt['operation'] = a.operation
++        g.evidence.mkdir(parents=True, exist_ok=True)
++        # One managed operation per canonical receipt directory. Lock lives outside Git.
++        with (g.evidence / '.managed.lock').open('a') as lock:
++            try:
++                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            except BlockingIOError as e:
++                raise GateError('another managed operation owns the custody lock') from e
++            g.receipt['status'] = getattr(g, a.operation)(a)
++            path = g.save()
++        code = 0
++    except (GateError, OSError, ValueError, KeyError, TypeError) as e:
++        code = 2
++        if g is None:
++            print(json.dumps({'status': 'blocked', 'error': str(e)}))
++            return code
++        g.receipt['status'] = 'blocked'
++        g.receipt['error'] = str(e)
++    if code:
++        path = g.save()
++    print(json.dumps({'status': g.receipt['status'], 'receipt': str(path),
++                      'error': g.receipt.get('error')}))
++    return code
++
++
++if __name__ == '__main__':
++    sys.exit(main())
+diff --git a/tests-gitflow/test_offmenu_gitflow.py b/tests-gitflow/test_offmenu_gitflow.py
+new file mode 100644
+index 0000000..ded3416
+--- /dev/null
++++ b/tests-gitflow/test_offmenu_gitflow.py
+@@ -0,0 +1,746 @@
++"""Small disposable repositories; no operations on OffMenu's actual refs."""
++import hashlib
++import fcntl
++import importlib.util
++import json
++import os
++from unittest.mock import patch
++from pathlib import Path
++import subprocess
++import tempfile
++import unittest
++
++SCRIPT = Path(__file__).resolve().parents[1] / 'scripts/offmenu-gitflow.py'
++spec = importlib.util.spec_from_file_location('gitflow', SCRIPT)
++m = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(m)
++
++
++class FlowTest(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.remote = self.root / 'origin.git'
++        self.repo = self.root / 'worker-09'
++        self.ev = self.root / 'receipts'
++        self.ev.mkdir()
++        self.policy_path = self.root / 'policy.json'
++        self.run_git(self.root, 'init', '--bare', str(self.remote))
++        self.run_git(self.root, 'clone', str(self.remote), str(self.repo))
++        self.git('config', 'user.name', 'Synthetic Test')
++        self.git('config', 'user.email', 'synthetic@example.invalid')
++        self.git('switch', '-c', 'main')
++        (self.repo / 'sample').write_text('baseline\n')
++        self.git('add', 'sample')
++        self.git('commit', '-m', 'synthetic accepted baseline')
++        self.base = self.git('rev-parse', 'HEAD').strip()
++        self.git('tag', '-a', 'v1.0.0', '-m', 'synthetic baseline')
++        self.git('branch', 'develop')
++        self.git('push', 'origin', 'main', 'develop', 'v1.0.0')
++        self.proof = self.root / 'morgan.txt'
++        self.proof.write_text('Synthetic Morgan approval fixture. Not a real release.\n')
++        self.policy = {
++            'schema': 'offmenu-gitflow-policy/1', 'pool_limit': 32, 'evidence_dir': str(self.ev),
++            'common_dir': str((self.repo / '.git').resolve()), 'origin': str(self.remote),
++            'baseline': dict(self.verdict(sha=self.base), tag='v1.0.0', tag_object=self.git('rev-parse', 'v1.0.0').strip()),
++            'released_main': dict(self.verdict(sha=self.base), tag='v1.0.0', tag_object=self.git('rev-parse', 'v1.0.0').strip()),
++            'lines': {line: self.verdict(sha=self.base, line=line) for line in ('main', 'develop')},
++            'workers': {'9': {'path': str(self.repo), 'owner': 'fixture-worker09', 'custody': 'clear',
++                              'evidence': self.reference(), 'active_task': None, 'open_prs': [],
++                              'recovery_dependencies': [], 'evidence_dependencies': []}},
++            'base_exceptions': {str(i): {'status': 'preserved transition exception'} for i in range(1, 9)},
++            'reviews': [], 'reconciliations': [], 'develop_initialized': True,
++        }
++        self.write_policy()
++
++    def run_git(self, cwd, *args):
++        p = subprocess.run(['git', '-C', str(cwd), *args], capture_output=True, text=True, env=m.git_environment())
++        self.assertEqual(p.returncode, 0, p.stderr)
++        return p.stdout
++
++    def git(self, *args):
++        return self.run_git(self.repo, *args)
++
++    def reference(self):
++        return {'path': str(self.proof), 'sha256': hashlib.sha256(self.proof.read_bytes()).hexdigest()}
++
++    def verdict(self, **kwargs):
++        return dict(reviewer='Morgan', verdict='accepted', qualification='qualified', utc=m.utc(),
++                    evidence=self.reference(), **kwargs)
++
++    def write_policy(self):
++        self.policy_path.write_text(json.dumps(self.policy))
++
++    def command(self, *args, ok=True):
++        self.write_policy()
++        p = subprocess.run(['python3', '-B', str(SCRIPT), '--repo', str(self.repo),
++                            '--policy', str(self.policy_path), '--evidence-dir', str(self.ev),
++                            *args], capture_output=True, text=True, env=m.git_environment())
++        self.assertEqual(p.returncode, 0 if ok else 2, p.stdout + p.stderr)
++        out = json.loads(p.stdout)
++        receipt = json.loads(Path(out['receipt']).read_text()) if 'receipt' in out else out
++        return out, receipt
++
++    def start(self, kind='feature', task='fixture', check=False, ok=True):
++        args = ['start', '--worker', '9', '--kind', kind, '--task', task]
++        if check:
++            args.append('--check-only')
++        return self.command(*args, ok=ok)
++
++    def commit(self, content='feature'):
++        (self.repo / 'sample').write_text(content + '\n')
++        self.git('add', 'sample')
++        self.git('commit', '-m', content)
++        return self.git('rev-parse', 'HEAD').strip()
++
++    def ready(self, start):
++        checks = self.root / 'checks.json'
++        checks.write_text(json.dumps(self.reference()))
++        return self.command('ready', '--worker', '9', '--start', start['receipt'], '--checks', str(checks))
++
++    def review(self, line, candidate, source, base=None):
++        self.policy['reviews'].append(self.verdict(operation='integrate-' + line, candidate=candidate,
++                                                   source=source, base=base or self.base))
++
++    def delivery_fixture(self):
++        self.git('switch', '-c', 'feature/delivery')
++        head = self.commit('reviewed delivery')
++        self.git('push', 'origin', 'feature/delivery')
++        self.policy['routine_delivery'] = {'authorizer': 'Matt', 'project': 'OffMenu',
++            'scope': 'normal-qualified-gitflow', 'evidence': self.reference()}
++        self.policy['reviews'] = [self.verdict(operation='deliver-develop', candidate=head, base=self.base, source=head)]
++        snapshot = {'state': 'open', 'base_ref': 'develop', 'head_ref': 'feature/delivery', 'head': head, 'base': self.base,
++            'owner': 'worker09', 'url': 'https://example.invalid/fixture/pr',
++            'independent_review': {'state': 'passed', 'reviewer': 'worker13', 'head': head,
++                                   'base': self.base, 'evidence': self.reference()},
++            'requirements_status': 'known', 'required_reviews': [], 'required_checks': [], 'security_alerts': [],
++            'advisory_reviews': [{'state': 'pending', 'open_findings': 0, 'reviewer': 'codex'}],
++            'platform_confirmation': {'state': 'confirmed', 'head': head, 'base': self.base,
++                                      'evidence': self.reference()}}
++        return head, snapshot
++
++    def delivery_command(self, head, snapshot, ok=True):
++        path = self.root / 'snapshot.json';path.write_text(json.dumps(snapshot))
++        return self.command('delivery', '--worker', '9', '--snapshot', str(path),
++                            '--head', head, '--base', self.base, ok=ok)
++
++    def test_routine_delivery_advisory_pending_disclosed_not_approval(self):
++        head, snapshot = self.delivery_fixture()
++        _, r = self.delivery_command(head, snapshot)
++        self.assertEqual(r['status'], 'allowed')
++        self.assertEqual(r['advisory_disclosures'][0]['state'], 'pending')
++        self.assertIn('no PR creation/push/merge', r['meaning'])
++        self.assertEqual(self.git('rev-parse', 'origin/develop').strip(), self.base)
++
++    def test_routine_delivery_required_pending_and_unknown_requirements_block(self):
++        head, snapshot = self.delivery_fixture()
++        snapshot['required_reviews'] = [{'head': head, 'state': 'PENDING'}]
++        _, r = self.delivery_command(head, snapshot, ok=False)
++        self.assertIn('required review', r['error'])
++        snapshot['required_reviews'] = []
++        snapshot['required_checks'] = [{'head': head, 'status': 'in_progress', 'conclusion': None}]
++        self.delivery_command(head, snapshot, ok=False)
++        snapshot['required_checks'] = []
++        snapshot['requirements_status'] = 'unavailable'
++        self.delivery_command(head, snapshot, ok=False)
++
++    def test_routine_delivery_stale_review_verdict_confirmation_and_late_finding(self):
++        head, snapshot = self.delivery_fixture()
++        original = json.loads(json.dumps(snapshot))
++        snapshot['independent_review']['head'] = self.base
++        self.delivery_command(head, snapshot, ok=False)
++        snapshot = json.loads(json.dumps(original));snapshot['platform_confirmation']['state'] = 'pending'
++        self.delivery_command(head, snapshot, ok=False)
++        snapshot = json.loads(json.dumps(original));snapshot['advisory_reviews'][0]['open_findings'] = 1
++        self.delivery_command(head, snapshot, ok=False)
++        snapshot = json.loads(json.dumps(original));self.policy['reviews'][0]['candidate'] = self.base
++        self.delivery_command(head, snapshot, ok=False)
++
++    def test_explicit_client_enforcement_allows_unavailable_origin_not_pending_required(self):
++        head, snapshot = self.delivery_fixture()
++        snapshot['requirements_status'] = 'origin-unavailable-client-enforced'
++        self.delivery_command(head, snapshot, ok=False)
++        self.policy['client_enforcement'] = {'accepted_by': 'Matt', 'origin_protection': 'unavailable',
++            'bypassable_outside_workflow': True, 'evidence': self.reference()}
++        _, r = self.delivery_command(head, snapshot)
++        self.assertFalse(r['origin_protected'])
++        snapshot['required_checks'] = [{'head': head, 'status': 'completed', 'conclusion': 'failure'}]
++        self.delivery_command(head, snapshot, ok=False)
++
++    def test_known_security_alert_requires_separate_exact_disposition(self):
++        head, snapshot = self.delivery_fixture();snapshot['security_alerts'] = ['synthetic scanner alert']
++        _, r = self.delivery_command(head, snapshot, ok=False)
++        self.assertIn('security disposition', r['error'])
++        snapshot['security_confirmation'] = {'state': 'confirmed', 'head': head, 'base': self.base,
++                                             'evidence': self.reference()}
++        self.delivery_command(head, snapshot)
++        snapshot['security_confirmation']['head'] = self.base
++        self.delivery_command(head, snapshot, ok=False)
++
++    def test_normal_merge_receipt_exact_parents_and_tree_without_posthoc_approval(self):
++        head, snapshot = self.delivery_fixture()
++        gate, _ = self.delivery_command(head, snapshot)
++        self.git('switch', 'develop')
++        self.git('merge', '--no-ff', head, '-m', 'normal fixture merge')
++        merged = self.git('rev-parse', 'HEAD').strip()
++        self.git('push', 'origin', 'develop')
++        after = {'url': snapshot['url'], 'state': 'merged', 'base_ref': 'develop', 'head': head,
++            'base': self.base, 'merge_sha': merged, 'normal_merge': True, 'merged_at': m.utc(),
++            'provider_evidence': self.reference()}
++        path = self.root / 'merge-snapshot.json';path.write_text(json.dumps(after))
++        args = ['merge_receipt', '--worker', '9', '--snapshot', str(path), '--preflight', gate['receipt']]
++        _, r = self.command(*args)
++        self.assertEqual(r['merge_parents'], [self.base, head])
++        after['base'] = head;path.write_text(json.dumps(after));self.command(*args, ok=False)
++        after['base'] = self.base;after['merged_at'] = '2000-01-01T00:00:00Z'
++        path.write_text(json.dumps(after));self.command(*args, ok=False)
++
++    def test_routine_delivery_live_head_or_base_movement_blocks(self):
++        head, snapshot = self.delivery_fixture()
++        self.commit('post review head')
++        self.git('push', 'origin', 'feature/delivery')
++        _, r = self.delivery_command(head, snapshot, ok=False)
++        self.assertIn('live PR head changed', r['error'])
++
++    def test_routine_delivery_never_relabels_merged_pr_as_approval(self):
++        head, snapshot = self.delivery_fixture();snapshot['state'] = 'merged'
++        _, r = self.delivery_command(head, snapshot, ok=False)
++        self.assertIn('historical merge', r['error'])
++
++    def test_per_worker_launcher_binds_path_and_refuses_owner_override(self):
++        launcher = SCRIPT.with_name('offmenu-gitflow-launch.py')
++        self.write_policy()
++        args = ['python3', '-B', str(launcher), '--policy', str(self.policy_path),
++                '--evidence-dir', str(self.ev), 'start', '--kind', 'feature', '--task', 'launcher-task']
++        p = subprocess.run(args, cwd=self.repo, env=m.git_environment(), text=True, capture_output=True)
++        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'feature/09/launcher-task')
++        p = subprocess.run(args + ['--worker', '2'], cwd=self.repo, env=m.git_environment(),
++                           text=True, capture_output=True)
++        self.assertEqual(p.returncode, 2)
++        self.assertIn('binds', p.stderr)
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'feature/09/launcher-task')
++
++    def test_busy_fetch_lock_refuses_cached_base_without_switch(self):
++        with (self.remote / 'offmenu-fetch.lock').open('a') as lock:
++            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            _, r = self.start(ok=False)
++        self.assertIn('lock is busy', r['error'])
++        self.assertIsNone(r['fetches'][0]['exit_code'])
++        self.assertIsNone(r['fetches'][0]['sha'])
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++
++    def test_routine_dispatch_from_reviewed_line_without_release(self):
++        self.policy['baseline'] = {};self.policy['lines'] = {}
++        self.policy['routine_delivery'] = {'authorizer': 'Matt', 'project': 'OffMenu',
++            'scope': 'normal-qualified-gitflow', 'evidence': self.reference()}
++        self.policy['routine_develop'] = {'reviewer': 'Morgan', 'verdict': 'reviewed-integration-line',
++            'sha': self.base, 'evidence': self.reference()}
++        _, r = self.start()
++        self.assertIn('release uncertified', r['dispatch_qualification'])
++
++    def test_integration_preserves_ignored_collision_bytes(self):
++        start, _ = self.start()
++        (self.repo / 'collision').write_text('incoming tracked bytes')
++        self.git('add', 'collision')
++        self.git('commit', '-m', 'feature collision')
++        source = self.git('rev-parse', 'HEAD').strip()
++        ready, _ = self.ready(start)
++        self.git('switch', 'develop')
++        (self.repo / '.git/info/exclude').write_text('collision\n')
++        (self.repo / 'collision').write_text('ignored integration owner bytes')
++        self.review('develop', source, source)
++        _, r = self.command('integrate', '--worker', '9', '--ready', ready['receipt'],
++                            '--candidate', source, ok=False)
++        self.assertIn('merge failed', r['error'])
++        self.assertEqual((self.repo / 'collision').read_text(), 'ignored integration owner bytes')
++        self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++
++    def test_retirement_detach_preserves_ignored_collision_and_task_branch(self):
++        start, ready, integration, source = self.integrated_fixture()
++        (self.repo / 'collision').write_text('incoming tracked bytes')
++        self.git('add', 'collision')
++        self.git('commit', '-m', 'develop collision after integration')
++        target = self.git('rev-parse', 'HEAD').strip()
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=target)
++        self.git('switch', 'feature/09/fixture')
++        (self.repo / '.git/info/exclude').write_text('collision\n')
++        (self.repo / 'collision').write_text('ignored retirement owner bytes')
++        w = self.policy['workers']['9']
++        w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
++                 retirement=self.verdict(source=source, task='fixture'))
++        _, r = self.command('retire', '--worker', '9', '--start', start['receipt'],
++                            '--ready', ready['receipt'], '--integration', integration['receipt'], ok=False)
++        self.assertIn('switch failed', r['error'])
++        self.assertEqual((self.repo / 'collision').read_text(), 'ignored retirement owner bytes')
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'feature/09/fixture')
++        self.assertEqual(self.git('rev-parse', 'feature/09/fixture').strip(), source)
++
++    def test_inherited_git_locations_cannot_redirect_fixture_or_script(self):
++        guard = self.root / 'guard'
++        self.run_git(self.root, 'init', str(guard))
++        self.run_git(guard, 'config', 'user.name', 'Guard')
++        self.run_git(guard, 'config', 'user.email', 'guard@example.invalid')
++        (guard / 'owner').write_text('guarded owner bytes')
++        self.run_git(guard, 'add', 'owner')
++        self.run_git(guard, 'commit', '-m', 'guard')
++        before = self.run_git(guard, 'rev-parse', 'HEAD')
++        index = (guard / '.git/index').read_bytes()
++        overrides = {'GIT_DIR': str(guard / '.git'), 'GIT_WORK_TREE': str(guard),
++                     'GIT_INDEX_FILE': str(guard / '.git/index'), 'GIT_COMMON_DIR': str(guard / '.git'),
++                     'GIT_OBJECT_DIRECTORY': str(guard / '.git/objects'),
++                     'GIT_ALTERNATE_OBJECT_DIRECTORIES': str(guard / '.git/objects'),
++                     'GIT_NAMESPACE': 'sentinel', 'GIT_CONFIG_COUNT': '1',
++                     'GIT_CONFIG_KEY_0': 'core.worktree', 'GIT_CONFIG_VALUE_0': str(guard),
++                     'GIT_CONFIG_PARAMETERS': "'core.worktree='"}
++        # The real shared repository is observed read-only; contamination always
++        # points at the disposable guard. Portable runs omit only this host proof.
++        shared = Path('/home/user/src/offmenu/.git')
++        def shared_snapshot():
++            if not shared.is_dir():
++                return {'available': False}
++            p = subprocess.run(['git', '--git-dir', str(shared), 'rev-parse', 'refs/heads/main'],
++                               text=True, capture_output=True, env=m.git_environment())
++            self.assertEqual(p.returncode, 0, p.stderr)
++            index_path = shared / 'index'
++            return {'common_dir': str(shared.resolve()), 'main': p.stdout.strip(),
++                    'index_sha256': hashlib.sha256(index_path.read_bytes()).hexdigest() if index_path.exists() else None}
++        real_before = shared_snapshot()
++        author_repo = SCRIPT.parent.parent
++        def author_identity():
++            p = subprocess.run(['git', '-C', str(author_repo), 'rev-parse', 'HEAD'],
++                               text=True, capture_output=True, env=m.git_environment())
++            self.assertEqual(p.returncode, 0, p.stderr)
++            branch = subprocess.run(['git', '-C', str(author_repo), 'branch', '--show-current'],
++                                    text=True, capture_output=True, env=m.git_environment())
++            self.assertEqual(branch.returncode, 0, branch.stderr)
++            return {'head': p.stdout.strip(), 'branch': branch.stdout.strip()}
++        author_before = author_identity()
++        retained = Path('/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts')
++        retained_before = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in retained.glob('*.json')}
++        code_before = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in
++                       (SCRIPT, SCRIPT.parent.parent / 'docs/OFFMENU_GITFLOW.md', Path(__file__).resolve())}
++        with patch.dict(os.environ, overrides):
++            # Fixture helper must still operate in its requested repository.
++            self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++            # Intentionally pass the polluted environment to the CLI, so its own
++            # child Git sanitization is tested independently of command().
++            self.write_policy()
++            p = subprocess.run(['python3', '-B', str(SCRIPT), '--repo', str(self.repo),
++                                '--policy', str(self.policy_path), '--evidence-dir', str(self.ev),
++                                'start', '--worker', '9', '--kind', 'feature', '--task', 'ambient-env'],
++                               text=True, capture_output=True, env=dict(os.environ))
++            self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
++            self.assertEqual(os.environ['GIT_DIR'], overrides['GIT_DIR'])
++        self.assertEqual(shared_snapshot(), real_before)
++        self.assertEqual(author_identity(), author_before)
++        self.assertEqual({p: hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in retained_before}, retained_before)
++        self.assertEqual({path: hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in code_before}, code_before)
++        self.assertEqual(self.run_git(guard, 'rev-parse', 'HEAD'), before)
++        self.assertEqual((guard / '.git/index').read_bytes(), index)
++        self.assertEqual((guard / 'owner').read_text(), 'guarded owner bytes')
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'feature/09/ambient-env')
++        proof_path = os.environ.get('OFFMENU_GITFLOW_ISOLATION_PROOF')
++        if proof_path:
++            Path(proof_path).write_text(json.dumps({'contamination_target': str(guard),
++                'variables': sorted(overrides), 'sentinel_head_unchanged': True, 'sentinel_index_unchanged': True,
++                'sentinel_owner_bytes_unchanged': True, 'real_shared_before': real_before,
++                'real_shared_after': shared_snapshot(), 'author_identity_unchanged': author_before,
++                'retained_receipt_hashes_unchanged': retained_before, 'tracked_code_hashes_unchanged': code_before}, indent=2) + '\n')
++
++    def test_dispatch_preserves_ignored_collision_bytes(self):
++        # Main has ignored owner data; freshly qualified develop tracks that path.
++        self.git('switch', 'develop')
++        (self.repo / 'collision').write_text('incoming tracked bytes')
++        self.git('add', 'collision')
++        self.git('commit', '-m', 'track collision on develop')
++        advanced = self.git('rev-parse', 'HEAD').strip()
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=advanced)
++        self.git('switch', 'main')
++        (self.repo / '.git/info/exclude').write_text('collision\n')
++        (self.repo / 'collision').write_text('preserved ignored owner bytes')
++        self.assertEqual(self.git('status', '--porcelain').strip(), '')
++        _, r = self.start(ok=False)
++        self.assertIn('switch failed', r['error'])
++        self.assertEqual((self.repo / 'collision').read_text(), 'preserved ignored owner bytes')
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++
++    def provisional(self):
++        self.policy['baseline'] = {}
++        self.policy['released_main'] = {}
++        self.policy['lines'] = {}
++        receipt = self.root / 'provisional-bootstrap.json'
++        receipt.write_text(json.dumps({
++            'schema': 'offmenu-provisional-develop/1',
++            'verdict': 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE',
++            'seed': self.base, 'localDevelop': self.base, 'fetchedDevelop': self.base,
++            'releaseCertified': False, 'tagCreated': False, 'mainChanged': False}))
++        self.policy['provisional_bootstrap'] = {
++            'reviewer': 'Morgan', 'authorization': 'ordinary-development-start',
++            'verdict': 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE',
++            'qualification': 'unqualified', 'line': 'develop', 'sha': self.base, 'utc': m.utc(),
++            'evidence': {'path': str(receipt), 'sha256': hashlib.sha256(receipt.read_bytes()).hexdigest()}}
++        # Demonstrate that dispatch needs no certified first release or tag.
++        self.git('push', 'origin', '--delete', 'v1.0.0')
++        self.git('tag', '-d', 'v1.0.0')
++
++    def test_provisional_feature_dispatch_records_truthful_readiness(self):
++        self.provisional()
++        start, r = self.start()
++        self.assertEqual(r['base'], self.base)
++        self.assertEqual(r['fetches'][0]['exit_code'], 0)
++        self.assertEqual(r['dispatch_qualification'], 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE')
++        self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++        source = self.commit('provisional feature')
++        _, r = self.ready(start)
++        self.assertEqual(r['candidate'], source)
++        self.assertEqual(r['dispatch_qualification'], 'PROVISIONAL_UNQUALIFIED_INTEGRATION_BASELINE')
++        self.assertEqual(r['completion'], 'ready_for_Morgan_review')
++
++    def test_provisional_bugfix_dispatch(self):
++        self.provisional()
++        _, r = self.start(kind='bugfix')
++        self.assertEqual(r['base_line'], 'develop')
++        self.assertEqual(r['dispatch_base'], self.base)
++
++    def test_provisional_unapproved_dispatch_refused(self):
++        self.provisional()
++        self.policy['provisional_bootstrap']['reviewer'] = 'worker09'
++        _, r = self.start(ok=False)
++        self.assertIn('Morgan provisional', r['error'])
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++        self.policy['provisional_bootstrap']['reviewer'] = 'Morgan'
++        self.policy['provisional_bootstrap']['authorization'] = 'integration-only'
++        self.start(ok=False)
++        del self.policy['provisional_bootstrap']
++        _, r = self.start(ok=False)
++        self.assertIn('no accepted release baseline', r['error'])
++
++    def test_provisional_stale_fetched_develop_refused(self):
++        self.provisional()
++        self.git('switch', 'develop')
++        advanced = self.commit('develop advanced after authorization')
++        self.git('push', 'origin', 'develop')
++        self.git('switch', 'main')
++        _, r = self.start(ok=False)
++        self.assertEqual(r['fetches'][0]['sha'], advanced)
++        self.assertIn('stale provisional baseline', r['error'])
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++
++    def test_provisional_cannot_qualify_release_hotfix_or_integration(self):
++        self.provisional()
++        self.start(kind='release', task='release-attempt', ok=False)
++        self.start(kind='hotfix', task='hotfix-attempt', ok=False)
++        start, _ = self.start()
++        source = self.commit('provisional feature')
++        ready, _ = self.ready(start)
++        self.git('switch', 'develop')
++        self.review('develop', source, source)
++        _, r = self.command('integrate', '--worker', '9', '--ready', ready['receipt'],
++                            '--candidate', source, ok=False)
++        self.assertIn('no accepted release baseline', r['error'])
++        self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++
++    def test_provisional_bootstrap_evidence_mismatch_refused(self):
++        self.provisional()
++        record = self.policy['provisional_bootstrap']
++        path = Path(record['evidence']['path'])
++        data = json.loads(path.read_text())
++        data['releaseCertified'] = True
++        path.write_text(json.dumps(data))
++        _, r = self.start(ok=False)
++        self.assertIn('digest mismatch', r['error'])
++        record['evidence']['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
++        _, r = self.start(ok=False)
++        self.assertIn('must not claim release', r['error'])
++
++    def test_fresh_feature_dispatch_and_review_readiness(self):
++        out, r = self.start()
++        self.assertEqual(r['status'], 'completed')
++        self.assertEqual(r['base'], self.base)
++        self.assertEqual(r['fetches'][0]['exit_code'], 0)
++        self.assertEqual(r['fetches'][0]['sha'], self.base)
++        self.assertTrue(r['fetches'][0]['completed_utc'].endswith('Z'))
++        candidate = self.commit()
++        _, ready = self.ready(out)
++        self.assertEqual(ready['candidate'], candidate)
++        self.assertEqual(ready['completion'], 'ready_for_Morgan_review')
++        self.assertNotIn('accepted', ready)
++
++    def test_dry_run_does_not_consume_unique_task_and_second_task_blocks(self):
++        _, r = self.start(check=True)
++        self.assertEqual(r['status'], 'allowed')
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++        self.start()
++        _, r = self.start(task='second', ok=False)
++        self.assertIn('active task', r['error'])
++
++    def test_dirty_and_untracked_never_switch(self):
++        before = self.git('symbolic-ref', 'HEAD')
++        (self.repo / 'untracked').write_text('preserve me')
++        _, r = self.start(ok=False)
++        self.assertIn('custody', r['error'])
++        self.assertEqual(self.git('symbolic-ref', 'HEAD'), before)
++        self.assertEqual((self.repo / 'untracked').read_text(), 'preserve me')
++        self.assertEqual(r['fetches'], [])
++
++    def test_missing_develop_does_not_use_cached_ref(self):
++        self.git('push', 'origin', '--delete', 'develop')
++        _, r = self.start(ok=False)
++        self.assertNotEqual(r['fetches'][0]['exit_code'], 0)
++        self.assertIsNone(r['fetches'][0]['sha'])
++        self.assertEqual(self.git('branch', '--show-current').strip(), 'main')
++
++    def test_preserves_broken_capture_ref(self):
++        broken = self.repo / '.git/refs/codex/turn-diffs/captures/fixture/base'
++        broken.parent.mkdir(parents=True)
++        broken.write_bytes(b'')
++        # A new object forces connectivity negotiation through the malformed ref.
++        publisher = self.root / 'publisher'
++        self.run_git(self.root, 'clone', str(self.remote), str(publisher))
++        self.run_git(publisher, 'config', 'user.name', 'Publisher')
++        self.run_git(publisher, 'config', 'user.email', 'fixture@example.invalid')
++        self.run_git(publisher, 'switch', 'develop')
++        (publisher / 'fresh').write_text('new remote object')
++        self.run_git(publisher, 'add', 'fresh')
++        self.run_git(publisher, 'commit', '-m', 'fresh develop')
++        self.run_git(publisher, 'push', 'origin', 'develop')
++        _, r = self.start(ok=False)
++        self.assertNotEqual(r['fetches'][0]['exit_code'], 0)
++        self.assertEqual(broken.read_bytes(), b'')
++        self.assertIn('bad object', r['fetches'][0]['stderr'])
++
++    def test_unqualified_and_ambiguous_custody_block(self):
++        self.policy['lines']['develop']['qualification'] = 'unqualified'
++        _, r = self.start(ok=False)
++        self.assertEqual(r['fetches'][0]['exit_code'], 0)
++        self.assertIn('unqualified', r['error'])
++        self.policy['lines']['develop']['qualification'] = 'qualified'
++        self.policy['workers']['9']['recovery_dependencies'] = ['retained original']
++        _, r = self.start(ok=False)
++        self.assertIn('recovery_dependencies', r['error'])
++
++    def test_pool_path_origin_and_unique_branch(self):
++        self.command('start', '--worker', '33', '--kind', 'feature', '--task', 'bad', ok=False)
++        self.policy['workers']['9']['path'] = str(self.root / 'other')
++        self.start(ok=False)
++        self.policy['workers']['9']['path'] = str(self.repo)
++        self.policy['origin'] = 'wrong-origin'
++        self.start(ok=False)
++        self.policy['origin'] = str(self.remote)
++        self.start()
++        self.start(ok=False)
++
++    def test_no_accepted_baseline_and_evidence_tamper(self):
++        self.policy['baseline'] = {}
++        _, r = self.start(ok=False)
++        self.assertIn('no accepted release baseline', r['error'])
++        self.policy['baseline'] = dict(self.verdict(sha=self.base), tag='v1.0.0', tag_object=self.git('rev-parse', 'v1.0.0').strip())
++        self.proof.write_text('changed approval')
++        _, r = self.start(ok=False)
++        self.assertIn('digest mismatch', r['error'])
++
++    def test_release_tag_is_pinned_on_canonical_remote(self):
++        self.git('push', 'origin', '--delete', 'v1.0.0')
++        _, r = self.start(ok=False)
++        self.assertIn('tag unavailable', r['error'])
++        self.assertNotEqual(r['tag_checks'][0]['exit_code'], 0)
++
++    def test_stale_qualified_line_sha_blocks_dispatch(self):
++        self.git('switch', 'develop')
++        changed = self.commit('advanced')
++        self.git('push', 'origin', 'develop')
++        _, r = self.start(ok=False)
++        self.assertEqual(r['fetches'][0]['sha'], changed)
++        self.assertIn('exact sha', r['error'])
++
++    def integrated_fixture(self, kind='feature', line='develop'):
++        start, _ = self.start(kind=kind)
++        source = self.commit(kind + ' change')
++        ready, _ = self.ready(start)
++        self.git('switch', line)
++        self.review(line, source, source)
++        integrated, _ = self.command('integrate', '--worker', '9', '--ready', ready['receipt'],
++                                     '--line', line, '--candidate', source)
++        return start, ready, integrated, source
++
++    def test_exact_review_required_and_successful_integration(self):
++        start, _ = self.start()
++        source = self.commit()
++        ready, _ = self.ready(start)
++        self.git('switch', 'develop')
++        args = ['integrate', '--worker', '9', '--ready', ready['receipt'], '--candidate', source]
++        _, r = self.command(*args, ok=False)
++        self.assertIn('exact candidate', r['error'])
++        self.assertEqual(self.git('rev-parse', 'HEAD').strip(), self.base)
++        self.review('develop', source, source)
++        _, r = self.command(*args)
++        self.assertEqual(r['candidate'], source)
++        self.assertEqual(self.git('rev-parse', 'HEAD').strip(), source)
++
++    def test_feature_cannot_bypass_release_to_main(self):
++        start, _ = self.start()
++        source = self.commit()
++        ready, _ = self.ready(start)
++        self.git('switch', 'main')
++        self.review('main', source, source)
++        _, r = self.command('integrate', '--worker', '9', '--ready', ready['receipt'], '--line', 'main',
++                            '--candidate', source, ok=False)
++        self.assertIn('only reviewed hotfixes', r['error'])
++
++    def test_changed_task_and_wrong_verdict_do_not_integrate(self):
++        start, _ = self.start()
++        source = self.commit()
++        ready, _ = self.ready(start)
++        self.commit('post review change')
++        self.git('switch', 'develop')
++        self.review('develop', source, source)
++        _, r = self.command('integrate', '--worker', '9', '--ready', ready['receipt'], '--candidate', source, ok=False)
++        self.assertIn('changed after', r['error'])
++
++    def test_preserved_exception_ready_does_not_claim_fresh_dispatch(self):
++        self.git('switch', '-c', 'worker/09/foundation')
++        self.commit('foundation implementation')
++        self.policy['workers']['9']['active_task'] = 'foundation'
++        args = ['exception', '--worker', '9', '--task', 'foundation']
++        self.command(*args, ok=False)
++        self.policy['base_exceptions']['9'] = {
++            'authorization': 'Matt', 'evidence': self.reference(), 'base': self.base,
++            'task': 'foundation', 'branch': 'worker/09/foundation', 'kind': 'feature'}
++        start, r = self.command(*args)
++        self.assertEqual(r['qualification'], 'unqualified-base-exception')
++        self.assertEqual(r['fetches'], [])
++        _, r = self.ready(start)
++        self.assertEqual(r['base_line'], 'preserved-exception')
++        self.assertTrue(r['exception'])
++        self.assertEqual(r['completion'], 'ready_for_Morgan_review')
++        self.command(*args, ok=False)
++
++    def test_wrong_reviewer_and_duplicate_verdict_block(self):
++        start, _ = self.start()
++        source = self.commit()
++        ready, _ = self.ready(start)
++        self.git('switch', 'develop')
++        self.review('develop', source, source)
++        self.policy['reviews'][0]['reviewer'] = 'worker09'
++        args = ['integrate', '--worker', '9', '--ready', ready['receipt'], '--candidate', source]
++        _, r = self.command(*args, ok=False)
++        self.assertIn('Morgan accepted', r['error'])
++        self.policy['reviews'][0]['reviewer'] = 'Morgan'
++        self.policy['reviews'].append(dict(self.policy['reviews'][0]))
++        self.command(*args, ok=False)
++
++    def test_develop_advance_requires_reconciliation(self):
++        start, _ = self.start()
++        source = self.commit('feature changes')
++        ready, _ = self.ready(start)
++        self.git('switch', 'develop')
++        (self.repo / 'other').write_text('other work')
++        self.git('add', 'other')
++        self.git('commit', '-m', 'advance develop')
++        advanced = self.git('rev-parse', 'HEAD').strip()
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=advanced)
++        self.git('merge', '--no-ff', source, '-m', 'prepare exact synthetic candidate')
++        candidate = self.git('rev-parse', 'HEAD').strip()
++        # Restore fixture target by normal checkout of a temporary test branch, then
++        # move develop back in this disposable repository only.
++        self.git('switch', '--detach', candidate)
++        self.git('branch', '-f', 'develop', advanced)
++        self.git('switch', 'develop')
++        self.review('develop', candidate, source, base=advanced)
++        args = ['integrate', '--worker', '9', '--ready', ready['receipt'], '--candidate', candidate]
++        _, r = self.command(*args, ok=False)
++        self.assertIn('reconciliation required', r['error'])
++        self.policy['reconciliations'] = [self.verdict(source=source, develop=advanced)]
++        self.command(*args)
++
++    def test_hotfix_requires_accepted_released_main(self):
++        self.policy['released_main'] = {}
++        _, r = self.start(kind='hotfix', ok=False)
++        self.assertIn('Morgan accepted', r['error'])
++        self.policy['released_main'] = dict(self.verdict(sha=self.base), tag='v1.0.0', tag_object=self.git('rev-parse', 'v1.0.0').strip())
++        _, r = self.start(kind='hotfix')
++        self.assertEqual(r['base_line'], 'main')
++
++    def test_release_requires_backmerge_qualification_and_immutable_tag(self):
++        start, _ = self.start(kind='release')
++        candidate = self.commit('release fix')
++        self.git('switch', 'main')
++        self.policy['reviews'] = [self.verdict(operation='promote-release', candidate=candidate,
++                                               base=self.base, source=self.base)]
++        args = ['promote', '--worker', '9', '--start', start['receipt'], '--candidate', candidate, '--tag', 'v1.1.0']
++        _, r = self.command(*args, ok=False)
++        self.assertIn('back-merged', r['error'])
++        # Simulate separately reviewed backmerge/publication in the fixture.
++        self.git('switch', 'develop')
++        self.git('merge', '--ff-only', candidate)
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=candidate)
++        self.policy['reviews'] = [self.verdict(operation='promote-release', candidate=candidate,
++                                               base=self.base, source=candidate)]
++        self.git('switch', 'main')
++        self.command(*args)
++        self.assertEqual(self.git('rev-parse', 'v1.1.0^{commit}').strip(), candidate)
++        self.command(*args, ok=False)
++        self.assertEqual(self.git('rev-parse', 'v1.1.0^{commit}').strip(), candidate)
++
++    def test_develop_initialized_once_only_with_exact_baseline_decision(self):
++        self.git('push', 'origin', '--delete', 'develop')
++        self.git('branch', '-d', 'develop')
++        self.policy['develop_initialized'] = False
++        self.policy['reviews'] = [self.verdict(operation='initialize-develop', candidate=self.base,
++                                               base=self.base, source=self.base)]
++        self.command('initialize', '--worker', '9')
++        self.assertEqual(self.git('rev-parse', 'develop').strip(), self.base)
++        self.command('initialize', '--worker', '9', ok=False)
++        self.git('branch', '-d', 'develop')
++        _, r = self.command('initialize', '--worker', '9', ok=False)
++        self.assertIn('initialization receipt exists', r['error'])
++
++    def test_retire_requires_review_integration_custody_and_preserves_path(self):
++        start, ready, integrated, source = self.integrated_fixture()
++        args = ['retire', '--worker', '9', '--start', start['receipt'], '--ready', ready['receipt'],
++                '--integration', integrated['receipt']]
++        self.command(*args, ok=False)
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=source)
++        w = self.policy['workers']['9']
++        w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
++                 retirement=self.verdict(source=source, task='fixture'))
++        w['open_prs'] = ['PR fixture']
++        self.command(*args, ok=False)
++        w['open_prs'] = []
++        self.command(*args)
++        self.assertTrue(self.repo.is_dir())
++        self.assertIn(f'worktree {self.repo}', self.git('worktree', 'list', '--porcelain'))
++        p = subprocess.run(['git', '-C', str(self.repo), 'show-ref', '--verify', 'refs/heads/feature/09/fixture'],
++                           capture_output=True, env=m.git_environment())
++        self.assertNotEqual(p.returncode, 0)
++
++    def test_hotfix_retirement_requires_both_lines(self):
++        start, ready, integrated, source = self.integrated_fixture(kind='hotfix', line='main')
++        self.git('push', 'origin', 'main')
++        self.git('tag', '-a', 'v1.0.1', source, '-m', 'synthetic released hotfix')
++        self.git('push', 'origin', 'v1.0.1')
++        self.policy['released_main'] = dict(self.verdict(sha=source), tag='v1.0.1', tag_object=self.git('rev-parse', 'v1.0.1').strip())
++        self.policy['lines']['main'] = self.verdict(line='main', sha=source)
++        w = self.policy['workers']['9']
++        w.update(active_task='fixture', ignored_custody='preserved', ignored_evidence=self.reference(),
++                 retirement=self.verdict(source=source, task='fixture'))
++        args = ['retire', '--worker', '9', '--start', start['receipt'], '--ready', ready['receipt'],
++                '--integration', integrated['receipt']]
++        _, r = self.command(*args, ok=False)
++        self.assertIn('not integrated', r['error'])
++        self.git('switch', 'develop')
++        self.git('merge', '--ff-only', source)
++        self.git('push', 'origin', 'develop')
++        self.policy['lines']['develop'] = self.verdict(line='develop', sha=source)
++        self.command(*args)
++
++
++if __name__ == '__main__':
++    unittest.main()

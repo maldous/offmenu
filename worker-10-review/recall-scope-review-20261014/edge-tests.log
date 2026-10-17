@@ -1,0 +1,78 @@
+{
+  "cases": 37,
+  "passed": 34,
+  "failed": 3,
+  "failedCases": [
+    {
+      "id": "submillisecond-effective-after-asof-and-retrieval",
+      "expected": "unknown",
+      "actual": "matched",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0001Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      }
+    },
+    {
+      "id": "submillisecond-retrieval-in-future",
+      "expected": "unknown",
+      "actual": "matched",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0009Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      }
+    },
+    {
+      "id": "submillisecond-freshness-before-actual-expiry",
+      "expected": "matched",
+      "actual": "unknown",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      }
+    }
+  ]
+}

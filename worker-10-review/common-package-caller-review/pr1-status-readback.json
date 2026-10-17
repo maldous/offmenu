@@ -1,0 +1,65 @@
+{
+  "schema": "offmenu.worker10.pr1-read-only-status/1",
+  "observedAt": "2026-10-14 08:19:14 UTC",
+  "pullRequest": {
+    "url": "https://github.com/maldous/offmenu/pull/1",
+    "state": "closed",
+    "merged": true,
+    "head": "7beffdc390826ee68e99031ef6fe735efce9d2c9",
+    "base": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "merge": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "requested_reviewers": null,
+    "comments": [
+      {
+        "url": "https://github.com/maldous/offmenu/pull/1#issuecomment-6163842912",
+        "user": "chatgpt-codex-connector[bot]",
+        "review": null,
+        "body": "<!-- codex-pull-request-review-summary -->\n\n## Codex Review Summary\n\nThis comment shows the latest Codex review activity on this pull request.\n\n| Review | Status | Commit | Review trigger |\n| --- | --- | --- | --- |\n| \ud83d\udcdd **Code Review** | \u2705 **Completed** <relative-time datetime=\"2026-10-14T08:10:12.673230Z\">2026-10-14T08:10:12.673230Z</relative-time> | `7beffdc` | PR opened |\n\n\n\n<details> <summary>\u2139\ufe0f About Codex in GitHub</summary>\n<br/>\n\n[Your team has set up Codex to review pull requests in this repo](https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n- Open a pull request for review\n- Mark a draft as ready\n- Comment \"@codex review\" or \"@codex security review\".\n\nCodex reacts with \ud83d\udc40 while any review is running, comments if it has suggestions, and reacts with \ud83d\udc4d once all reviews finish with no findings.\n\n</details>",
+        "created_at": "2026-10-14T08:06:54Z",
+        "updated_at": "2026-10-14T08:10:13Z",
+        "path": null,
+        "line": null
+      },
+      {
+        "url": "https://github.com/maldous/offmenu/pull/1#pullrequestreview-5514907317",
+        "user": "chatgpt-codex-connector[bot]",
+        "review": "COMMENTED",
+        "body": "\n### \ud83d\udca1 Codex Review\n\nHere are some automated review suggestions for this pull request.\n\n**Reviewed commit:** `7beffdc390`\n    \n\n<details> <summary>\u2139\ufe0f About Codex in GitHub</summary>\n<br/>\n\n[Your team has set up Codex to review pull requests in this repo](https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n- Open a pull request for review\n- Mark a draft as ready\n- Comment \"@codex review\".\n\nIf Codex has suggestions, it will comment; otherwise it will react with \ud83d\udc4d.\n\n\n\n\nCodex can also answer questions or update the PR. Try commenting \"@codex address that feedback\".\n            \n</details>",
+        "created_at": "2026-10-14T08:10:09Z",
+        "updated_at": null,
+        "path": null,
+        "line": null
+      },
+      {
+        "url": "https://github.com/maldous/offmenu/pull/1#discussion_r4268300505",
+        "user": "chatgpt-codex-connector[bot]",
+        "review": null,
+        "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Stop source iteration after restoring a reached limit**\n\nWhen `--limit` was reached at a committed packet boundary before an interruption, the restored count enters this branch and `continue` processes subsequent source metadata even though no more rows are read. An uninterrupted run instead breaks the outer loop immediately after reaching the limit, so resuming can add `wikidata-food-businesses` to `sources` and alter coverage fields and final manifest bytes. Break out of the source loop here to preserve byte-identical benchmark output.\n\nUseful? React with \ud83d\udc4d\u00a0/ \ud83d\udc4e.",
+        "created_at": "2026-10-14T08:10:10Z",
+        "updated_at": "2026-10-14T08:10:10Z",
+        "path": "scripts/align-places-common.py",
+        "line": 419
+      }
+    ]
+  },
+  "commitStatusResponse": {
+    "statuses": []
+  },
+  "requiredCheckConfiguration": "unavailable; branch protection/rulesets not returned by these tools",
+  "checkRunCoverage": "not established from commit status contexts",
+  "reviewState": "Codex summary reports completed; submitted review COMMENTED with one P2. Not an APPROVED review.",
+  "pendingState": "No pending entry in returned status contexts (empty list); remediation disposition of P2 not established.",
+  "checkpointMetadataFollowup": {
+    "candidate": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+    "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "changedFiles": [
+      "scripts/places-recovery-preflight.py",
+      "tests/test_places_checkpoint.py"
+    ],
+    "observed": "New read-only sibling OUTPUT.checkpoint.sqlite metadata lookup using mode=ro&immutable=1; only matching output/version1 metadata sets checkpointExists. Explicitly not resume integrity qualification.",
+    "authorTestsObserved": "Retained author tests.log reports 11 tests OK; reviewer did not run tests.",
+    "botFindingRelation": "This two-file metadata followup does not modify align-places-common.py source-loop limit logic identified by the bot.",
+    "diffSha256": "6260e5dac320145456300ae3604683925e21b1bbdb10fb353ee0c1da5c687a80"
+  },
+  "reservation": "Worker10 remains reserved for forthcoming exact07 two-P2 fix; no source branch switch, reviewfile deletion, dataset acquisition or external mutation."
+}

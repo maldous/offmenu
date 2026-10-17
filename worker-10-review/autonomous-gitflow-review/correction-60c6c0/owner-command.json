@@ -1,0 +1,15 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests-gitflow",
+    "-v"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot",
+  "exitCode": 0,
+  "logSha256": "e05e482632527255c3112a5f88e9ec08fed1eca9fd4373ceb5305fc18368421e"
+}
