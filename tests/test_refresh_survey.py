@@ -272,4 +272,31 @@ class SurveyTests(unittest.TestCase):
         self.assertEqual(survey._parse_markers(raw,'NO'),[])
 
 
+
+    def test_native_decoder_failure_triggers_one_probe_without_replacing_failure(self):
+        failed=survey._error_country('NO','worker-failed',diagnostics=survey._diagnostics('source-json-decoder-entry'))
+        failed['diagnostics']['exitCode']=-11
+        probe=survey._error_country('NO','selected-hash-mismatch',submitted=0)
+        with mock.patch.object(survey,'_run_worker_attempt',side_effect=[failed,probe]) as run:
+            result=survey._run_worker('NO',9)
+        self.assertEqual(run.call_args_list,[mock.call('NO',9),mock.call('NO',9,python_scanner=True)])
+        self.assertEqual(result['diagnostics']['exitCode'],-11)
+        self.assertIsNone(result['survey'])
+        self.assertEqual(result['decoderProbe']['result'],probe)
+        self.assertEqual(survey.sanitize_country(result,'NO'),result)
+        forged=copy.deepcopy(result);forged['decoderProbe']['result']['decoderProbe']=copy.deepcopy(result['decoderProbe'])
+        with self.assertRaises(ValueError):survey.sanitize_country(forged,'NO')
+        for phase,code in [('source-depth-scan-entry',-11),('source-json-decoder-entry',2),('source-json-decoder-entry',-14),('source-json-decoder-entry',-15),('source-structural-walk-entry',-11)]:
+            held=survey._error_country('NO','worker-failed',diagnostics=survey._diagnostics(phase))
+            held['diagnostics']['exitCode']=code
+            with mock.patch.object(survey,'_run_worker_attempt',return_value=held) as run:
+                self.assertEqual(survey._run_worker('NO',9),held)
+            run.assert_called_once_with('NO',9)
+
+    def test_python_scanner_worker_is_fixed_norway_only(self):
+        r=subprocess.run([sys.executable,'-I','-B',survey.__file__,'--worker-python-scanner','FR'],capture_output=True,timeout=5)
+        self.assertEqual((r.returncode,r.stdout,r.stderr),(2,b'',b''))
+        self.assertLessEqual(2*survey.WALL_SECONDS+survey.PROBE_WALL_SECONDS,230)
+
+
 if __name__ == '__main__': unittest.main()

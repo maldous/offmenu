@@ -93,7 +93,17 @@ def _held(codes):
             'reasonCodes': sorted(set(codes))}
 
 
-def _strict_json(raw):
+def _strict_json(raw, *, progress=None, python_scanner=False):
+    seen = set()
+    def emit(event):
+        if progress is not None:
+            progress(event)
+    def once(event):
+        if event in seen:
+            return False
+        seen.add(event)
+        emit(event)
+        return True
     def pairs(items):
         result = {}
         for key, value in items:
@@ -106,15 +116,26 @@ def _strict_json(raw):
         raise SurveyError('nonfinite-json-number')
 
     def number(value):
+        marked = once('float-hook-entry')
         parsed = float(value)
+        marked = once('float-hook-complete') or marked
         if not math.isfinite(parsed):
             raise SurveyError('nonfinite-json-number')
-        if parsed == 0 and Decimal(value) != 0:
-            raise SurveyError('json-number-underflow')
+        if parsed == 0:
+            marked = once('decimal-zero-entry') or marked
+            nonzero = Decimal(value) != 0
+            marked = once('decimal-zero-complete') or marked
+            if nonzero:
+                raise SurveyError('json-number-underflow')
+        if marked:
+            emit('json-decoder-entry')
         return parsed
 
     try:
+        emit('decode-entry')
         text = raw.decode('utf-8')
+        emit('decode-complete')
+        emit('depth-scan-entry')
         # Bound nesting before json.loads can recurse. String contents do not count.
         depth = 0
         in_string = escaped = False
@@ -134,8 +155,19 @@ def _strict_json(raw):
                     raise SurveyError('depth-limit-exceeded')
             elif char in ']}':
                 depth -= 1
-        value = json.loads(text, object_pairs_hook=pairs, parse_constant=constant,
-                           parse_float=number)
+        emit('depth-scan-complete')
+        emit('json-decoder-entry')
+        if python_scanner:
+            decoder = json.JSONDecoder(object_pairs_hook=pairs, parse_constant=constant,
+                                       parse_float=number)
+            decoder.parse_string = json.decoder.py_scanstring
+            decoder.scan_once = json.scanner.py_make_scanner(decoder)
+            value = decoder.decode(text)
+        else:
+            value = json.loads(text, object_pairs_hook=pairs, parse_constant=constant,
+                               parse_float=number)
+        emit('json-decoder-complete')
+        emit('structural-walk-entry')
         stack = [(value, 0)]
         while stack:
             item, depth = stack.pop()
@@ -155,6 +187,7 @@ def _strict_json(raw):
                 if len(item) > MAX_OBSERVATIONS:
                     raise SurveyError('observation-limit-exceeded')
                 stack.extend((child, depth + 1) for child in item)
+        emit('structural-walk-complete')
         return value
     except (UnicodeDecodeError, json.JSONDecodeError, RecursionError, ValueError) as exc:
         if isinstance(exc, SurveyError):
@@ -475,7 +508,7 @@ def _food_structure(foods, holds, budget):
     return {'energy': energy, 'metadata': metadata}
 
 
-def _survey(blobs, progress=None):
+def _survey(blobs, progress=None, python_scanner=False):
     if type(blobs) is not dict or set(blobs) != set(INPUTS):
         raise SurveyError('input-set-mismatch')
     if any(type(body) is not bytes for body in blobs.values()):
@@ -489,7 +522,10 @@ def _survey(blobs, progress=None):
         try:
             if progress is not None:
                 progress('parse-entry', name)
-            documents[name] = _strict_json(blobs[name])
+            def phase(event):
+                if progress is not None:
+                    progress(event, name)
+            documents[name] = _strict_json(blobs[name], progress=phase, python_scanner=python_scanner)
             if progress is not None:
                 progress('parse-complete', name)
         except SurveyError as exc:
@@ -691,10 +727,10 @@ def sanitize_report(value) -> dict:
     return result
 
 
-def survey(blobs: dict[str, bytes], *, progress=None) -> dict:
+def survey(blobs: dict[str, bytes], *, progress=None, python_scanner=False) -> dict:
     """Return complete bounded structural evidence, or a content-free fatal hold."""
     try:
-        return sanitize_report(_survey(blobs, progress=progress))
+        return sanitize_report(_survey(blobs, progress=progress, python_scanner=python_scanner))
     except SurveyError as exc:
         code = str(exc)
         if code not in REASONS:

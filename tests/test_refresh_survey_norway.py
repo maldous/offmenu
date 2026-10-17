@@ -174,5 +174,30 @@ class NorwaySurveyTests(unittest.TestCase):
                 no.sanitize_report(bad)
 
 
+
+    def test_decoder_subphases_and_python_scanner_preserve_float_hooks(self):
+        raw = b'{"v":[0.0,-0.0,1.25,1e-6,5e-324],"s":"escaped \\u00e9"}'
+        reports=[]
+        for python_scanner in (False, True):
+            phases=[]
+            reports.append(no._strict_json(raw, progress=phases.append, python_scanner=python_scanner))
+            for phase in ('decode-entry','decode-complete','depth-scan-entry','depth-scan-complete',
+                          'json-decoder-entry','json-decoder-complete','structural-walk-entry',
+                          'structural-walk-complete','float-hook-entry','decimal-zero-entry'):
+                self.assertIn(phase,phases)
+            self.assertLessEqual(len(phases),14)
+        self.assertEqual(reports[0],reports[1])
+        self.assertEqual(no.survey(blobs(fixture())), no.survey(blobs(fixture()),python_scanner=True))
+
+    def test_python_scanner_retains_key_nonfinite_underflow_and_depth_rejections(self):
+        cases=[(b'{"x":1,"x":2}','duplicate-json-key'),
+               (b'[1e-999]','json-number-underflow'),(b'[1e999]','nonfinite-json-number'),
+               (b'[NaN]','nonfinite-json-number'),(b'['*41+b'0'+b']'*41,'depth-limit-exceeded')]
+        for raw,reason in cases:
+            for python_scanner in (False,True):
+                with self.subTest(reason=reason,python_scanner=python_scanner), self.assertRaisesRegex(no.SurveyError,reason):
+                    no._strict_json(raw,python_scanner=python_scanner)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -38,6 +38,7 @@ MAX_INPUT = 32 * 1024 * 1024
 MAX_BUNDLE = 64 * 1024 * 1024
 CPU_SECONDS = 90
 WALL_SECONDS = 100
+PROBE_WALL_SECONDS = 30
 MEMORY_BYTES = 1024 * 1024 * 1024
 HEX = re.compile(r'[0-9a-f]{64}\Z')
 # Sizes/hashes independently observed on Foo in diagnostics run 39077114923.
@@ -182,7 +183,13 @@ PHASES = frozenset(('not-started', 'startup', 'resource-limits', 'audit-setup',
                     'source-sanitize', 'country-sanitize', 'encoding', 'emitting',
                     'complete', 'parent-launch', 'parent-read', 'parent-decode',
                     'parent-sanitize', 'unknown', 'asset-read-entry', 'asset-read-complete',
-                    'source-parse-entry', 'source-parse-complete'))
+                    'source-parse-entry', 'source-parse-complete',
+                    'source-decode-entry', 'source-decode-complete',
+                    'source-depth-scan-entry', 'source-depth-scan-complete',
+                    'source-json-decoder-entry', 'source-json-decoder-complete',
+                    'source-structural-walk-entry', 'source-structural-walk-complete',
+                    'source-float-hook-entry', 'source-float-hook-complete',
+                    'source-decimal-zero-entry', 'source-decimal-zero-complete'))
 EXCEPTIONS = frozenset(('PermissionError', 'FileNotFoundError', 'ImportError',
                        'ModuleNotFoundError', 'MemoryError', 'ValueError', 'TypeError',
                        'KeyError', 'RecursionError', 'RuntimeError', 'OSError',
@@ -203,7 +210,7 @@ def _diagnostics(phase='not-started', error=None):
 # A tiny fixed-token stderr protocol survives SIGSEGV even when stdout is empty.
 # It never contains source values, paths, exception text, or traceback fragments.
 MARKER_PREFIX = b'OFFMENU_SURVEY_V1 '
-MAX_MARKERS = 48
+MAX_MARKERS = 96
 _PROGRESS_COUNTRY = None
 _PROGRESS_RESOURCE = None
 
@@ -299,7 +306,7 @@ def _error_country(country, code, *, verified=False, submitted=None, diagnostics
             'diagnostics': diagnostics if diagnostics is not None else _diagnostics()}
 
 
-def _worker(country):
+def _worker(country, *, python_scanner=False):
     verified, submitted, phase = False, 0, 'input-verification'
     spec = COUNTRIES[country]
     _mark(phase)
@@ -326,10 +333,10 @@ def _worker(country):
         _mark(phase)
         asset_names = {ASSETS[key][0].split('/')[-1]: key for key in spec['raw']}
         def progress(event, name):
-            if event not in ('parse-entry', 'parse-complete') or name not in asset_names:
+            if 'source-' + event not in PHASES or name not in asset_names:
                 raise ValueError('invalid-survey-progress')
             _mark('source-' + event, asset_names[name])
-        result = module.survey(blobs, progress=progress)
+        result = module.survey(blobs, progress=progress, **({'python_scanner': True} if python_scanner else {}))
         phase = 'source-sanitize'
         _mark(phase)
         result = module.sanitize_report(result)
@@ -370,8 +377,9 @@ def _stop(process):
     process.wait()
 
 
-def _run_worker(country, lock_fd):
-    command = [sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--worker', country]
+def _run_worker_attempt(country, lock_fd, *, python_scanner=False):
+    command = [sys.executable, '-I', '-B', str(Path(__file__).resolve()),
+               '--worker-python-scanner' if python_scanner else '--worker', country]
     environment = {'PATH': os.defpath, 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8', 'TZ': 'UTC'}
     try:
         process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE,
@@ -380,7 +388,7 @@ def _run_worker(country, lock_fd):
         return _error_country(country, 'worker-failed', diagnostics=_diagnostics('parent-launch', error))
     out, err = bytearray(), bytearray()
     code, diagnostic = None, _diagnostics('parent-read')
-    deadline = time.monotonic() + WALL_SECONDS
+    deadline = time.monotonic() + (PROBE_WALL_SECONDS if python_scanner else WALL_SECONDS)
     try:
         with selectors.DefaultSelector() as selector:
             selector.register(process.stdout, selectors.EVENT_READ, True)
@@ -446,7 +454,44 @@ def _run_worker(country, lock_fd):
                               diagnostics=diagnostic)
 
 
-def sanitize_country(value, country):
+
+JSON_CRASH_PHASES = frozenset(('source-json-decoder-entry', 'source-float-hook-entry',
+                             'source-float-hook-complete', 'source-decimal-zero-entry',
+                             'source-decimal-zero-complete'))
+
+
+def _native_decoder_failure(value):
+    diagnostic = value['diagnostics']
+    return (value['errorCode'] == 'worker-failed' and
+            type(diagnostic['exitCode']) is int and diagnostic['exitCode'] in (-4, -6, -7, -8, -11) and
+            diagnostic['phase'] in JSON_CRASH_PHASES)
+
+
+def _run_worker(country, lock_fd):
+    result = _run_worker_attempt(country, lock_fd)
+    if country == 'NO' and _native_decoder_failure(result):
+        # One diagnostic retry only; original failure remains the primary result.
+        # It re-verifies identical fixed pins, with identical numeric/key hooks,
+        # memory/CPU/audit limits, and a smaller 30-second wall budget.
+        probe = _run_worker_attempt(country, lock_fd, python_scanner=True)
+        result['decoderProbe'] = {'scanner': 'stdlib-python',
+            'trigger': 'native-default-json-decoder-failure', 'result': probe}
+    return result
+
+
+def sanitize_country(value, country, *, allow_probe=True):
+    if isinstance(value, dict) and 'decoderProbe' in value:
+        if country != 'NO' or not allow_probe:
+            raise ValueError('invalid-survey-probe')
+        primary = {key: item for key, item in value.items() if key != 'decoderProbe'}
+        clean = sanitize_country(primary, country, allow_probe=False)
+        probe = value['decoderProbe']
+        exact(probe, ('scanner', 'trigger', 'result'))
+        if (not _native_decoder_failure(clean) or probe['scanner'] != 'stdlib-python' or
+                probe['trigger'] != 'native-default-json-decoder-failure'):
+            raise ValueError('invalid-survey-probe')
+        clean['decoderProbe'] = {**probe, 'result': sanitize_country(probe['result'], country, allow_probe=False)}
+        return clean
     exact(value, ('country', 'sourceId', 'releaseId', 'status', 'inputPinsVerified',
                   'readOnlyViewVerified', 'sourceBodiesSubmitted', 'errorCode', 'survey', 'diagnostics'))
     _validate_diagnostics(value['diagnostics'])
@@ -606,9 +651,12 @@ def survey_selected(workspace):
 
 def _worker_main():
     global _PROGRESS_COUNTRY, _PROGRESS_RESOURCE
-    if len(sys.argv) != 3 or sys.argv[1] != '--worker' or sys.argv[2] not in COUNTRIES or not sys.flags.isolated:
+    if (len(sys.argv) != 3 or sys.argv[1] not in ('--worker', '--worker-python-scanner') or
+            sys.argv[2] not in COUNTRIES or not sys.flags.isolated or
+            (sys.argv[1] == '--worker-python-scanner' and sys.argv[2] != 'NO')):
         return 2
     country, phase, before, after = sys.argv[2], 'startup', None, None
+    python_scanner = sys.argv[1] == '--worker-python-scanner'
     resource = None
     _PROGRESS_COUNTRY = country
     _mark(phase)
@@ -624,11 +672,11 @@ def _worker_main():
         after = _resource_limits(resource)
         phase = 'audit-setup'
         _mark(phase)
-        signal.alarm(WALL_SECONDS)
+        signal.alarm(PROBE_WALL_SECONDS if python_scanner else WALL_SECONDS)
         sys.dont_write_bytecode = True
         sys.path.insert(0, str(ROOT))
         sys.addaudithook(_audit_guard)
-        report = _worker(country)
+        report = _worker(country, python_scanner=python_scanner)
         phase = 'country-sanitize'
         _mark(phase)
         report = sanitize_country(report, country)
