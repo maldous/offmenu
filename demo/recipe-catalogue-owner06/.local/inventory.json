@@ -1,0 +1,425 @@
+{
+  "schema": "offmenu-held-recipe-local-index/1",
+  "createdAt": "2026-10-14T10:40:30.712946+00:00",
+  "scope": "Provisional directly inspected collections; Worker07 reconciliation pending. Not ALL held recipes.",
+  "completeHeldInventory": false,
+  "selectedSourceIdentities": 25734,
+  "sourceOccurrences": 29043,
+  "overlapOccurrences": 3309,
+  "dedupPolicy": "Source origin + original source record ID; Wikibooks language scope from source URL; preferred configured snapshot priority, all occurrences retained; no title or dish equivalence claim",
+  "collections": [
+    {
+      "id": "global-qualified",
+      "path": "/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz",
+      "format": "jsonl-gzip",
+      "priority": 100,
+      "declaredClass": "retained-public-licensed-with-record-review-qualifiers",
+      "inventoryProof": "Worker07 streamed25135recipe records to gzip EOF; distinct source identity25135; not global ALL",
+      "actualRecipeRecordsRead": 25135,
+      "bytes": 19589524,
+      "sha256": "90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73",
+      "gzipEOFValidated": true
+    },
+    {
+      "id": "live-wikibooks",
+      "path": "/home/user/src/offmenu-data/wikibooks-2026-10-13-live/normalized.jsonl.gz",
+      "format": "jsonl-gzip",
+      "priority": 90,
+      "declaredClass": "retained-public-source-content-needs-review",
+      "inventoryProof": "Worker07 streamed3796recipe records to gzip EOF; unique(sourceId,id)3796; overlap pending",
+      "actualRecipeRecordsRead": 3796,
+      "bytes": 4487113,
+      "sha256": "1bf9dfc95093f73803cdae3bb2c00da8073ff49575fa93f9f5f9a2d681ec6fd7",
+      "gzipEOFValidated": true
+    },
+    {
+      "id": "qualified-expansion",
+      "path": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/normalized.jsonl.gz",
+      "format": "jsonl-gzip",
+      "priority": 110,
+      "declaredClass": "retained-source-qualified-not-global-release-certified",
+      "inventoryProof": "42manifest records; direct source identities indexed locally; Worker07 reconciliation pending",
+      "actualRecipeRecordsRead": 42,
+      "bytes": 15798,
+      "sha256": "ca1dcfd582c40062f6dbf11940a50622bd60579550432866c19fb6bf539844f6",
+      "gzipEOFValidated": true
+    },
+    {
+      "id": "app-starter-pack",
+      "path": "/home/user/src/offmenu-workers/worker-06/public/recipes.json",
+      "format": "json-array",
+      "priority": 10,
+      "declaredClass": "original-or-source-attributed-app-content-not-personal",
+      "inventoryProof": "70actual app records; separate facet in the same catalogue, never labelled ALL",
+      "actualRecipeRecordsRead": 70,
+      "bytes": 164167,
+      "sha256": "2859bd50bca7caa8f3122cd3ec8c77e530588b1c7845d9db97bca267638f4c40",
+      "gzipEOFValidated": false
+    }
+  ],
+  "facets": {
+    "sources": [
+      {
+        "value": "wikibooks:hu",
+        "count": 6402
+      },
+      {
+        "value": "historical-archive",
+        "count": 6192
+      },
+      {
+        "value": "wikibooks:en",
+        "count": 3796
+      },
+      {
+        "value": "wikibooks:bn",
+        "count": 1103
+      },
+      {
+        "value": "wikibooks:fr",
+        "count": 1074
+      },
+      {
+        "value": "wikibooks:id",
+        "count": 1003
+      },
+      {
+        "value": "wikibooks:pl",
+        "count": 868
+      },
+      {
+        "value": "wikibooks:de",
+        "count": 636
+      },
+      {
+        "value": "wikibooks:it",
+        "count": 597
+      },
+      {
+        "value": "wikibooks:ru",
+        "count": 581
+      },
+      {
+        "value": "wikibooks:nl",
+        "count": 505
+      },
+      {
+        "value": "unitools",
+        "count": 501
+      },
+      {
+        "value": "LukeSmithxyz/based.cooking",
+        "count": 426
+      },
+      {
+        "value": "Anduin2017/HowToCook",
+        "count": 362
+      },
+      {
+        "value": "wikibooks:sv",
+        "count": 350
+      },
+      {
+        "value": "wikibooks:ja",
+        "count": 300
+      },
+      {
+        "value": "smithsonian-archive",
+        "count": 256
+      },
+      {
+        "value": "wikibooks:he",
+        "count": 154
+      },
+      {
+        "value": "wikibooks:tr",
+        "count": 128
+      },
+      {
+        "value": "wikibooks:nb",
+        "count": 71
+      },
+      {
+        "value": "app-starter-pack",
+        "count": 70
+      },
+      {
+        "value": "wikibooks:th",
+        "count": 46
+      },
+      {
+        "value": "wikibooks:pt",
+        "count": 36
+      },
+      {
+        "value": "wikibooks:ms",
+        "count": 33
+      },
+      {
+        "value": "github:lvisintini/recetasdemami",
+        "count": 33
+      },
+      {
+        "value": "wikibooks:ko",
+        "count": 27
+      },
+      {
+        "value": "wikibooks:es",
+        "count": 21
+      },
+      {
+        "value": "wikibooks:sk",
+        "count": 19
+      },
+      {
+        "value": "wikibooks:zh",
+        "count": 18
+      },
+      {
+        "value": "wikibooks:ar",
+        "count": 18
+      },
+      {
+        "value": "sinker/tacofancy",
+        "count": 18
+      },
+      {
+        "value": "wikibooks:hr",
+        "count": 14
+      },
+      {
+        "value": "wikibooks:fi",
+        "count": 14
+      },
+      {
+        "value": "wikibooks:fa",
+        "count": 11
+      },
+      {
+        "value": "wikibooks:da",
+        "count": 11
+      },
+      {
+        "value": "wikibooks:el",
+        "count": 9
+      },
+      {
+        "value": "wikibooks:oc",
+        "count": 7
+      },
+      {
+        "value": "wikibooks:simple",
+        "count": 6
+      },
+      {
+        "value": "github:chefdelakarma/libre_cuisine",
+        "count": 6
+      },
+      {
+        "value": "wikibooks:hi",
+        "count": 5
+      },
+      {
+        "value": "wikibooks:cs",
+        "count": 3
+      },
+      {
+        "value": "github:clicat/Ricette",
+        "count": 2
+      },
+      {
+        "value": "recipecommons/openrecipe-spec",
+        "count": 1
+      },
+      {
+        "value": "github:Remarknl/Indisch-eten",
+        "count": 1
+      }
+    ],
+    "languages": [
+      {
+        "value": "en",
+        "count": 10201
+      },
+      {
+        "value": "hu",
+        "count": 6402
+      },
+      {
+        "value": "bn",
+        "count": 1103
+      },
+      {
+        "value": "fr",
+        "count": 1074
+      },
+      {
+        "value": "id",
+        "count": 1003
+      },
+      {
+        "value": "pl",
+        "count": 868
+      },
+      {
+        "value": "de",
+        "count": 637
+      },
+      {
+        "value": "it",
+        "count": 599
+      },
+      {
+        "value": "ru",
+        "count": 581
+      },
+      {
+        "value": "unknown",
+        "count": 557
+      },
+      {
+        "value": "nl",
+        "count": 512
+      },
+      {
+        "value": "en,ru",
+        "count": 501
+      },
+      {
+        "value": "zh",
+        "count": 380
+      },
+      {
+        "value": "sv",
+        "count": 350
+      },
+      {
+        "value": "ja",
+        "count": 300
+      },
+      {
+        "value": "he",
+        "count": 154
+      },
+      {
+        "value": "tr",
+        "count": 128
+      },
+      {
+        "value": "nb",
+        "count": 71
+      },
+      {
+        "value": "es",
+        "count": 54
+      },
+      {
+        "value": "th",
+        "count": 46
+      },
+      {
+        "value": "pt",
+        "count": 36
+      },
+      {
+        "value": "ms",
+        "count": 33
+      },
+      {
+        "value": "ko",
+        "count": 27
+      },
+      {
+        "value": "sk",
+        "count": 19
+      },
+      {
+        "value": "ar",
+        "count": 18
+      },
+      {
+        "value": "hr",
+        "count": 14
+      },
+      {
+        "value": "fi",
+        "count": 14
+      },
+      {
+        "value": "fa",
+        "count": 11
+      },
+      {
+        "value": "da",
+        "count": 11
+      },
+      {
+        "value": "el",
+        "count": 9
+      },
+      {
+        "value": "oc",
+        "count": 7
+      },
+      {
+        "value": "simple",
+        "count": 6
+      },
+      {
+        "value": "hi",
+        "count": 5
+      },
+      {
+        "value": "cs",
+        "count": 3
+      }
+    ],
+    "licences": [
+      {
+        "value": "CC BY-SA 4.0",
+        "count": 18367
+      },
+      {
+        "value": "Unlicense adaptation; original work public domain",
+        "count": 6192
+      },
+      {
+        "value": "Unlicense",
+        "count": 806
+      },
+      {
+        "value": "CC0-1.0",
+        "count": 330
+      },
+      {
+        "value": "CC-BY-SA-4.0",
+        "count": 39
+      }
+    ],
+    "collections": [
+      {
+        "value": "global-qualified",
+        "count": 25135
+      },
+      {
+        "value": "live-wikibooks",
+        "count": 487
+      },
+      {
+        "value": "app-starter-pack",
+        "count": 70
+      },
+      {
+        "value": "qualified-expansion",
+        "count": 42
+      }
+    ]
+  },
+  "index": {
+    "path": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/index.sqlite",
+    "bytes": 23138304,
+    "sha256": "8b86125043db59865db13ee196450821a29576127e280afdce51aabcd897bc58"
+  },
+  "payloadClassification": "LOCAL/private preparation only; no new real-record publication permission",
+  "copies": "Thin metadata/pointers only. No directions/ingredient corpus copied."
+}

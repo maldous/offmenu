@@ -1,0 +1,101 @@
+{
+  "sourceCommit": "e57db238d96059caa00712e9f6fb94f770e134db",
+  "workerVersion": "139f5839-fadc-446e-9557-9031168a521e",
+  "deployment": "495d5259-cea5-42f0-90d8-c04c718c2a34",
+  "deployedAt": "2026-10-13T01:59:18.395854Z",
+  "workerSha256": "74916152a1aa372eff4d6031d53e77537da0af1ec0d23e180b2d03b66d8d1e34",
+  "tests": {
+    "javascript": 106,
+    "python": 7,
+    "build": "pass"
+  },
+  "publicRoutes": {
+    "/api/health": 200,
+    "/api/catalogue/coverage": 200,
+    "/api/catalogue/country?code=AU": 200,
+    "/api/catalogue/country?code=AQ": 200,
+    "/api/catalogue/records?kind=source&country=AU&limit=3": 200,
+    "/api/data/public?source=afcd&query=carrot&country=AU": 200,
+    "/api/personal/health": 401,
+    "/api/data/connections": 401,
+    "/api/v1/health": 401,
+    "/mcp": 401,
+    "/.well-known/oauth-protected-resource/mcp": 200,
+    "/.well-known/oauth-authorization-server": 200,
+    "/openapi.json": 200,
+    "/.netlify/identity/settings": 200,
+    "/api/recipes": 200
+  },
+  "workflows": {
+    "release": {
+      "status": 200,
+      "cache": null,
+      "records": 0
+    },
+    "calculation": {
+      "status": 200,
+      "cache": null,
+      "records": 0
+    },
+    "comparison": {
+      "status": 200,
+      "cache": null,
+      "records": 0
+    },
+    "qualification": {
+      "status": 200,
+      "cache": null,
+      "records": 0
+    },
+    "gleifMiss": {
+      "status": 200,
+      "cache": "hit",
+      "records": 10
+    },
+    "wikidata": {
+      "status": 200,
+      "cache": "miss",
+      "records": 1
+    },
+    "gleifHit": {
+      "status": 200,
+      "cache": "hit",
+      "records": 10
+    },
+    "crossOrigin": {
+      "status": 403,
+      "cache": null,
+      "records": 0
+    }
+  },
+  "browser": [
+    "31 quantified recipes / 70 total",
+    "Cook raw stock once",
+    "Half-serving with saved remainder leaves 0.5 cooked portions",
+    "Australia country summary",
+    "Antarctica has no ordinary starter basket",
+    "Synthetic 300g example gives 390 kcal / 7.5g protein; unknown metrics remain unknown",
+    "GLEIF 10 company candidates; repeated lookup cache hit"
+  ],
+  "preservation": {
+    "accountRecords": 1,
+    "summedRevisions": 2,
+    "snapshotBytes": 821,
+    "unchanged": true,
+    "vaultBindingRetained": true,
+    "identitySettings": "same Netlify Identity endpoint; live settings 200",
+    "queryRedaction": true,
+    "maintenanceCron": "17 * * * *",
+    "sourceCountryLinks": 1400,
+    "activeLeasesAfterChecks": 0
+  },
+  "blocked": [
+    "No provider credentials configured for BYOC live verification",
+    "Native HealthKit/Health Connect bridge and granular device permissions",
+    "Physical scanner/accessibility trials",
+    "Independent recipe/nutrition review",
+    "Two-device signed-in/offline household pilot",
+    "Independent third-party MCP-client certification",
+    "Provider contracts, complete quantitative country baskets and complete worldwide product/menu/ownership/legal/recall coverage"
+  ]
+}

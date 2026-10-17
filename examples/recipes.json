@@ -1,0 +1,15 @@
+[
+  {
+    "id": "demo-coconut-rice",
+    "title": "Coconut rice (demonstration)",
+    "servings": 2,
+    "source": "offmenu authored demonstration",
+    "license": "CC0-1.0",
+    "instructions": ["Rinse rice. Combine with coconut milk and 200 ml water. Bring to a simmer, cover and cook gently until rice is tender. Rest before serving."],
+    "ingredients": [
+      {"ingredient": "rice", "quantity": 150, "unit": "g"},
+      {"ingredient": "coconut milk", "quantity": 200, "unit": "ml"},
+      {"ingredient": "water", "quantity": 200, "unit": "ml"}
+    ]
+  }
+]

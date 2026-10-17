@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "offmenu-data-handoff/1",
+  "scope": "Acquisition, declarative contracts and data alignment; application/i18n realization belongs to OffMenu i18n task",
+  "implementationThread": "01a136bd-f4e7-72f2-872f-467a1b35ad50",
+  "packageDirectory": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014",
+  "packageManifestSha256": "99a5b2cb384ec1d8b03f958f1380954a07e470b92d47299698cbe4d43aca2121",
+  "hostedManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+  "hostedStatus": "all-public-package-files-and-native-downloads-verified",
+  "contracts": {
+    "schema": "corpus/common-data.schema.json",
+    "contract": "corpus/common-data-contract.json",
+    "sourceMappings": "corpus/common-source-mappings.json",
+    "typeDiscovery": "docs/common-data-type-discovery-20261014.json"
+  },
+  "registeredTypes": 109,
+  "mappedLegacyKinds": 28,
+  "acceptance": {
+    "status": "all-packets-schema-identity-citation-and-scope-checked",
+    "sourceCount": 20,
+    "sourceRecordTotal": 22574292,
+    "recipeRecords": 25135,
+    "recipeConcepts": 24988,
+    "crossSourceConcepts": 93,
+    "multiLanguageConcepts": 591,
+    "counts": {
+      "resources": 441391,
+      "translations": 3242,
+      "packets": 79534,
+      "assertions": 2199543,
+      "relations": 459245
+    },
+    "declaredExternalReferenceCount": 362
+  },
+  "recipeCoverage": {
+    "sourceRecipes": 24879,
+    "partialHistoricalOcrCandidates": 256,
+    "languageEditionCodes": 32,
+    "standardQuantityIngredients": 48165,
+    "sourceNumericQuantities": 117400
+  },
+  "schemaEvolution": "Every newly acquired field/type must map to the common resource/assertion/value/relation contract. Preserve typed unmapped source facts, original locators, vocabulary/measurement definitions and type proposals; register extensions with evidence before semantic qualification. No field dropped merely because a current consumer lacks support.",
+  "identityPolicy": "Source variants remain distinct. Candidate concept links, ingredient matches and quantities require review; no recipe averaging, new worked recipe, nutrient equivalence or dietary eligibility is inferred.",
+  "translationPolicy": "Stable identities, source hashes, RDF/XML expressions and quantity dimensions remain fixed. Display text carries language and citation. A translation references its exact source-text hash; source edition language never constrains the target language or identifies country.",
+  "newSourceFindings": {
+    "formalExpressions": 14365,
+    "unicodeIrisPreserved": true,
+    "mistypedAnyUriAnnotations": 4,
+    "sourceNotationRetained": true,
+    "genericFlourSeparateFromWheatFlour": true
+  },
+  "publicationPrivacy": {
+    "privateDataPublished": false,
+    "originalSourceArchivesPublished": false,
+    "sourceRights": "Per-citation licence, attribution and rights scope retained; imported FoodOn classes remain references."
+  },
+  "tests": {
+    "python": "36 passed",
+    "wholePackage": "79,534 packets checked against schema; resource/assertion/relation identity uniqueness, citation resolution and public scope checked",
+    "javascript": "119 passed",
+    "nativeRecipeSchema": "25,135 validated",
+    "publishedData": "170 files and both native recipe downloads fully read back; bytes/hashes/counts checked; base 22,519,902 records unchanged",
+    "recipeConsumer": "All 25,135 recipes exercised through stock matching/portable export; all 256 incomplete OCR candidates withheld from planning and personal conversion"
+  },
+  "limits": "Entire 20-source corpus is declaratively mapped; full resource graphs in this package cover recipes, ingredient terminology and FoodOn. Remaining legacy source records are not falsely claimed migrated. Translation UI, reviewed cross-source synthesis and application migration are the implementing agent’s work.",
+  "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+  "immutableManifest": "https://6acea38bcfc2cc066ba1ec8f--offmenu-corpus.netlify.app/common-data/manifest.json",
+  "deploy": {
+    "id": "6acea38bcfc2cc066ba1ec8f",
+    "state": "ready",
+    "publishedAt": "2026-10-13T21:35:56.647Z"
+  },
+  "independentVerification": {
+    "status": "independent-data-verification-passed",
+    "packets": 79534,
+    "resources": 441391,
+    "assertions": 2199543,
+    "relations": 459245,
+    "localizedSourceTexts": 685020,
+    "citations": 54391,
+    "translationsChecked": 3242,
+    "quantitiesChecked": 224639,
+    "externalReferences": 362,
+    "allFileDigestsChecked": 170
+  },
+  "checkedAt": "2026-10-13T21:37:59.318718+00:00",
+  "recipeConsumerVerification": "docs/common-data-recipe-consumer-verification-20261014.json",
+  "packageManifestPayloadSha256": "99a5b2cb384ec1d8b03f958f1380954a07e470b92d47299698cbe4d43aca2121",
+  "packageManifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+  "servingManifestPayloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+  "servingManifestByteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+  "manifestChecksumDefinition": {
+    "legacyFields": [
+      "packageManifestSha256",
+      "servingManifestSha256"
+    ],
+    "legacyMeaning": "Producer payload digest excluding its own manifestSha256 field; not exact downloaded bytes. Use the explicitly named ByteSha256 fields for byte pinning.",
+    "payloadAlgorithm": "Legacy producer payload digest: remove only the top-level manifestSha256 field, retain JSON member order, serialize with Python json.dumps ensure_ascii=True and separators=(comma,colon), then SHA-256 UTF-8 bytes. This is not a digest of downloaded bytes and not RFC 8785 canonical JSON.",
+    "byteAlgorithm": "SHA-256 of the exact UTF-8 file bytes, including whitespace and trailing newline. Use this value to pin downloaded manifests.",
+    "publishedDefinitionsAndChecksums": "https://offmenu-corpus.netlify.app/common-data/manifest-checksums.json",
+    "servingByteChecksum": "https://offmenu-corpus.netlify.app/common-data/manifest.json.sha256",
+    "packageByteChecksum": "https://offmenu-corpus.netlify.app/common-data/releases/common-data-20261014/manifest.json.sha256"
+  },
+  "manifestChecksumVerification": "docs/common-data-manifest-checksum-verification-20261014.json",
+  "manifestChecksumDeployment": {
+    "id": "6acea54e7b6d662e6991719f",
+    "immutableChecksumReceipt": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
+  },
+  "implementationLifecycle": {
+    "status": "merged-to-main-and-conversation-archived",
+    "mergeCommit": "776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f",
+    "branchAndWorktreeClosed": true,
+    "workerDeploymentOfI18nPerformed": false
+  },
+  "developmentExpansion": {
+    "status": "semantic-recovery-running-local-only",
+    "evidence": "docs/common-corpus-expansion-20261014.json",
+    "registeredTypes": 110,
+    "newType": "UnitDefinition",
+    "countingRule": "Existing acceptance and hosted checksums above describe the published core. Development graph source coverage and extra recipes must pass independent combined validation before replacing it.",
+    "mappedCollectionCount": 22,
+    "mappedSourceRecords": 22574390,
+    "qualifiedLocalNationalRecords": 36737,
+    "qualifiedLocalReferenceRecords": 3896,
+    "additionalRecipeSourceRecords": 42,
+    "qualifiedUnitDefinitions": 56,
+    "historicalRecoveryRepresentations": 5,
+    "combinedReleaseQualified": false,
+    "publicServingReleaseChanged": false
+  }
+}

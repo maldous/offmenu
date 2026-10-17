@@ -1,0 +1,12 @@
+{
+  "schema": "offmenu-catalogue-rights-notices/1",
+  "scope": "Source-derived recipe content retains each record licence/attribution/source revision. UI code is separate original presentation code.",
+  "changes": "Fields selected and serialized for static browsing; no images, media, source archives or original full-text containers; quantities remain source-qualified. No endorsement implied.",
+  "sourceLicenceCounts": {
+    "CC BY-SA 4.0": 17880,
+    "Unlicense": 806,
+    "Unlicense adaptation; original work public domain": 6192
+  },
+  "attribution": "Per-record attribution, licence URI, original source URL, revision/history and original change notices retained. CC BY-SA recipe derivatives remain share-alike under their source terms; CC0/Unlicense/public-domain-labelled records retain their labels without relicensing other components.",
+  "limitation": "Licence labels and original-source qualification are inherited from held records, not independent new legal/culinary certification. Incomplete OCR/schema-example fixtures excluded; no dietary/allergen/health/origin claim."
+}

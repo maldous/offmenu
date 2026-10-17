@@ -1,0 +1,101 @@
+{
+  "id": "6acea54e7b6d662e6991719f",
+  "site_id": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+  "build_id": null,
+  "state": "ready",
+  "name": "offmenu-corpus",
+  "url": "http://offmenu-corpus.netlify.app",
+  "ssl_url": "https://offmenu-corpus.netlify.app",
+  "admin_url": "https://app.netlify.com/projects/offmenu-corpus",
+  "deploy_url": "http://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app",
+  "deploy_ssl_url": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app",
+  "created_at": "2026-10-13T21:40:30.871Z",
+  "updated_at": "2026-10-13T21:41:15.520Z",
+  "user_id": "6949661f255143bbcf578c0b",
+  "error_message": null,
+  "required": [],
+  "required_functions": [],
+  "required_edge_functions": [],
+  "required_server": [],
+  "commit_ref": null,
+  "review_id": null,
+  "branch": null,
+  "commit_url": null,
+  "skipped": null,
+  "locked": null,
+  "title": "Publish exact-byte checksums for common data manifests",
+  "commit_message": null,
+  "review_url": null,
+  "published_at": "2026-10-13T21:41:09.039Z",
+  "context": "production",
+  "deploy_time": 38,
+  "available_functions": [],
+  "screenshot_url": "https://d33wubrfki0l68.cloudfront.net/6acea54e7b6d662e6991719f/screenshot_2026-10-13-21-41-09-0000.webp",
+  "committer": null,
+  "skipped_log": null,
+  "manual_deploy": false,
+  "plugin_state": "none",
+  "lighthouse_plugin_scores": null,
+  "links": {
+    "permalink": "https://6acea54e7b6d662e6991719f--offmenu-corpus.netlify.app",
+    "alias": "https://offmenu-corpus.netlify.app",
+    "branch": null
+  },
+  "framework": null,
+  "entry_path": null,
+  "views_count": null,
+  "function_schedules": [],
+  "public_repo": null,
+  "pending_review_reason": null,
+  "lighthouse": null,
+  "edge_functions_present": null,
+  "expires_at": null,
+  "blobs_region": "us-east-2",
+  "deploy_validations_report": null,
+  "strict_contributor_verification_failure": false,
+  "agent_runner_id": null,
+  "deploy_source": "api",
+  "database_branch_id": null,
+  "database_migrations": null,
+  "database_snapshots": null,
+  "skew_protection_token": "f77920d317edf04d88a52050347263b281a51fc946a11dee458f718d6710d0dd366163656135346537623664363632653639393137313966",
+  "has_source_zip": false,
+  "subdomain_alias": "6acea54e7b6d662e6991719f",
+  "functions_region": "cmh",
+  "functions_region_overrides": [],
+  "summary": {
+    "status": "ready",
+    "messages": [
+      {
+        "type": "info",
+        "title": "3 new files uploaded",
+        "description": "3 assets changed.",
+        "details": null
+      },
+      {
+        "type": "info",
+        "title": "No redirect rules processed",
+        "description": "This deploy did not include any redirect rules. [Learn more about redirects](https://docs.netlify.com/routing/redirects/)",
+        "details": ""
+      },
+      {
+        "type": "info",
+        "title": "1 header rule processed",
+        "description": "All header rules deployed without errors.",
+        "details": ""
+      },
+      {
+        "type": "info",
+        "title": "No functions deployed",
+        "description": "This deploy did not include any functions. [Learn more about Netlify Functions](https://docs.netlify.com/functions/overview/)",
+        "details": null
+      },
+      {
+        "type": "info",
+        "title": "No edge functions deployed",
+        "description": "This deploy did not include any edge functions. [Learn more about Edge Functions](https://docs.netlify.com/edge-functions/overview/)",
+        "details": null
+      }
+    ]
+  }
+}

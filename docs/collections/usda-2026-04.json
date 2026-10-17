@@ -1,0 +1,725 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "usda-files",
+  "scope": "Every CSV table and supporting workbook in the supplied archive",
+  "license": "USDA FoodData Central public domain / CC0",
+  "attribution": "US Department of Agriculture, Agricultural Research Service, FoodData Central",
+  "url": "https://fdc.nal.usda.gov/download-datasets/",
+  "archiveSha256": "c33d91e5c44ddbcd71ed6038714fb648b26089b3f91fabfa3be63d96d5763a01",
+  "tables": {
+    "agricultural_samples": {
+      "raw": 810,
+      "accepted": 810,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "acquisition_date",
+        "market_class",
+        "treatment",
+        "state"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_protein_conversion_factor": {
+      "raw": 366,
+      "accepted": 366,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "food_nutrient_conversion_factor_id",
+        "value"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "acquisition_samples": {
+      "raw": 8361,
+      "accepted": 8361,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id_of_sample_food",
+        "fdc_id_of_acquisition_food"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "sample_food": {
+      "raw": 4079,
+      "accepted": 4079,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "lab_method_nutrient": {
+      "raw": 671,
+      "accepted": 671,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "lab_method_id",
+        "nutrient_id"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_attribute": {
+      "raw": 2529532,
+      "accepted": 2529532,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id",
+        "seq_num",
+        "food_attribute_type_id",
+        "name",
+        "value"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "fndds_ingredient_nutrient_value": {
+      "raw": 275535,
+      "accepted": 275535,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "ingredient code",
+        "Ingredient description",
+        "Nutrient code",
+        "Nutrient value",
+        "Nutrient value source",
+        "FDC ID",
+        "Derivation code",
+        "SR AddMod year",
+        "Foundation year acquired",
+        "Start date",
+        "End date"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "sub_sample_result": {
+      "raw": 134267,
+      "accepted": 134267,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "food_nutrient_id",
+        "adjusted_amount",
+        "lab_method_id",
+        "nutrient_name"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "survey_fndds_food": {
+      "raw": 5432,
+      "accepted": 5432,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "food_code",
+        "wweia_category_code",
+        "start_date",
+        "end_date"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_nutrient_conversion_factor": {
+      "raw": 789,
+      "accepted": 789,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "microbe": {
+      "raw": 17,
+      "accepted": 17,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "foodId",
+        "method",
+        "microbe_code",
+        "min_value",
+        "max_value",
+        "uom"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "measure_unit": {
+      "raw": 123,
+      "accepted": 123,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "name"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "fndds_derivation": {
+      "raw": 49,
+      "accepted": 49,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "derivation code",
+        "derivation description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "sub_sample_food": {
+      "raw": 75055,
+      "accepted": 75055,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "fdc_id_of_sample_food"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "input_food": {
+      "raw": 24622,
+      "accepted": 24622,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id",
+        "fdc_of_input_food",
+        "seq_num",
+        "amount",
+        "sr_code",
+        "sr_description",
+        "unit",
+        "portion_code",
+        "portion_description",
+        "gram_weight",
+        "retention_code"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "market_acquisition": {
+      "raw": 7577,
+      "accepted": 7577,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "brand_description",
+        "expiration_date",
+        "label_weight",
+        "location",
+        "acquisition_date",
+        "sales_type",
+        "sample_lot_nbr",
+        "sell_by_date",
+        "store_city",
+        "store_name",
+        "store_state",
+        "upc_code",
+        "acquisition_number"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_component": {
+      "raw": 3066,
+      "accepted": 3066,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id",
+        "name",
+        "pct_weight",
+        "is_refuse",
+        "gram_weight",
+        "data_points",
+        "min_year_acquired"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food": {
+      "raw": 2101279,
+      "accepted": 2101279,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "data_type",
+        "description",
+        "food_category_id",
+        "publication_date"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "lab_method": {
+      "raw": 305,
+      "accepted": 305,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "description",
+        "technique"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "sr_legacy_food": {
+      "raw": 7793,
+      "accepted": 7793,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "NDB_number"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "foundation_food": {
+      "raw": 395,
+      "accepted": 395,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "NDB_number",
+        "footnote"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_calorie_conversion_factor": {
+      "raw": 5134,
+      "accepted": 5134,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "food_nutrient_conversion_factor_id",
+        "protein_value",
+        "fat_value",
+        "carbohydrate_value"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_category": {
+      "raw": 28,
+      "accepted": 28,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "code",
+        "description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_attribute_type": {
+      "raw": 5,
+      "accepted": 5,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "name",
+        "description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "branded_food": {
+      "raw": 1999950,
+      "accepted": 1999950,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "fdc_id",
+        "brand_owner",
+        "brand_name",
+        "subbrand_name",
+        "gtin_upc",
+        "ingredients",
+        "not_a_significant_source_of",
+        "serving_size",
+        "serving_size_unit",
+        "household_serving_fulltext",
+        "branded_food_category",
+        "data_source",
+        "package_weight",
+        "modified_date",
+        "available_date",
+        "market_country",
+        "discontinued_date",
+        "preparation_state_code",
+        "trade_channel",
+        "short_description",
+        "material_code"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "wweia_food_category": {
+      "raw": 172,
+      "accepted": 172,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "wweia_food_category",
+        "wweia_food_category_description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_nutrient_source": {
+      "raw": 10,
+      "accepted": 10,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "code",
+        "description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_portion": {
+      "raw": 47446,
+      "accepted": 47446,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id",
+        "seq_num",
+        "amount",
+        "measure_unit_id",
+        "portion_description",
+        "modifier",
+        "gram_weight",
+        "data_points",
+        "footnote",
+        "min_year_acquired"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_nutrient": {
+      "raw": 27195013,
+      "accepted": 27195013,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "fdc_id",
+        "nutrient_id",
+        "amount",
+        "data_points",
+        "derivation_id",
+        "min",
+        "max",
+        "median",
+        "loq",
+        "footnote",
+        "min_year_acquired",
+        "percent_daily_value"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "lab_method_code": {
+      "raw": 214,
+      "accepted": 214,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "lab_method_id",
+        "code"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_nutrient_derivation": {
+      "raw": 80,
+      "accepted": 80,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "code",
+        "description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "retention_factor": {
+      "raw": 270,
+      "accepted": 270,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "n.gid",
+        "n.code",
+        "n.foodGroupId",
+        "n.description"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "nutrient": {
+      "raw": 477,
+      "accepted": 477,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "name",
+        "unit_name",
+        "nutrient_nbr",
+        "rank"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    },
+    "food_update_log_entry": {
+      "raw": 1620169,
+      "accepted": 1620169,
+      "duplicates": 0,
+      "quarantined": 0,
+      "excluded": 0,
+      "columns": [
+        "id",
+        "description",
+        "last_updated"
+      ],
+      "note": "All raw rows preserved; semantic identity duplicates are not removed at raw collection"
+    }
+  },
+  "status": "normalized",
+  "publication": "not active in production; collection and normalization complete locally",
+  "members": [
+    {
+      "path": "FoodData_Central_csv_2026-04-30/agricultural_samples.csv",
+      "bytes": 38059,
+      "crc32": 1968276697
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_protein_conversion_factor.csv",
+      "bytes": 5516,
+      "crc32": 1433443190
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/acquisition_samples.csv",
+      "bytes": 155247,
+      "crc32": 900920341
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/sample_food.csv",
+      "bytes": 39068,
+      "crc32": 887543536
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/lab_method_nutrient.csv",
+      "bytes": 9424,
+      "crc32": 517524769
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_attribute.csv",
+      "bytes": 137983467,
+      "crc32": 1726365114
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/fndds_ingredient_nutrient_value.csv",
+      "bytes": 36286830,
+      "crc32": 401002627
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/sub_sample_result.csv",
+      "bytes": 5294585,
+      "crc32": 2957610377
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/survey_fndds_food.csv",
+      "bytes": 293395,
+      "crc32": 1117337087
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_nutrient_conversion_factor.csv",
+      "bytes": 13988,
+      "crc32": 2483754693
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/microbe.csv",
+      "bytes": 1579,
+      "crc32": 2939952949
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/measure_unit.csv",
+      "bytes": 1969,
+      "crc32": 3406271199
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/fndds_derivation.csv",
+      "bytes": 4826,
+      "crc32": 2818995651
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/sub_sample_food.csv",
+      "bytes": 1478511,
+      "crc32": 1587543091
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/input_food.csv",
+      "bytes": 1698566,
+      "crc32": 2251319229
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/market_acquisition.csv",
+      "bytes": 914133,
+      "crc32": 595738081
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/Download API Field Descriptions.xlsx",
+      "bytes": 32849,
+      "crc32": 4053513398
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_component.csv",
+      "bytes": 176962,
+      "crc32": 2707758780
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food.csv",
+      "bytes": 219518822,
+      "crc32": 3310987345
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/lab_method.csv",
+      "bytes": 13084,
+      "crc32": 3789356956
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/sr_legacy_food.csv",
+      "bytes": 130404,
+      "crc32": 1181037755
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/foundation_food.csv",
+      "bytes": 17257,
+      "crc32": 1665481836
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_calorie_conversion_factor.csv",
+      "bytes": 144790,
+      "crc32": 244777169
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_category.csv",
+      "bytes": 997,
+      "crc32": 667028085
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_attribute_type.csv",
+      "bytes": 331,
+      "crc32": 465411622
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/branded_food.csv",
+      "bytes": 954002257,
+      "crc32": 1188551985
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/wweia_food_category.csv",
+      "bytes": 5119,
+      "crc32": 3807188550
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_nutrient_source.csv",
+      "bytes": 602,
+      "crc32": 946760617
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_portion.csv",
+      "bytes": 3376892,
+      "crc32": 1178695383
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_nutrient.csv",
+      "bytes": 1792081470,
+      "crc32": 939046115
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/lab_method_code.csv",
+      "bytes": 4582,
+      "crc32": 3273128966
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_nutrient_derivation.csv",
+      "bytes": 8294,
+      "crc32": 2332458406
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/retention_factor.csv",
+      "bytes": 13311,
+      "crc32": 2715217752
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/nutrient.csv",
+      "bytes": 21556,
+      "crc32": 2164366366
+    },
+    {
+      "path": "FoodData_Central_csv_2026-04-30/food_update_log_entry.csv",
+      "bytes": 110435047,
+      "crc32": 948219618
+    }
+  ],
+  "rawRows": 36049091,
+  "normalizedRows": 4202558,
+  "featureExercises": [],
+  "foodsByType": {
+    "branded_food": 1999950,
+    "sample_food": 4079,
+    "market_acquistion": 7577,
+    "sub_sample_food": 75055,
+    "foundation_food": 469,
+    "experimental_food": 114,
+    "sr_legacy_food": 7793,
+    "survey_fndds_food": 5432,
+    "agricultural_acquisition": 810
+  },
+  "nutrientObservations": 27195013,
+  "duplicateNutrientObservationsPreserved": 1,
+  "normalizedSha256": "23b989bdce62befb1891da72d7a0cbb7f09971fa4899ec1c8838ec525297bedc",
+  "normalizedBytes": 1825378432
+}

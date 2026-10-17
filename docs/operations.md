@@ -1,0 +1,17 @@
+# OffMenu operations
+
+Source of truth: private `maldous/offmenu`, branch `main`. Local path `/home/user/src/offmenu`. Existing pre-migration local history is retained in `checkpoint/pre-github-sync` and the original checkpoint bundle. Remote main was reconstructed through GitHub MCP with every blob/tree/commit SHA verified because this runtime's terminal lacks GitHub credentials. Normal authenticated `git fetch/pull/push` can be used in an environment with repository access.
+
+Run `npm ci`, `npm test`, `python3 -m unittest discover -s tests`, then `npm run build`. The generated Worker embeds its source commit and build date; `/api/health` exposes these without private state. Build after committing functional source. Production verification results belong in a subsequent evidence-only commit.
+
+Cloudflare Worker `offmenu` binds D1 `offmenu-users` (`006cbdd6-6be8-4181-9dd5-519de280b6ef`) as `DB`. Keep current compatibility settings, observability query redaction and hourly maintenance schedule. Module upload must set `keep_bindings:["secret_text"]`; never replace `PROVIDER_VAULT_KEY`. Netlify Identity remains the identity provider. Source uploads must not recreate authentication or reset D1.
+
+New resolver leases prevent equivalent public misses from sharing in-flight request promises across Workers requests. Keys partition by source, exact query, source policy document and normalizer version. Expired leases are reclaimable; failures back off. Policy checks occur before reads and before writes. Source withdrawal immediately denies reads; maintenance removes expired cache, leases and explicitly expired private retained records. Shared contribution and behavioural aggregates remain disabled.
+
+Private imported records retain original rights. Reviewed open sources permit private processing under their attached notices. Unknown provider persistence/export/derivation is denied until a reviewed active source policy permits the action/audience/market. `source_policies` is operator-maintained, not writable by anonymous import payloads. User-confirmed personal/retailer imports remain private and unverified. Provider disconnect removes account-owned source records; external credentials must be revoked at the provider separately. Sensitive unified kinds use dedicated consented health/history workflows, not generic data scopes.
+
+Read-only REST and MCP use separately scoped tokens. Sensitive health scope is never automatically requested when the caller omits scopes. APIs remain account-scoped; a kitchen membership does not grant private measurements/history. Household-scoped delegated integrations and external-client certification remain acceptance work, not an implicit widening of existing token permissions.
+
+Deployment acceptance: verify release commit, catalogue completeness, country/source pagination, special territory behaviour, synthetic calculations/comparisons, company candidates and warm cache, auth-required private routes, identity settings, OpenAPI/OAuth metadata, and browser demo. Recheck D1 counts, account aggregate revision/size and secret binding. Do not include private documents, credential values or production snapshots in logs or evidence files.
+
+Public food-place API attribution: Overture/Foursquare references retain the full [Foursquare publisher NOTICE](https://offmenu-corpus.netlify.app/notices/overture-food-places/2026-09-23.1/FOURSQUARE-NOTICE.txt), Apache 2.0 and CDLA Permissive 2.0 licence copies. See [public lookup contracts and notices](places-national-expansion.md).

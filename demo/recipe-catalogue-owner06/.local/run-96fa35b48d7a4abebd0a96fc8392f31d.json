@@ -1,0 +1,14 @@
+{
+  "schema": "offmenu-private-catalogue-run/1",
+  "runId": "96fa35b48d7a4abebd0a96fc8392f31d",
+  "ownerThread": "01a138a5-afff-7282-acd3-3a457bb91d24",
+  "pid": 959569,
+  "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+  "birthTicks": "2455715",
+  "cwd": "/home/user/src/offmenu-workers/worker-06",
+  "port": 19166,
+  "baseUrl": "http://127.0.0.1:19166",
+  "startedAt": "2026-10-14T11:34:44.686404+00:00",
+  "scope": "private catalogue preparation; not deployed",
+  "indexSha256": "8b86125043db59865db13ee196450821a29576127e280afdce51aabcd897bc58"
+}

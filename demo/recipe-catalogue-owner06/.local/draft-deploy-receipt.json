@@ -1,0 +1,21 @@
+{
+  "schema": "offmenu-code-only-deploy/1",
+  "phase": "draft",
+  "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+  "deployId": "6acf61fbc339faabe3f3d7ec",
+  "state": "ready",
+  "deployUrl": "https://6acf61fbc339faabe3f3d7ec--offmenu-corpus.netlify.app",
+  "productionUrl": "https://offmenu-corpus.netlify.app/recipes/",
+  "manifestSha256": "96bd4a8d7191f80252c3b33264b6fd8a8f29d7fe94b7fcddc8b174b881054681",
+  "newUploadBytes": 17926,
+  "uploadedPaths": [
+    "/_headers",
+    "/recipes/gallery/app.js",
+    "/recipes/gallery/style.css",
+    "/recipes/index.html"
+  ],
+  "existingFilesReused": 92835,
+  "newRealRecipeBytesUploaded": 0,
+  "publishedAt": null,
+  "draft": true
+}

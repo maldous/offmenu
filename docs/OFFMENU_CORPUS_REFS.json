@@ -1,0 +1,635 @@
+{
+  "schemaVersion": "offmenu-corpus-document-index/1",
+  "checkedAt": "2026-10-14T08:45:49.973834+00:00",
+  "branch": "feature/offmenu-corpus-document-index-20261014",
+  "publication": {
+    "repository": "maldous/offmenu",
+    "privateAuthenticationRequired": true,
+    "githubManifestConnectorVerified": true,
+    "ghCLIAuthentication": "unavailable; no login/configuration change attempted",
+    "canonicalRegisterAndSourceLedgerConnectorVerified": true,
+    "historicalAdvertisedRemoteMain": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "historicalAdvertisedRemoteDevelop": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "historicalRemoteRefsCheckedAtUTC": "2026-10-14T08:41:10.145121+00:00",
+    "worker14MappingPublishedAtHistoricalSnapshot": false,
+    "prePublicationObservation": {
+      "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+      "thisIndexPublished": false,
+      "scope": "Operator observation before root authorized the push; historical only, superseded by currentGitHubObservation for availability."
+    },
+    "currentGitHubObservation": {
+      "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+      "publishedCommit": "b637424f53ceef2010b6d3465f9fb39e59a2878d",
+      "reviewBranch": "feature/offmenu-corpus-document-index-20261014",
+      "pullRequestUrl": "https://github.com/maldous/offmenu/pull/4",
+      "pullRequestState": "open",
+      "mergedIntoDevelop": false,
+      "privateAuthenticationRequired": true,
+      "artifacts": {
+        "index": {
+          "published": true,
+          "gitPath": "docs/OFFMENU_CORPUS_INDEX.md",
+          "gitBlob": "c695512261a24ca5946d8613199a78563e779041",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/OFFMENU_CORPUS_INDEX.md"
+        },
+        "refs": {
+          "published": true,
+          "gitPath": "docs/OFFMENU_CORPUS_REFS.json",
+          "gitBlob": "f4e10f99ceaaf813c9e6e59965bc1c7ae45bc83b",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/OFFMENU_CORPUS_REFS.json"
+        },
+        "csv": {
+          "published": true,
+          "gitPath": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+          "gitBlob": "ad5d0e7c27e31e4c77a602d99b352a03fc9e8d8b",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv"
+        },
+        "receipt": {
+          "published": true,
+          "gitPath": "docs/dataset-discovery/consolidation-receipt.json",
+          "gitBlob": "1b66ba3b8447dd0efe77dd9720fbe922ca4a9de7",
+          "url": "https://github.com/maldous/offmenu/blob/b637424f53ceef2010b6d3465f9fb39e59a2878d/docs/dataset-discovery/consolidation-receipt.json"
+        }
+      },
+      "verification": "Connected GitHub PR metadata plus successful file reads returning exact blob IDs for all four paths at the published commit. Timestamped availability observation, not an evergreen branch-tip claim.",
+      "scope": "Private GitHub review publication only; not corpus/source admission, whole-release acceptance, app deployment or production publication. This later local correction is not yet pushed."
+    }
+  },
+  "countsChecked": {
+    "sourcePDFs": 5,
+    "researchRegisters": 4,
+    "canonicalRequirementIDs": 105,
+    "sourceLedgerEntries": 1303,
+    "countryMatrixUniqueISO2": 249,
+    "historicalLocalSecondaryMappingIDsMatch": true
+  },
+  "refs": [
+    {
+      "id": "report-1",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "scope": "authoritative source PDF; research/specification, not ingested corpus",
+      "sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+      "bytes": 123263,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "blobOid": "cc847101c5feefbc407e2621587d4e1aae548340",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf"
+    },
+    {
+      "id": "report-2",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "scope": "authoritative source PDF; research/specification, not ingested corpus",
+      "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+      "bytes": 129890,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "blobOid": "952472eae41d18b7614333ce0b76f690d9676087",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf"
+    },
+    {
+      "id": "report-3",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "scope": "authoritative source PDF; research/specification, not ingested corpus",
+      "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+      "bytes": 611508,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "blobOid": "05ff86200dcee3aa065108001ef0ff876e7c746f",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf"
+    },
+    {
+      "id": "report-4",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "scope": "authoritative source PDF; research/specification, not ingested corpus",
+      "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+      "bytes": 120855,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "blobOid": "e44fa722b776de9fda9034a1e0fb5cb34ea2a3ba",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf"
+    },
+    {
+      "id": "report-5",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+      "scope": "authoritative source PDF; research/specification, not ingested corpus",
+      "sha256": "5d4795811f472d0255e4c287a3401a2dbbcbd3991c8516c85dbe5341e9083a19",
+      "bytes": 371312,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+      "blobOid": "84cacba735fa95bf99497d81876b7d9e80fa980c",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf"
+    },
+    {
+      "id": "register-1",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/OffMenu_Enrichment_Source_Register_249.json",
+      "scope": "authoritative unchanged research register/specification; discovery is not data admission",
+      "sha256": "8c305dfa3362d469dc520f8df0a434349977b131fbabf5ff852fae111297c48e",
+      "bytes": 1303934,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/OffMenu_Enrichment_Source_Register_249.json",
+      "blobOid": "ebf46081030cac6a65f703ad514b83b07814ab6c",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/OffMenu_Enrichment_Source_Register_249.json"
+    },
+    {
+      "id": "register-2",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/OffMenu_Basket_Normalization_Spec.json",
+      "scope": "authoritative unchanged research register/specification; discovery is not data admission",
+      "sha256": "61e06a7d99545bd547b85562389cb339b02882e52bb2e0cf8af20a72975fcf6e",
+      "bytes": 195004,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/OffMenu_Basket_Normalization_Spec.json",
+      "blobOid": "51a701a2c1594c6be188e5aefb701c0b482866d7",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/OffMenu_Basket_Normalization_Spec.json"
+    },
+    {
+      "id": "register-3",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/OffMenu_Country_Basket_Register.json",
+      "scope": "authoritative unchanged research register/specification; discovery is not data admission",
+      "sha256": "239ad2177170969423ae0c259c106acdd87d383a486f427a35e7130e12e547b4",
+      "bytes": 6115331,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/OffMenu_Country_Basket_Register.json",
+      "blobOid": "166bd1398b3d43caafd43588f89bfbf4e31a426d",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/OffMenu_Country_Basket_Register.json"
+    },
+    {
+      "id": "register-4",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/OffMenu_Global_Data_Source_Register.json",
+      "scope": "authoritative unchanged research register/specification; discovery is not data admission",
+      "sha256": "ee3b5a6a2e29f4a13c2864195d5a9a861330fcd8a9639acb89a8b3fa54347c37",
+      "bytes": 329897,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/OffMenu_Global_Data_Source_Register.json",
+      "blobOid": "f71cbc769ad6b5f7ba8f3e5bda636ab9f710bcae",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/OffMenu_Global_Data_Source_Register.json"
+    },
+    {
+      "id": "research-manifest",
+      "path": "/home/user/src/offmenu-workers/worker-07/research/manifest.json",
+      "scope": "research metadata counts and preservation limits",
+      "sha256": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483",
+      "bytes": 1636,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "research/manifest.json",
+      "blobOid": "2668a300c6ba24b48ea7388fdb56824867ca9970",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/research/manifest.json"
+    },
+    {
+      "id": "research-audit",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/research-audit.json",
+      "scope": "historical PDF/register preservation checks",
+      "sha256": "25a82031c2f0cc6367a66cabbb2e88ed8ad03c321289bfa7b750d29ed42b9565",
+      "bytes": 2619,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/research-audit.json",
+      "blobOid": "8e131a949bf06b94ff2cc4a76a6535390482cb7f",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/research-audit.json"
+    },
+    {
+      "id": "requirements",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/recommendation-delivery-register.json",
+      "scope": "canonical 105 requirement IDs; not replaced by secondary mappings",
+      "sha256": "c6c6278544e1082462f307c637238d43541c3361c0ee6dd5bbe53da2025693b1",
+      "bytes": 81570,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/recommendation-delivery-register.json",
+      "blobOid": "bc90c983d8a8ce3e2b3c8ca235c612d207d18a53",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/recommendation-delivery-register.json"
+    },
+    {
+      "id": "reconciliation",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/delivery-reconciliation.json",
+      "scope": "historical status/evidence mapping; programmeComplete=false",
+      "sha256": "6c35c597471fdd1aeff1243aa45461b84674162cadd1d7fcd6a0522bc18f9047",
+      "bytes": 70665,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/delivery-reconciliation.json",
+      "blobOid": "53fc8c3862a1046102479610ccbbf060a8a8787f",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/delivery-reconciliation.json"
+    },
+    {
+      "id": "source-ledger",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/source-delivery-ledger.json",
+      "scope": "1303 research/source leads; defaults require rights and acquisition triage",
+      "sha256": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf",
+      "bytes": 1701843,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/source-delivery-ledger.json",
+      "blobOid": "f1244dfa959c845c5cff8279226cc4abbba82089",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/source-delivery-ledger.json"
+    },
+    {
+      "id": "country-matrix",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/country-delivery-matrix.json",
+      "scope": "249 country discovery/work queues, not operational completeness",
+      "sha256": "894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8",
+      "bytes": 133210,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/country-delivery-matrix.json",
+      "blobOid": "12a40e7c7fbe8f42b30e865bfce5656dd27ac92b",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/country-delivery-matrix.json"
+    },
+    {
+      "id": "country-execution",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/country-execution-20261013.json",
+      "scope": "historical geographic collection/access gaps",
+      "sha256": "1b630479e4a036bb4a6148066709c7284dba7e32db549bd9c3f6d36049c45dd4",
+      "bytes": 406546,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/country-execution-20261013.json",
+      "blobOid": "dc7ea168c48338c0e76e2c29133713b7e79bdcfb",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/country-execution-20261013.json"
+    },
+    {
+      "id": "catalogue",
+      "path": "/home/user/src/offmenu-workers/worker-07/public/sources.js",
+      "scope": "published source catalogue/status declarations, not proof every adapter is active",
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "bytes": 17882,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "public/sources.js",
+      "blobOid": "01069c7e14908d026a9f430ccea48901f008a96c",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/public/sources.js"
+    },
+    {
+      "id": "provider-code",
+      "path": "/home/user/src/offmenu-workers/worker-07/cloud/provider-data.mjs",
+      "scope": "published USDA/Edamam private lookup code and pending adapter declarations, not fresh live credentials/provider checks",
+      "sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "bytes": 15641,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "cloud/provider-data.mjs",
+      "blobOid": "77156d0a0ad254fce1a6c0b1e4785acfb4baf773",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/cloud/provider-data.mjs"
+    },
+    {
+      "id": "rights-contract",
+      "path": "/home/user/src/offmenu-workers/worker-07/corpus/common-data-contract.json",
+      "scope": "common semantics and rights contract; private scope is not public redistribution permission",
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "bytes": 46420,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "corpus/common-data-contract.json",
+      "blobOid": "642fe54371c15a9f8882bf2e771f77b28ce8babb",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/corpus/common-data-contract.json"
+    },
+    {
+      "id": "graph-schema",
+      "path": "/home/user/src/offmenu-workers/worker-07/corpus/common-data.schema.json",
+      "scope": "graph schema, not acquisition or app acceptance",
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+      "bytes": 17632,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "corpus/common-data.schema.json",
+      "blobOid": "95a04a9c9f5996dd603919d2bd71932d8215862f",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/corpus/common-data.schema.json"
+    },
+    {
+      "id": "curation-design",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/curation-architecture.md",
+      "scope": "local source archives and curated delivery architecture; historical status narrative",
+      "sha256": "854234d63cfbdc6c5018ae315bd4a5568a41fb695fb90c52d3e55d39c802726e",
+      "bytes": 9086,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/curation-architecture.md",
+      "blobOid": "b986c358ab71cf084d8c3e01bcc9345f2e9e570c",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/curation-architecture.md"
+    },
+    {
+      "id": "publication-history",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/common-data-publication-verification-20261014.json",
+      "scope": "historical package/native-download check receipt; no fresh all-file check",
+      "sha256": "6a924faf378e9113e3ca3ba9f0467043dbde9f87f065d7a72c0a7a0521394157",
+      "bytes": 33941,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/common-data-publication-verification-20261014.json",
+      "blobOid": "c18af38d208203669d89cbc4336ca3b53884b5b1",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/common-data-publication-verification-20261014.json"
+    },
+    {
+      "id": "manifest-checksum-history",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/common-data-manifest-checksum-verification-20261014.json",
+      "scope": "exact manifest byte versus legacy embedded payload hash definitions",
+      "sha256": "27e3126f88bdb02519d682eebcc959db6546d4c22bec97dd6bdf5781e51f78a7",
+      "bytes": 1665,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/common-data-manifest-checksum-verification-20261014.json",
+      "blobOid": "6d87fbe3515867880276c3e22c2706515a73fc8e",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/common-data-manifest-checksum-verification-20261014.json"
+    },
+    {
+      "id": "expanded-history",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/expanded-places-national-20261013.json",
+      "scope": "historical named 18-source 22519902-record curated release claim, not all data acceptance",
+      "sha256": "86621fcc0045965598270d766c3f2bd0d12583d3841cfc7fe0c1078f6a824f84",
+      "bytes": 94964,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "docs/expanded-places-national-20261013.json",
+      "blobOid": "a4d1165669d9cb95507bf4d71924ec06096c94eb",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/docs/expanded-places-national-20261013.json"
+    },
+    {
+      "id": "worker14-json",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/worker-14-backlog.json",
+      "scope": "Secondary operator-local historical backlog mapping only; source hashes retained for custody, not an externally reproducible comparison. Use the published requirements and reconciliation refs instead; Worker 14 evidence is not republished or modified.",
+      "gitCommit": "cd27c470a3671261651c7a42e884d9dda4bdf341",
+      "gitPath": "docs/worker-14-backlog.json",
+      "sha256": "69997199776f89981606b7b8ad35ed7081a8901df7e3c45b343aa87970257347",
+      "bytes": 982362,
+      "availability": {
+        "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+        "scope": "Operator-local retained Git artifact; not part of the approved four-file PR tree. Do not assume this commit is reachable in an external clone. No GitHub link or external git-show instruction is provided.",
+        "includedInApprovedPublication": false
+      }
+    },
+    {
+      "id": "worker14-md",
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/worker-14-backlog.md",
+      "scope": "Secondary operator-local historical backlog mapping only; source hashes retained for custody, not an externally reproducible comparison. Use the published requirements and reconciliation refs instead; Worker 14 evidence is not republished or modified.",
+      "gitCommit": "cd27c470a3671261651c7a42e884d9dda4bdf341",
+      "gitPath": "docs/worker-14-backlog.md",
+      "sha256": "8f468c7e147efa59a60474e3a42ae6b05745df2f7b4270b42911a928f95a27a4",
+      "bytes": 8654,
+      "availability": {
+        "observedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+        "scope": "Operator-local retained Git artifact; not part of the approved four-file PR tree. Do not assume this commit is reachable in an external clone. No GitHub link or external git-show instruction is provided.",
+        "includedInApprovedPublication": false
+      }
+    },
+    {
+      "id": "six-package-qualification",
+      "path": "/home/user/src/offmenu-data/common-ready-six-package-global-20261014.json",
+      "scope": "retained historical producer global qualification proof; not caller authorization/hosting/application acceptance",
+      "sha256": "6d6cb00806d6cd4350e0bb703de1ed7b7722c8e4bc33fc7fea8c96e6a9413fbd",
+      "bytes": 5156
+    },
+    {
+      "id": "common-package-1",
+      "path": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "bytes": 32624
+    },
+    {
+      "id": "common-package-2",
+      "path": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+      "bytes": 3992
+    },
+    {
+      "id": "common-package-3",
+      "path": "/home/user/src/offmenu-data/common-national-semantic-final-20261014/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+      "bytes": 276023
+    },
+    {
+      "id": "common-package-4",
+      "path": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+      "bytes": 4122
+    },
+    {
+      "id": "common-package-5",
+      "path": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "bytes": 4955
+    },
+    {
+      "id": "common-package-6",
+      "path": "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014/manifest.json",
+      "scope": "local common package; exact manifest bytes checked against retained producer proof only; no packet scans",
+      "sha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+      "bytes": 12907
+    },
+    {
+      "id": "curated-expanded",
+      "path": "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs/manifest.json",
+      "scope": "curated projection manifest declares 22519902 records/18 sources; original source archives local; independent source acceptance not implied",
+      "sha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+      "bytes": 5950633
+    },
+    {
+      "id": "curated-recipes",
+      "path": "/home/user/src/offmenu-data/curated-world-recipes-global-20261014/blobs/manifest.json",
+      "scope": "curated recipe projection declares 25135 records; unknown measurements and OCR/rights review remain",
+      "sha256": "5dc6f4b73862266a448eb70265a40a055e13e6675bae8d52f958f74146673c84",
+      "bytes": 523256
+    },
+    {
+      "id": "normalized-off",
+      "path": "/home/user/src/offmenu-data/off-2026-10-12-lf/manifest.json",
+      "scope": "named OFF local collection normalization manifest; raw/accepted/quarantine counts remain release-specific",
+      "sha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2",
+      "bytes": 48196
+    },
+    {
+      "id": "normalized-usda",
+      "path": "/home/user/src/offmenu-data/usda-2026-04/manifest.json",
+      "scope": "named USDA local normalization manifest; excluded records and basis/source identity remain explicit",
+      "sha256": "57de8e6e26f389e872a0ac61a3a08e11cefbfa3455a6aec42a8904ab66eedb1e",
+      "bytes": 19194
+    },
+    {
+      "id": "normalized-prices",
+      "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+      "scope": "named Open Prices local normalization manifest; proof metadata/image/contributor privacy distinctions retained",
+      "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "bytes": 46616
+    },
+    {
+      "id": "normalized-recipes",
+      "path": "/home/user/src/offmenu-data/world-recipes-global-final-20261014/manifest.json",
+      "scope": "named local recipe collection normalization; does not certify cooking/nutrition/identity",
+      "sha256": "4525ec0ee6cd279e4ee2a09997faab24bd8b986ca04b55e053b0a07aa6df1617",
+      "bytes": 3330
+    },
+    {
+      "id": "third-party-candidate",
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-02-develop-candidate-receipt.json",
+      "scope": "local candidate receipt; ledger records bounded source/synthetic acceptance of 49c6ed0, not develop integration, grants or live provider acceptance",
+      "sha256": "4c297806de9781117fec0ef4bb0165d85b939b9f6225887d7a4e476285f41174",
+      "bytes": 1565
+    },
+    {
+      "id": "enrichment-code",
+      "path": "/home/user/src/offmenu-workers/worker-07/cloud/enrichment.mjs",
+      "scope": "published GLEIF/Wikidata candidate enrichment and policy-bound cache code; not verified product ownership/origin or fresh provider execution",
+      "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "bytes": 6561,
+      "gitCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "gitPath": "cloud/enrichment.mjs",
+      "blobOid": "7a4c8d61e6db6325f8e2921438e6e0829c852358",
+      "githubUrl": "https://github.com/maldous/offmenu/blob/abe0ddc9db357b1e8d0d61825392d6b9923352f0/cloud/enrichment.mjs"
+    }
+  ],
+  "commonPackages": [
+    {
+      "ref": "common-package-1",
+      "directory": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014",
+      "releaseId": "common-data-20261014",
+      "grandfathered": true,
+      "manifestHashMatchesRetainedProof": true
+    },
+    {
+      "ref": "common-package-2",
+      "directory": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+      "releaseId": "common-references-20261014",
+      "grandfathered": false,
+      "manifestHashMatchesRetainedProof": true
+    },
+    {
+      "ref": "common-package-3",
+      "directory": "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+      "releaseId": "common-national-20261014",
+      "grandfathered": false,
+      "manifestHashMatchesRetainedProof": true
+    },
+    {
+      "ref": "common-package-4",
+      "directory": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014",
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "grandfathered": false,
+      "manifestHashMatchesRetainedProof": true
+    },
+    {
+      "ref": "common-package-5",
+      "directory": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph",
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "grandfathered": false,
+      "manifestHashMatchesRetainedProof": true
+    },
+    {
+      "ref": "common-package-6",
+      "directory": "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014",
+      "releaseId": "historical-recipe-quality-final-20261014",
+      "grandfathered": false,
+      "manifestHashMatchesRetainedProof": true
+    }
+  ],
+  "thirdParty": {
+    "publishedCodeScope": "USDA and Edamam personal-credential private lookup adapters; public/curated source routes are distinct",
+    "pending": "WhichGrocer/Spoonacular/Instacart adapters, Kroger OAuth/cart, Android Health Connect/Apple HealthKit native bridges, Strava OAuth; catalogue entries are not operational grants",
+    "localAcceptedCandidate": "49c6ed037a0c506dc2e71a7c8ef40d423d6f46d0; ledger says accepted bounded source/synthetic scope, not develop-integrated or pushed",
+    "authorityCaveat": "No live provider access, quota, grant, market, retention or clinical/culinary acceptance checked in this indexing task",
+    "publishedPublicCodeScope": "OFF/Open Prices barcode, UK FSA alerts/ratings and openFDA bounded sample lookups; GLEIF/Wikidata candidate enrichment. Source/rights-policy and matching scope still apply; no fresh endpoint runs."
+  },
+  "hostedManifestCheck": {
+    "checkedAt": "2026-10-14T08:43:26.316324+00:00",
+    "limit": "Three explicit manifest GETs, identity encoding, no redirects, <=1 MiB each, 15-second timeout each; no packets/data files downloaded",
+    "checks": [
+      {
+        "url": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+        "status": 200,
+        "bytes": 53572,
+        "sha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+        "releaseId": "common-data-20261014",
+        "schemaVersion": "offmenu-common-package/1",
+        "declaredStatus": "all-packets-schema-identity-citation-and-scope-checked",
+        "manifestFileEntries": 170,
+        "records": null,
+        "privateProviderData": null,
+        "privateDataPublished": false,
+        "originalSourceArchivesPublished": false
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/manifest.json",
+        "error": "ValueError: manifest byte ceiling exceeded"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
+        "error": "ValueError: manifest byte ceiling exceeded"
+      }
+    ],
+    "scope": "Fresh manifest availability/integrity only, not fresh all-packet/source/app acceptance"
+  },
+  "controls": {
+    "filesystem": "supplied danger-full-access, no filesystem sandbox",
+    "network": "enabled",
+    "reviewer": "mandatory auto_review",
+    "approvalPolicy": "separate value not supplied",
+    "userConfiguration": "permission_profile disabled, file_system unrestricted; not effective-control evidence"
+  },
+  "custody": {
+    "prior": "/home/user/Documents/Codex/2026-10-14/task-2/worker-07-corpus-index/prior-custody.json",
+    "branchReceipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-07-corpus-index/branch-receipt.json",
+    "previousCallerBranch": "feature/common-package-caller-20261014",
+    "previousCallerHead": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c"
+  },
+  "limits": [
+    "Navigation/integrity index only; not a new canonical register or Worker 14 consolidation",
+    "Only local manifest/metadata hashes checked; source records, archives, packets and runtime not replayed",
+    "Private provider/account data never become commons merely by normalization or public source visibility",
+    "No complete corpus, whole-release/country completeness, provider admission or app acceptance claim",
+    "Published b637424 index/batch availability is timestamped separately from pre-publication history; Worker 14 mapping remains operator-local and no external clone command is promised. This correction is not yet pushed."
+  ],
+  "githubVerification": "Repository links resolved against exact GitHub-advertised remote commit/tree after authenticated SSH fetch; manifest and canonical requirement/source-ledger files additionally verified via GitHub connector. Private authentication required; no Android browser trial. CLI authentication unavailable and unchanged.",
+  "historicalSnapshotCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "historicalSnapshotCheckedAtUTC": "2026-10-14T08:48:40.725173+00:00",
+  "currentIntegrationTarget": {
+    "commit": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+    "fetchedAtUTC": "2026-10-14T09:07:16.203531+00:00",
+    "fetchExit": 0,
+    "mergeCommit": "27f2f251c59e974b568e09b1e580cf7b4b6072bd",
+    "meaning": "Last freshly fetched locked origin/develop target, normally merged into the existing index feature; immutable reference URLs/pins remain at the historical snapshot."
+  },
+  "statusScope": "Reference publication/capability/status statements describe the historical snapshot and retained receipts, not an assertion of the current remote branch tip; currentIntegrationTarget is the separately fetched integration pin.",
+  "boundedDiscoveryBatch": {
+    "scope": "ONE bounded 25-source discovery/enrichment batch, not all source data, not ingested/curated/admitted whole releases or app acceptance",
+    "consolidationCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+    "csv": {
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+      "gitPath": "docs/dataset-discovery/offmenu-dataset-discovery-20261014.csv",
+      "sha256": "bde659a82dc8014bf7a139b8ca53554e950293efaa42c544d4a78809860d1ead",
+      "bytes": 166719,
+      "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+      "sourceGitBlob": "ad5d0e7c27e31e4c77a602d99b352a03fc9e8d8b",
+      "prePublicationObservation": {
+        "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+        "published": false,
+        "scope": "Historical observation before root push, not current availability."
+      },
+      "currentPublicationStateRef": "#/publication/currentGitHubObservation/artifacts/csv"
+    },
+    "receipt": {
+      "path": "/home/user/src/offmenu-workers/worker-07/docs/dataset-discovery/consolidation-receipt.json",
+      "gitPath": "docs/dataset-discovery/consolidation-receipt.json",
+      "sha256": "28c109d7ed49cba73f802bdebd835b2b1362ae33bd1e50f5f4d7cdf655b5dad3",
+      "bytes": 491555,
+      "sourceCommit": "2f7cf2eb8546e2c86ba6cb8647717ed20ca67a27",
+      "sourceGitBlob": "1b66ba3b8447dd0efe77dd9720fbe922ca4a9de7",
+      "prePublicationObservation": {
+        "observedAtUTC": "2026-10-14T09:14:56.670512+00:00",
+        "published": false,
+        "scope": "Historical observation before root push, not current availability."
+      },
+      "currentPublicationStateRef": "#/publication/currentGitHubObservation/artifacts/receipt"
+    },
+    "columns": 31,
+    "rows": 48,
+    "metadataRows": 25,
+    "sampleRows": 23,
+    "immutableSourceCSVReceiptPairs": 25,
+    "unchangedSampleSemantics": "Original units, attribution, rights restrictions, uncertainty and no-admission statuses retained byte-for-byte; samples are existing bounded references, not newly collected raw source archives",
+    "independentEvidence": {
+      "rootValidationPath": "/home/user/Documents/Codex/2026-10-14/task-2/dataset-independent-consolidation-validation.json",
+      "sha256": "9ccc3091509ffcb94b883da8ea5d21e000694ac8cf751879d1b94ead90b059f2",
+      "scope": "Root and Worker 34 bounded provenance/structure review; no independent licence/source admission upgrade"
+    },
+    "publication": "The exact four-file b637424 candidate is available in private GitHub PR 4 as observed in publication.currentGitHubObservation; PR remains open/unmerged. This local correction awaits Worker 34 re-review and root normal PR update/merge under mandatory platform gates.",
+    "android": "Authenticated Android readers can open the published b637424 index, CSV and receipt via currentGitHubObservation URLs now. Source provenance commits may remain operator-local; no whole-corpus availability or source admission is implied."
+  },
+  "externallyReproducibleRequirementComparison": {
+    "checkedAtUTC": "2026-10-14T10:10:26.496332+00:00",
+    "publishedSnapshotCommit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "canonicalRefId": "requirements",
+    "comparisonRefId": "reconciliation",
+    "canonicalUniqueIds": 105,
+    "comparisonUniqueIds": 105,
+    "sameIdSet": true,
+    "scope": "Both documents are reachable at published immutable abe0 URLs. This checks ID preservation, not delivery/acceptance; no local-only Worker 14 objects are required."
+  }
+}
