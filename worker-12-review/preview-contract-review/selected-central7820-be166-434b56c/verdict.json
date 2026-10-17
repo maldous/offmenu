@@ -1,0 +1,84 @@
+{
+  "schema": "offmenu-worker12-selected-composition-review/1",
+  "verdict": "PASS_SCOPED_CHANGED_PRODUCER_COMPOSITION_BINDINGS",
+  "producer": "434b56c0200671debfceb03f7aed0889509c51be",
+  "preparationProducer": "e16232f8d168a913e3075d2587e41e85f653223e",
+  "selectedAppSource": "7820e0a82583a05b21f9923ac050e007a7265210",
+  "selectedAppTree": "4f8546f80d1a23b371321c5fa4d96fca2f852e2a",
+  "selectedMockSource": "be166bb61483825498094d496e2caed9d8b775bb",
+  "descriptor": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/composition-1040246.json",
+    "sha256": "50b6fbd8fa9d1469f48c1cbf634bfd97050c45fda412cd682e41a6674c3c724a"
+  },
+  "inputs": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/inputs.json",
+    "sha256": "12f793505b4255424030bcbb49a20e4ef0c50ea234c6cc68b821151ab7a8ae6d"
+  },
+  "physicalMockPreparation": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/inputs.json",
+    "sha256": "0c9e7a83eff75c73561b24f5b57d875d7c268447c545ecaa754bbedde14957b8"
+  },
+  "qualification": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/interactive-qualification.json",
+    "sha256": "a8960699955a8e67af37815ee9c42223a39b51ce8b899f2f8765c72c45cd7f28",
+    "custodyPath": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/custody.json",
+    "port": 19077
+  },
+  "actualExecution": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/qualification-execution.json",
+    "sha256": "3b2a445628e8955cad1e4b2a05be5978385dc84e737e572ef69574ba94ab2f53"
+  },
+  "artifact": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/app/dist/worker.mjs",
+    "sha256": "2a4c5ca9a69d1372329d9fc2f35c3e88ce67f491c5431711cfa41fc4415dd61f"
+  },
+  "appIdentity": {
+    "pid": 1061418,
+    "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+    "birthTicks": "2817169",
+    "cwd": "/home/user/src/offmenu-workers/worker-05",
+    "port": 18797,
+    "argv": [
+      "node",
+      "dev-server.mjs",
+      ""
+    ],
+    "liveIdentityMatches": true,
+    "healthOrStatusSHA256": "e80273f47ebb6a24303c14a1130b3fcad84798d107533991eaa76c5b1c0b7772"
+  },
+  "mockIdentity": {
+    "pid": 1040246,
+    "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+    "birthTicks": "2784170",
+    "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9",
+    "port": 19077,
+    "argv": [
+      "java",
+      "-jar",
+      "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar",
+      "--bind-address",
+      "127.0.0.1",
+      "--port",
+      "19077",
+      "--root-dir",
+      "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d",
+      "--disable-http2-plain",
+      ""
+    ],
+    "liveIdentityMatches": true,
+    "healthOrStatusSHA256": "8db525aeadbc047638f4d3d550e7d05ebbe77dc16b4a8a5620d88944eda83861"
+  },
+  "tests": {
+    "focusedAdmission": 12,
+    "independentCompositionBoundaries": 8,
+    "sourceEntriesVerified": 151
+  },
+  "newReportableFindings": [],
+  "qualificationTestsRerunByReviewer": false,
+  "userFlowsPassedByReviewer": 0,
+  "consumer58Gate": "Exact reviewed producer and selected packet, fresh per-request custody/grant/source/expiry admission before state writes under existing authorized task",
+  "central871Selected": false,
+  "realGoogleProviderAcceptance": false,
+  "production": "STOP",
+  "ownerProcessesNotAdministered": true
+}

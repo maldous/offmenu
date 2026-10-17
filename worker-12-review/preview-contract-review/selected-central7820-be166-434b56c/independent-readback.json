@@ -1,0 +1,1174 @@
+{
+  "checkedUTC": "2026-10-14T12:42:48.579522+00:00",
+  "sourceFiles": [
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-mcp-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c69c297460f7ca598241a58e5d45dfa58612bf2ea19520469d3ad4d47ed0b5af",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-mcp.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "820aa8f09ea943ce6f26c55d105861f273e41805aad201d310b0f17153898735",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-operations-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "db1705c5fde51620d2aa98fc5248b0fc30dc5c53c048e03c460c54b9247a9f88",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-operations.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d9768acfd996b58aa4fcda4a943a2294f2229a559327b1a89d000ebef67c26d4",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "67683533c4868c2e34972de5ea3ac65d199158819be33e2447a4ccacf6ace316",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/admin-settings.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d6ca6fb1f4b7788aca4de17c796b734f29b5ce55227c2f9bc4ea5cbbda8831e9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-cases-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "fb76b5df85e18502ad845c2cfd333cbc3780db22b54071e382fc806fff73cda8",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-cases.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c46d7ebf5fc5a5099c157371a34a0d5cc14f2b935c287be141e67b3b22fba1af",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-community-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "739b00f13093dc687d33df56d77034fb58747f9d52eae0575af2463299eb2270",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-community.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "ab312f15408e26570011eb9f13025967f2496752c9aab413cabc829038c2a9d7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-updates-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "4d8d8c510cfd0c5799686d13d155078fa5bed6818c74c9c8f8b0d5a92621c22d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/care-updates.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "a98609ea91ad987768b55c59f491ef3738af278d594301aebbcf9829cf623015",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/catalogue-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "cab38bc6743d57832dcc293474c15a708e6461f7ccce15c4dc77c821e56c8dff",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/catalogue.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/community-ai-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "1c42f235f0c0943a10e4b1668a8e2f1e18100dcd675bb5c39b02fa245aefa01d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/community-ai.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "b2212706dc2ad13fd84f1f2eb27fadf0ef0597fc47af190d729922ccc71272c6",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/corpus-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "87fd745ba28de6db44e0c5e82bff4a9cd42435b0b6da4a60802b682d7743f254",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/corpus.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/durable-budget-owner30.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "292d117c5f4a59eb8b6803fa8669b29a19025033fddaa86c95b68ebba3cedd00",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/enrichment.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/global-settings.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "a332cf11ddd2e778519f32df5c21e679952a3eae22a1eecbcf80a3190ec50a48",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/handler.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f04e24b1a92fc159d6195894c4b13f984fcda727b774abd8cac01dcb26cc310a",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/integrations.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "7a11b3deb0bb7cd50d9ab55b5f7494ce490118157c577b4f403a24e95eb5761b",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/kitchens.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/locale.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f2ae374e427c1afcc652285d2bfc46733cb1d3922c8e34ef170c52a72607a077",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/personal-ai-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "0fd9193c2bf5a740b5a2b5f167d1ae7cec5c93422701637cf1a84bdd62a8b75e",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/personal-ai.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "93c09b017d45609b320dcb8ce4ea246eae93e535b12af260116cefdd4ed0c9a3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/provider-data.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/recipe-community-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d469b04030360afde4550a46817066b79eb0122d9cbd0474ae7ab168b771dfb4",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/recipe-community.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "782f410b1d01ef555556dfc914b09903b8fd1238ae1478aa9ee801296325cc3f",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/remove-source-replicas.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "833f8831f81bf55cfdca95ab236ca307867531c16339e7de458ff33e621bca26",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/service-config.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "bf79c76108caf4754950e89c1af52a43ef8d7ebaef4e47c839b8d8a2e9369bc7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/service-observability.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "ba4938348b1a08636c952c602b3de42cc3e1fcaeabcca10348e5328329b247c3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/service-support.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d5bc9cd3baaf9da35ecc360338738ec70195e3d1a0ddc2905a3c5b61296e971f",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/services-schema.sql",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "943a8b8a83376dbde2b14aa2e8d73de6879d3326d7ba2fe7a41c1e8f359b9f71",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "cloud/state.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "corpus/assert-curated.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "corpus/engine.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "cdcb587ec5a7bef519e313fd13fc79803fe0a3cf0f2cbb2ec01b45dca4c09497",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "netlify-return/i18n-source.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d6f222964d7cdd56fb5f1d4d84c8737e55cba2f76bc1564c10c7f2d969017edf",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "netlify-return/index.html",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "6b4cb56565f8384f6a675687396d75b0be3eea1d092314e159bf416353c41ad3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "netlify-return/return.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "4eeb544d120b860f60e4aad6b9c4ad1e19763331609168003dca96a2f9ab7c51",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/access-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/admin-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/admin-operations-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/admin-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/app.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "95d7c9b104c8f9337919c12ce7db3ffbaa1753869296df2dbd2e196093613288",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/basket-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "232b09d7446c733d9992ef42c82dfcfcf36c2a2547d10ac2b7e2765cf6468bf3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/care-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/care-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/checkout-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/common-corpus-locale.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/community-ai-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/content-locale.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/cooking-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/countries.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/data-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/data-workspace.html",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f46fce31724bc8c65154612eba34a433b02ea96e551b1e27e35fa8b99038454e",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/data-workspace.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "261c62d20463ea517459660b2cbdcdba8849279f82749fdff3da0e9b33fed318",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/documents.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/evidence-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/freshness-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/health-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/household-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "4263d2d566f39486c25486d96a34820490bbd259f8bdcea9c08f8390800d4b48",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/i18n.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "01a907dfcef285ad6e5139a46b4b73debc6e43592af0d0349a3ba6a6b891c5f5",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/icon.svg",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "7b3fe6361e2f845f22045f83db9124b0e88037d94a7c0b85979e503966bec608",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/index.html",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "e5e743b17125fa9fced1a39cb37f3d52dd22ea2ded6aae29037c28dd9e951a8d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/ingredients.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/insights-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/insights-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c753b299728297fde12a4829e572787394501f34d24e5b111a2c00cc8ebbd21c",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/integration-owner03.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f5061c84a0dd24b8a374297041ebad0e5947eddb9893d4515bdfb0d09950c819",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/integrations.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/journey-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "2cdc4131b6ef3661f62f765447adee0ee4c2c2e381d9b570ac51cc168fc1b8d1",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/locale-negotiation.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "5cd8f89d2702435d38f9ff7fd5c3a719d983ead8518281285a5b10664ee6b063",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/locales/ar.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/locales/en.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "69d279154f21d5d1d55a91de1126aa72dfa0749c4b9d432cd78d8460e91c8c02",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/manifest-ar.webmanifest",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f8819ebfb423affec304e8840019280959f6bf935e5512f7938f9ca47ef62efa",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/manifest.webmanifest",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "b5a0fdb7dca5fa7f2d72511c8e511a190b3fb8eca5f86e50ecb5503dae702caf",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/menu-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/personal-ai-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-community-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-community-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-ingredient-aliases.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-library-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-library-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "22847d90e0aa2c2bc3fd3566fab71d7087197f39f09ab9ec264d37d023e16b28",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipe-review.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/record-policy.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/reference-profile-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "576c65d02058f88d7ca1b19bd67353a2cfeae474eb776b01fb0341eb72e3fcc4",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/reference-view-owner22.mjs",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "6bba1e5d90090af4b83cf3e074ce6f8f0ea2a0c58e123d1db57273dd1dfc2cd0",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/scanner-decode.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d6bfb9568bce12335264af8aba953d9c6e294ee48c6212c765361547de657583",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/scanner-licenses.txt",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "11c5397e1bfc9ccf801a5b5a282ccf2fbeebb17eb853f1d50a5c80e196ccaa49",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/scanner-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "df11379546c78c531bcd69574236fba89bd6446edae58ff3ed79bba3d99f49c1",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/scanner-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "a24ccba829a402f3782832fe2b170af29f24686313fc11703fcec3e7e9fcfea3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/scanner-worker.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "9b27a0eeae589ee60719de41435bbef58d1f8f08a1092cb06e022263929ceea8",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/services-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/services-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/session-fetch.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "0c734d92db37d84c98448f32dfbbbd2fd97b582b32de7aabcc2574a1e20094ef",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/sharing-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/sources.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/style.css",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "be617853adc235cc53cd4dbf9c09a6d62edbd5d34500da5fa74556bf72022108",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/sw.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "0291d5c685298eb3d9d7e544beb8f7bbcc352835871288b0a0bf9c1715b0333f",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/sync-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/sync-ui.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/unified-data.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/waste-analysis-model.js",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "060e1ab4ca3ccef9506a87ab9d563a6bb626c7b76fe330d746420b97df94052d",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "research/manifest.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "package.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "package-lock.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "f461a0c3fe8d81be447158514d3b5c45ef35f2866bfdd212e574b2673caf0cde",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/adapter.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "0eb13d25f5c80e59df3f5afac28e8ecb252ef67bed6e93effed89b98ad6da9b9",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/fixtures.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "58a2fd5cfb762e8e32da8b646dfadd038f291c1a501c463a64c2c23b33236982",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/mappings.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "3e4a65a2889fa05dbf730ffec66910e54e047969d2a7bd98b61254538a482813",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/contracts.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "682b54f6ec9cdb2ed00a6482c33762d64dc1d21b34bdd0a1b75fb502d05797cb",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/runtime-lock.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "99f1a85ebb1736cb749d59e65ab6da4d3b1ecb45ea262f03f96a10252cf74eec",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/runtime.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "9d8e4b0735a221ccdda8e968debcc8d6e7a707da898173a3f60e0ba2cbf80025",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/identity-validation.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "8aeac76c3c6ed051cf77a56343ae97e781352bd57a9575ca5862404b730923ad",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/identity-verification.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "9eff83bac2aa42c3c5f083ca056a23065af9a8d68f676b6c7bf67d9c3614828c",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/callback-source-contract.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "e06c7d3bd080399b22e0f30252566e683f4f9b7f0b41be1dd5e5a59649e006ef",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/callback-source-contract.md",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "56f393dc6ff0a4fb202dfb5d0748a5d628fe2afd9de0834b97e5213113faf59f",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev/wiremock/callback-source-verification.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "b87db422b9cdcfd5a5ef875cf10e70fbcc5c75c8b1b7640be6903df6d6636ecc",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "package.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "package-lock.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "f461a0c3fe8d81be447158514d3b5c45ef35f2866bfdd212e574b2673caf0cde",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "scripts/verify-uiux-browser.mjs",
+      "commit": "e1de8e839954905d82f939730ac5ea79412bc805",
+      "sha256": "35842015acdc360f995d3669925a773ba6386aa163a070b3d19972a49077c30a",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "tests-uiux/dom-audit.mjs",
+      "commit": "e1de8e839954905d82f939730ac5ea79412bc805",
+      "sha256": "e617d71f6d8de142a2615477ec168d6ede3d7347c465a519bd15e6982e173ef8",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev-entry.mjs",
+      "commit": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+      "sha256": "bb237051415b3c6a8a1e4769f1bbe83134cc2091b9b46776fb7ad208db2acc75",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev-server.mjs",
+      "commit": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+      "sha256": "fc6e76ad557eb9cc37eb5f145768b04bfd73ad1feb5cb89e73bab0d7bc19f8af",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev-stop.mjs",
+      "commit": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+      "sha256": "a236bbd898733c87800bb881a52620e2fa7e94e0f4f0d5b77ceaeb251dce1a0b",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "dev-lifecycle.mjs",
+      "commit": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+      "sha256": "92be82e165ae84ea8402e2b4d9c3d8c9c160b344b4bbdf4a34bf44b01893bfe8",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/recipes.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "2859bd50bca7caa8f3122cd3ec8c77e530588b1c7845d9db97bca267638f4c40",
+      "matches": true
+    },
+    {
+      "kind": "overlay",
+      "path": "public/afcd-nutrient-details.json",
+      "commit": "7820e0a82583a05b21f9923ac050e007a7265210",
+      "sha256": "d297aa8d3e7453d707d909b1eaab23337b559a80bf71dd11f348c6707e3220ca",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/README.md",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "97cb3ed21568a282d4bc2b2056a6f1cf5ad114e8b47b56fa2d187270a4cc1f78",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/adapter.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "0eb13d25f5c80e59df3f5afac28e8ecb252ef67bed6e93effed89b98ad6da9b9",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/callback-source-contract.md",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "56f393dc6ff0a4fb202dfb5d0748a5d628fe2afd9de0834b97e5213113faf59f",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/callback-source-contract.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "e06c7d3bd080399b22e0f30252566e683f4f9b7f0b41be1dd5e5a59649e006ef",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/callback-source-contract.test.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "20331ae144fa2cf47f510a6a4d41c6735db8b3cf2f411a202ff1ad8b8807c390",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/callback-source-verification.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "b87db422b9cdcfd5a5ef875cf10e70fbcc5c75c8b1b7640be6903df6d6636ecc",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/contracts.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "682b54f6ec9cdb2ed00a6482c33762d64dc1d21b34bdd0a1b75fb502d05797cb",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/coverage.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "70d48ee70fa760a75b8bbd0df5a2941303f6d1eb9706a674847c43036a31fb74",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/coverage.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "381eaed95258686b06c77bf78be7ef630c08b53d805baf1c71828219ae01839e",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/fixtures.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "58a2fd5cfb762e8e32da8b646dfadd038f291c1a501c463a64c2c23b33236982",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/identity-validation.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "8aeac76c3c6ed051cf77a56343ae97e781352bd57a9575ca5862404b730923ad",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/identity-verification.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "9eff83bac2aa42c3c5f083ca056a23065af9a8d68f676b6c7bf67d9c3614828c",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/mappings.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "3e4a65a2889fa05dbf730ffec66910e54e047969d2a7bd98b61254538a482813",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/probes.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "14ea44d48f1bac2a816ce949a19501ff189a8375be7b5f1bd0ac88d425ba90d5",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/runtime-lock.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "99f1a85ebb1736cb749d59e65ab6da4d3b1ecb45ea262f03f96a10252cf74eec",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/runtime-validation.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "7f0eac8f8263fa18703f2606fc770a7161b90cf8386ee0b83bd91c429add9fb3",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/runtime.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "9d8e4b0735a221ccdda8e968debcc8d6e7a707da898173a3f60e0ba2cbf80025",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/validation.test.mjs",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "d79b9104d736bb2e8aaa583e7b8eceb1608703c6690c62aaaa7ded112a8caef5",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "dev/wiremock/verification.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "e1b4b0cc57a7053356bbf7554392ce5f899b7b34d73193e72ba36d656646b09e",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "package.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "matches": true
+    },
+    {
+      "kind": "physicalMock",
+      "path": "package-lock.json",
+      "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+      "sha256": "f461a0c3fe8d81be447158514d3b5c45ef35f2866bfdd212e574b2673caf0cde",
+      "matches": true
+    }
+  ],
+  "sourceFileCount": 151,
+  "overlayRoot": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b",
+  "physicalMockRoot": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9",
+  "inputCompositionSHA256": "3af7cdeb434418a36eae548f7928f28c901275c7ed9600d42fb9b375dd966149",
+  "descriptorRef": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/composition-1040246.json",
+    "sha256": "50b6fbd8fa9d1469f48c1cbf634bfd97050c45fda412cd682e41a6674c3c724a"
+  },
+  "inputsRef": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/inputs.json",
+    "sha256": "12f793505b4255424030bcbb49a20e4ef0c50ea234c6cc68b821151ab7a8ae6d"
+  },
+  "preparationRef": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/inputs.json",
+    "sha256": "0c9e7a83eff75c73561b24f5b57d875d7c268447c545ecaa754bbedde14957b8"
+  },
+  "qualificationRef": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/interactive-qualification.json",
+    "sha256": "a8960699955a8e67af37815ee9c42223a39b51ce8b899f2f8765c72c45cd7f28",
+    "custodyPath": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/custody.json",
+    "port": 19077
+  },
+  "executionRef": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d/qualification-execution.json",
+    "sha256": "3b2a445628e8955cad1e4b2a05be5978385dc84e737e572ef69574ba94ab2f53"
+  },
+  "artifact": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/app/dist/worker.mjs",
+    "sha256": "2a4c5ca9a69d1372329d9fc2f35c3e88ce67f491c5431711cfa41fc4415dd61f"
+  },
+  "selectedPins": {
+    "02": "7820e0a82583a05b21f9923ac050e007a7265210",
+    "03": "e1de8e839954905d82f939730ac5ea79412bc805",
+    "05": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+    "06": "be166bb61483825498094d496e2caed9d8b775bb"
+  },
+  "actualProducerSource": "434b56c0200671debfceb03f7aed0889509c51be",
+  "liveIdentity": {
+    "preview": {
+      "pid": 1061418,
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "birthTicks": "2817169",
+      "cwd": "/home/user/src/offmenu-workers/worker-05",
+      "port": 18797,
+      "argv": [
+        "node",
+        "dev-server.mjs",
+        ""
+      ],
+      "liveIdentityMatches": true,
+      "healthOrStatusSHA256": "e80273f47ebb6a24303c14a1130b3fcad84798d107533991eaa76c5b1c0b7772"
+    },
+    "mock": {
+      "pid": 1040246,
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "birthTicks": "2784170",
+      "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9",
+      "port": 19077,
+      "argv": [
+        "java",
+        "-jar",
+        "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar",
+        "--bind-address",
+        "127.0.0.1",
+        "--port",
+        "19077",
+        "--root-dir",
+        "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/mock-preparation/a6a24dba-afa0-4ac4-a138-70f596962ae9/dev/wiremock/.runtime/run-19077-ee739583-6e5d-4be7-953f-05d8eecf0d4d",
+        "--disable-http2-plain",
+        ""
+      ],
+      "liveIdentityMatches": true,
+      "healthOrStatusSHA256": "8db525aeadbc047638f4d3d550e7d05ebbe77dc16b4a8a5620d88944eda83861"
+    }
+  },
+  "recordedQualificationAssertions": {
+    "identity": 176,
+    "reset": 2,
+    "callback": 28
+  },
+  "recordedAuditUnmatched": 0,
+  "qualificationRerunByReviewer": false,
+  "callbackSourceBoundariesNotRepeated": true,
+  "oldPIDReadback": [
+    {
+      "historicalPID": 729700,
+      "procEntryPresent": false,
+      "noAdministration": true
+    },
+    {
+      "historicalPID": 883879,
+      "procEntryPresent": false,
+      "noAdministration": true
+    },
+    {
+      "historicalPID": 930520,
+      "procEntryPresent": false,
+      "noAdministration": true
+    },
+    {
+      "historicalPID": 695978,
+      "procEntryPresent": false,
+      "noAdministration": true
+    },
+    {
+      "historicalPID": 883005,
+      "procEntryPresent": false,
+      "noAdministration": true
+    }
+  ],
+  "noStateWritingFlowRequests": true,
+  "noCatalogueOrProviderCalls": true
+}

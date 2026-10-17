@@ -1,0 +1,10 @@
+✔ lease identity refuses stopped/foreign namespaces before process control (0.61643ms)
+✔ actual unrelated Node process cannot qualify via inert runner argument (145.540801ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 302.002734

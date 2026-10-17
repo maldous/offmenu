@@ -1,0 +1,9 @@
+file:///tmp/worker12-lifecycle-fix-xvmtkrdx/worker05-lifecycle/lease.mjs:13
+  if(readlinkSync('/proc/'+r.pid+'/cwd')!==sourceRoot||argv.length!==2||argv[1]!==runner||realpathSync(argv[0])!==selectedNode||realpathSync('/proc/'+r.pid+'/exe')!==selectedNode)throw Error('Lease refused: cwd/exact Node entrypoint');}
+                                                                                                                                                                                         ^
+
+Error: Lease refused: cwd/exact Node entrypoint
+    at verifyLease (file:///tmp/worker12-lifecycle-fix-xvmtkrdx/worker05-lifecycle/lease.mjs:13:186)
+    at file:///home/user/src/offmenu-workers/worker-12/worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/command-boundary-probe.mjs:4:152
+
+Node.js v24.16.0

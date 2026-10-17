@@ -1,0 +1,6 @@
+{
+  "interactive-preview.mjs": "43a5bb9eceb73cc7cbdccaa5d7ff3cda04cf44361e95b2ea39d557cb6fbf8d68",
+  "dev-lifecycle.mjs": "92be82e165ae84ea8402e2b4d9c3d8c9c160b344b4bbdf4a34bf44b01893bfe8",
+  "tests-dev/interactive-preview.test.mjs": "cc012bc92856b11b7c9933e6e411ac67a4771fb3476ec8c79289b70922b5196f",
+  "tests-dev/receipt-binding.test.mjs": "3c369dc467d83b6ecc60bd94ec3371cb5b45dd9961ea86c424c601d074d8deaf"
+}

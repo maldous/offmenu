@@ -1,0 +1,25 @@
+✔ lost response after remote effect survives restart with same ID and one synthetic deduction (2.322059ms)
+✔ uncertain attempt is durably recorded before transport, including a crash boundary (0.529442ms)
+✔ failure to durably enqueue or record uncertainty prevents sending (0.831572ms)
+✔ failed acknowledgement persistence leaves an unknown result for replay (0.398736ms)
+✔ expiry during durable preflight prevents transport even after an attempt was reserved (0.240529ms)
+✔ account, resource and authorization generation isolate identical operation IDs (0.544923ms)
+✔ HTTP-like success, missing ack, wrong ID and cross-account ack remain unknown (0.750724ms)
+✔ expiry retains unknown evidence, blocks FIFO and needs explicit scoped reconciliation (0.622137ms)
+✔ revocation suppresses in-flight ack and survives restart; new grants do not inherit work (0.455048ms)
+✔ caller mutation and concurrent calls cannot change an envelope or send it twice (0.582683ms)
+✔ backoff is capped, persisted and does not schedule background work (0.358332ms)
+✔ unsafe transport, lossy payloads, bad limits and damaged/cross-scope records fail closed (0.295474ms)
+✔ bounded storage retains acknowledged IDs instead of evicting replay protection (0.197071ms)
+✔ reordered scope acknowledges both transport and explicit reconciliation (0.331919ms)
+✔ scope mismatches and extra identity fields cannot acknowledge or reconcile (0.610261ms)
+✔ hidden serialization hooks and accessors are rejected without being executed (0.170146ms)
+✔ fresh JSON capture preserves benign fields and rejects cycles, custom prototypes and sparse arrays (0.291945ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.105872

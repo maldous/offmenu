@@ -1,0 +1,16 @@
+file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:28
+      if (keys.length !== length + 1) throw new TypeError('Expected a dense ordinary array');
+                                            ^
+
+TypeError: Expected a dense ordinary array
+    at plainData (file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:28:45)
+    at file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:37:53
+    at Array.map (<anonymous>)
+    at plainData (file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:37:36)
+    at record (file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:44:10)
+    at setMealPreferences (file:///tmp/offmenu-worker12-meal-correction-uikjj8cu/public/meal-preference-model.js:83:11)
+    at file:///home/user/src/offmenu-workers/worker-12/worker-12-review/meal-preference-review/independent-probes.mjs:11:92
+    at probe (file:///home/user/src/offmenu-workers/worker-12/worker-12-review/meal-preference-review/independent-probes.mjs:10:76)
+    at file:///home/user/src/offmenu-workers/worker-12/worker-12-review/meal-preference-review/independent-probes.mjs:11:1
+
+Node.js v24.16.0

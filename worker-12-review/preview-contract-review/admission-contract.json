@@ -1,0 +1,90 @@
+{
+  "schema": "offmenu-worker12-owner05-consumer58-review/1",
+  "verdict": "CORRECTIONS_REQUIRED_BEFORE_CONSUMER_ADMISSION",
+  "producerCandidate": "f77bfafb4672e5e0660f1f66efbec0502ec493a8",
+  "consumerCandidate": "e8c3e40e8b518681671392712b7f5661a1f4a4bf",
+  "runtimeOwner": {
+    "worker": 5,
+    "thread": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+    "root": "/home/user/src/offmenu-workers/worker-05",
+    "privateMockRoot": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock"
+  },
+  "sourceProvenance": {
+    "worker": 6,
+    "commit": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d",
+    "fileCount": 122,
+    "sourceHashesEvidence": "overlay-readback.json"
+  },
+  "identityEvidence": {
+    "java": {
+      "pid": 695978,
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "birthTicks": "1923192",
+      "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock",
+      "port": 19075,
+      "bindAddress": "127.0.0.1",
+      "argv": [
+        "java",
+        "-jar",
+        "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar",
+        "--bind-address",
+        "127.0.0.1",
+        "--port",
+        "19075",
+        "--root-dir",
+        "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock/dev/wiremock/.runtime/run-19075-3799e879-66ef-407f-a83b-b641c91d0f10",
+        "--disable-http2-plain",
+        ""
+      ],
+      "processInheritedThreadID": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+      "healthTokenMatches": true
+    },
+    "preview": {
+      "pid": 729700,
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "birthTicks": "1982544",
+      "cwd": "/home/user/src/offmenu-workers/worker-05",
+      "port": 18795,
+      "runId": "interactive-feedback-20261014-01",
+      "stateId": "worker-05-interactive-feedback-20261014-01",
+      "producerSourceCommit": "f77bfafb4672e5e0660f1f66efbec0502ec493a8"
+    },
+    "noAuthorityFromHashOrControls": true
+  },
+  "hashLevels": {
+    "inputCompositionSHA256": "73c906be308a2714ae0fc5695b3dfaf4184f70b1c0f5897ce8a992f675a8b243",
+    "liveDescriptorSHA256": "a0a20164cafc39c75c04a80ec17bcd73d2d3c4a11d67152ba5b74f686ac30567",
+    "previewReceiptSHA256": "ac91eee25979280ba84bb97ade0d9dc67f3b2da03fcf5974753f28c304283dde",
+    "applicationArtifact": {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/app/dist/worker.mjs",
+      "sha256": "608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2"
+    },
+    "jarSHA512": "1d6f6bb0511058dc1a912b43e320e871e8c9515ba691f6de1cc003cdead6b1f89ca03249450a0cda1b3de91f08ee1ec716eddb22a0e38d3de13365b003cb19ee",
+    "scannerWASMSHA256": "b03d35cd265123b9f75a0c476c204714663a1e85ba908acc3f50eae7824dfcf6"
+  },
+  "requiredChecksBeforeEveryConsumerRequest": [
+    "Exact independently selected producer/consumer source pins and input packet hashes",
+    "Runtime owner05 and source provenance06 remain separate",
+    "Native custody packet hash AND equality to supplied custody fields; actual /proc PID birth boot cwd command loopback bind/port",
+    "JAR version/path/SHA512 versus lock and current referenced bytes; overlay source, mapping bytes and dependency hashes",
+    "Fresh internally consistent qualification tied to this exact process/source/mapping/hash; reject stopped/expired/future/before-process claims",
+    "Independently verified task grant reference/source thread, owner session/root, exact selected app/artifact/composition, subset of permitted synthetic fixture actions",
+    "Ready preview receipt/live status matches owner05 run state process app/artifact pins and descriptor digest; preserve separate input-composition digest",
+    "Consumer callbacks refuse before every request; zero bypass entry points",
+    "Retain per-request audit/status/hash proof and no-egress evidence; no provider/account/browser/device certification inferred"
+  ],
+  "readbackVerifiedOnly": true,
+  "flowsAccepted": 0,
+  "ownerCorrections": [
+    "05: enforce task grant/source reference and fixture action scope, not only session/root/hash/reviewer fields",
+    "05: compare declared JAR/runtime/native custody/qualification fields with actual pinned dependencies and process/source; reject contradictory qualification timestamps",
+    "58: implement reviewed admission callback to these exact producer/receipt pins after correction; report four HTTP groups separately from remaining four pending groups"
+  ],
+  "actualControls": {
+    "filesystem": "danger-full-access / unrestricted",
+    "network": "enabled",
+    "mandatoryReviewer": "auto_review",
+    "separateApprovalPolicy": null,
+    "namedProfile": null
+  }
+}

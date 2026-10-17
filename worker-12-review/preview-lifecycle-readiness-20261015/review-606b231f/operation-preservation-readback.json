@@ -1,0 +1,186 @@
+{
+  "operationsRefs": [
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-20261015-79add35e-a/operation-73c3bd5b-9b6e-4fbc-b133-c9932536687d.json",
+      "sha256": "96852ec24fc95e4029100e238978ada9d20ec2d14c0cb7030239f732aea30904",
+      "matchesResult": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-20261015-79add35e-a/operation-8267a70a-4fd5-402d-9d93-a59631fd25f1.json",
+      "sha256": "cca83dc790357218d8fb49e5c846cd6e4109deae4d78409d8fa0099505ed0c4e",
+      "matchesResult": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-20261015-79add35e-a/operation-905bf6da-a9b8-4a5d-8f85-039f9bde8bc8.json",
+      "sha256": "6a9fc6db9ceffa2aee826cc26ed0385f3caad4732ee7003470613e607a229150",
+      "matchesResult": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/a-stdout.log",
+      "sha256": "4e5bcd9ce53e18a8997baa1d2c4b09fa7835f8a7d7cde2bda87d2b11ecc5303c"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/a-ready.json",
+      "sha256": "b7289e5db0db18fb8598caf2d3805d1c8dd1d9f62ff48d044cdd5ce049c115e4"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/a-stopped.json",
+      "sha256": "cc70185342ef65cf60e6b3abcf196ddccff0acf158609dac809e6a9ddba97780"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-20261015-79add35e-b/operation-ac9c2d52-e4fd-4615-9b44-ffa67a5f2738.json",
+      "sha256": "ba0af8f9849765649476201e9a8bc4fff4bff7b652aa05d6220f5504c6892f68",
+      "matchesResult": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-20261015-79add35e-b/operation-f24ac2fc-099d-441c-bcae-e5b89995a2f9.json",
+      "sha256": "81ab2d0e9dccb52e8369603329375d34bdfc038a4b74ca951562784a6cf6ea5b",
+      "matchesResult": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/b-stdout.log",
+      "sha256": "8fed7e1c52a28d53ffea96bcc706496756d538ceaff3cb0fefe08857b1b73ab3"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/b-ready.json",
+      "sha256": "e6f58fe7a31db37cce39190815b8cc839d0eb5e3d5213f5b6bb9827d51404cee"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/lifecycle-qualifications/lifecycle05-20261015-79add35e/b-stopped.json",
+      "sha256": "bb977e0b77357d3f0c64c1bc9b6ae6bd011f6a76e510c7992ca337672df62f9c"
+    }
+  ],
+  "recordedOwnerAssertions": 44,
+  "recordedOwnerHTTPObservations": 12,
+  "reviewerReranOperations": false,
+  "twoLeaseResetStopRestartEvidenceInternallyMatches": true,
+  "disposablePIDsAbsent": true,
+  "18809CurrentlyRefused": true,
+  "feedbackPID": 1061418,
+  "feedbackBirth": "2817169",
+  "feedbackReceiptHashUnchanged": true,
+  "feedbackStatusSHA256": "e80273f47ebb6a24303c14a1130b3fcad84798d107533991eaa76c5b1c0b7772",
+  "supplementarySource": "27169ac47167a456e6d0f46572af66500069d01e",
+  "supplementaryPacketSHA256": "c1d18f5afaf221429431d0eec55b6e688d1a879e4d5f6fee961faaa9642be4bf",
+  "supplementaryBeforeAfterMatch": true,
+  "supplementaryFiles": 19,
+  "supplementaryDurableBytes": 3002768,
+  "volatileSHMExcluded": true,
+  "supplementaryCurrentReadback": [
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-feedback-20261014-01/current-run.json",
+      "recordedSHA256": "ac91eee25979280ba84bb97ade0d9dc67f3b2da03fcf5974753f28c304283dde",
+      "currentSHA256": "ac91eee25979280ba84bb97ade0d9dc67f3b2da03fcf5974753f28c304283dde",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-20261014-01/miniflare-D1DatabaseObject/ab9091f2ef7cbe2c5b6b1ede189d207e8e654e13349fe0851a46c13b5097eef5.sqlite",
+      "recordedSHA256": "4455632d9a6ba8a2720e555526a3d26ef5e5410352b737fc4ae9790bced756b0",
+      "currentSHA256": "4455632d9a6ba8a2720e555526a3d26ef5e5410352b737fc4ae9790bced756b0",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-20261014-01/miniflare-D1DatabaseObject/metadata.sqlite",
+      "recordedSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "currentSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-20261014-01/miniflare-D1DatabaseObject/metadata.sqlite-wal",
+      "recordedSHA256": "17f18d6df99eadc078464056639742a1411e21b5e83f22b3f2ee3a178e635c94",
+      "currentSHA256": "17f18d6df99eadc078464056639742a1411e21b5e83f22b3f2ee3a178e635c94",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-feedback-corrected-20261014-02/current-run.json",
+      "recordedSHA256": "fc9c83e41d431478707a57461f0d745f5e83ff4989d3dc9eca9e5915c3a0b42a",
+      "currentSHA256": "fc9c83e41d431478707a57461f0d745f5e83ff4989d3dc9eca9e5915c3a0b42a",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-corrected-20261014-02/miniflare-D1DatabaseObject/ab9091f2ef7cbe2c5b6b1ede189d207e8e654e13349fe0851a46c13b5097eef5.sqlite",
+      "recordedSHA256": "40bd8f52ca54e417962a235fef70c239e2b027aba5a61002443a177ed49eee8a",
+      "currentSHA256": "40bd8f52ca54e417962a235fef70c239e2b027aba5a61002443a177ed49eee8a",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-corrected-20261014-02/miniflare-D1DatabaseObject/metadata.sqlite",
+      "recordedSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "currentSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-corrected-20261014-02/miniflare-D1DatabaseObject/metadata.sqlite-wal",
+      "recordedSHA256": "f02f4de27535b74401628a1da6e5dcd6a31b9210e860dcf8d7687837ba31cae3",
+      "currentSHA256": "f02f4de27535b74401628a1da6e5dcd6a31b9210e860dcf8d7687837ba31cae3",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-feedback-d100b858-20261014-03/current-run.json",
+      "recordedSHA256": "1f5fba982598b84c4e7f460a6e735c9eefdd57d2302aafd88dbf1fc3b94be824",
+      "currentSHA256": "1f5fba982598b84c4e7f460a6e735c9eefdd57d2302aafd88dbf1fc3b94be824",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-d100b858-20261014-03/miniflare-D1DatabaseObject/ab9091f2ef7cbe2c5b6b1ede189d207e8e654e13349fe0851a46c13b5097eef5.sqlite",
+      "recordedSHA256": "8f447143047972c339f1f8e0d68d0a98303aa54305ecbbee8d2cbc99bfdddb00",
+      "currentSHA256": "8f447143047972c339f1f8e0d68d0a98303aa54305ecbbee8d2cbc99bfdddb00",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-d100b858-20261014-03/miniflare-D1DatabaseObject/metadata.sqlite",
+      "recordedSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "currentSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-feedback-d100b858-20261014-03/miniflare-D1DatabaseObject/metadata.sqlite-wal",
+      "recordedSHA256": "b12aa9a57ba7f1ec8a503eef7a8469628a67a157e16ba3c41603cbc31239a5e6",
+      "currentSHA256": "b12aa9a57ba7f1ec8a503eef7a8469628a67a157e16ba3c41603cbc31239a5e6",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-central7820-be166-20261014-04/current-run.json",
+      "recordedSHA256": "a66977e8386ea6d298d7a508bd3128946c77d2b74bf252adccd88e9f543b15ff",
+      "currentSHA256": "a66977e8386ea6d298d7a508bd3128946c77d2b74bf252adccd88e9f543b15ff",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-central7820-be166-20261014-04/miniflare-D1DatabaseObject/ab9091f2ef7cbe2c5b6b1ede189d207e8e654e13349fe0851a46c13b5097eef5.sqlite",
+      "recordedSHA256": "19f15b1b9534657c9f561706e7c7f285f31d1161ba54d1c67a7dee6fed95911c",
+      "currentSHA256": "d8108f62feed2aef76d243f04d355b95bc82fd5af70c29132927ce28901fa303",
+      "matchesNow": false
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-central7820-be166-20261014-04/miniflare-D1DatabaseObject/metadata.sqlite",
+      "recordedSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "currentSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/states/worker-05-interactive-central7820-be166-20261014-04/miniflare-D1DatabaseObject/metadata.sqlite-wal",
+      "recordedSHA256": "63f83d87b7e06c083ddf0709eac7e65026826d9dc0cfb58d262ce069f1a34e89",
+      "currentSHA256": "63f83d87b7e06c083ddf0709eac7e65026826d9dc0cfb58d262ce069f1a34e89",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/state/miniflare-D1DatabaseObject/ab9091f2ef7cbe2c5b6b1ede189d207e8e654e13349fe0851a46c13b5097eef5.sqlite",
+      "recordedSHA256": "636b3c3e8966abe8a2c3d1968bb658468e46c7ba5c8a3822d495080ceade07e8",
+      "currentSHA256": "636b3c3e8966abe8a2c3d1968bb658468e46c7ba5c8a3822d495080ceade07e8",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/state/miniflare-D1DatabaseObject/metadata.sqlite",
+      "recordedSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "currentSHA256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d",
+      "matchesNow": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/state/miniflare-D1DatabaseObject/metadata.sqlite-wal",
+      "recordedSHA256": "6c439964b9a7c7300c86101bd5479bc8b496f65f20287ca09a2f33025e33e6ef",
+      "currentSHA256": "6c439964b9a7c7300c86101bd5479bc8b496f65f20287ca09a2f33025e33e6ef",
+      "matchesNow": true
+    }
+  ],
+  "noDataCopiesOrProcessAdministration": true
+}

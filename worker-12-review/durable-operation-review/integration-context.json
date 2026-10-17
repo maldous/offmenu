@@ -1,0 +1,32 @@
+{
+  "public/sync-ui.js": {
+    "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db",
+    "selectedLines": [
+      {
+        "line": 12,
+        "text": "async function checkpoint(key,current){await writeQueue(key,{version:1,mutationId:crypto.randomUUID(),base:baseline,revision,state:clone(current),savedAt:new Date().toISOString()});}"
+      },
+      {
+        "line": 13,
+        "text": "async function recover(ctx){if(!recovery)recovery=(async()=>{let queued;try{queued=await readQueue(ctx.key);}catch{return;}if(ctx.generation!==generation||ctx.key!==getKey())return;const restored=recoverCheckpoint(queued,clone(snapshot()));if(restored.conflicts.length){blocked=true;status('Offline checkpoint conflicts with local edits. Export before restoring cloud.','conflict');return;}if(restored.recovered){apply(restored.state);baseline=queued.base;revision=queued.revision;localStorage.setItem(ctx.key+'-dirty','1');status('Recovered offline changes \u00b7 sync pending','pending');}})();await recovery;}"
+      },
+      {
+        "line": 14,
+        "text": "async function run(){if(Date.now()<nextAttempt||busy||blocked||!getUser()||isDemo()||!navigator.onLine)return;const ctx=context();busy=true;try{await recover(ctx);if(blocked||ctx.generation!==generation)return;const local=clone(snapshot());await checkpoint(ctx.key,local);const remote=await request('GET');if(ctx.generation!==generation||ctx.key!==getKey()||!getUser()||isDemo())return;let current=clone(snapshot()),desired=current;if(remote.state){const merged=mergeStates(baseline||undefined,current,remote.state);if(merged.conflicts.length){blocked=true;status('Conflicting edits retained locally. Export, then restore cloud or review: '+merged.conflicts.slice(0,3).join(', '),'conflict');return;}desired=merged.state;}if(!same(current,desired)){apply(desired);current=clone(snapshot());}revision=remote.revision;baseline=remote.state||null;if(!same(current,remote.state)){await checkpoint(ctx.key,current);const result=await request('PUT',{revision,state:current});if(ctx.generation!==generation||ctx.key!==getKey()||!getUser()||isDemo())return;revision=result.revision;baseline=current;}else baseline=current;localStorage.setItem(ctx.key+'-revision',String(revision));localStorage.setItem(ctx.key+'-sync-base',JSON.stringify(baseline));const latest=clone(snapshot());await checkpoint(ctx.key,latest);if(same(latest,baseline)){localStorage.removeItem(ctx.key+'-dirty');status('Synced \u00b7 '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),'synced');}else{localStorage.setItem(ctx.key+'-dirty','1');status('New changes pending','pending');schedule();}failures=0;nextAttempt=0;}catch(e){failures++;nextAttempt=Date.now()+Math.min(300000,15000*2**Math.min(failures-1,5));status((e.sourceMessage||e.message).includes('newer')?'Another device changed the kitchen. Retrying with its latest version.':'Saved on this device \u00b7 sync pending: '+e.message,'pending');}finally{busy=false;}}"
+      },
+      {
+        "line": 15,
+        "text": "function schedule(){context();clearTimeout(timer);if(getUser()&&!isDemo()){status(navigator.onLine?'Saving automatically\u2026':'Offline \u00b7 changes queued on this device','pending');const ctx=context();void recover(ctx).then(()=>{if(!blocked&&ctx.generation===generation)return checkpoint(ctx.key,clone(snapshot()));}).catch(()=>status('Local backup retained; durable queue unavailable','pending'));timer=setTimeout(run,1000);}}"
+      }
+    ]
+  },
+  "cloud/kitchens.mjs": {
+    "sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+    "selectedLines": [
+      {
+        "line": 12,
+        "text": "if(action==='state'){if(request.method==='GET'){const row=await env.DB.prepare('SELECT revision,state_json,updated_at FROM kitchens WHERE id=?').bind(id).first();return reply({revision:row.revision,state:kitchenProjection(JSON.parse(row.state_json)),updated_at:row.updated_at});}if(request.method!=='PUT')return reply({error:'Method not allowed'},405);if(member.role==='viewer')return reply({error:'This kitchen is read-only for your account'},403);const body=await boundedJSON(request);if(!Number.isSafeInteger(body.revision)||body.revision<1)return reply({error:'Invalid revision'},400);const state=validateKitchen(body.state),row=await env.DB.prepare('UPDATE kitchens SET revision=revision+1,state_json=?,updated_at=? WHERE id=? AND revision=? RETURNING revision').bind(JSON.stringify(state),new Date().toISOString(),id,body.revision).first();if(!row)return reply({error:'A newer kitchen save exists'},409);return reply({revision:row.revision});}"
+      }
+    ]
+  }
+}

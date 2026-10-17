@@ -1,0 +1,56 @@
+{
+  "status": "standalone-package-qualified",
+  "package": "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+  "releaseId": "common-national-20261014",
+  "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+  "admissionEvidence": "/home/user/src/offmenu-data/common-national-semantic-final-20261014-admission.json",
+  "sourceRecordCounts": {
+    "afcd": 1801,
+    "ciqual": 3484,
+    "cofid": 2887,
+    "germany-bls": 7140,
+    "matvaretabellen": 2121,
+    "frida": 1381,
+    "cnf": 5690,
+    "mext": 2538,
+    "fineli": 4232,
+    "foodfiles": 2857,
+    "sweden-food": 2606
+  },
+  "sourceRecordTotal": 36737,
+  "observedCounts": {
+    "packets": 36737,
+    "resources": 661266,
+    "assertions": 2020535,
+    "relations": 661266,
+    "translations": 0
+  },
+  "partitionCoverage": {
+    "complete": true,
+    "expectedFiles": 1470,
+    "observedFiles": 1470,
+    "expectedPackets": 36737,
+    "observedPackets": 36737
+  },
+  "validation": {
+    "tool": "scripts/qualify-common-expansion.py",
+    "status": "all-packets-streamed-global-identities-references-and-provenance-checked",
+    "seconds": 63.495,
+    "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+    "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "externalReferences": 1249058,
+    "database": {
+      "ids": 3343067,
+      "texts": 1456174,
+      "citations": 36737,
+      "referencesRecorded": 661266
+    }
+  },
+  "typingRules": {
+    "fixedIdentifiers": "Field-first typing preserves true IDs, codes, statuses, schemas, units, releases, hashes, locale tags and explicitly coded countries. Nested lists retain their nearest semantic parent and camelCase handles are recognized.",
+    "foodNames": "foodName receives the declared source-text locale for each national source. Existing data.names language keys are retained only when syntactically valid.",
+    "otherHumanText": "Unclassified human source text, including nutrient labels, legal licence titles, rights, country notices, portions and descriptive definitions, remains und rather than being assigned a country-derived language. Compact namespace definition handles and known SPDX shortcodes remain fixed identifiers."
+  },
+  "scope": "Curated public national composition records only. Foods and nutrient observations remain source-scoped; no cross-table food identity, quantity conversion, averaging, diet qualification or source-rights change is asserted.",
+  "nextQualification": "The standalone package validation passed. The aggregation owner must include this immutable package in the paired core global proof before publication."
+}

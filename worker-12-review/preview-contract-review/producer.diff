@@ -1,0 +1,613 @@
+diff --git a/dev-entry.mjs b/dev-entry.mjs
+new file mode 100644
+index 0000000..20a069e
+--- /dev/null
++++ b/dev-entry.mjs
+@@ -0,0 +1,20 @@
++import app from './dist/worker.mjs';
++export default {
++  async fetch(request, env, ctx) {
++    if (new URL(request.url).pathname === '/__dev/status') {
++      return Response.json({mode:'isolated-development', interactive:!!env.DEV_INTERACTIVE, qualifiedContext:env.DEV_QUALIFIED_CONTEXT||null, blockedFeatures:JSON.parse(env.DEV_BLOCKED_FEATURES||'null'), owner:'worker-05', freshState:true, ownerThread:env.DEV_OWNER_THREAD, runId:env.DEV_RUN_ID, sourceCommit:env.DEV_SOURCE_COMMIT, stateId:env.DEV_STATE_ID, developmentCompatibilityDate:'2026-08-06', productionCompatibilityDate:'2026-10-12', database:'local synthetic D1', composition:env.DEV_COMPOSITION||'deny-all', compositionSha256:env.DEV_COMPOSITION_SHA256||null, applicationCommit:env.DEV_APP_COMMIT, applicationArtifact:JSON.parse(env.DEV_APPLICATION_ARTIFACT||'null'), applicationArtifactSha256:env.DEV_APPLICATION_ARTIFACT_SHA256||null, authorPins:JSON.parse(env.DEV_AUTHOR_PINS||'null'), pins:JSON.parse(env.DEV_AUTHOR_PINS||'null'), outbound:env.DEV_COMPOSITION==='pinned-synthetic'?'qualified synthetic WireMock; no live fallback':'deny-all pending owner WireMock artifacts', authentication:env.DEV_COMPOSITION==='pinned-synthetic'?'contracted synthetic Identity; Google OAuth blocked':'unavailable pending Google IDP and WireMock contracts', productionCredentials:false});
++    }
++    const response = await app.fetch(request, env, ctx);
++    const headers = new Headers(response.headers);
++    headers.set('Cache-Control', 'no-store');
++    headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
++    headers.set('X-OffMenu-Development', 'isolated-no-live-outbound');
++    if (headers.get('Content-Type')?.includes('text/html')) {
++      let html = await response.text();
++      const banner=env.DEV_INTERACTIVE?'Private development preview · shared synthetic fixtures only · sign in as alice@example.test, bob@example.test or admin@example.test with fixture-password. Real Google/provider/device/corpus flows remain blocked; independent acceptance pending.':'Development preview · synthetic local data · live services blocked · sign-in and external lookups awaiting mock integration.';
++      html = html.replace(/<body([^>]*)>/i, '<body$1><aside role="status" style="padding:10px;background:#fff3cd;color:#332701;font:16px system-ui">'+banner+' <a href="/__dev/status">Environment details</a></aside>');
++      return new Response(html, {status:response.status, headers});
++    }
++    return new Response(response.body, {status:response.status, headers});
++  }
++};
+diff --git a/dev-lifecycle.mjs b/dev-lifecycle.mjs
+new file mode 100644
+index 0000000..a740773
+--- /dev/null
++++ b/dev-lifecycle.mjs
+@@ -0,0 +1,267 @@
++import path from 'node:path';
++import {fileURLToPath} from 'node:url';
++import {readFileSync,readlinkSync} from 'node:fs';
++export const ownerThread='01a138a5-6210-7ad3-af85-b50eb97eaf38';
++export const sourceRoot=path.dirname(fileURLToPath(import.meta.url));
++export const externalRoot='/home/user/src/offmenu-data/dev-preview-20261014';
++export const receiptRoot=path.join(externalRoot,'workers','worker-05','runs');
++export function configuration(env=process.env) {
++ const runId=env.OFFMENU_DEV_RUN;
++ if(!runId||!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$/.test(runId))throw new Error('Set OFFMENU_DEV_RUN to a new short alphanumeric run ID.');
++ if(env.OFFMENU_DEV_STATE)throw new Error('OFFMENU_DEV_STATE is legacy-only; Worker 05 uses a fresh namespace per run.');
++ const port=Number(env.OFFMENU_DEV_PORT||8787);
++ if(!Number.isInteger(port)||port<1024||port>65535)throw new Error('Invalid OFFMENU_DEV_PORT.');
++ const runRoot=path.join(receiptRoot,runId);
++ const stateId=`worker-05-${runId}`;
++ return {ownerThread,sourceRoot,runId,port,runRoot,receiptPath:path.join(runRoot,'current-run.json'),stateId,statePath:path.join(externalRoot,'states',stateId),retainedStatePath:path.join(externalRoot,'state')};
++}
++export function processBirth(pid) {
++ const stat=readFileSync(`/proc/${pid}/stat`,'utf8');
++ const fields=stat.slice(stat.lastIndexOf(')')+2).trim().split(/\s+/);
++ return {bootId:readFileSync('/proc/sys/kernel/random/boot_id','utf8').trim(),startTicks:fields[19]};
++}
++export function verifyReceipt(receipt,config) {
++ for(const key of ['ownerThread','sourceRoot','runId','stateId','statePath','port'])if(receipt[key]!==config[key])throw new Error(`Runner ${key} mismatch: refusing to signal.`);
++ if(!Number.isInteger(receipt.pid)||receipt.pid<=1||!receipt.bootId||!receipt.startTicks)throw new Error('Missing runner birth identity: refusing to signal.');
++}
++export function verifyLiveRunner(receipt,config) {
++ verifyReceipt(receipt,config);
++ const birth=processBirth(receipt.pid);
++ if(birth.bootId!==receipt.bootId||birth.startTicks!==receipt.startTicks)throw new Error('Runner birth mismatch: refusing to signal.');
++ const cwd=readlinkSync(`/proc/${receipt.pid}/cwd`);
++ const args=readFileSync(`/proc/${receipt.pid}/cmdline`,'utf8').split('\0');
++ if(cwd!==sourceRoot||!args.some(arg=>arg==='dev-server.mjs'||arg===path.join(sourceRoot,'dev-server.mjs')))throw new Error('Runner cwd/command mismatch: refusing to signal.');
++}
++
++// Composition receipts are supplied by the owners after Morgan reviews the pinned tree.
++// Hashes identify evidence; they are not a substitute for that management decision.
++export const mockOwner='01a138a5-afff-7282-acd3-3a457bb91d24';
++export const authOwner='01a138a5-1538-7861-8b0f-d3d28311fc62';
++export const mockRoot='/home/user/src/offmenu-workers/worker-06';
++const gateway='01a130cd-91c1-73da-9978-889018a100dd';
++const mockFiles=['dev/wiremock/adapter.mjs','dev/wiremock/mappings.mjs','dev/wiremock/fixtures.mjs','dev/wiremock/contracts.json','dev/wiremock/runtime-lock.json','package.json','package-lock.json'];
++const hex=(value,length)=>typeof value==='string'&&new RegExp(`^[a-f0-9]{${length}}$`).test(value);
++function requireField(condition,message){if(!condition)throw new Error(`Composition refused: ${message}`);}
++function fresh(record,now){
++ const issued=Date.parse(record.qualifiedAt),expires=Date.parse(record.expiresAt);
++ requireField(Number.isFinite(issued)&&Number.isFinite(expires)&&issued<=now&&expires>now&&expires-issued<=15*60*1000,'missing/stale qualification (maximum 15 minutes)');
++}
++export function validateCompositionShape(d,now=Date.now()) {
++ requireField(d?.schema==='offmenu-dev-composition/1','descriptor schema');
++ requireField(d.approval?.via===gateway&&typeof d.approval.reference==='string'&&d.approval.reference.length>0,'Morgan approval reference via Gateway required');
++ requireField(d.app&&(/^\/home\/user\/src\/offmenu-workers\/worker-0[1-8]$/.test(d.app.root)||d.app.source&&d.app.disposition==='isolated-compatibility-only')&&hex(d.app.commit,40),'pinned permanent application source');
++ requireField(d.app.artifact?.path===`${d.app.root}/dist/worker.mjs`&&hex(d.app.artifact.sha256,64),'pinned compiled application');
++ requireField(d.app.schemas&&['cloud/schema.sql','cloud/catalogue-schema.sql'].every(f=>hex(d.app.schemas[f],64)),'pinned account/catalogue schemas');
++ requireField(d.mock?.ownerThread===mockOwner&&d.mock.root===mockRoot&&hex(d.mock.commit,40)&&d.mock.api==='offmenu-mocks/1','Worker 06 owner/source/API');
++ requireField(d.mock.files&&mockFiles.every(f=>hex(d.mock.files[f],64)),'complete adapter/dependency checksums');
++ requireField(d.mock.receipt&&path.isAbsolute(d.mock.receipt.path)&&hex(d.mock.receipt.sha256,64),'qualified runtime receipt pin');
++ requireField(d.auth&&path.isAbsolute(d.auth.path)&&hex(d.auth.sha256,64),'Worker 04 auth contract pin');
++ requireField(d.scenario==='success','only success scenario qualified for this lifecycle seam');
++ fresh(d,now);
++ return d;
++}
++import {createHash} from 'node:crypto';
++import {Response as MiniflareResponse} from 'miniflare';
++import {execFileSync} from 'node:child_process';
++import {pathToFileURL} from 'node:url';
++const digest=(file,algorithm='sha256')=>createHash(algorithm).update(readFileSync(file)).digest('hex');
++export function verifyFilePin(file,expected,algorithm='sha256'){requireField(digest(file,algorithm)===expected,'file checksum');}
++function pinnedJSON(ref){verifyFilePin(ref.path,ref.sha256);return JSON.parse(readFileSync(ref.path,'utf8'));}
++function sourcePin(root,commit){
++ requireField(execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim()===commit,'source HEAD mismatch');
++ requireField(execFileSync('git',['diff','HEAD','--name-only'],{cwd:root,encoding:'utf8'}).trim()==='','tracked source differs from pinned HEAD');
++}
++export function validateCompositionFiles(d) {
++ if(d.app.source)verifyCandidateSource(d.app.source,d.app.root);else sourcePin(d.app.root,d.app.commit);
++ sourcePin(mockRoot,d.mock.commit);
++ requireField(digest(d.app.artifact.path)===d.app.artifact.sha256,'application artifact checksum');
++ for(const [f,h] of Object.entries(d.app.schemas)) {
++  requireField(['cloud/schema.sql','cloud/catalogue-schema.sql'].includes(f),'unknown schema');
++  requireField(digest(path.join(d.app.root,f))===h,'schema checksum');
++ }
++ for(const f of mockFiles)requireField(digest(path.join(mockRoot,f))===d.mock.files[f],`mock checksum ${f}`);
++ const auth=pinnedJSON(d.auth);let runtime=pinnedJSON(d.mock.receipt);
++ if(runtime.schemaVersion===1&&runtime.operation==='status'){
++  requireField(d.mock.commit===candidatePins['06']&&d.mock.qualification,'pinned native runtime qualification');
++  const q=pinnedJSON(d.mock.qualification);
++  requireField(d.mock.qualification.sha256===hashBytes(gitBytes('show',`${candidatePins['06']}:dev/wiremock/identity-verification.json`))&&q.schema==='offmenu-identity-fidelity-verification/1'&&q.semanticsVersion==='offmenu-identity-session/2'&&q.java.representativeScenariosPassed===119&&q.java.identity.assertions===176&&q.java.identity.logoutRevocation===true&&q.java.identity.passwordRevival===true,'native WireMock qualification');
++  const at=Date.parse(runtime.at);
++  runtime={schema:'offmenu-mock-runtime/1',ownerThread:mockOwner,status:'qualified',api:'offmenu-mocks/1',sourceCommit:d.mock.commit,qualifiedAt:runtime.at,expiresAt:new Date(at+15*60*1000).toISOString(),version:runtime.custody.version,jarSha512:runtime.custody.jarSha512,bootId:runtime.custody.bootId,custody:runtime.custody};
++ }
++ const lock=JSON.parse(readFileSync(path.join(mockRoot,'dev/wiremock/runtime-lock.json'),'utf8'));
++ validateOwnerContracts(d,auth,runtime,lock);
++ const c=runtime.custody;
++ requireField(digest(c.jar,'sha512')===lock.sha512,'runtime JAR checksum');
++ return {auth,runtime};
++}
++export function validateOwnerContracts(d,auth,runtime,lock) {
++ if(auth.schemaVersion===1&&auth.owner==='OffMenu Worker 04'){
++  requireField(d.app.source&&d.auth.sha256===hashBytes(gitBytes('show',`${candidatePins['04']}:dev/google-idp/contract.json`))&&auth.isolation.liveFallback===false&&auth.identity.prefix==='/.netlify/identity/'&&auth.checkpoint==='02da1609a0cfc3da249aa69c9717ad25ff06191d','native auth source/boundary');
++ }else {
++ requireField(auth.schema==='offmenu-dev-auth/1'&&auth.ownerThread===authOwner&&auth.status==='qualified'&&auth.appCommit===d.app.commit&&auth.mockCommit===d.mock.commit,'auth qualification/composition mismatch');
++ requireField(auth.mode==='synthetic-only'&&auth.providerAcceptance===false&&auth.sameOriginPath==='/.netlify/identity/'&&auth.upstream==='https://offmenu-accounts.netlify.app/.netlify/identity'&&auth.googleOAuth==='blocked-501'&&auth.profileUpdate==='blocked-501','auth boundary contract');
++ requireField(['password','refresh','user'].every(v=>auth.capabilities?.includes(v)),'required synthetic auth capabilities');
++ }
++ requireField(runtime.schema==='offmenu-mock-runtime/1'&&runtime.ownerThread===mockOwner&&runtime.status==='qualified'&&runtime.api===d.mock.api&&runtime.sourceCommit===d.mock.commit,'runtime owner/source/qualification');
++ requireField(runtime.version===lock.version&&runtime.jarSha512===lock.sha512,'runtime version/checksum pin');
++ const c=runtime.custody;
++ requireField(c&&[1,2].includes(c.schemaVersion)&&Number.isInteger(c.pid)&&c.pid>1&&c.cwd===mockRoot&&Number.isInteger(c.port)&&c.port>=1024&&c.port<=65535&&(c.schemaVersion===1?c.root===`${mockRoot}/dev/wiremock/.runtime/port-${c.port}`:new RegExp(`^${mockRoot}/dev/wiremock/\\.runtime/run-${c.port}-[a-f0-9-]{36}$`).test(c.root))&&path.isAbsolute(c.jar)&&typeof c.token==='string'&&c.token.length>=16&&c.version===lock.version,'runtime custody shape');
++ requireField(hex(runtime.bootId?.replaceAll('-',''),32)&&/^\d+$/.test(c.birthTicks),'runtime birth pin');
++}
++export async function verifyMockRuntime(runtime,now=Date.now()) {
++ fresh(runtime,now);
++ const c=runtime.custody,birth=processBirth(c.pid);
++ if(runtime.nativeCustodyReceipt){requireField(runtime.nativeCustodyReceipt.path===path.join(c.root,'custody.json'),'native custody receipt path');verifyFilePin(runtime.nativeCustodyReceipt.path,runtime.nativeCustodyReceipt.sha256);}
++ const native=JSON.parse(readFileSync(path.join(c.root,'custody.json'),'utf8'));
++ for(const key of ['schemaVersion','pid','bootId','jarSha512','mappingsSha256','birthTicks','port','jar','root','cwd','token','version','startedAt'])requireField(native[key]===c[key],'native custody differs from qualified receipt');
++ requireField(birth.bootId===runtime.bootId&&birth.startTicks===c.birthTicks,'runtime birth mismatch');
++ requireField(readlinkSync(`/proc/${c.pid}/cwd`)===mockRoot,'runtime cwd');
++ const args=readFileSync(`/proc/${c.pid}/cmdline`,'utf8').split('\0');
++ requireField(args.includes(c.jar)&&args[args.indexOf('--root-dir')+1]===c.root&&args[args.indexOf('--port')+1]===String(c.port)&&args[args.indexOf('--bind-address')+1]==='127.0.0.1','runtime command');
++ const response=await fetch(`http://127.0.0.1:${c.port}/__offmenu_fixture_health`,{redirect:'error',signal:AbortSignal.timeout(1000)});
++ requireField(response.ok&&(await response.json()).custodyToken===c.token,'runtime health token');
++}
++export function guardedOutbound({adapter,contractFor,check,onEvent=()=>{}}) {
++ return async request=>{
++  try {
++   requireField(Boolean(contractFor(request.url,request.method)),'unknown outbound contract; no live fallback');
++   await check();
++   const response=await adapter(request);
++   requireField(response.headers.get('X-OffMenu-Dev-Mock')==='wiremock'&&!(response.status>=300&&response.status<400),'unmarked/redirect response; no live fallback');
++   const url=new URL(request.url);
++   await onEvent({blocked:false,host:url.hostname,path:url.pathname,method:request.method,status:response.status});
++   return response;
++  }catch {
++   await onEvent({blocked:true,method:request.method,status:502});
++   return MiniflareResponse.json({error:'DEV_COMPOSITION_BLOCKED'},{status:502,headers:{'X-OffMenu-Dev-Mock':'blocked'}});
++  }
++ };
++}
++export async function loadComposition(env=process.env,{probe=true,onEvent=()=>{}}={}) {
++ if(!env.OFFMENU_DEV_COMPOSITION&&!env.OFFMENU_DEV_COMPOSITION_SHA256)return null;
++ requireField(path.isAbsolute(env.OFFMENU_DEV_COMPOSITION||'')&&hex(env.OFFMENU_DEV_COMPOSITION_SHA256,64),'descriptor path/hash must both be supplied');
++ const ref={path:env.OFFMENU_DEV_COMPOSITION,sha256:env.OFFMENU_DEV_COMPOSITION_SHA256};
++ const d=validateCompositionShape(pinnedJSON(ref)),pins=validateCompositionFiles(d);
++ fresh(pins.runtime,Date.now());
++ if(probe)await verifyMockRuntime(pins.runtime);
++ // Revalidate every imported input after a successful probe, before module evaluation.
++ validateCompositionFiles(d);
++ if(!probe)return {descriptor:d,descriptorSha256:ref.sha256,auth:pins.auth,runtime:pins.runtime};
++ const module=await import(pathToFileURL(path.join(mockRoot,'dev/wiremock/adapter.mjs')).href);
++ requireField(typeof module.createOutboundAdapter==='function'&&typeof module.contractFor==='function','adapter API');
++ const fixtures=await import(pathToFileURL(path.join(mockRoot,'dev/wiremock/fixtures.mjs')).href);
++ if(pins.auth.schemaVersion===1)for(const [id,actor] of Object.entries(pins.auth.actors))for(const key of ['id','token','refreshToken'])requireField(fixtures.ACTORS[id]?.[key]===actor[key],'auth/mock actor mismatch');
++ const adapter=module.createOutboundAdapter({wiremockOrigin:`http://127.0.0.1:${pins.runtime.custody.port}`,scenario:d.scenario,onEvent:()=>{}});
++ const outboundService=guardedOutbound({adapter,contractFor:module.contractFor,onEvent,check:async()=>{
++  validateCompositionShape(d);validateCompositionFiles(d);await verifyMockRuntime(pins.runtime);
++ }});
++ const service=pins.auth.schemaVersion===1?syntheticAuthBoundary(outboundService):outboundService;
++ return {descriptor:d,descriptorSha256:ref.sha256,outboundService:service,auth:pins.auth,runtime:pins.runtime};
++}
++
++export const candidatePins={
++ '02':'1469cea8b6c91f705de9c4c8aee91c4c4d723660',
++ '04':'5102bc7a42d7eab37522301705335acdf75c7b13',
++ '05':'e513539ed952e1e4271529206d5274553221f6b5',
++ '06':'9b31f7d4de21dd30add0c49b038e5ac31413ec5d',
++ '08':'223ea760124b8fea642c29ed549181d2e5a02cb4'
++};
++const mainPin='8652b312ce7989c5e4f2d49ae765d5d8daf5841d',thirdPin='84c4732af985965c3e5b00383acaa662bdd52ea6';
++const gitBytes=(...args)=>execFileSync('git',args,{cwd:sourceRoot,maxBuffer:32*1024*1024});
++const hashBytes=value=>createHash('sha256').update(value).digest('hex');
++export function verifyCandidateSource(ref,root){
++ const s=pinnedJSON(ref);
++ requireField(s.schema==='offmenu-local-candidate-source/1'&&s.disposition==='isolated-compatibility-only'&&s.root===root,'candidate source/disposition');
++ requireField(root.startsWith(path.join(externalRoot,'workers/worker-05/candidates')+'/')&&path.resolve(root)===root,'candidate root');
++ requireField(JSON.stringify(s.pins)===JSON.stringify(candidatePins)&&s.main===mainPin&&s.thirdParty===thirdPin&&s.compositionManifestSha256==='31ad2805f7df39660ede64dd5468aac82d9cced681d5e04e924963fa1db2ef9a','candidate selection pins');
++ requireField(s.files.length>0&&s.files.length<300&&hex(s.manifestSha256,64),'bounded source manifest');
++ const names=new Set();
++ for(const f of s.files){
++  requireField(typeof f.path==='string'&&!path.isAbsolute(f.path)&&!f.path.split('/').includes('..')&&!names.has(f.path),'candidate path');names.add(f.path);
++  requireField(digest(path.join(root,f.path))===f.sha256,'candidate input checksum');
++  if(f.gitBlob){requireField([mainPin,thirdPin,candidatePins['04']].includes(f.sourceCommit),'unselected source revision');requireField(hashBytes(gitBytes('cat-file','blob',f.gitBlob))===f.sha256&&gitBytes('rev-parse',`${f.sourceCommit}:${f.path}`).toString().trim()===f.gitBlob,'candidate Git source');}
++ }
++ requireField(hashBytes(JSON.stringify(s.files))===s.manifestSha256,'candidate manifest hash');
++ return s;
++}
++export async function buildCandidate(){
++ const helperPath='/home/user/src/offmenu-workers/worker-02/scripts/lib/third-party-compatibility.mjs';
++ requireField(hashBytes(gitBytes('show',`${candidatePins['02']}:scripts/lib/third-party-compatibility.mjs`))===digest(helperPath),'pinned Worker 02 composer');
++ const {snapshot,composeSnapshots,blob}=await import(pathToFileURL(helperPath).href);
++ const base=gitBytes('merge-base',mainPin,thirdPin).toString().trim();
++ const composed=composeSnapshots(snapshot(sourceRoot,base),snapshot(sourceRoot,mainPin),snapshot(sourceRoot,thirdPin));
++ const merged=composeSnapshots(snapshot(sourceRoot,'65805762cf398202a765d1dc9d8ec26cfe035348'),composed.entries,snapshot(sourceRoot,candidatePins['04']));
++ const {mkdir,writeFile,symlink}=await import('node:fs/promises');
++ const {randomUUID}=await import('node:crypto');
++ const root=path.join(externalRoot,'workers/worker-05/candidates',randomUUID());await mkdir(root,{recursive:true});
++ const files=[];let bytes=0;
++ const put=async(name,data,metadata={})=>{bytes+=Buffer.byteLength(data);requireField(bytes<=16*1024*1024,'candidate exceeds 16MiB');await mkdir(path.dirname(path.join(root,name)),{recursive:true});await writeFile(path.join(root,name),data,{flag:'wx'});files.push({path:name,sha256:hashBytes(data),...metadata});};
++ const assetsNames=['index.html','data-workspace.html','style.css','icon.svg','manifest.webmanifest','manifest-ar.webmanifest'];
++ const specific=new Set([...assetsNames.map(f=>'public/'+f),'public/locales/en.json','public/recipe-ingredient-aliases.json','research/manifest.json','netlify-return/callback-policy.js']);
++ for(const [name,entry] of merged.entries){
++  if(!specific.has(name)&&!/^((cloud|corpus)\/.*\.mjs|cloud\/.*\.sql|public\/.*\.js)$/.test(name))continue;
++  await put(name,blob(sourceRoot,entry),{sourceCommit:entry.commit,gitBlob:entry.oid});
++ }
++ await put('package.json','{"type":"module","private":true}\n');await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'node_modules'),'dir');
++ const {build}=await import('esbuild');
++ const assets={'recipes.json':'[]','afcd-nutrient-details.json':'{}','scanner.wasm':'','retailer-extension.zip':''};
++ for(const name of assetsNames)assets[name]=readFileSync(path.join(root,'public',name),'utf8');
++ for(const [name,format] of [['app','esm'],['data-workspace','esm'],['sw','iife']]){
++  const result=await build({entryPoints:[path.join(root,'public',name+'.js')],bundle:true,minify:true,write:false,format,platform:'browser'});assets[name+'.js']=result.outputFiles[0].text;
++ }
++ const release={sourceCommit:mainPin,candidatePins,compositionManifest:merged.manifestSHA256,isolatedCandidate:true};
++ await put('cloud/generated.mjs','const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+readFileSync(path.join(root,'cloud/handler.mjs'),'utf8'));
++ const built=await build({entryPoints:[path.join(root,'cloud/generated.mjs')],bundle:true,minify:true,write:false,format:'esm',platform:'browser'});
++ await put('dist/worker.mjs',built.outputFiles[0].text);
++ files.sort((a,b)=>a.path.localeCompare(b.path));
++ const source={schema:'offmenu-local-candidate-source/1',disposition:'isolated-compatibility-only',root,pins:candidatePins,base,main:mainPin,thirdParty:thirdPin,mainTree:gitBytes('rev-parse',`${mainPin}^{tree}`).toString().trim(),idpTree:gitBytes('rev-parse',`${candidatePins['04']}^{tree}`).toString().trim(),compositionManifestSha256:merged.manifestSHA256,bytes,files,manifestSha256:hashBytes(JSON.stringify(files)),syntheticAssets:['recipes.json','afcd-nutrient-details.json','scanner.wasm','retailer-extension.zip'],corpus07:'PENDING'};
++ const manifest=path.join(root,'candidate-source.json');await writeFile(manifest,JSON.stringify(source,null,2)+'\n',{flag:'wx'});
++ return {root,commit:mainPin,artifact:{path:path.join(root,'dist/worker.mjs'),sha256:digest(path.join(root,'dist/worker.mjs'))},schemas:Object.fromEntries(['cloud/schema.sql','cloud/catalogue-schema.sql'].map(f=>[f,digest(path.join(root,f))])),source:{path:manifest,sha256:digest(manifest)},disposition:source.disposition};
++}
++
++export async function createCandidateDescriptor(runtimeReceipt){
++ requireField(path.isAbsolute(runtimeReceipt),'explicit Worker 06 status receipt');
++ const app=await buildCandidate();
++ const native=pinnedJSON({path:runtimeReceipt,sha256:digest(runtimeReceipt)});
++ requireField(native.operation==='status'||native.schema==='offmenu-mock-runtime/1'&&native.status==='qualified','fresh live native status or qualified runtime receipt required');
++ const d={schema:'offmenu-dev-composition/1',disposition:'isolated-compatibility-only',approval:{via:gateway,reference:'Morgan selected immutable 04/05/06/08 via setup 01a137cf; isolated candidate compatibility only'},qualifiedAt:new Date().toISOString(),expiresAt:new Date(Date.now()+15*60*1000).toISOString(),scenario:'success',app,
++  mock:{root:mockRoot,ownerThread:mockOwner,commit:candidatePins['06'],api:'offmenu-mocks/1',files:Object.fromEntries(mockFiles.map(f=>[f,digest(path.join(mockRoot,f))])),receipt:{path:runtimeReceipt,sha256:digest(runtimeReceipt)},qualification:{path:path.join(mockRoot,'dev/wiremock/identity-verification.json'),sha256:digest(path.join(mockRoot,'dev/wiremock/identity-verification.json'))}},
++  auth:{path:'/home/user/src/offmenu-workers/worker-04/dev/google-idp/contract.json',sha256:digest('/home/user/src/offmenu-workers/worker-04/dev/google-idp/contract.json')},corpus07:'PENDING',pins:candidatePins};
++ validateCompositionShape(d);const {runtime}=validateCompositionFiles(d);await verifyMockRuntime(runtime);
++ const descriptorPath=path.join(app.root,'composition.json');
++ const {writeFile}=await import('node:fs/promises');await writeFile(descriptorPath,JSON.stringify(d,null,2)+'\n',{flag:'wx'});
++ return {descriptorPath,descriptorSha256:digest(descriptorPath),candidateRoot:app.root,artifactSha256:app.artifact.sha256,source:d.app.source};
++}
++if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)&&process.argv[2]==='candidate')console.log(JSON.stringify(await createCandidateDescriptor(process.argv[3]),null,2));
++
++export function syntheticAuthBoundary(outbound){
++ return async request=>{
++  const u=new URL(request.url);
++  if(u.hostname==='offmenu-accounts.netlify.app'&&u.pathname.startsWith('/.netlify/identity/')){
++   const suffix=u.pathname.slice('/.netlify/identity/'.length);
++   if(!((request.method==='GET'&&['settings','user'].includes(suffix))||(request.method==='POST'&&['token','logout'].includes(suffix))))return MiniflareResponse.json({error:'DEV_AUTH_FLOW_PENDING',synthetic:true},{status:501,headers:{'X-OffMenu-Dev-Mock':'wiremock'}});
++  }
++  return outbound(request);
++ };
++}
++
++export function loadCandidateApplication(env=process.env){
++ if(!env.OFFMENU_DEV_CANDIDATE_SOURCE&&!env.OFFMENU_DEV_CANDIDATE_SHA256)return null;
++ requireField(!env.OFFMENU_DEV_COMPOSITION&&!env.OFFMENU_DEV_COMPOSITION_SHA256,'explicit candidate deny-all and mock composition cannot be mixed');
++ requireField(path.isAbsolute(env.OFFMENU_DEV_CANDIDATE_SOURCE||'')&&hex(env.OFFMENU_DEV_CANDIDATE_SHA256,64),'candidate source path/hash pair');
++ const ref={path:env.OFFMENU_DEV_CANDIDATE_SOURCE,sha256:env.OFFMENU_DEV_CANDIDATE_SHA256};
++ const source=pinnedJSON(ref);verifyCandidateSource(ref,source.root);
++ const file=name=>{const entry=source.files.find(f=>f.path===name);requireField(entry,'candidate artifact/schema missing');return entry.sha256;};
++ return {root:source.root,commit:source.main,artifact:{path:path.join(source.root,'dist/worker.mjs'),sha256:file('dist/worker.mjs')},schemas:Object.fromEntries(['cloud/schema.sql','cloud/catalogue-schema.sql'].map(f=>[f,file(f)])),source:ref,disposition:source.disposition};
++}
++
++export async function initializeCandidateSchema(db,root){
++ const {DatabaseSync}=await import('node:sqlite');
++ const schema=new DatabaseSync(':memory:');
++ try{
++  for(const file of ['cloud/schema.sql','cloud/catalogue-schema.sql'])schema.exec(readFileSync(path.join(root,file),'utf8'));
++  const statements=schema.prepare("SELECT sql FROM sqlite_master WHERE sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY CASE type WHEN 'table' THEN 0 ELSE 1 END,name").all();
++  for(const {sql} of statements)await db.prepare(sql.replace(/^CREATE TABLE /,'CREATE TABLE IF NOT EXISTS ').replace(/^CREATE INDEX /,'CREATE INDEX IF NOT EXISTS ')).run();
++  return statements.length;
++ }finally{schema.close();}
++}
+diff --git a/dev-server.mjs b/dev-server.mjs
+new file mode 100644
+index 0000000..4a4689c
+--- /dev/null
++++ b/dev-server.mjs
+@@ -0,0 +1,63 @@
++import {Miniflare, Response} from 'miniflare';
++import {readFile, appendFile, writeFile, mkdir, access} from 'node:fs/promises';
++import path from 'node:path';
++import net from 'node:net';
++import {execFileSync} from 'node:child_process';
++import {configuration,processBirth,loadComposition,loadCandidateApplication,candidatePins,initializeCandidateSchema} from './dev-lifecycle.mjs';
++import {loadInteractive,inputPins} from './interactive-preview.mjs';
++for(const key of Object.keys(process.env))if(key.startsWith('GIT_'))delete process.env[key];
++const config=configuration();
++const audit=event=>appendFile(path.join(config.runRoot,'mock-audit.jsonl'),JSON.stringify({at:new Date().toISOString(),...event})+'\n');
++const dryRun=process.argv.includes('--dry-run');
++const candidateApp=loadCandidateApplication();
++const interactive=await loadInteractive(process.env,{probe:!dryRun});
++const composition=interactive||await loadComposition(process.env,{probe:!dryRun,onEvent:audit});
++if(dryRun){console.log(JSON.stringify({...config,composition:composition?{mode:'pinned-synthetic',descriptorSha256:composition.descriptorSha256,runtimeProbe:'not performed; dry-run is not readiness'}:{mode:candidateApp?'deny-all-candidate':'deny-all'},application:candidateApp||composition?.descriptor.app||null},null,2));process.exit(0);}
++
++const {sourceRoot:root,runRoot:home,stateId,statePath,receiptPath,ownerThread,runId,port}=config;
++process.chdir(root);
++// Missing local build must fail before reserving a run or touching state.
++const application=composition?.descriptor.app||candidateApp;
++const authorPins=interactive?inputPins:candidatePins;
++const compositionMode=composition?'pinned-synthetic':candidateApp?'deny-all-candidate':'deny-all';
++const artifactPath=application?.artifact.path||path.join(root,'dist/worker.mjs');
++await access(artifactPath);
++// Check loopback ownership before starting workerd or touching synthetic D1.
++await new Promise((resolve,reject)=>{const probe=net.createServer();probe.once('error',reject);probe.listen(port,'127.0.0.1',()=>probe.close(resolve));});
++await mkdir(path.dirname(home),{recursive:true});
++await mkdir(home); // Exclusive run reservation; never overwrite or adopt another run.
++await mkdir(statePath); // Fresh state only; retained and prior namespaces stay untouched.
++const sourceCommit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
++const receipt={pid:process.pid,ownerThread,runId,...processBirth(process.pid),sourceRoot:root,sourceCommit,stateId,statePath,port,schema:'offmenu.worker05.lifecycle.v2',owner:'worker-05',processOwner:'worker-05',applicationArtifact:application?.artifact||null,applicationArtifactSha256:application?.artifact?.sha256||null,authorPins:application?{...authorPins}:null,freshState:true,stateNamespace:stateId,lifecycleLeaseId:runId+'-'+process.pid+'-'+processBirth(process.pid).startTicks,accepted:false,candidateStatus:'isolated-compatibility-only',compositionMode,candidateSourceSha256:application?.source?.sha256||null,pins:candidateApp||composition?{...authorPins}:null,mode:composition?'pinned-synthetic-mocks':candidateApp?'isolated-candidate-no-live-outbound':'isolated-no-live-outbound',compositionSha256:composition?.descriptorSha256||null,applicationCommit:application?.commit||sourceCommit,developmentCompatibilityDate:'2026-08-06',productionCompatibilityDate:'2026-10-12',interactive:!!interactive,qualifiedContext:interactive?.qualifiedContext||null,grantBinding:interactive?.descriptor.authority||null,blockedFeatures:interactive?.descriptor.blockedFeatures||null,startedAt:new Date().toISOString(),status:'starting'};
++await writeFile(receiptPath,JSON.stringify(receipt,null,2)+'\n');
++const record=async changes=>{Object.assign(receipt,changes);await writeFile(receiptPath,JSON.stringify(receipt,null,2)+'\n');};
++const entryPath=application?path.join(home,'dev-entry.mjs'):path.join(root,'dev-entry.mjs');
++if(application){
++ const entry=await readFile(path.join(root,'dev-entry.mjs'),'utf8');
++ await writeFile(entryPath,entry.replace("'./dist/worker.mjs'",JSON.stringify(artifactPath)),{flag:'wx'});
++}
++const mf=new Miniflare({host:'127.0.0.1',port,modules:true,scriptPath:entryPath,modulesRoot:'/',compatibilityDate:'2026-08-06',compatibilityFlags:['nodejs_compat'],cf:{country:'AU'},d1Databases:{DB:'offmenu-development-synthetic'},d1Persist:statePath,bindings:{...(interactive?.bindings||{}),DEV_SOURCE_COMMIT:sourceCommit,DEV_STATE_ID:stateId,DEV_OWNER_THREAD:ownerThread,DEV_RUN_ID:runId,DEV_COMPOSITION:compositionMode,DEV_COMPOSITION_SHA256:composition?.descriptorSha256||'',DEV_APP_COMMIT:application?.commit||sourceCommit,DEV_APPLICATION_ARTIFACT:JSON.stringify(application?.artifact||null),DEV_APPLICATION_ARTIFACT_SHA256:application?.artifact?.sha256||'',DEV_AUTHOR_PINS:application?JSON.stringify(authorPins):'null',DEV_INTERACTIVE:!!interactive,DEV_QUALIFIED_CONTEXT:interactive?.qualifiedContext||'',DEV_BLOCKED_FEATURES:JSON.stringify(interactive?.descriptor.blockedFeatures||null)},
++  outboundService:composition?.outboundService|| (async request=>{
++    const url=new URL(request.url);
++    await appendFile(path.join(home,'outbound-blocked.jsonl'),JSON.stringify({at:new Date().toISOString(),method:request.method,origin:url.origin,path:url.pathname,result:'blocked-unmatched-no-live-passthrough'})+'\n');
++    return Response.json({error:'DEV_OUTBOUND_BLOCKED',message:'No local mock contract is connected for this request.',origin:url.origin,path:url.pathname},{status:501});
++  })
++});
++let closing=false;
++async function stop(){if(closing)return;closing=true;await mf.dispose();await record({status:'stopped',stoppedAt:new Date().toISOString()});console.log('Development server stopped');process.exit(0);}
++process.on('SIGINT',stop);process.on('SIGTERM',stop);
++// Terminal command avoids competing runtime signal-exit hooks.
++process.stdin.setEncoding('utf8');
++process.stdin.on('data',data=>{if(data.trim()==='stop')void stop();});
++try {
++const db=await mf.getD1Database('DB');
++const schemaRoot=application?.root||root;
++if(application)await initializeCandidateSchema(db,schemaRoot);
++else for(const file of ['cloud/schema.sql','cloud/catalogue-schema.sql'])await db.exec(await readFile(path.join(schemaRoot,file),'utf8'));
++await db.prepare('INSERT INTO catalogue(kind,id,country,document,search_text,version) VALUES(?,?,?,?,?,?) ON CONFLICT(kind,id) DO NOTHING').bind('country','dev:AU','AU',JSON.stringify({id:'dev:AU',code:'AU',name:'Australia (synthetic development record)',countryCode:'AU',starterLines:[],source:'dev-fixture'}),'australia synthetic development','development-fixture-1').run();
++const url=await mf.ready;
++await record({status:'ready',url:String(url)});
++console.log(JSON.stringify(receipt));
++} catch(error) {
++  await mf.dispose();await record({status:'failed',failedAt:new Date().toISOString(),error:error.message});throw error;
++}
+diff --git a/dev-smoke.mjs b/dev-smoke.mjs
+new file mode 100644
+index 0000000..1428dc5
+--- /dev/null
++++ b/dev-smoke.mjs
+@@ -0,0 +1,21 @@
++import assert from 'node:assert/strict';
++import {readFile,writeFile} from 'node:fs/promises';
++import {configuration,verifyLiveRunner} from './dev-lifecycle.mjs';
++const config=configuration();
++const receipt=JSON.parse(await readFile(config.receiptPath,'utf8'));
++verifyLiveRunner(receipt,config);
++assert.equal(receipt.status,'ready');
++const base=`http://127.0.0.1:${config.port}`;
++if(receipt.compositionSha256)throw new Error('Composed acceptance requires Worker 08 harness; dev-smoke checks deny-all lifecycle only.');
++const checks=[];
++for(const [path,status] of [['/',200],['/__dev/status',200],['/api/health',200],['/api/recipes',200],['/api/state',401],['/api/product?barcode=0000000000000',502]]) {
++ const response=await fetch(base+path);assert.equal(response.status,status,path);
++ const body=await response.text();const check={path,status:response.status};
++ if(path==='/'){assert.match(body,/Development preview/);assert.match(response.headers.get('content-security-policy'),/connect-src 'self';/);check.banner=true;}
++ if(path==='/__dev/status'){const detail=JSON.parse(body);assert.equal(detail.ownerThread,config.ownerThread);assert.equal(detail.runId,config.runId);assert.equal(detail.stateId,config.stateId);assert.equal(detail.productionCredentials,false);assert.equal(detail.compositionSha256,receipt.compositionSha256||null);assert.equal(detail.composition,receipt.compositionMode||'deny-all');assert.equal(detail.applicationCommit,receipt.applicationCommit);check.environment=detail;}
++ if(path==='/api/recipes'){check.records=JSON.parse(body).length;assert.ok(check.records>0);}
++ checks.push(check);
++}
++const evidence={at:new Date().toISOString(),base,checks,limitation:'Synthetic loopback checks; no real OAuth, provider, device or production acceptance.'};
++await writeFile(new URL('verification.json',`file://${config.runRoot}/`),JSON.stringify(evidence,null,2)+'\n');
++console.log(JSON.stringify(evidence));
+diff --git a/dev-stop.mjs b/dev-stop.mjs
+new file mode 100644
+index 0000000..3da78a3
+--- /dev/null
++++ b/dev-stop.mjs
+@@ -0,0 +1,24 @@
++import {readFile,writeFile} from 'node:fs/promises';
++import {configuration,verifyReceipt,verifyLiveRunner,processBirth} from './dev-lifecycle.mjs';
++const config=configuration();
++const receipt=JSON.parse(await readFile(config.receiptPath,'utf8'));
++verifyReceipt(receipt,config);
++function sameRunnerPresent(){
++ try {
++  const birth=processBirth(receipt.pid);
++  return birth.bootId===receipt.bootId&&birth.startTicks===receipt.startTicks;
++ }catch(error){if(error.code==='ENOENT'||error.code==='ESRCH')return false;throw error;}
++}
++if(sameRunnerPresent()) {
++ verifyLiveRunner(receipt,config);
++ process.kill(receipt.pid,'SIGTERM');
++ for(let attempt=0;attempt<100&&sameRunnerPresent();attempt++)await new Promise(resolve=>setTimeout(resolve,100));
++ if(sameRunnerPresent())throw new Error('Owned runner did not exit; no escalation signal sent.');
++} else {
++ // A reused PID is never signalled, nor described as the original live process.
++ receipt.stopEvidence='recorded boot/start identity absent; no signal sent';
++}
++receipt.status='stopped';receipt.stoppedAt=new Date().toISOString();
++receipt.stopEvidence ||= 'owner/run/cwd/command/boot/start identity verified; owned runner absent after stop';
++await writeFile(config.receiptPath,JSON.stringify(receipt,null,2)+'\n');
++console.log(JSON.stringify({status:receipt.status,pid:receipt.pid,runId:receipt.runId,stopEvidence:receipt.stopEvidence}));
+diff --git a/docs/interactive-preview-owner05/contract.md b/docs/interactive-preview-owner05/contract.md
+new file mode 100644
+index 0000000..6b04db8
+--- /dev/null
++++ b/docs/interactive-preview-owner05/contract.md
+@@ -0,0 +1,19 @@
++# Worker 05 interactive private DEV contract
++
++This is an owner-05 development contract update, not an accepted release or a relabelled Worker 06 process. The user/root task authorizes an interactive loopback preview, fixed synthetic fixture accounts, fresh local state, and independent Worker 58 checks. No production, provider credentials/account grants, security settings, workflows or external corpus writes are authorized.
++
++Inputs: base `908ca373dfc918f2e33fd5e44260879577bed5c5`; 02 `29f73fea7e6a7b8286c1e07ef20787a001e5ef2a` (development pending acceptance), 03 `e1de8e839954905d82f939730ac5ea79412bc805`, 05 `8dc49b2b3683f2532ee4e3581d105c446f6f575e`, 06 `9b31f7d4de21dd30add0c49b038e5ac31413ec5d`. Code is read as exact regular Git blobs into a bounded private overlay; author checkouts are untouched. No Git writing fixtures or source handler/schema/UI overwrites are used. Dependencies and the pinned cached JAR remain references. Existing shipped app static assets are embedded as normal build inputs; no external corpus is acquired or replicated.
++
++`offmenu-owner05-interactive-composition/2` identifies the input manifest and hashes, app artifact/schema hashes, actual owner/session/root, root task grant reference, permitted fixture actions, actual supplied controls and blocked qualifications. Grant evidence is separate from profile controls. Active instructions supply unrestricted filesystem/network and mandatory auto_review; separate AskForApproval value and named profile are unavailable. User configuration and environment profile are recorded separately. A declaration or JSON hash is not a substitute for independent root/grant verification.
++
++`offmenu-owner05-mock-runtime/2` records owner05, source owner06 and immutable06 pin, actual private cwd/run root/command, PID/boot/birth/loopback port, pinned JAR version/SHA512, mapping hash, immutable native custody, live health and actual Identity/reset test receipts. The original06 code is unmodified and its native custody is preserved. This differs intentionally from the old05 contract that required a06-owned root/process. Worker58 must explicitly consume this updated owner/root contract before claiming combined acceptance; no prior schema or stopped receipt is rewritten to pass.
++
++Qualification is valid only while the same birth, source checksums, JAR and health identity remain live. Every forwarded request rechecks custody/health and adapter sources. Unknown requests never fall back to live vendors. Only settings/user, password/refresh token and logout are exposed through the development Identity seam; Google authorize/callback and unsupported profile/signup/recovery flows stay501. Fixed fixture identities/revocation are not Google consent, credential rotation, real-account linking or production role grants.
++
++`dev-server.mjs` retains the prior owner05 birth-verified lifecycle and exclusive fresh state/run directories. A new descriptor is supplied through OFFMENU_DEV_INTERACTIVE plus its exact SHA256; it cannot mix with legacy composition/deny-all descriptors. `current-run.json` exposes source/owner/run/state/birth/port, actual artifact/hash, author pins, composition hash, grant binding and blocked features. Live status retains artifact object/scalar/pins and explicit interactive/pending-acceptance flags. Shared synthetic actors are available for manual feedback; independent tests may revoke a fixture actor until a valid password re-login.
++
++Start the owned launcher with the exact descriptor and unique OFFMENU_DEV_RUN. Stop only through the own terminal `stop` command or the unchanged `dev-stop.mjs` birth/cwd/command guard. The mock's exact pinned runtime module can administer/stop only its own private custody path; no historical or other-owner process is adopted. A ready user-requested preview remains running for feedback until explicitly stopped or its actual owned identity fails. Native-device reachability, extension installation, real providers and source-admission/corpus transport remain separate gates.
++
++Initial private packet: `/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/`. Input manifest SHA256 `4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b`; app artifact SHA256 `608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2`; input composition SHA256 `73c906be308a2714ae0fc5695b3dfaf4184f70b1c0f5897ce8a992f675a8b243`. Live descriptor `composition-live.json` SHA256 `a0a20164cafc39c75c04a80ec17bcd73d2d3c4a11d67152ba5b74f686ac30567`. Mock qualification `mock-qualified.json` SHA256 `f3017bfd73e0d9626788585409d3ee7be2fc617288dcca7c25a557f0010f8281`: 176 actual Identity assertions plus2 reset assertions passed; owner05 mock PID695978/birth1923192/loopback19075, source06 unmodified. These are real producer facts, not eight-flow or browser acceptance.
++
++Prior dev8dc and Swiss3328 branches, external state/receipts, node_modules reference and primary main/index are preserved. .venv is absent in05; none was created. Review metadata must keep the Swiss/AFCD source ownership distinction honest. Only owned dev integration/receipt/test files are changed here.
+diff --git a/docs/interactive-preview-owner05/pickup.json b/docs/interactive-preview-owner05/pickup.json
+new file mode 100644
+index 0000000..2c7ccba
+--- /dev/null
++++ b/docs/interactive-preview-owner05/pickup.json
+@@ -0,0 +1,30 @@
++{
++  "schema": "offmenu-owner05-preview-pickup/1",
++  "session_id": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
++  "root": "/home/user/src/offmenu-workers/worker-05",
++  "branch": "feature/interactive-preview-owner05-20261014",
++  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
++  "fetch_started_utc": "2026-10-14T09:53:10.083018+00:00",
++  "fetch_completed_utc": "2026-10-14T09:53:12.575299+00:00",
++  "fetch_exit": 0,
++  "prior": {
++    "branch": "feature/dataset-swiss-composition-20261014",
++    "head": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
++    "status": "?? node_modules",
++    "node_modules": "/home/user/src/offmenu/node_modules",
++    "dev_pin": "8dc49b2b3683f2532ee4e3581d105c446f6f575e"
++  },
++  "primary_before": {
++    "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
++    "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
++    "index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
++  },
++  "custody_checked": true,
++  "actual_supplied_controls": {
++    "filesystem": "danger-full-access; no restrictions",
++    "network": "enabled",
++    "approval_policy": "not separately exposed",
++    "mandatory_reviewer": "auto_review"
++  },
++  "config_profile_env": null
++}
+diff --git a/interactive-preview.mjs b/interactive-preview.mjs
+new file mode 100644
+index 0000000..a68cd39
+--- /dev/null
++++ b/interactive-preview.mjs
+@@ -0,0 +1,91 @@
++import path from 'node:path';
++import {readFile,writeFile,mkdir,symlink,readdir} from 'node:fs/promises';
++import {readFileSync,readlinkSync} from 'node:fs';
++import {execFileSync,spawn} from 'node:child_process';
++import {createHash,randomUUID} from 'node:crypto';
++import {pathToFileURL,fileURLToPath} from 'node:url';
++import {Response as WorkerResponse} from 'miniflare';
++import {ownerThread,sourceRoot,externalRoot,processBirth,guardedOutbound,initializeCandidateSchema} from './dev-lifecycle.mjs';
++export const inputPins={'02':'29f73fea7e6a7b8286c1e07ef20787a001e5ef2a','03':'e1de8e839954905d82f939730ac5ea79412bc805','05':'8dc49b2b3683f2532ee4e3581d105c446f6f575e','06':'9b31f7d4de21dd30add0c49b038e5ac31413ec5d'};
++const base='908ca373dfc918f2e33fd5e44260879577bed5c5';
++export const cleanEnv=()=>Object.fromEntries(Object.entries(process.env).filter(([k])=>!k.startsWith('GIT_')));
++const git=(...args)=>execFileSync('git',args,{cwd:sourceRoot,env:cleanEnv(),maxBuffer:32*1024*1024});
++const hash=(data,algorithm='sha256')=>createHash(algorithm).update(data).digest('hex');
++const sha=file=>hash(readFileSync(file));
++const requireThat=(condition,message)=>{if(!condition)throw Error('Interactive preview refused: '+message);};
++const put=async(file,bytes)=>{await mkdir(path.dirname(file),{recursive:true});await writeFile(file,bytes,{flag:'wx'});};
++export async function buildInteractive(){
++ const root=path.join(externalRoot,'workers/worker-05/interactive',randomUUID());await mkdir(root,{recursive:true});
++ const files=[];let inputBytes=0;
++ async function sourceFile(part,pin,name,materialize=true){
++  const meta=git('ls-tree',pin,'--',name).toString().trim().split(/\s+/);requireThat(['100644','100755'].includes(meta[0])&&meta[1]==='blob','regular pinned Git source required: '+name);
++  const bytes=git('show',`${pin}:${name}`);inputBytes+=bytes.length;requireThat(inputBytes<16*1024*1024,'bounded source exceeded16MiB');
++  const entry={part,path:name,commit:pin,blob:meta[2],sha256:hash(bytes),bytes:bytes.length,materialized:materialize};files.push(entry);
++  if(materialize)await put(path.join(root,part,name),bytes);return bytes;
++ }
++ const assetsNames=['index.html','style.css','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','manifest.webmanifest','manifest-ar.webmanifest','data-workspace.html'];
++ const selected=new Set(assetsNames.filter(f=>!['recipes.json','afcd-nutrient-details.json'].includes(f)).map(f=>'public/'+f));
++ for(const line of git('ls-tree','-r','--name-only',inputPins['02']).toString().split('\n')){
++  if(selected.has(line)||/^(cloud|corpus)\/.*\.(mjs|sql)$/.test(line)||/^public\/.*\.js$/.test(line)||/^netlify-return\/.*\.(js|html|css)$/.test(line)||/^public\/locales\/(en|ar)\.json$/.test(line)||line==='public/recipe-ingredient-aliases.json'||line==='research/manifest.json')await sourceFile('app',inputPins['02'],line);
++ }
++ await sourceFile('app',inputPins['02'],'package.json');await sourceFile('app',inputPins['02'],'package-lock.json');await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'app/node_modules'),'dir');
++ for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs','identity-validation.mjs','identity-verification.json'])await sourceFile('mock',inputPins['06'],'dev/wiremock/'+name);
++ await sourceFile('mock',inputPins['06'],'package.json');await sourceFile('mock',inputPins['06'],'package-lock.json');await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'mock/node_modules'),'dir');
++ await sourceFile('audit',inputPins['03'],'scripts/verify-uiux-browser.mjs');await sourceFile('audit',inputPins['03'],'tests-uiux/dom-audit.mjs');
++ await put(path.join(root,'audit/package.json'),'{"type":"module","private":true}\n');
++ for(const name of ['dev-entry.mjs','dev-server.mjs','dev-stop.mjs','dev-lifecycle.mjs'])await sourceFile('producer-input',inputPins['05'],name);
++ const {build}=await import('esbuild'),assets={};
++ for(const name of assetsNames){
++  const bytes=['recipes.json','afcd-nutrient-details.json'].includes(name)?await sourceFile('app',inputPins['02'],'public/'+name,false):await readFile(path.join(root,'app/public',name));assets[name]=bytes.toString();
++ }
++ for(const [name,format] of [['app','esm'],['data-workspace','esm'],['sw','iife'],['scanner-worker','esm']]){
++  const b=await build({entryPoints:[path.join(root,'app/public',name+'.js')],bundle:true,minify:true,write:false,format,platform:'browser'});assets[name+'.js']=b.outputFiles[0].text;
++ }
++ assets['scanner.wasm']=(await readFile(path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'))).toString('base64');
++ assets['retailer-extension.zip']=''; // Extension installation is not qualified in this preview.
++ const release={sourceCommit:inputPins['02'],base,inputPins,developmentPendingAcceptance:true,production:false};
++ const generated='const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+await readFile(path.join(root,'app/cloud/handler.mjs'),'utf8');
++ await put(path.join(root,'app/cloud/generated.mjs'),generated);
++ const compiled=await build({entryPoints:[path.join(root,'app/cloud/generated.mjs')],bundle:true,minify:true,write:false,format:'esm',platform:'browser'});const artifact=path.join(root,'app/dist/worker.mjs');await put(artifact,compiled.outputFiles[0].contents);
++ const trees=Object.fromEntries(Object.entries(inputPins).map(([k,p])=>[k,git('rev-parse',p+'^{tree}').toString().trim()]));
++ const manifest={schema:'offmenu-owner05-private-inputs/1',root,base,pins:inputPins,trees,files,inputBytes,compositionSha256:hash(JSON.stringify({base,pins:inputPins,trees,files})),artifact:{path:artifact,sha256:sha(artifact)},schemas:Object.fromEntries(['cloud/schema.sql','cloud/catalogue-schema.sql'].map(f=>[f,sha(path.join(root,'app',f))])),externalCorporaCopied:false,shippedAppAssets:'Recipes/nutrient-detail bytes are build inputs from the selected existing app Git blobs, not acquired or materialized external corpora.',scannerDependency:{path:path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'),sha256:sha(path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'))},dependencies:await readlinkSync(path.join(sourceRoot,'node_modules'))};
++ const file=path.join(root,'inputs.json');await put(file,JSON.stringify(manifest,null,2)+'\n');return {path:file,sha256:sha(file),root,artifact:manifest.artifact,compositionSha256:manifest.compositionSha256};
++}
++export function verifyInputs(ref){
++ requireThat(ref&&path.isAbsolute(ref.path)&&sha(ref.path)===ref.sha256,'input manifest hash');const m=JSON.parse(readFileSync(ref.path));
++ requireThat(m.schema==='offmenu-owner05-private-inputs/1'&&m.root.startsWith(path.join(externalRoot,'workers/worker-05/interactive')+'/')&&path.resolve(m.root)===m.root&&JSON.stringify(m.pins)===JSON.stringify(inputPins),'owner/input binding');
++ for(const f of m.files){requireThat(['app','mock','audit','producer-input'].includes(f.part)&&Object.values(inputPins).includes(f.commit)&&!path.isAbsolute(f.path)&&!f.path.split('/').includes('..'),'input path/pin');requireThat(hash(git('cat-file','blob',f.blob))===f.sha256&&git('rev-parse',`${f.commit}:${f.path}`).toString().trim()===f.blob,'input Git blob binding');if(f.materialized)requireThat(sha(path.join(m.root,f.part,f.path))===f.sha256,'materialized input changed');}
++ requireThat(m.compositionSha256===hash(JSON.stringify({base:m.base,pins:m.pins,trees:m.trees,files:m.files}))&&sha(m.artifact.path)===m.artifact.sha256,'composition/artifact hash');return m;
++}
++export async function startOwnedMock(ref,port=19075){
++ requireThat(process.env.CODEX_THREAD_ID===ownerThread,'actual native owner session');
++ const m=verifyInputs(ref),runtime=path.join(m.root,'mock/dev/wiremock/runtime.mjs'),jar='/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar';
++ const lock=JSON.parse(readFileSync(path.join(m.root,'mock/dev/wiremock/runtime-lock.json')));requireThat(hash(readFileSync(jar),'sha512')===lock.sha512,'retained JAR checksum');
++ const log=path.join(m.root,'mock-start.log'),{open}=await import('node:fs/promises');const fd=await open(log,'wx');
++ const proc=spawn(process.execPath,[runtime,'start',String(port),jar],{cwd:path.join(m.root,'mock'),env:cleanEnv(),stdio:['ignore',fd.fd,fd.fd]});proc.once('exit',()=>fd.close());
++ let ready;for(let i=0;i<150;i++){const text=await readFile(log,'utf8');for(const line of text.split('\n'))try{const value=JSON.parse(line);if(value.ready)ready=value;}catch{}if(ready)break;if(proc.exitCode!==null)throw Error('Own mock startup failed; log preserved '+log);await new Promise(ok=>setTimeout(ok,100));}requireThat(ready,'own mock readiness timeout; preserve startup log');
++ const custody=JSON.parse(await readFile(ready.custody));const module=await import(pathToFileURL(runtime));await module.assertOwner(custody);
++ const validation=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/identity-validation.mjs')));const identity=await validation.validateIdentityRuntime(`http://127.0.0.1:${port}`);const reset=await module.operate('reset',ready.custody);const resetCheck=await validation.validateIdentityReset(`http://127.0.0.1:${port}`);
++ const receipt={schema:'offmenu-owner05-mock-runtime/2',ownerThread,sourceOwner:'06',sourceCommit:inputPins['06'],status:'qualified-live',qualifiedAt:new Date().toISOString(),validity:'Only while this exact owned birth, source hashes, JAR and health identity remain live; no historical PID adoption.',custody,nativeCustody:{path:ready.custody,sha256:sha(ready.custody)},runtimeSource:{path:runtime,sha256:sha(runtime)},jarSha512:lock.sha512,version:lock.version,identity,reset,resetCheck,startLog:log,startLogSha256:sha(log)};
++ const file=path.join(m.root,'mock-qualified.json');await put(file,JSON.stringify(receipt,null,2)+'\n');return {path:file,sha256:sha(file),custodyPath:ready.custody,port};
++}
++export async function buildDescriptor(inputs,mock){
++ const m=verifyInputs(inputs);const authority={sourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',grant:'Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.',boundSession:ownerThread,boundRoot:sourceRoot,pins:inputPins,compositionSha256:m.compositionSha256,applicationArtifact:m.artifact,permittedActions:['owned-loopback-preview','synthetic-fixture-account-flows','fresh-isolated-synthetic-state','independent58-read/flow-checks','birth-verified-own-process-stop'],actualSuppliedControls:{filesystem:'danger-full-access; no restrictions',network:'enabled',mandatoryReviewer:'auto_review',approvalPolicy:null,namedProfile:null},userConfiguration:{permissionProfile:'disabled',filesystem:'unrestricted'},environmentProfile:process.env.CODEX_PERMISSION_PROFILE||null,unavailableNotInferred:['separate AskForApproval value','named permission profile'],notNewAccountGrant:true};
++ const d={schema:'offmenu-owner05-interactive-composition/2',ownerThread,sourceRoot,developmentPendingAcceptance:true,accepted:false,inputs,mock,authority,app:{root:path.join(m.root,'app'),commit:inputPins['02'],artifact:m.artifact,schemas:m.schemas},scenario:'success',pins:inputPins,compositionSha256:m.compositionSha256,qualifiedAt:new Date().toISOString(),blockedFeatures:['real Google authorize/callback','real provider calls/credentials','real corpus source admission/transport','native device access','extension install']};
++ const file=path.join(m.root,'composition-live.json');await put(file,JSON.stringify(d,null,2)+'\n');return {path:file,sha256:sha(file),root:m.root};
++}
++export async function loadInteractive(env=process.env,{probe=true}={}){
++ if(!env.OFFMENU_DEV_INTERACTIVE&&!env.OFFMENU_DEV_INTERACTIVE_SHA256)return null;
++ requireThat(!env.OFFMENU_DEV_COMPOSITION&&!env.OFFMENU_DEV_CANDIDATE_SOURCE,'modes cannot be mixed');const ref={path:env.OFFMENU_DEV_INTERACTIVE,sha256:env.OFFMENU_DEV_INTERACTIVE_SHA256};requireThat(ref.path&&sha(ref.path)===ref.sha256,'interactive descriptor hash');const d=JSON.parse(readFileSync(ref.path));
++ requireThat(d.schema==='offmenu-owner05-interactive-composition/2'&&d.ownerThread===ownerThread&&d.sourceRoot===sourceRoot&&d.accepted===false,'explicit owner/schema/development scope');const m=verifyInputs(d.inputs);requireThat(JSON.stringify(d.pins)===JSON.stringify(inputPins)&&d.compositionSha256===m.compositionSha256&&JSON.stringify(d.app.artifact)===JSON.stringify(m.artifact),'descriptor input/artifact binding');
++ requireThat(d.authority.boundSession===ownerThread&&d.authority.boundRoot===sourceRoot&&JSON.stringify(d.authority.pins)===JSON.stringify(inputPins)&&d.authority.actualSuppliedControls.mandatoryReviewer==='auto_review'&&d.authority.compositionSha256===m.compositionSha256&&JSON.stringify(d.authority.applicationArtifact)===JSON.stringify(m.artifact),'grant/session/policy binding');
++ requireThat(sha(d.mock.path)===d.mock.sha256,'owned mock receipt hash');const receipt=JSON.parse(readFileSync(d.mock.path));requireThat(receipt.ownerThread===ownerThread&&receipt.sourceOwner==='06'&&receipt.sourceCommit===inputPins['06']&&receipt.status==='qualified-live'&&receipt.identity.assertions===176&&receipt.resetCheck.assertions===2,'actual owned Java qualification');
++ if(!probe)return {descriptor:d,descriptorSha256:ref.sha256,qualifiedContext:'Dry-run only; live runtime not probed'};
++ const runtime=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/runtime.mjs'))),adapter=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/fixtures.mjs')));
++ const check=async()=>{requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
++ await check();const original=adapter.createOutboundAdapter({wiremockOrigin:`http://127.0.0.1:${receipt.custody.port}`,scenario:'success'});
++ const guarded=guardedOutbound({adapter:original,contractFor:adapter.contractFor,check});
++ const service=async request=>{const u=new URL(request.url);if(u.hostname==='offmenu-accounts.netlify.app'&&u.pathname.startsWith('/.netlify/identity/')){const suffix=u.pathname.slice('/.netlify/identity/'.length);if(!((request.method==='GET'&&['settings','user'].includes(suffix))||(request.method==='POST'&&['token','logout'].includes(suffix))))return WorkerResponse.json({error:'DEV_AUTH_FLOW_BLOCKED',synthetic:true},{status:501,headers:{'X-OffMenu-Dev-Mock':'wiremock'}});}return guarded(request);};
++ return {descriptor:d,descriptorSha256:ref.sha256,outboundService:service,bindings:fixtures.BINDINGS(),runtime:receipt,check,qualifiedContext:'Interactive owner05 private overlay; independent58 acceptance pending'};
++}
++if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)&&process.argv[2]==='build')console.log(JSON.stringify(await buildInteractive(),null,2));
+diff --git a/tests-dev/interactive-preview.test.mjs b/tests-dev/interactive-preview.test.mjs
+new file mode 100644
+index 0000000..0b68762
+--- /dev/null
++++ b/tests-dev/interactive-preview.test.mjs
+@@ -0,0 +1,24 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {readFileSync,writeFileSync,mkdtempSync,rmSync} from 'node:fs';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {createHash} from 'node:crypto';
++import {verifyInputs,loadInteractive,inputPins,cleanEnv} from '../interactive-preview.mjs';
++const root='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383';
++const ref={path:root+'/inputs.json',sha256:'4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b'};
++const hash=b=>createHash('sha256').update(b).digest('hex');
++test('exact private immutable input packet verifies, wrong hash refuses, Git overrides stripped',()=>{
++ const m=verifyInputs(ref);assert.equal(m.pins['02'],inputPins['02']);assert.equal(m.externalCorporaCopied,false);assert.ok(m.inputBytes<16*1024*1024);
++ assert.throws(()=>verifyInputs({...ref,sha256:'a'.repeat(64)}));
++ process.env.GIT_INDEX_FILE='/synthetic-do-not-use';assert.equal(cleanEnv().GIT_INDEX_FILE,undefined);delete process.env.GIT_INDEX_FILE;
++});
++test('invalid owner/grant/receipt/composition pins fail before installing a mock adapter',async()=>{
++ const original=JSON.parse(readFileSync(root+'/composition-live.json'));
++ const dir=mkdtempSync(path.join(tmpdir(),'preview05-negative-'));
++ try{
++  for(const change of [d=>d.ownerThread='wrong',d=>d.sourceRoot='/wrong',d=>d.pins['06']='a'.repeat(40),d=>d.authority.boundSession='wrong',d=>d.authority.actualSuppliedControls.mandatoryReviewer='disabled',d=>d.mock.sha256='a'.repeat(64),d=>d.app.artifact.sha256='a'.repeat(64)]){
++   const d=structuredClone(original);change(d);const b=JSON.stringify(d);const file=path.join(dir,'bad.json');writeFileSync(file,b);await assert.rejects(loadInteractive({OFFMENU_DEV_INTERACTIVE:file,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)}));
++  }
++ }finally{rmSync(dir,{recursive:true});}
++});

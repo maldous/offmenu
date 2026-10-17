@@ -1,0 +1,127 @@
+diff --git a/docs/interactive-preview-owner05/contract.md b/docs/interactive-preview-owner05/contract.md
+index 5beec77..aae337c 100644
+--- a/docs/interactive-preview-owner05/contract.md
++++ b/docs/interactive-preview-owner05/contract.md
+@@ -20,7 +20,7 @@ Prior dev8dc and Swiss3328 branches, external state/receipts, node_modules refer
+ 
+ ## P12-01/P12-02 correction
+ 
+-Both exact reviewer reproductions failed before this fix: an unrelated source/empty grant/real-provider action descriptor was accepted, and rehashed before-process qualification plus false JAR/version/runtime claims were accepted. The new focused regression tests now refuse both, plus individual field mutations; the exact original legitimate packet remains admissible without state writes.
++Both exact reviewer reproductions failed before this fix: an unrelated source/empty grant/real-provider action descriptor was accepted, and rehashed before-process qualification plus false JAR/version/runtime claims were accepted. The new focused regression tests now refuse both, plus individual field mutations; the then-current legitimate packet remained admissible without state writes. The additional P12-03/P12-04 requirements below now exclude the original legacy packet.
+ 
+ Task admission checks the independently registered root task source/reference and exact bounded synthetic action set, including duplicate/empty/expanded-action refusal. It binds owner/session/root, selected pins, composition and artifact, and retains unavailable named-profile/approval-policy values as unavailable. These checks do not turn JSON or controls into human authority; independent root/grant verification remains separate.
+ 
+@@ -29,3 +29,11 @@ Qualification now compares the declared custody with the immutable native record
+ Initial qualification has no rolling clock-only lease: validity is the explicitly documented same live birth/source/JAR/health identity while this user-requested preview runs. Before-process/future/expired claims refuse; elapsed age is not silently presented as a new qualification. Stopped identities remain refused. A recorded assertion count is not independently repeated consumer acceptance.
+ 
+ Qualification files/start logs/descriptors now use unique run-specific names, preserving every prior packet. The current live f77 app and mock remain their actual original processes/code; this correction is not claimed as loaded into them. The application artifact and selected input scope are unchanged. A fresh owned packet/runtime readback at the new immutable producer pin will be supplied for independent12 review before58 state-writing admission; safe cutover preserves old state/receipts and only stops owned birth-verified processes.
++
++## P12-03/P12-04 correction
++
++Actual execution evidence is mandatory for all qualified adapter admission, including dry-run validation. The referenced immutable record must match the selected validator/source, native process, Identity results, reset and reset-check results; reset/audit records retain their hash/process/chronology bindings. Original legacy receipts remain untouched and cannot provide a qualified adapter under this contract.
++
++Descriptor qualifiedAt must be a finite string timestamp, at or after the mock qualification and no later than the actual current same-host clock (zero future tolerance). An explicitly supplied descriptor expiry must be finite and unexpired. These checks repeat before every forwarded request; no implicit TTL or new qualification date is invented for an older live mock. Expected root grant/action set and author pins are frozen in producer code; those values and hashes identify a registered task binding, not a signature or human-approval proof.
++
++The fresh producer process reuses unchanged input/app bytes and the preserved actual mock19076 execution/reset/audit packet. No duplicate Identity qualification execution is needed for this validation-only correction. Both earlier app/mock generations, their source labels and state remain preserved; neither is claimed to load this correction. Independent12 review must precede58 state-writing acceptance.
+diff --git a/interactive-preview.mjs b/interactive-preview.mjs
+index 3e2e88d..dfb58e3 100644
+--- a/interactive-preview.mjs
++++ b/interactive-preview.mjs
+@@ -6,14 +6,14 @@ import {createHash,randomUUID} from 'node:crypto';
+ import {pathToFileURL,fileURLToPath} from 'node:url';
+ import {Response as WorkerResponse} from 'miniflare';
+ import {ownerThread,sourceRoot,externalRoot,processBirth,guardedOutbound,initializeCandidateSchema} from './dev-lifecycle.mjs';
+-export const inputPins={'02':'29f73fea7e6a7b8286c1e07ef20787a001e5ef2a','03':'e1de8e839954905d82f939730ac5ea79412bc805','05':'8dc49b2b3683f2532ee4e3581d105c446f6f575e','06':'9b31f7d4de21dd30add0c49b038e5ac31413ec5d'};
++export const inputPins=Object.freeze({'02':'29f73fea7e6a7b8286c1e07ef20787a001e5ef2a','03':'e1de8e839954905d82f939730ac5ea79412bc805','05':'8dc49b2b3683f2532ee4e3581d105c446f6f575e','06':'9b31f7d4de21dd30add0c49b038e5ac31413ec5d'});
+ const base='908ca373dfc918f2e33fd5e44260879577bed5c5';
+ export const cleanEnv=()=>Object.fromEntries(Object.entries(process.env).filter(([k])=>!k.startsWith('GIT_')));
+ const git=(...args)=>execFileSync('git',args,{cwd:sourceRoot,env:cleanEnv(),maxBuffer:32*1024*1024});
+ const hash=(data,algorithm='sha256')=>createHash(algorithm).update(data).digest('hex');
+ const sha=file=>hash(readFileSync(file));
+ const requireThat=(condition,message)=>{if(!condition)throw Error('Interactive preview refused: '+message);};
+-export const taskAdmission={sourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',grant:'Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.',actions:['owned-loopback-preview','synthetic-fixture-account-flows','fresh-isolated-synthetic-state','independent58-read/flow-checks','birth-verified-own-process-stop']};
++export const taskAdmission=Object.freeze({sourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',grant:'Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.',actions:Object.freeze(['owned-loopback-preview','synthetic-fixture-account-flows','fresh-isolated-synthetic-state','independent58-read/flow-checks','birth-verified-own-process-stop'])});
+ export function validateTaskAdmission(a,m){
+  requireThat(a&&a.sourceThread===taskAdmission.sourceThread&&a.grant===taskAdmission.grant,'registered task source/grant reference');
+  requireThat(Array.isArray(a.permittedActions)&&a.permittedActions.every(x=>typeof x==='string')&&new Set(a.permittedActions).size===a.permittedActions.length&&JSON.stringify([...a.permittedActions].sort())===JSON.stringify([...taskAdmission.actions].sort()),'registered synthetic fixture action scope');
+@@ -38,7 +38,8 @@ export async function validateQualification(r,m,{live=true}={}){
+  const reset=JSON.parse(readFileSync(r.reset.receipt)),audit=JSON.parse(readFileSync(r.reset.previousAudit));
+  requireThat(reset.operation==='reset'&&reset.result.reset===true&&nativeEqual(reset.custody,c)&&audit.operation==='audit'&&nativeEqual(audit.custody,c)&&Date.parse(reset.at)>=started&&Date.parse(reset.at)<=qualified&&Date.parse(audit.at)>=started&&Date.parse(audit.at)<=Date.parse(reset.at),'reset/audit process/time binding');
+  requireThat(sha(m.scannerDependency.path)===m.scannerDependency.sha256,'referenced scanner dependency changed');
+- if(r.executionEvidence){
++ {
++  requireThat(r.executionEvidence&&typeof r.executionEvidence.path==='string'&&typeof r.executionEvidence.sha256==='string','required actual Identity execution reference');
+   requireThat(r.executionEvidence.path===path.join(c.root,'identity-execution.json')&&sha(r.executionEvidence.path)===r.executionEvidence.sha256,'preserved actual Identity execution evidence');
+   const e=JSON.parse(readFileSync(r.executionEvidence.path)),validatorPath=path.join(baseRoot,'dev/wiremock/identity-validation.mjs'),vf=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/identity-validation.mjs');
+   requireThat(e.schema==='offmenu-owner05-identity-execution/1'&&e.ownerThread===ownerThread&&e.sourceCommit===inputPins['06']&&nativeEqual(e.custody,c)&&e.validator.path===validatorPath&&e.validator.sha256===vf.sha256&&sha(validatorPath)===vf.sha256&&JSON.stringify(e.identity)===JSON.stringify(r.identity)&&JSON.stringify(e.reset)===JSON.stringify(r.reset)&&JSON.stringify(e.resetCheck)===JSON.stringify(r.resetCheck)&&Date.parse(e.completedAt)>=Date.parse(reset.at)&&Date.parse(e.completedAt)<=qualified,'qualification versus actual test/source/process evidence');
+@@ -115,16 +116,22 @@ export async function buildDescriptor(inputs,mock){
+  const d={schema:'offmenu-owner05-interactive-composition/2',ownerThread,sourceRoot,developmentPendingAcceptance:true,accepted:false,inputs,mock,authority,app:{root:path.join(m.root,'app'),commit:inputPins['02'],artifact:m.artifact,schemas:m.schemas},scenario:'success',pins:inputPins,compositionSha256:m.compositionSha256,qualifiedAt:new Date().toISOString(),blockedFeatures:['real Google authorize/callback','real provider calls/credentials','real corpus source admission/transport','native device access','extension install']};
+  const file=path.join(m.root,`composition-${JSON.parse(readFileSync(mock.path)).custody.pid}.json`);await put(file,JSON.stringify(d,null,2)+'\n');return {path:file,sha256:sha(file),root:m.root};
+ }
++export function validateDescriptorTime(d,r){
++ const qualified=Date.parse(d.qualifiedAt),mockQualified=Date.parse(r.qualifiedAt),now=Date.now();
++ // Same host clock; no tolerance and no implicit rolling expiry for a live preview.
++ requireThat(typeof d.qualifiedAt==='string'&&Number.isFinite(qualified)&&Number.isFinite(mockQualified)&&qualified>=mockQualified&&qualified<=now,'descriptor qualification before mock/future/invalid');
++ if(d.expiresAt!==undefined)requireThat(typeof d.expiresAt==='string'&&Number.isFinite(Date.parse(d.expiresAt))&&Date.parse(d.expiresAt)>now&&Date.parse(d.expiresAt)>=qualified,'expired descriptor qualification');
++}
+ export async function loadInteractive(env=process.env,{probe=true}={}){
+  if(!env.OFFMENU_DEV_INTERACTIVE&&!env.OFFMENU_DEV_INTERACTIVE_SHA256)return null;
+  requireThat(!env.OFFMENU_DEV_COMPOSITION&&!env.OFFMENU_DEV_CANDIDATE_SOURCE,'modes cannot be mixed');const ref={path:env.OFFMENU_DEV_INTERACTIVE,sha256:env.OFFMENU_DEV_INTERACTIVE_SHA256};requireThat(ref.path&&sha(ref.path)===ref.sha256,'interactive descriptor hash');const d=JSON.parse(readFileSync(ref.path));
+  requireThat(d.schema==='offmenu-owner05-interactive-composition/2'&&d.ownerThread===ownerThread&&d.sourceRoot===sourceRoot&&d.accepted===false,'explicit owner/schema/development scope');const m=verifyInputs(d.inputs);requireThat(JSON.stringify(d.pins)===JSON.stringify(inputPins)&&d.compositionSha256===m.compositionSha256&&JSON.stringify(d.app.artifact)===JSON.stringify(m.artifact),'descriptor input/artifact binding');
+  requireThat(d.authority.boundSession===ownerThread&&d.authority.boundRoot===sourceRoot&&JSON.stringify(d.authority.pins)===JSON.stringify(inputPins)&&d.authority.actualSuppliedControls.mandatoryReviewer==='auto_review'&&d.authority.compositionSha256===m.compositionSha256&&JSON.stringify(d.authority.applicationArtifact)===JSON.stringify(m.artifact),'grant/session/policy binding');
+  requireThat(sha(d.mock.path)===d.mock.sha256,'owned mock receipt hash');const receipt=JSON.parse(readFileSync(d.mock.path));requireThat(receipt.ownerThread===ownerThread&&receipt.sourceOwner==='06'&&receipt.sourceCommit===inputPins['06']&&receipt.status==='qualified-live'&&receipt.identity.assertions===176&&receipt.resetCheck.assertions===2,'actual owned Java qualification');
+- validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:probe});
++ validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:probe});validateDescriptorTime(d,receipt);
+  if(!probe)return {descriptor:d,descriptorSha256:ref.sha256,qualifiedContext:'Dry-run only; live runtime not probed'};
+  const runtime=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/runtime.mjs'))),adapter=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/fixtures.mjs')));
+- const check=async()=>{validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:true});requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
++ const check=async()=>{validateDescriptorTime(d,receipt);validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:true});requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
+  await check();const original=adapter.createOutboundAdapter({wiremockOrigin:`http://127.0.0.1:${receipt.custody.port}`,scenario:'success'});
+  const guarded=guardedOutbound({adapter:original,contractFor:adapter.contractFor,check});
+  const service=async request=>{const u=new URL(request.url);if(u.hostname==='offmenu-accounts.netlify.app'&&u.pathname.startsWith('/.netlify/identity/')){const suffix=u.pathname.slice('/.netlify/identity/'.length);if(!((request.method==='GET'&&['settings','user'].includes(suffix))||(request.method==='POST'&&['token','logout'].includes(suffix))))return WorkerResponse.json({error:'DEV_AUTH_FLOW_BLOCKED',synthetic:true},{status:501,headers:{'X-OffMenu-Dev-Mock':'wiremock'}});}return guarded(request);};
+diff --git a/tests-dev/interactive-preview.test.mjs b/tests-dev/interactive-preview.test.mjs
+index 0b68762..5e7518b 100644
+--- a/tests-dev/interactive-preview.test.mjs
++++ b/tests-dev/interactive-preview.test.mjs
+@@ -14,7 +14,7 @@ test('exact private immutable input packet verifies, wrong hash refuses, Git ove
+  process.env.GIT_INDEX_FILE='/synthetic-do-not-use';assert.equal(cleanEnv().GIT_INDEX_FILE,undefined);delete process.env.GIT_INDEX_FILE;
+ });
+ test('invalid owner/grant/receipt/composition pins fail before installing a mock adapter',async()=>{
+- const original=JSON.parse(readFileSync(root+'/composition-live.json'));
++ const original=JSON.parse(readFileSync(root+'/composition-883005.json'));
+  const dir=mkdtempSync(path.join(tmpdir(),'preview05-negative-'));
+  try{
+   for(const change of [d=>d.ownerThread='wrong',d=>d.sourceRoot='/wrong',d=>d.pins['06']='a'.repeat(40),d=>d.authority.boundSession='wrong',d=>d.authority.actualSuppliedControls.mandatoryReviewer='disabled',d=>d.mock.sha256='a'.repeat(64),d=>d.app.artifact.sha256='a'.repeat(64)]){
+diff --git a/tests-dev/receipt-binding.test.mjs b/tests-dev/receipt-binding.test.mjs
+index 7eaf1bc..6f49fd4 100644
+--- a/tests-dev/receipt-binding.test.mjs
++++ b/tests-dev/receipt-binding.test.mjs
+@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
+ import path from 'node:path';
+ import {loadInteractive} from '../interactive-preview.mjs';
+ const packet='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383';
+-const original=JSON.parse(readFileSync(packet+'/composition-live.json'));
++const original=JSON.parse(readFileSync(packet+'/composition-883005.json'));
+ const hash=b=>createHash('sha256').update(b).digest('hex');
+ async function altered(mutator){const dir=mkdtempSync(path.join(tmpdir(),'owner05-binding-'));try{const d=structuredClone(original);await mutator(d,dir);const b=JSON.stringify(d),f=path.join(dir,'descriptor.json');writeFileSync(f,b);return await loadInteractive({OFFMENU_DEV_INTERACTIVE:f,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});}finally{rmSync(dir,{recursive:true});}}
+ test('P12-01 refuses unrelated task, empty grant and expanded non-fixture actions',async()=>{
+@@ -24,3 +24,19 @@ test('individual before/future times and dependency/native evidence contradictio
+  for(const [field,value] of [['qualifiedAt','2000-01-01T00:00:00Z'],['qualifiedAt','2099-01-01T00:00:00Z'],['version','wrong-version'],['jarSha512','0'.repeat(128)],['expiresAt','2000-01-01T00:00:00Z']])await assert.rejects(altered((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));q[field]=value;const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
+  for(const mutate of [q=>q.runtimeSource.sha256='0'.repeat(64),q=>q.custody.startedAt='2000-01-01T00:00:00Z',q=>q.reset.sha256='0'.repeat(64),q=>q.nativeCustody.sha256='0'.repeat(64)])await assert.rejects(altered((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
+ });
++
++const freshOriginal=original;
++async function alteredFresh(mutator){const dir=mkdtempSync(path.join(tmpdir(),'owner05-fresh-binding-'));try{const d=structuredClone(freshOriginal);await mutator(d,dir);const b=JSON.stringify(d),f=path.join(dir,'descriptor.json');writeFileSync(f,b);return await loadInteractive({OFFMENU_DEV_INTERACTIVE:f,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});}finally{rmSync(dir,{recursive:true});}}
++test('fresh packet cannot remove its actual execution-evidence reference',async()=>{
++ await assert.rejects(alteredFresh((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));delete q.executionEvidence;const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
++});
++test('descriptor timestamps reject absent/invalid/future/before-mock and explicit expiry',async()=>{
++ for(const date of [undefined,null,'invalid','2000-01-01T00:00:00Z','2099-01-01T00:00:00Z'])await assert.rejects(alteredFresh(d=>d.qualifiedAt=date),/descriptor qualification/);
++ for(const date of ['invalid','2000-01-01T00:00:00Z'])await assert.rejects(alteredFresh(d=>d.expiresAt=date),/expired descriptor/);
++});
++test('legacy packet is preserved but cannot admit a qualified adapter without execution evidence',async()=>{
++ await assert.rejects(loadInteractive({OFFMENU_DEV_INTERACTIVE:packet+'/composition-live.json',OFFMENU_DEV_INTERACTIVE_SHA256:hash(readFileSync(packet+'/composition-live.json'))}),/required actual Identity execution reference/);
++});
++test('execution evidence cannot contradict actual identity/reset/audit results or source reference',async()=>{
++ for(const mutate of [q=>q.executionEvidence.sha256='0'.repeat(64),q=>q.executionEvidence.path='/missing',q=>q.identity.assertions=175,q=>q.resetCheck.assertions=1,q=>q.reset.previousAuditSha256='0'.repeat(64)])await assert.rejects(alteredFresh((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
++});

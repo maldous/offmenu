@@ -1,0 +1,11 @@
+{
+  "sourceBaseline": "434b56c0200671debfceb03f7aed0889509c51be",
+  "byteIdentical": [
+    "dev-entry.mjs",
+    "dev-lifecycle.mjs",
+    "dev-server.mjs",
+    "dev-stop.mjs",
+    "interactive-preview.mjs"
+  ],
+  "noOldAcceptedTestsRepeated": true
+}

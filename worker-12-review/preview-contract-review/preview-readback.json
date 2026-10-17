@@ -1,0 +1,73 @@
+{
+  "checkedUTC": "2026-10-14T10:20:04.173361+00:00",
+  "receiptPath": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-feedback-20261014-01/current-run.json",
+  "receiptSHA256": "ac91eee25979280ba84bb97ade0d9dc67f3b2da03fcf5974753f28c304283dde",
+  "pid": 729700,
+  "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+  "birthTicks": "1982544",
+  "cwd": "/home/user/src/offmenu-workers/worker-05",
+  "port": 18795,
+  "ownerThread": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+  "runId": "interactive-feedback-20261014-01",
+  "stateId": "worker-05-interactive-feedback-20261014-01",
+  "producerSourceCommit": "f77bfafb4672e5e0660f1f66efbec0502ec493a8",
+  "sourcePins": {
+    "02": "29f73fea7e6a7b8286c1e07ef20787a001e5ef2a",
+    "03": "e1de8e839954905d82f939730ac5ea79412bc805",
+    "05": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+    "06": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d"
+  },
+  "applicationArtifact": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/app/dist/worker.mjs",
+    "sha256": "608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2"
+  },
+  "descriptorSHA256": "a0a20164cafc39c75c04a80ec17bcd73d2d3c4a11d67152ba5b74f686ac30567",
+  "statusResponseSHA256": "3ca9b8caa85ff93c5f684cc150b34072f32258e4366ecdb3444e6c6b1a3e10b1",
+  "identityFieldsMatch": true,
+  "mode": "isolated-development",
+  "interactive": true,
+  "productionCredentials": false,
+  "inputCompositionSHA256": "73c906be308a2714ae0fc5695b3dfaf4184f70b1c0f5897ce8a992f675a8b243",
+  "grantBinding": {
+    "sourceThread": "01a137cf-2242-761d-8fd7-6e6fc5658013",
+    "grant": "Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.",
+    "boundSession": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+    "boundRoot": "/home/user/src/offmenu-workers/worker-05",
+    "pins": {
+      "02": "29f73fea7e6a7b8286c1e07ef20787a001e5ef2a",
+      "03": "e1de8e839954905d82f939730ac5ea79412bc805",
+      "05": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+      "06": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d"
+    },
+    "compositionSha256": "73c906be308a2714ae0fc5695b3dfaf4184f70b1c0f5897ce8a992f675a8b243",
+    "applicationArtifact": {
+      "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/app/dist/worker.mjs",
+      "sha256": "608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2"
+    },
+    "permittedActions": [
+      "owned-loopback-preview",
+      "synthetic-fixture-account-flows",
+      "fresh-isolated-synthetic-state",
+      "independent58-read/flow-checks",
+      "birth-verified-own-process-stop"
+    ],
+    "actualSuppliedControls": {
+      "filesystem": "danger-full-access; no restrictions",
+      "network": "enabled",
+      "mandatoryReviewer": "auto_review",
+      "approvalPolicy": null,
+      "namedProfile": null
+    },
+    "userConfiguration": {
+      "permissionProfile": "disabled",
+      "filesystem": "unrestricted"
+    },
+    "environmentProfile": null,
+    "unavailableNotInferred": [
+      "separate AskForApproval value",
+      "named permission profile"
+    ],
+    "notNewAccountGrant": true
+  },
+  "noFlowRequests": true
+}

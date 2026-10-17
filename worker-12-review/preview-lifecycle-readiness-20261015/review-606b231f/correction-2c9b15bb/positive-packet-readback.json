@@ -1,0 +1,25 @@
+{
+  "packet": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/lifecycle05-command-fix-02fd1aee/command-positive.json",
+  "sha256": "add80ee4e9a1e805e5f4d6dbe5bc790212e406f4050d5eac1fc43394e0291b79",
+  "sourceCommit": "2c9b15bbd828de95752fa32343a4f5fb43ed147e",
+  "ownerRecordedHTTP": 4,
+  "ownerRecordedNativeCommand": {
+    "pid": 1456363,
+    "birth": {
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "startTicks": "3479472"
+    },
+    "argv": [
+      "/usr/bin/node",
+      "/home/user/src/offmenu-workers/worker-05/worker05-lifecycle/runner.mjs"
+    ]
+  },
+  "matchingStoppedSnapshot": true,
+  "exitCode": 0,
+  "PIDAbsentNow": true,
+  "port18809RefusedNow": true,
+  "stdoutSHA256": "bb7debdb7c0575ec2be45e141ccf9023f03b760c18dcc82290847218824b42d5",
+  "feedbackReceiptHashPreserved": true,
+  "reviewerControlOperations": 0,
+  "noFullDeletionRestoreClaim": true
+}

@@ -1,0 +1,63 @@
+{
+  "scratch": "/tmp/worker12-preview-contract-YAixlP",
+  "sourceDescriptor": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/composition-883005.json",
+  "results": [
+    {
+      "name": "current-exact-positive",
+      "accepted": true,
+      "expectedObservation": true
+    },
+    {
+      "name": "wrong-native-owner",
+      "accepted": false,
+      "reason": "Interactive preview refused: explicit owner/schema/development scope",
+      "expectedObservation": false
+    },
+    {
+      "name": "wrong-bound-session",
+      "accepted": false,
+      "reason": "Interactive preview refused: grant/session/policy binding",
+      "expectedObservation": false
+    },
+    {
+      "name": "wrong-composition-hash",
+      "accepted": false,
+      "reason": "Interactive preview refused: descriptor input/artifact binding",
+      "expectedObservation": false
+    },
+    {
+      "name": "missing-or-unrelated-task-grant",
+      "accepted": false,
+      "reason": "Interactive preview refused: registered task source/grant reference",
+      "expectedObservation": false
+    },
+    {
+      "name": "stale-qualifiedAt-and-false-dependency-claims",
+      "accepted": false,
+      "reason": "Interactive preview refused: qualification JAR/version versus lock/current bytes",
+      "expectedObservation": false
+    },
+    {
+      "name": "stopped-receipt-refused",
+      "accepted": false,
+      "reason": "Interactive preview refused: actual owned Java qualification",
+      "expectedObservation": false
+    },
+    {
+      "name": "missing-actual-execution-record-still-admitted",
+      "accepted": true,
+      "expectedObservation": true
+    },
+    {
+      "name": "future-descriptor-time-still-admitted",
+      "accepted": true,
+      "expectedObservation": true
+    },
+    {
+      "name": "descriptor-before-mock-qualification-still-admitted",
+      "accepted": true,
+      "expectedObservation": true
+    }
+  ],
+  "scope": "Only source reads, disposable descriptor/receipt writes and existing loopback fixture health GETs. No start/stop/reset/auth requests."
+}

@@ -1,0 +1,214 @@
+diff --git a/docs/worker-20-preference-model.md b/docs/worker-20-preference-model.md
+index dca7e95..919a8fb 100644
+--- a/docs/worker-20-preference-model.md
++++ b/docs/worker-20-preference-model.md
+@@ -43,6 +43,15 @@ authenticate or authorize an account. The caller supplies its authenticated scop
+ after consent and access checks. Functions have no clock, storage, transport,
+ randomness or side effects; no injected dependencies are needed.
+ 
++Input contract: records (including the member's preserved metadata) must contain
++acyclic plain JSON data: ordinary or null-prototype records, dense ordinary arrays,
++strings, booleans, finite numbers and null. Capture uses own data descriptors;
++accessors, symbols, hidden fields, custom array properties/iteration hooks,
++undefined, functions, class instances and cycles are rejected. A missing field is
++different from a present undefined value. Proxies are unsupported: reflection may
++execute proxy traps, so callers must supply ordinary data, not proxy objects.
++No getter or custom array method is used to establish the supported input shape.
++
+ An existing household caller could adopt this pattern after its owner approves:
+ 
+ ```js
+@@ -88,3 +97,32 @@ receives that commit. No primary ref/index or other owner's files are changed.
+ Focused checks do not establish shipping, integration, medical safety, allergy
+ certainty, complete requirement acceptance or release qualification. Morgan review
+ and the owner-controlled dependencies remain required.
++
++## Worker 12 review follow-through — M12-01 and M12-02
++
++Original immutable candidate `571cb01186b19184e7423dc9d032428009e0eae9`
++remains in this branch's history. Both P2 findings were reproduced before edits:
++sparse likes returned undefined and serialized to `[null]`; `[42]` with overridden
++some was accepted; the spice accessor was read three times and returned invalid
++`safe` through the adapter. These are helper shape defects, not shipped storage or
++safety decisions.
++
++The new change captures plain JSON data via descriptors before validating state,
++patch, scope, reset fields and member metadata. Dense arrays are captured by index,
++rejecting holes/custom properties and never using caller iteration hooks. Spice is
++captured once as a scalar and the output returns precisely that validated scalar.
++Nested member accessors are rejected before the adapter copies metadata. The
++plain-data contract above narrows unsupported caller objects explicitly.
++
++Actual post-fix focused run: `node --test --test-isolation=none
++tests-web/meal-preference-model.test.mjs`, nine passed, zero failed, 27.066366 ms.
++Three added tests cover sparse/custom-some/custom-iterator/index-getter rejection,
++state/patch/scope/nested-member accessor rejection with zero getter calls, and
++dense 32-by-100-character list positives plus every ordinary spice value through
++JSON restore/reset. Original six tests still pass. Test-runner environment stripped
++all inherited `GIT_*`, with no test children spawned; fixtures write no Git state.
++`git diff --check` passed. Only the helper, focused test and this owned usage doc
++change. Existing UI/schema/ranking and P0-07 gates remain pending and unchanged.
++
++This correction is READY FOR MORGAN REVIEW; Worker 12 targeted recheck must use
++the new exact commit pin. No acceptance or integration verdict is asserted.
+diff --git a/public/meal-preference-model.js b/public/meal-preference-model.js
+index 394c9bc..a884fc0 100644
+--- a/public/meal-preference-model.js
++++ b/public/meal-preference-model.js
+@@ -3,15 +3,52 @@ const FIELDS = ['likes', 'textures', 'spice'];
+ const SPICE = ['none', 'mild', 'medium', 'hot'];
+ const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
+ 
++// Capture plain JSON data through descriptors, never getters or array hooks.
++// Proxies are outside this API's contract (reflection can execute proxy traps).
++function plainData(value, ancestors = new Set()) {
++  if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
++  if (typeof value === 'number' && Number.isFinite(value)) return value;
++  if (!value || typeof value !== 'object' || ancestors.has(value)) throw new TypeError('Expected acyclic plain JSON data');
++  const array = Array.isArray(value), prototype = Object.getPrototypeOf(value);
++  if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) {
++    throw new TypeError('Expected plain JSON data');
++  }
++  const descriptors = Object.getOwnPropertyDescriptors(value);
++  const keys = Reflect.ownKeys(descriptors);
++  for (const key of keys) {
++    const descriptor = descriptors[key];
++    if (typeof key !== 'string' || !own(descriptor, 'value') || (!descriptor.enumerable && !(array && key === 'length'))) {
++      throw new TypeError('Accessors, symbols and hidden fields are not plain JSON data');
++    }
++  }
++  ancestors.add(value);
++  try {
++    if (array) {
++      const length = descriptors.length.value;
++      if (keys.length !== length + 1) throw new TypeError('Expected a dense ordinary array');
++      const result = [];
++      for (let index = 0; index < length; index++) {
++        const descriptor = descriptors[String(index)];
++        if (!descriptor) throw new TypeError('Expected a dense ordinary array');
++        result.push(plainData(descriptor.value, ancestors));
++      }
++      return result;
++    }
++    return Object.fromEntries(keys.map(key => [key, plainData(descriptors[key].value, ancestors)]));
++  } finally {
++    ancestors.delete(value);
++  }
++}
+ function record(value) {
+   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('Expected a record');
++  return plainData(value);
+ }
+ function identity(value) {
+   if (typeof value !== 'string' || !value.trim() || value.length > 200) throw new TypeError('Explicit scope required');
+   return value; // Never normalize account/member identifiers.
+ }
+ function scopeOf(scope) {
+-  record(scope);
++  scope = record(scope);
+   return {accountId: identity(scope.accountId), memberId: identity(scope.memberId)};
+ }
+ function list(value) {
+@@ -21,13 +58,14 @@ function list(value) {
+   return [...value]; // Retain entered terms; no ingredient/safety identity inference.
+ }
+ function values(value) {
+-  record(value);
++  value = record(value);
+   const likes = list(value.likes), textures = list(value.textures);
+-  if (value.spice !== null && !SPICE.includes(value.spice)) throw new TypeError('Invalid spice preference');
+-  return {likes, textures, spice: value.spice};
++  const spice = value.spice;
++  if (spice !== null && !SPICE.includes(spice)) throw new TypeError('Invalid spice preference');
++  return {likes, textures, spice};
+ }
+ function checked(state, scope) {
+-  record(state);
++  state = record(state);
+   const expected = scopeOf(scope), actual = scopeOf(state.scope);
+   if (state.version !== 1 || actual.accountId !== expected.accountId || actual.memberId !== expected.memberId) {
+     throw new TypeError('Preference scope/version mismatch');
+@@ -42,7 +80,7 @@ export function createMealPreferences(scope) {
+ 
+ export function setMealPreferences(state, scope, patch) {
+   const current = checked(state, scope);
+-  record(patch);
++  patch = record(patch);
+   if (Object.keys(patch).some(key => !FIELDS.includes(key))) throw new TypeError('Only explicit taste fields may change');
+   const next = Object.fromEntries(FIELDS.map(key => [key, own(patch, key) ? patch[key] : current[key]]));
+   return {...current, ...values(next)};
+@@ -50,6 +88,7 @@ export function setMealPreferences(state, scope, patch) {
+ 
+ export function resetMealPreferences(state, scope, fields = FIELDS) {
+   const current = checked(state, scope);
++  fields = plainData(fields);
+   if (!Array.isArray(fields) || fields.length > FIELDS.length || fields.some(key => !FIELDS.includes(key))) {
+     throw new TypeError('Invalid reset fields');
+   }
+@@ -60,7 +99,7 @@ export function resetMealPreferences(state, scope, fields = FIELDS) {
+ // Adoption adapter: the caller owns authentication, consent and persistence.
+ // It must gate selection with P0-07 independently of these taste values.
+ export function withMealPreferences(member, state, scope) {
+-  record(member);
++  member = record(member);
+   const preferences = checked(state, scope);
+   if (member.id !== preferences.scope.memberId) throw new TypeError('Member mismatch');
+   return {...structuredClone(member), mealPreferences: preferences};
+diff --git a/tests-web/meal-preference-model.test.mjs b/tests-web/meal-preference-model.test.mjs
+index 989b5e2..b3632d2 100644
+--- a/tests-web/meal-preference-model.test.mjs
++++ b/tests-web/meal-preference-model.test.mjs
+@@ -7,6 +7,53 @@ import {memberSuitability} from '../public/household-model.js';
+ const scope = {accountId: 'synthetic-account', memberId: 'sam'};
+ const filled = () => setMealPreferences(createMealPreferences(scope), scope, {likes: ['rice'], textures: ['crunchy'], spice: 'mild'});
+ 
++test('rejects sparse arrays and custom some/iterator hooks without invoking them', () => {
++  let calls = 0;
++  const custom = [42];
++  custom.some = () => { calls++; return false; };
++  const iterator = ['rice'];
++  iterator[Symbol.iterator] = function* () { calls++; yield 42; };
++  const indexed = ['rice'];
++  Object.defineProperty(indexed, '0', {enumerable: true, get() { calls++; return 'rice'; }});
++  for (const terms of [new Array(1), custom, iterator, indexed]) {
++    for (const field of ['likes', 'textures']) {
++      assert.throws(() => setMealPreferences(filled(), scope, {[field]: terms}));
++    }
++  }
++  assert.throws(() => resetMealPreferences(filled(), scope, new Array(1)));
++  assert.throws(() => resetMealPreferences(filled(), scope, custom));
++  assert.equal(calls, 0);
++});
++
++test('rejects accessors across state/patch/scope/member without reading them', () => {
++  let reads = 0;
++  const accessor = (object, key) => Object.defineProperty(object, key, {
++    enumerable: true, get() { reads++; return reads <= 2 ? 'mild' : 'safe'; }
++  });
++  const state = accessor(createMealPreferences(scope), 'spice');
++  assert.throws(() => withMealPreferences({id: 'sam'}, state, scope));
++  assert.throws(() => setMealPreferences(state, scope, {}));
++  assert.throws(() => resetMealPreferences(state, scope));
++  assert.throws(() => setMealPreferences(filled(), scope, accessor({}, 'spice')));
++  assert.throws(() => createMealPreferences(accessor({...scope}, 'accountId')));
++  assert.throws(() => withMealPreferences({id: 'sam', source: accessor({}, 'quantity')}, filled(), scope));
++  assert.equal(reads, 0);
++});
++
++test('dense boundary data and every ordinary spice value survive JSON roundtrip/reset', () => {
++  for (const spice of [null, 'none', 'mild', 'medium', 'hot']) {
++    const state = setMealPreferences(createMealPreferences(scope), scope, {
++      likes: Array.from({length: 32}, (_, i) => 'x'.repeat(98) + String(i).padStart(2, '0')),
++      textures: ['Crisp', ' soft '], spice
++    });
++    const restored = JSON.parse(JSON.stringify(state));
++    assert.deepEqual(setMealPreferences(restored, scope, {}), state);
++    assert.equal(withMealPreferences({id: 'sam'}, restored, scope).mealPreferences.spice, spice);
++    assert.deepEqual(resetMealPreferences(restored, scope), createMealPreferences(scope));
++    assert.deepEqual(state.textures, ['Crisp', ' soft ']);
++  }
++});
++
+ test('existing cloud validator drops explicit taste fields: adoption requires schema owner', () => {
+   const member = {id: 'sam', name: 'Sam', portion: 1, avoid: [], advisors: ['balanced'], likes: ['rice'], textures: ['crunchy'], spice: 'mild'};
+   const saved = validateState({inventory: [], products: {}, recipes: [], selections: [], profile: {country: 'AU', units: 'metric', servings: 1, members: [member]}}).profile.members[0];

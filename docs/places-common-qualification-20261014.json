@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "offmenu-places-common-qualification/1",
+  "releaseId": "common-places-20261014",
+  "status": "running-corrected-semantic-typing-not-qualified-not-for-assembly-or-publication",
+  "input": {
+    "curatedRelease": "expanded-country-search-20261013",
+    "sources": {
+      "overture-food-places": {
+        "expectedAdmittedRecords": 12681108,
+        "releaseId": "2026-09-23.1",
+        "representation": "Site resources; source categories do not assert actor, ownership, retailer, producer, supplier, availability or inventory facts."
+      },
+      "wikidata-food-businesses": {
+        "expectedAdmittedRecords": 1505,
+        "releaseId": "2026-10-13-direct-types",
+        "representation": "Organization resources; direct P31 business roles remain source fields and are not promoted to verified ownership, outlet, market coverage or stock facts."
+      }
+    },
+    "expectedAdmittedRecords": 12682613,
+    "rawSourcePayloadPublished": false
+  },
+  "packetization": {
+    "recordsPerPacket": 1000,
+    "packetsPerFile": 1,
+    "assetKeyFormat": "packets/part-00000.jsonl.gz",
+    "maxAssetBytes": 8388608,
+    "guard": "Each packet is compressed before writing. A packet larger than the limit fails before write; otherwise files rotate before a write would exceed the limit. Concatenated deterministic gzip members remain valid JSONL gzip streams.",
+    "licenceArtifacts": "Overture notice texts are copied as manifest-listed licenses/overture-food-places assets."
+  },
+  "benchmark": {
+    "directory": "/home/user/src/offmenu-data/common-places-semantic-benchmark2-20261014",
+    "status": "benchmark-incomplete-not-for-publication",
+    "limit": 1000,
+    "elapsedSeconds": 0.35,
+    "packetAssetBytes": 1013210,
+    "packetAssets": 1,
+    "projectedCompressedBytes": 12850000000,
+    "projectedDurationMinutes": 74,
+    "interpretation": "A bounded performance and delivery-shape observation only; per-input asset bytes and SHA-256 values were verified before row processing. It is not source-complete, qualified or publishable."
+  },
+  "fullRun": {
+    "pid": 209490,
+    "output": "/home/user/src/offmenu-data/common-places-semantic-final-20261014",
+    "partialOutput": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial",
+    "command": ".venv/bin/python scripts/align-places-common.py --output /home/user/src/offmenu-data/common-places-semantic-final-20261014 --records-per-packet 1000 --packets-per-file 1 --max-asset-bytes 8388608",
+    "startedBy": "places_semantic_recovery",
+    "state": "running",
+    "supersededReason": "The old partial stream represented fixed machine controls such as visibility, source dates and source hashes as localizable text. It remains held and is excluded from qualification. The corrected stream fixes those controls while retaining human names, locality, legal rights, notices, attribution and descriptive statements as cited undetermined-language source text.",
+    "acceptanceGate": "A fresh corrected run, followed by an atomic rename after all source counts, packets, schema validations, public scope checks, notice checks and manifest checks complete, is required before this can change to qualified."
+  },
+  "diskBudget": {
+    "maximumAdditionalBytes": 25000000000,
+    "uncompressedIntermediates": false,
+    "rule": "Do not publish, assemble or globally qualify the partial directory."
+  }
+}

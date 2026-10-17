@@ -1,0 +1,93 @@
+{
+  "candidate": "691f6f81cf3107a67a51641c2d7d9d9b5e85045e",
+  "previousCandidate": "571cb01186b19184e7423dc9d032428009e0eae9",
+  "diffSHA256": "67ec3fb4ecfefaff2608502fa14bf5a266cdc2dea404acfa053913314a0ca58b",
+  "snapshot": "/tmp/offmenu-worker12-meal-correction-uikjj8cu",
+  "files": [
+    {
+      "path": "docs/worker-20-preference-model.md",
+      "sha256": "3ddab221f197b36587a0a43870703d6056ba36654bc40fcb9019c457c0bb07cc",
+      "bytes": 7712
+    },
+    {
+      "path": "public/meal-preference-model.js",
+      "sha256": "153599336dabe7b2dd814092fe40a01c1306c0ee68cfd834a9981710755f88b6",
+      "bytes": 5102
+    },
+    {
+      "path": "tests-web/meal-preference-model.test.mjs",
+      "sha256": "94728efc7a60e54c3e227c180c7ec3974aa7865f9960f2eed242098c448761b3",
+      "bytes": 6940
+    },
+    {
+      "path": "package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "bytes": 709
+    },
+    {
+      "path": "public/household-model.js",
+      "sha256": "4263d2d566f39486c25486d96a34820490bbd259f8bdcea9c08f8390800d4b48",
+      "bytes": 7298
+    },
+    {
+      "path": "public/menu-model.js",
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "bytes": 3306
+    },
+    {
+      "path": "public/checkout-model.js",
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "bytes": 3416
+    },
+    {
+      "path": "public/i18n.js",
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe",
+      "bytes": 8341
+    },
+    {
+      "path": "public/locale-negotiation.js",
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009",
+      "bytes": 2675
+    },
+    {
+      "path": "public/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "bytes": 27728
+    },
+    {
+      "path": "public/model.js",
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "bytes": 4450
+    },
+    {
+      "path": "public/ingredients.js",
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "bytes": 5143
+    },
+    {
+      "path": "cloud/state.mjs",
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "bytes": 6238
+    },
+    {
+      "path": "public/insights-model.js",
+      "sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9",
+      "bytes": 5798
+    },
+    {
+      "path": "public/unified-data.js",
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "bytes": 14640
+    },
+    {
+      "path": "public/countries.js",
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "bytes": 1497
+    },
+    {
+      "path": "public/cooking-model.js",
+      "sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7",
+      "bytes": 7863
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+ OFFMENU / PRODUCT STRATEGY / 08
+
+
+
+ Integrations: connect only what is
+ useful
+ Access status is as researched on 12 October 2026. An API page or outbound link is not an active integration.
+
+   Integration                     Customer benefit / next step                    Launch treatment
+
+   Australian retailers: Coles,    Test licensed product/offer coverage for        Outbound links and manual receipts work
+   Woolworths, ALDI, IGA;          the household shopping list. Obtain terms       now. No general authorised consumer
+   WhichGrocer                     covering store identity, GTINs,                 stock/cart feed was verified. WhichGrocer
+                                   timestamps, retention and display.              terms could not be fully read in this
+                                                                                   review. [34]
+
+   DoorDash [21]                   Delivery handoff where supported;               Marketplace APIs are limited-access
+                                   consider a partnership if demand warrants       merchant/partner integrations, not a
+                                   it.                                             verified public consumer barcode-price
+                                                                                   catalogue.
+
+   Instacart [22]                  Shoppable recipes/list pages and retailer       Developer key and supported region
+                                   discovery in supported markets.                 required. Prove the precise flow and
+                                                                                   commercial terms before advertising
+                                                                                   connected checkout.
+
+   Google Health [23]              Potential consented activity/body-data          Official page says new projects are not
+                                   connection.                                     being onboarded. Do not make launch
+                                                                                   depend on it or confuse Google login with
+                                                                                   health permission.
+
+   Health Connect / HealthKit      Optional device nutrition, activity and body    Plan native companion/bridge work. These
+   [24, 25]                        metrics.                                        are not ordinary browser OAuth data
+                                                                                   sources. Manual entry remains sufficient
+                                                                                   for the POC.
+
+   Garmin / Withings / other       Device-specific metrics where a pilot           Discovery candidates, not verified
+   vendors                         cohort requests them.                           integrations. Compare approval, scopes,
+                                                                                   retention, overlap and ongoing cost first.
+
+   Calendar, contacts and          Dinner attendance, prep reminders, shared       Start with user-controlled calendar
+   reminders                       household planning.                             file/export and in-app reminders. Add
+                                                                                   provider OAuth only for a demonstrated
+                                                                                   workflow.
+
+   Receipts, email and OCR         Unpack shopping with fewer scans.               Start with explicit user upload. Email
+                                                                                   connection needs narrow authorisation
+                                                                                   and retention rules; receipt lines rarely
+                                                                                   identify exact GTINs reliably.
+
+   REST / remote MCP [32]          Assistants and consumer tools can use           Existing reads need live-client verification.
+                                   current inventory, plans and dietary            Prioritise read freshness and
+                                   history.                                        per-household/per-profile scopes; add
+                                                                                   confirmed writes later.
+
+   Portable formats and            CSV/JSON, Recipe JSON-LD, print, EPUB,          Build on current exports. Add import
+   household devices               private QR labels, Bluetooth/USB scanners       contracts, versioning and
+                                   and kitchen tablets.                            keyboard-scanner support; no proprietary
+                                                                                   kitchen hardware required.
+
+ Give each connector a capability record: supported countries, read/write actions, data quality, source licence, cost,
+ freshness, health permissions, access state and fallback. Show customers only actions available in their region; put provider
+ diagnostics in the developer area.
+
+
+
+
+OFFMENU / PRODUCT REVIEW / 12 OCT 2026                                                                                           8
+ OFFMENU / PRODUCT STRATEGY / 09
+
+
+
+ Normalise once. Preserve the
+ evidence.
+ Normalisation, hashing, compression, embedding and distribution do not remove source rights. Physical separation helps
+ governance but does not itself settle derivative-database obligations.
+
+ Proposed data model
+  Entity                            Essential fields and distinction
+
+  Product / product version         Internal ID; original GTIN string; canonical GTIN where valid; market; brand; pack size;
+                                    label version; ingredient/allergen claims; source timestamp. A retail SKU is not a
+                                    universal product ID.
+
+  Ingredient / composition          Culinary identity, synonyms by locale, raw/cooked/drained form, edible portion, nutrient
+  record                            units/basis, portion or density evidence. Similar names do not prove nutritional
+                                    equivalence.
+
+  Recipe / ingredient line          Recipe version; source text; parsed amount/range/unit; optionality; preparation; yield;
+                                    mapped identity; parsing confidence; reviewed state; licensed instructions/images.
+
+  Lot / batch / serving / event     Household and location; received/opened/frozen dates;
+                                    use-by/best-before/check-reminder separately; quantity basis; cook batch;
+                                    served/eaten/saved/discarded events.
+
+  Offer / observation               Retailer and store; region; date; currency; pack quantity; price basis; loyalty condition;
+                                    promotion; availability evidence; delivery/minimum-order conditions.
+
+  Source assertion /                Provider, source ID/URL, retrieval and effective times, licence/version, attribution,
+  permission                        allowed uses/cache/export, transformation history, confidence and correction record.
+
+
+
+ Ingestion and publication pipeline
+ 1. Register the source and approved uses. 2. Retain raw evidence only where permitted. 3. Parse and
+ normalise into a source-labelled staging area. 4. Validate units, identities, duplicates and anomalies. 5.
+ Send uncertain mappings to review. 6. Publish a versioned feature projection. 7. Refresh, withdraw and
+ reprocess through the same auditable path.
+
+ Storage that fits the product
+ Keep licensed raw releases and large compressed snapshots in object storage where permitted. Use
+ indexed operational tables for fast barcode, ingredient and household queries. Deliver small
+ regional/offline packs and incremental updates. Retain commercial provider responses only within
+ permitted bounds; do not dump whole third-party catalogues into every phone or user-state snapshot.
+
+ Choose evidence by field, not one universal winner
+ Use exact current package evidence for product-specific labels; reviewed regional composition for generic
+ foods; explicit user corrections for that private lot. Retain conflicting assertions and show uncertainty.
+ Version nutrient calculations so a later upstream correction does not silently rewrite dietary history.
+
+ Licence release gate: complete attribution, adapted-content obligations, permitted caching/export, commercial use, image
+ rights and withdrawal handling. Never mix personal health records into a public share-alike data release. OFF, AFCD and
+ commercial API obligations differ. [8-16]
+
+
+
+
+OFFMENU / PRODUCT REVIEW / 12 OCT 2026                                                                                           9
+

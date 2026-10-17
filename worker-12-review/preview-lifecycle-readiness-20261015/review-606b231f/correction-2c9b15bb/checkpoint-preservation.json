@@ -1,0 +1,64 @@
+{
+  "schema": "worker12-local-checkpoint-preservation/1",
+  "UTC": "2026-10-14T14:35:31.718065+00:00",
+  "owner": "01a138ee-5252-7f63-8b43-cf730ecd7e05",
+  "worktree": "/home/user/src/offmenu-workers/worker-12",
+  "currentTaskBranchException": "No eligible new managed task branch enrolled; keep completed dataset branch/head unchanged; recovery refs are not task-branch delivery",
+  "currentBranchPreserved": "feature/dataset-portugal-portfir-20261014",
+  "currentHEADPreserved": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+  "sourceBase": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "previousCheckpoint": "ff9690f19a4869d187ba95ccaf84337c5980dcee",
+  "latestLocalCheckpoint": "5f5b17a1fab1aed27bb48a751761f7c73f26c186",
+  "localRecoveryRef": "refs/checkpoints/worker12-preview-lifecycle-20261015-fix2c9b15bb",
+  "ownedFilesAdded": [
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/correction-2c9b15bb/independent-command-probe.mjs",
+      "sha256": "3eab6acd0f5f129980bb135c76bd76af2e4740cb36596d6ac5925003c453145b",
+      "bytes": 1931,
+      "blob": "25f4ebf6b0eaf861011ddafd018cc401096fe4ba"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/correction-2c9b15bb/review.md",
+      "sha256": "5203eba0297f5d2f7856a249b5f38b702ca39dfb2e493b8d461d514df22a2293",
+      "bytes": 4664,
+      "blob": "74ed556dea521eaa83f49df7946cbe7b53ac085e"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/correction-2c9b15bb/verdict.json",
+      "sha256": "fffe1aa5e9f44c1315ac351524cc1cb463a3a8c4282c5d32fea47044fac0a584",
+      "bytes": 712,
+      "blob": "80e9c540e93e5a04c5115301dca22132e41141cd"
+    }
+  ],
+  "originPrivateVerified": true,
+  "originVerification": "Existing GitHub get_repo maldous/offmenu visibility=private; no new credentials",
+  "remoteBackupAttempted": false,
+  "remoteRef": null,
+  "remoteVerifiedSHA": null,
+  "remoteReadback": {
+    "ref": "refs/heads/feature/dataset-portugal-portfir-20261014",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "workflowBlocker": {
+    "reason": "must use the SAME registered permanent worker path",
+    "policy": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/policy.json",
+    "detail": "Existing policy only enrolls Worker9, not Worker12; no eligible managed task branch/backup path. No guard bypass or policy edit.",
+    "receipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/receipts/gate-start-cb1ae19d2cfa42aa905c85c2327b97d1.json"
+  },
+  "independentReview": {
+    "source606": "Historical CORRECTIONS_REQUIRED L12-01",
+    "supplementary271": "Owner preservation packet readback, no re-execution",
+    "source2c9": "PASS_SCOPED_DISPOSABLE_LEASE_COMMAND_CONTROL",
+    "old434": "PASS preserved"
+  },
+  "developMerge": null,
+  "retainedRecoveryState": "Both recovery commits reachable; actual packets/logs/hashes retained locally, no raw state/data/dependency copies committed",
+  "localOnlyExceptions": [
+    "Author files remain untracked in unchanged checkout but captured by recovery commits",
+    "Generated observations, diffs, PDF extraction and evidence remain local-only",
+    "Private backup eligibility blocked until managed Worker12 task/branch custody is registered"
+  ],
+  "production": "STOP"
+}

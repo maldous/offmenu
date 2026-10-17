@@ -1,0 +1,87 @@
+{
+  "schema": "worker12-local-checkpoint-preservation/1",
+  "UTC": "2026-10-14T14:26:03.946376+00:00",
+  "owner": "01a138ee-5252-7f63-8b43-cf730ecd7e05",
+  "worktree": "/home/user/src/offmenu-workers/worker-12",
+  "currentBranchPreserved": "feature/dataset-portugal-portfir-20261014",
+  "currentHEADPreserved": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+  "checkpointBase": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "localCheckpoint": "ff9690f19a4869d187ba95ccaf84337c5980dcee",
+  "localRecoveryRef": "refs/checkpoints/worker12-preview-lifecycle-20261015",
+  "checkpointMode": "Content-addressed local recovery commit, not a managed task-branch start/delivery; completed dataset branch not advanced and dirty/untracked checkout not switched",
+  "ownedAuthoredFiles": [
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/adversarial-probes.mjs",
+      "sha256": "a4aa6b742982d67bf2fd45478314a947341ce49afd98e21355c53db91ce82ce8",
+      "bytes": 3939,
+      "blob": "82043ada0f64911343c1d7f62812bc719c04a059"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/probe-matrix.json",
+      "sha256": "0c8dd5371a0052fa6d5b8c9418ef3e91b601e8ac35a7fc00a83cd052c7eaa0d7",
+      "bytes": 7909,
+      "blob": "5c4e9037968581328ab4399ac4cfa5d46548b163"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/readiness.md",
+      "sha256": "f7f274b5003b48746a71a6f7abfac3aa9e978365935a1b62928d8e86d672cfde",
+      "bytes": 6048,
+      "blob": "dce89597323f9acbf406e26ef282f4e0dd88541f"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/pdf-refs.json",
+      "sha256": "06f810bd0d2d6f7a447a566fc7b1f1e084f7f3c1cfc35d1bd7a57c2113f6f2e7",
+      "bytes": 522,
+      "blob": "9cb1f7b5180626511497e52b8bdd5c16ffbee1ff"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/command-boundary-probe.mjs",
+      "sha256": "0a683092a9c8a2c2d6412466c26a66bf053270a067bd3db48124f4d4fd35fff1",
+      "bytes": 1864,
+      "blob": "0589e7f526a40e386f552e8aa37f7b527bcb311c"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/review.md",
+      "sha256": "bc4a4bfcebb97e7323f56cd099a8460de8af2f87a8dca29c262cb909e8231605",
+      "bytes": 6338,
+      "blob": "47364c1219507a4518d135b96cea3c5d447e4450"
+    },
+    {
+      "path": "worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/verdict.json",
+      "sha256": "23dc73156a3ee2b42e7ba956239dbcb63e317dbaa052c19343ffb4b598d65764",
+      "bytes": 745,
+      "blob": "9b38acdd80e8b2b2614cca52b2796c56331bc172"
+    }
+  ],
+  "excluded": [
+    "PDF page extraction text/render intermediates",
+    "producer source/diffs/logs/raw data",
+    "dependencies/symlinks/cache",
+    "prior reviewed artifacts"
+  ],
+  "origin": "git@github.com:maldous/offmenu.git",
+  "originPrivateVerifiedBy": "GitHub get_repo maldous/offmenu: visibility private; existing connector",
+  "remoteBackupAttempted": false,
+  "remoteBackupVerifiedSHA": null,
+  "remoteRefReadback": {
+    "ref": "refs/heads/feature/dataset-portugal-portfir-20261014",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "workflowBlocker": {
+    "reason": "must use the SAME registered permanent worker path",
+    "policy": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/policy.json",
+    "detail": "Existing policy only enrolls Worker9, not Worker12; no eligible managed task branch/backup path. No guard bypass or policy edit.",
+    "receipt": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/receipts/gate-start-cb1ae19d2cfa42aa905c85c2327b97d1.json"
+  },
+  "independentReview": {
+    "source606": "CORRECTIONS_REQUIRED L12-01",
+    "source271": "supplementary preservation evidence observed; same lease command defect carries unchanged",
+    "old434": "PASS preserved"
+  },
+  "developMerge": null,
+  "recoveryState": "Recovery commit reachable by local refs/checkpoints; authored files remain untracked in original checkout; excluded evidence retained local by hash manifests",
+  "uncommittedLocalOnlyExceptions": "All review artifacts remain outside completed dataset task branch; checkpoint captures seven owned authored files; no remote copy qualifies until managed enrollment/backup approval",
+  "production": "STOP"
+}

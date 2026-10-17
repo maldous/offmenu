@@ -1,0 +1,67 @@
+[
+  {
+    "name": "P2 D12-01 reordered correct scope ACK remains unknown",
+    "passed": true,
+    "observed": {
+      "status": "unknown",
+      "operationId": "deduct1"
+    },
+    "semanticScopeMatches": true
+  },
+  {
+    "name": "canonical correct ACK succeeds positive control",
+    "passed": true,
+    "sends": 1
+  },
+  {
+    "name": "P2 D12-02 nonenumerable toJSON silently replaces captured payload",
+    "passed": true,
+    "callerDeduct": 2,
+    "persistedDeduct": 999,
+    "sentDeduct": 999
+  },
+  {
+    "name": "D12-02 accessor is read twice and changes captured JSON",
+    "passed": true,
+    "reads": 2,
+    "persistedDeduct": 999
+  },
+  {
+    "name": "negative mismatched accountId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "negative mismatched resourceId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "negative mismatched grantId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "storage uncertainty commit failure never transports",
+    "passed": true,
+    "sends": 0
+  },
+  {
+    "name": "expired unknown FIFO evidence survives and explicit ACK releases successor",
+    "passed": true,
+    "sends": 2
+  },
+  {
+    "name": "revoke commit failure is reported; in-memory instance refuses later sends",
+    "passed": true,
+    "durableRecordRevoked": false,
+    "limitation": "failed durable revocation is not a persisted tombstone; restart must obey new-grant/remote authorization contract"
+  },
+  {
+    "name": "acknowledgement save failure preserves same-ID unknown replay",
+    "passed": true,
+    "sends": 2
+  },
+  {
+    "name": "simultaneous calls on one instance serialize",
+    "passed": true,
+    "sends": 1
+  }
+]

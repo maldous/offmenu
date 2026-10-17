@@ -1,0 +1,19 @@
+✔ exact private immutable input packet verifies, wrong hash refuses, Git overrides stripped (549.418524ms)
+✔ invalid owner/grant/receipt/composition pins fail before installing a mock adapter (2738.668954ms)
+✔ P12-01 refuses unrelated task, empty grant and expanded non-fixture actions (555.739888ms)
+✔ P12-02 refuses rehashed before-process qualification and false version/JAR/runtime claims (545.761063ms)
+✔ valid exact existing packet remains admitted without state writes (635.708789ms)
+✔ each task admission field independently refuses wrong or empty action authority (3103.195903ms)
+✔ individual before/future times and dependency/native evidence contradictions refuse (6121.429816ms)
+✔ fresh packet cannot remove its actual execution-evidence reference (684.082205ms)
+✔ descriptor timestamps reject absent/invalid/future/before-mock and explicit expiry (5040.814351ms)
+✔ legacy packet is preserved but cannot admit a qualified adapter without execution evidence (719.23181ms)
+✔ execution evidence cannot contradict actual identity/reset/audit results or source reference (3541.938928ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21115.204956

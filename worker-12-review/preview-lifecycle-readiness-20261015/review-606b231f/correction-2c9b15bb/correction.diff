@@ -1,0 +1,71 @@
+diff --git a/worker05-lifecycle/command-probe.mjs b/worker05-lifecycle/command-probe.mjs
+new file mode 100644
+index 0000000..da6c872
+--- /dev/null
++++ b/worker05-lifecycle/command-probe.mjs
+@@ -0,0 +1,6 @@
++import {verifyLease,verifyControl,runner} from './lease.mjs';import {configuration,processBirth} from '../dev-lifecycle.mjs';
++const c=configuration({OFFMENU_DEV_RUN:'command-negative-05',OFFMENU_DEV_PORT:'18809'}),r={...c,...processBirth(process.pid),schema:'offmenu-worker05-disposable-lifecycle/1',leaseId:'read-only-probe',status:'ready',pid:process.pid};let leaseAccepted=false,controlAccepted=false;
++try{verifyLease(r,{runId:c.runId,leaseId:r.leaseId,port:c.port});leaseAccepted=true;}catch{}
++try{verifyControl({operation:'stop',runId:r.runId,leaseId:r.leaseId,pid:r.pid,bootId:r.bootId,startTicks:r.startTicks},r,{runId:c.runId,leaseId:r.leaseId,port:c.port});controlAccepted=true;}catch{}
++console.log(JSON.stringify({leaseAccepted,controlAccepted,actualEntryPoint:process.argv[1],runnerTagPresent:process.argv.includes(runner),controlExecuted:false}));
++if(leaseAccepted||controlAccepted)process.exitCode=1;
+diff --git a/worker05-lifecycle/control-positive.mjs b/worker05-lifecycle/control-positive.mjs
+new file mode 100644
+index 0000000..1fee1e7
+--- /dev/null
++++ b/worker05-lifecycle/control-positive.mjs
+@@ -0,0 +1,11 @@
++import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {writeFile} from 'node:fs/promises';import {spawn} from 'node:child_process';import {randomUUID,createHash} from 'node:crypto';import path from 'node:path';import {pathToFileURL} from 'node:url';
++import {externalRoot,sourceRoot,configuration,processBirth,verifyLiveRunner} from '../dev-lifecycle.mjs';import {loadInteractive,cleanEnv} from '../interactive-preview.mjs';import {runner,verifyLease,verifyControl,nativeOwner} from './lease.mjs';
++nativeOwner();const sha=p=>createHash('sha256').update(readFileSync(p)).digest('hex'),dp=path.join(externalRoot,'workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b/composition-1040246.json'),context=await loadInteractive({OFFMENU_DEV_INTERACTIVE:dp,OFFMENU_DEV_INTERACTIVE_SHA256:sha(dp)}),fixture=await import(pathToFileURL(path.join(context.runtime.custody.cwd,'dev/wiremock/fixtures.mjs')));
++const feedbackRun='interactive-central7820-be166-20261014-04',feedbackPath=path.join(externalRoot,'workers/worker-05/runs',feedbackRun,'current-run.json'),fb=JSON.parse(readFileSync(feedbackPath)),feedbackSha=sha(feedbackPath);verifyLiveRunner(fb,configuration({OFFMENU_DEV_RUN:feedbackRun,OFFMENU_DEV_PORT:'18797'}));
++const runId='lifecycle05-command-fix-'+randomUUID().slice(0,8),leaseId=randomUUID(),port=18809,c=configuration({OFFMENU_DEV_RUN:runId,OFFMENU_DEV_PORT:String(port)}),env={...cleanEnv(),OFFMENU_DEV_RUN:runId,OFFMENU_DEV_PORT:String(port),OFFMENU_LIFECYCLE_LEASE:leaseId,OFFMENU_DEV_INTERACTIVE:dp,OFFMENU_DEV_INTERACTIVE_SHA256:sha(dp)};for(const k of ['OFFMENU_DEV_STATE','OFFMENU_DEV_COMPOSITION','OFFMENU_DEV_CANDIDATE_SOURCE'])delete env[k];
++const proc=spawn(process.execPath,[runner],{cwd:sourceRoot,env,stdio:['pipe','pipe','pipe']});let log='',error='';proc.stdout.on('data',b=>log+=b);proc.stderr.on('data',b=>error+=b);const exited=new Promise(ok=>proc.once('exit',(code,signal)=>ok({code,signal})));let ready;for(let i=0;i<200;i++){if(log.includes('"ready":true')){ready=JSON.parse(readFileSync(c.receiptPath));break;}if(proc.exitCode!==null)throw Error(error);await new Promise(ok=>setTimeout(ok,100));}assert.ok(ready);const config={runId,leaseId,port};verifyLease(ready,config);
++const argv=readFileSync('/proc/'+ready.pid+'/cmdline','utf8').split('\0').filter(Boolean),nativeBefore={pid:ready.pid,birth:processBirth(ready.pid),argv};assert.deepEqual(argv,[process.execPath,runner]);
++function command(operation){const m={operation,runId,leaseId,pid:ready.pid,bootId:ready.bootId,startTicks:ready.startTicks};assert.equal(verifyControl(m,ready,config),operation);proc.stdin.write(JSON.stringify(m)+'\n');}
++const url='http://127.0.0.1:'+port,headers={Origin:url,Authorization:'Bearer '+fixture.ACTORS.alice.token,'Content-Type':'application/json'},requests=[];async function call(method,body){await context.check();const r=await fetch(url+'/api/state',{method,headers,...(body?{body:JSON.stringify(body)}:{})}),b=await r.text();assert.equal(r.status,200);requests.push({method,status:r.status,sha256:createHash('sha256').update(b).digest('hex')});return JSON.parse(b);}
++try{assert.equal((await call('GET')).state,null);await call('PUT',{revision:0,state:{inventory:[],products:{},recipes:[],profile:{servings:1,country:'AU',units:'metric'},selections:['synthetic:exact-command-'+runId]}});assert.ok((await call('GET')).state);command('reset');for(let i=0;i<100&&!log.includes('"operation":"reset"');i++)await new Promise(ok=>setTimeout(ok,100));assert.ok(log.includes('"operation":"reset"'));assert.equal((await call('GET')).state,null);command('stop');const outcome=await exited;assert.equal(outcome.code,0);const stopped=JSON.parse(readFileSync(c.receiptPath));assert.equal(stopped.status,'stopped');assert.throws(()=>verifyLease(stopped,config));verifyLiveRunner(fb,configuration({OFFMENU_DEV_RUN:feedbackRun,OFFMENU_DEV_PORT:'18797'}));await context.check();assert.equal(sha(feedbackPath),feedbackSha);
++const report={schema:'offmenu-worker05-command-correction-positive/1',sourceCommit:ready.sourceCommit,ready,actualNative:nativeBefore,stopped,outcome,requests,feedback:{pid:fb.pid,receiptSha256:feedbackSha,preserved:true},scope:'Meaningful exact-entrypoint correction positive only; actual private reset+gracefulstop with validcontrol. Prior lifecycle/preservation/sourceflow evidence not repeated or relabelled.',production:'STOP'};const file=path.join(c.runRoot,'command-positive.json');await writeFile(file,JSON.stringify(report,null,2)+'\n',{flag:'wx'});await writeFile(path.join(c.runRoot,'stdout.log'),log,{flag:'wx'});console.log(JSON.stringify({path:file,sha256:sha(file),sourceCommit:ready.sourceCommit,requests:requests.length}));}finally{if(proc.exitCode===null){try{command('stop');await exited;}catch(e){console.error('Own stop unconfirmed: '+e.message);}}}
+diff --git a/worker05-lifecycle/lease.mjs b/worker05-lifecycle/lease.mjs
+index a9ef5e1..5313627 100644
+--- a/worker05-lifecycle/lease.mjs
++++ b/worker05-lifecycle/lease.mjs
+@@ -1,4 +1,4 @@
+-import {readFileSync,readlinkSync} from 'node:fs';
++import {readFileSync,readlinkSync,realpathSync} from 'node:fs';
+ import {processBirth,sourceRoot,ownerThread,configuration} from '../dev-lifecycle.mjs';
+ import path from 'node:path';
+ export const runner=path.join(sourceRoot,'worker05-lifecycle/runner.mjs');
+@@ -8,7 +8,9 @@ export function verifyLease(r,{runId,leaseId,port},live=true){
+  if(r.schema!=='offmenu-worker05-disposable-lifecycle/1'||r.leaseId!==leaseId||typeof leaseId!=='string'||!Number.isInteger(r.pid)||r.pid<=1)throw Error('Lease refused: identity');
+  if(r.status!=='ready')throw Error('Lease refused: not ready');
+  if(live){const b=processBirth(r.pid);if(b.bootId!==r.bootId||b.startTicks!==r.startTicks)throw Error('Lease refused: birth');
+-  if(readlinkSync('/proc/'+r.pid+'/cwd')!==sourceRoot||!readFileSync('/proc/'+r.pid+'/cmdline','utf8').split('\0').includes(runner))throw Error('Lease refused: cwd/command');}
++  const argv=readFileSync('/proc/'+r.pid+'/cmdline','utf8').split('\0');if(argv.at(-1)==='')argv.pop();
++  const selectedNode=realpathSync(process.execPath);
++  if(readlinkSync('/proc/'+r.pid+'/cwd')!==sourceRoot||argv.length!==2||argv[1]!==runner||realpathSync(argv[0])!==selectedNode||realpathSync('/proc/'+r.pid+'/exe')!==selectedNode)throw Error('Lease refused: cwd/exact Node entrypoint');}
+  return c;
+ }
+ export function verifyControl(message,r,c){
+diff --git a/worker05-lifecycle/lease.test.mjs b/worker05-lifecycle/lease.test.mjs
+index fa2495a..e372789 100644
+--- a/worker05-lifecycle/lease.test.mjs
++++ b/worker05-lifecycle/lease.test.mjs
+@@ -1,3 +1,6 @@
+ import test from 'node:test';import assert from 'node:assert/strict';import {configuration} from '../dev-lifecycle.mjs';import {verifyLease} from './lease.mjs';
+ const c=configuration({OFFMENU_DEV_RUN:'unit-lease-05',OFFMENU_DEV_PORT:'18809'}),r={...c,schema:'offmenu-worker05-disposable-lifecycle/1',status:'ready',leaseId:'unit-lease',pid:2};
+ test('lease identity refuses stopped/foreign namespaces before process control',()=>{assert.ok(verifyLease(r,{runId:c.runId,leaseId:r.leaseId,port:c.port},false));for(const patch of [{ownerThread:'foreign'},{statePath:'/foreign'},{stateId:'foreign'},{status:'stopped'},{leaseId:'foreign'},{runId:'foreign'},{port:18797}])assert.throws(()=>verifyLease({...r,...patch},{runId:c.runId,leaseId:r.leaseId,port:c.port},false));});
++
++import {execFileSync} from 'node:child_process';import {runner} from './lease.mjs';
++test('actual unrelated Node process cannot qualify via inert runner argument',()=>{const result=JSON.parse(execFileSync(process.execPath,['worker05-lifecycle/command-probe.mjs',runner],{encoding:'utf8'}));assert.equal(result.runnerTagPresent,true);assert.equal(result.leaseAccepted,false);assert.equal(result.controlAccepted,false);assert.equal(result.controlExecuted,false);});
+diff --git a/worker05-lifecycle/pdf-source.md b/worker05-lifecycle/pdf-source.md
+index 157e8b0..47f2631 100644
+--- a/worker05-lifecycle/pdf-source.md
++++ b/worker05-lifecycle/pdf-source.md
+@@ -5,3 +5,5 @@ Read actual04 pp1-10 and02 pp7-9, verified source SHA25604=2e049a433c329421249a2
+ 04pp2-4 require authorisation on every reuse, source/right/revision evidence and inherited constraints; pp5/7 require grant cancellation/withdrawal checks; pp8-9 require version-aware isolation, retraction/deletion and meaningful acceptance scenarios.02pp7-9 distinguish source rights and available integrations, preserve recipe/version/source facts and withdraw/reprocess through the audited path. This supports separate immutable lease/state evidence and explicit ASSIGNED-WAITING for missing reviewed corpus transport; it does not justify inventing source admission or copying a large corpus.
+ 
+ The disposable runner uses exact selected434b56c helpers and7820/be166 descriptor without editing02/01/07 or resetting feedback18797/mock19077. A unique private lease has stdin-only birth/run/lease-bound controls. Reset deletes only qualification-created user_state rows in its own exclusive D1; it is not a production-wide deletion or backup-restore claim. Graceful stop/restart uses unique fresh state and process identities. Existing feedback state, native custody and receipts must remain unchanged. Positive/negative actualHTTP and stale-control outcomes are retained for same12/58 review. Corpus/provenance remains ASSIGNED-WAITING exact07source graph/rights/transport; no all-eight or whole105 acceptance. ProductionSTOP and mandatoryauto_review retained.
++
++Command-identity correction: independent12 demonstrated that an unrelated Node script could pass when the runner path was only an inert argv tag. Before-fix owner probe reproduced lease/control admission without executing control. Corrected verifier requires the exact two-argument Node command, runner as actual argv[1], matching selected Node executable and native /proc executable, plus existing cwd/boot/birth/namespace bindings. This helper is scoped to the same selected Node runtime, not generic arbitrary interpreters. New negative probe and actual disposable positive reset/stop qualify only this changed boundary; original results and later live SQLite drift remain distinct.

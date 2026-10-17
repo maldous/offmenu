@@ -1,0 +1,21 @@
+{
+  "candidate": "be166bb61483825498094d496e2caed9d8b775bb",
+  "parent": "4397063e3036db07442947fdf7169885801b5eed",
+  "deltaSHA256": "4ec5674cbc3b2757e0a4e17efdddd7b21e00a04c6a949cc9f63e9f5ce702e39c",
+  "verdict": "PASS_SCOPED_PURE_CALLBACK_SOURCE_CONTRACT",
+  "findingsResolved": [
+    "C12-01",
+    "C12-02"
+  ],
+  "newReportableFindings": [],
+  "candidateSelected": false,
+  "runtimeAcceptance": false,
+  "providerAcceptance": false,
+  "d100ScopedPASSPreserved": true,
+  "existingNative16FilesUnchanged": true,
+  "testsActuallyRun": {
+    "combined": 137,
+    "independent": 11,
+    "oldExploitScriptAfter": "expected failure at rejected first accessor; not passing corrected suite"
+  }
+}

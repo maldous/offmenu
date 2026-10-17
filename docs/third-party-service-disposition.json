@@ -1,0 +1,70 @@
+{
+  "$schema": "https://offmenu.aldous.info/schemas/third-party-service-disposition/1",
+  "asOf": "2026-10-14",
+  "sourceInventory": {
+    "path": "third-party-service-inventory.json",
+    "records": 149,
+    "sha256": "c4e529fdff627d5a66dd8c8045ade01828025baeae4dea023bc43b2f55d77294",
+    "evidenceStatus": "Each record retains the source inventory's exact status and evidence. This register adds an OffMenu disposition only; it does not restate, infer, upgrade, or overwrite evidence."
+  },
+  "guardrails": [
+    "No new paid contract, shared credential, account, production mutation, tracker, advertising tag, email, scan, or external request is created by this branch.",
+    "A historical record is not proof of current entitlement, usable credentials, approval, or a suitable OffMenu data-processing arrangement.",
+    "Client analytics, diagnostics, consent, feedback, and advertising are disabled unless a validated THIRD_PARTY_CONFIG explicitly enables them."
+  ],
+  "dispositions": [
+    {
+      "name": "existing-foundation",
+      "action": "retain",
+      "feature": "Cloudflare Worker/D1 application, Netlify Identity with managed Google sign-in, source hosting and the existing public food-data adapters.",
+      "conditions": ["Keep account data private and source responses transient as implemented.", "Confirm existing plan, binding, sender, and OAuth settings before a production change."],
+      "recordIds": ["cloudflare", "netlify", "netlify-identity", "google-sign-in", "github", "cloudflare-zaraz", "google-fonts", "google-maps-places", "apple-maps", "openstreetmap", "offmenu-source-world-recipes", "offmenu-source-sweden-food", "offmenu-source-overture-food-places", "offmenu-source-matvaretabellen", "offmenu-source-wikidata-food-businesses", "offmenu-source-dietary-guidelines", "offmenu-source-off", "offmenu-source-prices", "offmenu-source-wikibooks", "offmenu-source-usda-files", "offmenu-source-afcd", "offmenu-source-ausnut", "offmenu-source-cofid", "offmenu-source-cnf", "offmenu-source-ciqual", "offmenu-source-foodfiles", "offmenu-source-fineli", "offmenu-source-frida", "offmenu-source-mext", "offmenu-source-germany-bls", "offmenu-source-france-rappelconso", "offmenu-source-infoods", "offmenu-source-fsa-alerts", "offmenu-source-fsa-ratings", "offmenu-source-openfda", "offmenu-source-fsanz-notices", "offmenu-source-canada-notices", "offmenu-source-rasff", "offmenu-source-aldi", "offmenu-enrichment-gleif", "offmenu-enrichment-wikidata"]
+    },
+    {
+      "name": "implement-or-configure-after-qualification",
+      "action": "provide a disabled integration/configuration seam",
+      "feature": "Error diagnostics, explicit-send support email, feedback, consent, coarse consent-gated analytics, discoverability, uptime, and optional quality gates.",
+      "conditions": ["Sentry captures only filtered technical errors; no pantry, health, receipt, token, or identity content.", "Brevo sends only explicit transactional/support messages after sender, recipient, retention, and unsubscribe duties are confirmed.", "iubenda blocks optional client services until consent; Sleekplan is loaded only after its product/board configuration is qualified.", "Zaraz stays coarse and consent-gated. Search Console and Bing are verification/configuration work, not client tracking.", "Snyk and Sonar execute only in credential-qualified CI; no account setup or fabricated scan result."],
+      "recordIds": ["sentry", "uptimerobot", "snyk", "sonar-sonarqube", "iubenda", "google-analytics", "google-search-console", "bing-webmaster-tools", "brevo", "sleekplan"]
+    },
+    {
+      "name": "operational-reuse-only",
+      "action": "reuse outside the public product when an owner confirms scope",
+      "feature": "Delivery coordination, mailbox operations, and staff notifications.",
+      "conditions": ["No user data is forwarded without a documented purpose and retention decision.", "A historical authenticated read does not authorize a new workspace, channel, inbox, or webhook."],
+      "recordIds": ["linear", "gmail-google-smtp", "msmtp-and-mbsync", "agentmail", "slack", "discord", "apidog", "argos", "google-drive-docs-sheets-slides", "chatgpt-pages-spaces-library", "microsoft-teams"]
+    },
+    {
+      "name": "conditional-product-direction",
+      "action": "defer until the named product decision and provider approval",
+      "feature": "Advertising, native/mobile delivery, retailer data, credentialed nutrition search, partner health/activity imports, and design prototypes.",
+      "conditions": ["AdSense is permitted only after OffMenu site approval, privacy/consent configuration, and a conscious monetisation decision. AdMob and Funding Choices require a native/app or approved Google flow.", "Credentialed data providers require an OffMenu-specific key/account and terms, quota, attribution, caching, and privacy review.", "Retail, health, and activity integrations require their own approval/OAuth/native bridge and explicit user consent.", "Prototype/design services can be used for internal exploration only; no public runtime dependency follows."],
+      "recordIds": ["google-adsense", "google-admob", "google-funding-choices", "google-ads", "codemagic", "apple-developer-app-store-connect-testflight", "google-play-console", "capacitor", "firebase", "chatgpt-sites", "magicpath", "lovable", "spotify", "mymemory", "offmenu-source-usda", "offmenu-source-nevo", "offmenu-source-tbca", "offmenu-source-whichgrocer", "offmenu-source-spoonacular", "offmenu-source-edamam", "offmenu-source-instacart", "offmenu-source-doordash", "offmenu-source-kroger", "offmenu-source-google-health", "offmenu-source-health-connect", "offmenu-source-healthkit", "offmenu-source-strava", "offmenu-source-garmin"]
+    },
+    {
+      "name": "external-approval-or-licence-blocked",
+      "action": "do not integrate until documented external permission exists",
+      "feature": "Regional food data and inspections with stated permission, membership, account, or terms-review requirements.",
+      "conditions": ["Record written permission, approved account, licence, attribution, allowed use, geography, retention, and refresh policy before code or import work."],
+      "recordIds": ["offmenu-source-china-cdc", "offmenu-source-india-ifct", "offmenu-source-india-datakart", "offmenu-source-indonesia-tkpi", "offmenu-source-indonesia-bpom", "offmenu-source-russia-nutrition", "offmenu-source-russia-gs1"]
+    },
+    {
+      "name": "inappropriate-or-unneeded-currently",
+      "action": "do not add to OffMenu runtime",
+      "feature": "Historical AI tooling/providers, retired local platform stack, brand channels, unused source control, and unrelated development products.",
+      "conditions": ["AI-provider history authorizes development tooling only, not a product AI feature, customer data transfer, or runtime provider selection.", "Retired/self-hosted USF topology is not an OffMenu hosting requirement.", "Revisit only with a separately approved feature and a suitable architecture."],
+      "recordIds": ["x-twitter", "gitlab", "openai-codex", "anthropic-claude", "google-gemini-ai-studio", "groq", "cerebras", "mistral", "hugging-face", "openrouter", "sambanova", "fireworks-ai", "together-ai", "deepseek", "github-models", "codebuff", "elevenlabs", "ollama", "arcee", "cohere", "nous", "nvidia-inference", "z-ai-zhipu", "minimax", "google-antigravity", "models-dev", "stardog", "usf-software-postgres", "usf-software-keycloak", "usf-software-nats", "usf-software-temporal", "usf-software-minio", "usf-software-openbao", "usf-software-mailpit", "usf-software-otel-collector", "usf-software-prometheus", "usf-software-grafana", "usf-software-loki", "usf-software-tempo", "usf-software-pgadmin", "usf-software-localstack", "usf-software-wiremock", "usf-software-alertmanager", "usf-software-alloy", "usf-software-windmill", "usf-software-pgbackrest", "usf-software-clamav", "usf-software-caddy", "usf-software-redis", "usf-software-meilisearch", "usf-software-clickhouse"]
+    },
+    {
+      "name": "terms-review-before-import",
+      "action": "keep registry reference; do not automate collection",
+      "feature": "Food composition and food-safety sources where current terms, licence, access method, or dataset scope needs a source-specific review.",
+      "conditions": ["Use public-reference links only until the source-specific review approves collection and publication."],
+      "recordIds": ["offmenu-source-china-samr"]
+    }
+  ],
+  "integrity": {
+    "expectedRecordIds": 149,
+    "verification": "Every inventory record ID appears exactly once in dispositions[].recordIds; verify-third-party-config tests configuration, and the service-document test checks this register against the source inventory."
+  }
+}

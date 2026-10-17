@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "fineli",
+  "releaseId": "20.0",
+  "status": "normalized",
+  "normalizedRows": 4238,
+  "counts": {
+    "raw": 4238,
+    "accepted": 4238,
+    "duplicates": 0,
+    "quarantined": 0,
+    "excluded": 0,
+    "records": 4238
+  },
+  "countries": {
+    "FI": 4238
+  },
+  "archiveSha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+  "license": "CC BY 4.0",
+  "attribution": "National Institute for Health and Welfare (THL), Fineli, Release 20.0",
+  "sourceAcquisition": {
+    "key": "fineli-basic2.zip",
+    "url": "https://fineli.fi/fineli/content/file/49",
+    "bytes": 1954388,
+    "sha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+    "method": "Official browser download; terminal request forbidden"
+  },
+  "publication": "local only",
+  "completedAt": "2026-10-13T09:24:50.849760+00:00",
+  "rawRelationalRows": 387146,
+  "sourceTables": 47,
+  "nutrientObservations": 307834,
+  "bibliographyLineBreakReconciliation": "Four unquoted multiline citations rejoined without changing citation text",
+  "scope": "Every food and nutrient observation in the complete publisher Fineli Release 20.0 74-component archive. Companion 55-component and raw-ingredient archives retained without double-counting overlapping foods. This downloadable snapshot is not claimed as the current live API."
+}

@@ -1,0 +1,4 @@
+{
+  "exitCode": 1,
+  "meaning": "Old vulnerable-observation script fails on immediate rejection of first accessor; not an independent passing suite."
+}

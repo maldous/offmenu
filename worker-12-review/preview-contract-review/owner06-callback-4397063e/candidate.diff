@@ -1,0 +1,172 @@
+diff --git a/dev/wiremock/callback-source-contract.md b/dev/wiremock/callback-source-contract.md
+new file mode 100644
+index 0000000..7f89cf2
+--- /dev/null
++++ b/dev/wiremock/callback-source-contract.md
+@@ -0,0 +1,26 @@
++# Local synthetic SDK callback source contract
++
++Scope: owner06 mock input contract only. Existing API `offmenu-mocks/1` and strict Identity semantics `offmenu-identity-session/2` remain unchanged. This result adds no redirect, HTTP route, browser session, consent flow or state store. Native `/authorize` and `/callback` still return501.
++
++Agreed with Worker04: its LOCAL harness creates a callback fragment only after explicit same-tab intent. The retained guard accepts access_token, refresh_token, token_type, expires_in, expires_at and provider; duplicates, mixed token kinds and unsupported state/nonce/redirect fields fail before SDK handling. Provider/start time is kept in same-tab sessionStorage, limited to15minutes, consumed once; absent/stale/future/wrong-provider/replayed intent fails and the URL is scrubbed. This is an accidental-response guard, not cryptographic OAuth state/nonce verification. Netlify server OAuth state verification remains a separate provider boundary. Consent and linking are unknown.
++
++## Source interface
++
++`callbackSourceTokenRequest(actorId)` returns the exact known synthetic password-grant request for Alice, Bob or admin. The caller sends it through the selected local `createOutboundAdapter`; the function itself does no I/O. The named HTTPS URL identifies the existing mock contract and is not an instruction to call a live provider.
++
++After a newly observed native HTTP200 token response, `validateCallbackSourceReply(actorId,reply,{httpStatus,localOrigin})` checks an explicit literal-loopback HTTP origin/port and all four native fixture fields. It rejects wrong actors, mixed access/refresh pairs, changed expiry/type, missing fields, callback/provider fields or invented consent. The returned token fields are frozen. Matching fixed synthetic token bytes does not establish that the actor is currently unrevoked, signed in, provider-authenticated or consented. Caller must use native user/refresh checks and the Worker04 guard. `currentSessionVerified` and `providerAcceptance` are explicitly false.
++
++Worker04 owns fragment construction, intent consumption, SDK invocation, URL scrubbing and callback UI. Owner06 owns native synthetic token/user/refresh/logout behavior. Worker02 owns central app/browser composition. Worker05 owns preview/runtime lifecycle. No peer source or existing19076process is modified here.
++
++## Remaining original-scope gates
++
++- Real Google authorization/callback and provider consent/linking remain unsupported501; this contract never qualifies them.
++- Browser extension/native bridge interface is not agreed. Device/health bridges are not HTTP mocks. No fabricated native success fixture is added.
++- Other provider/service scenarios need exact method/path/header/request and response assertions from the app/provider owner before a new fixture is implemented.
++- Independent12/58 qualification and a fresh Worker05-owned runtime/source pin are required before adoption. This source result is not self-accepted.
++
++## Evidence
++
++New callback-source contract has five focused tests; unchanged base mock validation retains128 tests. Combined run:133passed,0failed. The16original mock files were restored and independently byte-checked against9b31f7d. No fresh Java runtime was started for this pure validator change and no new live06lease exists. Existing9b31 real-Java/Identity/logout receipts remain preserved;05owns19076. Worker04 separately reports4installed-SDK/native9b31tests passed, nativeaudit23requests0unmatched and owned shutdown in its836f7dd candidate; that evidence is owner-reported, not independent acceptance of this new module.
++
++Catalogue auxiliary source8f23c3d is frozen outside checkout at `/home/user/src/offmenu-data/worker-06-private-catalogue-20261014/source-8f23c3d`,23951source bytes; its data/index remain referenced, not copied. Historical855715PID was absent and19166closed on pickup. One restored private viewer is owned by06(PID959569,birth2455715,run96fa35b48d7a4abebd0a96fc8392f31d), and serves25135main records before/after the original mock branch switch. Production publication remains cancelled; no Netlify continuation.
+diff --git a/dev/wiremock/callback-source-contract.mjs b/dev/wiremock/callback-source-contract.mjs
+new file mode 100644
+index 0000000..f40f5e4
+--- /dev/null
++++ b/dev/wiremock/callback-source-contract.mjs
+@@ -0,0 +1,48 @@
++// Local SDK callback INPUT contract only. No redirect, browser intent storage,
++// HTTP listener, state/nonce verification, provider consent or session creation.
++import {ACTORS,identityToken} from './fixtures.mjs';
++import {loopbackOrigin} from './adapter.mjs';
++
++export const CALLBACK_SOURCE_CONTRACT=Object.freeze({
++ schema:'offmenu-synthetic-sdk-callback-source/1',
++ api:'offmenu-mocks/1',identitySemantics:'offmenu-identity-session/2',
++ fixtureBaseline:'9b31f7d4de21dd30add0c49b038e5ac31413ec5d',
++ mode:'local-synthetic-only',providerAcceptance:false,consent:'unknown',accountLinking:'unknown',
++ nativeAuthorizeStatus:501,nativeCallbackStatus:501,
++ fragmentOwner:'Worker04 local SDK harness; never a Worker06 redirect response',
++ fragmentAllowedKeys:Object.freeze(['access_token','refresh_token','token_type','expires_in','expires_at','provider']),
++ intentOwner:'Worker04 same-tab sessionStorage provider/start-time guard, 15-minute bound, one consumption; not cryptographic OAuth state/nonce',
++ forbiddenClaims:Object.freeze(['Google provider authentication','cryptographic state/nonce verification','provider consent','account linking','token rotation','session validity inferred from fixed token bytes']),
++ nativeStatusContract:Object.freeze({validToken:200,missingOrWrongCredential:401,duplicateExtraOrMixedFields:400,revokedUser:401,logout:200,repeatedLogout:401}),
++ unsupportedBridges:Object.freeze(['Google provider authorize/callback remains 501','browser extension/native bridge contract not agreed','device/health bridges are not HTTP mocks']),
++});
++const NATIVE_KEYS=Object.freeze(['access_token','refresh_token','token_type','expires_in']);
++function actor(id){if(!Object.hasOwn(ACTORS,id))throw Error('Unknown synthetic actor');return ACTORS[id];}
++
++// Caller sends this only through the selected local createOutboundAdapter.
++// The upstream URL names the existing contract; this function performs no I/O.
++export function callbackSourceTokenRequest(actorId){
++ const a=actor(actorId);
++ return Object.freeze({url:'https://offmenu-accounts.netlify.app/.netlify/identity/token',method:'POST',
++  headers:Object.freeze({'content-type':'application/x-www-form-urlencoded'}),
++  body:new URLSearchParams({grant_type:'password',username:a.email,password:'fixture-password'}).toString(),
++ });
++}
++
++// Validate a newly observed strict native token reply before Worker04 composes
++// its fragment. Matching these fixed values does NOT prove a live session:
++// native user/refresh checks and revocation remain WireMock's responsibility.
++export function validateCallbackSourceReply(actorId,reply,{httpStatus,localOrigin}={}){
++ actor(actorId);const origin=loopbackOrigin(localOrigin);
++ if(httpStatus!==200)throw Error('Successful native token response required');
++ if(!reply||typeof reply!=='object'||Array.isArray(reply))throw Error('Native token object required');
++ if(Object.keys(reply).length!==NATIVE_KEYS.length||Object.keys(reply).some(k=>!NATIVE_KEYS.includes(k)))throw Error('Unsupported or ambiguous native token fields');
++ const expected=identityToken(actorId);
++ for(const key of NATIVE_KEYS)if(reply[key]!==expected[key])throw Error('Native synthetic token/actor/lifetime mismatch');
++ return Object.freeze({schema:CALLBACK_SOURCE_CONTRACT.schema,actorId,localOrigin:origin,
++  tokenFields:Object.freeze(Object.fromEntries(NATIVE_KEYS.map(k=>[k,reply[k]]))),
++  intentVerification:'Must be performed and consumed by Worker04 before SDK handling',
++  providerAcceptance:false,consent:'unknown',accountLinking:'unknown',
++  currentSessionVerified:false,callbackEndpointStatus:501,
++ });
++}
+diff --git a/dev/wiremock/callback-source-contract.test.mjs b/dev/wiremock/callback-source-contract.test.mjs
+new file mode 100644
+index 0000000..afa20ee
+--- /dev/null
++++ b/dev/wiremock/callback-source-contract.test.mjs
+@@ -0,0 +1,35 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {ACTORS,identityToken} from './fixtures.mjs';
++import {createMappings} from './mappings.mjs';
++import {contractFor} from './adapter.mjs';
++import {CALLBACK_SOURCE_CONTRACT,callbackSourceTokenRequest,validateCallbackSourceReply} from './callback-source-contract.mjs';
++const options={httpStatus:200,localOrigin:'http://127.0.0.1:19104'};
++
++test('all actor sources use the strict existing password grant without performing I/O',()=>{
++ for(const id of Object.keys(ACTORS)){
++  const r=callbackSourceTokenRequest(id);assert.equal(contractFor(r.url,r.method).id,'identity');
++  assert.deepEqual(Object.fromEntries(new URLSearchParams(r.body)),{grant_type:'password',username:ACTORS[id].email,password:'fixture-password'});
++  assert.equal(r.headers['content-type'],'application/x-www-form-urlencoded');assert.ok(Object.isFrozen(r));
++ }
++ assert.throws(()=>callbackSourceTokenRequest('real-person'),/Unknown synthetic actor/);
++});
++test('exact native actor/token pairs accepted with explicit non-acceptance boundaries',()=>{
++ for(const id of Object.keys(ACTORS)){
++  const r=validateCallbackSourceReply(id,identityToken(id),options);assert.deepEqual(r.tokenFields,identityToken(id));
++  assert.equal(r.currentSessionVerified,false);assert.equal(r.providerAcceptance,false);assert.equal(r.consent,'unknown');assert.equal(r.callbackEndpointStatus,501);assert.ok(Object.isFrozen(r.tokenFields));
++ }
++});
++test('failed grants, mixed actors, altered lifetimes and invented consent/callback fields rejected',()=>{
++ for(const status of [400,401,403,500,502])assert.throws(()=>validateCallbackSourceReply('alice',identityToken('alice'),{...options,httpStatus:status}),/Successful native/);
++ for(const reply of [identityToken('admin'),{...identityToken('alice'),refresh_token:ACTORS.bob.refreshToken},{...identityToken('alice'),expires_in:86400}])assert.throws(()=>validateCallbackSourceReply('alice',reply,options),/mismatch/);
++ for(const name of ['state','nonce','provider','redirect_uri','consent','accessToken','id_token'])assert.throws(()=>validateCallbackSourceReply('alice',{...identityToken('alice'),[name]:'invented'},options),/Unsupported or ambiguous/);
++ const missing=identityToken('alice');delete missing.refresh_token;assert.throws(()=>validateCallbackSourceReply('alice',missing,options),/Unsupported or ambiguous/);
++});
++test('external/credentialed/path/query callback destinations cannot become redirect targets',()=>{
++ for(const localOrigin of ['https://accounts.google.com:443','http://localhost:19104','http://127.0.0.1','http://user@127.0.0.1:19104','http://127.0.0.1:19104/callback','http://127.0.0.1:19104/?redirect=https://example.com'])assert.throws(()=>validateCallbackSourceReply('alice',identityToken('alice'),{...options,localOrigin}));
++});
++test('existing native authorize/callback defaults remain 501 for every scenario',()=>{
++ const routes=createMappings().filter(m=>/^identity-(authorize|callback)-/.test(m.name||''));assert.equal(routes.length,14);assert.ok(routes.every(r=>r.response.status===501));
++ assert.equal(CALLBACK_SOURCE_CONTRACT.providerAcceptance,false);assert.ok(Object.isFrozen(CALLBACK_SOURCE_CONTRACT.fragmentAllowedKeys));
++});
+diff --git a/dev/wiremock/callback-source-verification.json b/dev/wiremock/callback-source-verification.json
+new file mode 100644
+index 0000000..e4c68e4
+--- /dev/null
++++ b/dev/wiremock/callback-source-verification.json
+@@ -0,0 +1,39 @@
++{
++  "schema": "offmenu-callback-source-verification/1",
++  "atUtc": "2026-10-14T11:42:02.681242+00:00",
++  "baseline": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d",
++  "originalMockFilesUnchanged": 16,
++  "callbackSourceContract": "offmenu-synthetic-sdk-callback-source/1",
++  "api": "offmenu-mocks/1",
++  "identitySemantics": "offmenu-identity-session/2",
++  "unitTests": {
++    "passed": 133,
++    "failed": 0,
++    "newFocusedTests": 5,
++    "log": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/callback-source-unit-20261014.log",
++    "sha256": "bf5e86c65fba53efb5d99ab4f7ee0c78ef35bfbf6115d88e0c0a890d63a5b1d3"
++  },
++  "sourceFiles": {
++    "callback-source-contract.mjs": "916ac88a4ba4cbd27af77b534e62dc7e27dbaf2d5c53d506a871a8418c616e39",
++    "callback-source-contract.test.mjs": "4312cdea16f450f6f40d44982079cdf57503add1b31ea95a8eb719c7be55def0",
++    "callback-source-contract.md": "0abccb31882089657ee298c097fb9dcbf469808ed03c6b73d753e245e93442aa"
++  },
++  "nativeOAuthAuthorizeCallbackStill501": true,
++  "newHttpEndpoints": 0,
++  "newRuntimeStartedForMock": false,
++  "runtime19076Owner": "Worker05",
++  "callbackFragmentGuardOwner": "Worker04",
++  "realProviderAcceptance": false,
++  "consentAndLinking": "unknown",
++  "independentAcceptance": "pending12/58; owner05freshruntime required",
++  "catalogueAuxiliary": {
++    "snapshot": "8f23c3d5026cb40d769bed42ad0b06ed0eb2d68d",
++    "freezeReceipt": "/home/user/src/offmenu-data/worker-06-private-catalogue-20261014/freeze-receipt.json",
++    "url": "http://127.0.0.1:19166",
++    "pid": 959569,
++    "birthTicks": "2455715",
++    "records": 25135,
++    "indexCorpusDependencyCopied": false
++  },
++  "sharedMainIndexUnchanged": true
++}

@@ -1,0 +1,19 @@
+{
+  "candidate.diff": "65c5bfdaa08b7c37b90ea8ada09e6726b2ada5f538f27f6e5d9cab22a6639ac9",
+  "carried-helpers-preserved.json": "19db45e993fc5a6b981cb0d12a6f03d08cc9c51681faf4d7c75d249e0d2faef8",
+  "checkpoint-preservation.json": "aa1816510733fd23a7b1c931d31bbe2515b990dbdca516e49c701b5fd7c0d529",
+  "command-boundary-probe.json": "39fe1efb40be16d2a3240660e162b2030853664f12ddd1af0100818cc140eb23",
+  "command-boundary-probe.log": "947576d9f0489b8605387d86888545e19c858ae56a58ec13e3407c43a9d19d9b",
+  "command-boundary-probe.mjs": "0a683092a9c8a2c2d6412466c26a66bf053270a067bd3db48124f4d4fd35fff1",
+  "custody-after.json": "eae46e0b3146e33740bb32797de9d3987ebe2e02343b41b9efc94cd76babcea1",
+  "custody-before.json": "5b69aef8085c39547dfe1fc6c77d38a036d15aa0a9f0f457c527b6bddf162068",
+  "focused-lease-test.log": "9d50e759b6bb256a06542208978288bb534d30c350880c58e36f9f6131d5118c",
+  "operation-preservation-readback.json": "6e286d9854b1aa6e9f0cf8f604caf2909d042af9b8a1dba03538b3c1a0150e9e",
+  "origin-verification.json": "452ab97a77d177d2366dc3a584d734d42f961b309c4b116d52727e38ffe6f84b",
+  "pin.json": "6823333dfdb18753ff103454b31b84d48d29c5573647c1fee63ee3978227ca36",
+  "preservation-additive.diff": "7403e57fd3dfc83364d607d5cfacc8651be4d3d533a757b4367f8bc1adfd7ee6",
+  "preservation-pin.json": "16ca21163352023c6349100ccff37108978d9639616c975c53efba2135cc77a8",
+  "review.md": "bc4a4bfcebb97e7323f56cd099a8460de8af2f87a8dca29c262cb909e8231605",
+  "snapshot-manifest.json": "2c6b259987e391d686298d416ce50fcdeab3dcc662e6d3f2b9e4296b6d534f39",
+  "verdict.json": "23dc73156a3ee2b42e7ba956239dbcb63e317dbaa052c19343ffb4b598d65764"
+}

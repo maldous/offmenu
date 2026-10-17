@@ -1,0 +1,26 @@
+-- Archived baseline DDL from cloud/schema.sql at 26829d4^; comments omitted because sqlite_master normalizes DDL structure.
+CREATE TABLE IF NOT EXISTS user_state (user_id TEXT PRIMARY KEY, revision INTEGER NOT NULL, state_json TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS products (barcode TEXT PRIMARY KEY, data TEXT NOT NULL, source TEXT NOT NULL, license TEXT NOT NULL, checked_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS recipes (id TEXT PRIMARY KEY, title TEXT NOT NULL, doc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS price_observations (barcode TEXT PRIMARY KEY, data TEXT NOT NULL, source TEXT NOT NULL, license TEXT NOT NULL, checked_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS integration_tokens (id TEXT PRIMARY KEY, token_hash TEXT UNIQUE NOT NULL, user_id TEXT NOT NULL, name TEXT NOT NULL, scopes TEXT NOT NULL, resource TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, revoked_at INTEGER);
+CREATE INDEX IF NOT EXISTS integration_tokens_user ON integration_tokens(user_id);
+CREATE TABLE IF NOT EXISTS oauth_clients (id TEXT PRIMARY KEY, name TEXT NOT NULL, redirect_uris TEXT NOT NULL, created_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS oauth_codes (code_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL, client_id TEXT NOT NULL, redirect_uri TEXT NOT NULL, challenge TEXT NOT NULL, scopes TEXT NOT NULL, resource TEXT NOT NULL, expires_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS integration_limits (key TEXT NOT NULL, bucket INTEGER NOT NULL, count INTEGER NOT NULL, PRIMARY KEY(key,bucket));
+CREATE TABLE IF NOT EXISTS provider_connections (user_id TEXT NOT NULL, source_id TEXT NOT NULL, label TEXT NOT NULL, sealed TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY(user_id,source_id));
+CREATE TABLE IF NOT EXISTS unified_records (owner TEXT NOT NULL, id TEXT NOT NULL, kind TEXT NOT NULL, source_id TEXT NOT NULL, countries TEXT NOT NULL, document TEXT NOT NULL, updated_at TEXT NOT NULL, search_text TEXT NOT NULL DEFAULT '', PRIMARY KEY(owner,id));
+CREATE INDEX IF NOT EXISTS unified_records_owner_kind ON unified_records(owner,kind);
+CREATE TABLE IF NOT EXISTS kitchens (id TEXT PRIMARY KEY, name TEXT NOT NULL, revision INTEGER NOT NULL, state_json TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS kitchen_members (kitchen_id TEXT NOT NULL, user_id TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('owner','editor','viewer')), PRIMARY KEY(kitchen_id,user_id));
+CREATE TABLE IF NOT EXISTS kitchen_invites (token_hash TEXT PRIMARY KEY, kitchen_id TEXT NOT NULL, role TEXT NOT NULL, expires_at INTEGER NOT NULL, used_at INTEGER);
+CREATE TABLE IF NOT EXISTS source_policies(id TEXT PRIMARY KEY,document TEXT NOT NULL,revision INTEGER NOT NULL,active INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS service_requests (id TEXT PRIMARY KEY,owner TEXT NOT NULL,kind TEXT NOT NULL CHECK(kind IN ('support','email')),idempotency_key TEXT NOT NULL,body_hash TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN ('pending','sent','failed','unknown')),sealed TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,retain_until INTEGER NOT NULL,UNIQUE(owner,kind,idempotency_key));
+CREATE INDEX IF NOT EXISTS service_requests_owner_kind_created ON service_requests(owner,kind,created_at DESC);
+CREATE TABLE IF NOT EXISTS service_rate_limits (owner TEXT NOT NULL,kind TEXT NOT NULL,bucket INTEGER NOT NULL,count INTEGER NOT NULL,PRIMARY KEY(owner,kind,bucket));
+CREATE TABLE IF NOT EXISTS app_settings (id TEXT PRIMARY KEY CHECK(id='global'),revision INTEGER NOT NULL CHECK(revision >= 1),settings_json TEXT NOT NULL,sealed_credentials TEXT,write_id TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS app_settings_audit (id TEXT PRIMARY KEY,actor_id TEXT NOT NULL,revision INTEGER NOT NULL,paths_json TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS app_settings_audit_revision ON app_settings_audit(revision DESC);
+CREATE TABLE IF NOT EXISTS admin_operations_locks (source_id TEXT PRIMARY KEY,nonce TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS admin_operations_audit (id TEXT PRIMARY KEY,actor_id TEXT NOT NULL,source_id TEXT NOT NULL,revision INTEGER NOT NULL,action TEXT NOT NULL CHECK(action IN ('suspended','reactivated')),created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS admin_operations_audit_source_revision ON admin_operations_audit(source_id, revision DESC);

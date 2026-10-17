@@ -1,0 +1,45 @@
+{
+  "results": [
+    {
+      "name": "actual-selected-composition-positive",
+      "admitted": true
+    },
+    {
+      "name": "unselected-871-successor-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: descriptor input/artifact binding"
+    },
+    {
+      "name": "historical9b31-mock-pin-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: descriptor input/artifact binding"
+    },
+    {
+      "name": "separate-physical-root-rebinding-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: separate owned mock source root binding"
+    },
+    {
+      "name": "preparation-reference-hash-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: selected mock preparation hash"
+    },
+    {
+      "name": "selected-execution-omission-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: required selected native callback execution"
+    },
+    {
+      "name": "selected-execution-hash-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: required selected native callback execution"
+    },
+    {
+      "name": "native-cwd-relabel-refuses",
+      "admitted": false,
+      "reason": "Interactive preview refused: native qualification root/process shape"
+    }
+  ],
+  "scratch": "/tmp/worker12-selected-binding-lxs0GA",
+  "network": "Existing fixture health GETs from admission only; no auth/state/reset/flows."
+}

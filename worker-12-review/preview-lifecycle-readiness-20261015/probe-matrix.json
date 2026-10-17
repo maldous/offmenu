@@ -1,0 +1,350 @@
+{
+  "schema": "worker12-independent-lifecycle-transport-probes/1",
+  "status": "ASSIGNED-WAITING",
+  "receiptSource": "9202de2e92e000d6f551d2c006b9a719e1b181a9",
+  "cases": [
+    {
+      "id": "L01",
+      "kind": "lifecycle",
+      "positive": true,
+      "mutation": null,
+      "pages": [
+        "04:2",
+        "04:9"
+      ],
+      "purpose": "Accept owner-performed disposable reset/stop/restart evidence only with fresh source/lease/birth/state and feedback preservation."
+    },
+    {
+      "id": "L02",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "target",
+          "statePath"
+        ],
+        "valueFrom": [
+          "feedback",
+          "statePath"
+        ]
+      },
+      "pages": [
+        "04:4",
+        "04:7"
+      ],
+      "purpose": "Reject feedback-state reset even when owner and source hashes match."
+    },
+    {
+      "id": "L03",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "target",
+          "leaseId"
+        ],
+        "value": "unrelated-lease"
+      },
+      "pages": [
+        "04:2",
+        "04:7"
+      ],
+      "purpose": "Reject another lease before reset or stop admission."
+    },
+    {
+      "id": "L04",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "target",
+          "birthTicks"
+        ],
+        "value": "0"
+      },
+      "pages": [
+        "04:2",
+        "04:9"
+      ],
+      "purpose": "Reject stale/reused PID evidence, not merely numeric PID."
+    },
+    {
+      "id": "L05",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "operation",
+          "receiptStatus"
+        ],
+        "value": "stopped"
+      },
+      "pages": [
+        "04:5",
+        "04:9"
+      ],
+      "purpose": "Reject stopped receipt as authority for a new operation."
+    },
+    {
+      "id": "L06",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "stop",
+          "httpReadyAfter"
+        ],
+        "value": true
+      },
+      "pages": [
+        "04:9"
+      ],
+      "purpose": "Do not accept claimed graceful stop while the same owned endpoint stays ready."
+    },
+    {
+      "id": "L07",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "restart",
+          "stateId"
+        ],
+        "valueFrom": [
+          "before",
+          "stateId"
+        ]
+      },
+      "pages": [
+        "04:4",
+        "04:9"
+      ],
+      "purpose": "Reject alleged fresh restart that silently reuses old state namespace."
+    },
+    {
+      "id": "L08",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "restart",
+          "birthTicks"
+        ],
+        "valueFrom": [
+          "before",
+          "birthTicks"
+        ]
+      },
+      "pages": [
+        "04:9"
+      ],
+      "purpose": "Reject alleged new birth that is the unchanged process."
+    },
+    {
+      "id": "L09",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "preservation",
+          "feedbackHashesMatch"
+        ],
+        "value": false
+      },
+      "pages": [
+        "04:4",
+        "04:9"
+      ],
+      "purpose": "Reject operation outcome that changes feedback/retained state unexpectedly."
+    },
+    {
+      "id": "L10",
+      "kind": "lifecycle",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "restore",
+          "withdrawalReplayed"
+        ],
+        "value": false
+      },
+      "pages": [
+        "04:7",
+        "04:9"
+      ],
+      "purpose": "Reset/restore must not resurrect a withdrawn grant/source policy."
+    },
+    {
+      "id": "T01",
+      "kind": "transport",
+      "positive": true,
+      "mutation": null,
+      "pages": [
+        "04:2",
+        "04:3",
+        "02:9"
+      ],
+      "purpose": "Accept only selected bounded source-permitted graph and explicit logical-HTTPS-to-physical-loopback DEV mapping."
+    },
+    {
+      "id": "T02",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "mapping",
+          "physicalOrigin"
+        ],
+        "value": "https://external.invalid"
+      },
+      "pages": [
+        "04:2",
+        "04:3",
+        "02:8"
+      ],
+      "purpose": "Refuse mapping that turns the scoped DEV seam into provider/external transport."
+    },
+    {
+      "id": "T03",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "manifest",
+          "observedSHA256"
+        ],
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "pages": [
+        "04:4",
+        "02:9"
+      ],
+      "purpose": "Wrong manifest hash refuses without source/identity relabel."
+    },
+    {
+      "id": "T04",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "file",
+          "observedSHA256"
+        ],
+        "value": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "pages": [
+        "04:4",
+        "02:9"
+      ],
+      "purpose": "Wrong graph file hash refuses even when manifest hash matches."
+    },
+    {
+      "id": "T05",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "sourcePolicy",
+          "status"
+        ],
+        "value": "withdrawn"
+      },
+      "pages": [
+        "04:7",
+        "04:8",
+        "04:9"
+      ],
+      "purpose": "Refuse cached graph and derived views after source withdrawal."
+    },
+    {
+      "id": "T06",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "sourcePolicy",
+          "allowedAudience"
+        ],
+        "value": "other-private-account"
+      },
+      "pages": [
+        "04:3",
+        "04:4",
+        "04:6",
+        "02:9"
+      ],
+      "purpose": "Same bytes/hash cannot widen private audience or entitlement."
+    },
+    {
+      "id": "T07",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "budget",
+          "observedBytes"
+        ],
+        "value": 3145729
+      },
+      "pages": [
+        "04:3",
+        "04:5"
+      ],
+      "purpose": "Byte-budget refusal must stop transport, not record a successful large fetch."
+    },
+    {
+      "id": "T08",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "record",
+          "licence"
+        ],
+        "value": null
+      },
+      "pages": [
+        "04:3",
+        "02:9"
+      ],
+      "purpose": "Unknown rights cannot become admitted/curated content from checksum success."
+    },
+    {
+      "id": "T09",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "record",
+          "unknownFlags"
+        ],
+        "value": []
+      },
+      "pages": [
+        "04:4",
+        "04:8",
+        "02:9"
+      ],
+      "purpose": "Reject source-unknown loss rather than infer dietary/origin certainty."
+    },
+    {
+      "id": "T10",
+      "kind": "transport",
+      "positive": false,
+      "mutation": {
+        "path": [
+          "mapping",
+          "registered"
+        ],
+        "value": false
+      },
+      "pages": [
+        "04:2",
+        "02:8"
+      ],
+      "purpose": "Unknown logical/file route must fail closed, without redirect/fallback."
+    }
+  ],
+  "driverBinding": "Reviewer adapter pending exact new05 exported validation/source/evidence interfaces. These are local reviewer-normalized fixture paths, not claimed producer APIs.",
+  "executionPermitted": "Only reviewed read-only validation functions against cloned fixtures. No lifecycle functions, network or process administration."
+}

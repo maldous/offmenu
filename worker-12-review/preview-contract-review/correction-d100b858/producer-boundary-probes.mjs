@@ -1,0 +1,19 @@
+import {readFileSync,writeFileSync,mkdtempSync} from 'node:fs';
+import {tmpdir} from 'node:os';import path from 'node:path';import {createHash} from 'node:crypto';import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+const out=process.argv[2],owner='/home/user/src/offmenu-workers/worker-05';const {loadInteractive}=await import(pathToFileURL(owner+'/interactive-preview.mjs'));
+const source='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/composition-d100b858-18797.json';const original=JSON.parse(readFileSync(source));const scratch=mkdtempSync(path.join(tmpdir(),'worker12-preview-contract-'));const hash=b=>createHash('sha256').update(b).digest('hex');const results=[];
+async function run(name,change,expected){const d=structuredClone(original);await change(d);const b=JSON.stringify(d),p=path.join(scratch,name+'.json');writeFileSync(p,b);let accepted=false,reason;try{const v=await loadInteractive({OFFMENU_DEV_INTERACTIVE:p,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});accepted=!!v;}catch(e){reason=e.message;}results.push({name,accepted,reason,expectedObservation:expected});assert.equal(accepted,expected);}
+await run('current-exact-positive',()=>{},true);
+await run('wrong-native-owner',d=>d.ownerThread='wrong',false);
+await run('wrong-bound-session',d=>d.authority.boundSession='wrong',false);
+await run('wrong-composition-hash',d=>d.compositionSha256='a'.repeat(64),false);
+await run('missing-or-unrelated-task-grant',d=>{d.authority.sourceThread='unrelated-task';d.authority.grant='';d.authority.permittedActions=['real-provider-flow'];},false);
+await run('stale-qualifiedAt-and-false-dependency-claims',d=>{const q=JSON.parse(readFileSync(d.mock.path));q.qualifiedAt='2000-01-01T00:00:00Z';q.version='wrong-version';q.jarSha512='0'.repeat(128);q.runtimeSource.sha256='0'.repeat(64);const b=JSON.stringify(q),p=path.join(scratch,'stale-mock.json');writeFileSync(p,b);d.mock={...d.mock,path:p,sha256:hash(b)};},false);
+await run('stopped-receipt-refused',d=>{const q=JSON.parse(readFileSync(d.mock.path));q.status='stopped';const b=JSON.stringify(q),p=path.join(scratch,'stopped-mock.json');writeFileSync(p,b);d.mock={...d.mock,path:p,sha256:hash(b)};},false);
+await run('missing-actual-execution-record-still-admitted',d=>{const q=JSON.parse(readFileSync(d.mock.path));delete q.executionEvidence;const b=JSON.stringify(q),p=path.join(scratch,'no-execution.json');writeFileSync(p,b);d.mock={...d.mock,path:p,sha256:hash(b)};},false);
+await run('future-descriptor-time-still-admitted',d=>{d.qualifiedAt='2099-01-01T00:00:00Z';},false);
+await run('descriptor-before-mock-qualification-still-admitted',d=>{d.qualifiedAt='2000-01-01T00:00:00Z';},false);
+await run('absent-descriptor-time-refuses',d=>{delete d.qualifiedAt;},false);
+await run('explicit-expired-descriptor-refuses',d=>{d.expiresAt='2000-01-01T00:00:00Z';},false);
+const refBytes=readFileSync(source);const admitted=await loadInteractive({OFFMENU_DEV_INTERACTIVE:source,OFFMENU_DEV_INTERACTIVE_SHA256:hash(refBytes)});await admitted.check();admitted.descriptor.qualifiedAt='2099-01-01T00:00:00Z';await assert.rejects(admitted.check(),/descriptor qualification/);results.push({name:'per-request-check-revalidates-descriptor-time',accepted:false,expectedObservation:false});
+writeFileSync(out+'/producer-boundary-probes.json',JSON.stringify({scratch,sourceDescriptor:source,results,scope:'Only source reads, disposable descriptor/receipt writes and existing loopback fixture health GETs. No start/stop/reset/auth requests.'},null,2)+'\n');console.log('13 producer observations confirmed: all four reported gaps refuse and per-request revalidation works. No auth/reset flow execution.');

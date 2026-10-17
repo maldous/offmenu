@@ -1,0 +1,77 @@
+{
+  "schema": "offmenu-worker12-owner05-consumer58-review/1",
+  "verdict": "PASS_SCOPED_PRODUCER_CONTRACT_REVIEW",
+  "reviewedProducerCandidate": "d100b858d78b44389285fbb07d06468159f78c91",
+  "deltaBase": "2fd7db9e54dc93752f4973556bdbb59507f82118",
+  "deltaSHA256": "10a7303a5c2a0cdaf846ce1986a24688f2e5e30e99ed3e6100c93aac1abd8e2b",
+  "reportedFindingsResolved": [
+    "P12-01",
+    "P12-02",
+    "P12-03",
+    "P12-04"
+  ],
+  "descriptorSHA256": "ec51c8ac7eadd1ea8a402d5420ed6ba43f989c93e48c0679b57a34055e8e1d41",
+  "qualificationSHA256": "45ae5357b45958f5ea1a517f501a3b9125184819438310fdcb5d5aa8d7e56397",
+  "executionEvidence": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock/dev/wiremock/.runtime/run-19076-a6368be8-471a-4c83-ae14-dde46eda20d3/identity-execution.json",
+    "sha256": "1020430d071de852919231fce08d9eb77fe7a3f1a2c8b28d0cc176fbe12232c3"
+  },
+  "actualPreview": {
+    "pid": 930520,
+    "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+    "birthTicks": "2416283",
+    "cwd": "/home/user/src/offmenu-workers/worker-05",
+    "port": 18797,
+    "argv": [
+      "node",
+      "dev-server.mjs",
+      ""
+    ],
+    "liveIdentityMatches": true,
+    "statusResponseSHA256": "4542c2ef6029d620079c0830ee27fa31cd75e7c948dfc10ec381d53d1d09e52f"
+  },
+  "actualMock": {
+    "pid": 883005,
+    "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+    "birthTicks": "2220328",
+    "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock",
+    "port": 19076,
+    "argv": [
+      "java",
+      "-jar",
+      "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar",
+      "--bind-address",
+      "127.0.0.1",
+      "--port",
+      "19076",
+      "--root-dir",
+      "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock/dev/wiremock/.runtime/run-19076-a6368be8-471a-4c83-ae14-dde46eda20d3",
+      "--disable-http2-plain",
+      ""
+    ],
+    "liveIdentityMatches": true,
+    "statusResponseSHA256": "471e23cf84ac82baaee9d95cdb96148a0eef5fb4330a13552f52165f5cc92c48"
+  },
+  "inputManifestSHA256": "4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b",
+  "applicationArtifact": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/app/dist/worker.mjs",
+    "sha256": "608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2"
+  },
+  "recordedQualificationAssertions": [
+    176,
+    2
+  ],
+  "reviewerReranQualification": false,
+  "consumerFlowGroupsPassedByReviewer": 0,
+  "conditions": [
+    "Existing independently authorized root synthetic DEV task only; metadata/hash/control matches are not human approval proof",
+    "Consumer selects exact reviewed producer and expected packet hashes separately from input pin05=8dc49b2",
+    "Fresh owner05/native birth/cwd/command/loopback/health/source/dependency checks before every request",
+    "Mandatory execution evidence and valid mock/descriptor time ordering; explicit expiry rechecked",
+    "Source provenance06 retained; old runtime generations not relabelled",
+    "Worker58 exact callback/flow execution and all-eight/browser/device/provider/release acceptance remain separate"
+  ],
+  "production": "STOP",
+  "catalogue19166Touched": false,
+  "communication": "Local retained review; no external messaging authorization assumed"
+}

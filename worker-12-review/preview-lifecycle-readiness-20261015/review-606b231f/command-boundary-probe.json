@@ -1,0 +1,13 @@
+{
+  "sourcePin": "606b231f68f18ec5920977323f6da61e84138365",
+  "pid": 1353232,
+  "actualEntryPoint": "/home/user/src/offmenu-workers/worker-12/worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/command-boundary-probe.mjs",
+  "inertRunnerArgument": "/tmp/worker12-lifecycle606-review-5v3zt3tj/worker05-lifecycle/runner.mjs",
+  "actualRunner": false,
+  "liveLeaseAdmitted": true,
+  "controlDecision": "stop",
+  "controlExecuted": false,
+  "wrongBirthRefused": true,
+  "wrongLeaseRefused": true,
+  "scope": "Only this reviewer Node process/read-only pinned fixture; no existing PID or actual control operation"
+}

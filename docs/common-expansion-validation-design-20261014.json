@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "offmenu-common-expansion-validation-design/1",
+  "purpose": "Independent streaming qualification before immutable assembly of the expanded OffMenu common-schema corpus.",
+  "runner": "scripts/qualify-common-expansion.py evidence.json scratch.sqlite [--scratch-budget-gib 35] packageDir...",
+  "admission": {
+    "complete": true,
+    "limit": null,
+    "requiredManifestFields": [
+      "expectedCounts",
+      "observedCounts",
+      "counts",
+      "expectedSourceRecords",
+      "observedSourceRecords",
+      "partitionCoverage",
+      "files"
+    ],
+    "sourceRecordRule": "ExpectedSourceRecords and observedSourceRecords are authoritative admitted-curated input count maps (or separately admitted new collection counts), not all raw archive rows. Retain nativeSourceRecords and withheldRecords separately. Qualification evidence copies an observedSourceRecords map as admittedSourceRecords. Already accepted immutable packages may use a nonnegative integer only when manifest.source.id or sourceId names its source; qualification normalizes it to a one-entry map. Generated graph counters must match the full streamed packet fold.",
+    "partitionCoverage": {
+      "complete": true,
+      "required": [
+        "expectedFiles",
+        "observedFiles",
+        "expectedPackets",
+        "observedPackets"
+      ],
+      "rule": "Expected and observed output-file and packet counts must agree and must equal the manifest-listed, streamed packet assets. inputCoverage is optional, but when provided must be complete and have matching expected/observed source-file counts."
+    },
+    "grandfatherException": {
+      "directory": "common-data-reviewed-package-20261014",
+      "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "status": "all-packets-schema-identity-citation-and-scope-checked",
+      "scope": "Only this exact historical package may omit the new source-package admission fields."
+    }
+  },
+  "streaming": {
+    "input": "Every manifest-listed asset is byte/SHA checked. Every .jsonl.gz asset explicitly carrying packets metadata is parsed as a graph packet stream; auxiliary JSONL evidence without packets metadata is retained and checksum-verified but is not misparsed as a graph packet. No group-name allow-list is used.",
+    "checks": [
+      "File bytes, SHA-256 and packet count match the package manifest.",
+      "Every packet validates against the common JSON Schema.",
+      "All scopes, including citations, are public.",
+      "Resource and additional resource types are registered by the current common-data contract.",
+      "Nested citation IDs resolve within their packet.",
+      "Localized source text hash is SHA-256 of its UTF-8 value.",
+      "Known g/kg/mg/microgram, ml/l, count and portion quantities use their declared dimensions.",
+      "Structured source-field values do not retain rawFields, rawNutriments, ingredientsText, originalTextLines, sealed, credentials, owner or proofId.",
+      "Identifiers and formal expressions are structural values and are never translated."
+    ]
+  },
+  "globalIdentity": {
+    "unique": [
+      "resource",
+      "assertion",
+      "relation",
+      "translation"
+    ],
+    "reusedText": "Allowed only when language, value, source-text SHA-256 and sorted citation IDs are identical, matching contract.textIdentityRule.",
+    "reusedCitation": "Allowed only when the complete canonical citation object is identical.",
+    "references": "Subjects, relation targets, cultural representations, typed references, quantity concept fields, terminology references and derivation input assertions must resolve globally. urn:offmenu:country:, urn:offmenu:unit: and http(s) ontology IRIs are declared external namespaces."
+  },
+  "storage": {
+    "implementation": "SQLite WITHOUT ROWID tables keyed by kind plus SHA-256(identifier).",
+    "purpose": "Avoid retaining 100-million-record identity sets in memory while retaining global uniqueness and reference checks.",
+    "transactionBatch": 10000,
+    "minimumFreeBytes": 10737418240,
+    "scratchBudget": "20 GiB default operational budget, configurable with --scratch-budget-gib for a known larger qualified corpus. The runner refuses to start or continue below 10 GiB free beside the requested scratch database."
+  },
+  "output": {
+    "evidence": "New JSON file only after all packages, file hashes, identities and references pass. It pins schemaByteSha256 and contractByteSha256 for the exact registry used during qualification; assembly must reject mutable schema or contract drift. Each proof-package entry includes admittedSourceRecords from the checked manifest; the historical core is reconstructed only from its pinned 25,135 world-recipes count and its checked FoodOn manifest count of 29,255 classes.",
+    "scratch": "SQLite audit scratch remains available for inspection and is intentionally not an assembled or published corpus asset."
+  },
+  "limitations": "Qualification establishes structural integrity, provenance linkage and declared completeness accounting. It does not establish scientific truth, exact food equivalence, dietary suitability, universal recipe synthesis or translation completeness."
+}

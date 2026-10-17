@@ -1,0 +1,247 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> offmenu-web@0.1.0 test
+> node --test tests-web/*.test.mjs
+
+✔ shelf reset replaces only the selected shelf (1.588293ms)
+✔ shopping additions retain existing stock (0.148068ms)
+✔ empty resets cannot erase a shelf (0.250449ms)
+✔ shelf location survives cloud validation (0.906758ms)
+✔ missing nutrition is unknown, zero remains zero (0.186725ms)
+✔ small salt values are not rounded to zero (0.173275ms)
+✔ automatic checkout preserves labelled pack amounts (0.525855ms)
+✔ unknown scan is accepted as one reviewable package (0.856123ms)
+✔ held barcode does not repeat; removal re-arms it (0.354252ms)
+✔ cloud profile preserves feedback and final receipt (0.422293ms)
+✔ unreviewed ingredient suggestions do not satisfy recipes (0.380592ms)
+✔ profile and barcode cache retained (1.781998ms)
+✔ invalid country rejected (0.26467ms)
+✔ duplicate lot identifiers rejected (0.360922ms)
+✔ repeated ingredient quantities summed (0.303328ms)
+✔ ingredient whitespace normalized (0.132165ms)
+✔ global sources remain available with country filters; major countries have named sources (1.296803ms)
+✔ OFF preserves leading zeroes, native names, country and unknown nutrients (0.874299ms)
+✔ USDA unit conversion and qualifier-aware CSV preserve basis (1.114013ms)
+✔ prices preserve currency and missing amount, imports stay private (0.58939ms)
+✔ retailer extraction isolates merchant SKUs and excludes account/session fields (0.716757ms)
+✔ credential encryption binds ciphertext to profile and provider (8.985184ms)
+✔ per-profile credential management never returns raw credentials and ignores other owners (8.525777ms)
+✔ private records cannot leak into another profile; public schema needs no login (2.716658ms)
+✔ source country filtering keeps documented global routes and excludes other countries (3.533783ms)
+✔ Vitamin C normalization preserves mg and enforces mass versus volume basis (1.500813ms)
+✔ specialist synthetic fixture: totals and density; no invented missing nutrients (1.596826ms)
+✔ missing vitamin C withholds total and ranks while preserving mass/energy coverage (0.518074ms)
+✔ complete baskets with different component definitions cannot be ranked together (3.985289ms)
+✔ unit and definition gates prevent false nutrition (0.63718ms)
+✔ rights admission denies unknown permissions, foreign private scope and restricted derivatives (0.29173ms)
+✔ unknown, expired and contradictory qualification evidence never passes (0.371968ms)
+✔ GTIN keeps leading zeros; recall scope is explicit (0.322776ms)
+✔ private health deduplication retains source identity and rejects invalid units (0.666443ms)
+✔ private measurements require sign-in, ownership, origin and CAS (12.647267ms)
+✔ authentication, ownership, atomic revision conflicts and CSRF (18.771571ms)
+✔ custom location reset isolates bench bowl (1.643133ms)
+✔ cilantro and coriander preference recognised (0.458296ms)
+✔ required diet conflict requires separate meal (0.292471ms)
+✔ household shared plan scales explicit portions (1.697163ms)
+✔ one missing ingredient unlocks recipe (0.259953ms)
+✔ duration consumes shared stock instead of repeating its availability (0.439468ms)
+✔ custom locations and members survive cloud save (0.881911ms)
+✔ document escapes user data and EPUB is a ZIP (7.922257ms)
+✔ sodium uses label first, derives salt otherwise, missing stays unknown (1.110247ms)
+✔ partial completion snapshot remains stable and scopes do not duplicate totals (2.748936ms)
+✔ zero-percent consumption is valid, malicious completion rejected (1.114774ms)
+✔ cleanup removes only matched source and supports partial amounts (0.450124ms)
+✔ history goals reminders and waste survive cloud validation (1.407466ms)
+✔ shopping keeps unmeasured needs and custom additions, CSV blocks formula cells (0.640445ms)
+✔ history and waste documents escape data and preserve completion (5.108837ms)
+✔ REST bearer tokens are hashed, scoped, audience-bound and revocable (13.817674ms)
+✔ MCP initializes and exposes only authorised personal tools (10.823271ms)
+✔ OAuth enforces registered exact redirect, PKCE, resource and one-time codes (5.457101ms)
+✔ token management rejects cross-origin writes and expiry rejects reads (6.23606ms)
+✔ 30 original recipes have explicit quantities/yields and no unresolved required identities (1.196175ms)
+✔ durable checkpoint recovery retains pending changes and detects competing local edits (7.455519ms)
+✔ turkey is blocked for vegetarian; peanut butter is not dairy (0.483964ms)
+✔ unknown restriction evidence needs checking; allergies are distinct from dislikes (0.234947ms)
+✔ aliases preserve identity and imperial inputs/display convert dimensionally (3.431662ms)
+✔ a cook deducts raw ingredients once and creates cooked stock; retry is idempotent (2.956481ms)
+✔ half eaten with saved remainder reconciles serving and cooked stock without raw deduction (1.150948ms)
+✔ unknown completion records a serving with unknown nutrients, not measured zero intake (2.059989ms)
+✔ undo restores raw lots before serving; after serving undo is prohibited (1.56582ms)
+✔ expired stock cannot fund a future plan or cooking (1.07089ms)
+✔ offline disjoint edits merge; competing edits and concurrent cooking are surfaced (5.012955ms)
+✔ shared projection excludes measurements, dietary history and credentials (1.328019ms)
+✔ cooking snapshots and local foods survive account validation (0.372479ms)
+✔ simultaneous equal servings cannot merge two events with one stock deduction (4.151063ms)
+✔ independent accounts join by single-use invitation; role, ownership, revision and revocation checks (18.666897ms)
+✔ expired kitchen invitations cannot be redeemed (7.838714ms)
+✔ week starts Monday across month boundary (2.069603ms)
+✔ weekly shopping requirements share the available stock (1.89119ms)
+✔ daily totals include only the selected date (0.295186ms)
+✔ missing nutrition is unknown, not zero (0.167557ms)
+✔ plan survives cloud validation (0.682417ms)
+✔ stop during permission prompt closes late stream and never starts capture (2.47387ms)
+✔ unsupported focus/torch/zoom remain hidden and visibility loss releases the camera (1.17234ms)
+✔ permission denial is explained without repeated permission requests (0.646634ms)
+✔ changing setup cancels an old camera request without leaking either stream (6.362175ms)
+✔ new devices use front bench mode and saved camera choice is retained (0.893648ms)
+✔ retail validation rejects errors, wrong lengths, non-retail data and bad checksums (1.485141ms)
+✔ two fresh agreeing reads; slow processing or a dropped frame cannot double count (0.491505ms)
+✔ ambiguous frames never accept and explicit rearm still requires consensus (0.173956ms)
+✔ real WASM decoder: plain (47.295128ms)
+✔ real WASM decoder: rotated90 (17.759248ms)
+✔ real WASM decoder: upsideDown (12.139167ms)
+✔ real WASM decoder: rotated270 (12.241758ms)
+✔ real WASM decoder: mirrored (8.200618ms)
+✔ real WASM decoder: inverted (18.121212ms)
+✔ real WASM decoder: lowContrast (4.801733ms)
+✔ contrast pass preserves the barcode and does not invent one in a flat frame (24.989713ms)
+ℹ tests 92
+ℹ suites 0
+ℹ pass 92
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 507.716497
+test_mass_volume_and_non_food_bases_remain_distinct (test_afcd_import.AFCDImportTests.test_mass_volume_and_non_food_bases_remain_distinct) ... ok
+test_bad_import_rolls_back_and_preserves_barcode (test_core.MatchingTests.test_bad_import_rolls_back_and_preserves_barcode) ... ok
+test_expired_inventory_excluded (test_core.MatchingTests.test_expired_inventory_excluded) ... ok
+test_negative_and_nonfinite_quantity_rejected (test_core.MatchingTests.test_negative_and_nonfinite_quantity_rejected) ... ok
+test_quantity_scaling (test_core.MatchingTests.test_quantity_scaling) ... ok
+test_repeated_requirements_cannot_reuse_same_stock (test_core.MatchingTests.test_repeated_requirements_cannot_reuse_same_stock) ... ok
+test_unknown_and_incompatible_units_never_ready (test_core.MatchingTests.test_unknown_and_incompatible_units_never_ready) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.022s
+
+OK
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> offmenu-web@0.1.0 build
+> node scripts/build.mjs
+
+Built worker with 14 assets
+../offmenu-checkpoint.bundle is okay
+The bundle contains these 2 refs:
+dbdca1acb24bf4e92fd830c3905c08967c799101 refs/heads/main
+dbdca1acb24bf4e92fd830c3905c08967c799101 HEAD
+The bundle records a complete history.
+The bundle uses this hash algorithm: sha1
+
+Final resumed migration checks:
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> offmenu-web@0.1.0 test
+> node --test tests-web/*.test.mjs
+
+✔ shelf reset replaces only the selected shelf (1.893363ms)
+✔ shopping additions retain existing stock (0.210701ms)
+✔ empty resets cannot erase a shelf (0.36569ms)
+✔ shelf location survives cloud validation (0.942831ms)
+✔ missing nutrition is unknown, zero remains zero (0.225924ms)
+✔ small salt values are not rounded to zero (0.184722ms)
+✔ automatic checkout preserves labelled pack amounts (0.306422ms)
+✔ unknown scan is accepted as one reviewable package (0.863924ms)
+✔ held barcode does not repeat; removal re-arms it (0.317408ms)
+✔ cloud profile preserves feedback and final receipt (0.474911ms)
+✔ unreviewed ingredient suggestions do not satisfy recipes (1.046143ms)
+✔ profile and barcode cache retained (2.232443ms)
+✔ invalid country rejected (0.443414ms)
+✔ duplicate lot identifiers rejected (0.541278ms)
+✔ repeated ingredient quantities summed (0.473669ms)
+✔ ingredient whitespace normalized (0.242398ms)
+✔ global sources remain available with country filters; major countries have named sources (1.857651ms)
+✔ OFF preserves leading zeroes, native names, country and unknown nutrients (1.277505ms)
+✔ USDA unit conversion and qualifier-aware CSV preserve basis (1.639008ms)
+✔ prices preserve currency and missing amount, imports stay private (0.477845ms)
+✔ retailer extraction isolates merchant SKUs and excludes account/session fields (0.556501ms)
+✔ credential encryption binds ciphertext to profile and provider (11.710516ms)
+✔ per-profile credential management never returns raw credentials and ignores other owners (10.773864ms)
+✔ private records cannot leak into another profile; public schema needs no login (7.38486ms)
+✔ source country filtering keeps documented global routes and excludes other countries (2.761964ms)
+✔ Vitamin C normalization preserves mg and enforces mass versus volume basis (1.052082ms)
+✔ specialist synthetic fixture: totals and density; no invented missing nutrients (1.835898ms)
+✔ missing vitamin C withholds total and ranks while preserving mass/energy coverage (3.832924ms)
+✔ complete baskets with different component definitions cannot be ranked together (1.302692ms)
+✔ unit and definition gates prevent false nutrition (0.809734ms)
+✔ rights admission denies unknown permissions, foreign private scope and restricted derivatives (0.272783ms)
+✔ unknown, expired and contradictory qualification evidence never passes (0.611873ms)
+✔ GTIN keeps leading zeros; recall scope is explicit (0.341284ms)
+✔ private health deduplication retains source identity and rejects invalid units (1.01689ms)
+✔ private measurements require sign-in, ownership, origin and CAS (9.244108ms)
+✔ authentication, ownership, atomic revision conflicts and CSRF (15.916542ms)
+✔ custom location reset isolates bench bowl (3.485793ms)
+✔ cilantro and coriander preference recognised (0.796154ms)
+✔ required diet conflict requires separate meal (0.290378ms)
+✔ household shared plan scales explicit portions (2.543783ms)
+✔ one missing ingredient unlocks recipe (0.309767ms)
+✔ duration consumes shared stock instead of repeating its availability (0.735435ms)
+✔ custom locations and members survive cloud save (0.953396ms)
+✔ document escapes user data and EPUB is a ZIP (9.236917ms)
+✔ sodium uses label first, derives salt otherwise, missing stays unknown (1.273659ms)
+✔ partial completion snapshot remains stable and scopes do not duplicate totals (1.924609ms)
+✔ zero-percent consumption is valid, malicious completion rejected (1.009059ms)
+✔ cleanup removes only matched source and supports partial amounts (0.360983ms)
+✔ history goals reminders and waste survive cloud validation (1.113973ms)
+✔ shopping keeps unmeasured needs and custom additions, CSV blocks formula cells (0.839008ms)
+✔ history and waste documents escape data and preserve completion (5.98498ms)
+✔ REST bearer tokens are hashed, scoped, audience-bound and revocable (21.552195ms)
+✔ MCP initializes and exposes only authorised personal tools (12.658044ms)
+✔ OAuth enforces registered exact redirect, PKCE, resource and one-time codes (13.728003ms)
+✔ token management rejects cross-origin writes and expiry rejects reads (2.197332ms)
+✔ 30 original recipes have explicit quantities/yields and no unresolved required identities (1.293098ms)
+✔ durable checkpoint recovery retains pending changes and detects competing local edits (8.629692ms)
+✔ turkey is blocked for vegetarian; peanut butter is not dairy (0.527298ms)
+✔ unknown restriction evidence needs checking; allergies are distinct from dislikes (0.219454ms)
+✔ aliases preserve identity and imperial inputs/display convert dimensionally (3.410752ms)
+✔ a cook deducts raw ingredients once and creates cooked stock; retry is idempotent (1.953692ms)
+✔ half eaten with saved remainder reconciles serving and cooked stock without raw deduction (0.615639ms)
+✔ unknown completion records a serving with unknown nutrients, not measured zero intake (0.837315ms)
+✔ undo restores raw lots before serving; after serving undo is prohibited (0.872958ms)
+✔ expired stock cannot fund a future plan or cooking (0.797937ms)
+✔ offline disjoint edits merge; competing edits and concurrent cooking are surfaced (4.752291ms)
+✔ shared projection excludes measurements, dietary history and credentials (1.033765ms)
+✔ cooking snapshots and local foods survive account validation (0.334373ms)
+✔ simultaneous equal servings cannot merge two events with one stock deduction (2.863555ms)
+✔ independent accounts join by single-use invitation; role, ownership, revision and revocation checks (28.490487ms)
+✔ expired kitchen invitations cannot be redeemed (11.417188ms)
+✔ week starts Monday across month boundary (4.989061ms)
+✔ weekly shopping requirements share the available stock (1.747007ms)
+✔ daily totals include only the selected date (0.22391ms)
+✔ missing nutrition is unknown, not zero (0.135991ms)
+✔ plan survives cloud validation (0.653674ms)
+✔ stop during permission prompt closes late stream and never starts capture (2.929481ms)
+✔ unsupported focus/torch/zoom remain hidden and visibility loss releases the camera (0.948379ms)
+✔ permission denial is explained without repeated permission requests (0.537844ms)
+✔ changing setup cancels an old camera request without leaking either stream (8.035685ms)
+✔ new devices use front bench mode and saved camera choice is retained (0.838117ms)
+✔ retail validation rejects errors, wrong lengths, non-retail data and bad checksums (1.470219ms)
+✔ two fresh agreeing reads; slow processing or a dropped frame cannot double count (0.247355ms)
+✔ ambiguous frames never accept and explicit rearm still requires consensus (0.142821ms)
+✔ real WASM decoder: plain (31.256272ms)
+✔ real WASM decoder: rotated90 (25.183383ms)
+✔ real WASM decoder: upsideDown (11.037103ms)
+✔ real WASM decoder: rotated270 (12.547081ms)
+✔ real WASM decoder: mirrored (7.811273ms)
+✔ real WASM decoder: inverted (10.148713ms)
+✔ real WASM decoder: lowContrast (4.893779ms)
+✔ contrast pass preserves the barcode and does not invent one in a flat frame (10.416257ms)
+ℹ tests 92
+ℹ suites 0
+ℹ pass 92
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 383.616236
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.021s
+
+OK
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> offmenu-web@0.1.0 build
+> node scripts/build.mjs
+
+Built worker with 14 assets

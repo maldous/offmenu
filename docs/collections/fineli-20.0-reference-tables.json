@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "fineli",
+  "releaseId": "20.0-reference-tables",
+  "status": "normalized",
+  "normalizedRows": 29568,
+  "counts": {
+    "raw": 29568,
+    "accepted": 29568,
+    "duplicates": 0,
+    "quarantined": 0,
+    "records": 29568
+  },
+  "sourceFormulaComponentRows": 11138,
+  "recipeFormulae": 2032,
+  "sourceDietaryFlags": 27536,
+  "unresolvedIngredientSourceIds": [],
+  "scope": "All recipe component and dietary-flag rows in the complete Fineli Release 20.0 archive. Formula rows grouped by source food ID; source amounts and cooking-factor fields retained without treating them as independently quantified recipes. Diet labels remain source assertions, not verified qualifications.",
+  "license": "CC BY 4.0",
+  "attribution": "THL Fineli Release 20.0",
+  "archiveSha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+  "publication": "local only; separate unreviewed reference tables, not part of hosted curation",
+  "completedAt": "2026-10-13T09:47:25.464199+00:00"
+}

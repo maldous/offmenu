@@ -1,0 +1,114 @@
+[
+  {
+    "path": "worker-12-review/durable-operation-review/37-tests-command.json",
+    "sha256": "3980dd2b12c201e841ee580ccd0e2cfcb22ee773ff27a21d066d7490d98a31f3"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/37-tests.log",
+    "sha256": "4413d84644e54e28d8be5655ad48fbb3f55c428fc2fa3c4e9de56441c96d0f38"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/artifact-sha256.json",
+    "sha256": "e35b15c9b4d399b18c504d83dcdd2f223c33d176b7f0e08e1416647b64100cc9"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/candidate.diff",
+    "sha256": "c44cc12a86b678653e1f484106bb45e7f89f980bedf153868eeca0fe8c7eede6"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/41-tests.log",
+    "sha256": "699499b98ec314eb9e7ebebf2db5670eb94c7682d8e15ae9205f14d73a94b7ca"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/artifact-sha256.json",
+    "sha256": "45fbd5bfdef76439a9ab69403003c1e43bea22155ae15a4c054173d5da31f135"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/correction.diff",
+    "sha256": "2ef3a73831e48fefd36d8bdeefa02fb2c44360c4253274e10fcafb5cf20cd3d2"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/custody-after.json",
+    "sha256": "871a166613483436b3bb27d45da9892c3daf5933c20ca05ece123db86d750997"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/custody-before.json",
+    "sha256": "871a166613483436b3bb27d45da9892c3daf5933c20ca05ece123db86d750997"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/custody-comparison.json",
+    "sha256": "c21ee1d03a007226e143d96155e2b5bd975c96ab83674f6a3776e6c44ad1c641"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/focused-tests.log",
+    "sha256": "d11b2f4b5fd4a590f83bdbfb95d6be0d8717dc84b25dc15180b6144516d85ee1"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/independent-probes.json",
+    "sha256": "df25953fbf4b2631c1b7fa333394aa82369253c98ba9aa2429083dbac56c6b82"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/independent-probes.log",
+    "sha256": "b064d4bf0f6f3a3bb2e75153c21c0680a89fe56b1fd8f70df998b7e4babef9fd"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/independent-probes.mjs",
+    "sha256": "29bcd1cf4a97105b94dc73b8cbf0aed2410f127ecc308db7bc0228c49eb1f451"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/review.md",
+    "sha256": "f14f5f0bdc43bf607981192ddb31144578d59e73810cb52a48762fcfd7431d46"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/correction-0e7279a7/snapshot-manifest.json",
+    "sha256": "92b4d4c0360e75239ade12ff2e58c098c0f05b0f4ee2b87348d37d813137893f"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/custody-after.json",
+    "sha256": "9b61db462297535bc9346098df6a5080928d377a31cc3e013741513de9051d86"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/custody-before.json",
+    "sha256": "538abbb6cf12af62f8360d9cca33e98b81d3fc2ae7a27519669b6c3e71dd662a"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/custody-comparison.json",
+    "sha256": "bb86c44f5475ee9e0380fce7a202a97708bb390bb01b52ee40e9ad6ac333ab77"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/focused-tests.log",
+    "sha256": "6daf8e3c2eb1564384a426cb08b980c47bbd41ce4ea6e3bc2c57d2246e0ccf83"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/independent-probes.json",
+    "sha256": "5c82c06ceebfa8370ac9eca509740d85d4630da98905f7b712a2d4158147806d"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/independent-probes.log",
+    "sha256": "98afca40a3b67849113cfaee4debcd7f951f9bb8583ef3b5fb4b209e3ab7603a"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/independent-probes.mjs",
+    "sha256": "74a66356a03c766a97dcfa91a4f37d7e7e7e3579bf334f7acd7d0f4289bdc910"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/integration-context.json",
+    "sha256": "113880240b0db926a368f7cda9f7edaa48977ac0c7f6dfeed44154513c1d5922"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/review.md",
+    "sha256": "97648bf966e2e929e4c517c4c97b26da2b7d1034300fbd456fd1d5156ac9b7f7"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/shared-custody-after-finalization.json",
+    "sha256": "003b3f463c845473a8ae5bfa8203558454460e79e8a4989b88f17c7b115d3d34"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/shared-custody-before-finalization.json",
+    "sha256": "003b3f463c845473a8ae5bfa8203558454460e79e8a4989b88f17c7b115d3d34"
+  },
+  {
+    "path": "worker-12-review/durable-operation-review/snapshot-manifest.json",
+    "sha256": "a0319e917c05348748157fc93a1e9cd5d1e27efab4c8384f11afeb0a8c658687"
+  }
+]
