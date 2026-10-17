@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "offmenu-terminology-translation-bounds/1",
+  "generatedAt": "2026-10-15T01:41:18.940179+00:00",
+  "noteOnTimestamps": "This lane did not invent its timestamps. generatedAt is written live at file write time.",
+  "laneOwner": "Freebuff OffMenu language-terminology lane",
+  "purpose": "Deterministic contract for what may be translated/proposed/accepted versus what must stay immutable native source text, for controlled-English terminology alignment and downstream locale projection/back-translation readiness. This is a readiness contract and seed; it is not a completed translation.",
+  "boundSources": {
+    "corpusContract": "/home/user/src/offmenu/corpus/common-data-contract.json",
+    "corpusContractSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+    "corpusSourceMappings": "/home/user/src/offmenu/corpus/common-source-mappings.json",
+    "corpusSourceMappingsSha256": "cf0251cbdb7b42476059a52bd8b291a0fb519969b19c6b4ec3bcdb8cdb6719a2",
+    "corpusContractTranslationBoundaries": true,
+    "note": "This lane reuses the corpus contract translation-boundary model and restates it for the language-terminology lane with citations only; it does not overwrite the corpus contract."
+  },
+  "mustPreserveAsImmutableNative": {
+    "rationale": "Native terms can carry culturally or legally meaningful meaning that must not be normalized into an English gloss; English explanatory glosses are separate.",
+    "categories": [
+      "brands",
+      "scientific/botanical names",
+      "cultivar/variety names",
+      "traditional dish names where the native form is the culturally meaningful term",
+      "culturally meaningful untranslatable terms",
+      "legal/authority names and official notice identifiers",
+      "source-native script forms where script is part of identity",
+      "source-original ingredient wording where wording is evidence"
+    ],
+    "rule": "When a native term falls into one of these categories, the native alias/text must be preserved and any English gloss is a separate labeled interpretation, not a replacement."
+  },
+  "localizableText": {
+    "rationale": "These are human-readable text fields whose controlled English rendering is the intended target of terminology/translation work, with source text preserved.",
+    "fields": [
+      "resource.names",
+      "value.kind=text",
+      "original ingredient wording",
+      "instruction text",
+      "cultural/local dish names",
+      "source notes and terminology descriptions"
+    ],
+    "rule": "For each localizable field, the canonical record must retain original-language text plus source-language/locale/script metadata; English rendering is a separate layer with review status, concept IDs and per-field lineage where applicable."
+  },
+  "glossaryContract": {
+    "conceptIdRule": "Each concept uses a stable concept/entity ID; aliases, narrower/broader/related/exact-match/candidate relations are versioned and evidence-backed.",
+    "nativeAliasRule": "Native terms are preserved as aliases/notes, not overwritten by English.",
+    "interpretationLayerRule": "English glosses are interpretations with review status; they are not new source facts.",
+    "freezeStatus": "No frozen corpus glossary is published by this lane; this lane may publish a candidate seed glossary with version + provenance, and the coordinator freezes later.",
+    "versioning": "Concept IDs may be stable while labels/aliases/definitions/relations are versioned; every change is provenance-logged."
+  },
+  "translationProposalModel": {
+    "recordShape": {
+      "conceptId": "stable id",
+      "domain": "ingredient | food | recipeInstruction | preparation | quantity | nutrient/dietary/certification | producer/supplier/retailer/businessIdentity | recall | price/unit",
+      "nativeText": "immutable original",
+      "nativeLanguageScriptLocale": "source metadata",
+      "nativeIsImmutableCategory": true,
+      "nativeCategory": "brand",
+      "englishGloss": "controlled English rendering or null",
+      "englishGlossStatus": "proposed | pending-review | accepted | rejected | unknown",
+      "aliasKind": "exact | narrower | broader | related | exactMatchCandidate | candidate | untranslatable | regionalVariant",
+      "regionContext": "market/region where relevant",
+      "rationale": "evidence-backed reason",
+      "citations": [
+        "source pointer with archive hash/version/date"
+      ],
+      "confidence": "0.0-1.0",
+      "reviewOutcome": "pending | accepted | rejected",
+      "timestamp": "live generation time"
+    },
+    "rule": "Proposed English glosses never overwrite native text; accepted glosses remain interpretations and must keep lineage; unsupported proposals remain quarantined/unknown."
+  },
+  "laneDeterministicChecksDerivedFromCorpusContract": {
+    "identity": "fixed identifiers and codes must not change across translation/projection",
+    "units": "quantity.unitId and unit dimension must be preserved; do not translate unit dimensions",
+    "codes": "countryCode/currencyCode/notice IDs/lot/GTIN identifiers must not be localized",
+    "dates": "dates/codes must be preserved as source values; formatting changes are separate from value changes",
+    "negation": "negation and qualifiers in localizable text must not be dropped or flipped during translation",
+    "allergenAndDietary": "allergen/dietary claims must not be inferred from translation; they require evidence",
+    "recall": "recall jurisdiction/markets/lot/GTIN and notice IDs must not be altered by translation",
+    "citations": "source citations/archive hashes must be preserved verbatim"
+  },
+  "uncertainties": [
+    "This lane does not yet have a frozen glossary; concept IDs proposed here are candidate seeds.",
+    "Translation/projection coverage per locale is not asserted; the union target inventory is a target, not a completion report.",
+    "Independent review of difficult translations is required before any sensitive assertion can be accepted; two models agreeing or model self-confidence is not sufficient."
+  ],
+  "translationBoundaryRules": [
+    {
+      "ruleId": "tb-ingredient-native-dish-name",
+      "domain": "ingredient",
+      "assertion": "source-native dish names such as 'museau de boeuf' are preserved as immutable native aliases; English glosses are separate interpretations with review status",
+      "resultState": "translation-allowed-with-review"
+    },
+    {
+      "ruleId": "tb-dietary-claim-not-from-name",
+      "domain": "nutrientDietaryCertification",
+      "assertion": "dietary/allergen claims are not inferred from a source name alone; inserted dietary paraphrase must not replace composition-preserving rendering",
+      "resultState": "translation-denied"
+    },
+    {
+      "ruleId": "tb-recall-identifiers-not-translated",
+      "domain": "recall",
+      "assertion": "source-native recall notice identifiers, jurisdiction/markets, lot/GTIN and dates remain source values; English rendering is a separate interpretative layer only",
+      "resultState": "translation-allowed-with-review"
+    },
+    {
+      "ruleId": "tb-price-observed-not-converted",
+      "domain": "priceUnit",
+      "assertion": "observed price is preserved as observed; conversion is separate dated evidence; observed vs converted must stay distinct",
+      "resultState": "translation-allowed-with-review"
+    }
+  ]
+}

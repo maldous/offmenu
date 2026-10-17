@@ -1,0 +1,4781 @@
+{
+  "schema": "offmenu-reader-package-probe/1",
+  "manifestPath": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014/manifest.json",
+  "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+  "releaseId": "common-data-20261014",
+  "producerStatus": "all-packets-schema-identity-citation-and-scope-checked",
+  "producerCounts": {
+    "resources": 441391,
+    "translations": 3242,
+    "packets": 79534,
+    "assertions": 2199543,
+    "relations": 459245
+  },
+  "scope": "First and last packets from first/middle/last part of each group, plus published-translation packets while seeking a foreign-source English translation. Not full-package reader validation.",
+  "files": [
+    {
+      "key": "concepts/part-0000.jsonl.gz",
+      "sha256": "e76f179db6c135b37fdfb18ed58aa39d7cc1abb95d91e497721cb2eb6b411553",
+      "bytes": 108265
+    },
+    {
+      "key": "concepts/part-0025.jsonl.gz",
+      "sha256": "5288242eb90c76549384133fe563797e230da2344c360d4894784af798cd150b",
+      "bytes": 109239
+    },
+    {
+      "key": "concepts/part-0049.jsonl.gz",
+      "sha256": "3db8ff63b1d824584f706ea626e7248e0ad9be7b8c393d2ed6ba24aa9d750219",
+      "bytes": 104859
+    },
+    {
+      "key": "recipes/part-0000.jsonl.gz",
+      "sha256": "66342cb0c4f82375dd13488e055fa582712cb622a300cf909cfe8592cb518c30",
+      "bytes": 3074958
+    },
+    {
+      "key": "recipes/part-0025.jsonl.gz",
+      "sha256": "0554227f772491cd4f310396df6e7edd862286dc4c7e33bc06f7cc5fcb1d96a5",
+      "bytes": 2970320
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "sha256": "7b6997a4e8140f185f6a34a311ee9561661105d746c8e62c6b041e02505b6dd8",
+      "bytes": 3405842
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "sha256": "f5797472880cdd7aaeea18f571060fc0ab3a5f6857f93c5fd72aed5716fd3894",
+      "bytes": 5235571
+    },
+    {
+      "key": "recipes/part-0050.jsonl.gz",
+      "sha256": "a33092243a5ce4ffea8739c97bedbf602e74c5d586a20996e979ba0be616d5d6",
+      "bytes": 280305
+    },
+    {
+      "key": "terminology/part-0000.jsonl.gz",
+      "sha256": "4198d34cfd7cad3bed67d617c5d28e0ef9c970250a3f7f1af16b169182186874",
+      "bytes": 34362
+    },
+    {
+      "key": "ontology/part-0000.jsonl.gz",
+      "sha256": "41ffe240659597f4fab848fd3433c826aadc83506adc2e64a1adc3ed6f7266c9",
+      "bytes": 247363
+    },
+    {
+      "key": "ontology/part-0029.jsonl.gz",
+      "sha256": "4dd46e86a6a79969117f66f6273883f961c5ef04b1e9d15786c857d3340573c0",
+      "bytes": 294394
+    },
+    {
+      "key": "ontology/part-0058.jsonl.gz",
+      "sha256": "c45ce1bfc5b080506a5ec5a4ff08239f990c90372a23b7a5880df915d72a762b",
+      "bytes": 154097
+    }
+  ],
+  "samples": [
+    {
+      "key": "concepts/part-0000.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "concepts/part-0000.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "concepts/part-0025.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "concepts/part-0025.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "concepts/part-0049.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "concepts/part-0049.jsonl.gz",
+      "line": 488,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0000.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 33,
+      "assertions": 105,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0000.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 8,
+      "assertions": 39,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0025.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 12,
+      "assertions": 67,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0025.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 10,
+      "assertions": 43,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 380,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 381,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 382,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 383,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 384,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 385,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 386,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 387,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 80,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 388,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 389,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 390,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 391,
+      "reason": "published-translation",
+      "resources": 12,
+      "assertions": 64,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 392,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 146,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 393,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 394,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 138,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 395,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 118,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 396,
+      "reason": "published-translation",
+      "resources": 13,
+      "assertions": 78,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 397,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 398,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 94,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 399,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 110,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 400,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 401,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 136,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 402,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 403,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 86,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 404,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 136,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 405,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 406,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 86,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 407,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 408,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 86,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 409,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 410,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 411,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 128,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 412,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 413,
+      "reason": "published-translation",
+      "resources": 12,
+      "assertions": 64,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 414,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 88,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 415,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 416,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 417,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 418,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 419,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 146,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 420,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 421,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 422,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 423,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 424,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 88,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 425,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 80,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 426,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 427,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 428,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 429,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 88,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 430,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 431,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 432,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 433,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 434,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 128,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 435,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 436,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 437,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 438,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 439,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 80,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 440,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 441,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 442,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 443,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 444,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 86,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 445,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 446,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 447,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 448,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 449,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 136,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 450,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 451,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 452,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 453,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 454,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 455,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 456,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 457,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 94,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 458,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 459,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 460,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 461,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 462,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 463,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 464,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 465,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 466,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 467,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 468,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 469,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 470,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 471,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 472,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 473,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 474,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 475,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 128,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 476,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 477,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 478,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 479,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 480,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 96,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 481,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 482,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 112,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 483,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 484,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 485,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 486,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 487,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 488,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 489,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 490,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 491,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 492,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 493,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 494,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 495,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 496,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 497,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 128,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 498,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 499,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 120,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0034.jsonl.gz",
+      "line": 500,
+      "reason": "published-translation",
+      "resources": 12,
+      "assertions": 70,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 1,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 2,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 3,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 4,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 5,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 6,
+      "reason": "published-translation",
+      "resources": 13,
+      "assertions": 72,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 7,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 102,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 8,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 9,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 10,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 11,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 88,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 12,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 13,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 14,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 15,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 16,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 80,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 17,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 104,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 18,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 19,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 20,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 21,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 22,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 23,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 24,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 25,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 26,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 27,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 28,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 29,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 30,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 31,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 32,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 33,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 34,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 35,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 36,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 37,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 38,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 39,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 40,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 41,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 42,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 43,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 44,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 45,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 46,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 47,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 48,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 49,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 50,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 80,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 51,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 74,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 52,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 53,
+      "reason": "published-translation",
+      "resources": 26,
+      "assertions": 164,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 54,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 55,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 56,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 138,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 57,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 58,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 59,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 60,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 61,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 62,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 63,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 64,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 65,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 66,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 67,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 68,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 69,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 70,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 71,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 72,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 73,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 138,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 74,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 75,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 76,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 77,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 78,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 79,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 80,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 81,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 82,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 83,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 84,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 85,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 86,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 87,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 88,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 89,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 90,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 91,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 92,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 93,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 138,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 94,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 95,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 96,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 97,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 122,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 98,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 99,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 100,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 101,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 102,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 103,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 104,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 105,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 106,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 107,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 108,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 109,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 110,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 111,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 112,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 113,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 114,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 115,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 116,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 117,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 118,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 119,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 120,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 121,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 122,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 123,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 124,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 125,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 126,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 127,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 128,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 129,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 130,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 131,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 132,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 133,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 134,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 130,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 135,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 136,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 137,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 138,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 139,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 140,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 98,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 141,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 142,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 143,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 144,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 145,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 146,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 147,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 148,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 149,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 150,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 151,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 152,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 153,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 154,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 155,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 156,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 157,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 158,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 159,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 160,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 82,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 161,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 162,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 163,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 164,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 165,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 166,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 167,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 168,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 169,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 170,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 171,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 172,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 173,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 174,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 175,
+      "reason": "published-translation",
+      "resources": 27,
+      "assertions": 172,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 176,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 177,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 178,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 179,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 180,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 181,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 182,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 183,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 184,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 185,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 186,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 187,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 188,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 189,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 190,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 191,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 192,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 193,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 194,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 195,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 196,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 197,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 198,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 199,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 200,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 201,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 202,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 203,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 204,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 205,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 206,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 207,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 208,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 209,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 210,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 211,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 212,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 213,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 214,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 215,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 216,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 217,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 218,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 219,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 220,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 221,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 222,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 223,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 224,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 225,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 226,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 227,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 228,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 229,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 114,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 230,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 231,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 232,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 233,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 234,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 235,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 236,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 237,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 238,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 239,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 240,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 241,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 242,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 243,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 244,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 245,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 68,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 246,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 247,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 248,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 249,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 250,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 251,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 252,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 253,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 254,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 255,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 256,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 257,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 258,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 259,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 260,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 106,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 261,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 262,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 263,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 264,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 265,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 266,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 267,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 268,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 269,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 270,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 271,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 272,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 273,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 274,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 275,
+      "reason": "published-translation",
+      "resources": 14,
+      "assertions": 68,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 276,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 277,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 278,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 279,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 280,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 281,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 282,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 283,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 284,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 285,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 286,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 287,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 288,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 289,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 290,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 291,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 292,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 293,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 294,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 295,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 296,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 297,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 298,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 299,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 300,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 301,
+      "reason": "published-translation",
+      "resources": 26,
+      "assertions": 164,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 302,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 303,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 304,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 305,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 306,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 307,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 308,
+      "reason": "published-translation",
+      "resources": 25,
+      "assertions": 156,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 309,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 310,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 311,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 312,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 313,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 314,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 315,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 316,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 317,
+      "reason": "published-translation",
+      "resources": 24,
+      "assertions": 148,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 318,
+      "reason": "published-translation",
+      "resources": 23,
+      "assertions": 140,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 319,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 320,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 321,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 322,
+      "reason": "published-translation",
+      "resources": 27,
+      "assertions": 172,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 323,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 324,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 325,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 326,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 327,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 328,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 329,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 330,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 331,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 332,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 333,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 90,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 334,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 335,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 336,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 337,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 338,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 339,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 340,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 341,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 342,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 343,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 344,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 345,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 346,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 347,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 348,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 349,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 350,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 351,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 352,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 353,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 354,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 355,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 356,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 357,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 358,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 359,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 360,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 361,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 362,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 363,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 364,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 365,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 366,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 367,
+      "reason": "published-translation",
+      "resources": 22,
+      "assertions": 132,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 368,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 369,
+      "reason": "published-translation",
+      "resources": 19,
+      "assertions": 108,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 370,
+      "reason": "published-translation",
+      "resources": 16,
+      "assertions": 84,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 371,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 372,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 373,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 374,
+      "reason": "published-translation",
+      "resources": 17,
+      "assertions": 92,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 375,
+      "reason": "published-translation",
+      "resources": 20,
+      "assertions": 116,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 376,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 377,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 378,
+      "reason": "published-translation",
+      "resources": 15,
+      "assertions": 76,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 379,
+      "reason": "published-translation",
+      "resources": 21,
+      "assertions": 124,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0035.jsonl.gz",
+      "line": 380,
+      "reason": "published-translation",
+      "resources": 18,
+      "assertions": 100,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0050.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 4,
+      "assertions": 25,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "recipes/part-0050.jsonl.gz",
+      "line": 135,
+      "reason": "last",
+      "resources": 4,
+      "assertions": 25,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "terminology/part-0000.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 17,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "terminology/part-0000.jsonl.gz",
+      "line": 156,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 0,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0000.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 12,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0000.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 4,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0029.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 10,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0029.jsonl.gz",
+      "line": 500,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 14,
+      "expressions": 2,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0058.jsonl.gz",
+      "line": 1,
+      "reason": "first",
+      "resources": 1,
+      "assertions": 10,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    },
+    {
+      "key": "ontology/part-0058.jsonl.gz",
+      "line": 255,
+      "reason": "last",
+      "resources": 1,
+      "assertions": 6,
+      "expressions": 0,
+      "unicodeIRIs": 0
+    }
+  ],
+  "publishedTranslation": {
+    "key": "recipes/part-0034.jsonl.gz",
+    "line": 380,
+    "sourceLanguage": "en",
+    "language": "ru",
+    "textId": "urn:offmenu:text:c4347829f29eaf91b2a0acd8",
+    "translationId": "urn:offmenu:translation:d8834d1a777f6001e749c209",
+    "citationIds": [
+      "urn:offmenu:citation:a4ed59ecfe3bae23a2b913af"
+    ]
+  },
+  "foreignEnglishTranslation": null,
+  "status": "sampled-packets-reader-compatible"
+}

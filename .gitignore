@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+data/
+*.pem
+*.key
+
+node_modules/
+dist/
+cloud/generated.mjs
+
+.netlify/
+
+.playwright-cli/
+output/playwright/
+netlify-return/i18n.js

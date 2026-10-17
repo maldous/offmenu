@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "offmenu-dataset-recovery-progress/1",
+  "checkedAtUtc": "2026-10-14T03:13:49.120822+00:00",
+  "owner": "OffMenu — Dataset Collation",
+  "threadId": "01a13831-debc-7743-8f86-08b68e53a872",
+  "baseline": "a08c120085fe97f1cc54811b4221233560fb61fa",
+  "status": "guarded-bulk-checkpoint-resume-implemented-and-bounded-tested; full-jobs-held",
+  "noBulkRestart": true,
+  "noCleanup": true,
+  "productionChanged": false,
+  "readySixPackageProof": "/home/user/src/offmenu-data/common-ready-six-package-global-20261014.json",
+  "readyPackageManifestReadback": [
+    {
+      "directory": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014",
+      "manifestByteSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+      "stillMatches": true
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+      "manifestByteSha256": "bec93ffedf4d80eef10ec11000c18161024a3c30999697ad1f3db5f3318ff3e7",
+      "stillMatches": true
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+      "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+      "stillMatches": true
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014",
+      "manifestByteSha256": "75c33340f1ee25c4121c57d8fc124621b4455412717fc6d9dd01bfb162351679",
+      "stillMatches": true
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph",
+      "manifestByteSha256": "6f035cbe1303554cb59e6d3ee82f0e49bfa577e8d3844c2266df3241a4e328d5",
+      "stillMatches": true
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014",
+      "manifestByteSha256": "e4c06a1d4a2fcb492529c37c6245a595dd104061ef1a63427cbe9d65e7e2241f",
+      "stillMatches": true
+    }
+  ],
+  "bulkRecoveryInspection": "/home/user/src/offmenu-data/bulk-recovery-bounded-inspection-final-20261014.json",
+  "inspectedAssets": [
+    {
+      "key": "packets/part-00000.jsonl.gz",
+      "inputByteSha256": "bd32d73c3eb3e3dd6719d187b64064f21208af47c26362e2b13c26ad3c9462b8",
+      "status": "source-compared-complete-asset",
+      "verifiedPackets": 1000,
+      "retainedBytes": 1129091,
+      "retainedByteSha256": "4f67c0313bf3632306b29c069607972f0c04c333a261489a6ac2aa64d577c1b1"
+    },
+    {
+      "key": "packets/part-00412.jsonl.gz",
+      "inputByteSha256": "2312fe7607da16233df5f34746a351182a601f5b454c18e74099eee292d78321",
+      "status": "source-compared-complete-asset",
+      "verifiedPackets": 1000,
+      "retainedBytes": 1115514,
+      "retainedByteSha256": "e1eb065ab54ef4f588ab5c4e65b5764936a17a26a447a503e535ea3d23f323b7"
+    },
+    {
+      "key": "packets/part-00413.jsonl.gz",
+      "inputByteSha256": "22fe0340947ea32e66281dd5ca015fb519b83defa4c63222399ff51eeaafe204",
+      "status": "held-not-reusable",
+      "verifiedPackets": 676,
+      "retainedBytes": 741421,
+      "retainedByteSha256": "9609e5728df5248926deabdea9424e764ff9b348866b27d224a1c1a121e03fc6",
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    }
+  ],
+  "inspectionScope": "Two complete assets containing 2000 original source packets compare exactly to authorized transform; final incomplete asset is held after676rows. This is bounded recovery evidence, not full package admission. Other retained files remain unresolved.",
+  "implementation": {
+    "files": [
+      "scripts/repair-bulk-controls-20261014.py",
+      "scripts/verify-bulk-repair-checkpoint.py"
+    ],
+    "guards": [
+      "exclusive writer lock; existing/stale lock never reclaimed automatically",
+      "pinned source manifest/schema/contract/implementation before resume",
+      "atomic per-asset file and fsynced checkpoint receipts",
+      "source comparison of existing outputs, including complete unjournaled assets",
+      "receipt/hash/packet-count reconciliation; corrupt/missing assets fail closed",
+      "legacy partial lacking checkpoint explicitly refused",
+      "completed immutable package cannot resume",
+      "gzip headers omit worker PID filenames; independent-process deterministic-byte fixture",
+      "atomic completion manifest only after all ordered assets"
+    ],
+    "legacyRecovery": "Current414-file partial has no checkpoint and WILL NOT be resumed by --resume. Full source-comparison/recovery into distinct retained output still requires reviewed scheduling and adequate capacity."
+  },
+  "validation": {
+    "allPythonTestsPassed": 77,
+    "log": "/home/user/src/offmenu-data/logs/dataset-recovery-resume-final-tests-20261014.log",
+    "testScope": "Includes interrupted/resumed vs uninterrupted equivalence, exact source-fact retention, cross-process bytes, corruption/changed pins/legacy and duplicate-writer rejection. No full source repair/collection was run."
+  },
+  "nextConcreteOutputs": [
+    "Reviewed verified-prefix recovery for legacy food and places outputs, preserving original partial evidence",
+    "Places checkpoint/cursor/duplicate-identity persistence and bounded interruption tests",
+    "Capacity-qualified all-eight-package global proof and immutable master once completion is scheduled"
+  ],
+  "capacityDecision": "Prior measured/projection leaves20.068GiB shortfall even after2.639GiB scratch reclaim and assumed verified prefix hardlink reuse; require additional persistent capacity or a reviewed revised plan. No reclaim authorized by latest messages.",
+  "ownershipGaps": {
+    "commonCorpusTransport": {
+      "status": "missing beyond manual under2MB graph import or graph supplied in an existing API response",
+      "evidence": [
+        "public/data-ui.js useCommonGraph and file.size>2_000_000 guard",
+        "public/common-corpus-locale.js takes a complete supplied graph",
+        "cloud/corpus.mjs reads offmenu-curated/1, not common graph package"
+      ],
+      "needed": "Morgan allocate application/API consumer owner for indexed common graph lookup, scoped/paginated partition transport, cross-packet resolution and digest/locale/identity validation. Dataset Collation owns packet/package evidence and future corpus distribution artifacts; does not absorb application implementation."
+    },
+    "reviewedJoins": {
+      "status": "candidate/evidence concepts present; equivalence, canonical ingredient/preparation/quantity and new synthesized recipe not independently accepted",
+      "needed": "Allocate domain/culinary/language review and consumer join workflow; retain variant citations/cultural differences, no averaging or dietary inference."
+    },
+    "integratedAcceptance": {
+      "status": "data schema/source admission, UI reader and original curated query tests are separate proofs",
+      "needed": "Allocate integrated application acceptance across hosted common partitions, translations, actual pantry quantities/planning and client/offline/privacy flows; Dev Environment composes mocks, UIUX assesses flows, no full corpus delivery claim from manual preview."
+    }
+  },
+  "separateOwnership": [
+    "Development Environment owns preview/build/WireMock composition and synthetic dev reset",
+    "Mock/Third-party owner owns HTTP contracts/fixtures/adapters",
+    "Google IDP owns sign-in",
+    "UIUX owns functional assessment/design",
+    "Morgan owns scheduling/allocation and storage decisions"
+  ]
+}

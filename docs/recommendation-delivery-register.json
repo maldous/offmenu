@@ -1,0 +1,1820 @@
+{
+  "version": "offmenu-recommendation-delivery/1",
+  "date": "2026-10-13",
+  "purpose": "Every recommendation family mapped to an accountable deliverable; independent source entries and country coverage are separate ledgers",
+  "requirements": [
+    {
+      "id": "P0-01",
+      "title": "Independently reviewed quantified meal pack and useful ingredient mappings",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-02",
+      "title": "Produce, no-barcode and missing-product capture",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-03",
+      "title": "Ingredient identity and dimensional unit engine",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-04",
+      "title": "Independent household membership and roles",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-05",
+      "title": "Durable autosync, retry-safe operations and two-device proof",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-06",
+      "title": "Cooking, serving, leftovers and waste reconciliation",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-07",
+      "title": "Restriction certainty and actual-package evidence",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P0-08",
+      "title": "Keyboard/screen-reader/device usability, trust and recovery",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P1-01",
+      "title": "Reviewed receipt/label OCR with duplicates and minimal retention",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P1-02",
+      "title": "Reusable planning, lunchboxes, attendance, batch cooking and date-aware reservations",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P1-03",
+      "title": "Household likes, texture/spice preferences and reset",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P1-04",
+      "title": "Shared shopping, substitutes, printable views, calendar and retailer handoff",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Priority feature portfolio, page 5",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-01",
+      "title": "Taste/culture, fasting windows, multiple homes and carers",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-02",
+      "title": "Opened/frozen/thawed/decanted/partial stock and private labels",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-03",
+      "title": "Private recipes, bookmarks, family collections and creator packs",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-04",
+      "title": "Pack/unit-price/budget alternatives, fees and limited store stops",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-05",
+      "title": "Measured waste reasons/quantity/value and seasonal smaller-pack suggestions",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-06",
+      "title": "Nutrition/hydration/snacks/restaurant entries/substitutions and private trends",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-07",
+      "title": "Exercise schedules and consented dated body metrics",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-08",
+      "title": "Native wearables/scales/vendor imports with overlap handling",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-09",
+      "title": "Country recall evidence and lot/date warnings",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-10",
+      "title": "Approved assistants, home displays and scoped future write proposals",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-11",
+      "title": "Governed professional sharing and clinical/IDDSI boundary",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "P2-12",
+      "title": "Moderated creator/community/partnership features with rights and sponsorship",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion opportunities, page 6",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-01",
+      "title": "Full eligible Open Food Facts product release and taxonomies",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-02",
+      "title": "Complete AFCD and eligible AUSNUT releases and supporting tables",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-03",
+      "title": "Complete eligible USDA food data types and supporting tables",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-04",
+      "title": "Full permitted Wikibooks and rights-cleared creator recipe collections",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-05",
+      "title": "Approved GS1 supplier/product identity feeds",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-06",
+      "title": "Full permitted Open Prices related exports",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-07",
+      "title": "Full eligible CoFID/Ciqual/BLS and other national composition sources",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-08",
+      "title": "Credentialed nutrition/recipe providers under actual plan permissions",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-09",
+      "title": "Official recalls and source-backed storage guidance",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-10",
+      "title": "Private user/manufacturer input with separate contribution rights",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-11",
+      "title": "Approved regional retailer and WhichGrocer product/offer coverage",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-12",
+      "title": "Approved merchant/delivery/Instacart/Kroger capabilities",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-13",
+      "title": "Authorized POS/catalogue/menu/venue feeds",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-14",
+      "title": "Consented vendor health and native bridges",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-15",
+      "title": "Portable import/export/calendar/hardware input",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DATA-16",
+      "title": "Real REST/MCP clients, scopes and freshness",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Datasets and integrations, pages 7–9",
+      "ownerLane": 2,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-01",
+      "title": "Health/allergen/preference uncertainty and intended-purpose boundaries",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-02",
+      "title": "Private health/religious/child information with narrow consent and deletion",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-03",
+      "title": "Use-by versus best-before versus review reminder distinctions",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-04",
+      "title": "Account/household/organization lifecycle and shared-device revocation",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-05",
+      "title": "WCAG keyboard/focus/screen-reader/reflow/contrast/large-target acceptance",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-06",
+      "title": "Camera alternatives, quiet/reduced-motion and cognitive/motor recovery",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-07",
+      "title": "Localized strings/plurals/RTL/names and language metadata",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-08",
+      "title": "Real metric/imperial/cup/spoon/currency/date/timezone behavior",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-09",
+      "title": "Regional aliases/rules/guidance/data/retailer locale packs",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-10",
+      "title": "Offline/poor-network/older-phone/tablet continuity",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "TRUST-11",
+      "title": "Support, terms/licences, issue reporting, status/recovery and truthful availability",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Safety/privacy and accessible international experience, pages 10–12",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-01",
+      "title": "Five-food-to-dinner first outcome and measured activation",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-02",
+      "title": "Private household invitation and second-user contribution",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-03",
+      "title": "Licensed creator meal packs and factual search content",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-04",
+      "title": "Measured waste/budget household pilots and technical MCP demonstration",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-05",
+      "title": "Retention/effort/reliability/support/cost scorecard",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "PROMO-06",
+      "title": "Explicit revenue/referral/sponsorship decisions without health-data targeting",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Promotion and staged pilots, pages 13–14",
+      "ownerLane": 8,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-01",
+      "title": "Original and edible quantities, population and person-day basis",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-02",
+      "title": "All 45 nutrient metrics with compatible units/analytical definitions",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-03",
+      "title": "Vitamin/mineral equivalent and missing/trace/rounded-zero distinctions",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-04",
+      "title": "All 17 evidenced food groups with non-overlap and unallocated mass",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-05",
+      "title": "Density/count/edible/drained/yield/retention conversion chains",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-06",
+      "title": "Prepared recipe/menu/portion and substituted-ingredient calculations",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-07",
+      "title": "Metric-specific completeness, uncertainty, lineage and ranking gates",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-08",
+      "title": "Cohort/track/purpose/state/reference-period compatible comparison",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-09",
+      "title": "Dated cost/FX/PPP/affordability and pack-versus-consumed cost",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-10",
+      "title": "Versioned basket/product/recipe/menu/supplier/source entity joins",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-11",
+      "title": "GTIN/Digital Link/lot/date and product-version matching",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-12",
+      "title": "Dietary/supplier pass/fail/unknown/conflict and weighted coverage",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-13",
+      "title": "Seven comparison views and named reference-profile contracts",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "NORM-14",
+      "title": "Reproduce synthetic totals/coverage and hold incomplete ranks",
+      "researchReport": "01-OffMenu_Basket_Normalization_Addendum.pdf",
+      "researchSection": "Measurement, metrics, state, evidence and comparisons, A1–A13",
+      "ownerLane": 3,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-01",
+      "title": "Dated product-brand-business-control joins",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-02",
+      "title": "Manufacturing/ingredient/packing/headquarters origin kept distinct",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-03",
+      "title": "Current versus pending/historical control and minority/licensing relations",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-04",
+      "title": "Scheme/certifier/site/product/lot scoped non-GMO/halal/kosher/organic evidence",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-05",
+      "title": "Jurisdiction/category/limit/transition additive and regulatory rules",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-06",
+      "title": "Current recall action versus historical enforcement with precise lot scope",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-07",
+      "title": "Independent/local/small producer and fiscal-year size evidence",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-08",
+      "title": "Grower/cooperative/market seller routes without fictional GTINs",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-09",
+      "title": "Minimal prompting and ambiguous identity candidates",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-10",
+      "title": "Permitted public evidence and BYOC/partner entitlement separation",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "ENRICH-11",
+      "title": "All 938 source-catalogue entries and country gaps retained/processed",
+      "researchReport": "03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+      "researchSection": "Decision brief and all regional source entries",
+      "ownerLane": 5,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-01",
+      "title": "Transient/private/shared/derived/aggregate partitions with executable field policies",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-02",
+      "title": "Audience/action/territory/retention/entitlement/attribution permissions",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-03",
+      "title": "Scoped cache keys and no credential/personal-data key leakage",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-04",
+      "title": "Versioned source assertions, dependencies and independent evidence",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-05",
+      "title": "Freshness/validity/retention clocks and event/delta invalidation",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-06",
+      "title": "Conditional/coalesced requests, retry/negative cache/backoff and spend budgets",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-07",
+      "title": "Consent/contribution/refresh/disconnect choices and queued-job rechecks",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-08",
+      "title": "Separate aggregate privacy assessment and anti-reidentification rules",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-09",
+      "title": "Identity/quality review before any field promotion",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-10",
+      "title": "Search/export/index/derived-use isolation and withdrawal/deletion",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "CACHE-11",
+      "title": "Live warm cache, two-account revocation and mixed-response acceptance",
+      "researchReport": "04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "researchSection": "Architecture, rights, privacy and acceptance, pages 1–9",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-01",
+      "title": "All 249 ISO entries and special provisioning contexts",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-02",
+      "title": "Editorial/statistical/basic-needs/acquisition/consumption/supply tracks separated",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-03",
+      "title": "Local starter structure and reviewed alternatives without inferred dietary identity",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-04",
+      "title": "Primary-source complete quantities/population/period extraction where available",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-05",
+      "title": "Recipe-derived shopping quantities, usable inventory and pack rounding",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-06",
+      "title": "Food-concept/product/menu/offer/supplier matching",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-07",
+      "title": "Dated price/currency/geography/specification and compatible comparisons",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "BASKET-08",
+      "title": "Country evidence/access/gap/localization review for every entry",
+      "researchReport": "05-OffMenu_Global_Shopping_Baskets.pdf",
+      "researchSection": "Basket definition, matching and all country cards",
+      "ownerLane": 6,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "unassessed",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": null
+    },
+    {
+      "id": "DEFER-01",
+      "title": "Automatic grocery purchasing",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion boundaries, page 6",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "deferred-by-research",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": "Separate owner scope decision and applicable clinical/financial/access governance required before activation"
+    },
+    {
+      "id": "DEFER-02",
+      "title": "Disease treatment and glucose/medication dosing",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion boundaries, page 6",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "deferred-by-research",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": "Separate owner scope decision and applicable clinical/financial/access governance required before activation"
+    },
+    {
+      "id": "DEFER-03",
+      "title": "Smart-fridge hardware dependence",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion boundaries, page 6",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "deferred-by-research",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": "Separate owner scope decision and applicable clinical/financial/access governance required before activation"
+    },
+    {
+      "id": "DEFER-04",
+      "title": "Full social network",
+      "researchReport": "02-OffMenu_Product_Review_and_Plan-1-.pdf",
+      "researchSection": "Expansion boundaries, page 6",
+      "ownerLane": 1,
+      "planReference": "docs/research-delivery-plan.md",
+      "deliveryStatus": "deferred-by-research",
+      "implementation": null,
+      "datasetReleases": [],
+      "featureEvidence": [],
+      "independentAcceptance": null,
+      "blocker": "Separate owner scope decision and applicable clinical/financial/access governance required before activation"
+    }
+  ],
+  "originalEnrichmentRecommendations": [
+    {
+      "title": "Decision and scope",
+      "paragraphs": [
+        "OffMenu can enrich a scanned food with its brand, legal business, parent relationships, operating locations, declared origin, ingredients, certification and recall history. The workable approach is a network of dated, source-backed assertions. No single provider supplies complete, current and freely reusable coverage of these fields across all 249 ISO entries.",
+        "This is discovery, not implementation. Product code was not changed. Public source pages and documentation were researched; authenticated subscriptions, sample barcode hit rates, ingestion, commercial contracts and end-to-end integration were not tested. 'Verified source' means a published lookup, list, dataset or documented capability was found, not that every field or use right was verified.",
+        "The country inventory is exhaustive against the 249-code scope. The provider universe is not closed: municipal authorities, producer cooperatives, certifiers, registries and supplier systems change continually. Candidate routes and unresolved gaps are retained instead of presenting a false claim of complete global data coverage.",
+        "The separate discovery conversation's agent was not reachable through the available collaboration tools. Five regional research agents were coordinated within this session. To support later consolidation, the attached JSON uses ISO2 keys, exact source URLs, stable URL-based source identifiers and separate source status/access fields. It does not claim that the other conversation received or merged this report."
+      ]
+    },
+    {
+      "title": "What a barcode can and cannot establish",
+      "table": {
+        "headers": [
+          "Evidence",
+          "Useful association",
+          "Limit"
+        ],
+        "rows": [
+          [
+            "GTIN/UPC/EAN + market",
+            "Product identity and candidate label version; brand and GS1 licensee",
+            "The GS1 prefix is not manufacturing origin. A valid check digit does not authenticate a product."
+          ],
+          [
+            "Brand + registry/LEI identifier",
+            "Brand-owning legal entity and dated parent relationships",
+            "Brand owner, trademark owner, distributor, packer and contract manufacturer can be different parties."
+          ],
+          [
+            "2D code / Digital Link / lot",
+            "Possible lot, expiry, producer and traceability references",
+            "A standard enables fields; it does not mean a specific pack publishes them or permits access."
+          ],
+          [
+            "Package text and certification ID",
+            "Declared ingredients, origin, claims and certificate match",
+            "OCR and manufacturer claims need provenance; an organisation certificate may not cover the scanned SKU."
+          ],
+          [
+            "Recall notice with GTIN/lot/date",
+            "Confirmed or possible match against household stock",
+            "Where a notice restricts lots or dates, missing lot evidence leaves a potential match. All-batch recalls may be matched without a lot. No match is not a safety guarantee."
+          ],
+          [
+            "PLU, farm label or receipt",
+            "Loose produce type and possible seller/grower",
+            "PLU is not a unique farm identifier. Seller is not necessarily grower. Do not use the old '8 means GMO' claim."
+          ]
+        ]
+      },
+      "paragraphs": [
+        "Supporting sources: Verified by GS1 and GS1 prefix guidance; GS1 Digital Link/EPCIS; IFPS PLU guidance. All are listed with links in the global source catalogue."
+      ]
+    },
+    {
+      "title": "Resolve the requested preferences precisely",
+      "table": {
+        "headers": [
+          "Preference",
+          "Evidence required",
+          "OffMenu interpretation"
+        ],
+        "rows": [
+          [
+            "Avoid Unilever or another enterprise",
+            "Dated product-brand-owner chain; direct/ultimate control; minority investments and licences as separate edges",
+            "Default proposal: exclude currently controlled brands. Let the user optionally include minority investment or licensed brands; show the ownership path and effective date."
+          ],
+          [
+            "Only non-GMO food",
+            "Exact product/market certificate or substantiated supplier claim, certificate status and validity",
+            "Interpret the user's 'non gma' as non-GMO. Keep certified, declared, inferred and unknown separate; it is a preference filter, not a health-risk judgement."
+          ],
+          [
+            "Nothing from China or another country",
+            "Separate manufacturing, ingredient growing/sourcing, packing and ownership-country assertions",
+            "Offer explicit scopes such as made in, ingredients sourced from, or parent headquartered in. Missing ingredient origin cannot become 'not from China'."
+          ],
+          [
+            "No colouring banned elsewhere",
+            "Substance identity, target jurisdiction, food category, maximum level, exceptions and effective date",
+            "Distinguish banned, not authorised for this use, limited use, warning required, proposed restriction and no evidence. Unknown concentration may prevent a legal-use verdict."
+          ],
+          [
+            "Has been recalled",
+            "Historical notices linked by exact product/market/lot with reason and event date",
+            "Distinguish past event from current affected stock. Supplier/company recall history is not a current recall of every product it makes."
+          ],
+          [
+            "Independent/local/small producer",
+            "Control relationships plus location and dated size metrics",
+            "Independent ownership is separate from size and distance. Lack of a parent record is not proof of independence."
+          ],
+          [
+            "Suitable restaurant meal",
+            "Current menu item/version, recipe/allergen disclosures, substitutions and site/operator identity",
+            "Franchisor and franchisee differ. Menu ingredients often lack brand/lot traceability; never infer current allergens from a similarly named packaged food."
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Time and uncertainty change the answer",
+      "paragraphs": [
+        "Ownership must be temporal. Unilever's own demerger page records The Magnum Ice Cream Company's separation. An old 'brands owned by Unilever' image can therefore misclassify a current product. A minority holding, transitional service agreement and outright control are different relationships. Acquisition announcements must stay pending until completion evidence is found.",
+        "Regulatory comparison also needs time. FDA's Red No. 3 page specifies 15 January 2027 for food reformulation and 18 January 2028 for ingested drugs. At this report's date, those deadlines are future events. A binary 'banned in the US' flag would lose the transition and product-category context.",
+        "GLEIF Level 2 is highly useful open data, but it records accounting-consolidating parents, not a full beneficial-ownership register. Preserve reporting exceptions and unresolved parents. Natural-person owners, directors and founders are different roles; record only relevant public business facts and never infer nationality or background from a name.",
+        "openFDA food enforcement is useful for historical research. Its documentation says it should not be used to issue public alerts or track the recall lifecycle, and published status may not be updated. Current action should come from the regulator's public notice and manufacturer guidance. Match the notice's actual scope: product, label, market, dates and lots where specified. Some recalls cover all batches and all dates."
+      ]
+    },
+    {
+      "title": "Proposed enrichment entities",
+      "paragraphs": [
+        "This is a discovery-level information model, not a change to the existing code or a final schema. OffMenu can own its schema and authored mappings while preserving each source's copyright, database rights and contractual limits."
+      ],
+      "table": {
+        "headers": [
+          "Entity or relation",
+          "Fields worth discovering"
+        ],
+        "rows": [
+          [
+            "Product / product version",
+            "GTIN as string; pack hierarchy; brand; market/language; quantity; recipe/label version; first/last seen; manufacturer part/SKU identifiers."
+          ],
+          [
+            "Brand / trademark",
+            "Name, aliases/scripts, territory, trademark registration, proprietor, brand owner, licensee and effective dates."
+          ],
+          [
+            "Legal business / organisation",
+            "Registry jurisdiction and number, LEI, D-U-N-S where licensed, tax/business identifiers, legal/trading names, status, incorporation date, official website."
+          ],
+          [
+            "Ownership / control relationship",
+            "Subject/object IDs; direct ownership, accounting consolidation, voting control, beneficial ownership, franchise, licensing or joint venture; percentage; effective interval; evidence."
+          ],
+          [
+            "Business background / size observation",
+            "Founded date, founder/public executive role, concise attributed history, sector, headcount, revenue/currency/fiscal year, farm area/unit, group versus entity scope; declared versus estimated."
+          ],
+          [
+            "Site / grower / cooperative",
+            "Physical site, farm/group identifiers, production role, GLN/GGN, approved-establishment number, certifier, commodity, cooperative/member relationship and location granularity."
+          ],
+          [
+            "Supply chain / origin assertion",
+            "Grown/raised/caught, processed/manufactured, packed, dispatched/imported, marketed-in, headquarters and incorporation countries; ingredient-level source and batch where evidenced."
+          ],
+          [
+            "Ingredient / chemical",
+            "Canonical ingredient, local synonyms, INS/E-number/CAS where appropriate, allergen/cross-contact claims, processing aids, nutrient basis and supporting composition dataset."
+          ],
+          [
+            "Certification / claim",
+            "Scheme and version, certifier, certificate ID, operator/site/product/lot scope, issue/expiry/suspension dates, official verification link, certified versus self-declared."
+          ],
+          [
+            "Regulatory provision",
+            "Jurisdiction and subdivision, legal source, additive/food category, permission/restriction, units and limit, effective interval, transition, exemptions and retrieval date."
+          ],
+          [
+            "Recall / incident",
+            "Regulator/event ID, affected GTIN/name/size/lot/dates, distribution markets, reason, notice status and updates, consumer action link; historic versus current evidence."
+          ],
+          [
+            "Menu / recipe / merchant",
+            "Restaurant site/operator/franchisor, menu item/version, recipe yield, ingredient supplier/brand when known, permitted dietary claims, availability and substitutions."
+          ],
+          [
+            "Source assertion / access grant",
+            "Original source ID/URL, publisher, evidence class, retrieved/effective times, licence/terms version, allowed display/cache/export, confidence, contradiction and profile entitlement."
+          ]
+        ]
+      }
+    },
+    {
+      "title": "Minimal prompting, with honest gaps",
+      "paragraphs": [
+        "Use the profile's chosen market and language, then scan the identifier. Look up permitted public product records; resolve candidate business identifiers from the label, GS1 and registries; join dated ownership and site evidence; enrich with origin, certificates and relevant public notices. Preserve alternative matches when identity is ambiguous.",
+        "Ask only when the missing fact changes the user's decision: for example, a quick photo of the ingredient/origin panel, the lot code for a possible recall, or the meaning of a country preference. An optional one-time preference choice can distinguish manufacturing country from ingredient origin and corporate headquarters. Do not interrupt every scan with the same question.",
+        "For an independent grower without a barcode, accept farm/market name, receipt, producer QR or seller catalogue once; enrich through business IDs, cooperative directories, organic/GAP registers and approved establishments. Keep a seller-only record usable when no grower is established. A photo or user assertion can be retained privately without being promoted to public verified data.",
+        "Display a short factual reason such as 'manufactured in CN according to package dated ...' or 'parent link not established'. Evaluate each preference as matches, conflicts, or unknown, with contradictory and stale evidence visible. Let users choose how strict unknowns should be; never silently treat them as suitable."
+      ]
+    },
+    {
+      "title": "Public data and bring-your-own-credentials",
+      "table": {
+        "headers": [
+          "Access class",
+          "Proposed handling",
+          "Examples / constraint"
+        ],
+        "rows": [
+          [
+            "Reusable open releases",
+            "Make available without forcing user sign-up; keep country filters, provenance, release dates and licence obligations",
+            "GLEIF CC0, Wikidata structured data, eligible government releases; OFF/OSM require ODbL treatment."
+          ],
+          [
+            "Public website or lookup",
+            "Offer source links and permitted lookups; seek an approved feed before systematic copying",
+            "WIPO is public but disallows bulk/automatic downloading; some company registries prohibit information-service reuse."
+          ],
+          [
+            "User/vendor subscription",
+            "Optional per-profile API key or OAuth connection; check scope and licence for each action",
+            "Orbis, D&B, OpenCorporates, product-data pools and paid certification APIs. A paid account is not automatically an external redistribution licence."
+          ],
+          [
+            "Merchant/supplier-controlled",
+            "Receive records only from the authorised merchant or supplier; user may own that business",
+            "Square/Toast catalogues, supplier portals, GDSN recipient publications, EPCIS events. Shopper credentials are not merchant API authority."
+          ],
+          [
+            "User browser/session or import",
+            "Prefer authorised extension actions and user-selected exports/receipts; retain separately per profile",
+            "Session access cannot bypass an API approval, paywall, anti-automation control or reuse restriction. Browser extension does not legalise scraping."
+          ],
+          [
+            "Restricted professional/government",
+            "Record the source as a candidate/reference without promising consumer access",
+            "INFOSAN, protected beneficial-owner data, customs or regulatory consignment records; ordinary BYOC cannot create eligibility."
+          ]
+        ]
+      },
+      "paragraphs": [
+        "Each access grant should be scoped to profile, provider account, organisation, countries, permitted actions, expiry and retention. Keep credentials outside the public source register; support revocation, deletion, rotation, narrow scopes and a user-visible data origin. Sharing a household does not automatically share one member's commercial subscription.",
+        "Do not pool private subscription results across users, even if normalized. Some vendors require an OffMenu developer application or partner agreement in addition to user credentials. Public datasets that need a free technical key or registered download should have the least-friction compliant access route; they should not become a paid integration by default.",
+        "A proprietary unified schema does not convert ODbL, share-alike, noncommercial or restricted content into proprietary data. Keep source rights attached to every assertion and make publication/export decisions from those rights. Physical database separation alone does not settle derivative-database obligations."
+      ]
+    },
+    {
+      "title": "Small producers, medium businesses and enterprises",
+      "table": {
+        "headers": [
+          "Segment",
+          "Best discovery routes",
+          "Typical remaining gap"
+        ],
+        "rows": [
+          [
+            "Independent grower / fisher",
+            "Organic/GAP/fishery certification, municipal food permits, cooperative lists, farmer-market directories, farm website and producer QR",
+            "No GTIN, informal trading name, seasonal produce, no public revenue/ownership data; avoid publishing home addresses unnecessarily."
+          ],
+          [
+            "Cooperative / regional processor",
+            "Food-business and approved-establishment registers, cooperative register, certifications, wholesale catalogue and supplier-authorised data",
+            "Members, plant operator, brand owner and distributor can differ; certificate applies to a specified scope."
+          ],
+          [
+            "Medium manufacturer",
+            "Business filings, national product registration, GS1 data, website, annual accounts, trade association and certifier records",
+            "Private financials and beneficial ownership may be paid or absent; outsourced manufacturing obscures origin."
+          ],
+          [
+            "Large corporate group",
+            "Audited annual reports, securities filings, subsidiary schedules, GLEIF and commercial ownership providers",
+            "Frequent acquisitions/divestitures, shared licences, minority holdings, multinational sites and country-specific formulas."
+          ],
+          [
+            "Restaurant / menu provider",
+            "Operator permits, hygiene records, franchisor filings, current menu and merchant-authorised POS/catalogue",
+            "Menu title rarely determines full recipe, cross-contact handling or ingredient brand/lot. Chain nutrition is not every franchise's current dish."
+          ]
+        ]
+      },
+      "paragraphs": [
+        "For company size, retain raw dated observations instead of a universal small/medium/enterprise label. Any OffMenu grouping should publish its thresholds and specify employee count, revenue or farm area, country context and whether the measure is consolidated across a corporate group."
+      ]
+    },
+    {
+      "title": "Recommended source sequence",
+      "table": {
+        "headers": [
+          "Step",
+          "Research-to-adoption decision",
+          "Evidence to collect before integration"
+        ],
+        "rows": [
+          [
+            "1. Shared public backbone",
+            "OFF + FoodData Central + Wikidata + GLEIF + useful licensed national registries",
+            "Exact licence/version, field coverage, product-to-company matching quality, freshness and re-publication obligations."
+          ],
+          [
+            "2. Market and safety detail",
+            "Official product/operator registers, current recall notices and additive legal sources",
+            "Market/lot identifiers, jurisdiction and effective dates; separate historical enforcement datasets from alert feeds."
+          ],
+          [
+            "3. Producer and claims depth",
+            "GLOBALG.A.P., organic registers, Fairtrade, MSC/ASC, halal/kosher/non-GMO/vegan schemes",
+            "Certificate scope/status, record identifiers, permitted machine access and product-level linkage."
+          ],
+          [
+            "4. Optional commercial enrichment",
+            "Orbis/D&B/OpenCorporates, GDSN/Syndigo/NIQ, Mintel and other licensed intelligence",
+            "Per-profile contract compatibility, incremental coverage, read/export rights and cost; no integration commitment made here."
+          ],
+          [
+            "5. Uncovered local supply",
+            "Supplier claims, local markets, cooperative records and permitted user imports",
+            "Contributor identity/authority, private/public consent, label evidence and clear unresolved relationships."
+          ]
+        ]
+      },
+      "paragraphs": [
+        "Evaluate coverage by real tasks: barcode-to-product, product-to-owner, owner-to-parent, origin by field, current claim/certificate, recall-lot identification and menu-to-ingredient traceability. Report these separately per country and language; a provider's country presence does not establish field-level coverage.",
+        "Refresh cadence should follow each source's publication pattern and the consequence of staleness. New recall notices and certificate suspensions deserve fast updates; annual size metrics should preserve fiscal year. Revalidate rights and withdrawn sources as well as content. These are proposed operating decisions, not implemented pipelines.",
+        "Food composition and vocabulary can bridge the separate food/menu discovery work: FoodData Central contributes branded GTIN and nutrient fields; FoodOn and ChEBI help normalize food and ingredient identities. These joins must preserve recipe version, units and market. Generic nutrients or a chemical hazard record do not prove a particular meal's ingredients, exposure or suitability."
+      ]
+    },
+    {
+      "title": "Additional discovery candidates",
+      "paragraphs": [
+        "The following are named follow-up candidates, not verified integrations or licence clearances in this report: national trademark offices and EUIPO/TMview; GS1 member-organisation product pools including NPC, GS1 China/ANCC and GS1 India DataKart; NIQ Brandbank, Trace One and other product-content vendors; VLOG, ProTerra, IFOAM/member certifiers, Ecocert, Control Union, Soil Association and national organic bodies; STAR-K/OK/Kosher Australia; BPJPH/MUIS and country halal bodies; GFCO product-level directory, Coeliac/AOECS schemes and the Vegan Society; Fairtrade International and national fair-trade bodies; local chambers, export-promotion boards, cooperative registers and farm-market associations.",
+        "For further company background and supply-chain context, consider licensed S&P Global/Panjiva, ImportGenius, Creditsafe, Dun & Bradstreet local products, ESG/controversy vendors, public regulator/court/competition-authority filings, Business & Human Rights Resource Centre, government modern-slavery statements, CDP and producer-published sustainability reports. These may add context but do not prove retail product provenance. Public allegations must be attributed and kept separate from findings.",
+        "For menus and retail observations, consider authorised Clover/Lightspeed/Shopify/WooCommerce catalogues, Open Food Network/other producer marketplaces, retailer exports, permitted recipe/menu JSON-LD, licensed Foursquare/business directories and merchant supplier feeds. The separate global food/menu/retailer discovery task should decide priorities and deduplicate these with its own source inventory.",
+        "Country statistical portals, FAOSTAT and UN Comtrade can add agricultural or trade context but generally cannot identify the farm, owner or ingredient origin of a particular barcode. Do not use aggregate trade patterns as product-level evidence."
+      ]
+    },
+    {
+      "title": "How to read the country register",
+      "paragraphs": [
+        "Every ISO2 code appears once in the appendix and once in the JSON. Research groupings are workflow assignments, not political or legal classifications. England is covered under GB with subdivision-level sources; it is not a separate ISO 3166-1 entry. Kosovo/XK is outside the requested 249 assigned-code set and can be considered as an explicitly additional locale later.",
+        "Territories are individually recorded. Parent-state registries, customs/import routes or regional systems are candidate routes only when their scope is established. Antarctica and uninhabited territories do not acquire a fictional consumer market because they have an ISO code. Source-country, destination-market and legal-jurisdiction fields remain distinct.",
+        "V = a published source capability was found; C = a candidate authority, source route or unverified capability; N = no suitable source was found in this pass. Access flags describe observed discovery access, not an open-data legal clearance. 'No source found' does not establish that no source exists. Country-specific gaps and access restrictions are preserved in full in the JSON.",
+        "The report catalogue and country cards contain clickable source names; the JSON retains complete URLs, notes and research queries. Stable source IDs are derived from canonical URL text for merging; provider aliases and different endpoints still need human deduplication. All entries carry this report's check date."
+      ]
+    }
+  ],
+  "originalComparisonViews": [
+    "basket_total",
+    "per_100_g_edible_same_state",
+    "per_1000_kcal",
+    "per_2000_kcal_benchmark",
+    "per_documented_person_day",
+    "per_declared_serving",
+    "percent_named_reference"
+  ]
+}
