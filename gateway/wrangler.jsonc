@@ -1,0 +1,51 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "freebuff-relay",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-17",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "limits": {
+    "cpu_ms": 10
+  },
+  "observability": {
+    "enabled": false
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "BRIDGE",
+        "class_name": "BridgeQueue"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "BridgeQueue"
+      ]
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "5b9e248128ab424b8a31b034a2c3c269"
+    }
+  ],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://freebuff-gateway.aldous.info",
+    "ENABLED": "false",
+    "OWNER_SUB": "",
+    "OWNER_EMAIL": "alexander.emmalyn.thomas@gmail.com",
+    "ACCESS_TEAM_DOMAIN": "matthewaldous.cloudflareaccess.com",
+    "ACCESS_AUD": "6ff19b6255cbbd295d4d0ff7cf10a9a27079930c7cb641fe0d4b8cb970b77fe2",
+    "ALLOWED_SESSION_IDS": "[]",
+    "ALLOWED_OAUTH_REDIRECT_URIS": "[]"
+  },
+  "minify": true
+}
