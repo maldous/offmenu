@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import fcntl
 import hashlib
+import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -15,16 +18,20 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
 ACTIVE_LOCK_FD = None
+CANCEL_EVENT = threading.Event()
+MAX_DIAGNOSTIC_EVIDENCE = 12 * 1024
+LEDGER_SOURCE_SHA = "8c25c6d76088c958d17f7adc4a3c0af7aab5c298"
 INVENTORY_COUNT_KEYS = {"entries", "files", "directories", "bytesObserved", "symlinksSkipped",
                         "privateOrRuntimeEntriesSkipped", "depthLimitedDirectories",
                         "specialFilesSkipped", "unreadableEntries", "unreadableDirectories"}
@@ -117,14 +124,52 @@ def terminate_group(process):
     process.wait()
 
 
+def finite_float(value):
+    result = float(value)
+    if not math.isfinite(result):
+        raise ValueError("nonfinite-child-evidence")
+    return result
+
+
+def diagnostic_evidence(value):
+    """Rebind child reports through pinned, closed-schema sanitizers."""
+    schemas = {
+        "offmenu-ledger-structural-audit/1": ("offmenu_ledger_audit.py", "ledgerAudit"),
+        "offmenu-selected-data-inventory/1": ("inspect-selected-datasets.py", "selectedDataInventory"),
+    }
+    schema = value.get("schemaVersion")
+    if not isinstance(schema, str) or schema not in schemas:
+        return {}
+    filename, key = schemas[schema]
+    path = Path(__file__).resolve().parent / filename
+    try:
+        spec = importlib.util.spec_from_file_location("offmenu_diagnostic_sanitizer_" + key, path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        try:
+            sanitized = module.sanitize_report(value)
+        except Exception:
+            # Validation errors are private and never enter published evidence.
+            return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
+        if not isinstance(sanitized, dict) or sanitized.get("schemaVersion") != schema:
+            return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
+        if len(canonical(sanitized)) > MAX_DIAGNOSTIC_EVIDENCE:
+            return {"diagnosticEvidenceError": "diagnostic-evidence-limit-exceeded"}
+        return {key: sanitized}
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, RecursionError):
+        return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
+
+
 def safe_evidence(raw):
     evidence = {"stdoutBytes": len(raw), "stdoutSha256": hashlib.sha256(raw).hexdigest()}
     try:
-        value = json.loads(raw)
-    except (ValueError, UnicodeError):
+        value = json.loads(raw, object_pairs_hook=strict_object, parse_float=finite_float,
+                           parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+    except (ValueError, UnicodeError, JobError, RecursionError):
         return evidence
     if not isinstance(value, dict):
         return evidence
+    evidence.update(diagnostic_evidence(value))
     if value.get("schemaVersion") == "offmenu-refresh-inventory/1" and isinstance(value.get("counts"), dict):
         evidence["inventoryCounts"] = {k: v for k, v in value.get("counts", {}).items()
                                        if k in INVENTORY_COUNT_KEYS and type(v) is int and 0 <= v <= 2**63 - 1}
@@ -143,6 +188,8 @@ def safe_evidence(raw):
 
 def run_child(command, code, timeout=240):
     started = time.monotonic()
+    if CANCEL_EVENT.is_set():
+        return {"status": "cancelled", "exitCode": 130, "durationSeconds": 0, "evidence": {}}
     env = {"PATH": "/usr/bin:/bin", "HOME": "/srv/offmenu-runner", "LANG": "C.UTF-8",
            "PYTHONDONTWRITEBYTECODE": "1", "TMPDIR": str(OUTPUT / "tmp")}
     # GitHub uses this non-secret marker to identify orphan processes at job end.
@@ -163,6 +210,9 @@ def run_child(command, code, timeout=240):
         selector.register(process.stderr, selectors.EVENT_READ, "stderr")
         try:
             while selector.get_map() and status is None:
+                if CANCEL_EVENT.is_set():
+                    status, exit_code = "cancelled", 130
+                    break
                 if not group_closed and process.poll() is not None:
                     # A detached descendant can keep the pipe open after the
                     # requested command exits. Do not let it run until timeout.
@@ -211,48 +261,117 @@ def profile_steps(profile, code):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
-    if profile in {"inventory", "smoke"}:
+    if profile in {"inventory", "smoke", "delivery-diagnostics"}:
         steps.append(("inventory", ["readiness"], [python, "-B", "-m", "offmenu.refresh", "inventory",
                                                   "--root", str(CACHE), "--max-entries", "10000", "--max-depth", "4"]))
-    if profile in {"offline-replay", "smoke"}:
+    if profile == "delivery-diagnostics":
+        steps += [
+            ("ledger-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_offmenu_ledger_audit.py"]),
+            ("ledger-audit", ["readiness", "ledger-tests"], [python, "-B", "scripts/offmenu_ledger_audit.py"]),
+            ("dataset-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_selected_dataset_metadata.py"]),
+            ("selected-data-inventory", ["readiness", "dataset-tests"], [python, "-B", "scripts/inspect-selected-datasets.py", "--cache-root", str(CACHE)]),
+        ]
+    if profile in {"offline-replay", "smoke", "delivery-diagnostics"}:
         steps += [("refresh-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_corpus_refresh.py"]),
                   ("offline-replay", ["readiness", "refresh-tests"], replay),
                   ("replay-idempotency", ["offline-replay"], replay)]
     return steps
 
 
-def run_profile(request, sha, code, run_id, attempt):
-    results = []
-    by_id = {}
+def run_step(step_id, command, code):
+    try:
+        result = run_child(command, code)
+        if result["status"] == "failed" and result["evidence"].get("errorCode") == "unfinished-run-requires-resume" and step_id == "offline-replay":
+            previous = result
+            result = run_child(command + ["--resume"], code)
+            result["resumeAttempt"] = True
+            result["durationSeconds"] += previous["durationSeconds"]
+        if step_id == "replay-idempotency" and result["status"] == "passed" and result["evidence"].get("resultAction") != "verified-no-op":
+            result.update(status="failed", exitCode=3, errorCode="idempotency-not-established")
+        if step_id in {"ledger-audit", "selected-data-inventory"} and result["status"] in {"passed", "failed"}:
+            key = "ledgerAudit" if step_id == "ledger-audit" else "selectedDataInventory"
+            report = result["evidence"].get(key, {})
+            if step_id == "selected-data-inventory" and result["exitCode"] == 2 and report.get("status") == "incomplete":
+                result["status"] = "blocked"
+            elif result["status"] == "passed":
+                expected = "complete" if step_id == "ledger-audit" else "ready-for-adapter-design"
+                if report.get("status") != expected:
+                    result.update(status="failed", exitCode=3, errorCode="diagnostic-result-not-established")
+    except Cancelled:
+        CANCEL_EVENT.set()
+        result = {"status": "cancelled", "exitCode": 130, "durationSeconds": 0}
+    except (OSError, subprocess.SubprocessError):
+        result = {"status": "failed", "exitCode": 1, "durationSeconds": 0, "errorCode": "step-launch-failed"}
+    return result
+
+
+def skipped(cancelled, blocked):
+    return {"status": "skipped", "exitCode": None, "durationSeconds": 0,
+            "skipReason": "job-cancelled" if cancelled else "dependency-failed", "blockedBy": blocked}
+
+
+def parallel_diagnostics(steps, code):
+    """Two bounded child processes; dependencies preserve the serial replay pair.
+
+    Cancellation propagates to each process group before the shared lock can be
+    released. No shell command or parallelism setting is accepted from requests.
+    """
+    by_id, pending, active = {}, list(steps), {}
     cancelled = False
-    for step_id, dependencies, command in profile_steps(request["profile"], code):
-        blocked = [dep for dep in dependencies if by_id[dep]["status"] != "passed"]
-        if cancelled or blocked:
-            result = {"status": "skipped", "exitCode": None, "durationSeconds": 0,
-                      "skipReason": "job-cancelled" if cancelled else "dependency-failed", "blockedBy": blocked}
-        else:
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        while pending or active:
             try:
-                result = run_child(command, code)
-                if result["status"] == "failed" and result["evidence"].get("errorCode") == "unfinished-run-requires-resume" and step_id == "offline-replay":
-                    previous = result
-                    result = run_child(command + ["--resume"], code)
-                    result["resumeAttempt"] = True
-                    result["durationSeconds"] += previous["durationSeconds"]
-                if step_id == "replay-idempotency" and result["status"] == "passed" and result["evidence"].get("resultAction") != "verified-no-op":
-                    result.update(status="failed", exitCode=3, errorCode="idempotency-not-established")
+                for step in list(pending):
+                    step_id, dependencies, command = step
+                    if not all(dep in by_id for dep in dependencies):
+                        continue
+                    blocked = [dep for dep in dependencies if by_id[dep]["status"] != "passed"]
+                    if cancelled or CANCEL_EVENT.is_set() or blocked:
+                        by_id[step_id] = skipped(cancelled or CANCEL_EVENT.is_set(), blocked)
+                        pending.remove(step)
+                    elif len(active) < 2:
+                        active[pool.submit(run_step, step_id, command, code)] = step_id
+                        pending.remove(step)
+                if active:
+                    done, _ = wait(active, timeout=0.2, return_when=FIRST_COMPLETED)
+                    for future in done:
+                        step_id = active.pop(future)
+                        by_id[step_id] = future.result()
+                        if by_id[step_id]["status"] == "cancelled":
+                            cancelled = True
+                            CANCEL_EVENT.set()
             except Cancelled:
-                result = {"status": "cancelled", "exitCode": 130, "durationSeconds": 0}
-            except (OSError, subprocess.SubprocessError):
-                result = {"status": "failed", "exitCode": 1, "durationSeconds": 0, "errorCode": "step-launch-failed"}
-            cancelled = result["status"] == "cancelled"
-        result.update(stepId=step_id, dependsOn=dependencies)
-        by_id[step_id] = result
-        results.append(result)
-    state = "cancelled" if cancelled else ("passed" if all(x["status"] == "passed" for x in results) else "failed")
-    return {"schemaVersion": 1, "reportKind": "offmenu-foo-job", "jobId": request["jobId"],
-            "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
-            "githubRunAttempt": attempt, "status": state, "steps": results,
-            "sourceContentsUploaded": False, "externalPublication": False}
+                cancelled = True
+                CANCEL_EVENT.set()
+    return by_id, cancelled
+
+
+def run_profile(request, sha, code, run_id, attempt):
+    steps = profile_steps(request["profile"], code)
+    cancelled = False
+    if request["profile"] == "delivery-diagnostics":
+        by_id, cancelled = parallel_diagnostics(steps, code)
+    else:
+        by_id = {}
+        for step_id, dependencies, command in steps:
+            blocked = [dep for dep in dependencies if by_id[dep]["status"] != "passed"]
+            result = skipped(cancelled, blocked) if cancelled or blocked else run_step(step_id, command, code)
+            cancelled = cancelled or result["status"] == "cancelled"
+            by_id[step_id] = result
+    results = [by_id[step_id] | {"stepId": step_id, "dependsOn": dependencies}
+               for step_id, dependencies, _ in steps]
+    statuses = {result["status"] for result in results}
+    state = ("cancelled" if cancelled else "passed" if statuses == {"passed"} else
+             "incomplete" if statuses <= {"passed", "blocked"} else "failed")
+    report = {"schemaVersion": 1, "reportKind": "offmenu-foo-job", "jobId": request["jobId"],
+              "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
+              "githubRunAttempt": attempt, "status": state, "steps": results,
+              "sourceContentsUploaded": False, "externalPublication": False}
+    if request["profile"] == "delivery-diagnostics":
+        report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
+                      diagnosticScope="structural-ledger-and-selected-cache-metadata",
+                      corpusAcceptanceEstablished=False)
+    return report
 
 
 def safe_dir(path):
@@ -285,7 +404,7 @@ def execute(request, sha, code, run_id, attempt):
             previous = json.loads(receipt.read_bytes())
             if previous.get("requestIdentity") != identity:
                 raise JobError("job-id-reused-for-different-request")
-            if previous.get("status") in {"passed", "failed", "cancelled"}:
+            if previous.get("status") in {"passed", "failed", "cancelled", "incomplete"}:
                 return previous | {"delivery": "existing-receipt-no-execution"}
             # An interrupted coordinator may retry. The downstream replay handles resumable checkpoints.
         atomic_json(receipt, {"status": "running", "requestIdentity": identity})
@@ -308,6 +427,7 @@ def main(argv=None):
     parser.add_argument("--trusted-code-sha", required=True)
     args = parser.parse_args(argv)
     os.umask(0o077)
+    CANCEL_EVENT.clear()
     signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(Cancelled()))
     signal.signal(signal.SIGINT, lambda *_: (_ for _ in ()).throw(Cancelled()))
     try:

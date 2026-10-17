@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [smoke, readiness, inventory, offline-replay]
+        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]
@@ -58,6 +58,26 @@ jobs:
         with:
           ref: ${{ env.TRUSTED_CODE_SHA }}
           path: trusted-code
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Check out immutable ledger evidence only
+        # Keep independent diagnostics running if evidence checkout is blocked.
+        # The fixed audit validates revision, file hashes and structure itself.
+        continue-on-error: true
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: 8c25c6d76088c958d17f7adc4a3c0af7aab5c298
+          path: ledger-source
+          sparse-checkout: |
+            /docs/handover/2026-10-17/operational-ledger/authority.json
+            /docs/handover/2026-10-17/operational-ledger/base-initial-copy.json
+            /docs/handover/2026-10-17/operational-ledger/interim-obligation-index.json
+            /docs/handover/2026-10-17/operational-ledger/handover.json
+            /docs/handover/2026-10-17/operational-ledger/management-summary.json
+            /docs/handover/2026-10-17/operational-ledger/events.jsonl
+            /docs/handover/2026-10-17/morgan-batches-20261017/current-checkpoint.json
+            /docs/handover/2026-10-17/morgan-batches-20261017/transport-checkpoint-current.json
+          sparse-checkout-cone-mode: false
           persist-credentials: false
           fetch-depth: 1
       - name: Run one bounded batch and emit one sanitized report

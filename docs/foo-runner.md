@@ -7,7 +7,7 @@ This package lets the repository owner install a dedicated GitHub Actions runner
 - Repository: private, personally owned `maldous/offmenu` (repository ID `1416253963`), default branch `main`.
 - Runtime account: `offmenu-runner`, with no extra groups, sudo, Docker socket, personal SSH keys, GitHub CLI login, cloud credentials, or deployment credentials.
 - The service has read-only access to one explicitly selected dataset directory, exposed as `/srv/offmenu-refresh/cache`. It writes its own runner state, checkout, temporary files, and `/srv/offmenu-refresh/outputs`.
-- Initial profiles: `readiness`, `inventory`, `offline-replay`, and the consolidated `smoke` batch. No arbitrary shell command field, network acquisition, deployment, schedule, or pull-request trigger.
+- Profiles: `readiness`, `inventory`, `offline-replay`, the consolidated `smoke` batch, and the reviewed `delivery-diagnostics` extension described below. No arbitrary shell command field, network acquisition, deployment, schedule, or pull-request trigger.
 - Registration creates persistent access. Any trusted writer who can change this repository's workflows could run code as this account. Labels, actor checks, pinned code, and manifest schemas reduce mistakes in this queue; they do not impose a repository-wide workflow allowlist. The user-owned repository cannot rely on organization runner-group policies.
 - The systemd sandbox hides ordinary home directories and constrains filesystem writes. It is not a VM or a network isolation boundary. World-readable host files and reachable local/network services remain relevant risks. Do not use this host arrangement if such services expose credentials or privileged operations to untrusted local users.
 
@@ -171,3 +171,50 @@ This uses your existing `gh` login only. It creates a fresh fixed-field report r
 The package's unit tests cover default read-only operation, exact pins, safe extraction, conflicting-install preservation, interactive-only registration, scrubbed environments, schema/injection rejection, bounded profiles, dependency behavior, exit/timeout/cancel reporting, receipt replay protection, and kernel-lock release. Synthetic local integration ran the real refresh tests and the complete five-step smoke batch successfully, including idempotent replay. These are preparation checks, not evidence of a working foo runner.
 
 Remaining verification: actual OS/architecture/dependencies and cache permissions; dedicated account/service sandbox; local registration and idle runner; published trusted SHA and workflow; actual connector actor; real first-batch report and conclusion. No live foo data, runner registration, GitHub workflow execution, or deployment was used in the preparation tests.
+
+## Delivery diagnostics extension (reviewed execution code required)
+
+The existing transport is proven by the completed [smoke run 39043749665](https://github.com/maldous/offmenu/actions/runs/39043749665), request commit `784ba35b000b54a7443094133e22cfc3f7ca5301`, execution SHA `5722ca925e0c8543a8dc58f40d94e7f1768f475b`, job `foo-bootstrap-smoke-20261017-001`, and runner ID 21. The preserved sanitized receipt is `tests/fixtures/foo-runner/prior-smoke-receipt.json`. Its inventory explicitly did not establish source coverage or asset hashes. This result does not prove access to the real Norway or CIQUAL assets.
+
+The new allowlisted `delivery-diagnostics` profile adds a substantial, restartable batch while retaining the existing exact three-field request schema. It runs:
+
+1. Python/runtime readiness.
+2. Bounded cache inventory.
+3. Ledger structural-audit tests, followed by the pinned ledger audit.
+4. Selected-data metadata tests, followed by the fixed Norway/CIQUAL metadata inspector.
+5. Existing refresh tests, fixture-only offline replay, then replay idempotency.
+
+At most two child processes run concurrently. Ledger, dataset metadata and fixture-replay branches are independent: unavailable dataset files cannot suppress the ledger audit or fixture replay. Failed tests suppress only their dependent operation. The two fixture replay stages remain ordered. Each child retains the 240-second deadline and 1 MiB per-output-stream limit. A cancelled batch terminates active child process groups before releasing the inherited kernel lock. There is no arbitrary command, path, source revision, concurrency, timeout or download option in the request.
+
+### Separate immutable evidence checkout
+
+The workflow checks out only the following eight tracked files into sibling `ledger-source`, from commit `8c25c6d76088c958d17f7adc4a3c0af7aab5c298`:
+
+- `docs/handover/2026-10-17/operational-ledger/authority.json`
+- `docs/handover/2026-10-17/operational-ledger/base-initial-copy.json`
+- `docs/handover/2026-10-17/operational-ledger/interim-obligation-index.json`
+- `docs/handover/2026-10-17/operational-ledger/handover.json`
+- `docs/handover/2026-10-17/operational-ledger/management-summary.json`
+- `docs/handover/2026-10-17/operational-ledger/events.jsonl`
+- `docs/handover/2026-10-17/morgan-batches-20261017/current-checkpoint.json`
+- `docs/handover/2026-10-17/morgan-batches-20261017/transport-checkpoint-current.json`
+
+This checkout alone has `continue-on-error` so an input checkout failure does not suppress unrelated diagnostics. The ledger audit independently verifies its fixed source revision and all file byte counts, SHA-256 and Git blob pins from `scripts/offmenu-ledger-source-pins.json`. Missing or invalid inputs fail the ledger step and overall job. The audit streams the complete 9,647,254-byte journal, reports JSON/object/newline structure and bounded top-level field/type counts, and compares the 5,269-record prefix and retained 5,271/5,105 lineage cuts. It does not reconstruct semantic state, current ownership, current worker capacity or sequence semantics.
+
+### Selected-cache boundaries
+
+The inspector uses only its reviewed six Norway/CIQUAL asset paths and five small receipt paths under the existing cache view. It hashes bounded source bytes and reads recognized receipt metadata, without parsing source bodies, downloading, copying data, changing permissions, reconfiguring mounts, restarting the service or refreshing a source. The currently mounted empty bootstrap cache is expected to produce missing-asset blockers. File metadata from that view must not be represented as dataset acceptance. The script and its documentation define the exact view layout; changing the real dataset mount requires a separately authorized, reviewed host operation.
+
+### Receipt status and compatibility
+
+Report schema version 1 retains all existing fields and statuses, and adds the terminal status `incomplete` for a diagnostics batch whose required metadata is unavailable but whose other stages passed. The metadata step is `blocked` only when its recognized report says `incomplete` and the child exits 2. A failed test, bad ledger pin, malformed report, timeout, output-limit or launch failure remains an overall failure. Both `failed` and `incomplete` return nonzero from the dispatcher. The report always states `corpusAcceptanceEstablished: false`; a successful metadata check is readiness for adapter design only.
+
+Each new child report is rebound through its pinned strict-schema sanitizer and limited to 12 KiB. The complete consolidated receipt remains limited to 32 KiB. It contains no raw logs, source rows, workbook cells, credential values or private source paths. The JSON schemas allow only bounded static labels, typed counters/booleans and validated hashes (plus bounded ledger field names). Receipts are durable and scoped to the exact request and execution SHA. A completed `incomplete` receipt is returned without re-execution for the same job ID; use a new ID after changing the available inputs. An interrupted coordinator can retry the same ID.
+
+### Publication and queue order
+
+1. Publish the reviewed scripts, pins, tests and documentation as a new immutable execution commit. The source workflow deliberately retains the unconfigured execution-SHA placeholder.
+2. In a later control-branch commit, copy the reviewed workflow and replace only `TRUSTED_CODE_SHA` with that published execution SHA. Preserve the repository/actor checks, exact action pin, read-only token and fixed evidence commit.
+3. Update `.github/offmenu-runner/request.json` with one fresh ID and `profile: "delivery-diagnostics"` in that control commit or a subsequent commit. Read the exact immutable request and workflow run until the consolidated terminal receipt is available.
+
+No runner registration, initial version pin, runtime user/privilege, boot setting, schedule or host service configuration changes are part of this extension.
