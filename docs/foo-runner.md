@@ -18,9 +18,12 @@ GitHub's [runner setup documentation](https://docs.github.com/en/actions/how-tos
 Check out the reviewed setup branch/commit on foo. Inspect the scripts before running them.
 
 ```sh
-bash scripts/setup-foo-runner.sh
-python3 -B -m unittest discover -s tests -p test_foo_runner.py -v
+python3 -B scripts/check-foo-setup.py --publish --issue 30
 ```
+
+This single command runs preflight, the runner setup/batch tests, and the refresh tests independently, then posts one combined sanitized report to OffMenu PR #30 through your existing `gh` login. A failing earlier check does not prevent the other test group from running. Every step includes its real exit code, duration, and status. Raw test output stays in a private local temporary directory, limited to 1 MiB per output stream per step; its location is printed only locally. The GitHub report contains no raw logs, credentials, source paths, or dataset contents. An uncertain publication is not retried automatically; inspect PR #30 before repeating `--publish`.
+
+Omit `--publish` to keep the report entirely local. The command does not run admin steps, register a runner, log into GitHub, or create tokens. Existing `gh` login is required only for publication. The process exits nonzero if any check fails or publication is not verified. The older `setup-foo-runner.sh preflight` remains available for a quick standalone inspection.
 
 The report identifies OS, CPU architecture, Python, systemd, required tools, and existing setup state. It does not claim to have verified the host alias, a running service, registration correctness, or dataset readability. `null` means a private directory was not visible from this account. No source contents, original source paths, environment variables, tokens, or credentials enter the report.
 
