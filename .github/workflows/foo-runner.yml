@@ -104,3 +104,471 @@ jobs:
           # No pipes: the dispatcher's nonzero exit cannot be hidden by tee/cat.
           python3 -B "$GITHUB_WORKSPACE/trusted-code/scripts/dispatch-foo-job.py" \
             --request "$REQUEST" --trusted-code-sha "$TRUSTED_CODE_SHA"
+
+  # Hosted-only publisher. Its job-scoped write token never reaches Foo.
+  # Install only after the explicit permission expansion and results PR approval.
+  publish_receipt:
+    needs: run
+    if: >-
+      always() && needs.run.result != 'skipped' &&
+      github.repository_id == '1416253963' &&
+      github.actor_id == '6347545' &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/offmenu-runner-jobs'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    permissions:
+      actions: read
+      contents: write
+      pull-requests: read
+    env:
+      TRUSTED_CODE_SHA: ac04ab98914658bc0443189b3fa04f86ebbc6525
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Verify terminal Foo job and prepare bounded evidence
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          umask 077
+          cat > "$RUNNER_TEMP/offmenu-completion-publisher.py" <<'PUBLISHER_PY'
+          #!/usr/bin/env python3
+          """Reviewed, stdlib-only publisher, embedded verbatim in the hosted job.
+          
+          Never checks out or executes repository, request, report, or artifact content.
+          It publishes only a small schema-projected receipt to an existing fixed PR.
+          """
+          import base64
+          import hashlib
+          import json
+          import math
+          import os
+          from pathlib import Path
+          import re
+          import sys
+          import time
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          
+          REPOSITORY = 'maldous/offmenu'
+          REPOSITORY_ID = 1416253963
+          OWNER_ID = 6347545
+          WORKFLOW_ID = 387731309
+          WORKFLOW_PATH = '.github/workflows/foo-runner.yml'
+          CONTROL_BRANCH = 'offmenu-runner-jobs'
+          RUNNER_ID = 21
+          # Configure these reviewed constants only after the dedicated PR is verified.
+          RESULTS_PR = 31
+          RESULTS_BRANCH = 'offmenu-runner-results'
+          RESULTS_BASE = 'main'
+          RECEIPT_PATH = '.github/offmenu-runner/latest-receipt.json'
+          MAX_LOG = 2 * 1024 * 1024
+          MAX_REPORT = 128 * 1024
+          MAX_RECEIPT = 16 * 1024
+          MAX_API = 1024 * 1024
+          PROFILES = {'readiness', 'inventory', 'offline-replay', 'smoke',
+                      'delivery-diagnostics', 'national-schema-survey'}
+          STEP_IDS = {'readiness', 'inventory', 'refresh-tests', 'offline-replay',
+                      'replay-idempotency', 'ledger-tests', 'ledger-audit',
+                      'dataset-tests', 'selected-data-inventory', 'schema-survey-tests',
+                      'schema-survey'}
+          PROFILE_STEPS = {
+              'readiness': ['readiness'],
+              'inventory': ['readiness', 'inventory'],
+              'offline-replay': ['readiness', 'refresh-tests', 'offline-replay', 'replay-idempotency'],
+              'smoke': ['readiness', 'inventory', 'refresh-tests', 'offline-replay', 'replay-idempotency'],
+              'delivery-diagnostics': ['readiness', 'inventory', 'ledger-tests', 'ledger-audit',
+                                       'dataset-tests', 'selected-data-inventory', 'refresh-tests',
+                                       'offline-replay', 'replay-idempotency'],
+              'national-schema-survey': ['readiness', 'schema-survey-tests', 'schema-survey'],
+          }
+          STEP_STATES = {'passed', 'failed', 'blocked', 'cancelled', 'timeout',
+                         'output-limit', 'skipped'}
+          REPORT_STATES = {'passed', 'failed', 'blocked', 'cancelled', 'incomplete'}
+          CONCLUSIONS = {'success', 'failure', 'cancelled', 'timed_out',
+                         'action_required', 'neutral', 'skipped', 'stale', 'startup_failure'}
+          SHA = re.compile(r'[0-9a-f]{40}')
+          DIGEST = re.compile(r'[0-9a-f]{64}')
+          REPORT_LINE = re.compile(r'^(?:\ufeff)?\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d+Z OFFMENU_JOB_REPORT (\{.*\})$')
+          
+          
+          class Rejected(Exception):
+              """Only static error codes may be emitted, never API/log body content."""
+          
+          
+          def require(ok, code):
+              if not ok:
+                  raise Rejected(code)
+          
+          
+          def strict_object(pairs):
+              result = {}
+              for key, value in pairs:
+                  require(key not in result, 'duplicate-json-key')
+                  result[key] = value
+              return result
+          
+          
+          def decode_json(raw, maximum):
+              require(len(raw) <= maximum, 'json-size-limit')
+              try:
+                  return json.loads(raw, object_pairs_hook=strict_object,
+                                    parse_constant=lambda _: (_ for _ in ()).throw(Rejected('nonfinite-json')))
+              except (ValueError, UnicodeError, RecursionError):
+                  raise Rejected('invalid-json') from None
+          
+          
+          def canonical(value):
+              return (json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode()
+          
+          
+          def positive(value, code):
+              require(type(value) is int and 0 < value < 2 ** 63, code)
+              return value
+          
+          
+          def env_number(name):
+              value = os.environ[name]
+              require(bool(re.fullmatch(r'[1-9][0-9]{0,19}', value)), 'invalid-numeric-context')
+              return positive(int(value), 'invalid-numeric-context')
+          
+          
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          
+          
+          class API:
+              def __init__(self, token):
+                  self.token = token
+                  self.opener = urllib.request.build_opener(NoRedirect)
+          
+              def request(self, path, method='GET', payload=None):
+                  require(path.startswith('/repos/' + REPOSITORY + '/'), 'invalid-api-path')
+                  headers = {'Accept': 'application/vnd.github+json',
+                             'Authorization': 'Bearer ' + self.token,
+                             'X-GitHub-Api-Version': '2022-11-28',
+                             'User-Agent': 'offmenu-completion-publisher'}
+                  data = None if payload is None else canonical(payload)
+                  if data is not None:
+                      headers['Content-Type'] = 'application/json'
+                  request = urllib.request.Request('https://api.github.com' + path,
+                                                   data=data, headers=headers, method=method)
+                  try:
+                      with self.opener.open(request, timeout=30) as response:
+                          return decode_json(response.read(MAX_API + 1), MAX_API)
+                  except urllib.error.HTTPError as error:
+                      # No automatic mutation retry: an uncertain PUT may have succeeded.
+                      raise Rejected('github-api-http-' + str(error.code)) from None
+                  except (OSError, TimeoutError):
+                      raise Rejected('github-api-network-error') from None
+          
+              def log(self, job_id):
+                  path = '/repos/' + REPOSITORY + '/actions/jobs/' + str(job_id) + '/logs'
+                  request = urllib.request.Request('https://api.github.com' + path, headers={
+                      'Authorization': 'Bearer ' + self.token,
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'offmenu-completion-publisher'})
+                  # GitHub returns a short-lived signed download. Never forward its token.
+                  try:
+                      response = self.opener.open(request, timeout=30)
+                  except urllib.error.HTTPError as error:
+                      if error.code not in (301, 302, 303, 307, 308):
+                          raise Rejected('job-log-unavailable') from None
+                      location = error.headers.get('Location', '')
+                      target = urllib.parse.urlsplit(location)
+                      require(target.scheme == 'https' and target.username is None and
+                              target.password is None and target.port in (None, 443) and
+                              bool(target.hostname) and
+                              (target.hostname.endswith('.blob.core.windows.net') or
+                               target.hostname.endswith('.githubusercontent.com')),
+                              'job-log-redirect-rejected')
+                      # No second redirect accepted, even with this credential-free request.
+                      try:
+                          response = self.opener.open(urllib.request.Request(location), timeout=30)
+                      except (OSError, TimeoutError):
+                          raise Rejected('job-log-unavailable') from None
+                  except (OSError, TimeoutError):
+                      raise Rejected('job-log-unavailable') from None
+                  with response:
+                      raw = response.read(MAX_LOG + 1)
+                  require(len(raw) <= MAX_LOG, 'job-log-size-limit')
+                  return raw
+          
+          
+          def verify_run(run, run_id, attempt, control_sha):
+              positive(run.get('run_number'), 'run-number-invalid')
+              require(run.get('id') == run_id and run.get('run_attempt') == attempt,
+                      'run-identity-mismatch')
+              require(run.get('repository', {}).get('id') == REPOSITORY_ID and
+                      run.get('head_repository', {}).get('id') == REPOSITORY_ID,
+                      'run-repository-mismatch')
+              require(run.get('workflow_id') == WORKFLOW_ID and
+                      run.get('path') == WORKFLOW_PATH, 'workflow-identity-mismatch')
+              require(run.get('event') == 'push' and run.get('head_branch') == CONTROL_BRANCH,
+                      'run-event-mismatch')
+              require(run.get('actor', {}).get('id') == OWNER_ID and
+                      run.get('triggering_actor', {}).get('id') == OWNER_ID,
+                      'run-actor-mismatch')
+              require(run.get('head_sha') == control_sha and bool(SHA.fullmatch(control_sha)),
+                      'control-sha-mismatch')
+          
+          
+          def select_job(jobs, run_id, attempt, control_sha):
+              require(type(jobs.get('total_count')) is int and jobs['total_count'] <= 100,
+                      'job-list-size-limit')
+              selected = [j for j in jobs.get('jobs', []) if j.get('name') == 'run']
+              require(len(selected) == 1, 'source-job-not-unique')
+              job = selected[0]
+              positive(job.get('id'), 'invalid-job-id')
+              require(job.get('run_id') == run_id and job.get('run_attempt') == attempt and
+                      job.get('head_sha') == control_sha, 'job-identity-mismatch')
+              require(job.get('runner_id') == RUNNER_ID and job.get('runner_name') == 'foo-offmenu',
+                      'runner-identity-mismatch')
+              require(job.get('status') == 'completed' and job.get('conclusion') in CONCLUSIONS,
+                      'source-job-not-terminal')
+              return job
+          
+          
+          def read_contents(api, path, ref, maximum):
+              data = api.request('/repos/' + REPOSITORY + '/contents/' + path +
+                                 '?ref=' + urllib.parse.quote(ref, safe=''))
+              require(data.get('type') == 'file' and data.get('encoding') == 'base64' and
+                      type(data.get('size')) is int and data['size'] <= maximum,
+                      'content-object-invalid')
+              try:
+                  raw = base64.b64decode(data['content'].replace('\n', ''), validate=True)
+              except (KeyError, ValueError):
+                  raise Rejected('content-encoding-invalid') from None
+              require(len(raw) <= maximum and bool(SHA.fullmatch(data.get('sha', ''))),
+                      'content-object-invalid')
+              return raw, data['sha']
+          
+          
+          def verify_request(raw):
+              request = decode_json(raw, 1024)
+              require(isinstance(request, dict) and
+                      set(request) == {'schemaVersion', 'jobId', 'profile'} and
+                      type(request['schemaVersion']) is int and request['schemaVersion'] == 1,
+                      'request-schema-invalid')
+              require(isinstance(request['jobId'], str) and
+                      bool(re.fullmatch(r'[a-z0-9][a-z0-9-]{7,63}', request['jobId'])) and
+                      isinstance(request['profile'], str) and
+                      request['profile'] in PROFILES, 'request-value-invalid')
+              return request
+          
+          
+          def project_report(raw_logs, request, trusted_sha, run_id, attempt, conclusion):
+              # Only a real timestamp-prefixed output line qualifies, not echoed shell text.
+              candidates = [m.group(1).encode() for line in raw_logs.decode('utf-8-sig').splitlines()
+                            if (m := REPORT_LINE.fullmatch(line))]
+              require(len(candidates) == 1, 'report-not-unique')
+              raw = candidates[0]
+              report = decode_json(raw, MAX_REPORT)
+              require(isinstance(report, dict), 'report-schema-invalid')
+              require(type(report.get('schemaVersion')) is int and report['schemaVersion'] == 1 and
+                      report.get('reportKind') == 'offmenu-foo-job', 'report-schema-invalid')
+              require(report.get('jobId') == request['jobId'] and report.get('profile') == request['profile'] and
+                      report.get('trustedCodeSha') == trusted_sha and
+                      report.get('githubRunId') == str(run_id) and
+                      report.get('githubRunAttempt') == str(attempt), 'report-binding-mismatch')
+              identity = hashlib.sha256(json.dumps({'request': request, 'trustedCodeSha': trusted_sha},
+                                                  sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+              require(report.get('requestIdentity') == identity, 'request-identity-mismatch')
+              require(report.get('sourceContentsUploaded') is False and
+                      report.get('externalPublication') is False, 'report-disclosure-flag-invalid')
+              require(isinstance(report.get('status'), str) and
+                      report['status'] in REPORT_STATES, 'report-status-invalid')
+              require((report['status'] == 'passed') == (conclusion == 'success'),
+                      'report-conclusion-mismatch')
+              require(report.get('delivery') is None, 'reused-report-requires-origin-verification')
+              steps = report.get('steps')
+              require(isinstance(steps, list) and 1 <= len(steps) <= len(STEP_IDS), 'report-steps-invalid')
+              projected, seen = [], set()
+              for step in steps:
+                  require(isinstance(step, dict) and isinstance(step.get('stepId'), str) and
+                          step['stepId'] in STEP_IDS and step['stepId'] not in seen and
+                          isinstance(step.get('status'), str) and step['status'] in STEP_STATES,
+                          'report-step-invalid')
+                  seen.add(step['stepId'])
+                  code, duration = step.get('exitCode'), step.get('durationSeconds')
+                  require((code is None and step['status'] == 'skipped') or
+                          (type(code) is int and -255 <= code <= 255), 'step-exit-code-invalid')
+                  require(type(duration) in (int, float) and 0 <= duration <= 3600 and
+                          math.isfinite(duration), 'step-duration-invalid')
+                  require((step['status'] == 'passed') == (code == 0), 'step-status-exit-mismatch')
+                  projected.append({'stepId': step['stepId'], 'status': step['status'],
+                                    'exitCode': code, 'durationSeconds': duration})
+              require([s['stepId'] for s in projected] == PROFILE_STEPS[request['profile']],
+                      'report-profile-steps-mismatch')
+              require((report['status'] == 'passed') == all(s['status'] == 'passed' for s in projected),
+                      'report-step-status-mismatch')
+              return {'validation': 'verified', 'status': report['status'],
+                      'reportSha256': hashlib.sha256(raw).hexdigest(),
+                      'requestIdentity': identity, 'steps': projected}
+          
+          
+          def verify_pr(pr):
+              require(RESULTS_PR > 0 and pr.get('number') == RESULTS_PR and pr.get('state') == 'open' and
+                      pr.get('merged') is False, 'results-pr-not-open')
+              require(pr.get('head', {}).get('repo', {}).get('id') == REPOSITORY_ID and
+                      pr.get('base', {}).get('repo', {}).get('id') == REPOSITORY_ID and
+                      pr.get('head', {}).get('ref') == RESULTS_BRANCH and
+                      pr.get('base', {}).get('ref') == RESULTS_BASE, 'results-pr-target-mismatch')
+          
+          
+          def prepare(api, output):
+              run_id, attempt = env_number('GITHUB_RUN_ID'), env_number('GITHUB_RUN_ATTEMPT')
+              control_sha, trusted_sha = os.environ['GITHUB_SHA'], os.environ['TRUSTED_CODE_SHA']
+              require(bool(SHA.fullmatch(trusted_sha)), 'trusted-sha-invalid')
+              run = api.request(f'/repos/{REPOSITORY}/actions/runs/{run_id}')
+              verify_run(run, run_id, attempt, control_sha)
+              jobs = api.request(f'/repos/{REPOSITORY}/actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100')
+              source_attempt = attempt
+              if not any(j.get('name') == 'run' for j in jobs.get('jobs', [])):
+                  # A publisher-only rerun does not re-execute an already completed Foo job.
+                  # Inspect actual job attempt metadata; never relabel old computation.
+                  history = api.request(f'/repos/{REPOSITORY}/actions/runs/{run_id}/jobs?filter=all&per_page=100')
+                  require(type(history.get('total_count')) is int and history['total_count'] <= 100,
+                          'job-history-size-limit')
+                  candidates = [j for j in history.get('jobs', []) if j.get('name') == 'run' and
+                                type(j.get('run_attempt')) is int and 0 < j['run_attempt'] < attempt]
+                  require(bool(candidates), 'source-job-missing-from-history')
+                  source_attempt = max(j['run_attempt'] for j in candidates)
+                  jobs = {'total_count': len(candidates),
+                          'jobs': [j for j in candidates if j['run_attempt'] == source_attempt]}
+                  prior_run = api.request(f'/repos/{REPOSITORY}/actions/runs/{run_id}/attempts/{source_attempt}')
+                  verify_run(prior_run, run_id, source_attempt, control_sha)
+              job = select_job(jobs, run_id, source_attempt, control_sha)
+              request_raw, _ = read_contents(api, '.github/offmenu-runner/request.json', control_sha, 1024)
+              request = verify_request(request_raw)
+              try:
+                  projected = project_report(api.log(job['id']), request, trusted_sha,
+                                             run_id, source_attempt, job['conclusion'])
+              except (Rejected, UnicodeError):
+                  # Publish a minimal attention receipt, never arbitrary malformed text.
+                  projected = {'validation': 'unavailable-or-invalid', 'status': 'attention-required'}
+              receipt = {'schemaVersion': 'offmenu-completion-receipt/1',
+                         'repositoryId': REPOSITORY_ID, 'workflowId': WORKFLOW_ID,
+                         'runId': run_id, 'runNumber': run['run_number'], 'runAttempt': source_attempt,
+                         'publicationAttempt': attempt, 'sourceJobId': job['id'],
+                         'sourceRunnerId': RUNNER_ID, 'controlSha': control_sha,
+                         'trustedCodeSha': trusted_sha, 'request': request,
+                         'sourceJobConclusion': job['conclusion'], 'report': projected,
+                         'idempotencyKey': f'{REPOSITORY_ID}:{run_id}:{source_attempt}:{job["id"]}',
+                         'runUrl': f'https://github.com/{REPOSITORY}/actions/runs/{run_id}',
+                         'workflowRunTerminalAtPublish': False,
+                         'consumerMustVerifyTerminalRun': True}
+              raw = canonical(receipt)
+              require(len(raw) <= MAX_RECEIPT, 'receipt-size-limit')
+              output.mkdir(mode=0o700, parents=True, exist_ok=True)
+              (output / 'evidence.json').write_bytes(raw)
+          
+          
+          def compare_receipts(old, new):
+              require(isinstance(old, dict) and old.get('schemaVersion') in
+                      {'offmenu-completion-receipt/1', 'offmenu-completion-bootstrap/1'},
+                      'previous-receipt-schema-invalid')
+              if old['schemaVersion'] == 'offmenu-completion-bootstrap/1':
+                  return 'replace'
+              require(old.get('repositoryId') == REPOSITORY_ID, 'previous-receipt-repository-invalid')
+              before = tuple(positive(old.get(k), 'previous-receipt-identity-invalid')
+                             for k in ('runNumber', 'runAttempt'))
+              after = (new['runNumber'], new['runAttempt'])
+              if before > after:
+                  return 'stale'
+              if before == after:
+                  require(old.get('idempotencyKey') == new['idempotencyKey'], 'receipt-key-conflict')
+                  # An already-written identity never makes another commit/webhook.
+                  return 'duplicate'
+              return 'replace'
+          
+          
+          def publish(api, output):
+              require(RESULTS_PR > 0, 'results-pr-not-configured')
+              receipt = decode_json((output / 'evidence.json').read_bytes(), MAX_RECEIPT)
+              artifact_id = env_number('ARTIFACT_ID')
+              digest = os.environ['ARTIFACT_DIGEST']
+              require(bool(DIGEST.fullmatch(digest)), 'artifact-digest-invalid')
+              artifact = api.request(f'/repos/{REPOSITORY}/actions/artifacts/{artifact_id}')
+              require(artifact.get('id') == artifact_id and artifact.get('expired') is False and
+                      artifact.get('name') == f'offmenu-receipt-{receipt["runId"]}-{receipt["publicationAttempt"]}' and
+                      artifact.get('workflow_run', {}).get('id') == receipt['runId'] and
+                      artifact.get('workflow_run', {}).get('head_sha') == receipt['controlSha'] and
+                      artifact.get('digest') == 'sha256:' + digest, 'artifact-binding-mismatch')
+              receipt['artifact'] = {'id': artifact_id, 'sha256': digest,
+                                     'url': f'https://github.com/{REPOSITORY}/actions/runs/{receipt["runId"]}/artifacts/{artifact_id}',
+                                     'retentionDays': 14}
+              raw = canonical(receipt)
+              require(len(raw) <= MAX_RECEIPT, 'receipt-size-limit')
+              pr = api.request(f'/repos/{REPOSITORY}/pulls/{RESULTS_PR}')
+              verify_pr(pr)
+              # Contents API sha is compare-and-swap. Reconcile only a definite 409;
+              # an uncertain network/5xx mutation is never blindly retried.
+              for collision in range(5):
+                  old_raw, old_sha = read_contents(api, RECEIPT_PATH, RESULTS_BRANCH, MAX_RECEIPT)
+                  decision = compare_receipts(decode_json(old_raw, MAX_RECEIPT), receipt)
+                  if decision != 'replace':
+                      print('Receipt publication: ' + decision)
+                      return
+                  data = {'message': f'Foo completion receipt {receipt["runId"]}/{receipt["runAttempt"]}',
+                          'content': base64.b64encode(raw).decode(), 'sha': old_sha, 'branch': RESULTS_BRANCH}
+                  try:
+                      result = api.request(f'/repos/{REPOSITORY}/contents/{RECEIPT_PATH}', method='PUT', payload=data)
+                      break
+                  except Rejected as error:
+                      if str(error) != 'github-api-http-409' or collision == 4:
+                          raise
+                      verify_pr(api.request(f'/repos/{REPOSITORY}/pulls/{RESULTS_PR}'))
+              commit_sha = result.get('commit', {}).get('sha', '')
+              require(bool(SHA.fullmatch(commit_sha)), 'published-commit-unverified')
+              actual, _ = read_contents(api, RECEIPT_PATH, commit_sha, MAX_RECEIPT)
+              require(actual == raw, 'published-receipt-verification-failed')
+              print('Published verified completion receipt: ' + commit_sha)
+          
+          
+          def main():
+              try:
+                  require(os.environ.get('GITHUB_REPOSITORY') == REPOSITORY and
+                          os.environ.get('GITHUB_REPOSITORY_ID') == str(REPOSITORY_ID),
+                          'publisher-repository-mismatch')
+                  require(os.environ.get('RUNNER_ENVIRONMENT') == 'github-hosted', 'publisher-not-github-hosted')
+                  output = Path(os.environ['RUNNER_TEMP']) / 'offmenu-completion'
+                  api = API(os.environ['GH_TOKEN'])
+                  require(len(sys.argv) == 2 and sys.argv[1] in {'prepare', 'publish'}, 'invalid-phase')
+                  (prepare if sys.argv[1] == 'prepare' else publish)(api, output)
+              except Rejected as error:
+                  print('Publisher refused: ' + str(error), file=sys.stderr)
+                  return 1
+              except Exception:
+                  print('Publisher failed; inspect API state before retrying.', file=sys.stderr)
+                  return 1
+              return 0
+          
+          
+          if __name__ == '__main__':
+              sys.exit(main())
+          PUBLISHER_PY
+          python3 -I -B "$RUNNER_TEMP/offmenu-completion-publisher.py" prepare
+      - name: Retain bounded completion evidence
+        id: evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4, verified 2026-10-17
+        with:
+          name: offmenu-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/offmenu-completion/evidence.json
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 14
+          overwrite: false
+      - name: Replace only the verified results receipt
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        run: |
+          set -euo pipefail
+          python3 -I -B "$RUNNER_TEMP/offmenu-completion-publisher.py" publish
