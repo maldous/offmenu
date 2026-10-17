@@ -41,10 +41,18 @@ def main(argv=None):
     fixture_flags.add_argument('--resume', action='store_true')
     fixture_flags.add_argument('--force-rebuild', action='store_true')
     fixture_flags.add_argument('--force-refresh', action='store_true', help='Unavailable; never downloads or overrides admission.')
+    survey = commands.add_parser('survey-selected', help='Read-only schema evidence for exact selected NO/FR inputs; no candidates.')
+    survey.add_argument('--workspace', required=True, type=Path)
     args = parser.parse_args(argv)
     operation_id = uuid.uuid4().hex
     try:
-        if args.command == 'plan-fixture':
+        if args.command == 'survey-selected':
+            from .survey import survey_selected, SurveyError
+            try:
+                result = survey_selected(args.workspace)
+            except SurveyError as error:
+                raise RefreshError(str(error)) from None
+        elif args.command == 'plan-fixture':
             from .policy import load_evidence, plan_fixture
             result = plan_fixture(args.fixture, load_evidence(args.evidence) if args.evidence else None,
                                   force=args.force_refresh, repin_runtime=args.repin_synthetic_runtime)
@@ -67,6 +75,8 @@ def main(argv=None):
     except (Exception, KeyboardInterrupt) as error:
         result = {'schemaVersion': 'offmenu-refresh-error/1', 'status': 'failed', 'errorCode': 'operation-failed-inspect-local-state', 'operationId': operation_id, **getattr(error, 'refresh_context', {})}
     print(json.dumps(result, sort_keys=True, allow_nan=False))
+    if args.command == 'survey-selected':
+        return 0 if result.get('surveyComplete') is True else 2
     return 2 if result.get('status') == 'failed' else 0
 
 

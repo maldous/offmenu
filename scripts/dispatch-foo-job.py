@@ -24,10 +24,12 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
+MAX_SURVEY_EVIDENCE = 96 * 1024
+MAX_SURVEY_REPORT = 128 * 1024
 ACTIVE_LOCK_FD = None
 CANCEL_EVENT = threading.Event()
 MAX_DIAGNOSTIC_EVIDENCE = 12 * 1024
@@ -76,9 +78,13 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
 
 
+def report_limit(value):
+    return MAX_SURVEY_REPORT if value.get('profile') == 'national-schema-survey' else MAX_REPORT
+
+
 def atomic_json(path, value):
     payload = canonical(value) + b"\n"
-    if len(payload) > MAX_REPORT:
+    if len(payload) > report_limit(value):
         raise JobError("report-limit-exceeded")
     with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".receipt-", delete=False) as f:
         temp = Path(f.name)
@@ -138,6 +144,19 @@ def diagnostic_evidence(value):
         "offmenu-selected-data-inventory/1": ("inspect-selected-datasets.py", "selectedDataInventory"),
     }
     schema = value.get("schemaVersion")
+    if schema == 'offmenu-selected-schema-survey/1':
+        try:
+            # Resolve only this trusted checkout's known diagnostic package.
+            root = str(Path(__file__).resolve().parent.parent)
+            if root not in sys.path:
+                sys.path.insert(0, root)
+            from offmenu.refresh.survey import sanitize_report
+            clean = sanitize_report(value)
+            if len(canonical(clean)) > MAX_SURVEY_EVIDENCE:
+                return {"diagnosticEvidenceError": "diagnostic-evidence-limit-exceeded"}
+            return {"schemaSurvey": clean}
+        except Exception:
+            return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
     if not isinstance(schema, str) or schema not in schemas:
         return {}
     filename, key = schemas[schema]
@@ -261,6 +280,11 @@ def profile_steps(profile, code):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "national-schema-survey":
+        steps += [
+            ("schema-survey-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_refresh_survey*.py"]),
+            ("schema-survey", ["readiness", "schema-survey-tests"], [python, "-B", "-m", "offmenu.refresh", "survey-selected", "--workspace", str(OUTPUT / "schema-surveys")]),
+        ]
     if profile in {"inventory", "smoke", "delivery-diagnostics"}:
         steps.append(("inventory", ["readiness"], [python, "-B", "-m", "offmenu.refresh", "inventory",
                                                   "--root", str(CACHE), "--max-entries", "10000", "--max-depth", "4"]))
@@ -288,6 +312,14 @@ def run_step(step_id, command, code):
             result["durationSeconds"] += previous["durationSeconds"]
         if step_id == "replay-idempotency" and result["status"] == "passed" and result["evidence"].get("resultAction") != "verified-no-op":
             result.update(status="failed", exitCode=3, errorCode="idempotency-not-established")
+        if step_id == "schema-survey" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("schemaSurvey", {})
+            if report.get("surveyComplete") is True and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "held" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            else:
+                result.update(status="failed", exitCode=3, errorCode="schema-survey-result-not-established")
         if step_id in {"ledger-audit", "selected-data-inventory"} and result["status"] in {"passed", "failed"}:
             key = "ledgerAudit" if step_id == "ledger-audit" else "selectedDataInventory"
             report = result["evidence"].get(key, {})
@@ -371,6 +403,10 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
                       diagnosticScope="structural-ledger-and-selected-cache-metadata",
                       corpusAcceptanceEstablished=False)
+    if request["profile"] == "national-schema-survey":
+        report.update(diagnosticScope="selected-no-fr-schema-and-dictionaries",
+                      corpusAcceptanceEstablished=False, candidateGenerationEnabled=False,
+                      sourceContentsUploaded=False, structuralDictionaryLabelsIncluded=True)
     return report
 
 
@@ -399,7 +435,7 @@ def execute(request, sha, code, run_id, attempt):
         if receipt.is_symlink():
             raise JobError("receipt-symlink-forbidden")
         if receipt.exists():
-            if receipt.stat().st_size > MAX_REPORT:
+            if receipt.stat().st_size > report_limit(request):
                 raise JobError("previous-receipt-invalid")
             previous = json.loads(receipt.read_bytes())
             if previous.get("requestIdentity") != identity:
