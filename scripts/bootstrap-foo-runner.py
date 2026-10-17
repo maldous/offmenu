@@ -104,28 +104,93 @@ def check_request(args, log_dir):
     args.expected_run_id = matches[0]['id']
     return {'runId': args.expected_run_id, 'requestIdentityVerified': True}
 
-def registration_probe(log_dir):
-    # Read only .runner identity fields as the dedicated account. Never open
-    # .credentials, .credentials_rsaparams, .env, or runner diagnostic logs.
-    code = """import json,pathlib,sys
+REGISTRATION_DIAGNOSTIC_KEYS = (
+    'filePresent', 'regularFile', 'boundedSize', 'utf8Bom', 'jsonObject',
+    'gitHubUrlPresent', 'gitHubUrlIsString', 'repositoryMatches',
+    'agentNamePresent', 'agentNameIsString', 'runnerNameMatches',
+    'workFolderPresent', 'workFolderIsString', 'workFolderMatches',
+    'agentIdPresent', 'agentIdIsPositiveInteger',
+)
+
+# Official runner v2.337 IOUtil.SaveObject uses Encoding.UTF8 (with BOM).
+# This program runs only as the dedicated user. It reads no credential files
+# and emits only booleans plus the numeric ID of a fully matched registration.
+REGISTRATION_PROBE_CODE = """import json,os,pathlib,stat,sys
 p=pathlib.Path('/srv/offmenu-runner/actions-runner/.runner')
-if not p.exists(): print(json.dumps({'registered':False})); sys.exit(0)
-if p.is_symlink() or not p.is_file(): sys.exit(2)
-v=json.loads(p.read_text())
-valid=(v.get('gitHubUrl','').rstrip('/').lower()=='https://github.com/maldous/offmenu' and v.get('agentName')=='foo-offmenu' and v.get('workFolder')=='_work' and type(v.get('agentId')) is int)
-if not valid: sys.exit(3)
-print(json.dumps({'registered':True,'runnerId':v['agentId']}))
+d={}
+def finish(registered, valid=False, runner_id=None):
+    result={'registered':registered,'identityValid':valid,'diagnostics':d}
+    if valid: result['runnerId']=runner_id
+    print(json.dumps(result))
+    sys.exit(0)
+try:
+    fd=os.open(p,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+except FileNotFoundError:
+    d['filePresent']=p.is_symlink()
+    finish(p.is_symlink())
+except OSError:
+    d['filePresent']=True
+    finish(True)
+d['filePresent']=True
+with os.fdopen(fd,'rb') as f:
+    info=os.fstat(f.fileno())
+    d['regularFile']=stat.S_ISREG(info.st_mode)
+    d['boundedSize']=0 < info.st_size <= 65536
+    if not d['regularFile'] or not d['boundedSize']: finish(True)
+    raw=f.read(65537)
+if len(raw)>65536: finish(True)
+d['utf8Bom']=raw.startswith(bytes((239,187,191)))
+try:
+    v=json.loads(raw.decode('utf-8-sig'))
+except (ValueError,UnicodeError):
+    d['jsonObject']=False
+    finish(True)
+d['jsonObject']=isinstance(v,dict)
+if not d['jsonObject']: finish(True)
+for key in ('gitHubUrl','agentName','workFolder','agentId'):
+    d[key+'Present']=key in v
+for key in ('gitHubUrl','agentName','workFolder'):
+    d[key+'IsString']=isinstance(v.get(key),str)
+d['repositoryMatches']=d['gitHubUrlIsString'] and v['gitHubUrl'].rstrip('/').lower()=='https://github.com/maldous/offmenu'
+d['runnerNameMatches']=v.get('agentName')=='foo-offmenu'
+d['workFolderMatches']=v.get('workFolder')=='_work'
+d['agentIdIsPositiveInteger']=type(v.get('agentId')) is int and 0 < v['agentId'] < 2**64
+valid=all(d[key] for key in ('repositoryMatches','runnerNameMatches','workFolderMatches','agentIdIsPositiveInteger'))
+finish(True,valid,v.get('agentId'))
 """
+
+class RegistrationProbeError(Blocked):
+    def __init__(self, diagnostics, exit_code):
+        super().__init__('existing-registration-identity-invalid')
+        self.diagnostics = diagnostics
+        self.exit_code = exit_code
+
+def registration_probe(log_dir):
     name = 'registration-identity-probe'
-    # Unique files on each call, preserving private immutable local logs.
+    # Unique files preserve private local evidence, containing only the safe
+    # program output. No .runner values or credential bytes are logged.
     probe_dir = Path(tempfile.mkdtemp(prefix='probe-', dir=log_dir))
-    result = captured(name, runner_command('-c', code), probe_dir)
-    if result['status'] != 'passed':
-        blocked('existing-registration-identity-invalid')
-    value = json.loads((probe_dir / (name + '.stdout')).read_bytes())
-    if not isinstance(value, dict) or type(value.get('registered')) is not bool:
-        blocked('registration-probe-invalid')
-    return value
+    result = captured(name, runner_command('-c', REGISTRATION_PROBE_CODE), probe_dir)
+    diagnostics = {}
+    try:
+        value = json.loads((probe_dir / (name + '.stdout')).read_bytes())
+        if not isinstance(value, dict):
+            raise ValueError()
+        raw = value.get('diagnostics', {})
+        diagnostics = {key: raw[key] for key in REGISTRATION_DIAGNOSTIC_KEYS
+                       if isinstance(raw, dict) and type(raw.get(key)) is bool}
+    except (ValueError, OSError, TypeError):
+        raise RegistrationProbeError(diagnostics, result.get('exitCode'))
+    if result['status'] != 'passed' or type(value.get('registered')) is not bool:
+        raise RegistrationProbeError(diagnostics, result.get('exitCode'))
+    if value['registered']:
+        expected = ('repositoryMatches', 'runnerNameMatches', 'workFolderMatches', 'agentIdIsPositiveInteger')
+        if value.get('identityValid') is not True or not all(diagnostics.get(k) is True for k in expected) or type(value.get('runnerId')) is not int or not 0 < value['runnerId'] < 2**64:
+            raise RegistrationProbeError(diagnostics, result.get('exitCode'))
+        return {'registered': True, 'runnerId': value['runnerId'], 'registrationDiagnostics': diagnostics}
+    if diagnostics.get('filePresent') is not False:
+        raise RegistrationProbeError(diagnostics, result.get('exitCode'))
+    return {'registered': False, 'registrationDiagnostics': diagnostics}
 
 def validate_source():
     host.validate_privileged_destination(SOURCE, directory=True, mode=0o755)
@@ -225,6 +290,9 @@ def run_all(args, log_dir):
                 value.setdefault('exitCode', 0)
             except KeyboardInterrupt:
                 value = {'status': 'cancelled', 'errorCode': 'operator-cancelled', 'exitCode': 130}
+            except RegistrationProbeError as exc:
+                value = {'status': 'failed', 'errorCode': str(exc), 'exitCode': exc.exit_code,
+                         'registrationDiagnostics': exc.diagnostics}
             except (Blocked, host.SetupError) as exc:
                 code = str(exc)
                 value = {'status': 'timeout' if code.endswith('timeout') else 'failed',
@@ -265,7 +333,8 @@ def run_all(args, log_dir):
         tty_command(['sudo', '-v'], log_dir, 300)
         state = registration_probe(log_dir)
         if state['registered']:
-            return {'registrationReused': True, 'runnerId': state['runnerId']}
+            return {'registrationReused': True, 'runnerId': state['runnerId'],
+                    'registrationDiagnostics': state['registrationDiagnostics']}
         report['registrationAttempted'] = True
         print('Use a FRESH registration token from the GitHub runner setup page, only in the local prompt.', flush=True)
         tty_command(runner_command(HELPER, 'register'), log_dir, 900)
@@ -273,7 +342,8 @@ def run_all(args, log_dir):
         state = registration_probe(log_dir)
         if not state['registered']:
             blocked('registration-not-established')
-        return {'registrationReused': False, 'runnerId': state['runnerId']}
+        return {'registrationReused': False, 'runnerId': state['runnerId'],
+                'registrationDiagnostics': state['registrationDiagnostics']}
     registration = stage('runner-registration', register, ('runner-install',))
     stage('service-verification', lambda: verify_service(log_dir), ('runner-registration',))
     stage('service-start', lambda: captured('start-runner-service', ['sudo', '-n', 'systemctl', 'start', host.SERVICE], log_dir, 120), ('service-verification',))

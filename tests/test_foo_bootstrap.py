@@ -106,6 +106,57 @@ class BootstrapTests(unittest.TestCase):
         self.assertEqual(state['session'],os.getsid(0))
         self.assertEqual(state['group'],state['pid'])
         self.assertNotEqual(state['group'],os.getpgrp())
+    def probe_fixture(self, root, value=None, raw=None):
+        target=root/'.runner'
+        if raw is not None: target.write_bytes(raw)
+        elif value is not None: target.write_text(json.dumps(value))
+        code=b.REGISTRATION_PROBE_CODE.replace('/srv/offmenu-runner/actions-runner/.runner',str(target))
+        result=subprocess.run([os.sys.executable,'-B','-c',code],env=b.batch.environment(root),
+                              capture_output=True,check=True,timeout=5)
+        return json.loads(result.stdout),result.stdout+result.stderr
+    def valid_registration(self):
+        return {'agentId':123,'agentName':'foo-offmenu','gitHubUrl':'https://github.com/maldous/offmenu',
+                'workFolder':'_work','serverUrl':'PRIVATE_SERVER_URL','unknown':'PRIVATE_SENTINEL'}
+    def test_official_utf8_bom_registration_is_accepted_without_leaking_values(self):
+        with tempfile.TemporaryDirectory() as td:
+            raw=b'\xef\xbb\xbf'+json.dumps(self.valid_registration()).encode()
+            result,output=self.probe_fixture(Path(td),raw=raw)
+        self.assertTrue(result['registered']);self.assertTrue(result['identityValid'])
+        self.assertEqual(result['runnerId'],123);self.assertTrue(result['diagnostics']['utf8Bom'])
+        self.assertNotIn(b'PRIVATE',output);self.assertNotIn(b'https://',output)
+    def test_non_bom_registration_is_also_accepted(self):
+        with tempfile.TemporaryDirectory() as td:
+            result,_=self.probe_fixture(Path(td),self.valid_registration())
+        self.assertTrue(result['identityValid']);self.assertFalse(result['diagnostics']['utf8Bom'])
+    def test_wrong_registration_values_remain_rejected_with_boolean_evidence(self):
+        for key,value,evidence in [('gitHubUrl','https://github.com/other/repo','repositoryMatches'),
+                                   ('agentName','other-runner','runnerNameMatches'),
+                                   ('workFolder','/other','workFolderMatches'),
+                                   ('agentId',True,'agentIdIsPositiveInteger')]:
+            with self.subTest(key=key),tempfile.TemporaryDirectory() as td:
+                fixture=self.valid_registration();fixture[key]=value
+                result,output=self.probe_fixture(Path(td),fixture)
+                self.assertFalse(result['identityValid']);self.assertFalse(result['diagnostics'][evidence])
+                self.assertNotIn('runnerId',result);self.assertNotIn(b'PRIVATE',output)
+                self.assertTrue(all(type(v) is bool for v in result['diagnostics'].values()))
+    def test_missing_registration_is_distinct_from_malformed_or_symlink(self):
+        with tempfile.TemporaryDirectory() as td:
+            result,_=self.probe_fixture(Path(td))
+            self.assertFalse(result['registered']);self.assertFalse(result['diagnostics']['filePresent'])
+            result,_=self.probe_fixture(Path(td),raw=b'\xef\xbb\xbfinvalid-json-PRIVATE')
+            self.assertTrue(result['registered']);self.assertFalse(result['identityValid'])
+            (Path(td)/'.runner').unlink();(Path(td)/'.runner').symlink_to(Path(td)/'missing')
+            result,_=self.probe_fixture(Path(td))
+            self.assertTrue(result['registered']);self.assertFalse(result['identityValid'])
+    def test_parent_probe_strips_unknown_diagnostics_and_preserves_failure_exit(self):
+        def fake(name,command,log_dir):
+            value={'registered':True,'identityValid':False,'diagnostics':{'repositoryMatches':False,'private':'PRIVATE'},'secret':'PRIVATE'}
+            (log_dir/(name+'.stdout')).write_text(json.dumps(value))
+            return {'status':'passed','exitCode':0}
+        with tempfile.TemporaryDirectory() as td,patch.object(b,'captured',side_effect=fake):
+            with self.assertRaises(b.RegistrationProbeError) as caught:b.registration_probe(Path(td))
+        self.assertEqual(caught.exception.diagnostics,{'repositoryMatches':False})
+        self.assertEqual(caught.exception.exit_code,0)
     def test_official_repo_offered_version_pin(self):
         self.assertEqual(b.host.VERSION,'2.337.0')
         self.assertEqual(b.host.ASSETS['x86_64'][1],'70920811a4f8ad4328818682bca5c6469c1c942fab52448868071d0063816613')

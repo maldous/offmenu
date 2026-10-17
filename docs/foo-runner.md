@@ -33,6 +33,8 @@ Until an actual dataset-only cache has been selected, the bootstrap creates `/sr
 
 Omit `--apply` for diagnostics only. Omit `--publish` to keep results local. Raw diagnostic logs stay private and bounded locally; registration/sudo prompts are never logged. If publication is uncertain, inspect PR #30 before requesting another post. Read-only GitHub polling retries transient reads within the deadline; mutation and publication failures are never blindly retried. If interrupted after service start, it may remain running; the final report does not claim rollback. Stop it locally with `sudo systemctl stop offmenu-runner.service` if desired.
 
+If a prior attempt completed registration but stopped at identity validation, rerun the same complete bootstrap from the corrected checkout. It reads GitHub's UTF-8 BOM-formatted settings safely, validates the same repository/name/work folder/numeric runner ID, reuses the matching registration without asking for another token, then continues to service verification and the queued smoke. A mismatch still stops; the report includes only allowlisted presence/type/match booleans, never settings values or credential files. Root-installed helpers remain unchanged by this parser correction.
+
 The sections below document individual stages for inspection and troubleshooting. They are not extra commands required after the complete bootstrap.
 
 ## 1. Check the host from your normal account
