@@ -6,7 +6,9 @@
   "destination_repository": "https://github.com/maldous/offmenu",
   "destination_remote": "git@github.com:maldous/offmenu.git",
   "namespace": "handover/2026-10-17",
-  "method": "Isolated-index Git plumbing only; no working tree, index, branch, reflog, stash or remote history was modified destructively. No merges to main, no resets, no gc/prune, no force pushes."
+  "method": "Isolated-index Git plumbing only; no working tree, index, branch, reflog, stash or remote history was modified destructively. No merges to main, no resets, no gc/prune, no force pushes.",
+  "manifest_revision": 2,
+  "revision_note": "Rev 2: disposition corrections (runtime-metadata-only checkouts), active-writer dual labels, and preservation of non-worktree related locations (offmenu_worker_instructions corpus, worker-02-handover.json)."
  },
  "remote_verification": {
   "ls_remote_refs_checked": 348,
@@ -29,7 +31,8 @@
   "total_refs_pushed": 348,
   "stashes_found": 0,
   "reflog_orphans_found": 0,
-  "fsck_unreachable_commits_recovered": 4
+  "fsck_unreachable_commits_recovered": 4,
+  "related_non_worktree_locations": 4
  },
  "dispositions_legend": [
   "NEWLY_COMMITTED_AND_PUSHED",
@@ -60,14 +63,16 @@
    "branch": "codex/worker05-live-dev-20261016",
    "head": "3eb230d27c6db16fe6369a54b9b908dded274772",
    "dirty_files_excl_deps": 1,
-   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED + ACTIVE_WRITER_CHECKPOINT_NOT_FINAL",
+   "note": "Preservation commit exists, but dev-preview runner processes may resume writing; compare against later runner state."
   },
   {
    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/production-app",
    "branch": "codex/worker05-production-copy-20261016",
    "head": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
    "dirty_files_excl_deps": 44,
-   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED + ACTIVE_WRITER_CHECKPOINT_NOT_FINAL",
+   "note": "Preservation commit exists, but dev-preview runner processes may resume writing; compare against later runner state."
   },
   {
    "path": "/home/user/src/offmenu-enrich11-global76/worker-52",
@@ -81,7 +86,8 @@
    "branch": "feature/freebuff-corpus-manager-20261015",
    "head": "bca0836326114f05f1215bcb0d341ab900f4b59c",
    "dirty_files_excl_deps": 2,
-   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   "disposition": "UNCHANGED_DUPLICATE_REFERENCE",
+   "note": "Uncommitted items are Freebuff runtime metadata only (.agents/ empty, .freebuff/project-id); no valuable work lost; nothing committed. Source work already covered by corpus-manager branch refs."
   },
   {
    "path": "/home/user/src/offmenu-google-idp",
@@ -144,7 +150,8 @@
    "branch": "sync/worker-06/f6cb92ae-20261015",
    "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
    "dirty_files_excl_deps": 1,
-   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED + LOCALLY_RETAINED_RESTRICTED_EXCEPTION",
+   "note": "Deploy evidence committed; token-bearing readbacks, index.sqlite and proposed-preview/ retained locally (see exceptions)."
   },
   {
    "path": "/home/user/src/offmenu-workers/worker-07",
@@ -3135,6 +3142,33 @@
    "disposition": "ACTIVE_WRITER_CHECKPOINT_NOT_FINAL",
    "reason": "Dev-preview runner/wiremock/workerd processes were running at capture and cannot be paused from this session. No file in these trees changed within 60 minutes before capture (checkpoint stable at capture time), but these directories are not labelled final snapshots.",
    "retrieval_step": "Compare against later runner state if these trees resumed writing."
+  }
+ ],
+ "related_non_worktree_locations": [
+  {
+   "path": "/home/user/src/offmenu_worker_instructions",
+   "kind": "not a Git repository; 372 KB 64-worker instruction corpus (instructions-all64.json, MANIFEST/ALL64-MANIFEST, queue scripts, CURRENT-APPROVAL-BLOCKERS.md, queue-log receipts)",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED",
+   "published_at": "docs/handover/2026-10-17/offmenu-worker-instructions/ (this branch, revision 2)",
+   "scan": "0 secret-pattern hits, 0 forbidden filenames"
+  },
+  {
+   "path": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/worker-02-handover.json",
+   "kind": "64-session reconciliation task state (18 KB JSON)",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED",
+   "published_at": "docs/handover/2026-10-17/worker-02-handover.json (this branch, revision 2)"
+  },
+  {
+   "path": "/home/user/src/offmenu-data",
+   "kind": "171 GB datasets/dev-preview state/model outputs",
+   "disposition": "LOCALLY_RETAINED_LARGE_DATA_EXCEPTION",
+   "published_at": null
+  },
+  {
+   "path": "/home/user/src/offmenu-data/dev-preview-20261014/source",
+   "kind": "nested independent Git repository (own root)",
+   "disposition": "BLOCKED_PRECISE_REASON",
+   "published_at": null
   }
  ]
 }

@@ -1,0 +1,17 @@
+{
+  "schema": "all64-local-prepared-package/1",
+  "counts": {
+    "fixedWorkers": 64,
+    "selectableWorkers": 5,
+    "nonExecutableDenialDrafts": 2,
+    "otherWorkersWithoutNewSubmission": 57,
+    "durableContexts": 3
+  },
+  "files": {
+    "instructions-all64.json": "87fc772adaf4e9547fb61d34b3fe6182e88cabfe2569da1051765be114cab142",
+    "queue_all64_instructions.py": "80fd8c1e99c2f1671af0ca45c2fe78eabd1cf1a3f184d9f416d50f558be22588",
+    "CURRENT-APPROVAL-BLOCKERS.md": "ba68c3a1e1f3cb928b56bdecceb9c2edbc0bbd2229da0a838730800cbced4d70"
+  },
+  "no_submissions": true,
+  "no_uploads": true
+}

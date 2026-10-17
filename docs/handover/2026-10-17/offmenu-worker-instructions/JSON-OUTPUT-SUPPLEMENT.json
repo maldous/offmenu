@@ -1,0 +1,11 @@
+{
+  "file": "queue_selected_workers_json.py",
+  "sha256": "900eeeb41bae8f00ca21523073b07f682473bee456032edf37b3ed1abb2041e1",
+  "previous_script_unchanged_sha256": "68b7f4052b924d0d8377d6af7c974a118d9040543de046968c1da117374b02ea",
+  "instructions_sha256": "8477190e6a07d6036f7decbb4bc6127561f8e2e02a40ac81d6ad3b23381173ef",
+  "shared_attempt_log": "queue-log",
+  "previews_prompts": "stderr",
+  "result": "one JSON object on stdout at exit",
+  "scope_unchanged": true,
+  "no_submission_performed": true
+}

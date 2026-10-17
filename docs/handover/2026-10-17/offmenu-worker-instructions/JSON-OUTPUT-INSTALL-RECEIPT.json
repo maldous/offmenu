@@ -1,0 +1,8 @@
+{
+  "installed_sha256": "900eeeb41bae8f00ca21523073b07f682473bee456032edf37b3ed1abb2041e1",
+  "backup": "queue_selected_workers.pre-json-output.py.bak",
+  "logs_preserved": {
+    "/home/user/src/offmenu_worker_instructions/queue-log/26-1eeff8d1cb059b40239db8d4bfab42cc6c616113ebdf5ab82ff8675f9d9a8d56.json": "a2586c2874a6e426157fba5109d7adad1dcbbfd2103acc83521ede41a358c7c4"
+  },
+  "no_queue_invocation": true
+}

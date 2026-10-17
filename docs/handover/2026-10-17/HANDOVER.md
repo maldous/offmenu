@@ -187,3 +187,15 @@ preservation commits are labelled checkpoints, not final snapshots.
 Morgan's cloud agents can take sole implementation ownership once this checkpoint is
 verified. All local checkouts and backups remain in place until Morgan verifies the remote
 handover.
+
+## 11. Non-worktree related locations (rev 2 addition)
+
+- `/home/user/src/offmenu_worker_instructions` — **[verified]** 64-worker instruction corpus
+  (372 KB, not a Git repository): `instructions-all64.json`, `MANIFEST.json`/`ALL64-MANIFEST.json`,
+  `queue_all64_instructions.py`, `CURRENT-APPROVAL-BLOCKERS.md` (approval-blocker ledger with
+  exact bounded authorization wording), `queue-log/` receipts, `TEST-RESULTS.json`.
+  Scan-clean; preserved at `docs/handover/2026-10-17/offmenu-worker-instructions/` on this branch.
+- `worker-02-handover.json` — the 64-session reconciliation task state, preserved at
+  `docs/handover/2026-10-17/worker-02-handover.json` on this branch.
+- `/home/user/src/offmenu-data` (171 GB) and nested `dev-preview/source` repo: unchanged
+  local exceptions per section 9.

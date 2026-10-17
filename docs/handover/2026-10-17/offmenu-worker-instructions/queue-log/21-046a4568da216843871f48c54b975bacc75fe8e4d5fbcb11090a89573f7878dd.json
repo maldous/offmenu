@@ -1,0 +1,13 @@
+{
+  "worker": 21,
+  "thread_id": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "message_sha256": "c7a02d1ca2adaffbd0a124b91c49c8d4b7734152c2ce6e42f5a8a45604bcd378",
+  "utc": "2026-10-16T10:07:00.694939+00:00",
+  "status": "admitted",
+  "execution_confirmed": false,
+  "approval_cleared": false,
+  "returncode": 0,
+  "queue_message_id": "01a1442d-e49e-7742-9162-9f1696a6960d",
+  "output": "Queued message 01a1442d-e49e-7742-9162-9f1696a6960d for thread 01a138f9-d5c4-75c0-9ccb-91dac497b5a9.\n\n",
+  "output_truncated": false
+}

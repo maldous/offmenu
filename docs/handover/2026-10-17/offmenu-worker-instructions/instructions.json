@@ -1,0 +1,344 @@
+{
+  "schema": "human-selected-worker-instructions/1",
+  "items": [
+    {
+      "worker": 6,
+      "thread_id": "01a138a5-afff-7282-acd3-3a457bb91d24",
+      "host": "local",
+      "title": "Adoption accounting documentary delta",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/worker-06-workflow-actual-use-20261016/adoption-count-v1.json",
+          "sha256": "5a8f68c474de69cef5b56b7f1605ddf7212032e14c8890291e14ffa21b8481bd"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/notification-adoption-readiness-20261016/final-review.json",
+          "sha256": "b3421f72169493f14758eb1f118f54acb4d08e2a2a367ab859de6dbd662c3403"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-16/worker64-management-summary/FROZEN-SUMMARY-STAGE1.json",
+          "sha256": "a16979fdfdc3d2c2198870b735622effd444c75b9afe89cb4473cd12181dc36b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/scheduling-summary-evaluation-20261016/stage1-review.json",
+          "sha256": "803cd373292c7faa5313223e830c45d051cb31580a8557dd9a157cba80728fb5"
+        }
+      ],
+      "native_last_turn": "01a14413-2708-7612-ac42-a1d322b6325d",
+      "native_status": "completed",
+      "platform_hold": "6/56 prior actual dispatch denial preserved; human instruction is not native approval",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, directly instruct existing Worker06 to perform only workflow6-current-adoption-delta-from-observed-evidence under UNIVERSAL-LOCAL-WORKFLOW-ADOPTION. This is my bounded documentary instruction, not a blanket release or a substitute for mandatory platform approval.\n\nFirst deduplicate this exact task and check current ownership/holds. Read only these retained inputs and verify their hashes:\n/home/user/src/offmenu-data/worker-06-workflow-actual-use-20261016/adoption-count-v1.json SHA256 5a8f68c474de69cef5b56b7f1605ddf7212032e14c8890291e14ffa21b8481bd\n/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/notification-adoption-readiness-20261016/final-review.json SHA256 b3421f72169493f14758eb1f118f54acb4d08e2a2a367ab859de6dbd662c3403\n/home/user/Documents/Codex/2026-10-16/worker64-management-summary/FROZEN-SUMMARY-STAGE1.json SHA256 a16979fdfdc3d2c2198870b735622effd444c75b9afe89cb4473cd12181dc36b\n/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/scheduling-summary-evaluation-20261016/stage1-review.json SHA256 803cd373292c7faa5313223e830c45d051cb31580a8557dd9a157cba80728fb5\n\nWrite additive documentary outputs only beneath /home/user/src/offmenu-data/worker-06-workflow-actual-use-20261016/adoption-delta-v2. Preserve existing differing outputs and input receipts. Bind the historical count72 and newer14/64 evidence with their original time cuts; distinguish native tool use, configured commands, ledger use, notification adoption and installation. Deduplicate overlapping contexts; keep all64 adoption unknown. Do not recount51/50, repeat reviews, conduct a client census or probe memory. Freeze a result and exact input/output hashes. Record this scoped result in the SAME existing ledger using its normal adapter; leave the parent open. Return the result in this Worker06 conversation; do not message another worker.\n\nPreserve the batchC serving pause, Worker56 and UI denials, all other source/rights/custody/reviewer/production/CIX holds. No source acquisition, source or Git edits, branch/ref/process/settings changes, servers, runtime/UI/serving work, paid calls, new workers/controllers, integration or publication. No review dispatch. Do not retry the earlier Gateway send. If a mandatory platform denial/approval still blocks this task, stop and show me its exact action and supported native approval UI; this text does not clear that platform gate.\n",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 56,
+      "thread_id": "01a139a9-2714-7cb1-9b61-c7f957cb4734",
+      "host": "local",
+      "title": "Barcode design contract documentary delta",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/owner-56-normalization/CORE-BARCODE-IMPLEMENTATION-CONTRACT-20261016-V02/implementation-contract.md",
+          "sha256": "5a2a281abdd1777bbb5c5ce61f63a78aa532ecbf7a7b2318cc89b8e4a528bded"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/owner-56-normalization/CORE-BARCODE-DESIGN-ENDORSEMENT-20261016/design-endorsement.json",
+          "sha256": "8752e8fdc0da6158608b0bb5ba745804c54b11f62357c413a8b777b1e11c82a9"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/barcode-d01-d08-named-design-disposition-20261016.json",
+          "sha256": "6f3300e353bc0df72d00d231330e23cbdb1f967a03624447cd80c661485651bd"
+        },
+        {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-core-barcode-contract02-20261016/review-receipt.json",
+          "sha256": "4b309f9e843bc4454f6ffaea935de9d79f75d9c9c01fc5b06741d7a1f4f9fecc"
+        }
+      ],
+      "native_last_turn": "01a142c0-eccb-77a0-bf8b-76f4709a673b",
+      "native_status": "completed",
+      "platform_hold": "6/56 prior actual dispatch denial preserved; human instruction is not native approval",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, directly select only barcode56-design-endorsement-contract-delta. Author an additive external documentary revision under /home/user/src/offmenu-data/owner-56-normalization/CORE-BARCODE-CONTRACT-ENDORSEMENT-DELTA-20261016. This narrowly permits document authorship only; SAME11 review hold and all execution/promotion holds remain. Preserve D01/D04/D05/D07 design endorsements exactly ; Bind Gateway D01\u2013D08 defaults and mark remaining technical proposals as proposals ; Keep other roles as design nominations until acknowledged operational appointments; no fabricated writer ; List exact execution-phase/writer/input/review prerequisites without minting IDs, migrating stores or changing gold ; Keep no further design choice required from Matthew now; any future execution request must be concrete ; Preserve v0.2 review264 and original contract; SAME11 reviews only genuinely new documentary delta if selected. Read only the following hash-pinned inputs:\n/home/user/src/offmenu-data/owner-56-normalization/CORE-BARCODE-IMPLEMENTATION-CONTRACT-20261016-V02/implementation-contract.md SHA256 5a2a281abdd1777bbb5c5ce61f63a78aa532ecbf7a7b2318cc89b8e4a528bded\n/home/user/src/offmenu-data/owner-56-normalization/CORE-BARCODE-DESIGN-ENDORSEMENT-20261016/design-endorsement.json SHA256 8752e8fdc0da6158608b0bb5ba745804c54b11f62357c413a8b777b1e11c82a9\n/home/user/Documents/Codex/2026-10-13/task-3/barcode-d01-d08-named-design-disposition-20261016.json SHA256 6f3300e353bc0df72d00d231330e23cbdb1f967a03624447cd80c661485651bd\n/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/review-core-barcode-contract02-20261016/review-receipt.json SHA256 4b309f9e843bc4454f6ffaea935de9d79f75d9c9c01fc5b06741d7a1f4f9fecc Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 26,
+      "thread_id": "01a138fe-fd62-7a61-89ad-46808d7da338",
+      "host": "local",
+      "title": "Prospective result reporting only",
+      "message": "I, Matthew, authorize existing Worker26 to send one deduplicated ordinary OffMenu status/completion message for each genuine NEW result to named Gateway01a130cd-91c1-73da-9978-889018a100dd through supported messaging. This is prospective messaging permission only, not work selection. Do not resend historical NI/SL/NE/SA/SO or already handled/uncertain results. Preserve actual denied-action holds; stop if a platform action is rejected. Record intent, actual transport outcome and separate pickup/result evidence. Do not start new source work, resume held routes, change custody, production, CIX, runtime or security settings. Acknowledge here; this grants no approval bypass.",
+      "input_pins": [],
+      "native_last_turn": "01a143a9-33d5-74f1-bfb4-4ce0d47f1816",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": true,
+      "authorization_locus": {
+        "gateway_dispatch": "No Gateway execution dispatch requested; prospective sender permission only",
+        "worker_task_scope": "No task execution or historical replay authorized",
+        "worker_outbound_send": "Proposed direct human prospective status/result permission to named Gateway only; effective acceptance unverified",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      }
+    },
+    {
+      "worker": 10,
+      "thread_id": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+      "host": "local",
+      "title": "Retained receipt metadata only: NO",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-10/NO/45e332e7b83ad2bfe6cc/receipt.json",
+          "sha256": "18d5c4afd2ff565d1cc0b21b800ca4ac397fad258a2f0fac495c46b6447d902b"
+        }
+      ],
+      "native_last_turn": "01a13fd4-4451-7402-9835-c656ebdccf7c",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, lift only the bootstrap-only scope restriction for this exact receipt-metadata prerequisite: Worker10 NO. This does not resume old China discovery, ME normalization, validator work or unrelated reviews. Read only the listed receipt JSON metadata, max1MiB cumulative, hash-verify metadata; stat referenced original lengths only, never read/rehash bodies. Reuse prior own exact qualifications if present. Classify complete originals versus metadata/failed responses; bind exact JSON pointers for release/version/rights/intended-use/attribution and missing prerequisites. No public-access-to-permission inference. Write a small additive qualification JSON under /home/user/src/offmenu-data/user-selected-receipt-metadata-20261016/owner-10/NO/. Record exact scoped pickup/result through the SAME existing ledger normal adapter, leaving country/parent open. Stop on hash mismatch or budget exhaustion. Inputs:\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-10/NO/45e332e7b83ad2bfe6cc/receipt.json SHA256 18d5c4afd2ff565d1cc0b21b800ca4ac397fad258a2f0fac495c46b6447d902b Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 17,
+      "thread_id": "01a138f7-993f-7f20-85dd-53447588096c",
+      "host": "local",
+      "title": "Retained receipt metadata only: NZ,SY",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/NZ/receipt.json",
+          "sha256": "58af057d2a687211f742a1df0604a1b5ef85d8469aca2c1dda1c6c4f2b0a7ad2"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/SY/receipt.json",
+          "sha256": "1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c"
+        }
+      ],
+      "native_last_turn": "01a13fd4-683f-75f0-97b2-e8e2065b4d65",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, lift only the bootstrap-only scope restriction for this exact receipt-metadata prerequisite: Worker17 NZ,SY. This does not resume old China discovery, ME normalization, validator work or unrelated reviews. Read only the listed receipt JSON metadata, max1MiB cumulative, hash-verify metadata; stat referenced original lengths only, never read/rehash bodies. Reuse prior own exact qualifications if present. Classify complete originals versus metadata/failed responses; bind exact JSON pointers for release/version/rights/intended-use/attribution and missing prerequisites. No public-access-to-permission inference. Write a small additive qualification JSON under /home/user/src/offmenu-data/user-selected-receipt-metadata-20261016/owner-17/NZ-SY/. Record exact scoped pickup/result through the SAME existing ledger normal adapter, leaving country/parent open. Stop on hash mismatch or budget exhaustion. Inputs:\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/NZ/receipt.json SHA256 58af057d2a687211f742a1df0604a1b5ef85d8469aca2c1dda1c6c4f2b0a7ad2\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/SY/receipt.json SHA256 1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 21,
+      "thread_id": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+      "host": "local",
+      "title": "Retained receipt metadata only: TD",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/192e6db8a8e35677d60a/receipt.json",
+          "sha256": "5c2737441fae9d8c8fb061bbd186d43f21a710710c83d7ce7ccf36107f4000d5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/30e4af2f7b78e81af9e9/receipt.json",
+          "sha256": "a9bec2c84ff5cb534fc15c2065332d3e9c7d93604a9c16e194a98b102241a386"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/83683ca40b881efb6214/receipt.json",
+          "sha256": "a80539f40e62ca0de114e660b029f9fb3cd7b9d5c20b148a31f89b6a66953cdb"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/83f3a08b8b6a45726bef/receipt.json",
+          "sha256": "2c0f1d625aed36526f671ef2ad5fac3701c7b1fbd92164044827cc1849eb0f02"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/9b0c09c7e721d2a1dfd1/receipt.json",
+          "sha256": "075e9b2b9aff04a6b3f1e8af747af52194ffedd86e47a516892c6a85523468ec"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/c1d68ebfeab158fe624a/receipt.json",
+          "sha256": "3bef831b327ca72ef3d8d9b9dd0dc05e0fdc188103a6ee83964ec53a44b92638"
+        }
+      ],
+      "native_last_turn": "01a14131-2a14-71f2-99f8-51347e865684",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, lift only the bootstrap-only scope restriction for this exact receipt-metadata prerequisite: Worker21 TD. This does not resume old China discovery, ME normalization, validator work or unrelated reviews. Read only the listed receipt JSON metadata, max1MiB cumulative, hash-verify metadata; stat referenced original lengths only, never read/rehash bodies. Reuse prior own exact qualifications if present. Classify complete originals versus metadata/failed responses; bind exact JSON pointers for release/version/rights/intended-use/attribution and missing prerequisites. No public-access-to-permission inference. Write a small additive qualification JSON under /home/user/src/offmenu-data/user-selected-receipt-metadata-20261016/owner-21/TD/. Record exact scoped pickup/result through the SAME existing ledger normal adapter, leaving country/parent open. Stop on hash mismatch or budget exhaustion. Inputs:\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/192e6db8a8e35677d60a/receipt.json SHA256 5c2737441fae9d8c8fb061bbd186d43f21a710710c83d7ce7ccf36107f4000d5\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/30e4af2f7b78e81af9e9/receipt.json SHA256 a9bec2c84ff5cb534fc15c2065332d3e9c7d93604a9c16e194a98b102241a386\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/83683ca40b881efb6214/receipt.json SHA256 a80539f40e62ca0de114e660b029f9fb3cd7b9d5c20b148a31f89b6a66953cdb\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/83f3a08b8b6a45726bef/receipt.json SHA256 2c0f1d625aed36526f671ef2ad5fac3701c7b1fbd92164044827cc1849eb0f02\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/9b0c09c7e721d2a1dfd1/receipt.json SHA256 075e9b2b9aff04a6b3f1e8af747af52194ffedd86e47a516892c6a85523468ec\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/TD/c1d68ebfeab158fe624a/receipt.json SHA256 3bef831b327ca72ef3d8d9b9dd0dc05e0fdc188103a6ee83964ec53a44b92638 Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 36,
+      "thread_id": "01a13998-eb2d-7741-8765-6c570d934587",
+      "host": "local",
+      "title": "Retained receipt metadata only: TN",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/41924e35c05607a1eea4/receipt.json",
+          "sha256": "8f5e5f9eb98f24fdfc52bd2a875332698db7736f6bbb259048a8b63f0ce7a71a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/9aa548408e13e4d36e17/receipt.json",
+          "sha256": "813f36fc09455c0673361a196a187f2d47432a588f10bdb92066e8f0624d8460"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/a72dd0a1c88c9b8956ed/receipt.json",
+          "sha256": "d421c74fc45069a4468c69bf37a3fb1bad5587e577cc000e420eab17627d0940"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/ceb76a86c1cd3ea355fc/receipt.json",
+          "sha256": "6bc1890fc5e70c179765bcf5a5556cc48f448235dc3f62a5fa47c5056cebc828"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/fe5e1f52c41980639a79/receipt.json",
+          "sha256": "2b7671cf8ed3dd9f79e69cf71bb288d5da83a26c82799263d9226538be08b4b8"
+        }
+      ],
+      "native_last_turn": "01a14131-457b-71d1-8c7b-9f9fbe10a6a0",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, lift only the bootstrap-only scope restriction for this exact receipt-metadata prerequisite: Worker36 TN. This does not resume old China discovery, ME normalization, validator work or unrelated reviews. Read only the listed receipt JSON metadata, max1MiB cumulative, hash-verify metadata; stat referenced original lengths only, never read/rehash bodies. Reuse prior own exact qualifications if present. Classify complete originals versus metadata/failed responses; bind exact JSON pointers for release/version/rights/intended-use/attribution and missing prerequisites. No public-access-to-permission inference. Write a small additive qualification JSON under /home/user/src/offmenu-data/user-selected-receipt-metadata-20261016/owner-36/TN/. Record exact scoped pickup/result through the SAME existing ledger normal adapter, leaving country/parent open. Stop on hash mismatch or budget exhaustion. Inputs:\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/41924e35c05607a1eea4/receipt.json SHA256 8f5e5f9eb98f24fdfc52bd2a875332698db7736f6bbb259048a8b63f0ce7a71a\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/9aa548408e13e4d36e17/receipt.json SHA256 813f36fc09455c0673361a196a187f2d47432a588f10bdb92066e8f0624d8460\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/a72dd0a1c88c9b8956ed/receipt.json SHA256 d421c74fc45069a4468c69bf37a3fb1bad5587e577cc000e420eab17627d0940\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/ceb76a86c1cd3ea355fc/receipt.json SHA256 6bc1890fc5e70c179765bcf5a5556cc48f448235dc3f62a5fa47c5056cebc828\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/fe5e1f52c41980639a79/receipt.json SHA256 2b7671cf8ed3dd9f79e69cf71bb288d5da83a26c82799263d9226538be08b4b8 Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    },
+    {
+      "worker": 50,
+      "thread_id": "01a139a5-da98-7d32-ba15-a517eb284913",
+      "host": "local",
+      "title": "Retained receipt metadata only: MV,SD,VC",
+      "input_pins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/13897dad9c915ff4a833/receipt.json",
+          "sha256": "55edcd6caa0914a383abe794d226ce6c610672f60ae345f01af469c93c4e3de8"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/3da11b31095dd318ce8f/receipt.json",
+          "sha256": "7d04bac9ff45f53f6b4e78315165fdb07398a23eaf6984ce262890a3b8b5ced0"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/72646505566faa283034/receipt.json",
+          "sha256": "122f73fc435196032e7d1c15cc48489f84a335baebb7f5be2d271e014835aa4b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/a557b28d7b47a129ea51/receipt.json",
+          "sha256": "870f7bbc19b354843dd812b0e0f55b4dc03359c7369e186ba5ceec5863e68e49"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/2f1f7ee4e098f63737b6/receipt.json",
+          "sha256": "702a17b34d0ad2aad8c19349f0ce33c71d9429e72b1e8f1568e79bb54387214b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/40a71a6c56a6eab8a875/receipt.json",
+          "sha256": "26c6ea779bbc0f8bdb5fdc73aaee472335e732730f4c85294674ae79744913fc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/a6b0ff97d17d802c1cc2/receipt.json",
+          "sha256": "bc785dce014edaf3c7d61368ccb5e32bd9e60f4d0ab50a20e4a922f2af156024"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/d0a270bf30f14afcad10/receipt.json",
+          "sha256": "a51f82fc350cc532e312cbb3c7153c6061262239d8cd09b67d5db43b4ccdefac"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/fcb38dec12cc6d4623da/receipt.json",
+          "sha256": "422bffa27ef201981a0f997404b03cb1a196c3bc5e4617f3c15e7b34b831e7c7"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/ff159c76284278bb375b/receipt.json",
+          "sha256": "16b59e0e26fb982929447d1c7bdfe07865103d89b0555c16495228946ab7b886"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/1e9398972a63d6e94c9c/receipt.json",
+          "sha256": "7cf702881817da6067133ee980e8d0dc3ae0df101a006d0ed9add494769213b0"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/2966b2bee89c6dec8d0e/receipt.json",
+          "sha256": "74ee9e6e9de0a97e3f3529c9a656ed285cebb55f4e0dfbfe05d0a3987e03b73c"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/56db4d33f6aa1878491a/receipt.json",
+          "sha256": "99ab76d2299e5effc31f587a7e4b92f30db7b7fabfeaf74e7cda1f1c77a47e84"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/600abc7a4dade3c7bfc6/receipt.json",
+          "sha256": "da189683f4e49c85dac6a7d3179d0697b92fd361dc108e7f5e3f2aa3e77538e3"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/a1d08237b442cff82a6a/receipt.json",
+          "sha256": "08cbcd826f957eee5aca1a1d36e74bed4158dfc2c75341bd7632d3be72530043"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/dbcb62035e953c1e6641/receipt.json",
+          "sha256": "425ca7ceee4d972b613cb7df09a7e3bc57840f7bfc91cadb3cffab7b78b41309"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/e6aa93184be6e9abe8fd/receipt.json",
+          "sha256": "88a9e83fa477c9692dc2b55fc56ba29b9af051b71bc9f65fe6d2e6292eefb898"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/f498da62bca15673401d/receipt.json",
+          "sha256": "0a59691150625bfafe0ddb354cc59d90c14f4db179545444c7c5753153a05a7d"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/f5cdc920e800c90fea73/receipt.json",
+          "sha256": "a231c89f0eb7a58ffd682d5098f1b15fac7ba5c73a23cce2602181a5c0f50f52"
+        }
+      ],
+      "native_last_turn": "01a14131-7cab-73a2-bc8b-078dbccb1a2a",
+      "native_status": "completed",
+      "platform_hold": "All applicable action/custody/source holds preserved",
+      "queue_eligible": false,
+      "authorization_locus": {
+        "gateway_dispatch": "NOT CLEARED: previous Gateway-targeted instructions do not authorize a replacement direct-worker execution route",
+        "worker_task_scope": "DRAFT ONLY; separate exact direct-worker selection not established by prior Gateway instruction",
+        "worker_outbound_send": "Not authorized by this item",
+        "native_platform_approval": "Excluded; all actual denials remain, requires exact original denied action/context and supported human approval interface",
+        "approval_effect": "UNVERIFIED; local delivery is not Gateway approval or hold release"
+      },
+      "draft_message_not_authorization": "I, Matthew, lift only the bootstrap-only scope restriction for this exact receipt-metadata prerequisite: Worker50 MV,SD,VC. This does not resume old China discovery, ME normalization, validator work or unrelated reviews. Read only the listed receipt JSON metadata, max1MiB cumulative, hash-verify metadata; stat referenced original lengths only, never read/rehash bodies. Reuse prior own exact qualifications if present. Classify complete originals versus metadata/failed responses; bind exact JSON pointers for release/version/rights/intended-use/attribution and missing prerequisites. No public-access-to-permission inference. Write a small additive qualification JSON under /home/user/src/offmenu-data/user-selected-receipt-metadata-20261016/owner-50/MV-SD-VC/. Record exact scoped pickup/result through the SAME existing ledger normal adapter, leaving country/parent open. Stop on hash mismatch or budget exhaustion. Inputs:\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/13897dad9c915ff4a833/receipt.json SHA256 55edcd6caa0914a383abe794d226ce6c610672f60ae345f01af469c93c4e3de8\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/3da11b31095dd318ce8f/receipt.json SHA256 7d04bac9ff45f53f6b4e78315165fdb07398a23eaf6984ce262890a3b8b5ced0\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/72646505566faa283034/receipt.json SHA256 122f73fc435196032e7d1c15cc48489f84a335baebb7f5be2d271e014835aa4b\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/MV/a557b28d7b47a129ea51/receipt.json SHA256 870f7bbc19b354843dd812b0e0f55b4dc03359c7369e186ba5ceec5863e68e49\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/2f1f7ee4e098f63737b6/receipt.json SHA256 702a17b34d0ad2aad8c19349f0ce33c71d9429e72b1e8f1568e79bb54387214b\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/40a71a6c56a6eab8a875/receipt.json SHA256 26c6ea779bbc0f8bdb5fdc73aaee472335e732730f4c85294674ae79744913fc\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/a6b0ff97d17d802c1cc2/receipt.json SHA256 bc785dce014edaf3c7d61368ccb5e32bd9e60f4d0ab50a20e4a922f2af156024\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/d0a270bf30f14afcad10/receipt.json SHA256 a51f82fc350cc532e312cbb3c7153c6061262239d8cd09b67d5db43b4ccdefac\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/fcb38dec12cc6d4623da/receipt.json SHA256 422bffa27ef201981a0f997404b03cb1a196c3bc5e4617f3c15e7b34b831e7c7\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/SD/ff159c76284278bb375b/receipt.json SHA256 16b59e0e26fb982929447d1c7bdfe07865103d89b0555c16495228946ab7b886\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/1e9398972a63d6e94c9c/receipt.json SHA256 7cf702881817da6067133ee980e8d0dc3ae0df101a006d0ed9add494769213b0\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/2966b2bee89c6dec8d0e/receipt.json SHA256 74ee9e6e9de0a97e3f3529c9a656ed285cebb55f4e0dfbfe05d0a3987e03b73c\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/56db4d33f6aa1878491a/receipt.json SHA256 99ab76d2299e5effc31f587a7e4b92f30db7b7fabfeaf74e7cda1f1c77a47e84\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/600abc7a4dade3c7bfc6/receipt.json SHA256 da189683f4e49c85dac6a7d3179d0697b92fd361dc108e7f5e3f2aa3e77538e3\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/a1d08237b442cff82a6a/receipt.json SHA256 08cbcd826f957eee5aca1a1d36e74bed4158dfc2c75341bd7632d3be72530043\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/dbcb62035e953c1e6641/receipt.json SHA256 425ca7ceee4d972b613cb7df09a7e3bc57840f7bfc91cadb3cffab7b78b41309\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/e6aa93184be6e9abe8fd/receipt.json SHA256 88a9e83fa477c9692dc2b55fc56ba29b9af051b71bc9f65fe6d2e6292eefb898\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/f498da62bca15673401d/receipt.json SHA256 0a59691150625bfafe0ddb354cc59d90c14f4db179545444c7c5753153a05a7d\n/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-50/VC/f5cdc920e800c90fea73/receipt.json SHA256 a231c89f0eb7a58ffd682d5098f1b15fac7ba5c73a23cce2602181a5c0f50f52 Preserve every unrelated hold, source rights/privacy/custody, mandatory platform approval, production/CIX pause and UI/runtime pause. No network, source-body reads, normalization, canonical admission, source/Git edits, process/server/configuration/security changes, paid calls, new workers or reviewer dispatch. Do not retry prior rejected Gateway sends. If native approval is required, stop and show its exact requirement; this text does not clear a platform gate. Deduplicate exact prior work before pickup and preserve existing differing outputs. Return result in this conversation, not via cross-chat send, except the separate explicit prospective reporting instruction for26. No blanket release.",
+      "message": "NON-EXECUTABLE DRAFT: prior authorization targeted Gateway. This package does not substitute a direct-worker route. See draft_message_not_authorization for the proposed bounded scope; do not queue it until exact authorization locus is resolved."
+    }
+  ],
+  "excluded": [
+    "Durable Morgan and UI: not local routes",
+    "22 corrected meal helper and31 deficit helper: independent scoped passes already bound",
+    "52 audit delta and68-parent reconciliation: resolved documentary items",
+    "28/48/61: exact task/custody conflicts need named evidence, no blanket release",
+    "Source rights/access, recipe origin, private runtime binding and publication requests: missing exact prerequisites; not authorized by this batch",
+    "Historical other bootstrap owners: no currently selected exact unresolved task established"
+  ],
+  "limitations": "Only Worker26 prospective reporting request is selectable. Seven task drafts are non-executable because prior Gateway-targeted instructions do not establish replacement direct-worker authority. Queue admission never clears Gateway/native holds."
+}

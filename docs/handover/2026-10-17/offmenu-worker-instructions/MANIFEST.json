@@ -1,0 +1,26 @@
+{
+  "schema": "local-worker-package/2",
+  "authorization_effect": "UNVERIFIED",
+  "selectable_workers": [
+    26
+  ],
+  "non_executable_drafts": [
+    6,
+    56,
+    10,
+    17,
+    21,
+    36,
+    50
+  ],
+  "excluded_approval_requirements": {
+    "Gateway": "Exact Gateway dispatch authorization in original durable context; endpoint unavailable locally",
+    "native": "Exact original denial event/context through supported human approval interface; no approval performed",
+    "UI": "Excluded; existing holds unchanged"
+  },
+  "files": {
+    "queue_selected_workers.py": "68b7f4052b924d0d8377d6af7c974a118d9040543de046968c1da117374b02ea",
+    "instructions.json": "8477190e6a07d6036f7decbb4bc6127561f8e2e02a40ac81d6ad3b23381173ef",
+    "README.txt": "ae8f61311fc6f9357a2bdf52e538e91f85335520fb94af01dd32040b0eb05497"
+  }
+}

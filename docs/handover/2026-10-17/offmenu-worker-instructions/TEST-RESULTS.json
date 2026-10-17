@@ -1,0 +1,36 @@
+[
+  {
+    "case": "preview",
+    "status": "preview-only",
+    "exit": 0,
+    "pass": true
+  },
+  {
+    "case": "26-excluded",
+    "status": "stopped",
+    "exit": 2,
+    "pass": true
+  },
+  {
+    "case": "6-denial-excluded",
+    "status": "stopped",
+    "exit": 2,
+    "pass": true
+  },
+  {
+    "case": "cancel",
+    "status": "cancelled",
+    "exit": 0,
+    "pass": true
+  },
+  {
+    "case": "confirmation-cancel",
+    "status": "cancelled",
+    "exit": 0,
+    "pass": true
+  },
+  {
+    "case": "uncertain-prior-attempt-no-resend",
+    "pass": true
+  }
+]
