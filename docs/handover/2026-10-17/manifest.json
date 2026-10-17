@@ -1,0 +1,3140 @@
+{
+ "handover": {
+  "title": "OffMenu repository preservation handover",
+  "date_utc": "2026-10-17",
+  "created_by": "Freebuff Worker 05 (worktree slot 62) handover task",
+  "destination_repository": "https://github.com/maldous/offmenu",
+  "destination_remote": "git@github.com:maldous/offmenu.git",
+  "namespace": "handover/2026-10-17",
+  "method": "Isolated-index Git plumbing only; no working tree, index, branch, reflog, stash or remote history was modified destructively. No merges to main, no resets, no gc/prune, no force pushes."
+ },
+ "remote_verification": {
+  "ls_remote_refs_checked": 348,
+  "sha_exact_matches": 348,
+  "mismatches": 0,
+  "missing": 0,
+  "independent_clean_clone_readback": "PASS (fresh bare clone fetched all 348 refs; 8/8 representative file SHA-256 comparisons identical to source worktree files; orphan and codex-wrapper commits retrievable)",
+  "verified_at_utc": "2026-10-17"
+ },
+ "totals": {
+  "worktrees_discovered": 101,
+  "worktrees_with_uncommitted_work": 18,
+  "preservation_commits_created": 17,
+  "detached_head_branches_created": 3,
+  "orphan_commit_branches_created": 4,
+  "codex_snapshot_trees_wrapped": 41,
+  "local_branches_with_unique_commits_republished": 201,
+  "prior_namespace_refs_republished": 78,
+  "codex_refs_republished": 69,
+  "total_refs_pushed": 348,
+  "stashes_found": 0,
+  "reflog_orphans_found": 0,
+  "fsck_unreachable_commits_recovered": 4
+ },
+ "dispositions_legend": [
+  "NEWLY_COMMITTED_AND_PUSHED",
+  "REPUBLISHED_AT_ORIGINAL_SHA",
+  "ALREADY_REMOTELY_PRESERVED",
+  "LOCALLY_RETAINED_RESTRICTED_OR_LARGE_EXCEPTION",
+  "ACTIVE_WRITER_CHECKPOINT_NOT_FINAL",
+  "BLOCKED_PRECISE_REASON",
+  "UNCHANGED_DUPLICATE_REFERENCE"
+ ],
+ "checkouts": [
+  {
+   "path": "/home/user/src/offmenu",
+   "branch": "main",
+   "head": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+   "dirty_files_excl_deps": 15,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/Documents/Codex/2026-10-16/worker31-shopping-deficit-local/worktree",
+   "branch": "dev/owner31-shopping-deficit-20261016",
+   "head": "b63b3c44a11da6386dfb40c2617564c83e43239a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/app",
+   "branch": "codex/worker05-live-dev-20261016",
+   "head": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/production-app",
+   "branch": "codex/worker05-production-copy-20261016",
+   "head": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+   "dirty_files_excl_deps": 44,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-enrich11-global76/worker-52",
+   "branch": "codex/owner52-enrich11-global76-3eb-20261016",
+   "head": "cd197f733dd50d28cdd86a4440fcdf9b8747f518",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-freebuff",
+   "branch": "feature/freebuff-corpus-manager-20261015",
+   "head": "bca0836326114f05f1215bcb0d341ab900f4b59c",
+   "dirty_files_excl_deps": 2,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-google-idp",
+   "branch": "google-idp",
+   "head": "65805762cf398202a765d1dc9d8ec26cfe035348",
+   "dirty_files_excl_deps": 15,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-pr2-p2",
+   "branch": "bugfix/third-party-pr2-p2-20261015",
+   "head": "00270af072641823985f76a4e95fcc5f26a9c1e9",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-third-party",
+   "branch": "third-party-services",
+   "head": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-01",
+   "branch": "sync/worker-01/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-02",
+   "branch": "codex/owner02-pr29-publisher-update-20261016",
+   "head": "a9f3f4eec12039d2d37aa6627a6cd44b5f7edca9",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-03",
+   "branch": "sync/worker-03/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-04",
+   "branch": "sync/worker-04/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-05",
+   "branch": "codex/worker05-central-c996-20261015",
+   "head": "328d33548f0e1de5179cee316b561a3c690fcca6",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-06",
+   "branch": "sync/worker-06/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-07",
+   "branch": "sync/worker-07/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-08",
+   "branch": "sync/worker-08/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-09",
+   "branch": "feature/autonomous-gitflow-review-20261014",
+   "head": "b61617a6d5896c2ea11bf81c4a3cfa4f93c130bf",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-10",
+   "branch": "sync/worker-10/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-11",
+   "branch": "sync/worker-11/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-12",
+   "branch": "sync/worker-12/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-13",
+   "branch": "sync/worker-13/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-14",
+   "branch": "sync/worker-14/f6cb92ae-20261015",
+   "head": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-15",
+   "branch": "feature/regional-quantity-final-f6-owner15-20261015",
+   "head": "c39c29b9d1e39f6d06bbe1d590f1be8510ef6982",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-16",
+   "branch": "codex/owner16-digest-composition-f6cb92a",
+   "head": "9e2db6ec1398f8fbaf94fe830473ca85df8edb90",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-17",
+   "branch": "sync/worker-17/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 2,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-18",
+   "branch": "sync/worker-18/f6cb92ae-20261015",
+   "head": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-18-ocr-delivery-20261015",
+   "branch": "codex/worker18-ocr-delivery-20261015",
+   "head": "e6f611348423bd9dc3751dec21319e37ce3a486b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-18-ocr-discovery",
+   "branch": "codex/worker18-ocr-discovery-pr16",
+   "head": "e8e68222a15e6c2ee20c8f1633b67c400348185a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-18-ocr-rebind-f6cb92",
+   "branch": "codex/worker18-ocr-rebind-f6cb92",
+   "head": "2cb5f588fe2acea317c2558072b8277b2b7a2c6e",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-19",
+   "branch": "sync/worker-19/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-20",
+   "branch": "sync/worker-20/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-21",
+   "branch": "sync/worker-21/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-22",
+   "branch": "sync/worker-22/f6cb92ae-20261015",
+   "head": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-23",
+   "branch": "sync/worker-23/f6cb92ae-20261015",
+   "head": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-24",
+   "branch": "feature/review-global-baskets-worker24-20261015",
+   "head": "6a98bf34a5b1bfd398ba35a2aae1768c100ade3f",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-25",
+   "branch": "sync/worker-25/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-26",
+   "branch": "sync/worker-26/f6cb92ae-20261015",
+   "head": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-27",
+   "branch": "sync/worker-27/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-28",
+   "branch": "feature/health-preview-closure-owner28-f6cb92ae-20261015",
+   "head": "5de87d949202f95cd81028926f3dc86dbc9c28f6",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-29",
+   "branch": "sync/worker-29/f6cb92ae-20261015",
+   "head": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-30",
+   "branch": "sync/worker-30/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-31",
+   "branch": "bugfix/recipe-pack-provenance-owner31-20261016",
+   "head": "15af87df41f789288630904344a4f7b0f2d49f76",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-32",
+   "branch": "sync/worker-32/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-33",
+   "branch": "sync/worker-33/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-34",
+   "branch": "sync/worker-34/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-35",
+   "branch": "sync/worker-35/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-36",
+   "branch": "sync/worker-36/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-37",
+   "branch": "feature/si-release-definitions-37-20261016",
+   "head": "6ae1ff22ef9640af39fdd4fec7f935b0768f475e",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-38",
+   "branch": "feature/worker38-my-cpi-en-labels-20261015",
+   "head": "b40a208f1d47f0cff2b4c2208f69c6bf7aa5f3fd",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-39",
+   "branch": "feature/pricecatcher-normalization-owner39-f6-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-40",
+   "branch": "feature/reference-discovery-40-20261015",
+   "head": "d67b18b494ec61db9b5be9a830db91f8d6d09b47",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-41",
+   "branch": "sync/worker-41/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-42",
+   "branch": "sync/worker-42/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-42-portability-20261015",
+   "branch": "feature/culinary-names42-evidence-provenance-20261016",
+   "head": "72e8bb592c1e274637fe581f5325187fa04d85fc",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-43",
+   "branch": "sync/worker-43/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-44",
+   "branch": "sync/worker-44/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-45",
+   "branch": "sync/worker-45/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-46",
+   "branch": "sync/worker-46/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-47",
+   "branch": "sync/worker-47/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-48",
+   "branch": "feature/owner48-afcd-portability-20261016",
+   "head": "043db7807f2f1bab2c8d1dbb4b0aa7295236571a",
+   "dirty_files_excl_deps": 8,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-49",
+   "branch": "feature/fineli-selected-export-owner49-20261016",
+   "head": "2528673e4c08ce4d1830912a60a1bf9d7ebf0b23",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-50",
+   "branch": "feature/data-normalize-50-tbca-20261015-a",
+   "head": "ef6bf232c3d0720eb287fc75dba2456fcbb47e2e",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-51",
+   "branch": "feature/data-normalize-owner51-japan-20261015-a",
+   "head": "7a29cfc73d25beb5dc061dfa15be8b6ffe699f6b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-52",
+   "branch": "sync/worker-52/f6cb92ae-20261015",
+   "head": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-53",
+   "branch": "sync/worker-53/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-54",
+   "branch": "feature/owner54-pr24-fr-es-alternatives-20261016",
+   "head": "08beadaf127205a0bf6f99e55d80a6173a870eca",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-55",
+   "branch": "feature/worker55-typed-relationships-f6-20261015",
+   "head": "43eb506d050af1e39c9fa28eca4b58187f5092dd",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-56",
+   "branch": "feature/global-data-56-taxonomy-20261015",
+   "head": "3e7b381b2fb934b665c8a9069b6951cd77676134",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-57",
+   "branch": "sync/worker-57/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-58",
+   "branch": "sync/worker-58/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 3,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-59",
+   "branch": "sync/worker-59/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-60",
+   "branch": "sync/worker-60/f6cb92ae-20261015",
+   "head": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-61",
+   "branch": "feature/61/freebuff-language-qa-20261015",
+   "head": "045b9a59091d350afc97cce3f091986ed3993ab5",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-62",
+   "branch": "bugfix/62/freebuff-repair-diagnosis-20261015",
+   "head": "894313bca2a1966b05beb79c3735d75075377600",
+   "dirty_files_excl_deps": 4,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-63",
+   "branch": "feature/63/freebuff-semantic-candidates-20261015",
+   "head": "b90269eecf3ac060aba97335d99cf1df38762a3a",
+   "dirty_files_excl_deps": 4,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/offmenu-workers/worker-64",
+   "branch": "sync/worker-64/f6cb92ae-20261015",
+   "head": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "dirty_files_excl_deps": 1,
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "path": "/home/user/src/owner03-cleanup-locale/worker-03",
+   "branch": "codex/owner03-waste-report-cli-20261016",
+   "head": "703f6dd79b512ef58cbabb055f0ce81680c077de",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/owner04-d1-delivery/worker-04",
+   "branch": "codex/owner04-d1-final-f6-20261015",
+   "head": "38a7d0b3a86dfd11d582f7f5238215a06abd9103",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/owner04-waste-metadata/worker-04",
+   "branch": "codex/owner04-waste-metadata-20261016",
+   "head": "a1ea137c232935488c2a9668f1cdd133870e21a9",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/owner20-basket-json-cli/worker-20",
+   "branch": "codex/owner20-basket-json-cli-20261016",
+   "head": "6f706494fff57dd57462d99cfb93ff7538d74477",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/worker13-local-paging-adapter/worker-13",
+   "branch": "codex/worker13-local-paging-adapter-20261016",
+   "head": "59a651b2ec82f99cc49d438701e8130e03dea4cc",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/worker22-meal-availability/worker-22",
+   "branch": "codex/worker22-meal-availability-20261016",
+   "head": "59ec1cc73c94deb27f564c63741e1f91cd547bdf",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/home/user/src/worker56-proposal-v2-metadata/worker-56",
+   "branch": "feature/worker56-source-proposal-lookup-3eb-20261016",
+   "head": "ac4fb2a47f0fa422e4054cc65b4b1460097a4c00",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-d1-integration-20261015",
+   "branch": "HEAD",
+   "head": "c7a28fc7f48a1f5464a78f641a98deebcc16bab3",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-dk-m002-922-20261017",
+   "branch": "feature/dk-m002-code-only-20261017",
+   "head": "dfc1777dcb61c2e550529a9394e3d31975c2732c",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-health28-integration-20261016",
+   "branch": "HEAD",
+   "head": "2ea46e713087b744d9c3c14a57949c598ad0deee",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-health28-null-context-20261016",
+   "branch": "HEAD",
+   "head": "791b90382a68ad10272bc73a078da8a0f5be63be",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-identity-environment-third-party-20261016",
+   "branch": "feature/identity-environment-third-party-20261016",
+   "head": "65df4acd070871d8e89e071fe45dd0373af87e5a",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-lifecycle2337-localized-20261017",
+   "branch": "feature/lifecycle2337-localized-20261017",
+   "head": "5a5a7a0f8dd964d24d7310844ee8e7537cc504ba",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-owner03-integration-20261016",
+   "branch": "HEAD",
+   "head": "5153c548ca993dd105c043af2eb4684af9288f62",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-pr10-pr12-preview-20261015",
+   "branch": "HEAD",
+   "head": "4539fcd5f8bd0e839173c33c0c233e190891d981",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-pr13-inventory-20261015",
+   "branch": "HEAD",
+   "head": "af6bf9ecbd0034dda5ce7fc5cc82a613aa1c6c2b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-pr2-ci-portable-20261015",
+   "branch": "HEAD",
+   "head": "3028130619f34cedec4834f107bc7eca1de8230b",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-pr2-develop-composition.ghp6ka1w",
+   "branch": "HEAD",
+   "head": "1ee97433171f8ceb092d3e4862b46dd5cbcef2ea",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-proposal56-integration-20261016",
+   "branch": "HEAD",
+   "head": "4eb07f898e550b4395aea8a89b9af87bf3daee37",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-quantity54-integration-20261016",
+   "branch": "HEAD",
+   "head": "0adcbe7503f69ffeb355c6ca050b74c3afb7a2bb",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-queue-d1-compatibility-integration-20261016",
+   "branch": "HEAD",
+   "head": "f8c0cf7553c2bf143c446a3e5ce606bea74a55a9",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-reference40-integration-20261016",
+   "branch": "HEAD",
+   "head": "01d77ae8eb745f1f7bf22dd5681dfe7e0fa738d2",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-shopping-helper-fix-20261016",
+   "branch": "HEAD",
+   "head": "f5652c8cb7cf1f3aa079ef8e2eab8af3af623ef7",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  },
+  {
+   "path": "/tmp/offmenu-shopping-packaging-20261016",
+   "branch": "HEAD",
+   "head": "d840ea79f928341d69de875439b8664f94c00946",
+   "dirty_files_excl_deps": 0,
+   "disposition": "ALREADY_REMOTELY_PRESERVED_OR_UNCHANGED"
+  }
+ ],
+ "preservation_commits": [
+  {
+   "slug": "worker62-relay-gateway-poller",
+   "worktree": "/home/user/src/offmenu-workers/worker-62",
+   "parent": "894313bca2a1966b05beb79c3735d75075377600",
+   "commit": "231a8e29ef39ddc2231e98a1b5c2a1fa60bba1ef",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker62-relay-gateway-poller",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "offmenu-main-aldi-delivery-corpus",
+   "worktree": "/home/user/src/offmenu",
+   "parent": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+   "commit": "6f5bafdb890752ea2a529975701ca0ae34711ec6",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/offmenu-main-aldi-delivery-corpus",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "offmenu-google-idp-identity",
+   "worktree": "/home/user/src/offmenu-google-idp",
+   "parent": "65805762cf398202a765d1dc9d8ec26cfe035348",
+   "commit": "9ee0a5b54c87685dd6cfa3208cefa7c35f71d44a",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/offmenu-google-idp-identity",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "devpreview-worker05-live-dev-popup",
+   "worktree": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/app",
+   "parent": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "commit": "1b9783c1255b0c67f6d694fe1ee833e011dce3ef",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/devpreview-worker05-live-dev-popup",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "devpreview-worker05-production-app",
+   "worktree": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-5f92-4394-a0e7-ef3a3f7c1879/production-app",
+   "parent": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+   "commit": "6f0f198d82e2b7176243a325f2bed08b8556ebfa",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/devpreview-worker05-production-app",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker48-afcd-normalization",
+   "worktree": "/home/user/src/offmenu-workers/worker-48",
+   "parent": "043db7807f2f1bab2c8d1dbb4b0aa7295236571a",
+   "commit": "afa74592c3e5b942c49a9c2ab080360994082032",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker48-afcd-normalization",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker06-demo-recipe-catalogue-deploy-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-06",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "4b593826f1fc1dfc81c8caf720a7786a1aeb3afc",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker06-demo-recipe-catalogue-deploy-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker10-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-10",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "0bc8eec9542674cb9834f8b25f3ea48bea80de29",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker10-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker12-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-12",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "1ec86d2838bbfb86fe6b1820081ce405ad5abe2e",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker12-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker20-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-20",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "14c8110ee380bff10d9c6bee05758f75581158cb",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker20-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker21-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-21",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "19b6ae891d23fe7a6cc0a66b002e13fe04f31ea7",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker21-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker25-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-25",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "2c459b3f1b8b4a7457274d815a6070862dcdf9a1",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker25-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker58-authed-browser-qa",
+   "worktree": "/home/user/src/offmenu-workers/worker-58",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "9ab350e58307c6cf17a91b5ee604724b39dc8825",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker58-authed-browser-qa",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker63-review-evidence",
+   "worktree": "/home/user/src/offmenu-workers/worker-63",
+   "parent": "b90269eecf3ac060aba97335d99cf1df38762a3a",
+   "commit": "40f3bb8462fa623a50cd35c1ceaafe6199ac5908",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker63-review-evidence",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker01-source-reconciliation",
+   "worktree": "/home/user/src/offmenu-workers/worker-01",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "f98f956617d5b6c495aac1e7c047da9c63220852",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker01-source-reconciliation",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker17-origin-gitflow-report",
+   "worktree": "/home/user/src/offmenu-workers/worker-17",
+   "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "commit": "74cb87bd9c2035fae6b3e10b16c89eb9900f5f6c",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker17-origin-gitflow-report",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "worker64-ci-portability-patch",
+   "worktree": "/home/user/src/offmenu-workers/worker-64",
+   "parent": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "commit": "e0b5bdd91c532cb8c4bd40f412eb1decf696d579",
+   "branch": "refs/heads/handover/2026-10-17/worktree-wip/worker64-ci-portability-patch",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  }
+ ],
+ "detached_head_branches": [
+  {
+   "slug": "health28-null-context",
+   "worktree": "/tmp/offmenu-health28-null-context-20261016",
+   "commit": "791b90382a68ad10272bc73a078da8a0f5be63be",
+   "branch": "refs/heads/handover/2026-10-17/detached/health28-null-context",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "pr10-pr12-preview",
+   "worktree": "/tmp/offmenu-pr10-pr12-preview-20261015",
+   "commit": "4539fcd5f8bd0e839173c33c0c233e190891d981",
+   "branch": "refs/heads/handover/2026-10-17/detached/pr10-pr12-preview",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "slug": "pr2-develop-composition",
+   "worktree": "/tmp/offmenu-pr2-develop-composition.ghp6ka1w",
+   "commit": "1ee97433171f8ceb092d3e4862b46dd5cbcef2ea",
+   "branch": "refs/heads/handover/2026-10-17/detached/pr2-develop-composition",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  }
+ ],
+ "orphan_branches": [
+  {
+   "branch": "handover/2026-10-17/orphan/codex-disposable-integration-preview-20261014",
+   "commit": "1104e45e6fc1ff965e798f7f9bee3ff3e0bb56c6",
+   "note": "Codex disposable integration-preview merge (google-idp x febd6e73); unreferenced (fsck).",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "branch": "handover/2026-10-17/orphan/ui-stock-quantity-fix-a-20261017",
+   "commit": "fd524a8c90c3ddd031ddeb71f7128b464ea18bc2",
+   "note": "Lost UI fix set A (household-model.js, model.js), 2026-10-17 02:02, child of ac2df940.",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "branch": "handover/2026-10-17/orphan/ui-stock-quantity-fix-b-20261017",
+   "commit": "04e08ea83705c7cf50f40abb99da3311a88e2ddf",
+   "note": "Lost UI fix set B (app.js, household-model.js, model.js), 2026-10-17 02:04, divergent sibling of fix A; both preserved separately.",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  },
+  {
+   "branch": "handover/2026-10-17/orphan/worker33-cache-delta-review-20261015",
+   "commit": "41f035afc012a18db0b65988afd99f3dd40d2c33",
+   "note": "Worker33 cache-delta review artifacts (docs/worker33-cache-review-25f99e96/*), 2026-10-15.",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+  }
+ ],
+ "codex_snapshot_refs": {
+  "note": "69 refs in refs/codex/turn-diffs/* (turn-diff checkpoints/captures) pointed at 41 distinct complete worktree snapshot trees (no node_modules). Each tree is wrapped in a parentless provenance commit and published under refs/heads/handover/2026-10-17/codex/<original path>. 2 refs with missing tip objects are BLOCKED (see exceptions).",
+  "tree_wrappers_tsv": "codex-tree-wrappers.tsv",
+  "mappings": [
+   {
+    "original_ref": "refs/codex/turn-diffs/captures/1792162320917/fffa7a64-6d1f-431c-aaff-01ce2468e84a/base",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/captures/1792162320917/fffa7a64-6d1f-431c-aaff-01ce2468e84a/base",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/0037e53fbe2897f8dd30d8f8d72ff7b4/a7875a56743a38deefd6ef682750d192/1792198038880/c90126a5-87b3-4b20-863c-f184378bf29a",
+    "commit": "62517f5a36972fa7ca7c64cdd392c88e9aa72ff0",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/0037e53fbe2897f8dd30d8f8d72ff7b4/a7875a56743a38deefd6ef682750d192/1792198038880/c90126a5-87b3-4b20-863c-f184378bf29a",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/011af0219fdd2769d3ff9da107dec2a4/e058c12667ef4c31be3983647788ec9b/1791951666717/adfccc59-783a-47c1-a456-8f96766ab1fa",
+    "commit": "9e3f20b96b155c829a9bc8bf7fc6162898ba7d66",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/011af0219fdd2769d3ff9da107dec2a4/e058c12667ef4c31be3983647788ec9b/1791951666717/adfccc59-783a-47c1-a456-8f96766ab1fa",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/014f7324b640a8fbee49cb7b83bfa0e6/f8a611380a9f12d7a47a7fd46b1db907/1792196862575/74fef531-fcad-4a52-8dd2-e22eb8ad986f",
+    "commit": "68fba326b25c2f780aaf53bb8f7e571fdf267336",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/014f7324b640a8fbee49cb7b83bfa0e6/f8a611380a9f12d7a47a7fd46b1db907/1792196862575/74fef531-fcad-4a52-8dd2-e22eb8ad986f",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/0b8b114b57c10d7a852f0515889e5459/44fd4978d637d646e66e8c7b6dc5fd13/1792198152086/1d12cb44-5ff6-42ca-ab57-5023f87acd23",
+    "commit": "050fdc21e369eda82e2ab82f768d119252d06dae",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/0b8b114b57c10d7a852f0515889e5459/44fd4978d637d646e66e8c7b6dc5fd13/1792198152086/1d12cb44-5ff6-42ca-ab57-5023f87acd23",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/0c8500666ffa7ad3bef1cae1764a1e79/4a5957a07c12ca265c2fda2288b4620a/1792198022731/55550673-674c-4e65-9384-66efbeab0f53",
+    "commit": "cf6f5ec1b3db78b833aaedb1ea4cb681a2bd5f88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/0c8500666ffa7ad3bef1cae1764a1e79/4a5957a07c12ca265c2fda2288b4620a/1792198022731/55550673-674c-4e65-9384-66efbeab0f53",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/11ec288a6bc9463a59b13dc72c636bd5/ca632f76b978f4de61a15d4aa723775a/1792198107204/fe8755fb-92e5-4cac-9c53-cff0f6e33b99",
+    "commit": "cdfb354b711f0a9192b25177bb1bf567fdbd475f",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/11ec288a6bc9463a59b13dc72c636bd5/ca632f76b978f4de61a15d4aa723775a/1792198107204/fe8755fb-92e5-4cac-9c53-cff0f6e33b99",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/1354e97e200d2daa5839468593f84dc2/5a057ef36cd83f0d8d7fe6b4f01a222d/1792198056618/1826a825-4f80-440a-977e-491a0d75418f",
+    "commit": "afd0f622ef618f18192a36b855f072be40275abf",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/1354e97e200d2daa5839468593f84dc2/5a057ef36cd83f0d8d7fe6b4f01a222d/1792198056618/1826a825-4f80-440a-977e-491a0d75418f",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/1550f4a0afdde53621c1ba524b953c2f/851daa97dd2f9342521740ed53c9ef48/1792197915967/2b67728d-9de7-4f68-9773-a681231b8179",
+    "commit": "8a2442cbbb4a12451bbe1fa63567502802b4eab9",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/1550f4a0afdde53621c1ba524b953c2f/851daa97dd2f9342521740ed53c9ef48/1792197915967/2b67728d-9de7-4f68-9773-a681231b8179",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/158ad7f8f5d7acea14e8c70eff1a47d4/4e8eb02e6095d3b45e7c97110e2c9133/1792198166619/5d1ba25d-095b-42b8-add8-485a1f58a0dc",
+    "commit": "cf6f5ec1b3db78b833aaedb1ea4cb681a2bd5f88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/158ad7f8f5d7acea14e8c70eff1a47d4/4e8eb02e6095d3b45e7c97110e2c9133/1792198166619/5d1ba25d-095b-42b8-add8-485a1f58a0dc",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/16cb85412957e7ba0905462a74d2bc3a/c7538beafc40958fedd5d84a53cc54a1/1792197451873/6fc3380c-fbef-49a0-bd94-150892030b83",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/16cb85412957e7ba0905462a74d2bc3a/c7538beafc40958fedd5d84a53cc54a1/1792197451873/6fc3380c-fbef-49a0-bd94-150892030b83",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/16ebf1d0271d0285a645d0c866fb54c8/7542b65e10f22c3e302ed6864203e002/1792198022367/89b06c23-faf8-495c-bc0a-7cca31e68b37",
+    "commit": "ea1165386500a515b1f415f9907deb14ad51dfde",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/16ebf1d0271d0285a645d0c866fb54c8/7542b65e10f22c3e302ed6864203e002/1792198022367/89b06c23-faf8-495c-bc0a-7cca31e68b37",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/1ac06dfe673fe4f42ea718037aa1ca32/784f8ed284e0626116b70287901b4857/1792198115616/48a92bc1-d655-41da-93d7-30c26f29dad8",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/1ac06dfe673fe4f42ea718037aa1ca32/784f8ed284e0626116b70287901b4857/1792198115616/48a92bc1-d655-41da-93d7-30c26f29dad8",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/1b95f21479aca749b79b8556b2427ed0/a85c8e2c55d95363b230eaec23f688a0/1792198057012/9735d9e0-86f4-4884-ba04-ccee293e17be",
+    "commit": "ea192bc478bb05f7ef014d98914eac7a33bedf88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/1b95f21479aca749b79b8556b2427ed0/a85c8e2c55d95363b230eaec23f688a0/1792198057012/9735d9e0-86f4-4884-ba04-ccee293e17be",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/1fd36b8acb65d8a2e9fddbf0dc9a6f1b/b4fa333fb83d413f2763de8a269ae49d/1792196925840/e262e89d-d409-41c4-b7c2-f0daf520e0cf",
+    "commit": "04689eb01186f06726a1bbf9a03d6045ae5601a6",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/1fd36b8acb65d8a2e9fddbf0dc9a6f1b/b4fa333fb83d413f2763de8a269ae49d/1792196925840/e262e89d-d409-41c4-b7c2-f0daf520e0cf",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/2acda2dafe3fcca1bb1ca18e61bb5633/bab2b43bef72de5005e03f28c93e011c/1792197417962/35d998b3-40ef-4096-9b07-97ce730e4a09",
+    "commit": "14f034fc1a7320dd7a3105165f83c4fb14af169c",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/2acda2dafe3fcca1bb1ca18e61bb5633/bab2b43bef72de5005e03f28c93e011c/1792197417962/35d998b3-40ef-4096-9b07-97ce730e4a09",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/2cd41554a2432c4694282ce226c8d7f9/cdd57ff055f3cd1f8a3fe795d26c8c66/1792198146107/1f82fa1b-4c4d-437c-b622-77668879cbd8",
+    "commit": "984695f4ac1d4a6a13197b49a700c03b58131866",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/2cd41554a2432c4694282ce226c8d7f9/cdd57ff055f3cd1f8a3fe795d26c8c66/1792198146107/1f82fa1b-4c4d-437c-b622-77668879cbd8",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/2f851333a71c1280b22263122e2906ad/1cfc8e44108e1b3d6ebb2ad98404da76/1792197972047/d65f36fd-e3f8-441c-9592-841a9ade131c",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/2f851333a71c1280b22263122e2906ad/1cfc8e44108e1b3d6ebb2ad98404da76/1792197972047/d65f36fd-e3f8-441c-9592-841a9ade131c",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/2fe69f556e3350f0c30c0e610c27f7b7/58cb73690446538dba1f94bd3769b2b6/1792197976101/e718e0fb-7966-4916-86aa-b75668cc05e8",
+    "commit": "cf6f5ec1b3db78b833aaedb1ea4cb681a2bd5f88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/2fe69f556e3350f0c30c0e610c27f7b7/58cb73690446538dba1f94bd3769b2b6/1792197976101/e718e0fb-7966-4916-86aa-b75668cc05e8",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/3240c7b9fcc561f78e71c773de349ad7/0d1f38b33cda2d4b9b035703fa84b176/1792198138859/24bef81b-f074-41f2-a111-622e0905ebe0",
+    "commit": "cf6f5ec1b3db78b833aaedb1ea4cb681a2bd5f88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/3240c7b9fcc561f78e71c773de349ad7/0d1f38b33cda2d4b9b035703fa84b176/1792198138859/24bef81b-f074-41f2-a111-622e0905ebe0",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/3b2b70bc59898a2d241b229a87792b9f/bf560fc3a6fc13192d2ab428e28f2a3a/1792197897560/1559466f-a0f8-492e-8766-f54662f3a7d7",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/3b2b70bc59898a2d241b229a87792b9f/bf560fc3a6fc13192d2ab428e28f2a3a/1792197897560/1559466f-a0f8-492e-8766-f54662f3a7d7",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/4206d35e94e594d51ffdec48cbd38d19/7acbb983b751a58d64c224476ecd9487/1792197903163/d02970de-a622-442c-8e2d-ba3d91587a64",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/4206d35e94e594d51ffdec48cbd38d19/7acbb983b751a58d64c224476ecd9487/1792197903163/d02970de-a622-442c-8e2d-ba3d91587a64",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/45e7b5fde7d70fb16c5b48242ee3d6ea/545727084f6d6b63003dbaf2b22cc6e8/1792197959153/b2939be1-4da8-4612-9e53-409c74c09058",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/45e7b5fde7d70fb16c5b48242ee3d6ea/545727084f6d6b63003dbaf2b22cc6e8/1792197959153/b2939be1-4da8-4612-9e53-409c74c09058",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/4f03296c84ad0e3517e063e3e1b870d3/093cd494c5951c0ed5b0f34356a36f7c/1792198144747/2ee67e0e-193c-426b-a8ad-62035b29ab36",
+    "commit": "1c91f53212660f06c1b2f1d8b5287fed019fd45c",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/4f03296c84ad0e3517e063e3e1b870d3/093cd494c5951c0ed5b0f34356a36f7c/1792198144747/2ee67e0e-193c-426b-a8ad-62035b29ab36",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/5447562aca3c406a4c003980a75276a8/d198cb98192433be3a8fbbc418f84015/1792198082202/45ddc185-b078-445d-b5af-c1681617515f",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/5447562aca3c406a4c003980a75276a8/d198cb98192433be3a8fbbc418f84015/1792198082202/45ddc185-b078-445d-b5af-c1681617515f",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/55214308086532031fa27ef60c13c1d3/486492f8290974933dc2147731a02739/1792198050732/29ed111b-006d-4677-8afc-c415d6da7c02",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/55214308086532031fa27ef60c13c1d3/486492f8290974933dc2147731a02739/1792198050732/29ed111b-006d-4677-8afc-c415d6da7c02",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/5a764858542a69f291bd4a0ad00df3c4/2341d008bf980c9b4b4f582769da621f/1792196879990/d8d54a43-0b46-4a98-9303-1ebfdef22359",
+    "commit": "cf6f5ec1b3db78b833aaedb1ea4cb681a2bd5f88",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/5a764858542a69f291bd4a0ad00df3c4/2341d008bf980c9b4b4f582769da621f/1792196879990/d8d54a43-0b46-4a98-9303-1ebfdef22359",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/5fed28515e13f08127e52812ce5590f2/9ed8627b0785672a9b1b7b6fee90246d/1792198041652/64ac4e36-a9e4-4ceb-9e74-aa0b7106c3e8",
+    "commit": "24b8c83ca47a3fd3a5fd49c5a051e6114265b120",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/5fed28515e13f08127e52812ce5590f2/9ed8627b0785672a9b1b7b6fee90246d/1792198041652/64ac4e36-a9e4-4ceb-9e74-aa0b7106c3e8",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/6075d5b4e844e2cd4c5e112ae6ebc3a6/6b6891ae89a33c334a6323139b062c89/1792198126492/101d847d-1e07-4c90-a524-98eac991c9ab",
+    "commit": "cdabff44e3514a4f1b588a7e80aa8048ea2442da",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/6075d5b4e844e2cd4c5e112ae6ebc3a6/6b6891ae89a33c334a6323139b062c89/1792198126492/101d847d-1e07-4c90-a524-98eac991c9ab",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/641e350d5b59ded989ad0162eb67059d/3c2780a457ff9a2a02c8f9b4869efd51/1792198145624/74e1801b-7d8c-4fbb-8c85-2e7532372c89",
+    "commit": "2bd0a9c5c95a13251bc627de7ca3f8819b8e8921",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/641e350d5b59ded989ad0162eb67059d/3c2780a457ff9a2a02c8f9b4869efd51/1792198145624/74e1801b-7d8c-4fbb-8c85-2e7532372c89",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/65bbd76b6fd64be3d91f7243e33c0440/feb0003d719cb298b01d6c6b2d0d2a08/1792197929343/c066c760-738d-4c3d-a6e8-8c1e20b8cd46",
+    "commit": "55b7f00ffc5cc45fd53aae17330fcdc1c3d0b53a",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/65bbd76b6fd64be3d91f7243e33c0440/feb0003d719cb298b01d6c6b2d0d2a08/1792197929343/c066c760-738d-4c3d-a6e8-8c1e20b8cd46",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/67f9380a3c16a3415a1ea3493f67a4d5/a66783977b0a9c2d36a14a0b81fe1949/1792197897858/0f3b233a-d363-407a-8425-b79cef4f6d0d",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/67f9380a3c16a3415a1ea3493f67a4d5/a66783977b0a9c2d36a14a0b81fe1949/1792197897858/0f3b233a-d363-407a-8425-b79cef4f6d0d",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/6b5566f92bf6625ab6219400e8aefc56/b6329ec891c7f90342b2c47aeba7ec3e/1792196800425/ff47471b-7f72-483e-9066-6e06b08f5aed",
+    "commit": "883f3fec69b46f1d301ce48620a971912e438b52",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/6b5566f92bf6625ab6219400e8aefc56/b6329ec891c7f90342b2c47aeba7ec3e/1792196800425/ff47471b-7f72-483e-9066-6e06b08f5aed",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/7765bd16861d2deef3a4960ae94899b7/e9360c86ec588a3d608cc647b0b99c8c/1792197900563/a4ab74cd-2357-4b3a-8534-89e641ee3752",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/7765bd16861d2deef3a4960ae94899b7/e9360c86ec588a3d608cc647b0b99c8c/1792197900563/a4ab74cd-2357-4b3a-8534-89e641ee3752",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/7b7241f0f2bcbdb41afc97fe48c4d996/c096adbaec59def22d3a0085a15a7981/1792198131758/bc56e242-f430-422f-aa7c-a7f9ca7ea6a6",
+    "commit": "fc8217a28c053e650d7b88ab168852a7e46476f2",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/7b7241f0f2bcbdb41afc97fe48c4d996/c096adbaec59def22d3a0085a15a7981/1792198131758/bc56e242-f430-422f-aa7c-a7f9ca7ea6a6",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/7ba618af75db2e2065b1af713a626ff1/aa2340a8f78e36c81972644451b20ba7/1792196852533/00f1b831-d957-4c56-9997-e0933b5111b0",
+    "commit": "7cfd7bbfb86cc5779d5c75d0519db474fe1e558e",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/7ba618af75db2e2065b1af713a626ff1/aa2340a8f78e36c81972644451b20ba7/1792196852533/00f1b831-d957-4c56-9997-e0933b5111b0",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/7d22192f9a5f60c526f0e820205b928b/9e15be4a2156ff522b3199bdaf1da15c/1791954189501/253c6c27-88da-4bb5-a982-da87a3bd1e20",
+    "commit": "3c45f1c68badc4113201b9171b7cddab10af359a",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/7d22192f9a5f60c526f0e820205b928b/9e15be4a2156ff522b3199bdaf1da15c/1791954189501/253c6c27-88da-4bb5-a982-da87a3bd1e20",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/7e4af7204d27bdb9247880e3f60bfe5f/11406bd4fbb84f981a52067308fbcf53/1792197946160/aedcde89-f0e8-4bb5-930d-1f32b0701c6a",
+    "commit": "5ce2c79044b930151b15470c971f1de009d4f922",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/7e4af7204d27bdb9247880e3f60bfe5f/11406bd4fbb84f981a52067308fbcf53/1792197946160/aedcde89-f0e8-4bb5-930d-1f32b0701c6a",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/80637f34e99c6ad45241998d8dbf023b/41c5fe9a1cdbcc6d1749421898ea35d0/1792196800994/4a0f55c3-7b41-41e1-8acb-98f13f603363",
+    "commit": "04689eb01186f06726a1bbf9a03d6045ae5601a6",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/80637f34e99c6ad45241998d8dbf023b/41c5fe9a1cdbcc6d1749421898ea35d0/1792196800994/4a0f55c3-7b41-41e1-8acb-98f13f603363",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/80754fea94effa0a1df17346b811336d/1492a83776d97fdaabd1a25038a96035/1792198080643/ced11efc-96f2-4c08-b229-4dd0f542e447",
+    "commit": "a2149c8748f4e76205706a41fb6933fe98282a07",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/80754fea94effa0a1df17346b811336d/1492a83776d97fdaabd1a25038a96035/1792198080643/ced11efc-96f2-4c08-b229-4dd0f542e447",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/821afb2526e0d4a46d7b90ad1f371533/02adc41551dfa781843b9aaf558fb3cd/1792198059390/f664cb0c-9097-4dbf-ae7a-e394908289eb",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/821afb2526e0d4a46d7b90ad1f371533/02adc41551dfa781843b9aaf558fb3cd/1792198059390/f664cb0c-9097-4dbf-ae7a-e394908289eb",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/892650b8e52b9824dbf28d5849635501/eaa1456821182db19f477dabef1189dd/1792197977886/39e9bb97-e2e2-493a-b757-12a4140a9213",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/892650b8e52b9824dbf28d5849635501/eaa1456821182db19f477dabef1189dd/1792197977886/39e9bb97-e2e2-493a-b757-12a4140a9213",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/8e045b2e6329239cf40b1c23fbea89e2/3d835a0140b49cb3d19a47f83680ffa4/1792198064080/c02059f8-760b-4f16-afa1-027bc451a915",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/8e045b2e6329239cf40b1c23fbea89e2/3d835a0140b49cb3d19a47f83680ffa4/1792198064080/c02059f8-760b-4f16-afa1-027bc451a915",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/91243f5bcec59910949494d4fdecfc67/7ab6493233176158adde99462d25a83e/1792197938263/c0bbcc9d-2b18-436b-afab-5d9872bbf4d6",
+    "commit": "3181967e81a96671d72ff5d05e256dcf0883f988",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/91243f5bcec59910949494d4fdecfc67/7ab6493233176158adde99462d25a83e/1792197938263/c0bbcc9d-2b18-436b-afab-5d9872bbf4d6",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/91e69349bc89f8ffc2abc29ae260098f/43f0447986cbef8c8f52394ed93f0d3e/1792198045489/152c9f69-4379-4eac-bf1d-58a166b58417",
+    "commit": "f1c440cb5167cfecf8f17c6e096f8bcd92e5f0c1",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/91e69349bc89f8ffc2abc29ae260098f/43f0447986cbef8c8f52394ed93f0d3e/1792198045489/152c9f69-4379-4eac-bf1d-58a166b58417",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/983625ab0849e2891e751d21e9ade6d6/fde75a5c7ba882acbb871ce23fe656e5/1792197938508/8d668b3c-032d-4f96-9eb4-fa9625918cb6",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/983625ab0849e2891e751d21e9ade6d6/fde75a5c7ba882acbb871ce23fe656e5/1792197938508/8d668b3c-032d-4f96-9eb4-fa9625918cb6",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/9b13ca78d6dd9e351308551aa75e25d7/b30f57c4dfe67149f51afb544ef31880/1791951640307/afc88376-506f-46f6-85a3-01ae9e93c069",
+    "commit": "f7c536b44241e28c31af1ca9fcd045a476495b76",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/9b13ca78d6dd9e351308551aa75e25d7/b30f57c4dfe67149f51afb544ef31880/1791951640307/afc88376-506f-46f6-85a3-01ae9e93c069",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/a8b47deb6c9854d631a2836c2d1126a2/a9bbab6f6c84db4e89fe28312146e7af/1791951672277/8eabcdba-49b9-4bd7-83c0-71a1dca50bb6",
+    "commit": "f7c536b44241e28c31af1ca9fcd045a476495b76",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/a8b47deb6c9854d631a2836c2d1126a2/a9bbab6f6c84db4e89fe28312146e7af/1791951672277/8eabcdba-49b9-4bd7-83c0-71a1dca50bb6",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/ad98d58b86ee7b29e492b0c12563a0dd/a914e1300a9952fe0f58d94e3514e3eb/1792198095621/73e19531-730c-4049-9c81-bca9b6f5883f",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/ad98d58b86ee7b29e492b0c12563a0dd/a914e1300a9952fe0f58d94e3514e3eb/1792198095621/73e19531-730c-4049-9c81-bca9b6f5883f",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/aeb302c39567adcba898d31882f2431a/98919e849ca9a03c96e7e69686a415dc/1792197689225/7c404b99-dc2a-4398-921e-9725d693b305",
+    "commit": "799158015b3e02b70875c8ef4aed8768f79fd9e5",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/aeb302c39567adcba898d31882f2431a/98919e849ca9a03c96e7e69686a415dc/1792197689225/7c404b99-dc2a-4398-921e-9725d693b305",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/b34889ecf1ef66514f611647c6a47f18/8fd848e73d6029784c95ccea7fa246d8/1792198070003/9be3bbc2-9102-4262-901f-3f74bfb040a8",
+    "commit": "240bf81bbde4db807f333041fb213edb9b455cef",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/b34889ecf1ef66514f611647c6a47f18/8fd848e73d6029784c95ccea7fa246d8/1792198070003/9be3bbc2-9102-4262-901f-3f74bfb040a8",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/b42051c657f2d7baeb1baa6a7d63c637/82da2bbce6044060598a9c6455d661e9/1792197145790/d0cf9095-b632-47ad-be86-bcf0cb926be3",
+    "commit": "9553a6ff64b923074df85790dfd4c1d4414ab132",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/b42051c657f2d7baeb1baa6a7d63c637/82da2bbce6044060598a9c6455d661e9/1792197145790/d0cf9095-b632-47ad-be86-bcf0cb926be3",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/b87588071923f1da5b0c61ca04928763/c1b58b5ed6e0185967208b24fac4ba44/1792198072656/66f49d9a-f5e4-47fc-9960-4a4cd58677a5",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/b87588071923f1da5b0c61ca04928763/c1b58b5ed6e0185967208b24fac4ba44/1792198072656/66f49d9a-f5e4-47fc-9960-4a4cd58677a5",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/bceec8c21496c02a89afb2d2dfc3c87d/90dc964b9e1d47ae789dd0278151a01d/1792198011037/bb9732b8-c81d-4da0-8145-1a114b4a2128",
+    "commit": "a9c810e7af10b9103b9e17a270f6e67c241aeabc",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/bceec8c21496c02a89afb2d2dfc3c87d/90dc964b9e1d47ae789dd0278151a01d/1792198011037/bb9732b8-c81d-4da0-8145-1a114b4a2128",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/bf6c3c6e498bec66ef979dc94e6eaa21/c01402aae81b9db4d1318bf7761aaae4/1792198018700/77c97368-ff3b-4bfc-88b3-7b4606b2b451",
+    "commit": "fdc2441b6fa2cabb0a4ed66894ec52613d49b299",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/bf6c3c6e498bec66ef979dc94e6eaa21/c01402aae81b9db4d1318bf7761aaae4/1792198018700/77c97368-ff3b-4bfc-88b3-7b4606b2b451",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/c4f81cb57d22aeb0b154eab565058ad5/3e28656921222f25c870d65c8470272a/1792197855651/51455207-f349-4234-8415-9d5bc2a956fd",
+    "commit": "1de2f473ac5fcd19633cbb8f4c691483e6fe3602",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/c4f81cb57d22aeb0b154eab565058ad5/3e28656921222f25c870d65c8470272a/1792197855651/51455207-f349-4234-8415-9d5bc2a956fd",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/c5b220888e0af81a455615b3a343f043/1f237b43bb36b06132c32b0834c7f09f/1792198079637/d64735bf-608c-498d-ba31-527f2e2bb1c0",
+    "commit": "d78436eab4b378b60ef46e9cb29350bf34d95bcb",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/c5b220888e0af81a455615b3a343f043/1f237b43bb36b06132c32b0834c7f09f/1792198079637/d64735bf-608c-498d-ba31-527f2e2bb1c0",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/d90ab5648689e7a9db6c093802342be2/47bb7e6bbdb323c1bdc5eca6d7508c03/1792198008825/82298de2-907b-4782-8365-7bf332faab13",
+    "commit": "3d07b45cc5579384fc768736b34f7d5281950155",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/d90ab5648689e7a9db6c093802342be2/47bb7e6bbdb323c1bdc5eca6d7508c03/1792198008825/82298de2-907b-4782-8365-7bf332faab13",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/dad5e40dcf8571b79109d971fc0fc7b2/bed59ddf8834b09f3e3af1643b2af58e/1792198134586/ac65b908-2d6e-4aee-8d7c-eb6c14545c7e",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/dad5e40dcf8571b79109d971fc0fc7b2/bed59ddf8834b09f3e3af1643b2af58e/1792198134586/ac65b908-2d6e-4aee-8d7c-eb6c14545c7e",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/df37ea8d3df81cf94b2199fba2f9fcad/3f9f5f01adb96824c58bb21458f438b3/1792198082826/dd3ee770-28f7-4c74-bd5a-aec7675874ca",
+    "commit": "10e8c64a6187bbf1a785a5f84daae00767eb2173",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/df37ea8d3df81cf94b2199fba2f9fcad/3f9f5f01adb96824c58bb21458f438b3/1792198082826/dd3ee770-28f7-4c74-bd5a-aec7675874ca",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/e0ed5eaf6bcbcfa989724e95e9f6d71b/5f93e3942d1320910d375483871481b0/1792197719262/5e07e018-6360-4a0e-8e0f-8f19c3f77e00",
+    "commit": "a9c8b152c76f845147bdc8ef6fae8b5ffb181e9c",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/e0ed5eaf6bcbcfa989724e95e9f6d71b/5f93e3942d1320910d375483871481b0/1792197719262/5e07e018-6360-4a0e-8e0f-8f19c3f77e00",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/e4011f81dc12b6e9adb22d724bc1a729/99a471bf5a22885afdd502d3f7567df0/1792198095218/bb5e4381-3f61-4228-816c-c9505dbbaa26",
+    "commit": "7cfd7bbfb86cc5779d5c75d0519db474fe1e558e",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/e4011f81dc12b6e9adb22d724bc1a729/99a471bf5a22885afdd502d3f7567df0/1792198095218/bb5e4381-3f61-4228-816c-c9505dbbaa26",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/e4792a403244fbd7bd7c7763a741cf7d/e8005791e589dde8dc36738288af7cf2/1792197946585/57b04b89-b879-4376-8951-b2a46f7bcffd",
+    "commit": "e2e52a8850c292cf1716cf82e8905936fc2ff793",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/e4792a403244fbd7bd7c7763a741cf7d/e8005791e589dde8dc36738288af7cf2/1792197946585/57b04b89-b879-4376-8951-b2a46f7bcffd",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/e78b4337cae3f4edffc8d3c450c89e14/a65c2b3c759e60b2b3064bdfb7d877c1/1792196840703/540a4f2f-c7d9-4fe6-bff8-b73dde00a9de",
+    "commit": "9317f3b50c0ba81f04557c9f334e60ea856ce581",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/e78b4337cae3f4edffc8d3c450c89e14/a65c2b3c759e60b2b3064bdfb7d877c1/1792196840703/540a4f2f-c7d9-4fe6-bff8-b73dde00a9de",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/ed23ea261f3691dd7b31a13ca449b5ed/05e12150119aa86f87fc434eafeef501/1792197853815/b35a09d7-116e-40b5-8a99-2cadc07ee6f4",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/ed23ea261f3691dd7b31a13ca449b5ed/05e12150119aa86f87fc434eafeef501/1792197853815/b35a09d7-116e-40b5-8a99-2cadc07ee6f4",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/f0414a94bf03c480ed9a6ee9630eb23e/5f125d092578aa7c80fb8b50f9ac85bf/1792197915895/db3f1331-2953-4cc6-a65f-2528f4478e68",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/f0414a94bf03c480ed9a6ee9630eb23e/5f125d092578aa7c80fb8b50f9ac85bf/1792197915895/db3f1331-2953-4cc6-a65f-2528f4478e68",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/f2083d0c7a4702245e45451c2e73d3b1/f679375c3b9b165acc10bc971bb94513/1792198070953/1b82ad18-0de3-4482-9e3f-22b84c27441d",
+    "commit": "afd0f622ef618f18192a36b855f072be40275abf",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/f2083d0c7a4702245e45451c2e73d3b1/f679375c3b9b165acc10bc971bb94513/1792198070953/1b82ad18-0de3-4482-9e3f-22b84c27441d",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/fa481105a10163fa995e8bd526a27c1a/63b5ad0e22db57b6157c94e15fc4c393/1792198066563/3972ad0b-126c-43a6-870c-ee6c742533fc",
+    "commit": "8694beabf3e26a0ac45a5d0a95b8f13b2c07c821",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/fa481105a10163fa995e8bd526a27c1a/63b5ad0e22db57b6157c94e15fc4c393/1792198066563/3972ad0b-126c-43a6-870c-ee6c742533fc",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   },
+   {
+    "original_ref": "refs/codex/turn-diffs/checkpoints/fc396d81de4e18ce70fed2be4dac1f88/2306e92360b7bafe3157e800def96f2a/1792197414087/8c67e145-c27e-48ab-be2e-8f0d8094544f",
+    "commit": "532fe559d13f27a5f84c86b6f7177c1924e63516",
+    "handover_ref": "handover/2026-10-17/codex/turn-diffs/checkpoints/fc396d81de4e18ce70fed2be4dac1f88/2306e92360b7bafe3157e800def96f2a/1792197414087/8c67e145-c27e-48ab-be2e-8f0d8094544f",
+    "disposition": "NEWLY_COMMITTED_AND_PUSHED"
+   }
+  ]
+ },
+ "branch_refs": [
+  {
+   "original_ref": "bugfix/62/freebuff-repair-diagnosis-20261015",
+   "commit": "894313bca2a1966b05beb79c3735d75075377600",
+   "handover_ref": "handover/2026-10-17/branch/bugfix/62/freebuff-repair-diagnosis-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "bugfix/recipe-pack-provenance-owner31-20261016",
+   "commit": "15af87df41f789288630904344a4f7b0f2d49f76",
+   "handover_ref": "handover/2026-10-17/branch/bugfix/recipe-pack-provenance-owner31-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner02-receipt-identity-20261016",
+   "commit": "8ba00e638a1855c8b738298b31d7e1d0efa40d8b",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner02-receipt-identity-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner03-cleanup-f6cb-reviewed-20261015",
+   "commit": "5eb9bc6da8825843bc8b5350f97bbcfee24cc791",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner03-cleanup-f6cb-reviewed-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner03-cleanup-locale-20261015",
+   "commit": "09b00f3c7198b5646492602862fe1a7215b28631",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner03-cleanup-locale-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner03-receipt-regression-b132392-20261016",
+   "commit": "302c9bfc8b1f3d44263e11326fcdcc63f8e3195e",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner03-receipt-regression-b132392-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner03-waste-report-cli-20261016",
+   "commit": "703f6dd79b512ef58cbabb055f0ce81680c077de",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner03-waste-report-cli-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner04-d1-delivery-20261015",
+   "commit": "c949a7a7d1633646ef8ef23ce797292ac6e5e7af",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner04-d1-delivery-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner04-waste-metadata-20261016",
+   "commit": "a1ea137c232935488c2a9668f1cdd133870e21a9",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner04-waste-metadata-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner20-basket-json-cli-20261016",
+   "commit": "6f706494fff57dd57462d99cfb93ff7538d74477",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner20-basket-json-cli-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/owner52-enrich11-global76-3eb-20261016",
+   "commit": "cd197f733dd50d28cdd86a4440fcdf9b8747f518",
+   "handover_ref": "handover/2026-10-17/branch/codex/owner52-enrich11-global76-3eb-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker13-local-paging-adapter-20261016",
+   "commit": "59a651b2ec82f99cc49d438701e8130e03dea4cc",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker13-local-paging-adapter-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-google-return-7e5a175",
+   "commit": "dcd53964fba721854d421fdc0bd04b1c9bcc27c7",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-google-return-7e5a175",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-google-return-84eefe60",
+   "commit": "1e94895b29b99de450b32d88f4bfbdda5281368b",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-google-return-84eefe60",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-owner03-09b00f3-review",
+   "commit": "5e8790ae7e2c17e3ce9390113010e65fbeb565cd",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-owner03-09b00f3-review",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-owner03-31a5eec-review",
+   "commit": "4f6cf5c6d7d3be96cc50e652a7fedf492e199c6a",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-owner03-31a5eec-review",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-owner03-5eb9bc6-review",
+   "commit": "13516d30a622909db5e7408f83113c9d30ab8756",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-owner03-5eb9bc6-review",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker14-preference-composition-review-20261015",
+   "commit": "6abfc8aba180bb6d247ae379bfd0928af1f42a85",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker14-preference-composition-review-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker18-ocr-delivery-20261015",
+   "commit": "e6f611348423bd9dc3751dec21319e37ce3a486b",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker18-ocr-delivery-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "codex/worker22-meal-availability-20261016",
+   "commit": "59ec1cc73c94deb27f564c63741e1f91cd547bdf",
+   "handover_ref": "handover/2026-10-17/branch/codex/worker22-meal-availability-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "dev/owner31-shopping-deficit-20261016",
+   "commit": "b63b3c44a11da6386dfb40c2617564c83e43239a",
+   "handover_ref": "handover/2026-10-17/branch/dev/owner31-shopping-deficit-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/61/freebuff-language-qa-20261015",
+   "commit": "045b9a59091d350afc97cce3f091986ed3993ab5",
+   "handover_ref": "handover/2026-10-17/branch/feature/61/freebuff-language-qa-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/63/freebuff-semantic-candidates-20261015",
+   "commit": "b90269eecf3ac060aba97335d99cf1df38762a3a",
+   "handover_ref": "handover/2026-10-17/branch/feature/63/freebuff-semantic-candidates-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/actual-recipe-inventory-owner07-20261014",
+   "commit": "45080c376be9a91faf0d9846a82447931676a10f",
+   "handover_ref": "handover/2026-10-17/branch/feature/actual-recipe-inventory-owner07-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/aggregate-privacy-owner59-20261014",
+   "commit": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
+   "handover_ref": "handover/2026-10-17/branch/feature/aggregate-privacy-owner59-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/basket-quantity-caller-20261014",
+   "commit": "3f9dafb75088437dda59668f5b70f967693bf0bb",
+   "handover_ref": "handover/2026-10-17/branch/feature/basket-quantity-caller-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/cache-dependencies-20261014",
+   "commit": "f2e195bdcc5f00c0bccf1c4a475255b9211e5184",
+   "handover_ref": "handover/2026-10-17/branch/feature/cache-dependencies-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/cache-request-budget-20261014",
+   "commit": "00d07283f014beeda82d3f16338e8814acbcb29d",
+   "handover_ref": "handover/2026-10-17/branch/feature/cache-request-budget-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/checkpoint-inventory-recovery-20261014",
+   "commit": "163e198ca98dd0d7898ce45cd019eb12b9a69c6a",
+   "handover_ref": "handover/2026-10-17/branch/feature/checkpoint-inventory-recovery-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/common-package-caller-20261014",
+   "commit": "f99c308cac7e6d7033d17abdabcb07aead5c8e5c",
+   "handover_ref": "handover/2026-10-17/branch/feature/common-package-caller-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/corpus-capacity-custody-reconciliation-20261014",
+   "commit": "63fceac6563721c18f65a4790ff0a4df9a3a6148",
+   "handover_ref": "handover/2026-10-17/branch/feature/corpus-capacity-custody-reconciliation-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/culinary-names-42-20261015",
+   "commit": "4a6bf7179567d67c9dbbb4f480b22ca951410510",
+   "handover_ref": "handover/2026-10-17/branch/feature/culinary-names-42-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/data-normalize-owner51-japan-20261015-a",
+   "commit": "7a29cfc73d25beb5dc061dfa15be8b6ffe699f6b",
+   "handover_ref": "handover/2026-10-17/branch/feature/data-normalize-owner51-japan-20261015-a",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-australia-afcd-20261014",
+   "commit": "2bd5061f55979024cdc25626e500927daadeb9e0",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-australia-afcd-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-brazil-tbca-20261014",
+   "commit": "ccbbabd36854dbd24f9b2bc0107ae474de76fbb2",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-brazil-tbca-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-canada-cnf-20261014",
+   "commit": "d7ce7f7027b8568ebf98751934c7e898eda27aa6",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-canada-cnf-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-congo-basin-fao-20261014",
+   "commit": "4168ae2c8be6f535193df92d595b4e944748720e",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-congo-basin-fao-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-denmark-frida-20261014",
+   "commit": "7658953a0b6d05958406fd22fd6bee556472fb36",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-denmark-frida-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-france-ciqual-20261014",
+   "commit": "d3250fca994501be60c8ba159c0bf9635b91dc17",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-france-ciqual-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-france-rappelconso-20261014",
+   "commit": "3bee93dbf9b6b2a8a381513e0526675ae6cd077d",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-france-rappelconso-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-germany-bls-20261014",
+   "commit": "9e077eebec180b2f200e617ce723af2449de6a33",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-germany-bls-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-india-ifct-20261014",
+   "commit": "3fb6ee105d8d9c7bd09e50587b0ccf7716ad9e0b",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-india-ifct-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-indonesia-tkpi-20261014",
+   "commit": "38ff7e45179e4eefae4af0f637c5262869db4968",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-indonesia-tkpi-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-italy-crea-20261014",
+   "commit": "770c0b57eff70aa23c329c6026ba87086671f020",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-italy-crea-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-japan-mext-20261014",
+   "commit": "17275322a1a99a925364b321fca8dfbc6d8fed0a",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-japan-mext-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-kenya-composition-20261014",
+   "commit": "6a9a85f752f6861a2ffd42d8f14e13c40e152240",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-kenya-composition-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-korea-rda-20261014",
+   "commit": "606385a70f89d7f57309ab3e2964fb4633c87ed2",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-korea-rda-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-malaysia-pricecatcher-20261014",
+   "commit": "86fda6983bb600930ef3be0d493a00bf5a0d5350",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-malaysia-pricecatcher-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-netherlands-nevo-20261014",
+   "commit": "7a8a6f393eb27aec1f6aae66c338f7a06a1fe080",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-netherlands-nevo-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-norway-matvaretabellen-20261014",
+   "commit": "6d7a617e1c6fc671d377731bc54faf6aedad026e",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-norway-matvaretabellen-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-pacific-pndb-20261014",
+   "commit": "4c17ad172a6fc3067e5e94b07e9be7023d5377bf",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-pacific-pndb-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-portugal-portfir-20261014",
+   "commit": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-portugal-portfir-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-south-africa-samrc-20261014",
+   "commit": "7d1905a12390445d245e4b2a0a9c613cd9def40f",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-south-africa-samrc-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-swiss-composition-20261014",
+   "commit": "3328cc6b76d1b2786c01352cc39fb2746914fa35",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-swiss-composition-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-uk-cofid-20261014",
+   "commit": "74d95fc4a0e23ffa28ce7288515935b1eade1d0d",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-uk-cofid-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-uk-fsa-alerts-20261014",
+   "commit": "20863845eb5f3affcdc2133a59c0a5a3408cbed1",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-uk-fsa-alerts-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-us-openfda-recalls-20261014",
+   "commit": "eb47657e703c5f7f5c128182bc37f639b46a020a",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-us-openfda-recalls-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dataset-west-africa-fao-20261014",
+   "commit": "7fe849b0297a2fbe5a97457c206afd230cc3dd67",
+   "handover_ref": "handover/2026-10-17/branch/feature/dataset-west-africa-fao-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/dk-m002-code-only-20261017",
+   "commit": "dfc1777dcb61c2e550529a9394e3d31975c2732c",
+   "handover_ref": "handover/2026-10-17/branch/feature/dk-m002-code-only-20261017",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/durable-budget-consumer-20261014",
+   "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+   "handover_ref": "handover/2026-10-17/branch/feature/durable-budget-consumer-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/durable-queue-consumer-20261014",
+   "commit": "61192ddba1c40747b974a45d5ed2fdad368d6c3d",
+   "handover_ref": "handover/2026-10-17/branch/feature/durable-queue-consumer-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/fineli-reader-owner49-20261016",
+   "commit": "c9e958cee0391265579eeebb697adf91ebd95466",
+   "handover_ref": "handover/2026-10-17/branch/feature/fineli-reader-owner49-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/fineli-selected-export-owner49-20261016",
+   "commit": "2528673e4c08ce4d1830912a60a1bf9d7ebf0b23",
+   "handover_ref": "handover/2026-10-17/branch/feature/fineli-selected-export-owner49-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/freebuff-corpus-manager-20261015",
+   "commit": "bca0836326114f05f1215bcb0d341ab900f4b59c",
+   "handover_ref": "handover/2026-10-17/branch/feature/freebuff-corpus-manager-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/global-data-53-recipe-geography-20261015",
+   "commit": "8d468982f7bc905af01d5262c8eabb8db7051e96",
+   "handover_ref": "handover/2026-10-17/branch/feature/global-data-53-recipe-geography-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/global-ph-philfct-37-20261015",
+   "commit": "3d393eca8e2a4b6077673ee9bdc93bb1330253ca",
+   "handover_ref": "handover/2026-10-17/branch/feature/global-ph-philfct-37-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/global-regional-37-tw-additive-operator-20261015",
+   "commit": "7ded57a840bc078fa3da5ad21b85a0193e456759",
+   "handover_ref": "handover/2026-10-17/branch/feature/global-regional-37-tw-additive-operator-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/google-idp-local-session-20261014",
+   "commit": "8711147752d58b7d93ed3fed4c5047cd87ee4cdb",
+   "handover_ref": "handover/2026-10-17/branch/feature/google-idp-local-session-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/hosted-menu-demo-owner06-20261014",
+   "commit": "8f23c3d5026cb40d769bed42ad0b06ed0eb2d68d",
+   "handover_ref": "handover/2026-10-17/branch/feature/hosted-menu-demo-owner06-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/identity-environment-third-party-20261016",
+   "commit": "65df4acd070871d8e89e071fe45dd0373af87e5a",
+   "handover_ref": "handover/2026-10-17/branch/feature/identity-environment-third-party-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/intake-extension-20261014",
+   "commit": "59d8bca52cc3281741862d17f2579668d6e6140d",
+   "handover_ref": "handover/2026-10-17/branch/feature/intake-extension-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/interactive-preview-owner05-20261014",
+   "commit": "434b56c0200671debfceb03f7aed0889509c51be",
+   "handover_ref": "handover/2026-10-17/branch/feature/interactive-preview-owner05-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/lean-check-measurements-20261014",
+   "commit": "6328ef598cf6df3cdb8b1c32b1d5381358bd9782",
+   "handover_ref": "handover/2026-10-17/branch/feature/lean-check-measurements-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/lifecycle2337-localized-20261017",
+   "commit": "5a5a7a0f8dd964d24d7310844ee8e7537cc504ba",
+   "handover_ref": "handover/2026-10-17/branch/feature/lifecycle2337-localized-20261017",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-app-integration-owner02-20261014",
+   "commit": "c996bb469621c57820007c261585aba5faddd519",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-app-integration-owner02-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-36-20261014",
+   "commit": "12a557de0fb9d25040d139d292baadec91dc60e2",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-36-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-37-20261014",
+   "commit": "cb3a05581c88ffa3025e7426a4f2d50f5ae0326b",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-37-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-38-20261014",
+   "commit": "94a45cc275879f869ceae9508679307f9ba4b99f",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-38-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-39-20261014",
+   "commit": "38f8aedee9c8d30950db1b6d2ae5e82b520e894b",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-39-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-40-20261014",
+   "commit": "0fa3614f5a7b85a5d3b95999d15c7e168bbc1837",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-40-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-41-20261014",
+   "commit": "9450bb7ade9ba0110290b23e071cc03a83b11ee3",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-41-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-42-20261014",
+   "commit": "88e3ca4164c82d8da06d51d8a6265beb0a0cbf31",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-42-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/local-data-validation-43-20261014",
+   "commit": "bf63dd2f0f88928de31ec35eff93e16765f4c6a5",
+   "handover_ref": "handover/2026-10-17/branch/feature/local-data-validation-43-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/locale-coverage-20261014",
+   "commit": "f412001dd40e7fc30b57de1205e05767b1763c40",
+   "handover_ref": "handover/2026-10-17/branch/feature/locale-coverage-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/locale-coverage-consumer-32-20261014",
+   "commit": "1647460d1db6185a9f09681ce91514d243bcf27f",
+   "handover_ref": "handover/2026-10-17/branch/feature/locale-coverage-consumer-32-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/lot-restriction-consumer-28-20261014",
+   "commit": "12b8d7a7526d66a74762b62b7e175a1e713a2452",
+   "handover_ref": "handover/2026-10-17/branch/feature/lot-restriction-consumer-28-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/meal-context-owner33-20261014",
+   "commit": "5aabcbf8f3cd6d2d57eb3c84eb0d513e30b59ca2",
+   "handover_ref": "handover/2026-10-17/branch/feature/meal-context-owner33-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/meal-context-owner33-post-pr10-20261015t110522460346z",
+   "commit": "f8deb8b99e227fbc297e95d704d480387bcbe4db",
+   "handover_ref": "handover/2026-10-17/branch/feature/meal-context-owner33-post-pr10-20261015t110522460346z",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/meal-plan-consumer-19-20261014",
+   "commit": "c91a780ccbf3e2b9dcdb33cf1c6d9f27c9e2de2f",
+   "handover_ref": "handover/2026-10-17/branch/feature/meal-plan-consumer-19-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/named-reference-composition22-20261015",
+   "commit": "c8d0a991bad2eb0dbd86cda4c8b6d6b5bb5f258c",
+   "handover_ref": "handover/2026-10-17/branch/feature/named-reference-composition22-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/norm-reference-20261014",
+   "commit": "beebcce0d7b77eebe39035ce7c96531b3acc2114",
+   "handover_ref": "handover/2026-10-17/branch/feature/norm-reference-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/owner54-quantity-delivery-20261015",
+   "commit": "2b6fa26099bd0c831e9e7719cb53d671e8defc70",
+   "handover_ref": "handover/2026-10-17/branch/feature/owner54-quantity-delivery-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/ownership-evidence-20261014",
+   "commit": "7965b02a3d48b62e881e26d8c11d6f34fc823df7",
+   "handover_ref": "handover/2026-10-17/branch/feature/ownership-evidence-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/pack-cost-20261014",
+   "commit": "0f51ea301045435c32294b73ed1db12a7ecd9f16",
+   "handover_ref": "handover/2026-10-17/branch/feature/pack-cost-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/plan-templates-20261014",
+   "commit": "38dcb3f8a542a0c8d3f1d3341c1e4a4a779a1d18",
+   "handover_ref": "handover/2026-10-17/branch/feature/plan-templates-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/portable-checkpoint-metadata-20261014",
+   "commit": "33687dc5d5d3333f57c95cbf89d642fe0fd9ec89",
+   "handover_ref": "handover/2026-10-17/branch/feature/portable-checkpoint-metadata-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/pr2-ci-portability-20261014",
+   "commit": "c6fffaa636e08ed9a8c5b94dcbd5acf0b8913bc8",
+   "handover_ref": "handover/2026-10-17/branch/feature/pr2-ci-portability-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/preference-model-20261014",
+   "commit": "691f6f81cf3107a67a51641c2d7d9d9b5e85045e",
+   "handover_ref": "handover/2026-10-17/branch/feature/preference-model-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/preservation-receipts-owner64-20261015",
+   "commit": "2bf70f7e8212afe124660df8088e98c3dffe97cf",
+   "handover_ref": "handover/2026-10-17/branch/feature/preservation-receipts-owner64-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/recall-scope-20261014",
+   "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8",
+   "handover_ref": "handover/2026-10-17/branch/feature/recall-scope-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/receipt-review-20261014",
+   "commit": "e3149b555789231b525b732e5b127fb7ba8d578d",
+   "handover_ref": "handover/2026-10-17/branch/feature/receipt-review-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/recipe-pack-owner31-20261016",
+   "commit": "a34269e341b3aad71337884d45ab7253247bdbe2",
+   "handover_ref": "handover/2026-10-17/branch/feature/recipe-pack-owner31-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/reference-view-consumer-22-20261014",
+   "commit": "a14382e4e2a9f5e85c5829759530dbbe4dff30d6",
+   "handover_ref": "handover/2026-10-17/branch/feature/reference-view-consumer-22-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/regional-quantity-delivery-owner15-20261015",
+   "commit": "458cb55830ff1666db6a0134bf06fd01efd5f0aa",
+   "handover_ref": "handover/2026-10-17/branch/feature/regional-quantity-delivery-owner15-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/regional-quantity-final-f6-owner15-20261015",
+   "commit": "c39c29b9d1e39f6d06bbe1d590f1be8510ef6982",
+   "handover_ref": "handover/2026-10-17/branch/feature/regional-quantity-final-f6-owner15-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/restriction-evidence-20261014",
+   "commit": "e829f61c181a5965ffba70462433d4b446f226c7",
+   "handover_ref": "handover/2026-10-17/branch/feature/restriction-evidence-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/review-off-v2-44-20261015",
+   "commit": "8e348e6f36f35363cd119115ae79ba289abf6f5c",
+   "handover_ref": "handover/2026-10-17/branch/feature/review-off-v2-44-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/session-state-d1-owner04-20261015",
+   "commit": "16492a906d617a3f3466f608860e4f19763578ff",
+   "handover_ref": "handover/2026-10-17/branch/feature/session-state-d1-owner04-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/session-state-server-20261014",
+   "commit": "25543bd75c3812a203e0d3b865d51302bfe1854d",
+   "handover_ref": "handover/2026-10-17/branch/feature/session-state-server-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/shopping-handoff-20261014",
+   "commit": "ac19b0c863ca486b9e6139cd2cad8497694fa368",
+   "handover_ref": "handover/2026-10-17/branch/feature/shopping-handoff-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/shopping-handoff-consumer-31-20261014",
+   "commit": "f0072452731b87411d90a83a7f8937a594475e53",
+   "handover_ref": "handover/2026-10-17/branch/feature/shopping-handoff-consumer-31-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/si-prs-normalization-37-f6-20261015",
+   "commit": "a65999a4ef0d752b9799a519fbb2e498bfa3d084",
+   "handover_ref": "handover/2026-10-17/branch/feature/si-prs-normalization-37-f6-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/si-release-definitions-37-20261016",
+   "commit": "6ae1ff22ef9640af39fdd4fec7f935b0768f475e",
+   "handover_ref": "handover/2026-10-17/branch/feature/si-release-definitions-37-20261016",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-agrovoc-ingredient-terms-20261014",
+   "commit": "d3aeb3b1e00498e94177ff63af2e9eab3bdb1404",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-agrovoc-ingredient-terms-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-canada-cfia-recalls-20261014",
+   "commit": "d64dc8a9495312b742b182569a55a00c5e867059",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-canada-cfia-recalls-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-category-consolidation-20261014",
+   "commit": "5bf652970079c7880cc155c4e2f7e4b0c921543f",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-category-consolidation-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-eu-agri-market-prices-20261014",
+   "commit": "4b413215cddd808380a52e5c6441284c536a5f64",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-eu-agri-market-prices-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-eu-ambrosia-origin-register-20261014",
+   "commit": "bd4ecc167cccfeb5c0a6d15d62c2797a55e691ed",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-eu-ambrosia-origin-register-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-eu-rasff-alerts-20261014",
+   "commit": "6a617b6fa7997815cd36d4d8391707d9804a5176",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-eu-rasff-alerts-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-eu-traces-organic-20261014",
+   "commit": "0d0d0ddfef478ea64e6655e8515e70d49d9e6733",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-eu-traces-organic-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-fsanz-recalls-20261014",
+   "commit": "9a0f80bababb4fa34ef8ee9f3d03bcd5079b2095",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-fsanz-recalls-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-gleif-relationships-20261014",
+   "commit": "8d7197a46512b0a3309fd845debb9ab19828d4c1",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-gleif-relationships-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-gs1-gtin-identity-20261014",
+   "commit": "f38006a219e48b4f224be5f1475fe608ee4d9040",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-gs1-gtin-identity-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-msc-supply-chain-20261014",
+   "commit": "a87da8c78c4965e1f523e7bffbedbd5491bcf131",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-msc-supply-chain-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-normalization-v2-20261014",
+   "commit": "9458fb378d5f45c66fb8b86d8550a2e7cea6476d",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-normalization-v2-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-off-barcode-origin-evidence-20261014",
+   "commit": "9385fa20f6389879aa083fe50f964391628431a8",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-off-barcode-origin-evidence-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-open-prices-offers-20261014",
+   "commit": "da1f69778e6c88610a95f2c6bf6b656c97e15b32",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-open-prices-offers-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-osm-food-businesses-20261014",
+   "commit": "abcc6992aaa53926f860c7916be0d7403a3c678a",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-osm-food-businesses-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-overture-food-businesses-20261014",
+   "commit": "764aff1abc99e933ff038b1541cdc8d0b67e3ced",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-overture-food-businesses-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-36-20261014",
+   "commit": "ab841fd38bef94b2b4ef68879f09a58f6a943c5e",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-36-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-37-20261014",
+   "commit": "74dcd25fd39ba2cfc3d2f49ed67b9c201c569312",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-37-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-38-20261014",
+   "commit": "982d11fa11550dac7f962367cb7a4b618dd14439",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-38-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-39-20261014",
+   "commit": "d684fe84061b6016c2bacd13ab84a8462a1997be",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-39-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-40-20261014",
+   "commit": "317f6e477bb628a2f73cc6543ed46e0121d049f5",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-40-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-41-20261014",
+   "commit": "55e38669ce3e069602ce0fb6c0858cd02286f47c",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-41-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-42-20261014",
+   "commit": "8502fec18d484f401f48540f46bf3c59259f4a88",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-42-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-43-20261014",
+   "commit": "912dcecb310b25520384dbd94eb8b7bac3cc8c0e",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-43-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-44-20261014",
+   "commit": "29c82c71ed63d7f7e82687acf0140877debfcb0d",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-44-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-45-20261014",
+   "commit": "8cf790e307b745324b98ca75bda6f110ac4eed10",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-45-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-48-20261014",
+   "commit": "f740b360baea68aa71ed21f0a431840848568da5",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-48-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-49-20261014",
+   "commit": "bc279f07c850768ff798c0ab4aedc370338a76a7",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-49-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-50-20261014",
+   "commit": "454f5bcdf98985d3f508b15e9494c02454808b88",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-50-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-51-20261014",
+   "commit": "fbf61c268afee32992d080908545f3b371687f30",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-51-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-52-20261014",
+   "commit": "4dbad5359aafbf49540048e7b5ab66f335ef8a14",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-52-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-53-20261014",
+   "commit": "4dd6b6824b9c2871878ce01cbc68fb927a40e6b9",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-53-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-54-20261014",
+   "commit": "be3bbc106c2b302f1121f1247a517b6d2faa1340",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-54-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-55-20261014",
+   "commit": "24440e830042cc2584aaef4992fb8136942fa786",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-55-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-qualification-56-20261014",
+   "commit": "e43050c135e69af71f847ea0757f9e12838c2a33",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-qualification-56-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-sec-issuer-identity-20261014",
+   "commit": "fe50a8f5691e002424c9e752d1130309956ebfda",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-sec-issuer-identity-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-uk-fhrs-establishments-20261014",
+   "commit": "b7b89248e4d4047edc2162104940e7bca30ebced",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-uk-fhrs-establishments-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-usda-ams-market-prices-20261014",
+   "commit": "d96ae279606030146e9737e21328b403f42693a5",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-usda-ams-market-prices-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-usda-foodkeeper-20261014",
+   "commit": "613820f8d53a82e7d8f00c79c864cca207d9e319",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-usda-foodkeeper-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-usda-organic-operations-20261014",
+   "commit": "79ef427a8bc2755d982154a9a25f7a083e8e978f",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-usda-organic-operations-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-wfp-food-prices-20261014",
+   "commit": "3f69ac72e4816646f2e1f25850f065d99c41d5b1",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-wfp-food-prices-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/source-wikidata-business-relations-20261014",
+   "commit": "32968623d4092d45c9ed952c54fca6e23d2b4be9",
+   "handover_ref": "handover/2026-10-17/branch/feature/source-wikidata-business-relations-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/state-operation-auth-contract-20261014",
+   "commit": "86c6400284038ea2fe76c1deff80fe3cc675c657",
+   "handover_ref": "handover/2026-10-17/branch/feature/state-operation-auth-contract-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/stock-transitions-20261014",
+   "commit": "c051de0f7895cabc490466693f3cde993bd4d48e",
+   "handover_ref": "handover/2026-10-17/branch/feature/stock-transitions-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/tfda-additive-records-37-20261015",
+   "commit": "e2de8c780251149d876379b9e6075f5f686f26a8",
+   "handover_ref": "handover/2026-10-17/branch/feature/tfda-additive-records-37-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/third-party-compatibility-integration-20261014",
+   "commit": "49c6ed037a0c506dc2e71a7c8ef40d423d6f46d0",
+   "handover_ref": "handover/2026-10-17/branch/feature/third-party-compatibility-integration-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/third-party-current-develop-integration-20261014",
+   "commit": "5b4dd9612d47a4f0a44484c65a3b609dc76e30d6",
+   "handover_ref": "handover/2026-10-17/branch/feature/third-party-current-develop-integration-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/waste-analysis-20261014",
+   "commit": "5b072aa40786b507fcc673554310a8aea6f02d0c",
+   "handover_ref": "handover/2026-10-17/branch/feature/waste-analysis-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "feature/waste-observation-consumer-24-20261014",
+   "commit": "0bc4cbbb73f1bca90cd0d9a0156ae2e666dac54f",
+   "handover_ref": "handover/2026-10-17/branch/feature/waste-observation-consumer-24-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/detached/health28-null-context",
+   "commit": "791b90382a68ad10272bc73a078da8a0f5be63be",
+   "handover_ref": "handover/2026-10-17/detached/health28-null-context",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/detached/pr10-pr12-preview",
+   "commit": "4539fcd5f8bd0e839173c33c0c233e190891d981",
+   "handover_ref": "handover/2026-10-17/detached/pr10-pr12-preview",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/detached/pr2-develop-composition",
+   "commit": "1ee97433171f8ceb092d3e4862b46dd5cbcef2ea",
+   "handover_ref": "handover/2026-10-17/detached/pr2-develop-composition",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/orphan/codex-disposable-integration-preview-20261014",
+   "commit": "1104e45e6fc1ff965e798f7f9bee3ff3e0bb56c6",
+   "handover_ref": "handover/2026-10-17/orphan/codex-disposable-integration-preview-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/orphan/ui-stock-quantity-fix-a-20261017",
+   "commit": "fd524a8c90c3ddd031ddeb71f7128b464ea18bc2",
+   "handover_ref": "handover/2026-10-17/orphan/ui-stock-quantity-fix-a-20261017",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/orphan/ui-stock-quantity-fix-b-20261017",
+   "commit": "04e08ea83705c7cf50f40abb99da3311a88e2ddf",
+   "handover_ref": "handover/2026-10-17/orphan/ui-stock-quantity-fix-b-20261017",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/orphan/worker33-cache-delta-review-20261015",
+   "commit": "41f035afc012a18db0b65988afd99f3dd40d2c33",
+   "handover_ref": "handover/2026-10-17/orphan/worker33-cache-delta-review-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/devpreview-worker05-live-dev-popup",
+   "commit": "1b9783c1255b0c67f6d694fe1ee833e011dce3ef",
+   "handover_ref": "handover/2026-10-17/worktree-wip/devpreview-worker05-live-dev-popup",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/devpreview-worker05-production-app",
+   "commit": "6f0f198d82e2b7176243a325f2bed08b8556ebfa",
+   "handover_ref": "handover/2026-10-17/worktree-wip/devpreview-worker05-production-app",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/offmenu-google-idp-identity",
+   "commit": "9ee0a5b54c87685dd6cfa3208cefa7c35f71d44a",
+   "handover_ref": "handover/2026-10-17/worktree-wip/offmenu-google-idp-identity",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/offmenu-main-aldi-delivery-corpus",
+   "commit": "6f5bafdb890752ea2a529975701ca0ae34711ec6",
+   "handover_ref": "handover/2026-10-17/worktree-wip/offmenu-main-aldi-delivery-corpus",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker01-source-reconciliation",
+   "commit": "f98f956617d5b6c495aac1e7c047da9c63220852",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker01-source-reconciliation",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker06-demo-recipe-catalogue-deploy-evidence",
+   "commit": "4b593826f1fc1dfc81c8caf720a7786a1aeb3afc",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker06-demo-recipe-catalogue-deploy-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker10-review-evidence",
+   "commit": "0bc8eec9542674cb9834f8b25f3ea48bea80de29",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker10-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker12-review-evidence",
+   "commit": "1ec86d2838bbfb86fe6b1820081ce405ad5abe2e",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker12-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker17-origin-gitflow-report",
+   "commit": "74cb87bd9c2035fae6b3e10b16c89eb9900f5f6c",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker17-origin-gitflow-report",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker20-review-evidence",
+   "commit": "14c8110ee380bff10d9c6bee05758f75581158cb",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker20-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker21-review-evidence",
+   "commit": "19b6ae891d23fe7a6cc0a66b002e13fe04f31ea7",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker21-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker25-review-evidence",
+   "commit": "2c459b3f1b8b4a7457274d815a6070862dcdf9a1",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker25-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker48-afcd-normalization",
+   "commit": "afa74592c3e5b942c49a9c2ab080360994082032",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker48-afcd-normalization",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker58-authed-browser-qa",
+   "commit": "9ab350e58307c6cf17a91b5ee604724b39dc8825",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker58-authed-browser-qa",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker62-relay-gateway-poller",
+   "commit": "231a8e29ef39ddc2231e98a1b5c2a1fa60bba1ef",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker62-relay-gateway-poller",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker63-review-evidence",
+   "commit": "40f3bb8462fa623a50cd35c1ceaafe6199ac5908",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker63-review-evidence",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "handover/2026-10-17/worktree-wip/worker64-ci-portability-patch",
+   "commit": "e0b5bdd91c532cb8c4bd40f412eb1decf696d579",
+   "handover_ref": "handover/2026-10-17/worktree-wip/worker64-ci-portability-patch",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "sync/worker-18/f6cb92ae-20261015",
+   "commit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "handover_ref": "handover/2026-10-17/branch/sync/worker-18/f6cb92ae-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "sync/worker-22/f6cb92ae-20261015",
+   "commit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "handover_ref": "handover/2026-10-17/branch/sync/worker-22/f6cb92ae-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "sync/worker-23/f6cb92ae-20261015",
+   "commit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "handover_ref": "handover/2026-10-17/branch/sync/worker-23/f6cb92ae-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "sync/worker-26/f6cb92ae-20261015",
+   "commit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "handover_ref": "handover/2026-10-17/branch/sync/worker-26/f6cb92ae-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "sync/worker-29/f6cb92ae-20261015",
+   "commit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+   "handover_ref": "handover/2026-10-17/branch/sync/worker-29/f6cb92ae-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/03/uiux-assessment-20261014",
+   "commit": "e1de8e839954905d82f939730ac5ea79412bc805",
+   "handover_ref": "handover/2026-10-17/branch/worker/03/uiux-assessment-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/04/google-idp-20261014",
+   "commit": "5102bc7a42d7eab37522301705335acdf75c7b13",
+   "handover_ref": "handover/2026-10-17/branch/worker/04/google-idp-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/05/dev-environment-20261014",
+   "commit": "8dc49b2b3683f2532ee4e3581d105c446f6f575e",
+   "handover_ref": "handover/2026-10-17/branch/worker/05/dev-environment-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/06/mock-services-20261014",
+   "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+   "handover_ref": "handover/2026-10-17/branch/worker/06/mock-services-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/07/corpus-application-transport-20261014",
+   "commit": "77eb80d0e91fd3b10e42d2df83fd71c70713564b",
+   "handover_ref": "handover/2026-10-17/branch/worker/07/corpus-application-transport-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/08/synthetic-integration-acceptance-20261014",
+   "commit": "ba6c0fd05115531528c638a6f04bed4054f7e113",
+   "handover_ref": "handover/2026-10-17/branch/worker/08/synthetic-integration-acceptance-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/09/gitflow-enforcement-20261014",
+   "commit": "ae7f1a5a2e44a857c2683adf32180e821c0bfd54",
+   "handover_ref": "handover/2026-10-17/branch/worker/09/gitflow-enforcement-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/14/backlog-decomposition-20261014",
+   "commit": "cd27c470a3671261651c7a42e884d9dda4bdf341",
+   "handover_ref": "handover/2026-10-17/branch/worker/14/backlog-decomposition-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/15/unit-engine-gap-20261014",
+   "commit": "dcdb90f2637d828bd8963bfb2fac08ca051634ba",
+   "handover_ref": "handover/2026-10-17/branch/worker/15/unit-engine-gap-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "worker/16/autosync-gap-20261014",
+   "commit": "0e7279a7b3ba9e8d68f5aba546d2404fc3fc99a9",
+   "handover_ref": "handover/2026-10-17/branch/worker/16/autosync-gap-20261014",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  }
+ ],
+ "prior_refs": [
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-01",
+   "commit": "9458fb378d5f45c66fb8b86d8550a2e7cea6476d",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-01",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-02",
+   "commit": "c996bb469621c57820007c261585aba5faddd519",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-02",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-03",
+   "commit": "84eefe60a3a306d23e4cfe174478036504b89cdb",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-03",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-04",
+   "commit": "b85244a3ad2751b56a64b9de84d448e043b31db3",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-04",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-06",
+   "commit": "be166bb61483825498094d496e2caed9d8b775bb",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-06",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-07",
+   "commit": "bc7307f205db6438b121a640743826712296ea0d",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-07",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-08",
+   "commit": "1c0c6acaeb004312dfbaf0a3d1535aa4f25f9dde",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-08",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-10",
+   "commit": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-10",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-11",
+   "commit": "05debc7742b58d61f7a18b09e00a57610838edc3",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-11",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-12",
+   "commit": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-12",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-13",
+   "commit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-13",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-14",
+   "commit": "13516d30a622909db5e7408f83113c9d30ab8756",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-14",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-15",
+   "commit": "458cb55830ff1666db6a0134bf06fd01efd5f0aa",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-15",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-17",
+   "commit": "2eba0586ce0f05285c8c3d8d624534f6f7851b68",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-17",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-18",
+   "commit": "998f76e302400298ac1b2600e7c1f792c4924069",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-18",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-19",
+   "commit": "1a1fefb8347aa111f4c6cb92ec75907c602e0eaa",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-19",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-20",
+   "commit": "ba3b08b7c26919aab94c4a3796d18d7c6b3873ac",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-20",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-21",
+   "commit": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-21",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-22",
+   "commit": "c8d0a991bad2eb0dbd86cda4c8b6d6b5bb5f258c",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-22",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-23",
+   "commit": "ed2a9c062fa42a64a7ec358d88825a72f7d21380",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-23",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-25",
+   "commit": "329a3680c28b3dddf8209dda826c707aee971a7b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-25",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-26",
+   "commit": "b207e6e1ae9b59c5fe5bf283465fd8209b7cd2ec",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-26",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-27",
+   "commit": "a32044773c0e56cc57666b6ba59ad7d9af23e081",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-27",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-28",
+   "commit": "f235054c307497a195b23d77f3895c1135b57b0f",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-28",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-29",
+   "commit": "bbfc9d53f1ee0d0ad3e6ee7dfb08126c9a5aa4b3",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-29",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-30",
+   "commit": "c3d20c3c2b14cfc49d419a36b85b5574ab966c75",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-30",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-32",
+   "commit": "fc0f986d1ea41d9f952f46a5fb3392448c6c99ac",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-32",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-33",
+   "commit": "5aabcbf8f3cd6d2d57eb3c84eb0d513e30b59ca2",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-33",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-34",
+   "commit": "ac81f5eb7527c23dab6f06bd6bcf3f89cc0ca9ed",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-34",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-35",
+   "commit": "db223293433056367b3f6d559291de4a69ad75cb",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-35",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-36",
+   "commit": "97724130bef3e4acc65859bce224019e87879cba",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-36",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-37",
+   "commit": "e2de8c780251149d876379b9e6075f5f686f26a8",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-37",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-38",
+   "commit": "06749e70db5431c31194fdcc7a82bc359e9f0d32",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-38",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-39",
+   "commit": "7e6fa5972e108d884edce26fe4e81b842d862b38",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-39",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-40",
+   "commit": "881cc23f057f14b225e47f804a0b3ee6d10eb7d4",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-40",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-41",
+   "commit": "db223293433056367b3f6d559291de4a69ad75cb",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-41",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-42",
+   "commit": "8c2b26b34e52bf19ca03445bc6fe37581728ab92",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-42",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-43",
+   "commit": "10bdfd6032a5f046323d802c39c825a135314f32",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-43",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-44",
+   "commit": "8e348e6f36f35363cd119115ae79ba289abf6f5c",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-44",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-45",
+   "commit": "8cf790e307b745324b98ca75bda6f110ac4eed10",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-45",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-46",
+   "commit": "5aa8070444066cea198e9295da2d3f5d8d730ccb",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-46",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-47",
+   "commit": "27c995da8684c3b6c90f8083e7a22eb35b5b88f0",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-47",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-52",
+   "commit": "504e09d6234bb30228ad0f4842ea5eea6145c848",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-52",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-53",
+   "commit": "1ab53c0c97ad6f99502b1bd26f03191f78b1c36d",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-53",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-55",
+   "commit": "715275915adc0c9849c7106fe5fb28cfcfb9fc11",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-55",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-57",
+   "commit": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-57",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-58",
+   "commit": "85c03e90bbb814150b22d83cdf7b906a47eac346",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-58",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-59",
+   "commit": "a0e5f71f5340e9f7654dc6ffc3c62ace5fd15192",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-59",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-60",
+   "commit": "ff0908626ed2594e9999964a001d7c148ac1cf42",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-60",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261015/worker-64",
+   "commit": "2bf70f7e8212afe124660df8088e98c3dffe97cf",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261015/worker-64",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-14-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-14-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-18-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-18-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-18-before-922ab2d3",
+   "commit": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-18-before-922ab2d3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-22-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-22-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-22-before-922ab2d3",
+   "commit": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-22-before-922ab2d3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-23-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-23-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-23-before-922ab2d3",
+   "commit": "3eb230d27c6db16fe6369a54b9b908dded274772",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-23-before-922ab2d3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-26-before-922ab2d3",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-26-before-922ab2d3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-29-before-922ab2d3",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-29-before-922ab2d3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-52-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-52-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/offmenu-sync-20261016/worker-64-before-3eb230d",
+   "commit": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+   "handover_ref": "handover/2026-10-17/prior/preservation/offmenu-sync-20261016/worker-64-before-3eb230d",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/preservation/worker21-lot-final-f6-review-20261015",
+   "commit": "1cfa4611554e21e3d4d73111c8bbeccc025d56fd",
+   "handover_ref": "handover/2026-10-17/prior/preservation/worker21-lot-final-f6-review-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/google-return-before-7e5a175",
+   "commit": "6abfc8aba180bb6d247ae379bfd0928af1f42a85",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/google-return-before-7e5a175",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/google-return-delta-before-84eefe60",
+   "commit": "dcd53964fba721854d421fdc0bd04b1c9bcc27c7",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/google-return-delta-before-84eefe60",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/google-return-delta-reviewed-84eefe60",
+   "commit": "1e94895b29b99de450b32d88f4bfbdda5281368b",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/google-return-delta-reviewed-84eefe60",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/google-return-reviewed-7e5a175",
+   "commit": "dcd53964fba721854d421fdc0bd04b1c9bcc27c7",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/google-return-reviewed-7e5a175",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-review-before-09b00f3",
+   "commit": "4f6cf5c6d7d3be96cc50e652a7fedf492e199c6a",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-review-before-09b00f3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-review-before-31a5eec",
+   "commit": "1e94895b29b99de450b32d88f4bfbdda5281368b",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-review-before-31a5eec",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-review-before-5eb9bc6",
+   "commit": "5e8790ae7e2c17e3ce9390113010e65fbeb565cd",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-review-before-5eb9bc6",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-reviewed-09b00f3",
+   "commit": "5e8790ae7e2c17e3ce9390113010e65fbeb565cd",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-reviewed-09b00f3",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-reviewed-31a5eec",
+   "commit": "4f6cf5c6d7d3be96cc50e652a7fedf492e199c6a",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-reviewed-31a5eec",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/owner03-reviewed-5eb9bc6",
+   "commit": "13516d30a622909db5e7408f83113c9d30ab8756",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/owner03-reviewed-5eb9bc6",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/preference-review-before-20261015",
+   "commit": "5bf652970079c7880cc155c4e2f7e4b0c921543f",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/preference-review-before-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/offmenu-private/worker14/preference-review-qualified-20261015",
+   "commit": "8b1ff0df5735bca2f55cf0af503cc1ea9c48cf77",
+   "handover_ref": "handover/2026-10-17/prior/offmenu-private/worker14/preference-review-qualified-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/checkpoints/worker12-preview-lifecycle-20261015",
+   "commit": "ff9690f19a4869d187ba95ccaf84337c5980dcee",
+   "handover_ref": "handover/2026-10-17/prior/checkpoints/worker12-preview-lifecycle-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/checkpoints/worker12-preview-lifecycle-20261015-fix2c9b15bb",
+   "commit": "5f5b17a1fab1aed27bb48a751761f7c73f26c186",
+   "handover_ref": "handover/2026-10-17/prior/checkpoints/worker12-preview-lifecycle-20261015-fix2c9b15bb",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/worker05/locked-central-c996-20261015",
+   "commit": "fc2733299e6fbcecf27fbda291ff968056cdfd36",
+   "handover_ref": "handover/2026-10-17/prior/worker05/locked-central-c996-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  },
+  {
+   "original_ref": "refs/worker05/locked-develop-20261015",
+   "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+   "handover_ref": "handover/2026-10-17/prior/worker05/locked-develop-20261015",
+   "disposition": "REPUBLISHED_AT_ORIGINAL_SHA"
+  }
+ ],
+ "exceptions": [
+  {
+   "id": "worker06-deploy-readbacks-skew-token",
+   "paths": [
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/draft-site-readback-response.json",
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/getDeploy-baseline.json",
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/draft-poll-response.json",
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/draft-ready-response.json",
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/getSite-baseline.json",
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/draft-reconcile-response.json"
+   ],
+   "disposition": "LOCALLY_RETAINED_RESTRICTED_EXCEPTION",
+   "reason": "Cloudflare deploy readbacks contain a live published_deploy.skew_protection_token (112 chars) and auth settings fields. Never published to Git.",
+   "retrieval_step": "Manual review + secure transfer by Morgan; rotate the skew-protection token if these files leave the host."
+  },
+  {
+   "id": "worker06-index-sqlite",
+   "paths": [
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/index.sqlite"
+   ],
+   "disposition": "LOCALLY_RETAINED_RESTRICTED_EXCEPTION",
+   "reason": "Runtime database; directive excludes runtime DBs from Git.",
+   "retrieval_step": "Retained on host; transfer separately if needed."
+  },
+  {
+   "id": "worker06-proposed-preview-bulk",
+   "paths": [
+    "offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/proposed-preview/"
+   ],
+   "disposition": "LOCALLY_RETAINED_LARGE_DATA_EXCEPTION",
+   "reason": "Bulk dataset build output: 250 gzipped recipe parts + catalogue index + rights-notices.json. Not uploaded wholesale; licensing recorded in rights-notices.json inside the directory.",
+   "retrieval_step": "Reproducible from the corpus build pipeline; or approved separate transfer."
+  },
+  {
+   "id": "dependency-caches",
+   "paths": [
+    "*/node_modules/",
+    "*/.venv/",
+    "*/.wrangler/"
+   ],
+   "disposition": "LOCALLY_RETAINED_EXCEPTION",
+   "reason": "Dependency/build caches. Reproducible from package-lock.json / pyproject via npm ci / venv bootstrap. Excluded from all preservation commits.",
+   "retrieval_step": "npm ci / pip install per lockfiles."
+  },
+  {
+   "id": "offmenu-data-datasets",
+   "paths": [
+    "/home/user/src/offmenu-data (171 GB: corpus datasets, dev-preview state, model outputs)"
+   ],
+   "disposition": "LOCALLY_RETAINED_LARGE_DATA_EXCEPTION",
+   "reason": "Large licensed/raw datasets and runtime state; not uploadable wholesale and not suitable for Git/LFS without separate licensing review. Immutable manifests/hashes live in the dataset directories themselves (see FREEBUFF_HANDOVER.txt custody constraints).",
+   "retrieval_step": "Separate approved transfer route decided by Morgan; per-dataset provenance/hashes are retained locally."
+  },
+  {
+   "id": "nested-repo-dev-preview-source",
+   "paths": [
+    "/home/user/src/offmenu-data/dev-preview-20261014/source"
+   ],
+   "disposition": "BLOCKED_PRECISE_REASON",
+   "reason": "Genuinely separate nested Git repository (own root commit; remote 'origin' = /home/user/src/offmenu local path). Directive: report destination rather than flattening into OffMenu or publishing to the wrong repository. Not pushed.",
+   "retrieval_step": "Morgan decides proper destination; content untouched locally (3 commits, clean)."
+  },
+  {
+   "id": "codex-broken-turn-diff-refs",
+   "paths": [
+    "refs/codex/turn-diffs/checkpoints/2cd41554a2432c4694282ce226c8d7f9/c6727646eb4c01d1d46b21b72e44dbed/1792056140262/6c462982-67d5-4ee1-be4f-43caa581c9d4",
+    "refs/codex/turn-diffs/checkpoints/821afb2526e0d4a46d7b90ad1f371533/2ab904e1fa38459d4c733b2dc721cd55/1792056116494/302ac432-9483-41ae-97be-a9c7dfc0b974"
+   ],
+   "disposition": "BLOCKED_PRECISE_REASON",
+   "reason": "Tip objects are missing from the object store (pre-existing damage; also broke full-history fetch from origin). Left in place untouched; unpushable.",
+   "retrieval_step": "None possible for missing objects; names preserved for investigation."
+  },
+  {
+   "id": "private-host-state",
+   "paths": [
+    "/home/user/.local/state/freebuff-relay/poller-config.json (mode 0600, private poller configuration)",
+    "/home/user/.local/state/freebuff/api-session.json (Freebuff loopback API session/authentication store)",
+    "raw poller bearer token (owner-only file; only its SHA-256 hash is designed for the Worker secret)"
+   ],
+   "disposition": "LOCALLY_RETAINED_RESTRICTED_EXCEPTION",
+   "reason": "Credentials/session stores must never enter Git, logs, manifests or chat. No secret values appear in this manifest.",
+   "retrieval_step": "Remain on the authorized host; provision via the secure setup process only."
+  },
+  {
+   "id": "worker48-afcd-license-note",
+   "paths": [
+    "offmenu-workers/worker-48/tests/fixtures/afcd48/"
+   ],
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED (license annotation)",
+   "reason": "Small AFCD-derived test excerpts (CC BY-SA 3.0 AU + FSANZ terms) are included with attribution evidence in fixture-manifest.json + dependencies/afcd_rights_evidence.json; NOT the complete dataset. Share-alike obligations apply to downstream use.",
+   "retrieval_step": "n/a \u2014 in the worker48-afcd-normalization preservation commit."
+  },
+  {
+   "id": "active-writer-checkpoints",
+   "paths": [
+    "offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-.../app",
+    "offmenu-data/dev-preview-20261014/workers/worker-05/live-dev/3a50a8b5-.../production-app"
+   ],
+   "disposition": "ACTIVE_WRITER_CHECKPOINT_NOT_FINAL",
+   "reason": "Dev-preview runner/wiremock/workerd processes were running at capture and cannot be paused from this session. No file in these trees changed within 60 minutes before capture (checkpoint stable at capture time), but these directories are not labelled final snapshots.",
+   "retrieval_step": "Compare against later runner state if these trees resumed writing."
+  }
+ ]
+}
