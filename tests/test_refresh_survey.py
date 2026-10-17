@@ -146,8 +146,14 @@ class SurveyTests(unittest.TestCase):
         from offmenu.refresh.__main__ import main
         for args in (['survey-selected','--workspace',str(self.root),'--input-root','/tmp'], ['survey-selected','--workspace',str(self.root),'--lock','/tmp/test'], ['survey-selected','--workspace',str(self.root),'--force-refresh']):
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):main(args)
-        with self.assertRaisesRegex(survey.SurveyError, 'outside-output-root'):
-            survey.survey_selected(self.root/'nope')
+        # Foo sets TMPDIR beneath OUTPUT; a temporary directory is not proof
+        # that a workspace is outside the allowed output root.
+        outside = Path('/offmenu-schema-survey-outside-output-root')
+        with mock.patch.object(survey, '_run_worker') as worker, mock.patch.object(survey, '_safe_directory') as directory:
+            with self.assertRaisesRegex(survey.SurveyError, 'outside-output-root'):
+                survey.survey_selected(outside)
+            worker.assert_not_called()
+            directory.assert_not_called()
 
     def test_audit_guard_denies_network_process_and_writes_but_allows_reads(self):
         for event,args in [('socket.connect',()),('subprocess.Popen',()),('ctypes.dlopen',()),('os.mkdir',()),('open',('/tmp','w',os.O_WRONLY)),('open',('/tmp',None,os.O_CREAT))]:
