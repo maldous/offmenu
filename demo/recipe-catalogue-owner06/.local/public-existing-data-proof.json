@@ -1,0 +1,70 @@
+{
+  "schema": "offmenu-already-public-recipe-proof/1",
+  "manifest": {
+    "url": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
+    "bytes": 2115538,
+    "sha256": "e6e74eb3e9333d67450fcf2cf8250f4aabf819b133c6cb0b85be9c78e6075a54",
+    "releaseId": "world-recipes-common-20261014"
+  },
+  "publicRecipeDownload": {
+    "url": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.jsonl.gz",
+    "bytes": 20366538,
+    "sha256": "10227c11299976ea2727f83b51e41d0cfe41da026db87a7f6fe2fe28f1a1678c",
+    "gzipEOFValidated": true,
+    "recordCount": 25135
+  },
+  "pinnedLocalInput": {
+    "path": "/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz",
+    "bytes": 19589524,
+    "sha256": "90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73",
+    "records": 25135
+  },
+  "identityIntersection": 25135,
+  "comparedFields": [
+    "original source identity",
+    "title",
+    "languages",
+    "original ingredient wording",
+    "directions",
+    "licence",
+    "attribution",
+    "sourceURL"
+  ],
+  "comparedFieldDifferences": 336,
+  "differenceExamples": [
+    {
+      "origin": "wikibooks:hu",
+      "recordId": "49332"
+    },
+    {
+      "origin": "wikibooks:hu",
+      "recordId": "42500"
+    },
+    {
+      "origin": "wikibooks:hu",
+      "recordId": "48886"
+    },
+    {
+      "origin": "wikibooks:bn",
+      "recordId": "9328"
+    },
+    {
+      "origin": "wikibooks:nb",
+      "recordId": "6843"
+    }
+  ],
+  "licenceDistribution": {
+    "Unlicense adaptation; original work public domain": 6192,
+    "CC BY-SA 4.0": 17880,
+    "Unlicense": 806,
+    "CC0-1.0": 257
+  },
+  "classification": {
+    "sourceDeclaredPublic": 25135,
+    "incompleteOCR": 256,
+    "schemaExample": 1
+  },
+  "uploads": "NO recipe/data payload to upload; UI code consumes existing exact public catalogue and detail files",
+  "cataloguePages": 51,
+  "detailFiles": 256
+}

@@ -1,0 +1,164 @@
+{
+  "schema": "offmenu-code-only-production-manifest/1",
+  "authority": "Fresh explicit Matt production demonstration instruction relayed by setup01a137cf: working production recipe catalogue; not provider/backend/release certification",
+  "destination": {
+    "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+    "teamId": "6949661f255143bbcf578c0e",
+    "site": "offmenu-corpus",
+    "productionUrl": "https://offmenu-corpus.netlify.app/recipes/",
+    "baselinePublishedDeployId": "6acea54e7b6d662e6991719f",
+    "strategy": "Full existing digest reuse + only additive UI files. Draft HTTPS/CSP test first, then new production snapshot; never gallery-directory-only deployment."
+  },
+  "publicDataProof": {
+    "schema": "offmenu-already-public-recipe-proof/1",
+    "manifest": {
+      "url": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
+      "bytes": 2115538,
+      "sha256": "e6e74eb3e9333d67450fcf2cf8250f4aabf819b133c6cb0b85be9c78e6075a54",
+      "releaseId": "world-recipes-common-20261014"
+    },
+    "publicRecipeDownload": {
+      "url": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.jsonl.gz",
+      "bytes": 20366538,
+      "sha256": "10227c11299976ea2727f83b51e41d0cfe41da026db87a7f6fe2fe28f1a1678c",
+      "gzipEOFValidated": true,
+      "recordCount": 25135
+    },
+    "pinnedLocalInput": {
+      "path": "/home/user/src/offmenu-data/world-recipes-global-final-20261014/normalized.jsonl.gz",
+      "bytes": 19589524,
+      "sha256": "90dcf2c498c8b86ba723a66214ce4573f32b4fc2b6d1c88c184ce5e365247e73",
+      "records": 25135
+    },
+    "identityIntersection": 25135,
+    "comparedFields": [
+      "original source identity",
+      "title",
+      "languages",
+      "original ingredient wording",
+      "directions",
+      "licence",
+      "attribution",
+      "sourceURL"
+    ],
+    "comparedFieldDifferences": 336,
+    "differenceExamples": [
+      {
+        "origin": "wikibooks:hu",
+        "recordId": "49332"
+      },
+      {
+        "origin": "wikibooks:hu",
+        "recordId": "42500"
+      },
+      {
+        "origin": "wikibooks:hu",
+        "recordId": "48886"
+      },
+      {
+        "origin": "wikibooks:bn",
+        "recordId": "9328"
+      },
+      {
+        "origin": "wikibooks:nb",
+        "recordId": "6843"
+      }
+    ],
+    "licenceDistribution": {
+      "Unlicense adaptation; original work public domain": 6192,
+      "CC BY-SA 4.0": 17880,
+      "Unlicense": 806,
+      "CC0-1.0": 257
+    },
+    "classification": {
+      "sourceDeclaredPublic": 25135,
+      "incompleteOCR": 256,
+      "schemaExample": 1
+    },
+    "uploads": "NO recipe/data payload to upload; UI code consumes existing exact public catalogue and detail files",
+    "cataloguePages": 51,
+    "detailFiles": 256
+  },
+  "newUploads": [
+    {
+      "path": "/_headers",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/production-ui/_headers",
+      "bytes": 757,
+      "sha1": "c009ac7f5d7500ef77a13bf1ca518a7446a02d09",
+      "sha256": "dc47b01ca3e96538c7e848175b6a4d2366a795cb1aa0e628075f0e7a86461092",
+      "classification": "existing header rules retained plus new-gallery scoped CSP"
+    },
+    {
+      "path": "/recipes/gallery/app.js",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/production-ui/recipes/gallery/app.js",
+      "bytes": 11994,
+      "sha1": "b675ee63b54b0d078088bc612d1969cb75a1b47e",
+      "sha256": "34f3da969d42b751cf87d0b2329d91740fe0ab3d25e0de83fcf0f1a1a0d03274",
+      "classification": "new original UI/public code only"
+    },
+    {
+      "path": "/recipes/gallery/style.css",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/production-ui/recipes/gallery/style.css",
+      "bytes": 3093,
+      "sha1": "fc3e2f371345a26e57d7a7276cf6483ebd06beaa",
+      "sha256": "c1c8f7bbaa0ad22cb6195fc5fd3b6477d5a25894672ffb524894ccee7f6bd51d",
+      "classification": "new original UI/public code only"
+    },
+    {
+      "path": "/recipes/index.html",
+      "localPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/production-ui/recipes/index.html",
+      "bytes": 2083,
+      "sha1": "6d73cc76a7bb8a629c32865d9872b5ed40fa4338",
+      "sha256": "3a0415740981b4583bb498abf6255da29c42c25ce4c923f16acc0a872332b04d",
+      "classification": "new original UI/public code only"
+    }
+  ],
+  "newUploadBytes": 17927,
+  "newRealRecipeRecordUploads": 0,
+  "reuse": {
+    "existingFileCount": 92835,
+    "baselineFileManifestPath": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/existing-site-files.json",
+    "baselineFileManifestSha256": "932090764539fa3e02cb0f15a7fa8de2b51175c0dba9eaf19f8fb3c0c01c620c",
+    "combinedFileCount": 92839,
+    "everyExistingPathDigestPreserved": true,
+    "existingHeaderRulesPreserved": true,
+    "newHeaderScope": [
+      "/recipes/",
+      "/recipes/index.html",
+      "/recipes/gallery/*"
+    ],
+    "redirects": "No existing redirect file in published digest listing; no redirects added/removed",
+    "functions": "Existing function count checked separately; no functions supplied or built"
+  },
+  "privacy": {
+    "secretsPersonalInternalOperationalIncluded": false,
+    "localIndexDatabaseSourcePathsPIDsReceiptsExcluded": true,
+    "allNewBytesArePresentationCodeOrHeaderRules": true
+  },
+  "display": {
+    "sourceIdentities": 25135,
+    "partialOCR": 256,
+    "specificationExample": 1,
+    "explicitClassification": true,
+    "additionalHoldings": "Not included; owner07 inventory remains separate",
+    "quantities": "Original text or observed quantity/amount+unit; no conversion/inference",
+    "missingFields": "Explicit unknown/not supplied",
+    "rights": "Uses existing per-record licence/attribution/revision/history/changes; no new data relicensing"
+  },
+  "supersededProposal": {
+    "path": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/publication-manifest.json",
+    "sha256": "ad71180f42c7cd32ff3793c6706c3586e3a2a6073e583145cb84d9ef64b33306",
+    "status": "Earlier DRAFT additional-record projection stays LOCAL; NOT this production payload"
+  },
+  "costFacts": {
+    "actualExistingPlan": "nf_team_pro",
+    "buildAgentRunnerNewSiteOrSettingsChange": false,
+    "accountCreditsBandwidthLimits": "unavailable; no new spend limit inferred"
+  },
+  "draftRequest": {
+    "path": "/home/user/src/offmenu-workers/worker-06/demo/recipe-catalogue-owner06/.local/draft-request.json",
+    "sha256": "c7ac1f4dd082e77fea5d74c116d6d13a842982bdba4454e9d0a218987b6c6552",
+    "bytes": 10053376
+  },
+  "reviewStatus": "Frozen before normal deployment review; no external write yet"
+}
