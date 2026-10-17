@@ -1,5 +1,5 @@
 {
   "schemaVersion": 1,
-  "jobId": "foo-bootstrap-smoke-20261017-001",
-  "profile": "smoke"
+  "jobId": "delivery-diagnostics-20261017-001",
+  "profile": "delivery-diagnostics"
 }
