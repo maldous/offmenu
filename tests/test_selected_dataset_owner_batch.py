@@ -51,6 +51,47 @@ class OwnerBatchTests(unittest.TestCase):
             with self.subTest(key=key),self.assertRaises((m.Invalid,ValueError,TypeError)):
                 m.sanitize_grant(changed,self.inspect,self.errors)
 
+    def test_service_diagnostics_accept_exact_schema_and_reject_canaries(self):
+        props={**grant.BASE_PROPERTIES,'BindReadOnlyPaths':grant.BOOTSTRAP_BIND,'DropInPaths':'','ActiveState':'failed','SubState':'failed','Result':'exit-code','MainPID':'0','ExecMainPID':'123','ExecMainCode':'1','ExecMainStatus':'226','StatusErrno':'13'}
+        props['ControlGroup']='/CANARY-SECRET'
+        sample=grant.property_evidence(props)
+        diagnostic={'failure':sample,'failureSample':'fresh','afterAttempts':2,'afterLastPending':'runtime-activation','afterErrno':2,
+                    'failureDetail':{'errorCode':'system-command-failed','errno':None,'command':{'operation':'start','exitCode':1,'errno':None,'timedOut':False}}}
+        changed=copy.deepcopy(self.report);changed['serviceDiagnostics']=diagnostic
+        self.assertNotIn('CANARY',json.dumps(m.sanitize_grant(changed,self.inspect,self.errors)))
+        mutations=[lambda d:d.update(unexpected='CANARY'),
+          lambda d:d['failure']['states'].update(Result='CANARY'),
+          lambda d:d['failure']['numbers'].update(ExecMainStatus='CANARY'),
+          lambda d:d['failure']['numbers'].update(ExecMainStatus=True),
+          lambda d:d['failure']['unexpectedValueSha256'].update(ControlGroup='/CANARY'),
+          lambda d:d['failure']['properties']['User'].update(match=1),
+          lambda d:d['failureDetail']['command'].update(stderr='CANARY'),
+          lambda d:d['failureDetail']['command'].update(exitCode=999),
+          lambda d:d['failureDetail'].update(errno=True),
+          lambda d:d.update(afterAttempts=129),
+          lambda d:d.update(afterLastPending='CANARY'),
+          lambda d:d.update(failureSample='unavailable')]
+        for mutate in mutations:
+            bad=copy.deepcopy(diagnostic);mutate(bad)
+            with self.assertRaises(m.Invalid):m.sanitize_service_diagnostics(bad,self.errors)
+
+    def test_maximum_service_evidence_stays_within_existing_report_cap(self):
+        # Size bound covers four complete snapshots with every checked value
+        # unexpected, plus the largest real selected-data evidence shape.
+        values={name:'CANARY' for name in grant.PROPERTY_NAMES}
+        sample=grant.property_evidence(values)
+        changed=copy.deepcopy(self.report)
+        changed['serviceDiagnostics']={phase:sample for phase in ('before','after','failure','rollback')}
+        fixtures=module('maximum_evidence_fixture',ROOT/'tests/test_selected_dataset_metadata.py')
+        fixture=fixtures.SelectedMetadataTests();fixture.setUp();self.addCleanup(fixture.doCleanups)
+        selection=fixture.fixture()
+        with patch.object(inspector,'SELECTION',selection):changed['snapshotEvidence']=inspector.inspect(str(fixture.root))
+        detail={'errorCode':'system-command-failed','errno':4096,'command':{'operation':'start','exitCode':255,'errno':4096,'timedOut':True}}
+        changed['serviceDiagnostics'].update(afterAttempts=128,rollbackAttempts=128,afterLastPending='read-only-mount-verification-failed',rollbackLastPending='read-only-mount-verification-failed',afterErrno=4096,rollbackErrno=4096,failureDetail=detail,rollbackDetail=detail,failureSample='fresh',rollbackSample='fresh')
+        sanitized=m.sanitize_grant(changed,self.inspect,self.errors)
+        self.assertLess(len(json.dumps(sanitized).encode()),16384)
+
+
     def test_strict_json_duplicate_nonfinite_overflow(self):
         for body in (b'{"x":1,"x":2}',b'{"x":NaN}',b'{"x":{"n":1e9999}}'):
             with self.assertRaises(m.Invalid):m.strict_json(body)

@@ -194,16 +194,22 @@ class GrantTests(unittest.TestCase):
         if preexisting_drop_dir:dropdir.mkdir()
         def ensure(path,body,mode=0o644):path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(body)
         with contextlib.ExitStack() as stack:
-            mocks={'isolated_runtime':True,'account':(self.runner,self.owner),'preflight_sources':({k:'validated' for k in selected},selected,observations),'verify_baseline':(b'unit',False),'source_check':('validated',info.stat()),'properties':{'MainPID':'123'},'verify_properties':None,'create_snapshot':observations,'protected_directory':None,'assert_idle':None}
+            mocks={'isolated_runtime':True,'account':(self.runner,self.owner),'preflight_sources':({k:'validated' for k in selected},selected,observations),'verify_baseline':(b'unit',False),'source_check':('validated',info.stat()),'runtime_identity':None,'create_snapshot':observations,'protected_directory':None,'assert_idle':None}
             for name,value in mocks.items():stack.enter_context(patch.object(m,name,return_value=value))
             stack.enter_context(patch.object(m.os,'geteuid',return_value=0))
             stack.enter_context(patch.object(m,'DROP_DIR',dropdir));stack.enter_context(patch.object(m,'DROP_IN',drop));stack.enter_context(patch.object(m,'BACKUP',backup))
+            def props(timeout=90):
+                values={**m.BASE_PROPERTIES,'BindReadOnlyPaths':' '.join(m.bindings(selected)) if drop.exists() else m.BOOTSTRAP_BIND,'DropInPaths':str(drop) if drop.exists() else '',
+                        'ActiveState':'active','SubState':'running','Result':'success','MainPID':'123','ExecMainPID':'123','ExecMainCode':'0','ExecMainStatus':'0','StatusErrno':'0'}
+                m.LAST_PROPERTIES=values
+                return values
+            stack.enter_context(patch.object(m,'properties',side_effect=props))
             stack.enter_context(patch.object(m,'ensure_file',side_effect=ensure))
             stack.enter_context(patch.object(m,'regular_bytes',side_effect=lambda p,cap:p.read_bytes()))
             stack.enter_context(patch.object(m,'command',side_effect=lambda args,capture=False:commands.append(args) or ''))
             stack.enter_context(patch.object(m,'administrative_lock',side_effect=lambda:os.open(info,os.O_RDONLY)))
             stack.enter_context(patch.object(m,'idle_lock',side_effect=m.Blocked('job-active') if active else lambda runner:os.open(info,os.O_RDONLY)))
-            stack.enter_context(patch.object(m,'verify_mounts',side_effect=m.Blocked('read-only-mount-verification-failed') if fail_mount else lambda *a:None))
+            stack.enter_context(patch.object(m,'verify_mounts',side_effect=m.Blocked('mounted-file-identity-mismatch') if fail_mount else lambda *a:None))
             result=m.run(True)
         return result,commands,drop,backup
 
@@ -363,6 +369,197 @@ class GrantTests(unittest.TestCase):
         self.assertTrue(report['snapshotVerified'])
         self.assertEqual('pinned-receipt-content',report['snapshotEvidence']['assets']['NO_EN_FOODS']['acquisitionMatchBasis'])
         self.assertFalse(report['snapshotEvidence']['completeReady'])  # staging is writable; NO-only fixture
+
+
+    def ready_properties(self,selected=None,**changes):
+        return {**m.expected_properties(selected),'ActiveState':'active','SubState':'running','Result':'success','MainPID':'123','ExecMainPID':'123','ExecMainCode':'0','ExecMainStatus':'0','StatusErrno':'0',**changes}
+
+    def await_fixture(self,values,mount_effect=None,identity_effect=None):
+        report={};now=[0]
+        def sleep(seconds):now[0]+=seconds
+        stack=contextlib.ExitStack()
+        stack.enter_context(patch.object(m,'properties',side_effect=values if isinstance(values,list) else lambda timeout=90:values))
+        stack.enter_context(patch.object(m,'runtime_identity',side_effect=identity_effect))
+        mounts=stack.enter_context(patch.object(m,'verify_mounts',side_effect=mount_effect))
+        stack.enter_context(patch.object(m.time,'monotonic',side_effect=lambda:now[0]))
+        stack.enter_context(patch.object(m.time,'sleep',side_effect=sleep))
+        self.addCleanup(stack.close)
+        return report,now,mounts
+
+    def test_transient_start_converges_only_after_full_identity_and_mounts(self):
+        selected=sorted(m.GROUPS['NO']);ready=self.ready_properties(selected)
+        transient={**ready,'ActiveState':'activating','SubState':'start','ControlGroup':'','MainPID':'0'}
+        report,now,mounts=self.await_fixture([transient,ready,ready])
+        m.await_ready(selected,self.runner,{},report,'after')
+        self.assertEqual(2,report['serviceDiagnostics']['afterAttempts'])
+        self.assertEqual('runtime-activation',report['serviceDiagnostics']['afterLastPending'])
+        mounts.assert_called_once_with(123,selected,{})
+        self.assertEqual(m.READY_INTERVAL,now[0])
+
+    def test_static_drift_and_foreign_cgroup_fail_immediately(self):
+        selected=sorted(m.GROUPS['NO'])
+        for key,value in [('ProtectHome','no'),('User','root'),('ControlGroup','/foreign/CANARY'),('DropInPaths','/CANARY')]:
+            with self.subTest(key=key),contextlib.ExitStack() as stack:
+                values=self.ready_properties(selected,**{key:value})
+                stack.enter_context(patch.object(m,'properties',return_value=values))
+                sleep=stack.enter_context(patch.object(m.time,'sleep'))
+                mounts=stack.enter_context(patch.object(m,'verify_mounts'))
+                with self.assertRaises(m.Blocked):m.await_ready(selected,self.runner,{}, {},'after')
+                sleep.assert_not_called();mounts.assert_not_called()
+
+    def test_terminal_service_state_fails_with_226_evidence(self):
+        selected=sorted(m.GROUPS['NO'])
+        values=self.ready_properties(selected,ActiveState='failed',SubState='failed',Result='exit-code',ExecMainCode='1',ExecMainStatus='226',MainPID='0',ControlGroup='')
+        report,now,mounts=self.await_fixture(values)
+        with self.assertRaisesRegex(m.Blocked,'service-start-failed'):m.await_ready(selected,self.runner,{},report,'after')
+        self.assertEqual(226,report['serviceDiagnostics']['after']['numbers']['ExecMainStatus'])
+        self.assertEqual(0,now[0]);mounts.assert_not_called()
+
+    def test_readonly_mount_pending_is_bounded_and_reason_retained(self):
+        selected=sorted(m.GROUPS['NO'])
+        report,now,mounts=self.await_fixture(self.ready_properties(selected),m.Blocked('read-only-mount-verification-failed'))
+        with self.assertRaisesRegex(m.Blocked,'service-readiness-timeout'):m.await_ready(selected,self.runner,{},report,'after')
+        self.assertEqual(m.READY_SECONDS,now[0])
+        self.assertLessEqual(report['serviceDiagnostics']['afterAttempts'],101)
+        self.assertEqual('read-only-mount-verification-failed',report['serviceDiagnostics']['afterLastPending'])
+
+    def test_wrong_mounted_identity_and_unexpected_uid_fail_immediately(self):
+        selected=sorted(m.GROUPS['NO'])
+        for boundary,code in [('verify_mounts','mounted-file-identity-mismatch'),('runtime_identity','service-process-owner-invalid')]:
+            with self.subTest(boundary=boundary),contextlib.ExitStack() as stack:
+                stack.enter_context(patch.object(m,'properties',return_value=self.ready_properties(selected)))
+                stack.enter_context(patch.object(m,'runtime_identity'))
+                stack.enter_context(patch.object(m,boundary,side_effect=m.Blocked(code)))
+                sleep=stack.enter_context(patch.object(m.time,'sleep'))
+                with self.assertRaisesRegex(m.Blocked,code):m.await_ready(selected,self.runner,{}, {},'after')
+                sleep.assert_not_called()
+
+    def test_pid_change_requires_fresh_mount_identity(self):
+        selected=sorted(m.GROUPS['NO']);first=self.ready_properties(selected);second={**first,'MainPID':'456'}
+        report,now,mounts=self.await_fixture([first,second,second,second])
+        m.await_ready(selected,self.runner,{},report,'after')
+        self.assertEqual([123,456],[call.args[0] for call in mounts.call_args_list])
+        self.assertEqual('process-changed',report['serviceDiagnostics']['afterLastPending'])
+
+    def test_property_diagnostics_never_export_free_text(self):
+        values=self.ready_properties(ControlGroup='/CANARY-SECRET',ReadWritePaths='/SECRET',ActiveState='CANARY',ExecMainStatus='NaN',StatusErrno='13')
+        evidence=m.property_evidence(values)
+        self.assertNotIn('CANARY',json.dumps(evidence));self.assertNotIn('/SECRET',json.dumps(evidence))
+        self.assertFalse(evidence['properties']['ControlGroup']['match'])
+        self.assertEqual(hashlib.sha256(b'/CANARY-SECRET').hexdigest(),evidence['unexpectedValueSha256']['ControlGroup'])
+        self.assertEqual('unknown',evidence['states']['ActiveState'])
+        self.assertIsNone(evidence['numbers']['ExecMainStatus']);self.assertEqual(13,evidence['numbers']['StatusErrno'])
+
+    def test_original_failure_snapshot_survives_rollback(self):
+        result,commands,drop,backup=self.mocked_apply(fail_mount=True)
+        diagnostics=result['serviceDiagnostics']
+        self.assertEqual('mounted-file-identity-mismatch',diagnostics['failureDetail']['errorCode'])
+        self.assertEqual('mounted-file-identity-mismatch',result['errorCode'])
+        self.assertTrue(diagnostics['failure']['properties']['DropInPaths']['match'])
+        self.assertTrue(diagnostics['rollback']['properties']['DropInPaths']['match'])
+        self.assertTrue(result['rollbackRestored']);self.assertFalse(result['applied'])
+
+    def test_command_failure_keeps_only_exit_code_or_errno(self):
+        with self.assertRaisesRegex(m.Blocked,'system-command-failed'):m.command([sys.executable,'-I','-c','import sys;sys.exit(7)'])
+        self.assertEqual(7,m.LAST_COMMAND['exitCode'])
+        self.assertNotIn(sys.executable,json.dumps(m.LAST_COMMAND))
+        with patch.object(m.subprocess,'Popen',side_effect=PermissionError(errno.EACCES,'CANARY')):
+            with self.assertRaises(PermissionError):m.command(['/usr/bin/systemctl','start',m.SERVICE])
+        self.assertEqual(errno.EACCES,m.LAST_COMMAND['errno']);self.assertEqual('start',m.LAST_COMMAND['operation'])
+        self.assertNotIn('CANARY',json.dumps(m.LAST_COMMAND))
+
+    def test_existing_nine_asset_snapshot_revalidated_without_expansion_or_writes(self):
+        # Real inspector hashes the published files again; only root ownership
+        # checks are adapted to the unprivileged test account.
+        spec=importlib.util.spec_from_file_location('snapshot_inspector',SCRIPT.parent/'inspect-selected-datasets.py')
+        inspector=importlib.util.module_from_spec(spec);spec.loader.exec_module(inspector)
+        saved=sorted(set(m.GROUPS['NO'])|set(m.GROUPS['FR']));selected=sorted(m.FILES)
+        backup=self.root/'private';backup.mkdir(mode=0o700);snapshot=backup/'snapshot';snapshot.mkdir(mode=0o750)
+        selection=dict(inspector.SELECTION);acquisition=[]
+        def put(key,body):
+            path=snapshot/m.FILES[key][1];path.parent.mkdir(exist_ok=True,mode=0o750);path.write_bytes(body);path.chmod(0o440)
+            selection[key]=(*selection[key][:2],hashlib.sha256(body).hexdigest())
+        for key in saved:
+            if m.FILES[key][2]=='raw':put(key,b'fixture '+key.encode())
+        for country in ('NO','FR'):
+            source,release,keys,manifest,_=inspector.SOURCES[country];decl=[]
+            for key in keys:
+                body=(snapshot/m.FILES[key][1]).read_bytes();digest=hashlib.sha256(body).hexdigest()
+                decl.append({'key':selection[key][0].split('/')[-1],'bytes':len(body),'sha256':digest})
+                acquisition.append({'key':selection[key][0],'bytes':len(body),'sha256':digest})
+            put(manifest,json.dumps({'schemaVersion':'offmenu-collection/1','sourceId':source,'releaseId':release,'status':'normalized','sourceFiles':decl,'license':inspector.LICENSES[country]}).encode())
+        put('NATIONAL_ACQUISITION',json.dumps(acquisition).encode())
+        stored=backup/'selection.json';stored.write_text(json.dumps(saved));stored.chmod(0o600)
+        old=backup/'approved-inspector.py';old.write_bytes(b'old immutable leaf');old.chmod(0o600)
+        before={p:(p.read_bytes(),m.signature(p.stat())) for p in backup.rglob('*') if p.is_file()}
+        report={'sourceBytesRead':0,'sourceBytesWritten':0,'snapshotBytesWritten':0,'assets':{},'sources':{}}
+        runner=SimpleNamespace(pw_uid=os.getuid(),pw_gid=os.getgid())
+        regular=m.regular_bytes
+        def directory(path,runner,create=False,stage=False):
+            self.assertFalse(create);self.assertEqual(0o750,path.stat().st_mode&0o777)
+        # Adapt root ownership at the directory-entry boundary only; the real
+        # inventory still enforces exact paths, directories, modes, group and links.
+        original_scandir=m.os.scandir
+        class Entry:
+            def __init__(self,entry):self.entry=entry;self.name=entry.name
+            def is_dir(self,**kwargs):return self.entry.is_dir(**kwargs)
+            def stat(self,**kwargs):
+                values=list(self.entry.stat(**kwargs));values[4]=0
+                return os.stat_result(values)
+        @contextlib.contextmanager
+        def fixture_scandir(path):
+            with original_scandir(path) as entries:yield (Entry(entry) for entry in entries)
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.object(inspector,'SELECTION',selection))
+            stack.enter_context(patch.object(m,'BACKUP',backup));stack.enter_context(patch.object(m,'SCAFFOLD',snapshot))
+            stack.enter_context(patch.object(m,'protected_directory'));stack.enter_context(patch.object(m,'safe_parents'))
+            stack.enter_context(patch.object(m,'snapshot_directory',side_effect=directory))
+            stack.enter_context(patch.object(m,'reference_parser',return_value=vars(inspector)))
+            stack.enter_context(patch.object(m,'regular_bytes',side_effect=lambda path,cap:regular(path,cap,owner=os.getuid())))
+            stack.enter_context(patch.object(m.os,'scandir',side_effect=fixture_scandir))
+            stack.enter_context(patch.object(m,'anchored_source',side_effect=AssertionError('original read')))
+            stack.enter_context(patch.object(m,'ensure_file',side_effect=AssertionError('overwrite')))
+            result=m.create_snapshot(selected,runner,self.owner,{},report)
+            self.assertEqual(saved,sorted(result));self.assertEqual('blocked',report['sources']['FI'])
+            self.assertTrue(report['snapshotEvidence']['sources']['NO']['provenanceVerified'])
+            self.assertTrue(report['snapshotEvidence']['sources']['FR']['provenanceVerified'])
+            self.assertEqual(0,report['sourceBytesRead']);self.assertEqual(0,report['snapshotBytesWritten'])
+            self.assertEqual(before,{p:(p.read_bytes(),m.signature(p.stat())) for p in before})
+            unknown=snapshot/'metadata/unknown.json';unknown.write_bytes(b'preserve');unknown.chmod(0o440)
+            with self.assertRaisesRegex(m.Blocked,'snapshot-unrecognized-file'):m.create_snapshot(selected,runner,self.owner,{},report)
+            self.assertEqual(b'preserve',unknown.read_bytes());unknown.unlink()
+            # A private snapshot with changed bytes must fail; prior selection alone is insufficient.
+            raw=snapshot/m.FILES['NO_EN_FOODS'][1];raw.chmod(0o640);raw.write_bytes(b'drift');raw.chmod(0o440)
+            with self.assertRaisesRegex(m.Blocked,'existing-snapshot-evidence-drift'):
+                m.create_snapshot(selected,runner,self.owner,{},report)
+
+
+    def test_failed_start_refresh_preserves_operation_and_226_state(self):
+        m.LAST_PROPERTIES=self.ready_properties()
+        m.LAST_COMMAND={'operation':'start','exitCode':1,'errno':None,'timedOut':False}
+        failed=self.ready_properties(ActiveState='failed',SubState='failed',Result='exit-code',ExecMainStatus='226')
+        def refresh(timeout):
+            self.assertEqual(2,timeout)
+            m.LAST_COMMAND={'operation':'show','exitCode':0,'errno':None,'timedOut':False}
+            return failed
+        diagnostics={}
+        with patch.object(m,'properties',side_effect=refresh):
+            m.record_failure(diagnostics,'failure',m.Blocked('system-command-failed'),None,refresh=True)
+        self.assertEqual(226,diagnostics['failure']['numbers']['ExecMainStatus'])
+        self.assertEqual('start',diagnostics['failureDetail']['command']['operation'])
+        self.assertEqual(1,diagnostics['failureDetail']['command']['exitCode'])
+        self.assertEqual('fresh',diagnostics['failureSample'])
+
+    def test_failed_diagnostic_sample_never_mislabels_prior_state(self):
+        for phase in ('failure','rollback'):
+            m.LAST_PROPERTIES=self.ready_properties()
+            m.LAST_COMMAND={'operation':'start','exitCode':1,'errno':None,'timedOut':False}
+            diagnostics={phase:m.property_evidence(m.LAST_PROPERTIES)}
+            with patch.object(m,'properties',side_effect=PermissionError(errno.EACCES,'CANARY')):
+                m.record_failure(diagnostics,phase,m.Blocked('system-command-failed'),None,refresh=True)
+            self.assertNotIn(phase,diagnostics);self.assertEqual('unavailable',diagnostics[phase+'Sample'])
+            self.assertEqual(errno.EACCES,diagnostics[phase+'SampleDetail']['errno'])
+            self.assertNotIn('CANARY',json.dumps(diagnostics))
 
 
 if __name__=='__main__':unittest.main()

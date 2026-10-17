@@ -135,3 +135,20 @@ python3 -B -m unittest discover -s tests
 Fixtures replace owner authentication, sudo, GitHub publication and real host grants.
 Only small unprivileged subprocesses test bounded capture and the verified-byte
 loader. Tests do not establish host readiness or authorize a live grant.
+
+## Service evidence from the pinned helper
+
+The helper pin covers bounded post-start readiness and sanitized diagnostic
+sampling. The owner wrapper independently validates serviceDiagnostics against
+fixed property names, boolean shapes, state/result enums, path hashes and numeric
+ranges. Arbitrary fields, paths, command output, exception strings and oversized
+records are rejected. The existing 16 KiB helper-report and 32 KiB batch-report
+limits remain in force.
+
+The receipt distinguishes the first grant failure from the rollback result. It
+also records whether a failure sample is fresh, last-observed or unavailable, and
+keeps a failed diagnostic-read code separately. A restored original service does
+not imply the dataset view was applied or verified. The helper's 20-second
+post-start convergence budget does not retry the batch or start the service a
+second time; rollback retains its existing separately scoped start when needed.
+Operator queue, replay and downstream admission gates remain unchanged.

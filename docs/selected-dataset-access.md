@@ -203,3 +203,41 @@ private staging, exact selection, permission refusal, subprocess/read bounds,
 no-clobber publication, lock exclusion and scoped rollback. They do not establish
 that foo's actual paths or mounts are ready; that evidence comes from the local
 receipt and runner inspection.
+
+## Bounded post-start verification and safe diagnostics
+
+The base unit, service type, sandbox properties and fixed bind remain unchanged.
+After the single explicit service start, verification has a 20-second monotonic
+readiness budget. Each systemctl show has at most two seconds within that budget.
+Every sample must match all static sandbox, drop-in and bind configuration. Only
+an empty ControlGroup is temporarily permitted; a foreign or missing group is a
+hard failure. Failed, inactive, unknown or terminal service states fail immediately.
+
+Incomplete activation, the pre-exec root identity, a disappearing process, or a
+not-yet-read-only mount can settle within that budget. Unexpected non-root process
+identity, foreign process cgroup or wrong mounted-file identity fails immediately.
+Success requires active/running, the exact cgroup, a stable MainPID greater than one,
+the runner UID, membership in the fixed service cgroup, and the unchanged read-only
+mount/file-identity checks. A second property sample must still match. No extra
+explicit start, scope expansion or sandbox relaxation is attempted. The existing
+idle/dispatcher-lock checks and operator-controlled quiet queue still apply.
+
+The bounded serviceDiagnostics object records before, after, failure and rollback
+samples when available. Fixed security property names expose presence/match
+booleans only. Unexpected path-valued properties expose SHA-256, never their raw
+values. ActiveState/SubState/Result are fixed enums; process/service exit fields
+are bounded integers or null. The last command operation, exit code, timeout flag,
+OS errno and pending readiness reason are bounded fields. No stdout, stderr,
+journals, environment, credentials or arbitrary exception text is included.
+A failed start gets one bounded fresh sample before rollback; if that read fails,
+the sample is explicitly unavailable. Original failure evidence is retained
+separately from rollback, including a failed rollback-start diagnostic sample.
+
+An existing root-private snapshot is reused only after the protected stored
+selection, exact inventory, every selected digest and current pinned provenance
+checks pass again. The saved nine-asset NO/FR subset is not expanded to include the
+two FI preflight candidates. Retry tests establish zero original reads/writes or
+snapshot/selection overwrite during reuse, and reject changed bytes or unknown
+files without deleting them. The private parent remains 0700, snapshot directories
+0750 root:runner and files 0440 root:runner. This change does not prove any cause
+for a prior service-sandbox-drift receipt that omitted property evidence.

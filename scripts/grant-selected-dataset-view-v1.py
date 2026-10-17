@@ -67,6 +67,21 @@ BASE_PROPERTIES = {
 }
 
 
+# Readiness is bounded separately from ordinary administrative commands.
+READY_SECONDS=20
+READY_INTERVAL=0.2
+STATE_VALUES={
+ 'ActiveState':{'active','activating','inactive','deactivating','failed','reloading','maintenance','refreshing'},
+ 'SubState':{'running','start','start-pre','start-post','auto-restart','dead','failed','exited','stop','stop-sigterm','stop-sigkill','stop-post','final-sigterm','final-sigkill','reload','reload-signal','reload-notify','cleaning','condition'},
+ 'Result':{'success','resources','protocol','timeout','exit-code','signal','core-dump','watchdog','start-limit-hit','oom-kill','exec-condition','skip-condition'},
+}
+PATH_PROPERTIES={'BindPaths','FragmentPath','ReadWritePaths','ControlGroup','BindReadOnlyPaths','DropInPaths'}
+NUMBER_PROPERTIES={'MainPID','ExecMainPID','ExecMainCode','ExecMainStatus','StatusErrno'}
+PROPERTY_NAMES=tuple(BASE_PROPERTIES)+('BindReadOnlyPaths','DropInPaths',*STATE_VALUES,*sorted(NUMBER_PROPERTIES))
+LAST_PROPERTIES=None
+LAST_COMMAND=None
+
+
 class Blocked(Exception):
     pass
 
@@ -221,38 +236,65 @@ def bounded_read(path,cap):
     finally:os.close(fd)
 
 
-def command(args, capture=False):
+def command(args, capture=False, timeout=90):
+    global LAST_COMMAND
+    # Never export argv, output, environment, paths or exception text.
+    operation=args[1] if args[:1]==['/usr/bin/systemctl'] and args[1:2] and args[1] in {'show','stop','start','daemon-reload'} else 'verify' if args[:2]==['/usr/bin/systemd-analyze','verify'] else 'other'
+    LAST_COMMAND={'operation':operation,'exitCode':None,'errno':None,'timedOut':False}
+    try:
+        return command_run(args,capture,timeout)
+    except OSError as exc:
+        LAST_COMMAND['errno']=safe_number(exc.errno,4096)
+        raise
+
+
+def command_run(args,capture,timeout):
     proc=subprocess.Popen(args,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE if capture else subprocess.DEVNULL,
                           stderr=subprocess.DEVNULL,env={'PATH':'/usr/bin:/bin','LANG':'C','SYSTEMD_COLORS':'0'})
-    deadline=time.monotonic()+90;parts=[];total=0
+    deadline=time.monotonic()+timeout;parts=[];total=0
     try:
         if capture:
             while True:
                 left=deadline-time.monotonic()
-                if left<=0:block('system-command-timeout')
+                if left<=0:
+                    LAST_COMMAND['timedOut']=True;block('system-command-timeout')
                 ready,_,_=select.select([proc.stdout],[],[],left)
-                if not ready:block('system-command-timeout')
+                if not ready:
+                    LAST_COMMAND['timedOut']=True;block('system-command-timeout')
                 part=os.read(proc.stdout.fileno(),min(4096,65537-total))
                 if not part:break
                 total+=len(part)
                 if total>65536:block('system-response-oversized')
                 parts.append(part)
-        if proc.wait(timeout=max(0.01,deadline-time.monotonic())):block('system-command-failed')
+        try:code=proc.wait(timeout=max(0.01,deadline-time.monotonic()))
+        except subprocess.TimeoutExpired:
+            LAST_COMMAND['timedOut']=True;block('system-command-timeout')
+        LAST_COMMAND['exitCode']=safe_number(code,255,-255)
+        if code:block('system-command-failed')
         return b''.join(parts).decode('utf-8','strict') if capture else ''
     finally:
         if proc.poll() is None:proc.kill();proc.wait()
         if proc.stdout is not None:proc.stdout.close()
 
 
-def properties():
-    names=list(BASE_PROPERTIES)+['BindReadOnlyPaths','DropInPaths','ActiveState','SubState','MainPID']
-    text=command(['/usr/bin/systemctl','show',SERVICE,'--property='+','.join(names)],True)
+def safe_number(value,maximum=2147483647,minimum=0):
+    return value if type(value) is int and minimum<=value<=maximum else None
+
+
+def property_number(value):
+    return safe_number(int(value)) if isinstance(value,str) and value.isascii() and value.isdigit() and len(value)<=10 else None
+
+
+def properties(timeout=90):
+    global LAST_PROPERTIES
+    text=command(['/usr/bin/systemctl','show',SERVICE,'--property='+','.join(PROPERTY_NAMES)],True,timeout=timeout)
     values={}
     for line in text.splitlines():
         key,sep,value=line.partition('=')
-        if sep and key in names:
+        if sep and key in PROPERTY_NAMES:
             if key in values:block('service-properties-invalid')
             values[key]=value
+    LAST_PROPERTIES=values
     return values
 
 
@@ -260,16 +302,118 @@ def normalize_bind(value):
     return value.replace('\\x20',' ').replace('\\040',' ').replace('"','').replace(':rbind','')
 
 
-def verify_properties(values,selected=None,active=True):
-    if any(values.get(k)!=v for k,v in BASE_PROPERTIES.items()):block('service-sandbox-drift')
-    expected=' '.join(bindings(selected)) if selected is not None else BOOTSTRAP_BIND
-    if normalize_bind(values.get('BindReadOnlyPaths','')) != expected:block('service-mount-drift')
-    if values.get('DropInPaths') != (str(DROP_IN) if selected is not None else ''):block('service-dropin-conflict')
-    if active and (values.get('ActiveState')!='active' or values.get('SubState')!='running' or not values.get('MainPID','').isdigit() or int(values['MainPID'])<=1):
+def expected_properties(selected=None):
+    return {**BASE_PROPERTIES,'BindReadOnlyPaths':' '.join(bindings(selected)) if selected is not None else BOOTSTRAP_BIND,
+            'DropInPaths':str(DROP_IN) if selected is not None else ''}
+
+
+def property_evidence(values,selected=None):
+    values=values or {};expected=expected_properties(selected)
+    checks={};unexpected={}
+    for name,want in expected.items():
+        actual=values.get(name)
+        matches=(normalize_bind(actual) if name=='BindReadOnlyPaths' and actual is not None else actual)==want
+        checks[name]={'present':name in values,'match':matches}
+        if name in PATH_PROPERTIES and name in values and not matches:unexpected[name]=hashlib.sha256(actual.encode()).hexdigest()
+    states={name:values.get(name) if values.get(name) in allowed else 'unknown' for name,allowed in STATE_VALUES.items()}
+    numbers={name:property_number(values.get(name)) for name in sorted(NUMBER_PROPERTIES)}
+    return {'properties':checks,'unexpectedValueSha256':unexpected,'states':states,'numbers':numbers}
+
+
+def failure_evidence(exc):
+    return {'errorCode':str(exc) if isinstance(exc,Blocked) else 'grant-failed','errno':safe_number(getattr(exc,'errno',None),4096),
+            'command':dict(LAST_COMMAND) if LAST_COMMAND is not None else None}
+
+
+def record_failure(diagnostics,phase,exc,selected,refresh=False):
+    # Preserve the failed operation before a diagnostic show changes it. Never
+    # describe an older successful sample as the state after a failed start.
+    diagnostics[phase+'Detail']=failure_evidence(exc)
+    values=LAST_PROPERTIES
+    if refresh:
+        try:values=properties(timeout=2)
+        except Exception as sample_exc:
+            diagnostics.pop(phase,None)
+            diagnostics[phase+'Sample']='unavailable'
+            diagnostics[phase+'SampleDetail']=failure_evidence(sample_exc)
+            return
+    diagnostics[phase+'Sample']='fresh' if refresh else 'last-observed' if values is not None else 'unavailable'
+    if values is not None:diagnostics[phase]=property_evidence(values,selected)
+
+
+def verify_properties(values,selected=None,active=True,transient=False):
+    for key,want in BASE_PROPERTIES.items():
+        if key=='ControlGroup' and transient and values.get(key)=='':continue
+        if values.get(key)!=want:block('service-sandbox-drift')
+    expected=expected_properties(selected)
+    if normalize_bind(values.get('BindReadOnlyPaths','')) != expected['BindReadOnlyPaths']:block('service-mount-drift')
+    if values.get('DropInPaths') != expected['DropInPaths']:block('service-dropin-conflict')
+    if active and (values.get('ActiveState')!='active' or values.get('SubState')!='running' or property_number(values.get('MainPID')) in (None,0,1)):
         block('service-not-running')
 
 
-def verify_baseline(selected):
+def runtime_identity(pid,runner):
+    root=Path('/proc')/str(pid)
+    status=bounded_read(root/'status',65536).decode('utf-8','strict')
+    uids=next((line.split()[1:] for line in status.splitlines() if line.startswith('Uid:')),[])
+    if uids==['0']*4:block('service-process-starting')
+    if uids!=[str(runner.pw_uid)]*4:block('service-process-owner-invalid')
+    membership=bounded_read(root/'cgroup',4096).decode('utf-8','strict').splitlines()
+    if membership!=['0::'+BASE_PROPERTIES['ControlGroup']]:block('service-process-cgroup-mismatch')
+    raw=bounded_read(Path('/sys/fs/cgroup')/BASE_PROPERTIES['ControlGroup'].lstrip('/')/'cgroup.procs',4096)
+    try:pids=[int(value) for value in raw.split()]
+    except ValueError:block('service-process-list-invalid')
+    if len(pids)>256 or pid not in pids:block('service-process-identity-invalid')
+
+
+def await_ready(selected,runner,observations,report,phase):
+    # Type=simple may return before exec/namespace setup. Only incomplete runtime
+    # activation may converge; every sample must match all static security values.
+    deadline=time.monotonic()+READY_SECONDS;attempts=0
+    diagnostics=report.setdefault('serviceDiagnostics',{})
+    while True:
+        left=deadline-time.monotonic()
+        if left<=0:block('service-readiness-timeout')
+        values=properties(timeout=min(2,left));attempts+=1
+        diagnostics[phase]=property_evidence(values,selected)
+        diagnostics[phase+'Attempts']=attempts
+        verify_properties(values,selected,active=False,transient=True)
+        state=values.get('ActiveState');sub=values.get('SubState');result=values.get('Result')
+        if state not in {'active','activating'} or sub not in {'running','start','start-pre','start-post'} or result!='success':
+            block('service-start-failed')
+        ready=(state=='active' and sub=='running' and property_number(values.get('MainPID')) not in (None,0,1)
+               and values.get('ControlGroup')==BASE_PROPERTIES['ControlGroup'])
+        if not ready:diagnostics[phase+'LastPending']='runtime-activation'
+        if ready:
+            pid=int(values['MainPID'])
+            try:
+                runtime_identity(pid,runner)
+                if selected is not None:verify_mounts(pid,selected,observations)
+            except (FileNotFoundError,ProcessLookupError) as exc:
+                diagnostics[phase+'LastPending']='process-not-present'
+                diagnostics[phase+'Errno']=safe_number(exc.errno,4096)
+                # Process/root can disappear while exec/start is still settling.
+                pass
+            except Blocked as exc:
+                if str(exc) not in {'service-process-starting','read-only-mount-verification-failed'}:raise
+                diagnostics[phase+'LastPending']=str(exc)
+            else:
+                left=deadline-time.monotonic()
+                if left<=0:block('service-readiness-timeout')
+                confirm=properties(timeout=min(2,left))
+                diagnostics[phase]=property_evidence(confirm,selected)
+                verify_properties(confirm,selected,active=False,transient=True)
+                if confirm.get('ActiveState') not in {'active','activating'} or confirm.get('SubState') not in {'running','start','start-pre','start-post'} or confirm.get('Result')!='success':block('service-start-failed')
+                if all(confirm.get(k)==values.get(k) for k in ('MainPID','ControlGroup','ActiveState','SubState')):
+                    verify_properties(confirm,selected)
+                    return confirm
+                diagnostics[phase+'LastPending']='process-changed'
+        left=deadline-time.monotonic()
+        if left<=0:block('service-readiness-timeout')
+        time.sleep(min(READY_INTERVAL,left))
+
+
+def verify_baseline(selected,report=None):
     unit=regular_bytes(UNIT,65536)
     if hashlib.sha256(unit).hexdigest()!=UNIT_SHA:block('base-unit-pin-mismatch')
     for name,pin in HELPERS.items():
@@ -286,7 +430,9 @@ def verify_baseline(selected):
         if contents:
             if regular_bytes(DROP_IN,16384)!=dropin_bytes(selected):block('existing-grant-conflicts')
             existing=True
-    verify_properties(properties(),selected if existing else None)
+    values=properties()
+    if report is not None:report.setdefault('serviceDiagnostics',{})['before']=property_evidence(values,selected if existing else None)
+    verify_properties(values,selected if existing else None)
     return unit,existing
 
 
@@ -539,11 +685,12 @@ CURRENT_SELECTION=[]
 
 
 def run(apply=False):
-    global CURRENT_SELECTION
+    global CURRENT_SELECTION,LAST_PROPERTIES,LAST_COMMAND
+    LAST_PROPERTIES=None;LAST_COMMAND=None
     report={'schemaVersion':'offmenu-selected-data-grant/1','reportKind':'dataset-view-grant','grantVersion':1,'status':'blocked','applied':False,'sourceBytesRead':0,
             'sourceBytesWritten':0,'snapshotBytesWritten':0,'snapshotVerified':False,'sourcePermissionsChanged':False,'credentialsRead':False,
             'selectedAssets':[],'assets':{},'sources':{c:'not-checked' for c in GROUPS},'serviceReady':False,'serviceRestarted':False,'effectiveMountAssets':[],'readOnlyMountsVerified':False,'rollbackAttempted':False,'rollbackRestored':None}
-    fd=None;admin_fd=None;added=False;stopped=False;created_drop_dir=False
+    fd=None;admin_fd=None;added=False;stopped=False;created_drop_dir=False;existing=False
     try:
         if os.geteuid()!=0:block('local-root-required')
         if not isolated_runtime():block('isolated-python-required')
@@ -551,7 +698,7 @@ def run(apply=False):
         statuses,selected,observations=preflight_sources(runner,owner)
         report['assets']=statuses;report['selectedAssets']=selected;CURRENT_SELECTION=selected
         report['sources']={c:('validated' if all(k in selected for k in keys) else 'blocked') for c,keys in GROUPS.items()}
-        unit,existing=verify_baseline(selected)
+        unit,existing=verify_baseline(selected,report)
         if not selected:block('no-complete-source-group')
         fd=idle_lock(runner);assert_idle(runner,existing)
         if not apply:
@@ -586,12 +733,13 @@ def run(apply=False):
         command(['/usr/bin/systemctl','stop',SERVICE]);stopped=True
         command(['/usr/bin/systemctl','daemon-reload'])
         command(['/usr/bin/systemctl','start',SERVICE]);report['serviceRestarted']=True
-        values=properties();verify_properties(values,selected)
-        verify_mounts(int(values['MainPID']),selected,snapshot_observations)
+        await_ready(selected,runner,snapshot_observations,report,'after')
         report.update(status='applied',applied=True,serviceReady=True,readOnlyMountsVerified=True,effectiveMountAssets=selected)
         report['sources']={c:('metadata-view-granted' if c=='FI' else 'view-granted') if v=='validated' else v for c,v in report['sources'].items()}
     except (Exception,KeyboardInterrupt) as exc:
         report['errorCode']=str(exc) if isinstance(exc,Blocked) else 'grant-failed'
+        diagnostics=report.setdefault('serviceDiagnostics',{})
+        record_failure(diagnostics,'failure',exc,CURRENT_SELECTION if added or existing else None,refresh=stopped)
         if added:
             report['rollbackAttempted']=True
             try:
@@ -605,9 +753,13 @@ def run(apply=False):
                 command(['/usr/bin/systemctl','daemon-reload'])
                 if stopped:
                     command(['/usr/bin/systemctl','start',SERVICE]);report['serviceRestarted']=True
-                verify_properties(properties(),None)
+                if stopped:await_ready(None,runner,None,report,'rollback')
+                else:
+                    values=properties();diagnostics['rollback']=property_evidence(values,None);verify_properties(values,None)
                 report['rollbackRestored']=True;report['serviceReady']=True
-            except Exception:report['rollbackRestored']=False
+            except Exception as rollback_exc:
+                report['rollbackRestored']=False
+                record_failure(diagnostics,'rollback',rollback_exc,None,refresh=stopped)
     finally:
         if fd is not None:os.close(fd)
         if admin_fd is not None:os.close(admin_fd)
