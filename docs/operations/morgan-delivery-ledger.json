@@ -1,0 +1,558 @@
+{
+  "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
+  "status": "reviewed-ready-for-coordinator-publication",
+  "asOfUTC": "2026-10-17T23:54:00Z",
+  "coordinator": "Morgan/root",
+  "purpose": "Small successor operations checkpoint for the currently selected automatic route and concurrent lanes. References immutable ledger history; does not replace its base/journal or claim semantic replay.",
+  "instructionContext": {
+    "source": "parent handoff of user direction at 2026-10-17T23:39Z",
+    "direction": "Start resolving issues and progressing the full ledger backlog through the proven automatic route, in distinct concurrent lanes. No blind restart of the historical 64 sessions.",
+    "confirmationBoundary": "Existing approvals apply only within scope; real access, actor, source rights, security and production holds remain."
+  },
+  "immutableHistory": {
+    "repository": "maldous/offmenu",
+    "commit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+    "manifestPreservedRefs": 348,
+    "base": {
+      "path": "operational-ledger/interim-obligation-index.json",
+      "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a",
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/interim-obligation-index.json"
+    },
+    "journal": {
+      "path": "operational-ledger/events.jsonl",
+      "gitBlob": "80cac7cac22bb9689312615fdf20f4f5a41e6b64",
+      "sha256": "227231014083074bf3b61b8d02b889e9c7576e359d9ed94e682433316bd8d071",
+      "bytes": 9647254,
+      "records": 5271,
+      "verifiedByRun": 39077114923,
+      "semanticsEstablished": false,
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/events.jsonl"
+    },
+    "summary": {
+      "path": "operational-ledger/management-summary.json",
+      "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+      "sourceSequence": 5271,
+      "obligations": 89,
+      "boundedItems": 43,
+      "status": "historical-derived-view",
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/management-summary.json"
+    },
+    "separateHistoricalCuts": {
+      "handover": 5269,
+      "transport": 5105,
+      "evidenceCheckpoint": 4889
+    },
+    "countsRule": "89 obligations, 43 bounded items, 881 pending dispositions, 84 awaiting evidence, 310 disposed rows, and earlier 105 canonical requirement rows overlap and must not be summed or treated as current closure/capacity.",
+    "semanticProjection": {
+      "status": "pending",
+      "projectorFiles": 6,
+      "exactHashAndStaticInventory": "verified on Foo per current handoff",
+      "sourceBodiesPreservedInCloud": false,
+      "next": "Recover the six exact pinned source bodies and dependency metadata through a bounded reviewed preservation step, inspect statically, then design isolated no-side-effect projection against preserved inputs.",
+      "notRepeated": "284 unique immutable tip-tree filename scan already complete; do not repeat."
+    },
+    "referenceCatalog": "docs/operations/morgan-historical-reference-catalog.json",
+    "originalHistoryEdited": false
+  },
+  "currentExecution": {
+    "sourceCommit": "314822f900c49953aeca04d82ce0957d851d19c9",
+    "controlCommit": "498d66b07c48f66e9a9d2ec99ce5845d140e3aa2",
+    "sourceStatus": "Verified survey004 published source; later candidates are not yet adoption evidence",
+    "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+    "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+    "production": "paused",
+    "cix": "paused",
+    "fi": "held",
+    "cleanupProtection": [
+      "offmenu-runner-jobs",
+      "offmenu-runner-results",
+      "PR31",
+      ".github/workflows/foo-runner.yml",
+      "Continue OffMenu delivery automation",
+      "source pins",
+      "PR30"
+    ],
+    "sourceUrl": "https://github.com/maldous/offmenu/commit/314822f900c49953aeca04d82ce0957d851d19c9",
+    "controlUrl": "https://github.com/maldous/offmenu/commit/498d66b07c48f66e9a9d2ec99ce5845d140e3aa2",
+    "capacity": {
+      "totalConcurrentCapIncludingCoordinator": 7,
+      "fooRunnerConcurrency": 1,
+      "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+      "currentBlocker": "Two stale pending-initialization tasks still consume slots; the UI/tooling backfill attempt was rejected by the seven-total limit. UI/tooling remains queued, not active."
+    },
+    "coordinatorRole": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts."
+  },
+  "chronologicalEvents": [
+    {
+      "atUTC": "2026-10-17T22:57:37Z",
+      "kind": "verified-runtime-result",
+      "id": "diagnostics003",
+      "runId": 39077114923,
+      "outcome": "All nine stages passed; nine immutable selected NO/FR assets readable and pinned; 5271-record journal structure verified. No corpus acceptance or semantic projection.",
+      "evidence": "diagnostics003"
+    },
+    {
+      "atUTC": "2026-10-17T23:06:00Z",
+      "kind": "coordinator-reported-user-direction",
+      "id": "park-phase-durability",
+      "outcome": "Extra phase-durability draft parked after user speed feedback; do not start speculative hardening."
+    },
+    {
+      "atUTC": "2026-10-17T23:29:15Z",
+      "kind": "verified-runtime-result",
+      "id": "survey003",
+      "runId": 39079184351,
+      "outcome": "Incomplete: FR worker exited 0 and identified matching 3484 XML/XLSX IDs, 84 columns, TABLE/ALIM and two sheets; 75 structural labels withheld. NO worker exited -11 with no result body.",
+      "evidence": "survey003",
+      "startedAtUTC": "2026-10-17T23:28:56Z"
+    },
+    {
+      "atUTC": "2026-10-17T23:37:51Z",
+      "kind": "verified-end-to-end-route",
+      "id": "automatic-cycle",
+      "canaryRunId": 39079524637,
+      "followonRunId": 39079671083,
+      "outcome": "Canary receipt -> actual bot wake -> one follow-on Foo execution -> receipt -> second actual bot wake verified. Observed success, not a future delivery guarantee.",
+      "evidence": "automaticCycle"
+    },
+    {
+      "atUTC": "2026-10-17T23:38:51Z",
+      "kind": "verified-requirement-update",
+      "id": "better-auth-eligible",
+      "url": "https://github.com/maldous/offmenu/issues/32#issuecomment-6243191166",
+      "outcome": "Dependency satisfied; architecture/compatibility work eligible in parallel; production/credential changes not started."
+    },
+    {
+      "atUTC": "2026-10-17T23:39:00Z",
+      "kind": "coordinator-reported-user-direction",
+      "id": "full-backlog-kickoff",
+      "outcome": "Use the proven automatic route to progress all backlog across concurrent eligible lanes; no historical-worker restart."
+    },
+    {
+      "atUTC": "2026-10-17T23:42:44Z",
+      "kind": "coordinator-reported-active-pickup",
+      "id": "auth-architecture-pickup",
+      "outcome": "Planning reports vanilla JavaScript, Cloudflare Worker + D1 and Netlify Identity 2.0.0 proxy; stable user-ID mappings key private data. Planning only."
+    },
+    {
+      "atUTC": "2026-10-17T23:43:58Z",
+      "kind": "verified-requirement-record",
+      "id": "tooling-design-requirement",
+      "url": "https://github.com/maldous/offmenu/issues/33",
+      "outcome": "New implementation record for tooling alternatives/adversarial review and recovered UI feedback; no framework migration and no worker pickup inferred."
+    },
+    {
+      "atUTC": "2026-10-17T23:44:00Z",
+      "kind": "coordinator-reported-user-direction",
+      "id": "read-before-update-ledger",
+      "outcome": "Track actionable discussion and changed decisions/dependencies/evidence; search and read existing entries first, update related work rather than blindly append; create only genuinely new actionable items. Apply to recent automatic-loop cleanup, speed/concurrency, auth, tooling/design and CRM decisions."
+    },
+    {
+      "atUTC": "2026-10-17T23:44:02Z",
+      "kind": "verified-requirement-record",
+      "id": "crm-deferred-requirement",
+      "url": "https://github.com/maldous/offmenu/issues/34",
+      "outcome": "Low-priority consideration only after working production; no current implementation."
+    },
+    {
+      "atUTC": "2026-10-17T23:44:44Z",
+      "kind": "coordinator-reported-review-result",
+      "id": "survey004-reviewed",
+      "outcome": "Exact survey004 review passed; coordinator publishing next. ac04/b446 remain latest verified source/control until new publication proof."
+    },
+    {
+      "atUTC": null,
+      "recordedAtUTC": "2026-10-17T23:53:00Z",
+      "kind": "verified-runtime-result",
+      "id": "survey004",
+      "runId": 39080278066,
+      "outcome": "Terminal incomplete despite successful hosted publisher: France 3484 exact matching XML/XLSX IDs and 84 disclosed headers; INFOODS dictionary semantics incomplete. Norway SIGSEGV (-11) inside first strict JSON parse after selected assets were read. No corpus acceptance.",
+      "evidence": "survey004"
+    }
+  ],
+  "lanes": [
+    {
+      "id": "corpus-no-fr",
+      "status": "active-targeted-correction-and-native-candidate",
+      "owner": "Active Norway correction and France native-candidate workers; Morgan/root integrates",
+      "pickupEvidence": "Coordinator reports active distinct Norway correction and France native-candidate work at checkpoint handoff",
+      "latestResult": "survey004 terminal incomplete",
+      "output": "Reviewed Norway targeted correction and France native candidate, followed by actual bounded runtime and separate acceptance evidence",
+      "next": "Review and publish bounded fixes through the existing automatic route with one Foo runner; verify actual receipts before acceptance.",
+      "dependencies": [
+        "Exact reviewed correction bytes",
+        "Single control writer",
+        "Actual runtime receipt"
+      ],
+      "completionRequires": [
+        "Norway exact crash cause and qualified correction with actual bounded runtime evidence",
+        "France native candidate with independently qualified dictionary/value semantics",
+        "Separate source rights, semantics and admission decisions"
+      ],
+      "evidence": [
+        "survey003",
+        "survey004"
+      ],
+      "latestReview": "survey004 was published and executed; any next candidate needs separate review and runtime evidence",
+      "activeSubtasks": [
+        {
+          "scope": "Norway targeted parser correction",
+          "owner": "Norway correction worker",
+          "status": "active"
+        },
+        {
+          "scope": "France source-native extraction",
+          "owner": "France extraction worker",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "better-auth",
+      "status": "active-first-implementation",
+      "owner": "Better Auth implementation worker; Morgan coordinates",
+      "pickupEvidence": "Coordinator confirms architecture plan completed with 13 tests and first implementation active; production migration remains unestablished",
+      "issue": "https://github.com/maldous/offmenu/issues/32",
+      "output": "First bounded Better Auth implementation and compatibility tests, independently reviewed before adoption",
+      "dependencies": [
+        "Existing identity-provider and access-control contracts",
+        "Stable user ID mapping",
+        "Mandatory approval boundaries for any persistent access/security changes"
+      ],
+      "completionRequires": [
+        "Exact current architecture evidence",
+        "Reviewed migration/test plan",
+        "Separately qualified implementation/rollout before migration completion"
+      ],
+      "productionChanges": false,
+      "architectureObserved": {
+        "application": "vanilla JavaScript",
+        "backend": "Cloudflare Worker + D1",
+        "identity": "Netlify Identity 2.0.0 proxy",
+        "criticalConstraint": "Stable user-ID mappings key private data",
+        "stage": "Architecture planning followed by active first implementation; rollout not established"
+      }
+    },
+    {
+      "id": "ledger-reconciliation",
+      "status": "reviewed-awaiting-root-publication",
+      "owner": "Ledger reconciliation worker prepares artifacts; Morgan verifies and publishes",
+      "pickupEvidence": "Existing draft and full catalog read; current evidence reconciled without duplicate requirements",
+      "output": "Sanitized checkpoint, historical reference catalog and validated publication manifest",
+      "dependencies": [
+        "Exact projector code recovery before semantic replay",
+        "Current source receipts before whole-requirement acceptance"
+      ],
+      "completionRequires": [
+        "Root publishes exact reviewed files and verifies immutable readback"
+      ],
+      "semanticProjection": "pending"
+    },
+    {
+      "id": "tooling-ui-design",
+      "status": "queued-capacity-blocked",
+      "owner": null,
+      "issue": "https://github.com/maldous/offmenu/issues/33",
+      "output": "Source-linked prior UI/dev-server/landing/app feedback reconciliation; current-stack alternatives/impacts; independent adversarial decision review; final standards and scoped backlog",
+      "dependencies": [
+        "Recover prior actual design/user feedback",
+        "Current vanilla-JS architecture inspection",
+        "Independent review before implementation"
+      ],
+      "constraints": [
+        "No React/Preact merely to accommodate Biome, nestjs-trpc, shadcn or nuqs",
+        "Evaluate keep-current/no-additional-dependency option",
+        "Adoption or rejection requires concrete justification and maintenance/migration/cost impact",
+        "Read actual official Emil Kowalski skills at 2d228630ba1446365f614a108cb8252f1feda202 when doing UI work; retain MIT notice if copied",
+        "No speculative replacement design or unrequested heavy mandatory developer checks"
+      ],
+      "pickupEvidence": null,
+      "assignmentStatus": "Backfill attempted; rejected by seven-total thread limit. Two stale pending-initialization tasks consume capacity; no active tooling worker."
+    },
+    {
+      "id": "sonar",
+      "status": "open-separate-assessment-and-remediation",
+      "owner": "Current assignee not verified in this handoff",
+      "output": "Actual Sonar assessment evidence and separately reviewed remediation",
+      "dependencies": [
+        "Actual scan capability/configuration and result"
+      ],
+      "completionRequires": [
+        "Scan result and exact finding disposition; skipped scan is not pass"
+      ],
+      "blockingOtherIndependentLanes": false
+    },
+    {
+      "id": "product-acceptance-joins",
+      "status": "candidate-queue-unassigned",
+      "owner": null,
+      "output": "Exact existing product output/review/current-caller acceptance joins",
+      "dependencies": [
+        "Free capacity",
+        "Coordinator selects bounded work and owner",
+        "No overlap with auth/state or UI writers"
+      ],
+      "candidateTaskIds": [
+        "product-source-permission-join",
+        "product-shopping-deficit-join",
+        "product-meal-availability-join",
+        "product-meal-preference-persistence",
+        "product-scanner-device-acceptance"
+      ]
+    },
+    {
+      "id": "phase-durability",
+      "status": "parked",
+      "owner": null,
+      "reason": "User speed feedback at 23:06; no speculative hardening selected"
+    },
+    {
+      "id": "historical-source-and-country-holds",
+      "status": "held-or-unreconciled",
+      "owner": "Morgan/root for selection; historical worker numbers are provenance",
+      "output": "Exact source/receipt/disposition reconciliation only",
+      "dependencies": [
+        "Source-specific rights and custody",
+        "NP12/PK28 restricted actor portions",
+        "ER14 no-retry",
+        "OFF/OpenPrices export custodian",
+        "NF native producer",
+        "Prices archive custodian",
+        "KP/KR qualified source holder"
+      ],
+      "rule": "Do not repeat searches, resend uncertain attempts, waive source restrictions or infer country completion from current pipeline tests."
+    },
+    {
+      "id": "crm-consideration",
+      "status": "deferred-low-priority",
+      "owner": null,
+      "issue": "https://github.com/maldous/offmenu/issues/34",
+      "output": "Consider trycompai/crm and alternatives only after working production exists",
+      "dependencies": [
+        "Evidence of a working production platform"
+      ],
+      "constraints": [
+        "Consideration only, not adoption mandate",
+        "Assess real need, data/privacy/integration/operating impact and licence",
+        "Do not divert current delivery or introduce CRM infrastructure now"
+      ],
+      "pickupEvidence": null
+    }
+  ],
+  "pendingUnassignedCandidateIds": [
+    "product-source-permission-join",
+    "product-shopping-deficit-join",
+    "product-meal-availability-join",
+    "product-meal-preference-persistence",
+    "product-scanner-device-acceptance"
+  ],
+  "unknownTaskIdentifiers": [
+    "Sonar assessment/remediation owner and current result remain unverified"
+  ],
+  "nextPriorities": [
+    "Finish active Norway targeted correction and France native candidate through reviewed automatic route; observe actual runtime receipts",
+    "Continue active first Better Auth implementation and bounded compatibility tests in parallel",
+    "Automatically backfill freed capacity with one eligible bounded product acceptance join; recover existing outputs before implementing",
+    "Preserve exact six projector sources/dependencies and reconcile known response/request pairs before semantic ledger migration",
+    "Obtain actual Sonar assessment evidence and independently qualified fixes without treating a skipped scan as a pass"
+  ],
+  "duplicateSuppression": [
+    "Do not restart 64 historical sessions",
+    "No second canary needed merely to reconfirm already verified automatic cycle",
+    "Join M005 5216/5255 uncertain attempt before resend",
+    "Keep 5219 original requester51 correlation",
+    "Keep 5222/5223, 5225, 5239, 5249 response ownership",
+    "Keep 5265 exact metadata-pin and NOT_HELD distinctions",
+    "M006/NL remains failed-turn history without exact later authorized result"
+  ],
+  "evidence": {
+    "diagnostics003": {
+      "sha256": "897f08423d2bd60f3e2f557d1cab56c76f8656e56152feca4e098396d4d41bc5",
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39077114923"
+    },
+    "survey003": {
+      "sha256": "1067e67dcf4bf7a929d7f574fa50a44607938f4e514758b1ded551977cc1fd8b",
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39079184351"
+    },
+    "automaticCycle": {
+      "sha256": "4f01cff1f06ade5995c6e4377c476f2f0644b81c08832387b6c6414d36fe5c06",
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39079671083",
+      "canaryRunUrl": "https://github.com/maldous/offmenu/actions/runs/39079524637"
+    },
+    "survey004Candidate": {
+      "sha256": "c13c9710859293e7a8af81114b0c828fbebfd4890b4c0631019efd6a42ac76ac",
+      "publishedSourceUrl": "https://github.com/maldous/offmenu/commit/314822f900c49953aeca04d82ce0957d851d19c9",
+      "status": "Historical candidate manifest; exact source subsequently published and executed"
+    },
+    "projectorPins": {
+      "sha256": "d29c116fb42e772b1e5dddc8e45663246b27e73ef059d390d832ad3dd6e3341c",
+      "sourceUrl": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/management-summary.json",
+      "scope": "Private preservation-manifest digest only; source bodies not yet preserved and no public manifest URL claimed"
+    },
+    "historicalSummary": {
+      "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93",
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/management-summary.json"
+    },
+    "historicalBase": {
+      "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a",
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/interim-obligation-index.json"
+    },
+    "historicalHandover": {
+      "sha256": "cd69b9e14b08a309ec63c31e69af2ad843b3aadfe7458003709f01e8fdc2a541",
+      "url": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/handover.json"
+    },
+    "currentTree": {
+      "sha256": "85dc5fef05514efc9c25c189a0f43a95673c9a9bea3d46da47c87b0802993a6e",
+      "commit": "ac04ab98914658bc0443189b3fa04f86ebbc6525",
+      "url": "https://github.com/maldous/offmenu/tree/ac04ab98914658bc0443189b3fa04f86ebbc6525",
+      "scope": "Earlier baseline tree read; not a claim of latest-source verification for every product path"
+    },
+    "issue33": {
+      "sha256": "b18840b745a044cfe1434167e4835699bceb757c557ded5c0a51a3b2bbe0d6e0",
+      "url": "https://github.com/maldous/offmenu/issues/33"
+    },
+    "issue34": {
+      "sha256": "8343a842a7209d0ba6ce942cb35f170180c88b935182439399fc35376b96477e",
+      "url": "https://github.com/maldous/offmenu/issues/34"
+    },
+    "mealAvailability": {
+      "sha256": "4f14237195759ace4997a27ec77c3850d960546ad6b179931e88ec73a20f66aa",
+      "commit": "59ec1cc73c94deb27f564c63741e1f91cd547bdf",
+      "scope": "Complete targeted preserved tip-tree read; no code execution",
+      "url": "https://github.com/maldous/offmenu/tree/59ec1cc73c94deb27f564c63741e1f91cd547bdf"
+    },
+    "shoppingDeficit": {
+      "sha256": "b99600ee75a06715a4ed1837ea1fef1773be1b67df586ff3a0ed9b3dcdd5ef85",
+      "commit": "b63b3c44a11da6386dfb40c2617564c83e43239a",
+      "scope": "Complete targeted preserved tip-tree read; no code execution",
+      "url": "https://github.com/maldous/offmenu/tree/b63b3c44a11da6386dfb40c2617564c83e43239a"
+    },
+    "survey004": {
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39080278066",
+      "artifactUrl": "https://github.com/maldous/offmenu/actions/runs/39080278066/artifacts/12118319259",
+      "artifactId": 12118319259,
+      "artifactSha256": "184f7b527188c9f4678b9d419951c19ca2fa9308baec0d784039c71565b68849",
+      "verificationSha256": "5b1847fbf2ed64928a8c7c470b0efd60c966706260d874c569eed84105ad4c1b",
+      "status": "terminal-incomplete",
+      "corpusAcceptanceEstablished": false,
+      "sourceCommit": "314822f900c49953aeca04d82ce0957d851d19c9",
+      "controlCommit": "498d66b07c48f66e9a9d2ec99ce5845d140e3aa2"
+    }
+  },
+  "sideEffects": {
+    "githubWrites": 0,
+    "fooActions": 0,
+    "oldWorkerDispatches": 0,
+    "sourceHistoryChanges": 0,
+    "localDraftFilesOnly": true
+  },
+  "issueReconciliation": [
+    {
+      "issue": 32,
+      "url": "https://github.com/maldous/offmenu/issues/32",
+      "role": "Current Better Auth migration implementation record",
+      "relatedHistoricalObligationIds": [
+        "IDENTITY-ASSESSMENT",
+        "IDENTITY-DEV",
+        "IDENTITY-VALIDATOR",
+        "IDENTITY-PROD",
+        "SERVICES-GAPS"
+      ],
+      "relationship": "Continues identity work with a newly required solution; old scoped reviews remain history. Does not establish current implementation or close identity parents.",
+      "matchStatus": "Related identity scope established; exact whole-parent semantic projection pending"
+    },
+    {
+      "issue": 33,
+      "url": "https://github.com/maldous/offmenu/issues/33",
+      "role": "Current design-feedback reconciliation and tooling decision implementation record",
+      "relatedHistoricalObligationIds": [
+        "UX-HISTORY",
+        "UI-ROUTE",
+        "DEV7645-COUNTRY-PROGRESS-VIEW"
+      ],
+      "relationship": "UX-HISTORY is the direct chronology/recovery connection. UI-ROUTE and DEV7645 are retained history/ownership/feedback evidence, not assertions to reopen resolved work or retry denied live requests.",
+      "matchStatus": "Broad history match established; exact landing/app prior conversation and final requirement match unresolved"
+    },
+    {
+      "issue": 34,
+      "url": "https://github.com/maldous/offmenu/issues/34",
+      "role": "Deferred future consideration record",
+      "relatedHistoricalObligationIds": [],
+      "relationship": "No exact CRM requirement match identified among the 89 historical obligation summaries read. Do not map the generic SERVICES-GAPS parent as an exact CRM requirement or add to historical counts.",
+      "matchStatus": "Genuinely new specific actionable consideration in current discussion, deferred; wider preserved 105-requirement detail not fully semantically reconciled"
+    }
+  ],
+  "operationalDecisionReconciliation": [
+    {
+      "decision": "Automatic continuation proof",
+      "updatesExistingIds": [
+        "SUPERVISOR-FULL-CANDIDATE",
+        "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+        "REPORTING-GATEWAYS"
+      ],
+      "scope": "Current automatic route proven only; historical supervisor/adoption/ledger obligations remain partially unreconciled",
+      "separateBacklogItemCreated": false
+    },
+    {
+      "decision": "Protect active automation infrastructure during cleanup",
+      "updatesExistingLane": "currentExecution.cleanupProtection",
+      "scope": "Runner jobs/results branches, PR31, workflow, continuation automation, source pins and PR30 retained",
+      "separateBacklogItemCreated": false
+    },
+    {
+      "decision": "Speed, useful concurrency and parked hardening",
+      "updatesExistingLanes": [
+        "corpus-no-fr",
+        "better-auth",
+        "product-acceptance-joins",
+        "phase-durability"
+      ],
+      "scope": "Seven concurrent agents total including coordinator, one Foo runner; automatic eligible backfill; active Norway, France and auth work; no fake capacity or speculative hardening",
+      "separateBacklogItemCreated": false
+    },
+    {
+      "decision": "Voice and chat updates",
+      "scope": "Coordinator owns user updates across the authorized voice/chat interaction; this worker performs no outbound user or voice messages",
+      "separateBacklogItemCreated": false
+    },
+    {
+      "decision": "Terminal survey004 and parallel corrective pickup",
+      "updatesExistingLanes": [
+        "corpus-no-fr",
+        "better-auth"
+      ],
+      "scope": "Update actual evidence and current work stage; do not duplicate existing corpus or identity requirements",
+      "separateBacklogItemCreated": false
+    },
+    {
+      "decision": "Coordinator focuses on task management; delegate substantive deliverables",
+      "updatesExistingIds": [
+        "SUPERVISOR-FULL-CANDIDATE",
+        "PERMANENT-LEDGER-OPERATIONAL-ADOPTION"
+      ],
+      "scope": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts.",
+      "separateBacklogItemCreated": false,
+      "capacityConstraint": "Two stale pending-initialization tasks still consume slots; the UI/tooling backfill attempt was rejected by the seven-total limit. UI/tooling remains queued, not active."
+    }
+  ],
+  "unresolvedMatches": [
+    "Exact six-projector semantic replay and current authoritative whole-parent projection",
+    "Issue33 exact prior landing-page/app feedback conversation and dev-server session source",
+    "Issue34 exact historical CRM antecedent, if any, outside the read 89-row summary",
+    "Current Sonar task/result identifiers",
+    "Exact later source-permission evaluator result/review receipt",
+    "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
+  ],
+  "publication": {
+    "status": "not-published",
+    "writer": "Morgan/root only",
+    "changesMadeHere": "Reviewed local files only; no repository/issue/history writes",
+    "adoptionCondition": "Root alone publishes the reviewed allowlist and verifies immutable readback; checkpoint remains unpublished until that evidence exists"
+  },
+  "activeWork": [
+    "Norway targeted parser correction",
+    "France source-native extraction",
+    "Better Auth first implementation",
+    "Ledger finalization"
+  ]
+}
