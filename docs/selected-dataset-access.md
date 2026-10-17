@@ -72,8 +72,14 @@ is made. Missing/invalid output after a terminal kill or power loss is failure.
 
 The grant opens every original ancestor with anchored directory descriptors and
 `O_NOFOLLOW`; it opens each regular leaf without following links and holds those
-file descriptors through copying. It checks owner, type, single link, bounded size,
-non-executable/non-group-or-world-writable mode, stable stat identity, and existing
+file descriptors through copying. Source ancestors may be group-writable only
+when owned by root or the expected source owner with that owner's expected primary
+group; world-writable ancestors, access ACLs and unknown owners/groups are rejected.
+Ancestor ACL checks use the already-held directory descriptor. This does
+not relax any root-owned destination/store/drop-in checks. Group-writable source
+leaves require the same owner/primary-group match; concurrent writes cannot bypass
+the copied-content digest gate. It checks owner, type, single link, bounded size,
+non-executable/non-world-writable mode, stable stat identity, and existing
 read permission for the dedicated account. ACLs or ambiguous access are blockers,
 not permission to chmod, chown or copy otherwise inaccessible data as root.
 

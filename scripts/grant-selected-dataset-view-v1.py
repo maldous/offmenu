@@ -134,9 +134,21 @@ def anchored_source(asset_id,runner,owner):
             nxt=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=parent)
             os.close(parent);parent=nxt
             info=os.fstat(parent)
-            if info.st_uid not in {0,owner.pw_uid} or info.st_mode&0o022:block('unsafe-path')
+            # Sources may be maintained in the owner's primary group. Held
+            # descriptors plus immutable content pins prevent substitution from
+            # becoming exposed data; world-write/unknown identity still fails.
+            primary_groups={0:0,owner.pw_uid:owner.pw_gid}
+            if info.st_uid not in primary_groups or info.st_gid!=primary_groups[info.st_uid] or info.st_mode&0o002:block('unsafe-path')
+            try:
+                os.getxattr(parent,'system.posix_acl_access')
+                block('acl-requires-review')
+            except OSError as exc:
+                if exc.errno not in (errno.ENODATA,errno.ENOTSUP):block('access-unverified')
         before=os.stat(parts[-1],dir_fd=parent,follow_symlinks=False)
-        if not stat.S_ISREG(before.st_mode) or before.st_nlink!=1 or before.st_uid not in {0,owner.pw_uid} or before.st_mode&0o133:block('unsafe-file')
+        # The same primary-group source policy applies to non-executable leaves.
+        # Concurrent changes still cannot pass the private immutable-digest gate.
+        primary_groups={0:0,owner.pw_uid:owner.pw_gid}
+        if not stat.S_ISREG(before.st_mode) or before.st_nlink!=1 or before.st_uid not in primary_groups or before.st_gid!=primary_groups[before.st_uid] or before.st_mode&0o113:block('unsafe-file')
         if before.st_size>(MAX_RAW if kind=='raw' else MAX_META):block('oversized')
         fd=os.open(parts[-1],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)
         info=os.fstat(fd)

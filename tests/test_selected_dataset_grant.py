@@ -17,10 +17,81 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 
 class GrantTests(unittest.TestCase):
     def setUp(self):
-        self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
+        # Production traversal intentionally rejects writable ancestors. CI's
+        # conventional /tmp is1777, so place controlled fixtures under the
+        # resolved checkout rather than depending on host temp-root modes.
+        self.tmp=tempfile.TemporaryDirectory(prefix='.grant-test-',dir=SCRIPT.parents[1]);self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name)
         self.runner=SimpleNamespace(pw_uid=99999,pw_gid=99999)
-        self.owner=SimpleNamespace(pw_uid=os.geteuid())
+        self.owner=SimpleNamespace(pw_uid=os.geteuid(),pw_gid=os.getegid())
+
+    def test_writable_source_ancestor_is_rejected(self):
+        unsafe=self.root/'unsafe-parent';unsafe.mkdir();unsafe.chmod(0o1777)
+        path=unsafe/m.FILES['NO_EN_FOODS'][0]
+        path.parent.mkdir(parents=True);path.write_bytes(b'fixture');path.chmod(0o644)
+        with patch.object(m,'ORIGINALS',unsafe):
+            state,info=m.source_check('NO_EN_FOODS',self.runner,self.owner)
+        self.assertEqual('unsafe-path',state)
+        self.assertIsNone(info)
+        self.assertEqual(b'fixture',path.read_bytes())
+
+    def test_known_primary_group_writable_source_ancestor_allowed(self):
+        self.source('NO_EN_FOODS');self.root.chmod(0o775)
+        with patch.object(m,'ORIGINALS',self.root):
+            state,info=m.source_check('NO_EN_FOODS',self.runner,self.owner)
+        self.assertEqual('validated',state)
+        self.assertEqual(0o775,self.root.stat().st_mode&0o777)
+        self.assertEqual(0o644,info.st_mode&0o777)
+
+    def test_named_acl_on_held_source_ancestor_rejected(self):
+        self.source('NO_EN_FOODS');self.root.chmod(0o775)
+        inode=self.root.stat().st_ino;original_getxattr=m.os.getxattr
+        def named_acl(fd,name):
+            self.assertIsInstance(fd,int)
+            if os.fstat(fd).st_ino==inode:return b'named-writer-acl'
+            return original_getxattr(fd,name)
+        with patch.object(m,'ORIGINALS',self.root),patch.object(m.os,'getxattr',side_effect=named_acl):
+            self.assertEqual('acl-requires-review',m.source_check('NO_EN_FOODS',self.runner,self.owner)[0])
+        self.assertEqual(0o775,self.root.stat().st_mode&0o777)
+
+    def test_unknown_source_ancestor_group_still_rejected(self):
+        self.source('NO_EN_FOODS');self.root.chmod(0o775)
+        original_fstat=m.os.fstat;inode=self.root.stat().st_ino
+        def wrong_group(fd):
+            info=original_fstat(fd)
+            if info.st_ino==inode:
+                values=list(info);values[5]=99998
+                return os.stat_result(values)
+            return info
+        with patch.object(m,'ORIGINALS',self.root),patch.object(m.os,'fstat',side_effect=wrong_group):
+            self.assertEqual('unsafe-path',m.source_check('NO_EN_FOODS',self.runner,self.owner)[0])
+
+    def test_expected_group_writable_source_leaf_allowed(self):
+        p=self.source('NO_EN_FOODS');p.chmod(0o664)
+        with patch.object(m,'ORIGINALS',self.root):
+            self.assertEqual('validated',m.source_check('NO_EN_FOODS',self.runner,self.owner)[0])
+        self.assertEqual(0o664,p.stat().st_mode&0o777)
+
+    def test_source_leaf_unknown_owner_or_group_rejected(self):
+        p=self.source('NO_EN_FOODS');p.chmod(0o664)
+        original_stat=m.os.stat
+        for index in (4,5):
+            def wrong_identity(path,*args,**kwargs):
+                info=original_stat(path,*args,**kwargs)
+                if path=='en-foods.json':
+                    values=list(info);values[index]=99998
+                    return os.stat_result(values)
+                return info
+            with patch.object(m,'ORIGINALS',self.root),patch.object(m.os,'stat',side_effect=wrong_identity):
+                self.assertEqual('unsafe-file',m.source_check('NO_EN_FOODS',self.runner,self.owner)[0])
+
+    def test_group_write_does_not_bypass_runner_read_or_world_write(self):
+        p=self.source('NO_EN_FOODS')
+        for mode,expected in ((0o660,'runner-read-denied'),(0o666,'unsafe-file'),(0o675,'unsafe-file')):
+            p.chmod(mode)
+            with patch.object(m,'ORIGINALS',self.root):
+                self.assertEqual(expected,m.source_check('NO_EN_FOODS',self.runner,self.owner)[0])
+            self.assertEqual(mode,p.stat().st_mode&0o777)
 
     def test_exact_raw_selection_and_no_broad_mount(self):
         self.assertEqual(6,sum(v[2]=='raw' for v in m.FILES.values()))
@@ -168,7 +239,7 @@ class GrantTests(unittest.TestCase):
         with self.assertRaisesRegex(m.Blocked,'bounded-read-limit'):m.bounded_read(p,10)
 
     def test_source_parent_replacement_uses_held_directory(self):
-        p=self.source('NO_EN_FOODS',b'APPROVED')
+        p=self.source('NO_EN_FOODS',b'APPROVED');p.parent.chmod(0o775)
         outside=self.root/'outside';outside.mkdir();(outside/'en-foods.json').write_bytes(b'CANARY-SECRET')
         original_open=m.os.open;swapped=False
         def replace_parent(path,flags,*args,**kwargs):
