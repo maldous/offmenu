@@ -475,7 +475,7 @@ def _food_structure(foods, holds, budget):
     return {'energy': energy, 'metadata': metadata}
 
 
-def _survey(blobs):
+def _survey(blobs, progress=None):
     if type(blobs) is not dict or set(blobs) != set(INPUTS):
         raise SurveyError('input-set-mismatch')
     if any(type(body) is not bytes for body in blobs.values()):
@@ -487,7 +487,11 @@ def _survey(blobs):
     documents, errors = {}, set()
     for name in INPUTS:
         try:
+            if progress is not None:
+                progress('parse-entry', name)
             documents[name] = _strict_json(blobs[name])
+            if progress is not None:
+                progress('parse-complete', name)
         except SurveyError as exc:
             errors.add(str(exc))
     if errors:
@@ -687,10 +691,10 @@ def sanitize_report(value) -> dict:
     return result
 
 
-def survey(blobs: dict[str, bytes]) -> dict:
+def survey(blobs: dict[str, bytes], *, progress=None) -> dict:
     """Return complete bounded structural evidence, or a content-free fatal hold."""
     try:
-        return sanitize_report(_survey(blobs))
+        return sanitize_report(_survey(blobs, progress=progress))
     except SurveyError as exc:
         code = str(exc)
         if code not in REASONS:

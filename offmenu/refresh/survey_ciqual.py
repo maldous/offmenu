@@ -15,6 +15,7 @@ import json
 import posixpath
 import re
 import stat
+import unicodedata
 import xml.etree.ElementTree as ET
 import zipfile
 
@@ -30,7 +31,31 @@ MAX_ROWS = 10_000
 MAX_COLUMNS = 128
 MAX_TEXT = 4096
 MAX_LABEL = 256
-MAX_RESULT = 32 * 1024
+MAX_RESULT = 64 * 1024
+# Unicode White_Space characters only; no Unicode compatibility/case folding.
+DISPLAY_WHITESPACE = frozenset('\t\n\v\f\r \u0085\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000')
+WHITESPACE_TYPES = ('space', 'tab', 'lineFeed', 'carriageReturn', 'nbsp',
+                    'narrowNbsp', 'lineSeparator', 'paragraphSeparator', 'otherWhitespace')
+HEADER_REJECTIONS = ('missing-cell', 'invalid-cell', 'non-text-cell', 'missing-text',
+                     'empty-display', 'label-too-long', 'no-letters',
+                     'leading-or-trailing-whitespace', 'control-character',
+                     'url-or-path-token', 'unsupported-character', 'slash-outside-unit-suffix')
+UNICODE_CLASSES = ('Lu', 'Ll', 'Lt', 'Lm', 'Lo', 'Mn', 'Mc', 'Me', 'Nd', 'Nl', 'No',
+                   'Pc', 'Pd', 'Ps', 'Pe', 'Pi', 'Pf', 'Po', 'Sm', 'Sc', 'Sk', 'So',
+                   'Zs', 'Zl', 'Zp', 'Cc', 'Cf', 'Cs', 'Co', 'Cn')
+LABEL_PUNCTUATION = " _-.,:;()[]%/+<>='µμ°βαγ×±*’–"
+INFOODS_SHEET = 'INFOODS codes'
+INFOODS_ROWS = 75
+INFOODS_COLUMNS = 3
+INFOODS_KINDS = ('numeric-code-candidate', 'code-candidate', 'header-label-candidate',
+                 'unit-candidate', 'withheld')
+INFOODS_REJECTIONS = ('missing-cell', 'invalid-cell', 'unsupported-cell-type',
+                      'noninteger-numeric-code', 'empty-text', 'unknown-dictionary-text')
+# Shape-only tokens from the explicitly reviewed dictionary, not a tag-name
+# vocabulary or nutrient mapping. Unknown spellings are evidence, not errors.
+INFOODS_CODE_TOKEN = re.compile(r'[A-Z][A-Z0-9_]{0,31}\Z')
+INFOODS_UNIT = re.compile(r'(?:g|mg|µg|μg|ug|kJ|kcal|IU|RE|RAE|TE|NE|%)(?: */ *100 *g)?\Z')
+
 S = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
 R = '{http://schemas.openxmlformats.org/package/2006/relationships}'
 RID = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
@@ -73,6 +98,7 @@ REASONS = frozenset((
     'ambiguous-identity-xml-entries', 'missing-identity-field',
     'duplicate-identity-field', 'invalid-identity-field', 'empty-identity-table',
     'xml-entry-limit', 'schema-label-limit', 'result-size-limit',
+    'infoods-dictionary-shape-held', 'infoods-dictionary-cell-held', 'duplicate-infoods-dictionary-sheet',
 ))
 OMISSIONS = ('xlsx', 'xml', 'worksheet-rows', 'worksheet-columns', 'schema-labels', 'report')
 
@@ -146,24 +172,88 @@ def _local(tag):
     return tag.rsplit('}', 1)[-1]
 
 
-def _label_ok(value):
-    # Dictionary labels only. No arbitrary payloads, prose lines, paths or URLs.
-    if not isinstance(value, str) or not 0 < len(value) <= MAX_LABEL:
-        return False
-    if not any(c.isalpha() for c in value) or value != value.strip():
-        return False
+def _label_rejections(value):
+    """Fixed diagnostics only; never return rejected source characters/text."""
+    reasons = []
+    if not isinstance(value, str) or not value:
+        return ['empty-display']
+    if len(value) > MAX_LABEL:
+        reasons.append('label-too-long')
+    if not any(c.isalpha() for c in value):
+        reasons.append('no-letters')
+    if value != value.strip():
+        reasons.append('leading-or-trailing-whitespace')
     if any(ord(c) < 32 or ord(c) == 127 for c in value):
-        return False
-    if any(x in value for x in ('\\', '@', '://', 'www.', '../', './', '\x00')):
-        return False
-    if value.startswith(('/', '~')) or value.endswith(('.xml', '.xlsx', '.csv', '.json')):
-        return False
-    if any(not (c.isalnum() or c in " _-.,:;()[]%/+<>='µμ°βαγ×±*’–") for c in value):
-        return False
-    # Slashes are admitted only in parenthesized/bracketed dictionary unit suffixes.
+        reasons.append('control-character')
+    compact = ''.join(c for c in value if c not in DISPLAY_WHITESPACE)
+    if (any(x in compact for x in ('\\', '@', '://', 'www.', '../', './', '\x00'))
+            or value.startswith(('/', '~')) or value.endswith(('.xml', '.xlsx', '.csv', '.json'))):
+        reasons.append('url-or-path-token')
+    if any(not (c.isalnum() or c in LABEL_PUNCTUATION) for c in value):
+        reasons.append('unsupported-character')
     if '/' in value and not re.search(r'[\[(][^\[\]()]*\/[^\[\]()]*[\])]$', value):
-        return False
-    return True
+        reasons.append('slash-outside-unit-suffix')
+    return reasons
+
+
+def _label_ok(value):
+    return not _label_rejections(value)
+
+
+def _display_whitespace(value):
+    # Convert only White_Space to ASCII space, collapse runs, trim edges.
+    # Original decoded strings remain the sole inputs to existing raw hashes.
+    converted = ''.join(' ' if c in DISPLAY_WHITESPACE else c for c in value)
+    return re.sub(' +', ' ', converted).strip(' ')
+
+
+def _whitespace_counts(value):
+    names = {' ': 'space', '\t': 'tab', '\n': 'lineFeed', '\r': 'carriageReturn',
+             '\u00a0': 'nbsp', '\u202f': 'narrowNbsp', '\u2028': 'lineSeparator',
+             '\u2029': 'paragraphSeparator'}
+    return Counter(names.get(c, 'otherWhitespace') for c in value if c in DISPLAY_WHITESPACE)
+
+
+def _header_label(cell, column, diagnostics, ctx):
+    kind = 'missing' if cell is None else cell[0]
+    diagnostics['types'][kind] += 1
+    raw = cell[1] if cell and isinstance(cell[1], str) else ''
+    whitespace = _whitespace_counts(raw)
+    diagnostics['whitespace'].update(whitespace)
+    display = _display_whitespace(raw)
+    unsupported = Counter(unicodedata.category(c) for c in display
+                          if not (c.isalnum() or c in LABEL_PUNCTUATION))
+    diagnostics['unsupportedCharacterClasses'].update(unsupported)
+    if raw != display:
+        diagnostics['normalizedColumns'].append(column)
+    if cell is None:
+        reasons = ['missing-cell']
+    elif cell[2]:
+        reasons = ['invalid-cell']
+    elif kind not in ('s', 'inlineStr', 'str'):
+        reasons = ['non-text-cell']
+    elif cell[1] is None:
+        reasons = ['missing-text']
+    else:
+        reasons = _label_rejections(display)
+    if reasons:
+        diagnostics['rejectionReasons'].update(reasons)
+        for reason in reasons:
+            diagnostics['rejectionColumns'].setdefault(reason, []).append(column)
+        # All reason/column associations and aggregate counts are retained.
+        # Bound verbose examples so repeated failures cannot erase the entire
+        # report through the 32 KiB result cap; disclose every omitted detail.
+        if len(diagnostics['rejectedColumns']) < 8:
+            diagnostics['rejectedColumns'].append({'column': column, 'type': kind,
+                'reasons': reasons, 'whitespace': dict(sorted(whitespace.items())),
+                'unsupportedCharacterClasses': dict(sorted(unsupported.items()))})
+        else:
+            diagnostics['rejectedColumnDetailsOmitted'] += 1
+        ctx.hold('invalid-header' if any(r in reasons for r in
+            ('missing-cell', 'invalid-cell', 'non-text-cell', 'missing-text'))
+            else 'structural-label-withheld', 'schema-labels')
+        return None
+    return display
 
 
 def _label(value, ctx):
@@ -640,29 +730,123 @@ def _sheet(root, strings, first, ctx):
         header = {}
     columns = max(stats['maxColumn'], min(MAX_COLUMNS, (dimension or {}).get('lastColumn', 0)))
     labels = []
+    diagnostics = {'types': Counter(), 'rejectionReasons': Counter(), 'whitespace': Counter(),
+                   'unsupportedCharacterClasses': Counter(), 'normalizedColumns': [], 'rejectedColumns': [],
+                   'rejectionColumns': {}, 'rejectedColumnDetailsOmitted': 0}
     for col in range(1, columns + 1):
         value = header.get(col)
-        label, suffix = None, None
-        if value and not value[2] and value[0] in ('s', 'inlineStr', 'str') and value[1]:
-            label = _label(value[1], ctx)
-            if label:
-                match = re.search(r'(\([^()]*\)|\[[^\[\]]*\])$', label)
-                if match:
-                    suffix = match[1]  # Preserve delimiters, whitespace and literal spelling.
-        else:
-            ctx.hold('invalid-header')
+        label, suffix = _header_label(value, col, diagnostics, ctx), None
+        if label:
+            match = re.search(r'(\([^()]*\)|\[[^\[\]]*\])$', label)
+            if match:
+                suffix = match[1]  # Literal suffix of the whitespace-only display label.
         labels.append({'column': col, 'label': label, 'literalUnitSuffix': suffix,
                        'rawHeaderSha256': hashlib.sha256(value[1].encode('utf-8')).hexdigest() if value and isinstance(value[1], str) else None,
                        'rawHeaderCharacters': len(value[1]) if value and isinstance(value[1], str) else 0,
                        'qualifiers': dict(sorted(qualifiers[col - 1].items()))})
+    for key in ('types', 'rejectionReasons', 'whitespace', 'unsupportedCharacterClasses'):
+        diagnostics[key] = dict(sorted(diagnostics[key].items()))
     identity['unique'], identity['setSha256'] = len(codes), _digest(codes)
     if any(names[x] for x in ('missing', 'blank', 'invalid')):
         ctx.hold('missing-english-name')
     return stats, {'headerRow': 1, 'rawHeaderSequenceSha256': hashlib.sha256(_encode([header.get(col) for col in range(1, columns + 1)])).hexdigest(),
-                   'headerHashSemantics': 'decoded-xml-text-utf8-no-normalization', 'unitSemantics': 'unverified-literal-header-suffix',
+                   'headerHashSemantics': 'decoded-xml-text-utf8-no-normalization',
+                   'headerDisplayNormalization': 'unicode-whitespace-only-collapse-and-trim',
+                   'headerDiagnostics': diagnostics, 'unitSemantics': 'unverified-literal-header-suffix',
                    'qualifierCategories': list(QUALIFIERS), 'columns': labels,
                    'foodCodeColumn': 7, 'englishNameColumn': 8,
                    'foodCodes': identity, 'englishNamePresence': dict(sorted(names.items()))}, codes
+
+
+def _infoods_candidate(cell, header_labels):
+    if cell is None:
+        return 'withheld', None, 'missing-cell'
+    kind, raw, invalid = cell
+    if invalid:
+        return 'withheld', None, 'invalid-cell'
+    if kind == 'n':
+        if raw is not None and re.fullmatch(r'[0-9]{1,6}', raw):
+            return 'numeric-code-candidate', raw, None
+        return 'withheld', None, 'noninteger-numeric-code'
+    if kind not in ('s', 'inlineStr', 'str'):
+        return 'withheld', None, 'unsupported-cell-type'
+    display = _display_whitespace(raw or '')
+    if not display:
+        return 'withheld', None, 'empty-text'
+    if display in header_labels:
+        return 'header-label-candidate', display, None
+    if INFOODS_CODE_TOKEN.fullmatch(display):
+        return 'code-candidate', display, None
+    if INFOODS_UNIT.fullmatch(display):
+        return 'unit-candidate', display, None
+    return 'withheld', None, 'unknown-dictionary-text'
+
+
+def _infoods(root, strings, sheet_index, first_sheet, ctx):
+    """Only the reviewed 75x3, exactly named dictionary; no header inference.
+
+    Row and column positions are explicit through list order. Display kinds are
+    lexical candidates only. Header-label text must exactly match an already
+    disclosed main-sheet display label; arbitrary dictionary prose never passes.
+    """
+    out = {'sheetIndex': sheet_index, 'label': INFOODS_SHEET,
+           'semanticsVerified': False, 'displayNormalization': 'unicode-whitespace-only-collapse-and-trim',
+           'rowStart': 1, 'columnStart': 1, 'expectedRows': INFOODS_ROWS,
+           'expectedColumns': INFOODS_COLUMNS, 'rowsObserved': 0, 'columnsObserved': 0,
+           'shapeAccepted': False, 'dictionaryComplete': False,
+           'rawCellSequenceSha256': None, 'sourceCellTypes': [{}, {}, {}],
+           'candidateTypes': [{}, {}, {}], 'rejectionReasons': {}, 'rejectionPositions': {},
+           'rows': []}
+    containers = root.findall(S + 'sheetData')
+    data = list(containers[0]) if len(containers) == 1 else []
+    out['rowsObserved'] = len(data)
+    shape_ok = len(containers) == 1 and len(data) == INFOODS_ROWS
+    if len(data) != INFOODS_ROWS:
+        dimension = _dimension(root, ctx)
+        out['columnsObserved'] = (dimension or {}).get('lastColumn', 0)
+        ctx.hold('infoods-dictionary-shape-held', 'schema-labels')
+        return out
+    for index, row in enumerate(data, 1):
+        refs = [_coordinate(cell.get('r')) for cell in row]
+        out['columnsObserved'] = max(out['columnsObserved'], max((x[1] for x in refs if x), default=0))
+        if (row.tag != S + 'row' or row.get('r') != str(index) or len(row) != INFOODS_COLUMNS
+                or refs != [(index, 1), (index, 2), (index, 3)]
+                or any(cell.tag != S + 'c' for cell in row)):
+            shape_ok = False
+    dimension = _dimension(root, ctx)
+    if dimension != {'firstRow': 1, 'lastRow': 75, 'firstColumn': 1, 'lastColumn': 3}:
+        shape_ok = False
+    if not shape_ok:
+        ctx.hold('infoods-dictionary-shape-held', 'schema-labels')
+        return out
+    out['shapeAccepted'] = True
+    header_labels = {x['label'] for x in (first_sheet or {}).get('columns', []) if x['label'] is not None}
+    raw_sequence, source_types, candidate_types, reasons = [], [Counter() for _ in range(3)], [Counter() for _ in range(3)], Counter()
+    for row_number, row in enumerate(data, 1):
+        parsed_row, display_row = [], []
+        for column, element in enumerate(row, 1):
+            cell = _cell(element, strings, ctx)
+            parsed_row.append(cell)
+            source_types[column - 1][cell[0]] += 1
+            kind, display, reason = _infoods_candidate(cell, header_labels)
+            candidate_types[column - 1][kind] += 1
+            raw = cell[1]
+            display_row.append({'kind': kind, 'display': display,
+                'rawSha256': hashlib.sha256(raw.encode()).hexdigest() if isinstance(raw, str) else None})
+            if reason:
+                reasons[reason] += 1
+                # One-based row-major positions, 1..225; no source values.
+                out['rejectionPositions'].setdefault(reason, []).append((row_number - 1) * 3 + column)
+        raw_sequence.append(parsed_row)
+        out['rows'].append(display_row)
+    out['rawCellSequenceSha256'] = hashlib.sha256(_encode(raw_sequence)).hexdigest()
+    out['sourceCellTypes'] = [dict(sorted(x.items())) for x in source_types]
+    out['candidateTypes'] = [dict(sorted(x.items())) for x in candidate_types]
+    out['rejectionReasons'] = dict(sorted(reasons.items()))
+    out['dictionaryComplete'] = not reasons
+    if reasons:
+        ctx.hold('infoods-dictionary-cell-held', 'schema-labels')
+    return out
 
 
 def _features(members, archive):
@@ -701,7 +885,7 @@ def _workbook(raw, ctx):
     strings, shared = _strings(members, ctx)
     styles = _styles(members, ctx)
     out = {'archive': archive, 'relationships': relationships, 'features': features,
-           'sharedStrings': shared, 'styles': styles, 'sheets': [], 'firstSheet': None}
+           'sharedStrings': shared, 'styles': styles, 'sheets': [], 'firstSheet': None, 'infoodsDictionary': None}
     required = ('xl/workbook.xml', '_rels/.rels', 'xl/_rels/workbook.xml.rels', '[Content_Types].xml')
     if any(x not in members for x in required):
         ctx.hold('missing-workbook-part', 'xlsx')
@@ -739,6 +923,11 @@ def _workbook(raw, ctx):
             item['statistics'] = stats
             if index == 1:
                 out['firstSheet'], codes = first, found
+            elif sheet.get('name') == INFOODS_SHEET:
+                if out['infoodsDictionary'] is not None:
+                    ctx.hold('duplicate-infoods-dictionary-sheet', 'schema-labels')
+                else:
+                    out['infoodsDictionary'] = _infoods(members[target], strings, index, out['firstSheet'], ctx)
         except SurveyError as exc:
             ctx.hold(str(exc), 'xlsx')
     if not sheets:
@@ -864,7 +1053,7 @@ def _base():
             'reconciliation': None}
 
 
-def survey(blobs: dict[str, bytes]) -> dict:
+def survey(blobs: dict[str, bytes], *, progress=None) -> dict:
     """Produce redacted evidence in one pass over two already-pinned inputs."""
     ctx, out = _Context(), _base()
     if not isinstance(blobs, dict) or set(blobs) != {WORKBOOK, IDENTITIES}:
@@ -877,7 +1066,11 @@ def survey(blobs: dict[str, bytes]) -> dict:
             ctx.hold('invalid-input-bytes', section)
             continue
         try:
+            if progress is not None:
+                progress('parse-entry', name)
             out[section], identities[section] = reader(raw, ctx)
+            if progress is not None:
+                progress('parse-complete', name)
         except SurveyError as exc:
             ctx.hold(str(exc), section)
     left, right = identities.get('xlsx'), identities.get('xml')
@@ -917,6 +1110,32 @@ def sanitize_report(value) -> dict:
             raise ValueError()
         if value['status'] == 'surveyed' and (value['xlsx'] is None or value['xml'] is None or value['reconciliation'] is None):
             raise ValueError()
+        if value['xlsx'] and value['xlsx']['infoodsDictionary'] is not None:
+            dictionary = value['xlsx']['infoodsDictionary']
+            labels = {x['label'] for x in (value['xlsx']['firstSheet'] or {}).get('columns', []) if x['label'] is not None}
+            if len(dictionary['sourceCellTypes']) != 3 or len(dictionary['candidateTypes']) != 3:
+                raise ValueError()
+            if dictionary['shapeAccepted']:
+                if len(dictionary['rows']) != 75 or any(len(row) != 3 for row in dictionary['rows']):
+                    raise ValueError()
+            elif dictionary['rows'] or dictionary['dictionaryComplete']:
+                raise ValueError()
+            for row in dictionary['rows']:
+                for cell in row:
+                    kind, display = cell['kind'], cell['display']
+                    if kind == 'withheld':
+                        if display is not None:
+                            raise ValueError()
+                    elif display is None:
+                        raise ValueError()
+                    elif kind == 'numeric-code-candidate' and not re.fullmatch(r'[0-9]{1,6}', display):
+                        raise ValueError()
+                    elif kind == 'code-candidate' and not (INFOODS_CODE_TOKEN.fullmatch(display)):
+                        raise ValueError()
+                    elif kind == 'header-label-candidate' and display not in labels:
+                        raise ValueError()
+                    elif kind == 'unit-candidate' and not INFOODS_UNIT.fullmatch(display):
+                        raise ValueError()
         return json.loads(_encode(value))
     except (ValueError, TypeError, KeyError, OverflowError, RecursionError):
         raise ValueError('invalid-ciqual-survey-report') from None
@@ -935,13 +1154,43 @@ _DIM = ('nullable', {key: _I for key in ('firstRow', 'lastRow', 'firstColumn', '
 _STATS = {key: _I for key in ('rows', 'dataRows', 'cells', 'invalidRows', 'invalidCells', 'duplicateRows', 'duplicateCells', 'maxRow', 'maxColumn')}
 _STATS.update(dimension=_DIM, cellTypes=('hist', CELL_TYPES), rowWidths=('list', {'columns': ('int', 0, 128), 'rows': _I}, 129))
 _FIRST = {'headerRow': ('enum', (1,)), 'rawHeaderSequenceSha256': _HASH,
-          'headerHashSemantics': ('enum', ('decoded-xml-text-utf8-no-normalization',)), 'unitSemantics': ('enum', ('unverified-literal-header-suffix',)),
+          'headerHashSemantics': ('enum', ('decoded-xml-text-utf8-no-normalization',)),
+          'headerDisplayNormalization': ('enum', ('unicode-whitespace-only-collapse-and-trim',)),
+          'headerDiagnostics': {
+              'types': ('hist', CELL_TYPES + ('missing',)),
+              'rejectionReasons': ('hist', HEADER_REJECTIONS),
+              'rejectionColumns': ('enum-lists', HEADER_REJECTIONS, 128),
+              'rejectedColumnDetailsOmitted': ('int', 0, 128),
+              'whitespace': ('hist', WHITESPACE_TYPES),
+              'unsupportedCharacterClasses': ('hist', UNICODE_CLASSES),
+              'normalizedColumns': ('list', ('int', 1, 128), 128),
+              'rejectedColumns': ('list', {'column': ('int', 1, 128),
+                  'type': ('enum', CELL_TYPES + ('missing',)),
+                  'reasons': ('list', ('enum', HEADER_REJECTIONS), len(HEADER_REJECTIONS)),
+                  'whitespace': ('hist', WHITESPACE_TYPES),
+                  'unsupportedCharacterClasses': ('hist', UNICODE_CLASSES)}, 8)},
+          'unitSemantics': ('enum', ('unverified-literal-header-suffix',)),
           'qualifierCategories': ('exact', list(QUALIFIERS)),
           'columns': ('list', {'column': ('int', 1, 128), 'label': _LABEL,
                      'literalUnitSuffix': ('nullable', ('suffix',)), 'rawHeaderSha256': ('nullable', _HASH),
                      'rawHeaderCharacters': ('int', 0, MAX_TEXT), 'qualifiers': ('hist', QUALIFIERS)}, 128),
           'foodCodeColumn': ('enum', (7,)), 'englishNameColumn': ('enum', (8,)),
           'foodCodes': _IDENT, 'englishNamePresence': _PRESENCE}
+_INFOODS = {
+    'sheetIndex': ('int', 2, 128), 'label': ('enum', (INFOODS_SHEET,)),
+    'semanticsVerified': ('enum', (False,)),
+    'displayNormalization': ('enum', ('unicode-whitespace-only-collapse-and-trim',)),
+    'rowStart': ('enum', (1,)), 'columnStart': ('enum', (1,)),
+    'expectedRows': ('enum', (75,)), 'expectedColumns': ('enum', (3,)),
+    'rowsObserved': _I, 'columnsObserved': _I, 'shapeAccepted': _B, 'dictionaryComplete': _B,
+    'rawCellSequenceSha256': ('nullable', _HASH),
+    'sourceCellTypes': ('list', ('hist', CELL_TYPES), 3),
+    'candidateTypes': ('list', ('hist', INFOODS_KINDS), 3),
+    'rejectionReasons': ('hist', INFOODS_REJECTIONS),
+    'rejectionPositions': ('enum-lists', INFOODS_REJECTIONS, 225),
+    'rows': ('list', ('list', {'kind': ('enum', INFOODS_KINDS),
+        'display': ('nullable', ('dictionary-display',)), 'rawSha256': ('nullable', _HASH)}, 3), 75),
+}
 _XLSX = {
     'archive': {'members': ('int', 1, 128), 'archiveBytes': ('int', 1, MAX_ARCHIVE),
                 'expandedBytes': ('int', 0, MAX_EXPANDED), 'xmlElements': ('int', 0, MAX_ELEMENTS),
@@ -957,6 +1206,7 @@ _XLSX = {
                                         'resolution': ('enum', ('internal', 'external', 'unsafe', 'unresolved', 'ambiguous'))},
                        'statistics': ('nullable', _STATS)}, 128),
     'firstSheet': ('nullable', _FIRST),
+    'infoodsDictionary': ('nullable', _INFOODS),
 }
 _XML = {'rootTag': _TAG, 'rootAttributeCount': _I, 'elementCount': ('int', 1, MAX_ELEMENTS),
         'namespaces': ('list', {'kind': ('enum', ('none', 'namespaced')), 'sha256': _HASH, 'elements': _I}, 128),
@@ -1006,6 +1256,11 @@ def _validate(value, schema):
     elif kind == 'tag':
         if not isinstance(value, str) or len(value) > 256 or not re.fullmatch(r'[^\W\d][\w.-]*', value, re.UNICODE):
             raise ValueError()
+    elif kind == 'dictionary-display':
+        if not isinstance(value, str) or not 0 < len(value) <= MAX_LABEL:
+            raise ValueError()
+        if not (re.fullmatch(r'[0-9]{1,6}', value) or _label_ok(value) or INFOODS_UNIT.fullmatch(value)):
+            raise ValueError()
     elif kind == 'suffix':
         if not isinstance(value, str) or len(value) > 256 or not re.fullmatch(r'(?:\([^()]*\)|\[[^\[\]]*\])', value) or not _label_ok('Unit ' + value):
             raise ValueError()
@@ -1014,6 +1269,11 @@ def _validate(value, schema):
             raise ValueError()
         for item in value:
             _validate(item, schema[1])
+    elif kind == 'enum-lists':
+        if not isinstance(value, dict) or not set(value) <= set(schema[1]):
+            raise ValueError()
+        for item in value.values():
+            _validate(item, ('list', ('int', 1, schema[2]), schema[2]))
     elif kind == 'hist':
         if not isinstance(value, dict) or not set(value) <= set(schema[1]):
             raise ValueError()

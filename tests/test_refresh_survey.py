@@ -176,14 +176,14 @@ class SurveyTests(unittest.TestCase):
         value=json.loads(r.stdout)
         self.assertEqual(value['status'],'held')
         self.assertIsNone(value['survey'])
-        self.assertEqual(r.stderr,b'')
+        self.assertTrue(survey._parse_markers(r.stderr, 'FR'))
         self.assertNotIn(str(self.root),r.stdout.decode())
 
     def test_import_parse_and_sanitize_failures_have_distinct_safe_phases(self):
         cases = [
             ('source-import', ModuleNotFoundError('private import path'), None),
             ('source-parse', None, SimpleNamespace(survey=mock.Mock(side_effect=ValueError('private food')), sanitize_report=lambda x:x)),
-            ('source-sanitize', None, SimpleNamespace(survey=lambda x:{}, sanitize_report=mock.Mock(side_effect=TypeError('private schema')))),
+            ('source-sanitize', None, SimpleNamespace(survey=lambda x, **kwargs:{}, sanitize_report=mock.Mock(side_effect=TypeError('private schema')))),
         ]
         for phase, error, module in cases:
             with self.subTest(phase=phase), mock.patch.object(survey.os,'getuid',return_value=1000), mock.patch.object(survey.os,'geteuid',return_value=1000), mock.patch.object(survey,'_read_asset',return_value=b'{}'), mock.patch.object(survey,'_module',side_effect=error,return_value=module):
@@ -201,7 +201,7 @@ class SurveyTests(unittest.TestCase):
         self.assertEqual(value['diagnostics']['phase'],'resource-limits')
         self.assertEqual(value['diagnostics']['exceptionClass'],'ValueError')
         self.assertIsNotNone(value['diagnostics']['resourceLimitsBefore'])
-        self.assertEqual(result.stderr,b'')
+        self.assertEqual(survey._parse_markers(result.stderr, 'FR')[-1]['phase'], 'resource-limits')
         self.assertNotIn('private',result.stdout.decode())
         self.assertEqual(survey.sanitize_country(value,'FR'),value)
 
@@ -232,6 +232,44 @@ class SurveyTests(unittest.TestCase):
         self.assertEqual(result['diagnostics']['stderrBytes'],7)
         self.assertEqual(result['diagnostics']['phase'],'parent-decode')
         self.assertNotIn('private',json.dumps(result))
+
+
+
+    def test_france_dictionary_budget_does_not_expand_norway_budget(self):
+        value = {'status':'surveyed', 'evidenceComplete':True, 'padding':'x' * (40 * 1024)}
+        module = SimpleNamespace(survey=lambda *a, **kw:value, sanitize_report=lambda x:x)
+        with mock.patch.object(survey.os,'getuid',return_value=1000), mock.patch.object(survey.os,'geteuid',return_value=1000), mock.patch.object(survey,'_read_asset',return_value=b'{}'), mock.patch.object(survey,'_module',return_value=module):
+            no = survey._worker('NO')
+            fr = survey._worker('FR')
+        self.assertEqual(no['errorCode'], 'worker-output-limit')
+        self.assertIsNone(fr['errorCode'])
+        self.assertEqual(survey.MAX_REPORT, 96 * 1024)
+        self.assertEqual(survey.MEMORY_BYTES, 1024 * 1024 * 1024)
+
+    def test_parent_retains_fixed_asset_marker_after_native_crash(self):
+        original=subprocess.Popen
+        code = "import os, resource, signal; resource.setrlimit(resource.RLIMIT_CORE, (0,0)); os.write(2, b'OFFMENU_SURVEY_V1 NO source-parse-entry NO_EN_FOODS 13690405 123456\\n'); os.write(2,b'private crash text\\n'); os.kill(os.getpid(), signal.SIGSEGV)"
+        def launch(command, **kwargs):
+            return original([sys.executable,'-I','-B','-c',code],**kwargs)
+        with tempfile.TemporaryFile() as lock, mock.patch.object(survey.subprocess,'Popen',side_effect=launch):
+            result=survey._run_worker('NO',lock.fileno())
+        diagnostic=result['diagnostics']
+        self.assertEqual(diagnostic['exitCode'], -11)
+        self.assertEqual(diagnostic['phase'], 'source-parse-entry')
+        self.assertIsNone(diagnostic['exceptionClass'])
+        self.assertEqual(diagnostic['progress'], [{'phase':'source-parse-entry',
+            'asset':'NO_EN_FOODS','inputBytes':13690405,'peakRssKiB':123456}])
+        self.assertEqual(diagnostic['stdoutBytes'],0)
+        self.assertNotIn('private',json.dumps(result))
+        self.assertEqual(survey.sanitize_country(result,'NO'),result)
+
+    def test_marker_parser_rejects_nonallowlisted_or_wrong_country_payloads(self):
+        raw = b'private traceback\nOFFMENU_SURVEY_V1 FR source-parse-entry FR_IDENTITIES 1581031 2\n'
+        raw += b'OFFMENU_SURVEY_V1 NO secret NO_EN_FOODS 13690405 2\n'
+        raw += b'OFFMENU_SURVEY_V1 NO source-parse-entry NO_EN_FOODS 1 2\n'
+        raw += b'OFFMENU_SURVEY_V1 NO source-parse-entry private 13690405 2\n'
+        raw += b'OFFMENU_SURVEY_V1 NO source-parse-entry NO_EN_FOODS 13690405 99999999999999999999\n'
+        self.assertEqual(survey._parse_markers(raw,'NO'),[])
 
 
 if __name__ == '__main__': unittest.main()

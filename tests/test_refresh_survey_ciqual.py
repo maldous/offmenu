@@ -47,6 +47,45 @@ def inline(ref, text):
     return cell
 
 
+def with_infoods(blobs, row_count=75, sheet_name='INFOODS codes', expand_headers=False):
+    """Synthetic-only 75x3 dictionary; callers may perturb fixed positions."""
+    members = parts(blobs[ciqual.WORKBOOK])
+    main = ET.fromstring(members['xl/worksheets/sheet1.xml'])
+    header = main.find(ciqual.S + 'sheetData')[0]
+    if expand_headers:
+        def column_name(number):
+            name = ''
+            while number:
+                number, digit = divmod(number - 1, 26)
+                name = chr(65 + digit) + name
+            return name
+        for column in range(74, 85):
+            header.append(inline(column_name(column) + '1', 'Synthetic additional component ' + str(column) + ' (g/100g)'))
+        main.find(ciqual.S + 'dimension').set('ref', 'A1:CF4')
+        members['xl/worksheets/sheet1.xml'] = ET.tostring(main)
+    nutrient_labels = [cell.find(ciqual.S + 'is/' + ciqual.S + 't').text for cell in header[9:]]
+    workbook = ET.fromstring(members['xl/workbook.xml'])
+    ET.SubElement(workbook.find(ciqual.S + 'sheets'), ciqual.S + 'sheet',
+                  {'name': sheet_name, 'sheetId': '2', ciqual.RID: 'infoods'})
+    members['xl/workbook.xml'] = ET.tostring(workbook)
+    relations = ET.fromstring(members['xl/_rels/workbook.xml.rels'])
+    ET.SubElement(relations, ciqual.R + 'Relationship', {'Id': 'infoods',
+                  'Type': ciqual.REL_PREFIX + 'worksheet', 'Target': 'worksheets/sheet2.xml'})
+    members['xl/_rels/workbook.xml.rels'] = ET.tostring(relations)
+    dictionary = ET.Element(ciqual.S + 'worksheet')
+    ET.SubElement(dictionary, ciqual.S + 'dimension', {'ref': 'A1:C' + str(row_count)})
+    data = ET.SubElement(dictionary, ciqual.S + 'sheetData')
+    for index in range(1, row_count + 1):
+        row = ET.SubElement(data, ciqual.S + 'row', {'r': str(index)})
+        code = ET.SubElement(row, ciqual.S + 'c', {'r': 'A' + str(index)})
+        ET.SubElement(code, ciqual.S + 'v').text = str(index + 100)
+        row.append(inline('B' + str(index), nutrient_labels[(index - 1) % len(nutrient_labels)]))
+        row.append(inline('C' + str(index), 'PROCNT'))
+    members['xl/worksheets/sheet2.xml'] = ET.tostring(dictionary)
+    blobs[ciqual.WORKBOOK] = archive(members)
+    return blobs
+
+
 class CiqualSurveyTests(unittest.TestCase):
     def test_fatty_acid_dictionary_colons_remain_visible(self):
         blobs = fixtures()
@@ -237,7 +276,7 @@ class CiqualSurveyTests(unittest.TestCase):
         blobs[ciqual.WORKBOOK] = archive({'huge.xml': b'<ROOT>' + b' ' * 2_000_000 + b'</ROOT>'})
         self.assertIn('zip-member-bounds', ciqual.survey(blobs)['reasonCodes'])
 
-    def test_headers_preserve_whitespace_and_hash_sequence_changes(self):
+    def test_header_display_whitespace_collapses_but_raw_hash_sequence_changes(self):
         original = ciqual.survey(fixtures())
         blobs = fixtures()
         def edit(root):
@@ -248,7 +287,186 @@ class CiqualSurveyTests(unittest.TestCase):
         a, b = original['xlsx']['firstSheet'], changed['xlsx']['firstSheet']
         self.assertNotEqual(a['rawHeaderSequenceSha256'], b['rawHeaderSequenceSha256'])
         self.assertNotEqual(a['columns'][10]['rawHeaderSha256'], b['columns'][10]['rawHeaderSha256'])
-        self.assertEqual(b['columns'][10]['label'], 'Energy  (kcal/100g)')
+        self.assertEqual(b['columns'][10]['label'], 'Energy (kcal/100g)')
+        self.assertEqual(b['headerDiagnostics']['normalizedColumns'], [11])
+
+    def test_newline_nbsp_header_display_normalizes_with_exact_raw_digest(self):
+        blobs = fixtures()
+        raw = '\u00a0Energy\n\t(kcal/100g)\u202f'
+        def edit(root):
+            root.find(ciqual.S + 'sheetData')[0][10].find(ciqual.S + 'is/' + ciqual.S + 't').text = raw
+        edit_sheet(blobs, edit)
+        report = ciqual.survey(blobs)
+        first = report['xlsx']['firstSheet']
+        column = first['columns'][10]
+        self.assertEqual(column['label'], 'Energy (kcal/100g)')
+        self.assertEqual(column['literalUnitSuffix'], '(kcal/100g)')
+        self.assertEqual(column['rawHeaderSha256'], hashlib.sha256(raw.encode()).hexdigest())
+        self.assertEqual(column['rawHeaderCharacters'], len(raw))
+        self.assertEqual(first['headerDisplayNormalization'], 'unicode-whitespace-only-collapse-and-trim')
+        diagnostics = first['headerDiagnostics']
+        self.assertEqual(diagnostics['normalizedColumns'], [11])
+        self.assertEqual(diagnostics['rejectedColumns'], [])
+        self.assertEqual(diagnostics['whitespace']['lineFeed'], 1)
+        self.assertEqual(diagnostics['whitespace']['tab'], 1)
+        self.assertEqual(diagnostics['whitespace']['nbsp'], 1)
+        self.assertEqual(diagnostics['whitespace']['narrowNbsp'], 1)
+        self.assertEqual(report['status'], 'surveyed')
+        self.assertTrue(report['evidenceComplete'])
+
+    def test_display_does_not_fold_case_punctuation_or_unicode_forms(self):
+        blobs = fixtures()
+        raw = 'Protein N × 6.25; α—β (g/100g)'
+        # Em dash is deliberately still unsupported; diagnostics identify its
+        # Unicode class without exporting a rejected source character/value.
+        def edit(root):
+            root.find(ciqual.S + 'sheetData')[0][10].find(ciqual.S + 'is/' + ciqual.S + 't').text = raw
+        edit_sheet(blobs, edit)
+        report = ciqual.survey(blobs)
+        first = report['xlsx']['firstSheet']
+        self.assertIsNone(first['columns'][10]['label'])
+        self.assertEqual(first['columns'][10]['rawHeaderSha256'], hashlib.sha256(raw.encode()).hexdigest())
+        rejected = first['headerDiagnostics']['rejectedColumns']
+        self.assertEqual(len(rejected), 1)
+        self.assertEqual(rejected[0]['column'], 11)
+        self.assertEqual(rejected[0]['type'], 'inlineStr')
+        self.assertEqual(rejected[0]['reasons'], ['unsupported-character'])
+        self.assertEqual(rejected[0]['unsupportedCharacterClasses'], {'Pd': 1})
+        self.assertFalse(report['evidenceComplete'])
+        self.assertNotIn(raw, json.dumps(report, ensure_ascii=False))
+        self.assertEqual(ciqual._display_whitespace(' µg  μg  e\u0301 É '), 'µg μg e\u0301 É')
+
+    def test_header_rejections_have_bounded_types_and_no_source_text(self):
+        blobs = fixtures()
+        def edit(root):
+            header = root.find(ciqual.S + 'sheetData')[0]
+            header[10].find(ciqual.S + 'is/' + ciqual.S + 't').text = 'SECRET\u200bBODY'
+            header[11].find(ciqual.S + 'is/' + ciqual.S + 't').text = 'https:\n//secret.invalid (g/100g)'
+            header[12].find(ciqual.S + 'is/' + ciqual.S + 't').text = 'A' * 257
+            header[13].clear()
+            header[13].set('r', 'N1')
+            ET.SubElement(header[13], ciqual.S + 'v').text = '923411'
+        edit_sheet(blobs, edit)
+        report = ciqual.survey(blobs)
+        diagnostics = report['xlsx']['firstSheet']['headerDiagnostics']
+        self.assertEqual(diagnostics['rejectionReasons']['unsupported-character'], 1)
+        self.assertEqual(diagnostics['rejectionReasons']['url-or-path-token'], 1)
+        self.assertEqual(diagnostics['rejectionReasons']['label-too-long'], 1)
+        self.assertEqual(diagnostics['rejectionReasons']['non-text-cell'], 1)
+        self.assertEqual(diagnostics['unsupportedCharacterClasses'], {'Cf': 1})
+        self.assertEqual(diagnostics['types']['n'], 1)
+        self.assertEqual(len(diagnostics['rejectedColumns']), 4)
+        for private in ('SECRET', 'secret.invalid', '923411', 'A' * 257):
+            self.assertNotIn(private, json.dumps(report))
+        changed = deepcopy(report)
+        changed['xlsx']['firstSheet']['headerDiagnostics']['whitespace']['SOURCE'] = 1
+        with self.assertRaisesRegex(ValueError, '^invalid-ciqual-survey-report$'):
+            ciqual.sanitize_report(changed)
+
+    def test_repeated_rejections_keep_complete_reason_indices_under_result_cap(self):
+        blobs = fixtures()
+        def edit(root):
+            header = root.find(ciqual.S + 'sheetData')[0]
+            for cell in header[9:]:
+                cell.find(ciqual.S + 'is/' + ciqual.S + 't').text = 'Unknown\u200bLabel\n(g/100g)'
+        edit_sheet(blobs, edit)
+        report = ciqual.survey(blobs)
+        self.assertIsNotNone(report['xlsx'])
+        diagnostics = report['xlsx']['firstSheet']['headerDiagnostics']
+        self.assertEqual(diagnostics['rejectionReasons']['unsupported-character'], 64)
+        self.assertEqual(diagnostics['rejectionColumns']['unsupported-character'], list(range(10, 74)))
+        self.assertEqual(diagnostics['unsupportedCharacterClasses'], {'Cf': 64})
+        self.assertEqual(diagnostics['whitespace']['lineFeed'], 64)
+        self.assertEqual(len(diagnostics['rejectedColumns']), 8)
+        self.assertEqual(diagnostics['rejectedColumnDetailsOmitted'], 56)
+        self.assertNotIn('result-size-limit', report['reasonCodes'])
+        self.assertLessEqual(len(ciqual._encode(report)), ciqual.MAX_RESULT)
+
+    def test_infoods_exact_reviewed_shape_and_positional_candidates(self):
+        report = ciqual.survey(with_infoods(fixtures(), expand_headers=True))
+        dictionary = report['xlsx']['infoodsDictionary']
+        self.assertEqual(len(report['xlsx']['firstSheet']['columns']), 84)
+        self.assertTrue(dictionary['shapeAccepted'])
+        self.assertTrue(dictionary['dictionaryComplete'])
+        self.assertFalse(dictionary['semanticsVerified'])
+        self.assertTrue(report['evidenceComplete'])
+        self.assertEqual(dictionary['candidateTypes'], [
+            {'numeric-code-candidate': 75}, {'header-label-candidate': 75}, {'code-candidate': 75}])
+        self.assertEqual(len(dictionary['rows']), 75)
+        self.assertEqual(dictionary['rows'][0][0]['display'], '101')
+        self.assertEqual(dictionary['rows'][0][0]['rawSha256'], hashlib.sha256(b'101').hexdigest())
+        self.assertEqual(dictionary['rows'][0][2]['display'], 'PROCNT')
+        self.assertEqual(ciqual.sanitize_report(report), report)
+        self.assertLess(len(ciqual._encode(report)), 64 * 1024)
+        self.assertFalse(report['candidateGenerationEnabled'])
+
+    def test_infoods_unknown_text_is_hashed_withheld_not_exported(self):
+        blobs = with_infoods(fixtures())
+        members = parts(blobs[ciqual.WORKBOOK])
+        root = ET.fromstring(members['xl/worksheets/sheet2.xml'])
+        root.find(ciqual.S + 'sheetData')[0][1].find(ciqual.S + 'is/' + ciqual.S + 't').text = 'SECRET FOOD NAME'
+        root.find(ciqual.S + 'sheetData')[0][2].find(ciqual.S + 'is/' + ciqual.S + 't').text = 'NOVEL_TAG_2025'
+        members['xl/worksheets/sheet2.xml'] = ET.tostring(root)
+        blobs[ciqual.WORKBOOK] = archive(members)
+        report = ciqual.survey(blobs)
+        dictionary = report['xlsx']['infoodsDictionary']
+        self.assertEqual(dictionary['rejectionReasons'], {'unknown-dictionary-text': 1})
+        self.assertEqual(dictionary['rejectionPositions'], {'unknown-dictionary-text': [2]})
+        self.assertEqual(dictionary['rows'][0][1]['kind'], 'withheld')
+        self.assertIsNone(dictionary['rows'][0][1]['display'])
+        self.assertEqual(dictionary['rows'][0][1]['rawSha256'], hashlib.sha256(b'SECRET FOOD NAME').hexdigest())
+        self.assertFalse(report['evidenceComplete'])
+        self.assertNotIn('SECRET FOOD NAME', json.dumps(report))
+        self.assertEqual(dictionary['rows'][0][2]['kind'], 'code-candidate')
+        self.assertEqual(dictionary['rows'][0][2]['display'], 'NOVEL_TAG_2025')
+        self.assertEqual(dictionary['rows'][0][2]['rawSha256'], hashlib.sha256(b'NOVEL_TAG_2025').hexdigest())
+        self.assertFalse(dictionary['semanticsVerified'])
+        forged = deepcopy(report)
+        forged['xlsx']['infoodsDictionary']['rows'][0][2].update(kind='code-candidate', display='Unknown code prose')
+        with self.assertRaises(ValueError):
+            ciqual.sanitize_report(forged)
+        self.assertEqual(ciqual._infoods_candidate(('inlineStr', 'novel_tag_2025', False), set()),
+                         ('withheld', None, 'unknown-dictionary-text'))
+        self.assertEqual(ciqual._infoods_candidate(('inlineStr', 'A' * 33, False), set()),
+                         ('withheld', None, 'unknown-dictionary-text'))
+
+    def test_infoods_unit_candidate_normalizes_display_only_with_raw_hash(self):
+        blobs = with_infoods(fixtures())
+        members = parts(blobs[ciqual.WORKBOOK])
+        root = ET.fromstring(members['xl/worksheets/sheet2.xml'])
+        raw = '\u00a0µg\n/ 100 g\u202f'
+        root.find(ciqual.S + 'sheetData')[0][2].find(ciqual.S + 'is/' + ciqual.S + 't').text = raw
+        members['xl/worksheets/sheet2.xml'] = ET.tostring(root)
+        blobs[ciqual.WORKBOOK] = archive(members)
+        report = ciqual.survey(blobs)
+        cell = report['xlsx']['infoodsDictionary']['rows'][0][2]
+        self.assertEqual(cell['kind'], 'unit-candidate')
+        self.assertEqual(cell['display'], 'µg / 100 g')
+        self.assertEqual(cell['rawSha256'], hashlib.sha256(raw.encode()).hexdigest())
+        self.assertFalse(report['xlsx']['infoodsDictionary']['semanticsVerified'])
+
+    def test_infoods_shape_overflow_and_unreviewed_sheet_name_do_not_export(self):
+        for count in (74, 76):
+            report = ciqual.survey(with_infoods(fixtures(), row_count=count))
+            dictionary = report['xlsx']['infoodsDictionary']
+            self.assertEqual(dictionary['rowsObserved'], count)
+            self.assertFalse(dictionary['shapeAccepted'])
+            self.assertEqual(dictionary['rows'], [])
+            self.assertIn('infoods-dictionary-shape-held', report['reasonCodes'])
+        report = ciqual.survey(with_infoods(fixtures(), sheet_name='Other dictionary'))
+        self.assertIsNone(report['xlsx']['infoodsDictionary'])
+
+    def test_progress_callbacks_use_only_fixed_inputs_and_success_boundaries(self):
+        calls = []
+        ciqual.survey(fixtures(), progress=lambda phase, name: calls.append((phase, name)))
+        self.assertEqual(calls, [('parse-entry', ciqual.WORKBOOK), ('parse-complete', ciqual.WORKBOOK),
+                                ('parse-entry', ciqual.IDENTITIES), ('parse-complete', ciqual.IDENTITIES)])
+        calls.clear()
+        blobs = fixtures()
+        blobs[ciqual.IDENTITIES] = b'<broken'
+        ciqual.survey(blobs, progress=lambda phase, name: calls.append((phase, name)))
+        self.assertEqual(calls[-1], ('parse-entry', ciqual.IDENTITIES))
+        self.assertNotIn(('parse-complete', ciqual.IDENTITIES), calls)
 
     def test_closed_schema_rejects_extra_strings_and_wrong_types(self):
         report = ciqual.survey(fixtures())

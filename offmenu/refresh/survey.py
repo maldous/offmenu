@@ -32,7 +32,8 @@ OUTPUT = Path('/srv/offmenu-refresh/outputs')
 ROOT = Path(__file__).resolve().parents[2]
 MAX_REPORT = 96 * 1024
 MAX_SOURCE_REPORT = 32 * 1024
-MAX_CHILD_OUTPUT = 48 * 1024
+MAX_FR_SOURCE_REPORT = 64 * 1024
+MAX_CHILD_OUTPUT = 72 * 1024
 MAX_INPUT = 32 * 1024 * 1024
 MAX_BUNDLE = 64 * 1024 * 1024
 CPU_SECONDS = 90
@@ -180,7 +181,8 @@ PHASES = frozenset(('not-started', 'startup', 'resource-limits', 'audit-setup',
                     'input-verification', 'source-import', 'source-parse',
                     'source-sanitize', 'country-sanitize', 'encoding', 'emitting',
                     'complete', 'parent-launch', 'parent-read', 'parent-decode',
-                    'parent-sanitize', 'unknown'))
+                    'parent-sanitize', 'unknown', 'asset-read-entry', 'asset-read-complete',
+                    'source-parse-entry', 'source-parse-complete'))
 EXCEPTIONS = frozenset(('PermissionError', 'FileNotFoundError', 'ImportError',
                        'ModuleNotFoundError', 'MemoryError', 'ValueError', 'TypeError',
                        'KeyError', 'RecursionError', 'RuntimeError', 'OSError',
@@ -195,7 +197,66 @@ def _diagnostics(phase='not-started', error=None):
             'exceptionClass': name if name in EXCEPTIONS else ('Other' if name else None),
             'errno': number if type(number) is int and 0 < number < 4096 else None,
             'exitCode': None, 'stdoutBytes': 0, 'stderrBytes': 0,
-            'resourceLimitsBefore': None, 'resourceLimitsAfter': None}
+            'resourceLimitsBefore': None, 'resourceLimitsAfter': None, 'progress': []}
+
+
+# A tiny fixed-token stderr protocol survives SIGSEGV even when stdout is empty.
+# It never contains source values, paths, exception text, or traceback fragments.
+MARKER_PREFIX = b'OFFMENU_SURVEY_V1 '
+MAX_MARKERS = 48
+_PROGRESS_COUNTRY = None
+_PROGRESS_RESOURCE = None
+
+
+def _mark(phase, asset=None):
+    if _PROGRESS_COUNTRY is None:
+        return
+    if phase not in PHASES or (asset is not None and asset not in ASSETS):
+        raise ValueError('invalid-survey-progress')
+    rss = 0
+    if _PROGRESS_RESOURCE is not None:
+        rss = int(_PROGRESS_RESOURCE.getrusage(_PROGRESS_RESOURCE.RUSAGE_SELF).ru_maxrss)
+    size = ASSETS[asset][1] if asset is not None else 0
+    line = f'OFFMENU_SURVEY_V1 {_PROGRESS_COUNTRY} {phase} {asset or "-"} {size} {rss}\n'.encode('ascii')
+    try:
+        os.write(2, line)
+    except OSError:
+        pass
+
+
+def _validate_progress(rows, country=None):
+    if type(rows) is not list or len(rows) > MAX_MARKERS:
+        raise ValueError('invalid-survey-progress')
+    allowed = set(ASSETS) if country is None else {'NATIONAL_ACQUISITION', COUNTRIES[country]['prior'], *COUNTRIES[country]['raw']}
+    for row in rows:
+        exact(row, ('phase', 'asset', 'inputBytes', 'peakRssKiB'))
+        asset = row['asset']
+        if (row['phase'] not in PHASES or (asset is not None and asset not in allowed) or
+                type(row['inputBytes']) is not int or row['inputBytes'] != (ASSETS[asset][1] if asset else 0) or
+                type(row['peakRssKiB']) is not int or not 0 <= row['peakRssKiB'] <= 2**32):
+            raise ValueError('invalid-survey-progress')
+    return rows
+
+
+def _parse_markers(raw, country):
+    rows = []
+    for line in raw.splitlines():
+        if len(line) > 192 or not line.startswith(MARKER_PREFIX):
+            continue
+        try:
+            prefix, observed, phase, asset, size, rss = line.decode('ascii').split(' ')
+            if prefix != 'OFFMENU_SURVEY_V1' or observed != country:
+                continue
+            if not size.isdecimal() or not rss.isdecimal():
+                continue
+            row = {'phase': phase, 'asset': None if asset == '-' else asset,
+                   'inputBytes': int(size), 'peakRssKiB': int(rss)}
+            _validate_progress([row], country)
+        except (ValueError, TypeError, KeyError, UnicodeError):
+            continue
+        if len(rows) < MAX_MARKERS:
+            rows.append(row)
+    return rows
 
 
 def _resource_limits(resource):
@@ -206,7 +267,7 @@ def _resource_limits(resource):
 
 def _validate_diagnostics(value):
     exact(value, ('phase', 'exceptionClass', 'errno', 'exitCode', 'stdoutBytes', 'stderrBytes',
-                  'resourceLimitsBefore', 'resourceLimitsAfter'))
+                  'resourceLimitsBefore', 'resourceLimitsAfter', 'progress'))
     if value['phase'] not in PHASES or value['exceptionClass'] not in EXCEPTIONS | {None}:
         raise ValueError('invalid-survey-diagnostics')
     if value['errno'] is not None and (type(value['errno']) is not int or not 0 < value['errno'] < 4096):
@@ -224,6 +285,7 @@ def _validate_diagnostics(value):
                 if (type(pair) is not list or len(pair) != 2 or
                         any(type(n) is not int or not -1 <= n <= 2**63-1 for n in pair)):
                     raise ValueError('invalid-survey-diagnostics')
+    _validate_progress(value['progress'])
     return dict(value)
 
 
@@ -240,6 +302,7 @@ def _error_country(country, code, *, verified=False, submitted=None, diagnostics
 def _worker(country):
     verified, submitted, phase = False, 0, 'input-verification'
     spec = COUNTRIES[country]
+    _mark(phase)
     if os.getuid() == 0 or os.geteuid() == 0:
         return _error_country(country, 'normal-user-required', submitted=0,
                               diagnostics=_diagnostics(phase))
@@ -251,16 +314,26 @@ def _worker(country):
         blobs = {}
         for asset_id in needed:
             relative, size, digest = ASSETS[asset_id]
+            _mark('asset-read-entry', asset_id)
             body = _read_asset(CACHE, relative, size, digest)
+            _mark('asset-read-complete', asset_id)
             if asset_id in spec['raw']:
                 blobs[relative.split('/')[-1]] = body
         verified, phase = True, 'source-import'
+        _mark(phase)
         module = _module(country)
         phase, submitted = 'source-parse', len(spec['raw'])
-        result = module.survey(blobs)
+        _mark(phase)
+        asset_names = {ASSETS[key][0].split('/')[-1]: key for key in spec['raw']}
+        def progress(event, name):
+            if event not in ('parse-entry', 'parse-complete') or name not in asset_names:
+                raise ValueError('invalid-survey-progress')
+            _mark('source-' + event, asset_names[name])
+        result = module.survey(blobs, progress=progress)
         phase = 'source-sanitize'
+        _mark(phase)
         result = module.sanitize_report(result)
-        if len(canonical(result)) > MAX_SOURCE_REPORT:
+        if len(canonical(result)) > (MAX_FR_SOURCE_REPORT if country == 'FR' else MAX_SOURCE_REPORT):
             raise SurveyError('worker-output-limit')
         return {'country': country, 'sourceId': spec['sourceId'], 'releaseId': spec['releaseId'],
                 'status': result['status'], 'inputPinsVerified': True, 'readOnlyViewVerified': True,
@@ -305,7 +378,7 @@ def _run_worker(country, lock_fd):
                                    stderr=subprocess.PIPE, pass_fds=(lock_fd,))
     except (OSError, ValueError) as error:
         return _error_country(country, 'worker-failed', diagnostics=_diagnostics('parent-launch', error))
-    out, err_count = bytearray(), 0
+    out, err = bytearray(), bytearray()
     code, diagnostic = None, _diagnostics('parent-read')
     deadline = time.monotonic() + WALL_SECONDS
     try:
@@ -325,8 +398,8 @@ def _run_worker(country, lock_fd):
                     if key.data:
                         out.extend(chunk)
                     else:
-                        err_count += len(chunk)
-                    if len(out) > MAX_CHILD_OUTPUT or err_count > MAX_CHILD_OUTPUT:
+                        err.extend(chunk)
+                    if len(out) > MAX_CHILD_OUTPUT or len(err) > MAX_CHILD_OUTPUT:
                         code = 'worker-output-limit'
                         break
                 if code:
@@ -342,9 +415,13 @@ def _run_worker(country, lock_fd):
         _stop(process)
         process.stdout.close()
         process.stderr.close()
-    transport = {'exitCode': process.returncode, 'stdoutBytes': len(out), 'stderrBytes': err_count}
+    transport = {'exitCode': process.returncode, 'stdoutBytes': len(out), 'stderrBytes': len(err)}
+    markers = _parse_markers(err, country)
+    transport['progress'] = markers
     diagnostic.update(transport)
     if code:
+        if markers:
+            diagnostic['phase'] = markers[-1]['phase']
         return _error_country(country, code, diagnostics=diagnostic)
     # A worker may emit a useful structured failure and exit nonzero. Preserve
     # that diagnostic instead of throwing it away under a generic exit status.
@@ -361,6 +438,10 @@ def _run_worker(country, lock_fd):
     except (ValueError, TypeError, KeyError, RecursionError) as error:
         diagnostic = _diagnostics(phase, error)
         diagnostic.update(transport)
+        if markers:
+            diagnostic['phase'] = markers[-1]['phase']
+        if process.returncode < 0 and not out:
+            diagnostic['exceptionClass'] = None
         return _error_country(country, 'worker-failed' if process.returncode else 'worker-report-invalid',
                               diagnostics=diagnostic)
 
@@ -369,6 +450,7 @@ def sanitize_country(value, country):
     exact(value, ('country', 'sourceId', 'releaseId', 'status', 'inputPinsVerified',
                   'readOnlyViewVerified', 'sourceBodiesSubmitted', 'errorCode', 'survey', 'diagnostics'))
     _validate_diagnostics(value['diagnostics'])
+    _validate_progress(value['diagnostics']['progress'], country)
     expected = {'country': country, 'sourceId': COUNTRIES[country]['sourceId'],
                 'releaseId': COUNTRIES[country]['releaseId']}
     if any(value[k] != v for k, v in expected.items()):
@@ -523,34 +605,44 @@ def survey_selected(workspace):
 
 
 def _worker_main():
+    global _PROGRESS_COUNTRY, _PROGRESS_RESOURCE
     if len(sys.argv) != 3 or sys.argv[1] != '--worker' or sys.argv[2] not in COUNTRIES or not sys.flags.isolated:
         return 2
     country, phase, before, after = sys.argv[2], 'startup', None, None
     resource = None
+    _PROGRESS_COUNTRY = country
+    _mark(phase)
     try:
         import resource
+        _PROGRESS_RESOURCE = resource
         phase = 'resource-limits'
+        _mark(phase)
         before = _resource_limits(resource)
         resource.setrlimit(resource.RLIMIT_AS, (MEMORY_BYTES, MEMORY_BYTES))
         resource.setrlimit(resource.RLIMIT_CPU, (CPU_SECONDS, CPU_SECONDS))
         resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_REPORT, MAX_REPORT))
         after = _resource_limits(resource)
         phase = 'audit-setup'
+        _mark(phase)
         signal.alarm(WALL_SECONDS)
         sys.dont_write_bytecode = True
         sys.path.insert(0, str(ROOT))
         sys.addaudithook(_audit_guard)
         report = _worker(country)
         phase = 'country-sanitize'
+        _mark(phase)
         report = sanitize_country(report, country)
         report['diagnostics'].update(resourceLimitsBefore=before, resourceLimitsAfter=after)
         phase = 'encoding'
+        _mark(phase)
         encoded = canonical(report)
         if len(encoded) > MAX_CHILD_OUTPUT:
             raise SurveyError('worker-output-limit')
         phase = 'emitting'
+        _mark(phase)
         sys.stdout.buffer.write(encoded)
         sys.stdout.buffer.flush()
+        _mark('complete')
         return 0
     except BaseException as error:
         # Only fixed phase/class/errno and numeric limits cross this boundary.
