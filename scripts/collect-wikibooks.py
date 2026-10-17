@@ -7,13 +7,14 @@ retained for manual review; they cannot become automatic planner quantities.
 import argparse
 import gzip
 import hashlib
+import io
 import json
 import re
 from pathlib import Path
 from datetime import datetime, timezone
 
 
-def collect(path, output):
+def collect(path, output, *, fetched_at=None):
     raw_bytes = path.read_bytes()
     raw = json.loads(raw_bytes)
     output.mkdir(parents=True, exist_ok=True)
@@ -26,8 +27,11 @@ def collect(path, output):
                 'counts': {'raw': len(raw), 'accepted': 0, 'duplicates': 0, 'quarantined': 0, 'excluded': 0, 'records': 0},
                 'featureExercises': [], 'publication': 'local only', 'status': 'collecting'}
     seen, quarantine = set(), []
-    now = datetime.now(timezone.utc).isoformat()
-    with gzip.open(output / 'normalized.jsonl.gz', 'wt', encoding='utf-8') as out:
+    now = fetched_at or datetime.now(timezone.utc).isoformat()
+    # Fixed gzip metadata makes pinned offline replay byte-reproducible.
+    with (output / 'normalized.jsonl.gz').open('wb') as binary, \
+            gzip.GzipFile(filename='', mode='wb', fileobj=binary, mtime=0) as compressed, \
+            io.TextIOWrapper(compressed, encoding='utf-8', newline='\n') as out:
         for index, item in enumerate(raw, 1):
             d = item.get('recipe_data') or {}
             url, title = d.get('url'), d.get('title')
@@ -81,6 +85,7 @@ def collect(path, output):
     (output / 'quarantine.json').write_text(json.dumps(quarantine, indent=2) + '\n')
     (output / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps(manifest['counts']))
+    return manifest
 
 
 if __name__ == '__main__':

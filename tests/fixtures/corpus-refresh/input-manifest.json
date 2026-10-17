@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "offmenu-refresh-input/1",
+  "sourceId": "wikibooks",
+  "releaseId": "2024-07-31",
+  "scope": "synthetic-fixture",
+  "input": {
+    "path": "recipes_parsed.json",
+    "bytes": 621,
+    "sha256": "39a50fb82754cc31ac04f4a2a52c5e27da5c22c9b369efefa4474c380f256650"
+  },
+  "acquiredAt": "2026-10-17T00:00:00+00:00",
+  "rights": {
+    "status": "reviewed-local-use",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Wikibooks contributors; dataset Gosse Minnema, July 2024"
+  }
+}
