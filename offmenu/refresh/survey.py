@@ -176,45 +176,102 @@ def _module(country):
     raise ValueError('unknown-survey-country')
 
 
-def _error_country(country, code, *, verified=False, submitted=None):
+PHASES = frozenset(('not-started', 'startup', 'resource-limits', 'audit-setup',
+                    'input-verification', 'source-import', 'source-parse',
+                    'source-sanitize', 'country-sanitize', 'encoding', 'emitting',
+                    'complete', 'parent-launch', 'parent-read', 'parent-decode',
+                    'parent-sanitize', 'unknown'))
+EXCEPTIONS = frozenset(('PermissionError', 'FileNotFoundError', 'ImportError',
+                       'ModuleNotFoundError', 'MemoryError', 'ValueError', 'TypeError',
+                       'KeyError', 'RecursionError', 'RuntimeError', 'OSError',
+                       'AttributeError', 'TimeoutExpired', 'SurveyError', 'OverflowError',
+                       'BrokenPipeError', 'JSONDecodeError', 'KeyboardInterrupt', 'SystemExit', 'Other'))
+
+
+def _diagnostics(phase='not-started', error=None):
+    name = type(error).__name__ if error is not None else None
+    number = getattr(error, 'errno', None)
+    return {'phase': phase if phase in PHASES else 'unknown',
+            'exceptionClass': name if name in EXCEPTIONS else ('Other' if name else None),
+            'errno': number if type(number) is int and 0 < number < 4096 else None,
+            'exitCode': None, 'stdoutBytes': 0, 'stderrBytes': 0,
+            'resourceLimitsBefore': None, 'resourceLimitsAfter': None}
+
+
+def _resource_limits(resource):
+    return {name: list(resource.getrlimit(which)) for name, which in (
+        ('addressSpaceBytes', resource.RLIMIT_AS), ('cpuSeconds', resource.RLIMIT_CPU),
+        ('fileBytes', resource.RLIMIT_FSIZE))}
+
+
+def _validate_diagnostics(value):
+    exact(value, ('phase', 'exceptionClass', 'errno', 'exitCode', 'stdoutBytes', 'stderrBytes',
+                  'resourceLimitsBefore', 'resourceLimitsAfter'))
+    if value['phase'] not in PHASES or value['exceptionClass'] not in EXCEPTIONS | {None}:
+        raise ValueError('invalid-survey-diagnostics')
+    if value['errno'] is not None and (type(value['errno']) is not int or not 0 < value['errno'] < 4096):
+        raise ValueError('invalid-survey-diagnostics')
+    if value['exitCode'] is not None and (type(value['exitCode']) is not int or not -128 <= value['exitCode'] <= 255):
+        raise ValueError('invalid-survey-diagnostics')
+    for key in ('stdoutBytes', 'stderrBytes'):
+        if type(value[key]) is not int or not 0 <= value[key] <= MAX_CHILD_OUTPUT + 8192:
+            raise ValueError('invalid-survey-diagnostics')
+    for key in ('resourceLimitsBefore', 'resourceLimitsAfter'):
+        limits = value[key]
+        if limits is not None:
+            exact(limits, ('addressSpaceBytes', 'cpuSeconds', 'fileBytes'))
+            for pair in limits.values():
+                if (type(pair) is not list or len(pair) != 2 or
+                        any(type(n) is not int or not -1 <= n <= 2**63-1 for n in pair)):
+                    raise ValueError('invalid-survey-diagnostics')
+    return dict(value)
+
+
+def _error_country(country, code, *, verified=False, submitted=None, diagnostics=None):
     if code not in ERRORS:
         code = 'survey-internal-error'
     return {'country': country, 'sourceId': COUNTRIES[country]['sourceId'],
             'releaseId': COUNTRIES[country]['releaseId'], 'status': 'held',
             'inputPinsVerified': verified, 'readOnlyViewVerified': verified,
-            'sourceBodiesSubmitted': submitted, 'errorCode': code, 'survey': None}
+            'sourceBodiesSubmitted': submitted, 'errorCode': code, 'survey': None,
+            'diagnostics': diagnostics if diagnostics is not None else _diagnostics()}
 
 
 def _worker(country):
-    verified, submitted = False, 0
+    verified, submitted, phase = False, 0, 'input-verification'
     spec = COUNTRIES[country]
     if os.getuid() == 0 or os.geteuid() == 0:
-        return _error_country(country, 'normal-user-required', submitted=0)
+        return _error_country(country, 'normal-user-required', submitted=0,
+                              diagnostics=_diagnostics(phase))
     try:
         needed = ('NATIONAL_ACQUISITION', spec['prior'], *spec['raw'])
         if sum(ASSETS[key][1] for key in needed) > MAX_BUNDLE:
             raise SurveyError('input-limit')
-        # Receipt pins corroborate release/provenance only, never confer adapter
-        # admission or a new legal decision. Every needed asset is independently
-        # reverified in this invocation before any source body is interpreted.
+        # Verified in-memory bytes, never a source path, reach the parser.
         blobs = {}
         for asset_id in needed:
             relative, size, digest = ASSETS[asset_id]
             body = _read_asset(CACHE, relative, size, digest)
             if asset_id in spec['raw']:
                 blobs[relative.split('/')[-1]] = body
-        verified, submitted = True, len(spec['raw'])
+        verified, phase = True, 'source-import'
         module = _module(country)
-        result = module.sanitize_report(module.survey(blobs))
+        phase, submitted = 'source-parse', len(spec['raw'])
+        result = module.survey(blobs)
+        phase = 'source-sanitize'
+        result = module.sanitize_report(result)
         if len(canonical(result)) > MAX_SOURCE_REPORT:
             raise SurveyError('worker-output-limit')
         return {'country': country, 'sourceId': spec['sourceId'], 'releaseId': spec['releaseId'],
                 'status': result['status'], 'inputPinsVerified': True, 'readOnlyViewVerified': True,
-                'sourceBodiesSubmitted': len(spec['raw']), 'errorCode': None, 'survey': result}
+                'sourceBodiesSubmitted': len(spec['raw']), 'errorCode': None, 'survey': result,
+                'diagnostics': _diagnostics('complete')}
     except SurveyError as error:
-        return _error_country(country, str(error), verified=verified, submitted=submitted)
-    except Exception:
-        return _error_country(country, 'survey-internal-error', verified=verified, submitted=submitted)
+        return _error_country(country, str(error), verified=verified, submitted=submitted,
+                              diagnostics=_diagnostics(phase, error))
+    except Exception as error:
+        return _error_country(country, 'survey-internal-error', verified=verified, submitted=submitted,
+                              diagnostics=_diagnostics(phase, error))
 
 
 def _audit_guard(event, args):
@@ -243,10 +300,13 @@ def _stop(process):
 def _run_worker(country, lock_fd):
     command = [sys.executable, '-I', '-B', str(Path(__file__).resolve()), '--worker', country]
     environment = {'PATH': os.defpath, 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8', 'TZ': 'UTC'}
-    process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, pass_fds=(lock_fd,))
+    try:
+        process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, pass_fds=(lock_fd,))
+    except (OSError, ValueError) as error:
+        return _error_country(country, 'worker-failed', diagnostics=_diagnostics('parent-launch', error))
     out, err_count = bytearray(), 0
-    code = None
+    code, diagnostic = None, _diagnostics('parent-read')
     deadline = time.monotonic() + WALL_SECONDS
     try:
         with selectors.DefaultSelector() as selector:
@@ -273,26 +333,42 @@ def _run_worker(country, lock_fd):
                     break
             if code is None:
                 try:
-                    returncode = process.wait(timeout=max(0.01, deadline - time.monotonic()))
-                    if returncode != 0:
-                        code = 'worker-failed'
-                except subprocess.TimeoutExpired:
-                    code = 'worker-timeout'
+                    process.wait(timeout=max(0.01, deadline - time.monotonic()))
+                except subprocess.TimeoutExpired as error:
+                    code, diagnostic = 'worker-timeout', _diagnostics('parent-read', error)
+    except (OSError, ValueError) as error:
+        code, diagnostic = 'worker-failed', _diagnostics('parent-read', error)
     finally:
         _stop(process)
         process.stdout.close()
         process.stderr.close()
+    transport = {'exitCode': process.returncode, 'stdoutBytes': len(out), 'stderrBytes': err_count}
+    diagnostic.update(transport)
     if code:
-        return _error_country(country, code)
+        return _error_country(country, code, diagnostics=diagnostic)
+    # A worker may emit a useful structured failure and exit nonzero. Preserve
+    # that diagnostic instead of throwing it away under a generic exit status.
+    phase = 'parent-decode'
     try:
-        return sanitize_country(strict_json(out), country)
-    except (ValueError, TypeError, KeyError, RecursionError):
-        return _error_country(country, 'worker-report-invalid')
+        value = strict_json(out)
+        phase = 'parent-sanitize'
+        result = sanitize_country(value, country)
+        result['diagnostics'].update(transport)
+        if process.returncode != 0 and result['errorCode'] is None:
+            return _error_country(country, 'worker-failed', verified=result['inputPinsVerified'],
+                                  submitted=result['sourceBodiesSubmitted'], diagnostics=result['diagnostics'])
+        return result
+    except (ValueError, TypeError, KeyError, RecursionError) as error:
+        diagnostic = _diagnostics(phase, error)
+        diagnostic.update(transport)
+        return _error_country(country, 'worker-failed' if process.returncode else 'worker-report-invalid',
+                              diagnostics=diagnostic)
 
 
 def sanitize_country(value, country):
     exact(value, ('country', 'sourceId', 'releaseId', 'status', 'inputPinsVerified',
-                  'readOnlyViewVerified', 'sourceBodiesSubmitted', 'errorCode', 'survey'))
+                  'readOnlyViewVerified', 'sourceBodiesSubmitted', 'errorCode', 'survey', 'diagnostics'))
+    _validate_diagnostics(value['diagnostics'])
     expected = {'country': country, 'sourceId': COUNTRIES[country]['sourceId'],
                 'releaseId': COUNTRIES[country]['releaseId']}
     if any(value[k] != v for k, v in expected.items()):
@@ -303,10 +379,10 @@ def sanitize_country(value, country):
                 (value['sourceBodiesSubmitted'] is not None and
                  (type(value['sourceBodiesSubmitted']) is not int or
                   value['sourceBodiesSubmitted'] not in (0, len(COUNTRIES[country]['raw'])))) or
-                (value['inputPinsVerified'] is True and value['sourceBodiesSubmitted'] != len(COUNTRIES[country]['raw'])) or
+                (value['inputPinsVerified'] is True and value['sourceBodiesSubmitted'] not in (0, len(COUNTRIES[country]['raw']))) or
                 (value['inputPinsVerified'] is False and value['sourceBodiesSubmitted'] not in (None, 0)) or
                 value != _error_country(country, value['errorCode'],
-                                        verified=value['inputPinsVerified'], submitted=value['sourceBodiesSubmitted']) or
+                                        verified=value['inputPinsVerified'], submitted=value['sourceBodiesSubmitted'], diagnostics=value['diagnostics']) or
                 value['errorCode'] not in ERRORS):
             raise ValueError('invalid-survey-report')
         return dict(value)
@@ -426,8 +502,9 @@ def survey_selected(workspace):
         for country in COUNTRIES:
             try:
                 countries[country] = _run_worker(country, fd)
-            except (OSError, ValueError):
-                countries[country] = _error_country(country, 'worker-failed')
+            except (OSError, ValueError) as error:
+                countries[country] = _error_country(country, 'worker-failed',
+                                                    diagnostics=_diagnostics('parent-read', error))
             _write_new(run / (country + '.json'), countries[country])
         if code_identity() != fingerprint:
             raise SurveyError('survey-code-changed-during-run')
@@ -448,22 +525,50 @@ def survey_selected(workspace):
 def _worker_main():
     if len(sys.argv) != 3 or sys.argv[1] != '--worker' or sys.argv[2] not in COUNTRIES or not sys.flags.isolated:
         return 2
-    import resource
-    resource.setrlimit(resource.RLIMIT_AS, (MEMORY_BYTES, MEMORY_BYTES))
-    resource.setrlimit(resource.RLIMIT_CPU, (CPU_SECONDS, CPU_SECONDS))
-    resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_REPORT, MAX_REPORT))
-    signal.alarm(WALL_SECONDS)
-    sys.dont_write_bytecode = True
-    sys.path.insert(0, str(ROOT))
-    sys.addaudithook(_audit_guard)
+    country, phase, before, after = sys.argv[2], 'startup', None, None
+    resource = None
     try:
-        report = sanitize_country(_worker(sys.argv[2]), sys.argv[2])
+        import resource
+        phase = 'resource-limits'
+        before = _resource_limits(resource)
+        resource.setrlimit(resource.RLIMIT_AS, (MEMORY_BYTES, MEMORY_BYTES))
+        resource.setrlimit(resource.RLIMIT_CPU, (CPU_SECONDS, CPU_SECONDS))
+        resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_REPORT, MAX_REPORT))
+        after = _resource_limits(resource)
+        phase = 'audit-setup'
+        signal.alarm(WALL_SECONDS)
+        sys.dont_write_bytecode = True
+        sys.path.insert(0, str(ROOT))
+        sys.addaudithook(_audit_guard)
+        report = _worker(country)
+        phase = 'country-sanitize'
+        report = sanitize_country(report, country)
+        report['diagnostics'].update(resourceLimitsBefore=before, resourceLimitsAfter=after)
+        phase = 'encoding'
         encoded = canonical(report)
         if len(encoded) > MAX_CHILD_OUTPUT:
-            return 2
+            raise SurveyError('worker-output-limit')
+        phase = 'emitting'
         sys.stdout.buffer.write(encoded)
+        sys.stdout.buffer.flush()
         return 0
-    except BaseException:
+    except BaseException as error:
+        # Only fixed phase/class/errno and numeric limits cross this boundary.
+        # No traceback, exception message, source fragment or path is emitted.
+        diagnostic = _diagnostics(phase, error)
+        if resource is not None:
+            try:
+                after = _resource_limits(resource)
+            except BaseException:
+                pass
+        diagnostic.update(resourceLimitsBefore=before, resourceLimitsAfter=after)
+        report = _error_country(country, 'worker-failed', diagnostics=diagnostic)
+        try:
+            os.write(1, canonical(sanitize_country(report, country)))
+        except BaseException:
+            # A broken output channel cannot carry a report. Parent transport
+            # diagnostics still preserve exit status and bounded byte counts.
+            pass
         return 2
 
 

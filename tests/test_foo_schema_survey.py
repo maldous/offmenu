@@ -21,7 +21,7 @@ def fixture_report():
         blobs={survey.ASSETS[key][0].split('/')[-1]:(ROOT/'tests/fixtures'/folder/survey.ASSETS[key][0].split('/')[-1]).read_bytes() for key in survey.COUNTRIES[country]['raw']}
         mod=survey._module(country)
         result=mod.sanitize_report(mod.survey(blobs))
-        countries[country]={'country':country,'sourceId':survey.COUNTRIES[country]['sourceId'],'releaseId':survey.COUNTRIES[country]['releaseId'],'status':result['status'],'inputPinsVerified':True,'readOnlyViewVerified':True,'sourceBodiesSubmitted':len(blobs),'errorCode':None,'survey':result}
+        countries[country]={'country':country,'sourceId':survey.COUNTRIES[country]['sourceId'],'releaseId':survey.COUNTRIES[country]['releaseId'],'status':result['status'],'inputPinsVerified':True,'readOnlyViewVerified':True,'sourceBodiesSubmitted':len(blobs),'errorCode':None,'survey':result,'diagnostics':survey._diagnostics('complete')}
     value={'schemaVersion':survey.SCHEMA,'operationId':'a'*32,'status':'held' if any(x['status']=='held' for x in countries.values()) else 'surveyed','surveyComplete':all(x['survey']['evidenceComplete'] for x in countries.values()),'codeFingerprint':'b'*64,'selectionSha256':survey.sha(survey.canonical(survey.ASSETS)),'inputPins':survey.input_lock(),'runtime':survey.runtime(),'boundaries':dict(survey.BOUNDARIES),'countries':countries}
     return survey.sanitize_report(value)
 

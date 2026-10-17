@@ -179,5 +179,59 @@ class SurveyTests(unittest.TestCase):
         self.assertEqual(r.stderr,b'')
         self.assertNotIn(str(self.root),r.stdout.decode())
 
+    def test_import_parse_and_sanitize_failures_have_distinct_safe_phases(self):
+        cases = [
+            ('source-import', ModuleNotFoundError('private import path'), None),
+            ('source-parse', None, SimpleNamespace(survey=mock.Mock(side_effect=ValueError('private food')), sanitize_report=lambda x:x)),
+            ('source-sanitize', None, SimpleNamespace(survey=lambda x:{}, sanitize_report=mock.Mock(side_effect=TypeError('private schema')))),
+        ]
+        for phase, error, module in cases:
+            with self.subTest(phase=phase), mock.patch.object(survey.os,'getuid',return_value=1000), mock.patch.object(survey.os,'geteuid',return_value=1000), mock.patch.object(survey,'_read_asset',return_value=b'{}'), mock.patch.object(survey,'_module',side_effect=error,return_value=module):
+                result=survey._worker('FR')
+            self.assertEqual(result['diagnostics']['phase'],phase)
+            self.assertTrue(result['inputPinsVerified'])
+            self.assertNotIn('private',json.dumps(result))
+            self.assertEqual(survey.sanitize_country(result,'FR'),result)
+
+    def test_resource_setup_failure_emits_fixed_diagnostic_in_isolated_process(self):
+        code = "import sys, resource; sys.path.insert(0, %r); from offmenu.refresh import survey; resource.setrlimit=lambda *a: (_ for _ in ()).throw(ValueError('private resource detail')); sys.argv=[survey.__file__, '--worker', 'FR']; raise SystemExit(survey._worker_main())" % str(survey.ROOT)
+        result=subprocess.run([sys.executable,'-I','-B','-c',code],capture_output=True,timeout=5)
+        self.assertEqual(result.returncode,2)
+        value=json.loads(result.stdout)
+        self.assertEqual(value['diagnostics']['phase'],'resource-limits')
+        self.assertEqual(value['diagnostics']['exceptionClass'],'ValueError')
+        self.assertIsNotNone(value['diagnostics']['resourceLimitsBefore'])
+        self.assertEqual(result.stderr,b'')
+        self.assertNotIn('private',result.stdout.decode())
+        self.assertEqual(survey.sanitize_country(value,'FR'),value)
+
+    def test_parent_preserves_nonzero_exit_and_bounded_transport_counts(self):
+        value=survey._error_country('FR','worker-failed',diagnostics=survey._diagnostics('resource-limits',PermissionError(13,'private path')))
+        raw=survey.canonical(value)
+        code='import os; os.write(1, %r); os.write(2, b"private stderr"); raise SystemExit(7)' % raw
+        original=subprocess.Popen
+        def launch(command, **kwargs):
+            return original([sys.executable,'-I','-B','-c',code],**kwargs)
+        with tempfile.TemporaryFile() as lock, mock.patch.object(survey.subprocess,'Popen',side_effect=launch):
+            result=survey._run_worker('FR',lock.fileno())
+        self.assertEqual(result['diagnostics']['exitCode'],7)
+        self.assertEqual(result['diagnostics']['stdoutBytes'],len(raw))
+        self.assertEqual(result['diagnostics']['stderrBytes'],len(b'private stderr'))
+        self.assertEqual(result['diagnostics']['phase'],'resource-limits')
+        self.assertEqual(result['diagnostics']['errno'],13)
+        self.assertNotIn('private',json.dumps(result))
+
+    def test_parent_retains_blank_worker_exit_diagnostics(self):
+        original=subprocess.Popen
+        def launch(command, **kwargs):
+            return original([sys.executable,'-I','-B','-c','import os; os.write(2,b"private"); raise SystemExit(9)'],**kwargs)
+        with tempfile.TemporaryFile() as lock, mock.patch.object(survey.subprocess,'Popen',side_effect=launch):
+            result=survey._run_worker('NO',lock.fileno())
+        self.assertEqual(result['diagnostics']['exitCode'],9)
+        self.assertEqual(result['diagnostics']['stdoutBytes'],0)
+        self.assertEqual(result['diagnostics']['stderrBytes'],7)
+        self.assertEqual(result['diagnostics']['phase'],'parent-decode')
+        self.assertNotIn('private',json.dumps(result))
+
 
 if __name__ == '__main__': unittest.main()
