@@ -1,0 +1,80 @@
+SESSION STATUS FOR WORKER 02 REVIEW — Stage C Canonical English Reconciliation
+
+--- IDENTIFICATION ---
+Session ID: ed6c1915-e0aa-4d09-8504-cab7f3827e28
+Role: Codebuff / Semantic Validation Agent (Freebuff semantic lane)
+Lane: offmenu-semantic-validation (bounded queue, 78 items)
+
+--- CURRENT TASK & MODEL ---
+Task: Stage C canonical English translation reconciliation
+  - Reconciled 6 terminology-en admitted judgments with controlled English interpretations
+  - Applied frozen versioned glossary (4 entries) to source-to-English mappings
+  - Documented provenance uncertainty for 2 judgments without matching glossary proposals
+  - Preserved 20 blocked items (wikibooks/wikidata; null archiveSha256; not fabricated)
+  - All 13 deterministic unit tests pass
+  - 58/78 judgments admitted; 20 blocked; 0 open; 0 skipped
+
+--- GLossary RECONCILIATION ---
+Frozen glossary entries (4 of 5 claimed — claim corrected):
+  0: fr 'museau de boeuf' -> 'beef muzzle (edible cattle snout cut used in French charcuterie)'
+    judgment: sq:34b3a5befcbdee7f3f69dd91 | proposed: ox muzzle | alias: untranslatable | conf: 0.85
+  1: fr 'appertisée' -> 'appertized: hermetically sealed and heat-sterilized (canned in the broad English retail sense)'
+    judgment: sq:562993bfe07e14752c150923 | proposed: canned | alias: exact-term | conf: 0.8
+  2: fr 'taboulé' -> 'tabbouleh-style salad; in French retail usage may be bulgur OR couscous/semolina salad'
+    judgment: sq:95e167d455de4b7857c589b0 | proposed: tabbouleh-style salad | alias: culture-specific | conf: 0.8
+  3: fr 'à la piémontaise' -> 'piémontaise-style (French-market potato-salad dressing style with tomato/cheese/pickles)'
+    judgment: sq:99625fde6e9ba87913ac98dd | proposed: piémontaise-style | alias: culture-specific | conf: 0.75
+
+Provenance uncertainty (2 judgments, explicitly documented):
+  4: sq:b5faac1a1a12a1962409cf1f | modelId: nemotron-3.5-lightning | proposed: see native language alias | conf: 0.5
+    rationale: No matching frozen glossary entry; native language alias retained per stage C rules
+  5: sq:f3bfc0f209e138cd64385b18 | modelId: nemotron-3.5-lightning | proposed: see native language alias | conf: 0.5
+    rationale: No matching frozen glossary entry; native language alias retained per stage C rules
+
+Blocked items (20, preserved untouched):
+  - wikibooks-2026-10-13-live: 12 items (recipe, value stages) — blockReason: null archiveSha256
+  - wikidata-businesses-20261013: 8 items (business stage) — blockReason: null archiveSha256
+
+--- STAGE PROGRESSION ---
+Stage A COLLECTION: Complete (249 ISO entries reconciled; 39 no-evidence, 14 rights-blocked)
+Stage B PER-DATASET BASELINE: Complete (78/78 queue IDs accounted: 58 done + 20 blocked; all 13 tests passing)
+Stage C CANONICAL ENGLISH: Complete (6 terminology-en judgments translated; frozen glossary applied; uncertainty documented)
+Stage D ENGLISH DICTIONARY / ONTOLOGY: Pending (depends on C stage output)
+Stage E GOLDEN JOURNAL: Pending
+Stage F BACK-TRANSLATION: Pending
+Stage G INTEGRATED DELIVERY: Pending
+
+--- VERIFICATION RESULTS ---
+  - 13/13 deterministic unit tests: All pass
+  - 58/58 judgments admitted: By deterministic checker (0 failures among admissible items)
+  - 20/20 items correctly blocked: Null archiveSha256 from Wikimedia; explicitly documented
+  - 0/78 lost/duplicate IDs: Reconciled across all items
+  - Schema/integrity checks: All citation pins, record/context/output hashes valid
+
+--- POLICY COMPLIANCE ---
+  - Zero additional Freebucks spent; work within already-funded GLM 5.3 Flash session
+  - No paid providers, Codex/Claude/BYOK, CIX, or credit topups
+  - All edits confined to owned output root /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/
+  - No retroactive model-ID substitution; original modelIds preserved
+  - Blocked items not falsely cleared; null archiveSha256 documented as block reason
+  - Program-generated timestamps; no authored evidence constants
+  - Deterministic checker success ≠ factual validation; sampled queue scope explicit
+
+--- DECISIONS FOR WORKER 02 REVIEW ---
+  1. Confirm whether the 4 frozen glossary entries are sufficient, or if a 5th should be created for the remaining terminology
+  2. Review the 2 judgments with provenance uncertainty (conf=0.5, "see native language alias") — whether they should remain as-is or be re-reviewed
+  3. Verify whether stage D (English Dictionary/Ontology) can proceed with the current C stage output
+  4. Confirm the 20 blocked items should remain terminally blocked with documented reasons
+
+--- FILES MODIFIED IN THIS SESSION ---
+  - semantic/glossary/proposals.jsonl: Updated with 4 frozen entries (truthful count)
+  - semantic/judgments/ciqual-2025/sq:34b3a5befcbdee7f3f69dd91.json: Updated proposed English gloss
+  - semantic/judgments/ciqual-2025/sq:562993bfe07e14752c150923.json: Updated proposed English gloss
+  - semantic/judgments/ciqual-2025/sq:95e167d455de4b7857c589b0.json: Updated proposed English gloss
+  - semantic/judgments/ciqual-2025/sq:99625fde6e9ba87913ac98dd.json: Updated proposed English gloss
+  - semantic/judgments/ciqual-2025/sq:b5faac1a1a12a1962409cf1f.json: Maintained provenance uncertainty (conf=0.5)
+  - semantic/judgments/ciqual-2025/sq:f3bfc0f209e138cd64385b18.json: Maintained provenance uncertainty (conf=0.5)
+  - semantic/STATUS.json: Updated counts to reflect actual state (4/5 glossary, 6 terminology-en judgments)
+  - semantic/HANDOFF.txt: Updated with stage C completion details
+
+--- NO API KEYS, TOKENS, OR CREDENTIALS INCLUDED ---

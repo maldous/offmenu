@@ -9,6 +9,20 @@ def main():
     parser = argparse.ArgumentParser(description='Offline pantry → recipes → shop observations')
     parser.add_argument('--db', default='data/offmenu.sqlite')
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('import-aldi-doordash', help='Import a local ALDI snapshot as source-scoped catalogue records')
+    p.add_argument('capture'); p.add_argument('output')
+    p.add_argument('--register', action='store_true', help='Register this snapshot for lookup by datasource ID')
+    p = sub.add_parser('datasource', help='Read a bounded page from a local retail datasource')
+    p.add_argument('directory')
+    p.add_argument('--kind', choices=['product', 'priceObservation', 'retailer'], default='product')
+    p.add_argument('--query', default='')
+    p.add_argument('--offset', type=int, default=0)
+    p.add_argument('--limit', type=int, default=25)
+    p.add_argument('--food-only', action='store_true')
+    p = sub.add_parser('import-delivery-prices', help='Import dated retail observations from any delivery partner/market')
+    p.add_argument('file'); p.add_argument('output')
+    p.add_argument('--register', action='store_true')
+    sub.add_parser('delivery-partners', help='List discovered delivery pricing sources and capture status')
     sub.add_parser('init')
     for command in ('import-products', 'import-recipes', 'import-prices'):
         p = sub.add_parser(command)
@@ -30,6 +44,38 @@ def main():
     p = sub.add_parser('shops')
     p.add_argument('barcode')
     args = parser.parse_args()
+    if args.command == 'delivery-partners':
+        from .delivery_pricing import registry
+        print(json.dumps(registry(), indent=2, ensure_ascii=False))
+        return
+    if args.command == 'import-delivery-prices':
+        from .delivery_pricing import import_observations, register
+        try:
+            output = import_observations(args.file, args.output)
+            if args.register:
+                output['registration'] = register(args.output)
+            print(json.dumps(output, indent=2, ensure_ascii=False))
+        except (ValueError, KeyError, TypeError, OSError, sqlite3.Error) as e:
+            parser.exit(2, f'Error: {e}\n')
+        return
+    if args.command in ('import-aldi-doordash', 'datasource'):
+        from .aldi_datasource import import_snapshot, read_page, register_snapshot
+        try:
+            if args.command == 'datasource':
+                from pathlib import Path
+                from .delivery_pricing import SOURCE as DELIVERY_SOURCE, page
+                supplied = Path(args.directory)
+                if args.directory == DELIVERY_SOURCE or (supplied.is_dir() and json.loads((supplied / 'manifest.json').read_text()).get('sourceId') == DELIVERY_SOURCE):
+                    def read_page(directory, kind, query, offset, limit, food_only):
+                        return page(directory, kind=kind, query=query, offset=offset, limit=limit, food_only=food_only)
+            output = (import_snapshot(args.capture, args.output) if args.command == 'import-aldi-doordash'
+                      else read_page(args.directory, args.kind, args.query, args.offset, args.limit, args.food_only))
+            if args.command == 'import-aldi-doordash' and args.register:
+                output['registration'] = register_snapshot(args.output)
+            print(json.dumps(output, indent=2, ensure_ascii=False))
+        except (ValueError, KeyError, OSError, sqlite3.Error) as e:
+            parser.exit(2, f'Error: {e}\n')
+        return
     db = connect(args.db)
     try:
         if args.command == 'init':

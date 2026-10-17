@@ -1,0 +1,98 @@
+sessionId: offmenu-language-terminology-lane-20261015
+role: Freebuff OffMenu language-terminology lane (source-language inventory, terminology alignment, translation-qualification readiness)
+currentTask: own only /home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology; read-only cross-reference to semantic lane; preserve prior country reconciliation outputs elsewhere
+model: Solar (free session; no metered purchase, wallet, topup, BYOK, Codex/Claude CLI, CIX/Linear/Symphony, new paid contracts, or MCP approval bypass)
+state: running
+blocked: false
+lastCompletedOutput:
+  - wrote STATUS.json and HANDOFF.txt in the owned language-terminology directory
+  - rebuilt store-language-locale-inventory.json from the retained app-store-locale-snapshot.json
+  - refreshed store-locale-bcp47-extraction.json from the same snapshot with a live generatedAt
+  - repaired LANGUAGE_TARGETS.json after a parse-failure, preserving union/gaps only after recompute
+  - added translationBoundaryRules to terminology-translation-bounds.json
+  - added store excerpt hashes to qa/store-locale-bcp47-extraction.json
+  - final lane QA passed: 117 checks, 0 failures
+artifactDir: /home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology
+statusFile: /home/user/src/offmenu/.morgan-status/offmenu-language-terminology-lane-20261015.txt
+STATUS_sha256: a921f803c97a0daf5b6922b1ebc4b0183a52ca6cf1debd4a1be0056654e37f52
+HANDOFF_sha256: a5a01b5dd60b8961fbefb0a1614d4992db715f452c33fa27b8ceff6b8d4a9c6e
+storeInventory_distinctCanonicalTags:
+  googlePlay: 9
+  appleAppStore: 49
+  combined_unique_canonical_tags_in_store_inventory: 118
+timestampProvenance:
+  generatedAt: 2026-10-15T01:30:18.172992+00:00
+  hostWallClockAtGeneration: 2026-10-15T01:30:18.172992+00:00
+  precedingCountrySTATUS: not found at generation time; no contemporaneous claim made; no date invented
+externalFetchThisTurn: none; Google/Apple locale lists derived from the retained snapshot in this lane
+readOnlyCrossReference:
+  semantic/STATUS.json sha256: c64878309b2504d46175956f72875d91f76f43e7193a351b85eaeaa5dafc1a46
+  semantic/HANDOFF.txt sha256: e7b64154d59cc2b30045959831098c561893169b5adc1e55fbd54cb37ea3c1d8
+  semantic/CONTRACT.md sha256: d0b55808fd9b8bffd7d3e99465a545bd2f052989273de33910698cba46046c40
+  semantic/contracts/judgment.schema.json sha256: 1101ee9fbb48979bce47d36933e49b511f7bc820c79c1daf44ac88c11ba697e8
+  semantic/contracts/stages.json sha256: 34096a10b14870fb238f0bf537eb2ebb034f63b6cb387d6e4d0642e0cd052f26
+  semantic/contracts/unit-registry.json sha256: 734c6dee1451a88d930059b15caa8db56541ae326a8904cfbf8cccc9545916f2
+  semantic/glossary/proposals.jsonl sha256: df152cdb077a0bda83688c870f57e1f651383affcbfd233123e77089eb8361d2
+  semantic/checkpoint/queue-state.json sha256: 2c1263355fa84a0931e7430be1be0420d5167ece8ffb05ce2bd3303d5529997d
+  semantic/tracked.patch sha256: 3f9911db511d39507fe19f7c4de9a1d158680fed1525febccfa55564a85e7a99
+decisionsNeeded:
+  - confirm whether to leave the repaired LANGUAGE_TARGETS.json as the accepted union artifact or rebuild its union from the retained snapshot plus the bounded dataset scan again
+  - confirm whether any semantic-lane sensitive/unknown judgments should be surfaced into a separate read-only handoff note without republishing them
+notes:
+  - Apple App Store captions were normalized only where the cue maps to a standard subregion/script code; non-standard source region forms are preserved as quoted evidence only.
+  - Google Play explicit BCP-47 tags in the retained excerpt are authoritative in this lane and used directly.
+  - No complete corpus or complete translation claim is made by this lane.
+terminologyContract_domains:
+  - ingredient
+  - food
+  - recipeInstruction
+  - preparation
+  - quantity
+  - nutrientDietaryCertification
+  - businessIdentity
+  - recall
+  - priceUnit
+  - producerSupplierRetailer
+terminologyTranslationBounds_translationBoundaryRules_count: 4
+LANGUAGE_TARGETS_union_base_tags_count: 46
+LANGUAGE_TARGETS_unionDistinctBaseTagsCount: 46
+pinnedArtifactShas:
+- STATUS.json
+  bytes: 5238
+  sha256: a921f803c97a0daf5b6922b1ebc4b0183a52ca6cf1debd4a1be0056654e37f52
+- HANDOFF.txt
+  bytes: 6476
+  sha256: a5a01b5dd60b8961fbefb0a1614d4992db715f452c33fa27b8ceff6b8d4a9c6e
+- store-language-locale-inventory.json
+  bytes: 53927
+  sha256: 99477680f057d72e80b15ddabe71129cfa30cdeff8585c1dd060ae3130fcc0ca
+- store-locale-bcp47-extraction.json
+  bytes: 17385
+  sha256: ea7c59996f3a99cd0b8623553cb136291dddf21d4610387d0f1dbcafc0e4187a
+- app-store-locale-snapshot.json
+  bytes: 55622
+  sha256: c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4
+- terminology-contract.json
+  bytes: 16175
+  sha256: 030ec4cc3c4a606c40f0ed3b51df08e50a6eaa8537a51f0e68b6d17464a50135
+- terminology-translation-bounds.json
+  bytes: 7370
+  sha256: 7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca
+- LANGUAGE_TARGETS.json
+  bytes: 19559
+  sha256: 90fb4a1df254c1c02c9a3be6f3055d1c2a9b1296d1e532780f0e46ba2fea722a
+- terminology-fixtures.jsonl
+  bytes: 7675
+  sha256: bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7
+- extract-store-locale-bcp47.py
+  bytes: 10457
+  sha256: cb5564d6b1a4de468df8c3d282ee6f229d6241e680e0489cec90c8ae3a7898a8
+- qa/store-locale-bcp47-extraction.json
+  bytes: 15385
+  sha256: b68699b847099523d61d90017badb501d22042b22e72d1f3837ca183629ab7fe
+- qa/fix-store-bcp-tags.py
+  bytes: 9825
+  sha256: ac4026bbb3f5f51626f005038bfb1185b2504ec2534cfdaab696ba1aa2caf981
+- qa/test_terminology_qa.py
+  bytes: 14396
+  sha256: 5844e90f53da5beccce27878becc81692c71554cc957b5586118c479195a5650

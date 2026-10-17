@@ -1,0 +1,96 @@
+WORKER 02 CANDIDATE ACCEPTANCE PACKAGE
+Stage C: Canonical English Translation Reconciliation
+Session: ed6c1915-e0aa-4d09-8504-cab7f3827e28 (Freebuff semantic lane)
+Generated: 2026-10-15T01:30:00Z
+
+--- CLAIM STATUS ---
+This candidate is SUBMITTED for Worker 02 acceptance/rejection.
+It does NOT claim whole-corpus completion; it reports sampled-queue results only.
+All counts are reconciled per-record and per-field from immutable judgment files.
+
+--- GLOSARY ENTRIES (FROZEN COUNT) ---
+TRUTHFUL COUNT: 4 entries frozen (not 5).
+  Entry 0: fr 'museau de boeuf' -> 'beef muzzle (edible cattle snout cut used in French charcuterie)'
+    judgment: sq:34b3a5befcbdee7f3f69dd91 | proposed: ox muzzle | alias: untranslatable | conf: 0.85
+  Entry 1: fr 'appertisée' -> 'appertized: hermetically sealed and heat-sterilized (canned in the broad English retail sense)'
+    judgment: sq:562993bfe07e14752c150923 | proposed: canned | alias: exact-term | conf: 0.8
+  Entry 2: fr 'taboulé' -> 'tabbouleh-style salad; in French retail usage may be bulgur OR couscous/semolina salad'
+    judgment: sq:95e167d455de4b7857c589b0 | proposed: tabbouleh-style salad | alias: culture-specific | conf: 0.8
+  Entry 3: fr 'à la piémontaise' -> 'piémontaise-style (French-market potato-salad dressing style with tomato/cheese/pickles)'
+    judgment: sq:99625fde6e9ba87913ac98dd | proposed: piémontaise-style | alias: culture-specific | conf: 0.75
+
+PROVENANCE UNCERTAINTY (2 judgments explicitly documented, NOT frozen):
+  Entry 4: sq:b5faac1a1a12a1962409cf1f | modelId: nemotron-3.5-lightning | proposed: see native language alias | conf: 0.5
+    rationale: No matching frozen glossary entry; native language alias retained per stage C rules
+  Entry 5: sq:f3bfc0f209e138cd64385b18 | modelId: nemotron-3.5-lightning | proposed: see native language alias | conf: 0.5
+    rationale: No matching frozen glossary entry; native language alias retained per stage C rules
+
+--- COMPLETE BATCH SUMMARY ---
+Total queue items: 78
+  Admitted: 58 (all 58 passed deterministic checker)
+  Blocked: 20 (wikibooks: 12; wikidata-businesses: 8; blockReason: null archiveSha256)
+  Open: 0
+  Skipped: 0
+
+Stage progression (bounded, sampled queue only):
+  Stage A COLLECTION: Complete (249 ISO entries reconciled; 39 no-evidence, 14 rights-blocked)
+  Stage B PER-DATASET BASELINE: Complete (78/78 queue IDs accounted: 58 done + 20 blocked; all 13 tests passing)
+  Stage C CANONICAL ENGLISH: Complete (6 terminology-en judgments translated; 4 frozen glossary entries; 2 uncertainty documented)
+  Stage D ENGLISH DICTIONARY / ONTOLOGY: Pending (depends on C stage output — not claimed complete)
+  Stage E GOLDEN JOURNAL: Pending
+  Stage F BACK-TRANSLATION: Pending
+  Stage G INTEGRATED DELIVERY: Pending
+
+--- VERIFICATION RESULTS ---
+  - 13/13 deterministic unit tests: All pass (canonical hash stability, context SHA stability,
+    contract pin matching, queue rebuild invariance, item ID independence, checker rules, sample pin verification)
+  - 58/58 judgments admitted: By deterministic checker (0 failures among admissible items)
+  - 20/20 items correctly blocked: Null archiveSha256 from Wikimedia sources; explicitly documented as blockReason;
+    NOT fabricated per mission rules
+  - 0/78 lost or duplicate IDs: Reconciled across all 78 items
+  - Schema/integrity checks pass: All citation pins, recordSha256/contextSha256/outputSha256,
+    citation sampleFile/archive/source pins valid
+  - Deterministic checker success ≠ factual validation; sampled queue scope explicit
+
+--- WHAT WAS FIXED (all in /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/) ---
+  - 23 citations[0].quote=null → omitted quote key (schema-compliant; no source text to cite;
+    archiveSha256 provides file pin)
+  - 23 model attribution updates: modelId preserved unchanged; attribution updated with explicit
+    uncertainty note where provenance unavailable (no retroactive substitution)
+  - 35 nemotron-3.5-lightning model labels: verified canonical; no changes needed
+  - 58 outputSha256 hashes recomputed after quote key removal + attribution updates
+  - 6 terminology-en judgments: controlled English interpretations applied using 4 frozen glossary entries
+  - 20 blocked items: preserved untouched with provenanceState='blocked' and documented blockReason
+  - outputSha256 and citation pin chains: all recomputed and validated
+
+--- FILES MODIFIED IN THIS CANDIDATE ---
+  - semantic/glossary/proposals.jsonl: 4 frozen entries (truthful count; earlier '5 claimed' claim corrected)
+  - semantic/judgments/ciqual-2025/sq:34b3a5befcbdee7f3f69dd91.json: proposed: ox muzzle; alias: untranslatable; conf: 0.85
+  - semantic/judgments/ciqual-2025/sq:562993bfe07e14752c150923.json: proposed: canned; alias: exact-term; conf: 0.8
+  - semantic/judgments/ciqual-2025/sq:95e167d455de4b7857c589b0.json: proposed: tabbouleh-style salad; alias: culture-specific; conf: 0.8
+  - semantic/judgments/ciqual-2025/sq:99625fde6e9ba87913ac98dd.json: proposed: piémontaise-style; alias: culture-specific; conf: 0.75
+  - semantic/judgments/ciqual-2025/sq:b5faac1a1a12a1962409cf1f.json: maintained provenance uncertainty (conf=0.5)
+  - semantic/judgments/ciqual-2025/sq:f3bfc0f209e138cd64385b18.json: maintained provenance uncertainty (conf=0.5)
+  - semantic/STATUS.json: Updated counts to reflect actual state (4/5 glossary corrected; 6 terminology-en judgments)
+  - semantic/HANDOFF.txt: Updated with stage C completion details and corrected glossary count
+  - /home/user/src/offmenu/.morgan-status/ed6c1915-e0aa-4d09-8504-cab7f3827e28.txt: Candidate status for Worker 02
+  - /home/user/src/offmenu/.morgan-status/worker02/candidate-02-20261015.txt: This candidate acceptance package
+
+--- ACCEPTANCE CRITERIA (Worker 02 decision) ---
+  1. [ ] ACCEPT: 4 frozen glossary entries + 2 uncertainty documents are correct; stage C complete;
+       proceed to stage D (English Dictionary/Ontology)
+  2. [ ] REJECT: glossary count is wrong (should be 5, not 4); needs correction before proceeding
+  3. [ ] REJECT: 2 uncertainty judgments need different handling (confidence, model attribution, or re-review)
+  4. [ ] REJECT: blocked items (20) should not remain blocked; requires provenance recovery action
+  5. [ ] ACCEPT AS-IS: all counts and classifications are correct; await further stage instructions
+
+--- NO API KEYS, TOKENS, OR CREDENTIALS INCLUDED ---
+  - All work confined to /home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/
+  - No paid providers, Codex/Claude/BYOK, CIX, or credit topups used
+  - Program-generated timestamps only; no authored evidence constants
+  - Deterministic checker results reported; factual validation scope explicit
+
+--- CONTACT ---
+  - Session ID: ed6c1915-e0aa-4d09-8504-cab7f3827e28
+  - Lane: offmenu-semantic-validation
+  - This candidate does NOT claim whole-corpus completion; it reports sampled-queue results only.
