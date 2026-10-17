@@ -1,0 +1,525 @@
+{
+  "sourceId": "usda-files",
+  "releaseId": "usda-2026-04",
+  "records": 4202558,
+  "parts": [
+    {
+      "file": "part-0000.sql",
+      "bytes": 83683216,
+      "etag": "54e265fa75449bc0d17da59fb62548de",
+      "status": "pending"
+    },
+    {
+      "file": "part-0001.sql",
+      "bytes": 88309748,
+      "etag": "c0d7ea92e5cc40f96189bca8675d53bb",
+      "status": "pending"
+    },
+    {
+      "file": "part-0002.sql",
+      "bytes": 88960708,
+      "etag": "9343b0d76b83210e32732f6ee1d5f303",
+      "status": "pending"
+    },
+    {
+      "file": "part-0003.sql",
+      "bytes": 90659242,
+      "etag": "3947140ea01180ab5f69a31ab821fe20",
+      "status": "pending"
+    },
+    {
+      "file": "part-0004.sql",
+      "bytes": 82948682,
+      "etag": "4f7d15775197d8ad0712c41740e33ced",
+      "status": "pending"
+    },
+    {
+      "file": "part-0005.sql",
+      "bytes": 82031954,
+      "etag": "2bb826c621352a83649fd9a7acea6242",
+      "status": "pending"
+    },
+    {
+      "file": "part-0006.sql",
+      "bytes": 82715728,
+      "etag": "aed9747a382c18bc2ccf7441f3986d73",
+      "status": "pending"
+    },
+    {
+      "file": "part-0007.sql",
+      "bytes": 84456098,
+      "etag": "64cfa21292eea165c456cf8c1d07d32e",
+      "status": "pending"
+    },
+    {
+      "file": "part-0008.sql",
+      "bytes": 84430976,
+      "etag": "a2284c4f54f6cf31b03fbc6f52ef4070",
+      "status": "pending"
+    },
+    {
+      "file": "part-0009.sql",
+      "bytes": 82253246,
+      "etag": "3c34ed33288e0b3725ec1224045d725b",
+      "status": "pending"
+    },
+    {
+      "file": "part-0010.sql",
+      "bytes": 82916732,
+      "etag": "8b94ae28ef83aa2badf1c892081ed38b",
+      "status": "pending"
+    },
+    {
+      "file": "part-0011.sql",
+      "bytes": 82199670,
+      "etag": "75c5ae7281f693934ce0591aec645a48",
+      "status": "pending"
+    },
+    {
+      "file": "part-0012.sql",
+      "bytes": 81613254,
+      "etag": "07ae98a56f1bedb8b3e6ece2d141ff62",
+      "status": "pending"
+    },
+    {
+      "file": "part-0013.sql",
+      "bytes": 80684362,
+      "etag": "555c58e79886339f03b148f316815852",
+      "status": "pending"
+    },
+    {
+      "file": "part-0014.sql",
+      "bytes": 69762674,
+      "etag": "7285d2fcbbe90034d69302e43890f348",
+      "status": "pending"
+    },
+    {
+      "file": "part-0015.sql",
+      "bytes": 78370758,
+      "etag": "c6bf9647d8d9f9bb72681955460a0a2b",
+      "status": "pending"
+    },
+    {
+      "file": "part-0016.sql",
+      "bytes": 86830106,
+      "etag": "b670a1caaf5e08994c9ea6581f934b36",
+      "status": "pending"
+    },
+    {
+      "file": "part-0017.sql",
+      "bytes": 87169252,
+      "etag": "14d1ab5d374694b84f0df9c5ed1258f6",
+      "status": "pending"
+    },
+    {
+      "file": "part-0018.sql",
+      "bytes": 87251666,
+      "etag": "fec0ab94852ef8cd74917e18ca412222",
+      "status": "pending"
+    },
+    {
+      "file": "part-0019.sql",
+      "bytes": 87347650,
+      "etag": "24b507df7d991b9d7cf5efd13300751e",
+      "status": "pending"
+    },
+    {
+      "file": "part-0020.sql",
+      "bytes": 87457588,
+      "etag": "07bf58c651be4fa93ae3a0c411b265b2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0021.sql",
+      "bytes": 88206796,
+      "etag": "8c35e532563224c7ec6dead5f5181f28",
+      "status": "pending"
+    },
+    {
+      "file": "part-0022.sql",
+      "bytes": 88245790,
+      "etag": "8e29cf3f1a5d668322c02c18e86e314b",
+      "status": "pending"
+    },
+    {
+      "file": "part-0023.sql",
+      "bytes": 89827772,
+      "etag": "d744757a1d9b2c222c5912245d6799d2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0024.sql",
+      "bytes": 98704026,
+      "etag": "e84186f40e0bbd80d621654a1eb45442",
+      "status": "pending"
+    },
+    {
+      "file": "part-0025.sql",
+      "bytes": 98576798,
+      "etag": "98b0ed5e267db8083585e11d211daa75",
+      "status": "pending"
+    },
+    {
+      "file": "part-0026.sql",
+      "bytes": 99335626,
+      "etag": "581dbcc653f9df969074cc43acfbfd59",
+      "status": "pending"
+    },
+    {
+      "file": "part-0027.sql",
+      "bytes": 79868338,
+      "etag": "eeab656ee03922c027547603e6044cac",
+      "status": "pending"
+    },
+    {
+      "file": "part-0028.sql",
+      "bytes": 87034796,
+      "etag": "eff740a99e1a481a3f2b2d398b19bbf2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0029.sql",
+      "bytes": 88226390,
+      "etag": "9d288d1c6ecd490fd76432650fc258f5",
+      "status": "pending"
+    },
+    {
+      "file": "part-0030.sql",
+      "bytes": 91481246,
+      "etag": "ba3456c0853418933f2fef634155164c",
+      "status": "pending"
+    },
+    {
+      "file": "part-0031.sql",
+      "bytes": 87854268,
+      "etag": "f047d99e090756df787cbff16f08c5a5",
+      "status": "pending"
+    },
+    {
+      "file": "part-0032.sql",
+      "bytes": 88131366,
+      "etag": "aaaf5f8725e8abcaef686d89dc2f971c",
+      "status": "pending"
+    },
+    {
+      "file": "part-0033.sql",
+      "bytes": 87807854,
+      "etag": "65e82d25f749279d06ca607bc882b308",
+      "status": "pending"
+    },
+    {
+      "file": "part-0034.sql",
+      "bytes": 88831632,
+      "etag": "e6637c8c9e932c7ffef4a35cdb7b7a39",
+      "status": "pending"
+    },
+    {
+      "file": "part-0035.sql",
+      "bytes": 89977080,
+      "etag": "f4c140bb158c118c3ef015c8e86588d8",
+      "status": "pending"
+    },
+    {
+      "file": "part-0036.sql",
+      "bytes": 79494680,
+      "etag": "7a5bce7a396fca7da64e23f0007d2eb1",
+      "status": "pending"
+    },
+    {
+      "file": "part-0037.sql",
+      "bytes": 87006524,
+      "etag": "8e34e0539598be3f037f629c466e288a",
+      "status": "pending"
+    },
+    {
+      "file": "part-0038.sql",
+      "bytes": 87277648,
+      "etag": "013c55c661504618570f5cd19a977353",
+      "status": "pending"
+    },
+    {
+      "file": "part-0039.sql",
+      "bytes": 87273428,
+      "etag": "460213f3a091ec149d112899511a7454",
+      "status": "pending"
+    },
+    {
+      "file": "part-0040.sql",
+      "bytes": 88522008,
+      "etag": "a74869cb45ff9f1e6f985600e0f1b981",
+      "status": "pending"
+    },
+    {
+      "file": "part-0041.sql",
+      "bytes": 88730936,
+      "etag": "413592e08b753fb39435c784dbb013a2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0042.sql",
+      "bytes": 89480308,
+      "etag": "7c0be421ffd7fe49773bd6ae2c73a44e",
+      "status": "pending"
+    },
+    {
+      "file": "part-0043.sql",
+      "bytes": 91165082,
+      "etag": "68502392d42df56bee5e59d37afbd0f1",
+      "status": "pending"
+    },
+    {
+      "file": "part-0044.sql",
+      "bytes": 91989514,
+      "etag": "76675d8084d5696e76ca5ee38dc192a1",
+      "status": "pending"
+    },
+    {
+      "file": "part-0045.sql",
+      "bytes": 82219936,
+      "etag": "2680af53534cca254ea4fb57f47d40c7",
+      "status": "pending"
+    },
+    {
+      "file": "part-0046.sql",
+      "bytes": 74478114,
+      "etag": "a7f17b222a3df2631af206e157f07f02",
+      "status": "pending"
+    },
+    {
+      "file": "part-0047.sql",
+      "bytes": 80056088,
+      "etag": "ba00baba7fc36ec87680fbb86fb04bd8",
+      "status": "pending"
+    },
+    {
+      "file": "part-0048.sql",
+      "bytes": 74800916,
+      "etag": "1e234745aa6509811635a97b7c4b7d24",
+      "status": "pending"
+    },
+    {
+      "file": "part-0049.sql",
+      "bytes": 79076818,
+      "etag": "2c4f0c78b456766ee7273855e3d553dd",
+      "status": "pending"
+    },
+    {
+      "file": "part-0050.sql",
+      "bytes": 89467384,
+      "etag": "ee844fbf446a2fbe9d84c8cbcf8a78f9",
+      "status": "pending"
+    },
+    {
+      "file": "part-0051.sql",
+      "bytes": 88306936,
+      "etag": "7e7409d2cb22cd405c7d2b313eea65a6",
+      "status": "pending"
+    },
+    {
+      "file": "part-0052.sql",
+      "bytes": 87279990,
+      "etag": "dc9e64efd2c0b87c8cffe5e46dc50164",
+      "status": "pending"
+    },
+    {
+      "file": "part-0053.sql",
+      "bytes": 93982044,
+      "etag": "51442fee1698ed194a6fb00671cf0b57",
+      "status": "pending"
+    },
+    {
+      "file": "part-0054.sql",
+      "bytes": 94845636,
+      "etag": "7058bf613f27d2e967999dedc2952e2f",
+      "status": "pending"
+    },
+    {
+      "file": "part-0055.sql",
+      "bytes": 85455800,
+      "etag": "7496dcda33c4e2a9a60ae834505ea2d2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0056.sql",
+      "bytes": 89295954,
+      "etag": "29f9aa9e4e73dc7c5a286090814566b4",
+      "status": "pending"
+    },
+    {
+      "file": "part-0057.sql",
+      "bytes": 90265842,
+      "etag": "ab8fc4c7720101a41e7bed1562be22ac",
+      "status": "pending"
+    },
+    {
+      "file": "part-0058.sql",
+      "bytes": 89722784,
+      "etag": "45a69a5e2c5503c9c29505792efa6700",
+      "status": "pending"
+    },
+    {
+      "file": "part-0059.sql",
+      "bytes": 90866982,
+      "etag": "5a6984e15815536c0596794c6d8c60d2",
+      "status": "pending"
+    },
+    {
+      "file": "part-0060.sql",
+      "bytes": 85649552,
+      "etag": "f22998eb426032a25a5ba342baceef14",
+      "status": "pending"
+    },
+    {
+      "file": "part-0061.sql",
+      "bytes": 89030356,
+      "etag": "1daca9b19a36cc8ffc76612b1e9d7560",
+      "status": "pending"
+    },
+    {
+      "file": "part-0062.sql",
+      "bytes": 89814326,
+      "etag": "7b8a368503a5f005bbc89e915f24d1b4",
+      "status": "pending"
+    },
+    {
+      "file": "part-0063.sql",
+      "bytes": 101852200,
+      "etag": "577df57f69821fbd65bfe61207ce2a8f",
+      "status": "pending"
+    },
+    {
+      "file": "part-0064.sql",
+      "bytes": 88529084,
+      "etag": "6db9914b437d3f055a5f487f10d2feb4",
+      "status": "pending"
+    },
+    {
+      "file": "part-0065.sql",
+      "bytes": 65635644,
+      "etag": "93dac9647af666300f0b7db84231eb1d",
+      "status": "pending"
+    },
+    {
+      "file": "part-0066.sql",
+      "bytes": 78061590,
+      "etag": "8031c17350bb77752084d56f782f7b0e",
+      "status": "pending"
+    },
+    {
+      "file": "part-0067.sql",
+      "bytes": 86781520,
+      "etag": "ce12c5834c2acde3670a5cd8a3deb160",
+      "status": "pending"
+    },
+    {
+      "file": "part-0068.sql",
+      "bytes": 86171580,
+      "etag": "c6bf927d3905a3968c54265e02ec9f90",
+      "status": "pending"
+    },
+    {
+      "file": "part-0069.sql",
+      "bytes": 85707920,
+      "etag": "714eb64b575fdcac2a33cc76f2c241d9",
+      "status": "pending"
+    },
+    {
+      "file": "part-0070.sql",
+      "bytes": 86851574,
+      "etag": "7271fc292ffddfeafecf5b5af8b3943c",
+      "status": "pending"
+    },
+    {
+      "file": "part-0071.sql",
+      "bytes": 87055888,
+      "etag": "869e3040c5addd0f1cb28568396d5519",
+      "status": "pending"
+    },
+    {
+      "file": "part-0072.sql",
+      "bytes": 86138778,
+      "etag": "2c14bf79d682d283a2d6852f29484a96",
+      "status": "pending"
+    },
+    {
+      "file": "part-0073.sql",
+      "bytes": 86961782,
+      "etag": "fac8497e36e6182a52b63dddb0d50357",
+      "status": "pending"
+    },
+    {
+      "file": "part-0074.sql",
+      "bytes": 86339196,
+      "etag": "bd850025155a5567d1ac74c4786d3648",
+      "status": "pending"
+    },
+    {
+      "file": "part-0075.sql",
+      "bytes": 86335022,
+      "etag": "22f18fbdb1f345a74e13347fb2cec3ec",
+      "status": "pending"
+    },
+    {
+      "file": "part-0076.sql",
+      "bytes": 88795562,
+      "etag": "4f0d175e3eb86356c76777446120bd51",
+      "status": "pending"
+    },
+    {
+      "file": "part-0077.sql",
+      "bytes": 89283136,
+      "etag": "ae7233aba587980fdbc6301ff8ddf344",
+      "status": "pending"
+    },
+    {
+      "file": "part-0078.sql",
+      "bytes": 88910942,
+      "etag": "51edac936ba33f13dae161bfb0b19696",
+      "status": "pending"
+    },
+    {
+      "file": "part-0079.sql",
+      "bytes": 89165844,
+      "etag": "0ce6972366c8866e1141fe2100b562c1",
+      "status": "pending"
+    },
+    {
+      "file": "part-0080.sql",
+      "bytes": 82622560,
+      "etag": "d58918d589ec4bd5798ca4263659a42e",
+      "status": "pending"
+    },
+    {
+      "file": "part-0081.sql",
+      "bytes": 80907008,
+      "etag": "968bb2f31e9e8b66a3e8cb98797a0bfc",
+      "status": "pending"
+    },
+    {
+      "file": "part-0082.sql",
+      "bytes": 82869550,
+      "etag": "1dab8b5440d19b82e5941004235e4142",
+      "status": "pending"
+    },
+    {
+      "file": "part-0083.sql",
+      "bytes": 79722870,
+      "etag": "10465f11a9a790d9d58e257e88893f3b",
+      "status": "pending"
+    },
+    {
+      "file": "part-0084.sql",
+      "bytes": 3529926,
+      "etag": "8e31d05f85407b5b8494e42f5645b171",
+      "status": "pending"
+    },
+    {
+      "file": "activate.sql",
+      "bytes": 14104,
+      "etag": "43e742d4eb4767f7ebd6639f415ab174",
+      "status": "pending"
+    }
+  ],
+  "status": "superseded by user instruction: local engine -> curated Netlify release -> Cloudflare cache",
+  "uploaded": false
+}

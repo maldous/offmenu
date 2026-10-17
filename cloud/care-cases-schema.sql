@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS care_cases (id TEXT PRIMARY KEY,owner TEXT,idempotency_key TEXT,payload_hash TEXT,category TEXT NOT NULL,status TEXT NOT NULL,assigned_to TEXT,revision INTEGER NOT NULL,write_id TEXT NOT NULL,sealed TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,retain_until INTEGER NOT NULL,UNIQUE(owner,idempotency_key));
+CREATE TABLE IF NOT EXISTS care_messages (id TEXT PRIMARY KEY,case_id TEXT NOT NULL,author_role TEXT NOT NULL CHECK(author_role IN ('owner','staff','internal')),idempotency_key TEXT,payload_hash TEXT,write_id TEXT NOT NULL,sealed TEXT,created_at TEXT NOT NULL,retain_until INTEGER NOT NULL,UNIQUE(case_id,idempotency_key));
+CREATE TABLE IF NOT EXISTS care_case_locks (id TEXT PRIMARY KEY CHECK(id='global'),nonce TEXT NOT NULL,expires_at INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS care_audit (id TEXT PRIMARY KEY,case_id TEXT NOT NULL,actor_id TEXT NOT NULL,revision INTEGER NOT NULL,paths_json TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS care_cases_staff ON care_cases(status,updated_at DESC);

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-14",
+  "branch": "third-party-services",
+  "baseCommit": "776c0f7",
+  "scope": "Functional third-party service seams and role-bound application administration; final UI layout is deferred.",
+  "inventoryRecords": 149,
+  "implemented": [
+    "Sanitized service capabilities and strict operator configuration",
+    "Granular browser-local optional service preferences and revocation",
+    "iubenda policy language and TCF adapter with explicit vendor fallback",
+    "Sleekplan feedback widget and independent board link",
+    "Consent-purpose-gated coarse Zaraz events",
+    "Approved non-personalized AdSense slot with TCF callback and revocation gates",
+    "Sentry fixed-code browser/Worker diagnostics without private event payloads",
+    "Authenticated Brevo support requests and confirmed document email to verified self",
+    "Private encrypted delivery ledger and keyed idempotency tombstones",
+    "SEO verification metadata, public sitemap and private-route robots exclusions",
+    "Pinned GitHub Actions baseline and deliberate credential-qualified Snyk/Sonar scans",
+    "Fresh trusted Identity administrator roles for global services, write-only shared credential settings, application defaults, feature controls and service caps/retention",
+    "Value-free revisioned settings and public-source audit with atomic CAS mutation",
+    "Bounded suspension/reactivation of existing reviewed public policies without personal-result publication"
+  ],
+  "checks": {
+    "javascriptPassed": 194,
+    "pythonPassed": 36,
+    "compiledWorkerPassed": 3,
+    "applicationBuild": "passed",
+    "i18nCatalogue": "passed; untranslated messages retain explicit English fallback",
+    "configurationValidation": "passed; optional defaults off",
+    "diffCheck": "passed",
+    "browser": {
+      "externalNetworking": "mocked",
+      "accountControls": "rendered and service choices saved",
+      "defaultOptionalConsent": "all false",
+      "loadedVendorScriptsAtDefault": 0,
+      "consoleErrors": 0,
+      "screenshot": "output/playwright/services/account-services.png"
+    },
+    "administration": {
+      "trustedRoles": "admin or offmenu-admin in verified app_metadata.roles only",
+      "ownerIsolation": "compiled admin requests with another user selector return no seeded private canaries",
+      "concurrency": "settings create/update and source parallel writes produce one200 and one409; one audit per winner",
+      "rollback": "missing audit table returns503 and leaves settings/source state unchanged",
+      "revocation": "removed current trusted role denies read/write",
+      "diagnostics": "stored disable or corrupt configuration causes zero legacy Sentry sends on forced handler exception",
+      "browser": {
+        "externalNetworking": "mocked",
+        "globalDefaults": "saved AU default; current personal country unchanged",
+        "credentialFields": "blank after save; destroyed after logout",
+        "publicSource": "gleif suspension saved and audited",
+        "logout": "both administrative panels hidden",
+        "consoleErrors": 0,
+        "warning": "local HTTP Identity fixture only",
+        "screenshot": "output/playwright/services/administration.png"
+      }
+    }
+  },
+  "independentReview": {
+    "resolved": [
+      "Asynchronous vendor loader continuation after local consent revocation",
+      "Real TCF callback signature and latest consent decision after delayed load",
+      "Removal of loaded advertising on TCF withdrawal",
+      "Client/server diagnostic enum drift",
+      "Canonical fresh-install schema and cleanup",
+      "Feedback-only configuration usability",
+      "Failed email retry versus unknown-delivery non-replay",
+      "Composite support/copy duplicate delivery",
+      "Vendor policy language wire values and unsupported language fallback",
+      "Requested external scan silently skipping missing prerequisites",
+      "Canonical inventory digest and exact record correspondence",
+      "Dictionary-testable retention tombstones",
+      "Source operation loser audit after post-precheck race",
+      "Exception diagnostics bypass of stored service disable",
+      "Stale administrative UI continuations after account switch",
+      "Canonical schema migration coverage for admin settings and public-source audits"
+    ],
+    "deploymentGate": "Sensitive document email requires the selected Brevo processor/contract, region and retention review before production activation. Explicit message preview/confirmation alone is not that review.",
+    "finalVerdict": "clear; all reported material implementation findings resolved"
+  },
+  "productionReadback": {
+    "readOnly": true,
+    "workerVersion": "c776cb4e-15ff-4221-84f8-b100461f0df8",
+    "deployment": "619b6162-8950-432e-8299-88f7fe16d689",
+    "compatibilityDate": "2026-10-12",
+    "secretNames": [
+      "PROVIDER_VAULT_KEY"
+    ],
+    "accounts": 1,
+    "summedRevision": 2,
+    "snapshotBytes": 821,
+    "writesPerformed": 0,
+    "deploymentPerformed": false
+  },
+  "activationPrerequisites": [
+    "Apply additive cloud/services-schema.sql before any deployment of these handlers to an existing database; canonical cloud/schema.sql includes the same fresh-install DDL.",
+    "Apply cloud/admin-schema.sql and cloud/admin-operations-schema.sql additive migrations before using admin routes on an existing database. Provision exact trusted app_metadata.roles in the Identity provider dashboard. No roles, production migrations or deployment were performed here.",
+    "OffMenu Sentry project and scoped SENTRY_DSN; no inherited Paperly project access.",
+    "Brevo OffMenu sender, support recipient, current entitlement and processor review; set BREVO_API_KEY securely and preserve the existing vault secret.",
+    "OffMenu iubenda site/policy IDs and actual licensed policy language; verify TCF configuration and vendor consent in real integration.",
+    "OffMenu Sleekplan product/board; no prior account configuration is assumed.",
+    "Configure Zaraz tools under a real consent purpose with denial by default before injecting tools; application opt-in does not prove edge-dashboard configuration.",
+    "AdSense approval for OffMenu and complete certified-CMP verification before enabling ads.",
+    "Status page/monitor and Google/Bing property verification; a status link does not create an uptime monitor.",
+    "Snyk/Sonar configuration and explicit manual scan invocation; local validation is not a completed external scan.",
+    "Native/partner/health/retailer workflows and new paid services remain gated by their own access and product requirements."
+  ],
+  "sourceCommit": "4f984cbf45a62193bbb8f3e420d3444056bf65e6",
+  "localRuntimeQualification": {
+    "miniflareCompatibilityDate": "2026-08-06",
+    "productionCompatibilityDateRetained": "2026-10-12",
+    "reason": "The repository-pinned local workerd supports August 6; no production compatibility setting changed."
+  }
+}

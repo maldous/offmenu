@@ -1,0 +1,96 @@
+{
+  "schema": "offmenu-recipe-expansion-report/1",
+  "status": "independently-reviewed-and-combined-global-qualified-not-published",
+  "scope": "This report is completed by scripts/collect-recipe-expansion-20261014.py. It admits only complete recipes from pinned primary repository files with fetched root CC0 or Unlicense evidence; it does not treat discovery lists, archive access, website scraping, or a repository wrapper as a clearance for third-party text.",
+  "priority": [
+    "Spanish complete recipes",
+    "Dutch-language Indonesian cultural recipes",
+    "Dutch recipes",
+    "Italian recipes",
+    "Portuguese recipes"
+  ],
+  "sourceOutput": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014",
+  "native": {
+    "records": 42,
+    "complete": true,
+    "limit": null,
+    "sourceCounts": {
+      "lvisintini/recetasdemami": 33,
+      "Remarknl/Indisch-eten": 1,
+      "chefdelakarma/libre_cuisine": 6,
+      "clicat/Ricette": 2,
+      "rochacbruno/vegan_recipes": 0
+    },
+    "licences": {
+      "lvisintini/recetasdemami": "CC0-1.0",
+      "Remarknl/Indisch-eten": "CC0-1.0",
+      "chefdelakarma/libre_cuisine": "CC0-1.0",
+      "clicat/Ricette": "CC0-1.0",
+      "rochacbruno/vegan_recipes": "Unlicense"
+    },
+    "languages": {
+      "es": 33,
+      "nl": 7,
+      "it": 2,
+      "pt": 0
+    },
+    "normalizedArtifactSha256": "ca1dcfd582c40062f6dbf11940a50622bd60579550432866c19fb6bf539844f6",
+    "contentLinesSha256": "0ad4d3e4deec2b9ef69a42e0f538735ef5bfdf21f1991efb612b5465935f3126"
+  },
+  "commonGraph": {
+    "directory": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph",
+    "packetFile": "recipe-source-alignment.jsonl.gz",
+    "packetArtifactSha256": "170d0413de1c5101970e20889aacf849984cf49201a2a681cc7f66b58a67af28",
+    "partitionCoverage": {
+      "complete": true,
+      "expectedFiles": 1,
+      "observedFiles": 1,
+      "expectedPackets": 42,
+      "observedPackets": 42
+    },
+    "expectedCounts": {
+      "resources": 682,
+      "assertions": 1588,
+      "relations": 644,
+      "citations": 42,
+      "translations": 0,
+      "packets": 42
+    },
+    "observedCounts": {
+      "resources": 682,
+      "assertions": 1588,
+      "relations": 644,
+      "citations": 42,
+      "translations": 0,
+      "packets": 42
+    },
+    "qualification": "Draft 2020-12 schema validation, global resource/assertion/relation uniqueness and candidate-only quantity/optionality facts passed.",
+    "globalEvidence": "/home/user/src/offmenu-data/common-foundation-recipes-final-global-20261014.json"
+  },
+  "admission": {
+    "publicAdmission": "Qualified local package; publication waits for full source expansion assembly",
+    "originals": "Raw source blobs and root licence texts are retained locally under originals and are not public corpus artifacts.",
+    "titlePolicy": "An actual source H1 or plain NAME is source-asserted. A filename fallback is a candidate only and is marked in record provenance.",
+    "semanticPolicy": "Ingredient quantities and optionality produced by normalization are candidates derived from cited source statements. Country, dietary type, recipe concept joins, translation and automatic planning eligibility are not inferred."
+  },
+  "typeProposals": [
+    {
+      "type": "RecipeSourceEdition",
+      "reason": "Repository plus immutable commit identifies a source edition independently of a recipe concept."
+    },
+    {
+      "type": "IngredientStatement",
+      "reason": "Source-language ingredient wording needs its own citation and may retain an unresolved measure."
+    }
+  ],
+  "independentReview": {
+    "titleStatuses": {
+      "source-asserted": 40,
+      "filename-derived-candidate": 2
+    },
+    "allSpanishPageTitlesPreserved": 33,
+    "rightsAndBlobHashes": "pass",
+    "schemasAndGraphIdentities": "pass",
+    "ingredientTargets": "All 12 candidate ingredient links resolve in full accepted core terminology under combined global qualification"
+  }
+}

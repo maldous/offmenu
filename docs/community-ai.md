@@ -1,0 +1,15 @@
+# Community AI review
+
+This optional moderation aid is disabled by default and has no hosted inference cost. `mcp` queues narrowly scoped public submissions for an authenticated administrator's MCP agent; it does not pretend to run a model. `self-hosted` uses only the HTTPS origin configured in `CARE_AI_ORIGIN`, with an optional server-only `CARE_AI_KEY`.
+
+Inputs are pending public recipes, recipe comments, topics, and replies. They exclude account IDs, aliases, email, cases, pantry/health data, provider credentials, flags, and appeals. Each body is capped at 3,500 characters and treated as untrusted prompt content. Only a strict decision object is retained.
+
+The daily database reservation includes failed calls and prevents parallel review from exceeding the configured 1–20 limit. An exhausted budget releases its pre-inference claim without recording a decision, so the same unchanged pending item can be considered on a later day. In-progress claims expire after 60 seconds and can be reclaimed by exactly one later worker; only the current claim owner may complete or release it. Inference failures are retained as visible `failed` decisions. Automatic actions are off by default. When enabled, only a high-confidence reject can make a reversible hide for text contributions; recipes always await human confirmation because rights, structure, nutrition and allergen claims require review.
+
+Scheduled internal review is deliberately unavailable until an explicit, fresh MCP administrator grant is configured. An external MCP administrator may queue or review work now; the application never picks an arbitrary retained proof or impersonates an administrator for a cron job.
+
+Before an automatic moderation action, its decision moves durably to `applying` with a 60-second lease. If recording its final state fails after moderation, the product reports `finalization_failed` rather than claiming success; the `applying` record prevents replay. Reconciliation considers only expired applying leases, protecting an in-flight review from another administrator's run. A later human moderator may have changed the content while the AI worker was interrupted, so `reconcileCommunityAIDecisions` always resolves ambiguous records to `held` with an uncertain reason. It never attributes a human change to AI; a reviewer must use the underlying moderation audit to establish what happened.
+
+Each run examines at most three pending items, independently of the daily cap, so a Worker invocation has a small, predictable D1 operation budget. A response may set `continuation` when another run can continue the queue. MCP `awaiting_agent` records, including recipe comments, can be completed only through `completeAwaitingAgentDecision` with a current trusted administrator and the underlying revision-checked moderator operation.
+
+Workers AI is intentionally not activated: its free quota is account-wide and entitlement cannot be verified at runtime. Personal bring-your-own keys are never read or used.

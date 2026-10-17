@@ -1,0 +1,33 @@
+{
+  "source": "usda-files",
+  "release": "usda-2026-04",
+  "records": 4202558,
+  "profiles": 2101279,
+  "planningExercises": 2101279,
+  "reviewableRecipes": 0,
+  "recipesWithoutIngredients": 0,
+  "prices": 0,
+  "missingPriceAmount": 0,
+  "missingCurrency": 0,
+  "missingPriceDate": 0,
+  "negativePriceAmount": 0,
+  "knownMetrics": {
+    "energy-kcal_100g": 1875456,
+    "proteins_100g": 1898499,
+    "carbohydrates_100g": 1888168,
+    "fat_100g": 1880096,
+    "sugars_100g": 1801590,
+    "salt_100g": 0,
+    "sodium_mg_100g": 1887014,
+    "saturated-fat_100g": 1650296,
+    "fiber_100g": 1604550,
+    "calcium_100g": 1575865,
+    "iron_100g": 1574033,
+    "potassium_100g": 890665,
+    "vitamin-c_100g": 902789
+  },
+  "errors": [],
+  "status": "all normalized records structurally exercised",
+  "limitation": "Synthetic per-100-unit model checks verify data paths, not food identity, dietary suitability or independent nutrition accuracy",
+  "completedAt": "2026-10-13T03:25:58.583Z"
+}

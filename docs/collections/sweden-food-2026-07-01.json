@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "sweden-food",
+  "releaseId": "2026-07-01",
+  "status": "normalized",
+  "normalizedRows": 2606,
+  "counts": {
+    "raw": 2606,
+    "accepted": 2606,
+    "duplicates": 0,
+    "quarantined": 0,
+    "excluded": 0,
+    "records": 2606
+  },
+  "countries": {
+    "SE": 2606
+  },
+  "archiveSha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569",
+  "license": "Publisher reuse terms: source/version attribution, data must not be changed",
+  "attribution": "Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+  "sourceAcquisition": {
+    "key": "sweden-20260701.xlsx",
+    "url": "https://soknaringsinnehall.livsmedelsverket.se/Spara/HamtaHelaDatabasen",
+    "method": "Publisher full-database export POST",
+    "bytes": 678355,
+    "sha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569"
+  },
+  "publication": "local only",
+  "completedAt": "2026-10-13T09:23:30.959987+00:00",
+  "nutrientObservations": 151148,
+  "scope": "Complete official Swedish full-database workbook export, version 2026-07-01; every food and all 58 nutrient columns parsed without changing source values. Missing values remain unknown. Recipe-derived foods are composition references, not quantified recipe instructions."
+}

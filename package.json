@@ -1,0 +1,29 @@
+{
+  "name": "offmenu-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests-web/*.test.mjs",
+    "i18n:extract": "node scripts/i18n-catalogue.mjs",
+    "i18n:check": "node scripts/i18n-catalogue.mjs --check",
+    "test:locale-edge": "node --test tests-edge/*.test.mjs"
+  },
+  "dependencies": {
+    "@netlify/identity": "^2.0.0",
+    "zxing-wasm": "3.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "latest",
+    "acorn": "^8.19.0",
+    "esbuild": "0.25.12",
+    "miniflare": "^4.20260730.0"
+  },
+  "overrides": {
+    "miniflare": {
+      "undici": "7.30.0",
+      "sharp": "0.35.5"
+    }
+  }
+}
