@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "offmenu-places-projection-candidate/1",
+  "candidateId": "places-projection-candidate-20261015",
+  "purpose": "A3 dataset-projection declaration: contract-level integration fixture over the existing places->common adapter seam (scripts/align-places-common.py + scripts/places_checkpoint.py, both UNCHANGED), measured projection characteristics and explicit storage/acceptance gates. Unblocks A3 planning; NOT an execution authorization.",
+  "worker": "Worker 05 (slot 62, branch bugfix/62/freebuff-repair-diagnosis-20261015)",
+  "seamReuse": {
+    "projection": "scripts/align-places-common.py (unchanged, no duplicate code)",
+    "persistence": "scripts/places_checkpoint.py (unchanged; persistence already covered by 12 checkpoint tests)",
+    "testsCoveringSeam": [
+      "tests/test_places_checkpoint.py (12)",
+      "tests/test_places_common.py (2)"
+    ]
+  },
+  "sourcePins": {
+    "curatedManifest": {
+      "path": "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs/manifest.json",
+      "sha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895",
+      "releaseId": "expanded-country-search-20261013"
+    },
+    "fixtureManifest": {
+      "path": "tests/fixtures/places-projection-20261015/curated/manifest.json",
+      "sha256": "aa454cd463de237b567e977d8890b585f4dcd480d77a1282370e74c20f8b99df"
+    },
+    "fixtureFiles": [
+      {
+        "key": "curated/records/overture-food-places/000.jsonl.gz",
+        "sha256": "83dd244ad82252a6bb78e3a77b69a34fc75554dd2afc4bdf6e2afed605f6732f",
+        "bytes": 1061,
+        "synthetic": false
+      },
+      {
+        "key": "curated/records/overture-food-places/001.jsonl.gz",
+        "sha256": "0c52a764a1903b705574708c802b3649c9c823d203dc00fd2031934215785d4d",
+        "bytes": 534,
+        "synthetic": true
+      },
+      {
+        "key": "curated/records/wikidata-food-businesses/0.jsonl.gz",
+        "sha256": "de454b6fe688cae11c54a749c025625e375620fe79ac5b59b9909526cbfc087d",
+        "bytes": 603,
+        "synthetic": false
+      }
+    ],
+    "linePreservation": {
+      "curated/records/overture-food-places/000.jsonl.gz": {
+        "source": "overture-food-places",
+        "synthetic": false,
+        "rowId": "offmenu:site:2d9225749012badb40104fcc",
+        "recordId": "aae2b76a-80b0-47e3-a45b-cca4ddc92c7a",
+        "expectedResourceId": "urn:offmenu:source:overture-food-places:site:aae2b76a-80b0-47e3-a45b-cca4ddc92c7a",
+        "license": "CDLA-Permissive-2.0",
+        "attribution": "Overture Maps Foundation; Overture, meta",
+        "licenseUrl": "https://docs.overturemaps.org/attribution/#places",
+        "originalUrl": "https://docs.overturemaps.org/guides/places/",
+        "lineSha256": "b617f3e923c6ce4d35c119f75e59a929854ab3593e5dcd434f4bad7fc6ddcce4"
+      },
+      "curated/records/overture-food-places/001.jsonl.gz": {
+        "source": "overture-food-places",
+        "synthetic": true,
+        "rowId": "fixture:site:coordinate-null-case-1",
+        "recordId": "fixture-synthetic-coordinate-null-case-1",
+        "expectedResourceId": "urn:offmenu:source:overture-food-places:site:fixture-synthetic-coordinate-null-case-1",
+        "license": "CC0 1.0 (synthetic fixture authored for edge coverage; NOT source data)",
+        "attribution": "OffMenu synthetic test fixture",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "originalUrl": "https://example.org/fixture/coordinate-null-case-1",
+        "lineSha256": "1fb1ba3e061b2e4a25c62d1184f06107a3a51798d322d9d164e3b38b1815aeda"
+      },
+      "curated/records/wikidata-food-businesses/0.jsonl.gz": {
+        "source": "wikidata-food-businesses",
+        "synthetic": false,
+        "rowId": "offmenu:organization:8df0f7183d8ea289adf4e2c2",
+        "recordId": "Q10375044",
+        "expectedResourceId": "urn:offmenu:source:wikidata-food-businesses:organization:Q10375044",
+        "license": "CC0 1.0",
+        "attribution": "Wikidata contributors",
+        "licenseUrl": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+        "originalUrl": "https://www.wikidata.org/wiki/Q10375044",
+        "lineSha256": "35152832ffb57f4d9db52e3021eb79e1562bccad7fcc202400aeb80e8462fab6"
+      }
+    },
+    "syntheticRowDisclosure": "exactly ONE fixture row (curated/records/overture-food-places/001.jsonl.gz, recordId fixture-synthetic-coordinate-null-case-1) is authored synthetic edge-case data, CC0 labelled, example.org provenance, NOT source data. Rationale: the retained normalized rows omit geometry by upstream curation policy ('contacts/street addresses/geometry omitted'; 0/300 first rows carry coordinate fields), so the coordinates-preservation path cannot be exercised by retained rows alone. All measurement denominators/ratios use REAL rows only."
+  },
+  "schemaPins": {
+    "commonSchema": {
+      "path": "corpus/common-data.schema.json",
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    "commonContract": {
+      "path": "corpus/common-data-contract.json",
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+    }
+  },
+  "implementationPins": {
+    "alignPlacesCommon": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f",
+    "placesCheckpoint": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+  },
+  "fixtureRun": {
+    "options": {
+      "records_per_packet": 1,
+      "packets_per_file": 1
+    },
+    "counts": {
+      "packets": 3,
+      "resources": 3,
+      "assertions": 6,
+      "relations": 0,
+      "translations": 0
+    },
+    "resourceTypes": {
+      "urn:offmenu:type:Site": 2,
+      "urn:offmenu:type:Organization": 1
+    },
+    "packetPins": {
+      "packets/part-00000.jsonl.gz": {
+        "bytes": 2478,
+        "sha256": "64749ab6872f736cd11e8558319092df1856d0b558ee3fbe13775e8b1b12e1a5"
+      },
+      "packets/part-00001.jsonl.gz": {
+        "bytes": 1584,
+        "sha256": "24799f492947143f90e9af08e81e3e66b06e8add5cb10ba6c69213e85a8b852c"
+      },
+      "packets/part-00002.jsonl.gz": {
+        "bytes": 1559,
+        "sha256": "0f97248eb42621ea633ed7814637b0444c283bbffec50313c695a40475d3e08e"
+      }
+    },
+    "determinism": "two independent runs byte-identical for all packet files (verified at authoring; re-verified by tests/test_places_projection_candidate.py)",
+    "volatileOutputFields": [
+      "output manifest.json createdAt",
+      "output manifest.json manifestPayloadSha256 (payload-bound over createdAt)"
+    ],
+    "checkpointedHandoff": "output manifest.json file receipts == actual packet bytes; state checkpoint <output>.checkpoint.sqlite pins inputs/schema/contract/implementation; writer lock released"
+  },
+  "projectionDeclaration": {
+    "method": "per-record common-data packet serialized as compact JSON + gzip compresslevel=1 mtime=0 (the exact sink encoding), measured read-only on REAL rows; no bulk run, no full manifest scan",
+    "measurement": {
+      "rowsPerSource": 200,
+      "sampling": "first 200 non-empty rows of the first record file of each source (bounded, read-only)",
+      "basis": "REAL rows only; the synthetic fixture row is excluded from all measurements",
+      "overture-food-places": {
+        "rowsMeasured": 200,
+        "compressedBytesPerRecord": 2489.2,
+        "uncompressedBytesPerRecord": 10417.5
+      },
+      "wikidata-food-businesses": {
+        "rowsMeasured": 200,
+        "compressedBytesPerRecord": 1552.0,
+        "uncompressedBytesPerRecord": 6090.6
+      }
+    },
+    "denominators": {
+      "overture-food-places": 12681108,
+      "wikidata-food-businesses": 1505,
+      "totalRecords": 12682613,
+      "source": "accepted curated manifest expanded-country-search-20261013 (sha256 pinned in sourcePins.curatedManifest)"
+    },
+    "projectedPacketBytes": {
+      "compressed": 31568149794,
+      "uncompressed": 132114608943,
+      "uncompressedMaterialized": false
+    },
+    "projectedAuxiliary": {
+      "checkpointIdentityTable": "UNKNOWN-estimated 1-2 GB for 12,682,613 (source,record) identity rows — measured value unknown, NOT zero; must be measured in a bounded representative qualification run before expansion",
+      "checkpointBufferMax": 8388608,
+      "outputManifestAndNotices": "small (<1 MB); Overture NOTICE texts only"
+    },
+    "projectedPeakWorkingSet": {
+      "centralCompressed": 33568149794,
+      "note": "packets (~31.6 GB) + estimated checkpoint identity table (~2 GB upper) + buffer; decimal GB"
+    },
+    "assumptionsAndUnknowns": [
+      "n=200 per source from the FIRST record file only; file ordering may correlate with geography/collection order — size distribution variance across files is UNKNOWN, not zero",
+      "per-record packet overhead is fixed in this fixture (one record per packet); production packing (1000 records/packet) changes file count, not total payload",
+      "checkpoint identity-table size is estimated, not measured (unknown != zero)",
+      "retained normalized rows omit coordinates by upstream policy; per-record sizes therefore also exclude any future geometry fields — if geometry is ever retained, sizes grow by an UNKNOWN amount, not zero",
+      "this is a DECLARED projection for planning, not a full-scale qualification measurement"
+    ]
+  },
+  "storageGates": {
+    "freeCapacityEnvelope": "116 GiB free at measurement (see w02-storage-qualification-20261015.json sha256 ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e); plan against envelope only",
+    "fit": "projected peak ~33.6 GB decimal fits the envelope with margin under declared assumptions",
+    "blocked": [
+      "mass acquisition",
+      "bulk places run",
+      "full manifest scan",
+      "full-scale expansion until bounded representative-sample qualification is independently reviewed and Morgan-approved"
+    ],
+    "separation": "repair subset scope 3/9,797 and its expansion gate remain separate and gated; orphan lock and legacy partial untouched"
+  },
+  "acceptanceGates": {
+    "status": "CANDIDATE — NOT accepted, NOT integrated, NOT corpus admission",
+    "requires": [
+      "independent exact review of this manifest + fixture + test at the delivery commit",
+      "Morgan verdict",
+      "bounded representative-sample qualification run (separate authorization) before any bulk execution"
+    ],
+    "note": "the inner output manifest status string 'accepted-complete-schema-identity-citation-public-scope-checked' is the pipeline's schema/identity/citation check-completion label within fixture scope; it is NOT an acceptance decision"
+  },
+  "preservationGuarantees": {
+    "sourceNativeIdentity": "one source-scoped resource per source record; original row id + full source record retained as typed cited assertions ($.id identifier, $.sourceRecord structure); fixture lineSha256 pin the native rows byte-for-byte",
+    "rights": "per-record license/attribution/licenseUrl/copyright/licenseNotices retained verbatim as typed cited fields and in the citation envelope (rightsEvidenceUrl); no re-licensing",
+    "coordinates": "source coordinates retained as typed source assertions without projection, rounding or geocoding (exercised via the synthetic edge row; retained rows carry none)",
+    "missingness": "explicit source nulls become typed null values; absent source fields are never invented (unknown != zero)"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "status": "accepted",
+  "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+  "deliverable": {
+    "graph": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014/measurement-units.jsonl.gz",
+    "manifest": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014/manifest.json",
+    "licenseNotice": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014/LICENSE-NOTICE.txt",
+    "globalAdmissionEvidence": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014-admission.json",
+    "collector": "scripts/collect-measurement-terminology-20261014.py",
+    "schema": "offmenu-common/1"
+  },
+  "sourceQualification": {
+    "id": "qudt-measurement-definitions",
+    "publisher": "QUDT.org",
+    "repository": "https://github.com/qudt/qudt-public-repo",
+    "release": "v3.5.2",
+    "publishedAt": "2026-09-22T13:13:30Z",
+    "license": "CC-BY-4.0",
+    "attributionRequired": "QUDT.org",
+    "rightsEvidence": "https://raw.githubusercontent.com/qudt/qudt-public-repo/v3.5.2/LICENSE.md",
+    "rawSourcePolicy": "The pinned original Turtle vocabularies and original licence are retained locally only; the normalized graph and LICENSE-NOTICE are public.",
+    "pinnedRawFiles": {
+      "units": {"bytes": 3148041, "sha256": "372448d68405c3bf561ffc99900bb3bffc5fe9affd345eccbadacbc8043be4c7"},
+      "quantityKinds": {"bytes": 1204247, "sha256": "729dc6c4f429a808d4c5d6766f1be13a3dc1196fd95f5bdb417a19f251cbce8f"},
+      "license": {"bytes": 167, "sha256": "77238443162b7f95f17951206864a95377aff8155ad52fc7d80212acc73b82b9"}
+    }
+  },
+  "acceptedGraph": {
+    "complete": true,
+    "limit": null,
+    "expectedSourceRecords": 56,
+    "observedSourceRecords": 56,
+    "expectedCounts": {"packets": 56, "resources": 56, "assertions": 440, "relations": 0, "translations": 0},
+    "observedCounts": {"packets": 56, "resources": 56, "assertions": 440, "relations": 0, "translations": 0},
+    "partitionCoverage": {"complete": true, "expectedFiles": 1, "observedFiles": 1, "expectedPackets": 56, "observedPackets": 56},
+    "files": [
+      {"key": "measurement-units.jsonl.gz", "bytes": 37724, "sha256": "bd31f57545c2d02e555ee409e2f0e716e0ca0d7cf6331daaaa56fcf6d2915f68", "packets": 56},
+      {"key": "LICENSE-NOTICE.txt", "bytes": 254, "sha256": "6ed1df6463319a751c30a4552e77175e385bbf3b16097187a6cb5e22e3a64088"}
+    ],
+    "coverage": {
+      "mass": ["GM", "KiloGM", "MilliGM", "MicroGM", "LB", "OZ"],
+      "volume": ["L", "MilliL", "CUP", "CUP_US", "TBSP", "TSP", "OZ_VOL_UK", "OZ_VOL_US", "GAL_IMP", "GAL_UK", "GAL_US", "GAL_US_DRY", "PINT", "PINT_UK", "PINT_US", "PINT_US_DRY", "QT_UK", "QT_US", "QT_US_DRY", "BU_UK", "BU_US", "BU_US_DRY", "PK_UK", "PK_US_DRY"],
+      "energy": ["J", "KiloJ", "CAL_15DEG_C", "CAL_15_DEG_C", "CAL_20DEG_C", "CAL_IT", "CAL_MEAN", "CAL_TH", "KiloCAL", "KiloCAL_IT", "KiloCAL_Mean", "KiloCAL_TH"],
+      "dimensionlessAndCount": ["COUNT", "NUM", "ONE", "PERCENT"],
+      "time": ["SEC", "MIN", "HR", "DAY"],
+      "length": ["M", "CentiM", "IN", "FT"],
+      "temperature": ["DEG_C", "K"],
+      "notPresentInPinnedSourceSelection": ["DOZEN"]
+    }
+  },
+  "representation": {
+    "resourceType": "urn:offmenu:type:UnitDefinition",
+    "identity": "QUDT unit IRI",
+    "sourceAssertions": ["qudtConversionMultiplier", "qudtConversionOffset when supplied", "unitSymbol", "ucumCode", "uneceCommonCode", "qudtQuantityKind", "qudtDimensionVector"],
+    "calorieRule": "QUDT calorie and kilocalorie source identifiers remain distinct records. This package does not assert a universal calorie/kilocalorie alias."
+  },
+  "validation": {
+    "tool": "jsonschema-rs Draft 2020-12 with IRI format validation",
+    "passed": ["56 of 56 packets schema-valid", "56 unique resource IDs", "440 unique assertion IDs", "every projected assertion cited", "all graph records public", "final manifest admission check passed for both delivered files and all five count dimensions"]
+  },
+  "limits": {
+    "exact": "A QUDT multiplier or offset is an asserted unit-definition fact in QUDT's declared dimensional model.",
+    "notAsserted": ["food density or mass-volume conversion", "ingredient yield or cooked/raw conversion", "ingredient identity equivalence", "a default regional recipe cup, spoon or serving", "historical measure conversion", "derived flow/rate units such as gallon per hour"]
+  }
+}

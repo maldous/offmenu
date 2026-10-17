@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "offmenu-workflow1",
+  "generator": "worker-05-bugfix-bounds-and-resumable-recovery",
+  "workerId": "worker-05",
+  "reviewerId": "worker-05",
+  "taskBatch": "MORGAN-BOUNDED-PEER-REVIEWS-QA5AC-SEM32AD-W05",
+  "reviewTask": "T2 — Independent semantic correction re-review of author-06 corrections manifest 32ad083c… (W1-W4 dispositions) against frozen baseline a42bd0b8…",
+  "reviewKind": "independent exact-SHA correction re-review (documentary-only scope; no corpus admission, no glossary freeze, no global acceptance, no Morgan verdict)",
+  "reviewedAuthor": "semantic lane session d787bf1f-edd2-43fd-8d77-66f39d8653ff (corrections authored by predecessor session ed6c1915-e0aa-4d09-8504-cab7f3827e28)",
+  "subject": {
+    "correctionsManifest": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-w02-corrections-manifest-W06.json",
+    "correctionsManifestSha256Declared": "32ad083c39f6ab4b3a05dcdcd27d6aec6da19e97774063f55298495602f8d01e",
+    "correctionsManifestSha256Verified": "32ad083c39f6ab4b3a05dcdcd27d6aec6da19e97774063f55298495602f8d01e",
+    "changedFilesDeclared": ["STATUS.json", "HANDOFF.txt"],
+    "reviewerReceiptPinnedByAuthor": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-semantic-candidate-review-20261015.json",
+      "sha256Declared": "84fcce4376f79814ea86d46825e7565c3b69ef5049adb7c0db75fd985c73b4b2",
+      "verified": "MATCH (independently recomputed)"
+    }
+  },
+  "freeze": {
+    "method": "corrections manifest + both declared changed files copied into own review namespace BEFORE review; all verification then ran against frozen copies only; no moving-byte review; live semantic lane READ-ONLY throughout",
+    "freezeRoot": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/review-freeze-semantic-w06-32ad083c-20261015",
+    "frozenFiles": [
+      {"path": "20261015-w02-corrections-manifest-W06.json", "sha256": "32ad083c39f6ab4b3a05dcdcd27d6aec6da19e97774063f55298495602f8d01e"},
+      {"path": "semantic/STATUS.json", "sha256": "6be5e0ca0a5cfbbbc7d5630b4942907b0d32be3638459f500ce581441072f13c"},
+      {"path": "semantic/HANDOFF.txt", "sha256": "201b0d311ded9af3298a5085cfd40401cd8f8c99154085525915445c80ad8765"}
+    ],
+    "movingByteCheck": "PASS — manifest postSha256 values equal frozen live bytes for both changed files (STATUS 6be5e0ca…, HANDOFF 201b0d31…); no mismatch, review proceeded"
+  },
+  "baseline": {
+    "frozenBaseline": "review-freeze-semantic-20261015 (my 197-file W1-review freeze)",
+    "baselineManifestSha256": "a42bd0b8eaf58cdd3e271fec9e8b15dc47195b3cc14ba7a53a4501313964a9da",
+    "baselineManifestVerification": "FREEZE.sha256 of the baseline freeze is byte-exact a42bd0b8… (matches both the manifest's frozenManifestSha256 and the task's stated baseline)",
+    "preHashChain": "closed: manifest preSha256 values equal my baseline frozen-tree copies — STATUS.json 110226ac6375da81… (also independently pinned in my prior receipt verifiedClaims.hashPins), HANDOFF.txt ffa9c2bb8c552f0f… (both MATCH)"
+  },
+  "byteLevelScopeVerification": {
+    "method": "full 197-file sha256 comparison of baseline frozen-tree/ vs live semantic lane",
+    "result": "195 unchanged, exactly 2 changed (HANDOFF.txt, STATUS.json), 0 missing; 9 live-only new files, all review artifacts under reviews/ (8 review receipts/manifest + REVIEW_CUSTODY_INDEX.json); NO judgment, queue, admission, glossary, checkpoint, contract or spec file changed",
+    "conclusion": "documentary-only claim VERIFIED at byte level, not merely asserted"
+  },
+  "wVerifications": {
+    "W1": {
+      "requirement": "unsupported 'prior independent review verdict source-pinned-adoptable' claim explicitly retracted/qualified in HANDOFF + STATUS",
+      "verdict": "VERIFIED",
+      "evidence": "HANDOFF.txt L31-35: explicit 'was self-authored and is NOT corroborated by any retained review receipt. It is RETRACTED here.' with evidenced history (only retained receipt freebuff-semantic-lane-review-20261015.json 00:46Z records 'NOT-adoptable-until-defects-resolved' for an EARLIER tree state) and honest scope qualifier ('No host-wide search was performed'). STATUS.json carries the same retraction in stageStatusAccurate (REVIEW-EVIDENCE CORRECTION block) and in w02ReviewCorrections20261015.W1 ('disposition: CORRECTED — unevidenced claim retracted … withdrawn'). Both files consistent."
+    },
+    "W2": {
+      "requirement": "six blocked-class defect enumeration complete",
+      "verdict": "VERIFIED (with independent recomputation)",
+      "evidence": "HANDOFF L56-64 enumerates all six checker error classes (1. citation archiveSha256 format, 2. bad provenanceState 'blocked', 3. model.pricing invalid, 4. outputSha256 mismatch, 5. citation archiveSha256 != sample sourceFileSha256 pin, 6. original mismatch at data) with 5-6 explicitly flagged as the previously-missing pair; STATUS W2 same. Independent focused recomputation against the FROZEN admission record (unchanged bytes): 20/20 failed items, each carrying exactly 6 error classes (min=max=6), all six classes present on all 20 items — the '20/20 items each' claim is exactly true."
+    },
+    "W3": {
+      "requirement": "piémontaise / à la preservation wording truthful",
+      "verdict": "VERIFIED",
+      "evidence": "HANDOFF L131-136 now states exactly: rows 1-3 nativeAliasesPreserved == nativeText; row 4 nativeText 'à la piémontaise' while nativeAliasesPreserved entry is 'piémontaise' — 'à la' dropped in the alias TOKEN only, full native form retained in nativeText; the earlier blanket 'preserved verbatim' wording is explicitly called an overstatement. STATUS W3 records the same. Truthful per my prior W3 finding."
+    },
+    "W4": {
+      "requirement": "author-attested lineage limitation recorded, not claimed byte-proven",
+      "verdict": "VERIFIED",
+      "evidence": "HANDOFF L41-42 + L100-105: lineage 'author-attested inside each remediation{} block. No independent pre-correction snapshot … flagged as NOT externally corroborated byte-for-byte. It is not asserted as independently verified.' STATUS W4: 'RECORDED AS LIMITATION — not resolvable by the author'. No overclaim present."
+    }
+  },
+  "driftVerification": {
+    "counts": "NO DRIFT — preservedCounts (78 total / 58 done / 20 blockedTerminal / 0 open; modelLabels 23 placeholder / 35 noncanonical / 20 blockedUnqualified) match: (a) my prior receipt's independent byte-level recomputation, (b) frozen admission record totals (78 = 58 + 20), (c) corrected STATUS class counts (placeholderClass 23, noncanonicalClass 35, blockedClass 20)",
+    "relabelHistory": "no relabel/counthistory drift observed: the only edited blocks are documentary (W1 evidenced-history correction + new w02ReviewCorrections20261015 block); all judgment/queue/admission/glossary bytes unchanged vs baseline",
+    "nonInheritance": "VERIFIED — corrected hashes explicitly do NOT inherit approval: manifest reReviewRequest ('conditional recommendation is not acceptance and not a Morgan verdict'); STATUS hashSupersession note ('corrections are POST-freeze, so Worker 02's freeze manifest a42bd0b8… does not cover them'); HANDOFF header ('freeze covers the PRE-correction bytes only') + 'A conditional reviewer recommendation is not acceptance, not corpus admission and not a Morgan verdict'. HANDOFF cross-pins the corrected STATUS hash 6be5e0ca… (present)."
+  },
+  "verdict": "CORRECTIONS-VERIFIED",
+  "verdictScope": "The corrected generation (STATUS.json 6be5e0ca…, HANDOFF.txt 201b0d31…) is an honest documentary-only correction: W1 retraction is explicit and evidenced in both files, W2's six-class enumeration is complete and independently recomputed (20/20 x 6), W3 wording is exact, W4 limitation is properly recorded, and no count/relabel/judgment history drifted. This re-review CLEARS the corrections for a Morgan verdict decision. It is NOT itself acceptance, NOT corpus admission, NOT a glossary freeze and NOT a Morgan verdict. New corrected hashes carry no inherited approval.",
+  "scopedRecommendationForMorgan": "Recommend accepting the W1-W4 corrections as delivered (documentary-only, byte-verified scope) and proceeding to a verdict on the underlying semantic candidate's remaining gates (W4 lineage limitation stands as a permanent caveat; blocked-class 20 artifacts remain excluded from acceptance until archive pins exist; 23+35 model-label classes remain unresolved-provisional).",
+  "testsRunByReviewer": [
+    "full 197-file baseline-vs-live sha256 byte diff (documentary-only scope proof)",
+    "focused admission-record recomputation of the six error classes x 20 failed items (changed-logic check: the W2 claim itself changed)",
+    "hash-chain verification: manifest sha, postSha vs frozen bytes, preSha vs baseline copies, reviewerReceiptSha256, FREEZE.sha256 == a42bd0b8…"
+  ],
+  "testsNotRun": [
+    "no broad re-judge, no schema revalidation, no checker rerun (retained schema/checker evidence from the W1 review sufficed; judgment bytes unchanged)",
+    "no live-lane writes; peer lanes READ-ONLY throughout"
+  ],
+  "observations": [
+    "O1: semantic lane reviews/ now contains Worker 06 exact reviews named for my earlier deliverables (20261015-db07b5b-n1-appendix-exact-review-W06.json, 20261015-53e4b344-subset-builder-exact-review-W06.json, 20261015-a49d3729-m1m3-exact-review-W06.json) plus REVIEW_CUSTODY_INDEX.json — observed as file existence only; their contents were NOT consumed in this bounded batch.",
+    "O2: corrections manifest generatedAtUTC 2026-10-15T04:35:02.434409+00:00 is live-write precision (not a nominal placeholder), consistent with this lane's timestamp-honesty convention."
+  ],
+  "atUTC": "2026-10-15T04:54:40Z",
+  "atUTCEvidence": "host date -u captured immediately after receipt write at commit time (evidenced, not nominal); verification events above executed 04:46-04:53Z in this session. An earlier draft value 04:52:00Z was nominal and has been replaced — no nominal stamps retained in this receipt."
+}

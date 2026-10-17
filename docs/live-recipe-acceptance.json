@@ -1,0 +1,17 @@
+{
+  "schema": "offmenu-live-recipe-acceptance/1",
+  "checkedAt": "2026-10-13T20:49:03.323Z",
+  "releaseId": "world-recipes-20261014",
+  "manifestSha256": "9bf3f77bdb6ab8efdbbdc3a43e3a86214a3bc27fea48088c49c8e2e7e6c89039",
+  "downloadSha256": "fb01454b8867e54bcb8c31a791ef6203354ab63268d45241fd73ebd43e1c6b5a",
+  "records": 23917,
+  "fullSourceRecipes": 23661,
+  "incompleteHistoricalOcrCandidates": 256,
+  "unknownYield": 22067,
+  "recordsWithUnknownQuantities": 23576,
+  "portableExports": "all source ingredient/direction counts preserved",
+  "ocrGate": "all incomplete OCR withheld from stock matching and personally reviewed recipe conversion",
+  "status": "published-download-and-consumer-gates-verified",
+  "independentCulinaryOrDietaryAcceptance": false,
+  "limitation": "Complete source text does not establish complete measurements, reviewed culinary identities or dietary suitability."
+}

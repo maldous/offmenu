@@ -1,0 +1,85 @@
+{
+  "version": "offmenu-hn-discovery/1",
+  "reviewedAt": "2026-10-13",
+  "method": "HN announcements and discussions as discovery; primary documentation and licences govern admission",
+  "originalRegisterAltered": false,
+  "scope": "targeted discovery for food/product/recipe/menu/diet data, not exhaustive HN history",
+  "sources": [
+    {
+      "id": "hn:opennutrition",
+      "name": "OpenNutrition Foods",
+      "announcement": "https://news.ycombinator.com/item?id=43569190",
+      "announcementDate": "2025-04-03",
+      "primary": "https://www.opennutrition.app/download",
+      "methodology": "https://www.opennutrition.app/about",
+      "release": "2025.1",
+      "sha256": "30420802bbf0e29852c282e37a58c7e18ebc1b57e109706925ef969f0498ff47",
+      "novelToOriginalRegister": true,
+      "domains": [
+        "products",
+        "barcodes",
+        "prepared-foods",
+        "restaurant-menus",
+        "nutrition"
+      ],
+      "access": "full publisher ZIP downloaded and checksum matched",
+      "rights": "ODbL plus modified DbCL attribution at every display/marketing/documentation location; upstream OFF attribution also required",
+      "quality": "Primary methodology includes model-inferred nutrient values and incomplete citations; separate estimates from measurements",
+      "status": "acquired; quality/attribution admission pending",
+      "nextAction": "Reconcile all TSV rows and source citations; normalize as unverified estimates; reviewed restaurant/menu projection only, no diet/certification inference"
+    },
+    {
+      "id": "hn:recipenlg",
+      "name": "RecipeNLG",
+      "announcement": "https://news.ycombinator.com/item?id=25356156",
+      "announcementDate": "2020-12-09",
+      "primary": "https://huggingface.co/datasets/mbien/recipe_nlg/blob/main/README.md",
+      "novelToOriginalRegister": true,
+      "domains": [
+        "recipes",
+        "menus",
+        "ingredient-text"
+      ],
+      "access": "primary dataset card reviewed; 2,231,142 reported records",
+      "rights": "Dataset terms restrict use to non-commercial research/education; scraped upstream recipe rights not established for OffMenu publication",
+      "status": "blocked on publication rights",
+      "nextAction": "Keep as research benchmark lead; obtain compatible permission before product ingestion; full CC BY-SA Wikibooks snapshot is active fallback"
+    },
+    {
+      "id": "hn:swiss-openfood",
+      "name": "Swiss openfood.ch",
+      "announcement": "https://news.ycombinator.com/item?id=13004531",
+      "announcementDate": "2016-11-21",
+      "primary": "https://www.openfood.ch/",
+      "novelToOriginalRegister": true,
+      "domains": [
+        "products",
+        "barcodes",
+        "nutrition",
+        "allergens"
+      ],
+      "access": "Historical announcement reviewed; current primary site fetch failed",
+      "rights": "current release and terms not verified",
+      "status": "access/rights review unresolved",
+      "nextAction": "Verify current owner, release endpoint and rights; do not treat a 2016 announcement as a current active feed; OFF Switzerland filtering is an explicit uneven-coverage fallback"
+    },
+    {
+      "id": "hn:snapme",
+      "name": "USDA SNAPMe dietary photo benchmark",
+      "announcement": "https://news.ycombinator.com/item?id=42780570",
+      "primary": "https://agdatacommons.nal.usda.gov/articles/dataset/SNAPMe_A_Benchmark_Dataset_of_Food_Photos_with_Food_Records_for_Evaluation_of_Computer_Vision_Algorithms_in_the_Context_of_Dietary_Assessment/24856449",
+      "code": "https://github.com/JulesLarke-USDA/SNAPMe",
+      "paper": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10708545/",
+      "novelToOriginalRegister": true,
+      "domains": [
+        "food-recognition",
+        "dietary-history",
+        "portion-validation"
+      ],
+      "access": "Publisher record found, direct fetch returned 403; code/paper identified",
+      "rights": "Data/image licence must be verified separately from paper and analytic-code licence",
+      "status": "benchmark lead; source access/rights review pending",
+      "nextAction": "Acquire all authorized photo-record links and splits, benchmark recognition/portion errors; does not supply worldwide barcode/menu coverage"
+    }
+  ]
+}
