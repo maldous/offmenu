@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "offmenu-repair-subset-candidate-receipt/1",
+  "atUTC": "2026-10-15T04:24:04Z",
+  "atUTCCorrection": {
+    "correctedFrom": "2026-10-15T04:35:00Z",
+    "evidence": "filesystem mtime of this receipt before correction: 2026-10-15 15:24:04.996854051 +1100 = 2026-10-15T04:24:04Z; matches observed candidate completion ~04:24Z",
+    "reason": "previous value was a nominal stamp that post-dated observed completion (future timestamp); corrected to filesystem-evidenced write time",
+    "correctedAtUTC": "2026-10-15T04:32:30Z",
+    "correctedAtUTCEvidence": "evidenced as committer time of doc commit db07b5b (2026-10-15T15:32:30+11:00) that accompanied these receipt corrections; an earlier in-receipt nominal value 04:55:00Z over-stated the time and is itself corrected here",
+    "lineage": "correction requested by MORGAN-BOUNDED-DIAGNOSIS-RECEIPT-YIELD-20261015-W05 (receipt precision); original value retained here verbatim"
+  },
+  "owner": "Worker 05 (worktree slot 62; branch bugfix/62/freebuff-repair-diagnosis-20261015)",
+  "candidateNamespace": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015",
+  "namespaceOwnership": "new, owned by this worker; original orphaned lock and legacy 414-file partial untouched; no locks reclaimed; no full 9,797-asset scan",
+  "subset": {
+    "assets": ["packets/part-00000.jsonl.gz (off)", "packets/part-05500.jsonl.gz (usda-files)", "packets/part-09500.jsonl.gz (prices)"],
+    "denominator": "3/9797 packet assets; 3,000/9,796,656 packets",
+    "selectionRule": "first packet file of each wanted representative source region probed one-line-per-file read-only",
+    "assetPinsVerbatimFrom": "SOURCE package manifest /home/user/src/offmenu-data/common-bulk-food-20261014/manifest.json (byte sha256 5b88f9e37909f2ba19113d9df2af56bffcb1f274a9e6dd852bac249f8a61db74); the CANDIDATE input manifest is a different file, /home/user/src/offmenu-data/worker-062-repair-candidate-20261015/input/manifest.json (byte sha256 78f7625bbb71acf6ecb6f0a5ea6ff8fbec5684bfaeded13b6a6900496e637498, also the repair checkpoint inputManifestByteSha256). RS-1 correction (per 06 exact review): the pre-correction value cited the SOURCE manifest path with the CANDIDATE input manifest hash; correct naming/hash applied here, lineage retained in rsReviewCorrections20261015; no data affected",
+    "subsetManifestSha256": "8d33a1f4cce40bc3398d71c51f609c03fbab45e9c9fd05829f2ab3af78c4004b",
+    "builder": "scripts/build-repair-subset-candidate-20261015.py (committed; verifies source pins BEFORE copy against the manifest entries, then verifies the copied files byte-exact against the pin-verified in-memory source bytes). RS-3 correction (per 06 exact review): the post-copy check is byte-exactness vs pin-verified in-memory bytes, NOT a second verification against manifest pins — the pre-correction 'verifies pins before and after copy' wording overstated that; pin chain holds transitively"
+  },
+  "repairRun": {
+    "implementation": "scripts/repair-bulk-controls-20261014.py UNCHANGED (blob 2c025c07f0561d2ca0ac161778ca4ec98b0593b7c70b570ae53577a698c5bb4c)",
+    "command": "repair-bulk-controls-20261014.py --input <candidate>/input --output <candidate>/output --workers 1",
+    "exitCode": 0,
+    "changedPackets": 3000,
+    "removedUnusedTextIds": 3000,
+    "representativePreflight": "all three sources found (off part-00000; usda-files part-05500 with 16 nutrientMetadata assertions; prices part-09500), controls kind text value offmenu-curation/1",
+    "inputAssetsVerified": 3,
+    "outputs": ["output/checkpoint.json (schema offmenu-bulk-repair-checkpoint/1, complete)", "output/manifest.json (releaseId bulk-food-common-semantic-final-20261014, repairOf the subset release)", "output/packets/*.jsonl.gz"],
+    "postContainmentFault": "NONE occurred in this bounded run; host health is NOT certified and the run is NOT evidence of a healthy host; any future fault remains fail-and-stop"
+  },
+  "sourceComparison": {
+    "tool": "scripts/verify-bulk-repair-checkpoint.py inspect (unchanged); requires the M1 checkout layout (scripts/ beside corpus/) — a bare-directory run fails on /scripts/… then corpus/common-data.schema.json lookups until the layout is materialized (RS-4 documentation note per 06 exact review; same documented M1 class; no code change)",
+    "result": "3/3 assets source-compared-complete-asset; verifiedPackets 1000 each (3,000 total); status bounded-source-comparison-not-package-qualification (complete=false by design: no full-package qualification claimed)",
+    "retainedByteSha256": {
+      "packets/part-00000.jsonl.gz": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342",
+      "packets/part-05500.jsonl.gz": "91aa9005047bcaa45ebc71f3c9286355b2d7f1ff25e8395b618de84ef5f591cf",
+      "packets/part-09500.jsonl.gz": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    },
+    "pinsInReport": {"repairImplementationByteSha256": "2c025c07…", "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"}
+  },
+  "resumabilityEvidence": {
+    "disclosedSyntheticPartial": "output-partial was built from the completed run's own journal (first asset retained + checkpoint trimmed to its receipt, complete=false) for the original resume experiment; construction disclosed, not a natural interruption. RS-2 correction (per 06 exact review): the ORIGINAL pre-resume trimmed intermediate was NOT retained — the retained output-partial/checkpoint.json is byte-identical to the COMPLETE checkpoint (sha256 df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6, complete=true, all 3 assets journaled). Original intermediate states are not retained and are not claimed as byte evidence; the resume PATH cannot be independently re-derived from retained bytes — only its byte-identical OUTCOME is independently reproducible (see byteDeterminism)",
+    "resumeRun": "original observed result, not independently re-derivable from retained bytes: unchanged repair --resume reported retained asset source-compared via verify_retained_asset, remaining 2 assets repaired, manifest completed; exit 0; changedPackets 3000; inputAssetsVerified 3",
+    "byteDeterminism": "independently reproducible claim (narrower than the original resume narrative): retained resumed outputs are byte-identical to the first-run outputs for all 3 assets (sha256 3ca07524…, 91aa9005…, 700e6544…) — the deterministic OUTCOME is evidenced by retained bytes even though the intermediate resume states are not"
+  },
+  "corruptionEvidence": {
+    "case1_completedOutputGuard": "copy of completed output with one truncated asset: repair --resume refused BEFORE touching assets ('completed immutable output cannot be resumed'), corrupt file untouched — guardrail confirmed",
+    "case2_unjournaledCorruptAsset": "original observation: a partial state with a truncated asset reported repair --resume exit 1, corrupt file UNTOUCHED (sha256 59d877d6… unchanged), NO manifest written — held, not certified. RS-2 correction (per 06 exact review): the described 'truncated UNJOURNALED asset' precondition is NOT corroborated by retained bytes — the retained output-corrupt2/checkpoint.json is byte-identical to the COMPLETE checkpoint (df39b145…, complete=true) and journals packets/part-05500.jsonl.gz with its good sha, so on the retained state the documented completed-output/legacy-partial refusals would trigger FIRST, not an unjournaled-asset EOFError. The exact case-2 code path is therefore NOT independently proven from retained bytes; the fail-closed OUTCOME (exit 1, corrupt file untouched, no manifest) is preserved as an observation and remains consistent with documented fail-closed semantics. No new repair was run to re-assure this; original intermediates were NOT fabricated or recreated"
+  },
+  "scopeAndLimits": [
+    "review candidate only: source-comparable at 3/9,797 scope; NOT a full repair, NOT package qualification, NOT corpus admission",
+    "independent review required before any expansion of real repair",
+    "the full 9,797-asset scan and blind relaunch remain forbidden; relaunch posture still gated on Morgan verdict + orphaned-lock custody",
+    "root cause of the preflight SIGSEGV remains UNPROVEN; this bounded clean run does not certify host health",
+    "storage footprint recorded in the storage-qualification receipt (item 4)"
+  ],
+  "rsReviewCorrections20261015": {
+    "basis": "Worker 06 exact subset review reviews/53e4b344/review-receipt.json (committed be703f1 in slot-63 checkout; working-tree bytes == committed bytes, sha256 c339537cfa47ab1da4a8e8005728f1d443b9acf93754afc4b2d001f68dc70dbf); recommendation mechanically sound at 3/9,797 scope, NOT Morgan acceptance",
+    "applied": {
+      "RS-1": "manifest citation naming/hash corrected (source 5b88f9e3… vs candidate input 78f7625b…) with lineage",
+      "RS-2": "checkpoint preconditions corrected honestly: original intermediate states NOT retained; retained output-partial/output-corrupt2 checkpoints are byte-identical to the complete df39b145… checkpoint; resume outcome only is independently reproducible; case-2 code path NOT claimed proven; observed exit-1/corrupt-file-untouched/no-manifest preserved as observations",
+      "RS-3": "builder wording corrected: pins verified before copy + copied bytes verified against pin-verified in-memory bytes (no overstate of second manifest verification)",
+      "RS-4": "M1 checkout layout requirement documented in sourceComparison.tool; no code change (layout need itself already correctly documented in docs/repair-diagnosis-20261015.md per review M1)"
+    },
+    "priorReceiptVersionsRetained": [
+      {"sha256": "dbe1bdd8d57f07bdf212499513a2cb2b863fe90e54e21ff3ef20cb568376f736", "note": "first published version (nominal atUTC 04:35:00Z, later corrected)"},
+      {"sha256": "2fb8a923b39f1ae8b72f84560b694fefe7b40697260d17bee67603c5f57eba4a", "note": "after atUTC/correctedAtUTC precision corrections (the version 06 reviewed)"}
+    ],
+    "historyPolicy": "supersession recorded above rather than silent rewrite; no historical state recreated as original; no new repair/fault run",
+    "reReview": "author corrections — for 06 delta re-review only; NOT self-reviewed, NOT accepted here"
+  },
+  "nextAction": "submit candidate for independent review (not self-accepted); proceed to item 4 storage qualification"
+}

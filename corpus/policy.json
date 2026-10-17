@@ -1,0 +1,43 @@
+{
+  "version": "offmenu-curation/1",
+  "mode": "manually-triggered-local",
+  "publicSources": [
+    "off",
+    "prices",
+    "usda-files",
+    "wikibooks",
+    "afcd",
+    "ciqual",
+    "cofid",
+    "germany-bls",
+    "matvaretabellen",
+    "frida",
+    "wikidata-food-businesses",
+    "dietary-guidelines",
+    "cnf",
+    "mext",
+    "overture-food-places",
+    "fineli",
+    "foodfiles",
+    "sweden-food",
+    "world-recipes"
+  ],
+  "privateKinds": [
+    "healthObservation",
+    "activity",
+    "intakeRecord",
+    "pantryLot",
+    "mealPlan",
+    "wasteRecord"
+  ],
+  "rules": {
+    "visibility": "public only; never user provider responses",
+    "unknown": "retain nulls and original qualifiers",
+    "identity": "namespaced strings; no name-only identity merge",
+    "qualification": "source assertions are not verified dietary suitability",
+    "recipes": "manual review required before automatic planning/cooking",
+    "commercial": "BYOC, account and contract scope; no public promotion by default",
+    "ownershipOrigin": "dated evidence required; barcode prefix does not prove origin",
+    "publication": "immutable indexed release; all sources reconciled before manifest activation"
+  }
+}

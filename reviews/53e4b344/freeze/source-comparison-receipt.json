@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "offmenu-bulk-recovery-inspection/1",
+  "status": "bounded-source-comparison-not-package-qualification",
+  "complete": false,
+  "limit": 3,
+  "sourceDirectory": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015/input",
+  "retainedDirectory": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015/output",
+  "inputManifestByteSha256": "78f7625bbb71acf6ecb6f0a5ea6ff8fbec5684bfaeded13b6a6900496e637498",
+  "repairImplementationByteSha256": "2c025c07f0561d2ca0ac161778ca4ec98b0593b7c70b570ae53577a698c5bb4c",
+  "schemaByteSha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+  "contractByteSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+  "assets": [
+    {
+      "key": "packets/part-00000.jsonl.gz",
+      "inputByteSha256": "bd32d73c3eb3e3dd6719d187b64064f21208af47c26362e2b13c26ad3c9462b8",
+      "status": "source-compared-complete-asset",
+      "verifiedPackets": 1000,
+      "retainedBytes": 1129074,
+      "retainedByteSha256": "3ca075243d0f9785d29c6ada07c79d8449315eb15de9c300dc98246cb6765342"
+    },
+    {
+      "key": "packets/part-05500.jsonl.gz",
+      "inputByteSha256": "2b49b00c27fd44b065f4b60a37442475a4ed0967b9e6300b82b99c21123db8a7",
+      "status": "source-compared-complete-asset",
+      "verifiedPackets": 1000,
+      "retainedBytes": 1861696,
+      "retainedByteSha256": "91aa9005047bcaa45ebc71f3c9286355b2d7f1ff25e8395b618de84ef5f591cf"
+    },
+    {
+      "key": "packets/part-09500.jsonl.gz",
+      "inputByteSha256": "38bdbd6387baaa69e577bfa8d7d5a6e799b582d559f52e925dbcd4f8c1829906",
+      "status": "source-compared-complete-asset",
+      "verifiedPackets": 1000,
+      "retainedBytes": 696727,
+      "retainedByteSha256": "700e65444b29cd1165f6adce9938a9ac3397d62a5f2525594e0504a7e51111a3"
+    }
+  ],
+  "usableAssets": 3,
+  "rule": "Only inspected complete files match the original source under the single authorized transform repair. All uninspected assets remain unresolved. Full schema/identity/reference/source coverage qualification is still required; no file was changed or job resumed."
+}

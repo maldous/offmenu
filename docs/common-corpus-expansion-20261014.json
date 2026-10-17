@@ -1,0 +1,345 @@
+{
+  "schemaVersion": "offmenu-common-corpus-expansion/1",
+  "date": "2026-10-14",
+  "status": "custody-quiesced-before-migration",
+  "lead": "OffMenu data thread",
+  "priorities": [
+    {
+      "priority": 1,
+      "deliverable": "Full common-schema graphs for all 18 already admitted public sources",
+      "lanes": [
+        "national_data",
+        "bulk_food_data",
+        "places_data",
+        "root_reference"
+      ]
+    },
+    {
+      "priority": 2,
+      "deliverable": "New actually acquired and rights-qualified recipes and measurement terminology",
+      "lanes": [
+        "recipe_discovery",
+        "measurement_data"
+      ]
+    },
+    {
+      "priority": 3,
+      "deliverable": "Evidence-backed completion of historical OCR ingredient/instruction transcriptions",
+      "lanes": [
+        "historical_recipe_quality"
+      ]
+    }
+  ],
+  "publicInputSources": [
+    {
+      "sourceId": "off",
+      "admittedRecords": 5452981,
+      "nativeNormalizedRecords": 9614434,
+      "withheldRecords": 4161453,
+      "withheldReasons": {
+        "no usable mapped composition facts": 3807015,
+        "usable food identity unresolved": 354438
+      }
+    },
+    {
+      "sourceId": "usda-files",
+      "admittedRecords": 4025777,
+      "nativeNormalizedRecords": 4202558,
+      "withheldRecords": 176781,
+      "withheldReasons": {
+        "no usable mapped composition facts": 176772,
+        "usable food identity unresolved": 9
+      }
+    },
+    {
+      "sourceId": "prices",
+      "admittedRecords": 317898,
+      "nativeNormalizedRecords": 317898,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "afcd",
+      "admittedRecords": 1801,
+      "nativeNormalizedRecords": 1801,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "ciqual",
+      "admittedRecords": 3484,
+      "nativeNormalizedRecords": 3484,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "cofid",
+      "admittedRecords": 2887,
+      "nativeNormalizedRecords": 2887,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "germany-bls",
+      "admittedRecords": 7140,
+      "nativeNormalizedRecords": 7140,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "matvaretabellen",
+      "admittedRecords": 2121,
+      "nativeNormalizedRecords": 2121,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "frida",
+      "admittedRecords": 1381,
+      "nativeNormalizedRecords": 1381,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "wikidata-food-businesses",
+      "admittedRecords": 1505,
+      "nativeNormalizedRecords": 1505,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "dietary-guidelines",
+      "admittedRecords": 100,
+      "nativeNormalizedRecords": 100,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "wikibooks",
+      "admittedRecords": 3796,
+      "nativeNormalizedRecords": 3796,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "cnf",
+      "admittedRecords": 5690,
+      "nativeNormalizedRecords": 5690,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "mext",
+      "admittedRecords": 2538,
+      "nativeNormalizedRecords": 2538,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "overture-food-places",
+      "admittedRecords": 12681108,
+      "nativeNormalizedRecords": 12681108,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "fineli",
+      "admittedRecords": 4232,
+      "nativeNormalizedRecords": 4238,
+      "withheldRecords": 6,
+      "withheldReasons": {
+        "no usable mapped composition facts": 6
+      }
+    },
+    {
+      "sourceId": "foodfiles",
+      "admittedRecords": 2857,
+      "nativeNormalizedRecords": 2857,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    },
+    {
+      "sourceId": "sweden-food",
+      "admittedRecords": 2606,
+      "nativeNormalizedRecords": 2606,
+      "withheldRecords": 0,
+      "withheldReasons": {}
+    }
+  ],
+  "publicBoundary": "All public expansion uses accepted curated projections or an explicitly reviewed new source admission. Native held rows, raw source/private fields, contributor identities and source archives are not silently promoted. Original local holdings and their mapping/hold evidence remain separate.",
+  "sourcePublicationSchema": "corpus/common-data.schema.json",
+  "sourceContract": "corpus/common-data-contract.json",
+  "fullGlobalQualifier": "scripts/qualify-common-expansion.py",
+  "globalPilot": "/home/user/src/offmenu-data/common-core-reference-global-v2-20261014.json",
+  "acceptedReferencePackage": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+  "globalQualificationStatus": "Six final ready packages passed complete combined global checks. All-eight-package proof has not started: original 35 GiB scratch plan is insufficient and additional capacity must be secured; automatic launcher stopped.",
+  "diskPlan": {
+    "startingFreeGiB": 98,
+    "sourceLaneMaximumGiB": {
+      "national": 5,
+      "bulkFood": 25,
+      "places": 25,
+      "recipes": 5,
+      "measurements": 3,
+      "historicalQuality": 2
+    },
+    "sqliteMaximumGiB": 35,
+    "minimumFreeGiB": 10,
+    "assembly": "Immutable hard links avoid duplicate data copies; actual measured usage and projections gate full runs, not summed theoretical maxima.",
+    "finalScratchCapacity": "Independent projection exceeds 35 GiB; plan at least 60 GiB scratch plus 10 GiB reserve, after source outputs. More safe reclaim or a larger volume required."
+  },
+  "checkedAtUtc": "2026-10-14T02:13:44.076022+00:00",
+  "coordination": {
+    "managerMainThread": "01a128b3-8520-70a7-abb3-c88498aae0db",
+    "directSendError": "Some requested entity was not found: thread not found",
+    "gatewayThread": "01a130cd-91c1-73da-9978-889018a100dd",
+    "gatewayRelayRequestAccepted": true,
+    "managerDeliveryConfirmed": true,
+    "userDirection": "Continue remaining work in parallel while waiting",
+    "gatewayConnectionConfirmed": true,
+    "connectionNonce": "offmenu-source-20261014-check1",
+    "managerAcknowledgementSourceMessage": "01a137c8-711a-7748-80d9-40d2dd8199e3",
+    "latestDetailedReportAcceptedByGateway": true,
+    "deliveryNote": "Gateway relayed Morgan acknowledgement of latest report, checkpoint and technical jobs."
+  },
+  "independentlyReviewedReadyPackages": [
+    {
+      "directory": "/home/user/src/offmenu-data/measurement-terminology-final-qualified-20261014",
+      "counts": {
+        "packets": 56,
+        "resources": 56,
+        "assertions": 440,
+        "relations": 0,
+        "translations": 0
+      },
+      "review": "Source hashes, CC-BY notice, UnitDefinition registry, schema, scope and partition coverage pass"
+    },
+    {
+      "directory": "/home/user/src/offmenu-data/historical-recipe-quality-final-corrected-20261014",
+      "counts": {
+        "packets": 5,
+        "resources": 66,
+        "assertions": 256,
+        "relations": 66,
+        "translations": 0
+      },
+      "review": "Exact bounded source OCR and explicit optional clause preserved; typed ingredient quantities unresolved; no remaining defects"
+    }
+  ],
+  "foundationGlobalValidation": {
+    "evidence": "/home/user/src/offmenu-data/common-foundation-recovery-units-global-20261014.json",
+    "status": "all-packages-streamed-global-identities-references-and-provenance-checked",
+    "counts": {
+      "packets": 83491,
+      "resources": 445409,
+      "assertions": 2231407,
+      "relations": 459311,
+      "translations": 3242
+    },
+    "seconds": 51.698,
+    "scope": "Core, references, corrected historical recovery and QUDT; not the full expansion and predates new validation-definition proof pins"
+  },
+  "publicationGuards": {
+    "definitions": "Global proof pins exact schema and contract bytes",
+    "coverage": "Qualified package source coverage must equal declarative source mappings",
+    "recipeCounts": "Published native recipe library, extra source recipes and derived historical recovery variants counted separately",
+    "retention": "Immutable preceding releases retain exact-byte and producer-payload checksum receipts",
+    "readyPackageStatus": "Reviewed local holdings; full expansion is not yet published"
+  },
+  "qualifiedRecipeExpansion": {
+    "records": 42,
+    "sourcePackage": "/home/user/src/offmenu-data/recipe-expansion-final-qualified-20261014/common-graph",
+    "status": "independently-reviewed-and-combined-global-qualified-not-published"
+  },
+  "foundationWithRecipesGlobalValidation": {
+    "evidence": "/home/user/src/offmenu-data/common-foundation-recipes-final-global-20261014.json",
+    "counts": {
+      "packets": 83533,
+      "resources": 446091,
+      "assertions": 2232995,
+      "relations": 459955,
+      "translations": 3242
+    },
+    "schemaAndContractBytesPinned": true,
+    "allIngredientReferencesResolved": true,
+    "scope": "Earlier five-package evidence proves ingredient references resolve against full core, but its reference package is superseded. Not final release qualification."
+  },
+  "boundedAdditionalDiscovery": {
+    "evidence": "docs/global-recipe-source-discovery-20261014.json",
+    "metadataSourcesAcquired": 2,
+    "metadataBytes": 1234508,
+    "recipeTextRecordsAdmitted": 0,
+    "rightsPolicy": "Provider statements retained with scope; no worldwide clearance inferred"
+  },
+  "supersededFoodRun": {
+    "directory": "/home/user/src/offmenu-data/common-bulk-food-20261014-superseded-nutrient-fidelity",
+    "reason": "Per-nutrient source definition and basis must be preserved exactly; output is not admissible",
+    "replacement": "/home/user/src/offmenu-data/common-bulk-food-20261014"
+  },
+  "nationalReadyPackage": {
+    "directory": "/home/user/src/offmenu-data/common-national-semantic-final-20261014",
+    "evidence": "/home/user/src/offmenu-data/common-national-semantic-final-20261014-admission.json",
+    "records": 36737,
+    "sources": 11,
+    "manifestByteSha256": "c129dd58a917cf98721856f9094c724923f35ed14cefe2d9206c03db1fc6fcbb",
+    "counts": {
+      "packets": 36737,
+      "resources": 661266,
+      "assertions": 2020535,
+      "relations": 661266,
+      "translations": 0
+    },
+    "status": "standalone-global-qualified-and-independently-reviewed; not published"
+  },
+  "checkpointValidation": {
+    "pythonTestsPassed": 67,
+    "recipePublisherJavaScriptSyntax": "pass",
+    "diffWhitespace": "pass",
+    "publicReleaseChanged": false
+  },
+  "referenceReadyPackage": {
+    "directory": "/home/user/src/offmenu-data/common-reference-delivery-final-20261014",
+    "records": 3896,
+    "sources": 2,
+    "counts": {
+      "packets": 3896,
+      "resources": 3896,
+      "assertions": 31168,
+      "relations": 0,
+      "translations": 0
+    },
+    "status": "standalone-global-qualified-and-independently-reviewed; not published"
+  },
+  "activeLargePackages": {
+    "bulkFood": {
+      "directory": "/home/user/src/offmenu-data/common-bulk-food-semantic-final-20261014",
+      "records": 9796656,
+      "status": "serial repair stopped; 414 partial packet assets preserved; tested six-worker repair changes saved but not launched; no manifest"
+    },
+    "places": {
+      "directory": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial",
+      "records": 12682613,
+      "status": "PID209490 SIGSTOP suspended (Ts); 2393 packet assets preserved in incomplete .partial; no final manifest"
+    }
+  },
+  "abandonedOutputCleanup": {
+    "receipt": "/home/user/src/offmenu-data/rejected-output-evidence-20261014/cleanup-receipt.json",
+    "bytesReclaimed": 10697457827,
+    "scope": "Four abandoned generated partial directories; first packet samples and source-file hashes retained. Original source archives and completed bulk input preserved."
+  },
+  "readySixPackageValidation": {
+    "evidence": "/home/user/src/offmenu-data/common-ready-six-package-global-20261014.json",
+    "status": "all-packages-streamed-global-identities-references-and-provenance-checked",
+    "counts": {
+      "assets": 1661,
+      "externalReferences": 1357438,
+      "packets": 120270,
+      "resources": 1107357,
+      "assertions": 4253530,
+      "relations": 1121221,
+      "translations": 3242
+    },
+    "seconds": 123.691
+  },
+  "custodyHandover": "docs/OFFMENU_CUSTODY_HANDOVER_20261014.json"
+}

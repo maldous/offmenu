@@ -1,0 +1,4989 @@
+[
+  {
+    "id": "offmenu-starter-01",
+    "title": "Egg and pea rice",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "egg",
+        "quantity": 2.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "peas",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Simmer the rice in the water until tender. Cook the peas in a separate pan until hot.",
+      "Heat the oil. Scramble the eggs until set, then fold in rice and peas and heat through."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-02",
+    "title": "Carrot rice pilaf",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Grate the carrots and soften in oil for 5 minutes.",
+      "Add rice and water. Cover and simmer until rice is tender and liquid absorbed."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-03",
+    "title": "Pea and carrot rice bowls",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "peas",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice with the water until tender.",
+      "Slice carrots and steam until tender. Cook peas until hot. Divide into bowls with rice and drizzle with oil."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-04",
+    "title": "Tomato chickpea rice",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned chickpeas",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice in water until tender.",
+      "Drain chickpeas. Simmer with tomatoes and oil for 15 minutes, stirring. Serve over rice."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-05",
+    "title": "Lentil tomato soup",
+    "servings": 2,
+    "time": "35 minutes",
+    "minutes": 35,
+    "ingredients": [
+      {
+        "ingredient": "red lentils",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 700.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Rinse lentils. Dice carrots.",
+      "Simmer lentils, carrots and tomatoes in water for 25 minutes until tender. Stir in oil."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-06",
+    "title": "Spinach omelette",
+    "servings": 2,
+    "time": "15 minutes",
+    "minutes": 15,
+    "ingredients": [
+      {
+        "ingredient": "egg",
+        "quantity": 4.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "spinach",
+        "quantity": 100.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 10.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Wash spinach and wilt in oil.",
+      "Beat eggs, add to pan and cook over low heat until completely set. Fold and divide."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-07",
+    "title": "Mushroom omelette",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "egg",
+        "quantity": 4.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "mushroom",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Slice mushrooms. Cook in oil until tender.",
+      "Pour beaten eggs over mushrooms and cook until completely set. Divide into two portions."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-08",
+    "title": "Cheese and pea pasta",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "peas",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 60.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Boil pasta in water according to pack instructions. Add peas near the end and cook until hot.",
+      "Reserve a little cooking water, drain, then stir through grated cheese and enough reserved water to coat."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-09",
+    "title": "Tomato bean pasta",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned kidney beans",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Boil pasta in water according to pack instructions.",
+      "Drain beans. Simmer tomatoes, beans and oil for 15 minutes. Drain pasta and combine."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-10",
+    "title": "Broccoli garlic pasta",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "broccoli",
+        "quantity": 300.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": 10.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 20.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Boil pasta. Cut broccoli into small florets and cook with pasta for the final minutes until tender.",
+      "Drain. Gently cook minced garlic in oil and toss through pasta and broccoli."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-11",
+    "title": "Chickpea spinach stew",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "canned chickpeas",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "spinach",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Drain chickpeas and simmer with tomatoes and oil for 15 minutes.",
+      "Stir in washed spinach and cook until wilted and hot."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-12",
+    "title": "Red lentil coconut curry",
+    "servings": 2,
+    "time": "30 minutes",
+    "minutes": 30,
+    "ingredients": [
+      {
+        "ingredient": "red lentils",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "coconut milk",
+        "quantity": 200.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "curry powder",
+        "quantity": 5.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 350.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Rinse lentils. Simmer with water and curry powder until tender.",
+      "Stir in coconut milk and simmer 5 minutes. Check the spice blend ingredients before use."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-13",
+    "title": "Potato spinach frittata",
+    "servings": 2,
+    "time": "35 minutes",
+    "minutes": 35,
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": 300.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "spinach",
+        "quantity": 100.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "egg",
+        "quantity": 4.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Dice potatoes and boil until tender, then drain. Wilt washed spinach in oil.",
+      "Add potatoes and beaten eggs. Cover and cook gently until fully set, or finish in a preheated 180 C oven in an oven-safe pan."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-14",
+    "title": "Baked potato bean bowls",
+    "servings": 2,
+    "time": "60 minutes",
+    "minutes": 60,
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": 500.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned kidney beans",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Heat oven to 200 C. Scrub potatoes, prick and bake until soft, approximately 45–60 minutes.",
+      "Drain beans and simmer with tomatoes and oil for 15 minutes. Split cooked potatoes and spoon in beans."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-15",
+    "title": "Sweet potato chickpea tray",
+    "servings": 2,
+    "time": "40 minutes",
+    "minutes": 40,
+    "ingredients": [
+      {
+        "ingredient": "sweet potato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned chickpeas",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 20.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cumin",
+        "quantity": 3.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Heat oven to 200 C. Dice sweet potato and drain chickpeas.",
+      "Toss with oil and cumin. Roast for 30–35 minutes, stirring halfway, until sweet potato is tender."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-16",
+    "title": "Lemon chickpea salad",
+    "servings": 2,
+    "time": "15 minutes",
+    "minutes": 15,
+    "ingredients": [
+      {
+        "ingredient": "canned chickpeas",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cucumber",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "lemon juice",
+        "quantity": 20.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Drain chickpeas. Wash and dice cucumber and tomatoes.",
+      "Combine with lemon juice and oil. Divide into two bowls."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-17",
+    "title": "Couscous vegetable bowls",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "couscous",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 180.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cucumber",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Pour boiling water over couscous, cover for the pack-specified time and fluff.",
+      "Wash and dice cucumber and tomatoes. Combine with couscous and oil."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-18",
+    "title": "Tuna tomato pasta",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tuna",
+        "quantity": 180.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook pasta in water according to pack instructions.",
+      "Drain tuna. Simmer tomatoes and oil for 15 minutes, fold in tuna and heat through. Drain pasta and combine."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-19",
+    "title": "Salmon broccoli rice",
+    "servings": 2,
+    "time": "30 minutes",
+    "minutes": 30,
+    "ingredients": [
+      {
+        "ingredient": "salmon",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "broccoli",
+        "quantity": 300.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice with water. Heat oven to 200 C.",
+      "Place salmon and broccoli on a tray with oil. Cook until broccoli is tender and salmon is thoroughly cooked; cooking time depends on thickness. Serve with rice."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-20",
+    "title": "Chicken carrot rice",
+    "servings": 2,
+    "time": "30 minutes",
+    "minutes": 30,
+    "ingredients": [
+      {
+        "ingredient": "chicken",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice in water until tender.",
+      "Dice chicken and carrots. Cook in oil until carrots are tender and chicken is thoroughly cooked throughout. Serve with rice."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-21",
+    "title": "Turkey tomato mince bowls",
+    "servings": 2,
+    "time": "30 minutes",
+    "minutes": 30,
+    "ingredients": [
+      {
+        "ingredient": "turkey",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice in water.",
+      "Cook turkey mince in oil until thoroughly cooked. Add tomatoes and simmer for 15 minutes. Serve over rice."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-22",
+    "title": "Beef bean chilli",
+    "servings": 2,
+    "time": "35 minutes",
+    "minutes": 35,
+    "ingredients": [
+      {
+        "ingredient": "beef",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned kidney beans",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cumin",
+        "quantity": 3.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Brown beef mince in oil and cook thoroughly.",
+      "Drain beans. Add beans, tomatoes and cumin. Simmer 20 minutes, stirring."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-23",
+    "title": "Tofu vegetable stir fry",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "tofu",
+        "quantity": 300.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "broccoli",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "soy sauce",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cut tofu into cubes and vegetables into small pieces.",
+      "Cook tofu in oil. Add vegetables and a splash of water, cook until tender, then stir through soy sauce and heat through."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-24",
+    "title": "Peanut noodle bowls",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "rice noodles",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "peanut butter",
+        "quantity": 40.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "soy sauce",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice noodles in water following the pack. Reserve 60 ml cooking water then drain.",
+      "Mix peanut butter and soy sauce with reserved water. Toss with noodles and finely grated washed carrot."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-25",
+    "title": "Tomato lentil pasta",
+    "servings": 2,
+    "time": "35 minutes",
+    "minutes": 35,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "red lentils",
+        "quantity": 100.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1800.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Simmer rinsed lentils with tomatoes and 300 ml water until tender.",
+      "Cook pasta in the remaining water following the pack. Drain and combine with lentil sauce and oil."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-26",
+    "title": "Cauliflower chickpea tray",
+    "servings": 2,
+    "time": "40 minutes",
+    "minutes": 40,
+    "ingredients": [
+      {
+        "ingredient": "cauliflower",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned chickpeas",
+        "quantity": 240.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 20.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cumin",
+        "quantity": 3.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Heat oven to 200 C. Cut cauliflower into florets and drain chickpeas.",
+      "Toss with oil and cumin. Roast until tender, approximately 30–35 minutes, stirring halfway."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-27",
+    "title": "Courgette tomato pasta",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 160.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "zucchini",
+        "quantity": 250.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 1500.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook pasta in water according to pack instructions.",
+      "Dice zucchini and soften in oil. Add tomatoes and simmer until tender. Drain pasta and combine."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-28",
+    "title": "Egg tomato rice bowls",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "egg",
+        "quantity": 4.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "canned tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "preparation": "drained",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "rice",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 300.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Cook rice with water.",
+      "Simmer tomatoes in oil for 10 minutes. Make wells and add eggs. Cover and cook until eggs are completely set. Serve with rice."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-29",
+    "title": "Quinoa pea bowls",
+    "servings": 2,
+    "time": "25 minutes",
+    "minutes": 25,
+    "ingredients": [
+      {
+        "ingredient": "quinoa",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "peas",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": 150.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "water",
+        "quantity": 350.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 15.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Rinse quinoa and cook in water according to pack instructions.",
+      "Steam sliced carrots until tender and cook peas until hot. Combine with quinoa and oil."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "offmenu-starter-30",
+    "title": "Cheese tomato flatbread",
+    "servings": 2,
+    "time": "20 minutes",
+    "minutes": 20,
+    "ingredients": [
+      {
+        "ingredient": "flatbread",
+        "quantity": 2.0,
+        "unit": "count",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 100.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": 200.0,
+        "unit": "g",
+        "preparation": "as named",
+        "identityReviewed": true
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 10.0,
+        "unit": "ml",
+        "preparation": "as named",
+        "identityReviewed": true
+      }
+    ],
+    "instructions": [
+      "Heat oven to 200 C. Place flatbreads on a baking tray.",
+      "Top with sliced washed tomatoes, grated cheese and oil. Bake until cheese is melted and bases are hot, approximately 10–15 minutes."
+    ],
+    "source": "Offmenu original starter pack",
+    "license": "CC0-1.0",
+    "attribution": "Offmenu original content, 2026",
+    "version": "1.0",
+    "quantitiesValidated": true,
+    "reviewState": "structured-original",
+    "notes": "Original practical recipe; quantified and schema-checked. Not independently kitchen-tested. Pack cooking instructions take priority. Water used for boiling is not assumed fully consumed."
+  },
+  {
+    "id": "demo-coconut-rice",
+    "title": "Coconut rice (demonstration)",
+    "servings": 2,
+    "source": "offmenu authored demonstration",
+    "license": "CC0-1.0",
+    "instructions": [
+      "Rinse rice. Combine with coconut milk and 200 ml water. Bring to a simmer, cover and cook gently until rice is tender. Rest before serving."
+    ],
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "ingredient": "coconut milk",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "ingredient": "water",
+        "quantity": 200,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "id": "wikibooks-f84179dd5929",
+    "title": "Appam (Fermented Rice Pancake)",
+    "servings": 12,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Appam_(Fermented_Rice_Pancake)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "Prep: overnightCooking: 2–3 minutes each",
+    "ingredients": [
+      {
+        "ingredient": "cooked rice",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ cups uncooked white rice",
+        "optional": false
+      },
+      {
+        "ingredient": "coconut",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ cups fresh grated coconut",
+        "optional": false
+      },
+      {
+        "ingredient": "sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 teaspoon salt, or to taste",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teaspoon salt, or to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "cooked rice",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons white rice, cooked",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "water for soaking rice, and 2 to 2½ cups for grinding",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ teaspoon yeast or kefir, to start the ferment (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ teaspoon yeast or kefir, to start the ferment (optional)",
+        "optional": true
+      }
+    ],
+    "instructions": [
+      "Soak the raw rice in water.",
+      "Grind the soaked rice until about ¼ ground.",
+      "Add the grated coconut along with a little water and continue grinding.",
+      "Add the sugar, cooked rice and yeast or kefir, and keep grinding until the whole mixture becomes smooth. It should be thinner than pancake batter.",
+      "Transfer it to a wide open container and leave it to rise overnight.",
+      "The next morning, add salt and refrigerate the batter until use.",
+      "To fry the appams, use a tava or a small bowl-shaped pan with either a non-stick coating or a little oil (coconut or any other refined oil) or ghee.",
+      "Pour a full serving spoon of batter into the middle of the pan and swirl it around a single time so that a little of the batter sticks to the sides.",
+      "Cover the pan with a hot lid and remove the appam with a spatula after 2–3 minutes, when it becomes slightly browned around the edges. It should be round, with a thick centre and thin, lacy edges."
+    ]
+  },
+  {
+    "id": "wikibooks-f6eb93b8e0b1",
+    "title": "Arroz Negro (Valencian Squid Rice)",
+    "servings": 6,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Arroz_Negro_(Valencian_Squid_Rice)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "90 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 3 pounds diced squid",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 pounds diced squid",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 pounds green cubanelle peppers",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 cloves garlic, minced",
+        "optional": false
+      },
+      {
+        "ingredient": "rice",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups Valencian rice",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 teaspoons squid ink",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 teaspoons squid ink",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tablespoon sweet paprika",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon sweet paprika",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon sea salt",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "Olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 8 oz crab",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 oz crab",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 8 oz smelt or fish heads",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 oz smelt or fish heads",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw": "1 medium onion",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 medium green or red bell pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium green or red bell pepper",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 cloves of garlic",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 bay leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 bay leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 gallon of water",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Please read Paella cooking techniques before attempting this recipe.",
+      "Cut one onion and one bell pepper into quarters and place in a large pot with the rest of the broth ingredients.",
+      "Boil for about 30 minutes. Occasionally press the ingredients against the bottom of the pot with a potato masher or ladle to squeeze out their flavors.",
+      "Strain the broth and set aside. Discard the boiled seafood.",
+      "Pour enough oil into a paellera to cover the bottom and heat over a medium flame.",
+      "Add 1 teaspoon of salt to cubanelles and sauté until soft.",
+      "Add squid and sauté for 2 minutes.",
+      "Add garlic and sauté until brown (be careful not to burn).",
+      "Add rice and braise until coated with oil.",
+      "Add paprika and sauté for no more than 15 seconds then quickly add four cups of broth to prevent the paprika from burning.",
+      "Add squid ink and mix well.",
+      "Bring broth to a boil and then simmer for 2 minutes.",
+      "Taste the broth and invite your dinner guests to do so as well. If it tastes bland, add 1 teaspoon of salt at a time until everybody approves.",
+      "Add the rice.",
+      "Begin tasting the rice after it's been simmering for about 20 minute and reduce the heat a bit. Make sure the rice doesn't get too soft. Check the rice again every 10 minutes and reduce the heat slightly after each taste. Your goal is to wind up with rice that has a slightly underdone center. The time it takes to reach this point can vary from 30 minutes to an hour depending on your cooking gear.",
+      "Your paella is done once you've accomplished the following three things: 1) The rice should be slightly firm to the bite. Italians use the same approach when cooking pasta. They call this texture al dente, 2) The paella should be a little moist but not soupy, 3) You should have a bit of toasted rice on the bottom of the paellera. This is considered a delicacy throughout the Spanish-speaking world.",
+      "Remove the paellera from the heat and cover it with a white towel (NOT ALUMINUM FOIL). Allow it to sit for 5 minutes before serving."
+    ]
+  },
+  {
+    "id": "wikibooks-516f090a89b2",
+    "title": "Bhuna Khichuri (Bengali Rice and Lentils)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Bhuna_Khichuri_(Bengali_Rice_and_Lentils)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "50 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 1 cup white fragrant rice (e.g basmati rice or short-grained pilau rice)",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup white fragrant rice (e.g Basmati rice or short-grained pilau rice)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 cup green gram or red split lentils",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup green gram or red split lentils",
+        "optional": false
+      },
+      {
+        "ingredient": "chickpea",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup split dried chickpeas (preferably  Bengal variety; optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "review: ½ cup garden peas (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup garden peas (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons butter (preferably ghee)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ teaspoon turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ teaspoon turmeric powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 whole green chiles, slit in the middle and optionally de-seeded",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 whole green chiles, slit in the middle and optionally de-seeded",
+        "optional": true
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 cups water for boiling",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 bay leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 bay leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 green cardamom pods",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 green cardamom pods",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 whole cloves",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 whole cloves",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 sticks of cinnamon 1 inch long",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 sticks of cinnamon 1 inch long",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ teaspoon cumin seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ teaspoon cumin seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cm piece of ginger, finely chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cm piece of ginger, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 medium or 2 small onions, thinly sliced",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium or 2 small onions, thinly sliced",
+        "optional": false
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons butter preferably ghee",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 bunch coarsely chopped fresh coriander leaves",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Rinse rice, lentils, and chickpeas separately in cold water.",
+      "Dry rice in a colander or on a flat surface.",
+      "Leave lentils and chickpeas to soak in water for 30 minutes.",
+      "Drain lentils and chickpeas, then roast them briefly until they emit an aroma; set aside to cool.",
+      "Heat water in a kettle to use later. Keep warm but not boiling.",
+      "Semi-crush cardamom, cinnamon, and cloves.",
+      "Heat 2 tbsp butter in a heavy-based pan over medium heat. Add bay leaf and semi-crushed spices in; once they start to sputter, add sliced ginger and cumin. Stir for 1–2 minutes until ginger has a nutty aroma.",
+      "Add green chili and garden peas, and stir once or twice.",
+      "Add rice to the mixture and stir gently for 2–3 minutes, making sure the oil coats it thoroughly.",
+      "Add lentils, chickpeas and salt; stir again for 1–2 more minutes",
+      "Add hot water to the pan. The level of water should be about 1 inch above the mixture. Lower the heat slightly, cover, and simmer until done. Check regularly to make sure rice does not burn at the bottom. Rice and lentils are done when there is no hard part in rice, it is medium firm, each one is easily separable, but not very soft or sticky. This should take around 10 minutes.",
+      "While the rice is simmering, heat the remaining butter in a separate frying pan. Fry the onion on a medium heat until it starts to brown.",
+      "When rice mixture is done, top with onion and accompanying oil. Garnish with coriander.",
+      "Turn down the heat to the lowest and cover until served which should not take long."
+    ]
+  },
+  {
+    "id": "wikibooks-a8775e0d4d7c",
+    "title": "Agnolotti Pasta Soup (Agnolotti in Brodo)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Agnolotti_Pasta_Soup_(Agnolotti_in_Brodo)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "15 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 250 grams (8–9 ounces) of agnolotti or other small ravioli-type pasta",
+        "quantity": null,
+        "unit": null,
+        "raw": "250 grams (8–9 ounces) of agnolotti or other small ravioli-type pasta",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ litre (2 cups) of chicken broth (canned or homemade) or ½ litre of water and 2 good-quality chicken stock cubes",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ litre (2 cups) of chicken broth (canned or homemade) or ½ litre of water and 2 good-quality chicken stock cubes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ cup of single (light) cream",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup of single (light) cream",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 pinch of ground black pepper",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 handful of chopped flat-leaf parsley",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 handful of chopped flat-leaf parsley",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 dash (you decide how big or small) of sweet sherry",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 dash (you decide how big or small) of sweet sherry",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "Freshly-grated Parmesan cheese (Parmigiano-Reggiano) for garnish",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Bring the chicken broth to a rolling boil. If using water and chicken stock cubes, bring the water to a boil, add the stock cubes and let dissolve.",
+      "Add the agnolotti and cook according to the instructions on the package.",
+      "Add the cream, freshly-ground black pepper, and chopped parsley about 2 minutes before the end of the cooking, and turn down the heat.",
+      "Add the dash of sherry just before serving. If serving to children, dish out their portions first, then add the sherry for the grown-ups.",
+      "Let stand for a few minutes to marry the flavors, then serve, sprinkled with grated Parmesan cheese and enjoy."
+    ]
+  },
+  {
+    "id": "wikibooks-b031449253f4",
+    "title": "Asparagus Soup",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Asparagus_Soup",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "1 hour",
+    "ingredients": [
+      {
+        "ingredient": "review: 12 thick asparagus spears",
+        "quantity": null,
+        "unit": null,
+        "raw": "12 thick asparagus spears",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups water",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 medium shallot, chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium shallot, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tablespoons unsalted butter",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼–1 cup whipping or light cream",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼–1 cup whipping or light cream",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt, freshly ground black pepper, and cayenne pepper to taste",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Snap the tough ends off the asparagus spears.",
+      "Bring the water to a boil in a medium saucepan, salt the water lightly, and add the asparagus spears. Cook at a lively simmer for 10 minutes.  Lift out with tongs and set aside. Reserve the cooking water.",
+      "In a separate saucepan large enough to hold the finished soup, heat the butter, add the chopped shallot, and cook gently until soft but not browned. Add the cooked asparagus spears and one cup of the cooking water and bring to a boil. Cook at a lively simmer for 5 minutes. Remove from the heat and strain the soup through a medium sieve into a bowl, reserving the liquid.",
+      "Purée the solids in a food processor with enough of the reserved liquid to allow the mixture to purée smoothly.",
+      "Strain the purée through the sieve back into the non-reactive saucepan, rubbing the mixture through with a flexible scraper or wooden spoon and leaving the fibrous parts in the sieve. Discard the contents of the sieve.",
+      "Add the cream and enough of the remaining asparagus cooking water to give the soup the consistency you want. Season to taste with salt, freshly ground black pepper, and cayenne pepper. Reheat gently over low heat, making sure not to let the soup boil.",
+      "Serve hot or chilled. If you want to serve it chilled, let it cool, then refrigerate it uncovered until thoroughly cold, then cover with plastic wrap. You can keep it refrigerated for up to 2 days."
+    ]
+  },
+  {
+    "id": "wikibooks-67f6072bddb4",
+    "title": "Bean and Green Chili Soup",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Bean_and_Green_Chili_Soup",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "45 minutes",
+    "ingredients": [
+      {
+        "ingredient": "cooked rice",
+        "quantity": 480.0,
+        "unit": "ml",
+        "raw": "2 cup (480 ml) cooked rice",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 can (16 oz, 450 g) refried beans",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 can (16 oz, 450 g) refried beans",
+        "optional": false
+      },
+      {
+        "ingredient": "black beans",
+        "quantity": 450.0,
+        "unit": "g",
+        "raw": "1 can (16 oz, 450 g) black beans",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 small can (4 oz, 110 g) green salsa",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 small can (4 oz, 110 g) green salsa",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 ⅓ cup (300 ml) dried, bulk black bean soup mix",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 ⅓ cup (300 ml) dried, bulk black bean soup mix",
+        "optional": false
+      },
+      {
+        "ingredient": "review: sour cream (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Sour cream (optional)",
+        "optional": true
+      }
+    ],
+    "instructions": [
+      "Bring 1 cup (240 ml) dry rice and 2 cups (480 ml) water to a boil.",
+      "Turn heat to low and steam rice for 25–30 min (or prepare rice using rice cooker).",
+      "Prepare soup mix by combining with 3 cups (720 ml) boiling water, then simmer about 5 minutes.",
+      "Add remaining ingredients and rice to soup.",
+      "Heat through, stirring occasionally.",
+      "If desired, just before serving, spoon a teaspoon of sour cream in to the middle of the bowl."
+    ]
+  },
+  {
+    "id": "wikibooks-5ea8c9fe2992",
+    "title": "Carbonara Pasta",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Carbonara_Pasta",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "egg",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 free-range eggs with large yolks",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 oz (65 g) fresh italian pancetta, cubed into ¼–⅜-inch (0.64–0.95 cm) pieces",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 oz (65 g) fresh Italian pancetta, cubed into ¼–⅜-inch (0.64–0.95 cm) pieces",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 sprig of fresh thyme, finely chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 sprig of fresh thyme, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ small onion, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: the minced zest of ½ a lemon",
+        "quantity": null,
+        "unit": null,
+        "raw": "The minced zest of ½ a lemon",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "Pepper to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "Grated parmigiano and/or pecorino romano cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 12 oz (340 g) uncooked pasta (e.g. spaghetti or penne)",
+        "quantity": null,
+        "unit": null,
+        "raw": "12 oz (340 g) uncooked pasta (e.g. spaghetti or penne)",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Put on the desired quantity of pasta to cook.",
+      "Crack the eggs carefully, and separate the yolks from the whites—a good way of doing this is to run the egg through the almost closed fingers of your upturned palm, so as the white runs away through the fingers, and the yolk remains in your hand. Keep the yolks in a large bowl, and use the whites for another purpose. Remember to pick out the pesky little white bit that always remains behind on the yolk.",
+      "Fry the pancetta on a lowish heat in a dry frying pan until it is crispy.",
+      "When the pancetta is cooked, drain and allow it to cool for a few minutes before combining it with the yolks in a large bowl. Allowing it to cool prevents cooking of the eggs.",
+      "Add a pinch of rock-salt and a very generous amount of ground pepper to the yolk mixture.",
+      "Add the lemon zest, chopped thyme, and a small amount of the Parmigiano cheese.",
+      "Drain the pasta through a colander, count to 10 to let the pasta cool slightly, and add it to the bowl with the yolk mixture.",
+      "Mix it through with a wooden spoon and serve immediately, sprinkling the remaining Parmigiano cheese over the top."
+    ]
+  },
+  {
+    "id": "wikibooks-41646e43b7e4",
+    "title": "Cheesy Chicken Pasta",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Cheesy_Chicken_Pasta",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "15 minutes",
+    "ingredients": [
+      {
+        "ingredient": "pasta",
+        "quantity": 85.0,
+        "unit": "g",
+        "raw": "¾ cup (85 g/3 oz) dried pasta (whatever shape you like)",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 75.0,
+        "unit": "g",
+        "raw": "¼ cup (75 g/2.6 oz) cream cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 75.0,
+        "unit": "g",
+        "raw": "¾ cup (75 g/2.6 oz) grated mozzarella cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 75.0,
+        "unit": "g",
+        "raw": "¾ cup (75 g/2.6 oz) grated cheddar cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2½–3½ tablespoons hoisin sauce to taste",
+        "quantity": null,
+        "unit": null,
+        "raw": "2½–3½ tablespoons hoisin sauce to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "chicken",
+        "quantity": 125.0,
+        "unit": "g",
+        "raw": "1 cup (125 g/4.4 oz) chopped cooked chicken",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ cup (125 ml/4.2 us fl oz) heavy whipping cream",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup (125 ml/4.2 US fl oz) heavy whipping cream",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Bring a pot of water to the boil. Add the pasta and cook for about 10 minutes (or until the pasta is soft).",
+      "Drain the pasta so that no water remains in the pan. Return drained pasta to the pot.",
+      "Add the cream, cheeses, chicken, and hoisin sauce to the pasta.",
+      "Cook for a few minutes to warm everything through.",
+      "Serve."
+    ]
+  },
+  {
+    "id": "wikibooks-0c23bc3a39e7",
+    "title": "'Out of Salad Dressing' Salad Dressing",
+    "servings": 12,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:%27Out_of_Salad_Dressing%27_Salad_Dressing",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "8 h, 10 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 1 ½ lemons, juiced",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 ½ lemons, juiced",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup freshly grated Parmesan cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 teaspoons garlic salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ cup mayonnaise",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ cup mayonnaise",
+        "optional": false
+      },
+      {
+        "ingredient": "milk",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup milk",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Mix together lemon juice, Parmesan cheese, garlic salt, and mayonnaise until smooth.",
+      "Stir in milk, adjusting the amount or adding a little water, to make the dressing as thin or thick as you like.",
+      "Cover and refrigerate 8 hours, or overnight."
+    ]
+  },
+  {
+    "id": "wikibooks-f0a2463cd09f",
+    "title": "Ambrosia Fruit Salad",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Ambrosia_Fruit_Salad",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "Prep: 5 minutesChilling: 60 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 4 cups of mandarin oranges, drained",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 cups of mandarin oranges, drained",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cans of pineapple, drained",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cans of pineapple, drained",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cups of grapes",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups of grapes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 cups whipped cream",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 cups whipped cream",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 cup sour cream",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup sour cream",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 6–8 cups miniature marshmallows",
+        "quantity": null,
+        "unit": null,
+        "raw": "6–8 cups miniature marshmallows",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Mix the mandarin oranges, pineapple, and grapes in a large bowl.",
+      "Fold in the whipped cream, sour cream, and marshmallows.",
+      "Chill for at least an hour.",
+      "Stir again before serving."
+    ]
+  },
+  {
+    "id": "wikibooks-3619105eab5a",
+    "title": "American Potato Salad I",
+    "servings": 6,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:American_Potato_Salad_I",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "1 hour",
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 pounds (3–4 ea.) medium russet potatoes",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon plus ½ teaspoon salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tablespoons distilled white vinegar",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons distilled white vinegar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 medium rib of celery",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium rib of celery",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ teaspoon celery seed",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ teaspoon celery seed",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ cup mayonnaise",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ cup mayonnaise",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ teaspoon powdered mustard",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ teaspoon powdered mustard",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons minced onion",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tablespoons minced fresh parsley leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons minced fresh parsley leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ teaspoon ground black pepper",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 tablespoons sweet pickle relish",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tablespoons sweet pickle relish",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Peel and cut potatoes into ¾ inch cubes.",
+      "Cover potatoes with an inch of water in a large saucepan and bring to a boil.",
+      "Add 1 tablespoon salt to boiling water and reduce heat to medium.",
+      "Simmer about 8 minutes, stirring gently once or twice, until potatoes are tender. Taste a piece—don't overcook.",
+      "Drain potatoes and place in a large bowl.",
+      "Toss potatoes gently with vinegar using a rubber spatula.",
+      "Cool potatoes. They must be no more than barely warm to mix.",
+      "Chop celery fine.",
+      "Stir together celery, celery seeds, mayonnaise, dry mustard, onion, parsley, pepper, and ½ teaspoon salt.",
+      "Gently fold together dressing mix and potatoes.",
+      "Cover and refrigerate at least an hour, until thoroughly chilled."
+    ]
+  },
+  {
+    "id": "wikibooks-157ed4776ace",
+    "title": "Bacon and Egg Stuffed Tomatoes",
+    "servings": 6,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Bacon_and_Egg_Stuffed_Tomatoes",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "½ hour",
+    "ingredients": [
+      {
+        "ingredient": "tomato",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 large tomatoes, washed",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt and pepper to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 6 slices bacon, cooked and crumbled; or 4 tablespoons bacon bits",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 slices bacon, cooked and crumbled; or 4 tablespoons bacon bits",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ cups diced celery",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ cups diced celery",
+        "optional": false
+      },
+      {
+        "ingredient": "egg",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 hard boiled eggs",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ⅓ cup mayonnaise",
+        "quantity": null,
+        "unit": null,
+        "raw": "⅓ cup mayonnaise",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 teaspoon chopped fresh parsley",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 teaspoon chopped fresh parsley",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼  teaspoon salt",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼  teaspoon pepper",
+        "optional": false
+      },
+      {
+        "ingredient": "review: paprika",
+        "quantity": null,
+        "unit": null,
+        "raw": "Paprika",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Cut tops from tomatoes.",
+      "Scoop out pulp, leaving shells intact.",
+      "Chop tomato pulp.",
+      "Drain tomato shells and sprinkle cavities with salt and pepper.",
+      "Combine tomato pulp, bacon, celery, eggs, mayonnaise, parsley, and measured salt and pepper.",
+      "Stir well.",
+      "Fill tomato shell with bacon and egg mixture.",
+      "Sprinkle with paprika."
+    ]
+  },
+  {
+    "id": "wikibooks-d5ac5cbef0b9",
+    "title": "Baingan Bartha (South Indian Eggplant with Chili) II",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Baingan_Bartha_(South_Indian_Eggplant_with_Chili)_II",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "review: 2 medium dutch aubergines",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 medium Dutch aubergines",
+        "optional": false
+      },
+      {
+        "ingredient": "review: oil (use mustard oil or a blend for best results)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Oil (use mustard oil or a blend for best results)",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "Garlic, chopped fine",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ginger, chopped fine",
+        "quantity": null,
+        "unit": null,
+        "raw": "Ginger, chopped fine",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium Spanish onion, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ teaspoon mustard seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ teaspoon mustard seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ⅓ teaspoon cumin seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "⅓ teaspoon cumin seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ teaspoon turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ teaspoon turmeric powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 100 g tomato paste or 4 medium ripe tomatoes, finely diced",
+        "quantity": null,
+        "unit": null,
+        "raw": "100 g tomato paste or 4 medium ripe tomatoes, finely diced",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "2–3 coriander stems, finely chopped (reserve the chopped leaves as garnish)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: chopped green chilli, as desired",
+        "quantity": null,
+        "unit": null,
+        "raw": "Chopped green chilli, as desired",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Peel and steam the aubergine until the flesh is tender. Mash and reserve.",
+      "Heat some oil in a pan, and add mustard and cumin seeds. Sauté for 10 seconds, then add finely chopped garlic and ginger. Sauté until the ginger and garlic turn yellow.",
+      "Add chopped onion and sauté until the onion is translucent.",
+      "Add the aubergine mash, turmeric, coriander stem, tomato paste, and salt. Cook on medium heat for 20 minutes.",
+      "Garnish with chopped coriander and serve.",
+      "To smoke the bharta for a more robust flavour, light a small piece of charcoal and place it over a piece of foil placed inside the dish. Pour about ¼ teaspoon of oil and cover the dish immediately. Leave to infuse."
+    ]
+  },
+  {
+    "id": "wikibooks-5e667bdff820",
+    "title": "Baingan Bartha (South Indian Eggplant with Coconut and Chili) I",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Baingan_Bartha_(South_Indian_Eggplant_with_Coconut_and_Chili)_I",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "40 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 1 ea. (1 pound / 450 kg) eggplant (aubergine)",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 ea. (1 pound / 450 kg) eggplant (aubergine)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2–6 green chillies, as desired",
+        "quantity": null,
+        "unit": null,
+        "raw": "2–6 green chillies, as desired",
+        "optional": false
+      },
+      {
+        "ingredient": "coconut",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup fresh ground coconut",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup chopped fresh coriander leaves (cilantro)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cups paneer or yoghurt (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups paneer or yoghurt (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Roast the eggplant directly over a low flame. Don't be afraid to set it right on the gas burner, turning it regularly until the skin becomes blackened and brittle and the flesh soft (about 15–20 minutes).",
+      "Set aside to cool.",
+      "Grind the chillies, coconut, and coriander together in a food processor to form a paste.",
+      "Peel the eggplant skin off and mash the flesh to a uniform pulp by hand.",
+      "Mix in the coconut paste and paneer/yogurt, along with salt to taste.",
+      "Serve with chapatis, dosa or rice."
+    ]
+  },
+  {
+    "id": "wikibooks-9f52a270be58",
+    "title": "Basin Ki Kadi (Sindhi Chickpea Flour Curry)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Basin_Ki_Kadi_(Sindhi_Chickpea_Flour_Curry)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "review: oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "Oil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tbsp cumin seeds and mustard seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tbsp cumin seeds and mustard seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "review: curry leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "Curry leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4–5 pieces finely-chopped chiles",
+        "quantity": null,
+        "unit": null,
+        "raw": "4–5 pieces finely-chopped chiles",
+        "optional": false
+      },
+      {
+        "ingredient": "chickpea flour",
+        "quantity": 200.0,
+        "unit": "g",
+        "raw": "200 g besan (chickpea flour)",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": 500.0,
+        "unit": "ml",
+        "raw": "500 ml water",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "Finely-chopped coriander leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 average sized tomatoes, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: red chile powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "Red chile powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: turmeric",
+        "quantity": null,
+        "unit": null,
+        "raw": "Turmeric",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Heat oil in a skillet, and add the cumin seeds, mustard seeds, curry leaves, and chiles. Fry for a few minutes.",
+      "Stir in the besan. Cook, stirring, until the besan turns golden.",
+      "Mix in the water, and continue stirring for at least 5 minutes.",
+      "Mix in the coriander leaves, tomatoes, salt, chili powder, and turmeric. Simmer until thick.",
+      "Serve hot with white rice and fried potatoes."
+    ]
+  },
+  {
+    "id": "wikibooks-81a9569f6d77",
+    "title": "Burmese Pork Curry",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Burmese_Pork_Curry",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "2 hours",
+    "ingredients": [
+      {
+        "ingredient": "review: 8 dried red chillis",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 dried red chillis",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2.5 cm fresh root ginger, crushed",
+        "quantity": null,
+        "unit": null,
+        "raw": "2.5 cm fresh root ginger, crushed",
+        "optional": false
+      },
+      {
+        "ingredient": "review: lemongrass stalks, finely chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "Lemongrass stalks, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 15 ml (1 tbsp) fresh galangal, chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "15 ml (1 tbsp) fresh galangal, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 15 ml (1 tbsp) shrimp paste",
+        "quantity": null,
+        "unit": null,
+        "raw": "15 ml (1 tbsp) shrimp paste",
+        "optional": false
+      },
+      {
+        "ingredient": "brown sugar",
+        "quantity": 30.0,
+        "unit": "ml",
+        "raw": "30 ml (2 tbsp) fine brown sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 675 g pork, diced into chunks",
+        "quantity": null,
+        "unit": null,
+        "raw": "675 g pork, diced into chunks",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": 600.0,
+        "unit": "ml",
+        "raw": "600 ml (2½ cup) water",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 10 ml (2 tsp) ground turmeric",
+        "quantity": null,
+        "unit": null,
+        "raw": "10 ml (2 tsp) ground turmeric",
+        "optional": false
+      },
+      {
+        "ingredient": "soy sauce",
+        "quantity": 5.0,
+        "unit": "ml",
+        "raw": "5 ml (1 tsp) dark soy sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 200 g french (green) beans",
+        "quantity": null,
+        "unit": null,
+        "raw": "200 g French (green) beans",
+        "optional": false
+      },
+      {
+        "ingredient": "brown sugar",
+        "quantity": 5.0,
+        "unit": "ml",
+        "raw": "5 ml (1 tsp) brown sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 45 ml (3 tbsp) tamarind juice or 5 ml (1 tsp) tamarind pulp concentrate",
+        "quantity": null,
+        "unit": null,
+        "raw": "45 ml (3 tbsp) tamarind juice or 5 ml (1 tsp) tamarind pulp concentrate",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": 15.0,
+        "unit": "ml",
+        "raw": "15 ml (1 tbsp) minced garlic",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 shallots, finely chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 shallots, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 15 ml (1 tbsp) fish sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "15 ml (1 tbsp) fish sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: fresh red chillis, to garnish",
+        "quantity": null,
+        "unit": null,
+        "raw": "Fresh red chillis, to garnish",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Soak the dried chilli in warm water for 20 minutes.",
+      "Crush the ginger, chilli, lemongrass, and galangal in a mortar and pestle until they form a coarse paste.",
+      "Add the shrimp paste and fine sugar, and continue grinding to a dark grainy paste.",
+      "Place the pork in a wok or large frying pan over medium heat, and stir in the curry paste until the meat is well coated.",
+      "Cook the pork over a low heat, stirring occasionally, until the meat changes colour and renders some of its fat, and the curry has started to release its aroma.",
+      "Stir in the turmeric, water, and soy sauce, then simmer gently, uncovered, for 40 minutes until the meat is tender.",
+      "Steam the beans separately for about 10 minutes.",
+      "Stir the sugar, tamarind, garlic, shallots, and fish sauce into the meat until the sugar and tamarind are dissolved.",
+      "Garnish with the fresh chillis and steamed beans, and serve immediately."
+    ]
+  },
+  {
+    "id": "wikibooks-254678afb934",
+    "title": "Buttermilk Curry Soup (Kadi Pakora)",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Buttermilk_Curry_Soup_(Kadi_Pakora)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "35 minutes",
+    "ingredients": [
+      {
+        "ingredient": "chickpea flour",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup besan (chickpea flour)",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "Water",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "Turmeric powder",
+        "optional": false
+      },
+      {
+        "ingredient": "vegetable oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "Vegetable oil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 glasses cultured buttermilk",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 glasses cultured buttermilk",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tbsp besan",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tbsp besan",
+        "optional": false
+      },
+      {
+        "ingredient": "review: turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "Turmeric powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 pinch of asafoetida",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 pinch of asafoetida",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: black mustard seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "Black mustard seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 clove garlic, minced",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼-inch piece of ginger root, peeled and minced",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼-inch piece of ginger root, peeled and minced",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4–5 kadi patta (curry leaves)",
+        "quantity": null,
+        "unit": null,
+        "raw": "4–5 kadi patta (curry leaves)",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw": "1 small onion, finely chopped",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Mix besan with water, salt, and turmeric powder until you get a thick batter.",
+      "Heat oil in big pan.",
+      "Drop dollops of batter in the pan using a round spoon so that pakoras are round and fluffy.",
+      "Fry until the pakoras are golden, then remove them from the oil.",
+      "Mix buttermilk, 1 tbsp besan, turmeric powder, asafoetida, and salt until smooth and lump-free.",
+      "Heat a little oil in a pan. Add mustard seeds, garlic, ginger, curry leaves, and onion, then fry it until slightly reddish in color.",
+      "Stir the buttermilk mixture, and mix it into the onions. Continue mixing it over medium heat until it starts bubbling.",
+      "Add the pakoras, lower the heat, and keep for some time. Close the lid and switch off the flame.",
+      "Serve hot with rice or roti."
+    ]
+  },
+  {
+    "id": "wikibooks-f0c07fce4672",
+    "title": "Ají de Gallina (Peruvian Chili Chicken)",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Aj%C3%AD_de_Gallina_(Peruvian_Chili_Chicken)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "About 45 minutes",
+    "ingredients": [
+      {
+        "ingredient": "chicken",
+        "quantity": 1300.0,
+        "unit": "g",
+        "raw": "1300 g (4 lb) chicken",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 120.0,
+        "unit": "ml",
+        "raw": "120 ml (½ cup) of olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large finely chopped onion",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 cloves of minced garlic",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 hot yellow south american chilis (seeds and filaments removed): adjust quantity for individual taste.",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 hot yellow South American chilis (seeds and filaments removed): Adjust quantity for individual taste.",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt and pepper to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "chicken stock",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 chicken stock cube",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ loaf of bread",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ loaf of bread",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 110 g (¼ lb) of chopped pecans",
+        "quantity": null,
+        "unit": null,
+        "raw": "110 g (¼ lb) of chopped pecans",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": 110.0,
+        "unit": "g",
+        "raw": "110 g (4 ounces)  grated Parmesan cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "milk",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 can of evaporated milk",
+        "optional": false
+      },
+      {
+        "ingredient": "cooked rice",
+        "quantity": null,
+        "unit": null,
+        "raw": "1.6 kg (3.5 lbs) boiled rice (flavored with chopped garlic and salt)",
+        "optional": false
+      },
+      {
+        "ingredient": "egg",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 hard boiled eggs",
+        "optional": false
+      },
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 potatoes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 120 g (½ cup) black olives",
+        "quantity": null,
+        "unit": null,
+        "raw": "120 g (½ cup) black olives",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Boil chicken in salted water together with the stock cube. Remove bones and break into bite size pieces, keeping the resulting chicken stock.",
+      "In a saucepan, heat oil and sauté the onion, garlic, and finely chopped chili peppers and add salt and pepper. Fry this until the onions are cooked and golden.",
+      "Soak the bread in two cups of the stock from the boiled chicken and place in a blender for a couple of minutes and then add the resulting liquid to the saucepan.",
+      "Cook slowly for ten minutes. Cook slowly, stirring to thicken.",
+      "While the Ají de Gallina is cooking slowly, boil the rice: first fry the garlic for a couple of seconds, then add the rice and the salt, then add the water. When the water starts to boil, let the rice cook in a closed pot very slowly for about 20 minutes or until the water has completely evaporated (hint: to cook \"peruvian\" rice: cook a cup of rice in two cups of water)",
+      "Back to the Ají de Gallina: add the chopped pecans, grated cheese, and chicken pieces. Cook until it has a thick creamy texture. About five minutes before serving, add the evaporated milk and continue cooking on low heat.",
+      "Serve over the boiled rice and garnish with halved potatoes, eggs quartered lengthwise, and olives."
+    ]
+  },
+  {
+    "id": "wikibooks-db6185e3ef5e",
+    "title": "Apricot Chicken Salad",
+    "servings": 1,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Apricot_Chicken_Salad",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "15 minutes",
+    "ingredients": [
+      {
+        "ingredient": "chicken",
+        "quantity": null,
+        "unit": null,
+        "raw": "Shredded cooked chicken (about 2 small drumsticks)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 stalk celery, chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 stalk celery, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 medium apple, finely chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 medium apple, finely chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tbsp honey",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tbsp honey",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 dried apricots, chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 dried apricots, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: strained plain yogurt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Strained plain yogurt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: hot paprika (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Hot paprika (optional)",
+        "optional": true
+      }
+    ],
+    "instructions": [
+      "Combine shredded chicken, apricots, apple and celery.",
+      "Add yogurt, honey, and hot paprika powder, along with any other desired seasonings.",
+      "Mix well."
+    ]
+  },
+  {
+    "id": "wikibooks-4c77d5c7e02a",
+    "title": "Asian-Inspired Chicken Salad",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Asian-Inspired_Chicken_Salad",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "15 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 1½ cups broccoli flowerets",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ cups broccoli flowerets",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ cup pea pods",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup pea pods",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 6 cups torn mixed greens",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 cups torn mixed greens",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cups thinly-sliced nappa cabbage",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups thinly-sliced Nappa cabbage",
+        "optional": false
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup julienned carrots",
+        "optional": false
+      },
+      {
+        "ingredient": "chicken",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 package (6 oz) grilled chicken breast, cut in strips",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ cups salad dressing (teriyaki ginger, asian sesame with ginger, or balsamic vinaigrette)",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ cups salad dressing (teriyaki ginger, Asian sesame with ginger, or balsamic vinaigrette)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 mango, peeled, seeded, and thinly sliced (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 mango, peeled, seeded, and thinly sliced (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "review: sesame crackers (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Sesame crackers (optional)",
+        "optional": true
+      }
+    ],
+    "instructions": [
+      "In large saucepan quickly plunge broccoli and pea pods into boiling water for 30 seconds. Drain vegetables. Quickly rinse with cold water. Drain well.",
+      "In large bowl toss together the blanched broccoli and pea pods, greens, cabbage and carrots.",
+      "Add chicken.",
+      "Drizzle with salad dressing. Toss to coat.",
+      "Arrange on 4 serving plates.",
+      "Top with mango, if desired.",
+      "Serve with crackers."
+    ]
+  },
+  {
+    "id": "wikibooks-b7a2ff316c48",
+    "title": "Ashoka Halwa (Mung Bean Pudding)",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Ashoka_Halwa_(Mung_Bean_Pudding)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "40 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 1 cup split yellow moong dal",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup split yellow moong dal",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 cups water",
+        "optional": false
+      },
+      {
+        "ingredient": "sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups granulated sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 12 tablespoons ghee, divided",
+        "quantity": null,
+        "unit": null,
+        "raw": "12 tablespoons ghee, divided",
+        "optional": false
+      },
+      {
+        "ingredient": "wheat flour",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 tablespoons wheat flour",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ teaspoon cardamom powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ teaspoon cardamom powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 tablespoons broken cashews",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tablespoons broken cashews",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 pinch red food colouring in 1 teaspoon water",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Dry roast the moong dal until it smells nutty and browns slightly.",
+      "Add 3 cups of water and pressure cook for about 7–8 whistles until the dal is soft and mushy.",
+      "Add 4 tablespoons ghee to a heavy-bottomed pot over medium-low heat, and cook the wheat flour in it until golden brown.",
+      "Stir the cooked dal into the flour mixture, and let it thicken for 5 minutes. Add the sugar.",
+      "Stirring continuously, start mixing in the remaining ghee 1 tablespoon at a time. Keep stirring until the mixture starts leaving the sides of the pan and the whole mixture forms a dough. It will take about 12–15 minutes and 6–7 tablespoons of ghee.",
+      "Heat 1 tablespoon of ghee in a separate frying pan, and add the cashews. Fry until slightly brown, then add to the halwa mixture.",
+      "Mix in the powdered cardamom and food color.",
+      "Remove from the heat and let cool."
+    ]
+  },
+  {
+    "id": "wikibooks-a77a7a60c9d0",
+    "title": "Baked Beans",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Baked_Beans",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "Soaking: overnightCooking: 2½ hours",
+    "ingredients": [
+      {
+        "ingredient": "review: 2 pounds (900 g) navy, great northern, or pea beans, though black, kidney, or lima beans may be used for a different taste.",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 pounds (900 g) Navy, Great Northern, or Pea beans, though black, kidney, or lima beans may be used for a different taste.",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 pound (450g) bacon, diced",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 pound (450g) bacon, diced",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 2.0,
+        "unit": "count",
+        "raw": "2 large onions, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "brown sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ cups brown sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¾ cup molasses",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ cup molasses",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Soak dry beans overnight, or use 4 cans cooked beans.",
+      "Preheat oven to 350°F (175°C).",
+      "Stir all ingredients together, then pour into casserole dish, bean pot or Dutch oven.",
+      "Add water from beans, or preferably stock or fresh water. Just enough to barely cover.  Canned beans may need less water.  Beans will absorb more water as they cook.",
+      "Bake 2½ hours. Check after an hour for moisture level, add more water as needed to keep appropriate moistness. If beans have too much liquid, remove lid and cook a bit longer."
+    ]
+  },
+  {
+    "id": "wikibooks-e95093f098d1",
+    "title": "Bean and Bacon Bake",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Bean_and_Bacon_Bake",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "Prep: 10 minutesCooking: 10 minutes",
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 ea. (10–12 oz / 280–340 g) medium potato",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 6 strips bacon, cooked until crisp, or microwave ready fully cooked bacon",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 strips bacon, cooked until crisp, or microwave ready fully cooked bacon",
+        "optional": false
+      },
+      {
+        "ingredient": "green beans",
+        "quantity": 790.0,
+        "unit": "g",
+        "raw": "1 can (28 oz / 790 g) green beans",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ teaspoon salt",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ teaspoon onion powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ⅛ cup (15 g / 0.53 oz) sliced almonds",
+        "quantity": null,
+        "unit": null,
+        "raw": "⅛ cup (15 g / 0.53 oz) sliced almonds",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Peel and dice the potato.",
+      "Crumble crisp bacon into small pieces.",
+      "Drain green beans, keeping ½ cup of the liquid.",
+      "Put beans, bean juice, bacon, and potato in a microwave-safe baking dish.",
+      "Sprinkle onion powder and salt on top.",
+      "Cover with clear wrap.",
+      "Cook in microwave oven 5 minutes, stir, and cook another 5 minutes.",
+      "Let stand 5 minutes.",
+      "Garnish with sliced almonds."
+    ]
+  },
+  {
+    "id": "wikibooks-00ad1828980c",
+    "title": "Champ (Irish Mashed Potato with Scallion)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Champ_(Irish_Mashed_Potato_with_Scallion)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": 450.0,
+        "unit": "g",
+        "raw": "1 lb (450 g) potatoes, peeled",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 oz (60 g) scallions",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 oz (60 g) scallions",
+        "optional": false
+      },
+      {
+        "ingredient": "milk",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ pint (½ cup) milk",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "Freshly-ground pepper",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 tbsp butter",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Boil potatoes in water until done.",
+      "Drain the potatoes and mash them.",
+      "Pour the milk into a saucepan, add the chopped scallions and cook vigorously.",
+      "When cooked, sieve the scallions and set the milk aside.",
+      "Add the scallions to the potatoes and mix well.",
+      "Add as much of the scallion-infused milk as possible to make a ‘wet’ soft mixture.",
+      "Season with freshly ground pepper and salt.",
+      "Serve with a central well filled with melted butter."
+    ]
+  },
+  {
+    "id": "wikibooks-f51d4aa61fe0",
+    "title": "Chukauni (Nepalese Potato Salad)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Chukauni_(Nepalese_Potato_Salad)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "20 minutes",
+    "ingredients": [
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 boiled potatoes, peeled and roughly cubed",
+        "optional": false
+      },
+      {
+        "ingredient": "yoghurt",
+        "quantity": 200.0,
+        "unit": "ml",
+        "raw": "200 ml yoghurt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 chiles, chopped",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 chiles, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw": "1 large onion, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tbsp mustard oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp mustard oil",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ tsp turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ tsp turmeric powder",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ tsp fenugreek seeds",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ tsp fenugreek seeds",
+        "optional": false
+      },
+      {
+        "ingredient": "review: chile powder (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Chile powder (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "review: 2 dried red chiles (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 dried red chiles (optional)",
+        "optional": true
+      }
+    ],
+    "instructions": [
+      "Put the boiled potatoes in a bowl.",
+      "Add chopped chilies and chilies.",
+      "Pour the yoghurt over the potatoes.",
+      "Add salt and red chili powder as per your taste.",
+      "In a small wok or pan, heat some oil with red chilies and fenugreek seed.",
+      "When the seeds turn black, remove the pan from heat.",
+      "Add turmeric powder over the oil immediately.",
+      "Pour the oil over the potatoes and yoghurt mixture.",
+      "Mix the mixture evenly with a ladle or a spoon."
+    ]
+  },
+  {
+    "id": "wikibooks-3579d2b59bbf",
+    "title": "Chuu Chee Fish",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Chuu_Chee_Fish",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "1 hour",
+    "ingredients": [
+      {
+        "ingredient": "review: 650 g whole bream or similar fish",
+        "quantity": null,
+        "unit": null,
+        "raw": "650 g whole bream or similar fish",
+        "optional": false
+      },
+      {
+        "ingredient": "vegetable oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 metric cup vegetable oil (reserve 1 tablespoon for stir-frying curry paste)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 teaspoon of kaeng chu chee curry paste",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teaspoon of kaeng chu chee curry paste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 6 dried kaffir lime leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "6 dried Kaffir lime leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "coconut milk",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 metric cup coconut milk",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tablespoon (warning: perhaps the metric 20 ml one) fish sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon (warning: perhaps the metric 20 mL one) fish sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teaspoon sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "review: fresh cilantro",
+        "quantity": null,
+        "unit": null,
+        "raw": "Fresh cilantro",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 fresh red chile pepper",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "In a wok or large frypan, over high heat, fry fish using most of the vegetable oil, until golden on one side. It will take about 5 minutes.",
+      "Lower heat and, using tongs, gently turn fish over.",
+      "Turn up heat again and cook until golden. Using tongs again, lift fish gently onto a serving plate.",
+      "In the wok, gently stir-fry the curry-paste and lime leaves in remaining tablespoon of oil.",
+      "Add coconut milk and fish sauce. Simmer for about 5 minutes.",
+      "Add sugar and simmer for another 5 minutes.",
+      "Taste to see if extra coconut milk, fish sauce, or sugar is required.",
+      "Pour sauce over fish and garnish with cilantro and chopped chili peppers."
+    ]
+  },
+  {
+    "id": "wikibooks-45b0eee45a45",
+    "title": "Corn Bread Fish",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Corn_Bread_Fish",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "⅛ hour",
+    "ingredients": [
+      {
+        "ingredient": "review: 4 boneless, skinless fish fillets (about 6 ounces each, 1–1¼ inches at thickest), such as tilapia, catfish or trout (see notes)",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 boneless, skinless fish fillets (about 6 ounces each, 1–1¼ inches at thickest), such as tilapia, catfish or trout (see notes)",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "Pepper to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ⅓ cup bottled italian dressing",
+        "quantity": null,
+        "unit": null,
+        "raw": "⅓ cup bottled Italian dressing",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 large corn muffin, or ⅔ cup coarse crumbs",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large corn muffin, or ⅔ cup coarse crumbs",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 lemon, or 3 tablespoons lemon juice",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 lemon, or 3 tablespoons lemon juice",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Preheat the oven to 400°F (204°C).",
+      "Spray a glass baking dish with cooking-oil spray.",
+      "Season each fish piece with salt and pepper, and place in the dish.",
+      "Pour the dressing evenly over the fish.",
+      "Crumble the corn muffin, and sprinkle the crumbs over the fish.",
+      "Place the dish in the preheated oven, and bake until the dressing is bubbling at the edges, the crumbs lightly brown, and the thickest part of the fillets are opaque and flake easily with a fork (about 15 to 20 minutes).",
+      "While fish is baking, cut the lemon into 4 parts and set aside.",
+      "When the fish is done, remove it from the oven, squeeze the juice from the lemon quarters over the fish, and serve immediately."
+    ]
+  },
+  {
+    "id": "wikibooks-351e2ed73299",
+    "title": "Fish and Chips",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Fish_and_Chips",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "30 minutes",
+    "ingredients": [
+      {
+        "ingredient": "plain flour",
+        "quantity": 125.0,
+        "unit": "g",
+        "raw": "125 g (4 oz) plain flour",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 125 g (4 oz) corn flour (cornstarch)",
+        "quantity": null,
+        "unit": null,
+        "raw": "125 g (4 oz) corn flour (cornstarch)",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "Enough cold water to form a batter",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 cod/haddock/monkfish (or any other suitable flaky fish) fillets",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 cod/haddock/monkfish (or any other suitable flaky fish) fillets",
+        "optional": false
+      },
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 white potatoes, Maris Piper preferably",
+        "optional": false
+      },
+      {
+        "ingredient": "vegetable oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 litre (1¾ pint) vegetable oil for deep-frying",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Sea salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 lemon, wedged",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 lemon, wedged",
+        "optional": false
+      },
+      {
+        "ingredient": "review: sprig of parsley, to garnish",
+        "quantity": null,
+        "unit": null,
+        "raw": "Sprig of parsley, to garnish",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Sea salt",
+        "optional": false
+      },
+      {
+        "ingredient": "review: malt vinegar",
+        "quantity": null,
+        "unit": null,
+        "raw": "Malt Vinegar",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Preheat the vegetable oil in a deep fryer to 180°C (350°F), or until a cube of bread browns in 15 seconds when added to the oil.",
+      "Peel the potatoes and cut into thick wedges. Deep-fry the potatoes in batches for 6–8 minutes or until they are crisp and golden.",
+      "Remove from the oil, and drain on kitchen paper. Sprinkle with sea salt and keep warm.",
+      "In a bowl, whisk together the plain flour, corn flour, salt, and enough cold water to form a batter.",
+      "Cut the fish into thick slices, then coat in the batter.",
+      "Deep fry the fish in batches for 5–6 minutes, depending on the size of the fish. Remove and drain on kitchen paper.",
+      "Transfer the fish and chips to serving plates and garnish with lemon wedges and sprig of parsley. Or for a fun, traditional twist, place the fried fish and chips on brown paper or newsprint.",
+      "Top with salt and/or vinegar. Typically the lemon wedges are squeezed over the fish and the vinegar is sprinkled on the chips. Also can be served with pickles, pickled onions, tartar sauce, pickled eggs, and mushy peas."
+    ]
+  },
+  {
+    "id": "wikibooks-39970b70a092",
+    "title": "Chipotle BBQ Salmon Burgers",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Chipotle_BBQ_Salmon_Burgers",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "salmon",
+        "quantity": null,
+        "unit": null,
+        "raw": "1¼ pounds skinless wild salmon filet, cut into 2-inch cubes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: seafood seasoning, such as old bay",
+        "quantity": null,
+        "unit": null,
+        "raw": "Seafood seasoning, such as Old Bay",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 hamburger buns, split in half and toasted",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 hamburger buns, split in half and toasted",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "Extra-virgin olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 chipotles in adobo sauce, finely minced",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 chipotles in adobo sauce, finely minced",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 tbsp adobo sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tbsp adobo sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 3 tbsp barbecue sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tbsp barbecue sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tbsp unsalted butter, cut into small cubes",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Run salmon cubes through a meat grinder on medium setting. Mix with chipotle, sauce, butter, and adobo.",
+      "Form into 4 equal patties, about ¾ inch thick. Brush with extra-virgin olive oil and season both sides liberally with seasoning. Set aside.",
+      "Preheat grill pan to medium high. Rub with olive oil, then add salmon patties. Grill 5–6 minutes per side for medium rare, or until desired doneness is achieved.",
+      "Brush buns with oil. Place a patty on and close. Serve immediately with desired condiments."
+    ]
+  },
+  {
+    "id": "wikibooks-eeedd4edc89b",
+    "title": "Honey-Peppered Salmon",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Honey-Peppered_Salmon",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "1 hour",
+    "ingredients": [
+      {
+        "ingredient": "olive oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ cup olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tablespoon honey",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon honey",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tablespoons dijon mustard",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons Dijon mustard",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 cloves garlic, minced",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 teaspoon cayenne",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 teaspoon cayenne",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ teaspoon ground coriander",
+        "optional": false
+      },
+      {
+        "ingredient": "lemon juice",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons fresh lemon juice",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "salt, to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "salmon",
+        "quantity": 170.0,
+        "unit": "g",
+        "raw": "4 (6-ounce) (170 g) center-cut salmon fillets",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "In a shallow dish, combine oil, honey, mustard, garlic, cayenne, coriander, lemon juice, and salt. Mix well.",
+      "Add salmon and let marinate at room temperature for 30 minutes.",
+      "Preheat oven to 350°F (175˚C).",
+      "Grease a baking dish.",
+      "Remove salmon from marinade and place in the prepared dish.",
+      "Bake for 10–12 minutes or until desired \"doneness\"."
+    ]
+  },
+  {
+    "id": "wikibooks-9500db0b6777",
+    "title": "Maple Syrup Planked Salmon",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Maple_Syrup_Planked_Salmon",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "Soaking: 6–12 hoursCooking: 45 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 4 salmon steaks or individual fillets (preferably wild-caught)",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 salmon steaks or individual fillets (preferably wild-caught)",
+        "optional": false
+      },
+      {
+        "ingredient": "lemon juice",
+        "quantity": 60.0,
+        "unit": "ml",
+        "raw": "4 tbsp (60 ml) fresh lemon juice, divided",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tsp (10 ml) pure maple syrup",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tsp (10 ml) pure maple syrup",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tbsp (30 ml) grapeseed oil (or other neutral oil)",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp (30 ml) grapeseed oil (or other neutral oil)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1½ tsp (7 g) chipotle powder (chipotle barbecue sauce may be substituted for this)",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ tsp (7 g) chipotle powder (chipotle barbecue sauce may be substituted for this)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tsp (5 g) crushed dried rosemary",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tsp (5 g) crushed dried rosemary",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 scallions, thinly sliced for garnish",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 scallions, thinly sliced for garnish",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Completely immerse cedar planks in water for several hours or overnight.",
+      "Heat grill to medium-high.",
+      "Mix 2 tablespoons (30 ml) lemon juice, the oil, rosemary, maple syrup, and half of the chipotle powder in a small bowl. Coat the salmon with the mixture and let rest at room temperature for 20 minutes.",
+      "Mix the remaining lemon juice with the remaining chipotle powder with a fork and set aside as a garnish.",
+      "Place plank(s) on grill and close lid. Allow plank to heat for a couple minutes.",
+      "Lightly sprinkle salt on plank(s).",
+      "Put salmon on plank, keeping fish at least an inch from the edge of the plank (in the case of fillets, place skin-side down). Reduce heat to low and close lid.",
+      "Grill for roughly 15 minutes without turning or moving salmon until desired \"doneness\" is reached. Generally, salmon should be cooked until the flesh loses its transparency and the meat can easily be broken with a fork. Spray with water to douse any flames that light on the sides of the plank.",
+      "When cooked, place the salmon on a serving platter and sprinkle with the scallions.",
+      "Immerse the cedar plank in water as a safety precaution.",
+      "Serve the salmon with the optional lemon juice/chipotle sauce."
+    ]
+  },
+  {
+    "id": "wikibooks-242652b720c4",
+    "title": "Beef Stew II",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Beef_Stew_II",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "90 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 60 g (2 oz) flour",
+        "quantity": null,
+        "unit": null,
+        "raw": "60 g (2 oz) flour",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "pepper",
+        "quantity": null,
+        "unit": null,
+        "raw": "Pepper to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "Garlic powder to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": 50.0,
+        "unit": "ml",
+        "raw": "50 ml (3 Tablespoons) olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw": "1 medium onion, peeled and chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "beef",
+        "quantity": 500.0,
+        "unit": "g",
+        "raw": "500 g (1 lb) beef suitable for soup/stew, cut into cubes and trimmed of fat and gristle",
+        "optional": false
+      },
+      {
+        "ingredient": "beef broth",
+        "quantity": 1000.0,
+        "unit": "ml",
+        "raw": "1 L  (1 qt) beef broth",
+        "optional": false
+      },
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "200–250 g (approx. ½ lb) potatoes, diced",
+        "optional": false
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": null,
+        "unit": null,
+        "raw": "100–125 g (approx. ¼ lb) frozen carrots, sliced",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 100–125 g (approx. ¼ lb) frozen mushrooms, sliced",
+        "quantity": null,
+        "unit": null,
+        "raw": "100–125 g (approx. ¼ lb) frozen mushrooms, sliced",
+        "optional": false
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": 400.0,
+        "unit": "g",
+        "raw": "1 can (400 g / 14 oz) diced tomatoes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: marjoram to taste",
+        "quantity": null,
+        "unit": null,
+        "raw": "Marjoram to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 large or 2 small bay leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large or 2 small bay leaves",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Mix the flour, salt, pepper, and garlic powder together in a small bowl.",
+      "Heat a large saucepan on the stovetop, then add olive oil and chopped onion.",
+      "Dredge the beef cubes in the flour mixture and drop them into the saucepan; reserve the remaining flour mixture. Brown the beef on all sides.",
+      "Pour in the broth and add the remaining flour mixture, the potatoes, carrots, mushrooms, tomatoes, marjoram and bay leaf/leaves.",
+      "Once it has come to a boil, reduce the heat to the lowest setting, cover, and simmer for an hour or more, until the beef and potatoes are tender."
+    ]
+  },
+  {
+    "id": "wikibooks-c8e5568d3539",
+    "title": "Booyah (Chicken Vegetable Stew)",
+    "servings": 16,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Booyah_(Chicken_Vegetable_Stew)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "3 hours",
+    "ingredients": [
+      {
+        "ingredient": "chicken",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large roasting chicken",
+        "optional": false
+      },
+      {
+        "ingredient": "green beans",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups green beans",
+        "optional": false
+      },
+      {
+        "ingredient": "carrot",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 cups (1 pound) diced carrot",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 cups peas",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups peas",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 cup diced cabbage",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 cup diced cabbage",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 stalks celery",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 stalks celery",
+        "optional": false
+      },
+      {
+        "ingredient": "tomato sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups tomato sauce (or 1 quart whole tomatoes)",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": 1.0,
+        "unit": "count",
+        "raw": "1 large onion, diced",
+        "optional": false
+      },
+      {
+        "ingredient": "potato",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups peeled and diced potatoes (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Place chicken in a large pot and cover with water. Simmer until chicken is well done.",
+      "Remove chicken from broth and skim off fat.",
+      "Add remaining ingredients to broth.",
+      "Remove chicken meat from bones and skin. Cut meat into small pieces and add to broth. Add salt and water to taste.",
+      "Cover and let simmer for at least 3 hours. It tastes best when cooked all day."
+    ]
+  },
+  {
+    "id": "wikibooks-9092c58a2cb1",
+    "title": "Callaloo (Caribbean Stewed Greens)",
+    "servings": 8,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Callaloo_(Caribbean_Stewed_Greens)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "60 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 12 taro (dasheen or callaloo) leaves",
+        "quantity": null,
+        "unit": null,
+        "raw": "12 taro (dasheen or callaloo) leaves",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ pound salted beef or salted pork (optional)",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ pound salted beef or salted pork (optional)",
+        "optional": true
+      },
+      {
+        "ingredient": "review: 8 okra (ochroe)",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 okra (ochroe)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 4 stalks chives",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 stalks chives",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 sprigs thyme",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 sprigs thyme",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup chopped onion",
+        "optional": false
+      },
+      {
+        "ingredient": "garlic",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tsp minced garlic",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 crabs, cleaned and broken in pieces",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 crabs, cleaned and broken in pieces",
+        "optional": false
+      },
+      {
+        "ingredient": "coconut milk",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups coconut milk",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 cups hot water",
+        "optional": false
+      },
+      {
+        "ingredient": "butter",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tsp butter",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Strip the stalks and midribs from the taro leaves.",
+      "Wash and cut leaves and soft stalks, discarding remainder.",
+      "Soak salted beef or salted pork, and cut into bite-sized pieces.",
+      "Cut okra, chives and thyme into small pieces.",
+      "In a large pot combine callaloo leaves, salted meat, okra, chive, thyme, onion, garlic, crab, coconut milk, and water.",
+      "Bring to the boil; reduce heat, cover and simmer for 30 minutes or more until everything is soft and cooked.",
+      "Swizzle or beat with a hand beater.",
+      "Add butter and stir well.",
+      "Add salt and pepper to taste."
+    ]
+  },
+  {
+    "id": "wikibooks-1baa5b58fb10",
+    "title": "Egyptian Lentil Stew",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Egyptian_Lentil_Stew",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "20 minutes (prep); 1 hour (cook)",
+    "ingredients": [
+      {
+        "ingredient": "onion",
+        "quantity": 2.0,
+        "unit": "count",
+        "raw": "2 onions, peeled and chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "4 tablespoons olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": null,
+        "unit": null,
+        "raw": "8 cups water",
+        "optional": false
+      },
+      {
+        "ingredient": "lentil",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ pound red lentils",
+        "optional": false
+      },
+      {
+        "ingredient": "review: salt to taste or 4 tablespoons of soup mix (you can use any kind of soup mix, or if you don't have any, you can just leave it out)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste or 4 tablespoons of soup mix (you can use any kind of soup mix, or if you don't have any, you can just leave it out)",
+        "optional": false
+      },
+      {
+        "ingredient": "ground cumin",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teaspoon ground cumin",
+        "optional": false
+      },
+      {
+        "ingredient": "coriander",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teaspoon ground coriander",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 lemon",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 lemon",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Place the chopped onions into the big pot, along with the 4 tablespoons of olive oil.",
+      "Sauté the onions on low heat until they turn translucent and slightly golden.",
+      "Add the 8 cups of water, lentils, soup mix, cumin, and coriander to the pot with the onions.",
+      "Stir, then turn up the temperature of the stove to about medium heat (you want it to be slightly bubbling, but not boiling).",
+      "Let it simmer for an hour, stirring every few minutes to make sure that it doesn't burn. You may have to turn the temperature of the stove up or down a little. Taste, and add salt if needed.",
+      "Turn off the stove and put the pot on a different burner so that it doesn't continue to cook.",
+      "Take your lemon, and cut it in half. Then, squeeze it on the juicer until there is no more juice in the lemon.",
+      "Stir the lemon juice into the pot.",
+      "Taste the soup, and serve! Cumin and more fresh lemon and can be added to the bowl according to preference."
+    ]
+  },
+  {
+    "id": "wikibooks-2288fc931017",
+    "title": "Khichdi (South Asian Rice and Lentils)",
+    "servings": 2,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Khichdi_(South_Asian_Rice_and_Lentils)",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "rice",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teacup rice",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 teacup dal (e.g. moong dhal, arhar dal or masoor dal or combination thereof)",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 teacup dal (e.g. moong dhal, arhar dal or masoor dal or combination thereof)",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "Salt to taste",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tsp turmeric powder",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tsp turmeric powder",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Wash rice and lentils and soak them for 10–15 minutes in water.",
+      "Add salt and turmeric powder.",
+      "Pressure cook with 3–4 cups of water.",
+      "After the first whistle, reduce the heat and cook for 4–5 more minutes.",
+      "Allow to cool. Serve with ghee or buttermilk."
+    ]
+  },
+  {
+    "id": "wikibooks-9ed2039b4578",
+    "title": "Beef Yakiniku Pizza",
+    "servings": 12,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Beef_Yakiniku_Pizza",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "1 hour 30 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: 600 g high-protein flour",
+        "quantity": null,
+        "unit": null,
+        "raw": "600 g high-protein flour",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 200 g low-protein flour",
+        "quantity": null,
+        "unit": null,
+        "raw": "200 g low-protein flour",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 15 g instant yeast",
+        "quantity": null,
+        "unit": null,
+        "raw": "15 g instant yeast",
+        "optional": false
+      },
+      {
+        "ingredient": "sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "3 tbsp sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": 75.0,
+        "unit": "ml",
+        "raw": "75 ml cold water",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "¾ tsp salt",
+        "optional": false
+      },
+      {
+        "ingredient": "vegetable oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp vegetable oil",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ big onion, chopped",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ½ red capsicum, cut into 10 pieces",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ red capsicum, cut into 10 pieces",
+        "optional": false
+      },
+      {
+        "ingredient": "beef",
+        "quantity": 600.0,
+        "unit": "g",
+        "raw": "600 g tenderloin beef, cut into 2 x 1 x 1 cm pieces",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": 100.0,
+        "unit": "ml",
+        "raw": "100 ml water",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tbsp mirin",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp mirin",
+        "optional": false
+      },
+      {
+        "ingredient": "soy sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp light soy sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tbsp oyster sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tbsp oyster sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "water",
+        "quantity": 20.0,
+        "unit": "ml",
+        "raw": "2 tbsp cornstarch, dissolved with 20 ml water",
+        "optional": false
+      },
+      {
+        "ingredient": "salt",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tbsp salt",
+        "optional": false
+      },
+      {
+        "ingredient": "sugar",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tbsp sugar",
+        "optional": false
+      },
+      {
+        "ingredient": "tomato sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "5 tbsp tomato sauce",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Combine flours, yeast, sugar, water, and salt to make a dough.",
+      "Cover with plastic wrap, and rest the dough 10 minutes until expanded.",
+      "Heat the oil in a non-stick pan. Add the onion and capsicum, and sauté for 10 seconds.",
+      "Add the tenderloin and the water. Add the mirin, soy sauce, and oyster sauce.",
+      "Add the dissolved cornflour, salt, and sugar. Stir until well-mixed and slightly thickened.",
+      "Separate the solids from the extra sauce. Reserve the sauce to serve with the pizza.",
+      "Roll out the pizza dough to a 10 cm diameter. Spread the meat topping on top.",
+      "Bake pizza in the oven at 220°C for 20 minutes.",
+      "Serve hot with the dipping sauces."
+    ]
+  },
+  {
+    "id": "wikibooks-1dc8219163de",
+    "title": "Chicken Alfredo Pizza",
+    "servings": 4,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Chicken_Alfredo_Pizza",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": null,
+    "ingredients": [
+      {
+        "ingredient": "chicken",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 boneless, skinless chicken breasts",
+        "optional": false
+      },
+      {
+        "ingredient": "review: pizza dough (e.g. basic pizza crust or a pre-packaged dough for convenience)",
+        "quantity": null,
+        "unit": null,
+        "raw": "Pizza dough (e.g. Basic Pizza Crust or a pre-packaged dough for convenience)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 large jar of alfredo sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large jar of Alfredo sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 large package of shredded cheese (e.g. cheddar, mozzarella)",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 package of pepperoni",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 package of pepperoni",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Cut up the chicken breast, and sear/bake/grill it until it is cooked through.",
+      "Prepare the pizza crust and spread it on a medium-sized pizza pan.",
+      "Spread some Alfredo sauce on the crust, and top with cooked chicken. Repeat to make a few layers, then sprinkle shredded cheese on top.",
+      "Bake in oven at 350°F (175°C) for about 20 minutes or until the crust is done."
+    ]
+  },
+  {
+    "id": "wikibooks-a0013f079790",
+    "title": "Four in One Pizza",
+    "servings": 16,
+    "source": "https://en.wikibooks.org/wiki/Cookbook:Four_in_One_Pizza",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Wikibooks contributors. Dataset by Gosse Minnema (July 2024). Adapted for offmenu; original ingredient text retained.",
+    "time": "40 minutes",
+    "ingredients": [
+      {
+        "ingredient": "review: cooking spray",
+        "quantity": null,
+        "unit": null,
+        "raw": "Cooking spray",
+        "optional": false
+      },
+      {
+        "ingredient": "review: corn meal",
+        "quantity": null,
+        "unit": null,
+        "raw": "Corn meal",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 can refrigerated pizza crust",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 can refrigerated pizza crust",
+        "optional": false
+      },
+      {
+        "ingredient": "olive oil",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 teaspoons olive oil",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup (2 ounces) shredded cheddar cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "1½ cups (6 ounces) shredded mozzarella cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "onion",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon chopped red onion",
+        "optional": false
+      },
+      {
+        "ingredient": "chicken",
+        "quantity": null,
+        "unit": null,
+        "raw": "½ cup BBQ sauce mixed with shredded chicken",
+        "optional": false
+      },
+      {
+        "ingredient": "cheese",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon shredded (fresh) Parmesan cheese",
+        "optional": false
+      },
+      {
+        "ingredient": "tomato",
+        "quantity": null,
+        "unit": null,
+        "raw": "4–5 ¼-inch slices Roma (aka plum) tomatoes",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 1 tablespoon thin strips of fresh basil",
+        "quantity": null,
+        "unit": null,
+        "raw": "1 tablespoon thin strips of fresh basil",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tablespoons pizza sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons pizza sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 slices canadian bacon, cut in quarters",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 slices Canadian bacon, cut in quarters",
+        "optional": false
+      },
+      {
+        "ingredient": "review: ¼ cup drained chopped pineapple",
+        "quantity": null,
+        "unit": null,
+        "raw": "¼ cup drained chopped pineapple",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 2 tablespoons pizza sauce",
+        "quantity": null,
+        "unit": null,
+        "raw": "2 tablespoons pizza sauce",
+        "optional": false
+      },
+      {
+        "ingredient": "review: 8–10 slices pepperoni",
+        "quantity": null,
+        "unit": null,
+        "raw": "8–10 slices pepperoni",
+        "optional": false
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 425°F.",
+      "Spray cookie sheet with cooking spray.",
+      "Sprinkle lightly with cornmeal, if desired.",
+      "Unroll pizza dough and press out on cookie sheet into a 12 x 14-inch shape.",
+      "Brush dough with olive oil.",
+      "Bake crust for 6–8 minutes.",
+      "Sprinkle shredded cheddar cheese over the crust in a cross shape to divide crust in fourths.",
+      "In each corner, spread one of the above toppings (or one of your own!).",
+      "Sprinkle mozzarella cheese over the top of all.",
+      "Bake another 10–14 minutes, until cheese is bubbly but not burned.",
+      "Cut each corner into 4 squares."
+    ]
+  }
+]

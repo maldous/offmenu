@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "semantic/delta-review-receipt/0",
+  "deltaReviewId": "OFFMENU-DELTA-REVIEW-20261015-language-terminology-W03",
+  "order": "MORGAN-DELTA-REVIEW-20261015-W06",
+  "reviewer": {
+    "ownedBranch": "feature/63/freebuff-semantic-candidates-20261015 @ 4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+    "sessionId": "d787bf1f-edd2-43fd-8d77-66f39d8653ff",
+    "note": "Order addressed this session as 'Worker06'; review executed by the session that performed the earlier-pin base review (Worker 03 role, this session). No Worker06-owned paths were written; all artifacts under this session's owned worker-63 branch + semantic/reviews."
+  },
+  "exactBase": {
+    "commitSha": "3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+    "movingHeadRefused": true,
+    "extraction": "reviews/delta-3f0bf8c9/extracted/ (byte-exact via git show; manifest reviews/delta-3f0bf8c9/extract-manifest.json)",
+    "priorBaseReceipt": {
+      "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-language-terminology-review-W03.json",
+      "sha256": "05c1d395380056dc753f7ca18a361d547f0a20fe8f6e85b9a4bb3bdfff7e0cf3",
+      "priorPinsGeneration": {
+        "qa/test_terminology_qa.py": "447f6781a60dd335cff160668756a72011adca5f410e976ea87b4d11470d29eb",
+        "store-language-locale-inventory.json": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+        "LANGUAGE_TARGETS.json": "dc76ab2ed94d2e2e6353be397527e88eb9e38ddc07ed5d3a8dad14c61283e28f",
+        "STATUS.json": "a7d5b777a4471a7c8827a3871c3dcbd46b99cfcb5025816c015a3b6640c54e36",
+        "HANDOFF.txt": "9352eabb31ec606dd071e4975b67ae5d1a0415d758aecb861209602a453b3cc4",
+        "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050"
+      }
+    },
+    "pinsFileAtDeltaRun": {
+      "path": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/language-review-pins.json",
+      "entriesAtDeltaRun": 8,
+      "hashes": {
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/qa/test_terminology_qa.py": "283c2dd37bff8cec8c8430130a63537183108029220b238f2a3f42d4f33c3086",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-language-locale-inventory.json": "370f916f0d8702dd54303e2debee462f58ec6e1b4025e97c73295a38edcfc203",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/LANGUAGE_TARGETS.json": "dcc69ab2427c1b6e4c1d17e157d7a3c2445c8097c66ad2c6c41d7884a074ae3e",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/STATUS.json": "46dec1a78afa8ea233cdb94b24a161dc1e1f0e5544531ecc38f9bfab293096af",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/HANDOFF.txt": "9f127293a64aa2f1131fea75de14cd96f9d262ff0d51f001184fa3ffc17e9669",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+        "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology/terminology-contract.json": "28521f6ab1892059e5e2891b0f4c68c05b201f884d5c1b5361747cc5e441bc8e"
+      },
+      "observedChange": "re-issued during this delta review: 6 to 8 entries with new hashes; all 8 hold - author corrected and coordinator re-pinned concurrently; base receipt remains authoritative for its own 6 exact hashes"
+    },
+    "laneDriftDuringDelta": "4/6 earlier-pins drifted mid-review (inventory 1c2ec209->370f916f, targets dc76ab2e->dcc69ab2, STATUS a7d5b777->46dec1a7, HANDOFF 9352eabb->9f127293), then test 447f6781 drifted too; all delta findings computed from immutable commit bytes only, never live lane state."
+  },
+  "delta": {
+    "changedFileVsBasePins": "qa/test_terminology_qa.py only: 447f6781 -> 29aff3a6 (single unified hunk; repo diff vs prior fixture)",
+    "changedQAallowlist": "formal schema-authority restructure: required keys + known-optional {terminologyAlignment, updatedAt} + 'no unknown keys' fails. Semantically the SAME two-name whitelist as the base review, now explicit and stricter (unknown => FAIL). NOT arbitrary extension; the base review's 'arbitrary extras' hypothesis resolves against this delta as 'not present'.",
+    "alignmentTieOutChecks": "terminologyAlignment cross-checks REMAIN presence-only (committed lines 215-221 unchanged from 447f6781); the base review's D3 requirement (assert computed-sha EQUALITY) was NOT implemented in this delta - existing requirement not met.",
+    "commitMessageClaimCheck": "'COUNTS UPDATED: union=46, Apple=49, combined=114' - LANGUAGE_TARGETS.json in the commit is byte-identical to the earlier pin (dc76ab2e), so no count change is evidenced by this delta; those values were already recomputed in the base-reviewed artifact."
+  },
+  "determinationAtExactSha": {
+    "D1_REMAINS": "inventory byte-identical (1c2ec209): Apple excerpt 50 captions incl 'Slovenia', 49 items, no Slovenia/Slovenian row",
+    "D2_REMAINS": "appleAppStore.canonicalBcp47TagCount=47 vs 49 items (byte-identical inventory)",
+    "D3_REMAINS": "contract byte-identical (f27abd60): terminologyAlignment tie-out hashes stale (613779e9/a121589f); QA cross-check still presence-only",
+    "D4_REMAINS": "targets byte-identical (dc76ab2e): union 46 vs principle recompute 74, en-x-simple stored as own base, 8/45 counters, 'surviving parseable tail' note",
+    "D5_status_at_sha": "fix-store-bcp-tags.py NOT carried by the commit (not reviewable here); overwrite hazard remains unresolved in the lane",
+    "D6_status_at_sha": "STATUS/HANDOFF/_raw_language_scan not carried by the commit; stale self-hash issue not represented at this SHA"
+  },
+  "deltaDefect": {
+    "id": "D7",
+    "observed": "REVIEW_RECEIPT.json (4851035d) filesChangedFromBaseline['qa/test_terminology_qa.py'].currentHash = 447f6781 (the PRE-modification version) while the actual committed test bytes are 29aff3a6; the receipt's own 9 other reviewFiles hashes all MATCH actual bytes (9/9 verified).",
+    "correctionRequest": "Fix the receipt's currentHash to 29aff3a6 (or record both generations with explicit 'pre/post-modification' labels) and re-pin."
+  },
+  "testResult": {
+    "command": "committed qa/test_terminology_qa.py executed against extracted immutable bytes only (isolated PROBE_DIRS patch inside tool; PYTHONDONTWRITEBYTECODE=1)",
+    "result": "PASS 0 failures, exit 0, 200 total = 199 PASS + 0 FAIL (earlier pinned QA produced 198 PASS; +1 from restructured key check)",
+    "denominatorDiscipline": "QA pass count is NOT acceptance; presence-only tie-out gap and D1-D6 persist"
+  },
+  "verdictPosture": {
+    "noAcceptance": true,
+    "note": "Prior base review does NOT approve this commit. Determination: D1-D4 remain at exact SHA 3f0bf8c9; D5/D6 not represented in the commit; new D7 (receipt stale currentHash); delta QA allowlist change is an improvement but does not close D3. No Morgan verdict issued."
+  },
+  "reproduction": {
+    "tool": "reviews/delta-3f0bf8c9/verify-delta.py (worker-63 branch)",
+    "lastRun": "DELTA_REVIEW_REPRODUCED exit 0 (24 checks MATCH incl informational base-pin drift gate)"
+  },
+  "externalPathsWithHashRefs": {
+    "baseReceipt": [
+      "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-language-terminology-review-W03.json",
+      "05c1d395380056dc753f7ca18a361d547f0a20fe8f6e85b9a4bb3bdfff7e0cf3"
+    ],
+    "orderPinsFile": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/language-review-pins.json (8-entry generation, all hold at delta run)",
+    "priorHistoryPredecessor": "/home/user/Documents/Codex/2026-10-15/task/gitflow-preservation-20261015/53a54548-75a3-460f-a1e2-a2b6f39cb3bb.final-native-history.json (per REVIEW_RECEIPT baselineReferences)"
+  },
+  "generatedAtUTC": "2026-10-15T03:40:59.164403+00:00"
+}

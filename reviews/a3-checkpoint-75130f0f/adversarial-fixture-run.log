@@ -1,0 +1,20 @@
+sandbox: /tmp/a3adv-hk2gu7q3
+executed frozen align-places-common.py sha256 955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f
+executed frozen places_checkpoint.py  sha256 3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2
+  [PASS] interruption_raised -- adversarial interruption in close->commit window
+  observed after interruption: partial files=['part-00000.jsonl.gz', 'part-00001.jsonl.gz', 'part-00002.jsonl.gz'] orphan_sha256=d88197a2d357e27fcc4def923beaea206c55de7421e3e1e40cab70a72595fefc
+  [PASS] interruption_left_nonfirst_orphan -- ['part-00000.jsonl.gz', 'part-00001.jsonl.gz', 'part-00002.jsonl.gz']
+  [PASS] crash_left_lock_released -- lock still present after the in-process interruption
+  [PASS] no_final_output -- output directory exists after interruption
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/a3adv-hk2gu7q3/run/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+  [PASS] orphan_bytes_reused_unchanged -- before=d88197a2d357e27fcc4def923beaea206c55de7421e3e1e40cab70a72595fefc after=d88197a2d357e27fcc4def923beaea206c55de7421e3e1e40cab70a72595fefc
+{"assertions": 8, "elapsedSeconds": 0.02, "output": "/tmp/a3adv-hk2gu7q3/reference/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+  [PASS] resumed_package_byte_identical -- differing keys: []
+  [PASS] resumed_resource_count -- {'packets': 4, 'resources': 4, 'assertions': 8, 'relations': 0, 'translations': 0} vs {'packets': 4, 'resources': 4, 'assertions': 8, 'relations': 0, 'translations': 0}
+  [PASS] resumed_manifest_identical -- manifest fields differ: []
+{"assertions": 8, "elapsedSeconds": 0.02, "output": "/tmp/a3adv-hk2gu7q3/uncontrolled/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+  [observation] different-clock reference differs in package keys ['manifest.json'] and manifest fields ['createdAt', 'manifestPayloadSha256']; checkpoint retention kept createdAt='2026-10-15T05:27:27.943416+00:00'
+  [PASS] checkpoint_sidecar_not_in_package -- package keys: ['manifest.json', 'packets/part-00000.jsonl.gz', 'packets/part-00001.jsonl.gz', 'packets/part-00002.jsonl.gz', 'packets/part-00003.jsonl.gz']
+
+workdir retained for inspection: /tmp/a3adv-hk2gu7q3
+RESULT: ALL CHECKS PASSED

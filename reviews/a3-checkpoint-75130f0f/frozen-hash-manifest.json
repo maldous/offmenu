@@ -1,0 +1,31 @@
+{
+  "reviewId": "OFFMENU-A3-PLACES-CHECKPOINT-EXACT-REVIEW-W06",
+  "reviewedCommit": "75130f0f4da4a599b02e518f3da8a6d8e3e2516b",
+  "frozenFiles": {
+    "deps/align-places-common.py": {
+      "bytes": 27888,
+      "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f"
+    },
+    "deps/places-recovery-preflight.py": {
+      "bytes": 4945,
+      "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+    },
+    "deps/test_places_common.py": {
+      "bytes": 6855,
+      "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+    },
+    "places-checkpoint-recovery.md": {
+      "bytes": 4553,
+      "sha256": "3e59cc88e27d215354f735ccb58ff1efb3cdfee2eaddc77f5ead47338a0b210c"
+    },
+    "places_checkpoint.py": {
+      "bytes": 5632,
+      "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+    },
+    "test_places_checkpoint.py": {
+      "bytes": 16930,
+      "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2"
+    }
+  },
+  "receiptSha256": "cf9077c8a8f7c438d5e9b871f47f0f68f7a1068e7969b4eea384ae1685333bb8"
+}

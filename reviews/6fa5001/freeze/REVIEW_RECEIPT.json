@@ -1,0 +1,251 @@
+{
+  "review_candidate": "worker-01-qa-language-terminology-2026-10-15",
+  "purpose": "Independent review candidate: Worker 01 QA repair for language-terminology lane",
+  "provenanceStatus": {
+    "status": "HISTORICAL / SUPERSEDED",
+    "meaning": "This receipt documents the EARLIER worker-01 pickup candidate only. It is NOT the current candidate state and carries NO independent approval or signed verdict.",
+    "supersededBy": "REVIEW_RECEIPT_CORRECTIONS.json",
+    "immutableBase": "3f0bf8c9ca1f202d06e46bca41cba68a13e2dd22",
+    "doNotReadAsCurrent": [
+      "correctionStatus.newLaneHashes (historical; superseded by the successor receipt 'files' map)",
+      "correctionStatus.note (historical wording; the candidate dir now holds the SYNCED corrected copy, not a pre-correction frozen copy)",
+      "qaPostCorrectionResult (historical PENDING; superseded — see successor receipt verification block)",
+      "reviewFiles hashes (historical-at-pickup; 4 of 9 predate the D1-D6 corrections)"
+    ]
+  },
+  "generatedAt": "2026-10-15T03:23:06.543934+00:00",
+  "worker": {
+    "id": "da2ef323-8836-4110-a94d-d4dba3373b4c",
+    "role": "01",
+    "title": "OffMenu — Worker 01 (coverage/language owner)"
+  },
+  "task": {
+    "pickupId": "MORGAN-OFFMENU-20261015-0255-W01",
+    "branch": "feature/61/freebuff-language-qa-20261015",
+    "head": "b458b64",
+    "headFull": "b458b64cd465aecf37e60b530031c6cceaa5b0f2",
+    "headFullSource": "git rev-parse b458b64 -> b458b64cd465aecf37e60b530031c6cceaa5b0f2",
+    "headFullCorrectionNote": "Prior value 'b458b64abcdef' was an unfilled placeholder, not a real object name; replaced with the evidenced full SHA of prefix b458b64."
+  },
+  "originalLane": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology",
+    "note": "Owned language-terminology lane output. Preserved as-is; this review candidate is a COPY for independent review, not a modification of the pinned lane."
+  },
+  "reviewFiles": [
+    {
+      "path": "app-store-locale-snapshot.json",
+      "sha256": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "sizeBytes": 55622,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "staleVsCurrent": false
+    },
+    {
+      "path": "store-language-locale-inventory.json",
+      "sha256": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+      "sizeBytes": 54113,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+      "staleVsCurrent": true
+    },
+    {
+      "path": "store-locale-bcp47-extraction.json",
+      "sha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "sizeBytes": 38323,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "staleVsCurrent": false
+    },
+    {
+      "path": "qa/store-locale-bcp47-extraction.json",
+      "sha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "sizeBytes": 38323,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "staleVsCurrent": false
+    },
+    {
+      "path": "LANGUAGE_TARGETS.json",
+      "sha256": "dc76ab2ed94d2e2e6353be397527e88eb9e38ddc07ed5d3a8dad14c61283e28f",
+      "sizeBytes": 20184,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "04c25612d1cfb42b344e4378e3d1534998d7a5d13bbba0656568321bb928d539",
+      "staleVsCurrent": true
+    },
+    {
+      "path": "terminology-contract.json",
+      "sha256": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554",
+      "sizeBytes": 17571,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+      "staleVsCurrent": true
+    },
+    {
+      "path": "terminology-translation-bounds.json",
+      "sha256": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+      "sizeBytes": 7370,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+      "staleVsCurrent": false
+    },
+    {
+      "path": "terminology-fixtures.jsonl",
+      "sha256": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "sizeBytes": 7675,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "staleVsCurrent": false
+    },
+    {
+      "path": "qa/test_terminology_qa.py",
+      "sha256": "29aff3a642d0a05433285ecbb707db76b488f6f2bd4b25d889bbe4c7431becf9",
+      "sizeBytes": 16267,
+      "hashScope": "historical-at-pickup",
+      "currentAuthoritativeSha256": "cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9",
+      "staleVsCurrent": true
+    }
+  ],
+  "baselineReferences": {
+    "historicalHead": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+    "historicalBranch": "feature/61/freebuff-language-qa-20261015",
+    "predecessorWorker": "53a54548-75a3-460f-a1e2-a2b6f39cb3bb",
+    "predecessorHistory": "/home/user/Documents/Codex/2026-10-15/task/gitflow-preservation-20261015/53a54548-75a3-460f-a1e2-a2b6f39cb3bb.final-native-history.json"
+  },
+  "testCommand": "cd review-candidate/worker-01-qa-language-terminology/2026-10-15 && python3 qa/test_terminology_qa.py",
+  "testExpectedResult": "PASS 0 failures (verified by Worker 01 at generation time)",
+  "schemaAuthorityReview": {
+    "question": "Does relaxing exact contract keys to allow arbitrary extensions mask defects?",
+    "currentBehavior": "qa/test_terminology_qa.py checks contract keys present (required set must exist) and allows extra keys terminologyAlignment/updatedAt. Full exact match was the original check.",
+    "analysis": "The terminology-contract.json schema is defined by the contract file itself (schemaVersion: offmenu-terminology-contract/1). The contract is the schema authority. Adding terminologyAlignment (cross-reference to store language inventory) and updatedAt (audit timestamp) are additive non-breaking extensions that do not remove or alter required fields. The QA relaxation allows these two specific known extensions while still rejecting truly unexpected keys. This is a validated allowlist approach, not an open-ended 'accept anything' relaxation.",
+    "recommendation": "Replace the current 'allow terminologyAlignment/updatedAt' check with a formal allowlist of known optional keys. The required set remains exact-match enforced. This documents schema evolution policy and prevents silent acceptance of genuinely unintended keys.",
+    "proposedRequiredKeys": [
+      "schemaVersion",
+      "generatedAt",
+      "noteOnTimestamps",
+      "laneOwner",
+      "purpose",
+      "conceptIdSpace",
+      "domains",
+      "nativeNameCategories",
+      "terminologySeedFixtures",
+      "proposalGovernance",
+      "qaChecksThisContractEnables",
+      "uncertainties"
+    ],
+    "proposedOptionalAllowedKeys": [
+      "terminologyAlignment",
+      "updatedAt"
+    ],
+    "proposedCheck": "missing = required - actual; extra = actual - (required | optional); fail if missing or extra",
+    "implementedImprovement": {
+      "status": "applied in review candidate",
+      "description": "Replaced ad-hoc 'allow terminologyAlignment/updatedAt' with formal allowlist: required_keys (exact-match enforced) + known_optional_keys (terminologyAlignment, updatedAt). Unknown keys still fail.",
+      "proposedRequiredKeys": [
+        "schemaVersion",
+        "generatedAt",
+        "noteOnTimestamps",
+        "laneOwner",
+        "purpose",
+        "conceptIdSpace",
+        "domains",
+        "nativeNameCategories",
+        "terminologySeedFixtures",
+        "proposalGovernance",
+        "qaChecksThisContractEnables",
+        "uncertainties"
+      ],
+      "proposedOptionalAllowedKeys": [
+        "terminologyAlignment",
+        "updatedAt"
+      ],
+      "rationale": "The contract file (terminology-contract.json) is the schema authority via its schemaVersion field. Additive non-breaking extensions that do not remove/alter required fields are safe. The allowlist documents schema evolution policy and prevents silent acceptance of unintended keys while permitting known lane extensions."
+    }
+  },
+  "filesChangedFromBaseline": {
+    "qa/test_terminology_qa.py": {
+      "baselineHash": null,
+      "currentHash": "447f6781a60dd335cff160668756a72011adca5f410e976ea87b4d11470d29eb",
+      "note": "Modified by Worker 01: relaxed contract keys check, added terminologyAlignment cross-check"
+    },
+    "store-language-locale-inventory.json": {
+      "baselineHash": "613779e916c9257ed0def660e73f95465abc719aeb9df18897d4779913b4ac4c",
+      "currentHash": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+      "note": "Fixed 8 Apple canonicalBcp47 non-BCP47 values (Canada→en-CA, Brazil→pt-BR, etc.)"
+    },
+    "store-locale-bcp47-extraction.json": {
+      "baselineHash": "a121589fbcc7b179f825f9fc067ee9af339a8aba057b32b8e549fa85576fa96f",
+      "currentHash": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "note": "Converted from list format to dict format; complete 86+49 rows"
+    },
+    "qa/store-locale-bcp47-extraction.json": {
+      "baselineHash": "eca8443138f58247498561378bff7224f338819aee722f0ac90e9fbd075e08aa",
+      "currentHash": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "note": "Rebuilt: was 2 Google + 48 Apple rows; now 86 Google + 49 Apple rows"
+    },
+    "_raw_language_scan.json": {
+      "baselineHash": null,
+      "currentHash": null,
+      "note": "Rebuilt from actual scan: 25135 tagged, 32 distinct (predecessor showed 0/0/0). Not included in review candidate - output artifact only."
+    }
+  },
+  "unchangedPrerequisites": {
+    "app-store-locale-snapshot.json": {
+      "hash": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "note": "Source snapshot unchanged - authoritative store excerpt source"
+    },
+    "terminology-contract.json": {
+      "hash": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554",
+      "note": "Contract unchanged - schema authority"
+    },
+    "terminology-translation-bounds.json": {
+      "hash": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+      "note": "Translation bounds unchanged"
+    },
+    "terminology-fixtures.jsonl": {
+      "hash": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "note": "Fixtures unchanged"
+    }
+  },
+  "knownLimitations": [
+    "This candidate is a COPY of the lane output at a point in time. The original lane files remain the authoritative artifacts.",
+    "The QA script depends on the specific file set above. Adding/removing files may change the verdict.",
+    "The contract-keys relaxation is under review - see schemaAuthorityReview.",
+    "Fresh Google/Apple page fetch was not performed; store excerpt hashes reflect the retained snapshot, not live pages."
+  ],
+  "testActualResult": {
+    "runAt": "2026-10-15T03:23:06.543934+00:00",
+    "result": "PASS 0 failures",
+    "exitCode": 0,
+    "note": "Verified on review candidate with improved schema authority check (formal allowlist)"
+  },
+  "correctionStatus": {
+    "correctedBy": "Worker 01 correction pass 2026-10-15",
+    "reviewReceipt": "/home/user/src/offmenu-data/freebuff-parallel-20261015/semantic/reviews/20261015-language-terminology-review-W03.json",
+    "reviewSha256": "05c1d395380056dc753f7ca18a361d547f0a20fe8f6e85b9a4bb3bdfff7e0cf3",
+    "correctionsApplied": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "contract-allowedExtensions"
+    ],
+    "historical": true,
+    "noteHistorical": "Lane files (source of truth) corrected per Worker03 review. Review candidate directory retains PRE-CORRECTION frozen copy for review continuity.",
+    "note": "HISTORICAL note retained verbatim for lineage; it is NO LONGER TRUE. The candidate directory now holds the SYNCED corrected copy (not a pre-correction frozen copy). Current authoritative hashes = the 'files' map in REVIEW_RECEIPT_CORRECTIONS.json.",
+    "newLaneHashesHistorical": {
+      "store-language-locale-inventory.json": "370f916f0d8702dd54303e2debee462f58ec6e1b4025e97c73295a38edcfc203",
+      "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "terminology-contract.json": "28521f6ab1892059e5e2891b0f4c68c05b201f884d5c1b5361747cc5e441bc8e",
+      "LANGUAGE_TARGETS.json": "dcc69ab2427c1b6e4c1d17e157d7a3c2445c8097c66ad2c6c41d7884a074ae3e",
+      "STATUS.json": "46dec1a78afa8ea233cdb94b24a161dc1e1f0e5544531ecc38f9bfab293096af",
+      "HANDOFF.txt": "9f127293a64aa2f1131fea75de14cd96f9d262ff0d51f001184fa3ffc17e9669",
+      "qa/test_terminology_qa.py": "283c2dd37bff8cec8c8430130a63537183108029220b238f2a3f42d4f33c3086"
+    },
+    "newLaneHashesAuthority": "superseded: see REVIEW_RECEIPT_CORRECTIONS.json -> files (12 entries, verified against committed candidate bytes)"
+  },
+  "reviewFilesHashScopeNote": "reviewFiles hashes are the HISTORICAL pickup-time values. 4 of 9 predate the D1-D6 corrections and are marked staleVsCurrent=true. The authoritative current map is REVIEW_RECEIPT_CORRECTIONS.json -> files.",
+  "qaPostCorrectionResultHistorical": "PENDING — QA rerun after corrections",
+  "qaPostCorrectionResultCurrent": "PASS 0 failures on the SYNCED corrected candidate (see REVIEW_RECEIPT_CORRECTIONS.json -> verification). Author evidence only; NOT independent acceptance."
+}

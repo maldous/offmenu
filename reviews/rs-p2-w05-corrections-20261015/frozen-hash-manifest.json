@@ -1,0 +1,31 @@
+{
+  "reviewId": "OFFMENU-W05-RS1-RS4-P2-EXACT-DELTA-REREVIEW-W06",
+  "reviewedInputs": {
+    "manifest": "bd17f32501a8f28a85efd862519f4296ee4d8b4a2be53764e516afa58cdbceda",
+    "subsetReceiptPost": "92366d290772dd76dfa82a1968e77ef8cf881e29dde2a30650b157844a5888e4",
+    "docPostBlob": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af"
+  },
+  "frozenFiles": {
+    "manifest.json": {
+      "bytes": 7368,
+      "sha256": "bd17f32501a8f28a85efd862519f4296ee4d8b4a2be53764e516afa58cdbceda"
+    },
+    "repair-diagnosis-20261015-POST.md": {
+      "bytes": 14670,
+      "sha256": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af"
+    },
+    "repair-diagnosis-20261015-PRE.md": {
+      "bytes": 14484,
+      "sha256": "d25deb9c6448c16059f9e240a714220a80f20bff60b164864f5273bf0f4b3242"
+    },
+    "w02-repair-subset-candidate-receipt-POST.json": {
+      "bytes": 10429,
+      "sha256": "92366d290772dd76dfa82a1968e77ef8cf881e29dde2a30650b157844a5888e4"
+    },
+    "w02-storage-qualification.json": {
+      "bytes": 4928,
+      "sha256": "ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e"
+    }
+  },
+  "receiptSha256": "51deb57e70ccd1e1c749a4eb33adc259c6472a78a90c9b8cef6130041e200d05"
+}

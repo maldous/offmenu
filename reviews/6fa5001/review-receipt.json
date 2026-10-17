@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "semantic/exact-commit-review-receipt/0",
+  "reviewId": "OFFMENU-6FA5001-QA-LANGUAGE-TERMINOLOGY-EXACT-REVIEW-W06",
+  "order": "MORGAN-REASSIGNED-EXACT-QA6FA-REVIEW-W06 (sole reviewer; Controller withdrew 05's queued d9b0490b)",
+  "atUTC": "2026-10-15T05:09:10.887120+00:00",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWorktree": "/home/user/src/offmenu-workers/worker-63; writes only reviews/6fa5001/; peer paths read-only"
+  },
+  "toolInvocationErrorRecorded": {
+    "what": "my first git commands searched for '50017cb9af3cee3c2c15e51f3e92f5265a16e', dropping the leading '6f' from the requested commit",
+    "classification": "MY tool-invocation error; NOT a missing candidate, NOT an author defect",
+    "resolution": "correct full SHA 6fa50017cb9af3cee3c2c15e51f3e92f5265a16e (branch tip, 40 hex) used for every extraction below"
+  },
+  "candidate": {
+    "commit": "6fa50017cb9af3cee3c2c15e51f3e92f5265a16e",
+    "branch": "feature/61/freebuff-language-qa-20261015",
+    "parent": "5ac7d9aa502ecadfd657911f159b2823f5633ac5",
+    "cI": "2026-10-15T16:00:00+11:00",
+    "subject": "fix(worker-01): D7 receipt provenance + F4 QA input-root selection (05 delta re-review)",
+    "prefix": "review-candidate/worker-01-qa-language-terminology/2026-10-15/",
+    "delta": "EXACTLY the four expected files: REVIEW_RECEIPT.json (+74/-...), REVIEW_RECEIPT_CORRECTIONS.json, STATUS.json (2 lines), qa/test_terminology_qa.py (+70); 162 insertions / 23 deletions total",
+    "frozenFiles": 14,
+    "freezeManifest": "reviews/6fa5001/freeze/commit-tree-manifest.json",
+    "frozenPins": {
+      "LANGUAGE_TARGETS.json": "04c25612d1cfb42b344e4378e3d1534998d7a5d13bbba0656568321bb928d539",
+      "REVIEW_RECEIPT.json": "613bcceeee15420ba847327691c171aa42bdeb58f8d50ba5f322aabb8439b2ee",
+      "REVIEW_RECEIPT_CORRECTIONS.json": "979dd325cf2ef47b902eb0674fd8bfe7cd51d4ef48e4018efca36d333e13e9f9",
+      "STATUS.json": "1381a38739e691a2094fb74105122e97ed8750be326265d30c37a1e6e0e19dc2",
+      "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
+      "app-store-locale-snapshot.json": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855",
+      "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "qa/test_terminology_qa.py": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
+      "store-language-locale-inventory.json": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+      "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "terminology-contract.json": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+      "terminology-fixtures.jsonl": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca"
+    }
+  },
+  "reviewBasis": {
+    "baseCandidate": "5ac7d9aa502ecadfd657911f159b2823f5633ac5",
+    "reviewedByW05At": "e0ed4b55b3a5d2c963414ce8822e594af4158b5c",
+    "w05Receipt": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w05-qa-review-language-terminology-5ac7d9aa-20261015.json",
+    "w05ReceiptSha256": "c77b629e77df59fef398569d403c3742b039f939f54c9832877a58d43593452b",
+    "w05Verdict": "EXACT-VERIFIED-WITH-FINDINGS (D1-D6 verified; D7/F1-F3 provenance defects; F4 limitation)",
+    "note": "used W05's F1-F4/D1-D7 findings, not my own earlier 3f0bf8c9 notes"
+  },
+  "F_reconciliation": {
+    "F1_PRE_CORRECTION_AND_PENDING_AS_CURRENT": {
+      "verdict": "RECONCILED",
+      "evidence": "REVIEW_RECEIPT.json now opens with provenanceStatus {status: HISTORICAL / SUPERSEDED, supersededBy: REVIEW_RECEIPT_CORRECTIONS.json, doNotReadAsCurrent[]}. The old wording survives only as correctionStatus.noteHistorical with an explicit note: 'HISTORICAL note retained verbatim for lineage; it is NO LONGER TRUE...'. The PENDING claim was renamed qaPostCorrectionResultHistorical and a new qaPostCorrectionResultCurrent carries the PASS result."
+    },
+    "F2_headFull_placeholder": {
+      "verdict": "RECONCILED",
+      "evidence": "task.headFull = b458b64cd465aecf37e60b530031c6cceaa5b0f2 with headFullSource 'git rev-parse b458b64' and a headFullCorrectionNote. INDEPENDENTLY VERIFIED: git cat-file -t b458b64cd465aecf37e60b530031c6cceaa5b0f2 -> commit; git rev-parse b458b64 -> that SHA; it IS an ancestor of 6fa5001 and is distinct from both the base 5ac7d9aa and the current candidate; commit subject 'Worker 01 pickup: add .freuff/project-id and AGENTS.md'."
+    },
+    "F3_stale_reviewFiles_hashes": {
+      "verdict": "SUBSTANTIALLY RECONCILED - one residual stale 'currentAuthoritative' value and two unlabeled stale blocks remain (G1-G3)",
+      "evidence": "8 of 9 reviewFiles entries now carry a CORRECT currentAuthoritativeSha256 equal to the committed bytes; the 4 W05-flagged stale entries are marked staleVsCurrent=true with hashScope historical-at-pickup. But reviewFiles[qa/test_terminology_qa.py].currentAuthoritativeSha256 = cee8eed2... while the committed file is 60478fc2... (BAD)."
+    },
+    "F4_input_root_selection": {
+      "verdict": "RECONCILED (with one wording note G4)",
+      "evidence": "code (frozen bytes, qa/test_terminology_qa.py:36-77): ROOT = parents[1] of the script; candidate_has_inputs() gates on 9 required inputs; select_probe_dirs() returns [ROOT] 'candidate-root' when inputs are present, [LIVE,ROOT] 'live-opt-in' only when TERMINOLOGY_QA_ALLOW_LIVE_ROOT=1, else disclosed fallbacks. INDEPENDENTLY REPRODUCED: my run from the frozen tree printed ROOT=<my frozen tree> and ROOT_SELECTION_MODE candidate-root, and the two isolation checks PASSed (synthetic temp ROOT sentinel preferred; live alternative verified distinct)."
+    },
+    "D7_aggregate": {
+      "verdict": "MOSTLY CLOSED: F1 and F2 fully reconciled, F3 residual G1-G3"
+    }
+  },
+  "D_carryForward": {
+    "method": "byte comparison of every non-delta file against the base commit blobs (no guard/full-test re-run, per instruction)",
+    "result": "10 of 10 non-delta files UNCHANGED at base 5ac7d9aa (LANGUAGE_TARGETS, _raw_language_scan, app-store-locale-snapshot, qa/fix-store-bcp-tags.py, qa/store-locale-bcp47-extraction, store-language-locale-inventory, store-locale-bcp47-extraction, terminology-contract, terminology-fixtures, terminology-translation-bounds); the only changed files are exactly the four in the delta",
+    "meaning": "D1-D6 evidence files are inherited byte-identically; the D5 guard refusal probe was deliberately NOT re-run (byte-unchanged carry-forward + the frozen QA asserting the guard's declared defaults)",
+    "statusSelfHash": "STATUS.json carries deprecatedSelfHashes listing removed STATUS self-hashes with reasons, fileHashes excludes STATUS.json (12 keys verified), pinManifest points to the external non-self-referential language-review-pins.json; frozen QA assertions 226-228 confirm these on the committed bytes"
+  },
+  "independentQa": {
+    "command": "cd <frozen tree> && python3 qa/test_terminology_qa.py",
+    "exitCode": 0,
+    "result": "PASS 228 / FAIL 0",
+    "root": "my frozen tree (actual input root == frozen tree)",
+    "mode": "candidate-root",
+    "authorClaimMatch": "author reported 228 PASS / 0 FAIL / exit 0 and a fresh git-archive HEAD-tree pass - reproduced here from the frozen tree extracted from the commit",
+    "failedChecks": "NONE - every assertion passed; no failure was suppressed and the raw output is preserved at the run log",
+    "notRepeated": [
+      "D5 guard refusal probes (byte-unchanged carry-forward)",
+      "full lane suite (out of scope)"
+    ]
+  },
+  "reflectFindings": [
+    {
+      "id": "G1",
+      "severity": "minor-provenance",
+      "where": "REVIEW_RECEIPT.json reviewFiles[qa/test_terminology_qa.py].currentAuthoritativeSha256",
+      "observed": "claims cee8eed2410a020f71070f974bf1acb92a3b2d08054d9983436c30f6ce4159c9; committed bytes are 60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
+      "assessment": "NOT unambiguous. The entry is labeled staleVsCurrent=true, but the field name asserts current authority; a reader taking the field at face value is misled. This is the same defect class W05 raised as F3, left on the one entry the F4 pass itself changed.",
+      "request": "set currentAuthoritativeSha256 to 60478fc2... (or rename the field to historicalSha256 for stale entries and point current authority only at REVIEW_RECEIPT_CORRECTIONS.json -> files)."
+    },
+    {
+      "id": "G2",
+      "severity": "minor-provenance",
+      "where": "REVIEW_RECEIPT.json unchangedPrerequisites.terminology-contract.json",
+      "observed": "hash f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554 with note 'Contract unchanged - schema authority'; the committed terminology-contract.json is e0d1ee4da16180c4... and REVIEW_RECEIPT_CORRECTIONS.json's own files map lists it as changed to that value",
+      "assessment": "A block with no historical marker asserts 'unchanged' for a file the correction pass changed; it contradicts the successor receipt inside the same commit.",
+      "request": "mark the block historical or update/drop the terminology-contract entry."
+    },
+    {
+      "id": "G3",
+      "severity": "info",
+      "where": "REVIEW_RECEIPT.json provenanceStatus.doNotReadAsCurrent",
+      "observed": "the list names correctionStatus.newLaneHashes, correctionStatus.note, qaPostCorrectionResult and reviewFiles hashes - but NOT filesChangedFromBaseline or unchangedPrerequisites, which still hold stale values mislabeled as current (G1/G2, plus filesChangedFromBaseline.qa/test_terminology_qa.py.currentHash=447f6781... and .store-language-locale-inventory.json.currentHash=1c2ec209...)",
+      "assessment": "The top-level supersession is clear, but the enumeration of what to distrust is incomplete, so the unambiguous reading depends on the reader distrusting the WHOLE file rather than the listed fields - which is what the status says, yet the listed scope implies the rest is usable.",
+      "request": "extend doNotReadAsCurrent to every hash-bearing block in the file, or add a blanket statement that no field in REVIEW_RECEIPT.json is current authority."
+    },
+    {
+      "id": "G4",
+      "severity": "low",
+      "where": "qa/test_terminology_qa.py:40-41 comment vs :71-72 behavior",
+      "observed": "the comment/claim says a live-lane root is 'never a silent fallback', but when the candidate tree lacks required inputs the resolver returns [LIVE_LANE_ROOT] with mode 'live-fallback-candidate-incomplete' (:71-72) - a fallback that is disclosed in the printed mode but not gated by the env opt-in",
+      "assessment": "Behavior is defensible and self-disclosing, but the wording overstates the gate. In the actual candidate run the mode was candidate-root, so this does not affect the reviewed result.",
+      "request": "narrow the comment to 'no silent fallback while the candidate tree is complete', or gate the incomplete-input fallback behind the same env flag."
+    },
+    {
+      "id": "G5",
+      "severity": "info",
+      "where": "qa/test_terminology_qa.py:45",
+      "observed": "CANDIDATE_LANE_ROOT = LIVE_LANE_ROOT is assigned and never used elsewhere in the file (single occurrence)",
+      "assessment": "Dead alias pointing at the live lane; a future reader could mistake it for the candidate root. No behavioral effect.",
+      "request": "remove the alias or point it at ROOT with a comment."
+    }
+  ],
+  "selfConsistencyVsExternalTruth": {
+    "selfConsistency": "DATA/MANIFEST SELF-CONSISTENCY VERIFIED: every hash in REVIEW_RECEIPT_CORRECTIONS.json -> files (12 entries, incl. STATUS.json 1381a387 and qa/test_terminology_qa.py 60478fc2) equals the committed bytes; reviewFiles current values match the committed bytes for 8/9 entries; STATUS fileHashes lists 12 files excluding itself; QA computed cross-references (D3 inventorySha256/extractionSha256 equality, D4 union recomputation 74, counters 86/49) passed in my run.",
+    "externalTruth": "NOT VERIFIED and NOT CLAIMED: no store fetch was performed; the Google 86 / Apple 50 inventory counts, region captions and BCP47 canonicalizations are internal-consistency and retained-snapshot evidence only, not live-store truth. The candidate's own knownLimitations already say the store excerpts reflect the retained snapshot, not live pages.",
+    "counts": "Google 86 canonical / 0 unresolved / 86 items; Apple 49 canonical / 1 unresolvedCaption (Slovenia) / 50 items (D2 separation present)"
+  },
+  "verdict": {
+    "status": "EXACT-VERIFIED-WITH-RESIDUAL-PROVENANCE-FINDINGS",
+    "scope": "four-file delta at 6fa5001 against base 5ac7d9aa; F1/F2 reconciled; F3 substantially reconciled with G1-G3 residual; F4 reconciled with G4 wording note; D1-D6 inherited byte-identically; independent QA 228 PASS / 0 FAIL / exit 0",
+    "notAcceptance": "Author evidence only; this is one reviewer's receipt. No acceptance, no admission, no glossary freeze, no count relabeling, no modification of worker-01/04/05 files."
+  },
+  "scopedRecommendationForMorgan": "F1/F2/F4 and the four-file delta are exact-verified with a clean independent QA (228/0, exit 0) and byte-unchanged D1-D6 carry-forward. Recommend CONDITIONAL acceptance of this delta subject to ONE minimal provenance correction: G1 (the reviewFiles qa/test_terminology_qa.py currentAuthoritativeSha256 stale value) plus G2/G3 labeling completeness - i.e. finish the F3 reconciliation the delta set out to do. G4/G5 are optional wording/cleanup.",
+  "limits": [
+    "No external/live-store truth check (no fetch, by instruction).",
+    "One focused QA run only; the D5 refusal probes and the full lane suite were not re-run (byte-unchanged carry-forward justifies inheritance).",
+    "The candidate tree is a copy of the lane output; the lane itself is a separate artifact and was not modified.",
+    "No independent re-derivation of the Google/Apple inventories beyond the QA's own computed cross-references."
+  ],
+  "generatedAtUTC": "2026-10-15T05:09:10.887120+00:00"
+}

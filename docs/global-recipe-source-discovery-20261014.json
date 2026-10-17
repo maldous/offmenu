@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "offmenu-global-recipe-source-discovery-report/1",
+  "releaseId": "recipe-global-discovery-20261014",
+  "status": "bounded-source-evidence-acquired-not-recipe-admitted",
+  "scope": "Primary collection evidence for future recipe-boundary work. No recipe text, OCR, image, country, dietary, ingredient, quantity, or cultural-origin claim is admitted by this report.",
+  "duplicateCheck": {
+    "checked": [
+      "docs/world-recipe-research-20261014.json",
+      "docs/source-delivery-ledger.json",
+      "/home/user/src/offmenu-data historical source holdings"
+    ],
+    "result": "Neither Wellcome work ID nor IIIF item ID was present in the retained recipe corpus or ledger."
+  },
+  "acquired": [
+    {
+      "work": "The Indian cookery book : a practical handbook to the kitchen in India",
+      "workUrl": "https://wellcomecollection.org/works/gu8n9ens",
+      "metadataUrl": "https://api.wellcomecollection.org/catalogue/v2/works/gu8n9ens",
+      "iiifManifestUrl": "https://iiif.wellcomecollection.org/presentation/v3/b2152824x",
+      "files": {
+        "metadata": "10dd4c65a02f0aad13131347e0c44cc7539f9bfe12b0d0da0fdad5a874c3d4c5",
+        "manifest": "c4a950bef9e9deb570c2cd7288209405c6f6b3c6d6461ca1e18767042a9b19aa"
+      },
+      "sourceDeclaredContext": "The provider manifest names subject ‘Indian cooking’ and publication ‘Calcutta : Wyman & Co., [1869?]’. This is metadata context, not a country, community, or representative-cuisine inference.",
+      "rights": "The IIIF manifest declares CC Public Domain Mark and includes Wellcome's statement that it is free of known copyright restrictions. This is retained as the provider's rights assertion; it is not an independent worldwide title-chain or jurisdictional clearance.",
+      "nextAction": "Review page-level recipe boundaries, page language and OCR/image fidelity before admitting any recipe variant."
+    },
+    {
+      "work": "The English-Chinese cookery book : containing 200 receipts in English and Chinese",
+      "workUrl": "https://wellcomecollection.org/works/caqdp57k",
+      "metadataUrl": "https://api.wellcomecollection.org/catalogue/v2/works/caqdp57k",
+      "iiifManifestUrl": "https://iiif.wellcomecollection.org/presentation/v3/b28079887",
+      "files": {
+        "metadata": "4a3fedc2790b2ee473b2fd5150751846de5e52a27712b8faa368096297664b1b",
+        "manifest": "33bf92074ebb6d5bc4843eca9ad55e842e6a98934e97b067e5968a0dc730828d"
+      },
+      "sourceDeclaredContext": "The title itself says English and Chinese; the manifest lists subjects ‘Cooking’ and ‘China’ and 1890 Hong Kong publication metadata. Neither publisher language nor cultural representation is inferred beyond those citations.",
+      "rights": "The IIIF manifest declares CC Public Domain Mark with Wellcome's provider statement. Preserve that statement, provider attribution and the edition identity; obtain page-level evidence before recipe use.",
+      "nextAction": "Identify bilingual recipe pairs without treating English and Chinese labels as automatic equivalents or translations."
+    }
+  ],
+  "qualifiedLeadsNotAcquired": [
+    {
+      "workUrl": "https://www.loc.gov/item/28007521/",
+      "title": "Mandarin chop suey cook book",
+      "provider": "Library of Congress",
+      "sourceDeclaredContext": "Library of Congress catalogues it under ‘Cooking, Chinese’, dates it 1928 and lists English/Engchi.",
+      "rightsEvidence": "The provider page states the collection books are public domain and free to use and reuse.",
+      "blocker": "The direct catalogue API returned HTTP 403 to the acquisition client; the linked provider PDF declared 41,168,329 bytes, above this task's 20 MiB cap. The provider's United States public-domain statement must not be elevated to a worldwide clearance claim."
+    },
+    {
+      "workUrl": "https://www.loc.gov/item/14022680/",
+      "title": "California Mexican-Spanish cook book; selected Mexican and Spanish recipes",
+      "provider": "Library of Congress",
+      "sourceDeclaredContext": "Library of Congress catalogues it under ‘Cooking, Mexican’, dates it 1914 and identifies the text language as English.",
+      "rightsEvidence": "The provider page states the collection books are public domain and free to use and reuse.",
+      "blocker": "Not acquired in this bounded pass: source-specific byte size, revision artifact and page-level extraction were not yet verified. A United States provider statement alone is not a global reuse finding."
+    }
+  ],
+  "schemaGapProposals": [
+    {
+      "name": "DigitisedWorkAndCanvasEvidence",
+      "need": "Represent a source work and its immutable IIIF manifest/canvas separately from later RecipeVariant extraction, with page-level source hashes and OCR/image-review state."
+    },
+    {
+      "name": "ProviderRightsAssertionScope",
+      "need": "Preserve the provider's rights statement, jurisdiction/scope and conflict with any printed edition notice without treating either as a universal legal conclusion."
+    },
+    {
+      "name": "BilingualEditionRelationship",
+      "need": "Record source-declared bilingual edition context without asserting that recipe titles, ingredients or instructions are translations or equivalent formulations."
+    }
+  ],
+  "artifacts": {
+    "directory": "/home/user/src/offmenu-data/recipe-global-discovery-20261014",
+    "sourceCount": 2,
+    "rawRecipeRecords": 0,
+    "acquiredBytes": 1234508,
+    "byteCap": 20971520
+  }
+}

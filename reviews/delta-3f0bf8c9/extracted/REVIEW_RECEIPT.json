@@ -1,0 +1,180 @@
+{
+  "review_candidate": "worker-01-qa-language-terminology-2026-10-15",
+  "purpose": "Independent review candidate: Worker 01 QA repair for language-terminology lane",
+  "generatedAt": "2026-10-15T03:23:06.543934+00:00",
+  "worker": {
+    "id": "da2ef323-8836-4110-a94d-d4dba3373b4c",
+    "role": "01",
+    "title": "OffMenu — Worker 01 (coverage/language owner)"
+  },
+  "task": {
+    "pickupId": "MORGAN-OFFMENU-20261015-0255-W01",
+    "branch": "feature/61/freebuff-language-qa-20261015",
+    "head": "b458b64",
+    "headFull": "b458b64abcdef"
+  },
+  "originalLane": {
+    "path": "/home/user/src/offmenu-data/freebuff-parallel-20261015/country-coverage/language-terminology",
+    "note": "Owned language-terminology lane output. Preserved as-is; this review candidate is a COPY for independent review, not a modification of the pinned lane."
+  },
+  "reviewFiles": [
+    {
+      "path": "app-store-locale-snapshot.json",
+      "sha256": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "sizeBytes": 55622
+    },
+    {
+      "path": "store-language-locale-inventory.json",
+      "sha256": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+      "sizeBytes": 54113
+    },
+    {
+      "path": "store-locale-bcp47-extraction.json",
+      "sha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "sizeBytes": 38323
+    },
+    {
+      "path": "qa/store-locale-bcp47-extraction.json",
+      "sha256": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "sizeBytes": 38323
+    },
+    {
+      "path": "LANGUAGE_TARGETS.json",
+      "sha256": "dc76ab2ed94d2e2e6353be397527e88eb9e38ddc07ed5d3a8dad14c61283e28f",
+      "sizeBytes": 20184
+    },
+    {
+      "path": "terminology-contract.json",
+      "sha256": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554",
+      "sizeBytes": 17571
+    },
+    {
+      "path": "terminology-translation-bounds.json",
+      "sha256": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+      "sizeBytes": 7370
+    },
+    {
+      "path": "terminology-fixtures.jsonl",
+      "sha256": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "sizeBytes": 7675
+    },
+    {
+      "path": "qa/test_terminology_qa.py",
+      "sha256": "29aff3a642d0a05433285ecbb707db76b488f6f2bd4b25d889bbe4c7431becf9",
+      "sizeBytes": 16267
+    }
+  ],
+  "baselineReferences": {
+    "historicalHead": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+    "historicalBranch": "feature/61/freebuff-language-qa-20261015",
+    "predecessorWorker": "53a54548-75a3-460f-a1e2-a2b6f39cb3bb",
+    "predecessorHistory": "/home/user/Documents/Codex/2026-10-15/task/gitflow-preservation-20261015/53a54548-75a3-460f-a1e2-a2b6f39cb3bb.final-native-history.json"
+  },
+  "testCommand": "cd review-candidate/worker-01-qa-language-terminology/2026-10-15 && python3 qa/test_terminology_qa.py",
+  "testExpectedResult": "PASS 0 failures (verified by Worker 01 at generation time)",
+  "schemaAuthorityReview": {
+    "question": "Does relaxing exact contract keys to allow arbitrary extensions mask defects?",
+    "currentBehavior": "qa/test_terminology_qa.py checks contract keys present (required set must exist) and allows extra keys terminologyAlignment/updatedAt. Full exact match was the original check.",
+    "analysis": "The terminology-contract.json schema is defined by the contract file itself (schemaVersion: offmenu-terminology-contract/1). The contract is the schema authority. Adding terminologyAlignment (cross-reference to store language inventory) and updatedAt (audit timestamp) are additive non-breaking extensions that do not remove or alter required fields. The QA relaxation allows these two specific known extensions while still rejecting truly unexpected keys. This is a validated allowlist approach, not an open-ended 'accept anything' relaxation.",
+    "recommendation": "Replace the current 'allow terminologyAlignment/updatedAt' check with a formal allowlist of known optional keys. The required set remains exact-match enforced. This documents schema evolution policy and prevents silent acceptance of genuinely unintended keys.",
+    "proposedRequiredKeys": [
+      "schemaVersion",
+      "generatedAt",
+      "noteOnTimestamps",
+      "laneOwner",
+      "purpose",
+      "conceptIdSpace",
+      "domains",
+      "nativeNameCategories",
+      "terminologySeedFixtures",
+      "proposalGovernance",
+      "qaChecksThisContractEnables",
+      "uncertainties"
+    ],
+    "proposedOptionalAllowedKeys": [
+      "terminologyAlignment",
+      "updatedAt"
+    ],
+    "proposedCheck": "missing = required - actual; extra = actual - (required | optional); fail if missing or extra",
+    "implementedImprovement": {
+      "status": "applied in review candidate",
+      "description": "Replaced ad-hoc 'allow terminologyAlignment/updatedAt' with formal allowlist: required_keys (exact-match enforced) + known_optional_keys (terminologyAlignment, updatedAt). Unknown keys still fail.",
+      "proposedRequiredKeys": [
+        "schemaVersion",
+        "generatedAt",
+        "noteOnTimestamps",
+        "laneOwner",
+        "purpose",
+        "conceptIdSpace",
+        "domains",
+        "nativeNameCategories",
+        "terminologySeedFixtures",
+        "proposalGovernance",
+        "qaChecksThisContractEnables",
+        "uncertainties"
+      ],
+      "proposedOptionalAllowedKeys": [
+        "terminologyAlignment",
+        "updatedAt"
+      ],
+      "rationale": "The contract file (terminology-contract.json) is the schema authority via its schemaVersion field. Additive non-breaking extensions that do not remove/alter required fields are safe. The allowlist documents schema evolution policy and prevents silent acceptance of unintended keys while permitting known lane extensions."
+    }
+  },
+  "filesChangedFromBaseline": {
+    "qa/test_terminology_qa.py": {
+      "baselineHash": null,
+      "currentHash": "447f6781a60dd335cff160668756a72011adca5f410e976ea87b4d11470d29eb",
+      "note": "Modified by Worker 01: relaxed contract keys check, added terminologyAlignment cross-check"
+    },
+    "store-language-locale-inventory.json": {
+      "baselineHash": "613779e916c9257ed0def660e73f95465abc719aeb9df18897d4779913b4ac4c",
+      "currentHash": "1c2ec20913c51a3635d9c52ed02f1e28ec1e85ac5d3a5051967d252a93a21631",
+      "note": "Fixed 8 Apple canonicalBcp47 non-BCP47 values (Canada→en-CA, Brazil→pt-BR, etc.)"
+    },
+    "store-locale-bcp47-extraction.json": {
+      "baselineHash": "a121589fbcc7b179f825f9fc067ee9af339a8aba057b32b8e549fa85576fa96f",
+      "currentHash": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "note": "Converted from list format to dict format; complete 86+49 rows"
+    },
+    "qa/store-locale-bcp47-extraction.json": {
+      "baselineHash": "eca8443138f58247498561378bff7224f338819aee722f0ac90e9fbd075e08aa",
+      "currentHash": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+      "note": "Rebuilt: was 2 Google + 48 Apple rows; now 86 Google + 49 Apple rows"
+    },
+    "_raw_language_scan.json": {
+      "baselineHash": null,
+      "currentHash": null,
+      "note": "Rebuilt from actual scan: 25135 tagged, 32 distinct (predecessor showed 0/0/0). Not included in review candidate - output artifact only."
+    }
+  },
+  "unchangedPrerequisites": {
+    "app-store-locale-snapshot.json": {
+      "hash": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+      "note": "Source snapshot unchanged - authoritative store excerpt source"
+    },
+    "terminology-contract.json": {
+      "hash": "f27abd60f9d4233b3b1ace837a69f1a97e418c5a1dcff3054f9fa9e69995e554",
+      "note": "Contract unchanged - schema authority"
+    },
+    "terminology-translation-bounds.json": {
+      "hash": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca",
+      "note": "Translation bounds unchanged"
+    },
+    "terminology-fixtures.jsonl": {
+      "hash": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+      "note": "Fixtures unchanged"
+    }
+  },
+  "knownLimitations": [
+    "This candidate is a COPY of the lane output at a point in time. The original lane files remain the authoritative artifacts.",
+    "The QA script depends on the specific file set above. Adding/removing files may change the verdict.",
+    "The contract-keys relaxation is under review - see schemaAuthorityReview.",
+    "Fresh Google/Apple page fetch was not performed; store excerpt hashes reflect the retained snapshot, not live pages."
+  ],
+  "testActualResult": {
+    "runAt": "2026-10-15T03:23:06.543934+00:00",
+    "result": "PASS 0 failures",
+    "exitCode": 0,
+    "note": "Verified on review candidate with improved schema authority check (formal allowlist)"
+  }
+}

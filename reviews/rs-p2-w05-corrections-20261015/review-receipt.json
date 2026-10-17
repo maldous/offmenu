@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "offmenu/rs-p2-correction-rereview-receipt/0",
+  "reviewId": "OFFMENU-W05-RS1-RS4-P2-EXACT-DELTA-REREVIEW-W06",
+  "order": "MORGAN-ONE-RS-P2-EXACT-DELTA-REREVIEW-W06",
+  "atUTC": "2026-10-15T05:17:48.116876+00:00",
+  "reviewer": {
+    "identity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "ownWrites": "reviews/rs-p2-w05-corrections-20261015/ only (slot 63); all author/peer paths read-only"
+  },
+  "immutableInputs": {
+    "docWordingCommit": {
+      "sha": "a7c27b99a6f50fad82e7322df25aee4390896fb4",
+      "branch": "bugfix/62/freebuff-repair-diagnosis-20261015 (slot 62)",
+      "stat": "1 file changed: docs/repair-diagnosis-20261015.md +3/-1",
+      "blobBefore": "adc82606cb3db396eddba1f1857c4d3544372ba5",
+      "blobAfter": "fe232b4834b6cf0f591516bcf216628d8222a358",
+      "verified": "frozen POST doc sha256 a4ff0712… == declared postSha256; frozen PRE doc sha256 d25deb9c… == declared preSha256"
+    },
+    "manifestCopyCommit": {
+      "sha": "75130f0f4da4a599b02e518f3da8a6d8e3e2516b",
+      "verified": "only the manifest file added; committed bytes == frozen manifest bytes bd17f325… (path in repo: docs/reviews/w05-rs-p2-corrected-receipts-manifest-20261015.json)"
+    },
+    "externalManifest": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w05-rs-p2-corrected-receipts-manifest-20261015.json",
+      "sha256": "bd17f32501a8f28a85efd862519f4296ee4d8b4a2be53764e516afa58cdbceda",
+      "matchesOrderDeclared": true
+    },
+    "correctedSubsetReceipt": {
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-repair-subset-candidate-receipt-20261015.json",
+      "sha256": "92366d290772dd76dfa82a1968e77ef8cf881e29dde2a30650b157844a5888e4",
+      "jsonValid": true,
+      "matchesOrderDeclared": true
+    },
+    "docPostBlobSha256": {
+      "declared": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af",
+      "recomputed": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af",
+      "match": true
+    },
+    "priorReviewBasis": {
+      "reviewCommit": "be703f191032a48848db2f824f00a13c2a546a4b",
+      "reviewReceipt": "reviews/53e4b344/review-receipt.json",
+      "reviewReceiptSha256": "c339537cfa47ab1da4a8e8005728f1d443b9acf93754afc4b2d001f68dc70dbf",
+      "preCorrectionAuthorReceiptSha256": "2fb8a923b39f1ae8b72f84560b694fefe7b40697260d17bee67603c5f57eba4a",
+      "preCorrectionDocSha256": "d25deb9c6448c16059f9e240a714220a80f20bff60b164864f5273bf0f4b3242",
+      "quotedPreState": "my prior receipt's findings quote the pre-correction wording verbatim (RS-1 cited '…/common-bulk-food-20261014/manifest.json (byte sha256 78f7625b…)' and RS-3 quoted 'verifies pins before and after copy'), corroborating the described before-state"
+    },
+    "freeze": {
+      "dir": "reviews/rs-p2-w05-corrections-20261015/freeze",
+      "files": {
+        "manifest.json": {
+          "bytes": 7368,
+          "sha256": "bd17f32501a8f28a85efd862519f4296ee4d8b4a2be53764e516afa58cdbceda"
+        },
+        "repair-diagnosis-20261015-POST.md": {
+          "bytes": 14670,
+          "sha256": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af"
+        },
+        "repair-diagnosis-20261015-PRE.md": {
+          "bytes": 14484,
+          "sha256": "d25deb9c6448c16059f9e240a714220a80f20bff60b164864f5273bf0f4b3242"
+        },
+        "w02-repair-subset-candidate-receipt-POST.json": {
+          "bytes": 10429,
+          "sha256": "92366d290772dd76dfa82a1968e77ef8cf881e29dde2a30650b157844a5888e4"
+        },
+        "w02-storage-qualification.json": {
+          "bytes": 4928,
+          "sha256": "ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e"
+        }
+      }
+    }
+  },
+  "checksPerformed": {
+    "mechanical": [
+      "sha256 of every declared artifact vs frozen and committed copies",
+      "git blob ids for PRE/POST doc blobs",
+      "git show of the manifest-copy commit's blob vs frozen bytes",
+      "byte comparison of all four candidate-namespace checkpoints",
+      "sha256 of every packet asset in the candidate namespace",
+      "candidate-namespace mtime scan for post-batch writes",
+      "live /var/log/kern.log EDAC/MCE grep (read-only)",
+      "reproduction of the manifest payload-digest convention from the frozen builder"
+    ],
+    "notPerformed": [
+      "no repair run, no corruption experiment, no fault test, no broad suite, no store/network fetch, no rebuild of historical intermediates"
+    ]
+  },
+  "findings": [
+    {
+      "id": "RS-1",
+      "verdict": "VERIFIED-CORRECT",
+      "where": "receipt subset.assetPinsVerbatimFrom",
+      "evidence": "source package manifest /home/user/src/offmenu-data/common-bulk-food-20261014/manifest.json byte sha256 = 5b88f9e3… (matches declared); candidate input manifest /home/user/src/offmenu-data/worker-062-repair-candidate-20261015/input/manifest.json byte sha256 = 78f7625b… (matches declared); both are named explicitly in the corrected text and each is labeled 'byte sha256'. The SOURCE manifest genuinely carries all three selected pins verbatim (part-00000 bd32d73c bytes 1163998, part-05500 2b49b00c bytes 1882701, part-09500 38bdbd63 bytes 728341) — so 'assetPinsVerbatimFrom SOURCE' is substantively true, not just a corrected label.",
+      "conventionCheck": "declared field 'manifestSha256' 8d33a1f4… is NOT a byte hash and NOT a sorted-canonical hash — it reproduces exactly as the builder's manifest_payload_digest: sha256(json.dumps(payload, ensure_ascii=True, separators=(',',':')), order preserved, 'manifestSha256' excluded) [frozen builder lines 34-36]. Convention difference only — NOT corruption. Byte hash 78f7625b and payload digest 8d33a1f4 are both correct for their respective conventions."
+    },
+    {
+      "id": "RS-2",
+      "verdict": "VERIFIED-HONEST (exactly as narrowed, no overstatement remains)",
+      "where": "receipt resumabilityEvidence + corruptionEvidence.case2",
+      "evidence": "all four checkpoint files (output/, output-partial/, output-corrupt2/, output-corrupt/) are byte-identical to df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6 with complete=true and all 3 assets journaled — so the original trimmed pre-resume intermediate is indeed NOT retained, exactly as the correction states. In output-corrupt2 the checkpoint journals part-05500 at its GOOD sha 91aa9005… while the actual retained bytes of that asset are 59d877d6… (declared corrupt sha prefix 59d877d6 matches) — therefore the documented completed-output/legacy-partial refusals do trigger first on retained state and the 'unjournaled truncated asset' precondition cannot be reproduced from retained bytes. That is precisely what the correction now claims; the earlier narrative is no longer asserted. Observed outcomes (exit 1, corrupt file untouched, no manifest) are labeled as observations; 'only the byte-identical OUTCOME is independently reproducible' is accurate (resumed outputs 3ca07524/91aa9005/700e6544 byte-equal first-run outputs). No fabricated intermediates; no new run (candidate namespace has no writes after the original 15:19-15:23 window)."
+    },
+    {
+      "id": "RS-3",
+      "verdict": "VERIFIED-EXACT",
+      "where": "receipt subset.builder",
+      "evidence": "frozen builder scripts/build-repair-subset-candidate-20261015.py lines 50-56: source bytes are first checked against the manifest entry ('source pin mismatch before copy'), then shutil.copyfile, then 'if target.read_bytes() != data: copy is not byte-exact' — a comparison against the pin-verified IN-MEMORY source bytes, not a second check against manifest pins. The corrected receipt wording says exactly this. Builder bytes unchanged since my prior review (42bcf89a… live == frozen)."
+    },
+    {
+      "id": "RS-4",
+      "verdict": "VERIFIED",
+      "where": "receipt sourceComparison.tool + doc",
+      "evidence": "the receipt documents the M1 checkout layout requirement (scripts/ beside corpus/) and the doc independently documents it at lines 86-91 as review finding M1; no code change is declared and none occurred (delta = receipt + doc only)."
+    },
+    {
+      "id": "P2",
+      "verdict": "VERIFIED against the live retained log",
+      "where": "docs/repair-diagnosis-20261015.md kernel-log bullet",
+      "evidence": "live /var/log/kern.log (43250 lines, read-only): exactly ONE EDAC line exists — '2026-10-14T15:45:38.245883+11:00 foo kernel: EDAC MC: Ver: 3.0.0' — matching the documented banner timestamp; count of MCE/machine-check/hardware-error/EDAC-error lines = 0. The doc's corrected wording ('zero MCE/EDAC *error* entries' + the single EDAC line is the driver version banner, not counted as an error) is therefore literally true. Note the only substring 'Mce' hits are apparmor audit lines whose random semaphore names contain 'Mce' (sem.3j7Mce / sem.HmCev6 / sem.WsMcEr) — incidental, not error entries. The doc diff is a single 3+/1- hunk; the db07 N1 appendix (CPU-10-attributed vs explicitly UNATTRIBUTED GPF distinction, hypothesis status UNPROVEN) is byte-unchanged and preserves both distinctions verbatim."
+    }
+  ],
+  "lineageAndTimestamps": {
+    "supersession": "priorReceiptVersionsRetained records dbe1bdd8… (first version, nominal atUTC 04:35:00Z) and 2fb8a923… (post-precision-correction, the version I reviewed) with notes, and the corrected receipt carries a rsReviewCorrections20261015 block naming the basis receipt (c339537c…), the four applied dispositions, and an explicit historyPolicy ('supersession recorded rather than silent rewrite'). Lineage is coherent and self-consistent.",
+    "correctedAtUTCEvidence": "declared correctedAtUTC 2026-10-15T04:32:30Z evidenced by doc commit db07b5b committer time 2026-10-15T15:32:30+11:00 = 04:32:30Z — INDEPENDENTLY VERIFIED exact (git show -s %cI db07b5b).",
+    "atUTCEvidence": "atUTC 04:24:04Z is sourced from a pre-correction filesystem mtime; that mtime is no longer observable now (the receipt was rewritten at 16:02:01 +1100), so this single evidence chain is author-recorded rather than re-checkable — but it is COHERENT with the retained namespace write window (15:19-15:23 local) and with observed completion ~04:24Z.",
+    "noNominalStamps": "the corrected receipt and manifest both state that superseded nominal stamps were corrected rather than retained; the only round-number values present are explicitly labeled as the superseded originals (atUTCCorrection.correctedFrom 04:35:00Z). No nominal stamp is presented as evidence.",
+    "unchangedArtifactsVerified": {
+      "storageReceipt": {
+        "sha256": "ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e",
+        "match": true
+      },
+      "candidateNamespace": "no bytes written by this batch (latest mtime 15:23, before the 15:58-16:04 correction window)",
+      "semanticLaneAccepted": {
+        "STATUS.json": {
+          "sha256": "6be5e0ca0a5cfbbbc7d5630b4942907b0d32be3638459f500ce581441072f13c",
+          "match": true
+        },
+        "HANDOFF.txt": {
+          "sha256": "201b0d311ded9af3298a5085cfd40401cd8f8c99154085525915445c80ad8765",
+          "match": true
+        },
+        "morganAcceptanceFile": {
+          "sha256": "05a5cf7f66194136486adea5dd333dd8fc4e670ac2d0b4907624f7343c5a974c",
+          "match": true
+        },
+        "note": "hashes only re-verified; the W1-W4 semantic review was NOT repeated"
+      }
+    }
+  },
+  "residualFindings": [
+    {
+      "id": "S1",
+      "severity": "low (naming/provenance precision)",
+      "where": "receipt rsReviewCorrections20261015.priorReceiptVersionsRetained and manifest immutableBasis/priorVersionAlsoRetainedInLineage",
+      "observed": "the block records hashes and notes only. A bounded search (coordinator dir, the whole offmenu-data tree to depth 4, worker-05 and worker-62 worktrees, and my own review freezes) found NO file whose bytes match 2fb8a923… or dbe1bdd8… — the prior versions exist only as hash records.",
+      "assessment": "'priorVersionAlsoRetainedInLineage' / 'priorReceiptVersionsRetained' imply byte retention that does not exist. The disclosed historyPolicy is honest about the method (hash-recorded supersession), and RS-2 in this same batch elsewhere states non-retention explicitly — so the wording, not the conduct, is the defect. Practical consequence: this delta could not be diffed against the pre-correction bytes; the before-state is corroborated only by my prior receipt's verbatim quotes.",
+      "request": "rename to priorReceiptVersionsRecorded (or add 'bytes not retained') so the wording matches RS-2's precedent."
+    },
+    {
+      "id": "S2",
+      "severity": "info (review limitation disclosed)",
+      "where": "this review",
+      "observed": "the corrections were verified as POST-state truth plus quoted before-state; a byte-level PRE→POST diff was impossible because 2fb8a923… was overwritten and not retained anywhere.",
+      "assessment": "does not weaken the verification of the corrected statements (each was checked against live evidence), but it means the review cannot confirm that ONLY the described text changed in the receipt.",
+      "request": "none; recorded for transparency."
+    },
+    {
+      "id": "S3",
+      "severity": "info (documentation leftover)",
+      "where": "frozen builder lines 5-6 docstring",
+      "observed": "the docstring still reads 'verifies every copy against the authoritative manifest pins' — the same loose phrasing RS-3 corrected in the receipt; the script is declared unchanged, so the code is not implicated, but a future reader of the script alone could re-derive the overstatement.",
+      "assessment": "no behavioural impact; pin chain holds either way.",
+      "request": "optional: align the docstring with lines 50-56, or note it as superseded by the receipt wording."
+    }
+  ],
+  "consistencyVsExternalTruth": {
+    "internalConsistency": "all declared hashes in the manifest and corrected receipt reproduce against live bytes; the builder convention reproduces; the checkpoint/asset byte relationships match every RS-2 claim; the doc's kernel-log claim matches the live log exactly.",
+    "externalTruth": "NOT verified and not claimed: no source-corpus re-fetch, no host-health certification, no full-package qualification. The repair run's own scopeAndLimits (3/9,797 assets; root cause UNPROVEN; host health not certified) still stands and is not expanded by this review."
+  },
+  "verdict": {
+    "status": "EXACT-VERIFIED — all five corrections are true as written",
+    "scope": "RS-1, RS-2, RS-3, RS-4 in the corrected subset receipt (92366d29…) and P2 in docs/repair-diagnosis-20261015.md (a4ff0712…) — delta against my prior review be703f191 / receipt 2fb8a923 / doc d25deb9c",
+    "discrepancies": "none between claim and evidence; residual items are naming/documentation precision (S1) and one disclosed review limitation (S2)",
+    "notInherited": "these corrected bytes inherit NO approval from any earlier freeze or review; the db07 N1 appendix remains under my exact review and its bytes are unchanged",
+    "noAcceptance": "no acceptance, no admission, no corpus/merge/push authority; author paths unmodified"
+  },
+  "scopedRecommendationForMorgan": "Recommend accepting THESE CORRECTIONS ONLY (RS-1..RS-4 wording/retention honesty + P2 doc wording). Evidence: every declared hash reproduces, the four checkpoints are byte-identical at df39b145 with the honest no-retention disclosure, the builder's actual copy-check matches the corrected RS-3 wording, and the live kernel log contains exactly one EDAC line (the version banner) and zero MCE/EDAC error entries. NOT in scope of this recommendation: the underlying repair candidate, any expansion of real repair, host-health conclusion, or the semantic/QA candidates. Optional cleanup: S1 wording, S3 docstring.",
+  "limits": [
+    "No repair run, corruption experiment, fault test, broad suite, or network/source fetch was performed (by instruction).",
+    "PRE→POST byte diff of the author receipt was impossible (pre-correction bytes not retained anywhere) — S1/S2.",
+    "Host health and full-corpus truth remain outside this review.",
+    "One reviewer's receipt; Morgan's verdict is separate."
+  ],
+  "generatedAtUTC": "2026-10-15T05:17:48.116876+00:00"
+}

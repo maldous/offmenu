@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "offmenu-workflow1",
+  "generator": "worker-05-bugfix-bounds-and-resumable-recovery",
+  "workerId": "worker-05",
+  "taskBatch": "MORGAN-BOUNDED-RS-RECEIPT-P2-CORRECTIONS-W05",
+  "purpose": "Exact external corrected-receipt manifest for Worker 06 delta re-review of the RS-1..RS-4 + P2 author corrections; NOT self-reviewed, NOT accepted here",
+  "immutableBasis": {
+    "subsetReview": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/53e4b344/review-receipt.json",
+      "committedAs": "be703f1 (slot-63 checkout)",
+      "sha256": "c339537cfa47ab1da4a8e8005728f1d443b9acf93754afc4b2d001f68dc70dbf",
+      "byteState": "working-tree copy == committed bytes (independently compared)"
+    },
+    "a49Review": {
+      "path": "/home/user/src/offmenu-workers/worker-63/reviews/a49d3729/review-receipt.json",
+      "committedAs": "cd2a50d",
+      "findingConsumed": "P2 (EDAC driver version banner wording)"
+    },
+    "evidenceHashes": {
+      "sourcePackageManifest": "5b88f9e37909f2ba19113d9df2af56bffcb1f274a9e6dd852bac249f8a61db74",
+      "candidateInputManifest": "78f7625bbb71acf6ecb6f0a5ea6ff8fbec5684bfaeded13b6a6900496e637498",
+      "completeCheckpointAllThreeCopies": "df39b145456fcc72535ba7da26d9f6c08cbe061edb7d5c855f383a23a61ed3e6",
+      "note": "all three values independently recomputed by Worker 05 before applying corrections; the three checkpoints (output, output-partial, output-corrupt2) verified byte-identical this batch"
+    }
+  },
+  "correctedArtifacts": [
+    {
+      "kind": "author receipt (external lane)",
+      "path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-repair-subset-candidate-receipt-20261015.json",
+      "preSha256ReviewedBy06": "2fb8a923b39f1ae8b72f84560b694fefe7b40697260d17bee67603c5f57eba4a",
+      "priorVersionAlsoRetainedInLineage": "dbe1bdd8d57f07bdf212499513a2cb2b863fe90e54e21ff3ef20cb568376f736",
+      "postSha256": "92366d290772dd76dfa82a1968e77ef8cf881e29dde2a30650b157844a5888e4",
+      "jsonValid": true,
+      "changes": [
+        "RS-1: subset.assetPinsVerbatimFrom naming/hash corrected — source package manifest 5b88f9e3… vs candidate input manifest 78f7625b…, both named explicitly; lineage note inline",
+        "RS-2: resumabilityEvidence + corruptionEvidence.case2 corrected honestly — original pre-resume trimmed intermediate NOT retained (retained output-partial/output-corrupt2 checkpoints byte-identical to complete df39b145…, complete=true, 3/3 assets journaled incl. part-05500 with good sha — re-verified this batch); resume PATH not re-derivable, OUTCOME only is independently reproducible; exact case-2 code path NOT claimed proven (on retained bytes the completed-output/legacy-partial refusals trigger first); observed exit 1 / corrupt file untouched 59d877d6… / no manifest preserved as observations; no new repair run; no fabricated intermediates",
+        "RS-3: subset.builder wording corrected — pins verified before copy, copied bytes verified against pin-verified in-memory source bytes; no overstate of a second manifest verification",
+        "RS-4: M1 checkout layout requirement documented in sourceComparison.tool; no code change (layout need already correctly documented in the diagnosis doc per review M1)",
+        "rsReviewCorrections20261015 block added: basis, applied dispositions, priorReceiptVersionsRetained (supersession, not silent rewrite), re-review request"
+      ]
+    },
+    {
+      "kind": "local doc (narrow commit)",
+      "path": "docs/repair-diagnosis-20261015.md",
+      "commit": "a7c27b9 (branch bugfix/62/freebuff-repair-diagnosis-20261015, slot 62)",
+      "preSha256": "d25deb9c6448c16059f9e240a714220a80f20bff60b164864f5273bf0f4b3242",
+      "postSha256": "a4ff0712d804b249863bec397614dd3d71dea7529b760b60e2d088d6a9cd04af",
+      "changes": [
+        "P2: kernel-log bullet now reads 'zero MCE/EDAC error entries' and names the single EDAC line as the driver version banner (2026-10-14T15:45:38 EDAC MC: Ver: 3.0.0), explicitly not counted as an error",
+        "db07 N1 appendix content otherwise untouched: explicit CPU-10-attributed vs unattributed GPF distinction and the UNPROVEN hardware hypothesis preserved verbatim (that appendix remains under 06 exact review; these new bytes do not inherit any approval)"
+      ]
+    }
+  ],
+  "unchangedArtifacts": {
+    "storageReceipt": {"path": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-storage-qualification-20261015.json", "sha256": "ae5619fbd96e5147bce205ac8a12ced4ec5ceb66d157b05b1098d853a000d09e", "note": "untouched this batch"},
+    "candidateNamespace": "/home/user/src/offmenu-data/worker-062-repair-candidate-20261015 — no bytes written; checkpoints/lock/output untouched",
+    "semanticLane": "accepted W1-W4 semantic bytes preserved untouched (see morganDecisionRecorded)"
+  },
+  "morganDecisionRecorded": {
+    "decision": "ACCEPT exact W1-W4 documentary corrections ONLY (manifest 32ad083c39f6ab4b3a05dcdcd27d6aec6da19e97774063f55298495602f8d01e + independent re-review receipt 3dec80619a37564cbc9afe0be94850406517852b04350a99bc298a1fe4696845 @ commit 2fbc86a8cdfbe937227c97ae0a0a0b900c0465a6)",
+    "decisionFile": "/home/user/Documents/Codex/2026-10-15/task/freebuff-runtime-migration-20261015/morgan-w1-w4-correction-acceptance.json",
+    "decisionFileSha256": "05a5cf7f66194136486adea5dd333dd8fc4e670ac2d0b4907624f7343c5a974c",
+    "acceptedFilesStillMatch": "independently re-verified this batch: STATUS.json 6be5e0ca0a5cfbbbc7d5630b4942907b0d32be3638459f500ce581441072f13c and HANDOFF.txt 201b0d311ded9af3298a5085cfd40401cd8f8c99154085525915445c80ad8765 both match live bytes",
+    "explicitNonScope": "NOT full-corpus/candidate acceptance; NOT clearing the 20 blocked; NOT resolving the 23+35 model labels; NOT glossary freeze, integration, merge or new push; W4 historical-lineage caveat remains",
+    "recordedHereAs": "ledger/next-after summary entry (this manifest + the batch yield); 05/06 handover files carry the decision independently"
+  },
+  "reReviewRequest": {
+    "to": "Worker 06 (delta re-review of these author corrections only)",
+    "scope": "verify RS-1/RS-2/RS-3 wording corrections against the cited evidence hashes, RS-4 documentation note, P2 doc wording, and that the corrected receipts preserve supersession lineage; delta against the previously reviewed receipt sha 2fb8a923… and doc blob d25deb9c…",
+    "notClaimed": "no self-review, no acceptance, no Morgan verdict, no corpus admission, no payload upload authority; corrected hashes do not inherit approval from any earlier freeze or review"
+  },
+  "nextAfterSummary": [
+    "await 06 delta re-review of this manifest's corrected artifacts",
+    "await Morgan verdicts: QA candidate 5ac7d9aa (conditional on author-04 reconciling F1-F3) and semantic candidate (W1-W4 corrections now ACCEPTED; underlying candidate verdict still open)",
+    "deferred intact: lock custody, relaunch verdict, A3 places projection, integration receipts"
+  ],
+  "atUTC": "2026-10-15T05:03:58Z",
+  "atUTCEvidence": "host date -u captured immediately after manifest write (evidenced, not nominal); manifest write window 05:02-05:03Z; verification events for this batch ran 04:58-05:04Z. An in-draft value 05:03:00Z was a nominal second-precision stamp and is corrected here — no nominal stamps retained"
+}

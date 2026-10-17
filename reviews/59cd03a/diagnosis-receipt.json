@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "semantic/diagnosis-review-receipt/0",
+  "reviewId": "OFFMENU-DIAGNOSIS-REVIEW-59cd03a-W03",
+  "order": "MORGAN-INDEPENDENT-DIAGNOSIS-REVIEW-20261015-W06",
+  "reviewer": {
+    "sessionId": "d787bf1f-edd2-43fd-8d77-66f39d8653ff",
+    "ownedBranch": "feature/63/freebuff-semantic-candidates-20261015 @ 3ef845be3ce430fb02a59c79e73959f7e802a497"
+  },
+  "exactBase": {
+    "commit": "59cd03a110b7a127179a0af53532cf91715d6ecb",
+    "parent": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+    "repo": "/home/user/src/offmenu",
+    "branchClaim": "bugfix/62/freebuff-repair-diagnosis-20261015 (Worker05)",
+    "changedPaths": [
+      "docs/repair-diagnosis-20261015.md",
+      "tests/test_representative_preflight_determinism.py"
+    ],
+    "bytePins": {
+      "docs/repair-diagnosis-20261015.md": "a52c0f1cf3ca7971f2c02622250541f2d531d4376353f958a342f0f7c747878b",
+      "tests/test_representative_preflight_determinism.py": "ec2bfd5917d0d9f743e8447a10ce8b42daaf8df45639a9bc6e27745d5c0c4b02",
+      "scripts/repair-bulk-controls-20261014.py (content):": "2c025c07f056…",
+      "runtimeBlobId(base==commit)": "7403673ab33422ddf734f0b646e08927d14db837"
+    },
+    "laterCommitNonApproval": {
+      "siblingOnBranch": "8e09c3b (pin custody commit)",
+      "status": "at-59cd03a-only; later commits are NOT approved by this review"
+    }
+  },
+  "verified": [
+    "parent == base exactly; only the two reviewed files change (no further mutation) => 'no fix invented' confirmed at byte level",
+    "runtime unchanged: scripts/repair-bulk-controls-20261014.py blob identical base vs commit (7403673ab…) — the claim 'pinned implementation unchanged in this branch' VERIFIED",
+    "corpus/common-data-contract.json artifact inside the commit tree == semantic lane's pinned baseline contract b4fa5afb… (cross-lane pin integrity)",
+    "SIGSEGV triage corroborated in retained log: 'Fatal Python error: Segmentation fault', json/decoder.py:353 raw_decode <- representative_checks line 182, EXIT=139; repair_owned frames show representatives call at line 300 AFTER checkpoint_pins/verify_input region — consistent with 'verify_input had completed before the fault' (count detail below)",
+    "incident-2 corroborated: logs/repair-hang-evidence-20261015.json PID 2381191, 'rchar frozen at 14471614713' >57min, part-00244 ruled out as benign; flushed fd (fdTargets) retained",
+    "orphaned lock corroborated: 174 B, dead owner PID 2423767 inside lock JSON; .reconciled-20261015T013540Z sibling exists, neither deleted nor reclaimed — matches 'custody unresolved, left in place'",
+    "committed focused suite RUN by this review under the complete exact-SHA layout: 3/3 OK, exit 0, 0.5s (tempdir via git-show bytes ONLY; the two earlier failures I saw were MY harness's layout errors: script/corpus pins resolve via Path(__file__).parents[1], so the suite is checkout-layout-coupled — see finding M1)",
+    "subprocess semantics sound: capture_output, timeout=120 per subprocess, isolated tempfile layouts (target under TemporaryDirectory), negative/signal return codes fail assertions loudly (native-fault recurrence detection claim is implemented as stated); module import of the pinned script has no side effects (main guard at line 378)",
+    "determinism claims of the two narrower tests hold: outputs compared as sorted-keys canonical JSON strings; 6 fresh interpreters per test; in-process match passes"
+  ],
+  "findings": [
+    {
+      "id": "M1",
+      "class": "test-isolation/documentation",
+      "severity": "medium",
+      "observed": "The committed suite is checkout-layout-coupled: the pinned script's checkpoint_pins() reads corpus/common-data.schema.json + corpus/common-data-contract.json from Path(__file__).resolve().parents[1]; the tests therefore only pass when the script lives beneath a tree containing those artifacts (true in Worker05's branch checkout; true in my complete-layout harness; false in a vets scripts-only clone). The doc's 'isolated /tmp/offmenu-w62-testvenv' phrasing describes a venv over the branch checkout, not a layout-independent harness.",
+      "notObserved": "No evidence the claimed 17/17 or 92/92 runs used different bytes; results are consistent with their checkout layout.",
+      "correctionRequest": "One sentence in the doc (or a fixture-creating line in the test) stating the corpus/ layout requirement, or have the test write corpus pins into the temp root before invoking repair() — carry-forward to Worker05's NEXT candidate commit (not in-scope at the exact SHA)."
+    },
+    {
+      "id": "M2",
+      "class": "claim-evidence precision",
+      "severity": "low",
+      "observed": "Doc: 'the stack proves verify_input had completed (9,797 assets hash-verified that run)'. The verify_input-completion inference IS supported by the crash location (repair_owned line 300, after verify_input), but the figure 9,797 was not found in the cited artifacts I inspected (bulkfood-semantic-recovery log has no count; logs/repair-hang-evidence json: zero mentions).",
+      "hypothesisNotObserved": "The number may be recorded in another retained receipt (e.g., the superseded 'running-verified-progress' telemetry or process telemetry) — not fabricated, but currently uncorroborated.",
+      "correctionRequest": "Cite the artifact carrying the 9,797 count or soften to 'all listed assets' — carry-forward."
+    },
+    {
+      "id": "M3",
+      "class": "citation precision",
+      "severity": "low",
+      "observed": "Doc cites 'repair-hang-evidence-20261015.json' without the /logs/ directory prefix; actual retained path is /home/user/src/offmenu-data/logs/repair-hang-evidence-20261015.json.",
+      "correctionRequest": "Add explicit path in the next doc revision — carry-forward."
+    },
+    {
+      "id": "M4",
+      "class": "review limitation (disclosed, not a defect)",
+      "severity": "info",
+      "observed": "Doc claims broader suites 17/17 OK and full unittest discover 92/92 OK under the isolated venv with pinned extras; this review did NOT reproduce those batches (order: no assurance batches; only existing small focused tests if material). The committed new suite's own 3/3 OK is independently verified at the exact SHA. Partial reproduction limitation recorded; not a contradiction."
+    },
+    {
+      "id": "M5",
+      "class": "hypothesis discipline",
+      "severity": "info",
+      "observed": "Root-cause hypothesis is labeled 'preserved, NOT proven' with alternatives and ruled-out hypotheses enumerated (data trigger ruled out for bounded fixtures). No fix invented; incident triage keeps the three incidents distinct with preserved evidence; superseded PID-2423767 'running-verified-progress' claim explicitly replaced. No conflation found at the exact SHA; late-inbound 8e09c3b is NOT assessed here."
+    }
+  ],
+  "denominatorsAndEnv": {
+    "coreCaution": "System precaution honored: physical cores 10/11 offline by Matt authority — no probing/testing/re-enabling attempted.",
+    "runs": "verify tool: 13/13 MATCH, exit 0 (DIAGNOSIS_REVIEW_REPRODUCED); focused committed suite 3/3 OK exit 0; unit: 0.3-0.6s — well within bounded scope"
+  },
+  "verdictPosture": {
+    "noMorganVerdict": true,
+    "recommendationForNextReviewer": "Acceptable candidate family for continued diagnosis work at this SHA; carry-forward M1-M3 to the next correction commit; later commits (incl. 8e09c3b) require their own exact-SHA review."
+  },
+  "tooling": "reviews/59cd03a/verify-diagnosis-reproducer.py (worker-63 branch, committed; extracted byte fixtures + manifest below)",
+  "generatedAtUTC": "2026-10-15T04:02:54.525793+00:00"
+}

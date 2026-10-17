@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "semantic/w02-corrections-manifest/0",
+  "order": "MORGAN-BOUNDED-SEMANTIC-EXACT-REVIEW-YIELD-20261015-W06 Task 1",
+  "author": "semantic lane session d787bf1f-edd2-43fd-8d77-66f39d8653ff (corrections only)",
+  "reviewerReceipt": "/home/user/src/offmenu-data/coordinator-receipts-freebuff-20261015/w02-semantic-candidate-review-20261015.json",
+  "reviewerReceiptSha256": "84fcce4376f79814ea86d46825e7565c3b69ef5049adb7c0db75fd985c73b4b2",
+  "frozenManifestSha256": "a42bd0b8eaf58cdd3e271fec9e8b15dc47195b3cc14ba7a53a4501313964a9da",
+  "changedFiles": [
+    {
+      "path": "STATUS.json",
+      "preSha256": "110226ac6375da81943c3b1d2acfd6023fd0dc1de2963806a4258563b411c0f0",
+      "postSha256": "6be5e0ca0a5cfbbbc7d5630b4942907b0d32be3638459f500ce581441072f13c",
+      "change": "W1 evidenced-history correction in stageStatusAccurate.B-PER-DATASET-BASELINE; new w02ReviewCorrections20261015 block (W1-W4 dispositions, hashes)"
+    },
+    {
+      "path": "HANDOFF.txt",
+      "preSha256": "ffa9c2bb8c552f0fedef0600cb1bac54127a96ead39cf2625de1678b72a73ce1",
+      "postSha256": "201b0d311ded9af3298a5085cfd40401cd8f8c99154085525915445c80ad8765",
+      "change": "W1 retraction + evidenced history; W2 six-class defect enumeration; W3 exact alias wording; W4 lineage limitation; STATUS hash pin updated to corrected value"
+    }
+  ],
+  "unchangedArtifacts": {
+    "note": "no judgment artifact, queue file, admission record, glossary row, checkpoint or contract was modified by these corrections",
+    "reVerifiedUnchanged": [
+      "checkpoint/queue-state.json",
+      "admission/all.admission.json",
+      "glossary/proposals.jsonl",
+      "queue/ciqual-2025.queue.jsonl",
+      "queue/off-2026-10-12-lf.queue.jsonl",
+      "queue/prices-2026-10-12.queue.jsonl",
+      "queue/wikibooks-2026-10-13-live.queue.jsonl",
+      "queue/wikidata-businesses-20261013.queue.jsonl"
+    ]
+  },
+  "preservedCounts": {
+    "total": 78,
+    "done": 58,
+    "blockedTerminal": 20,
+    "open": 0,
+    "modelLabels": {
+      "placeholder": 23,
+      "noncanonical": 35,
+      "blockedUnqualified": 20
+    }
+  },
+  "reReviewRequest": "Worker 05 independent exact re-review of this corrected generation (hashes above); conditional recommendation is not acceptance and not a Morgan verdict",
+  "generatedAtUTC": "2026-10-15T04:35:02.434409+00:00"
+}

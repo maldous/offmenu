@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "semantic/derived-pin-contract-gate/0",
+  "gateId": "OFFMENU-DERIVED-PIN-F9-CONTRACT-GATE-W06",
+  "order": "MORGAN-ONE-DERIVED-PIN-SUCCESSOR-CONTRACT-GATE-W06",
+  "atUTC": "2026-10-15T05:02:50.339204+00:00",
+  "reviewer": {
+    "agentIdentity": "OffMenu - Worker 06 (Alexander agent), UUID d787bf1f-edd2-43fd-8d77-66f39d8653ff, DeepSeek V4 Flash",
+    "writeScope": "own slot63 only: reviews/derived-pin-f9/. No external lane copy this time (explicitly withheld during active peer review); no semantic lane STATUS/HANDOFF/old judgment/admission/queue write."
+  },
+  "phase": "PHASE 1 ONLY (contract gate). PHASE 2 NOT ENTERED: no candidate judgment, no manifest, no checker run on a purported candidate.",
+  "immutableBasis": {
+    "recoveryReceiptCommit": "3ef5d6dc460f1a98566ceaef8cda6d55d4bfbab2",
+    "recoveryReceipt": "reviews/archive-pin-f9/recovery-receipt.json",
+    "recoveryReceiptSha256": "6e92fb91f60d30e6d4c8e00b14d96e95d960c6eb80ab0b79d87c270f44a16a09",
+    "parentFile": "originals/revisions-0.json sha256 ff3c21af0585304ee2e357d512782ad14e19fff6d303b2ac14e2f748cb4bd957",
+    "derivedSpan": "offset 12011, length 2926, sha256 a8dd1017b62adec74fbe3f3cfa5f477e0919d00f4cd31cb4ec946e17a49c566f",
+    "wikitextContentSha256": "64ff156f0e81143267722f2c3108503c54b7600e45b5a7f0b87c7a78a46c1baa",
+    "itemId": "sq:f9afd2d81c0e2d63cc1098af",
+    "recordId": "wikibooks:recipe:6dfe69487265dcbf6a27bfdf",
+    "sampleSourceFileSha256": "1bf9dfc95093f73803cdae3bb2c00da8073ff49575fa93f9f5f9a2d681ec6fd7 (VERIFIED = sha256 of the normalized package file normalized.jsonl.gz)",
+    "sampleArchiveSha256": null,
+    "packageArchiveSha256": "efadf48d40d6a8e6f67f13c3c0dd66a07feaff5f8c294eda34292045326d8f88 (derivation UNVERIFIED - preserved as such, never used as this record's pin)",
+    "untouchedElsewhere": "W1-W4 correction manifest 32ad083c... and STATUS 6be5e0ca... / HANDOFF 201b0d31... verified unchanged"
+  },
+  "contractRulesCited": [
+    {
+      "path": "semantic/contracts/judgment.schema.json",
+      "line": 61,
+      "rule": "citation objects REQUIRE sampleFile, archiveSha256, sourceUrl (there is no derived-pin field)."
+    },
+    {
+      "path": "semantic/contracts/judgment.schema.json",
+      "line": 64,
+      "rule": "archiveSha256 must be a string matching ^[0-9a-f]{64}$ - a format-only constraint; the identity semantics are enforced by the checker, not the schema."
+    },
+    {
+      "path": "semantic/contracts/judgment.schema.json",
+      "line": 83,
+      "rule": "field provenanceState enum = original|proposed|accepted|conflict|unknown (no derived/blocked/superseded state)."
+    },
+    {
+      "path": "semantic/scripts/check_judgments.py",
+      "line": 43,
+      "rule": "PROVENANCE_STATES = {original, proposed, accepted, conflict, unknown}."
+    },
+    {
+      "path": "semantic/scripts/check_judgments.py",
+      "line": 227,
+      "rule": "citation.archiveSha256 MUST EQUAL sample.sourceFileSha256 whenever the sample records one - for this item that mandates the NORMALIZED-PACKAGE hash, the exact substitution Morgan forbids. A derived span hash (a8dd1017...) fails here."
+    },
+    {
+      "path": "semantic/scripts/check_judgments.py",
+      "line": 228,
+      "rule": "failure string emitted: 'citation archiveSha256 != sample sourceFileSha256 pin'."
+    },
+    {
+      "path": "semantic/scripts/check_judgments.py",
+      "line": 225,
+      "rule": "citation.archiveSha256 must equal sample.archiveSha256 when the sample records one (null here, so this branch does not fire)."
+    },
+    {
+      "path": "semantic/scripts/author_judgment.py",
+      "line": 55,
+      "rule": "the lane's own authoring path sets archiveSha256 = sample.archiveSha256 or sample.sourceFileSha256 - i.e. the only value the existing pipeline can emit for this item is the normalized-package hash."
+    },
+    {
+      "path": "semantic/CONTRACT.md",
+      "line": 65,
+      "rule": "the contract's own example declares the field semantics as '<source archive hash>' - not a derived scoped span hash."
+    },
+    {
+      "path": "semantic/CONTRACT.md",
+      "line": 96,
+      "rule": "hard rule 3 (CONTRACT.md:96): 'Every judgment cites at least the pinned sample file and the source release/archive hash recorded in it.' For this sample the only recorded hash is sourceFileSha256.",
+      "citationCorrection": "line corrected from an inferred 78 (which is inside the example code block) to the grepped line 96"
+    },
+    {
+      "path": "corpus/common-data-contract.json",
+      "line": 704,
+      "rule": "Derived facts cite all input assertions and the derivation method - governs derived DATA assertions, not the citation identity field archiveSha256."
+    },
+    {
+      "path": "corpus/common-data-contract.json",
+      "line": 714,
+      "rule": "each citation carries licence, attribution, reuse scope and derivative requirements - a derived-pin provenance form would need a declared schema location that does not exist."
+    }
+  ],
+  "gateVerdict": {
+    "result": "FORBIDS / PERMISSION CANNOT BE ESTABLISHED under the existing accepted contract, schema and checker",
+    "reasoning": "Two mutually exclusive values are demanded for the same field. To satisfy check_judgments.py:227 a successor must set citations[].archiveSha256 = 1bf9dfc9... (the normalized-package hash), which Morgan's instruction forbids ('never use normalized package hash as archive') and which would mislabel a normalized artifact as the source archive. To instead carry the derived scoped span pin (a8dd1017...) the successor fails the checker at line 227/228. additionalProperties:true at schema top level (and unrestricted citation items) permits EXTRA fields, but an extra field cannot remove the archiveSha256 requirement, and adding derivedPin while setting archiveSha256 to the normalized hash would still perform the forbidden substitution. There is also no supersession mechanism anywhere in lane contracts/scripts/schema (grep for supersed/derivedPin/archivePin/pinKind: zero matches), so 'link the successor as NEW to the old blocked item' has no contractual representation beyond free-text.",
+    "ambiguityNote": "None material: the forbidding rule is explicit and mechanical (a deterministic checker line), not a judgement call."
+  },
+  "notDone": [
+    "No candidate judgment created",
+    "No manifest created",
+    "No schema/checker/contract/allowlist edited or loosened",
+    "No checker or test run on a purported candidate",
+    "No other blocked item touched (the other 19 remain untouched, and so does this one: counts stay 20 blocked / 58 done, labels 23/35)"
+  ],
+  "minimalNextDecision": [
+    {
+      "option": "A - keep terminal-blocked (DEFAULT, zero change)",
+      "detail": "sq:f9afd2d81c0e2d63cc1098af stays blocked with its historical null archiveSha256 preserved; nothing else changes. Requirement: no action."
+    },
+    {
+      "option": "B - authorize a bounded contract extension (then a successor is expressible)",
+      "detail": "Add-an-explicit-pin-kind to the judgment contract/checker (e.g. pinKind: source-archive | derived-scoped-span, where the derived kind requires parentFileSha256 + byte offset + length + spanSha256 + declared derivation and rights), plus a documented new/supersession field. This is a schema+checker change with its own independent review; NOT performed here."
+    },
+    {
+      "option": "C - accept the normalized-package pin as the citation archive hash",
+      "detail": "Mechanically passes the current checker but is exactly the substitution Morgan's instruction forbids; recorded only for completeness, not recommended."
+    }
+  ],
+  "recommendation": "Option A (no change) unless Morgan explicitly wants the bounded contract extension in Option B; a derived pin must never be introduced by an author-side workaround.",
+  "noAdmission": true,
+  "generatedAtUTC": "2026-10-15T05:02:50.339204+00:00",
+  "receiptNote": "revised after a self-check: one CONTRACT.md line citation corrected from 78 to 96 (verified by grep). No verdict, rule content or decision changed."
+}

@@ -1,0 +1,19 @@
+{
+  "commit": "6fa50017cb9af3cee3c2c15e51f3e92f5265a16e",
+  "files": {
+    "LANGUAGE_TARGETS.json": "04c25612d1cfb42b344e4378e3d1534998d7a5d13bbba0656568321bb928d539",
+    "REVIEW_RECEIPT.json": "613bcceeee15420ba847327691c171aa42bdeb58f8d50ba5f322aabb8439b2ee",
+    "REVIEW_RECEIPT_CORRECTIONS.json": "979dd325cf2ef47b902eb0674fd8bfe7cd51d4ef48e4018efca36d333e13e9f9",
+    "STATUS.json": "1381a38739e691a2094fb74105122e97ed8750be326265d30c37a1e6e0e19dc2",
+    "_raw_language_scan.json": "b865ffc38f6e3c2356622574d055adb9ed2ac30e874ff7753c4b60484bd08050",
+    "app-store-locale-snapshot.json": "c0623842c50a4466393a304debdcdeb82a58296cbb5c9ece4e492cfe8af9f1f4",
+    "qa/fix-store-bcp-tags.py": "12cf22d0f296a39a3a5a47a23613692b484b270396ce0e29d65ddbe0405f2855",
+    "qa/store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "qa/test_terminology_qa.py": "60478fc21d2529b7191b5a5390fbe29bb685217ae94ac8b47d5b98b5dc93208f",
+    "store-language-locale-inventory.json": "f982ead7c71d691139ff236eef2add490880b73cef877cc28ef43698983d2580",
+    "store-locale-bcp47-extraction.json": "a48639ba909f99ca4852bcd8e1f4585834e4a30667f31877187559a62b7a489a",
+    "terminology-contract.json": "e0d1ee4da16180c40d7e03f4e2a27ab767b617b534af34c87e38102192ad4b5c",
+    "terminology-fixtures.jsonl": "bcfef49a950df6b7104c34992cc7d93b9ae8309ac8db242b190e6c6d8c3d42a7",
+    "terminology-translation-bounds.json": "7cffb6b3bf2520295fbe7f6ea9324135ad3d486ce0b7a0268644826ba9664fca"
+  }
+}
