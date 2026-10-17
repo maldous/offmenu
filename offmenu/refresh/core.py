@@ -2,6 +2,7 @@
 import contextlib
 import fcntl
 import hashlib
+import io
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -225,8 +226,10 @@ def writer_lock(path):
         os.close(descriptor)
 
 
-def code_identity():
-    files = sorted((ROOT / 'offmenu/refresh').glob('*.py')) + [ROOT / 'scripts/collect-wikibooks.py']
+def code_identity(*, extra_files=(), packaged=False):
+    files = sorted((ROOT / 'offmenu/refresh').glob('*.py'))
+    files += [ROOT / 'offmenu/__init__.py'] if packaged else [ROOT / 'scripts/collect-wikibooks.py']
+    files += [ROOT / name for name in extra_files]
     pins = {str(p.relative_to(ROOT)): digest(p)['sha256'] for p in files}
     runtime = {'python': platform.python_version(), 'implementation': platform.python_implementation(),
                'zlib': zlib.ZLIB_RUNTIME_VERSION, 'sqlite': sqlite3.sqlite_version}
@@ -234,10 +237,12 @@ def code_identity():
     git = ['git', '-C', str(ROOT)]
     try:
         commit = subprocess.check_output(git + ['rev-parse', '--verify', 'HEAD'], stderr=subprocess.DEVNULL, text=True).strip()
-        dirty = bool(subprocess.check_output(git + ['status', '--porcelain', '--', 'offmenu/refresh', 'scripts/collect-wikibooks.py'], stderr=subprocess.DEVNULL, text=True))
+        dirty = bool(subprocess.check_output(git + ['status', '--porcelain', '--', 'offmenu/refresh', 'scripts/collect-wikibooks.py', *extra_files], stderr=subprocess.DEVNULL, text=True))
     except (subprocess.CalledProcessError, FileNotFoundError):
-        raise RefreshError('git-code-identity-unavailable') from None
-    if not re.fullmatch(r'[0-9a-f]{40,64}', commit):
+        if not packaged:
+            raise RefreshError('git-code-identity-unavailable') from None
+        commit, dirty = None, None
+    if commit is not None and not re.fullmatch(r'[0-9a-f]{40,64}', commit):
         raise RefreshError('invalid-git-code-identity')
     return {'codeCommit': commit, 'codeDirty': dirty, 'codeFingerprint': code_digest, 'runtime': runtime}
 
@@ -256,6 +261,15 @@ class BoundedReader:
         return result
 
 
+def verify_source(source, expected):
+    if isinstance(source, bytes):
+        actual = {'bytes': len(source), 'sha256': sha(source)}
+        if actual != {k: expected[k] for k in ('bytes', 'sha256')}:
+            raise RefreshError('asset-checksum-mismatch')
+        return actual
+    return verify(source, expected)
+
+
 def cache_input(source, target, expected, *, force=False, copy_id):
     # A persisted run owns exactly this temporary. Resume cleans only its own
     # uncommitted copy, never arbitrary glob-matched or legacy assets.
@@ -268,13 +282,14 @@ def cache_input(source, target, expected, *, force=False, copy_id):
         verify(target, expected)
         return
     try:
-        before = verify(source, expected)
-        with source.open('rb') as src, temporary.open('xb') as out:
+        before = verify_source(source, expected)
+        reader = io.BytesIO(source) if isinstance(source, bytes) else source.open('rb')
+        with reader as src, temporary.open('xb') as out:
             shutil.copyfileobj(BoundedReader(src, expected['bytes']), out, 1024 * 1024)
             out.flush()
             os.fsync(out.fileno())
         verify(temporary, expected)
-        if verify(source, expected) != before:
+        if verify_source(source, expected) != before:
             raise RefreshError('input-changed-during-copy')
         if target.exists():
             verify(target, expected)
@@ -287,21 +302,21 @@ def cache_input(source, target, expected, *, force=False, copy_id):
             temporary.unlink()
 
 
-def artifact_inventory(directory):
+def artifact_inventory(directory, *, files=OUTPUT_FILES, maximum=MAX_OUTPUT):
     safe_path(directory)
-    if {p.name for p in directory.iterdir()} != set(OUTPUT_FILES):
+    if {p.name for p in directory.iterdir()} != set(files):
         raise RefreshError('unexpected-output-assets')
-    sizes = {name: safe_path(directory / name).stat().st_size for name in OUTPUT_FILES}
-    if sum(sizes.values()) > MAX_OUTPUT:
+    sizes = {name: safe_path(directory / name).stat().st_size for name in files}
+    if sum(sizes.values()) > maximum:
         raise RefreshError('output-exceeds-pilot-size-limit')
-    assets = {name: digest(directory / name, max_bytes=sizes[name]) for name in OUTPUT_FILES}
-    if sum(x['bytes'] for x in assets.values()) > MAX_OUTPUT:
+    assets = {name: digest(directory / name, max_bytes=sizes[name]) for name in files}
+    if sum(x['bytes'] for x in assets.values()) > maximum:
         raise RefreshError('output-exceeds-pilot-size-limit')
     return assets
 
 
-def validate_artifacts(directory, assets):
-    if artifact_inventory(directory) != assets:
+def validate_artifacts(directory, assets, *, files=OUTPUT_FILES, maximum=MAX_OUTPUT):
+    if artifact_inventory(directory, files=files, maximum=maximum) != assets:
         raise RefreshError('output-checksum-mismatch')
 
 
@@ -316,21 +331,73 @@ def transform(cache, destination, manifest, *, lock_fds=()):
 
 
 def replay(manifest, input_root, workspace, *, resume=False, force=False, failpoint=None):
+    return _replay(manifest, input_root, workspace, resume=resume, force=force, failpoint=failpoint)
+
+
+def replay_fixture(name, workspace, *, resume=False, force=False, repin_runtime=False, failpoint=None):
+    from .registry import fixture
+    entry = fixture(name, repin_runtime=repin_runtime)
+    return _replay(entry.lock, None, workspace, resume=resume, force=force,
+                   failpoint=failpoint, fixture=entry)
+
+
+def transform_bundle(caches, destination, entry, key, *, lock_fds=()):
+    """Expose only the complete selected bundle; never invoke adapter publication."""
+    from .registry import MAX_OUTPUT as maximum
+    bundle = safe_path(destination.with_name(destination.name + '.bundle'))
+    if bundle.exists():
+        shutil.rmtree(bundle)
+    bundle.mkdir()
+    try:
+        for item in entry.lock['inputs']:
+            source = caches[item['path']]
+            verify(source, item)
+            os.link(source, bundle / item['path'])
+        runner = ROOT / 'offmenu/refresh/runner.py'
+        environment = {'PATH': os.defpath, 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8', 'TZ': 'UTC'}
+        result = subprocess.run([sys.executable, '-I', '-B', str(runner), 'fixture', entry.name,
+                                 str(bundle), str(destination), key, '1' if entry.repinned else '0'],
+                                cwd=ROOT, env=environment, pass_fds=lock_fds,
+                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+        if result.returncode:
+            raise RefreshError('adapter-failed-no-output-published')
+        return artifact_inventory(destination, files=entry.output_files, maximum=maximum)
+    finally:
+        if bundle.exists():
+            shutil.rmtree(bundle)
+
+
+def _replay(manifest, input_root, workspace, *, resume=False, force=False, failpoint=None, fixture=None):
     """A failpoint callback is test-only; it is never an input from manifests/CLI."""
     if resume and force:
         raise RefreshError('resume-and-force-are-exclusive')
-    input_root, workspace = safe_path(input_root), safe_path(workspace)
-    source = safe_path(input_root / manifest['input']['path'])
-    if not input_root.is_dir() or not source.is_relative_to(input_root):
-        raise RefreshError('input-root-invalid')
-    # Keep all source data outside the writable workspace, in both directions.
-    if workspace == input_root or workspace.is_relative_to(input_root) or input_root.is_relative_to(workspace):
-        raise RefreshError('input-workspace-overlap')
+    workspace = safe_path(workspace)
+    if fixture is None:
+        input_root = safe_path(input_root)
+        source = safe_path(input_root / manifest['input']['path'])
+        if not input_root.is_dir() or not source.is_relative_to(input_root):
+            raise RefreshError('input-root-invalid')
+        # Keep all source data outside the writable workspace, in both directions.
+        if workspace == input_root or workspace.is_relative_to(input_root) or input_root.is_relative_to(workspace):
+            raise RefreshError('input-workspace-overlap')
+        inputs = [manifest['input']]
+        sources = {manifest['input']['path']: source}
+        source_id, release_id = SOURCE, RELEASE
+        files, maximum = OUTPUT_FILES, MAX_OUTPUT
+        identity_function = code_identity
+        pins = public_pins(manifest)
+    else:
+        inputs = fixture.lock['inputs']
+        sources = fixture.blobs
+        source_id, release_id = fixture.source_id, fixture.lock['releaseId']
+        files, maximum = fixture.output_files, MAX_OUTPUT
+        identity_function = lambda: code_identity(extra_files=fixture.dependencies, packaged=True)
+        pins = fixture.pins()
     if workspace == ROOT or ROOT.is_relative_to(workspace):
         raise RefreshError('workspace-must-not-contain-code')
-    verify(source, manifest['input'])
-    identity = code_identity()
-    pins = public_pins(manifest)
+    for item in inputs:
+        verify_source(sources[item['path']], item)
+    identity = identity_function()
     config_digest = sha(canonical(pins))
     key = sha(canonical({'pins': pins, 'codeFingerprint': identity['codeFingerprint']}))
     workspace.mkdir(parents=True, exist_ok=True)
@@ -338,8 +405,8 @@ def replay(manifest, input_root, workspace, *, resume=False, force=False, failpo
     with writer_lock(workspace / 'workspace.lock') as workspace_lock:
         for part in ('cache/sha256', 'staging', 'releases', 'receipts', 'locks'):
             safe_path(workspace / part).mkdir(parents=True, exist_ok=True)
-        with writer_lock(workspace / 'locks' / (SOURCE + '.lock')) as source_lock:
-            if shutil.disk_usage(workspace).free < len(OUTPUT_FILES) * MAX_OUTPUT + 2 * manifest['input']['bytes'] + 16 * 1024 * 1024:
+        with writer_lock(workspace / 'locks' / (source_id + '.lock')) as source_lock:
+            if shutil.disk_usage(workspace).free < len(files) * maximum + 2 * sum(item['bytes'] for item in inputs) + 16 * 1024 * 1024:
                 raise RefreshError('insufficient-staging-disk-space')
             database = safe_path(workspace / 'checkpoint.sqlite')
             db = sqlite3.connect(database)
@@ -371,9 +438,14 @@ def replay(manifest, input_root, workspace, *, resume=False, force=False, failpo
                     db.commit()
                     if failpoint:
                         failpoint(stage)
-                cache = safe_path(workspace / 'cache/sha256' / manifest['input']['sha256'])
-                cache_input(source, cache, manifest['input'], force=force, copy_id=run_id)
-                verify(cache, manifest['input'])
+                caches = {}
+                for item in inputs:
+                    cache = safe_path(workspace / 'cache/sha256' / item['sha256'])
+                    cache_input(sources[item['path']], cache, item, force=force, copy_id=run_id)
+                    caches[item['path']] = cache
+                # Never checkpoint a partially cached multi-file bundle.
+                for item in inputs:
+                    verify(caches[item['path']], item)
                 final = safe_path(workspace / 'releases' / key)
                 staging = safe_path(workspace / 'staging' / run_id)
                 action = 'replayed'
@@ -382,7 +454,7 @@ def replay(manifest, input_root, workspace, *, resume=False, force=False, failpo
                     if not previous:
                         raise RefreshError('uncheckpointed-release-requires-recovery')
                     assets = strict_json(previous[0])
-                    validate_artifacts(final, assets)
+                    validate_artifacts(final, assets, files=files, maximum=maximum)
                     action = 'verified-no-op'
                 else:
                     if stage == 'started':
@@ -393,53 +465,88 @@ def replay(manifest, input_root, workspace, *, resume=False, force=False, failpo
                             if staging.is_symlink():
                                 raise RefreshError('symlink-path-rejected')
                             shutil.rmtree(staging)
-                        assets = transform(cache, staging, manifest, lock_fds=(workspace_lock, source_lock))
-                        for name in OUTPUT_FILES:
+                        if fixture is None:
+                            assets = transform(cache, staging, manifest, lock_fds=(workspace_lock, source_lock))
+                        else:
+                            assets = transform_bundle(caches, staging, fixture, key,
+                                                      lock_fds=(workspace_lock, source_lock))
+                        if fixture is not None:
+                            from .registry import validate_candidate
+                            validate_candidate(staging, fixture, key)
+                        for name in files:
                             with (staging / name).open('rb') as handle:
                                 os.fsync(handle.fileno())
                         fsync_directory(staging)
                         checkpoint('transformed', assets)
                     if stage in ('transformed', 'published'):
-                        if code_identity()['codeFingerprint'] != identity['codeFingerprint']:
+                        if identity_function()['codeFingerprint'] != identity['codeFingerprint']:
                             raise RefreshError('code-changed-during-run')
                         if final.exists():
-                            validate_artifacts(final, assets)
+                            validate_artifacts(final, assets, files=files, maximum=maximum)
                             if staging.exists():
-                                validate_artifacts(staging, assets)
+                                validate_artifacts(staging, assets, files=files, maximum=maximum)
                                 shutil.rmtree(staging)
                             action = 'force-verified-identical' if force else 'resumed'
                         else:
                             if stage == 'published':
                                 raise RefreshError('published-release-missing')
-                            validate_artifacts(staging, assets)
+                            validate_artifacts(staging, assets, files=files, maximum=maximum)
+                            if fixture is not None:
+                                from .registry import validate_candidate
+                                validate_candidate(staging, fixture, key)
                             os.rename(staging, final)
                             fsync_directory(final.parent)
                             if failpoint:
                                 failpoint('renamed-before-checkpoint')
                         checkpoint('published', assets)
-                verify(cache, manifest['input'])
+                for item in inputs:
+                    verify(caches[item['path']], item)
                 # Detect edits to pipeline/adapter while the subprocess was running.
-                if code_identity()['codeFingerprint'] != identity['codeFingerprint']:
+                if identity_function()['codeFingerprint'] != identity['codeFingerprint']:
                     raise RefreshError('code-changed-during-run')
-                summary = strict_json((final / 'manifest.json').read_bytes())
-                receipt = {'schemaVersion': 'offmenu-refresh-receipt/1', 'runId': run_id,
-                           'sourceId': SOURCE, 'releaseId': RELEASE, 'scope': manifest['scope'],
-                           'status': 'complete', 'action': action, 'identity': key,
-                           'configFingerprint': config_digest, **identity,
-                           'input': manifest['input'] | {'path': None},
-                           'artifacts': assets, 'counts': summary['counts'],
-                           'cachePolicy': {'minimumReuseDays': 30, 'mode': 'offline-pinned-replay', 'mtimeUsedForFreshness': False},
-                           'network': {'acquisition': 'not-implemented', 'adapterGuard': 'python-audit-deny', 'externalPublication': False},
-                           'countryCoverage': {'universeCount': 249, 'observedCountryCodes': [], 'status': 'not-assessed', 'complete': False}}
-                del receipt['input']['path']
+                if fixture is None:
+                    summary = strict_json((final / 'manifest.json').read_bytes())
+                    receipt = {'schemaVersion': 'offmenu-refresh-receipt/1', 'runId': run_id,
+                               'sourceId': SOURCE, 'releaseId': RELEASE, 'scope': manifest['scope'],
+                               'status': 'complete', 'action': action, 'identity': key,
+                               'configFingerprint': config_digest, **identity,
+                               'input': manifest['input'] | {'path': None},
+                               'artifacts': assets, 'counts': summary['counts'],
+                               'cachePolicy': {'minimumReuseDays': 30, 'mode': 'offline-pinned-replay', 'mtimeUsedForFreshness': False},
+                               'network': {'acquisition': 'not-implemented', 'adapterGuard': 'python-audit-deny', 'externalPublication': False},
+                               'countryCoverage': {'universeCount': 249, 'observedCountryCodes': [], 'status': 'not-assessed', 'complete': False}}
+                    del receipt['input']['path']
+                else:
+                    from .registry import validate_candidate
+                    summary, content_digest = validate_candidate(final, fixture, key)
+                    receipt = {'schemaVersion': 'offmenu-refresh-receipt/2', 'runId': run_id,
+                               'sourceId': source_id, 'releaseId': release_id, 'scope': manifest['scope'],
+                               'status': 'complete', 'action': action, 'identity': key,
+                               'configFingerprint': config_digest, **identity,
+                               'inputBundleSha256': fixture.bundle_key(),
+                               'inputs': inputs, 'artifacts': assets, 'counts': summary['counts'],
+                               'canonicalContentSha256': content_digest,
+                               'acceptance': 'not-performed', 'publicExport': 'not-enabled',
+                               'runtimeRepinned': fixture.repinned,
+                               'completedAt': datetime.now(timezone.utc).isoformat(),
+                               'cachePolicy': {'minimumReuseDays': 30, 'mode': 'offline-pinned-replay',
+                                               'mtimeUsedForFreshness': False,
+                                               'acquisitionEvidenceInBuildKey': False},
+                               'network': {'acquisition': 'not-implemented', 'adapterGuard': 'python-audit-deny',
+                                           'osNetworkConfinementVerified': False, 'externalPublication': False},
+                               'countryCoverage': {'universeCount': 249, 'observedCountryCodes': ['NO'],
+                                                   'status': 'not-assessed', 'complete': False}}
                 atomic_json(workspace / 'receipts' / (run_id + '.json'), receipt)
                 checkpoint('complete', assets)
                 return receipt
             except BaseException as error:
                 # Only fixed identities and validated hashes cross into failure receipts.
-                error.refresh_context = {'sourceId': SOURCE, 'releaseId': RELEASE,
-                                         'configFingerprint': config_digest, **identity,
-                                         'input': {k: manifest['input'][k] for k in ('bytes', 'sha256')}}
+                error.refresh_context = {'sourceId': source_id, 'releaseId': release_id,
+                                         'configFingerprint': config_digest, **identity}
+                if fixture is None:
+                    error.refresh_context['input'] = {k: manifest['input'][k] for k in ('bytes', 'sha256')}
+                else:
+                    error.refresh_context['inputBundleSha256'] = fixture.bundle_key()
                 if 'run_id' in locals():
                     error.refresh_context['runId'] = run_id
                 raise

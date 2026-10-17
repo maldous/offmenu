@@ -28,10 +28,33 @@ def main(argv=None):
     flags.add_argument('--resume', action='store_true')
     flags.add_argument('--force-rebuild', action='store_true', help='Repeat local transform; does not download or relax hashes.')
     flags.add_argument('--force-refresh', action='store_true', help='Reserved for acquisition; currently fails explicitly.')
+    fixture_plan = commands.add_parser('plan-fixture', help='Plan one trusted packaged synthetic bundle; no downloads.')
+    fixture_plan.add_argument('--fixture', required=True, choices=('norway',))
+    fixture_plan.add_argument('--evidence', type=Path)
+    fixture_plan.add_argument('--repin-synthetic-runtime', action='store_true')
+    fixture_plan.add_argument('--force-refresh', action='store_true')
+    fixture_run = commands.add_parser('replay-fixture', help='Replay only an immutable packaged synthetic bundle offline.')
+    fixture_run.add_argument('--fixture', required=True, choices=('norway',))
+    fixture_run.add_argument('--workspace', required=True, type=Path)
+    fixture_run.add_argument('--repin-synthetic-runtime', action='store_true')
+    fixture_flags = fixture_run.add_mutually_exclusive_group()
+    fixture_flags.add_argument('--resume', action='store_true')
+    fixture_flags.add_argument('--force-rebuild', action='store_true')
+    fixture_flags.add_argument('--force-refresh', action='store_true', help='Unavailable; never downloads or overrides admission.')
     args = parser.parse_args(argv)
     operation_id = uuid.uuid4().hex
     try:
-        if args.command == 'inventory':
+        if args.command == 'plan-fixture':
+            from .policy import load_evidence, plan_fixture
+            result = plan_fixture(args.fixture, load_evidence(args.evidence) if args.evidence else None,
+                                  force=args.force_refresh, repin_runtime=args.repin_synthetic_runtime)
+        elif args.command == 'replay-fixture':
+            if args.force_refresh:
+                raise RefreshError('online-acquisition-not-implemented')
+            from .core import replay_fixture
+            result = replay_fixture(args.fixture, args.workspace, resume=args.resume,
+                                    force=args.force_rebuild, repin_runtime=args.repin_synthetic_runtime)
+        elif args.command == 'inventory':
             result = inventory(args.root, max_entries=args.max_entries, max_depth=args.max_depth)
         elif args.command == 'plan':
             result = cache_policy(load_manifest(args.manifest), force=args.force_refresh)

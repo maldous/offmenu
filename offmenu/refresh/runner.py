@@ -31,6 +31,26 @@ def main():
     resource.setrlimit(resource.RLIMIT_FSIZE, (256 * 1024 * 1024, 256 * 1024 * 1024))
     resource.setrlimit(resource.RLIMIT_CPU, (110, 110))
     sys.addaudithook(deny_network)
+    if sys.argv[1] == 'fixture':
+        # Only a code-selected static entry is accepted, never a module/command.
+        # -I omits the source root; add exactly this worker's own package root.
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+        from offmenu.refresh import core, registry
+        if len(sys.argv) != 7 or not core.HEX.fullmatch(sys.argv[5]) or sys.argv[6] not in ('0', '1'):
+            raise ValueError('invalid-fixture-worker-arguments')
+        entry = registry.fixture(sys.argv[2], repin_runtime=sys.argv[6] == '1')
+        bundle, destination = core.safe_path(sys.argv[3]), core.safe_path(sys.argv[4])
+        if {p.name for p in bundle.iterdir()} != {i['path'] for i in entry.lock['inputs']}:
+            raise ValueError('unexpected-bundle-assets')
+        assets = registry.render(entry, bundle, sys.argv[5])
+        if set(assets) != set(entry.output_files) or sum(len(v) for v in assets.values()) > registry.MAX_OUTPUT:
+            raise ValueError('invalid-fixture-output-assets')
+        destination.mkdir()
+        for name, body in assets.items():
+            with (destination / name).open('xb') as stream:
+                stream.write(body)
+        registry.validate_candidate(destination, entry, sys.argv[5])
+        return
     source, destination, acquired = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3]
     if source.stat().st_size > 64 * 1024 * 1024:
         raise ValueError('input-too-large')
