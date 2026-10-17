@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "reviewed-ready-for-coordinator-publication",
-  "asOfUTC": "2026-10-17T23:54:00Z",
+  "status": "active-coordinator-checkpoint",
+  "asOfUTC": "2026-10-17T23:59:15Z",
   "coordinator": "Morgan/root",
   "purpose": "Small successor operations checkpoint for the currently selected automatic route and concurrent lanes. References immutable ledger history; does not replace its base/journal or claim semantic replay.",
   "instructionContext": {
@@ -55,9 +55,9 @@
     "originalHistoryEdited": false
   },
   "currentExecution": {
-    "sourceCommit": "314822f900c49953aeca04d82ce0957d851d19c9",
-    "controlCommit": "498d66b07c48f66e9a9d2ec99ce5845d140e3aa2",
-    "sourceStatus": "Verified survey004 published source; later candidates are not yet adoption evidence",
+    "sourceCommit": "e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
+    "controlCommit": "b71341e0cb0848f78c943f2548585e3f33e3f7ea",
+    "sourceStatus": "Reviewed survey005 executed; terminal incomplete; no retry admitted",
     "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
     "resultsPr": "https://github.com/maldous/offmenu/pull/31",
     "production": "paused",
@@ -72,13 +72,13 @@
       "source pins",
       "PR30"
     ],
-    "sourceUrl": "https://github.com/maldous/offmenu/commit/314822f900c49953aeca04d82ce0957d851d19c9",
-    "controlUrl": "https://github.com/maldous/offmenu/commit/498d66b07c48f66e9a9d2ec99ce5845d140e3aa2",
+    "sourceUrl": "https://github.com/maldous/offmenu/commit/e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
+    "controlUrl": "https://github.com/maldous/offmenu/commit/b71341e0cb0848f78c943f2548585e3f33e3f7ea",
     "capacity": {
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Two stale pending-initialization tasks still consume slots; the UI/tooling backfill attempt was rejected by the seven-total limit. UI/tooling remains queued, not active."
+      "currentBlocker": "Two pending-initialization tasks consume slots. Freed useful slots are refilled; UI/tooling is now running."
     },
     "coordinatorRole": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts."
   },
@@ -168,17 +168,25 @@
       "runId": 39080278066,
       "outcome": "Terminal incomplete despite successful hosted publisher: France 3484 exact matching XML/XLSX IDs and 84 disclosed headers; INFOODS dictionary semantics incomplete. Norway SIGSEGV (-11) inside first strict JSON parse after selected assets were read. No corpus acceptance.",
       "evidence": "survey004"
+    },
+    {
+      "atUTC": "2026-10-17T23:58:38Z",
+      "kind": "verified-runtime-result",
+      "id": "survey005",
+      "runId": 39080970551,
+      "outcome": "Norway EN parse completed; NB decoded then SIGSEGV at structural walk. France also SIGSEGV in previously passing workbook parser. Decoder-only cause not established; shared runtime investigation active. No retry of unchanged batch.",
+      "evidence": "survey005"
     }
   ],
   "lanes": [
     {
       "id": "corpus-no-fr",
-      "status": "active-targeted-correction-and-native-candidate",
+      "status": "active-shared-runtime-investigation-and-france-integration",
       "owner": "Active Norway correction and France native-candidate workers; Morgan/root integrates",
       "pickupEvidence": "Coordinator reports active distinct Norway correction and France native-candidate work at checkpoint handoff",
-      "latestResult": "survey004 terminal incomplete",
+      "latestResult": "survey005 terminal incomplete",
       "output": "Reviewed Norway targeted correction and France native candidate, followed by actual bounded runtime and separate acceptance evidence",
-      "next": "Review and publish bounded fixes through the existing automatic route with one Foo runner; verify actual receipts before acceptance.",
+      "next": "Resolve concrete shared runtime cause and independently integrate France native wrapper; no blind rerun",
       "dependencies": [
         "Exact reviewed correction bytes",
         "Single control writer",
@@ -191,18 +199,19 @@
       ],
       "evidence": [
         "survey003",
-        "survey004"
+        "survey004",
+        "survey005"
       ],
-      "latestReview": "survey004 was published and executed; any next candidate needs separate review and runtime evidence",
+      "latestReview": "Norway005 independently reviewed and executed; local tests do not establish Foo success",
       "activeSubtasks": [
         {
-          "scope": "Norway targeted parser correction",
-          "owner": "Norway correction worker",
+          "scope": "Shared runtime native crash investigation",
+          "owner": "Corpus worker",
           "status": "active"
         },
         {
-          "scope": "France source-native extraction",
-          "owner": "France extraction worker",
+          "scope": "France native handler review and runner integration",
+          "owner": "Corpus review worker",
           "status": "active"
         }
       ]
@@ -235,7 +244,7 @@
     },
     {
       "id": "ledger-reconciliation",
-      "status": "reviewed-awaiting-root-publication",
+      "status": "active-maintenance",
       "owner": "Ledger reconciliation worker prepares artifacts; Morgan verifies and publishes",
       "pickupEvidence": "Existing draft and full catalog read; current evidence reconciled without duplicate requirements",
       "output": "Sanitized checkpoint, historical reference catalog and validated publication manifest",
@@ -246,11 +255,12 @@
       "completionRequires": [
         "Root publishes exact reviewed files and verifies immutable readback"
       ],
-      "semanticProjection": "pending"
+      "semanticProjection": "pending",
+      "latestResult": "Published checkpoint3a103bc7 with exact readback; current forward update records005"
     },
     {
       "id": "tooling-ui-design",
-      "status": "queued-capacity-blocked",
+      "status": "active",
       "owner": null,
       "issue": "https://github.com/maldous/offmenu/issues/33",
       "output": "Source-linked prior UI/dev-server/landing/app feedback reconciliation; current-stack alternatives/impacts; independent adversarial decision review; final standards and scoped backlog",
@@ -266,7 +276,7 @@
         "Read actual official Emil Kowalski skills at 2d228630ba1446365f614a108cb8252f1feda202 when doing UI work; retain MIT notice if copied",
         "No speculative replacement design or unrequested heavy mandatory developer checks"
       ],
-      "pickupEvidence": null,
+      "pickupEvidence": "Confirmed worker start after ledger slot freed; direct prior UI requirements recovered and being reconciled",
       "assignmentStatus": "Backfill attempted; rejected by seven-total thread limit. Two stale pending-initialization tasks consume capacity; no active tooling worker."
     },
     {
@@ -437,14 +447,28 @@
       "corpusAcceptanceEstablished": false,
       "sourceCommit": "314822f900c49953aeca04d82ce0957d851d19c9",
       "controlCommit": "498d66b07c48f66e9a9d2ec99ce5845d140e3aa2"
+    },
+    "survey005": {
+      "runId": 39080970551,
+      "runAttempt": 1,
+      "sourceJobId": 117537643633,
+      "runnerId": 21,
+      "runnerName": "foo-offmenu",
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39080970551",
+      "sourceCommit": "e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
+      "controlCommit": "b71341e0cb0848f78c943f2548585e3f33e3f7ea",
+      "requestId": "national-schema-survey-20261017-005",
+      "status": "terminal-incomplete",
+      "publisherStatus": "success",
+      "artifactId": 12118484439,
+      "artifactSha256": "9a6a81d68c81a47f79e86f3e4aed57b7d4cb57689437713481098eecad696f48",
+      "reportSha256": "07c98b2070dee5aca6fc31e2fdafd8ed6bf032108f0fe05ff22df3f401e8072e",
+      "verification": "Actual artifact ZIP SHA, sole evidence.json, receipt/run/job identities and terminal publisher verified",
+      "outcome": "Norway EN parse completed; NB decoded then SIGSEGV at structural walk. France also SIGSEGV in previously passing workbook parser. Decoder-only cause not established; shared runtime investigation active. No retry of unchanged batch."
     }
   },
   "sideEffects": {
-    "githubWrites": 0,
-    "fooActions": 0,
-    "oldWorkerDispatches": 0,
-    "sourceHistoryChanges": 0,
-    "localDraftFilesOnly": true
+    "scope": "Checkpoint bookkeeping; source datasets and historical journal unchanged"
   },
   "issueReconciliation": [
     {
@@ -544,15 +568,15 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "not-published",
-    "writer": "Morgan/root only",
-    "changesMadeHere": "Reviewed local files only; no repository/issue/history writes",
-    "adoptionCondition": "Root alone publishes the reviewed allowlist and verifies immutable readback; checkpoint remains unpublished until that evidence exists"
+    "status": "published-and-read-back",
+    "verifiedPriorCommit": "3a103bc7c380da01c83fcda35d82c92741379804",
+    "writer": "Morgan",
+    "note": "Current forward update records survey005 and live assignments; immutable readback required after publication."
   },
   "activeWork": [
-    "Norway targeted parser correction",
-    "France source-native extraction",
-    "Better Auth first implementation",
-    "Ledger finalization"
+    "Shared runtime crash investigation after survey005",
+    "France source-native independent review and runner integration",
+    "Better Auth first implementation freeze",
+    "UI/tooling requirements and adversarial assessment"
   ]
 }
