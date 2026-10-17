@@ -1,0 +1,121 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 34,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/M-BATCH-CUSTODY-R1-W16/response-r1.json",
+      "correlation": "B02-W34-GQ-BEAC16",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13997-947d-7ce1-bb6a-a6c1dc9d8aa3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 61,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/M-BATCH-CUSTODY-R1-W16/response-r1.json",
+      "correlation": "B03-W61 NU-census and NU-CPI pointer only",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139b7-6b00-78d3-a46c-1337fdc94bf3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 29,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/B03-W49/author-receipt.json",
+      "correlation": "B02-W29 FK currency missing",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13905-2584-74b1-833f-126c4ed791a7\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 36,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/B03-W49/author-receipt.json",
+      "correlation": "B02-W36 MU adaptation entitlement not held",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13998-eb2d-7741-8765-6c570d934587\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/B01-W24/LU-evidence-response.json",
+      "correlation": "B01-W14-DEF-A/B",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f1-6e28-7ba1-8d85-85b39e3aeae1\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 9,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-41/B03-W41/resolution.json",
+      "correlation": "B01-W09 BH not-held evidence",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ed-75f5-7511-af10-48685045d280\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 1,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-52/B03-W52/RESULT.json",
+      "correlation": "B01-W01-AD52-EXACT",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a1389f-239c-7191-8555-53bf152d6e84\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

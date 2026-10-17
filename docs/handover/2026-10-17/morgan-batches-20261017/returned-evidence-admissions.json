@@ -1,0 +1,359 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 10,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/KW10-NG20-custodian-response.json",
+      "correlation": "B01-W10-KW62-SA47-26-retained-metadata-v1",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ed-be8c-7340-b25e-87bee9272d7e\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 20,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/KW10-NG20-custodian-response.json",
+      "correlation": "B01-W20-NG62-USE-01",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f8-9d74-75c2-b5f4-b487f610f5e6\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 37,
+      "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-04/M-BATCH-CUSTODY-R1-W04-20261017/response.json",
+      "correlation": "B02-W37-PK-PBS-price-03",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a1399a-07db-7810-8612-d6372042c0fe\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-01/custody-r1-w01/B02-W31-PROVIDER-CUSTODY-response.json",
+      "correlation": "B02-W31-PROVIDER-CUSTODY UZ price lead only",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13905-cee6-7c01-b2ed-8855aa80c584\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 63,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/M-BATCH-CUSTODY-R1-W13/custody-response.json",
+      "correlation": "B03-W63-PE-rights-conflict-04",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139b8-6186-7633-9ac2-1ea5bf3c866f\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 11,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/M-BATCH-CUSTODY-R1-W13/custody-response.json",
+      "correlation": "B01-W11 LC",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ee-0d29-75d0-83df-da4f7ac6c9a4\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/M-BATCH-CUSTODY-R1-W13/custody-response.json",
+      "correlation": "B03-W61 GP",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139b7-6b00-78d3-a46c-1337fdc94bf3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 19,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-10/custody-responses/M-BATCH-CUSTODY-R1-W10-B01-W19-10/custodian-response.json",
+      "correlation": "B01-W19-10",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f8-5f61-78b0-a899-7ec31a611daa\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 28,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/custody-R1-W24/custody-response.json",
+      "correlation": "B02-W28-ER1 metadata24 only",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ff-c41d-7640-8480-eee807a10c47\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/custody-R1-W24/custody-response.json",
+      "correlation": "B03-W44-asset-10",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a1399e-08ab-7921-980b-bccda1d2db80\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 25,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/custody-R1-W24/custody-response.json",
+      "correlation": "B01-W25-CV-24",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138fe-af42-7ff1-8e37-f7ad5abf2671\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 12,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-60/GG/B03-W60/ML12-digitized-source-response.json",
+      "correlation": "B01-W12-R1 ML",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ee-5252-7f63-8b43-cf730ecd7e05\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 32,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/GB32-source-definition-response.json",
+      "correlation": "B02-W32",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13906-2929-7e70-8080-2751b69d80e3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/LU14-source-definition-response.json",
+      "correlation": "B01-W14",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f1-6e28-7ba1-8d85-85b39e3aeae1\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 23,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/CI23-source-definition-response.json",
+      "correlation": "B01-W23",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138fa-6a44-71f2-b31a-f8678f718b57\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 26,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/CA26-source-definition-response.json",
+      "correlation": "B01-W26",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138fe-fd62-7a61-89ad-46808d7da338\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-53/B03-W53/LU14-correlated-custody-response.json",
+      "correlation": "B01-W14-DEF-A/B",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f1-6e28-7ba1-8d85-85b39e3aeae1\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 24,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-53/B03-W53/LU14-correlated-custody-response.json",
+      "correlation": "B01-W24-LU-DEF-A-B",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138fa-bc52-7233-b70f-9e06b4b2b6ae\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 13,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-47/B03-W47/BE-MS-BO-retained-evidence-response.json",
+      "correlation": "B01-W13-MS47",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f1-385b-7081-9b8c-1509a8edff18\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 18,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-47/B03-W47/BE-MS-BO-retained-evidence-response.json",
+      "correlation": "B01-W18-BO-dictionary-R1",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f7-e2a4-72a1-ad65-580963d1d2b9\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 15,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-47/B03-W47/BE-MS-BO-retained-evidence-response.json",
+      "correlation": "B01-W15-BE47",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f1-b691-76e2-8c4e-c993256c8afc\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

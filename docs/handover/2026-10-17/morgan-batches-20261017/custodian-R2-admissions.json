@@ -1,0 +1,284 @@
+[
+  {
+    "owner": "4",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a138a5-1538-7861-8b0f-d3d28311fc62\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "10",
+    "packets": [
+      {
+        "requester": 64,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-64/B03-W64/custodian-artifact-request.json"
+      },
+      {
+        "requester": 47,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-47/B03-W47/specific-custodian-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a138ed-be8c-7340-b25e-87bee9272d7e\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "11",
+    "packets": [
+      {
+        "requester": 45,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-45/B03-W45/IT-custody-resolution.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a138ee-0d29-75d0-83df-da4f7ac6c9a4\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "12",
+    "packets": [
+      {
+        "requester": 47,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-47/B03-W47/specific-custodian-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a138ee-5252-7f63-8b43-cf730ecd7e05\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "21",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      },
+      {
+        "requester": 64,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-64/B03-W64/custodian-artifact-request.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a138f9-d5c4-75c0-9ccb-91dac497b5a9\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "33",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      },
+      {
+        "requester": 64,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-64/B03-W64/custodian-artifact-request.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a13997-3155-7ec2-a3e9-dce808a27a39\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "34",
+    "packets": [
+      {
+        "requester": 60,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-60/GG/B03-W60/gateway-artifact-request.txt"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a13997-947d-7ce1-bb6a-a6c1dc9d8aa3\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "37",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a1399a-07db-7810-8612-d6372042c0fe\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "39",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a1399a-ed83-7423-a962-dd853d959c54\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "42",
+    "packets": [
+      {
+        "requester": 64,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-64/B03-W64/custodian-artifact-request.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a1399c-9b32-74a3-867e-11b70ad9226f\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "52",
+    "packets": [
+      {
+        "requester": 57,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-57/B03-W57/precise-custody-requests.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a139a6-d34b-7083-b1c1-13a97374f968\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "55",
+    "packets": [
+      {
+        "requester": 54,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-54/B03-W54/custodian-field-request.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a139a8-ac70-7493-a4f4-9cf34bb16ce7\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "56",
+    "packets": [
+      {
+        "requester": 54,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-54/B03-W54/custodian-field-request.json"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a139a9-2714-7cb1-9b61-c7f957cb4734\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "61",
+    "packets": [
+      {
+        "requester": 60,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-60/GG/B03-W60/gateway-artifact-request.txt"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a139b7-6b00-78d3-a46c-1337fdc94bf3\"}"
+        }
+      ],
+      "isError": false
+    }
+  },
+  {
+    "owner": "63",
+    "packets": [
+      {
+        "requester": 60,
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-60/GG/B03-W60/gateway-artifact-request.txt"
+      }
+    ],
+    "envelope": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"threadId\":\"01a139b8-6186-7633-9ac2-1ea5bf3c866f\"}"
+        }
+      ],
+      "isError": false
+    }
+  }
+]

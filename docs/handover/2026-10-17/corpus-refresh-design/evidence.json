@@ -1,0 +1,250 @@
+{
+  "task": "Independent OffMenu dataset refresh architecture design",
+  "taskDate": "2026-10-17",
+  "repository": "/home/user/src/offmenu",
+  "observedHead": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "readOnlyInspection": true,
+  "projectOrSourceDataWrites": false,
+  "allowedWrites": "This separate task output directory only",
+  "testsExecuted": false,
+  "sourceBodiesParsed": false,
+  "sourceNetworkRequests": 0,
+  "standardsDocumentationConsulted": [
+    "https://www.rfc-editor.org/rfc/rfc9110.html#section-8.8.3",
+    "https://www.rfc-editor.org/rfc/rfc9111.html#section-4.3.4",
+    "https://reproducible-builds.org/docs/definition/",
+    "https://reproducible-builds.org/docs/timestamps/",
+    "https://www.sqlite.org/wal.html"
+  ],
+  "trackedAndUntrackedStatusAtEnd": " M offmenu/cli.py\n M public/sources.js\n?? .agents/\n?? .freebuff/\n?? .morgan-status/\n?? corpus/delivery-partners.json\n?? docs/FREEBUFF_CORPUS_MISSION.txt\n?? docs/FREEBUFF_HANDOVER.txt\n?? docs/aldi-doordash-local-datasource.md\n?? docs/delivery-retail-pricing.md\n?? knowledge.md\n?? offmenu/aldi_datasource.py\n?? offmenu/delivery_pricing.py\n?? tests/test_aldi_datasource.py\n?? tests/test_delivery_pricing.py\n",
+  "statusMatchedInitialInspection": true,
+  "codeAndRegistryPins": [
+    {
+      "path": "/home/user/src/offmenu/pyproject.toml",
+      "bytes": 677,
+      "sha256": "0b1fb53600ae99d58afa26f4baa8b267426d1d869fb517924bf8289c436842b3"
+    },
+    {
+      "path": "/home/user/src/offmenu/package-lock.json",
+      "bytes": 49742,
+      "sha256": "f461a0c3fe8d81be447158514d3b5c45ef35f2866bfdd212e574b2673caf0cde"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-national.py",
+      "bytes": 9061,
+      "sha256": "3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/import-national-tables.py",
+      "bytes": 8953,
+      "sha256": "99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-next-national.py",
+      "bytes": 11325,
+      "sha256": "77d41f505a25e1a9ad92312b3aa775b598023faeea2431d3aa8c69cc8a37128d"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-usda.py",
+      "bytes": 5398,
+      "sha256": "7878ad42474d3f43d19a60f70c971334d2c94058fe07db3e927f31657431d078"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/normalize-usda.py",
+      "bytes": 8278,
+      "sha256": "31bac1c8cad12c1a5838419b37d04508547302bd16c6d7cde72c151fc76733e0"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-jsonl.mjs",
+      "bytes": 5766,
+      "sha256": "b8a8564671c62d7a8ff7ff856b5d29fbe2ffa60402c4d7129b608db7aff28d79"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-overture.py",
+      "bytes": 10975,
+      "sha256": "c628b2a33885bbb899821849f8b8183d0447078c68dedb3082509edfa8300388"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-source-access.py",
+      "bytes": 3236,
+      "sha256": "7bb6d848c5d2a68e5f25ebd0cae3e47899384ebadd78e37905105752f936830c"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-world-recipe-wikis.py",
+      "bytes": 5254,
+      "sha256": "410fd3c6bca698b7ec93a466d71d25b328bf015c1519ec824c5fae8ec4d6c4e9"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/collect-business-references.py",
+      "bytes": 5596,
+      "sha256": "0c0b6d5a0de71006cbd101f36a91d7a2aa7083e65feaa093900143a6e6e2a8b7"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/build-curated-corpus.py",
+      "bytes": 13351,
+      "sha256": "a0fdf0fe1e80f61dc1f237d271ecaf42b2659df01afe2bb9fc0d068511e3e459"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/align-national-common.py",
+      "bytes": 20681,
+      "sha256": "2f81bbf4f4ebc371ecc9ce48f4c04d72afe0ebcea7cd9955f476c52dcbc110fa"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/index-curated-countries.py",
+      "bytes": 3837,
+      "sha256": "c733e5f9975bd95d13f35188e9704202c2141df2e61818881c6bb4e68a56af06"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/exercise-collection.mjs",
+      "bytes": 4504,
+      "sha256": "0ed9293aaf6f16c3597d7e71b1b00e46ac5062dc2987fa43a1849a1551c430e5"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/exercise-curated-corpus.mjs",
+      "bytes": 4136,
+      "sha256": "28995bcc504905e2a75efe634b850ed7748ba0a1102b4641e396e63e5fbce230"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/qualify-common-expansion.py",
+      "bytes": 27073,
+      "sha256": "37aa195b0bbf798eb361be9ee1803ed185c5e74fa38b79c3c4efe8a6dfcc6965"
+    },
+    {
+      "path": "/home/user/src/offmenu/scripts/report-country-execution.py",
+      "bytes": 5686,
+      "sha256": "2fd2bc4d3ebcca8bc997d45b48f4526121063bd344e94eb67bc43df9c6cb5eff"
+    },
+    {
+      "path": "/home/user/src/offmenu/corpus/curation.py",
+      "bytes": 9837,
+      "sha256": "b2dc2b2020b2addbc049ca7a0ea9ae81ec5b8c50ef5a26c76b5f0b2c82ca262f"
+    },
+    {
+      "path": "/home/user/src/offmenu/corpus/policy.json",
+      "bytes": 1202,
+      "sha256": "49e11547deeccd3ef64d666a6e743c636b6ded68275e1472b33db09ffe6d03f6"
+    },
+    {
+      "path": "/home/user/src/offmenu/corpus/common-data.schema.json",
+      "bytes": 17632,
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    {
+      "path": "/home/user/src/offmenu/corpus/common-data-contract.json",
+      "bytes": 46420,
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+    },
+    {
+      "path": "/home/user/src/offmenu/docs/country-delivery-matrix.json",
+      "bytes": 133210,
+      "sha256": "894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8"
+    },
+    {
+      "path": "/home/user/src/offmenu/docs/source-delivery-ledger.json",
+      "bytes": 1701843,
+      "sha256": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf"
+    },
+    {
+      "path": "/home/user/src/offmenu/tests/test_collection.py",
+      "bytes": 2150,
+      "sha256": "cba37cba9a24c841529c374e33cb08c175f8c6ef17935fee778deba09ddf1f84"
+    },
+    {
+      "path": "/home/user/src/offmenu/tests/test_next_national_collection.py",
+      "bytes": 2638,
+      "sha256": "c5bda7a6b7e06bbd546ddd5e4f5fa02ef7a6401bcc4f6b33f71dd73566cc5128"
+    },
+    {
+      "path": "/home/user/src/offmenu/tests/test_national_common.py",
+      "bytes": 3158,
+      "sha256": "6711c389530ff1e96c5d711127c6ad447b9a5727c27e649773530f3735388827"
+    },
+    {
+      "path": "/home/user/src/offmenu/tests/test_curation_projection.py",
+      "bytes": 4372,
+      "sha256": "d64965eed6afba6a3db076d2edf64a5e7ff316f3e66ce32867d7b8a818361dc7"
+    },
+    {
+      "path": "/home/user/src/offmenu/tests-web/curation.test.mjs",
+      "bytes": 10979,
+      "sha256": "58c73489162f0b01ae8f951323774afc8a54808ccae15b41359db67ff0597fb6"
+    }
+  ],
+  "retainedMetadataPins": [
+    {
+      "path": "/home/user/Documents/Codex/2026-10-17/offmenu-dk-m002-composition/composition-receipt.json",
+      "bytes": 7840,
+      "sha256": "896539524e55fb2b730c893ea82aaf198416a59a27c66eca47ab045b382241c5"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/renewed-all64-followthrough/owner57/concise-all64.md",
+      "bytes": 56015,
+      "sha256": "535ae9f63aeb075d5b22122edfcd19416c773e579e796eebb61ed831f4d5781a"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/acquisition.json",
+      "bytes": 8970,
+      "sha256": "654f91bd14d83b7b55a058777a0b8fd836674310e3dc38235638ec9435dc4edc"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/originals/next-national-20261013/acquisition.json",
+      "bytes": 2109,
+      "sha256": "d37f68c855ef24ac235bbc9c6903a26a757fc3c5a9ee621dc33e8f8801c5356f"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/ciqual-2025/manifest.json",
+      "bytes": 1930,
+      "sha256": "df4df008991e573c1a0f23111611b5fff2f68b62640546d9bb0360fe760cf9ab"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/matvaretabellen-2026/manifest.json",
+      "bytes": 2217,
+      "sha256": "8b6eb6d3adc99c3aab9053bd0fc373d7755ad1638769c72bafaf4f3a510b94a9"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/fineli-20.0/manifest.json",
+      "bytes": 1393,
+      "sha256": "e5ec80fc5e0276c76985015924d942db48227b8bcb949cd77f53859b5adee269"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/frida-5.5/manifest.json",
+      "bytes": 1457,
+      "sha256": "ddbcb22d6a4f5dac4574f515fe7244d8c80fed5bf063df907f4f0a65170b39e7"
+    },
+    {
+      "path": "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs/manifest.json",
+      "bytes": 5950633,
+      "sha256": "312a7f5ce7c32b81d1eb02251303a000073eea2d0b46d9ac710e09ff89dee895"
+    }
+  ],
+  "danishCandidateVerification": [
+    {
+      "path": "/tmp/offmenu-dk-m002-922-20261017/scripts/collect-national.py",
+      "bytes": 9442,
+      "sha256": "378ba12f8fcc59a2f560b6516f142b59e1e0b5d317db414f72b662facd9a2ae0",
+      "receiptSha256": "378ba12f8fcc59a2f560b6516f142b59e1e0b5d317db414f72b662facd9a2ae0",
+      "commitSha256": "378ba12f8fcc59a2f560b6516f142b59e1e0b5d317db414f72b662facd9a2ae0",
+      "allHashesMatch": true
+    },
+    {
+      "path": "/tmp/offmenu-dk-m002-922-20261017/scripts/align-national-common.py",
+      "bytes": 21096,
+      "sha256": "e8f543e8c241bd8edb01a099e63f89e88da91703298645cbed45c3f36110da3f",
+      "receiptSha256": "e8f543e8c241bd8edb01a099e63f89e88da91703298645cbed45c3f36110da3f",
+      "commitSha256": "e8f543e8c241bd8edb01a099e63f89e88da91703298645cbed45c3f36110da3f",
+      "allHashesMatch": true
+    }
+  ],
+  "registryCheck": {
+    "entries": 249,
+    "uniqueCodes": 249,
+    "domainDefaults": 13,
+    "sourceEntries": 1303
+  },
+  "provenanceLimit": "Raw source-body digests and source row counts in the recommendation are read from retained metadata, not independently rehashed/recounted in this task. Danish synthetic pass counts are receipt-reported; no suite rerun. The all64 export cut precedes the separate composition receipt.",
+  "deliverable": {
+    "path": "/tmp/offmenu-dataset-refresh-design-20261017/recommendation.md",
+    "bytes": 38675,
+    "sha256": "318846ea407c068047f2c0e8f14d38705ce99d40cc7edd083d233136c7e88126"
+  }
+}

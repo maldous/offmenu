@@ -1,0 +1,1865 @@
+{
+  "schema": "morgan-interim-obligations/1",
+  "updatedUTC": "2026-10-16T00:22:17.885953+00:00",
+  "purpose": "Temporary compact index; workercontext remains with workers. Not finaltooladoption.",
+  "canonicalHistoricalLedger": "/home/user/Documents/Codex/2026-10-14/task-2/offmenu-deliverable-ledger.json",
+  "requirementCount": 69,
+  "requirements": [
+    {
+      "id": "COUNTRY-04",
+      "owner": 4,
+      "thread": "01a138a5-1538-7861-8b0f-d3d28311fc62",
+      "state": "open",
+      "scope": [
+        "AE",
+        "CH",
+        "GL",
+        "KZ",
+        "NL"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141b9-2120-7292-a283-fdb1b73d1097",
+      "latestResult": "Recorded Worker 11’s **scoped PASS** for the GL chronology addendum. Original packet hashes and rights restrictions remain preserved.\n\nNL partials remain unqualified; no retry selected. [Status record](/home/user/src/offmenu-data/country-bundles-20261016/owner-04/review-status-gl-delta03.json)."
+    },
+    {
+      "id": "COUNTRY-43",
+      "owner": 43,
+      "thread": "01a1399d-a4e4-7ab2-87c6-e2ddebc41e89",
+      "state": "blocked",
+      "scope": [
+        "FJ",
+        "BZ",
+        "WS",
+        "SR",
+        "ZM"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a1419f-422d-7d11-b8f6-d4cd0907fc8f",
+      "latestResult": "OffMenu — Worker 43 bootstrap complete; idle.\n\n- Thread ID: `01a1399d-a4e4-7ab2-87c6-e2ddebc41e89`\n- Host: `foo`\n- Actual cwd: `/home/user/src/offmenu-workers/worker-43`\n- HEAD: `f6cb92aef52a5cc8193717d7e794556bd84f8b3b`\n- Git common directory: `/home/user/src/offmenu/.git`\n- Registered branch: `sync/worker-43/f6cb92ae-20261015`\n- Status: clean.\n\nSupplied controls: unrestricted filesystem access (`danger-full-access`; environment permission profile `disabled`), network enabled. Mandatory reviewer: `auto_review`, preserved. Approval-policy value and user-configured settings: unavailable. `CODEX_PERMISSION_PROFILE` is unset; no named profile inferred.\n\nExactly one read-only command ran with inherited `GIT_*` stripped. No changes, assignments, additional workers, or other sessions created.\n\nThis provisioning snapshot establishes neither future source freshness nor release acceptance. Future assignments require freshly fetched source and immutable independent review."
+    },
+    {
+      "id": "COUNTRY-55",
+      "owner": 55,
+      "thread": "01a139a8-ac70-7493-a4f4-9cf34bb16ce7",
+      "state": "blocked",
+      "scope": [
+        "BW",
+        "GA",
+        "KH",
+        "MY",
+        "SH"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a1419f-5db9-7d32-b2d9-2e653532dc34",
+      "latestResult": "OffMenu — Worker 55, authorized slot 55 within 33–60.\n\n- Thread ID: `01a139a8-ac70-7493-a4f4-9cf34bb16ce7`\n- Hostname: `foo`\n- Actual cwd: `/home/user/src/offmenu-workers/worker-55`\n- Git HEAD: `43eb506d050af1e39c9fa28eca4b58187f5092dd`\n- Common directory: `/home/user/src/offmenu/.git`\n- Registration: `/home/user/src/offmenu/.git/worktrees/worker-55`, with matching worktree backpointer.\n- Status: clean; branch `feature/worker55-typed-relationships-f6-20261015`.\n- `CODEX_PERMISSION_PROFILE`: unset; named profile unavailable.\n\nActual supplied controls: filesystem unrestricted (`danger-full-access`, sandbox disabled); network enabled. Mandatory reviewer: `auto_review`, preserved. Approval-policy availability and user-configured approval policy: unavailable separately.\n\nExactly one bounded read-only command ran, with inherited `GIT_*` stripped. No changes or additional workers/sessions. This provisioning snapshot establishes neither future source freshness nor release acceptance; future assignments require fresh fetched source and immutable independent review.\n\nIdle."
+    },
+    {
+      "id": "COUNTRY-19",
+      "owner": 19,
+      "thread": "01a138f8-5f61-78b0-a899-7ec31a611daa",
+      "state": "blocked",
+      "scope": [
+        "AF",
+        "AM",
+        "BT",
+        "CN",
+        "GR"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 46,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a1419f-7b7b-7911-8b5d-42ef69fd742d",
+      "latestResult": "Worker 19 read-only bootstrap verified with one bounded command:\n\n- Host: `foo`\n- Actual cwd: `/home/user/src/offmenu-workers/worker-19`\n- HEAD: `f6cb92aef52a5cc8193717d7e794556bd84f8b3b`\n- Common Git directory: `/home/user/src/offmenu/.git`\n- Worktree registered on `sync/worker-19/f6cb92ae-20261015`; status clean.\n- `CODEX_THREAD_ID`: `01a138f8-5f61-78b0-a899-7ec31a611daa`\n- `CODEX_PERMISSION_PROFILE`: unset; no named profile inferred.\n\nSupplied controls: unrestricted filesystem (`danger-full-access`), network enabled, mandatory reviewer `auto_review`. Separate approval policy: unavailable. Controls preserved; no changes or additional workers/sessions created.\n\nIdle and available, with no product assignment. This provisioning snapshot establishes neither task freshness nor release acceptance. Future tasks require Morgan Gitflow dispatch/review gates."
+    },
+    {
+      "id": "COUNTRY-01",
+      "owner": 1,
+      "thread": "01a1389f-239c-7191-8555-53bf152d6e84",
+      "state": "dietary-discovery-held",
+      "scope": [
+        "AD",
+        "AG",
+        "AI",
+        "AL",
+        "AO"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Exact eligible source/rights input or separately selected same-portfolio work; no repeated search",
+      "reviewer": 11,
+      "evidence": [
+        "/home/user/src/offmenu-data/country-bundles-20261016/owner-01/01a1389f-239c-7191-8555-53bf152d6e84/dietary-discovery-v3/packet-v3.manifest.json"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141ba-fe15-70a3-b478-cdd8a27a9a5b",
+      "latestResult": "v2 review bound; v3 no eligible distinct independently licensed original in bounded search; HOLD delivered and acknowledged; six queries remain",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "COUNTRY-07",
+      "owner": 7,
+      "thread": "01a138a5-f95f-7103-a8b0-437ae9d3ae48",
+      "state": "blocked",
+      "scope": [
+        "AQ",
+        "AR",
+        "AS",
+        "AT",
+        "AU"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "scope hold",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a1419f-b6f3-72f1-a051-88c12dc6cd45",
+      "latestResult": "Scope mismatch: Matt’s latest direct authorization for Worker 07 covers reconciling `bc7307f` and its real-provider qualification gaps; that work is complete. It does not cover this new five-country research/acquisition assignment.\n\nThe bootstrap restriction was superseded. The remaining issue is authorization for the distinct country task. No discovery, downloads, output writes or budget consumption occurred. Existing artifacts and holds remain preserved."
+    },
+    {
+      "id": "COUNTRY-08",
+      "owner": 8,
+      "thread": "01a138d3-4664-7ee0-9611-61d149582d53",
+      "state": "blocked",
+      "scope": [
+        "AW",
+        "AX",
+        "AZ",
+        "BA",
+        "BB"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "scope hold",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a1419f-d4ba-7c03-9d84-43ea0030e81b",
+      "latestResult": "Worker 08’s directly authorized task was the completed PR #11 review. The new AW/AX/AZ/BA/BB country bundle falls outside that scope.\n\nDirect authorization from Matt in this chat is needed to begin the country work. No discovery, acquisition, file changes, or review dispatch performed; prior results and holds remain preserved."
+    },
+    {
+      "id": "COUNTRY-15",
+      "owner": 15,
+      "thread": "01a138f1-b691-76e2-8c4e-c993256c8afc",
+      "state": "new-delta-complete-review14-dispatched",
+      "scope": [
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+      "reviewer": 14,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141bb-22fc-73e0-b3e6-fb48fe5bf363",
+      "latestResult": "Bound Worker 46’s prior scoped PASS without broadening it, then froze a distinct dietary-reference delta.\n\n- Linked retained dietary-reference IDs for **BD, BE and BG**.\n- Verified an official **Belgian 2025 guideline landing page**, exposing a freshness gap against FAO’s older 2019 description. No guideline body or numeric targets extracted. [Official issuer page](https://www.hgr-css.be/en/report/9805-9807/food-based-dietary-guidelines-for-the-belgian-population-2025).\n- Used **3 discovery queries and 1 direct HTTP request**, totaling **37,254 primary-response bytes**; zero dataset acquisition.\n- BF/BH denied routes untouched. No active children.\n\n[New frozen packet](/home/user/.codex/visualizations/2026/10/14/01a138f1-b691-76e2-8c4e-c993256c8afc/country-bundle-owner15-dietary-delta-20261016/manifest.json), SHA256 `6e7a10022f4393456a52980760b9154ce016207d1c23907f2784c15ab91a05d2`.\n\nReady for SAME46’s review of this new delta only; admission and country completion remain withheld.",
+      "latestReview": {
+        "owner": 15,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner15-BE-methods-review.json",
+        "sha256": "69438de21263acc81c352a8a1de90f51aa4f38bd2fdb047a0fe95c915fe48b8a",
+        "verdict": "PASS_BE_AUTHOR_METHOD_METADATA_ONLY"
+      },
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "delivery": {
+        "UTC": "2026-10-15T23:22:25.552548+00:00",
+        "toolSuccess": true,
+        "ownerCompletion": false
+      },
+      "reviewBinding": "Native owner confirms exact46binding completed without replay",
+      "deliveryUTC": "2026-10-15T23:25:12.715462+00:00",
+      "pickupVerified": true
+    },
+    {
+      "id": "COUNTRY-16",
+      "owner": 16,
+      "thread": "01a138f2-0657-7d60-be9e-a0e100d68bfd",
+      "state": "blocked",
+      "scope": [
+        "BI",
+        "BJ",
+        "BL",
+        "BM",
+        "BN"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "stale d396 task displaced country result",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a0-1356-7bb1-bfb5-c2fcabdf4f4a",
+      "latestResult": "Sent exact candidate `d39680201fb8135ffeb7b2b33e55ca72630e2ca2` to SAME25. Retained results: **19/19 passed**; CRLF fixture issue remains **CHANGES REQUIRED**.\n\nMorgan Gateway reporting was attempted; delivery is unconfirmed. All adoption and production holds remain preserved. Idle and available."
+    },
+    {
+      "id": "COUNTRY-18",
+      "owner": 18,
+      "thread": "01a138f7-e2a4-72a1-ad65-580963d1d2b9",
+      "state": "delta-frozen-review-pending",
+      "scope": [
+        "BO",
+        "BQ",
+        "BR",
+        "BS",
+        "BV"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141bb-4a21-7b83-91e8-2ba4e8e49d6c",
+      "latestResult": "Delta03 frozen: [dietary-reference discovery packet](/home/user/src/offmenu-data/country-bundle-20261016/owner-18/delta03-dietary-discovery/delta-packet.json).\n\n- Four leads across BO, BS and BQ; versions, extent and reuse permissions remain unresolved.\n- Excluded a Bahrain result and unverified Netherlands-to-BQ applicability.\n- Bound SAME38’s TACO4 scoped PASS without replay.\n- Used **3/18 queries**; no direct original downloads. Search-service transport totals are unavailable.\n\nGateway delivery remains unconfirmed. Prior packets and all holds remain preserved. [Bolivia ministry lead](https://www.minsalud.gob.bo/images/Libros/DGPS/PDS/p342_bt_dgps_uan_BASES_TECNICAS_DE_LAS_GUIAS.pdf), [Bahamas FAO reference](https://www.fao.org/platforms/school-food/around-the-world/latin-america-and-the-caribbean/bahamas/en), [BQ CBS lead](https://www.cbs.nl/nl-nl/maatwerk/2022/40/gezondheid-welzijn-en-leefstijl-op-bonaire-saba-en-sint-eustatius)."
+    },
+    {
+      "id": "COUNTRY-22",
+      "owner": 22,
+      "thread": "01a138fa-1d15-7701-94a1-39bdf19ffb22",
+      "state": "open",
+      "scope": [
+        "BY",
+        "CC",
+        "CD",
+        "CF",
+        "CG"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a7-4666-7d13-b520-7266cb237da0",
+      "latestResult": "[Delta 02 frozen separately](/home/user/Documents/Codex/2026-10-16/owner-22-country-delta02/manifest.json); first packet unchanged.\n\n- Congo Basin branch: one metadata row, **zero food samples**; source access/rights blocks retained.\n- CC retained “PDF”: verified as a 17-byte 403 response.\n- CC recipes: found a publisher-backed [community cookbook lead](https://www.cocoscrc.net/uploads/5/6/1/5/56151227/cocos_crc_annual_report_2021-2022.pdf); edition, recipe contents and rights remain unresolved.\n- CG: found [nutrition-policy metadata](https://leap.unep.org/en/countries/cg/national-legislation/plan-daction-national-pour-la-nutrition-du-congo), without qualified numeric dietary targets.\n\nCumulative: **5/18 queries**, zero direct HTTP requests or dataset acquisitions. Search transport totals are unavailable. BY/CF limits and denied routes preserved."
+    },
+    {
+      "id": "COUNTRY-23",
+      "owner": 23,
+      "thread": "01a138fa-6a44-71f2-b31a-f8678f718b57",
+      "state": "new-delta-complete-review14-dispatched",
+      "scope": [
+        "CI",
+        "CK",
+        "CL",
+        "CM",
+        "CO"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+      "reviewer": 14,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a7-8bd9-7c52-bc44-625d4b397bd8",
+      "latestResult": "**Chile delta frozen for scoped review.** Verified 613 unique CPI hierarchy entries against published counts, with index base and expenditure-weight periods kept separate. These are not household quantities or checkout prices. :codex-file-citation{path=\"/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/CL/8b341e9a5b7ba052dbd5/metodologÃ­a-base-anual-2023-=-100.pdf\" purpose=\"source\"}\n\n[Delta manifest](/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-02-CL-cpi-scope/manifest.json)\n\nExact reuse rights remain unresolved; no table rows exported or admitted. Cumulative spend: **0/18 queries, 0/80 HTTP operations, 0/192 MiB**.\n\nPhase 1 and its Worker 46 scoped PASS remain preserved without replay. No country completion, gold, translation or publication claimed.",
+      "latestReview": {
+        "owner": 23,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner23-CM-metadata-review.json",
+        "sha256": "b0ba818e756dc9c89e65b8df06d0dc9da1a4349ac5dba0ede14732176069ad13",
+        "verdict": "PASS_CM_PUBLICATION_METADATA_AND_HELD_BASIS_ONLY"
+      },
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "delivery": {
+        "UTC": "2026-10-15T23:22:25.552548+00:00",
+        "toolSuccess": true,
+        "ownerCompletion": false
+      },
+      "reviewBinding": "Native owner confirms exact46binding completed without replay",
+      "deliveryUTC": "2026-10-15T23:25:12.715462+00:00",
+      "pickupVerified": true
+    },
+    {
+      "id": "COUNTRY-25",
+      "owner": 25,
+      "thread": "01a138fe-af42-7ff1-8e37-f7ad5abf2671",
+      "state": "open",
+      "scope": [
+        "CR",
+        "CU",
+        "CV",
+        "CW",
+        "CX"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141b4-4391-7d80-823f-1c31e5a63c03",
+      "latestResult": "Existing exact-pin verdict for **`d39680201fb8135ffeb7b2b33e55ca72630e2ca2`**: **CHANGES REQUIRED**.\n\nIndependent tests: **19 passed, zero failures/skips**, including five local native D1 checks. Digest semantics received SCOPED PASS; **W25-Q16-C2 (P2)** remains against this pin because fixture hashing fails on CRLF checkouts.\n\n[Retained exact-pin receipt](/home/user/Documents/Codex/2026-10-15/worker-25-digest-d396802-review/receipt-d39680201fb8135ffeb7b2b33e55ca72630e2ca2.json)\n\nNo replay or implementation performed. Successor `03bccd` remains separate evidence. All adoption, publication, production and Morgan gates remain."
+    },
+    {
+      "id": "COUNTRY-26",
+      "owner": 26,
+      "thread": "01a138fe-fd62-7a61-89ad-46808d7da338",
+      "state": "delta-frozen-review-pending",
+      "scope": [
+        "CA",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141ba-e173-73b2-8869-4453c7728ffd",
+      "latestResult": "SAME38’s DE correction PASS is bound unchanged.\n\nNext distinct category progressed: **CZ dietary reference**, a complete 36-page SZÚ booklet, 792,719 bytes. Size/hash readback passed; redistribution, guidance extraction and admission remain withheld.\n\n[New frozen packet](/home/user/src/offmenu-data/owner26-country-bundles/COUNTRY-BUNDLE-20261016-CZ-DIETARY-R2/manifest.json)  \nSHA-256: `e09ae86073ed4a86c958a732b27a59f2ebcee2e3c046cf13577ac7dfb0cf7989`\n\nCumulative budget: 7 queries, 4 HTTP operations, 978,280 bytes. Remaining: 11 queries, 76 operations, 200,348,312 bytes. No active child; SAME38 review pending. All prior holds and Production STOP preserved."
+    },
+    {
+      "id": "COUNTRY-27",
+      "owner": 27,
+      "thread": "01a138ff-81fc-7fb0-a7f9-4535014e2869",
+      "state": "blocked",
+      "scope": [
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "scope hold",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a0-c39a-7bd2-8193-0f0f7652e93d",
+      "latestResult": "Country bundle not started. Worker 27’s direct bootstrap-only restriction remains in force; this delegated assignment does not authorize new country work.\n\nExisting artifacts, checkout write hold and all per-action holds remain preserved. Direct human authorization is needed to expand scope to DK, DM, DO, DZ and EC."
+    },
+    {
+      "id": "COUNTRY-28",
+      "owner": 28,
+      "thread": "01a138ff-c41d-7640-8480-eee807a10c47",
+      "state": "blocked",
+      "scope": [
+        "EE",
+        "EG",
+        "EH",
+        "ER",
+        "ES"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "technical send failure",
+      "reviewer": 46,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a13f4c-894e-7f93-ae38-865e899d7e81",
+      "latestResult": "**Health-preview closure ready for review.**\n\nCandidate/private-backup SHA: `5de87d949202f95cd81028926f3dc86dbc9c28f6`  \nBase: `f6cb92aef52a5cc8193717d7e794556bd84f8b3b`\n\nReviewed parser and test bytes are unchanged; **five synthetic checks passed**. [Frozen contracts and adoption holds](/home/user/src/offmenu-workers/worker-28/docs/health-import-owner28.md) distinguish preview consent from persistence authority and native access.\n\nRemote SHA verified exactly. Main and prior refs preserved; checkout clean. No real health import, central persistence adoption, PR, merge or deployment."
+    },
+    {
+      "id": "COUNTRY-29",
+      "owner": 29,
+      "thread": "01a13905-2584-74b1-833f-126c4ed791a7",
+      "state": "scoped-review-delivered",
+      "scope": [
+        "ET",
+        "FK",
+        "FM",
+        "FO",
+        "FR"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read owner binding/eligible next delta; do not duplicate delivery",
+      "reviewer": 11,
+      "evidence": [
+        "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-queue-reviews-20261016/owner29-FR-phase2-review.json"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141bb-859f-7203-9f88-f6ef17b128e2",
+      "latestResult": "Bound Same11’s scoped FO PASS and froze a distinct [FR inspection packet](/home/user/src/offmenu-data/country-bundles-20261016/owner-29/FR/phase2-alimconfiance/handoff.md):\n\n- 71,374 observations; all eight selected fields replayed against retained originals.\n- IDs, dates and missing values preserved; names/addresses excluded.\n- `fr-lo` retained without inventing a licence version. Broader reuse remains unqualified.\n\n[Freeze manifest](/home/user/src/offmenu-data/country-bundles-20261016/owner-29/FR/phase2-alimconfiance/freeze.json): `6104a508eb125ae8c73a4cc7e60feae5273fe3dff4a8fb70c03c0643ccbc6a7f`.\n\nBundle network usage remains **zero**. Prior packet and holds unchanged; no active child. Ready for distinct Same11 review. Gateway submission remains unconfirmed.",
+      "delivery": "Same target verified via registry/native identity after misroute rejection; successful send, not owner completion",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "COUNTRY-32",
+      "owner": 32,
+      "thread": "01a13906-2929-7e70-8080-2751b69d80e3",
+      "state": "delta-frozen-review-pending",
+      "scope": [
+        "GB",
+        "GD",
+        "GE",
+        "GF",
+        "GG"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141bb-c3e3-7150-afc5-6a5f9ba1efad",
+      "latestResult": "SAME38’s scoped PASS is hash-bound; the reviewed packet remains unchanged.\n\nCompleted a distinct GB dietary-reference acquisition: a complete 12-page historical PHE document, with its OGL v3 notice and exceptions verified.\n\n:codex-file-citation{path=\"/home/user/src/offmenu-data/country-bundles-20261016/owner-32/continuation-01/original.response\" purpose=\"source\"}\n\n[Continuation packet for SAME38](/home/user/src/offmenu-data/country-bundles-20261016/owner-32/continuation-01/result.json). Cumulative use: 13 queries, 3 HTTP operations, 17,112,540 bytes.\n\nGF remains held without retry or cap increase. No active children or transfers. Admission and production remain STOP."
+    },
+    {
+      "id": "COUNTRY-33",
+      "owner": 33,
+      "thread": "01a13997-3155-7ec2-a3e9-dce808a27a39",
+      "state": "open",
+      "scope": [
+        "GH",
+        "GI",
+        "GM",
+        "GN",
+        "GP"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a1-aa4a-7bc3-a75a-bff2809675b6",
+      "latestResult": "Picked up all five countries and froze a [first progress packet](/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json) with 30 category records.\n\n- **GH:** 39,038 retained price observations; latest July 2023.\n- **GI:** official [nutrition](https://www.gha.gi/jsna-obesity-nutrition/) and [price-index](https://www.gibraltar.gov.gi/press-releases/index-retail-prices-for-july-2026-12289) references located.\n- **GM:** retained evidence annotated; blocked routes preserved.\n- **GN:** 26,430 retained price observations through August 2026.\n- **GP:** retained CPI evidence annotated; [culinary references](https://www.lesilesdeguadeloupe.com/decouvrir/gastronomie-et-spiritueux/specialites-locales/le-bokit/) located.\n\nUsed 14 discovery queries and no direct acquisitions. Exact packet is available for SAME44 via Gateway; review remains pending. No country completeness claimed. Existing holds preserved; production **STOP**."
+    },
+    {
+      "id": "COUNTRY-34",
+      "owner": 34,
+      "thread": "01a13997-947d-7ce1-bb6a-a6c1dc9d8aa3",
+      "state": "blocked",
+      "scope": [
+        "GQ",
+        "GS",
+        "GT",
+        "GU",
+        "GW"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 46,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a1-c880-76f0-a967-332f790c07ee",
+      "latestResult": "OffMenu — Worker 34 is present in slot 34. Bootstrap read-only check complete.\n\n- Thread ID: `01a13997-947d-7ce1-bb6a-a6c1dc9d8aa3`\n- Hostname: `foo`\n- Actual cwd: `/home/user/src/offmenu-workers/worker-34`\n- Git HEAD: `f6cb92aef52a5cc8193717d7e794556bd84f8b3b`\n- Common directory: `/home/user/src/offmenu/.git`\n- Registration: existing worktree on `sync/worker-34/f6cb92ae-20261015`; observed checkout is **not detached**.\n- Status: clean.\n- `CODEX_PERMISSION_PROFILE`: unset; named environment profile unavailable.\n\nSupplied controls: unrestricted filesystem (`danger-full-access`), network enabled. Mandatory reviewer: `auto_review`, preserved. Approval escalation is available; configured approval-policy value is unavailable. User-supplied permission profile reports `disabled`.\n\nExactly one harmless command ran with inherited `GIT_*` stripped. No changes or additional sessions/workers were created. This snapshot establishes neither future freshness nor release acceptance; future assignments require freshly fetched source and immutable independent review. Idle."
+    },
+    {
+      "id": "COUNTRY-35",
+      "owner": 35,
+      "thread": "01a13998-70e7-7a71-8067-040f953879ee",
+      "state": "blocked",
+      "scope": [
+        "GY",
+        "HK",
+        "HM",
+        "HN",
+        "HR"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a1-e73e-7980-93da-114eca59d2d6",
+      "latestResult": "OffMenu — Worker 35 verified in authorized slot 35.\n\n- **Thread ID:** `01a13998-70e7-7a71-8067-040f953879ee`\n- **Hostname:** `foo`\n- **Actual cwd / registered worktree:** `/home/user/src/offmenu-workers/worker-35`\n- **Git HEAD:** `f6cb92aef52a5cc8193717d7e794556bd84f8b3b`\n- **Git common directory:** `/home/user/src/offmenu/.git`\n- **Registered branch:** `sync/worker-35/f6cb92ae-20261015`\n- **Status:** clean; all Git checks exited successfully.\n\nSupplied controls: filesystem sandbox `danger-full-access` with unrestricted access; network enabled. Mandatory reviewer remains **`auto_review`**. Separate approval-policy value and user configuration are unavailable. `CODEX_PERMISSION_PROFILE` is unset; no named profile inferred.\n\nExecuted exactly one bounded, read-only command with inherited `GIT_*` stripped. No changes or additional sessions created. This provisioning snapshot establishes neither future task freshness nor an accepted release; future assignments require freshly fetched source and immutable independent review.\n\nIdle."
+    },
+    {
+      "id": "COUNTRY-40",
+      "owner": 40,
+      "thread": "01a1399b-579c-7200-b679-0c4df8ce5afb",
+      "state": "blocked",
+      "scope": [
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a2-057d-7872-b699-5b438f11d8ea",
+      "latestResult": "OffMenu — Worker 40 bootstrap complete. One read-only command ran with inherited `GIT_*` stripped.\n\n- Thread: `01a1399b-579c-7200-b679-0c4df8ce5afb`\n- Host: `foo`\n- Actual cwd: `/home/user/src/offmenu-workers/worker-40`\n- HEAD: `d67b18b494ec61db9b5be9a830db91f8d6d09b47`\n- Git common directory: `/home/user/src/offmenu/.git`\n- Registered branch: `feature/reference-discovery-40-20261015`\n- Status: clean; currently branch-attached.\n- Filesystem: supplied `danger-full-access`, unrestricted access.\n- Network: enabled.\n- Mandatory reviewer: `auto_review`, preserved.\n- Separate approval-policy value/user configuration: unavailable.\n- `CODEX_PERMISSION_PROFILE`: unset; named profile unavailable.\n\nNo files, settings, branches, jobs, or other sessions changed. This snapshot establishes neither future freshness nor an accepted release; future assignments require fresh fetched source and immutable independent review. Idle."
+    },
+    {
+      "id": "COUNTRY-42",
+      "owner": 42,
+      "thread": "01a1399c-9b32-74a3-867e-11b70ad9226f",
+      "state": "open",
+      "scope": [
+        "IM",
+        "IN",
+        "IO",
+        "IQ",
+        "IR"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a2-2512-7ab2-bf8d-0bb4bc4a440b",
+      "latestResult": "Prepared the [five-country packet for SAME44 via Gateway](/home/user/src/offmenu-data/country-bundles-20261016/owner42/packet.json).\n\nConcrete progress:\n\n- **IM:** hash-verified dated menu; two historical price proposals with currency/portion unknown.\n- **IR:** two source-bound dietary-assessment correlations; kept distinct from nutrients or targets.\n- **IN/IR:** pinned retained dietary-directory references.\n- **IO/IQ:** exact source, ownership, rights and access gaps recorded.\n\nUsed 8 searches and 2 source HTTP operations. INDoRI returned empty 202; the Iraqi article returned 403. No retries or new originals acquired.\n\nAll six categories are documented per country. No country completion, gold, translation, admission or publication claimed. Existing holds preserved.\n\nPacket SHA-256: `554d2bf3136f26669961c7551490e617e1ec0013faa640d333a34a05993d4d67`"
+    },
+    {
+      "id": "COUNTRY-45",
+      "owner": 45,
+      "thread": "01a139a1-e916-7f81-8fd2-5a7eaac3a1de",
+      "state": "new-delta-complete-review14-dispatched",
+      "scope": [
+        "IS",
+        "IT",
+        "JE",
+        "JM",
+        "JO"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+      "reviewer": 14,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141bc-13a8-7ff3-89ff-eda83bbc8406",
+      "latestResult": "Bound SAME46’s scoped PASS without changing the reviewed bundle.\n\nAcquired a distinct **Jersey RPI group-index CSV**: **11,912 bytes, 105 data rows**, matching publisher size and MD5. Values remain unchanged; these are historical indices, not item prices, offers or basket quantities.\n\n[New frozen increment](/home/user/src/offmenu-data/country-bundles-20261016/owner-45/JE/prices-increment-1/frozen-increment.json)  \nSHA256: `2c9ba06255b4b43dade7fcfc3bcd3ead334f4dba93e98cc8fd764f0c42b9d81e`\n\nCumulative bundle: **4 discovery/catalogue queries, 6 HTTP operations, 619,663 bytes**. A local validation error lost request timing/headers; that gap is recorded, with no download retry.\n\nNew increment remains unreviewed. No active child/transfer; IS/JO holds and all prior evidence preserved. Mandatory `auto_review` unchanged.",
+      "latestReview": {
+        "owner": 45,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner45-JE-rpi-review.json",
+        "sha256": "55abdd71aa0fec4616395e6dc6084469b78081029abf2beae328863d72fa950d",
+        "verdict": "PASS_JE_LEXICAL_INDEX_QUALIFICATION_ONLY"
+      },
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "delivery": {
+        "UTC": "2026-10-15T23:22:25.552548+00:00",
+        "toolSuccess": true,
+        "ownerCompletion": false
+      },
+      "reviewBinding": "Native owner confirms exact46binding completed without replay",
+      "deliveryUTC": "2026-10-15T23:25:12.715462+00:00",
+      "pickupVerified": true
+    },
+    {
+      "id": "COUNTRY-49",
+      "owner": 49,
+      "thread": "01a139a5-69e8-7ae2-99e3-886592dadb79",
+      "state": "blocked",
+      "scope": [
+        "FI",
+        "JP",
+        "KE",
+        "KG",
+        "KI"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "bootstrap interruption",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a2-5bde-7c50-8ae2-c4425172f19c",
+      "latestResult": "OffMenu — Worker 49 is present in slot 49. Bootstrap check completed; now idle.\n\n- Thread: `01a139a5-69e8-7ae2-99e3-886592dadb79`\n- Host: `foo`\n- Actual cwd/registered worktree: `/home/user/src/offmenu-workers/worker-49`\n- Git common directory: `/home/user/src/offmenu/.git`\n- HEAD: `2528673e4c08ce4d1830912a60a1bf9d7ebf0b23`\n- Branch: `feature/fineli-selected-export-owner49-20261016`; status clean. Actual checkout is attached, not detached.\n- Supplied filesystem access: unrestricted, `danger-full-access`; network enabled.\n- Mandatory reviewer: `auto_review`, preserved.\n- Approval-policy value and user configuration: unavailable/uninspected.\n- `CODEX_PERMISSION_PROFILE`: unset; named profile unavailable.\n\nExactly one bounded read-only command ran, with inherited `GIT_*` stripped. No changes or additional workers/sessions. Future assignments require freshly fetched source and immutable independent review; this snapshot establishes neither freshness nor release acceptance."
+    },
+    {
+      "id": "COUNTRY-54",
+      "owner": 54,
+      "thread": "01a139a8-4531-7cc3-aaba-c8326447dc1f",
+      "state": "delta-frozen-review-pending",
+      "scope": [
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Route exact new delta to reserved reviewer with trusted messaging authority; preserve existing portfolio",
+      "reviewer": 38,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "idle",
+      "latestTurn": "01a141bc-3d38-7e71-a277-3e7df9d79460",
+      "latestResult": "Bound Worker 38’s **scoped custody/reference PASS**; rights and guidance acceptance remain held.\n\nAcquired one distinct KN original: the complete 2025 Fisherman’s Village restaurant-week menu, **416,091 bytes**, SHA256 `5c375365b67fd1460628610bad954560e95ba96357580666606074055bb5b733`.\n\n[Delta manifest](/home/user/src/offmenu-data/country-bundles-20261016/owner-54/20261015T221613Z/continuations/20261015T224430Z/delta-manifest.json).\n\nCumulative bundle usage: **6 searches, 6 HTTP requests, 36,608,049 bytes**. Prior frozen packet preserved. No active child, held KR takeover, admission or country-completion claim."
+    },
+    {
+      "id": "COUNTRY-47",
+      "owner": 47,
+      "thread": "01a139a2-bc19-7973-9637-f39f18108833",
+      "state": "review-pending-discovery-budget-exhausted",
+      "scope": [
+        "KY",
+        "LA",
+        "LB",
+        "LC",
+        "LI"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Read next eligible category or exhaustion disposition; route frozen delta to reserved reviewer",
+      "reviewer": 44,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a2-9ac2-7912-932f-4179dcd02a24",
+      "latestResult": "Picked up KY, LA, LB, LC and LI; froze the first substantive checkpoint.\n\n- Verified **16 retained files**, zero hash mismatches; reconciled **21 source-owner receipts**.\n- Reused two qualified LB/LC dietary references.\n- Preserved Lebanon’s composition-release denial.\n- Identified KY/LI recipe leads, then established publisher permission barriers; no bodies acquired. [KY terms](https://www.visitcaymanislands.com/es-ar/terms-of-use), [LI rights](https://tourismus.li/impressum.html).\n- Recorded progress and remaining gaps across six categories for each country.\n\n[Review packet for SAME44](/home/user/Documents/Codex/2026-10-16/country-bundle-owner47/checkpoint1-manifest.json)  \nSHA-256: `edab6c3ba81b4794029edc434b6a35201216b54d872ca119b6f89a713ef81b90`\n\nDiscovery allocation: **18/18 used**. No new acquisitions or country-completeness claims. Further discovery needs additional prospective allocation; source ownership and all holds remain."
+    },
+    {
+      "id": "COUNTRY-53",
+      "owner": 53,
+      "thread": "01a139a7-de7b-7fb0-9259-43d9ff7c6d6a",
+      "state": "new-delta-complete-review14-dispatched",
+      "scope": [
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "14 bounded new metadata/rights/provenance review; old11PASS preserved",
+      "reviewer": 14,
+      "evidence": [
+        "/home/user/src/offmenu-data/country-bundles-20261016/owner-53/LK/cell-discrepancy-20261016/manifest.json"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141a2-b90b-7890-915a-7f1dc2a57567",
+      "latestResult": "Author reports684cells/148blanks;8of28printed-total comparisons disagree, no replacement totals; not independent acceptance",
+      "latestReview": {
+        "owner": 53,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner53-LK-literal-review.json",
+        "sha256": "606ba2e7dd330bf966a27ccd596a1149a0d738afd33b4942a3eb1cc532ea9286",
+        "verdict": "PASS_LITERAL_COORDINATE_AND_UNRESOLVED_DISCREPANCY_REGISTER_ONLY"
+      },
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "delivery": {
+        "UTC": "2026-10-15T23:22:25.552548+00:00",
+        "toolSuccess": true,
+        "ownerCompletion": false
+      },
+      "reviewBinding": "Native owner confirms exact46binding completed without replay",
+      "deliveryUTC": "2026-10-15T23:25:12.715462+00:00",
+      "pickupVerified": true,
+      "manifestSHA256": "27acb44d7982632ac46c6542b968dc3a8339ec5d7176cb4fdffbb25172e64702"
+    },
+    {
+      "id": "COUNTRY-59",
+      "owner": 59,
+      "thread": "01a139ab-ddf3-7471-8e79-6c327d19c2d7",
+      "state": "price-metadata-scoped-pass-local-row-witness-dispatched",
+      "scope": [
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD"
+      ],
+      "expected": "Six-category portfolio outputs, independent review and remaining gaps",
+      "nextAction": "Up to6retainedLibyarows with exact marketID/unit/currency/date/price-type; no normalization/network",
+      "reviewer": 11,
+      "evidence": [
+        "country-allocation-matrix-20261016.json",
+        "country-batch-outcome-20261016.json",
+        "gateway-dispatch-checkpoint-20261016.md"
+      ],
+      "uncertainty": "No country completion inferred",
+      "latestNativeState": "notLoaded",
+      "latestTurn": "01a141ba-c4eb-7673-892a-7448324865eb",
+      "latestResult": "Frozen55638a34;3queries4metadata reads310041bytes; rights/edition gaps retained",
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "latestReview": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner59-price-basket-local-review.json"
+    },
+    {
+      "id": "COUNTRY-QUEUE",
+      "owner": "Gateway",
+      "state": "not-assigned",
+      "expected": "104 queued countries",
+      "nextAction": "Refill only verified eligible/exhausted owners",
+      "evidence": [
+        "country-allocation-matrix-20261016.json"
+      ]
+    },
+    {
+      "id": "REVIEW-44",
+      "owner": "44",
+      "state": "blocked",
+      "expected": "Final22delta/33/42/47 receipts",
+      "nextAction": "Reconcile bootstrap interruption; no redispatch",
+      "evidence": [
+        "gateway-dispatch-checkpoint-20261016.md"
+      ]
+    },
+    {
+      "id": "REVIEW-46",
+      "owner": "46",
+      "state": "follow-on-assignments-released",
+      "expected": "Owners15/45/23/53 exact retained-evidence reviews",
+      "nextAction": "Original four complete; four unstarted follow-ons assigned to11 under latest owner scheduling direction; no platform restriction bypass",
+      "evidence": [
+        {
+          "owner": 15,
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-46-review15-delta-6e7a10022f43/review.json",
+          "sha256": "e0fea5719243e4019656fb14473a775d650f1fe9c9d16a9ceb56d3b53e216a95",
+          "verdict": "PASS scoped retained-evidence delta only"
+        },
+        {
+          "owner": 45,
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-46-review45-delta-2c9ba06255b4/review.json",
+          "sha256": "bbcfd269dfabc2a708e2b2d168ce4e2d953ed87a10d88a493598b61eeffb9b12",
+          "verdict": "PASS scoped retained-evidence delta only"
+        },
+        {
+          "owner": 23,
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-46-review23-delta-11011764bdc1/review.json",
+          "sha256": "59b7e8c688792d807819e7abda3ff26a0b73bcd8b75f892414fd4a96f19ca54b",
+          "verdict": "PASS scoped retained-evidence delta only"
+        },
+        {
+          "owner": 53,
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-46-review53-delta-9e949a615d68/review.json",
+          "sha256": "6451167697765a985bd876c537e35b17ddf719ee4218cee4691a5bae40664c0b",
+          "verdict": "PASS scoped retained-evidence delta only"
+        }
+      ],
+      "authority": "ManagingMorgan supplied ongoing user coordination/routine-followthrough instruction; direct Gateway coordination authority retained",
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "latestResult": "After ongoing authorization supplied,46declined: quoted approvals do not clearly override this chat direct restriction to four named completed reviews; asks direct authorization here. No tools/receipts, no platform rejection.",
+      "deliveryUTC": "2026-10-15T23:32:11.676383+00:00"
+    },
+    {
+      "id": "PRODUCT-03",
+      "owner": "03/14",
+      "state": "done-local",
+      "expected": "WasteCLI703f6dd scoped review",
+      "nextAction": "Owner binding verified; local deliverable complete, integration held",
+      "evidence": [
+        "/home/user/src/offmenu-data/owner14-reviews/owner03-703f6dd/review-20261016/receipt.json"
+      ]
+    },
+    {
+      "id": "PRODUCT-20",
+      "owner": "20/52",
+      "state": "done-local",
+      "expected": "BasketCLI6f706494",
+      "nextAction": "Review bound; publication/adoption held",
+      "evidence": [
+        "/home/user/src/offmenu-data/owner20/BASKET-REPORT-CLI-20261016/independent-review-binding.json"
+      ]
+    },
+    {
+      "id": "PRODUCT-56",
+      "owner": "56/13",
+      "state": "done-local",
+      "expected": "Lookupac4fb2a",
+      "nextAction": "Review bound; publication/adoption held",
+      "evidence": [
+        "/home/user/src/offmenu-data/owner-56-normalization/LOCAL-SOURCE-PROPOSAL-LOOKUP-3EB-20261016/completion-review13.json"
+      ]
+    },
+    {
+      "id": "PRODUCT-31",
+      "owner": "31/24",
+      "state": "blocked",
+      "expected": "PrintableCC0 pack review",
+      "nextAction": "24bootstrap interruption; no bypass",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/worker-31-recipe-pack/receipt.json"
+      ]
+    },
+    {
+      "id": "UX-HISTORY",
+      "owner": "Gateway/third-party owner",
+      "state": "partial-chronology-reconciled",
+      "expected": "UX/ReactPuck/widgets-toPR2 history",
+      "nextAction": "Resolve earliest-conversation chronology gaps against actual sources; do not label full history complete",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-ui-services-history/reconciliation.json"
+      ],
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "SERVICES-GAPS",
+      "owner": "third-party owner",
+      "state": "assessment-done",
+      "expected": "149-entry inventory and gaps",
+      "nextAction": "Separate enabled/configuration/deployment; selectedidentity only",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-identity-assessment/full-inventory-extension.json"
+      ]
+    },
+    {
+      "id": "IDENTITY-ASSESSMENT",
+      "owner": "01a1371c-66f7-70e0-9e3b-a79d2b2eee9f",
+      "state": "done",
+      "expected": "GoogleApple/compatiblepublicappIDPs",
+      "nextAction": "PreserveIDs/linking; managedDEVfirst/WireMockfallback",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-identity-assessment/assessment.json"
+      ]
+    },
+    {
+      "id": "IDENTITY-DEV",
+      "owner": "same identity owner",
+      "state": "configuration-blocked",
+      "expected": "ManagedDEV/ordinary-admin journeys",
+      "nextAction": "Distinctapprovedproject/configuration/provisioning needed; sixsitesread noDEVidentified",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-identity-assessment/managed-dev-feasibility.json"
+      ]
+    },
+    {
+      "id": "IDENTITY-VALIDATOR",
+      "owner": "same identity owner",
+      "state": "implemented-local-owner-tested",
+      "expected": "LocalDEVPRODvalidator",
+      "nextAction": "Independent evaluation requires selected reviewer; no runtime adoption/publication authorization inferred",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-identity-validator/implementation-receipt.json"
+      ],
+      "completion": {
+        "commit": "e481fdc5c0b3be0806153ca4965dee7741add65b",
+        "ownerTests": "7 groups PASS reported",
+        "independentReview": false,
+        "adoption": false,
+        "publication": false
+      },
+      "authority": "Direct human authorization in existing identity owner thread; supersedes exact local validator denial only",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "IDENTITY-PROD",
+      "owner": "same identity owner",
+      "state": "unverified",
+      "expected": "Realprovider qualification",
+      "nextAction": "Configuration/independentreview/PRODrejectDEV/fulljourneys required; no deploy",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/offmenu-identity-assessment/assessment.json"
+      ]
+    },
+    {
+      "id": "UI-ROUTE",
+      "owner": "01a1415d-b449-77e0-843a-84b53c8e80fd",
+      "state": "resolved-reported",
+      "expected": "45s latency/phone tunnel",
+      "nextAction": "Separate directUIowner; do not reopen",
+      "evidence": [
+        "MORGAN-RESUME.md"
+      ]
+    },
+    {
+      "id": "APPROVAL-HOLDS",
+      "owner": "Gateway/ManagingMorgan",
+      "state": "blocked",
+      "expected": "All actualdenials/ownershipholds",
+      "nextAction": "Use current-denied-action-inventory.json;64/14dispatch released;Freebuff restored user-reported,connection unverified",
+      "evidence": [
+        "current-denied-action-inventory.json"
+      ]
+    },
+    {
+      "id": "SUPERVISOR-RESEARCH",
+      "owner": "root ManagingMorgan",
+      "state": "delivered",
+      "expected": "Proven supervisorhabits",
+      "nextAction": "Apply delivered design in64candidate/14evaluation; research delivery does not prove live readiness",
+      "evidence": [
+        "integrated-supervisor-design-reference.json"
+      ],
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "FREEBUFF-COMPAT",
+      "owner": "64/01a139b8-db37-7813-904e-3e3dad4b8c0c",
+      "state": "health-only-verified",
+      "expected": "Alexander/tool/skill compatibility",
+      "nextAction": "Qualify existing Alexander identity/MCP/cost/roundtrip with proper custodian; no restore or model invocation inferred",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/worker64-freebuff-management-compatibility-static/report.json",
+        "MORGAN-RESUME.md"
+      ],
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "ROUTING-FAILOVER",
+      "owner": "ManagingMorgan/Gateway",
+      "state": "desired-not-implemented",
+      "expected": "Codexdefault untilactualexhaustion",
+      "nextAction": "Quiesce/reconcile/verifycapacity-cost-approval beforeFreebuffactivation",
+      "evidence": [
+        "MORGAN-RESUME.md"
+      ]
+    },
+    {
+      "id": "REPORTING-GATEWAYS",
+      "owner": "Gateway/directUI/ManagingMorgan",
+      "state": "ongoing",
+      "expected": "Everyreply disposition/action",
+      "nextAction": "Keep uncertain sends open; UIseparate",
+      "evidence": [
+        "gateway-dispatch-checkpoint-20261016.md"
+      ]
+    },
+    {
+      "id": "MEMORY-HABITS",
+      "owner": "Gateway",
+      "state": "done-local",
+      "expected": "Portable checklist",
+      "nextAction": "Use topicrecords; noOffMenumemorymapping/newplatform",
+      "evidence": [
+        "MORGAN-RESUME.md"
+      ]
+    },
+    {
+      "id": "BACKLOG-AUDIT",
+      "owner": "Gateway",
+      "state": "bounded-cache-trace-no-finding",
+      "expected": "Oct11-16 requirement reconciliation includingfivePDFs",
+      "nextAction": "Needs selected varying representation consumer/provider binding for furtherCACHE03 work; no speculative patch",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/worker13-pdf02-pdf04-obligations/obligation-evidence.json",
+        "/home/user/Documents/Codex/2026-10-16/worker-52-audit/PDF03/obligations.json",
+        "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/pdf01-pdf05-obligation-audit/obligations-final.json"
+      ],
+      "sourceInventory": [
+        {
+          "path": "/home/user/src/offmenu/research/reports/01-OffMenu_Basket_Normalization_Addendum.pdf",
+          "sha256": "0bfcec39c353542a9966a461486c65f424cf90bc72501dbabbd00681ad2fb864",
+          "pages": 16,
+          "readState": "documentary-inventory-complete-implementation-join-pending"
+        },
+        {
+          "path": "/home/user/src/offmenu/research/reports/02-OffMenu_Product_Review_and_Plan-1-.pdf",
+          "sha256": "2d1ec141bf3694f7dd1305b1dec9a78197bcf16ba156bfab7c4dfb2aebd44d9c",
+          "pages": 16,
+          "readState": "documentary-inventory-complete-implementation-join-pending"
+        },
+        {
+          "path": "/home/user/src/offmenu/research/reports/03-OffMenu_Enrichment_Discovery_249_Countries.pdf",
+          "sha256": "2db2a6fa89b62afc2976483ecf0fcb697bc2bf4bb97fdad3f9720a5a287d3567",
+          "pages": 75,
+          "readState": "documentary-inventory-complete-implementation-join-pending"
+        },
+        {
+          "path": "/home/user/src/offmenu/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+          "pages": 10,
+          "readState": "documentary-inventory-complete-implementation-join-pending"
+        },
+        {
+          "path": "/home/user/src/offmenu/research/reports/05-OffMenu_Global_Shopping_Baskets.pdf",
+          "sha256": "5d4795811f472d0255e4c287a3401a2dbbcbd3991c8516c85dbe5341e9083a19",
+          "pages": 75,
+          "readState": "documentary-inventory-complete-implementation-join-pending"
+        }
+      ],
+      "ownership": {
+        "11": "PDF01/05",
+        "13": "PDF02/04",
+        "52": "PDF03",
+        "third-party owner": "repo/PR/commit/review evidence",
+        "Gateway": "localworker/adminrouting/obligationjoin",
+        "root": "cloudconversation/library"
+      },
+      "localInventory": {
+        "pages": 192,
+        "sourceLocalEntries": 3314,
+        "meaning": "mixed requirements/proposals/context, not accepted-requirement count"
+      },
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "latestJoin": {
+        "path": "/home/user/Documents/Codex/2026-10-16/worker13-pdf02-pdf04-repository-join/backlog-evidence.json",
+        "sha256": "ecd1a61faae2c61c30be2ccda48cb164387cf8f489ffec0e8b2ae4a1f794ec38"
+      },
+      "latestTrace": "/home/user/Documents/Codex/2026-10-16/worker13-cache03-public-enrichment-trace/report.json"
+    },
+    {
+      "id": "AUDIT-CLOUD-PDF-VERSIONS",
+      "state": "open",
+      "owner": "Gateway local audit / parent cloud researcher",
+      "expected": "Reconcile five uploaded PDF copies against local hashes and distinct generated basket version",
+      "evidence": {
+        "uploaded": [
+          [
+            "Global_Shopping_Baskets",
+            371312,
+            "libfile_6bac5ecdd8f88191a49e1782f15b975e"
+          ],
+          [
+            "Enrichment_Discovery_249_Countries",
+            611508,
+            "libfile_5d315dfe34708191b13312e6108bd461"
+          ],
+          [
+            "User_Driven_Cache",
+            120855,
+            "libfile_378d8c97cc788191a37e58f7506cdbc3"
+          ],
+          [
+            "Basket_Normalization_Addendum",
+            123263,
+            "libfile_d8ad6dfd36d88191a106770ad2000c1e"
+          ],
+          [
+            "Product_Review_and_Plan",
+            129890,
+            "libfile_6bb7a55e9ce481918a160f66c1bf4b2f"
+          ]
+        ],
+        "additionalDiscovery": [
+          444979,
+          "libfile_2e89eecdb5c88191a0f61d384cfd4f41"
+        ],
+        "generatedBasket": [
+          482262,
+          "libfile_353000d1c67081919c5c87a64bfe7c9a"
+        ]
+      },
+      "nextAction": "Compare versions; matching size alone does not establish identity"
+    },
+    {
+      "id": "SUPERVISOR-FULL-CANDIDATE",
+      "state": "practical-local-workflow-in-use",
+      "owner": "Worker64 implementation / Worker14 evaluation",
+      "expected": "Complete compatible Superpowers supervisor disciplines, MemPalace recall/task capabilities, pointer handover and reconciliation together; Codex and Freebuff Alexander evaluation",
+      "acceptance": [
+        "Real result handled through supported operations",
+        "Observed defects corrected and checked",
+        "Limits explicit; no automatic crash guarantees"
+      ],
+      "nextAction": "Continue actual result/action/ledger/turn-end loop; investigate observed issues only",
+      "authority": {
+        "recordedUTC": "2026-10-15T22:59:47.857118+00:00",
+        "source": "Direct human message in this Gateway chat",
+        "text": "Authorize Gateway to assign Worker64 the complete local supervisor candidate and Worker14 its independent evaluation, and coordinate existing country and audit owners; preserve approvals and existing denied-action holds."
+      },
+      "constraints": [
+        "No approval changes",
+        "No contradictory sequential-coding rules",
+        "Installed skills first; mandatory confirmation for unrecognized execution/new persistent access",
+        "No production or paid models",
+        "Prior denials preserved"
+      ],
+      "proposedImplementationOwner": {
+        "worker": 64,
+        "thread": "01a139b8-db37-7813-904e-3e3dad4b8c0c"
+      },
+      "proposedIndependentEvaluator": {
+        "worker": 14,
+        "thread": "01a138f1-6e28-7ba1-8d85-85b39e3aeae1"
+      },
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/worker64-supervisor-candidate-v1/MANIFEST.json"
+      ],
+      "localReported": "Successor54tests including12Main/Gateway Codex/Freebuff fixture cases; not independently accepted",
+      "liveAcceptance": false,
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "v1ManifestSHA256": "1770b99bfb66e7e913ae0508a64fdb5907827f83b2ead0a773ecd563f1723431",
+      "supportedSemantics": "Manager selects documented supported operations and explicit crash windows; adaptation not yet demonstrated; no exactly-once/live claim",
+      "operationalQualification": "Gateway manual native-message/ledger workflow used; candidate code adoption and Freebuff execution not demonstrated",
+      "latestResult": {
+        "timestamp": "2026-10-15T23:41:01.858910+00:00",
+        "source": "/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/candidate-v4-focused-20261016/receipt.json",
+        "sha256": "a5ce790864d3efa544f00cf1f78179c71bf7a72f3e43488bd4b6469f96b2ec71",
+        "decision": "Use v4 practical operation now: actual result read, review59 dispatched to designated11, effects confirmed, ledger reconciled; no automatic hooks/exactly-once claim",
+        "nextActions": [
+          "11 finish four country delta receipts then59metadata review",
+          "13 deliver implementation join",
+          "Bind returned results to exact source and next owner"
+        ],
+        "formalRelease": false,
+        "infrastructureGates": false
+      }
+    },
+    {
+      "id": "AUDIT-LOCAL-CORPUS-SUPERSESSION",
+      "state": "reported-source-implementation-join-pending",
+      "owner": "Gateway/parent researcher",
+      "source": "https://chatgpt.com/c/6acd8883-9cb4-83ec-b970-3af69839ec00?messageId=bbb21267-48e3-451b-8d61-8acf2f6d0198",
+      "expected": "Oct13 local manually triggered corpus/schema/engine; only curation to Netlify; Cloudflare cache only; no hosted source-data replication",
+      "nextAction": "Reconcile against Oct12 proposals and actual implementation; no cloud deletion authorized"
+    },
+    {
+      "id": "ARCH-CURATED-CORPUS-DELIVERY",
+      "owner": "Gateway audit / architecture assessment",
+      "state": "requirement-recorded-implementation-unverified",
+      "source": {
+        "thread": "01a137bf-289f-7139-aedd-e23ceab6401f",
+        "kind": "parent architecture refinement relay"
+      },
+      "expected": "Local source acquisition and processing produce OffMenu normalized, semantically validated gold corpus; curated information-rich delivery is the product value, not raw dataset replication. End-user interactions should feel instantaneous.",
+      "assessmentScope": [
+        "Selective client-loaded optimized subsets",
+        "Indexing and caching",
+        "Compact query delivery over curated corpus"
+      ],
+      "technologyExamplesOnly": [
+        "AJAX",
+        "GraphQL",
+        "protobuf",
+        "WebSockets"
+      ],
+      "requiredMeasurements": [
+        "First-load payload",
+        "Warm interaction latency",
+        "Mobile cost",
+        "Offline behavior",
+        "Invalidation",
+        "Rights",
+        "Privacy"
+      ],
+      "statusDimensions": {
+        "sourceAcquisition": "Separate per-source evidence required; no blanket completion inferred",
+        "goldAdmission": "Separate semantic validation/admission evidence required",
+        "servingReadiness": "Separate payload, latency, cost, offline, invalidation, rights and privacy evidence required"
+      },
+      "constraints": [
+        "Do not dump full source corpus to clients or Netlify",
+        "Preserve curated-publication / Cloudflare-cache design",
+        "Preserve current data workers",
+        "No production deployment or provider changes",
+        "Examples are not mandated technologies; measure before choosing complexity"
+      ],
+      "nextAction": "Join PDF/cloud architecture history and actual implementation evidence; identify measured results and missing benchmarks without implementing or deploying"
+    },
+    {
+      "id": "INTERIM-CAPTURE-RETIREMENT",
+      "owner": "Gateway",
+      "state": "ongoing",
+      "sourceThread": "01a137bf-289f-7139-aedd-e23ceab6401f",
+      "expected": "Incrementally capture all relevant conversation commitments and decisions in this local interim ledger until the final supervisor solution is validated AND used in actual operation.",
+      "retirementGate": {
+        "requires": [
+          "Evidence of final supervisor validation",
+          "Evidence of actual operational use",
+          "Preserved commitments, decisions and evidence through migration"
+        ],
+        "insufficient": [
+          "Installation",
+          "Configuration",
+          "Test-plan completion"
+        ]
+      },
+      "nextAction": "Main/Gateway and worker controllers update relevant obligations on meaningful events and reconcile before end of turn; ACK does not close unresolved action",
+      "authorizationStatus": "Direct Gateway authorization verified; parent relays explicit repair/resume instruction",
+      "relatedRequirements": [
+        "ARCH-CURATED-CORPUS-DELIVERY",
+        "SUPERVISOR-FULL-CANDIDATE"
+      ],
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00"
+    },
+    {
+      "id": "SESSION-DESCRIPTIVE-TITLES",
+      "owner": "Gateway",
+      "state": "verified-64-unique",
+      "expected": "Unique assigned descriptive titles; unused/unallocated OffMenu — NN; stable IDs and custody preserved",
+      "constraints": [
+        "No thread/branch/worktree changes or interruption",
+        "No invented assignments",
+        "Morgan and UI Gateway roles remain distinct",
+        "Freebuff only through supported existing metadata capability"
+      ],
+      "nextAction": "Maintain unique task titles on assignment; unused OffMenu — NN; no execution authority from titles",
+      "reconciledUTC": "2026-10-15T23:22:25.552548+00:00",
+      "evidence": [
+        "descriptive-title-final-readback.json"
+      ]
+    },
+    {
+      "id": "GATEWAY-DURABLE-INTERFACES",
+      "owner": "Gateway coordination; infrastructure custodian unidentified",
+      "state": "nonblocking-followthrough-dispatched",
+      "expected": "Bind actual durable ingress receipt/ACK,wake,owner-CAS and completion delivery",
+      "nextAction": "64 existing interface/custodian read-only follow-through dispatched; no new route/access/model invocation",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00",
+      "parentRequirement": "SUPERVISOR-FULL-CANDIDATE",
+      "evidence": [
+        "/home/user/Documents/Codex/2026-10-16/worker64-supervisor-candidate-v3/INTERFACE-DISPOSITION.md"
+      ],
+      "accountableCoordinator": "Morgan Gateway",
+      "implementationAssessmentOwner": "Worker64",
+      "infrastructureCustodian": "UNKNOWN; no documented binding found by existing admin audit",
+      "disposition": "Atomic ingress/wake/CAS are unavailable assumptions on exposed surface; supported active-turn manual read/send/ledger reconciliation; retain explicit crash windows",
+      "blocksPracticalLocalWorkflow": false
+    },
+    {
+      "id": "OFFMENU-MEMPALACE-ROUTE",
+      "owner": "Gateway coordination; route custodian unidentified",
+      "state": "investigation-complete-offmenu-store-binding-missing",
+      "expected": "Qualify intended shared OffMenu palace route",
+      "nextAction": "Manager supplies exactexistingauthorizedOffMenustorepath or endpoint+namespace; then scopepersistentregistration/recall. No transportfix exists: initializeexit0/tools[]/Freebuffconnected noerror.",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00",
+      "parentRequirement": "SUPERVISOR-FULL-CANDIDATE",
+      "evidence": [
+        "integrated-supervisor-design-reference.json",
+        "/home/user/Documents/Codex/2026-10-16/offmenu-repository-audit/admin-seam-evidence.json"
+      ],
+      "accountableCoordinator": "Morgan Gateway",
+      "implementationAssessmentOwner": "Worker64",
+      "infrastructureCustodian": "UNKNOWN; no documented binding found by existing admin audit",
+      "blocksPracticalLocalWorkflow": false,
+      "latestEvidence": "/home/user/Documents/Codex/2026-10-16/worker64-mempalace-connector-readback/FINDINGS.md",
+      "actual": "CodexinitializeOK/tools[];Freebuffconnected/tools[]/noerror;USF-onlywrapper noOffMenu route",
+      "pendingInvestigation": false
+    },
+    {
+      "id": "SUPERVISOR-INDEPENDENT-EVALUATION",
+      "owner": "Worker14",
+      "state": "v4-focused-pass",
+      "expected": "Independent48-case evaluation and separate Codex/Freebuff live evidence",
+      "nextAction": "No repeated evaluation; new observed delta only",
+      "reconciledUTC": "2026-10-15T23:39:12.062136+00:00",
+      "parentRequirement": "SUPERVISOR-FULL-CANDIDATE",
+      "evidence": [
+        {
+          "path": "/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/candidate-v1-evaluation-20261016/receipt.json",
+          "sha256": "82948baf04ed271d19fb2486c06a514a7c10b71be56a70852dcfd60886689616"
+        }
+      ],
+      "latestEvidence": "14native reports all205v1files match; authorized ledger evolution correctly separate from frozen candidate",
+      "findings": [
+        {
+          "id": "R1",
+          "priority": 1,
+          "issue": "stale acceptance after newer report/review"
+        },
+        {
+          "id": "R2",
+          "priority": 2,
+          "issue": "review routed to author rather than designated reviewer"
+        }
+      ],
+      "independentMatrix": {
+        "PASS": 36,
+        "FAIL": 4,
+        "BLOCKED": 5,
+        "UNTESTED": 3
+      },
+      "scopeSupersededUTC": "2026-10-15T23:30:39.267281+00:00",
+      "latestResult": {
+        "timestamp": "2026-10-15T23:41:01.858910+00:00",
+        "source": "/home/user/src/offmenu-data/owner14-reviews/owner64-supervisor/candidate-v4-focused-20261016/receipt.json",
+        "sha256": "a5ce790864d3efa544f00cf1f78179c71bf7a72f3e43488bd4b6469f96b2ec71",
+        "decision": "Use v4 practical operation now: actual result read, review59 dispatched to designated11, effects confirmed, ledger reconciled; no automatic hooks/exactly-once claim",
+        "nextActions": [
+          "11 finish four country delta receipts then59metadata review",
+          "13 deliver implementation join",
+          "Bind returned results to exact source and next owner"
+        ],
+        "formalRelease": false,
+        "infrastructureGates": false
+      }
+    },
+    {
+      "id": "REVIEW-38",
+      "owner": "Worker38 / Gateway",
+      "state": "context-blocked",
+      "expected": "Existing18/26/32/54 country delta reviews",
+      "nextAction": "Reconcile current assignment authority and actual pickup without duplicate dispatch",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00",
+      "parentRequirement": "REPORTING-GATEWAYS",
+      "evidence": [
+        "ledger-spot-test-20261016-001/baseline.json"
+      ]
+    },
+    {
+      "id": "COMPACTION-RECOVERY",
+      "owner": "Main controller / Gateway",
+      "state": "reconciled-partial",
+      "expected": "Recover authority,existing sends,assignments and unresolved actions before execution",
+      "nextAction": "Persist corrected state and explicit unknowns; avoid historical bootstrap substitution",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00",
+      "parentRequirement": "REPORTING-GATEWAYS",
+      "evidence": [
+        "ledger-spot-test-20261016-001/baseline.json"
+      ]
+    },
+    {
+      "id": "AUDIT-CLOUD68-TRANSFER",
+      "owner": "Parent cloud researcher / Gateway",
+      "state": "transfer-reconciliation-gap",
+      "expected": "Bind full previously transmitted68-cluster research locally",
+      "nextAction": "Recover complete text/artifact and verify all68 IDs; cloud research exists, local transfer incomplete",
+      "reconciledUTC": "2026-10-15T23:20:06.379309+00:00",
+      "parentRequirement": "BACKLOG-AUDIT",
+      "evidence": [
+        "ledger-spot-test-20261016-001/baseline.json"
+      ]
+    },
+    {
+      "id": "COUNTRY-6",
+      "owner": 6,
+      "scope": [
+        "ME",
+        "MF",
+        "MG",
+        "MH",
+        "MK"
+      ],
+      "state": "provenance-correction-v2-complete-review14-pending",
+      "reviewer": 14,
+      "expected": "Retained evidence reconciliation and bounded metadata-first portfolio",
+      "nextAction": "14exactdelta recheck; oldpacket preserved",
+      "allocation": "country-allocation-extension-20261016-001.json",
+      "latestResult": "/home/user/src/offmenu-data/worker-06-country-portfolio-20261016/provenance-correction-v2.json"
+    },
+    {
+      "id": "COUNTRY-12",
+      "owner": 12,
+      "scope": [
+        "ML",
+        "MM",
+        "MN",
+        "MO",
+        "MP"
+      ],
+      "state": "portfolio-metadata-frozen-review14-pending",
+      "reviewer": 14,
+      "expected": "Retained evidence reconciliation and bounded metadata-first portfolio",
+      "nextAction": "14 bounded review; no acquisition/categorycompletion implied",
+      "allocation": "country-allocation-extension-20261016-001.json"
+    },
+    {
+      "id": "DEV7645-COUNTRY-PROGRESS-VIEW",
+      "owner": "UI Gateway",
+      "thread": "01a1415d-b449-77e0-843a-84b53c8e80fd",
+      "state": "revision17-initial-slice-served-full-index-open",
+      "expected": "Mobile-friendly country/source/type/actual acquired progress on existingDEV7645",
+      "dataOwner": "Morgan Gateway read-only summary",
+      "nextAction": "UIdedup existing550nutrition vsnew200; connectdietary100; verifyactualservedcounts/fullpaging. Deliverynotservingcompletion",
+      "limits": "No rawcorpus,fabricated totals,stage promotion,production",
+      "dataSnapshot": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-progress-ui-snapshot.json",
+        "sha256": "ce4ccff4a59878f4c652bd728192e8d936ea325d4339d34ef86021585d61755c"
+      },
+      "url": "http://localhost:7645/country-progress.html",
+      "deliveryEvidence": "Direct UI Gateway reported build16ready/page-assetsserved; parent relayed toMatthew",
+      "userAccepted": false,
+      "productionDelivered": false,
+      "feedback": "Concise holdings/work/nextsteps and actualsamples; remove repetitive genericrights/goldtranslation caveats",
+      "dataExamples": "/home/user/Documents/Codex/2026-10-13/task-3/country-progress-ui-examples.json",
+      "interactionRequirement": {
+        "typingRequired": false,
+        "countryBrowsing": "tap-only",
+        "categoryStageControls": "tap-only",
+        "sampleExpansion": "tap-only",
+        "initialView": "useful summary on load",
+        "search": "optional"
+      },
+      "feedbackDelivery": "Parent already steered existing UI owner directly; no duplicate editor/dispatch",
+      "primaryGrouping": "data type",
+      "countryFilter": "optional",
+      "recordRequirements": [
+        "country",
+        "original source record identifier/pointer",
+        "bounded pagination",
+        "actual indexed count/coverage"
+      ],
+      "supersedes": "country-primary grouping and handpickedexamples-only",
+      "additionalFields": [
+        "evidence sources",
+        "where-used crossreferences",
+        "tap-friendlytabs",
+        "progress numerator/denominator+basis",
+        "completion state",
+        "worklane/activity asof"
+      ],
+      "recordIndexOwners": {
+        "prices": 59,
+        "retailers": 6,
+        "recipesIngredients": 12,
+        "nutritionDietary": 13
+      },
+      "firstSlice": "data-type-record-index-v1/manifest.json",
+      "exportHandoff": "data-type-record-index-v1/export-handoff.json",
+      "servedSlice": {
+        "revision": 17,
+        "records": 1437,
+        "types": 5,
+        "tabs": [
+          "Data",
+          "Sources",
+          "Progress"
+        ],
+        "evidence": "DirectUIowner report relayedbyparent",
+        "asOf": "2026-10-16"
+      },
+      "fullRecordRequirementComplete": false,
+      "remainingCoverage": "Indexed sources exceed served1437; additional retainedsources unindexed perowner inventories; no globalcompletion",
+      "servedDietaryRecords": 0,
+      "servedDietaryEvidence": "LatestUIreadback revision17 dietarypending; laternotyetverified",
+      "latestNutritionDelta": "/home/user/Documents/Codex/2026-10-16/worker13-ui-nutrition-dietary-index-v2/delta-manifest.json",
+      "nutritionIndexedProfiles": 6776,
+      "nutritionOwnerDisplayRecords": 220
+    },
+    {
+      "id": "COUNTRY-13",
+      "owner": 13,
+      "scope": [
+        "MQ",
+        "MR",
+        "MS",
+        "MT",
+        "MU"
+      ],
+      "reviewer": 11,
+      "state": "actual-pickup-active",
+      "nextAction": "Metadata-first portfolio; bounded5queries8HTTP2MiB, no deniedroute/body acquisition"
+    },
+    {
+      "id": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+      "priority": "priority-todo-first",
+      "owner": "Morgan Gateway provenance coordination",
+      "implementationOwner": "existing source/index owners; UI Gateway presentation only",
+      "state": "captured-awaiting-second-feedback-no-edits",
+      "userFeedback": "No original starter pack. Data gathered externally and derived by us; OffMenu must not be treated as original source.",
+      "expected": "Trace every displayed record to actual external publisher/source asset/original record plus derivation lineage using retained acquisition history. Correct fictitious starter-pack or OffMenu-origin attribution only when evidenced.",
+      "unresolvedPolicy": "Mark unresolved and assign owned traceback; never invent origin.",
+      "constraints": [
+        "Preserve original hashes and lineage",
+        "Distinguish processing layer from publisher",
+        "No blanket relabel",
+        "No data overwrite or mass edits now"
+      ],
+      "nextAction": "Await second feedback point; then scope source-by-source traceback with existing owners",
+      "capturedUTC": "2026-10-16T00:10:34.538560+00:00"
+    },
+    {
+      "id": "CORE-BARCODE-CANONICAL-IDENTITY",
+      "priority": "critical-core-product-architecture",
+      "owner": "Worker56 existing schema/gold owner",
+      "state": "latest-native-context-reconciliation-needed",
+      "expected": "Barcode maps to appropriate stable product/item identity linked to canonical ingredient/gold vocabulary and consistently reused by translations.",
+      "requirements": [
+        "Multiple barcodes may share product/concept identity without losing package/market variants",
+        "Mixed products preserve ingredient composition; barcode is not automatically one ingredient",
+        "Nutrition/prices/dietary/inventory join via appropriate stable canonical entities and external evidence, not translated names",
+        "Physical inventory quantity/lot separate from product identity",
+        "Preserve original barcode/source/market/package and derivation",
+        "Ambiguous/unresolved mappings stay explicit; no forced merges or invented IDs"
+      ],
+      "constraints": [
+        "No mass relabel",
+        "No destructive migration",
+        "Read-only current coverage/gap assessment first"
+      ],
+      "nextAction": "56continue SAME barcode assessment with foundations; no duplicate task/reacquisition",
+      "capturedUTC": "2026-10-16T00:12:22.672801+00:00",
+      "thread": "01a139a9-2714-7cb1-9b61-c7f957cb4734",
+      "pickupEvidence": "Native56turn01a1420d-ddb7-7551-b472-7d302ac6d331 active, explicitpickup+commands",
+      "coverage": "No completeassessment receipt received",
+      "goldFoundationDecision": {
+        "authority": "Matthew: Good, these need to become part of the golden standard",
+        "sources": {
+          "Open Food Facts": "barcode/product/ingredients/nutrition",
+          "USDA FoodData Central": "branded GTIN/nutrients",
+          "FoodOn": "canonical food ontology",
+          "Grocy": "inventory/meal-planning architecture patterns, not original nutrient truth"
+        },
+        "constraints": [
+          "Source-specific stableIDs",
+          "Versionedcrosswalks",
+          "Derivationlineage",
+          "Unresolvedmappingspreserved",
+          "No blanketgoldadmission",
+          "Reuse retaineddata; verifyprimarydocumentation forintegrationdetails"
+        ],
+        "capturedUTC": "2026-10-16T00:22:17.885953+00:00"
+      },
+      "goldFoundationClarification": {
+        "authority": "Matthew via Managing Morgan",
+        "principle": "OffMenu defines its own unified internal schema and canonical values across every dataset.",
+        "coverage": [
+          "spelling and aliases",
+          "translation",
+          "units",
+          "identifiers",
+          "concepts",
+          "relationships"
+        ],
+        "references": [
+          "Open Food Facts",
+          "USDA FoodData Central",
+          "FoodOn",
+          "Grocy"
+        ],
+        "integration": "References inform structure, knowledge, design, requirements, features, APIs and interoperability through explicit versioned crosswalks/adapters into the common OffMenu model; no competing imported models or wholesale copying.",
+        "preservation": "Preserve original source values, provenance and transformation lineage; resolve ambiguity without forced equivalence.",
+        "supersedes": "Any interpretation of prior gold-foundation decision as adopting external standards wholesale."
+      }
+    },
+    {
+      "id": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+      "priority": "HIGHEST",
+      "owner": "Worker64 implementation; Gateway authoritative controller",
+      "state": "activation-owner64-active",
+      "authority": "Matthew: Getting your permanent ledger solution established should be the highest priority",
+      "expected": "Minimum existing-interface adoption of durable commitment workflow, actual result/action/state/endturn and Codex/Freebuff supported handoff",
+      "nextAction": "64minimumoperationaladapter thenGateway real-reply use; interim remainsauthoritative",
+      "constraints": [
+        "Keep interimledger and everycommitment until replacement used/proven",
+        "Preserve provenance/barcode criticalobligations",
+        "MemPalace optionalbinding notcoregate",
+        "No hypotheticalexactlyonce/crashproof gate",
+        "No globalpause",
+        "No newpaidinfra or deniedactionbypass"
+      ],
+      "capturedUTC": "2026-10-16T00:16:25.657605+00:00"
+    }
+  ],
+  "unreconciled": [
+    "Legacy105rows implementation join pending",
+    "Full current denial inventory reconciliation pending",
+    "Portfolio eligibility/refill pending",
+    "24/44/38 context reconciliation pending",
+    "Cross-client live integration unqualified",
+    "PDF version identity and cloud68 complete transfer pending"
+  ],
+  "restrictions": [
+    "No productiondeploy/paidprovisioning/credentialgrants",
+    "No deniedactionretry/actorsubstitution",
+    "No productmigration/Freebuffrestoration",
+    "No fabricatedhistoricaldeliveryevents"
+  ],
+  "currentCommitments": [
+    "First ledger save and verified readback",
+    "Complete supervisor candidate owner and independent evaluator selection",
+    "Fresh country status, blockers, pending reviews, refill and concurrency reconciliation",
+    "Continue five-day five-PDF/local-history/repository audit alongside parent cloud researcher",
+    "Surface exact denied actions and smallest direct-input authorization; no bypass"
+  ],
+  "currentReconciliation": {
+    "timestamp": "2026-10-15T23:42:26.227420+00:00",
+    "completedCountryReviews": [
+      {
+        "owner": 15,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner15-BE-methods-review.json",
+        "sha256": "69438de21263acc81c352a8a1de90f51aa4f38bd2fdb047a0fe95c915fe48b8a",
+        "verdict": "PASS_BE_AUTHOR_METHOD_METADATA_ONLY"
+      },
+      {
+        "owner": 23,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner23-CM-metadata-review.json",
+        "sha256": "b0ba818e756dc9c89e65b8df06d0dc9da1a4349ac5dba0ede14732176069ad13",
+        "verdict": "PASS_CM_PUBLICATION_METADATA_AND_HELD_BASIS_ONLY"
+      },
+      {
+        "owner": 45,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner45-JE-rpi-review.json",
+        "sha256": "55abdd71aa0fec4616395e6dc6084469b78081029abf2beae328863d72fa950d",
+        "verdict": "PASS_JE_LEXICAL_INDEX_QUALIFICATION_ONLY"
+      },
+      {
+        "owner": 53,
+        "path": "/home/user/.codex/visualizations/2026/10/14/01a138ee-0d29-75d0-83df-da4f7ac6c9a4/country-follow-on-reviews-20261016/owner53-LK-literal-review.json",
+        "sha256": "606ba2e7dd330bf966a27ccd596a1149a0d738afd33b4942a3eb1cc532ea9286",
+        "verdict": "PASS_LITERAL_COORDINATE_AND_UNRESOLVED_DISCREPANCY_REGISTER_ONLY"
+      }
+    ],
+    "supervisor": "v4 observed fixes independentPASS, practical loop inuse",
+    "pending": [
+      "11 Owner59 metadata review",
+      "four country owners next eligible bounded gap",
+      "manager concrete product backlog selection"
+    ],
+    "notCompletion": "Receipt delivery is not next-gap completion"
+  },
+  "interimCaptureActive": true,
+  "directGatewayAuthorization": {
+    "recordedUTC": "2026-10-15T22:59:47.857118+00:00",
+    "source": "Direct human message in this Gateway chat",
+    "text": "Authorize Gateway to assign Worker64 the complete local supervisor candidate and Worker14 its independent evaluation, and coordinate existing country and audit owners; preserve approvals and existing denied-action holds."
+  },
+  "latestDispatches": {
+    "64": "delivered,pickup verified",
+    "14": "delivered,pickup verified",
+    "11": "country delta queue delivered",
+    "38": "country delta queue delivered",
+    "52": "PDF03 delivered,actual pickup verified",
+    "46": "direct authorization verified; four scoped reviews complete"
+  },
+  "cloudAuditCoverage": {
+    "reportedClusters": 68,
+    "clusterPayload": "Cloud68research previously transmitted as text; full local capture unavailable: transfer/reconciliation gap, not absent research",
+    "conversationsLocated": 16,
+    "selectedBranchHistoriesRead": 13,
+    "searchHits": 88,
+    "generatedPDFPages": 274,
+    "uniquePages": 258,
+    "limitations": [
+      "Partial/unavailable search flags",
+      "Summary/image omissions",
+      "Developer environment thread incomplete",
+      "Uploaded/generated byte identity unresolved"
+    ],
+    "actualDelivery": "UNKNOWN pending local join",
+    "UI7645": "resolved per current root; do not reopen"
+  },
+  "latestAuditCoverage": {
+    "localPDFPages": 192,
+    "sourceLocalEntries": 3314,
+    "classification": "Proposals, constraints, context and requirements mixed; not3314accepted requirements",
+    "implementationJoin": "pending"
+  },
+  "supervisorSeams": {
+    "existingOperationalOwners": [
+      "Gateway coordinator",
+      "64 assigned implementation",
+      "14 assigned independent evaluation"
+    ],
+    "routingInfrastructureCustodian": "Unidentified; existing audit owner asked for documented custodian/interface",
+    "available": "native read_thread/send_message_to_thread tools, local ledger/checkpoint; neither proves transactional Gateway adapter",
+    "unavailableUnqualified": [
+      "OffMenu shared MemPalace endpoint",
+      "Gateway ingress durable ACK/cursor contract",
+      "Due-wake integration",
+      "Transactional owner/completion adapter"
+    ],
+    "freebuff": "health response verified by64; account/MCP/roundtrip unverified"
+  },
+  "latestGatewayDisposition": {
+    "recordedUTC": "2026-10-15T23:13:34.257087+00:00",
+    "supervisor": {
+      "owner64Action": "45c55a4af78ef6dfd87711d8582356b5d25837cfbae79f031ed1ab76fc03f729",
+      "attempt": "4086e491-64c7-4557-bb1b-e3396242d575",
+      "ack": "delivered; receipt only, not live seam acceptance",
+      "localReportedTests": 42,
+      "matrixReported": "43 PASS / 5 BLOCKED deterministic; all 48 live BLOCKED",
+      "seamAudit": "/home/user/Documents/Codex/2026-10-16/offmenu-repository-audit/admin-seam-evidence.json",
+      "seamAuditSHA256": "509393b024a24f3b1fa9bbee0f49a8daf64bc5e5025e9ee148a754119d282e3f",
+      "next": "Freeze local candidate for existing14; actual Gateway persistence/ACK/wake/CAS and intended OffMenu MCP custodian unresolved"
+    },
+    "owner01": {
+      "packetSHA256": "1d653225561b8da2e77369aa484a2bc209efe06093dcc91e1e761714ab48b92a",
+      "result": "No eligible distinct independently licensed dietary original established in bounded AG/AI search",
+      "disposition": "HOLD dietary branch; no repeated queries or empty review; six queries remain; same five countries"
+    },
+    "identity": {
+      "reportedCommit": "e481fdc5c0b3be0806153ca4965dee7741add65b",
+      "receipt": "/home/user/Documents/Codex/2026-10-16/offmenu-identity-validator/implementation-receipt.json",
+      "scope": "two-file local pure config validator under new direct human authorization in owner thread",
+      "checks": "owner reports 7 groups PASS; no independent review or publication",
+      "priorDenial": "superseded only for exact local validator scope; other denials unchanged"
+    },
+    "titles": {
+      "initialUpdates": 64,
+      "successfulToolResponses": 64,
+      "numericCorrections": [
+        6,
+        12,
+        37,
+        41,
+        57,
+        58,
+        61,
+        62,
+        63
+      ],
+      "finalFullReadback": "64 verified,64unique",
+      "rule": "Assigned: OffMenu — concise current task; unused/unallocated: OffMenu — NN. Stable IDs and custody unchanged",
+      "evidence": "descriptive-title-final-readback.json"
+    }
+  },
+  "repairHistory": [
+    {
+      "UTC": "2026-10-15T23:20:06.379309+00:00",
+      "baselineSHA256": "d27e189d21550ff70ac2d80fb61d23a5ccdde327fbb8c4b8a488d3ec6e098980",
+      "baseline": "ledger-spot-test-20261016-001/baseline.json",
+      "authority": "Parent relay of Matthew explicit lift/read-only freeze and immediate repair instruction",
+      "correctedIDs": [
+        "IDENTITY-VALIDATOR",
+        "COUNTRY-15",
+        "COUNTRY-45",
+        "COUNTRY-23",
+        "COUNTRY-53",
+        "REVIEW-46",
+        "COUNTRY-01",
+        "COUNTRY-29",
+        "SUPERVISOR-RESEARCH",
+        "UX-HISTORY",
+        "SUPERVISOR-FULL-CANDIDATE",
+        "INTERIM-CAPTURE-RETIREMENT",
+        "BACKLOG-AUDIT",
+        "SESSION-DESCRIPTIVE-TITLES",
+        "FREEBUFF-COMPAT"
+      ],
+      "addedIDs": [
+        "GATEWAY-DURABLE-INTERFACES",
+        "OFFMENU-MEMPALACE-ROUTE",
+        "SUPERVISOR-INDEPENDENT-EVALUATION",
+        "REVIEW-38",
+        "COMPACTION-RECOVERY",
+        "AUDIT-CLOUD68-TRANSFER"
+      ]
+    }
+  ],
+  "controllerReconciliation": {
+    "timestamp": "2026-10-16T00:06:58.651884+00:00",
+    "outcomes": [
+      "4exportownerscomplete anddeliveredonce",
+      "MemPalaceactualconnectedzero-tools diagnosed asprojectbinding"
+    ],
+    "pending": [
+      "UIservedrecordcoverage",
+      "OffMenu authorizedstoreidentity/accessbinding"
+    ],
+    "supervisorUse": "Actualresults→managementdelivery→ledger→endturn persisted",
+    "noProduction": true
+  },
+  "practicalSupervisorDirection": {
+    "UTC": "2026-10-15T23:30:39.267281+00:00",
+    "source": "ManagingMorgan relay of Matthew explicit latest direction",
+    "direction": "Practical local supervisor use now via supported native reads/messages and existing ledger; deliver, try, fix observed problems",
+    "supersedes": [
+      "Crash-proof and exactly-once prerequisites",
+      "Atomic ACK/wake/owner-CAS prerequisite",
+      "Exhaustive hypothetical matrix as adoption gate"
+    ],
+    "preserves": [
+      "ActualR1/R2correctness corrections",
+      "Existing evidence",
+      "No product production deployment/new security access",
+      "Existing denied actions and source rights holds"
+    ],
+    "missingMemPalaceBlocksOtherWorkflow": false
+  },
+  "localDevelopmentApproach": {
+    "recordedUTC": "2026-10-15T23:32:23.288460+00:00",
+    "source": "ManagingMorgan relay of Matthew standing development clarification",
+    "environment": "Friendly local R&D without customers",
+    "practice": "Build, run in real workflow, observe, fix actual issues; crashes/debug logs/investigation normal",
+    "review": "Adversarial review welcome; no mandatory formal validation for every experiment",
+    "checks": "Development direct use, logs and iterative fixes; focused debugging/adversarial review useful, no full formal test/sign-off gate per local deliverable",
+    "preserve": [
+      "Factual provenance",
+      "Source rights",
+      "Existing ownership",
+      "Actual permission boundaries"
+    ],
+    "productionDeploymentAuthorized": false,
+    "application": "Fold into existing work, no new process or gate",
+    "gitflow": "Task worktrees/branches and PR integration to develop remain; formal release validation only at explicit release cut",
+    "exactUserQuote": "you work in development, and the only formal testing is when we do a release"
+  },
+  "highestPriority": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION"
+}

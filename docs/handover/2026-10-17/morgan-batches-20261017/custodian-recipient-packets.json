@@ -1,0 +1,1678 @@
+{
+  "52": [
+    {
+      "requester": 1,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-01/B01-W01/custodian-requests.json",
+      "sha256": "9eef07a5887a7688f8f85fc2fec30454aefe48f9ec942dae3fbff8900897eab0",
+      "recipients": [
+        52,
+        12
+      ]
+    },
+    {
+      "requester": 41,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-41/B03-W41/gateway-artifact-requests.json",
+      "sha256": "35c205c7b829aa4717c0335cfaf9cdb32d2ad9d47a713d3078cf2ef7ab88e1c7",
+      "recipients": [
+        20,
+        52
+      ]
+    },
+    {
+      "requester": 49,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/B03-W49/gateway-artifact-field-request.json",
+      "sha256": "e861bdd6e2d413ac242201628dc94301d7427fa5201de335b269bc241c09be7a",
+      "recipients": [
+        46,
+        51,
+        52
+      ]
+    },
+    {
+      "requester": 46,
+      "path": "/home/user/Documents/Codex/2026-10-17/owner46-B03-W46/gateway-artifact-requests.json",
+      "sha256": "0e6e211c94581f782e7f2b3fb940288368bfa792df37ab663ab33e6b696e7a8f",
+      "recipients": [
+        52,
+        54
+      ]
+    }
+  ],
+  "12": [
+    {
+      "requester": 1,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-01/B01-W01/custodian-requests.json",
+      "sha256": "9eef07a5887a7688f8f85fc2fec30454aefe48f9ec942dae3fbff8900897eab0",
+      "recipients": [
+        52,
+        12
+      ]
+    },
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    }
+  ],
+  "18": [
+    {
+      "requester": 2,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-02/AO/B01-W02/gateway-artifact-request.txt",
+      "sha256": "78c727392cd43b65bf5979743b40368edf88fa144d985dd4f58471c1c64c30d5",
+      "recipients": [
+        18,
+        33,
+        39
+      ]
+    },
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 34,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-34/GS/B02-W34/artifact-field-request.json",
+      "sha256": "5e8cf2a1c9be86f9b4ae05300c34af45a20ac65a38b5c93f6194d20eb3697424",
+      "recipients": [
+        16,
+        20,
+        18,
+        21
+      ]
+    },
+    {
+      "requester": 39,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-39/authorized-20261017/B02-W39/custodian-field-request.json",
+      "sha256": "08dabeecc05be4e55d9cbc65154571b8f8453972c3c3dacdcf5cce8c5d91872b",
+      "recipients": [
+        18,
+        54,
+        51
+      ]
+    },
+    {
+      "requester": 62,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/precise-gateway-request.json",
+      "sha256": "a5da89cce6f6233e7514355b6b4c622ec76db65827b7a00d7496ce496a824144",
+      "recipients": [
+        17,
+        18,
+        39,
+        47
+      ]
+    }
+  ],
+  "33": [
+    {
+      "requester": 2,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-02/AO/B01-W02/gateway-artifact-request.txt",
+      "sha256": "78c727392cd43b65bf5979743b40368edf88fa144d985dd4f58471c1c64c30d5",
+      "recipients": [
+        18,
+        33,
+        39
+      ]
+    }
+  ],
+  "39": [
+    {
+      "requester": 2,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-02/AO/B01-W02/gateway-artifact-request.txt",
+      "sha256": "78c727392cd43b65bf5979743b40368edf88fa144d985dd4f58471c1c64c30d5",
+      "recipients": [
+        18,
+        33,
+        39
+      ]
+    },
+    {
+      "requester": 30,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-30/B02-W30/custodian-requests.json",
+      "sha256": "a700484c8d37b0ef6d7d90e312e7e5653dc92d4a0a0926ea84f125aee2fe1cf8",
+      "recipients": [
+        39,
+        26
+      ]
+    },
+    {
+      "requester": 62,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/precise-gateway-request.json",
+      "sha256": "a5da89cce6f6233e7514355b6b4c622ec76db65827b7a00d7496ce496a824144",
+      "recipients": [
+        17,
+        18,
+        39,
+        47
+      ]
+    }
+  ],
+  "36": [
+    {
+      "requester": 5,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/B01-W05/custodian-request.txt",
+      "sha256": "f76d91275d5fc833e72eb232e92d0bfb63160e2239609f9812dfb8ff4abb77b3",
+      "recipients": [
+        36,
+        49,
+        40
+      ]
+    },
+    {
+      "requester": 40,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/B02-W40/gateway-artifact-requests.json",
+      "sha256": "ddee88e32363ea5327e4d3f07f886955f09f22019d7ece7e5fa304effb6803b7",
+      "recipients": [
+        34,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "requester": 50,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-50/B03-W50/artifact-request.json",
+      "sha256": "0bff5152a1451ded464ab78c6ea09c8ac75481e1feaab44ac0ab6640999de430",
+      "recipients": [
+        36,
+        61
+      ]
+    },
+    {
+      "requester": 6,
+      "path": "/home/user/src/offmenu-data/worker-06-B01-W06-20261017/custodian-request.txt",
+      "sha256": "40ef7c800461824121b49e8b0ed302711990ccf61e18eb3ce0aa146af3b8025f",
+      "recipients": [
+        36,
+        38
+      ]
+    }
+  ],
+  "49": [
+    {
+      "requester": 5,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/B01-W05/custodian-request.txt",
+      "sha256": "f76d91275d5fc833e72eb232e92d0bfb63160e2239609f9812dfb8ff4abb77b3",
+      "recipients": [
+        36,
+        49,
+        40
+      ]
+    },
+    {
+      "requester": 29,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-29/B02-W29/artifact-field-requests.json",
+      "sha256": "198bee4afb009270c3b1b7273b5fa6794e846aab87c3184db3697de8420689e1",
+      "recipients": [
+        51,
+        46,
+        55,
+        49
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 36,
+      "path": "/home/user/Documents/Codex/2026-10-17/B02-W36/gateway-custodian-request.json",
+      "sha256": "7a7b390d76efc669d215c1e342c5da7d2ef524e134620ce480cca0df399db4bc",
+      "recipients": [
+        49
+      ]
+    }
+  ],
+  "40": [
+    {
+      "requester": 5,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-05/B01-W05/custodian-request.txt",
+      "sha256": "f76d91275d5fc833e72eb232e92d0bfb63160e2239609f9812dfb8ff4abb77b3",
+      "recipients": [
+        36,
+        49,
+        40
+      ]
+    },
+    {
+      "requester": 43,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/precise-custodian-requests.json",
+      "sha256": "62c48226461046f7a98e09adff4bb03b93f0843212204fd67796a346b9209db1",
+      "recipients": [
+        55,
+        48,
+        40
+      ]
+    },
+    {
+      "requester": 63,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-63/B03-W63/custodian-requests.json",
+      "sha256": "a74b525fe51cc504966305827c57f6522ac6422181c894ea868a7c91eb4e4d6c",
+      "recipients": [
+        34,
+        40,
+        43,
+        13
+      ]
+    }
+  ],
+  "26": [
+    {
+      "requester": 7,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-07/B01-W07/custodian-request.txt",
+      "sha256": "8ad602df33503b4881d94dab47e8e267f392d2d5b1142b295907ab8bcb7fc044",
+      "recipients": [
+        26
+      ]
+    },
+    {
+      "requester": 10,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-10/B01-W10/precise-artifact-request.json",
+      "sha256": "997ae5be3ca4ec779a81a666238be315da2eedd4cd733438653d26a95df97c12",
+      "recipients": [
+        62,
+        47,
+        26
+      ]
+    },
+    {
+      "requester": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/B01-W14/artifact-request.json",
+      "sha256": "04f3f69256a9e17b0c0b216488de8e3898bc942dc19f4ec197a59c04e171ad11",
+      "recipients": [
+        24,
+        53,
+        26
+      ]
+    },
+    {
+      "requester": 24,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-24/B01-W24/custodian-request.json",
+      "sha256": "cc6b01edba99d2398918dd20d96f1d97f72dcb79e4b1e9e6b3db371f03656d3b",
+      "recipients": [
+        26
+      ]
+    },
+    {
+      "requester": 30,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-30/B02-W30/custodian-requests.json",
+      "sha256": "a700484c8d37b0ef6d7d90e312e7e5653dc92d4a0a0926ea84f125aee2fe1cf8",
+      "recipients": [
+        39,
+        26
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 55,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/artifact-field-request.json",
+      "sha256": "affba373517b1e625c57f32ea4d01db56dd5f4c66715cbd98a96ab3783572dcd",
+      "recipients": [
+        56,
+        38,
+        26
+      ]
+    },
+    {
+      "requester": 56,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/B03-W56/gateway-artifact-field-request.json",
+      "sha256": "bd136073a8787d381b2ef819ded67aabcb5c9c0992b40f69461238491fb4f0bf",
+      "recipients": [
+        26,
+        32,
+        55
+      ]
+    },
+    {
+      "requester": 58,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/specific-artifact-requests.json",
+      "sha256": "01da5824db966e2b2ec54cd57e79f3c313fe989d0a7e9fccc73783c5727c0a6e",
+      "recipients": [
+        56,
+        26
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 25,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138fe-af42-7ff1-8e37-f7ad5abf2671/B01-W25-country-inputs-20261017/gateway-artifact-requests.json",
+      "sha256": "5acbeb5c7076dfbbc4123c1188e5f0cc23c84889cfaef6592faa2a1006e8c880",
+      "recipients": [
+        20,
+        21,
+        24,
+        26
+      ]
+    }
+  ],
+  "62": [
+    {
+      "requester": 10,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-10/B01-W10/precise-artifact-request.json",
+      "sha256": "997ae5be3ca4ec779a81a666238be315da2eedd4cd733438653d26a95df97c12",
+      "recipients": [
+        62,
+        47,
+        26
+      ]
+    },
+    {
+      "requester": 20,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/B01-W20/NG62-specific-evidence-request.json",
+      "sha256": "067f2babd854cd5ceed439b483f80a9a61623353474bc90bb4237c4a74025c58",
+      "recipients": [
+        62
+      ]
+    },
+    {
+      "requester": 33,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-33/GH/B02-W33/R1-gateway-artifact-request.txt",
+      "sha256": "61addb766613b3e8c319d2de6a655c83529b9a60fb238c724d188d5fc00e2038",
+      "recipients": [
+        57,
+        62,
+        43
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-61/B03-W61-custodian-request.txt",
+      "sha256": "5a710e2e9a7d710a03ed77897f2fb1b78b8ef07a949708f78bc9a6e7b0433f96",
+      "recipients": [
+        13,
+        16,
+        53,
+        37,
+        62
+      ]
+    }
+  ],
+  "47": [
+    {
+      "requester": 10,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-10/B01-W10/precise-artifact-request.json",
+      "sha256": "997ae5be3ca4ec779a81a666238be315da2eedd4cd733438653d26a95df97c12",
+      "recipients": [
+        62,
+        47,
+        26
+      ]
+    },
+    {
+      "requester": 13,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/B01-W13/precise-artifact-requests.json",
+      "sha256": "a80d86021cb7b63795a093c9a2f502e5e45ea1a0c0cf7559710f266ce62938b6",
+      "recipients": [
+        46,
+        47
+      ]
+    },
+    {
+      "requester": 18,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-18/B01-W18/BO-custodian-artifact-request.json",
+      "sha256": "2db292b2fbbaca3cf1fa9c6d88e2358bdb93a1f553c54cb9eda49ef044f2ffe7",
+      "recipients": [
+        47
+      ]
+    },
+    {
+      "requester": 62,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/precise-gateway-request.json",
+      "sha256": "a5da89cce6f6233e7514355b6b4c622ec76db65827b7a00d7496ce496a824144",
+      "recipients": [
+        17,
+        18,
+        39,
+        47
+      ]
+    }
+  ],
+  "42": [
+    {
+      "requester": 12,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-12/B01-W12/recipient-requests.json",
+      "sha256": "4f028f9eb5e9202a14ba43e023c6a9c014717c51486e0d2ccb94cdc617473396",
+      "recipients": [
+        42,
+        41,
+        60
+      ]
+    },
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 16,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/B01-W16/reconciliation.json",
+      "sha256": "72fd6c705fb6b5cb59848451ecf8986583b9663c40dfe9ce3d291c5c833cdb10",
+      "recipients": [
+        43,
+        42
+      ]
+    }
+  ],
+  "41": [
+    {
+      "requester": 12,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-12/B01-W12/recipient-requests.json",
+      "sha256": "4f028f9eb5e9202a14ba43e023c6a9c014717c51486e0d2ccb94cdc617473396",
+      "recipients": [
+        42,
+        41,
+        60
+      ]
+    },
+    {
+      "requester": 28,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/B02-W28/gateway-exact-artifact-requests.json",
+      "sha256": "55ec83217338363f7e283c8bf48683d1f47c0b97ed955e2533764121b0019c4d",
+      "recipients": [
+        41,
+        43,
+        61,
+        24
+      ]
+    },
+    {
+      "requester": 9,
+      "path": "/home/user/Documents/Codex/2026-10-17/worker09-B01-W09-custody-resolution/custodian-request.json",
+      "sha256": "98f6327a0ddd96cdbc1f5cfbeba57fbfe51759c25410d69b3e228a07b6655a69",
+      "recipients": [
+        41,
+        54
+      ]
+    }
+  ],
+  "60": [
+    {
+      "requester": 12,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-12/B01-W12/recipient-requests.json",
+      "sha256": "4f028f9eb5e9202a14ba43e023c6a9c014717c51486e0d2ccb94cdc617473396",
+      "recipients": [
+        42,
+        41,
+        60
+      ]
+    }
+  ],
+  "46": [
+    {
+      "requester": 13,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/B01-W13/precise-artifact-requests.json",
+      "sha256": "a80d86021cb7b63795a093c9a2f502e5e45ea1a0c0cf7559710f266ce62938b6",
+      "recipients": [
+        46,
+        47
+      ]
+    },
+    {
+      "requester": 29,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-29/B02-W29/artifact-field-requests.json",
+      "sha256": "198bee4afb009270c3b1b7273b5fa6794e846aab87c3184db3697de8420689e1",
+      "recipients": [
+        51,
+        46,
+        55,
+        49
+      ]
+    },
+    {
+      "requester": 49,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/B03-W49/gateway-artifact-field-request.json",
+      "sha256": "e861bdd6e2d413ac242201628dc94301d7427fa5201de335b269bc241c09be7a",
+      "recipients": [
+        46,
+        51,
+        52
+      ]
+    }
+  ],
+  "24": [
+    {
+      "requester": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/B01-W14/artifact-request.json",
+      "sha256": "04f3f69256a9e17b0c0b216488de8e3898bc942dc19f4ec197a59c04e171ad11",
+      "recipients": [
+        24,
+        53,
+        26
+      ]
+    },
+    {
+      "requester": 28,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/B02-W28/gateway-exact-artifact-requests.json",
+      "sha256": "55ec83217338363f7e283c8bf48683d1f47c0b97ed955e2533764121b0019c4d",
+      "recipients": [
+        41,
+        43,
+        61,
+        24
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 25,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138fe-af42-7ff1-8e37-f7ad5abf2671/B01-W25-country-inputs-20261017/gateway-artifact-requests.json",
+      "sha256": "5acbeb5c7076dfbbc4123c1188e5f0cc23c84889cfaef6592faa2a1006e8c880",
+      "recipients": [
+        20,
+        21,
+        24,
+        26
+      ]
+    }
+  ],
+  "53": [
+    {
+      "requester": 14,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-14/LU/B01-W14/artifact-request.json",
+      "sha256": "04f3f69256a9e17b0c0b216488de8e3898bc942dc19f4ec197a59c04e171ad11",
+      "recipients": [
+        24,
+        53,
+        26
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-61/B03-W61-custodian-request.txt",
+      "sha256": "5a710e2e9a7d710a03ed77897f2fb1b78b8ef07a949708f78bc9a6e7b0433f96",
+      "recipients": [
+        13,
+        16,
+        53,
+        37,
+        62
+      ]
+    }
+  ],
+  "38": [
+    {
+      "requester": 15,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/continuations/B01-W15/custodian-request.json",
+      "sha256": "dff3a88bba937a1d7189b651bb88ef203c3159e40df1944f0c4c1a0a4b17801f",
+      "recipients": [
+        38,
+        37
+      ]
+    },
+    {
+      "requester": 21,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-21/B01-W21/custodian-requests.json",
+      "sha256": "660426dc554d321c26af0450876a2e7c4404781a0b355762b99d8e72d3930584",
+      "recipients": [
+        59,
+        38
+      ]
+    },
+    {
+      "requester": 40,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/B02-W40/gateway-artifact-requests.json",
+      "sha256": "ddee88e32363ea5327e4d3f07f886955f09f22019d7ece7e5fa304effb6803b7",
+      "recipients": [
+        34,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "requester": 55,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/artifact-field-request.json",
+      "sha256": "affba373517b1e625c57f32ea4d01db56dd5f4c66715cbd98a96ab3783572dcd",
+      "recipients": [
+        56,
+        38,
+        26
+      ]
+    },
+    {
+      "requester": 6,
+      "path": "/home/user/src/offmenu-data/worker-06-B01-W06-20261017/custodian-request.txt",
+      "sha256": "40ef7c800461824121b49e8b0ed302711990ccf61e18eb3ce0aa146af3b8025f",
+      "recipients": [
+        36,
+        38
+      ]
+    }
+  ],
+  "37": [
+    {
+      "requester": 15,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/continuations/B01-W15/custodian-request.json",
+      "sha256": "dff3a88bba937a1d7189b651bb88ef203c3159e40df1944f0c4c1a0a4b17801f",
+      "recipients": [
+        38,
+        37
+      ]
+    },
+    {
+      "requester": 40,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/B02-W40/gateway-artifact-requests.json",
+      "sha256": "ddee88e32363ea5327e4d3f07f886955f09f22019d7ece7e5fa304effb6803b7",
+      "recipients": [
+        34,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "requester": 4,
+      "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-04/B01-W04-ae-composition-20261017/resolution.json",
+      "sha256": "6445695e9c0d937bfe370e7441d53bb333cf2fad8a7fb69b0d6d138f5287fc0a",
+      "recipients": [
+        37
+      ]
+    },
+    {
+      "requester": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-61/B03-W61-custodian-request.txt",
+      "sha256": "5a710e2e9a7d710a03ed77897f2fb1b78b8ef07a949708f78bc9a6e7b0433f96",
+      "recipients": [
+        13,
+        16,
+        53,
+        37,
+        62
+      ]
+    }
+  ],
+  "54": [
+    {
+      "requester": 17,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-17/B01-W17/gateway-routing-request.json",
+      "sha256": "944f5cfdcda9a9305a53dca735090e6a8b5883224798739010a962c467033963",
+      "recipients": [
+        54,
+        43,
+        44
+      ]
+    },
+    {
+      "requester": 39,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-39/authorized-20261017/B02-W39/custodian-field-request.json",
+      "sha256": "08dabeecc05be4e55d9cbc65154571b8f8453972c3c3dacdcf5cce8c5d91872b",
+      "recipients": [
+        18,
+        54,
+        51
+      ]
+    },
+    {
+      "requester": 9,
+      "path": "/home/user/Documents/Codex/2026-10-17/worker09-B01-W09-custody-resolution/custodian-request.json",
+      "sha256": "98f6327a0ddd96cdbc1f5cfbeba57fbfe51759c25410d69b3e228a07b6655a69",
+      "recipients": [
+        41,
+        54
+      ]
+    },
+    {
+      "requester": 46,
+      "path": "/home/user/Documents/Codex/2026-10-17/owner46-B03-W46/gateway-artifact-requests.json",
+      "sha256": "0e6e211c94581f782e7f2b3fb940288368bfa792df37ab663ab33e6b696e7a8f",
+      "recipients": [
+        52,
+        54
+      ]
+    }
+  ],
+  "43": [
+    {
+      "requester": 17,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-17/B01-W17/gateway-routing-request.json",
+      "sha256": "944f5cfdcda9a9305a53dca735090e6a8b5883224798739010a962c467033963",
+      "recipients": [
+        54,
+        43,
+        44
+      ]
+    },
+    {
+      "requester": 28,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/B02-W28/gateway-exact-artifact-requests.json",
+      "sha256": "55ec83217338363f7e283c8bf48683d1f47c0b97ed955e2533764121b0019c4d",
+      "recipients": [
+        41,
+        43,
+        61,
+        24
+      ]
+    },
+    {
+      "requester": 33,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-33/GH/B02-W33/R1-gateway-artifact-request.txt",
+      "sha256": "61addb766613b3e8c319d2de6a655c83529b9a60fb238c724d188d5fc00e2038",
+      "recipients": [
+        57,
+        62,
+        43
+      ]
+    },
+    {
+      "requester": 42,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-42/B03-W42/gateway-artifact-request.json",
+      "sha256": "430f850bb93871d19ac9280592d974a67ee4e376212e634af317b323c594cb23",
+      "recipients": [
+        21,
+        43
+      ]
+    },
+    {
+      "requester": 63,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-63/B03-W63/custodian-requests.json",
+      "sha256": "a74b525fe51cc504966305827c57f6522ac6422181c894ea868a7c91eb4e4d6c",
+      "recipients": [
+        34,
+        40,
+        43,
+        13
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 16,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/B01-W16/reconciliation.json",
+      "sha256": "72fd6c705fb6b5cb59848451ecf8986583b9663c40dfe9ce3d291c5c833cdb10",
+      "recipients": [
+        43,
+        42
+      ]
+    }
+  ],
+  "44": [
+    {
+      "requester": 17,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-17/B01-W17/gateway-routing-request.json",
+      "sha256": "944f5cfdcda9a9305a53dca735090e6a8b5883224798739010a962c467033963",
+      "recipients": [
+        54,
+        43,
+        44
+      ]
+    },
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    }
+  ],
+  "59": [
+    {
+      "requester": 21,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-21/B01-W21/custodian-requests.json",
+      "sha256": "660426dc554d321c26af0450876a2e7c4404781a0b355762b99d8e72d3930584",
+      "recipients": [
+        59,
+        38
+      ]
+    }
+  ],
+  "55": [
+    {
+      "requester": 23,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-23/B01-W23/artifact-field-request.json",
+      "sha256": "78e6b4ccbb503996701735a34395cbcdb07071352709a3671901ca338542da2f",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 26,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/gateway-artifact-request.json",
+      "sha256": "eb70158197742f05fb90aff910143b72cb74a705b2c3737179712414d763dca4",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 29,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-29/B02-W29/artifact-field-requests.json",
+      "sha256": "198bee4afb009270c3b1b7273b5fa6794e846aab87c3184db3697de8420689e1",
+      "recipients": [
+        51,
+        46,
+        55,
+        49
+      ]
+    },
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 32,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/custodian-request.txt",
+      "sha256": "3a32e3950fa829714eab9ea9f3b59ed27c79cf6b306b4e86396f987e104c144d",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 43,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/precise-custodian-requests.json",
+      "sha256": "62c48226461046f7a98e09adff4bb03b93f0843212204fd67796a346b9209db1",
+      "recipients": [
+        55,
+        48,
+        40
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 56,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/B03-W56/gateway-artifact-field-request.json",
+      "sha256": "bd136073a8787d381b2ef819ded67aabcb5c9c0992b40f69461238491fb4f0bf",
+      "recipients": [
+        26,
+        32,
+        55
+      ]
+    }
+  ],
+  "56": [
+    {
+      "requester": 23,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-23/B01-W23/artifact-field-request.json",
+      "sha256": "78e6b4ccbb503996701735a34395cbcdb07071352709a3671901ca338542da2f",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 26,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-26/B01-W26/gateway-artifact-request.json",
+      "sha256": "eb70158197742f05fb90aff910143b72cb74a705b2c3737179712414d763dca4",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 32,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/custodian-request.txt",
+      "sha256": "3a32e3950fa829714eab9ea9f3b59ed27c79cf6b306b4e86396f987e104c144d",
+      "recipients": [
+        55,
+        56
+      ]
+    },
+    {
+      "requester": 55,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/artifact-field-request.json",
+      "sha256": "affba373517b1e625c57f32ea4d01db56dd5f4c66715cbd98a96ab3783572dcd",
+      "recipients": [
+        56,
+        38,
+        26
+      ]
+    },
+    {
+      "requester": 58,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/specific-artifact-requests.json",
+      "sha256": "01da5824db966e2b2ec54cd57e79f3c313fe989d0a7e9fccc73783c5727c0a6e",
+      "recipients": [
+        56,
+        26
+      ]
+    }
+  ],
+  "61": [
+    {
+      "requester": 28,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/B02-W28/gateway-exact-artifact-requests.json",
+      "sha256": "55ec83217338363f7e283c8bf48683d1f47c0b97ed955e2533764121b0019c4d",
+      "recipients": [
+        41,
+        43,
+        61,
+        24
+      ]
+    },
+    {
+      "requester": 50,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-50/B03-W50/artifact-request.json",
+      "sha256": "0bff5152a1451ded464ab78c6ea09c8ac75481e1feaab44ac0ab6640999de430",
+      "recipients": [
+        36,
+        61
+      ]
+    }
+  ],
+  "51": [
+    {
+      "requester": 29,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-29/B02-W29/artifact-field-requests.json",
+      "sha256": "198bee4afb009270c3b1b7273b5fa6794e846aab87c3184db3697de8420689e1",
+      "recipients": [
+        51,
+        46,
+        55,
+        49
+      ]
+    },
+    {
+      "requester": 39,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-39/authorized-20261017/B02-W39/custodian-field-request.json",
+      "sha256": "08dabeecc05be4e55d9cbc65154571b8f8453972c3c3dacdcf5cce8c5d91872b",
+      "recipients": [
+        18,
+        54,
+        51
+      ]
+    },
+    {
+      "requester": 49,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/B03-W49/gateway-artifact-field-request.json",
+      "sha256": "e861bdd6e2d413ac242201628dc94301d7427fa5201de335b269bc241c09be7a",
+      "recipients": [
+        46,
+        51,
+        52
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 19,
+      "path": "/home/user/Documents/Codex/2026-10-17/worker19-B01-lineage-resolution/custodian-artifact-request.json",
+      "sha256": "a0a4053397b751846647313e401bd87bf8b9289680720867da2f2cfcbb11f8de",
+      "recipients": [
+        10,
+        17,
+        51
+      ]
+    }
+  ],
+  "21": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 34,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-34/GS/B02-W34/artifact-field-request.json",
+      "sha256": "5e8cf2a1c9be86f9b4ae05300c34af45a20ac65a38b5c93f6194d20eb3697424",
+      "recipients": [
+        16,
+        20,
+        18,
+        21
+      ]
+    },
+    {
+      "requester": 42,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-42/B03-W42/gateway-artifact-request.json",
+      "sha256": "430f850bb93871d19ac9280592d974a67ee4e376212e634af317b323c594cb23",
+      "recipients": [
+        21,
+        43
+      ]
+    },
+    {
+      "requester": 25,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138fe-af42-7ff1-8e37-f7ad5abf2671/B01-W25-country-inputs-20261017/gateway-artifact-requests.json",
+      "sha256": "5acbeb5c7076dfbbc4123c1188e5f0cc23c84889cfaef6592faa2a1006e8c880",
+      "recipients": [
+        20,
+        21,
+        24,
+        26
+      ]
+    }
+  ],
+  "48": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 43,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/precise-custodian-requests.json",
+      "sha256": "62c48226461046f7a98e09adff4bb03b93f0843212204fd67796a346b9209db1",
+      "recipients": [
+        55,
+        48,
+        40
+      ]
+    }
+  ],
+  "27": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 35,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/B02-W35/custodian-artifact-requests.json",
+      "sha256": "1c8c669377bb78754948e3f28958f56f8bf32b67f96632e9045634b2f287b80b",
+      "recipients": [
+        45,
+        27,
+        28
+      ]
+    }
+  ],
+  "45": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 35,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/B02-W35/custodian-artifact-requests.json",
+      "sha256": "1c8c669377bb78754948e3f28958f56f8bf32b67f96632e9045634b2f287b80b",
+      "recipients": [
+        45,
+        27,
+        28
+      ]
+    }
+  ],
+  "1": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    }
+  ],
+  "20": [
+    {
+      "requester": 31,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/custodian-request.txt",
+      "sha256": "2eed2b9d18f341bf2e02376d2eb937ff1e0bda5db6c3ab26688cfddea557c1b3",
+      "recipients": [
+        18,
+        44,
+        21,
+        42,
+        12,
+        48,
+        27,
+        45,
+        1,
+        20,
+        55
+      ]
+    },
+    {
+      "requester": 34,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-34/GS/B02-W34/artifact-field-request.json",
+      "sha256": "5e8cf2a1c9be86f9b4ae05300c34af45a20ac65a38b5c93f6194d20eb3697424",
+      "recipients": [
+        16,
+        20,
+        18,
+        21
+      ]
+    },
+    {
+      "requester": 41,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-41/B03-W41/gateway-artifact-requests.json",
+      "sha256": "35c205c7b829aa4717c0335cfaf9cdb32d2ad9d47a713d3078cf2ef7ab88e1c7",
+      "recipients": [
+        20,
+        52
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 25,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138fe-af42-7ff1-8e37-f7ad5abf2671/B01-W25-country-inputs-20261017/gateway-artifact-requests.json",
+      "sha256": "5acbeb5c7076dfbbc4123c1188e5f0cc23c84889cfaef6592faa2a1006e8c880",
+      "recipients": [
+        20,
+        21,
+        24,
+        26
+      ]
+    }
+  ],
+  "57": [
+    {
+      "requester": 33,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-33/GH/B02-W33/R1-gateway-artifact-request.txt",
+      "sha256": "61addb766613b3e8c319d2de6a655c83529b9a60fb238c724d188d5fc00e2038",
+      "recipients": [
+        57,
+        62,
+        43
+      ]
+    }
+  ],
+  "16": [
+    {
+      "requester": 34,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-34/GS/B02-W34/artifact-field-request.json",
+      "sha256": "5e8cf2a1c9be86f9b4ae05300c34af45a20ac65a38b5c93f6194d20eb3697424",
+      "recipients": [
+        16,
+        20,
+        18,
+        21
+      ]
+    },
+    {
+      "requester": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-61/B03-W61-custodian-request.txt",
+      "sha256": "5a710e2e9a7d710a03ed77897f2fb1b78b8ef07a949708f78bc9a6e7b0433f96",
+      "recipients": [
+        13,
+        16,
+        53,
+        37,
+        62
+      ]
+    }
+  ],
+  "28": [
+    {
+      "requester": 35,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/B02-W35/custodian-artifact-requests.json",
+      "sha256": "1c8c669377bb78754948e3f28958f56f8bf32b67f96632e9045634b2f287b80b",
+      "recipients": [
+        45,
+        27,
+        28
+      ]
+    },
+    {
+      "requester": 48,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-48/B03-W48/artifact-field-requests.json",
+      "sha256": "31ccbb97911d6b6b0f9b96384a7fc4c7c7f259fb6ddb84d95e6a730c1e0c81de",
+      "recipients": [
+        34,
+        28
+      ]
+    }
+  ],
+  "4": [
+    {
+      "requester": 37,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/custody-and-input-requests.json",
+      "sha256": "9180b63581eab473188588595e2a9f09ffa0c27a7e0dfbb84118c3367064b0df",
+      "recipients": [
+        4
+      ]
+    }
+  ],
+  "34": [
+    {
+      "requester": 40,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/B02-W40/gateway-artifact-requests.json",
+      "sha256": "ddee88e32363ea5327e4d3f07f886955f09f22019d7ece7e5fa304effb6803b7",
+      "recipients": [
+        34,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 48,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-48/B03-W48/artifact-field-requests.json",
+      "sha256": "31ccbb97911d6b6b0f9b96384a7fc4c7c7f259fb6ddb84d95e6a730c1e0c81de",
+      "recipients": [
+        34,
+        28
+      ]
+    },
+    {
+      "requester": 63,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-63/B03-W63/custodian-requests.json",
+      "sha256": "a74b525fe51cc504966305827c57f6522ac6422181c894ea868a7c91eb4e4d6c",
+      "recipients": [
+        34,
+        40,
+        43,
+        13
+      ]
+    },
+    {
+      "requester": 3,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-03/B01-W03/resolution.json",
+      "sha256": "acd678a303daf44297c79f40059d392b24594e0b041344bf62a4f9e47d8128a9",
+      "recipients": [
+        43,
+        34,
+        20,
+        49,
+        51,
+        62,
+        26
+      ]
+    },
+    {
+      "requester": 8,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138d3-4664-7ee0-9611-61d149582d53/B01-W08/pickup-and-input-request.json",
+      "sha256": "b6f60aafd6a3164f68194c1d726727c8219d0b38b274766101c62c6fc4c1ead8",
+      "recipients": [
+        32,
+        34
+      ]
+    }
+  ],
+  "32": [
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 56,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/B03-W56/gateway-artifact-field-request.json",
+      "sha256": "bd136073a8787d381b2ef819ded67aabcb5c9c0992b40f69461238491fb4f0bf",
+      "recipients": [
+        26,
+        32,
+        55
+      ]
+    },
+    {
+      "requester": 8,
+      "path": "/home/user/.codex/visualizations/2026/10/14/01a138d3-4664-7ee0-9611-61d149582d53/B01-W08/pickup-and-input-request.json",
+      "sha256": "b6f60aafd6a3164f68194c1d726727c8219d0b38b274766101c62c6fc4c1ead8",
+      "recipients": [
+        32,
+        34
+      ]
+    }
+  ],
+  "17": [
+    {
+      "requester": 44,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-44/B03-W44-identity-resolution/custodian-field-requests.json",
+      "sha256": "eb9b211d7bf6c18619b9a8fe4c654511ac6e2226a527bbbec64d3e1daac08522",
+      "recipients": [
+        34,
+        53,
+        32,
+        24,
+        62,
+        17,
+        55,
+        26
+      ]
+    },
+    {
+      "requester": 62,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-62/B03-W62/precise-gateway-request.json",
+      "sha256": "a5da89cce6f6233e7514355b6b4c622ec76db65827b7a00d7496ce496a824144",
+      "recipients": [
+        17,
+        18,
+        39,
+        47
+      ]
+    },
+    {
+      "requester": 19,
+      "path": "/home/user/Documents/Codex/2026-10-17/worker19-B01-lineage-resolution/custodian-artifact-request.json",
+      "sha256": "a0a4053397b751846647313e401bd87bf8b9289680720867da2f2cfcbb11f8de",
+      "recipients": [
+        10,
+        17,
+        51
+      ]
+    }
+  ],
+  "13": [
+    {
+      "requester": 63,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-63/B03-W63/custodian-requests.json",
+      "sha256": "a74b525fe51cc504966305827c57f6522ac6422181c894ea868a7c91eb4e4d6c",
+      "recipients": [
+        34,
+        40,
+        43,
+        13
+      ]
+    },
+    {
+      "requester": 11,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/LC/b01-source-correction/onward-use-evidence.json",
+      "sha256": "ed6033be1c77be1bc8d6eb9895df2cf7d0d0654a62246e2df99ebcc7d1536619",
+      "recipients": [
+        13
+      ]
+    },
+    {
+      "requester": 61,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-61/B03-W61-custodian-request.txt",
+      "sha256": "5a710e2e9a7d710a03ed77897f2fb1b78b8ef07a949708f78bc9a6e7b0433f96",
+      "recipients": [
+        13,
+        16,
+        53,
+        37,
+        62
+      ]
+    }
+  ],
+  "10": [
+    {
+      "requester": 19,
+      "path": "/home/user/Documents/Codex/2026-10-17/worker19-B01-lineage-resolution/custodian-artifact-request.json",
+      "sha256": "a0a4053397b751846647313e401bd87bf8b9289680720867da2f2cfcbb11f8de",
+      "recipients": [
+        10,
+        17,
+        51
+      ]
+    }
+  ]
+}

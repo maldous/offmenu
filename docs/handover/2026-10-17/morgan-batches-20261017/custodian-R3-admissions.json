@@ -1,0 +1,121 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 55,
+      "requester": 22,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/B01-W22-CF-resolution-v1/artifact-request.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139a8-ac70-7493-a4f4-9cf34bb16ce7\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 56,
+      "requester": 22,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/B01-W22-CF-resolution-v1/artifact-request.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139a9-2714-7cb1-9b61-c7f957cb4734\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 61,
+      "requester": 51,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/B03-W51/gateway-artifact-request.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139b7-6b00-78d3-a46c-1337fdc94bf3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 62,
+      "requester": 51,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/B03-W51/gateway-artifact-request.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a139b7-e9d7-7161-a3ef-51e6e965866b\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 10,
+      "requester": 52,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-52/B03-W52/RESULT.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138ed-be8c-7340-b25e-87bee9272d7e\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 32,
+      "requester": 53,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-53/B03-W53/result.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a13906-2929-7e70-8080-2751b69d80e3\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "owner": 20,
+      "requester": 53,
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-53/B03-W53/result.json",
+      "envelope": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"threadId\":\"01a138f8-9d74-75c2-b5f4-b487f610f5e6\"}"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

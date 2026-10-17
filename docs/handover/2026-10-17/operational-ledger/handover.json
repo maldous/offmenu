@@ -1,0 +1,40 @@
+{
+  "schema": "offmenu-ledger-pointer-handover/1",
+  "mode": "active-extension",
+  "store": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger",
+  "authority": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger/authority.json",
+    "sha256": "bdd835b7c9c8071fe6c6168e546585c7d6bfed72ffc194a2a7d79ff708bdb7b4"
+  },
+  "base": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/interim-obligation-index.json",
+    "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a"
+  },
+  "journal": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger/events.jsonl",
+    "sha256": "8dfc62816fee8be1211c6efbb0ddad5c405d7f4b1bae5449be590659c8685e24"
+  },
+  "eventCount": 5269,
+  "conflicts": [],
+  "resumeCommand": [
+    "python3",
+    "/home/user/Documents/Codex/2026-10-16/worker64-permanent-ledger-adoption/ledger.py",
+    "--store",
+    "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger",
+    "view"
+  ],
+  "managementSummary": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger/management-summary.json",
+    "sha256": "5de7f4086c265fbdcee243c552ac654b10eee433621406580ed6862a0b9cdbf7"
+  },
+  "managementSummaryCommand": [
+    "python3",
+    "/home/user/Documents/Codex/2026-10-16/worker64-permanent-ledger-adoption/ledger.py",
+    "--store",
+    "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger",
+    "summary"
+  ],
+  "sameAuthorityAcrossHarnesses": true,
+  "nativeSessionTransferOrModelInvocation": false,
+  "createdUTC": "2026-10-17T00:49:05.464799+00:00"
+}

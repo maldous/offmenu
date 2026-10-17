@@ -199,3 +199,53 @@ handover.
   `docs/handover/2026-10-17/worker-02-handover.json` on this branch.
 - `/home/user/src/offmenu-data` (171 GB) and nested `dev-preview/source` repo: unchanged
   local exceptions per section 9.
+
+## 12. Operational ledger and latest backlog state (rev 3)
+
+**[verified]** The latest operational ledger was located and preserved (scan-clean):
+`docs/handover/2026-10-17/operational-ledger/` holds the append-only `events.jsonl`
+(5,271 events), `management-summary.json`, `base-initial-copy.json`, `authority.json`,
+`handover.json` and the ledger's `baseRevision` target `interim-obligation-index.json`;
+`docs/handover/2026-10-17/morgan-batches-20261017/` holds B01–B03 preflight/admissions,
+custodian R1–R3 admissions, recipient packets v1/v2, routing plan, ledger-evidence and
+current checkpoints, `transport-checkpoint-current.json` (64 admissions/64 starts,
+28 response transfers at cut, 6 blocked identity/actor cases, M005 only M-series admitted),
+M003/M004 dispositions and returned-evidence admissions.
+`freebuff-gateway-offmenu-restore-readiness-20261017.json` (same directory) is the
+companion routing reconciliation: 58/64 workers returned at the cut; pending sends
+enumerated; M-006 NL extraction preserved as a failed-turn record and NOT re-executed.
+Source: `/home/user/Documents/Codex/2026-10-13/task-3/…`. The 64-worker instruction corpus
+alone did not contain this backlog state.
+
+## 13. Gateway deployed baseline vs newer local changes (rev 3)
+
+**[verified, read-only]** Deployed baseline (Morgan: `morgan-freebuff-gateway` at
+freebuff-gateway.aldous.info, dispatch disabled) corresponds to the reviewed artifact
+bundle: `dist/index.js` 869,325 bytes, SHA-256 `8e42da8d7c6d31cb37d84fe197349d92e5d367e777a6ea5824cab0ead8094702`,
+`bootstrap-metadata.json` with `ENABLED=false` and empty allowlists. Newer local changes
+NOT deployed: `gateway/src/control.ts`, `poller/src/contracts.mjs` (two deliberate reviewed
+changes), `poller/adapters/freebuff-verified.mjs` + tests, `poller/test` additions. All
+other gateway sources/tests are identical to the baseline. No deploy, enablement,
+credential change or resource creation was performed. **Limitation:** a live
+`wrangler deployments list` requires a Cloudflare API token that does not exist on this
+host and was not created; the deployed script name appears in no local file — the
+baseline identity rests on the artifact hashes plus Morgan's statement.
+
+## 14. Verification round 2 — nested repo, writers, token evidence (rev 3)
+
+- Nested `dev-preview/source`: HEAD `94cc5c67d451601091760add6d0e9075d3858b5c`
+  (`dev/isolated-preview-20261014`), origin = `/home/user/src/offmenu` (local path),
+  52 commits with zero shared history with the parent repository, only untracked
+  `node_modules` dirty; its content (dev-server/smoke/stop tooling, corpus schema, docs)
+  is absent from every preserved parent ref. **Not pushed** — destination and content
+  scope unresolved (manifest `nested_repo_analysis`).
+- Writer status: the two worker-05 checkpoints are **byte-identical** to their
+  preservation commits (0 drift / 797 files); no deltas existed to preserve. No
+  source-writing jobs running. Preview processes remain running (delivery runner,
+  3 wiremock, 2 workerd) — unchanged policy: not killed, checkpoints stay non-final.
+- Skew-protection token: contained in exactly the six excluded worker-06 readback/baseline
+  files. Evidence: never in Git (path log empty; `git log -S` over the whole history since
+  2026-10-01 finds no commit introducing the string), never in any request payload or
+  outbound file; it arrived from Cloudflare inside authenticated deploy readbacks. No
+  evidence of onward publication or transmission. No value is printed anywhere and no
+  credential was rotated.

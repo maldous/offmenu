@@ -1,0 +1,1225 @@
+{
+  "cut": 4889,
+  "rows": {
+    "B01-W14": [
+      {
+        "seq": 4703,
+        "id": "B01-W14-definition-resolution-pickup",
+        "op": "B01-W14-pickup",
+        "outcome": "running"
+      },
+      {
+        "seq": 4708,
+        "id": "B01-W14-definition-artifact-request-transport",
+        "op": "B01-W14-artifact-request",
+        "outcome": "native-envelope-recorded"
+      },
+      {
+        "seq": 4762,
+        "id": "B01-W14-definition-resolution-result",
+        "op": "B01-W14-definition-resolution",
+        "outcome": "precise-custody-lead-found-awaiting-correlated-evidence"
+      },
+      {
+        "seq": 4770,
+        "id": "completion-notification-0a54ae2f8c968c79366b4723-intent",
+        "op": "completion-native-notification",
+        "outcome": "attempt-intent-recorded"
+      },
+      {
+        "seq": 4773,
+        "id": "completion-notification-0a54ae2f8c968c79366b4723-outcome",
+        "op": "completion-native-notification",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4884,
+        "id": "B03-W53-methodology-resolution-pickup",
+        "op": "B03-W53-pickup",
+        "outcome": "running"
+      }
+    ],
+    "B01-W08": [
+      {
+        "seq": 4704,
+        "id": "B01-W08-pickup",
+        "op": "country-specific-input-resolution-pickup",
+        "outcome": "metadata-investigation-started"
+      },
+      {
+        "seq": 4727,
+        "id": "B01-W08-metadata-resolution-result",
+        "op": "country-specific-input-resolution-result",
+        "outcome": "waiting-exact-custodian-evidence"
+      }
+    ],
+    "B01-W03": [
+      {
+        "seq": 4705,
+        "id": "country249-owner03-B01-W03-pickup-20261017",
+        "op": "B01-W03-source-use-resolution",
+        "outcome": "actual-pickup"
+      },
+      {
+        "seq": 4755,
+        "id": "country249-owner03-B01-W03-result-20261017",
+        "op": "B01-W03-source-use-resolution",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4756,
+        "id": "country249-owner03-B01-W03-notification-intent-20261017",
+        "op": "native-notification-intent",
+        "outcome": "one-attempt-prepared"
+      },
+      {
+        "seq": 4764,
+        "id": "country249-owner03-B01-W03-notification-outcome-20261017",
+        "op": "native-notification-outcome",
+        "outcome": "native-tool-admitted"
+      },
+      {
+        "seq": 4765,
+        "id": "country249-owner03-B01-W03-end-turn-20261017",
+        "op": "worker-end-turn-checkpoint",
+        "outcome": "completed-turn"
+      }
+    ],
+    "B01-W18": [
+      {
+        "seq": 4706,
+        "id": "worker18-B01-W18-pickup-20261017",
+        "op": "worker-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4760,
+        "id": "worker18-B01-W18-result-20261017",
+        "op": "worker-result",
+        "outcome": "specific-input-resolution-and-exact-extent-complete"
+      },
+      {
+        "seq": 4779,
+        "id": "worker18-B01-W18-route-intent-20261017",
+        "op": "completion-native-notification",
+        "outcome": "attempt-intent-recorded"
+      },
+      {
+        "seq": 4785,
+        "id": "worker18-B01-W18-route-outcome-20261017",
+        "op": "completion-native-notification",
+        "outcome": "native-submission-admitted"
+      }
+    ],
+    "B01-W15": [
+      {
+        "seq": 4707,
+        "id": "worker15-B01-W15-actual-start-20261017",
+        "op": "country-source-specific-input-resolution-pickup",
+        "outcome": "started"
+      },
+      {
+        "seq": 4757,
+        "id": "worker15-B01-W15-custodian-request-intent-20261017",
+        "op": "source-specific-custodian-request-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4781,
+        "id": "worker15-B01-W15-custodian-request-transport-20261017",
+        "op": "source-specific-custodian-request-transport",
+        "outcome": "native-send-nonerror"
+      },
+      {
+        "seq": 4797,
+        "id": "worker15-B01-W15-resolution-result-20261017",
+        "op": "B01-specific-source-input-resolution-result",
+        "outcome": "partial-awaiting-correlated-custodian-evidence"
+      },
+      {
+        "seq": 4798,
+        "id": "worker15-B01-W15-result-transport-checkpoint-20261017",
+        "op": "worker-result-transport-and-status-checkpoint",
+        "outcome": "native-send-nonerror-waiting-input"
+      }
+    ],
+    "B01-W12": [
+      {
+        "seq": 4709,
+        "id": "owner12-B01-W12-ack-start-20261017",
+        "op": "B01-W12-acknowledgment-and-actual-start",
+        "outcome": "IN_PROGRESS"
+      },
+      {
+        "seq": 4739,
+        "id": "owner12-B01-W12-R1-routing-intent-20261017",
+        "op": "B01-W12-precise-input-request-intent",
+        "outcome": "READY_ONE_GATEWAY_SEND"
+      },
+      {
+        "seq": 4751,
+        "id": "owner12-B01-W12-R1-native-admission-20261017",
+        "op": "B01-W12-precise-input-request-send",
+        "outcome": "NATIVE_ADMITTED"
+      },
+      {
+        "seq": 4805,
+        "id": "owner12-B01-W12-semantic-release-result-20261017",
+        "op": "B01-W12-semantic-release-result",
+        "outcome": "PARTIAL_AWAITING_PRECISE_CUSTODIAN_INPUTS"
+      },
+      {
+        "seq": 4806,
+        "id": "owner12-B01-W12-result-report-intent-20261017",
+        "op": "B01-W12-native-result-report-intent",
+        "outcome": "READY_ONE_SEND"
+      },
+      {
+        "seq": 4814,
+        "id": "owner12-B01-W12-result-native-admission-20261017",
+        "op": "B01-W12-native-result-report",
+        "outcome": "NATIVE_ADMITTED"
+      }
+    ],
+    "B01-W13": [
+      {
+        "seq": 4710,
+        "id": "worker13-B01-W13-actual-start-20261017",
+        "op": "bounded-country-input-resolution-pickup",
+        "outcome": "active"
+      },
+      {
+        "seq": 4712,
+        "id": "worker13-B01-W13-artifact-request-intent-20261017",
+        "op": "artifact-request-send-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4735,
+        "id": "worker13-B01-W13-artifact-request-transport-20261017",
+        "op": "artifact-request-send-outcome",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4778,
+        "id": "worker13-B01-W13-permitted-resolution-progress-20261017",
+        "op": "specific-source-methodology-and-extent-resolution",
+        "outcome": "partial-resolution-awaiting-artifact-replies"
+      },
+      {
+        "seq": 4800,
+        "id": "worker13-B01-W13-resolution-return-20261017",
+        "op": "return-bounded-source-resolution-to-Morgan",
+        "outcome": "waiting-for-correlated-artifact-response"
+      }
+    ],
+    "B01-W02": [
+      {
+        "seq": 4711,
+        "id": "worker02-B01-W02-actual-start-20261017",
+        "op": "B01-W02-source-selector-resolution-pickup",
+        "outcome": "actual-start"
+      },
+      {
+        "seq": 4732,
+        "id": "worker02-B01-W02-artifact-request-admitted-20261017",
+        "op": "B01-W02-gateway-artifact-request",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4745,
+        "id": "worker02-B01-W02-resolution-result-20261017",
+        "op": "B01-W02-source-scope-resolution-result",
+        "outcome": "partial-resolution-awaiting-correlated-input"
+      },
+      {
+        "seq": 4758,
+        "id": "worker02-B01-W02-result-transport-20261017",
+        "op": "B01-W02-result-native-report",
+        "outcome": "admitted"
+      }
+    ],
+    "B01-W07": [
+      {
+        "seq": 4713,
+        "id": "worker07-B01-W07-pickup-20261017",
+        "op": "morgan-directed-country-source-role-resolution-pickup",
+        "outcome": "started"
+      },
+      {
+        "seq": 4746,
+        "id": "worker07-B01-W07-custodian-request-intent-20261017",
+        "op": "native-source-artifact-request-intent",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4766,
+        "id": "worker07-B01-W07-custodian-request-transport-20261017",
+        "op": "native-source-artifact-request-transport",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4786,
+        "id": "worker07-B01-W07-result-20261017",
+        "op": "morgan-directed-source-role-and-AS-eligibility-resolution",
+        "outcome": "source-roles-corrected-AS-evidence-pending-exact-custodian"
+      },
+      {
+        "seq": 4790,
+        "id": "worker07-B01-W07-result-send-intent-20261017",
+        "op": "native-result-send-intent",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4793,
+        "id": "worker07-B01-W07-result-transport-20261017",
+        "op": "native-result-transport-outcome",
+        "outcome": "admitted"
+      }
+    ],
+    "B01-W04": [
+      {
+        "seq": 4714,
+        "id": "owner04-B01-W04-ae-composition-pickup-20261017",
+        "op": "country-specific-input-resolution",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4716,
+        "id": "owner04-B01-W04-ae-composition-metadata-resolution-20261017",
+        "op": "country-specific-input-resolution",
+        "outcome": "needs-exact-retained-artifact"
+      },
+      {
+        "seq": 4718,
+        "id": "owner04-B01-W04-gateway-request-intent-20261017",
+        "op": "worker-result-and-artifact-request-notification",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4730,
+        "id": "owner04-B01-W04-gateway-request-transport-20261017",
+        "op": "worker-result-and-artifact-request-notification",
+        "outcome": "submitted-no-error"
+      }
+    ],
+    "B01-W19": [
+      {
+        "seq": 4715,
+        "id": "B01-W19-actual-start-20261017",
+        "op": "targeted-lineage-resolution-start",
+        "outcome": "Existing metadata inspected; source10agricultural annualreport is a separate source branch from19Overture514lineage. AMno completeoriginal; BThistorical pricepublication; CNcommoditymonthly report. No sourcebodyread/newrights inference."
+      },
+      {
+        "seq": 4753,
+        "id": "B01-W19-result-56784a2d4e2f",
+        "op": "targeted-source-lineage-and-unit-resolution",
+        "outcome": "Concrete lineage packet plus3correlated existing-custodian requests; no bodyprocessing/oldvalidation/dependency-list replay."
+      },
+      {
+        "seq": 4754,
+        "id": "B01-W19-gateway-request-intent",
+        "op": "gateway-correlated-artifact-request-intent",
+        "outcome": "not-yet-attempted"
+      },
+      {
+        "seq": 4769,
+        "id": "B01-W19-gateway-request-submitted",
+        "op": "gateway-correlated-request-send",
+        "outcome": "native-send-returned-success"
+      }
+    ],
+    "B01-W11": [
+      {
+        "seq": 4717,
+        "id": "worker11-b01-lc-pickup-20261017",
+        "op": "bounded-review-start",
+        "outcome": "STARTED"
+      },
+      {
+        "seq": 4720,
+        "id": "worker11-b01-lc-result-20261017",
+        "op": "lc-instruction-supersession-and-use-resolution",
+        "outcome": "DONE_WITH_CONCERNS"
+      }
+    ],
+    "B01-W16": [
+      {
+        "seq": 4719,
+        "id": "worker16-B01-W16-pickup-20261017",
+        "op": "B01-W16-native-pickup",
+        "outcome": "in-progress"
+      },
+      {
+        "seq": 4742,
+        "id": "worker16-B01-W16-local-reconciliation-result-20261017",
+        "op": "B01-W16-source-specific-semantic-input-resolution",
+        "outcome": "DONE_WITH_CONCERNS_EXACT_CUSTODIAN_INPUT_PENDING"
+      },
+      {
+        "seq": 4748,
+        "id": "worker16-B01-W16-request-notification-intent-20261017",
+        "op": "B01-W16-native-request-notification",
+        "outcome": "send-intent"
+      },
+      {
+        "seq": 4761,
+        "id": "worker16-B01-W16-request-notification-outcome-20261017",
+        "op": "B01-W16-native-request-notification",
+        "outcome": "SUBMITTED_NO_ERROR"
+      }
+    ],
+    "B01-W21": [
+      {
+        "seq": 4721,
+        "id": "worker21-B01-W21-pickup-20261017",
+        "op": "B01-specific-source-input-resolution-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4771,
+        "id": "worker21-B01-W21-result-20261017",
+        "op": "B01-specific-source-input-resolution-result",
+        "outcome": "bounded-methodology-resolved-source-inputs-requested"
+      },
+      {
+        "seq": 4780,
+        "id": "worker21-B01-W21-gateway-intent-20261017",
+        "op": "B01-gateway-artifact-request-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4787,
+        "id": "worker21-B01-W21-gateway-transport-20261017",
+        "op": "B01-gateway-artifact-request-transport",
+        "outcome": "native-send-succeeded"
+      }
+    ],
+    "B01-W05": [
+      {
+        "seq": 4722,
+        "id": "worker05-B01-W05-start-and-custodian-request-intent",
+        "op": "worker-pickup-and-notification-intent",
+        "outcome": "started"
+      },
+      {
+        "seq": 4747,
+        "id": "worker05-B01-W05-request-transport",
+        "op": "notification-transport",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4750,
+        "id": "worker05-B01-W05-operation-boundaries-result",
+        "op": "worker-operation-boundary-result",
+        "outcome": "NEEDS_CONTEXT"
+      },
+      {
+        "seq": 4763,
+        "id": "worker05-B01-W05-result-notification-intent",
+        "op": "notification-intent",
+        "outcome": "prepared"
+      },
+      {
+        "seq": 4768,
+        "id": "worker05-B01-W05-result-notification-transport",
+        "op": "notification-transport",
+        "outcome": "admitted"
+      }
+    ],
+    "B01-W01": [
+      {
+        "seq": 4723,
+        "id": "owner01-B01-W01-actual-start",
+        "op": "ack-and-start",
+        "outcome": "recorded"
+      },
+      {
+        "seq": 4725,
+        "id": "owner01-B01-W01-custodian-request-intent",
+        "op": "custodian-artifact-request-intent",
+        "outcome": "recorded"
+      },
+      {
+        "seq": 4743,
+        "id": "owner01-B01-W01-custodian-request-transport",
+        "op": "custodian-artifact-request-via-gateway",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4744,
+        "id": "owner01-B01-W01-ai-cpi-linkage-result",
+        "op": "bind-existing-source-derivation-independent-review",
+        "outcome": "Exact code84071ad0/output458d68ac/manifest5c95e605/SAME11review6d6b97bb links recovered and pins match;16existingrows,3priorvaluesampled; no tests/body/qualification replay"
+      },
+      {
+        "seq": 4775,
+        "id": "owner01-B01-W01-source-resolution-result",
+        "op": "resolve-exact-ad-ag-source-scope-and-ai-existing-linkage",
+        "outcome": "AD0usable dataset/copyrights held; AGfileinputs known but selectors/use exactrequests admittedviaGateway; AI16existingCPIobservations+exactSAME11scopedreviewresolved; no sourcebody/replay"
+      },
+      {
+        "seq": 4777,
+        "id": "owner01-B01-W01-result-notification-intent",
+        "op": "native-result-notification",
+        "outcome": "attempt-intent-recorded"
+      },
+      {
+        "seq": 4783,
+        "id": "owner01-B01-W01-result-notification-transport",
+        "op": "native-result-notification",
+        "outcome": "admitted"
+      }
+    ],
+    "B01-W26": [
+      {
+        "seq": 4724,
+        "id": "worker26-B01-W26-ack-start-20261017",
+        "op": "B01-W26-source-semantic-manifest-binding-start",
+        "outcome": "in-progress"
+      },
+      {
+        "seq": 4795,
+        "id": "worker26-B01-W26-result-20261017",
+        "op": "B01-W26-source-semantic-manifest-binding-result",
+        "outcome": "DONE_WITH_CONCERNS"
+      }
+    ],
+    "B01-W23": [
+      {
+        "seq": 4726,
+        "id": "B01-W23-pickup-20261017",
+        "op": "B01-exact-input-resolution-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4741,
+        "id": "B01-W23-artifact-request-intent-20261017",
+        "op": "B01-precise-artifact-request-intent",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4752,
+        "id": "B01-W23-artifact-request-transport-20261017",
+        "op": "B01-artifact-request-transport",
+        "outcome": "admitted-not-acknowledged"
+      },
+      {
+        "seq": 4789,
+        "id": "B01-W23-result-20261017",
+        "op": "B01-exact-input-resolution-result",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4791,
+        "id": "B01-W23-result-notification-intent-20261017",
+        "op": "B01-result-notification-intent",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4794,
+        "id": "B01-W23-result-transport-20261017",
+        "op": "B01-result-transport",
+        "outcome": "admitted-not-acknowledged"
+      }
+    ],
+    "B01-W06": [
+      {
+        "seq": 4728,
+        "id": "worker06-B01-W06-pickup-20261017",
+        "op": "B01-W06-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4729,
+        "id": "worker06-B01-W06-result-20261017",
+        "op": "B01-W06-result",
+        "outcome": "needs-exact-custodian-metadata"
+      }
+    ],
+    "B01-W10": [
+      {
+        "seq": 4731,
+        "id": "worker10-B01-W10-actual-start-20261017",
+        "op": "country-source-specific-input-resolution-pickup",
+        "outcome": "started"
+      },
+      {
+        "seq": 4767,
+        "id": "worker10-B01-W10-artifact-request-intent-20261017",
+        "op": "correlated-custodian-artifact-request-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4772,
+        "id": "worker10-B01-W10-artifact-request-transport-20261017",
+        "op": "correlated-custodian-artifact-request-transport",
+        "outcome": "one-attempt-envelope-recorded"
+      },
+      {
+        "seq": 4803,
+        "id": "worker10-B01-W10-resolution-result-20261017",
+        "op": "country-source-specific-input-resolution-result",
+        "outcome": "DONE_WITH_CONCERNS_RETAINED_TRACE_COMPLETE_CUSTODIAN_RETURNS_PENDING"
+      },
+      {
+        "seq": 4804,
+        "id": "worker10-B01-W10-result-transport-20261017",
+        "op": "correlated-input-resolution-result-notification",
+        "outcome": "one-attempt-envelope-recorded"
+      }
+    ],
+    "B01-W22": [
+      {
+        "seq": 4733,
+        "id": "worker22-B01-W22-ack-start-20261017",
+        "op": "B01-W22-acknowledgment-and-start",
+        "outcome": "executing"
+      },
+      {
+        "seq": 4774,
+        "id": "worker22-B01-W22-artifact-request-transport-20261017",
+        "op": "B01-W22-artifact-request-transport",
+        "outcome": "failed"
+      },
+      {
+        "seq": 4776,
+        "id": "worker22-B01-W22-resolution-result-20261017",
+        "op": "freeze-B01-W22-source-evidence-resolution",
+        "outcome": "DONE_WITH_CONCERNS"
+      }
+    ],
+    "B01-W20": [
+      {
+        "seq": 4734,
+        "id": "worker20-B01-W20-acknowledged-actual-start-20261017",
+        "op": "B01-W20-custody-and-semantics-resolution",
+        "outcome": "running"
+      },
+      {
+        "seq": 4788,
+        "id": "worker20-B01-W20-specific-request-native-intent-20261017",
+        "op": "B01-W20-route-specific-custodian-request",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4801,
+        "id": "worker20-B01-W20-specific-request-native-outcome-20261017",
+        "op": "B01-W20-route-specific-custodian-request",
+        "outcome": "native-send-admitted"
+      },
+      {
+        "seq": 4834,
+        "id": "worker20-B01-W20-custody-semantic-evidence-result-20261017",
+        "op": "B01-W20-freeze-custody-and-semantic-evidence",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4841,
+        "id": "worker20-B01-W20-result-native-intent-20261017",
+        "op": "B01-W20-result-native-report",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4845,
+        "id": "worker20-B01-W20-result-native-outcome-20261017",
+        "op": "B01-W20-result-native-report",
+        "outcome": "native-send-admitted"
+      }
+    ],
+    "B01-W24": [
+      {
+        "seq": 4738,
+        "id": "worker24-B01-W24-ack-start-20261017",
+        "op": "B01-W24-acknowledgment-and-actual-start",
+        "outcome": "started"
+      },
+      {
+        "seq": 4796,
+        "id": "worker24-B01-W24-resolution-result-20261017",
+        "op": "B01-W24-source-specific-resolution",
+        "outcome": "partial-resolution-exact-custodian-requests"
+      },
+      {
+        "seq": 4799,
+        "id": "worker24-B01-W24-gateway-request-intent",
+        "op": "B01-W24-gateway-artifact-request",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4802,
+        "id": "worker24-B01-W24-gateway-request-outcome",
+        "op": "B01-W24-gateway-artifact-request",
+        "outcome": "admitted"
+      }
+    ],
+    "B01-W09": [
+      {
+        "seq": 4740,
+        "id": "worker09-B01-W09-pickup-20261017",
+        "op": "country-source-custody-use-resolution",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4749,
+        "id": "worker09-B01-W09-custodian-request-native-admission-20261017",
+        "op": "custodian-request-native-notification",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4784,
+        "id": "worker09-B01-W09-metadata-resolution-result-20261017",
+        "op": "country-source-custody-use-resolution",
+        "outcome": "NEEDS_CONTEXT"
+      }
+    ],
+    "B01-W25": [
+      {
+        "seq": 4759,
+        "id": "worker25-B01-W25-ack-start-20261017",
+        "op": "B01-country-input-resolution-start",
+        "outcome": "acknowledged-and-started"
+      },
+      {
+        "seq": 4782,
+        "id": "worker25-B01-W25-requests-intent-20261017",
+        "op": "B01-custodian-artifact-request-notification",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4792,
+        "id": "worker25-B01-W25-requests-transport-20261017",
+        "op": "B01-custodian-artifact-request-notification",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4811,
+        "id": "worker25-B01-W25-local-input-resolution-result-20261017",
+        "op": "B01-country-input-local-resolution-result",
+        "outcome": "needs-correlated-custodian-input"
+      },
+      {
+        "seq": 4812,
+        "id": "worker25-B01-W25-local-result-notification-intent-20261017",
+        "op": "B01-material-result-notification",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4817,
+        "id": "worker25-B01-W25-local-result-transport-20261017",
+        "op": "B01-material-result-notification",
+        "outcome": "admitted"
+      }
+    ],
+    "B02-W31": [
+      {
+        "seq": 4807,
+        "id": "worker31-b02-w31-pickup-20261017",
+        "op": "morgan-b02-source-input-resolution-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4858,
+        "id": "worker31-b02-w31-result-20261017",
+        "op": "morgan-b02-source-input-resolution-result",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4863,
+        "id": "worker31-b02-w31-native-transports-20261017",
+        "op": "morgan-b02-worker-native-transport",
+        "outcome": "native-admitted"
+      }
+    ],
+    "B02-W32": [
+      {
+        "seq": 4808,
+        "id": "worker32-B02-W32-pickup-20261017",
+        "op": "B02-W32-actual-start",
+        "outcome": "running"
+      },
+      {
+        "seq": 4831,
+        "id": "worker32-B02-W32-custodian-request-once-20261017",
+        "op": "B02-W32-exact-custodian-artifact-request",
+        "outcome": "native-admitted"
+      },
+      {
+        "seq": 4833,
+        "id": "worker32-B02-W32-metadata-resolution-result-20261017",
+        "op": "B02-W32-source-bound-custody-release-use-resolution",
+        "outcome": "bounded-metadata-resolved-exact-custodian-response-pending"
+      },
+      {
+        "seq": 4836,
+        "id": "worker32-B02-W32-result-notification-intent-20261017",
+        "op": "completion-native-notification",
+        "outcome": "attempt-intent-recorded"
+      },
+      {
+        "seq": 4840,
+        "id": "worker32-B02-W32-result-notification-outcome-20261017",
+        "op": "completion-native-notification",
+        "outcome": "admitted"
+      }
+    ],
+    "B02-W33": [
+      {
+        "seq": 4809,
+        "id": "worker33-B02-W33-ack-start-20261017",
+        "op": "B02-country-input-resolution-pickup",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4847,
+        "id": "worker33-B02-W33-R1-artifact-request-admitted-20261017",
+        "op": "B02-internal-artifact-request-transport",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4878,
+        "id": "worker33-B02-W33-resolution-result-20261017",
+        "op": "B02-country-source-input-resolution-result",
+        "outcome": "NEEDS_CONTEXT"
+      },
+      {
+        "seq": 4889,
+        "id": "worker33-B02-W33-result4878-report-transport-20261017",
+        "op": "worker-result-native-notification",
+        "outcome": "admitted"
+      }
+    ],
+    "B02-W29": [
+      {
+        "seq": 4810,
+        "id": "owner29-B02-W29-ack-start-20261017",
+        "op": "morgan-batch-ack-actual-start",
+        "outcome": "actual-start"
+      },
+      {
+        "seq": 4830,
+        "id": "owner29-B02-W29-field-request-intent-20261017",
+        "op": "correlated-custodian-request",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4843,
+        "id": "owner29-B02-W29-request-admitted-20261017",
+        "op": "correlated-custodian-request-transport",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4886,
+        "id": "owner29-B02-W29-resolution-result-20261017",
+        "op": "morgan-correlated-resolution-result",
+        "outcome": "NEEDS_CONTEXT"
+      }
+    ],
+    "B02-W36": [
+      {
+        "seq": 4813,
+        "id": "worker36-B02-W36-pickup-20261017",
+        "op": "B02-W36-specific-input-resolution",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4832,
+        "id": "worker36-B02-W36-custodian-request-intent-20261017",
+        "op": "B02-W36-gateway-request-intent",
+        "outcome": "prepared"
+      },
+      {
+        "seq": 4837,
+        "id": "worker36-B02-W36-field-resolution-result-20261017",
+        "op": "B02-W36-field-resolution-and-mechanical-request",
+        "outcome": "DONE_WITH_CONCERNS"
+      }
+    ],
+    "B02-W30": [
+      {
+        "seq": 4815,
+        "id": "worker30-B02-W30-pickup-20261017",
+        "op": "B02-W30-metadata-resolution-pickup",
+        "outcome": "in-progress"
+      },
+      {
+        "seq": 4839,
+        "id": "worker30-B02-W30-metadata-binding-result-20261017",
+        "op": "B02-W30-metadata-input-resolution",
+        "outcome": "NEEDS_CONTEXT"
+      }
+    ],
+    "B02-W40": [
+      {
+        "seq": 4816,
+        "id": "B02-W40-actual-start",
+        "op": "country-specific-input-resolution-start",
+        "outcome": "started"
+      },
+      {
+        "seq": 4835,
+        "id": "B02-W40-resolution-9cb51583858b",
+        "op": "country-specific-policy-and-handoff-resolution",
+        "outcome": "policy-evidence-reduced-gaps-correlated-inputs-requested"
+      },
+      {
+        "seq": 4838,
+        "id": "B02-W40-gateway-routing-intent",
+        "op": "B02-correlated-artifact-routing",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4842,
+        "id": "B02-W40-gateway-routing-outcome",
+        "op": "B02-correlated-artifact-routing",
+        "outcome": "admitted"
+      }
+    ],
+    "B02-W34": [
+      {
+        "seq": 4818,
+        "id": "worker34-B02-W34-ack-actualstart-20261017",
+        "op": "native-acknowledgment-and-actual-start",
+        "outcome": "in-progress"
+      },
+      {
+        "seq": 4827,
+        "id": "worker34-B02-W34-precise-request-send-intent-v1",
+        "op": "Gateway-artifact-request-intent",
+        "outcome": "send-intended"
+      },
+      {
+        "seq": 4856,
+        "id": "worker34-B02-W34-precise-request-transport-v1",
+        "op": "gateway-artifact-request-send",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4860,
+        "id": "worker34-B02-W34-semantic-resolution-result-v1",
+        "op": "B02-retained-metadata-semantic-resolution",
+        "outcome": "partial-resolution-and-admitted-precise-custodian-request"
+      },
+      {
+        "seq": 4861,
+        "id": "worker34-B02-W34-result-notification-intent-v1",
+        "op": "completion-notification-intent",
+        "outcome": "intended"
+      },
+      {
+        "seq": 4866,
+        "id": "worker34-B02-W34-end-turn-20261017-v1",
+        "op": "worker-checkpoint-and-result-notification-transport",
+        "outcome": "result-send-admitted-acknowledgment-unobserved"
+      }
+    ],
+    "B02-W28": [
+      {
+        "seq": 4819,
+        "id": "worker28-B02-W28-pickup-20261017-v1",
+        "op": "B02-country-source-binding-resolution",
+        "outcome": "picked-up"
+      },
+      {
+        "seq": 4857,
+        "id": "worker28-B02-W28-result-20261017-v1",
+        "op": "B02-country-source-binding-resolution",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4859,
+        "id": "worker28-B02-W28-return-intent-20261017-v1",
+        "op": "B02-correlated-Gateway-result-and-artifact-request",
+        "outcome": "attempt-intent-recorded"
+      },
+      {
+        "seq": 4862,
+        "id": "worker28-B02-W28-return-outcome-20261017-v1",
+        "op": "B02-correlated-Gateway-result-and-artifact-request",
+        "outcome": "native-submission-accepted"
+      }
+    ],
+    "B02-W38": [
+      {
+        "seq": 4822,
+        "id": "worker38-B02-W38-pickup",
+        "op": "correlated-attestation-pickup",
+        "outcome": "PICKED_UP"
+      },
+      {
+        "seq": 4823,
+        "id": "worker38-B02-W38-result",
+        "op": "correlated-attestation-resolution",
+        "outcome": "DONE_WITH_CONCERNS"
+      },
+      {
+        "seq": 4829,
+        "id": "worker38-B02-W38-transport",
+        "op": "correlated-result-transport",
+        "outcome": "FAILED"
+      }
+    ],
+    "B01-W17": [
+      {
+        "seq": 4824,
+        "id": "worker17-B01-W17-pickup",
+        "op": "country-specific-input-resolution-pickup",
+        "outcome": "active"
+      },
+      {
+        "seq": 4825,
+        "id": "worker17-B01-W17-routing-intent",
+        "op": "specific-custodian-request-intent",
+        "outcome": "intent"
+      },
+      {
+        "seq": 4848,
+        "id": "worker17-B01-W17-routing-admitted",
+        "op": "specific-custodian-request-transport",
+        "outcome": "admitted"
+      },
+      {
+        "seq": 4881,
+        "id": "worker17-B01-W17-result",
+        "op": "country-specific-input-resolution-result",
+        "outcome": "PARTIAL_WAITING_CUSTODIAN"
+      }
+    ],
+    "B02-W37": [
+      {
+        "seq": 4826,
+        "id": "worker37-B02-W37-pickup-20261017",
+        "op": "morgan-b02-actual-start",
+        "outcome": "running"
+      },
+      {
+        "seq": 4849,
+        "id": "worker37-B02-W37-request-intent-20261017",
+        "op": "morgan-correlated-input-request-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4852,
+        "id": "worker37-B02-W37-request-transport-20261017",
+        "op": "morgan-correlated-input-request-transport",
+        "outcome": "native-call-returned-without-error"
+      },
+      {
+        "seq": 4873,
+        "id": "worker37-B02-W37-result-20261017",
+        "op": "morgan-b02-field-use-resolution-result",
+        "outcome": "partial-evidence-backed-resolution-with-correlated-inputs-pending"
+      },
+      {
+        "seq": 4874,
+        "id": "worker37-B02-W37-result-notification-intent-20261017",
+        "op": "worker-native-result-report-intent",
+        "outcome": "prepared-not-sent"
+      },
+      {
+        "seq": 4887,
+        "id": "worker37-B02-W37-result-transport-20261017",
+        "op": "worker-native-result-report-transport",
+        "outcome": "native-call-returned-without-error"
+      }
+    ],
+    "B02-W27": [
+      {
+        "seq": 4828,
+        "id": "owner27-B02-W27-actual-pickup-20261017",
+        "op": "worker-source-prerequisite-pickup",
+        "outcome": "active"
+      },
+      {
+        "seq": 4851,
+        "id": "owner27-B02-W27-source-prerequisites-result-20261017",
+        "op": "worker-country-source-prerequisite-resolution",
+        "outcome": "needs-context"
+      },
+      {
+        "seq": 4855,
+        "id": "owner27-B02-W27-result4851-transport-20261017",
+        "op": "worker-material-result-and-custodian-request-transport",
+        "outcome": "admitted"
+      }
+    ],
+    "B02-W39": [
+      {
+        "seq": 4844,
+        "id": "worker39-B02-field-resolution-20261017",
+        "op": "B02-retained-metadata-and-source-use-resolution",
+        "outcome": "PARTIAL_INPUT_DEPENDENCY"
+      },
+      {
+        "seq": 4850,
+        "id": "worker39-B02-input-request-transport-20261017",
+        "op": "native-gateway-source-field-request",
+        "outcome": "ADMITTED"
+      }
+    ],
+    "B02-W35": [
+      {
+        "seq": 4846,
+        "id": "worker35-B02-W35-ack-start-20261017",
+        "op": "country-input-evidence-resolution-start",
+        "outcome": "actual-start"
+      },
+      {
+        "seq": 4853,
+        "id": "worker35-B02-W35-custodian-route-intent-20261017",
+        "op": "custodian-artifact-request-native-route",
+        "outcome": "intent-recorded"
+      },
+      {
+        "seq": 4854,
+        "id": "worker35-B02-W35-custodian-route-outcome-20261017",
+        "op": "custodian-artifact-request-native-route",
+        "outcome": "admitted"
+      }
+    ],
+    "B03-W42": [
+      {
+        "seq": 4864,
+        "id": "worker42-B03-W42-pickup-20261017",
+        "op": "B03-source-custody-and-existing-handoff-resolution",
+        "outcome": "running"
+      }
+    ],
+    "B03-W41": [
+      {
+        "seq": 4865,
+        "id": "worker41-B03-W41-pickup-20261017",
+        "op": "native-worker-pickup",
+        "outcome": "started"
+      }
+    ],
+    "B03-W43": [
+      {
+        "seq": 4867,
+        "id": "worker43-B03-W43-start-20261017",
+        "op": "B03-W43-acknowledge-start",
+        "outcome": "running"
+      }
+    ],
+    "B03-W46": [
+      {
+        "seq": 4868,
+        "id": "worker46-B03-W46-actual-start-20261017",
+        "op": "correlated-country-input-resolution-start",
+        "outcome": "running"
+      }
+    ],
+    "B03-W44": [
+      {
+        "seq": 4869,
+        "id": "worker44-B03-W44-identity-resolution-pickup-20261017",
+        "op": "country-identity-resolution-pickup",
+        "outcome": "picked-up"
+      }
+    ],
+    "B03-W47": [
+      {
+        "seq": 4870,
+        "id": "worker47-B03-W47-ack-start",
+        "op": "country-specific-input-resolution-start",
+        "outcome": "started"
+      }
+    ],
+    "B03-W48": [
+      {
+        "seq": 4871,
+        "id": "worker48-B03-W48-start-20261017",
+        "op": "B03-W48-start",
+        "outcome": "running"
+      }
+    ],
+    "B03-W45": [
+      {
+        "seq": 4872,
+        "id": "worker45-B03-W45-actual-start-20261017",
+        "op": "morgan-correlated-input-resolution-start",
+        "outcome": "picked-up"
+      }
+    ],
+    "B03-W57": [
+      {
+        "seq": 4875,
+        "id": "worker57-B03-W57-pickup-20261017",
+        "op": "B03-country-source-input-resolution-pickup",
+        "outcome": "picked-up"
+      }
+    ],
+    "B03-W55": [
+      {
+        "seq": 4876,
+        "id": "worker55-B03-W55-pickup-20261017",
+        "op": "B03-source-definition-resolution",
+        "outcome": "running"
+      }
+    ],
+    "B03-W54": [
+      {
+        "seq": 4877,
+        "id": "owner54-B03-W54-pickup-20261017",
+        "op": "B03-existing-source-methodology-resolution",
+        "outcome": "running"
+      }
+    ],
+    "B03-W51": [
+      {
+        "seq": 4879,
+        "id": "owner51-B03-W51-ack-start-20261017",
+        "op": "worker-pickup",
+        "outcome": "actual-start"
+      }
+    ],
+    "B03-W59": [
+      {
+        "seq": 4880,
+        "id": "owner59-B03-W59-pickup-20261017",
+        "op": "B03-worker-start",
+        "outcome": "PICKED_UP"
+      }
+    ],
+    "B03-W56": [
+      {
+        "seq": 4882,
+        "id": "worker56-B03-W56-pickup-20261017",
+        "op": "start-retained-metadata-specific-input-resolution",
+        "outcome": "CI23andCA26B01requestsfound;NIactualmetadata-producerthreadobserved;TK/WFsourceclaims/qualificationpointersselected."
+      }
+    ],
+    "B03-W50": [
+      {
+        "seq": 4883,
+        "id": "worker50-B03-W50-custody-trace-pickup-20261017",
+        "op": "B03-W50-custody-trace",
+        "outcome": "picked-up"
+      }
+    ],
+    "B03-W53": [
+      {
+        "seq": 4884,
+        "id": "B03-W53-methodology-resolution-pickup",
+        "op": "B03-W53-pickup",
+        "outcome": "running"
+      }
+    ],
+    "B03-W63": [
+      {
+        "seq": 4885,
+        "id": "M-20261017-B03-W63-start",
+        "op": "country-metadata-semantic-binding-start",
+        "outcome": "started"
+      }
+    ],
+    "B03-W52": [
+      {
+        "seq": 4888,
+        "id": "worker52-B03-W52-start-20261017",
+        "op": "start-M-20261017-B03-source-evidence-resolution",
+        "outcome": "running"
+      }
+    ]
+  }
+}

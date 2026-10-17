@@ -1,0 +1,31 @@
+{
+  "primaryAdmissions": 64,
+  "actualStarts": 64,
+  "missingPickup": [],
+  "pickupEvidenceLate": {
+    "49": 4898,
+    "60": 4952,
+    "62": "B03-W62 direct acknowledgment/start and result4905",
+    "64": 4890
+  },
+  "custodianQueryMessagesAdmitted": 64,
+  "queryBatches": {
+    "R1": 42,
+    "R2": 15,
+    "R3": 7
+  },
+  "R1PacketRoutes": 136,
+  "toolReportedQueryFailures": 0,
+  "responseTransfersAdmittedAtCut": 28,
+  "responseTransfersInFlightAtCut": 0,
+  "notAcceptance": "No custody, rights, body-processing or country completion inferred from transport.",
+  "blockedIdentityOrActorCases": [
+    "B02-W37 NP12 / PK28 restricted actor portions not dispatched",
+    "B02-W28 ER14 no-retry not retried; metadata24/61 only",
+    "B02-W27 OFF/OpenPrices actual export custody unbound",
+    "B03-W58 NF native producer unbound",
+    "B03-W59 prices archive actual custodian unbound",
+    "B03-W54 KP/KR qualified source holder unbound"
+  ],
+  "M005": "Admitted once to existing57; candidate S284 identity correction only; CP01 unselected."
+}

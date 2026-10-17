@@ -7,8 +7,8 @@
   "destination_remote": "git@github.com:maldous/offmenu.git",
   "namespace": "handover/2026-10-17",
   "method": "Isolated-index Git plumbing only; no working tree, index, branch, reflog, stash or remote history was modified destructively. No merges to main, no resets, no gc/prune, no force pushes.",
-  "manifest_revision": 2,
-  "revision_note": "Rev 2: disposition corrections (runtime-metadata-only checkouts), active-writer dual labels, and preservation of non-worktree related locations (offmenu_worker_instructions corpus, worker-02-handover.json)."
+  "manifest_revision": 3,
+  "revision_note": "Rev 3 (verification round 2): preserved operational ledger + morgan-batches-20261017 + transport checkpoint + restore-readiness receipt + the existing independent corpus-refresh design (correcting the earlier 'no design exists' statement); gateway deployed-baseline reconciliation; nested repo analysis; writer re-verification (0 drift); skew-protection-token evidence update."
  },
  "remote_verification": {
   "ls_remote_refs_checked": 348,
@@ -32,7 +32,8 @@
   "stashes_found": 0,
   "reflog_orphans_found": 0,
   "fsck_unreachable_commits_recovered": 4,
-  "related_non_worktree_locations": 4
+  "related_non_worktree_locations": 4,
+  "manifest_revision": 3
  },
  "dispositions_legend": [
   "NEWLY_COMMITTED_AND_PUSHED",
@@ -3054,7 +3055,8 @@
    ],
    "disposition": "LOCALLY_RETAINED_RESTRICTED_EXCEPTION",
    "reason": "Cloudflare deploy readbacks contain a live published_deploy.skew_protection_token (112 chars) and auth settings fields. Never published to Git.",
-   "retrieval_step": "Manual review + secure transfer by Morgan; rotate the skew-protection token if these files leave the host."
+   "retrieval_step": "Manual review + secure transfer by Morgan; rotate the skew-protection token if these files leave the host.",
+   "evidence_round2": "Exactly these 6 files contain the field (verified by name-only grep; value never printed). Never committed: git log --all -- demo/recipe-catalogue-owner06 is empty and git log -S skew_protection --since=2026-10-01 is empty across the whole shared history. No request payload, run log or outbound file contains it; the value arrived FROM Cloudflare in authenticated deploy readbacks. No evidence of onward publication or transmission from this host. Field name only appears in this manifest and preserve.sh audit scripts."
   },
   {
    "id": "worker06-index-sqlite",
@@ -3170,5 +3172,58 @@
    "disposition": "BLOCKED_PRECISE_REASON",
    "published_at": null
   }
- ]
+ ],
+ "corrections": [
+  {
+   "id": "corpus-refresh-design-exists",
+   "corrects": "Earlier handover prose stating no independent corpus-refresh design exists.",
+   "finding": "A complete reviewed design exists: /tmp/offmenu-dataset-refresh-design-20261017/recommendation.md (38 KB, 'OffMenu reproducible dataset refresh design': CLI + stage contract, immutable snapshots, resume semantics, validation quarantine, pilot + acceptance tests, staged implementation) and evidence.json (read-only inspection pins at HEAD 8652b312).",
+   "disposition": "NEWLY_COMMITTED_AND_PUSHED",
+   "published_at": "docs/handover/2026-10-17/corpus-refresh-design/ (this revision)"
+  }
+ ],
+ "operational_ledger": {
+  "disposition": "NEWLY_COMMITTED_AND_PUSHED",
+  "source": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger (+ interim-obligation-index.json base) and reports/country249-fixed64-priority/morgan-batches-20261017",
+  "published_at": "docs/handover/2026-10-17/operational-ledger/ and docs/handover/2026-10-17/morgan-batches-20261017/ (this revision)",
+  "contents": "append-only events.jsonl (5,271 events, 9.6 MB), management-summary.json (3.3 MB), base-initial-copy.json, authority.json, handover.json, interim-obligation-index.json (ledger baseRevision target); morgan-batches: B01-B03 preflight/admissions, custodian R1-R3 admissions, custodian-recipient-packets(+v2), custodian-routing-plan, ledger-evidence-checkpoint.json, current-checkpoint.json, transport-checkpoint-current.json, M003/M004, returned-evidence admissions",
+  "scan": "0 secret-pattern hits across all preserved ledger/batch files",
+  "note": "transport-checkpoint-current.json records the latest 64-worker backlog state (64 admissions/starts, 28 response transfers at cut, 6 blocked identity/actor cases, M005 only M-series admitted). Companion: freebuff-gateway-offmenu-restore-readiness-20261017.json (published at docs root of this directory)."
+ },
+ "gateway_deployment_reconciliation": {
+  "deployed_baseline": {
+   "described_by": "Morgan (2026-10-18 verification task): morgan-freebuff-gateway deployed at freebuff-gateway.aldous.info with dispatch disabled",
+   "local_evidence": "Reviewed artifact bundle /home/user/Downloads/freebuff-relay-artifact-2026-10-17.tar.gz (SHA-256 999acb908d618e9a562611212f051292a4005f7036bbadbdc2e8c1c39e40f449) -> dist/index.js 869,325 bytes SHA-256 8e42da8d7c6d31cb37d84fe197349d92e5d367e777a6ea5824cab0ead8094702, bootstrap-metadata.json ENABLED=false (dispatch disabled), empty allowlists",
+   "note": "The literal script name 'morgan-freebuff-gateway' appears in no local file; deployment-name evidence is Morgan's statement. Wrangler deployment listing could not run read-only: no CLOUDFLARE_API_TOKEN present and none may be created here (limitation)."
+  },
+  "newer_local_changes_not_deployed": [
+   "gateway/src/control.ts (new; mode-fencing draft)",
+   "poller/src/contracts.mjs (deliberate reviewed changes: x-freebuff-launch-id credential allowlist; PROJECT_PATH binding)",
+   "poller/adapters/freebuff-verified.mjs + freebuff-verified.test.mjs (verified adapter, native-seq paging contract)",
+   "poller/test/{poller.test.mjs (modified), localclient-verified-adapter.test.mjs, delivery-cycle.test.mjs (new)}"
+  ],
+  "unchanged_vs_baseline": "gateway/src/{index,auth,config,protocol,store,queue}.ts and gateway/test identical to the artifact source",
+  "actions_taken": "none \u2014 read-only reconciliation; no deploy, no enablement, no credential change, no resource creation"
+ },
+ "nested_repo_analysis": {
+  "path": "/home/user/src/offmenu-data/dev-preview-20261014/source",
+  "head": "94cc5c67d451601091760add6d0e9075d3858b5c",
+  "branch": "dev/isolated-preview-20261014",
+  "origin": "/home/user/src/offmenu (local path; not github.com/maldous/offmenu)",
+  "commits": "52 (own root; zero shared history with the preserved parent repository)",
+  "dirty": "untracked node_modules only; no modified tracked files",
+  "content": "isolated dev-environment composition: .gitignore, DEVELOPMENT.md, README.md, cloud/, corpus/, dev-entry.mjs, dev-server.mjs, dev-smoke.mjs, dev-stop.mjs, docs/ \u2014 absent from the preserved parent repository (not present in any pushed handover ref)",
+  "disposition": "BLOCKED_PRECISE_REASON (destination + content scope unresolved; not pushed, content untouched locally)"
+ },
+ "writer_status_round2": {
+  "worker05_checkpoints": "0 byte drift across 487 (app) + 310 (production-app) captured files vs preservation commits 1b9783c1 and 6f0f198d; no files modified in the 4h before check; no deltas needed, no new refs created",
+  "source_writing_jobs": "none observed (no codex exec / source-writing processes)",
+  "preview_processes_still_running": [
+   "dev-preview delivery runner.mjs (worker-05/delivery/ae792c25-\u2026, since 2026-10-15 22:06)",
+   "wiremock x3 (ports 22271, 22827, 7289; worker-05 mock-preparation)",
+   "workerd x2 (ports 22943, 7645)"
+  ],
+  "other": "bun /opt/freebuff/resources/orchestrator/orchestrator.js = Freebuff desktop orchestrator (local runtime, not a source writer)",
+  "disposition": "Preview processes remain running and unpaused (no kills); checkpoints re-verified stable but still labelled non-final"
+ }
 }

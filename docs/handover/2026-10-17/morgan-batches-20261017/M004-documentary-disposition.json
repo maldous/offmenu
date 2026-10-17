@@ -1,0 +1,36 @@
+{
+  "decision": "M-20261017-004",
+  "scope": "Morgan documentary disposition only; no new review/gold/body permission",
+  "accepted": [
+    {
+      "worker": 18,
+      "result": 4760,
+      "finding": "BR union31foodIDs/461cells;88overlap253oldonly120newonly"
+    },
+    {
+      "worker": 44,
+      "result": 4924,
+      "finding": "14unique responseassets/15lineage/3accessmetadata/0qualifiedrecords"
+    },
+    {
+      "worker": 49,
+      "result": 4899,
+      "finding": "files=[] belongs KG DOI20237163.v2 not JP"
+    },
+    {
+      "worker": 56,
+      "result": 4932,
+      "finding": "No Code328/ID339 repair; generic kg/currencyCode not CI equivalence"
+    },
+    {
+      "worker": 36,
+      "finding": "SV literal units/family labels only"
+    }
+  ],
+  "additionalEarlierMorganDocumentaryDispositions": [
+    "W07 source-role correction",
+    "W20 native62 versus Freebuff distinction",
+    "W23 four source-literal commercial-form qualifiers"
+  ],
+  "allHoldsPreserved": true
+}

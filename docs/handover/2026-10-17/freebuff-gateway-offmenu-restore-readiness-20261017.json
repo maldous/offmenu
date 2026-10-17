@@ -1,0 +1,99 @@
+{
+  "document": "freebuff-gateway-offmenu-restore-readiness-20261017",
+  "scope": "Gateway routing/readiness reconciliation only. Morgan owns priorities and decisions; this receipt records routing state, completed work, pending sends and the exact supported return route. No stale-queue restart, no credential change, no credit purchase, no source-restriction removal.",
+  "identity": {
+    "role": "Freebuff Gateway for OffMenu — routing/message/ledger layer",
+    "owner": "Gateway (Morgan-directed)",
+    "writer": "Worker 05 (worktree slot 62) for this bounded reconciliation receipt only",
+    "nativeAccount": "alexander.emmalyn.thomas@gmail.com",
+    "workerUuid": "9c16496f-c8a1-47d8-8f3c-f519fd7a57d3",
+    "worktreeSlot": "62",
+    "branch": "bugfix/62/freebuff-repair-diagnosis-20261015",
+    "head": "894313bca2a1966b05beb79c3735d75075377600"
+  },
+  "retainedEvidenceRoot": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/morgan-batches-20261017",
+  "checkpointCut": {
+    "transport": 5105,
+    "ledgerEvidence": 4889
+  },
+  "gatewayStateAsRecorded": {
+    "primaryAdmissions": 64,
+    "actualStarts": 64,
+    "missingPickup": [],
+    "custodianQueryMessagesAdmitted": 64,
+    "queryBatches": {"R1": 42, "R2": 15, "R3": 7},
+    "R1PacketRoutes": 136,
+    "toolReportedQueryFailures": 0,
+    "responseTransfersAdmittedAtCut": 28,
+    "responseTransfersInFlightAtCut": 0,
+    "notAcceptance": "No custody, rights, body-processing or country completion inferred from transport.",
+    "blockedIdentityOrActorCases": [
+      "B02-W37 NP12 / PK28 restricted actor portions not dispatched",
+      "B02-W28 ER14 no-retry not retried; metadata24/61 only",
+      "B02-W27 OFF/OpenPrices actual export custody unbound",
+      "B03-W58 NF native producer unbound",
+      "B03-W59 prices archive actual custodian unbound",
+      "B03-W54 KP/KR qualified source holder unbound"
+    ],
+    "M005": "Admitted once to existing57; candidate S284 identity correction only; CP01 unselected."
+  },
+  "completedWorkPreserved": {
+    "admittedBatches": ["B01", "B02", "B03"],
+    "admittedWorkersCount": 64,
+    "workersWithAtLeastOneResultAtTransportCut": 58,
+    "workersWithNoResultAtTransportCut": [4, 11, 13, 39, 40, 62],
+    "workersAckOnlyStartedNoResult": [4, 13],
+    "workersNoStartNoResult": [11, 39, 62],
+    "returnedEvidenceOwners": [1, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 23, 24, 25, 26, 28, 29, 31, 32, 34, 36, 37, 44, 61, 63],
+    "returnedEvidenceCount": 28,
+    "returnedEvidenceAdmissions": 21,
+    "returnedEvidenceAdditionalAdmissions": 7,
+    "morganDocumentaryDispositionsRetained": [
+      "M-20261017-003: accept M-002 as completed within its exact isolated code-composition/synthetic-test scope; no real data/gold/country completion/publication/runtime activation accepted",
+      "M-20261017-004: documentary dispositions for W18/W44/W49/W56/W36 plus additional earlier dispositions (W07 source-role correction, W20 native62 versus Freebuff distinction, W23 four source-literal commercial-form qualifiers)"
+    ],
+    "allHoldsPreserved": true
+  },
+  "pendingSendsToReconcile": {
+    "workersStartedButNoResultAtTransportCut": [4, 11, 13, 39, 40, 62],
+    "workersStartedButNotAcked": [1, 6, 19, 22, 23, 28, 31, 36, 38, 40, 45, 46, 47, 48, 50, 52, 56, 59, 60, 63],
+    "workersAckedButNoStart": [],
+    "workersNoStartNoResult": [11, 39, 62],
+    "blockedIdentityOrActorCases": [
+      "B02-W37 NP12 / PK28 restricted actor portions not dispatched",
+      "B02-W28 ER14 no-retry not retried; metadata24/61 only",
+      "B02-W27 OFF/OpenPrices actual export custody unbound",
+      "B03-W58 NF native producer unbound",
+      "B03-W59 prices archive actual custodian unbound",
+      "B03-W54 KP/KR qualified source holder unbound"
+    ],
+    "routingMissingOrUnbound": [
+      "B02-W27 actual Frida/OFF/OpenPrices custodians not yet identified; no arbitrary actor selected.",
+      "B03-W58 NF current native actor not established."
+    ],
+    "note": "Pending worker sends remain in the retained checkpoint and require Morgan follow-through, not gateway restart. No stale queue is restarted by this receipt."
+  },
+  "m006NetherlandsExtraction": {
+    "recordedIn": "a failed Codex turn, must be reconciled before execution",
+    "reconciliation": "No executable M-006 extraction was admitted or run in the retained morgan-batches-20261017 transport evidence. The accepted transport ledger records M005 as the only M-series disposition admitted ('Admitted once to existing57; candidate S284 identity correction only; CP01 unselected.'). No M-006/NL/M006 literal appears in the retained Morgan-batch transport files. Therefore the recorded M-006 extraction is preserved as a failed-turn record, NOT re-attempted, until Morgan authorizes a concrete NL operation with a named actual custodian and a permitted operation.",
+    "preservedAsIs": true,
+    "notReexecuted": true
+  },
+  "exactSupportedReturnRoute": {
+    "MorganToGateway": "Morgan posts B01/B02/B03 directions to Gateway; Gateway admits 64 primary admissions + 64 custodian query messages and returns correlation envelopes.",
+    "WorkerToMorgan": "Each worker returns results/evidence through Gateway native notifications for Morgan admission (returned-evidence-admissions + returned-evidence-additional-admissions).",
+    "CustodianRouting": "Gateway routes precise custodian/artifact requests per custodian-routing-plan.json; responses return under returned-evidence-* lanes.",
+    "AdmissionIsNotCompletion": "Transport admission does NOT imply custody/rights/body-processing/country completion (transport-checkpoint-current.json: notAcceptance)."
+  },
+  "readiness": {
+    "gatewayRestored": "Existing Freebuff Gateway routing state is preserved and reconciled from retained transport evidence; no fresh admission, no credential change, no credit purchase, no source-restriction removal was performed in this turn.",
+    "capacityAvailable": "64 country workers received Morgan's B01/B02/B03 directions and started; 64 internal evidence queries were admitted and 28 transfers returned. Pending sends and blocked identity/actor cases are recorded for Morgan follow-through.",
+    "blocked": "M-006 Netherlands extraction is reconciled and preserved, not executed; concrete NL operation still requires Morgan authorization with a named actual custodian and permitted operation. Workers started but without a result, and ack-only starters, remain pending."
+  },
+  "nextForMorgan": [
+    "Decide NL operation: name actual custodian, exact permitted operation, exact selectors/use, and confirm CP01 selection status if relevant.",
+    "Issue new NL-directional admission only if Morgan issues one; this reconciliation does not restart stale queues.",
+    "Direct follow-through for pending worker sends (started/no-result/ack-only/not-started) via the existing Gateway return route.",
+    "Resolve unblocked custodian/actor cases (B02-W27 OFF/OpenPrices, B03-W58 NF) by naming actual custodians if available, without inventing actors."
+  ]
+}

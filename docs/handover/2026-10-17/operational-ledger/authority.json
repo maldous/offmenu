@@ -1,0 +1,13 @@
+{
+  "schema": "offmenu-existing-ledger-extension/1",
+  "mode": "active-extension",
+  "base": "/home/user/Documents/Codex/2026-10-13/task-3/interim-obligation-index.json",
+  "initialBase": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/interim-obligation-index.json",
+    "sha256": "5be4d6decc6191b7f4608b92637c3f52f08cdf2a1a5109ce1a6ac7f211a0f2f3"
+  },
+  "initialRowCount": 69,
+  "authority": "Existing Gateway index plus this journal; base remains preserved and live; no other tracker",
+  "createdUTC": "2026-10-16T00:24:21.979456+00:00",
+  "journal": "events.jsonl"
+}
