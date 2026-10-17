@@ -19,8 +19,8 @@ import time
 
 SCHEMA='offmenu-owner-dataset-batch/1'
 PINS={
- 'scripts/grant-selected-dataset-view-v1.py':'3996577fd88e211e845d7b17db3e0e7c3f4420fe530db9b03c2577c30f4b83bf',
- 'scripts/inspect-selected-datasets.py':'74ec7d6ad41cdfbb6cdbd789aae43f7d569c1f6e2da9cfa8445ea29a914b43d1',
+ 'scripts/grant-selected-dataset-view-v1.py':'a1b06b6c25a59b09aa48d72fb97fde0cac286879d49a5b4546ec69fc4d6f34f8',
+ 'scripts/inspect-selected-datasets.py':'0b329be72f49dc83d7fda7aba6155344ed56a2818b8ccdc5b1da8dfce7326c60',
  'scripts/offmenu_projector_inventory.py':'937a6069068f46af6266f27fc4e636a268eda3ecc0a1c6879cd8f9f4b6856124',
 }
 HELPER,INSPECTOR,PROJECTOR=tuple(PINS)

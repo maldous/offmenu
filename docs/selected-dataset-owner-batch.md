@@ -89,6 +89,14 @@ be at most 16 KiB and pass the closed schema, fixed enums, numeric bounds and ne
 inspector sanitizer. The projector receipt passes its separate fixed schema and
 12 KiB bound. Invalid evidence is `unverified`; arbitrary output is never posted.
 
+The pinned inspector's national file-list matches include the bounded
+`pinned-receipt-content` basis and schema/ambiguity reason enums in nested snapshot
+evidence. File labels and URLs are never exported. The wrapper's helper/inspector
+pins move together; the projector pin and all authentication, publication, and
+service boundaries remain unchanged. The helper's content-addressed private
+inspector leaf allows retry after the old unsupported-schema stage without
+overwriting its earlier private inspector file.
+
 ## Single publication and honest outcomes
 
 After owner authentication, the wrapper prepares one sanitized comment on

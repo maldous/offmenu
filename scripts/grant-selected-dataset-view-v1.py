@@ -25,7 +25,7 @@ SERVICE = 'offmenu-runner.service'
 UNIT = Path('/etc/systemd/system') / SERVICE
 DROP_DIR = UNIT.parent / (SERVICE + '.d')
 DROP_IN = DROP_DIR / '40-selected-datasets-v1.conf'
-INSPECTOR_SHA = '74ec7d6ad41cdfbb6cdbd789aae43f7d569c1f6e2da9cfa8445ea29a914b43d1'
+INSPECTOR_SHA = '0b329be72f49dc83d7fda7aba6155344ed56a2818b8ccdc5b1da8dfce7326c60'
 BACKUP = Path('/var/lib/offmenu-selected-datasets-v1')
 SCAFFOLD = BACKUP / 'snapshot'
 STAGING = BACKUP / '.snapshot.staging'
@@ -357,7 +357,9 @@ def reference_parser():
     path=Path(__file__).absolute().parent/'inspect-selected-datasets.py'
     body=bounded_read(path,32768)
     if hashlib.sha256(body).hexdigest()!=INSPECTOR_SHA:block('inspector-dependency-pin-mismatch')
-    private_code=BACKUP/'approved-inspector.py'
+    # Keep any earlier pinned inspector intact after an evidence-blocked attempt.
+    # Existing content-addressed leaves still require exact bytes and mode.
+    private_code=BACKUP/('approved-inspector-'+INSPECTOR_SHA+'.py')
     ensure_file(private_code,body,0o600)
     namespace={'__name__':'offmenu_selected_reference','__file__':str(private_code)}
     exec(compile(body,str(path),'exec'),namespace)

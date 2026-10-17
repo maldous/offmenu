@@ -45,6 +45,11 @@ LICENSES = {
 HEX = re.compile(r'[0-9a-f]{64}\Z')
 STATUSES = {'missing','unsafe-path','not-regular','multiple-links','oversized','aggregate-limit','unreadable','changed','deadline','inspected','invalid-json','unsupported-schema','internal-error'}
 MATCHES = {'match','mismatch','unknown'}
+ACQUISITION_BASES = {'fixed-key','pinned-receipt-content'}
+ACQUISITION_REASONS = {'matched','acquisition-receipt-untrusted','prior-manifest-untrusted',
+    'rights-profile-unverified','prior-declaration-missing','raw-unverified','raw-receipt-mismatch',
+    'no-content-match','duplicate-content-match','reused-file-label','ambiguous-prior-content'}
+SCHEMA_REASONS = {'unsupported-schema','malformed-national-declaration','conflicting-digest-size'}
 
 
 def canonical(obj):
@@ -194,6 +199,8 @@ def metadata_facts(key, value):
         allowed = {SELECTION[a][0].split('/')[-1]:a for a in assets}
         decl = declarations(value.get('sourceFiles'), allowed)
         return {'declarations': {allowed[k]:v for k,v in decl.items()}, 'rights': rights if value.get('license') == LICENSES[country] else 'unknown', 'acquiredAt': None}
+    if key == 'NATIONAL_ACQUISITION' and isinstance(value, list) and any(isinstance(item, dict) and 'file' in item and 'key' not in item for item in value):
+        return national_content_facts(value)
     allowed = {v[0]:k for k,v in SELECTION.items() if v[1] == 'raw'}
     # Acquisition keys are accepted only at these exact known relative locations.
     decl = declarations(value, allowed)
@@ -203,6 +210,78 @@ def metadata_facts(key, value):
             # Never substitute completedAt or filesystem mtime for acquisition.
             acquired[allowed[item['key']]] = timestamp(item.get('acquiredAt'))
     return {'declarations': {allowed[k]:v for k,v in decl.items()}, 'rights':'unknown', 'acquiredAt':acquired}
+
+
+def national_content_facts(value):
+    """File and URL strings are opaque receipt labels, never paths or asset identities."""
+    if len(value) > 512:
+        raise ValueError('malformed-national-declaration')
+    records, labels, sizes = {}, {}, {}
+    for item in value:
+        if (not isinstance(item, dict) or not {'file','bytes','sha256','url'} <= set(item) or 'key' in item or
+                not isinstance(item['file'], str) or not item['file'] or
+                not isinstance(item['url'], str) or type(item['bytes']) is not int or
+                not 0 <= item['bytes'] <= 2**63-1 or not isinstance(item['sha256'], str) or
+                not HEX.fullmatch(item['sha256'])):
+            raise ValueError('malformed-national-declaration')
+        size, digest, label = item['bytes'], item['sha256'], item['file']
+        if digest in sizes and sizes[digest] != size:
+            raise ValueError('conflicting-digest-size')
+        sizes[digest] = size
+        records.setdefault((size,digest), []).append(label)
+        labels[label] = labels.get(label, 0) + 1
+    # Additional receipt fields stay inert, including any timestamp-like metadata.
+    # This schema carries no recognized acquisition time. Ignore filesystem time.
+    return {'contentRecords':records,'labelCounts':labels,'declarations':{},
+            'rights':'unknown','acquiredAt':{},'matchMode':'pinned-receipt-content'}
+
+
+def corroborate_national(report, facts):
+    """Bind content to names only through pinned prior source/release/rights receipts."""
+    acquisition = facts.get('NATIONAL_ACQUISITION', {})
+    if acquisition.get('matchMode') != 'pinned-receipt-content':
+        return
+    meta = report['assets']['NATIONAL_ACQUISITION']
+    acquisition_ok = meta['status'] == 'inspected' and meta['historicalMatch'] == 'match'
+    claims = {}
+    for country in ('NO','FR'):
+        prior = SOURCES[country][3]
+        state = report['assets'][prior]
+        if state['status'] == 'inspected' and state['historicalMatch'] == 'match':
+            for asset_id, pair in facts.get(prior, {}).get('declarations', {}).items():
+                claims.setdefault(pair, set()).add(asset_id)
+    for country in ('NO','FR'):
+        _, _, required, prior, rights = SOURCES[country]
+        state, fact = report['assets'][prior], facts.get(prior, {})
+        for asset_id in required:
+            asset = report['assets'][asset_id]
+            pair = fact.get('declarations', {}).get(asset_id)
+            labels = acquisition['contentRecords'].get(pair, [])
+            if not acquisition_ok:
+                reason = 'acquisition-receipt-untrusted'
+            elif state['status'] != 'inspected' or state['historicalMatch'] != 'match':
+                reason = 'prior-manifest-untrusted'
+            elif fact.get('rights') != rights:
+                reason = 'rights-profile-unverified'
+            elif pair is None:
+                reason = 'prior-declaration-missing'
+            elif asset['status'] != 'inspected' or asset['historicalMatch'] == 'mismatch':
+                reason = 'raw-unverified'
+            elif (asset.get('bytes'), asset.get('sha256')) != pair:
+                reason = 'raw-receipt-mismatch'
+            elif len(claims.get(pair, ())) != 1:
+                reason = 'ambiguous-prior-content'
+            elif not labels:
+                reason = 'no-content-match'
+            elif len(labels) != 1:
+                reason = 'duplicate-content-match'
+            elif acquisition['labelCounts'][labels[0]] != 1:
+                reason = 'reused-file-label'
+            else:
+                reason = 'matched'
+                asset['acquisitionMatch'] = 'match'
+                asset['acquisitionMatchBasis'] = 'pinned-receipt-content'
+            asset['acquisitionReason'] = reason
 
 
 def inspect(cache_root):
@@ -267,13 +346,16 @@ def inspect(cache_root):
                         continue
                     try:
                         facts[key] = metadata_facts(key, value)
-                    except (ValueError, TypeError, KeyError, RecursionError):
+                    except (ValueError, TypeError, KeyError, RecursionError) as exc:
                         asset['status'] = 'unsupported-schema'
+                        if key == 'NATIONAL_ACQUISITION':
+                            asset['schemaReason'] = str(exc) if str(exc) in SCHEMA_REASONS else 'unsupported-schema'
             except Exception as exc:
                 asset['status'] = classify(exc)
     finally:
         if root_fd is not None:
             os.close(root_fd)
+    corroborate_national(report, facts)
     for country, (source, release, required, manifest, rights) in SOURCES.items():
         meta = report['assets'][manifest]
         fact = facts.get(manifest, {})
@@ -293,6 +375,8 @@ def inspect(cache_root):
             declaration = facts.get(acquisition_id, {}).get('declarations', {}).get(asset_id) if acquisition_ok else None
             if declaration and 'sha256' in asset:
                 asset['acquisitionMatch'] = 'match' if (asset.get('bytes'), asset['sha256']) == declaration else 'mismatch'
+                if asset['acquisitionMatch'] == 'match':
+                    asset['acquisitionMatchBasis'] = 'fixed-key'
         ready = country != 'FI' and trusted and acquisition_ok and fact.get('rights') == rights and all(report['assets'][a]['status'] == 'inspected' and report['assets'][a]['receiptMatch'] == 'match' and report['assets'][a]['acquisitionMatch'] == 'match' and report['assets'][a]['historicalMatch'] != 'mismatch' and report['assets'][a]['readOnlyView'] for a in required) and meta['readOnlyView'] and acquisition['readOnlyView']
         times = facts.get(acquisition_id, {}).get('acquiredAt') or {}
         known_times = {times.get(a) for a in required}
@@ -361,6 +445,16 @@ def sanitize_report(value):
                 if not isinstance(item[key],str) or not HEX.fullmatch(item[key]):
                     raise ValueError('invalid-dataset-report')
                 clean[key] = item[key]
+        for key, choices in (('acquisitionMatchBasis',ACQUISITION_BASES),('acquisitionReason',ACQUISITION_REASONS),('schemaReason',SCHEMA_REASONS)):
+            if key in item:
+                if not isinstance(item[key],str) or item[key] not in choices:
+                    raise ValueError('invalid-dataset-report')
+                if key == 'schemaReason':
+                    if asset_id != 'NATIONAL_ACQUISITION' or item['status'] != 'unsupported-schema':
+                        raise ValueError('invalid-dataset-report')
+                elif SELECTION[asset_id][1] != 'raw':
+                    raise ValueError('invalid-dataset-report')
+                clean[key] = item[key]
         result['assets'][asset_id] = clean
     if not isinstance(value.get('sources'),dict) or set(value['sources']) != set(SOURCES):
         raise ValueError('invalid-dataset-report')
@@ -396,6 +490,23 @@ def sanitize_report(value):
         raise ValueError('invalid-dataset-report')
     for country in ('NO','FR'):
         source = result['sources'][country]
+        for asset_id in SOURCES[country][2]:
+            asset = result['assets'][asset_id]
+            basis, reason = asset.get('acquisitionMatchBasis'), asset.get('acquisitionReason')
+            if basis and asset['acquisitionMatch'] != 'match':
+                raise ValueError('invalid-dataset-report')
+            if reason and ((reason == 'matched') != (asset['acquisitionMatch'] == 'match') or
+                           (reason == 'matched' and basis != 'pinned-receipt-content')):
+                raise ValueError('invalid-dataset-report')
+            if basis == 'pinned-receipt-content':
+                metadata_ids = ('NATIONAL_ACQUISITION', SOURCES[country][3])
+                if (reason != 'matched' or asset['receiptMatch'] != 'match' or
+                        asset['status'] != 'inspected' or asset['historicalMatch'] == 'mismatch' or
+                        'sha256' not in asset or asset.get('declaredSha256') != asset['sha256'] or
+                        source['historicalRightsProfile'] != SOURCES[country][4] or
+                        source['freshness'] != 'unknown' or source['acquiredAt'] is not None or
+                        any(result['assets'][a]['status'] != 'inspected' or result['assets'][a]['historicalMatch'] != 'match' for a in metadata_ids)):
+                    raise ValueError('invalid-dataset-report')
         if source['status'] == 'ready-for-adapter-design':
             metadata_ids = ('NATIONAL_ACQUISITION', SOURCES[country][3])
             raw_ok = all(result['assets'][a]['status'] == 'inspected' and result['assets'][a]['readOnlyView'] and result['assets'][a]['receiptMatch'] == 'match' and result['assets'][a]['acquisitionMatch'] == 'match' and result['assets'][a]['historicalMatch'] != 'mismatch' and 'sha256' in result['assets'][a] and result['assets'][a].get('declaredSha256') == result['assets'][a]['sha256'] for a in SOURCES[country][2])

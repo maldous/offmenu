@@ -193,5 +193,126 @@ class SelectedMetadataTests(unittest.TestCase):
         self.assertLess(len(p.stdout),m.MAX_REPORT)
         self.assertNotIn(str(self.root),p.stdout.decode())
 
+    def file_fixture(self):
+        selection = self.fixture()
+        path = self.root / selection['NATIONAL_ACQUISITION'][0]
+        records = json.loads(path.read_text())
+        for n, item in enumerate(records):
+            item.pop('key');item.pop('acquiredAt')
+            item['file'] = '/DO-NOT-OPEN/CANARY-SECRET/../receipt-label-' + str(n)
+            item['unknownMetadata'] = {'CANARY-SECRET':'uninterpreted'}
+            item['otherUnknown'] = ['CANARY-SECRET']
+        return selection, records
+
+    def repin(self, selection, key, value):
+        path = self.put(key, json.dumps(value).encode())
+        selection[key] = (*selection[key][:2],hashlib.sha256(path.read_bytes()).hexdigest())
+
+    def inspect_file_fixture(self, selection, records):
+        self.repin(selection, 'NATIONAL_ACQUISITION', records)
+        with patch.object(m,'SELECTION',selection), patch.object(m.os,'fstatvfs',return_value=type('V',(),{'f_flag':os.ST_RDONLY})()):
+            return m.inspect(str(self.root))
+
+    def test_file_receipt_binds_only_by_pinned_content_without_paths_or_timestamps(self):
+        selection, records = self.file_fixture()
+        for item in records:item.update(acquiredAt='2099-01-01T00:00:00Z',completedAt='2099-01-01T00:00:00Z')
+        records.append({'file':'unrelated-large-file','bytes':m.MAX_RAW+1,'sha256':'a'*64,'url':'CANARY-SECRET'})
+        with patch.object(m,'parent_fd',wraps=m.parent_fd) as opened:
+            r = self.inspect_file_fixture(selection, records)
+        self.assertTrue(r['completeReady'])
+        self.assertTrue(all(call.args[1] in {v[0] for v in selection.values()} for call in opened.call_args_list))
+        for country in ('NO','FR'):
+            self.assertIsNone(r['sources'][country]['acquiredAt'])
+            self.assertEqual('unknown',r['sources'][country]['freshness'])
+            self.assertEqual('offline-only',r['sources'][country]['acquisitionPolicy'])
+            for key in m.SOURCES[country][2]:
+                self.assertEqual('match',r['assets'][key]['acquisitionMatch'])
+                self.assertEqual('pinned-receipt-content',r['assets'][key]['acquisitionMatchBasis'])
+                self.assertEqual('matched',r['assets'][key]['acquisitionReason'])
+        self.assertEqual('metadata-only-held',r['sources']['FI']['status'])
+        self.assertFalse(r['sources']['FI']['provenanceVerified'])
+        self.assertEqual((0,0,0),(r['sourceBodiesParsed'],r['downloads'],r['originalBytesWritten']))
+        self.assertNotIn('CANARY',json.dumps(r))
+        self.assertLess(len(m.canonical(r)),m.MAX_REPORT)
+
+    def test_file_receipt_unmatched_duplicate_and_reused_labels_fail_closed(self):
+        for case, reason in [('unmatched','no-content-match'),('duplicate','duplicate-content-match'),('duplicate-label','duplicate-content-match'),('label-conflict','reused-file-label')]:
+            with self.subTest(case=case):
+                selection, records = self.file_fixture()
+                if case == 'unmatched':records[0]['sha256'] = 'a'*64
+                elif case.startswith('duplicate'):
+                    records.append(dict(records[0]))
+                    if case == 'duplicate':records[-1]['file'] += '-second'
+                else:records.append({'file':records[0]['file'],'bytes':42,'sha256':'a'*64,'url':'CANARY-SECRET'})
+                r = self.inspect_file_fixture(selection, records)
+                self.assertFalse(r['completeReady'])
+                self.assertEqual(reason,r['assets']['NO_EN_FOODS']['acquisitionReason'])
+                self.assertEqual('unknown',r['assets']['NO_EN_FOODS']['acquisitionMatch'])
+                self.assertNotIn('CANARY',json.dumps(r))
+
+    def test_file_receipt_digest_size_conflict_rejects_entire_receipt(self):
+        selection, records = self.file_fixture()
+        records.append({**records[0],'file':'conflict','bytes':records[0]['bytes']+1})
+        r = self.inspect_file_fixture(selection, records)
+        self.assertEqual('unsupported-schema',r['assets']['NATIONAL_ACQUISITION']['status'])
+        self.assertEqual('conflicting-digest-size',r['assets']['NATIONAL_ACQUISITION']['schemaReason'])
+        self.assertFalse(r['completeReady'])
+
+    def test_file_receipt_malformed_declarations_and_mixed_schema_rejected(self):
+        edits = [lambda x:x.update(bytes=True),lambda x:x.update(bytes=-1),lambda x:x.update(bytes=2**63),
+                 lambda x:x.update(sha256='not-a-hash'),lambda x:x.update(file=None),lambda x:x.update(url=None),
+                 lambda x:x.update(key='norway/en-foods.json')]
+        for edit in edits:
+            selection, records = self.file_fixture();edit(records[0])
+            r = self.inspect_file_fixture(selection, records)
+            self.assertEqual('unsupported-schema',r['assets']['NATIONAL_ACQUISITION']['status'])
+            self.assertEqual('malformed-national-declaration',r['assets']['NATIONAL_ACQUISITION']['schemaReason'])
+            self.assertFalse(r['completeReady'])
+        with self.assertRaises(ValueError):m.metadata_facts('FI_ACQUISITION', records[1:])
+
+    def test_file_receipt_cross_asset_pair_ambiguity_is_not_identity(self):
+        selection, records = self.file_fixture()
+        first, other = 'NO_EN_FOODS', 'FR_WORKBOOK'
+        raw = (self.root/selection[first][0]).read_bytes();self.put(other,raw)
+        selection[other] = (*selection[other][:2],records[0]['sha256'])
+        prior = json.loads((self.root/selection['FR_PRIOR_MANIFEST'][0]).read_text())
+        prior['sourceFiles'][0].update(bytes=records[0]['bytes'],sha256=records[0]['sha256'])
+        self.repin(selection,'FR_PRIOR_MANIFEST',prior)
+        r = self.inspect_file_fixture(selection, records)
+        for key in (first,other):
+            self.assertEqual('ambiguous-prior-content',r['assets'][key]['acquisitionReason'])
+            self.assertEqual('unknown',r['assets'][key]['acquisitionMatch'])
+        self.assertFalse(r['completeReady'])
+
+    def test_file_receipt_requires_all_independent_trust_gates(self):
+        for case, reason in [('prior-pin','prior-manifest-untrusted'),('rights','rights-profile-unverified'),('declaration','prior-declaration-missing'),('raw','raw-receipt-mismatch')]:
+            with self.subTest(case=case):
+                selection, records = self.file_fixture()
+                prior = json.loads((self.root/selection['NO_PRIOR_MANIFEST'][0]).read_text())
+                if case == 'prior-pin':selection['NO_PRIOR_MANIFEST'] = (*selection['NO_PRIOR_MANIFEST'][:2],'a'*64)
+                elif case == 'rights':prior['license'] = 'CANARY-SECRET';self.repin(selection,'NO_PRIOR_MANIFEST',prior)
+                elif case == 'declaration':prior['sourceFiles'].pop(1);self.repin(selection,'NO_PRIOR_MANIFEST',prior)
+                else:self.put('NO_NB_FOODS',b'changed raw')
+                r = self.inspect_file_fixture(selection, records)
+                self.assertEqual(reason,r['assets']['NO_NB_FOODS']['acquisitionReason'])
+                self.assertFalse(r['completeReady'])
+        selection, records = self.file_fixture()
+        self.repin(selection,'NATIONAL_ACQUISITION',records)
+        selection['NATIONAL_ACQUISITION'] = (*selection['NATIONAL_ACQUISITION'][:2],'a'*64)
+        with patch.object(m,'SELECTION',selection):r = m.inspect(str(self.root))
+        self.assertEqual('acquisition-receipt-untrusted',r['assets']['NO_EN_FOODS']['acquisitionReason'])
+        self.assertFalse(r['completeReady'])
+
+    def test_new_diagnostics_are_allowlisted_and_consistent(self):
+        selection, records = self.file_fixture();base = self.inspect_file_fixture(selection, records)
+        edits = [lambda r:r['assets']['NO_EN_FOODS'].update(acquisitionReason='CANARY-SECRET'),
+                 lambda r:r['assets']['NO_EN_FOODS'].update(acquisitionMatchBasis='CANARY-SECRET'),
+                 lambda r:r['assets']['NATIONAL_ACQUISITION'].update(schemaReason='CANARY-SECRET'),
+                 lambda r:r['assets']['NO_EN_FOODS'].update(acquisitionMatch='unknown'),
+                 lambda r:r['sources']['NO'].update(freshness='timestamp-known')]
+        for edit in edits:
+            r=copy.deepcopy(base);edit(r)
+            with self.assertRaises(ValueError):m.sanitize_report(r)
+
 
 if __name__=='__main__':unittest.main()

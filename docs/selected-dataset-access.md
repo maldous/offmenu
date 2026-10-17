@@ -157,6 +157,38 @@ acquisition times stay unknown; filesystem mtime and normalization completedAt a
 never freshness. Minimum reuse is 30 days. No diagnostic downloads or revalidates
 anything, regardless of elapsed time.
 
+### Pinned national acquisition file-list receipts
+
+The national acquisition receipt also supports the observed list of records with
+required `file`, `bytes`, `sha256`, and `url` fields. Additional fields stay inert,
+uninterpreted, and unexported, including any timestamp-like metadata. This is restricted to
+`NATIONAL_ACQUISITION`; its historical SHA-256 pin is unchanged. The file and URL
+strings are opaque labels. Neither is interpreted as a path, used to name a
+selected asset, traversed, downloaded, or exported.
+
+For each NO/FR asset, the existing exact-pinned prior manifest must establish its
+source, release, normalized status, recognized historical rights profile, and
+named byte/hash declaration. The observed raw bytes must agree. Exactly one
+national declaration must then have that same byte count and SHA-256. Duplicate
+matches, a matched label reused by any declaration, cross-asset content ambiguity,
+malformed declarations, or a digest with conflicting sizes fail closed. Unselected
+declaration sizes are bounded integers, not permission to read additional files.
+All existing selected-file read limits and read-only readiness gates remain.
+
+Successful raw matches report `acquisitionMatchBasis: pinned-receipt-content`.
+Bounded `acquisitionReason` or national `schemaReason` enums distinguish missing
+matches, ambiguity, malformed declarations, and untrusted receipts. No receipt
+labels or free text enter those diagnostics. This shape has no recognized
+acquisition timestamp, so freshness stays unknown and the policy stays offline-only.
+The existing exact-relative `key` schema remains supported. Finland stays held.
+
+The helper loads the reviewed inspector into a private
+`approved-inspector-<sha256>.py` leaf under its existing backup directory. An earlier
+`approved-inspector.py` is left intact after an evidence-blocked attempt. The new
+leaf still requires exact pinned bytes and mode 0600 on every retry; conflicting
+files fail closed. This changes no source paths, permissions, mount scope, or
+service policy. A previously unrecognized staging directory still requires review.
+
 ## Tests
 
 ```sh

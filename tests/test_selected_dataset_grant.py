@@ -1,5 +1,6 @@
 import contextlib
 import errno
+import hashlib
 import importlib.util
 import json
 import os
@@ -302,6 +303,66 @@ class GrantTests(unittest.TestCase):
         evidence['assets']['NATIONAL_ACQUISITION']['historicalMatch']='mismatch'
         with self.assertRaisesRegex(m.Blocked,'snapshot-no-verified-source-group'):
             m.evidence_selection(evidence,selected,{}, {})
+
+    def test_content_addressed_inspector_preserves_previous_private_leaf_and_retries(self):
+        backup=self.root/'private';backup.mkdir(mode=0o700)
+        old=backup/'approved-inspector.py';old.write_bytes(b'previous-helper-owned-inspector');old.chmod(0o600)
+        old_stat=old.stat();body=(SCRIPT.parent/'inspect-selected-datasets.py').read_bytes()
+        private=backup/('approved-inspector-'+m.INSPECTOR_SHA+'.py')
+        regular=m.regular_bytes
+        with patch.object(m,'BACKUP',backup),patch.object(m,'safe_parents'),patch.object(m,'regular_bytes',side_effect=lambda p,c:regular(p,c,owner=os.geteuid())):
+            first=m.reference_parser();second=m.reference_parser()
+            self.assertEqual(str(private),first['__file__'])
+            self.assertEqual(str(private),second['__file__'])
+            self.assertEqual(body,private.read_bytes());self.assertEqual(0o600,private.stat().st_mode&0o777)
+            self.assertEqual(m.INSPECTOR_SHA,first['inspect'](str(self.root/'empty'))['inspectorSha256'])
+            self.assertEqual(m.signature(old_stat),m.signature(old.stat()))
+            self.assertEqual(b'previous-helper-owned-inspector',old.read_bytes())
+            private.write_bytes(b'unrecognized-current-leaf')
+            with self.assertRaisesRegex(m.Blocked,'versioned-file-conflict'):m.reference_parser()
+            self.assertEqual(b'unrecognized-current-leaf',private.read_bytes())
+        wrapper_spec=importlib.util.spec_from_file_location('retry_wrapper',SCRIPT.parent/'run-selected-dataset-grant.py')
+        wrapper=importlib.util.module_from_spec(wrapper_spec);wrapper_spec.loader.exec_module(wrapper)
+        self.assertEqual(hashlib.sha256(body).hexdigest(),m.INSPECTOR_SHA)
+        for path,pin in wrapper.PINS.items():self.assertEqual(pin,hashlib.sha256((SCRIPT.parents[1]/path).read_bytes()).hexdigest())
+
+    def test_previous_unsupported_stage_cleans_up_then_content_schema_retry_succeeds(self):
+        selected=sorted(m.GROUPS['NO']);backup=self.root/'private';backup.mkdir(mode=0o700)
+        stage=backup/'.stage';snapshot=backup/'snapshot'
+        spec=importlib.util.spec_from_file_location('retry_inspector',SCRIPT.parent/'inspect-selected-datasets.py')
+        inspector=importlib.util.module_from_spec(spec);spec.loader.exec_module(inspector)
+        reference=vars(inspector);selection=dict(inspector.SELECTION);decl=[];records=[]
+        for key in inspector.SOURCES['NO'][2]:
+            body=b'raw fixture '+key.encode();self.source(key,body);digest=hashlib.sha256(body).hexdigest()
+            selection[key]=(*selection[key][:2],digest if selection[key][2] else None)
+            decl.append({'key':selection[key][0].split('/')[-1],'bytes':len(body),'sha256':digest})
+            records.append({'file':'opaque label '+key,'bytes':len(body),'sha256':digest,'url':'https://DO-NOT-FETCH.invalid'})
+        self.source('NATIONAL_ACQUISITION',json.dumps(records).encode())
+        self.source('NO_PRIOR_MANIFEST',json.dumps({'schemaVersion':'offmenu-collection/1','sourceId':'matvaretabellen','releaseId':'2026','status':'normalized','license':inspector.LICENSES['NO'],'sourceFiles':decl}).encode())
+        for key in ('NATIONAL_ACQUISITION','NO_PRIOR_MANIFEST'):
+            selection[key]=(*selection[key][:2],hashlib.sha256((self.root/m.FILES[key][0]).read_bytes()).hexdigest())
+        reference['SELECTION']=selection;observations={k:(self.root/m.FILES[k][0]).stat() for k in selected}
+        parser=reference['metadata_facts']
+        def legacy_parser(key,value):
+            if key=='NATIONAL_ACQUISITION':raise ValueError('schema')
+            return parser(key,value)
+        def directory(path,runner,create=False,stage=False):
+            if create:path.mkdir(mode=0o700 if stage else 0o750)
+        with patch.object(m,'ORIGINALS',self.root),patch.object(m,'BACKUP',backup),patch.object(m,'STAGING',stage),patch.object(m,'SCAFFOLD',snapshot),patch.object(m,'protected_directory'),patch.object(m,'snapshot_directory',side_effect=directory),patch.object(m,'reference_parser',return_value=reference),patch.object(m,'ensure_file',side_effect=lambda path,body,mode:path.write_bytes(body)),patch.object(m.os,'chown'),patch.object(m.os,'fchown'):
+            reference['metadata_facts']=legacy_parser
+            failed={'sourceBytesRead':0,'snapshotBytesWritten':0,'snapshotVerified':False}
+            with self.assertRaisesRegex(m.Blocked,'snapshot-no-verified-source-group'):
+                m.create_snapshot(selected,self.runner,self.owner,observations,failed)
+            self.assertFalse(stage.exists());self.assertFalse(snapshot.exists())
+            self.assertFalse((backup/'selection.json').exists())
+            self.assertEqual('unsupported-schema',failed['snapshotEvidence']['assets']['NATIONAL_ACQUISITION']['status'])
+            reference['metadata_facts']=parser
+            report={'sourceBytesRead':0,'snapshotBytesWritten':0,'snapshotVerified':False}
+            result=m.create_snapshot(selected,self.runner,self.owner,observations,report)
+        self.assertEqual(set(selected),set(result));self.assertTrue(snapshot.exists());self.assertFalse(stage.exists())
+        self.assertTrue(report['snapshotVerified'])
+        self.assertEqual('pinned-receipt-content',report['snapshotEvidence']['assets']['NO_EN_FOODS']['acquisitionMatchBasis'])
+        self.assertFalse(report['snapshotEvidence']['completeReady'])  # staging is writable; NO-only fixture
 
 
 if __name__=='__main__':unittest.main()
