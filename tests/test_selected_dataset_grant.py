@@ -474,10 +474,10 @@ class GrantTests(unittest.TestCase):
         spec=importlib.util.spec_from_file_location('snapshot_inspector',SCRIPT.parent/'inspect-selected-datasets.py')
         inspector=importlib.util.module_from_spec(spec);spec.loader.exec_module(inspector)
         saved=sorted(set(m.GROUPS['NO'])|set(m.GROUPS['FR']));selected=sorted(m.FILES)
-        backup=self.root/'private';backup.mkdir(mode=0o700);snapshot=backup/'snapshot';snapshot.mkdir(mode=0o750)
+        backup=self.root/'private';backup.mkdir(mode=0o700);snapshot=backup/'snapshot';snapshot.mkdir(mode=0o750);snapshot.chmod(0o750)
         selection=dict(inspector.SELECTION);acquisition=[]
         def put(key,body):
-            path=snapshot/m.FILES[key][1];path.parent.mkdir(exist_ok=True,mode=0o750);path.write_bytes(body);path.chmod(0o440)
+            path=snapshot/m.FILES[key][1];path.parent.mkdir(exist_ok=True,mode=0o750);path.parent.chmod(0o750);path.write_bytes(body);path.chmod(0o440)
             selection[key]=(*selection[key][:2],hashlib.sha256(body).hexdigest())
         for key in saved:
             if m.FILES[key][2]=='raw':put(key,b'fixture '+key.encode())
