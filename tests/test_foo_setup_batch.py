@@ -17,6 +17,12 @@ spec.loader.exec_module(batch)
 
 
 class SetupBatchTests(unittest.TestCase):
+    def setUp(self):
+        # Tests never consult a developer/CI account's real authentication env.
+        clean = patch.dict(os.environ, {}, clear=True)
+        clean.start()
+        self.addCleanup(clean.stop)
+
     def test_all_three_steps_run_independently_after_failure(self):
         seen = []
         def fake(name, command, log_dir):
@@ -50,12 +56,32 @@ class SetupBatchTests(unittest.TestCase):
         self.assertNotIn("/home", json.dumps(result))
         self.assertEqual(result["tools"], {"curl": True})
 
-    def test_token_environment_not_inherited(self):
-        with patch.dict(os.environ, {"GH_TOKEN": "PRIVATE", "AWS_SECRET_ACCESS_KEY": "PRIVATE", "SSH_AUTH_SOCK": "/private/socket"}):
-            for github in (False, True):
-                result = batch.environment(Path("/tmp/check"), for_github=github)
-                self.assertNotIn("PRIVATE", json.dumps(result))
-                self.assertNotIn("SSH_AUTH_SOCK", result)
+    def test_tokens_absent_from_diagnostic_environment(self):
+        with patch.dict(os.environ, {"GH_TOKEN": "TEST_GH_VALUE", "GITHUB_TOKEN": "TEST_GITHUB_VALUE",
+                                     "AWS_SECRET_ACCESS_KEY": "TEST_AWS_VALUE", "SSH_AUTH_SOCK": "/private/socket"}):
+            result = batch.environment(Path("/tmp/check"))
+        for key in ("GH_TOKEN", "GITHUB_TOKEN", "AWS_SECRET_ACCESS_KEY", "SSH_AUTH_SOCK"):
+            self.assertNotIn(key, result)
+
+    def test_existing_tokens_reused_only_for_github_publication(self):
+        dummy = {"GH_TOKEN": "TEST_GH_VALUE", "GITHUB_TOKEN": "TEST_GITHUB_VALUE",
+                 "AWS_SECRET_ACCESS_KEY": "TEST_AWS_VALUE", "SSH_AUTH_SOCK": "/private/socket"}
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, dummy), patch.object(batch.shutil, "which", return_value="/usr/bin/gh"), patch.object(batch.os, "getuid", return_value=1000), patch.object(batch.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as run:
+            result = batch.publish_once({"status": "passed"}, 30, Path(tmp))
+            payload = (Path(tmp) / "github-report.json").read_text()
+        self.assertEqual(result, "posted")
+        self.assertEqual(run.call_count, 2)
+        for call in run.call_args_list:
+            env = call.kwargs["env"]
+            self.assertEqual(call.args[0][0], "/usr/bin/gh")
+            self.assertEqual(env["GH_TOKEN"], dummy["GH_TOKEN"])
+            self.assertEqual(env["GITHUB_TOKEN"], dummy["GITHUB_TOKEN"])
+            self.assertNotIn("AWS_SECRET_ACCESS_KEY", env)
+            self.assertNotIn("SSH_AUTH_SOCK", env)
+            self.assertEqual(call.kwargs["stdout"], subprocess.DEVNULL)
+            self.assertEqual(call.kwargs["stderr"], subprocess.DEVNULL)
+        for value in dummy.values():
+            self.assertNotIn(value, payload)
 
     def test_publish_requires_existing_login_and_does_not_try_login(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(batch.shutil, "which", return_value="/usr/bin/gh"), patch.object(batch.os, "getuid", return_value=1000), patch.object(batch.subprocess, "run", return_value=subprocess.CompletedProcess([], 1)) as run:

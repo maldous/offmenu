@@ -29,7 +29,10 @@ def environment(log_dir, for_github=False):
               "PYTHONDONTWRITEBYTECODE": "1", "TMPDIR": str(log_dir),
               "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null"}
     if for_github:
-        for key in ("GH_CONFIG_DIR", "XDG_CONFIG_HOME"):
+        # Reuse the owner's existing gh authentication only for gh's auth/API
+        # subprocesses. Test/runner environments never receive these tokens.
+        # Values remain in process memory: never print, serialize, or log them.
+        for key in ("GH_CONFIG_DIR", "XDG_CONFIG_HOME", "GH_TOKEN", "GITHUB_TOKEN"):
             if os.environ.get(key):
                 result[key] = os.environ[key]
     return result
@@ -51,14 +54,23 @@ def stop_group(process):
     process.wait()
 
 
-def run_step(step_id, command, log_dir, timeout=STEP_TIMEOUT):
+def run_step(step_id, command, log_dir, timeout=STEP_TIMEOUT, preserve_session=False):
     started = time.monotonic()
     stdout_path, stderr_path = log_dir / (step_id + ".stdout"), log_dir / (step_id + ".stderr")
     result = {"stepId": step_id, "status": "failed", "exitCode": None,
               "stdoutBytes": 0, "stderrBytes": 0, "logLimitExceeded": False}
+    # Local sudo timestamps are scoped to the original terminal/session.
+    # Bootstrap admin commands need a new process group for cleanup, but must
+    # retain that session. Ordinary diagnostics retain the detached default.
+    process_options = {"start_new_session": not preserve_session}
+    if preserve_session:
+        if sys.version_info >= (3, 11):
+            process_options["process_group"] = 0
+        else:
+            process_options["preexec_fn"] = os.setpgrp
     try:
         process = subprocess.Popen(command, cwd=ROOT, env=environment(log_dir),
-                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, **process_options)
     except OSError:
         result.update(errorCode="step-could-not-start", durationSeconds=round(time.monotonic() - started, 3))
         return result

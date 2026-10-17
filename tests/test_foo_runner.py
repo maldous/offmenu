@@ -31,9 +31,9 @@ class SetupTests(unittest.TestCase):
         install.assert_not_called(); register.assert_not_called(); publish.assert_not_called()
 
     def test_pinned_official_assets(self):
-        self.assertEqual(host.VERSION, "2.338.0")
-        self.assertEqual(host.ASSETS["x86_64"][1], "af4b794c1bc41d73d40535e3fe092a39f9679cd8d965954c2aca25a05ca41d32")
-        self.assertEqual(host.ASSETS["aarch64"][1], "628b4a7258487b80c1d3c221095a7ded349f5ae0175fd3dfab708d07428f041b")
+        self.assertEqual(host.VERSION, "2.337.0")
+        self.assertEqual(host.ASSETS["x86_64"][1], "70920811a4f8ad4328818682bca5c6469c1c942fab52448868071d0063816613")
+        self.assertEqual(host.ASSETS["aarch64"][1], "9b1dc70626422526e3c94767cf024896beb15da5342a3f4819bf2feac13e0393")
 
     def test_scrubbed_environment(self):
         with patch.dict(os.environ, {"GH_TOKEN": "do-not-leak", "SSH_AUTH_SOCK": "/secret/agent", "AWS_SECRET_ACCESS_KEY": "do-not-leak"}):

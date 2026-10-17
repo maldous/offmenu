@@ -13,6 +13,28 @@ This package lets the repository owner install a dedicated GitHub Actions runner
 
 GitHub's [runner setup documentation](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/add-runners) and [security guidance](https://docs.github.com/en/actions/reference/security/secure-use) explain these trust assumptions. [Runner groups](https://docs.github.com/en/actions/how-tos/manage-runners/self-hosted-runners/manage-access) apply to organization-level runners.
 
+## One-command initial bootstrap (recommended)
+
+Run from the reviewed checkout as your ordinary account in an interactive terminal:
+
+```sh
+python3 -B scripts/bootstrap-foo-runner.py --apply --publish --issue 30 \
+  --accept-github-agreement \
+  --expected-head-sha 784ba35b000b54a7443094133e22cfc3f7ca5301 \
+  --expected-run-id 39043749665 \
+  --expected-job-id foo-bootstrap-smoke-20261017-001
+```
+
+This runs all three diagnostics, validates the exact queued smoke request, requests local sudo when needed, creates the dedicated account/directories/service, downloads and checksum-verifies the repository-offered runner v2.337.0, registers only if needed, verifies effective systemd properties, starts the service without enabling it at boot, waits up to 20 minutes for that exact queued run, and posts one sanitized combined result to PR #30. Dependencies stop on failure, with completed stages and real command exit codes retained. Reruns reuse recognized installations and matching registration; conflicts fail closed without deleting or replacing unrelated state.
+
+The `--accept-github-agreement` flag records your acceptance of the [GitHub Customer Agreement](https://github.com/customer-terms) before download/configuration. Registration uses GitHub's original interactive terminal prompt, without capturing its input or output. Obtain a **fresh** short-lived token in your own browser when prompted. Never reuse a token shared in chat, and never put one in command arguments or reports. Existing owner `GH_TOKEN`/`GITHUB_TOKEN` authentication is passed only to `gh` transport, never to admin commands, tests, or runner processes.
+
+Until an actual dataset-only cache has been selected, the bootstrap creates `/srv/offmenu-bootstrap-input` as an empty root-owned 0755 directory. It refuses a pre-existing nonempty or unsafe path. The service exposes that empty directory read-only; the smoke job inventories it and replays repository fixtures. **Success establishes runner transport and fixture execution, not access to the real dataset cache.** A real cache can be configured later after reviewing its exact path. No source file permissions are broadened.
+
+Omit `--apply` for diagnostics only. Omit `--publish` to keep results local. Raw diagnostic logs stay private and bounded locally; registration/sudo prompts are never logged. If publication is uncertain, inspect PR #30 before requesting another post. Read-only GitHub polling retries transient reads within the deadline; mutation and publication failures are never blindly retried. If interrupted after service start, it may remain running; the final report does not claim rollback. Stop it locally with `sudo systemctl stop offmenu-runner.service` if desired.
+
+The sections below document individual stages for inspection and troubleshooting. They are not extra commands required after the complete bootstrap.
+
 ## 1. Check the host from your normal account
 
 Check out the reviewed setup branch/commit on foo. Inspect the scripts before running them.
@@ -54,12 +76,12 @@ sudo -u offmenu-runner -H env -i \
   /usr/bin/python3 -B /usr/local/lib/offmenu-runner/runner_host_setup.py install
 ```
 
-The script chooses the architecture from the actual host, downloads from `github.com/actions/runner`, and verifies the entire archive before extracting it. Pinned initial release: [v2.338.0](https://github.com/actions/runner/releases/tag/v2.338.0), verified against official release-asset digests on 2026-10-17:
+The script chooses the architecture from the actual host, downloads from `github.com/actions/runner`, and verifies the entire archive before extracting it. It copies the verified `bin/runsvc.sh` into the runner root as the dedicated account, matching the official service layout without invoking privileged `svc.sh` or enabling boot. Pinned initial release: [v2.337.0](https://github.com/actions/runner/releases/tag/v2.337.0), verified against official release-asset digests on 2026-10-17:
 
 | Architecture | Official archive | SHA-256 |
 |---|---|---|
-| x86-64 | actions-runner-linux-x64-2.338.0.tar.gz | `af4b794c1bc41d73d40535e3fe092a39f9679cd8d965954c2aca25a05ca41d32` |
-| ARM64 | actions-runner-linux-arm64-2.338.0.tar.gz | `628b4a7258487b80c1d3c221095a7ded349f5ae0175fd3dfab708d07428f041b` |
+| x86-64 | actions-runner-linux-x64-2.337.0.tar.gz | `70920811a4f8ad4328818682bca5c6469c1c942fab52448868071d0063816613` |
+| ARM64 | actions-runner-linux-arm64-2.337.0.tar.gz | `9b1dc70626422526e3c94767cf024896beb15da5342a3f4819bf2feac13e0393` |
 
 An identical recognized installation is left in place. A partial or unrecognized installation is not destroyed or overwritten. Upstream runner auto-updates remain enabled; rerunning this installer never downgrades an auto-updated installation. If installation happens substantially later, review GitHub's then-current supported runner release and its exact official checksum before updating these pins.
 

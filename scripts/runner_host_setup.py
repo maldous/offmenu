@@ -30,12 +30,12 @@ DATA_ROOT = Path("/srv/offmenu-refresh")
 CACHE_VIEW = DATA_ROOT / "cache"
 OUTPUT_ROOT = DATA_ROOT / "outputs"
 SERVICE = "offmenu-runner.service"
-VERSION = "2.338.0"
+VERSION = "2.337.0"
 # Verified against official GitHub release asset digests on 2026-10-17.
 ASSETS = {
-    "x86_64": ("x64", "af4b794c1bc41d73d40535e3fe092a39f9679cd8d965954c2aca25a05ca41d32"),
-    "aarch64": ("arm64", "628b4a7258487b80c1d3c221095a7ded349f5ae0175fd3dfab708d07428f041b"),
-    "arm64": ("arm64", "628b4a7258487b80c1d3c221095a7ded349f5ae0175fd3dfab708d07428f041b"),
+    "x86_64": ("x64", "70920811a4f8ad4328818682bca5c6469c1c942fab52448868071d0063816613"),
+    "aarch64": ("arm64", "9b1dc70626422526e3c94767cf024896beb15da5342a3f4819bf2feac13e0393"),
+    "arm64": ("arm64", "9b1dc70626422526e3c94767cf024896beb15da5342a3f4819bf2feac13e0393"),
 }
 
 
@@ -318,6 +318,21 @@ def safe_extract(archive, dest):
         tf.extractall(dest, members=members)
 
 
+def prepare_service_entrypoint(extracted):
+    # Official svc.sh copies this verified archive member to the runner root.
+    # Reproduce that unprivileged file operation without invoking its privileged
+    # install/enable actions. An unexpected destination is never overwritten.
+    source = extracted / "bin" / "runsvc.sh"
+    destination = extracted / "runsvc.sh"
+    if source.is_symlink() or not source.is_file():
+        fail("verified-runner-service-entrypoint-missing")
+    if destination.exists() or destination.is_symlink():
+        fail("unexpected-root-runner-service-entrypoint")
+    with destination.open("xb") as out:
+        out.write(source.read_bytes())
+    destination.chmod(0o755)
+
+
 def install_runner():
     require_host()
     require_runner_identity()
@@ -333,7 +348,11 @@ def install_runner():
             if RUNNER_DIR.is_symlink() or not marker.is_file():
                 fail("existing-install-unrecognized-no-files-replaced")
             info = json.loads(marker.read_text())
-            if info != {"repository": REPO, "initialVersion": VERSION, "sha256": expected}:
+            legacy = {"x64": "af4b794c1bc41d73d40535e3fe092a39f9679cd8d965954c2aca25a05ca41d32",
+                      "arm64": "628b4a7258487b80c1d3c221095a7ded349f5ae0175fd3dfab708d07428f041b"}
+            recognized = [{"repository": REPO, "initialVersion": VERSION, "sha256": expected},
+                          {"repository": REPO, "initialVersion": "2.338.0", "sha256": legacy[arch]}]
+            if info not in recognized:
                 fail("existing-install-marker-differs-no-files-replaced")
             if not (RUNNER_DIR / "config.sh").is_file() or not (RUNNER_DIR / "runsvc.sh").is_file():
                 fail("existing-install-incomplete-no-files-replaced")
@@ -356,6 +375,7 @@ def install_runner():
             extracted = temp / "runner"
             extracted.mkdir(mode=0o700)
             safe_extract(archive, extracted)
+            prepare_service_entrypoint(extracted)
             (extracted / ".offmenu-install.json").write_text(json.dumps({"repository": REPO, "initialVersion": VERSION, "sha256": expected}) + "\n")
             extracted.rename(RUNNER_DIR)
         print(json.dumps({"status": "installed", "initialVersion": VERSION, "checksumVerified": True}))
