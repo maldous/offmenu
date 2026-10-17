@@ -1,0 +1,111 @@
+{
+  "foods": [
+    {
+      "calories": {
+        "quantity": 0,
+        "sourceId": "synthetic-reference"
+      },
+      "constituents": [
+        {
+          "nutrientId": "p",
+          "quantity": 0,
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "f",
+          "quantity": null,
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "c",
+          "quantity": "TR",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "fi",
+          "quantity": "<0.1",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "s",
+          "quantity": "ND",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "na",
+          "quantity": "NT",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "ca",
+          "quantity": "N",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "fe",
+          "quantity": "-",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "k",
+          "quantity": "unresolved",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "sat",
+          "quantity": "1,5",
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "salt",
+          "quantity": 0,
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "vc",
+          "quantity": 2,
+          "sourceId": "synthetic-reference"
+        },
+        {
+          "nutrientId": "native",
+          "quantity": "TRACE",
+          "sourceId": "unresolved-native-reference"
+        }
+      ],
+      "energy": {
+        "quantity": 0,
+        "sourceId": "synthetic-reference"
+      },
+      "foodId": "0001",
+      "foodName": "Synthetic food A",
+      "langualCodes": [
+        "SYNTHETIC-NOT-A-CODE"
+      ],
+      "portions": [
+        {
+          "portionName": "Synthetic portion",
+          "quantity": 20,
+          "unit": "g"
+        }
+      ],
+      "uri": "https://example.invalid/fixture/0001"
+    },
+    {
+      "calories": {
+        "quantity": null
+      },
+      "constituents": [
+        {
+          "nutrientId": "p",
+          "quantity": null
+        }
+      ],
+      "energy": {},
+      "foodId": "0002",
+      "foodName": "Synthetic food B",
+      "langualCodes": [],
+      "portions": [],
+      "uri": "https://example.invalid/fixture/0002"
+    }
+  ]
+}

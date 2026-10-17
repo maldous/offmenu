@@ -1,0 +1,82 @@
+{
+  "nutrients": [
+    {
+      "euroFirId": "PROT",
+      "name": "Synthetic PROT",
+      "nutrientId": "p",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "FAT",
+      "name": "Synthetic FAT",
+      "nutrientId": "f",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "CHO",
+      "name": "Synthetic CHO",
+      "nutrientId": "c",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "FIBT",
+      "name": "Synthetic FIBT",
+      "nutrientId": "fi",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "SUGAR",
+      "name": "Synthetic SUGAR",
+      "nutrientId": "s",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "NA",
+      "name": "Synthetic NA",
+      "nutrientId": "na",
+      "unit": "mg"
+    },
+    {
+      "euroFirId": "CA",
+      "name": "Synthetic CA",
+      "nutrientId": "ca",
+      "unit": "mg"
+    },
+    {
+      "euroFirId": "FE",
+      "name": "Synthetic FE",
+      "nutrientId": "fe",
+      "unit": "mg"
+    },
+    {
+      "euroFirId": "K",
+      "name": "Synthetic K",
+      "nutrientId": "k",
+      "unit": "mg"
+    },
+    {
+      "euroFirId": "FASAT",
+      "name": "Synthetic FASAT",
+      "nutrientId": "sat",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "NACL",
+      "name": "Synthetic NACL",
+      "nutrientId": "salt",
+      "unit": "g"
+    },
+    {
+      "euroFirId": "VITC",
+      "name": "Synthetic VITC",
+      "nutrientId": "vc",
+      "unit": "mg"
+    },
+    {
+      "euroFirId": "EXPERIMENTAL",
+      "name": "Synthetic EXPERIMENTAL",
+      "nutrientId": "native",
+      "unit": "native-unit"
+    }
+  ]
+}

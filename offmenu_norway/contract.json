@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "offmenu-norway-adapter-contract/1",
+  "sourceId": "matvaretabellen",
+  "releaseId": "2026",
+  "inputFiles": {
+    "en-foods.json": "foods",
+    "nb-foods.json": "foods",
+    "en-nutrients.json": "nutrients",
+    "en-sources.json": "sources"
+  },
+  "canonicalComponents": {
+    "PROT": ["protein", "g"],
+    "FAT": ["fat", "g"],
+    "CHO": ["carbohydrate", "g"],
+    "FIBT": ["fibre", "g"],
+    "SUGAR": ["sugars", "g"],
+    "NA": ["sodium", "mg"],
+    "CA": ["calcium", "mg"],
+    "FE": ["iron", "mg"],
+    "K": ["potassium", "mg"],
+    "FASAT": ["saturatedFat", "g"],
+    "NACL": ["salt", "g"],
+    "VITC": ["vitaminC", "mg"]
+  },
+  "basis": {"amount": 100, "unit": "g", "state": "as-described", "portion": "edible portion"},
+  "license": "Mattilsynet API reuse: source attribution required; see https://www.matvaretabellen.no/api/",
+  "attribution": "Mattilsynet — Matvaretabellen 2026",
+  "scope": "synthetic-fixture-only",
+  "minimumAcquisitionReuseDays": 30,
+  "maximumAssetBytes": 33554432,
+  "maximumBundleBytes": 67108864,
+  "holds": ["historical-source-input-not-enabled", "public-export-not-enabled", "country-coverage-unassessed", "ciqual-separate-pilot", "fineli-access-and-zero-semantics-unchanged", "danish-definition-and-basis-holds-unchanged"]
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "offmenu-norway-repository-verification/1",
+  "scope": "synthetic-only-additive-integration",
+  "baseCommit": "208d7b2dff1a844925996ebbf60278dd627b0bf2",
+  "sourceArtifact": {
+    "revision": 2,
+    "manifest": "docs/evidence/norway-synthetic/artifact-manifest.json",
+    "manifestSha256": "f4d0e72048b3d4d5dee2a5258a7511cca8512060a73c95bf046cd4a31427c5ca",
+    "originalEntriesVerified": 27,
+    "includedEntries": 18,
+    "omittedEntries": 9,
+    "includedEntriesByteIdentical": 17,
+    "testPathOnlyAdjustment": "tests/test_norway_adapter.py uses tests/fixtures/norway-reference."
+  },
+  "implementationPins": [
+    {
+      "bytes": 82,
+      "path": "offmenu_norway/__init__.py",
+      "sha256": "605fb350bd663bababe7ce91542ffa604d6d784010ad54603946222b9f9f18cf"
+    },
+    {
+      "bytes": 22998,
+      "path": "offmenu_norway/adapter.py",
+      "sha256": "b5225d0b93cf191526c311fecdeb2c1c88773a719128dfb349e4a573ac1d1c66"
+    },
+    {
+      "bytes": 1286,
+      "path": "offmenu_norway/contract.json",
+      "sha256": "4c247021c66685e0bdea1ad10e0aea1a31d1403f821207893165dc913687b7ac"
+    }
+  ],
+  "runtime": {
+    "implementation": "CPython",
+    "python": "3.12.14",
+    "zlib": "1.3.2"
+  },
+  "buildKey": "0e39e65eb38e0353abbf54514c8e163a347f5945f2357420f13a233ddf1e3d28",
+  "inputBundleSha256": "75adc03ef4ce4fea22dce0756124e1f9c140e3d80274d08f7a70451f3040968e",
+  "checks": {
+    "focusedTestsPassed": 53,
+    "focusedOptimizedTestsPassed": 53,
+    "additionalIndependentSemanticChecksPassed": 7,
+    "twoFreshCandidatesMatchFinalGoldenBytes": true,
+    "wheelAndSdistContainExactImplementationAndContract": true,
+    "isolatedExtractedWheelImportsAndRenderPass": true,
+    "existingMaterializedBaselineFilesUnchanged": 134,
+    "allOverlayPathsAbsentFrom522FileBaseTree": true
+  },
+  "baselineCompatibility": {
+    "baselinePassed": 253,
+    "combinedPassed": 306,
+    "unchangedSkipped": 1,
+    "unchangedDependencyBlockedMethods": 42,
+    "unchangedModuleImportErrors": 8,
+    "missingExistingOptionalDependencies": [
+      "mwparserfromhell==0.7.2",
+      "jsonschema-rs==0.58.6"
+    ],
+    "newFailures": 0,
+    "fullDefaultSuitePassed": false
+  },
+  "resolvedDefects": [
+    "Contradictory explicit bases are rejected recursively.",
+    "Nonzero quantities and positive bounds cannot underflow into a source zero.",
+    "Python underscore notation remains unresolved source text.",
+    "Synthetic scope is documented as a trusted-caller declaration, not proof of origin or permission."
+  ],
+  "limits": [
+    "Authored synthetic fixture data only; historical scope remains blocked.",
+    "Original acquisition time stays outside content keys and controls the 30-day reuse plan; revalidation never resets it.",
+    "No host access, source acquisition, rights grant, shared-runner integration, common consumer or curation qualification, public acceptance, or production activation.",
+    "No OS network/DNS boundary qualification, hostile-filesystem confinement, or full interpreter-distribution lock.",
+    "Country completeness is unassessed; CIQUAL remains separate; Fineli access/zero and Danish definition/basis/curation holds remain unchanged.",
+    "The fixture script is source-checkout-only; no installed console command is added."
+  ]
+}

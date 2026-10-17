@@ -1,0 +1,12 @@
+{
+  "foods": [
+    {
+      "foodId": "0001",
+      "foodName": "Syntetisk mat A"
+    },
+    {
+      "foodId": "0002",
+      "foodName": "Syntetisk mat B"
+    }
+  ]
+}

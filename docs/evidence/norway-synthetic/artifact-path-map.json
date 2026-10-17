@@ -1,0 +1,271 @@
+{
+  "baseCommit": "208d7b2dff1a844925996ebbf60278dd627b0bf2",
+  "approvedManifestSha256": "f4d0e72048b3d4d5dee2a5258a7511cca8512060a73c95bf046cd4a31427c5ca",
+  "files": [
+    {
+      "sourcePath": "README.md",
+      "sourceBytes": 11617,
+      "sourceSha256": "9966e80520628176abb363c17fea97a096f8a8e132992603798adf5ee3b3f693",
+      "disposition": "omitted",
+      "reason": "Standalone development notes are replaced by the repository guide."
+    },
+    {
+      "sourcePath": "candidate-A/content-manifest.json",
+      "sourceBytes": 2310,
+      "sourceSha256": "1128a82b34bbe54021c3f5be0309b6524c242bfb7ac700009523e41e17667744",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-A/normalized.jsonl.gz",
+      "sourceBytes": 1246,
+      "sourceSha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-A/source-metadata.json",
+      "sourceBytes": 1239,
+      "sourceSha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-B/content-manifest.json",
+      "sourceBytes": 2310,
+      "sourceSha256": "1128a82b34bbe54021c3f5be0309b6524c242bfb7ac700009523e41e17667744",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-B/normalized.jsonl.gz",
+      "sourceBytes": 1246,
+      "sourceSha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-B/source-metadata.json",
+      "sourceBytes": 1239,
+      "sourceSha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "disposition": "omitted",
+      "reason": "Superseded preliminary output; final revision-2 golden candidates are retained."
+    },
+    {
+      "sourcePath": "candidate-v2-A/content-manifest.json",
+      "sourceBytes": 2310,
+      "sourceSha256": "73d467db52724f235f5a89660a9f579c0dbde414f06846a111155deae13d2aac",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/content-manifest.json",
+      "bytes": 2310,
+      "sha256": "73d467db52724f235f5a89660a9f579c0dbde414f06846a111155deae13d2aac",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "candidate-v2-A/normalized.jsonl.gz",
+      "sourceBytes": 1246,
+      "sourceSha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/normalized.jsonl.gz",
+      "bytes": 1246,
+      "sha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "candidate-v2-A/source-metadata.json",
+      "sourceBytes": 1239,
+      "sourceSha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-A/source-metadata.json",
+      "bytes": 1239,
+      "sha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "candidate-v2-B/content-manifest.json",
+      "sourceBytes": 2310,
+      "sourceSha256": "73d467db52724f235f5a89660a9f579c0dbde414f06846a111155deae13d2aac",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/content-manifest.json",
+      "bytes": 2310,
+      "sha256": "73d467db52724f235f5a89660a9f579c0dbde414f06846a111155deae13d2aac",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "candidate-v2-B/normalized.jsonl.gz",
+      "sourceBytes": 1246,
+      "sourceSha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/normalized.jsonl.gz",
+      "bytes": 1246,
+      "sha256": "246d3afdcf54f0386db40170a328cd394651bf2053fa8e207a7c8abe35706455",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "candidate-v2-B/source-metadata.json",
+      "sourceBytes": 1239,
+      "sourceSha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "path": "docs/evidence/norway-synthetic/approved-artifact/candidate-v2-B/source-metadata.json",
+      "bytes": 1239,
+      "sha256": "9308644f609d535f4f525706af87f98bd6022bf09206aa967c52d64c3d38b0e1",
+      "kind": "approved-review-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "fixture-acquisition-evidence.json",
+      "sourceBytes": 208,
+      "sourceSha256": "44bf14e492eaf67919389c80f49d796e57546465a3ac9fc11902307715257a16",
+      "path": "tests/fixtures/norway-acquisition-evidence.json",
+      "bytes": 208,
+      "sha256": "44bf14e492eaf67919389c80f49d796e57546465a3ac9fc11902307715257a16",
+      "kind": "synthetic-operational-evidence",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "fixtures.lock.json",
+      "sourceBytes": 1066,
+      "sourceSha256": "0e39e65eb38e0353abbf54514c8e163a347f5945f2357420f13a233ddf1e3d28",
+      "path": "tests/fixtures/norway.lock.json",
+      "bytes": 1066,
+      "sha256": "0e39e65eb38e0353abbf54514c8e163a347f5945f2357420f13a233ddf1e3d28",
+      "kind": "frozen-synthetic-lock",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "offmenu_norway/__init__.py",
+      "sourceBytes": 82,
+      "sourceSha256": "605fb350bd663bababe7ce91542ffa604d6d784010ad54603946222b9f9f18cf",
+      "path": "offmenu_norway/__init__.py",
+      "bytes": 82,
+      "sha256": "605fb350bd663bababe7ce91542ffa604d6d784010ad54603946222b9f9f18cf",
+      "kind": "implementation",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "offmenu_norway/adapter.py",
+      "sourceBytes": 22998,
+      "sourceSha256": "b5225d0b93cf191526c311fecdeb2c1c88773a719128dfb349e4a573ac1d1c66",
+      "path": "offmenu_norway/adapter.py",
+      "bytes": 22998,
+      "sha256": "b5225d0b93cf191526c311fecdeb2c1c88773a719128dfb349e4a573ac1d1c66",
+      "kind": "implementation",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "offmenu_norway/contract.json",
+      "sourceBytes": 1286,
+      "sourceSha256": "4c247021c66685e0bdea1ad10e0aea1a31d1403f821207893165dc913687b7ac",
+      "path": "offmenu_norway/contract.json",
+      "bytes": 1286,
+      "sha256": "4c247021c66685e0bdea1ad10e0aea1a31d1403f821207893165dc913687b7ac",
+      "kind": "implementation",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "reference/collect-national.py",
+      "sourceBytes": 9061,
+      "sourceSha256": "3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5",
+      "path": "tests/fixtures/norway-reference/collect-national.py",
+      "bytes": 9061,
+      "sha256": "3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5",
+      "kind": "pinned-legacy-reference",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "reference/import-national-tables.py",
+      "sourceBytes": 8953,
+      "sourceSha256": "99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8",
+      "path": "tests/fixtures/norway-reference/import-national-tables.py",
+      "bytes": 8953,
+      "sha256": "99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8",
+      "kind": "pinned-legacy-reference",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "test-results.txt",
+      "sourceBytes": 5832,
+      "sourceSha256": "325d23d63d882d788dbed4b2f70c46ef492bc10946db3425119d143a6fdf8355",
+      "disposition": "omitted",
+      "reason": "Raw standalone test output is summarized in verification-summary.json."
+    },
+    {
+      "sourcePath": "tests/fixtures/norway/en-foods.json",
+      "sourceBytes": 2542,
+      "sourceSha256": "1312499bc9b232c611c5b6b82804b5a92513848b9a0768995346115bc0438a22",
+      "path": "tests/fixtures/norway/en-foods.json",
+      "bytes": 2542,
+      "sha256": "1312499bc9b232c611c5b6b82804b5a92513848b9a0768995346115bc0438a22",
+      "kind": "authored-synthetic-fixture",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "tests/fixtures/norway/en-nutrients.json",
+      "sourceBytes": 1547,
+      "sourceSha256": "ccaba42b324e9d4376eeaf100a75b71ea9fe5922ba225b6be521a2b3525e4517",
+      "path": "tests/fixtures/norway/en-nutrients.json",
+      "bytes": 1547,
+      "sha256": "ccaba42b324e9d4376eeaf100a75b71ea9fe5922ba225b6be521a2b3525e4517",
+      "kind": "authored-synthetic-fixture",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "tests/fixtures/norway/en-sources.json",
+      "sourceBytes": 159,
+      "sourceSha256": "fb573244e2490452aeba90aa0127ca040a6c0bdb14e15979440f9728358af229",
+      "path": "tests/fixtures/norway/en-sources.json",
+      "bytes": 159,
+      "sha256": "fb573244e2490452aeba90aa0127ca040a6c0bdb14e15979440f9728358af229",
+      "kind": "authored-synthetic-fixture",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "tests/fixtures/norway/nb-foods.json",
+      "sourceBytes": 166,
+      "sourceSha256": "8b07f6003eec9fcaec290fb0da983495f9971b15f5df72fddab9a664b77a6f8c",
+      "path": "tests/fixtures/norway/nb-foods.json",
+      "bytes": 166,
+      "sha256": "8b07f6003eec9fcaec290fb0da983495f9971b15f5df72fddab9a664b77a6f8c",
+      "kind": "authored-synthetic-fixture",
+      "byteIdentical": true,
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "tests/test_norway_adapter.py",
+      "sourceBytes": 23781,
+      "sourceSha256": "6f123bb4336b69f09e6b049d49f592289ece0af7cab557d61104de47e14fa9fe",
+      "path": "tests/test_norway_adapter.py",
+      "bytes": 23803,
+      "sha256": "d4442d91c7599ef8fc4542939a8818f24506029d8b2f0266a6014f490fc3f984",
+      "kind": "unit-tests",
+      "byteIdentical": false,
+      "change": "Relocate legacy reference fixture path only.",
+      "disposition": "included"
+    },
+    {
+      "sourcePath": "verification.json",
+      "sourceBytes": 1445,
+      "sourceSha256": "a7b35791dea404142309828408f07cdca771ba9d6b1bf579b93126f318da7086",
+      "disposition": "omitted",
+      "reason": "Standalone verification report is summarized in verification-summary.json."
+    }
+  ],
+  "includedArtifactEntries": 18,
+  "omittedArtifactEntries": 9,
+  "notes": "Paths are original-artifact-relative or repository-relative. The source manifest is retained as provenance; omitted artifacts are not runtime inputs."
+}
