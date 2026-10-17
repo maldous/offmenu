@@ -34,7 +34,7 @@ jobs:
     env:
       # Replace only after the code/fixture/dispatcher commit is independently
       # reviewed and published. This placeholder deliberately prevents execution.
-      TRUSTED_CODE_SHA: 2b81d15b1a658269d215ff1da542ab5e43e7ba04
+      TRUSTED_CODE_SHA: ac04ab98914658bc0443189b3fa04f86ebbc6525
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify trusted revision is configured
