@@ -1,0 +1,224 @@
+diff --git a/dev/wiremock/callback-source-contract.md b/dev/wiremock/callback-source-contract.md
+index 7f89cf2..1c13565 100644
+--- a/dev/wiremock/callback-source-contract.md
++++ b/dev/wiremock/callback-source-contract.md
+@@ -21,6 +21,17 @@ Worker04 owns fragment construction, intent consumption, SDK invocation, URL scr
+ 
+ ## Evidence
+ 
+-New callback-source contract has five focused tests; unchanged base mock validation retains128 tests. Combined run:133passed,0failed. The16original mock files were restored and independently byte-checked against9b31f7d. No fresh Java runtime was started for this pure validator change and no new live06lease exists. Existing9b31 real-Java/Identity/logout receipts remain preserved;05owns19076. Worker04 separately reports4installed-SDK/native9b31tests passed, nativeaudit23requests0unmatched and owned shutdown in its836f7dd candidate; that evidence is owner-reported, not independent acceptance of this new module.
++Initial4397063 had5focused+128base checks(133passed), but independent12 found two strict-input defects. Correction now has9focused+128unchanged base checks:137passed,0failed. New regressions on4397063 gave5passed/4failed; all four pass after correction. The16original mock files were restored and independently byte-checked against9b31f7d. No fresh Java runtime was started for this pure validator change and no new live06lease exists. Existing9b31 real-Java/Identity/logout receipts remain preserved;05owns19076. Worker04 separately reports4installed-SDK/native9b31tests passed, nativeaudit23requests0unmatched and owned shutdown in its836f7dd candidate; that evidence is owner-reported, not independent acceptance of this new module.
+ 
+ Catalogue auxiliary source8f23c3d is frozen outside checkout at `/home/user/src/offmenu-data/worker-06-private-catalogue-20261014/source-8f23c3d`,23951source bytes; its data/index remain referenced, not copied. Historical855715PID was absent and19166closed on pickup. One restored private viewer is owned by06(PID959569,birth2455715,run96fa35b48d7a4abebd0a96fc8392f31d), and serves25135main records before/after the original mock branch switch. Production publication remains cancelled; no Netlify continuation.
++
++
++## C12-01/C12-02 strict-input correction
++
++Actor IDs must be primitive known strings in both exported functions, before property lookup or any other input reflection. Boxed/coercible objects, arrays, symbols and functions are refused without running identity hooks. Callback metadata likewise requires own enumerable data fields `httpStatus` and `localOrigin`; status remains numeric200 and origin a primitive literal-loopback string.
++
++This is a Node fixture-source helper. Proxy inputs are rejected using the native proxy predicate before reflective operations, avoiding proxy traps. Reply fields are inspected as property descriptors, never read through getters. Exactly the four known enumerable own data fields are captured once; hidden/symbol extras and accessors are rejected. Validation compares that captured primitive snapshot with the known actor's native token reply, and output freezes precisely the same captured values. Later mutation of the caller's reply cannot change output. No fragment/storage/session/provider operation is introduced.
++
++Owner12's exact retained independent-boundaries.mjs was run BEFORE correction against4397063:8expected observations, including lifetime3600-to86400, Alice-access-to-Bob-access substitution and4actor coercions yielding mixed pairs. Output is retained in the author's.runtime/c12-before-4397063. Running that unchanged exploit-observation script AFTER correction rejects the first accessor immediately; its old expected-vulnerable assertions therefore terminate rather than reporting an independent corrected PASS. Corrected author regressions prove zero getter/proxy/coercion invocations, mixed-actor rejection, immutable output and normal/null-prototype native record acceptance. Independent12/58 follow-through remains pending on the new immutable pin.
++
++Only the original four additive callback files change. Candidate4397063 and strict native9b31 remain retained in history. All16native mock files/501 mappings/JAR/runtime receipts are unchanged; no new runtime is adopted and no provider certification is claimed. Production STOP remains active.
+diff --git a/dev/wiremock/callback-source-contract.mjs b/dev/wiremock/callback-source-contract.mjs
+index f40f5e4..9611cd5 100644
+--- a/dev/wiremock/callback-source-contract.mjs
++++ b/dev/wiremock/callback-source-contract.mjs
+@@ -1,6 +1,7 @@
+ // Local SDK callback INPUT contract only. No redirect, browser intent storage,
+ // HTTP listener, state/nonce verification, provider consent or session creation.
+ import {ACTORS,identityToken} from './fixtures.mjs';
++import {types} from 'node:util';
+ import {loopbackOrigin} from './adapter.mjs';
+ 
+ export const CALLBACK_SOURCE_CONTRACT=Object.freeze({
+@@ -17,7 +18,23 @@ export const CALLBACK_SOURCE_CONTRACT=Object.freeze({
+  unsupportedBridges:Object.freeze(['Google provider authorize/callback remains 501','browser extension/native bridge contract not agreed','device/health bridges are not HTTP mocks']),
+ });
+ const NATIVE_KEYS=Object.freeze(['access_token','refresh_token','token_type','expires_in']);
+-function actor(id){if(!Object.hasOwn(ACTORS,id))throw Error('Unknown synthetic actor');return ACTORS[id];}
++function actor(id){if(typeof id!=='string'||!Object.hasOwn(ACTORS,id))throw Error('Unknown synthetic actor');return ACTORS[id];}
++
++// Node fixture boundary: property descriptors inspect ordinary records without
++// evaluating accessors. Reject proxies before reflection so their traps cannot
++// execute, and require exactly the named enumerable own data properties.
++function ownDataSnapshot(value,keys,label){
++ if(!value||typeof value!=='object'||types.isProxy(value)||Array.isArray(value))throw Error(label+' object required');
++ const descriptors=Object.getOwnPropertyDescriptors(value),names=Reflect.ownKeys(descriptors);
++ if(names.length!==keys.length||names.some(k=>typeof k!=='string'||!keys.includes(k)))throw Error('Unsupported or ambiguous '+label.toLowerCase()+' fields');
++ const captured=Object.create(null);
++ for(const key of keys){
++  const d=descriptors[key];
++  if(!d||!Object.hasOwn(d,'value')||!d.enumerable)throw Error(label+' requires enumerable own data fields');
++  captured[key]=d.value;
++ }
++ return Object.freeze(captured);
++}
+ 
+ // Caller sends this only through the selected local createOutboundAdapter.
+ // The upstream URL names the existing contract; this function performs no I/O.
+@@ -32,15 +49,18 @@ export function callbackSourceTokenRequest(actorId){
+ // Validate a newly observed strict native token reply before Worker04 composes
+ // its fragment. Matching these fixed values does NOT prove a live session:
+ // native user/refresh checks and revocation remain WireMock's responsibility.
+-export function validateCallbackSourceReply(actorId,reply,{httpStatus,localOrigin}={}){
+- actor(actorId);const origin=loopbackOrigin(localOrigin);
+- if(httpStatus!==200)throw Error('Successful native token response required');
+- if(!reply||typeof reply!=='object'||Array.isArray(reply))throw Error('Native token object required');
+- if(Object.keys(reply).length!==NATIVE_KEYS.length||Object.keys(reply).some(k=>!NATIVE_KEYS.includes(k)))throw Error('Unsupported or ambiguous native token fields');
++export function validateCallbackSourceReply(actorId,reply,options){
++ // Actor binding must precede lookup/reflection/coercion of any other input.
++ actor(actorId);
++ const metadata=ownDataSnapshot(options,['httpStatus','localOrigin'],'Callback metadata');
++ if(metadata.httpStatus!==200)throw Error('Successful native token response required');
++ if(typeof metadata.localOrigin!=='string')throw Error('Primitive loopback origin required');
++ const origin=loopbackOrigin(metadata.localOrigin);
++ const captured=ownDataSnapshot(reply,NATIVE_KEYS,'Native token');
+  const expected=identityToken(actorId);
+- for(const key of NATIVE_KEYS)if(reply[key]!==expected[key])throw Error('Native synthetic token/actor/lifetime mismatch');
++ for(const key of NATIVE_KEYS)if(captured[key]!==expected[key])throw Error('Native synthetic token/actor/lifetime mismatch');
+  return Object.freeze({schema:CALLBACK_SOURCE_CONTRACT.schema,actorId,localOrigin:origin,
+-  tokenFields:Object.freeze(Object.fromEntries(NATIVE_KEYS.map(k=>[k,reply[k]]))),
++  tokenFields:Object.freeze(Object.fromEntries(NATIVE_KEYS.map(k=>[k,captured[k]]))),
+   intentVerification:'Must be performed and consumed by Worker04 before SDK handling',
+   providerAcceptance:false,consent:'unknown',accountLinking:'unknown',
+   currentSessionVerified:false,callbackEndpointStatus:501,
+diff --git a/dev/wiremock/callback-source-contract.test.mjs b/dev/wiremock/callback-source-contract.test.mjs
+index afa20ee..0562a9b 100644
+--- a/dev/wiremock/callback-source-contract.test.mjs
++++ b/dev/wiremock/callback-source-contract.test.mjs
+@@ -33,3 +33,30 @@ test('existing native authorize/callback defaults remain 501 for every scenario'
+  const routes=createMappings().filter(m=>/^identity-(authorize|callback)-/.test(m.name||''));assert.equal(routes.length,14);assert.ok(routes.every(r=>r.response.status===501));
+  assert.equal(CALLBACK_SOURCE_CONTRACT.providerAcceptance,false);assert.ok(Object.isFrozen(CALLBACK_SOURCE_CONTRACT.fragmentAllowedKeys));
+ });
++
++test('C12-01 rejects accessor replies without invoking getters or returning unchecked fields',()=>{
++ for(const key of ['expires_in','access_token']){
++  let reads=0;const reply=identityToken('alice');
++  Object.defineProperty(reply,key,{enumerable:true,get(){reads++;return key==='expires_in'?(reads===1?3600:86400):(reads===1?ACTORS.alice.token:ACTORS.bob.token);}});
++  assert.throws(()=>validateCallbackSourceReply('alice',reply,options));assert.equal(reads,0);
++ }
++});
++test('C12-02 both exports reject coercible/boxed actors without running identity hooks',()=>{
++ let coercions=0;const id={ [Symbol.toPrimitive](){return ++coercions===4?'bob':'alice';}};
++ const reply={...identityToken('alice'),refresh_token:ACTORS.bob.refreshToken};
++ assert.throws(()=>validateCallbackSourceReply(id,reply,options));assert.throws(()=>callbackSourceTokenRequest(id));assert.equal(coercions,0);
++ for(const id of [new String('alice'),['alice'],null,()=> 'alice',Symbol('alice')]){
++  assert.throws(()=>callbackSourceTokenRequest(id));assert.throws(()=>validateCallbackSourceReply(id,identityToken('alice'),options));
++ }
++});
++test('strict own-data snapshots reject proxies/hidden fields and allow native null-prototype records',()=>{
++ let traps=0;const proxy=new Proxy(identityToken('alice'),{ownKeys(target){traps++;return Reflect.ownKeys(target);},get(target,key){traps++;return target[key];},getOwnPropertyDescriptor(target,key){traps++;return Object.getOwnPropertyDescriptor(target,key);}});
++ assert.throws(()=>validateCallbackSourceReply('alice',proxy,options));assert.equal(traps,0);
++ for(const key of ['nonce',Symbol('hidden')]){const reply=identityToken('alice');Object.defineProperty(reply,key,{value:'hidden',enumerable:false});assert.throws(()=>validateCallbackSourceReply('alice',reply,options));}
++ const reply=Object.assign(Object.create(null),identityToken('alice'));const r=validateCallbackSourceReply('alice',reply,options);reply.expires_in=86400;reply.access_token=ACTORS.bob.token;assert.deepEqual(r.tokenFields,identityToken('alice'));
++});
++test('metadata accessors and coercible origins cannot run hooks at the same input boundary',()=>{
++ let hooks=0;const metadata={localOrigin:options.localOrigin};Object.defineProperty(metadata,'httpStatus',{enumerable:true,get(){hooks++;return 200;}});
++ assert.throws(()=>validateCallbackSourceReply('alice',identityToken('alice'),metadata));assert.equal(hooks,0);
++ const localOrigin={toString(){hooks++;return options.localOrigin;}};assert.throws(()=>validateCallbackSourceReply('alice',identityToken('alice'),{httpStatus:200,localOrigin}));assert.equal(hooks,0);
++});
+diff --git a/dev/wiremock/callback-source-verification.json b/dev/wiremock/callback-source-verification.json
+index e4c68e4..a0dc334 100644
+--- a/dev/wiremock/callback-source-verification.json
++++ b/dev/wiremock/callback-source-verification.json
+@@ -1,39 +1,69 @@
+ {
+-  "schema": "offmenu-callback-source-verification/1",
+-  "atUtc": "2026-10-14T11:42:02.681242+00:00",
+-  "baseline": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d",
++  "schema": "offmenu-callback-source-verification/2",
++  "atUtc": "2026-10-14T11:59:00.415505+00:00",
++  "nativeBaseline": "9b31f7d4de21dd30add0c49b038e5ac31413ec5d",
++  "previousCandidate": "4397063e3036db07442947fdf7169885801b5eed",
++  "previousVerificationSha256": "72979272324d24145b0ce63d8f1516204189352e553dde9fd0a8cd32e76834fc",
++  "findingsCorrected": [
++    "C12-01",
++    "C12-02"
++  ],
++  "scope": "same four additive callback files only; original16native files unchanged",
+   "originalMockFilesUnchanged": 16,
+-  "callbackSourceContract": "offmenu-synthetic-sdk-callback-source/1",
+-  "api": "offmenu-mocks/1",
+-  "identitySemantics": "offmenu-identity-session/2",
+-  "unitTests": {
+-    "passed": 133,
++  "before": {
++    "exactReviewerProbe": {
++      "path": "/home/user/src/offmenu-workers/worker-12/worker-12-review/preview-contract-review/owner06-callback-4397063e/independent-boundaries.mjs",
++      "sha256": "8a779c7c261ba2d88633d0a477ff9f50d9d0efd0304f1d97db96b986f3dcb192",
++      "bytes": 4574
++    },
++    "expectedObservationCount": 8,
++    "includesDemonstratedDefects": true,
++    "result": {
++      "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/c12-before-4397063/independent-boundaries.json",
++      "sha256": "f8a77cf1ddd6455fec76397a1ec10eea9ffd1d67c73613b65cb5a6a655e583c4",
++      "bytes": 1425
++    },
++    "authorRegression": {
++      "passed": 5,
++      "failed": 4,
++      "receipt": {
++        "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/c12-before-4397063/regression-before.tap",
++        "sha256": "0a03a93e963e10a6a2b05e7964da3a9cdea4cb6b5ec3b2490275c317bfa1092f",
++        "bytes": 4694
++      }
++    }
++  },
++  "after": {
++    "testsPassed": 137,
+     "failed": 0,
+-    "newFocusedTests": 5,
+-    "log": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/callback-source-unit-20261014.log",
+-    "sha256": "bf5e86c65fba53efb5d99ab4f7ee0c78ef35bfbf6115d88e0c0a890d63a5b1d3"
++    "newFocusedTests": 9,
++    "regressionReceipt": {
++      "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/c12-correction-after.tap",
++      "sha256": "e0ff22c35e578f35e92d55808996430e68bcf49afa4411ec9b21554fc5512d48",
++      "bytes": 6054
++    },
++    "unchangedOriginalExploitProbeOutcome": "first accessor rejected immediately; vulnerable expectation script terminates, not independent corrected acceptance",
++    "unchangedOriginalProbeLog": {
++      "path": "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.runtime/c12-after-original-probe/exact-probe-after.log",
++      "sha256": "16c022766eb6e63e135bca98aaee3febad49de9b021c33372c664e9ddcc1070b",
++      "bytes": 1060
++    },
++    "zeroGetterProxyCoercionInvocationChecks": true,
++    "nativePrimitiveAndNullPrototypePositives": true
+   },
+   "sourceFiles": {
+-    "callback-source-contract.mjs": "916ac88a4ba4cbd27af77b534e62dc7e27dbaf2d5c53d506a871a8418c616e39",
+-    "callback-source-contract.test.mjs": "4312cdea16f450f6f40d44982079cdf57503add1b31ea95a8eb719c7be55def0",
+-    "callback-source-contract.md": "0abccb31882089657ee298c097fb9dcbf469808ed03c6b73d753e245e93442aa"
++    "callback-source-contract.mjs": "e06c7d3bd080399b22e0f30252566e683f4f9b7f0b41be1dd5e5a59649e006ef",
++    "callback-source-contract.test.mjs": "20331ae144fa2cf47f510a6a4d41c6735db8b3cf2f411a202ff1ad8b8807c390",
++    "callback-source-contract.md": "56f393dc6ff0a4fb202dfb5d0748a5d628fe2afd9de0834b97e5213113faf59f"
+   },
+-  "nativeOAuthAuthorizeCallbackStill501": true,
++  "nativeAuthorizeCallback501Unchanged": true,
+   "newHttpEndpoints": 0,
+-  "newRuntimeStartedForMock": false,
+-  "runtime19076Owner": "Worker05",
+-  "callbackFragmentGuardOwner": "Worker04",
++  "newJavaRuntimeStarted": false,
++  "runtime19076Owner": "Worker05; unchanged old9b source",
++  "catalogue": "Frozen source8f/index/data references preserved; no viewer process action in this correction",
+   "realProviderAcceptance": false,
++  "currentSessionProof": false,
+   "consentAndLinking": "unknown",
+-  "independentAcceptance": "pending12/58; owner05freshruntime required",
+-  "catalogueAuxiliary": {
+-    "snapshot": "8f23c3d5026cb40d769bed42ad0b06ed0eb2d68d",
+-    "freezeReceipt": "/home/user/src/offmenu-data/worker-06-private-catalogue-20261014/freeze-receipt.json",
+-    "url": "http://127.0.0.1:19166",
+-    "pid": 959569,
+-    "birthTicks": "2455715",
+-    "records": 25135,
+-    "indexCorpusDependencyCopied": false
+-  },
+-  "sharedMainIndexUnchanged": true
++  "independentAcceptance": "pending existing12/58 exact-pin review",
++  "productionPublication": "STOP remains active"
+ }

@@ -1,0 +1,4 @@
+{
+  "exitCode": 1,
+  "meaning": "Old defect-observation assertion stops at original sparse input because corrected helper rejects it; this expected failure is not a passing regression suite."
+}

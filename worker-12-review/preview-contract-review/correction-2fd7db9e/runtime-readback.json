@@ -1,0 +1,64 @@
+{
+  "checkedUTC": "2026-10-14T11:05:06.151616+00:00",
+  "newLiveIdentity": {
+    "mock": {
+      "pid": 883005,
+      "birthTicks": "2220328",
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "cwd": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock",
+      "port": 19076,
+      "argv": [
+        "java",
+        "-jar",
+        "/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar",
+        "--bind-address",
+        "127.0.0.1",
+        "--port",
+        "19076",
+        "--root-dir",
+        "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock/dev/wiremock/.runtime/run-19076-a6368be8-471a-4c83-ae14-dde46eda20d3",
+        "--disable-http2-plain",
+        ""
+      ],
+      "liveIdentityMatches": true,
+      "statusResponseSHA256": "471e23cf84ac82baaee9d95cdb96148a0eef5fb4330a13552f52165f5cc92c48",
+      "sourceCommit": null,
+      "recordedQualifiedAt": "2026-10-14T10:55:31.662Z"
+    },
+    "preview": {
+      "pid": 883879,
+      "birthTicks": "2236138",
+      "bootId": "2d41e7a9-0baa-4e0c-afc8-c6966a8b6f5d",
+      "cwd": "/home/user/src/offmenu-workers/worker-05",
+      "port": 18796,
+      "argv": [
+        "node",
+        "dev-server.mjs",
+        ""
+      ],
+      "liveIdentityMatches": true,
+      "statusResponseSHA256": "46dcbb71a4c06208eb895e5ff9eac3e1378b712e2ad59e06d102a9ff1c34e5b8",
+      "sourceCommit": "2fd7db9e54dc93752f4973556bdbb59507f82118",
+      "recordedQualifiedAt": null
+    }
+  },
+  "descriptorSHA256": "38a042e49a39b3b5c22c5b2be035aedc9a9477770348d12776e0140e71129574",
+  "qualificationSHA256": "45ae5357b45958f5ea1a517f501a3b9125184819438310fdcb5d5aa8d7e56397",
+  "executionEvidence": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/mock/dev/wiremock/.runtime/run-19076-a6368be8-471a-4c83-ae14-dde46eda20d3/identity-execution.json",
+    "sha256": "1020430d071de852919231fce08d9eb77fe7a3f1a2c8b28d0cc176fbe12232c3"
+  },
+  "resetAndAuditHashesMatch": true,
+  "jarVersion": "3.13.2",
+  "jarSHA512": "1d6f6bb0511058dc1a912b43e320e871e8c9515ba691f6de1cc003cdead6b1f89ca03249450a0cda1b3de91f08ee1ec716eddb22a0e38d3de13365b003cb19ee",
+  "inputSHA256": "4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b",
+  "applicationArtifact": {
+    "path": "/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/app/dist/worker.mjs",
+    "sha256": "608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2"
+  },
+  "recordedIdentityAssertions": 176,
+  "recordedResetAssertions": 2,
+  "qualificationRerunByReviewer": false,
+  "oldRuntimesUntouched": true,
+  "noStateWritingFlowRequests": true
+}

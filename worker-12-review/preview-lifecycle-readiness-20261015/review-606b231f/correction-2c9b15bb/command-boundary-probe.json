@@ -1,0 +1,13 @@
+{
+  "sourcePin": "2c9b15bbd828de95752fa32343a4f5fb43ed147e",
+  "pid": 1470549,
+  "actualEntryPoint": "/home/user/src/offmenu-workers/worker-12/worker-12-review/preview-lifecycle-readiness-20261015/review-606b231f/correction-2c9b15bb/independent-command-probe.mjs",
+  "inertRunnerArgument": "/tmp/worker12-lifecycle-fix-xvmtkrdx/worker05-lifecycle/runner.mjs",
+  "actualRunner": false,
+  "liveLeaseAdmitted": false,
+  "controlDecision": "refused",
+  "controlExecuted": false,
+  "wrongBirthRefused": true,
+  "wrongLeaseRefused": true,
+  "scope": "Only this reviewer Node process/read-only pinned fixture; no existing PID or actual control operation"
+}

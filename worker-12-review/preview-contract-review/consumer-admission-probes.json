@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "name": "rejecting admission callback prevents every four-group entry request",
+      "gates": 4,
+      "requests": 0,
+      "passedFlows": 0
+    },
+    {
+      "name": "external target rejected",
+      "requests": 0
+    },
+    {
+      "name": "missing admission callback rejected",
+      "requests": 0
+    }
+  ],
+  "scope": "No real or fake auth responses; zero network requests; no flow acceptance"
+}

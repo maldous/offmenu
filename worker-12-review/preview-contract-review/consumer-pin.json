@@ -1,0 +1,7 @@
+{
+  "candidate": "e8c3e40e8b518681671392712b7f5661a1f4a4bf",
+  "selectedFileHashes": {
+    "scripts/combined-dev-http-checks.mjs": "309b51de3507b44e732dd4614921652678c6e73a3a2726676a16520dfdbf0db8",
+    "docs/combined-dev-flow-acceptance.md": "b90baa6c238905d9ced183133d02932f2f50d1077445bfd1c32e1fef7c24123d"
+  }
+}

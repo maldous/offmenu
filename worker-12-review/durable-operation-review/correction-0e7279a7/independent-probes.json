@@ -1,0 +1,80 @@
+[
+  {
+    "name": "D12-01 resolution: reordered correct scope ACK acknowledges",
+    "passed": true,
+    "observed": {
+      "status": "acknowledged",
+      "operationId": "deduct1"
+    },
+    "semanticScopeMatches": true
+  },
+  {
+    "name": "canonical correct ACK succeeds positive control",
+    "passed": true,
+    "sends": 1
+  },
+  {
+    "name": "D12-02 resolution: hidden hook rejected without invocation or persistence",
+    "passed": true,
+    "calls": 0,
+    "persisted": false,
+    "sends": 0
+  },
+  {
+    "name": "D12-02 resolution: accessor rejected without invocation",
+    "passed": true,
+    "reads": 0,
+    "persisted": false
+  },
+  {
+    "name": "positive benign reserved JSON fields survive capture and send",
+    "passed": true,
+    "payloadPreserved": true
+  },
+  {
+    "name": "extra scope field rejects transport and explicit ACK",
+    "passed": true
+  },
+  {
+    "name": "explicit reordered scope reconciliation positive",
+    "passed": true
+  },
+  {
+    "name": "negative mismatched accountId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "negative mismatched resourceId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "negative mismatched grantId acknowledgement",
+    "passed": true
+  },
+  {
+    "name": "storage uncertainty commit failure never transports",
+    "passed": true,
+    "sends": 0
+  },
+  {
+    "name": "expired unknown FIFO evidence survives and explicit ACK releases successor",
+    "passed": true,
+    "sends": 2
+  },
+  {
+    "name": "revoke commit failure is reported; in-memory instance refuses later sends",
+    "passed": true,
+    "durableRecordRevoked": false,
+    "limitation": "failed durable revocation is not a persisted tombstone; restart must obey new-grant/remote authorization contract"
+  },
+  {
+    "name": "acknowledgement save failure preserves same-ID unknown replay",
+    "passed": true,
+    "sends": 2
+  },
+  {
+    "name": "simultaneous calls on one instance serialize",
+    "passed": true,
+    "sends": 1
+  }
+]

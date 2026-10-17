@@ -1,0 +1,171 @@
+diff --git a/docs/interactive-preview-owner05/contract.md b/docs/interactive-preview-owner05/contract.md
+index aae337c..889210e 100644
+--- a/docs/interactive-preview-owner05/contract.md
++++ b/docs/interactive-preview-owner05/contract.md
+@@ -37,3 +37,11 @@ Actual execution evidence is mandatory for all qualified adapter admission, incl
+ Descriptor qualifiedAt must be a finite string timestamp, at or after the mock qualification and no later than the actual current same-host clock (zero future tolerance). An explicitly supplied descriptor expiry must be finite and unexpired. These checks repeat before every forwarded request; no implicit TTL or new qualification date is invented for an older live mock. Expected root grant/action set and author pins are frozen in producer code; those values and hashes identify a registered task binding, not a signature or human-approval proof.
+ 
+ The fresh producer process reuses unchanged input/app bytes and the preserved actual mock19076 execution/reset/audit packet. No duplicate Identity qualification execution is needed for this validation-only correction. Both earlier app/mock generations, their source labels and state remain preserved; neither is claimed to load this correction. Independent12 review must precede58 state-writing acceptance.
++
++## Root-selected central7820 / mockbe166 preparation
++
++After independent13/08 review, root selected02 7820e0a82583a05b21f9923ac050e007a7265210 (tree4f8546f80d1a23b371321c5fa4d96fca2f852e2a) and06 be166bb61483825498094d496e2caed9d8b775bb after12/58 pure-boundary review. The new app is built from exact Git inputs including public mjs modules; selected mock is the fresh owned19077 preparation, whose regular source manifest/hash is independently bound. The new input manifest references that physical mock root separately from the app overlay; no historical mock is adopted.
++
++Native19077 actual176Identity+2reset and28callback-source/session assertions are retained with original completedAt and native audit/reset evidence. The interactive-format Identity receipt references this original execution; it does not claim another execution. The loader requires selected callback execution/source/process/audit binding as well as the priorP12 admission/chronology checks. Per-request checks preserve that binding. Central871 successor is not selected or wired; no836f is copied. Arabic376translated/2318missing remains explicit. ProductionSTOP.
++
++On this pickup, old18797 PID930520 was absent, despite its retained ready receipt. Its receipt and synthetic state are preserved as historical evidence, not live readiness; no stop/relabel was performed. New launch uses an exclusive fresh run/state and new process identity. Older mock identities are reported only after current readback. Independent12/58 changed-composition qualification remains required before combined acceptance.
+diff --git a/interactive-preview.mjs b/interactive-preview.mjs
+index dfb58e3..c48ce9b 100644
+--- a/interactive-preview.mjs
++++ b/interactive-preview.mjs
+@@ -6,8 +6,8 @@ import {createHash,randomUUID} from 'node:crypto';
+ import {pathToFileURL,fileURLToPath} from 'node:url';
+ import {Response as WorkerResponse} from 'miniflare';
+ import {ownerThread,sourceRoot,externalRoot,processBirth,guardedOutbound,initializeCandidateSchema} from './dev-lifecycle.mjs';
+-export const inputPins=Object.freeze({'02':'29f73fea7e6a7b8286c1e07ef20787a001e5ef2a','03':'e1de8e839954905d82f939730ac5ea79412bc805','05':'8dc49b2b3683f2532ee4e3581d105c446f6f575e','06':'9b31f7d4de21dd30add0c49b038e5ac31413ec5d'});
+-const base='908ca373dfc918f2e33fd5e44260879577bed5c5';
++export const inputPins=Object.freeze({'02':'7820e0a82583a05b21f9923ac050e007a7265210','03':'e1de8e839954905d82f939730ac5ea79412bc805','05':'8dc49b2b3683f2532ee4e3581d105c446f6f575e','06':'be166bb61483825498094d496e2caed9d8b775bb'});
++const base='5f5bdb6ae716cbf80fab1e174d1af2e354468ead';
+ export const cleanEnv=()=>Object.fromEntries(Object.entries(process.env).filter(([k])=>!k.startsWith('GIT_')));
+ const git=(...args)=>execFileSync('git',args,{cwd:sourceRoot,env:cleanEnv(),maxBuffer:32*1024*1024});
+ const hash=(data,algorithm='sha256')=>createHash(algorithm).update(data).digest('hex');
+@@ -22,7 +22,7 @@ export function validateTaskAdmission(a,m){
+ }
+ function nativeEqual(a,b){return ['schemaVersion','pid','bootId','birthTicks','port','jar','jarSha512','root','cwd','token','version','mappingsSha256','startedAt'].every(k=>a[k]===b[k]);}
+ export async function validateQualification(r,m,{live=true}={}){
+- const c=r.custody,baseRoot=path.join(m.root,'mock');
++ const c=r.custody,baseRoot=m.mockRoot||path.join(m.root,'mock');
+  requireThat(c&&c.schemaVersion===2&&Number.isInteger(c.pid)&&c.pid>1&&c.cwd===baseRoot&&Number.isInteger(c.port)&&c.port>=1024&&c.port<=65535&&c.root.startsWith(path.join(baseRoot,'dev/wiremock/.runtime',`run-${c.port}-`))&&path.resolve(c.root)===c.root,'native qualification root/process shape');
+  requireThat(r.nativeCustody?.path===path.join(c.root,'custody.json')&&sha(r.nativeCustody.path)===r.nativeCustody.sha256,'native qualification reference hash');
+  const native=JSON.parse(readFileSync(r.nativeCustody.path));requireThat(nativeEqual(native,c),'declared custody differs from immutable native record');
+@@ -45,6 +45,14 @@ export async function validateQualification(r,m,{live=true}={}){
+   requireThat(e.schema==='offmenu-owner05-identity-execution/1'&&e.ownerThread===ownerThread&&e.sourceCommit===inputPins['06']&&nativeEqual(e.custody,c)&&e.validator.path===validatorPath&&e.validator.sha256===vf.sha256&&sha(validatorPath)===vf.sha256&&JSON.stringify(e.identity)===JSON.stringify(r.identity)&&JSON.stringify(e.reset)===JSON.stringify(r.reset)&&JSON.stringify(e.resetCheck)===JSON.stringify(r.resetCheck)&&Date.parse(e.completedAt)>=Date.parse(reset.at)&&Date.parse(e.completedAt)<=qualified,'qualification versus actual test/source/process evidence');
+  }
+ 
++
++ if(m.mockRoot){
++  requireThat(r.selectedExecution?.path===path.join(c.root,'qualification-execution.json')&&sha(r.selectedExecution.path)===r.selectedExecution.sha256,'required selected native callback execution');
++  const x=JSON.parse(readFileSync(r.selectedExecution.path)),cf=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/callback-source-contract.mjs');
++  requireThat(x.schema==='offmenu-owner05-selected-mock-execution/1'&&x.sourceCommit===inputPins['06']&&x.ownerThread===ownerThread&&nativeEqual(x.custody,c)&&JSON.stringify(x.identity)===JSON.stringify(r.identity)&&JSON.stringify(x.reset)===JSON.stringify(r.reset)&&JSON.stringify(x.resetCheck)===JSON.stringify(r.resetCheck)&&x.callback.assertions===28&&x.callback.providerAcceptance===false&&Date.parse(x.completedAt)<=qualified&&sha(path.join(m.mockRoot,cf.path))===cf.sha256,'selected callback execution/source/process binding');
++  requireThat(sha(x.audit.receipt)===x.audit.sha256,'selected native audit hash');const xa=JSON.parse(readFileSync(x.audit.receipt));requireThat(nativeEqual(xa.custody,c)&&xa.operation==='audit'&&xa.result.unmatched.length===0&&Date.parse(xa.at)>=Date.parse(reset.at)&&Date.parse(xa.at)<=Date.parse(x.completedAt),'selected native audit custody/time/unmatched');
++ }
++
+  if(live){
+   const birth=processBirth(c.pid);requireThat(birth.bootId===c.bootId&&birth.startTicks===c.birthTicks&&readlinkSync(`/proc/${c.pid}/cwd`)===c.cwd,'live native boot/birth/cwd');
+   const hz=Number(execFileSync('getconf',['CLK_TCK'],{env:cleanEnv(),encoding:'utf8'}));const boot=Number(readFileSync('/proc/stat','utf8').match(/^btime (\d+)$/m)?.[1]);const actualBirth=(boot+Number(c.birthTicks)/hz)*1000;
+@@ -54,7 +62,8 @@ export async function validateQualification(r,m,{live=true}={}){
+ }
+ 
+ const put=async(file,bytes)=>{await mkdir(path.dirname(file),{recursive:true});await writeFile(file,bytes,{flag:'wx'});};
+-export async function buildInteractive(){
++export async function buildInteractive({mockPreparation}={}){
++ const selectedMockRoot=mockPreparation?verifyMockPreparation(mockPreparation).root:null;
+  const root=path.join(externalRoot,'workers/worker-05/interactive',randomUUID());await mkdir(root,{recursive:true});
+  const files=[];let inputBytes=0;
+  async function sourceFile(part,pin,name,materialize=true){
+@@ -66,10 +75,10 @@ export async function buildInteractive(){
+  const assetsNames=['index.html','style.css','scanner-licenses.txt','recipes.json','afcd-nutrient-details.json','icon.svg','manifest.webmanifest','manifest-ar.webmanifest','data-workspace.html'];
+  const selected=new Set(assetsNames.filter(f=>!['recipes.json','afcd-nutrient-details.json'].includes(f)).map(f=>'public/'+f));
+  for(const line of git('ls-tree','-r','--name-only',inputPins['02']).toString().split('\n')){
+-  if(selected.has(line)||/^(cloud|corpus)\/.*\.(mjs|sql)$/.test(line)||/^public\/.*\.js$/.test(line)||/^netlify-return\/.*\.(js|html|css)$/.test(line)||/^public\/locales\/(en|ar)\.json$/.test(line)||line==='public/recipe-ingredient-aliases.json'||line==='research/manifest.json')await sourceFile('app',inputPins['02'],line);
++  if(selected.has(line)||/^(cloud|corpus)\/.*\.(mjs|sql)$/.test(line)||/^public\/.*\.(js|mjs)$/.test(line)||/^netlify-return\/.*\.(js|html|css)$/.test(line)||/^public\/locales\/(en|ar)\.json$/.test(line)||line==='public/recipe-ingredient-aliases.json'||line==='research/manifest.json')await sourceFile('app',inputPins['02'],line);
+  }
+  await sourceFile('app',inputPins['02'],'package.json');await sourceFile('app',inputPins['02'],'package-lock.json');await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'app/node_modules'),'dir');
+- for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs','identity-validation.mjs','identity-verification.json'])await sourceFile('mock',inputPins['06'],'dev/wiremock/'+name);
++ for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs','identity-validation.mjs','identity-verification.json','callback-source-contract.mjs','callback-source-contract.md','callback-source-verification.json'])await sourceFile('mock',inputPins['06'],'dev/wiremock/'+name);
+  await sourceFile('mock',inputPins['06'],'package.json');await sourceFile('mock',inputPins['06'],'package-lock.json');await symlink(path.join(sourceRoot,'node_modules'),path.join(root,'mock/node_modules'),'dir');
+  await sourceFile('audit',inputPins['03'],'scripts/verify-uiux-browser.mjs');await sourceFile('audit',inputPins['03'],'tests-uiux/dom-audit.mjs');
+  await put(path.join(root,'audit/package.json'),'{"type":"module","private":true}\n');
+@@ -88,18 +97,24 @@ export async function buildInteractive(){
+  await put(path.join(root,'app/cloud/generated.mjs'),generated);
+  const compiled=await build({entryPoints:[path.join(root,'app/cloud/generated.mjs')],bundle:true,minify:true,write:false,format:'esm',platform:'browser'});const artifact=path.join(root,'app/dist/worker.mjs');await put(artifact,compiled.outputFiles[0].contents);
+  const trees=Object.fromEntries(Object.entries(inputPins).map(([k,p])=>[k,git('rev-parse',p+'^{tree}').toString().trim()]));
+- const manifest={schema:'offmenu-owner05-private-inputs/1',root,base,pins:inputPins,trees,files,inputBytes,compositionSha256:hash(JSON.stringify({base,pins:inputPins,trees,files})),artifact:{path:artifact,sha256:sha(artifact)},schemas:Object.fromEntries(['cloud/schema.sql','cloud/catalogue-schema.sql'].map(f=>[f,sha(path.join(root,'app',f))])),externalCorporaCopied:false,shippedAppAssets:'Recipes/nutrient-detail bytes are build inputs from the selected existing app Git blobs, not acquired or materialized external corpora.',scannerDependency:{path:path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'),sha256:sha(path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'))},dependencies:await readlinkSync(path.join(sourceRoot,'node_modules'))};
++ const manifest={schema:'offmenu-owner05-private-inputs/1',root,mockRoot:selectedMockRoot,mockPreparation:mockPreparation||null,base,pins:inputPins,trees,files,inputBytes,compositionSha256:hash(JSON.stringify({base,pins:inputPins,trees,files})),artifact:{path:artifact,sha256:sha(artifact)},schemas:Object.fromEntries(['cloud/schema.sql','cloud/catalogue-schema.sql'].map(f=>[f,sha(path.join(root,'app',f))])),externalCorporaCopied:false,shippedAppAssets:'Recipes/nutrient-detail bytes are build inputs from the selected existing app Git blobs, not acquired or materialized external corpora.',scannerDependency:{path:path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'),sha256:sha(path.join(sourceRoot,'node_modules/zxing-wasm/dist/reader/zxing_reader.wasm'))},dependencies:await readlinkSync(path.join(sourceRoot,'node_modules'))};
+  const file=path.join(root,'inputs.json');await put(file,JSON.stringify(manifest,null,2)+'\n');return {path:file,sha256:sha(file),root,artifact:manifest.artifact,compositionSha256:manifest.compositionSha256};
+ }
++function verifyMockPreparation(ref){
++ requireThat(ref&&path.isAbsolute(ref.path)&&sha(ref.path)===ref.sha256,'selected mock preparation hash');
++ const p=JSON.parse(readFileSync(ref.path));requireThat(p.schema==='offmenu-owner05-selected-mock-inputs/1'&&p.ownerThread===ownerThread&&p.sourceOwner==='06'&&p.sourceCommit===inputPins['06']&&path.resolve(p.root)===p.root&&p.root.startsWith(path.join(externalRoot,'workers/worker-05/mock-preparation')+'/'),'selected mock preparation identity');
++ for(const f of p.files){requireThat(!path.isAbsolute(f.path)&&!f.path.split('/').includes('..')&&sha(path.join(p.root,f.path))===f.sha256&&hash(git('cat-file','blob',f.blob))===f.sha256&&git('rev-parse',`${p.sourceCommit}:${f.path}`).toString().trim()===f.blob,'selected mock preparation source');}return p;
++}
+ export function verifyInputs(ref){
+  requireThat(ref&&path.isAbsolute(ref.path)&&sha(ref.path)===ref.sha256,'input manifest hash');const m=JSON.parse(readFileSync(ref.path));
++ if(m.mockRoot)requireThat(verifyMockPreparation(m.mockPreparation).root===m.mockRoot,'separate owned mock source root binding');
+  requireThat(m.schema==='offmenu-owner05-private-inputs/1'&&m.root.startsWith(path.join(externalRoot,'workers/worker-05/interactive')+'/')&&path.resolve(m.root)===m.root&&JSON.stringify(m.pins)===JSON.stringify(inputPins),'owner/input binding');
+  for(const f of m.files){requireThat(['app','mock','audit','producer-input'].includes(f.part)&&f.commit===inputPins[{'app':'02','mock':'06','audit':'03','producer-input':'05'}[f.part]]&&!path.isAbsolute(f.path)&&!f.path.split('/').includes('..'),'input path/pin');requireThat(hash(git('cat-file','blob',f.blob))===f.sha256&&git('rev-parse',`${f.commit}:${f.path}`).toString().trim()===f.blob,'input Git blob binding');if(f.materialized)requireThat(sha(path.join(m.root,f.part,f.path))===f.sha256,'materialized input changed');}
+  requireThat(m.compositionSha256===hash(JSON.stringify({base:m.base,pins:m.pins,trees:m.trees,files:m.files}))&&sha(m.artifact.path)===m.artifact.sha256,'composition/artifact hash');return m;
+ }
+ export async function startOwnedMock(ref,port=19075){
+  requireThat(process.env.CODEX_THREAD_ID===ownerThread,'actual native owner session');
+- const m=verifyInputs(ref),runtime=path.join(m.root,'mock/dev/wiremock/runtime.mjs'),jar='/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar';
++ const m=verifyInputs(ref),runtime=path.join(m.mockRoot||path.join(m.root,'mock'),'dev/wiremock/runtime.mjs'),jar='/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar';
+  const lock=JSON.parse(readFileSync(path.join(m.root,'mock/dev/wiremock/runtime-lock.json')));requireThat(hash(readFileSync(jar),'sha512')===lock.sha512,'retained JAR checksum');
+  const log=path.join(m.root,`mock-start-${port}-${randomUUID()}.log`),{open}=await import('node:fs/promises');const fd=await open(log,'wx');
+  const proc=spawn(process.execPath,[runtime,'start',String(port),jar],{cwd:path.join(m.root,'mock'),env:cleanEnv(),stdio:['ignore',fd.fd,fd.fd]});proc.once('exit',()=>fd.close());
+@@ -130,8 +145,8 @@ export async function loadInteractive(env=process.env,{probe=true}={}){
+  requireThat(sha(d.mock.path)===d.mock.sha256,'owned mock receipt hash');const receipt=JSON.parse(readFileSync(d.mock.path));requireThat(receipt.ownerThread===ownerThread&&receipt.sourceOwner==='06'&&receipt.sourceCommit===inputPins['06']&&receipt.status==='qualified-live'&&receipt.identity.assertions===176&&receipt.resetCheck.assertions===2,'actual owned Java qualification');
+  validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:probe});validateDescriptorTime(d,receipt);
+  if(!probe)return {descriptor:d,descriptorSha256:ref.sha256,qualifiedContext:'Dry-run only; live runtime not probed'};
+- const runtime=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/runtime.mjs'))),adapter=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/fixtures.mjs')));
+- const check=async()=>{validateDescriptorTime(d,receipt);validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:true});requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
++ const runtime=await import(pathToFileURL(path.join(m.mockRoot||path.join(m.root,'mock'),'dev/wiremock/runtime.mjs'))),adapter=await import(pathToFileURL(path.join(m.mockRoot||path.join(m.root,'mock'),'dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.mockRoot||path.join(m.root,'mock'),'dev/wiremock/fixtures.mjs')));
++ const check=async()=>{validateDescriptorTime(d,receipt);validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:true});requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===(m.mockRoot||path.join(m.root,'mock'))&&receipt.custody.root.startsWith(path.join(m.mockRoot||path.join(m.root,'mock'),'dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.mockRoot||path.join(m.root,'mock'),f.path))===f.sha256,'mock source changed');}};
+  await check();const original=adapter.createOutboundAdapter({wiremockOrigin:`http://127.0.0.1:${receipt.custody.port}`,scenario:'success'});
+  const guarded=guardedOutbound({adapter:original,contractFor:adapter.contractFor,check});
+  const service=async request=>{const u=new URL(request.url);if(u.hostname==='offmenu-accounts.netlify.app'&&u.pathname.startsWith('/.netlify/identity/')){const suffix=u.pathname.slice('/.netlify/identity/'.length);if(!((request.method==='GET'&&['settings','user'].includes(suffix))||(request.method==='POST'&&['token','logout'].includes(suffix))))return WorkerResponse.json({error:'DEV_AUTH_FLOW_BLOCKED',synthetic:true},{status:501,headers:{'X-OffMenu-Dev-Mock':'wiremock'}});}return guarded(request);};
+diff --git a/tests-dev/interactive-preview.test.mjs b/tests-dev/interactive-preview.test.mjs
+index 5e7518b..2e5aebd 100644
+--- a/tests-dev/interactive-preview.test.mjs
++++ b/tests-dev/interactive-preview.test.mjs
+@@ -5,8 +5,8 @@ import {tmpdir} from 'node:os';
+ import path from 'node:path';
+ import {createHash} from 'node:crypto';
+ import {verifyInputs,loadInteractive,inputPins,cleanEnv} from '../interactive-preview.mjs';
+-const root='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383';
+-const ref={path:root+'/inputs.json',sha256:'4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b'};
++const root='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b';
++const ref={path:root+'/inputs.json',sha256:'12f793505b4255424030bcbb49a20e4ef0c50ea234c6cc68b821151ab7a8ae6d'};
+ const hash=b=>createHash('sha256').update(b).digest('hex');
+ test('exact private immutable input packet verifies, wrong hash refuses, Git overrides stripped',()=>{
+  const m=verifyInputs(ref);assert.equal(m.pins['02'],inputPins['02']);assert.equal(m.externalCorporaCopied,false);assert.ok(m.inputBytes<16*1024*1024);
+@@ -14,7 +14,7 @@ test('exact private immutable input packet verifies, wrong hash refuses, Git ove
+  process.env.GIT_INDEX_FILE='/synthetic-do-not-use';assert.equal(cleanEnv().GIT_INDEX_FILE,undefined);delete process.env.GIT_INDEX_FILE;
+ });
+ test('invalid owner/grant/receipt/composition pins fail before installing a mock adapter',async()=>{
+- const original=JSON.parse(readFileSync(root+'/composition-883005.json'));
++ const original=JSON.parse(readFileSync(root+'/composition-1040246.json'));
+  const dir=mkdtempSync(path.join(tmpdir(),'preview05-negative-'));
+  try{
+   for(const change of [d=>d.ownerThread='wrong',d=>d.sourceRoot='/wrong',d=>d.pins['06']='a'.repeat(40),d=>d.authority.boundSession='wrong',d=>d.authority.actualSuppliedControls.mandatoryReviewer='disabled',d=>d.mock.sha256='a'.repeat(64),d=>d.app.artifact.sha256='a'.repeat(64)]){
+diff --git a/tests-dev/receipt-binding.test.mjs b/tests-dev/receipt-binding.test.mjs
+index 6f49fd4..477d3ed 100644
+--- a/tests-dev/receipt-binding.test.mjs
++++ b/tests-dev/receipt-binding.test.mjs
+@@ -5,8 +5,8 @@ import {createHash} from 'node:crypto';
+ import {tmpdir} from 'node:os';
+ import path from 'node:path';
+ import {loadInteractive} from '../interactive-preview.mjs';
+-const packet='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383';
+-const original=JSON.parse(readFileSync(packet+'/composition-883005.json'));
++const packet='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/396ff19a-bf3a-4833-86e8-71aa5d45d94b';
++const original=JSON.parse(readFileSync(packet+'/composition-1040246.json'));
+ const hash=b=>createHash('sha256').update(b).digest('hex');
+ async function altered(mutator){const dir=mkdtempSync(path.join(tmpdir(),'owner05-binding-'));try{const d=structuredClone(original);await mutator(d,dir);const b=JSON.stringify(d),f=path.join(dir,'descriptor.json');writeFileSync(f,b);return await loadInteractive({OFFMENU_DEV_INTERACTIVE:f,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});}finally{rmSync(dir,{recursive:true});}}
+ test('P12-01 refuses unrelated task, empty grant and expanded non-fixture actions',async()=>{
+@@ -34,9 +34,13 @@ test('descriptor timestamps reject absent/invalid/future/before-mock and explici
+  for(const date of [undefined,null,'invalid','2000-01-01T00:00:00Z','2099-01-01T00:00:00Z'])await assert.rejects(alteredFresh(d=>d.qualifiedAt=date),/descriptor qualification/);
+  for(const date of ['invalid','2000-01-01T00:00:00Z'])await assert.rejects(alteredFresh(d=>d.expiresAt=date),/expired descriptor/);
+ });
+-test('legacy packet is preserved but cannot admit a qualified adapter without execution evidence',async()=>{
+- await assert.rejects(loadInteractive({OFFMENU_DEV_INTERACTIVE:packet+'/composition-live.json',OFFMENU_DEV_INTERACTIVE_SHA256:hash(readFileSync(packet+'/composition-live.json'))}),/required actual Identity execution reference/);
++test('legacy packet is preserved but cannot be relabelled as the new selected composition',async()=>{
++ await assert.rejects(loadInteractive({OFFMENU_DEV_INTERACTIVE:'/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/composition-live.json',OFFMENU_DEV_INTERACTIVE_SHA256:hash(readFileSync('/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/composition-live.json'))}));
+ });
+ test('execution evidence cannot contradict actual identity/reset/audit results or source reference',async()=>{
+  for(const mutate of [q=>q.executionEvidence.sha256='0'.repeat(64),q=>q.executionEvidence.path='/missing',q=>q.identity.assertions=175,q=>q.resetCheck.assertions=1,q=>q.reset.previousAuditSha256='0'.repeat(64)])await assert.rejects(alteredFresh((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
+ });
++
++test('selected native callback evidence cannot be omitted or rehashed to a different execution',async()=>{
++ for(const mutate of [q=>delete q.selectedExecution,q=>q.selectedExecution.sha256='0'.repeat(64)])await assert.rejects(alteredFresh((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}),/selected native callback execution/);
++});

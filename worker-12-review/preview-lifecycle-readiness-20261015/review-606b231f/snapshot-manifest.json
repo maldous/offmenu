@@ -1,0 +1,23 @@
+{
+  "candidate": "606b231f68f18ec5920977323f6da61e84138365",
+  "snapshot": "/tmp/worker12-lifecycle606-review-5v3zt3tj",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+    },
+    {
+      "path": "dev-lifecycle.mjs",
+      "sha256": "92be82e165ae84ea8402e2b4d9c3d8c9c160b344b4bbdf4a34bf44b01893bfe8"
+    },
+    {
+      "path": "worker05-lifecycle/lease.mjs",
+      "sha256": "3b18835d8625a3bdd5ecb80b06cfef4e254e753a0eef228f4d9da0496f039bf0"
+    },
+    {
+      "path": "worker05-lifecycle/lease.test.mjs",
+      "sha256": "7ea5fd2f10f4873988a24f4a0dfc685be20299f068bc6a81397f18b89d589420"
+    }
+  ],
+  "runtimeProcessStarted": false
+}

@@ -1,0 +1,17 @@
+✔ rejects sparse arrays and custom some/iterator hooks without invoking them (1.352907ms)
+✔ rejects accessors across state/patch/scope/member without reading them (0.287162ms)
+✔ dense boundary data and every ordinary spice value survive JSON roundtrip/reset (1.928504ms)
+✔ existing cloud validator drops explicit taste fields: adoption requires schema owner (0.409909ms)
+✔ partial edits preserve entered terms and distinguish unknown spice from explicit none (0.181601ms)
+✔ selective and full reset affect taste only and are idempotent (0.28455ms)
+✔ all operations reject cross-account, cross-member and malformed scope (0.308186ms)
+✔ rejects invalid/unbounded inputs and attempts to update medical or scope fields (0.677627ms)
+✔ adapter preserves restrictions, uncertainty, consent, rights and source quantities; reset cannot clear allergy (0.521829ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24.642822

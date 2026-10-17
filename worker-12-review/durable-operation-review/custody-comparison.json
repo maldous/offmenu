@@ -1,0 +1,9 @@
+{
+  "reviewerIdentityStable": true,
+  "trackedStatusUnchanged": "?? worker-12-review/\n",
+  "unrelatedRefSnapshotChanges": [
+    "refs/heads/feature/places-recovery-integration-20261014 7beffdc390826ee68e99031ef6fe735efce9d2c9"
+  ],
+  "sharedFinalizationWindowStable": true,
+  "sharedFullTurnBeforeHashAvailable": false
+}

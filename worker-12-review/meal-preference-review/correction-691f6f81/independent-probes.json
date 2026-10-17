@@ -1,0 +1,77 @@
+[
+  {
+    "name": "M12-01 original sparse list rejected before output",
+    "passed": true,
+    "rejected": true
+  },
+  {
+    "name": "M12-01 original overridden some rejected without invoking it",
+    "passed": true,
+    "calls": 0,
+    "rejected": true
+  },
+  {
+    "name": "M12-02 original spice accessor rejected without reading it",
+    "passed": true,
+    "reads": 0,
+    "rejected": true
+  },
+  {
+    "name": "custom iterator and index accessors rejected without invocation",
+    "passed": true,
+    "calls": 0
+  },
+  {
+    "name": "plain JSON rejects cycles hidden fields symbols and present undefined",
+    "passed": true
+  },
+  {
+    "name": "null-prototype records and dense maximal terms survive roundtrip",
+    "passed": true
+  },
+  {
+    "name": "accessors in patch scope and nested member metadata rejected unread",
+    "passed": true,
+    "reads": 0
+  },
+  {
+    "name": "valid JSON state roundtrip including unknown spice and no-spice works",
+    "passed": true
+  },
+  {
+    "name": "all scoped edit/reset/adapter calls reject other account or member",
+    "passed": true
+  },
+  {
+    "name": "same member identifier with different account does not transfer preference state",
+    "passed": true
+  },
+  {
+    "name": "forbidden ordinary own fields and schema version rejected",
+    "passed": true
+  },
+  {
+    "name": "list and spelling bounds preserve positive inputs",
+    "passed": true
+  },
+  {
+    "name": "reset and adapter preserve all allergy/unknown/source metadata without mutation",
+    "passed": true
+  },
+  {
+    "name": "unknown ingredient checks are not upgraded by taste likes or reset",
+    "passed": true,
+    "status": "needs-check",
+    "automaticSelection": false
+  },
+  {
+    "name": "current caller validator strips actual preference envelope while retaining allergy",
+    "passed": true,
+    "envelopeRetained": false,
+    "allergyRetained": true
+  },
+  {
+    "name": "caller/returned ordinary arrays are independent",
+    "passed": true
+  }
+]

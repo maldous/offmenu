@@ -1,0 +1,19 @@
+{
+  "candidate": "2c9b15bbd828de95752fa32343a4f5fb43ed147e",
+  "parent": "27169ac47167a456e6d0f46572af66500069d01e",
+  "deltaSHA256": "bc95be17a538cbfbbeea5f9c832191f86da9a8627ce24cc6bceb5a6a1a3098d2",
+  "verdict": "PASS_SCOPED_DISPOSABLE_LEASE_COMMAND_CONTROL",
+  "resolved": [
+    "L12-01"
+  ],
+  "focusedTestsExecuted": 2,
+  "independentInertTagRejected": true,
+  "controlExecutedByReviewer": false,
+  "ownerPositivePacketSHA256": "add80ee4e9a1e805e5f4d6dbe5bc790212e406f4050d5eac1fc43394e0291b79",
+  "source606And271EvidencePreserved": true,
+  "old434PASSPreserved": true,
+  "corpusTransport": "ASSIGNED-WAITING",
+  "fullDeletionRestoreAccepted": false,
+  "whole105Accepted": false,
+  "production": "STOP"
+}

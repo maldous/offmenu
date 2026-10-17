@@ -1,0 +1,27 @@
+import pathlib,json,hashlib,os,subprocess,urllib.request,datetime
+repo=pathlib.Path('/home/user/src/offmenu-workers/worker-12');out=repo/'worker-12-review/preview-contract-review/selected-central7820-be166-434b56c';env={k:v for k,v in os.environ.items() if not k.startswith('GIT_')};env['GIT_OPTIONAL_LOCKS']='0'
+def git(*a):return subprocess.check_output(['git',*a],cwd=repo,env=env)
+packetPath=pathlib.Path('/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-central7820-be166-20261014-04/selected-composition-readback.json');packet=json.loads(packetPath.read_text())
+def ref(reference):
+ b=pathlib.Path(reference.get('path',reference.get('receipt'))).read_bytes();assert hashlib.sha256(b).hexdigest()==reference['sha256'];return json.loads(b)
+d=ref(packet['descriptor']);m=ref(packet['inputs']);r=ref(packet['runReceipt']);q=ref(packet['mock']['qualification']);x=ref(packet['mock']['execution']);prep=ref(m['mockPreparation']);checks=[]
+assert m['mockRoot']==prep['root']==q['custody']['cwd'];assert prep['sourceCommit']==m['pins']['06']=='be166bb61483825498094d496e2caed9d8b775bb';assert m['pins']['02']==packet['app']['selectedSource']=='7820e0a82583a05b21f9923ac050e007a7265210';assert git('rev-parse',m['pins']['02']+'^{tree}').decode().strip()=='4f8546f80d1a23b371321c5fa4d96fca2f852e2a';assert r['sourceCommit']==packet['producerCommit']=='434b56c0200671debfceb03f7aed0889509c51be'
+for label,sourceFiles in [('overlay',m['files']),('physicalMock',prep['files'])]:
+ for f in sourceFiles:
+  commit=f.get('commit',prep['sourceCommit']);raw=git('show',commit+':'+f['path']);assert hashlib.sha256(raw).hexdigest()==f['sha256'];assert git('rev-parse',commit+':'+f['path']).decode().strip()==f['blob']
+  if label=='physicalMock':assert hashlib.sha256((pathlib.Path(prep['root'])/f['path']).read_bytes()).hexdigest()==f['sha256']
+  elif f.get('materialized'):assert hashlib.sha256((pathlib.Path(m['root'])/f['part']/f['path']).read_bytes()).hexdigest()==f['sha256']
+  checks.append({'kind':label,'path':f['path'],'commit':commit,'sha256':f['sha256'],'matches':True})
+assert hashlib.sha256(pathlib.Path(m['artifact']['path']).read_bytes()).hexdigest()==m['artifact']['sha256'];lock=json.loads((pathlib.Path(m['mockRoot'])/'dev/wiremock/runtime-lock.json').read_text());assert hashlib.sha512(pathlib.Path(q['custody']['jar']).read_bytes()).hexdigest()==lock['sha512']==q['jarSha512'];assert hashlib.sha256(pathlib.Path(m['scannerDependency']['path']).read_bytes()).hexdigest()==m['scannerDependency']['sha256'];e=ref(q['executionEvidence']);native=ref(q['nativeCustody']);assert native==q['custody']==x['custody']==e['custody'];assert q['selectedExecution']==packet['mock']['execution'];audit=ref(x['audit']);assert audit['custody']==native and not audit['result']['unmatched'];assert x['callback']['assertions']==28 and x['callback']['providerAcceptance'] is False
+observations={}
+for name,obj in [('preview',r),('mock',native)]:
+ pid=obj['pid'];raw=pathlib.Path(f'/proc/{pid}/stat').read_text();birth=raw[raw.rfind(')')+2:].split()[19];boot=pathlib.Path('/proc/sys/kernel/random/boot_id').read_text().strip();cwd=os.readlink(f'/proc/{pid}/cwd');argv=pathlib.Path(f'/proc/{pid}/cmdline').read_bytes().decode().split('\0');assert birth==obj.get('birthTicks',obj.get('startTicks')) and boot==obj['bootId'] and cwd==obj.get('cwd',obj.get('sourceRoot'))
+ endpoint='__dev/status' if name=='preview' else '__offmenu_fixture_health'
+ with urllib.request.urlopen(f'http://127.0.0.1:{obj["port"]}/{endpoint}',timeout=3) as response:body=response.read(65536);s=json.loads(body);assert response.status==200
+ if name=='preview':
+  for k in ['sourceCommit','ownerThread','runId','stateId','applicationCommit','applicationArtifact','pins','compositionSha256']:assert s[k]==r[k]
+  assert s['productionCredentials'] is False and s['interactive'] is True
+ else:assert argv[argv.index('--bind-address')+1]=='127.0.0.1' and argv[argv.index('--port')+1]=='19077' and s['custodyToken']==obj['token']
+ observations[name]={'pid':pid,'bootId':boot,'birthTicks':birth,'cwd':cwd,'port':obj['port'],'argv':argv,'liveIdentityMatches':True,'healthOrStatusSHA256':hashlib.sha256(body).hexdigest()}
+old=[{'historicalPID':pid,'procEntryPresent':pathlib.Path(f'/proc/{pid}').exists(),'noAdministration':True} for pid in [729700,883879,930520,695978,883005]]
+result={'checkedUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'sourceFiles':checks,'sourceFileCount':len(checks),'overlayRoot':m['root'],'physicalMockRoot':m['mockRoot'],'inputCompositionSHA256':m['compositionSha256'],'descriptorRef':packet['descriptor'],'inputsRef':packet['inputs'],'preparationRef':m['mockPreparation'],'qualificationRef':packet['mock']['qualification'],'executionRef':packet['mock']['execution'],'artifact':m['artifact'],'selectedPins':m['pins'],'actualProducerSource':r['sourceCommit'],'liveIdentity':observations,'recordedQualificationAssertions':{'identity':176,'reset':2,'callback':28},'recordedAuditUnmatched':0,'qualificationRerunByReviewer':False,'callbackSourceBoundariesNotRepeated':True,'oldPIDReadback':old,'noStateWritingFlowRequests':True,'noCatalogueOrProviderCalls':True};(out/'independent-readback.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'sourceFilesVerified':len(checks),'appPID':r['pid'],'mockPID':native['pid'],'source02':m['pins']['02'],'source06':m['pins']['06'],'oldPIDs':old},indent=2))

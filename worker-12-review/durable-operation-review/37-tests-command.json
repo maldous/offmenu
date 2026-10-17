@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "tests-web/durable-operation-queue.test.mjs",
+    "tests-web/journey.test.mjs",
+    "tests-web/household.test.mjs",
+    "tests-web/kitchens.test.mjs"
+  ],
+  "exitCode": 0,
+  "scope": "13 candidate + 14 journey + 8 household + 2 kitchen tests; reconstructed relevant scope; author exact invocation not supplied"
+}

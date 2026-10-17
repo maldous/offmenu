@@ -1,0 +1,4 @@
+{
+  "exit": 1,
+  "meaning": "Unchanged original vulnerable-observation assertion exits at refused inert-tag live lease; not misreported as passing suite"
+}

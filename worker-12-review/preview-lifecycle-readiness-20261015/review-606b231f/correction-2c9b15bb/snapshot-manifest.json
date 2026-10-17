@@ -1,0 +1,27 @@
+{
+  "candidate": "2c9b15bbd828de95752fa32343a4f5fb43ed147e",
+  "snapshot": "/tmp/worker12-lifecycle-fix-xvmtkrdx",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+    },
+    {
+      "path": "dev-lifecycle.mjs",
+      "sha256": "92be82e165ae84ea8402e2b4d9c3d8c9c160b344b4bbdf4a34bf44b01893bfe8"
+    },
+    {
+      "path": "worker05-lifecycle/lease.mjs",
+      "sha256": "9abc3d9cabe16ba3ab0124ba91b4b05b9a3d5950398bc1992a0803f4ff141882"
+    },
+    {
+      "path": "worker05-lifecycle/lease.test.mjs",
+      "sha256": "3396059baec6368e126d4b2cc3d01c6a2441b641fd580754d132802fb782fdcf"
+    },
+    {
+      "path": "worker05-lifecycle/command-probe.mjs",
+      "sha256": "aa2861a3cf94384bf4a7a478a41107e701748ab162733c2c19e12581927ca1d7"
+    }
+  ],
+  "noProducerStarted": true
+}

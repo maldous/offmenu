@@ -1,0 +1,48 @@
+{
+  "results": [
+    {
+      "name": "C12-01 validated reply accessor changes copied lifetime",
+      "passed": true,
+      "reads": 2,
+      "validatedLifetime": 3600,
+      "returnedLifetime": 86400
+    },
+    {
+      "name": "C12-01 access-token getter creates mixed actor output after valid comparison",
+      "passed": true,
+      "reads": 2,
+      "returnedAccessActor": "bob",
+      "returnedRefreshActor": "alice"
+    },
+    {
+      "name": "C12-02 coercible actor object makes mixed actor pair the expected reply",
+      "passed": true,
+      "coercions": 4,
+      "actorIdType": "object",
+      "returnedAccessActor": "alice",
+      "returnedRefreshActor": "bob"
+    },
+    {
+      "name": "all primitive known actors preserve exact token fields and non-acceptance flags",
+      "passed": true
+    },
+    {
+      "name": "ordinary mixed actor replies and changed scalar lifetimes reject",
+      "passed": true
+    },
+    {
+      "name": "ordinary extra/missing/array token shapes and unknown actor reject",
+      "passed": true
+    },
+    {
+      "name": "loopback IPv4 and IPv6 positives; remote/credentials/path/query/fragment reject",
+      "passed": true
+    },
+    {
+      "name": "non200 token response refuses independently of matching bytes",
+      "passed": true
+    }
+  ],
+  "networkRequests": 0,
+  "mode": "pure function observations; two demonstrated defects, no callback/provider/session acceptance"
+}

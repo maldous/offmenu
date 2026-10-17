@@ -1,0 +1,12 @@
+file:///tmp/worker12-callback-correction-80tjxmnk/dev/wiremock/callback-source-contract.mjs:33
+  if(!d||!Object.hasOwn(d,'value')||!d.enumerable)throw Error(label+' requires enumerable own data fields');
+                                                        ^
+
+Error: Native token requires enumerable own data fields
+    at ownDataSnapshot (file:///tmp/worker12-callback-correction-80tjxmnk/dev/wiremock/callback-source-contract.mjs:33:57)
+    at validateCallbackSourceReply (file:///tmp/worker12-callback-correction-80tjxmnk/dev/wiremock/callback-source-contract.mjs:59:17)
+    at file:///home/user/src/offmenu-workers/worker-12/worker-12-review/preview-contract-review/owner06-callback-4397063e/independent-boundaries.mjs:3:228
+    at probe (file:///home/user/src/offmenu-workers/worker-12/worker-12-review/preview-contract-review/owner06-callback-4397063e/independent-boundaries.mjs:2:434)
+    at file:///home/user/src/offmenu-workers/worker-12/worker-12-review/preview-contract-review/owner06-callback-4397063e/independent-boundaries.mjs:3:1
+
+Node.js v24.16.0

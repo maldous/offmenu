@@ -1,0 +1,12 @@
+{
+  "changes": {
+    "develop": {
+      "before": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+      "after": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead"
+    }
+  },
+  "noTrackedEdits": true,
+  "priorArtifactsUnchanged": true,
+  "reviewerGitMutations": "only authorized locked origin/develop fetch; no local branch/index write commands",
+  "sharedMovementAttribution": "develop movement independently observed in local reflog at2026-10-14T10:22:39Z; reviewer ran no local-ref write; actor/authority not inferred"
+}

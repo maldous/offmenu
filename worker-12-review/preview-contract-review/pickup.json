@@ -1,0 +1,20 @@
+{
+  "task": "independent-owner05-consumer58-contract-review",
+  "ownBranchPreserved": "feature/dataset-portugal-portfir-20261014",
+  "ownHEADPreserved": "ba854f1ac25f2cb13be2d135e110e66757364ae4",
+  "freshFetch": {
+    "UTC": "2026-10-14T10:14:57.183672+00:00",
+    "exitCode": 0,
+    "stderr": "From github.com:maldous/offmenu\n * branch            develop    -> FETCH_HEAD\n",
+    "originDevelop": "908ca373dfc918f2e33fd5e44260879577bed5c5"
+  },
+  "noImplementationBranchCreated": true,
+  "suppliedControls": {
+    "filesystem": "danger-full-access; unrestricted",
+    "network": "enabled",
+    "mandatoryReviewer": "auto_review",
+    "separateApprovalPolicy": null,
+    "namedProfileEnv": null,
+    "thread": "01a138ee-5252-7f63-8b43-cf730ecd7e05"
+  }
+}

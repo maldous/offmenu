@@ -1,0 +1,14 @@
+{
+  "133-tests.log": "8139c7ba4c77568292de4fff292683181b0b9e938ee23de649ce89c2f65083f7",
+  "base-files-unchanged.json": "bb22d11f3e28a2355029f69f81fb92743f18e93fa2a9d6eb6228936d5c73c1f6",
+  "candidate.diff": "71b7f5998b933e8c620bc7d5315334ef53d1411cc9f3020daa7ec4dbac0a5bd0",
+  "custody-after-tests.json": "b4043280305cac874257945bc514d39d776a3fd445d913711641125a8b7ba0dd",
+  "custody-before-tests.json": "90bc3a4ecdd0f1b547acb3dcd036d37c8735c5ed2501e01cefd32ecc188b8a36",
+  "independent-boundaries.json": "f8a77cf1ddd6455fec76397a1ec10eea9ffd1d67c73613b65cb5a6a655e583c4",
+  "independent-boundaries.log": "7f2bfff99ea03d38fe4cc64c443b5b6bafd462b020d4f36f168ded389d992b7d",
+  "independent-boundaries.mjs": "8a779c7c261ba2d88633d0a477ff9f50d9d0efd0304f1d97db96b986f3dcb192",
+  "pin.json": "e44ae74bebd4d141ef8e623de87e787affa357944b6a3e947b6a6ced12e089a7",
+  "preservation.json": "57dfad4ba2ad6678eedb47a185e3a72c6ad7fb06b42be7173752c59ab0e46d7b",
+  "review.md": "095a5e0d527e31f9c45fdc478ea6bbfb3d7f6fc8f837889c6f0328e7bc69fda8",
+  "snapshot-manifest.json": "0ad8e2fcf41fa94e84f87f30fb711d0e3be420088ee6d99ae3175102c747d73b"
+}

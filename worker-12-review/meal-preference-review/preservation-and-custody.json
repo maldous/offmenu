@@ -1,0 +1,34 @@
+{
+  "stableIdentityAndIndexFields": [
+    "head",
+    "branch",
+    "main",
+    "develop",
+    "ownIndexSHA256",
+    "commonHEADSHA256",
+    "commonIndexSHA256"
+  ],
+  "allStable": true,
+  "priorWorkspaceArtifactCount": 28,
+  "priorWorkspaceArtifactsAllUnchanged": true,
+  "externalPriorUIUXArtifacts": [
+    {
+      "manifest": "/home/user/Documents/Codex/2026-10-14/task-2/worker-12-review/artifact-sha256.json",
+      "validatedFiles": 15,
+      "allMatchPriorHashes": true
+    },
+    {
+      "manifest": "/home/user/Documents/Codex/2026-10-14/task-2/worker-12-review/correction-f15bc0da/artifact-sha256.json",
+      "validatedFiles": 12,
+      "allMatchPriorHashes": true
+    }
+  ],
+  "unrelatedRefSnapshotChanges": [
+    "refs/heads/feature/basket-quantity-caller-20261014 dcdb90f2637d828bd8963bfb2fac08ca051634ba",
+    "refs/heads/feature/basket-quantity-caller-20261014 fcfc4cdf2a44f6a8664ef596d00371d54f57227f",
+    "refs/heads/feature/state-operation-auth-contract-20261014 8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "refs/heads/feature/state-operation-auth-contract-20261014 dfc15652e144c6aad8a3824cf0f166f991384ef1"
+  ],
+  "statusBefore": "?? worker-12-review/\n",
+  "statusAfter": "?? worker-12-review/\n"
+}

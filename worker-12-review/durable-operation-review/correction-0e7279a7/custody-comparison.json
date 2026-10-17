@@ -1,0 +1,15 @@
+{
+  "stableIdentityAndIndexFields": [
+    "head",
+    "branch",
+    "main",
+    "develop",
+    "ownIndexSHA256",
+    "commonHEADSHA256",
+    "commonIndexSHA256"
+  ],
+  "allStable": true,
+  "statusBefore": "?? worker-12-review/\n",
+  "statusAfter": "?? worker-12-review/\n",
+  "unrelatedBranchChanges": []
+}

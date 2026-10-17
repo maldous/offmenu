@@ -1,0 +1,327 @@
+diff --git a/public/durable-operation-queue.js b/public/durable-operation-queue.js
+new file mode 100644
+index 0000000..aad6598
+--- /dev/null
++++ b/public/durable-operation-queue.js
+@@ -0,0 +1,141 @@
++/**
++ * Isolated P0-05 outbox primitive; not wired to snapshot sync or cloud APIs.
++ * Existing sync-ui.js checkpoints regenerate mutationId and PUT only revision/state.
++ *
++ * Integration contract:
++ * - storage.load(key)/save(key, JSON record) must atomically persist a whole record;
++ *   save resolves only after durable commit. One live writer per scoped key is
++ *   required (a browser adapter must hold an exclusive cross-tab lock).
++ * - transport = {idempotent: true, send(envelope)} must authenticate the captured
++ *   scope and atomically deduplicate (scope, operationId) with the remote effect.
++ *   A durable acknowledgement is {acknowledged:true, scope, operationId}.
++ *   HTTP success alone is not acknowledgement. Current state PUT APIs do not
++ *   satisfy this contract. This helper alone does not provide exactly-once effects.
++ * - scope includes accountId, resourceId and grantId (authorization generation).
++ *   A new login/grant must use a new scope; never carry work across identities.
++ *   Call revoke immediately when authorization is lost. Remote authorization
++ *   still must reject revoked access; an already-sent request cannot be undone.
++ * - Unknown results retain the same ID/payload. Expiry stops sends but retains
++ *   evidence for explicit acknowledgement after reconciliation. FIFO blocks
++ *   behind unresolved expired work. IDs/tombstones are never silently recycled;
++ *   at capacity callers must reconcile/archive under a separate reviewed policy.
++ * No timers, UI, credentials, storage adapter or server mutation is supplied.
++ */
++const copy = value => JSON.parse(JSON.stringify(value));
++const equal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
++function identifier(value) {
++  if (typeof value !== 'string' || !value || value.length > 200) throw Error('Invalid identifier');
++  return value;
++}
++function captureScope(value) {
++  return Object.fromEntries(['accountId', 'resourceId', 'grantId'].map(key => [key, identifier(value?.[key])]));
++}
++function jsonPayload(value) {
++  // Reject lossy JSON conversion (undefined, NaN, functions, cycles, custom objects).
++  function check(item) {
++    if (item === null || typeof item === 'string' || typeof item === 'boolean') return;
++    if (typeof item === 'number' && Number.isFinite(item)) return;
++    if (Array.isArray(item)) { for (const child of item) check(child); return; }
++    if (item && Object.getPrototypeOf(item) === Object.prototype) {
++      for (const child of Object.values(item)) check(child);
++      return;
++    }
++    throw Error('Payload must be JSON data');
++  }
++  check(value);
++  return copy(value);
++}
++
++export function createDurableOperationQueue({scope: inputScope, storage, transport, now = Date.now,
++  retryDelay = 1000, maxRetryDelay = 60000, maxOperations = 1000}) {
++  const scope = captureScope(inputScope), key = 'offmenu-operations-v1:' + JSON.stringify(scope);
++  if (!storage?.load || !storage?.save || transport?.idempotent !== true || !transport?.send)
++    throw Error('Durable storage and an idempotent transport are required');
++  if (!Number.isSafeInteger(retryDelay) || retryDelay < 1 || !Number.isSafeInteger(maxRetryDelay) ||
++      maxRetryDelay < retryDelay || !Number.isSafeInteger(maxOperations) || maxOperations < 1)
++    throw Error('Invalid queue limits');
++  let tail = Promise.resolve(), revoked = false;
++  const serial = fn => { const result = tail.then(fn); tail = result.catch(() => {}); return result; };
++  const time = () => { const value = now(); if (!Number.isSafeInteger(value) || value < 0) throw Error('Invalid clock'); return value; };
++  async function load() {
++    const stored = await storage.load(key);
++    const record = stored == null ? {version: 1, scope, revoked: false, operations: []} : copy(stored);
++    if (record.version !== 1 || !equal(record.scope, scope) || typeof record.revoked !== 'boolean' ||
++        !Array.isArray(record.operations) || record.operations.length > maxOperations)
++      throw Error('Invalid scoped queue');
++    const ids = new Set();
++    for (const op of record.operations) {
++      identifier(op.operationId);
++      if (ids.has(op.operationId) || !['pending', 'unknown', 'expired', 'acknowledged'].includes(op.status) ||
++          !Number.isSafeInteger(op.expiresAt) || op.expiresAt < 0 || !Number.isSafeInteger(op.attempts) ||
++          op.attempts < 0 || !Number.isSafeInteger(op.nextAttemptAt) || op.nextAttemptAt < 0)
++        throw Error('Invalid persisted operation');
++      jsonPayload(op.payload); ids.add(op.operationId);
++    }
++    revoked ||= record.revoked;
++    record.revoked ||= revoked;
++    return record;
++  }
++  const save = record => storage.save(key, copy(record));
++  const matches = (ack, op) => ack?.acknowledged === true && ack.operationId === op.operationId && equal(ack.scope, scope);
++  return {
++    enqueue({operationId, payload, expiresAt}) {
++      // Capture caller input before yielding; pending envelopes are immutable.
++      const id = identifier(operationId), data = jsonPayload(payload);
++      if (!Number.isSafeInteger(expiresAt) || expiresAt <= time()) throw Error('Expiry must be in the future');
++      return serial(async () => {
++        const record = await load();
++        if (revoked) throw Error('Scope revoked');
++        const existing = record.operations.find(op => op.operationId === id);
++        if (existing) {
++          if (!equal(existing.payload, data) || existing.expiresAt !== expiresAt) throw Error('Operation ID already bound');
++          return copy(existing);
++        }
++        if (expiresAt <= time()) throw Error('Operation expired before persistence');
++        if (record.operations.length >= maxOperations) throw Error('Queue capacity reached');
++        const op = {operationId: id, payload: data, expiresAt, attempts: 0, nextAttemptAt: 0, status: 'pending'};
++        record.operations.push(op); await save(record); return copy(op);
++      });
++    },
++    inspect: () => serial(async () => copy(await load())),
++    revoke() {
++      revoked = true; // Stops acceptance of in-flight responses before persistence.
++      return serial(async () => { const record = await load(); record.revoked = true; await save(record); });
++    },
++    acknowledge(ack) {
++      const captured = copy(ack);
++      return serial(async () => {
++        const record = await load(), op = record.operations.find(item => item.operationId === captured.operationId);
++        if (revoked || !op || !matches(captured, op)) throw Error('Acknowledgement scope or operation mismatch');
++        op.status = 'acknowledged'; await save(record); return copy(op);
++      });
++    },
++    flush: () => serial(async () => {
++      const record = await load();
++      if (revoked) return {status: 'revoked'};
++      const op = record.operations.find(item => item.status !== 'acknowledged');
++      if (!op) return {status: 'idle'};
++      const current = time();
++      if (op.expiresAt <= current || op.status === 'expired') {
++        op.status = 'expired'; await save(record); return {status: 'expired', operationId: op.operationId};
++      }
++      if (op.nextAttemptAt > current) return {status: 'backoff', operationId: op.operationId};
++      // Commit uncertainty BEFORE transport. Crashes and lost responses must not
++      // become a new operation or be mistaken for a confirmed failure.
++      op.status = 'unknown'; op.attempts++;
++      op.nextAttemptAt = Math.min(op.expiresAt, current + Math.min(maxRetryDelay, retryDelay * 2 ** Math.min(op.attempts - 1, 30)));
++      await save(record);
++      if (revoked) { record.revoked = true; await save(record); return {status: 'revoked'}; }
++      if (time() >= op.expiresAt) {
++        op.status = 'expired'; await save(record); return {status: 'expired', operationId: op.operationId};
++      }
++      let ack;
++      try { ack = await transport.send(copy({scope, operationId: op.operationId, payload: op.payload, expiresAt: op.expiresAt})); }
++      catch { /* Delivery/result is unknown; retry only under deduplication contract. */ }
++      if (revoked) record.revoked = true;
++      else if (matches(ack, op)) op.status = 'acknowledged';
++      await save(record);
++      return {status: revoked ? 'revoked' : op.status, operationId: op.operationId};
++    })
++  };
++}
+diff --git a/tests-web/durable-operation-queue.test.mjs b/tests-web/durable-operation-queue.test.mjs
+new file mode 100644
+index 0000000..2c5ca08
+--- /dev/null
++++ b/tests-web/durable-operation-queue.test.mjs
+@@ -0,0 +1,174 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {createDurableOperationQueue} from '../public/durable-operation-queue.js';
++
++// Synthetic storage/server contracts only: no physical devices or cloud writes.
++const alice = {accountId: 'synthetic-alice', resourceId: 'synthetic-kitchen', grantId: 'grant-1'};
++const bob = {...alice, accountId: 'synthetic-bob'};
++const operation = {operationId: 'cook-1', payload: {deduct: 2}, expiresAt: 10000};
++const ack = envelope => ({acknowledged: true, scope: envelope.scope, operationId: envelope.operationId});
++function fixture() {
++  const records = new Map(); let clock = 100, writes = 0, sends = 0;
++  const storage = {
++    async load(key) { return structuredClone(records.get(key)); },
++    async save(key, value) { writes++; records.set(key, structuredClone(value)); }
++  };
++  const options = {scope: alice, storage, now: () => clock,
++    transport: {idempotent: true, async send(envelope) { sends++; return ack(envelope); }}};
++  return {records, storage, options, queue: extra => createDurableOperationQueue({...options, ...extra}),
++    tick: value => { clock = value; }, counts: () => ({writes, sends})};
++}
++
++test('lost response after remote effect survives restart with same ID and one synthetic deduction', async () => {
++  const f = fixture(), applied = new Map(), envelopes = []; let stock = 10, lose = true;
++  const transport = {idempotent: true, async send(envelope) {
++    envelopes.push(envelope);
++    const key = JSON.stringify([envelope.scope, envelope.operationId]);
++    if (!applied.has(key)) { stock -= envelope.payload.deduct; applied.set(key, ack(envelope)); }
++    if (lose) { lose = false; throw Error('Response lost after commit'); }
++    return applied.get(key);
++  }};
++  const first = f.queue({transport}); await first.enqueue(operation);
++  assert.equal((await first.flush()).status, 'unknown'); assert.equal(stock, 8);
++  const restarted = f.queue({transport});
++  assert.equal((await restarted.flush()).status, 'backoff');
++  f.tick(1100); assert.equal((await restarted.flush()).status, 'acknowledged');
++  assert.deepEqual(envelopes[0], envelopes[1]); assert.equal(stock, 8);
++  assert.equal((await restarted.flush()).status, 'idle');
++});
++
++test('uncertain attempt is durably recorded before transport, including a crash boundary', async () => {
++  const f = fixture(); let release, entered;
++  const started = new Promise(resolve => { entered = resolve; });
++  const wait = new Promise(resolve => { release = resolve; });
++  const q = f.queue({transport: {idempotent: true, async send(envelope) {
++    const persisted = [...f.records.values()][0].operations[0];
++    assert.equal(persisted.status, 'unknown'); assert.equal(persisted.attempts, 1);
++    entered(); await wait; return ack(envelope);
++  }}});
++  await q.enqueue(operation); const attempt = q.flush(); await started;
++  // Simulate process restart by copying committed storage, not simultaneous writers.
++  const recoveredStorage = structuredClone([...f.records.values()][0]);
++  const recovery = createDurableOperationQueue({...f.options, storage: {
++    async load() { return recoveredStorage; }, async save() { throw Error('Not expected'); }
++  }});
++  assert.equal((await recovery.flush()).status, 'backoff');
++  assert.equal((await recovery.inspect()).operations[0].operationId, operation.operationId);
++  release(); await attempt;
++});
++
++test('failure to durably enqueue or record uncertainty prevents sending', async () => {
++  const f = fixture(), bad = {...f.storage, async save() { throw Error('Disk unavailable'); }};
++  await assert.rejects(f.queue({storage: bad}).enqueue(operation), /Disk unavailable/);
++  assert.equal(f.counts().sends, 0);
++  await f.queue().enqueue(operation);
++  await assert.rejects(f.queue({storage: bad}).flush(), /Disk unavailable/);
++  assert.equal(f.counts().sends, 0);
++});
++
++test('failed acknowledgement persistence leaves an unknown result for replay', async () => {
++  const f = fixture(); await f.queue().enqueue(operation); let saves = 0;
++  const q = f.queue({storage: {...f.storage, async save(key, value) {
++    if (++saves === 2) throw Error('Crash at acknowledgement commit');
++    await f.storage.save(key, value);
++  }}});
++  await assert.rejects(q.flush(), /Crash/);
++  assert.equal((await f.queue().inspect()).operations[0].status, 'unknown');
++  f.tick(1100); assert.equal((await f.queue().flush()).status, 'acknowledged');
++});
++
++test('expiry during durable preflight prevents transport even after an attempt was reserved', async () => {
++  const f = fixture(); await f.queue().enqueue({...operation, expiresAt: 200});
++  const q = f.queue({storage: {...f.storage, async save(key, value) {
++    await f.storage.save(key, value); f.tick(201);
++  }}});
++  assert.equal((await q.flush()).status, 'expired'); assert.equal(f.counts().sends, 0);
++});
++
++test('account, resource and authorization generation isolate identical operation IDs', async () => {
++  const f = fixture(); await f.queue().enqueue(operation);
++  for (const scope of [bob, {...alice, resourceId: 'other-kitchen'}, {...alice, grantId: 'grant-2'}]) {
++    const q = f.queue({scope}); assert.equal((await q.flush()).status, 'idle');
++    await q.enqueue({...operation, payload: {deduct: 1}}); await q.flush();
++    assert.equal((await q.inspect()).operations[0].payload.deduct, 1);
++  }
++  assert.equal((await f.queue().inspect()).operations[0].status, 'pending');
++  assert.equal(f.records.size, 4);
++});
++
++test('HTTP-like success, missing ack, wrong ID and cross-account ack remain unknown', async () => {
++  for (const result of [{ok: true}, undefined, {acknowledged: true, scope: bob, operationId: 'cook-1'},
++    {acknowledged: true, scope: alice, operationId: 'other'}]) {
++    const f = fixture(), q = f.queue({transport: {idempotent: true, async send() { return result; }}});
++    await q.enqueue(operation); assert.equal((await q.flush()).status, 'unknown');
++    await assert.rejects(q.acknowledge({acknowledged: true, scope: bob, operationId: 'cook-1'}), /mismatch/);
++  }
++});
++
++test('expiry retains unknown evidence, blocks FIFO and needs explicit scoped reconciliation', async () => {
++  const f = fixture(), q = f.queue({transport: {idempotent: true, async send() { throw Error('Lost'); }}});
++  await q.enqueue({...operation, expiresAt: 200});
++  await q.enqueue({...operation, operationId: 'cook-2', expiresAt: 20000});
++  assert.equal((await q.flush()).status, 'unknown');
++  f.tick(201); assert.equal((await f.queue().flush()).status, 'expired');
++  const evidence = (await q.inspect()).operations[0];
++  assert.equal(evidence.attempts, 1); assert.deepEqual(evidence.payload, operation.payload);
++  await q.acknowledge({acknowledged: true, scope: alice, operationId: 'cook-1'});
++  assert.equal((await f.queue().flush()).operationId, 'cook-2');
++});
++
++test('revocation suppresses in-flight ack and survives restart; new grants do not inherit work', async () => {
++  const f = fixture(); let release, entered;
++  const started = new Promise(resolve => { entered = resolve; });
++  const waiting = new Promise(resolve => { release = resolve; });
++  const q = f.queue({transport: {idempotent: true, async send(envelope) { entered(); await waiting; return ack(envelope); }}});
++  await q.enqueue(operation); const running = q.flush(); await started;
++  const revocation = q.revoke(); release(); assert.equal((await running).status, 'revoked'); await revocation;
++  assert.equal((await q.inspect()).operations[0].status, 'unknown');
++  const restarted = f.queue(); assert.equal((await restarted.flush()).status, 'revoked');
++  await assert.rejects(restarted.enqueue({...operation, operationId: 'cook-2'}), /revoked/);
++  await assert.rejects(restarted.acknowledge({acknowledged: true, scope: alice, operationId: 'cook-1'}), /mismatch/);
++  assert.equal((await f.queue({scope: {...alice, grantId: 'grant-2'}}).flush()).status, 'idle');
++});
++
++test('caller mutation and concurrent calls cannot change an envelope or send it twice', async () => {
++  const f = fixture(), q = f.queue(), input = structuredClone(operation);
++  const saving = q.enqueue(input); input.payload.deduct = 999; await saving;
++  const results = await Promise.all([q.flush(), q.flush()]);
++  assert.deepEqual(results.map(r => r.status), ['acknowledged', 'idle']);
++  assert.equal(f.counts().sends, 1);
++  const output = await q.inspect(); output.operations[0].payload.deduct = 999;
++  assert.equal((await q.inspect()).operations[0].payload.deduct, 2);
++  await assert.rejects(q.enqueue({...operation, payload: {deduct: 3}}), /already bound/);
++  assert.equal((await q.enqueue(operation)).status, 'acknowledged');
++});
++
++test('backoff is capped, persisted and does not schedule background work', async () => {
++  const f = fixture(), q = f.queue({retryDelay: 10, maxRetryDelay: 20,
++    transport: {idempotent: true, async send() { throw Error('Offline'); }}});
++  await q.enqueue(operation); await q.flush();
++  assert.equal((await q.inspect()).operations[0].nextAttemptAt, 110);
++  f.tick(110); await q.flush();
++  assert.equal((await q.inspect()).operations[0].nextAttemptAt, 130);
++  f.tick(130); await q.flush(); assert.equal((await q.inspect()).operations[0].nextAttemptAt, 150);
++});
++
++test('unsafe transport, lossy payloads, bad limits and damaged/cross-scope records fail closed', async () => {
++  const f = fixture(); assert.throws(() => f.queue({transport: {send() {}}}), /idempotent/);
++  assert.throws(() => f.queue({retryDelay: 0}), /limits/);
++  for (const payload of [undefined, {value: NaN}, {value: undefined}, new Date()])
++    assert.throws(() => f.queue().enqueue({...operation, payload}), /JSON/);
++  assert.throws(() => f.queue().enqueue({...operation, expiresAt: 100}), /Expiry/);
++  for (const record of [{version: 2, scope: alice, revoked: false, operations: []},
++    {version: 1, scope: bob, revoked: false, operations: []},
++    {version: 1, scope: alice, revoked: false, operations: [{...operation, status: 'pending', attempts: -1, nextAttemptAt: 0}]}]) {
++    const q = f.queue({storage: {async load() { return record; }, async save() { assert.fail('No write'); }}});
++    await assert.rejects(q.flush(), /Invalid/);
++  }
++});
++
++test('bounded storage retains acknowledged IDs instead of evicting replay protection', async () => {
++  const f = fixture(), q = f.queue({maxOperations: 1}); await q.enqueue(operation); await q.flush();
++  await assert.rejects(q.enqueue({...operation, operationId: 'cook-2'}), /capacity/);
++  assert.equal((await q.enqueue(operation)).status, 'acknowledged');
++});

@@ -1,0 +1,15 @@
+{
+  "stableFields": [
+    "branch",
+    "HEAD",
+    "main",
+    "primaryHEADSHA256",
+    "primaryIndexSHA256",
+    "ownIndexSHA256"
+  ],
+  "allStable": true,
+  "developBefore": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "developAfter": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "reviewerNoLocalRefWrites": true,
+  "noTrackedEdits": true
+}

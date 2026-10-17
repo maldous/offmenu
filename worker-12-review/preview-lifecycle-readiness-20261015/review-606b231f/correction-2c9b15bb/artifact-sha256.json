@@ -1,0 +1,16 @@
+{
+  "2-tests.log": "45c4fb9c988666a6571c51334bb821d766d1344d71bb15df93cedbe007bc5f66",
+  "checkpoint-preservation.json": "202af52b3cbb22c9600975d1841f7c574f7262fd9daf5501d4720ba1828caa50",
+  "command-boundary-probe.json": "e77fa0d221bac59d781a3779b3c7e8fd3990afaaea93fccdad69cc8ebf65002d",
+  "correction.diff": "bc95be17a538cbfbbeea5f9c832191f86da9a8627ce24cc6bceb5a6a1a3098d2",
+  "custody-after.json": "eae46e0b3146e33740bb32797de9d3987ebe2e02343b41b9efc94cd76babcea1",
+  "independent-command-probe.log": "ac8ebbb9a02d3d6dcd7ba5467f17b92311be1a25225b5a9ab899e4967b71131f",
+  "independent-command-probe.mjs": "3eab6acd0f5f129980bb135c76bd76af2e4740cb36596d6ac5925003c453145b",
+  "original-probe-after.json": "ab626a4b73c9e945ee7488ed771d61867f3ff372b6fb7791906b53033bffd03e",
+  "original-probe-after.log": "9fd5fd43cc6e76613c6c36809f2193170e05fd93ba5c58f72af04cbec109a73c",
+  "pin.json": "8cac3f99a60078542840b50bc086b864c7acde4ec92508b8791dc14d7c869901",
+  "positive-packet-readback.json": "5a8a470270e9b867160826d57f7221f4eb9a2b3bdd2e7e332ed900b74fadc445",
+  "review.md": "5203eba0297f5d2f7856a249b5f38b702ca39dfb2e493b8d461d514df22a2293",
+  "snapshot-manifest.json": "1655ecc8b66e675a356810a948119d272b3c24ca2ccd607a639fa19202c5a453",
+  "verdict.json": "fffe1aa5e9f44c1315ac351524cc1cb463a3a8c4282c5d32fea47044fac0a584"
+}

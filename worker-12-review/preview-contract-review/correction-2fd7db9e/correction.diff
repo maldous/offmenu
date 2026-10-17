@@ -1,0 +1,147 @@
+diff --git a/docs/interactive-preview-owner05/contract.md b/docs/interactive-preview-owner05/contract.md
+index 6b04db8..5beec77 100644
+--- a/docs/interactive-preview-owner05/contract.md
++++ b/docs/interactive-preview-owner05/contract.md
+@@ -17,3 +17,15 @@ Start the owned launcher with the exact descriptor and unique OFFMENU_DEV_RUN. S
+ Initial private packet: `/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383/`. Input manifest SHA256 `4eb72d2450c472815d8d96dc5e3f24611c31bd86ee0528358f4d80ff3181452b`; app artifact SHA256 `608a82b8a4010fa1b5781c8966a240b25a2f2bb4e4d1d6ca41d9e708d627e0d2`; input composition SHA256 `73c906be308a2714ae0fc5695b3dfaf4184f70b1c0f5897ce8a992f675a8b243`. Live descriptor `composition-live.json` SHA256 `a0a20164cafc39c75c04a80ec17bcd73d2d3c4a11d67152ba5b74f686ac30567`. Mock qualification `mock-qualified.json` SHA256 `f3017bfd73e0d9626788585409d3ee7be2fc617288dcca7c25a557f0010f8281`: 176 actual Identity assertions plus2 reset assertions passed; owner05 mock PID695978/birth1923192/loopback19075, source06 unmodified. These are real producer facts, not eight-flow or browser acceptance.
+ 
+ Prior dev8dc and Swiss3328 branches, external state/receipts, node_modules reference and primary main/index are preserved. .venv is absent in05; none was created. Review metadata must keep the Swiss/AFCD source ownership distinction honest. Only owned dev integration/receipt/test files are changed here.
++
++## P12-01/P12-02 correction
++
++Both exact reviewer reproductions failed before this fix: an unrelated source/empty grant/real-provider action descriptor was accepted, and rehashed before-process qualification plus false JAR/version/runtime claims were accepted. The new focused regression tests now refuse both, plus individual field mutations; the exact original legitimate packet remains admissible without state writes.
++
++Task admission checks the independently registered root task source/reference and exact bounded synthetic action set, including duplicate/empty/expanded-action refusal. It binds owner/session/root, selected pins, composition and artifact, and retains unavailable named-profile/approval-policy values as unavailable. These checks do not turn JSON or controls into human authority; independent root/grant verification remains separate.
++
++Qualification now compares the declared custody with the immutable native record, source/runtime path+hash, version and actual referenced JAR bytes against the pinned lock, time against native/kernel birth and current time, and expiry when declared. Identity semantics/assertion flags, actual reset/audit record hashes, operation/process/time relationships and referenced WASM bytes are checked. Newly issued qualifications also retain an immutable actual Identity execution record bound to source validator, process, result and reset evidence. Source parts must match their exact author pins. These checks run again before forwarded requests.
++
++Initial qualification has no rolling clock-only lease: validity is the explicitly documented same live birth/source/JAR/health identity while this user-requested preview runs. Before-process/future/expired claims refuse; elapsed age is not silently presented as a new qualification. Stopped identities remain refused. A recorded assertion count is not independently repeated consumer acceptance.
++
++Qualification files/start logs/descriptors now use unique run-specific names, preserving every prior packet. The current live f77 app and mock remain their actual original processes/code; this correction is not claimed as loaded into them. The application artifact and selected input scope are unchanged. A fresh owned packet/runtime readback at the new immutable producer pin will be supplied for independent12 review before58 state-writing admission; safe cutover preserves old state/receipts and only stops owned birth-verified processes.
+diff --git a/interactive-preview.mjs b/interactive-preview.mjs
+index a68cd39..3e2e88d 100644
+--- a/interactive-preview.mjs
++++ b/interactive-preview.mjs
+@@ -13,6 +13,45 @@ const git=(...args)=>execFileSync('git',args,{cwd:sourceRoot,env:cleanEnv(),maxB
+ const hash=(data,algorithm='sha256')=>createHash(algorithm).update(data).digest('hex');
+ const sha=file=>hash(readFileSync(file));
+ const requireThat=(condition,message)=>{if(!condition)throw Error('Interactive preview refused: '+message);};
++export const taskAdmission={sourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',grant:'Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.',actions:['owned-loopback-preview','synthetic-fixture-account-flows','fresh-isolated-synthetic-state','independent58-read/flow-checks','birth-verified-own-process-stop']};
++export function validateTaskAdmission(a,m){
++ requireThat(a&&a.sourceThread===taskAdmission.sourceThread&&a.grant===taskAdmission.grant,'registered task source/grant reference');
++ requireThat(Array.isArray(a.permittedActions)&&a.permittedActions.every(x=>typeof x==='string')&&new Set(a.permittedActions).size===a.permittedActions.length&&JSON.stringify([...a.permittedActions].sort())===JSON.stringify([...taskAdmission.actions].sort()),'registered synthetic fixture action scope');
++ requireThat(a.boundSession===ownerThread&&a.boundRoot===sourceRoot&&JSON.stringify(a.pins)===JSON.stringify(inputPins)&&a.compositionSha256===m.compositionSha256&&JSON.stringify(a.applicationArtifact)===JSON.stringify(m.artifact),'grant session/input/artifact binding');
++ requireThat(a.actualSuppliedControls?.filesystem==='danger-full-access; no restrictions'&&a.actualSuppliedControls.network==='enabled'&&a.actualSuppliedControls.mandatoryReviewer==='auto_review'&&a.actualSuppliedControls.approvalPolicy===null&&a.actualSuppliedControls.namedProfile===null&&a.environmentProfile===null&&a.notNewAccountGrant===true,'declared controls must not fabricate unavailable profile/policy or grants');
++}
++function nativeEqual(a,b){return ['schemaVersion','pid','bootId','birthTicks','port','jar','jarSha512','root','cwd','token','version','mappingsSha256','startedAt'].every(k=>a[k]===b[k]);}
++export async function validateQualification(r,m,{live=true}={}){
++ const c=r.custody,baseRoot=path.join(m.root,'mock');
++ requireThat(c&&c.schemaVersion===2&&Number.isInteger(c.pid)&&c.pid>1&&c.cwd===baseRoot&&Number.isInteger(c.port)&&c.port>=1024&&c.port<=65535&&c.root.startsWith(path.join(baseRoot,'dev/wiremock/.runtime',`run-${c.port}-`))&&path.resolve(c.root)===c.root,'native qualification root/process shape');
++ requireThat(r.nativeCustody?.path===path.join(c.root,'custody.json')&&sha(r.nativeCustody.path)===r.nativeCustody.sha256,'native qualification reference hash');
++ const native=JSON.parse(readFileSync(r.nativeCustody.path));requireThat(nativeEqual(native,c),'declared custody differs from immutable native record');
++ const lock=JSON.parse(readFileSync(path.join(baseRoot,'dev/wiremock/runtime-lock.json')));
++ requireThat(r.version===lock.version&&c.version===lock.version&&r.jarSha512===lock.sha512&&c.jarSha512===lock.sha512&&hash(readFileSync(c.jar),'sha512')===lock.sha512,'qualification JAR/version versus lock/current bytes');
++ const runtimePath=path.join(baseRoot,'dev/wiremock/runtime.mjs'),source=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/runtime.mjs');
++ requireThat(r.runtimeSource?.path===runtimePath&&r.runtimeSource.sha256===source.sha256&&sha(runtimePath)===source.sha256,'qualification runtime source hash');
++ const started=Date.parse(c.startedAt),qualified=Date.parse(r.qualifiedAt),now=Date.now();
++ requireThat(Number.isFinite(started)&&Number.isFinite(qualified)&&qualified>=started&&qualified<=now,'qualification time before process/future/invalid');
++ if(r.expiresAt!==undefined)requireThat(Number.isFinite(Date.parse(r.expiresAt))&&Date.parse(r.expiresAt)>now&&Date.parse(r.expiresAt)>=qualified,'expired qualification');
++ requireThat(r.identity?.semanticsVersion==='offmenu-identity-session/2'&&JSON.stringify(r.identity.actors)===JSON.stringify(['alice','bob','admin'])&&r.identity.assertions===176&&r.identity.malformedGrantCasesPerActor===13&&r.identity.logoutRevocation===true&&r.identity.otherActorPreservation===true&&r.identity.passwordRevival===true&&r.identity.aliceRevokedForReset===true&&r.resetCheck?.assertions===2&&r.resetCheck.resetRestoresRevokedActor===true,'declared qualification semantics/assertion evidence');
++ requireThat(r.reset?.receipt?.startsWith(c.root+'/reset-')&&sha(r.reset.receipt)===r.reset.sha256&&r.reset.previousAudit?.startsWith(c.root+'/audit-')&&sha(r.reset.previousAudit)===r.reset.previousAuditSha256,'preserved reset/audit evidence hashes');
++ const reset=JSON.parse(readFileSync(r.reset.receipt)),audit=JSON.parse(readFileSync(r.reset.previousAudit));
++ requireThat(reset.operation==='reset'&&reset.result.reset===true&&nativeEqual(reset.custody,c)&&audit.operation==='audit'&&nativeEqual(audit.custody,c)&&Date.parse(reset.at)>=started&&Date.parse(reset.at)<=qualified&&Date.parse(audit.at)>=started&&Date.parse(audit.at)<=Date.parse(reset.at),'reset/audit process/time binding');
++ requireThat(sha(m.scannerDependency.path)===m.scannerDependency.sha256,'referenced scanner dependency changed');
++ if(r.executionEvidence){
++  requireThat(r.executionEvidence.path===path.join(c.root,'identity-execution.json')&&sha(r.executionEvidence.path)===r.executionEvidence.sha256,'preserved actual Identity execution evidence');
++  const e=JSON.parse(readFileSync(r.executionEvidence.path)),validatorPath=path.join(baseRoot,'dev/wiremock/identity-validation.mjs'),vf=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/identity-validation.mjs');
++  requireThat(e.schema==='offmenu-owner05-identity-execution/1'&&e.ownerThread===ownerThread&&e.sourceCommit===inputPins['06']&&nativeEqual(e.custody,c)&&e.validator.path===validatorPath&&e.validator.sha256===vf.sha256&&sha(validatorPath)===vf.sha256&&JSON.stringify(e.identity)===JSON.stringify(r.identity)&&JSON.stringify(e.reset)===JSON.stringify(r.reset)&&JSON.stringify(e.resetCheck)===JSON.stringify(r.resetCheck)&&Date.parse(e.completedAt)>=Date.parse(reset.at)&&Date.parse(e.completedAt)<=qualified,'qualification versus actual test/source/process evidence');
++ }
++
++ if(live){
++  const birth=processBirth(c.pid);requireThat(birth.bootId===c.bootId&&birth.startTicks===c.birthTicks&&readlinkSync(`/proc/${c.pid}/cwd`)===c.cwd,'live native boot/birth/cwd');
++  const hz=Number(execFileSync('getconf',['CLK_TCK'],{env:cleanEnv(),encoding:'utf8'}));const boot=Number(readFileSync('/proc/stat','utf8').match(/^btime (\d+)$/m)?.[1]);const actualBirth=(boot+Number(c.birthTicks)/hz)*1000;
++  requireThat(Number.isFinite(actualBirth)&&Math.abs(started-actualBirth)<=5000&&qualified>=actualBirth-1000,'qualification/native timestamp versus kernel process birth');
++  const nativeRuntime=await import(pathToFileURL(runtimePath));await nativeRuntime.assertOwner(c);
++ }
++}
++
+ const put=async(file,bytes)=>{await mkdir(path.dirname(file),{recursive:true});await writeFile(file,bytes,{flag:'wx'});};
+ export async function buildInteractive(){
+  const root=path.join(externalRoot,'workers/worker-05/interactive',randomUUID());await mkdir(root,{recursive:true});
+@@ -54,25 +93,27 @@ export async function buildInteractive(){
+ export function verifyInputs(ref){
+  requireThat(ref&&path.isAbsolute(ref.path)&&sha(ref.path)===ref.sha256,'input manifest hash');const m=JSON.parse(readFileSync(ref.path));
+  requireThat(m.schema==='offmenu-owner05-private-inputs/1'&&m.root.startsWith(path.join(externalRoot,'workers/worker-05/interactive')+'/')&&path.resolve(m.root)===m.root&&JSON.stringify(m.pins)===JSON.stringify(inputPins),'owner/input binding');
+- for(const f of m.files){requireThat(['app','mock','audit','producer-input'].includes(f.part)&&Object.values(inputPins).includes(f.commit)&&!path.isAbsolute(f.path)&&!f.path.split('/').includes('..'),'input path/pin');requireThat(hash(git('cat-file','blob',f.blob))===f.sha256&&git('rev-parse',`${f.commit}:${f.path}`).toString().trim()===f.blob,'input Git blob binding');if(f.materialized)requireThat(sha(path.join(m.root,f.part,f.path))===f.sha256,'materialized input changed');}
++ for(const f of m.files){requireThat(['app','mock','audit','producer-input'].includes(f.part)&&f.commit===inputPins[{'app':'02','mock':'06','audit':'03','producer-input':'05'}[f.part]]&&!path.isAbsolute(f.path)&&!f.path.split('/').includes('..'),'input path/pin');requireThat(hash(git('cat-file','blob',f.blob))===f.sha256&&git('rev-parse',`${f.commit}:${f.path}`).toString().trim()===f.blob,'input Git blob binding');if(f.materialized)requireThat(sha(path.join(m.root,f.part,f.path))===f.sha256,'materialized input changed');}
+  requireThat(m.compositionSha256===hash(JSON.stringify({base:m.base,pins:m.pins,trees:m.trees,files:m.files}))&&sha(m.artifact.path)===m.artifact.sha256,'composition/artifact hash');return m;
+ }
+ export async function startOwnedMock(ref,port=19075){
+  requireThat(process.env.CODEX_THREAD_ID===ownerThread,'actual native owner session');
+  const m=verifyInputs(ref),runtime=path.join(m.root,'mock/dev/wiremock/runtime.mjs'),jar='/home/user/src/offmenu-workers/worker-06/dev/wiremock/.cache/wiremock-standalone-3.13.2.jar';
+  const lock=JSON.parse(readFileSync(path.join(m.root,'mock/dev/wiremock/runtime-lock.json')));requireThat(hash(readFileSync(jar),'sha512')===lock.sha512,'retained JAR checksum');
+- const log=path.join(m.root,'mock-start.log'),{open}=await import('node:fs/promises');const fd=await open(log,'wx');
++ const log=path.join(m.root,`mock-start-${port}-${randomUUID()}.log`),{open}=await import('node:fs/promises');const fd=await open(log,'wx');
+  const proc=spawn(process.execPath,[runtime,'start',String(port),jar],{cwd:path.join(m.root,'mock'),env:cleanEnv(),stdio:['ignore',fd.fd,fd.fd]});proc.once('exit',()=>fd.close());
+  let ready;for(let i=0;i<150;i++){const text=await readFile(log,'utf8');for(const line of text.split('\n'))try{const value=JSON.parse(line);if(value.ready)ready=value;}catch{}if(ready)break;if(proc.exitCode!==null)throw Error('Own mock startup failed; log preserved '+log);await new Promise(ok=>setTimeout(ok,100));}requireThat(ready,'own mock readiness timeout; preserve startup log');
+  const custody=JSON.parse(await readFile(ready.custody));const module=await import(pathToFileURL(runtime));await module.assertOwner(custody);
+  const validation=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/identity-validation.mjs')));const identity=await validation.validateIdentityRuntime(`http://127.0.0.1:${port}`);const reset=await module.operate('reset',ready.custody);const resetCheck=await validation.validateIdentityReset(`http://127.0.0.1:${port}`);
+- const receipt={schema:'offmenu-owner05-mock-runtime/2',ownerThread,sourceOwner:'06',sourceCommit:inputPins['06'],status:'qualified-live',qualifiedAt:new Date().toISOString(),validity:'Only while this exact owned birth, source hashes, JAR and health identity remain live; no historical PID adoption.',custody,nativeCustody:{path:ready.custody,sha256:sha(ready.custody)},runtimeSource:{path:runtime,sha256:sha(runtime)},jarSha512:lock.sha512,version:lock.version,identity,reset,resetCheck,startLog:log,startLogSha256:sha(log)};
+- const file=path.join(m.root,'mock-qualified.json');await put(file,JSON.stringify(receipt,null,2)+'\n');return {path:file,sha256:sha(file),custodyPath:ready.custody,port};
++ const executionPath=path.join(custody.root,'identity-execution.json');const execution={schema:'offmenu-owner05-identity-execution/1',ownerThread,sourceCommit:inputPins['06'],validator:{path:path.join(m.root,'mock/dev/wiremock/identity-validation.mjs'),sha256:sha(path.join(m.root,'mock/dev/wiremock/identity-validation.mjs'))},custody,completedAt:new Date().toISOString(),identity,reset,resetCheck};await put(executionPath,JSON.stringify(execution,null,2)+'\n');
++ const executionEvidence={path:executionPath,sha256:sha(executionPath)};
++ const receipt={schema:'offmenu-owner05-mock-runtime/2',executionEvidence,ownerThread,sourceOwner:'06',sourceCommit:inputPins['06'],status:'qualified-live',qualifiedAt:new Date().toISOString(),validity:'Only while this exact owned birth, source hashes, JAR and health identity remain live; no historical PID adoption.',custody,nativeCustody:{path:ready.custody,sha256:sha(ready.custody)},runtimeSource:{path:runtime,sha256:sha(runtime)},jarSha512:lock.sha512,version:lock.version,identity,reset,resetCheck,startLog:log,startLogSha256:sha(log)};
++ const file=path.join(custody.root,'qualification.json');await put(file,JSON.stringify(receipt,null,2)+'\n');return {path:file,sha256:sha(file),custodyPath:ready.custody,port};
+ }
+ export async function buildDescriptor(inputs,mock){
+  const m=verifyInputs(inputs);const authority={sourceThread:'01a137cf-2242-761d-8fd7-6e6fc5658013',grant:'Explicit current native root task: owner05 interactive isolated private DEV; selected02/03/05/06 pins; no production/provider/paid/security changes.',boundSession:ownerThread,boundRoot:sourceRoot,pins:inputPins,compositionSha256:m.compositionSha256,applicationArtifact:m.artifact,permittedActions:['owned-loopback-preview','synthetic-fixture-account-flows','fresh-isolated-synthetic-state','independent58-read/flow-checks','birth-verified-own-process-stop'],actualSuppliedControls:{filesystem:'danger-full-access; no restrictions',network:'enabled',mandatoryReviewer:'auto_review',approvalPolicy:null,namedProfile:null},userConfiguration:{permissionProfile:'disabled',filesystem:'unrestricted'},environmentProfile:process.env.CODEX_PERMISSION_PROFILE||null,unavailableNotInferred:['separate AskForApproval value','named permission profile'],notNewAccountGrant:true};
+  const d={schema:'offmenu-owner05-interactive-composition/2',ownerThread,sourceRoot,developmentPendingAcceptance:true,accepted:false,inputs,mock,authority,app:{root:path.join(m.root,'app'),commit:inputPins['02'],artifact:m.artifact,schemas:m.schemas},scenario:'success',pins:inputPins,compositionSha256:m.compositionSha256,qualifiedAt:new Date().toISOString(),blockedFeatures:['real Google authorize/callback','real provider calls/credentials','real corpus source admission/transport','native device access','extension install']};
+- const file=path.join(m.root,'composition-live.json');await put(file,JSON.stringify(d,null,2)+'\n');return {path:file,sha256:sha(file),root:m.root};
++ const file=path.join(m.root,`composition-${JSON.parse(readFileSync(mock.path)).custody.pid}.json`);await put(file,JSON.stringify(d,null,2)+'\n');return {path:file,sha256:sha(file),root:m.root};
+ }
+ export async function loadInteractive(env=process.env,{probe=true}={}){
+  if(!env.OFFMENU_DEV_INTERACTIVE&&!env.OFFMENU_DEV_INTERACTIVE_SHA256)return null;
+@@ -80,9 +121,10 @@ export async function loadInteractive(env=process.env,{probe=true}={}){
+  requireThat(d.schema==='offmenu-owner05-interactive-composition/2'&&d.ownerThread===ownerThread&&d.sourceRoot===sourceRoot&&d.accepted===false,'explicit owner/schema/development scope');const m=verifyInputs(d.inputs);requireThat(JSON.stringify(d.pins)===JSON.stringify(inputPins)&&d.compositionSha256===m.compositionSha256&&JSON.stringify(d.app.artifact)===JSON.stringify(m.artifact),'descriptor input/artifact binding');
+  requireThat(d.authority.boundSession===ownerThread&&d.authority.boundRoot===sourceRoot&&JSON.stringify(d.authority.pins)===JSON.stringify(inputPins)&&d.authority.actualSuppliedControls.mandatoryReviewer==='auto_review'&&d.authority.compositionSha256===m.compositionSha256&&JSON.stringify(d.authority.applicationArtifact)===JSON.stringify(m.artifact),'grant/session/policy binding');
+  requireThat(sha(d.mock.path)===d.mock.sha256,'owned mock receipt hash');const receipt=JSON.parse(readFileSync(d.mock.path));requireThat(receipt.ownerThread===ownerThread&&receipt.sourceOwner==='06'&&receipt.sourceCommit===inputPins['06']&&receipt.status==='qualified-live'&&receipt.identity.assertions===176&&receipt.resetCheck.assertions===2,'actual owned Java qualification');
++ validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:probe});
+  if(!probe)return {descriptor:d,descriptorSha256:ref.sha256,qualifiedContext:'Dry-run only; live runtime not probed'};
+  const runtime=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/runtime.mjs'))),adapter=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/adapter.mjs'))),fixtures=await import(pathToFileURL(path.join(m.root,'mock/dev/wiremock/fixtures.mjs')));
+- const check=async()=>{requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
++ const check=async()=>{validateTaskAdmission(d.authority,m);await validateQualification(receipt,m,{live:true});requireThat(sha(receipt.nativeCustody.path)===receipt.nativeCustody.sha256,'native custody receipt');requireThat(receipt.custody.cwd===path.join(m.root,'mock')&&receipt.custody.root.startsWith(path.join(m.root,'mock/dev/wiremock/.runtime/run-')),'actual private mock root');await runtime.assertOwner(receipt.custody);for(const name of ['adapter.mjs','fixtures.mjs','mappings.mjs','contracts.json','runtime-lock.json','runtime.mjs']){const f=m.files.find(f=>f.part==='mock'&&f.path==='dev/wiremock/'+name);requireThat(sha(path.join(m.root,'mock',f.path))===f.sha256,'mock source changed');}};
+  await check();const original=adapter.createOutboundAdapter({wiremockOrigin:`http://127.0.0.1:${receipt.custody.port}`,scenario:'success'});
+  const guarded=guardedOutbound({adapter:original,contractFor:adapter.contractFor,check});
+  const service=async request=>{const u=new URL(request.url);if(u.hostname==='offmenu-accounts.netlify.app'&&u.pathname.startsWith('/.netlify/identity/')){const suffix=u.pathname.slice('/.netlify/identity/'.length);if(!((request.method==='GET'&&['settings','user'].includes(suffix))||(request.method==='POST'&&['token','logout'].includes(suffix))))return WorkerResponse.json({error:'DEV_AUTH_FLOW_BLOCKED',synthetic:true},{status:501,headers:{'X-OffMenu-Dev-Mock':'wiremock'}});}return guarded(request);};
+diff --git a/tests-dev/receipt-binding.test.mjs b/tests-dev/receipt-binding.test.mjs
+new file mode 100644
+index 0000000..7eaf1bc
+--- /dev/null
++++ b/tests-dev/receipt-binding.test.mjs
+@@ -0,0 +1,26 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {readFileSync,writeFileSync,mkdtempSync,rmSync} from 'node:fs';
++import {createHash} from 'node:crypto';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {loadInteractive} from '../interactive-preview.mjs';
++const packet='/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/interactive/0b18df2e-282a-42d7-aa3e-187b304b4383';
++const original=JSON.parse(readFileSync(packet+'/composition-live.json'));
++const hash=b=>createHash('sha256').update(b).digest('hex');
++async function altered(mutator){const dir=mkdtempSync(path.join(tmpdir(),'owner05-binding-'));try{const d=structuredClone(original);await mutator(d,dir);const b=JSON.stringify(d),f=path.join(dir,'descriptor.json');writeFileSync(f,b);return await loadInteractive({OFFMENU_DEV_INTERACTIVE:f,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});}finally{rmSync(dir,{recursive:true});}}
++test('P12-01 refuses unrelated task, empty grant and expanded non-fixture actions',async()=>{
++ await assert.rejects(altered(d=>{d.authority.sourceThread='unrelated-task';d.authority.grant='';d.authority.permittedActions=['real-provider-flow'];}));
++});
++test('P12-02 refuses rehashed before-process qualification and false version/JAR/runtime claims',async()=>{
++ await assert.rejects(altered((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));q.qualifiedAt='2000-01-01T00:00:00Z';q.version='wrong-version';q.jarSha512='0'.repeat(128);q.runtimeSource.sha256='0'.repeat(64);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
++});
++
++test('valid exact existing packet remains admitted without state writes',async()=>{assert.ok(await altered(()=>{}));});
++test('each task admission field independently refuses wrong or empty action authority',async()=>{
++ for(const mutate of [d=>d.authority.sourceThread='unrelated-task',d=>d.authority.grant='',d=>d.authority.permittedActions=[],d=>d.authority.permittedActions.push('real-provider-flow'),d=>d.authority.permittedActions.push(d.authority.permittedActions[0])])await assert.rejects(altered(mutate));
++});
++test('individual before/future times and dependency/native evidence contradictions refuse',async()=>{
++ for(const [field,value] of [['qualifiedAt','2000-01-01T00:00:00Z'],['qualifiedAt','2099-01-01T00:00:00Z'],['version','wrong-version'],['jarSha512','0'.repeat(128)],['expiresAt','2000-01-01T00:00:00Z']])await assert.rejects(altered((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));q[field]=value;const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
++ for(const mutate of [q=>q.runtimeSource.sha256='0'.repeat(64),q=>q.custody.startedAt='2000-01-01T00:00:00Z',q=>q.reset.sha256='0'.repeat(64),q=>q.nativeCustody.sha256='0'.repeat(64)])await assert.rejects(altered((d,dir)=>{const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(dir,'mock.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}));
++});

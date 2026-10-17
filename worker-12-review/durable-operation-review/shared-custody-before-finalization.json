@@ -1,0 +1,7 @@
+{
+  "commonDir": "/home/user/src/offmenu/.git",
+  "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "commonHEADSHA256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+  "commonIndexSHA256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+  "samplingLimit": "First reviewer shared HEAD/index hash taken after test execution; not full-turn before hash."
+}

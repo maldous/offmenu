@@ -1,0 +1,14 @@
+✔ existing cloud validator drops explicit taste fields: adoption requires schema owner (0.687376ms)
+✔ partial edits preserve entered terms and distinguish unknown spice from explicit none (0.541268ms)
+✔ selective and full reset affect taste only and are idempotent (0.227312ms)
+✔ all operations reject cross-account, cross-member and malformed scope (0.221674ms)
+✔ rejects invalid/unbounded inputs and attempts to update medical or scope fields (0.168046ms)
+✔ adapter preserves restrictions, uncertainty, consent, rights and source quantities; reset cannot clear allergy (0.382522ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20.757161

@@ -1,0 +1,13 @@
+{
+  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+  "candidate": "f77bfafb4672e5e0660f1f66efbec0502ec493a8",
+  "diffSHA256": "018808ff1ecc0e038f5a74b706522e5a643300cc08d0469562b73e6231c5265b",
+  "selectedFileHashes": {
+    "interactive-preview.mjs": "06ebce116800acf16f079e0af4cfcac0dac57be91b91cea760290103a7805732",
+    "dev-lifecycle.mjs": "92be82e165ae84ea8402e2b4d9c3d8c9c160b344b4bbdf4a34bf44b01893bfe8",
+    "dev-server.mjs": "f2fb601c7667b20ef27aed6f627e02a6e5c170b585cf485de97435affb1c3f72",
+    "dev-entry.mjs": "4da8f8147c6ad34052bd8002857ddbefe659741d74ab7d95cf44d2dd44a5a013",
+    "tests-dev/interactive-preview.test.mjs": "cc012bc92856b11b7c9933e6e411ac67a4771fb3476ec8c79289b70922b5196f"
+  },
+  "currentFileBytesEqualPinned": true
+}

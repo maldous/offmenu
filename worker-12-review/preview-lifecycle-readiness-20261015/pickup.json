@@ -1,0 +1,17 @@
+{
+  "status": "ASSIGNED-WAITING",
+  "dependency": "New immutable Worker05 lifecycle/source-transport producer pin and its independently inspectable operation receipts",
+  "owner58Receipt": "9202de2e92e000d6f551d2c006b9a719e1b181a9",
+  "freshFetch": {
+    "UTC": "2026-10-14T14:01:48.954129+00:00",
+    "exitCode": 0,
+    "originDevelop": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "stderr": "From github.com:maldous/offmenu\n * branch            develop    -> FETCH_HEAD\n"
+  },
+  "sourceReview": "Original PDF04 pages1-10/PDF02 pages8-9 exact abe0 hashes checked; text read, PDF04p2/p9 rendered and visually read",
+  "harnessMode": "Unique local reviewer probe artifact only; no producer implementation or Git branch/index mutation",
+  "accepted434ReviewPreserved": true,
+  "production": "STOP",
+  "whole105Acceptance": false,
+  "sourceAdmission": false
+}

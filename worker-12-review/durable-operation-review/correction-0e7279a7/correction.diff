@@ -1,0 +1,149 @@
+diff --git a/public/durable-operation-queue.js b/public/durable-operation-queue.js
+index aad6598..117d292 100644
+--- a/public/durable-operation-queue.js
++++ b/public/durable-operation-queue.js
+@@ -9,6 +9,7 @@
+  * - transport = {idempotent: true, send(envelope)} must authenticate the captured
+  *   scope and atomically deduplicate (scope, operationId) with the remote effect.
+  *   A durable acknowledgement is {acknowledged:true, scope, operationId}.
++ *   Scope field order is irrelevant; extra scope fields are rejected.
+  *   HTTP success alone is not acknowledgement. Current state PUT APIs do not
+  *   satisfy this contract. This helper alone does not provide exactly-once effects.
+  * - scope includes accountId, resourceId and grantId (authorization generation).
+@@ -21,29 +22,48 @@
+  *   at capacity callers must reconcile/archive under a separate reviewed policy.
+  * No timers, UI, credentials, storage adapter or server mutation is supplied.
+  */
+-const copy = value => JSON.parse(JSON.stringify(value));
++const copy = value => jsonPayload(value);
+ const equal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+ function identifier(value) {
+   if (typeof value !== 'string' || !value || value.length > 200) throw Error('Invalid identifier');
+   return value;
+ }
+ function captureScope(value) {
+-  return Object.fromEntries(['accountId', 'resourceId', 'grantId'].map(key => [key, identifier(value?.[key])]));
++  const data = jsonPayload(value), fields = ['accountId', 'resourceId', 'grantId'];
++  if (!data || Array.isArray(data) || typeof data !== 'object' ||
++      Object.keys(data).length !== fields.length || fields.some(key => !Object.hasOwn(data, key)))
++    throw Error('Invalid scope');
++  return Object.fromEntries(fields.map(key => [key, identifier(data[key])]));
+ }
+ function jsonPayload(value) {
+-  // Reject lossy JSON conversion (undefined, NaN, functions, cycles, custom objects).
+-  function check(item) {
+-    if (item === null || typeof item === 'string' || typeof item === 'boolean') return;
+-    if (typeof item === 'number' && Number.isFinite(item)) return;
+-    if (Array.isArray(item)) { for (const child of item) check(child); return; }
+-    if (item && Object.getPrototypeOf(item) === Object.prototype) {
+-      for (const child of Object.values(item)) check(child);
+-      return;
++  // Capture descriptor values once into a fresh tree, never running getters or
++  // toJSON. Reject hidden/symbol fields, sparse arrays, cycles and custom
++  // prototypes rather than silently dropping or transforming caller data.
++  const active = new Set();
++  const invalid = () => { throw Error('Payload must be plain JSON data'); };
++  function capture(item) {
++    if (item === null || typeof item === 'string' || typeof item === 'boolean') return item;
++    if (typeof item === 'number' && Number.isFinite(item)) return item;
++    if (!item || typeof item !== 'object' || active.has(item)) return invalid();
++    const array = Array.isArray(item), prototype = Object.getPrototypeOf(item);
++    if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) return invalid();
++    active.add(item);
++    const descriptors = Object.getOwnPropertyDescriptors(item), keys = Reflect.ownKeys(descriptors);
++    const result = array ? [] : {};
++    if (array && (keys.length !== descriptors.length.value + 1 ||
++        keys.some(key => key !== 'length' && (typeof key !== 'string' || !/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= descriptors.length.value))))
++      return invalid();
++    for (const key of keys) {
++      if (array && key === 'length') continue;
++      const descriptor = descriptors[key];
++      if (typeof key !== 'string' || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) return invalid();
++      // defineProperty preserves benign own __proto__/constructor/toJSON data.
++      Object.defineProperty(result, key, {value: capture(descriptor.value), enumerable: true, writable: true, configurable: true});
+     }
+-    throw Error('Payload must be JSON data');
++    active.delete(item);
++    return result;
+   }
+-  check(value);
+-  return copy(value);
++  return capture(value);
+ }
+ 
+ export function createDurableOperationQueue({scope: inputScope, storage, transport, now = Date.now,
+@@ -60,7 +80,7 @@ export function createDurableOperationQueue({scope: inputScope, storage, transpo
+   async function load() {
+     const stored = await storage.load(key);
+     const record = stored == null ? {version: 1, scope, revoked: false, operations: []} : copy(stored);
+-    if (record.version !== 1 || !equal(record.scope, scope) || typeof record.revoked !== 'boolean' ||
++    if (record.version !== 1 || !equal(captureScope(record.scope), scope) || typeof record.revoked !== 'boolean' ||
+         !Array.isArray(record.operations) || record.operations.length > maxOperations)
+       throw Error('Invalid scoped queue');
+     const ids = new Set();
+@@ -77,7 +97,12 @@ export function createDurableOperationQueue({scope: inputScope, storage, transpo
+     return record;
+   }
+   const save = record => storage.save(key, copy(record));
+-  const matches = (ack, op) => ack?.acknowledged === true && ack.operationId === op.operationId && equal(ack.scope, scope);
++  const matches = (ack, op) => {
++    try {
++      const data = copy(ack);
++      return data?.acknowledged === true && data.operationId === op.operationId && equal(captureScope(data.scope), scope);
++    } catch { return false; }
++  };
+   return {
+     enqueue({operationId, payload, expiresAt}) {
+       // Capture caller input before yielding; pending envelopes are immutable.
+diff --git a/tests-web/durable-operation-queue.test.mjs b/tests-web/durable-operation-queue.test.mjs
+index 2c5ca08..956782f 100644
+--- a/tests-web/durable-operation-queue.test.mjs
++++ b/tests-web/durable-operation-queue.test.mjs
+@@ -172,3 +172,47 @@ test('bounded storage retains acknowledged IDs instead of evicting replay protec
+   await assert.rejects(q.enqueue({...operation, operationId: 'cook-2'}), /capacity/);
+   assert.equal((await q.enqueue(operation)).status, 'acknowledged');
+ });
++
++test('reordered scope acknowledges both transport and explicit reconciliation', async () => {
++  const reordered = {grantId: alice.grantId, resourceId: alice.resourceId, accountId: alice.accountId};
++  const f = fixture(), q = f.queue({transport: {idempotent: true, async send(envelope) {
++    return {...ack(envelope), scope: reordered};
++  }}});
++  await q.enqueue(operation); assert.equal((await q.flush()).status, 'acknowledged');
++  assert.equal((await q.flush()).status, 'idle');
++  const second = f.queue({scope: bob}); await second.enqueue(operation);
++  await second.acknowledge({acknowledged: true, operationId: operation.operationId,
++    scope: {grantId: bob.grantId, resourceId: bob.resourceId, accountId: bob.accountId}});
++  assert.equal((await second.flush()).status, 'idle');
++});
++
++test('scope mismatches and extra identity fields cannot acknowledge or reconcile', async () => {
++  for (const scope of [{...alice, accountId: 'other'}, {...alice, resourceId: 'other'},
++    {...alice, grantId: 'other'}, {...alice, extra: 'unexpected'}]) {
++    const f = fixture(), response = {acknowledged: true, operationId: operation.operationId, scope};
++    const q = f.queue({transport: {idempotent: true, async send() { return response; }}});
++    await q.enqueue(operation); assert.equal((await q.flush()).status, 'unknown');
++    await assert.rejects(q.acknowledge(response), /mismatch/);
++  }
++});
++
++test('hidden serialization hooks and accessors are rejected without being executed', () => {
++  const f = fixture(); let calls = 0;
++  const hidden = {deduct: 2};
++  Object.defineProperty(hidden, 'toJSON', {value() { calls++; return {deduct: 999}; }});
++  const accessor = {};
++  Object.defineProperty(accessor, 'deduct', {enumerable: true, get() { return ++calls === 1 ? 2 : 999; }});
++  for (const payload of [hidden, accessor, {nested: hidden}, [accessor]])
++    assert.throws(() => f.queue().enqueue({...operation, payload}), /JSON/);
++  assert.equal(calls, 0); assert.equal(f.records.size, 0);
++});
++
++test('fresh JSON capture preserves benign fields and rejects cycles, custom prototypes and sparse arrays', async () => {
++  const f = fixture(), q = f.queue(), payload = JSON.parse('{"__proto__":{"deduct":2},"constructor":"food","toJSON":"label","items":[null,true,2,"rice"]}');
++  await q.enqueue({...operation, payload});
++  assert.deepEqual((await q.inspect()).operations[0].payload, payload);
++  const cycle = {}; cycle.self = cycle;
++  const inherited = Object.create({toJSON() { return {deduct: 999}; }}); inherited.deduct = 2;
++  for (const value of [cycle, inherited, new Array(1), {fn() {}}, {[Symbol('hidden')]: 2}])
++    assert.throws(() => q.enqueue({...operation, operationId: 'other', payload: value}), /JSON/);
++});

@@ -1,0 +1,14 @@
+import {readFileSync,writeFileSync,mkdtempSync} from 'node:fs';import {tmpdir} from 'node:os';import path from 'node:path';import {createHash} from 'node:crypto';import {pathToFileURL} from 'node:url';import assert from 'node:assert/strict';
+const out=process.argv[2];const {loadInteractive}=await import(pathToFileURL('/home/user/src/offmenu-workers/worker-05/interactive-preview.mjs'));const packet=JSON.parse(readFileSync('/home/user/src/offmenu-data/dev-preview-20261014/workers/worker-05/runs/interactive-central7820-be166-20261014-04/selected-composition-readback.json'));const original=JSON.parse(readFileSync(packet.descriptor.path));const scratch=mkdtempSync(path.join(tmpdir(),'worker12-selected-binding-'));const hash=b=>createHash('sha256').update(b).digest('hex');const results=[];
+async function run(name,mutate,expected=false){const d=structuredClone(original);await mutate(d);const b=JSON.stringify(d),file=path.join(scratch,name+'.json');writeFileSync(file,b);let admitted=false,reason;try{const v=await loadInteractive({OFFMENU_DEV_INTERACTIVE:file,OFFMENU_DEV_INTERACTIVE_SHA256:hash(b)});await v.check();admitted=true;}catch(e){reason=e.message;}assert.equal(admitted,expected);results.push({name,admitted,reason});}
+async function mock(d,name,mutate){const q=JSON.parse(readFileSync(d.mock.path));mutate(q);const b=JSON.stringify(q),file=path.join(scratch,name+'.json');writeFileSync(file,b);d.mock={...d.mock,path:file,sha256:hash(b)};}
+async function inputs(d,name,mutate){const m=JSON.parse(readFileSync(d.inputs.path));mutate(m);const b=JSON.stringify(m),file=path.join(scratch,name+'.json');writeFileSync(file,b);d.inputs={...d.inputs,path:file,sha256:hash(b)};}
+await run('actual-selected-composition-positive',()=>{},true);
+await run('unselected-871-successor-refuses',d=>{d.pins['02']='871'.padEnd(40,'0');});
+await run('historical9b31-mock-pin-refuses',d=>{d.pins['06']='9b31f7d4de21dd30add0c49b038e5ac31413ec5d';});
+await run('separate-physical-root-rebinding-refuses',d=>inputs(d,'wrong-root',m=>{m.mockRoot=m.root+'/mock';}));
+await run('preparation-reference-hash-refuses',d=>inputs(d,'wrong-prep',m=>{m.mockPreparation.sha256='0'.repeat(64);}));
+await run('selected-execution-omission-refuses',d=>mock(d,'missing-selected',q=>{delete q.selectedExecution;}));
+await run('selected-execution-hash-refuses',d=>mock(d,'bad-selected',q=>{q.selectedExecution.sha256='0'.repeat(64);}));
+await run('native-cwd-relabel-refuses',d=>mock(d,'bad-native-cwd',q=>{q.custody.cwd='/home/user/src/offmenu-workers/worker-06';}));
+writeFileSync(out+'/composition-boundaries.json',JSON.stringify({results,scratch,network:'Existing fixture health GETs from admission only; no auth/state/reset/flows.'},null,2)+'\n');console.log('8 selected composition positive/refusal observations passed.');

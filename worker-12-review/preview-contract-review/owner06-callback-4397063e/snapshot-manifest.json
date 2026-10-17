@@ -1,0 +1,91 @@
+{
+  "candidate": "4397063e3036db07442947fdf7169885801b5eed",
+  "snapshot": "/tmp/worker12-owner06-callback-v4_10wwp",
+  "files": [
+    {
+      "path": "dev/wiremock/.gitignore",
+      "sha256": "dbc724fc7f284de4367e2b2cd6c1be803601a37657fb0f4c67670244e2bd07cb"
+    },
+    {
+      "path": "dev/wiremock/README.md",
+      "sha256": "97cb3ed21568a282d4bc2b2056a6f1cf5ad114e8b47b56fa2d187270a4cc1f78"
+    },
+    {
+      "path": "dev/wiremock/adapter.mjs",
+      "sha256": "0eb13d25f5c80e59df3f5afac28e8ecb252ef67bed6e93effed89b98ad6da9b9"
+    },
+    {
+      "path": "dev/wiremock/callback-source-contract.md",
+      "sha256": "0abccb31882089657ee298c097fb9dcbf469808ed03c6b73d753e245e93442aa"
+    },
+    {
+      "path": "dev/wiremock/callback-source-contract.mjs",
+      "sha256": "916ac88a4ba4cbd27af77b534e62dc7e27dbaf2d5c53d506a871a8418c616e39"
+    },
+    {
+      "path": "dev/wiremock/callback-source-contract.test.mjs",
+      "sha256": "4312cdea16f450f6f40d44982079cdf57503add1b31ea95a8eb719c7be55def0"
+    },
+    {
+      "path": "dev/wiremock/callback-source-verification.json",
+      "sha256": "72979272324d24145b0ce63d8f1516204189352e553dde9fd0a8cd32e76834fc"
+    },
+    {
+      "path": "dev/wiremock/contracts.json",
+      "sha256": "682b54f6ec9cdb2ed00a6482c33762d64dc1d21b34bdd0a1b75fb502d05797cb"
+    },
+    {
+      "path": "dev/wiremock/coverage.json",
+      "sha256": "70d48ee70fa760a75b8bbd0df5a2941303f6d1eb9706a674847c43036a31fb74"
+    },
+    {
+      "path": "dev/wiremock/coverage.mjs",
+      "sha256": "381eaed95258686b06c77bf78be7ef630c08b53d805baf1c71828219ae01839e"
+    },
+    {
+      "path": "dev/wiremock/fixtures.mjs",
+      "sha256": "58a2fd5cfb762e8e32da8b646dfadd038f291c1a501c463a64c2c23b33236982"
+    },
+    {
+      "path": "dev/wiremock/identity-validation.mjs",
+      "sha256": "8aeac76c3c6ed051cf77a56343ae97e781352bd57a9575ca5862404b730923ad"
+    },
+    {
+      "path": "dev/wiremock/identity-verification.json",
+      "sha256": "9eff83bac2aa42c3c5f083ca056a23065af9a8d68f676b6c7bf67d9c3614828c"
+    },
+    {
+      "path": "dev/wiremock/mappings.mjs",
+      "sha256": "3e4a65a2889fa05dbf730ffec66910e54e047969d2a7bd98b61254538a482813"
+    },
+    {
+      "path": "dev/wiremock/probes.mjs",
+      "sha256": "14ea44d48f1bac2a816ce949a19501ff189a8375be7b5f1bd0ac88d425ba90d5"
+    },
+    {
+      "path": "dev/wiremock/runtime-lock.json",
+      "sha256": "99f1a85ebb1736cb749d59e65ab6da4d3b1ecb45ea262f03f96a10252cf74eec"
+    },
+    {
+      "path": "dev/wiremock/runtime-validation.mjs",
+      "sha256": "7f0eac8f8263fa18703f2606fc770a7161b90cf8386ee0b83bd91c429add9fb3"
+    },
+    {
+      "path": "dev/wiremock/runtime.mjs",
+      "sha256": "9d8e4b0735a221ccdda8e968debcc8d6e7a707da898173a3f60e0ba2cbf80025"
+    },
+    {
+      "path": "dev/wiremock/validation.test.mjs",
+      "sha256": "d79b9104d736bb2e8aaa583e7b8eceb1608703c6690c62aaaa7ded112a8caef5"
+    },
+    {
+      "path": "dev/wiremock/verification.json",
+      "sha256": "e1b4b0cc57a7053356bbf7554392ce5f899b7b34d73193e72ba36d656646b09e"
+    },
+    {
+      "path": "package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+    }
+  ],
+  "verificationSHA256": "72979272324d24145b0ce63d8f1516204189352e553dde9fd0a8cd32e76834fc"
+}
