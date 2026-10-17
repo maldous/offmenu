@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import subprocess
 import sys
 from types import SimpleNamespace
 import unittest
@@ -185,7 +186,7 @@ class GrantTests(unittest.TestCase):
         self.assertFalse(report['applied'])
         self.assertNotIn('/home',json.dumps(report))
 
-    def mocked_apply(self,fail_mount=False,active=False,preexisting_drop_dir=False):
+    def mocked_apply(self,fail_mount=False,active=False,preexisting_drop_dir=False,fail_stop=False,fail_readability=False):
         # Every external/privileged boundary is replaced. Only temporary fixture
         # files and real unprivileged lock descriptors exist in this test.
         commands=[];selected=list(m.GROUPS['NO']);info=(self.root/'source')
@@ -194,19 +195,30 @@ class GrantTests(unittest.TestCase):
         if preexisting_drop_dir:dropdir.mkdir()
         def ensure(path,body,mode=0o644):path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(body)
         with contextlib.ExitStack() as stack:
-            mocks={'isolated_runtime':True,'account':(self.runner,self.owner),'preflight_sources':({k:'validated' for k in selected},selected,observations),'verify_baseline':(b'unit',False),'source_check':('validated',info.stat()),'runtime_identity':None,'create_snapshot':observations,'protected_directory':None,'assert_idle':None}
+            mocks={'process_start_time':b'1','isolated_runtime':True,'account':(self.runner,self.owner),'preflight_sources':({k:'validated' for k in selected},selected,observations),'verify_baseline':(b'unit',False),'source_check':('validated',info.stat()),'runtime_identity':None,'create_snapshot':observations,'protected_directory':None}
             for name,value in mocks.items():stack.enter_context(patch.object(m,name,return_value=value))
             stack.enter_context(patch.object(m.os,'geteuid',return_value=0))
             stack.enter_context(patch.object(m,'DROP_DIR',dropdir));stack.enter_context(patch.object(m,'DROP_IN',drop));stack.enter_context(patch.object(m,'BACKUP',backup))
             def props(timeout=90):
-                values={**m.BASE_PROPERTIES,'BindReadOnlyPaths':' '.join(m.bindings(selected)) if drop.exists() else m.BOOTSTRAP_BIND,'DropInPaths':str(drop) if drop.exists() else '',
+                values={**m.BASE_PROPERTIES,'BindReadOnlyPaths':(m.bindings(selected)[0] if drop.exists() else m.BOOTSTRAP_BIND)+':rbind','DropInPaths':str(drop) if drop.exists() else '',
                         'ActiveState':'active','SubState':'running','Result':'success','MainPID':'123','ExecMainPID':'123','ExecMainCode':'0','ExecMainStatus':'0','StatusErrno':'0'}
                 m.LAST_PROPERTIES=values
                 return values
             stack.enter_context(patch.object(m,'properties',side_effect=props))
+            stack.enter_context(patch.object(m,'assert_idle',side_effect=lambda *args:props()))
+            def readable(pid,keys,observations,runner,report,timeout=5):
+                if fail_readability:
+                    report['runnerReadability']={'status':'blocked','stage':'namespace','checkedAssets':[],'failedAsset':None,'errno':errno.EPERM}
+                    m.block('runner-readability-failed')
+                report['runnerReadability']={'status':'verified','stage':'complete','checkedAssets':keys,'failedAsset':None,'errno':None}
+            stack.enter_context(patch.object(m,'verify_runner_readability',side_effect=readable))
             stack.enter_context(patch.object(m,'ensure_file',side_effect=ensure))
             stack.enter_context(patch.object(m,'regular_bytes',side_effect=lambda p,cap:p.read_bytes()))
-            stack.enter_context(patch.object(m,'command',side_effect=lambda args,capture=False:commands.append(args) or ''))
+            def command(args,capture=False):
+                commands.append(args)
+                if fail_stop and args==['/usr/bin/systemctl','stop',m.SERVICE] and commands.count(args)==1:m.block('system-command-timeout')
+                return ''
+            stack.enter_context(patch.object(m,'command',side_effect=command))
             stack.enter_context(patch.object(m,'administrative_lock',side_effect=lambda:os.open(info,os.O_RDONLY)))
             stack.enter_context(patch.object(m,'idle_lock',side_effect=m.Blocked('job-active') if active else lambda runner:os.open(info,os.O_RDONLY)))
             stack.enter_context(patch.object(m,'verify_mounts',side_effect=m.Blocked('mounted-file-identity-mismatch') if fail_mount else lambda *a:None))
@@ -217,7 +229,7 @@ class GrantTests(unittest.TestCase):
         result,commands,drop,backup=self.mocked_apply()
         self.assertEqual('applied',result['status']);self.assertTrue(result['readOnlyMountsVerified'])
         self.assertTrue(drop.exists());self.assertEqual(b'unit',(backup/'original.service').read_bytes())
-        self.assertEqual([['/usr/bin/systemd-analyze','verify',str(m.UNIT)],['/usr/bin/systemctl','stop',m.SERVICE],['/usr/bin/systemctl','daemon-reload'],['/usr/bin/systemctl','start',m.SERVICE]],commands)
+        self.assertEqual([['/usr/bin/systemd-analyze','verify',str(m.UNIT)],['/usr/bin/systemctl','daemon-reload'],['/usr/bin/systemctl','stop',m.SERVICE],['/usr/bin/systemctl','start',m.SERVICE]],commands)
 
     def test_mount_failure_rolls_back_own_dropin_and_restarts_base(self):
         result,commands,drop,backup=self.mocked_apply(fail_mount=True)
@@ -380,6 +392,8 @@ class GrantTests(unittest.TestCase):
         stack=contextlib.ExitStack()
         stack.enter_context(patch.object(m,'properties',side_effect=values if isinstance(values,list) else lambda timeout=90:values))
         stack.enter_context(patch.object(m,'runtime_identity',side_effect=identity_effect))
+        stack.enter_context(patch.object(m,'process_start_time',return_value=b'1'))
+        stack.enter_context(patch.object(m,'verify_runner_readability'))
         mounts=stack.enter_context(patch.object(m,'verify_mounts',side_effect=mount_effect))
         stack.enter_context(patch.object(m.time,'monotonic',side_effect=lambda:now[0]))
         stack.enter_context(patch.object(m.time,'sleep',side_effect=sleep))
@@ -429,6 +443,7 @@ class GrantTests(unittest.TestCase):
             with self.subTest(boundary=boundary),contextlib.ExitStack() as stack:
                 stack.enter_context(patch.object(m,'properties',return_value=self.ready_properties(selected)))
                 stack.enter_context(patch.object(m,'runtime_identity'))
+                stack.enter_context(patch.object(m,'process_start_time',return_value=b'1'))
                 stack.enter_context(patch.object(m,boundary,side_effect=m.Blocked(code)))
                 sleep=stack.enter_context(patch.object(m.time,'sleep'))
                 with self.assertRaisesRegex(m.Blocked,code):m.await_ready(selected,self.runner,{}, {},'after')
@@ -560,6 +575,159 @@ class GrantTests(unittest.TestCase):
             self.assertNotIn(phase,diagnostics);self.assertEqual('unavailable',diagnostics[phase+'Sample'])
             self.assertEqual(errno.EACCES,diagnostics[phase+'SampleDetail']['errno'])
             self.assertNotIn('CANARY',json.dumps(diagnostics))
+
+
+    def test_systemd_vendor_parser_exact_bind_regression(self):
+        tool=Path('/usr/bin/systemd-analyze')
+        if not tool.is_file():self.skipTest('vendor systemd-analyze unavailable')
+        runtime=self.root/'runtime';runtime.mkdir(mode=0o700)
+        unit=self.root/'bind-probe.service'
+        pair=m.bindings([])[0]
+        observed='09e9cae237096581d641e2653aabfda7bb590581a82254d288b61acc86086149'
+        for broken in (True,False):
+            body='[Service]\nExecStart=/usr/bin/true\nBindReadOnlyPaths="'+pair+'"\n' if broken else '[Service]\nExecStart=/usr/bin/true\n'+m.dropin_bytes([]).decode().split('[Service]\n')[1]
+            unit.write_text(body)
+            result=subprocess.run([str(tool),'--user','verify','--man=no',str(unit)],stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=20,
+                env={'PATH':'/usr/bin:/bin','LANG':'C','XDG_RUNTIME_DIR':str(runtime),'SYSTEMD_LOG_LEVEL':'debug','SYSTEMD_LOG_TARGET':'console','SYSTEMD_COLORS':'0'})
+            self.assertEqual(0,result.returncode,result.stdout[-2000:])
+            parsed=[line.strip().split(': ',1)[1] for line in result.stdout.decode().splitlines() if line.strip().startswith('BindReadOnlyPaths: ')]
+            expected=pair+':'+pair+':rbind' if broken else pair+':rbind'
+            self.assertIn(expected,parsed)
+            values=self.ready_properties([]);values['BindReadOnlyPaths']=expected
+            if broken:
+                self.assertEqual(observed,hashlib.sha256(expected.encode()).hexdigest())
+                with self.assertRaisesRegex(m.Blocked,'service-mount-drift'):m.verify_properties(values,[])
+            else:m.verify_properties(values,[])
+
+    def test_fixed_mapping_rejects_all_quoting_and_option_variants(self):
+        values=self.ready_properties([]);pair=m.bindings([])[0]
+        for bad in (pair, '"'+pair+'":rbind',pair+':rbind:rbind',pair+':bind',pair+':'+pair+':rbind',pair+'\\x20:rbind',pair+':rbind '+pair+':rbind'):
+            with self.subTest(bad=bad),self.assertRaisesRegex(m.Blocked,'service-mount-drift'):m.verify_properties({**values,'BindReadOnlyPaths':bad},[])
+        for bad in ('/fixed path','/fixed\tpath','/fixed%path','/fixed:path','/fixed"path','/fixed\\path'):
+            with patch.object(m,'CACHE',bad),self.assertRaisesRegex(m.Blocked,'invalid-fixed-path'):m.dropin_bytes([])
+
+    def test_configured_preflight_failure_rolls_back_without_stop(self):
+        original=m.configured_preflight
+        def fail(selected,runner,baseline,report):
+            values=m.properties();pair=m.bindings(selected)[0]
+            values['BindReadOnlyPaths']=pair+':'+pair+':rbind'
+            with patch.object(m,'properties',return_value=values):original(selected,runner,baseline,report)
+        with patch.object(m,'configured_preflight',side_effect=fail):result,commands,drop,backup=self.mocked_apply()
+        self.assertEqual('service-mount-drift',result['errorCode']);self.assertTrue(result['rollbackRestored'])
+        self.assertTrue(result['serviceReady']);self.assertFalse(result['serviceRestarted']);self.assertFalse(drop.exists())
+        self.assertFalse(result['readOnlyMountsVerified']);self.assertEqual([],result['effectiveMountAssets'])
+        self.assertFalse(result['serviceDiagnostics']['configured']['properties']['BindReadOnlyPaths']['match'])
+        self.assertFalse(result['serviceDiagnostics']['preflightSameProcess'])
+        self.assertEqual([['/usr/bin/systemd-analyze','verify',str(m.UNIT)],['/usr/bin/systemctl','daemon-reload'],['/usr/bin/systemctl','daemon-reload']],commands)
+
+    def test_configured_preflight_requires_same_pid_and_start_time(self):
+        selected=sorted(m.GROUPS['NO'])
+        for values,start in ((self.ready_properties(selected,MainPID='456'),b'1'),(self.ready_properties(selected),b'2')):
+            report={}
+            with patch.object(m,'properties',return_value=values),patch.object(m,'process_start_time',return_value=start),patch.object(m,'runtime_identity') as identity:
+                with self.assertRaisesRegex(m.Blocked,'service-preflight-process-changed'):m.configured_preflight(selected,self.runner,(123,b'1'),report)
+                identity.assert_not_called()
+            self.assertFalse(report['serviceDiagnostics']['preflightSameProcess'])
+
+    def test_process_start_time_parses_comm_parentheses(self):
+        fields=[b'S']+[b'0']*18+[b'12345']+[b'0']*4
+        with patch.object(m,'bounded_read',return_value=b'123 (strange ) comm) '+b' '.join(fields)):
+            self.assertEqual(b'12345',m.process_start_time(123))
+
+    def test_readability_uses_exact_mounted_paths_and_real_file_reads(self):
+        cache=self.root/'cache';keys=sorted(m.FILES);observations={}
+        for key in keys:
+            path=cache/m.FILES[key][1];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'PRIVATE-DATA');observations[key]=path.stat()
+        result=m.readability_record()
+        with patch.object(m,'CACHE',str(cache)):
+            m.read_runner_files(keys,observations,result)
+        self.assertEqual(keys,result['checkedAssets']);self.assertEqual('verified',result['status'])
+        self.assertEqual('complete',result['stage']);self.assertNotIn('PRIVATE-DATA',json.dumps(result))
+        self.assertIn('FR_WORKBOOK',result['checkedAssets'])
+
+    def test_readability_reports_exact_failed_asset_and_keeps_prior_checks(self):
+        cache=self.root/'cache';keys=sorted(m.FILES)[:2];observations={}
+        for key in keys:
+            path=cache/m.FILES[key][1];path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'data');observations[key]=path.stat()
+        (cache/m.FILES[keys[1]][1]).unlink()
+        result=m.readability_record()
+        with patch.object(m,'CACHE',str(cache)),self.assertRaises(FileNotFoundError):m.read_runner_files(keys,observations,result)
+        self.assertEqual([keys[0]],result['checkedAssets']);self.assertEqual(keys[1],result['failedAsset'])
+        self.assertEqual('files',result['stage'])
+
+    def test_readability_identity_and_symlink_fail_closed(self):
+        key='FR_WORKBOOK';cache=self.root/'cache';path=cache/m.FILES[key][1];path.parent.mkdir(parents=True);path.write_bytes(b'first');observations={key:path.stat()}
+        result=m.readability_record();path.write_bytes(b'changed')
+        with patch.object(m,'CACHE',str(cache)),self.assertRaisesRegex(m.Blocked,'runner-readability-identity-mismatch'):m.read_runner_files([key],observations,result)
+        path.unlink();path.symlink_to(self.root/'CANARY')
+        with patch.object(m,'CACHE',str(cache)),self.assertRaises(OSError):m.read_runner_files([key],observations,result)
+        self.assertEqual(key,result['failedAsset']);self.assertEqual([],result['checkedAssets'])
+
+
+    def test_stop_attempt_failure_still_restores_baseline(self):
+        result,commands,drop,backup=self.mocked_apply(fail_stop=True)
+        self.assertEqual('system-command-timeout',result['errorCode']);self.assertTrue(result['rollbackRestored'])
+        self.assertFalse(drop.exists());self.assertTrue(result['serviceReady'])
+        self.assertEqual(2,commands.count(['/usr/bin/systemctl','stop',m.SERVICE]))
+        self.assertEqual(1,commands.count(['/usr/bin/systemctl','start',m.SERVICE]))
+
+    def test_namespace_preflight_failure_preserves_baseline_without_stop(self):
+        result,commands,drop,backup=self.mocked_apply(fail_readability=True)
+        self.assertEqual('runner-readability-failed',result['errorCode']);self.assertTrue(result['rollbackRestored'])
+        self.assertFalse(drop.exists());self.assertFalse(result['serviceRestarted'])
+        self.assertEqual(errno.EPERM,result['runnerReadability']['errno'])
+        self.assertFalse(any(args[1] in {'stop','start'} for args in commands))
+
+    def readability_fork_fixture(self,keys,observations,report,timeout=5,read_effect=None):
+        # Real fork/pipe/deadline/reaping and file reads; all namespace/root and
+        # credential mutations are replaced with checked, ordered fixtures.
+        runner=SimpleNamespace(pw_uid=os.getuid(),pw_gid=os.getgid())
+        calls=[]
+        lib=SimpleNamespace(setns=lambda fd,kind:calls.append('setns') or 0)
+        original=m.read_runner_files
+        def read(selected,obs,result):
+            self.assertEqual(['setns','fchdir','chroot','chdir','groups','gid','uid'],calls)
+            if read_effect:return read_effect(selected,obs,result)
+            return original(selected,obs,result)
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(patch.object(m.ctypes,'CDLL',return_value=lib))
+            for name,label in [('fchdir','fchdir'),('chroot','chroot'),('chdir','chdir'),('setgroups','groups'),('setgid','gid'),('setuid','uid')]:
+                stack.enter_context(patch.object(m.os,name,side_effect=lambda *args,label=label:calls.append(label)))
+            stack.enter_context(patch.object(m.os,'getgroups',return_value=[]))
+            stack.enter_context(patch.object(m,'read_runner_files',side_effect=read))
+            m.verify_runner_readability(os.getpid(),keys,observations,runner,report,timeout)
+
+    def test_bounded_readability_child_proves_file_reads_after_identity_drop(self):
+        key='FR_WORKBOOK';cache=self.root/'cache';path=cache/m.FILES[key][1];path.parent.mkdir(parents=True);path.write_bytes(b'DO-NOT-EXPORT')
+        report={}
+        with patch.object(m,'CACHE',str(cache)):
+            self.readability_fork_fixture([key],{key:path.stat()},report)
+        self.assertEqual({'status':'verified','stage':'complete','checkedAssets':[key],'failedAsset':None,'errno':None},report['runnerReadability'])
+        self.assertNotIn('DO-NOT-EXPORT',json.dumps(report))
+
+    def test_bounded_readability_child_reports_real_runner_permission_denial(self):
+        key='NO_EN_FOODS';cache=self.root/'cache';path=cache/m.FILES[key][1];path.parent.mkdir(parents=True);path.write_bytes(b'DO-NOT-EXPORT');path.chmod(0)
+        self.addCleanup(path.chmod,0o600)
+        report={}
+        with patch.object(m,'CACHE',str(cache)),self.assertRaisesRegex(m.Blocked,'runner-readability-failed'):
+            self.readability_fork_fixture([key],{key:path.stat()},report)
+        self.assertEqual('files',report['runnerReadability']['stage']);self.assertEqual(key,report['runnerReadability']['failedAsset'])
+        self.assertEqual(errno.EACCES,report['runnerReadability']['errno']);self.assertEqual([],report['runnerReadability']['checkedAssets'])
+
+    def test_bounded_readability_timeout_reaps_child(self):
+        report={};waits=[];waitpid=m.os.waitpid
+        def wait(child,flags):
+            result=waitpid(child,flags);waits.append((child,flags,result));return result
+        with patch.object(m.os,'waitpid',side_effect=wait),self.assertRaisesRegex(m.Blocked,'runner-readability-timeout'):
+            self.readability_fork_fixture([],{},report,timeout=0.05,read_effect=lambda *args:m.time.sleep(10))
+        self.assertTrue(waits);self.assertEqual(0,waits[-1][1]);self.assertEqual(waits[-1][0],waits[-1][2][0])
+        with self.assertRaises(ChildProcessError):waitpid(waits[-1][0],os.WNOHANG)
+
+    def test_readability_checks_never_run_for_terminal_start_failure(self):
+        report,now,mounts=self.await_fixture(self.ready_properties([],ActiveState='failed',SubState='failed',Result='exit-code',MainPID='0'))
+        with patch.object(m,'verify_runner_readability') as readable,self.assertRaisesRegex(m.Blocked,'service-start-failed'):
+            m.await_ready([],self.runner,{},report,'after')
+        readable.assert_not_called()
 
 
 if __name__=='__main__':unittest.main()

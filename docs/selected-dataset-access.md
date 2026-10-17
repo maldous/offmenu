@@ -118,9 +118,13 @@ The dispatcher kernel lock is held throughout. The helper verifies the exact
 service cgroup has no active Runner.Worker or unrecognized process before stopping
 only offmenu-runner.service. The operator keeps the queue quiet to prevent a new
 assignment between local checks and shutdown. If idleness cannot be established,
-no service stop occurs. After systemd-analyze verification, it reloads/starts the
-same service and verifies its unchanged sandbox, read-only cache mount and mounted
-snapshot file identities. ProtectHome, capabilities and writable output boundaries
+no service stop occurs. After systemd-analyze verification, it reloads configuration
+while the original process stays running, checks the exact effective configuration,
+and proves the same baseline PID/start time is still idle. It also preflights the
+bounded namespace/root and runner-credential check before stopping. Only then does
+it stop/start the same service and verify its unchanged sandbox, read-only cache
+mount, mounted snapshot identities and actual selected-file readability under the
+dedicated runner UID/GID in that service namespace. ProtectHome, capabilities and writable output boundaries
 are retained. No corpus outputs are activated.
 
 Failure after adding this invocation's drop-in attempts to remove only those exact
@@ -206,7 +210,23 @@ receipt and runner inspection.
 
 ## Bounded post-start verification and safe diagnostics
 
-The base unit, service type, sandbox properties and fixed bind remain unchanged.
+The base unit, service type, sandbox properties and selected bind scope remain unchanged.
+The two fixed directory paths contain no whitespace or escape characters. Their
+source:destination separator is emitted unquoted: quoting the entire pair makes
+systemd parse it as one source pathname and default the destination to that same
+pathname. The effective BindReadOnlyPaths property must equal the single exact
+source:destination:rbind value; no quote, whitespace, duplicate or option
+normalization is accepted. Tests exercise the installed vendor parser directly.
+
+After writing only its own drop-in, syntax verification and daemon-reload precede
+the configured-property preflight. This configured sample describes the next
+start, while the verified unchanged baseline process still has its old namespace.
+It is never counted as a live selected mount. A failed preflight removes only this
+invocation's drop-in, reloads and verifies baseline configuration and the unchanged
+process without issuing stop/start. A stop attempt is treated as potentially
+state-changing even if systemctl fails or times out, so rollback restores and
+verifies the baseline rather than assuming it kept running.
+
 After the single explicit service start, verification has a 20-second monotonic
 readiness budget. Each systemctl show has at most two seconds within that budget.
 Every sample must match all static sandbox, drop-in and bind configuration. Only
@@ -218,17 +238,30 @@ not-yet-read-only mount can settle within that budget. Unexpected non-root proce
 identity, foreign process cgroup or wrong mounted-file identity fails immediately.
 Success requires active/running, the exact cgroup, a stable MainPID greater than one,
 the runner UID, membership in the fixed service cgroup, and the unchanged read-only
-mount/file-identity checks. A second property sample must still match. No extra
+mount/file-identity checks. A bounded forked child enters the held service mount
+namespace and root, clears supplementary groups and drops real/effective/saved
+UID/GID to the dedicated account. It opens only the selected fixed cache paths,
+checks each opened inode and reads at most one byte per file without exporting
+contents. This includes the filename containing spaces without shell parsing.
+The child has at most five seconds within the readiness budget and is killed and
+reaped on timeout. A second property sample and process start time must still
+match. No extra
 explicit start, scope expansion or sandbox relaxation is attempted. The existing
 idle/dispatcher-lock checks and operator-controlled quiet queue still apply.
 
-The bounded serviceDiagnostics object records before, after, failure and rollback
+The bounded serviceDiagnostics object records before, configured, after, failure and rollback
 samples when available. Fixed security property names expose presence/match
 booleans only. Unexpected path-valued properties expose SHA-256, never their raw
 values. ActiveState/SubState/Result are fixed enums; process/service exit fields
 are bounded integers or null. The last command operation, exit code, timeout flag,
 OS errno and pending readiness reason are bounded fields. No stdout, stderr,
 journals, environment, credentials or arbitrary exception text is included.
+The runnerReadability record contains only a fixed stage/status, checked asset IDs,
+the failed asset ID when known and a bounded errno. Namespace/credential mechanism
+readiness is preflighted on the baseline with no selected file reads. An applied
+receipt additionally requires every selected file to pass actual post-start reads;
+config matching, mount stat checks or restored baseline service cannot substitute
+for this proof.
 A failed start gets one bounded fresh sample before rollback; if that read fails,
 the sample is explicitly unavailable. Original failure evidence is retained
 separately from rollback, including a failed rollback-start diagnostic sample.
@@ -239,5 +272,7 @@ checks pass again. The saved nine-asset NO/FR subset is not expanded to include 
 two FI preflight candidates. Retry tests establish zero original reads/writes or
 snapshot/selection overwrite during reuse, and reject changed bytes or unknown
 files without deleting them. The private parent remains 0700, snapshot directories
-0750 root:runner and files 0440 root:runner. This change does not prove any cause
-for a prior service-sandbox-drift receipt that omitted property evidence.
+0750 root:runner and files 0440 root:runner. The authenticated b497 receipt's unexpected bind hash matches the vendor parser's
+whole-pair-quoted source/destination duplication exactly. The corrected serializer
+and semantic preflight address that confirmed configuration defect; only a later
+owner-run batch can establish live host success.

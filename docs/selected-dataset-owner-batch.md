@@ -133,8 +133,11 @@ python3 -B -m unittest discover -s tests
 ```
 
 Fixtures replace owner authentication, sudo, GitHub publication and real host grants.
-Only small unprivileged subprocesses test bounded capture and the verified-byte
-loader. Tests do not establish host readiness or authorize a live grant.
+Small unprivileged subprocesses test bounded capture and the verified-byte
+loader. A real installed systemd-analyze --user parser test compares the old and
+corrected bind serialization without loading units into a running manager. Real
+fork/pipe/file-read tests stub namespace and credential changes; they prove bounded
+child handling and actual fixture readability, not a privileged live mount. Tests do not establish host readiness or authorize a live grant.
 
 ## Service evidence from the pinned helper
 
@@ -152,3 +155,27 @@ not imply the dataset view was applied or verified. The helper's 20-second
 post-start convergence budget does not retry the batch or start the service a
 second time; rollback retains its existing separately scoped start when needed.
 Operator queue, replay and downstream admission gates remain unchanged.
+
+## Bind semantics and one-batch preflight
+
+The pinned helper serializes only the fixed snapshot-to-cache mapping with its
+colon unquoted, and requires the exact vendor-rendered source:destination:rbind
+property. After installing its own drop-in and syntax verification, it reloads and
+checks effective configuration before any service stop. The receipt preserves a
+configured snapshot plus same-process and namespace-probe booleans. The original
+runner remains live in its baseline namespace at this stage; no selected mount is
+claimed until a later successful restart, inode/read-only check and actual
+runner-UID/GID selected-file reads in the mounted namespace.
+
+Preflight failures remove only this invocation's drop-in and verify unchanged
+baseline configuration/process without stopping. If stop was attempted, even an
+ambiguous stop failure follows the bounded service rollback path. Existing private
+snapshots are still reused without new source reads or implicit selection expansion.
+The closed runnerReadability record exports only fixed status/stage enums, selected
+asset IDs and bounded errno. A successful grant requires complete mounted and
+readability evidence; rollback success remains a separate outcome.
+
+The wrapper pins the helper SHA-256 to
+`a71e3b3aa471a95d67c2b017cee555da3ee24265aa981cf9f1bcbbebdc828da7`.
+Inspector and projector pins, sudo scope, source permissions, owner authentication,
+single-publication behavior, quiet-queue and downstream admission gates are unchanged.

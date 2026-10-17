@@ -19,7 +19,7 @@ import time
 
 SCHEMA='offmenu-owner-dataset-batch/1'
 PINS={
- 'scripts/grant-selected-dataset-view-v1.py':'3f65422cf97f7bf40b7d48d8b9b6a40a65358f6593bf148a35f0f7602a7d4db6',
+ 'scripts/grant-selected-dataset-view-v1.py':'a71e3b3aa471a95d67c2b017cee555da3ee24265aa981cf9f1bcbbebdc828da7',
  'scripts/inspect-selected-datasets.py':'0b329be72f49dc83d7fda7aba6155344ed56a2818b8ccdc5b1da8dfce7326c60',
  'scripts/offmenu_projector_inventory.py':'937a6069068f46af6266f27fc4e636a268eda3ecc0a1c6879cd8f9f4b6856124',
 }
@@ -291,8 +291,8 @@ SERVICE_NUMBER_NAMES={'MainPID','ExecMainPID','ExecMainCode','ExecMainStatus','S
 
 
 def sanitize_service_diagnostics(value,errors):
-    snapshots={'before','after','failure','rollback'}
-    if type(value) is not dict or set(value)-snapshots-{'afterAttempts','rollbackAttempts','afterLastPending','rollbackLastPending','afterErrno','rollbackErrno','failureDetail','rollbackDetail','failureSample','rollbackSample','failureSampleDetail','rollbackSampleDetail'}:raise Invalid('invalid-grant-report')
+    snapshots={'before','configured','after','failure','rollback'}
+    if type(value) is not dict or set(value)-snapshots-{'afterAttempts','rollbackAttempts','afterLastPending','rollbackLastPending','afterErrno','rollbackErrno','failureDetail','rollbackDetail','failureSample','rollbackSample','failureSampleDetail','rollbackSampleDetail','preflightSameProcess','preflightNamespaceReady'}:raise Invalid('invalid-grant-report')
     for phase,record in value.items():
         if phase in snapshots:
             if type(record) is not dict or set(record)!={'properties','unexpectedValueSha256','states','numbers'}:raise Invalid('invalid-grant-report')
@@ -305,6 +305,8 @@ def sanitize_service_diagnostics(value,errors):
             states=record['states'];numbers=record['numbers']
             if type(states) is not dict or set(states)!=set(SERVICE_STATE_VALUES) or any(type(v) is not str or v not in SERVICE_STATE_VALUES[k] for k,v in states.items()):raise Invalid('invalid-grant-report')
             if type(numbers) is not dict or set(numbers)!=SERVICE_NUMBER_NAMES or any(x is not None and (type(x) is not int or not 0<=x<=2147483647) for x in numbers.values()):raise Invalid('invalid-grant-report')
+        elif phase in {'preflightSameProcess','preflightNamespaceReady'}:
+            if type(record) is not bool:raise Invalid('invalid-grant-report')
         elif phase.endswith('Sample'):
             if type(record) is not str or record not in {'fresh','last-observed','unavailable'}:raise Invalid('invalid-grant-report')
             name=phase[:-6]
@@ -326,8 +328,20 @@ def sanitize_service_diagnostics(value,errors):
     return json.loads(json.dumps(value))
 
 
+def sanitize_readability(value,selected):
+    if type(value) is not dict or set(value)!={'status','stage','checkedAssets','failedAsset','errno'}:raise Invalid('invalid-grant-report')
+    if value['status'] not in {'not-checked','blocked','verified'} or value['stage'] not in {'not-started','namespace','credentials','files','complete'}:raise Invalid('invalid-grant-report')
+    checked=value['checkedAssets']
+    if type(checked) is not list or len(checked)>len(selected) or checked!=selected[:len(checked)]:raise Invalid('invalid-grant-report')
+    if value['failedAsset'] not in [None,*selected]:raise Invalid('invalid-grant-report')
+    if value['errno'] is not None and safe_errno(value['errno']) is None:raise Invalid('invalid-grant-report')
+    if value['status']=='verified' and (value['stage']!='complete' or checked!=selected or value['failedAsset'] is not None or value['errno'] is not None):raise Invalid('invalid-grant-report')
+    if value['status']=='not-checked' and (value['stage']!='not-started' or checked or value['failedAsset'] is not None or value['errno'] is not None):raise Invalid('invalid-grant-report')
+    return dict(value,checkedAssets=list(checked))
+
+
 def sanitize_grant(value,inspector,errors):
-    base={'schemaVersion','reportKind','grantVersion','status','applied','sourceBytesRead','sourceBytesWritten','snapshotBytesWritten','snapshotVerified','sourcePermissionsChanged','credentialsRead','selectedAssets','assets','sources','serviceReady','serviceRestarted','effectiveMountAssets','readOnlyMountsVerified','rollbackAttempted','rollbackRestored'}
+    base={'schemaVersion','reportKind','grantVersion','status','applied','sourceBytesRead','sourceBytesWritten','snapshotBytesWritten','snapshotVerified','sourcePermissionsChanged','credentialsRead','selectedAssets','assets','sources','serviceReady','serviceRestarted','effectiveMountAssets','readOnlyMountsVerified','rollbackAttempted','rollbackRestored','runnerReadability'}
     if not isinstance(value,dict) or not base<=set(value) or set(value)-base-{'errorCode','snapshotEvidence','serviceDiagnostics'}:raise Invalid('invalid-grant-report')
     if value['schemaVersion']!='offmenu-selected-data-grant/1' or value['reportKind']!='dataset-view-grant' or type(value['grantVersion']) is not int or value['grantVersion']!=1:raise Invalid('invalid-grant-report')
     if value['status'] not in {'validated','applied','already-applied','blocked'}:raise Invalid('invalid-grant-report')
@@ -354,8 +368,10 @@ def sanitize_grant(value,inspector,errors):
         if type(value['errorCode']) is not str or value['errorCode'] not in errors:raise Invalid('invalid-grant-report')
         out['errorCode']=value['errorCode']
     if 'snapshotEvidence' in value:out['snapshotEvidence']=inspector['sanitize_report'](value['snapshotEvidence'])
+    out['runnerReadability']=sanitize_readability(value['runnerReadability'],out['selectedAssets'])
     if 'serviceDiagnostics' in value:out['serviceDiagnostics']=sanitize_service_diagnostics(value['serviceDiagnostics'],errors)
     if value['status'] in {'applied','already-applied'} and not all(value[k] for k in ('applied','serviceReady','snapshotVerified','readOnlyMountsVerified')):raise Invalid('invalid-grant-report')
+    if value['status'] in {'applied','already-applied'} and (out['runnerReadability']['status']!='verified' or out['effectiveMountAssets']!=out['selectedAssets']):raise Invalid('invalid-grant-report')
     if set(out['effectiveMountAssets'])-set(out['selectedAssets']):raise Invalid('invalid-grant-report')
     if len(json.dumps(out).encode())>16384:raise Invalid('invalid-grant-report')
     return out

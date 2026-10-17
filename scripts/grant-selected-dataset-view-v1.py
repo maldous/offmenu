@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 import pwd
 import select
+import signal
 import stat
 import subprocess
 import sys
@@ -214,12 +215,11 @@ def bindings(selected):
 
 
 def dropin_bytes(selected):
-    lines=['[Service]','BindReadOnlyPaths=']
-    # All paths are compile-time constants. Quote spaces; percent/backslash/quote are excluded.
-    for mapping in bindings(selected):
-        if any(c in mapping for c in ('%','\\','"','\n','\r')):block('invalid-fixed-path')
-        lines.append('BindReadOnlyPaths="'+mapping+'"')
-    return ('\n'.join(lines)+'\n').encode()
+    # The colon must remain outside quotes: systemd tokenizes source and
+    # destination independently. These fixed directory paths need no quoting.
+    for path in (str(SCAFFOLD),CACHE):
+        if not path.startswith('/') or any(c.isspace() or c in '%\\"\':' for c in path):block('invalid-fixed-path')
+    return ('[Service]\nBindReadOnlyPaths=\nBindReadOnlyPaths='+bindings(selected)[0]+'\n').encode()
 
 
 def bounded_read(path,cap):
@@ -298,12 +298,8 @@ def properties(timeout=90):
     return values
 
 
-def normalize_bind(value):
-    return value.replace('\\x20',' ').replace('\\040',' ').replace('"','').replace(':rbind','')
-
-
 def expected_properties(selected=None):
-    return {**BASE_PROPERTIES,'BindReadOnlyPaths':' '.join(bindings(selected)) if selected is not None else BOOTSTRAP_BIND,
+    return {**BASE_PROPERTIES,'BindReadOnlyPaths':(bindings(selected)[0] if selected is not None else BOOTSTRAP_BIND)+':rbind',
             'DropInPaths':str(DROP_IN) if selected is not None else ''}
 
 
@@ -312,7 +308,7 @@ def property_evidence(values,selected=None):
     checks={};unexpected={}
     for name,want in expected.items():
         actual=values.get(name)
-        matches=(normalize_bind(actual) if name=='BindReadOnlyPaths' and actual is not None else actual)==want
+        matches=actual==want
         checks[name]={'present':name in values,'match':matches}
         if name in PATH_PROPERTIES and name in values and not matches:unexpected[name]=hashlib.sha256(actual.encode()).hexdigest()
     states={name:values.get(name) if values.get(name) in allowed else 'unknown' for name,allowed in STATE_VALUES.items()}
@@ -346,10 +342,40 @@ def verify_properties(values,selected=None,active=True,transient=False):
         if key=='ControlGroup' and transient and values.get(key)=='':continue
         if values.get(key)!=want:block('service-sandbox-drift')
     expected=expected_properties(selected)
-    if normalize_bind(values.get('BindReadOnlyPaths','')) != expected['BindReadOnlyPaths']:block('service-mount-drift')
+    if values.get('BindReadOnlyPaths') != expected['BindReadOnlyPaths']:block('service-mount-drift')
     if values.get('DropInPaths') != expected['DropInPaths']:block('service-dropin-conflict')
     if active and (values.get('ActiveState')!='active' or values.get('SubState')!='running' or property_number(values.get('MainPID')) in (None,0,1)):
         block('service-not-running')
+
+
+def process_start_time(pid):
+    # comm may contain spaces or parentheses; field 22 follows its final ')'.
+    raw=bounded_read(Path('/proc')/str(pid)/'stat',4096)
+    fields=raw.rsplit(b')',1)[-1].split()
+    if len(fields)<20 or not fields[19].isdigit():block('service-process-identity-invalid')
+    return fields[19]
+
+
+def configured_preflight(selected,runner,baseline,report):
+    values=properties()
+    diagnostics=report.setdefault('serviceDiagnostics',{})
+    diagnostics['configured']=property_evidence(values,selected)
+    diagnostics['preflightSameProcess']=False
+    verify_properties(values,selected)
+    pid=int(values['MainPID'])
+    if (pid,process_start_time(pid))!=baseline:block('service-preflight-process-changed')
+    runtime_identity(pid,runner)
+    verify_runner_readability(pid,[],{},runner,report)
+    diagnostics['preflightNamespaceReady']=True
+    report['runnerReadability']=readability_record()
+    # Config now describes the next start; the unchanged current process still
+    # has the baseline namespace. No live-mount claim is made here.
+    assert_idle(runner,True)
+    confirm=properties()
+    diagnostics['configured']=property_evidence(confirm,selected)
+    verify_properties(confirm,selected)
+    if (int(confirm['MainPID']),process_start_time(int(confirm['MainPID'])))!=baseline:block('service-preflight-process-changed')
+    diagnostics['preflightSameProcess']=True
 
 
 def runtime_identity(pid,runner):
@@ -388,7 +414,10 @@ def await_ready(selected,runner,observations,report,phase):
             pid=int(values['MainPID'])
             try:
                 runtime_identity(pid,runner)
-                if selected is not None:verify_mounts(pid,selected,observations)
+                started=process_start_time(pid)
+                if selected is not None:
+                    verify_mounts(pid,selected,observations)
+                    verify_runner_readability(pid,selected,observations,runner,report,timeout=min(5,max(0.01,deadline-time.monotonic())))
             except (FileNotFoundError,ProcessLookupError) as exc:
                 diagnostics[phase+'LastPending']='process-not-present'
                 diagnostics[phase+'Errno']=safe_number(exc.errno,4096)
@@ -404,7 +433,7 @@ def await_ready(selected,runner,observations,report,phase):
                 diagnostics[phase]=property_evidence(confirm,selected)
                 verify_properties(confirm,selected,active=False,transient=True)
                 if confirm.get('ActiveState') not in {'active','activating'} or confirm.get('SubState') not in {'running','start','start-pre','start-post'} or confirm.get('Result')!='success':block('service-start-failed')
-                if all(confirm.get(k)==values.get(k) for k in ('MainPID','ControlGroup','ActiveState','SubState')):
+                if all(confirm.get(k)==values.get(k) for k in ('MainPID','ControlGroup','ActiveState','SubState')) and process_start_time(pid)==started:
                     verify_properties(confirm,selected)
                     return confirm
                 diagnostics[phase+'LastPending']='process-changed'
@@ -475,6 +504,7 @@ def assert_idle(runner, existing=False):
         if len(status)>65536 or len(comm)>32 or uids!=[str(runner.pw_uid)]*4:block('service-process-owner-invalid')
         if comm=='Runner.Worker':block('job-active')
         if comm not in {'runsvc.sh','node','Runner.Listener','bash','sleep'}:block('service-process-unrecognized')
+    return values
 
 
 def ensure_file(path,body,mode=0o644):
@@ -663,6 +693,94 @@ def verify_mounts(pid,selected,observations):
         if signature(mounted)!=signature(observations[key]):block('mounted-file-identity-mismatch')
 
 
+def readability_record():
+    return {'status':'not-checked','stage':'not-started','checkedAssets':[],'failedAsset':None,'errno':None}
+
+
+def read_runner_files(selected,observations,result):
+    # Called only after entering the service root/mount namespace and permanently
+    # dropping every real/effective/saved uid/gid to the dedicated account.
+    result['stage']='files'
+    for key in selected:
+        result['failedAsset']=key
+        fd=os.open(CACHE+'/'+FILES[key][1],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+        try:
+            if signature(os.fstat(fd))!=signature(observations[key]):block('runner-readability-identity-mismatch')
+            body=os.read(fd,1)
+            if len(body)!=min(1,observations[key].st_size):block('runner-readability-short-read')
+            if signature(os.fstat(fd))!=signature(observations[key]):block('runner-readability-identity-mismatch')
+        finally:os.close(fd)
+        result['checkedAssets'].append(key)
+    result.update(status='verified',stage='complete',failedAsset=None)
+
+
+def verify_runner_readability(pid,selected,observations,runner,report,timeout=5):
+    # A short-lived child performs only this fixed check. No shell, executable,
+    # arbitrary path, privileged runner command or source access is introduced.
+    result=readability_record();report['runnerReadability']=result
+    result['status']='blocked';result['stage']='namespace'
+    read_fd=write_fd=namespace_fd=root_fd=None;child=None;reaped=False
+    deadline=time.monotonic()+timeout
+    try:
+        namespace_fd=os.open('/proc/'+str(pid)+'/ns/mnt',os.O_RDONLY)
+        root_fd=os.open('/proc/'+str(pid)+'/root',os.O_RDONLY|os.O_DIRECTORY)
+        read_fd,write_fd=os.pipe()
+        child=os.fork()
+        if child==0:
+            os.close(read_fd)
+            try:
+                libc=ctypes.CDLL(None,use_errno=True)
+                if libc.setns(namespace_fd,0)!=0:
+                    number=ctypes.get_errno();raise OSError(number,'namespace-entry-failed')
+                os.fchdir(root_fd);os.chroot('.');os.chdir('/')
+                os.close(namespace_fd);os.close(root_fd)
+                result['stage']='credentials'
+                os.setgroups([]);os.setgid(runner.pw_gid);os.setuid(runner.pw_uid)
+                if os.getresuid()!=(runner.pw_uid,)*3 or os.getresgid()!=(runner.pw_gid,)*3 or os.getgroups():block('runner-readability-credentials-invalid')
+                read_runner_files(selected,observations,result)
+            except BaseException as exc:
+                result['errno']=safe_number(getattr(exc,'errno',None),4096)
+                result['status']='blocked'
+            try:os.write(write_fd,json.dumps(result,separators=(',',':')).encode())
+            finally:os._exit(0 if result['status']=='verified' else 1)
+        os.close(write_fd);write_fd=None
+        os.close(namespace_fd);namespace_fd=None
+        os.close(root_fd);root_fd=None
+        body=b''
+        while True:
+            left=deadline-time.monotonic()
+            if left<=0 or not select.select([read_fd],[],[],max(0,left))[0]:block('runner-readability-timeout')
+            part=os.read(read_fd,4097-len(body))
+            if not part:break
+            body+=part
+            if len(body)>4096:block('runner-readability-response-invalid')
+        while True:
+            waited,status=os.waitpid(child,os.WNOHANG)
+            if waited:reaped=True;break
+            if time.monotonic()>=deadline:block('runner-readability-timeout')
+            time.sleep(0.01)
+        try:checked=json.loads(body)
+        except (ValueError,UnicodeError):block('runner-readability-response-invalid')
+        if (type(checked) is not dict or set(checked)!=set(result) or checked['status'] not in {'verified','blocked'}
+            or checked['stage'] not in {'namespace','credentials','files','complete'}
+            or not isinstance(checked['checkedAssets'],list) or checked['checkedAssets']!=selected[:len(checked['checkedAssets'])]
+            or checked['failedAsset'] not in [None,*selected]
+            or checked['errno'] is not None and safe_number(checked['errno'],4096) is None):block('runner-readability-response-invalid')
+        report['runnerReadability']=checked
+        if (status!=0 or checked['status']!='verified' or checked['stage']!='complete'
+            or checked['checkedAssets']!=selected or checked['failedAsset'] is not None or checked['errno'] is not None):block('runner-readability-failed')
+    except OSError as exc:
+        result['errno']=safe_number(exc.errno,4096)
+        raise
+    finally:
+        if child not in (None,0) and not reaped:
+            try:os.kill(child,signal.SIGKILL)
+            except ProcessLookupError:pass
+            os.waitpid(child,0)
+        for fd in (read_fd,write_fd,namespace_fd,root_fd):
+            if fd is not None:os.close(fd)
+
+
 def administrative_lock():
     # Root-owned lock is separate from the unprivileged dispatcher lock.
     lock_path=Path('/run/offmenu-selected-datasets-v1.lock')
@@ -689,7 +807,7 @@ def run(apply=False):
     LAST_PROPERTIES=None;LAST_COMMAND=None
     report={'schemaVersion':'offmenu-selected-data-grant/1','reportKind':'dataset-view-grant','grantVersion':1,'status':'blocked','applied':False,'sourceBytesRead':0,
             'sourceBytesWritten':0,'snapshotBytesWritten':0,'snapshotVerified':False,'sourcePermissionsChanged':False,'credentialsRead':False,
-            'selectedAssets':[],'assets':{},'sources':{c:'not-checked' for c in GROUPS},'serviceReady':False,'serviceRestarted':False,'effectiveMountAssets':[],'readOnlyMountsVerified':False,'rollbackAttempted':False,'rollbackRestored':None}
+            'selectedAssets':[],'assets':{},'sources':{c:'not-checked' for c in GROUPS},'serviceReady':False,'serviceRestarted':False,'effectiveMountAssets':[],'readOnlyMountsVerified':False,'rollbackAttempted':False,'rollbackRestored':None,'runnerReadability':readability_record()}
     fd=None;admin_fd=None;added=False;stopped=False;created_drop_dir=False;existing=False
     try:
         if os.geteuid()!=0:block('local-root-required')
@@ -711,7 +829,7 @@ def run(apply=False):
         selected=sorted(snapshot_observations)
         report['selectedAssets']=selected;CURRENT_SELECTION=selected
         if existing:
-            verify_mounts(int(properties()['MainPID']),selected,snapshot_observations)
+            await_ready(selected,runner,snapshot_observations,report,'after')
             report.update(status='already-applied',applied=True,serviceReady=True,readOnlyMountsVerified=True,effectiveMountAssets=selected)
             report['sources']={c:('metadata-view-granted' if c=='FI' else 'view-granted') if v=='validated' else v for c,v in report['sources'].items()}
             return report
@@ -722,16 +840,19 @@ def run(apply=False):
         for key in selected:
             state,s=source_check(key,runner,owner)
             if state!='validated' or signature(s)!=signature(observations[key]):block('selected-source-changed')
-        assert_idle(runner,existing)
+        baseline_values=assert_idle(runner,existing)
+        baseline_pid=int(baseline_values['MainPID'])
+        baseline=(baseline_pid,process_start_time(baseline_pid))
         created_drop_dir=not DROP_DIR.exists()
         protected_directory(DROP_DIR,create=True)
         ensure_file(DROP_IN,dropin_bytes(selected));added=True
         command(['/usr/bin/systemd-analyze','verify',str(UNIT)])
-        assert_idle(runner,existing)
+        command(['/usr/bin/systemctl','daemon-reload'])
+        configured_preflight(selected,runner,baseline,report)
         # Queue must be held quiet by the operator. The dispatcher lock is held
         # throughout; the exact service cgroup was checked immediately above.
-        command(['/usr/bin/systemctl','stop',SERVICE]);stopped=True
-        command(['/usr/bin/systemctl','daemon-reload'])
+        stopped=True
+        command(['/usr/bin/systemctl','stop',SERVICE])
         command(['/usr/bin/systemctl','start',SERVICE]);report['serviceRestarted']=True
         await_ready(selected,runner,snapshot_observations,report,'after')
         report.update(status='applied',applied=True,serviceReady=True,readOnlyMountsVerified=True,effectiveMountAssets=selected)
@@ -756,6 +877,9 @@ def run(apply=False):
                 if stopped:await_ready(None,runner,None,report,'rollback')
                 else:
                     values=properties();diagnostics['rollback']=property_evidence(values,None);verify_properties(values,None)
+                    pid=int(values['MainPID'])
+                    if (pid,process_start_time(pid))!=baseline:block('service-preflight-process-changed')
+                    runtime_identity(pid,runner)
                 report['rollbackRestored']=True;report['serviceReady']=True
             except Exception as rollback_exc:
                 report['rollbackRestored']=False

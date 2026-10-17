@@ -76,12 +76,12 @@ class OwnerBatchTests(unittest.TestCase):
             with self.assertRaises(m.Invalid):m.sanitize_service_diagnostics(bad,self.errors)
 
     def test_maximum_service_evidence_stays_within_existing_report_cap(self):
-        # Size bound covers four complete snapshots with every checked value
+        # Size bound covers five complete snapshots with every checked value
         # unexpected, plus the largest real selected-data evidence shape.
         values={name:'CANARY' for name in grant.PROPERTY_NAMES}
         sample=grant.property_evidence(values)
         changed=copy.deepcopy(self.report)
-        changed['serviceDiagnostics']={phase:sample for phase in ('before','after','failure','rollback')}
+        changed['serviceDiagnostics']={phase:sample for phase in ('before','configured','after','failure','rollback')}
         fixtures=module('maximum_evidence_fixture',ROOT/'tests/test_selected_dataset_metadata.py')
         fixture=fixtures.SelectedMetadataTests();fixture.setUp();self.addCleanup(fixture.doCleanups)
         selection=fixture.fixture()
@@ -369,7 +369,7 @@ class OwnerBatchTests(unittest.TestCase):
 
     def test_successful_applied_receipt_and_real_exit_unchanged(self):
         receipt=copy.deepcopy(self.report)
-        receipt.update(status='applied',applied=True,snapshotVerified=True,serviceReady=True,readOnlyMountsVerified=True)
+        receipt.update(status='applied',applied=True,snapshotVerified=True,serviceReady=True,readOnlyMountsVerified=True,runnerReadability={'status':'verified','stage':'complete','checkedAssets':[],'failedAsset':None,'errno':None})
         receipt.pop('errorCode',None)
         got=self.invoke(grant_result={'exitCode':0,'overflow':False,'stdout':json.dumps(receipt).encode(),'outcome':'finished'})
         self.assertEqual(0,got.code);self.assertEqual('reported',got.outcome['grantStatus']);self.assertEqual('applied',got.local['grant']['report']['status'])
@@ -509,6 +509,31 @@ class OwnerBatchTests(unittest.TestCase):
             result=m.capture(['/usr/bin/python3','fixture'],self.root,'cancel-cleanup')
         self.assertEqual('command-interrupted',result['errorCode']);self.assertEqual('unknown',result['outcome']);self.assertIsNone(result['launched'])
         self.assertNotIn('SECRET_CANARY',json.dumps(result,default=str))
+
+
+    def test_readability_schema_accepts_fixed_failures_and_rejects_false_success(self):
+        selected=sorted(grant.GROUPS['NO']);receipt=copy.deepcopy(self.report);receipt['selectedAssets']=selected
+        receipt['runnerReadability']={'status':'blocked','stage':'files','checkedAssets':selected[:1],'failedAsset':selected[1],'errno':13}
+        sanitized=m.sanitize_grant(receipt,self.inspect,self.errors)
+        self.assertEqual(13,sanitized['runnerReadability']['errno'])
+        for key,value in [('status','CANARY'),('stage','CANARY'),('checkedAssets',['CANARY']),('checkedAssets',selected[1:]),('failedAsset','CANARY'),('errno',True),('errno',4097),('status','verified')]:
+            bad=copy.deepcopy(receipt);bad['runnerReadability'][key]=value
+            with self.subTest(key=key,value=value),self.assertRaises(m.Invalid):m.sanitize_grant(bad,self.inspect,self.errors)
+        good=copy.deepcopy(receipt);good.update(status='applied',applied=True,snapshotVerified=True,serviceReady=True,readOnlyMountsVerified=True,effectiveMountAssets=selected)
+        with self.assertRaises(m.Invalid):m.sanitize_grant(good,self.inspect,self.errors)
+        good['runnerReadability']={'status':'verified','stage':'complete','checkedAssets':selected,'failedAsset':None,'errno':None}
+        self.assertEqual('applied',m.sanitize_grant(good,self.inspect,self.errors)['status'])
+        good['effectiveMountAssets']=selected[:1]
+        with self.assertRaises(m.Invalid):m.sanitize_grant(good,self.inspect,self.errors)
+
+    def test_configured_snapshot_and_same_process_flags_are_closed_schema(self):
+        receipt=copy.deepcopy(self.report)
+        receipt['serviceDiagnostics']={'configured':grant.property_evidence(grant.expected_properties([]),[]),'preflightSameProcess':True,'preflightNamespaceReady':True}
+        self.assertTrue(m.sanitize_grant(receipt,self.inspect,self.errors)['serviceDiagnostics']['preflightSameProcess'])
+        for key in ('preflightSameProcess','preflightNamespaceReady'):
+            receipt['serviceDiagnostics'][key]=1
+            with self.assertRaises(m.Invalid):m.sanitize_grant(receipt,self.inspect,self.errors)
+            receipt['serviceDiagnostics'][key]=True
 
 
 if __name__=='__main__':unittest.main()
