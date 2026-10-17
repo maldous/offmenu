@@ -1,0 +1,304 @@
+{
+  "schema": "offmenu-world-recipe-research/1",
+  "checkedAt": "2026-10-13T21:37:59.318718+00:00",
+  "status": "all-native-and-common-data-downloads-live-verified",
+  "releaseId": "world-recipes-common-20261014",
+  "counts": {
+    "raw": 100380,
+    "accepted": 25135,
+    "duplicates": 0,
+    "quarantined": 0,
+    "excluded": 75245,
+    "records": 25135
+  },
+  "acceptedSourceCounts": {
+    "wikibooks:en": 3309,
+    "wikibooks:ar": 18,
+    "wikibooks:bn": 1103,
+    "wikibooks:cs": 3,
+    "wikibooks:da": 11,
+    "wikibooks:de": 636,
+    "wikibooks:el": 9,
+    "wikibooks:es": 21,
+    "wikibooks:fa": 11,
+    "wikibooks:fi": 14,
+    "wikibooks:fr": 1074,
+    "wikibooks:he": 154,
+    "wikibooks:hi": 5,
+    "wikibooks:hr": 14,
+    "wikibooks:hu": 6402,
+    "wikibooks:id": 1003,
+    "wikibooks:it": 597,
+    "wikibooks:ja": 300,
+    "wikibooks:ko": 27,
+    "wikibooks:ms": 33,
+    "wikibooks:nb": 71,
+    "wikibooks:nl": 505,
+    "wikibooks:oc": 7,
+    "wikibooks:pl": 868,
+    "wikibooks:pt": 36,
+    "wikibooks:ru": 581,
+    "wikibooks:simple": 6,
+    "wikibooks:sk": 19,
+    "wikibooks:sv": 350,
+    "wikibooks:th": 46,
+    "wikibooks:tr": 128,
+    "wikibooks:zh": 18,
+    "unitools": 501,
+    "Anduin2017/HowToCook": 362,
+    "LukeSmithxyz/based.cooking": 426,
+    "sinker/tacofancy": 18,
+    "recipecommons/openrecipe-spec": 1,
+    "historical-archive": 6192,
+    "smithsonian-archive": 256
+  },
+  "languageEditionCounts": {
+    "en": 10702,
+    "ar": 18,
+    "bn": 1103,
+    "cs": 3,
+    "da": 11,
+    "de": 637,
+    "el": 9,
+    "es": 21,
+    "fa": 11,
+    "fi": 14,
+    "fr": 1074,
+    "he": 154,
+    "hi": 5,
+    "hr": 14,
+    "hu": 6402,
+    "id": 1003,
+    "it": 597,
+    "ja": 300,
+    "ko": 27,
+    "ms": 33,
+    "nb": 71,
+    "nl": 505,
+    "oc": 7,
+    "pl": 868,
+    "pt": 36,
+    "ru": 1082,
+    "simple": 6,
+    "sk": 19,
+    "sv": 350,
+    "th": 46,
+    "tr": 128,
+    "zh": 380
+  },
+  "languageNote": "32 publisher language/edition codes: 31 languages plus Simple English. Language and country are independent; recipes remain available globally.",
+  "standardQuantityIngredients": 48165,
+  "sourceNumericQuantityIngredients": 117400,
+  "scope": "Full acquired cookbook routes for 54 Wikibooks projects plus English complete category, pinned openly licensed GitHub files, 501 complete UniTools recipes, six cleared historical archive collections, and sixteen Smithsonian CC0 archived book texts. All continuation exhausted; unextractable or rights-unresolved candidates remain locally retained. This is not exhaustive worldwide coverage.",
+  "sources": [
+    {
+      "repository": "Anduin2017/HowToCook",
+      "revision": "3dfa950f6daf0a5b311fc46619f1b559bac980c4",
+      "metadataSha256": "b350454cefec8e6ef9fc56d099156a7dae05e6de2036fc9f3995bc8a3b670fed"
+    },
+    {
+      "repository": "LukeSmithxyz/based.cooking",
+      "revision": "9d4a31a040eedd61e4fb608cb0c114ff9a7c4dd2",
+      "metadataSha256": "766be7969e9da7b6ab40afe266b679f505ffd5a36328f6ff9dc818eb655d8f58"
+    },
+    {
+      "repository": "sinker/tacofancy",
+      "revision": "075ba589da8bea2d8c46fa3e0e5c9421a7e462e7",
+      "metadataSha256": "295d5b01cd408ff309298c83e12acb7576871e17cd1cd5b4b68188c556d6f243"
+    },
+    {
+      "repository": "recipecommons/openrecipe-spec",
+      "revision": "dc9d4d9174038a1a5eb185f366addea0e67e38a5",
+      "metadataSha256": "c9094c1a234563763f3c3615de91fa713f96f52f11b01fdeb4cbbb71d57b4ef3"
+    },
+    {
+      "repository": "farcrak/unitools-recipes",
+      "revision": "2f554073f7e730b18d707fe1164d18308f6ec16c",
+      "metadataSha256": "6b0834800b3a4e0b5294c6b6cc33196027646636332febef90df07d32d372e4e"
+    },
+    {
+      "repository": "AdamBouhmad/open-recipe-archive",
+      "revision": "ae3bd2c009a8899dfe63b9166fa98ae3fa8041a8",
+      "metadataSha256": "bd51b435668e1ad8c53d58500d6b894a276c73fcc51f2313f6dc3e49474d069a"
+    },
+    {
+      "source": "Wikibooks",
+      "projectsAcquired": 54,
+      "snapshot": "2026-10-13T10:44:26.685159+00:00",
+      "recipeReuse": "CC BY-SA 4.0; individual revision URLs, history and contributors retained"
+    },
+    {
+      "source": "UniTools",
+      "url": "https://github.com/farcrak/unitools-recipes",
+      "records": 501,
+      "licence": "CC BY-SA 4.0"
+    },
+    {
+      "source": "Smithsonian archived book texts",
+      "items": 16,
+      "recipeCandidates": 256,
+      "rightsEvidence": [
+        {
+          "url": "https://library.si.edu/digital-library/book/1983festivalofam00fest",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/artofcookerymad00glas",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/cookbook183y00fish",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/dasweissehauskoc00gill",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/dietchtigehaus01stei",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/dietchtigehaus02stei",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/fivethousandrece00mack",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/frugalhousewife00chil",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/godeysladysbookr00fiel",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/handbookpractic00chur",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/newcyclopdiaofdo00elle",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/practicalcookin00hend",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/royalbakerpastry00newy",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/royalno10cookbo00temp",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/valuablerecipes00glen",
+          "cc0": true
+        },
+        {
+          "url": "https://library.si.edu/digital-library/book/virginiahousewi00rand",
+          "cc0": true
+        }
+      ]
+    }
+  ],
+  "format": {
+    "native": "offmenu-recipe/1 inside provenance-bearing offmenu unified records",
+    "schema": "https://offmenu-corpus.netlify.app/recipes/schema.json",
+    "portable": "Schema.org Recipe with recipeIngredient source text, HowToStep, known recipeYield only, creditText, licence and source references",
+    "specification": "https://schema.org/Recipe",
+    "identity": "stable publisher + source key; duplicate-content variants are not automatically merged",
+    "quantities": "Exact mass/volume and conservative count candidates; source wording, units, ranges and unknowns remain attached. Cups/spoons/historical units have no invented density conversion. Candidate ingredient aliases require personal review.",
+    "countries": "Only explicit source cuisine tags; language is not country origin. UniTools reports 127 country tags, including XK.",
+    "privacy": "Pantry matching runs locally; saving a reviewed recipe uses existing private kitchen state. No bulk account import, public D1 copy or credentials in dataset."
+  },
+  "excludedSources": [
+    {
+      "source": "Usenet alt.gourmand cookbook",
+      "evidence": "https://abreau.net/usenet-cookbook/Cookbook.pdf",
+      "decision": "Noncommercial copying notice prevents unrestricted shared commercial reuse; no full publication."
+    },
+    {
+      "source": "rec.food.recipes",
+      "evidence": "https://www.cs.cmu.edu/~mjw/recipes/recipe-archive.html",
+      "decision": "Public archive is not blanket author permission; hold full redistribution."
+    },
+    {
+      "source": "Recipe1M and unlicensed Kaggle scraped corpora",
+      "decision": "Research access or dataset wrapper licence does not grant recipe publisher text rights; not redistributed."
+    },
+    {
+      "source": "Gar-b-age/CookLikeHOC restaurant/SMB report recipes",
+      "evidence": "https://github.com/Gar-b-age/CookLikeHOC",
+      "decision": "No explicit recipe-content licence verified; retained research only."
+    },
+    {
+      "source": "Awesome lists and openrecipes bookmarks",
+      "evidence": [
+        "https://github.com/bbbenji/awesome-recipes",
+        "https://github.com/jzarca01/awesome-food",
+        "https://github.com/fictive-kin/openrecipes"
+      ],
+      "decision": "Lists/bookmarks aid discovery; linked text rights must be independently cleared; bookmarks are not complete recipes."
+    },
+    {
+      "source": "Wikipedia dish articles",
+      "decision": "Use Wikipedia for identification and references; Wikibooks provides the acquired recipe instructions."
+    },
+    {
+      "source": "Historical archive remaining candidates",
+      "decision": "Publisher Unlicense alone does not clear underlying works; only identified pre-1900 originals with known author/translator deaths through 1925 and catalog copyright-false metadata admitted. Others retained pending review."
+    }
+  ],
+  "limitations": [
+    "Automatic extraction is not independent culinary, food identity or dietary review.",
+    "Historical and OCR recipes retain uncorrected text; source ingredients and measurements may require correction.",
+    "No source photos or unverified nutrition/diet claims distributed.",
+    "Public-domain assessment is specific to identified works and editions, not blanket worldwide clearance of archives."
+  ],
+  "localPaths": {
+    "research": "/home/user/src/offmenu-data/recipe-research-20261013",
+    "wikiOriginals": "/home/user/src/offmenu-data/recipe-wikis-20261013",
+    "normalized": "/home/user/src/offmenu-data/world-recipes-common-input-20261014",
+    "curated": "/home/user/src/offmenu-data/curated-world-recipes-common-20261014"
+  },
+  "downloads": {
+    "manifest": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
+    "jsonl": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.jsonl.gz",
+    "schemaorg": "https://offmenu-corpus.netlify.app/releases/world-recipes-common-20261014/recipes.schemaorg.jsonld.gz",
+    "app": "https://offmenu.aldous.info/"
+  },
+  "fullRecipeRecords": 24879,
+  "historicalOcrCandidates": 256,
+  "ocrPolicy": "Smithsonian OCR candidates explicitly have ingredientExtractionComplete=false; pantry matching and personal recipe saving are disabled until complete ingredient transcription.",
+  "wikiRouteCoverage": {
+    "routesCompleted": 54,
+    "allContinuationsRetained": true,
+    "recoveredRoutes": [
+      "bn",
+      "el",
+      "ka"
+    ]
+  },
+  "commonSchema": {
+    "manifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+    "schema": "https://offmenu-corpus.netlify.app/common-data/schema.json",
+    "contract": "https://offmenu-corpus.netlify.app/common-data/contract.json",
+    "sourceMappings": "https://offmenu-corpus.netlify.app/common-data/source-mappings.json",
+    "newTypes": "docs/common-data-type-discovery-20261014.json",
+    "applicationOwner": "OffMenu i18n task",
+    "servingManifestSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+    "sourceCount": 20,
+    "servingManifestPayloadSha256": "8622310ae63f7114d4ba08e6cd074c6ccb352f2dc3bcda5ff5dd146815a71ff1",
+    "servingManifestByteSha256": "a20aca224758eb6ac64ea89d0bb31d33280a2b0d2ec97e46ed6a2ddc71c92867",
+    "manifestChecksumDefinition": "https://offmenu-corpus.netlify.app/common-data/manifest-checksums.json"
+  },
+  "publicationVerification": "docs/common-data-publication-verification-20261014.json",
+  "previousLiveAcceptanceReference": "docs/live-recipe-acceptance.json",
+  "previousLiveAcceptanceRelease": "world-recipes-20261014",
+  "independentCulinaryOrDietaryAcceptance": false,
+  "liveAcceptanceReference": "docs/common-data-recipe-consumer-verification-20261014.json"
+}

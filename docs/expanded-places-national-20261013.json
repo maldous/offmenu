@@ -1,0 +1,4130 @@
+{
+  "schema": "offmenu-expanded-execution/1",
+  "checkedAt": "2026-10-13T09:57:31.683330+00:00",
+  "releaseId": "expanded-country-search-20261013",
+  "records": 22519902,
+  "sourceCount": 18,
+  "sources": {
+    "off": {
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "records": 5452981,
+      "normalizedLocalRecords": 9614434,
+      "withheldRecords": 4161453,
+      "withheldReasons": {
+        "no usable mapped composition facts": 3807015,
+        "usable food identity unresolved": 354438
+      },
+      "bundles": 4461760,
+      "entryRange": [
+        0,
+        4461760
+      ],
+      "scope": "All product rows in the full JSONL export; original fields retained in archive",
+      "license": "ODbL / DbCL; images CC BY-SA",
+      "attribution": "Open Food Facts",
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "usda-files": {
+      "sourceId": "usda-files",
+      "releaseId": "usda-2026-04",
+      "records": 4025777,
+      "normalizedLocalRecords": 4202558,
+      "withheldRecords": 176781,
+      "withheldReasons": {
+        "no usable mapped composition facts": 176772,
+        "usable food identity unresolved": 9
+      },
+      "bundles": 2101271,
+      "entryRange": [
+        4461760,
+        6563031
+      ],
+      "scope": "Every CSV table and supporting workbook in the supplied archive",
+      "license": "USDA FoodData Central public domain / CC0",
+      "attribution": "US Department of Agriculture, Agricultural Research Service, FoodData Central",
+      "archiveSha256": "c33d91e5c44ddbcd71ed6038714fb648b26089b3f91fabfa3be63d96d5763a01",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "prices": {
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "records": 317898,
+      "normalizedLocalRecords": 317898,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 317898,
+      "entryRange": [
+        6563031,
+        6880929
+      ],
+      "scope": "All prices, locations and proof metadata rows; images and contributor identities excluded from public projection",
+      "license": "ODbL",
+      "attribution": "Open Prices",
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "afcd": {
+      "sourceId": "afcd",
+      "releaseId": "3",
+      "records": 1801,
+      "normalizedLocalRecords": 1801,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 1801,
+      "recordShardLength": 1,
+      "entryRange": [
+        6910000,
+        6911801
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "FSANZ Data User Licence Agreement (CC BY-SA 3.0 AU based)",
+      "attribution": "Food Standards Australia New Zealand — Australian Food Composition Database Release 3",
+      "archiveSha256": "ee2e99fe0856e29eb0b67247b12bb02a1b36ae2d01a5a910f67a0080f60043c6",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "ciqual": {
+      "sourceId": "ciqual",
+      "releaseId": "2025",
+      "records": 3484,
+      "normalizedLocalRecords": 3484,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 3484,
+      "recordShardLength": 1,
+      "entryRange": [
+        6911801,
+        6915285
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "Etalab Licence Ouverte 2.0",
+      "attribution": "Anses. 2025. Ciqual French food composition table.",
+      "archiveSha256": "5e89a52960dc6e0d87e73f55364c149e1af41a088e13e579d0fcd4fab56eee49",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "cofid": {
+      "sourceId": "cofid",
+      "releaseId": "2021",
+      "records": 2887,
+      "normalizedLocalRecords": 2887,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 2887,
+      "recordShardLength": 1,
+      "entryRange": [
+        6915285,
+        6918172
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "Open Government Licence 3.0",
+      "attribution": "Public Health England — McCance and Widdowson's CoFID 2021",
+      "archiveSha256": "2f031fd67ae55dfb5e638e286ef369ecad5a1f0a4bf0cc81f52afdd66705b63e",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "germany-bls": {
+      "sourceId": "germany-bls",
+      "releaseId": "4.0",
+      "records": 7140,
+      "normalizedLocalRecords": 7140,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 7140,
+      "recordShardLength": 2,
+      "entryRange": [
+        6918172,
+        6925312
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "CC BY 4.0",
+      "attribution": "Max Rubner-Institut — Bundeslebensmittelschlüssel BLS 4.0 (2025)",
+      "archiveSha256": "a5ba3a151e50834673c335afd719929557d4a22e7c4de9788a20d8e60cd9fb7c",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "matvaretabellen": {
+      "sourceId": "matvaretabellen",
+      "releaseId": "2026",
+      "records": 2121,
+      "normalizedLocalRecords": 2121,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 2121,
+      "recordShardLength": 1,
+      "entryRange": [
+        6925312,
+        6927433
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "Mattilsynet API reuse: source attribution required; see https://www.matvaretabellen.no/api/",
+      "attribution": "Mattilsynet — Matvaretabellen 2026",
+      "archiveSha256": "1bac8a781ed170e16535fd95ee808d0d04e4c8f6233b96cf4766d192b2852d75",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "frida": {
+      "sourceId": "frida",
+      "releaseId": "5.5",
+      "records": 1381,
+      "normalizedLocalRecords": 1381,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 1381,
+      "recordShardLength": 1,
+      "entryRange": [
+        6927433,
+        6928814
+      ],
+      "scope": "Complete named national food-composition release; all downloaded supporting files retained locally. Historical old-foods workbook is retained separately and not mixed into current CoFID.",
+      "license": "CC BY 4.0",
+      "attribution": "National Food Institute, Technical University of Denmark — Frida 5.5",
+      "archiveSha256": "14101f7df7b93dd78472c3e5506bf39104dd61d33f4ec45a9ee170a3e4063f92",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "wikidata-food-businesses": {
+      "sourceId": "wikidata-food-businesses",
+      "releaseId": "2026-10-13-direct-types",
+      "records": 1505,
+      "normalizedLocalRecords": 1505,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 1505,
+      "recordShardLength": 1,
+      "entryRange": [
+        6928814,
+        6930319
+      ],
+      "scope": "All results of the direct P31 food-manufacturer, supermarket-chain and grocery-store-chain query. Subclass query timed out; direct-type results are not all businesses or complete country registers.",
+      "license": "CC0 1.0",
+      "attribution": "Wikidata contributors",
+      "archiveSha256": "de3e72f283252c31f075bb3bf544a1ed9d17e7956e89abfa9ae4f8bd5332f559",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "dietary-guidelines": {
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "records": 100,
+      "normalizedLocalRecords": 100,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 100,
+      "recordShardLength": 1,
+      "entryRange": [
+        6930319,
+        6930419
+      ],
+      "scope": "All 100 country options in the FAO directory; reference metadata only, no guideline content copied or diet rules applied. Countries absent from the directory remain unresolved.",
+      "license": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights",
+      "attribution": "OffMenu reference index; FAO dietary-guidelines country directory",
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "wikibooks": {
+      "sourceId": "wikibooks",
+      "releaseId": "2026-10-13-live",
+      "records": 3796,
+      "normalizedLocalRecords": 3796,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 3796,
+      "recordShardLength": 1,
+      "entryRange": [
+        6930419,
+        6934215
+      ],
+      "scope": "All current pages in English Wikibooks Category:Recipes, Cookbook namespace, collected with complete API continuation. A dated retrieval, not a transactionally frozen dump.",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Wikibooks contributors",
+      "archiveSha256": "efadf48d40d6a8e6f67f13c3c0dd66a07feaff5f8c294eda34292045326d8f88",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "cnf": {
+      "sourceId": "cnf",
+      "releaseId": "2015",
+      "records": 5690,
+      "normalizedLocalRecords": 5690,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 5690,
+      "recordShardLength": 2,
+      "entryRange": [
+        6934215,
+        6939905
+      ],
+      "scope": "All 12 CSV relational tables in the complete CNF 2015 archive. Every food and nutrient observation parsed; original files and supporting guides retained locally.",
+      "license": "Health Canada CNF 2015 copyright guidelines",
+      "attribution": "Canadian Nutrient File, Health Canada, 2015",
+      "archiveSha256": "fb77503d88186844cc2c27b39432d755505f97a789c97fc5973a30d0cd4b0367",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "mext": {
+      "sourceId": "mext",
+      "releaseId": "2023-corrected-20260327-main",
+      "records": 2538,
+      "normalizedLocalRecords": 2538,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 2538,
+      "recordShardLength": 1,
+      "entryRange": [
+        6939905,
+        6942443
+      ],
+      "scope": "Every food row and component in the complete main composition table, corrected 27 March 2026. All 17 publisher release files retained; special-denominator companion tables remain original files, outside this per-100g projection. Parenthesized values remain unresolved.",
+      "license": "MEXT website content use rules",
+      "attribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan",
+      "archiveSha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "overture-food-places": {
+      "sourceId": "overture-food-places",
+      "releaseId": "2026-09-23.1",
+      "records": 12681108,
+      "normalizedLocalRecords": 12681108,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 12681108,
+      "recordShardLength": 3,
+      "entryRange": [
+        6943000,
+        19624108
+      ],
+      "scope": "Every row in all 16 pinned place Parquet files examined. All food/drink venues, non-tobacco food/beverage stores, farmers markets and agricultural farm references selected. No confidence or first-N truncation; rows outside the selected taxonomy scope explicitly excluded. Place category, operation and country remain source assertions.",
+      "license": "Per-record CDLA-Permissive-2.0 / Apache-2.0 / CC0-1.0; notices retained",
+      "attribution": "Overture Maps Foundation and original providers",
+      "archiveSha256": "9dd97acae860f74aba19a407c1a473fe0d1f0e9cfcbe82ad4b36f59a869b5a7a",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "fineli": {
+      "sourceId": "fineli",
+      "releaseId": "20.0",
+      "records": 4232,
+      "normalizedLocalRecords": 4238,
+      "withheldRecords": 6,
+      "withheldReasons": {
+        "no usable mapped composition facts": 6
+      },
+      "bundles": 4232,
+      "recordShardLength": 1,
+      "entryRange": [
+        19625000,
+        19629232
+      ],
+      "scope": "Every food and nutrient observation in the complete publisher Fineli Release 20.0 74-component archive. Companion 55-component and raw-ingredient archives retained without double-counting overlapping foods. This downloadable snapshot is not claimed as the current live API.",
+      "license": "CC BY 4.0",
+      "attribution": "National Institute for Health and Welfare (THL), Fineli, Release 20.0",
+      "archiveSha256": "e7e6bd8d4b9261d751229e763dad436b297d36d48fe853faf49e1fd2a116d262",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "foodfiles": {
+      "sourceId": "foodfiles",
+      "releaseId": "2024-v01",
+      "records": 2857,
+      "normalizedLocalRecords": 2857,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 2857,
+      "recordShardLength": 1,
+      "entryRange": [
+        19629232,
+        19632089
+      ],
+      "scope": "All FOODfiles 2024 Version 01 food names and all 571,495 unabridged nutrient observations parsed; all 30 installer components retained locally. Canonical facts use whole-food W matrix only; fatty-acid F and nitrogen N matrices remain source-specific. Multiple energy, carbohydrate and fibre definitions remain distinct. Source values unaltered; selected FSANZ available-carbohydrate energy definition explicitly identified. Not the newer 2026 online-search data.",
+      "license": "FOODfiles terms: source data unchanged, attribution and downstream terms required",
+      "attribution": "New Zealand Food Composition Database, FOODfiles 2024 Version 01; Plant & Food Research and New Zealand Ministry of Health",
+      "archiveSha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    },
+    "sweden-food": {
+      "sourceId": "sweden-food",
+      "releaseId": "2026-07-01",
+      "records": 2606,
+      "normalizedLocalRecords": 2606,
+      "withheldRecords": 0,
+      "withheldReasons": {},
+      "bundles": 2606,
+      "recordShardLength": 1,
+      "entryRange": [
+        19632089,
+        19634695
+      ],
+      "scope": "Complete official Swedish full-database workbook export, version 2026-07-01; every food and all 58 nutrient columns parsed without changing source values. Missing values remain unknown. Recipe-derived foods are composition references, not quantified recipe instructions.",
+      "license": "Publisher reuse terms: source/version attribution, data must not be changed",
+      "attribution": "Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+      "archiveSha256": "4424c9e4656368a94517a2c697313e3b8682d959ccc4b4c848181083c4dd6569",
+      "rawSourcePayloadPublished": false,
+      "rights": "Original source licence/attribution retained; no private provider results",
+      "independentlyAccepted": false,
+      "countryIndex": true
+    }
+  },
+  "curatedAcceptance": {
+    "status": "all-curated-records-exercised",
+    "releaseId": "expanded-country-search-20261013",
+    "rawSourcePayloadPublished": false,
+    "independentlyAccepted": false,
+    "method": "Composition of individually exercised immutable source files; every source-file checksum revalidated by merger.",
+    "limitation": "Structural and synthetic consumer checks do not establish independently reviewed food identity or dietary qualification.",
+    "completedAt": "2026-10-13T09:28:33.897803+00:00",
+    "countryRecordCounts": {
+      "afcd": {
+        "AU": {
+          "nutrientProfile": 1801
+        }
+      },
+      "ciqual": {
+        "FR": {
+          "nutrientProfile": 3484
+        }
+      },
+      "cnf": {
+        "CA": {
+          "nutrientProfile": 5690
+        }
+      },
+      "cofid": {
+        "GB": {
+          "nutrientProfile": 2887
+        }
+      },
+      "dietary-guidelines": {
+        "BG": {
+          "sourceAssertion": 1
+        },
+        "CL": {
+          "sourceAssertion": 1
+        },
+        "CU": {
+          "sourceAssertion": 1
+        },
+        "NG": {
+          "sourceAssertion": 1
+        },
+        "MK": {
+          "sourceAssertion": 1
+        },
+        "BS": {
+          "sourceAssertion": 1
+        },
+        "FJ": {
+          "sourceAssertion": 1
+        },
+        "FI": {
+          "sourceAssertion": 1
+        },
+        "GE": {
+          "sourceAssertion": 1
+        },
+        "GT": {
+          "sourceAssertion": 1
+        },
+        "NA": {
+          "sourceAssertion": 1
+        },
+        "RO": {
+          "sourceAssertion": 1
+        },
+        "SC": {
+          "sourceAssertion": 1
+        },
+        "SL": {
+          "sourceAssertion": 1
+        },
+        "SI": {
+          "sourceAssertion": 1
+        },
+        "TH": {
+          "sourceAssertion": 1
+        },
+        "UY": {
+          "sourceAssertion": 1
+        },
+        "AU": {
+          "sourceAssertion": 1
+        },
+        "IN": {
+          "sourceAssertion": 1
+        },
+        "JP": {
+          "sourceAssertion": 1
+        },
+        "NZ": {
+          "sourceAssertion": 1
+        },
+        "KN": {
+          "sourceAssertion": 1
+        },
+        "AE": {
+          "sourceAssertion": 1
+        },
+        "GB": {
+          "sourceAssertion": 1
+        },
+        "ET": {
+          "sourceAssertion": 1
+        },
+        "PE": {
+          "sourceAssertion": 1
+        },
+        "KR": {
+          "sourceAssertion": 1
+        },
+        "MD": {
+          "sourceAssertion": 1
+        },
+        "ZM": {
+          "sourceAssertion": 1
+        },
+        "CA": {
+          "sourceAssertion": 1
+        },
+        "CR": {
+          "sourceAssertion": 1
+        },
+        "GA": {
+          "sourceAssertion": 1
+        },
+        "GD": {
+          "sourceAssertion": 1
+        },
+        "NO": {
+          "sourceAssertion": 1
+        },
+        "BE": {
+          "sourceAssertion": 1
+        },
+        "CN": {
+          "sourceAssertion": 1
+        },
+        "CY": {
+          "sourceAssertion": 1
+        },
+        "SV": {
+          "sourceAssertion": 1
+        },
+        "EE": {
+          "sourceAssertion": 1
+        },
+        "FR": {
+          "sourceAssertion": 1
+        },
+        "GH": {
+          "sourceAssertion": 1
+        },
+        "HN": {
+          "sourceAssertion": 1
+        },
+        "IE": {
+          "sourceAssertion": 1
+        },
+        "IL": {
+          "sourceAssertion": 1
+        },
+        "AL": {
+          "sourceAssertion": 1
+        },
+        "BB": {
+          "sourceAssertion": 1
+        },
+        "HR": {
+          "sourceAssertion": 1
+        },
+        "PH": {
+          "sourceAssertion": 1
+        },
+        "AF": {
+          "sourceAssertion": 1
+        },
+        "KH": {
+          "sourceAssertion": 1
+        },
+        "CO": {
+          "sourceAssertion": 1
+        },
+        "DK": {
+          "sourceAssertion": 1
+        },
+        "GR": {
+          "sourceAssertion": 1
+        },
+        "IT": {
+          "sourceAssertion": 1
+        },
+        "OM": {
+          "sourceAssertion": 1
+        },
+        "PY": {
+          "sourceAssertion": 1
+        },
+        "ES": {
+          "sourceAssertion": 1
+        },
+        "BJ": {
+          "sourceAssertion": 1
+        },
+        "BO": {
+          "sourceAssertion": 1
+        },
+        "EC": {
+          "sourceAssertion": 1
+        },
+        "JM": {
+          "sourceAssertion": 1
+        },
+        "KE": {
+          "sourceAssertion": 1
+        },
+        "LK": {
+          "sourceAssertion": 1
+        },
+        "AT": {
+          "sourceAssertion": 1
+        },
+        "BZ": {
+          "sourceAssertion": 1
+        },
+        "CH": {
+          "sourceAssertion": 1
+        },
+        "MY": {
+          "sourceAssertion": 1
+        },
+        "QA": {
+          "sourceAssertion": 1
+        },
+        "LC": {
+          "sourceAssertion": 1
+        },
+        "SE": {
+          "sourceAssertion": 1
+        },
+        "TR": {
+          "sourceAssertion": 1
+        },
+        "US": {
+          "sourceAssertion": 1
+        },
+        "BA": {
+          "sourceAssertion": 1
+        },
+        "BR": {
+          "sourceAssertion": 1
+        },
+        "DM": {
+          "sourceAssertion": 1
+        },
+        "DO": {
+          "sourceAssertion": 1
+        },
+        "IS": {
+          "sourceAssertion": 1
+        },
+        "LB": {
+          "sourceAssertion": 1
+        },
+        "MT": {
+          "sourceAssertion": 1
+        },
+        "MX": {
+          "sourceAssertion": 1
+        },
+        "MN": {
+          "sourceAssertion": 1
+        },
+        "ZA": {
+          "sourceAssertion": 1
+        },
+        "VN": {
+          "sourceAssertion": 1
+        },
+        "AG": {
+          "sourceAssertion": 1
+        },
+        "GY": {
+          "sourceAssertion": 1
+        },
+        "IR": {
+          "sourceAssertion": 1
+        },
+        "LV": {
+          "sourceAssertion": 1
+        },
+        "PA": {
+          "sourceAssertion": 1
+        },
+        "VE": {
+          "sourceAssertion": 1
+        },
+        "HU": {
+          "sourceAssertion": 1
+        },
+        "NL": {
+          "sourceAssertion": 1
+        },
+        "VC": {
+          "sourceAssertion": 1
+        },
+        "AR": {
+          "sourceAssertion": 1
+        },
+        "BD": {
+          "sourceAssertion": 1
+        },
+        "DE": {
+          "sourceAssertion": 1
+        },
+        "ID": {
+          "sourceAssertion": 1
+        },
+        "NP": {
+          "sourceAssertion": 1
+        },
+        "PL": {
+          "sourceAssertion": 1
+        },
+        "PT": {
+          "sourceAssertion": 1
+        },
+        "SA": {
+          "sourceAssertion": 1
+        }
+      },
+      "frida": {
+        "DK": {
+          "nutrientProfile": 1381
+        }
+      },
+      "germany-bls": {
+        "DE": {
+          "nutrientProfile": 7140
+        }
+      },
+      "matvaretabellen": {
+        "NO": {
+          "nutrientProfile": 2121
+        }
+      },
+      "mext": {
+        "JP": {
+          "nutrientProfile": 2538
+        }
+      },
+      "off": {
+        "FR": {
+          "product": 1140462,
+          "nutrientProfile": 131
+        },
+        "GB": {
+          "product": 178656,
+          "nutrientProfile": 14
+        },
+        "NC": {
+          "product": 2380,
+          "nutrientProfile": 1175
+        },
+        "UY": {
+          "product": 1826,
+          "nutrientProfile": 810
+        },
+        "IT": {
+          "product": 260483,
+          "nutrientProfile": 29
+        },
+        "CH": {
+          "product": 101244,
+          "nutrientProfile": 4
+        },
+        "US": {
+          "product": 964986,
+          "nutrientProfile": 672451
+        },
+        "DK": {
+          "product": 20700,
+          "nutrientProfile": 11308
+        },
+        "ES": {
+          "product": 337639,
+          "nutrientProfile": 37
+        },
+        "DE": {
+          "product": 404843,
+          "nutrientProfile": 88
+        },
+        "RU": {
+          "product": 32307,
+          "nutrientProfile": 13469
+        },
+        "NL": {
+          "product": 107804,
+          "nutrientProfile": 27834
+        },
+        "BE": {
+          "product": 95797,
+          "nutrientProfile": 13
+        },
+        "AR": {
+          "product": 14003,
+          "nutrientProfile": 4336
+        },
+        "BY": {
+          "product": 1139,
+          "nutrientProfile": 414
+        },
+        "DZ": {
+          "product": 5024,
+          "nutrientProfile": 1966
+        },
+        "AU": {
+          "product": 79950,
+          "nutrientProfile": 45489
+        },
+        "SE": {
+          "product": 25996
+        },
+        "CZ": {
+          "product": 17373,
+          "nutrientProfile": 7771
+        },
+        "IE": {
+          "product": 74880,
+          "nutrientProfile": 145
+        },
+        "NZ": {
+          "product": 15277,
+          "nutrientProfile": 8270
+        },
+        "LK": {
+          "product": 677,
+          "nutrientProfile": 114
+        },
+        "AD": {
+          "product": 927,
+          "nutrientProfile": 556
+        },
+        "NO": {
+          "product": 26508,
+          "nutrientProfile": 12494
+        },
+        "IN": {
+          "product": 20935,
+          "nutrientProfile": 4557
+        },
+        "CL": {
+          "product": 6119
+        },
+        "JP": {
+          "product": 44803,
+          "nutrientProfile": 30700
+        },
+        "CM": {
+          "product": 432,
+          "nutrientProfile": 176
+        },
+        "PL": {
+          "product": 31576
+        },
+        "PH": {
+          "product": 8470,
+          "nutrientProfile": 2431
+        },
+        "UA": {
+          "product": 5580,
+          "nutrientProfile": 2382
+        },
+        "PT": {
+          "product": 18155
+        },
+        "CA": {
+          "product": 124813,
+          "nutrientProfile": 22
+        },
+        "MY": {
+          "product": 6789,
+          "nutrientProfile": 1504
+        },
+        "AT": {
+          "product": 21130,
+          "nutrientProfile": 2
+        },
+        "BR": {
+          "product": 34996,
+          "nutrientProfile": 1
+        },
+        "EE": {
+          "product": 5851,
+          "nutrientProfile": 3399
+        },
+        "RO": {
+          "product": 40659,
+          "nutrientProfile": 6470
+        },
+        "DO": {
+          "product": 1479,
+          "nutrientProfile": 826
+        },
+        "SG": {
+          "product": 11317,
+          "nutrientProfile": 3761
+        },
+        "SA": {
+          "product": 15160,
+          "nutrientProfile": 2781
+        },
+        "TW": {
+          "product": 3080,
+          "nutrientProfile": 1777
+        },
+        "QA": {
+          "product": 5900,
+          "nutrientProfile": 996
+        },
+        "HU": {
+          "product": 10037,
+          "nutrientProfile": 5439
+        },
+        "MX": {
+          "product": 15961,
+          "nutrientProfile": 2
+        },
+        "MA": {
+          "product": 13915,
+          "nutrientProfile": 3587
+        },
+        "LU": {
+          "product": 10859,
+          "nutrientProfile": 6954
+        },
+        "FI": {
+          "product": 19929,
+          "nutrientProfile": 12796
+        },
+        "BO": {
+          "product": 4096,
+          "nutrientProfile": 1421
+        },
+        "GR": {
+          "product": 9751,
+          "nutrientProfile": 4238
+        },
+        "SN": {
+          "product": 949,
+          "nutrientProfile": 408
+        },
+        "ID": {
+          "product": 8483,
+          "nutrientProfile": 1062
+        },
+        "MK": {
+          "product": 1302,
+          "nutrientProfile": 618
+        },
+        "RE": {
+          "product": 4226,
+          "nutrientProfile": 1996
+        },
+        "LT": {
+          "product": 9321,
+          "nutrientProfile": 3762
+        },
+        "CY": {
+          "product": 2324,
+          "nutrientProfile": 693
+        },
+        "IL": {
+          "product": 8043,
+          "nutrientProfile": 4650
+        },
+        "GA": {
+          "product": 250,
+          "nutrientProfile": 114
+        },
+        "MQ": {
+          "product": 1092,
+          "nutrientProfile": 371
+        },
+        "MT": {
+          "product": 2052,
+          "nutrientProfile": 834
+        },
+        "SI": {
+          "product": 3924,
+          "nutrientProfile": 2077
+        },
+        "TH": {
+          "product": 7959,
+          "nutrientProfile": 6525
+        },
+        "LB": {
+          "product": 3413,
+          "nutrientProfile": 1177
+        },
+        "AE": {
+          "product": 8317,
+          "nutrientProfile": 3097
+        },
+        "GT": {
+          "product": 1031,
+          "nutrientProfile": 453
+        },
+        "LV": {
+          "product": 4312,
+          "nutrientProfile": 2152
+        },
+        "BD": {
+          "product": 1140,
+          "nutrientProfile": 139
+        },
+        "IQ": {
+          "product": 4977,
+          "nutrientProfile": 580
+        },
+        "BG": {
+          "product": 14248,
+          "nutrientProfile": 5208
+        },
+        "GI": {
+          "product": 227,
+          "nutrientProfile": 162
+        },
+        "TR": {
+          "product": 1251,
+          "nutrientProfile": 43
+        },
+        "VN": {
+          "product": 1362,
+          "nutrientProfile": 774
+        },
+        "GE": {
+          "product": 1581,
+          "nutrientProfile": 742
+        },
+        "GP": {
+          "product": 1658,
+          "nutrientProfile": 677
+        },
+        "ZA": {
+          "product": 9603,
+          "nutrientProfile": 4347
+        },
+        "CU": {
+          "product": 1447,
+          "nutrientProfile": 1112
+        },
+        "RS": {
+          "product": 4127,
+          "nutrientProfile": 1833
+        },
+        "PF": {
+          "product": 1715,
+          "nutrientProfile": 884
+        },
+        "CO": {
+          "product": 8995,
+          "nutrientProfile": 3188
+        },
+        "BH": {
+          "product": 1377,
+          "nutrientProfile": 347
+        },
+        "PA": {
+          "product": 2320,
+          "nutrientProfile": 769
+        },
+        "CN": {
+          "product": 1372,
+          "nutrientProfile": 658
+        },
+        "EG": {
+          "product": 3599,
+          "nutrientProfile": 1253
+        },
+        "EC": {
+          "product": 1993,
+          "nutrientProfile": 970
+        },
+        "KR": {
+          "product": 3058,
+          "nutrientProfile": 2063
+        },
+        "SK": {
+          "product": 7823,
+          "nutrientProfile": 2479
+        },
+        "KW": {
+          "product": 2735,
+          "nutrientProfile": 1326
+        },
+        "BF": {
+          "product": 221,
+          "nutrientProfile": 68
+        },
+        "UZ": {
+          "product": 1424,
+          "nutrientProfile": 70
+        },
+        "TN": {
+          "product": 2941,
+          "nutrientProfile": 1183
+        },
+        "PY": {
+          "product": 1310,
+          "nutrientProfile": 523
+        },
+        "JO": {
+          "product": 1002,
+          "nutrientProfile": 411
+        },
+        "HR": {
+          "product": 6937,
+          "nutrientProfile": 2767
+        },
+        "GH": {
+          "product": 340,
+          "nutrientProfile": 115
+        },
+        "SV": {
+          "product": 1208,
+          "nutrientProfile": 474
+        },
+        "AL": {
+          "product": 830,
+          "nutrientProfile": 337
+        },
+        "PS": {
+          "product": 720,
+          "nutrientProfile": 93
+        },
+        "AZ": {
+          "product": 915,
+          "nutrientProfile": 53
+        },
+        "KZ": {
+          "product": 624,
+          "nutrientProfile": 267
+        },
+        "CR": {
+          "product": 2532,
+          "nutrientProfile": 1267
+        },
+        "PK": {
+          "product": 1411,
+          "nutrientProfile": 430
+        },
+        "NI": {
+          "product": 1537,
+          "nutrientProfile": 150
+        },
+        "OM": {
+          "product": 745,
+          "nutrientProfile": 205
+        },
+        "VE": {
+          "product": 1436,
+          "nutrientProfile": 543
+        },
+        "PE": {
+          "product": 2400,
+          "nutrientProfile": 1124
+        },
+        "MU": {
+          "product": 1226,
+          "nutrientProfile": 617
+        },
+        "JE": {
+          "product": 224,
+          "nutrientProfile": 117
+        },
+        "NE": {
+          "product": 71,
+          "nutrientProfile": 31
+        },
+        "PR": {
+          "product": 2934,
+          "nutrientProfile": 2177
+        },
+        "MD": {
+          "product": 1289,
+          "nutrientProfile": 402
+        },
+        "NG": {
+          "product": 744,
+          "nutrientProfile": 149
+        },
+        "KE": {
+          "product": 569,
+          "nutrientProfile": 234
+        },
+        "KM": {
+          "product": 187,
+          "nutrientProfile": 15
+        },
+        "AF": {
+          "product": 207,
+          "nutrientProfile": 13
+        },
+        "AM": {
+          "product": 459,
+          "nutrientProfile": 167
+        },
+        "GM": {
+          "product": 6,
+          "nutrientProfile": 3
+        },
+        "JM": {
+          "product": 497,
+          "nutrientProfile": 307
+        },
+        "ET": {
+          "product": 492,
+          "nutrientProfile": 88
+        },
+        "IS": {
+          "product": 2975,
+          "nutrientProfile": 1780
+        },
+        "KH": {
+          "product": 1146,
+          "nutrientProfile": 223
+        },
+        "ME": {
+          "product": 555,
+          "nutrientProfile": 282
+        },
+        "AW": {
+          "product": 88,
+          "nutrientProfile": 48
+        },
+        "BJ": {
+          "product": 125,
+          "nutrientProfile": 60
+        },
+        "HN": {
+          "product": 1196,
+          "nutrientProfile": 360
+        },
+        "BZ": {
+          "product": 214,
+          "nutrientProfile": 14
+        },
+        "LY": {
+          "product": 565,
+          "nutrientProfile": 222
+        },
+        "GF": {
+          "product": 379,
+          "nutrientProfile": 137
+        },
+        "LA": {
+          "product": 39,
+          "nutrientProfile": 9
+        },
+        "PG": {
+          "product": 178,
+          "nutrientProfile": 7
+        },
+        "SC": {
+          "product": 170,
+          "nutrientProfile": 89
+        },
+        "MZ": {
+          "product": 69,
+          "nutrientProfile": 29
+        },
+        "SR": {
+          "product": 313,
+          "nutrientProfile": 85
+        },
+        "BB": {
+          "product": 207,
+          "nutrientProfile": 113
+        },
+        "FO": {
+          "product": 473,
+          "nutrientProfile": 367
+        },
+        "GQ": {
+          "product": 16,
+          "nutrientProfile": 8
+        },
+        "MR": {
+          "product": 124,
+          "nutrientProfile": 30
+        },
+        "SO": {
+          "product": 252,
+          "nutrientProfile": 24
+        },
+        "RW": {
+          "product": 223,
+          "nutrientProfile": 36
+        },
+        "GN": {
+          "product": 99,
+          "nutrientProfile": 46
+        },
+        "AO": {
+          "product": 48,
+          "nutrientProfile": 26
+        },
+        "ML": {
+          "product": 159,
+          "nutrientProfile": 40
+        },
+        "DM": {
+          "product": 51,
+          "nutrientProfile": 9
+        },
+        "BN": {
+          "product": 395,
+          "nutrientProfile": 95
+        },
+        "YT": {
+          "product": 67,
+          "nutrientProfile": 25
+        },
+        "ZM": {
+          "product": 287,
+          "nutrientProfile": 60
+        },
+        "GU": {
+          "product": 228,
+          "nutrientProfile": 161
+        },
+        "SZ": {
+          "product": 11
+        },
+        "AX": {
+          "nutrientProfile": 99,
+          "product": 153
+        },
+        "MV": {
+          "product": 260,
+          "nutrientProfile": 66
+        },
+        "MG": {
+          "product": 406,
+          "nutrientProfile": 173
+        },
+        "IR": {
+          "product": 452,
+          "nutrientProfile": 188
+        },
+        "SY": {
+          "product": 151,
+          "nutrientProfile": 81
+        },
+        "VU": {
+          "product": 29,
+          "nutrientProfile": 12
+        },
+        "MC": {
+          "product": 296,
+          "nutrientProfile": 146
+        },
+        "YE": {
+          "product": 172,
+          "nutrientProfile": 21
+        },
+        "FJ": {
+          "product": 76,
+          "nutrientProfile": 31
+        },
+        "KY": {
+          "product": 46,
+          "nutrientProfile": 25
+        },
+        "MW": {
+          "product": 30,
+          "nutrientProfile": 16
+        },
+        "MS": {
+          "product": 449,
+          "nutrientProfile": 11
+        },
+        "KG": {
+          "product": 131,
+          "nutrientProfile": 51
+        },
+        "MP": {
+          "product": 20,
+          "nutrientProfile": 7
+        },
+        "BT": {
+          "product": 15,
+          "nutrientProfile": 6
+        },
+        "GG": {
+          "product": 145,
+          "nutrientProfile": 82
+        },
+        "HT": {
+          "product": 150,
+          "nutrientProfile": 71
+        },
+        "GL": {
+          "product": 111,
+          "nutrientProfile": 47
+        },
+        "NP": {
+          "product": 235,
+          "nutrientProfile": 81
+        },
+        "IM": {
+          "product": 137,
+          "nutrientProfile": 74
+        },
+        "SL": {
+          "product": 110,
+          "nutrientProfile": 17
+        },
+        "ZW": {
+          "product": 53,
+          "nutrientProfile": 30
+        },
+        "GD": {
+          "product": 38,
+          "nutrientProfile": 14
+        },
+        "VG": {
+          "product": 14,
+          "nutrientProfile": 10
+        },
+        "AS": {
+          "product": 25,
+          "nutrientProfile": 5
+        },
+        "TG": {
+          "product": 94,
+          "nutrientProfile": 41
+        },
+        "VA": {
+          "product": 4,
+          "nutrientProfile": 2
+        },
+        "UG": {
+          "product": 63,
+          "nutrientProfile": 18
+        },
+        "TZ": {
+          "product": 84,
+          "nutrientProfile": 24
+        },
+        "MN": {
+          "product": 196,
+          "nutrientProfile": 88
+        },
+        "NA": {
+          "product": 72,
+          "nutrientProfile": 31
+        },
+        "SM": {
+          "product": 94,
+          "nutrientProfile": 65
+        },
+        "TD": {
+          "product": 28,
+          "nutrientProfile": 9
+        },
+        "CW": {
+          "product": 94,
+          "nutrientProfile": 52
+        },
+        "DJ": {
+          "product": 52,
+          "nutrientProfile": 35
+        },
+        "KP": {
+          "product": 18,
+          "nutrientProfile": 17
+        },
+        "BM": {
+          "product": 78,
+          "nutrientProfile": 43
+        },
+        "BW": {
+          "product": 61,
+          "nutrientProfile": 15
+        },
+        "GY": {
+          "product": 85,
+          "nutrientProfile": 44
+        },
+        "SD": {
+          "product": 36,
+          "nutrientProfile": 4
+        },
+        "BQ": {
+          "product": 12,
+          "nutrientProfile": 9
+        },
+        "LI": {
+          "product": 121,
+          "nutrientProfile": 52
+        },
+        "TJ": {
+          "product": 25,
+          "nutrientProfile": 3
+        },
+        "TO": {
+          "product": 3,
+          "nutrientProfile": 1
+        },
+        "CF": {
+          "product": 7,
+          "nutrientProfile": 1
+        },
+        "CV": {
+          "product": 37,
+          "nutrientProfile": 23
+        },
+        "AI": {
+          "product": 20,
+          "nutrientProfile": 16
+        },
+        "LS": {
+          "product": 5,
+          "nutrientProfile": 1
+        },
+        "BI": {
+          "product": 19,
+          "nutrientProfile": 2
+        },
+        "CC": {
+          "product": 2,
+          "nutrientProfile": 2
+        },
+        "WS": {
+          "product": 4,
+          "nutrientProfile": 1
+        },
+        "NR": {
+          "product": 1
+        },
+        "SX": {
+          "product": 31,
+          "nutrientProfile": 15
+        },
+        "SS": {
+          "product": 15,
+          "nutrientProfile": 7
+        },
+        "LR": {
+          "product": 23,
+          "nutrientProfile": 3
+        },
+        "PW": {
+          "product": 7,
+          "nutrientProfile": 5
+        },
+        "TL": {
+          "product": 12
+        },
+        "IO": {
+          "product": 4,
+          "nutrientProfile": 1
+        },
+        "ER": {
+          "product": 3,
+          "nutrientProfile": 2
+        },
+        "CK": {
+          "product": 7,
+          "nutrientProfile": 2
+        },
+        "MH": {
+          "product": 2,
+          "nutrientProfile": 1
+        },
+        "SB": {
+          "product": 4,
+          "nutrientProfile": 3
+        },
+        "FK": {
+          "product": 4
+        },
+        "BV": {
+          "nutrientProfile": 1,
+          "product": 1
+        },
+        "GW": {
+          "nutrientProfile": 1
+        }
+      },
+      "prices": {
+        "US": {
+          "priceObservation": 40674
+        },
+        "FR": {
+          "priceObservation": 208484
+        },
+        "BE": {
+          "priceObservation": 2249
+        },
+        "DE": {
+          "priceObservation": 17112
+        },
+        "JP": {
+          "priceObservation": 642
+        },
+        "PL": {
+          "priceObservation": 2014
+        },
+        "NO": {
+          "priceObservation": 21712
+        },
+        "AR": {
+          "priceObservation": 56
+        },
+        "GB": {
+          "priceObservation": 2088
+        },
+        "IT": {
+          "priceObservation": 1636
+        },
+        "DK": {
+          "priceObservation": 1971
+        },
+        "AT": {
+          "priceObservation": 902
+        },
+        "SE": {
+          "priceObservation": 5102
+        },
+        "IL": {
+          "priceObservation": 334
+        },
+        "MY": {
+          "priceObservation": 103
+        },
+        "FI": {
+          "priceObservation": 1115
+        },
+        "HR": {
+          "priceObservation": 1112
+        },
+        "UA": {
+          "priceObservation": 381
+        },
+        "LT": {
+          "priceObservation": 308
+        },
+        "CA": {
+          "priceObservation": 674
+        },
+        "EE": {
+          "priceObservation": 299
+        },
+        "CZ": {
+          "priceObservation": 209
+        },
+        "CH": {
+          "priceObservation": 936
+        },
+        "PT": {
+          "priceObservation": 390
+        },
+        "IN": {
+          "priceObservation": 402
+        },
+        "BA": {
+          "priceObservation": 158
+        },
+        "ES": {
+          "priceObservation": 1063
+        },
+        "NL": {
+          "priceObservation": 257
+        },
+        "LI": {
+          "priceObservation": 71
+        },
+        "KZ": {
+          "priceObservation": 352
+        },
+        "MX": {
+          "priceObservation": 343
+        },
+        "RO": {
+          "priceObservation": 90
+        },
+        "RU": {
+          "priceObservation": 530
+        },
+        "BD": {
+          "priceObservation": 52
+        },
+        "BG": {
+          "priceObservation": 233
+        },
+        "AL": {
+          "priceObservation": 50
+        },
+        "GR": {
+          "priceObservation": 66
+        },
+        "MC": {
+          "priceObservation": 208
+        },
+        "BR": {
+          "priceObservation": 82
+        },
+        "LV": {
+          "priceObservation": 346
+        },
+        "TW": {
+          "priceObservation": 256
+        },
+        "LA": {
+          "priceObservation": 32
+        },
+        "CO": {
+          "priceObservation": 21
+        },
+        "HU": {
+          "priceObservation": 37
+        },
+        "MA": {
+          "priceObservation": 100
+        },
+        "MK": {
+          "priceObservation": 1
+        },
+        "LU": {
+          "priceObservation": 21
+        },
+        "SK": {
+          "priceObservation": 19
+        },
+        "SI": {
+          "priceObservation": 18
+        },
+        "SG": {
+          "priceObservation": 195
+        },
+        "PA": {
+          "priceObservation": 49
+        },
+        "AU": {
+          "priceObservation": 92
+        },
+        "HT": {
+          "priceObservation": 2
+        },
+        "JE": {
+          "priceObservation": 1
+        },
+        "AE": {
+          "priceObservation": 15
+        },
+        "IE": {
+          "priceObservation": 51
+        },
+        "KR": {
+          "priceObservation": 18
+        },
+        "DZ": {
+          "priceObservation": 19
+        },
+        "ID": {
+          "priceObservation": 27
+        },
+        "CY": {
+          "priceObservation": 60
+        },
+        "TH": {
+          "priceObservation": 48
+        },
+        "PH": {
+          "priceObservation": 26
+        },
+        "TR": {
+          "priceObservation": 28
+        },
+        "IS": {
+          "priceObservation": 5
+        },
+        "TN": {
+          "priceObservation": 54
+        },
+        "EC": {
+          "priceObservation": 4
+        },
+        "MD": {
+          "priceObservation": 4
+        },
+        "EG": {
+          "priceObservation": 6
+        },
+        "PK": {
+          "priceObservation": 8
+        },
+        "ZA": {
+          "priceObservation": 11
+        },
+        "AD": {
+          "priceObservation": 1
+        },
+        "GH": {
+          "priceObservation": 1
+        },
+        "KH": {
+          "priceObservation": 6
+        },
+        "CN": {
+          "priceObservation": 22
+        },
+        "DO": {
+          "priceObservation": 6
+        },
+        "OM": {
+          "priceObservation": 1
+        },
+        "RS": {
+          "priceObservation": 22
+        },
+        "SA": {
+          "priceObservation": 4
+        },
+        "LY": {
+          "priceObservation": 1
+        },
+        "QA": {
+          "priceObservation": 2
+        },
+        "MR": {
+          "priceObservation": 2
+        },
+        "GG": {
+          "priceObservation": 1
+        },
+        "PY": {
+          "priceObservation": 11
+        },
+        "SN": {
+          "priceObservation": 5
+        },
+        "GA": {
+          "priceObservation": 3
+        },
+        "GE": {
+          "priceObservation": 2
+        },
+        "CR": {
+          "priceObservation": 1
+        },
+        "UZ": {
+          "priceObservation": 3
+        },
+        "NZ": {
+          "priceObservation": 3
+        },
+        "CM": {
+          "priceObservation": 10
+        },
+        "LK": {
+          "priceObservation": 5
+        },
+        "SV": {
+          "priceObservation": 1
+        },
+        "TZ": {
+          "priceObservation": 1
+        },
+        "PE": {
+          "priceObservation": 5
+        },
+        "LB": {
+          "priceObservation": 2
+        },
+        "IQ": {
+          "priceObservation": 4
+        },
+        "RW": {
+          "priceObservation": 1
+        },
+        "IR": {
+          "priceObservation": 1
+        },
+        "AF": {
+          "priceObservation": 1
+        },
+        "BM": {
+          "priceObservation": 2
+        },
+        "MM": {
+          "priceObservation": 1
+        },
+        "VN": {
+          "priceObservation": 2
+        },
+        "CL": {
+          "priceObservation": 3
+        },
+        "NP": {
+          "priceObservation": 1
+        },
+        "PS": {
+          "priceObservation": 1
+        },
+        "CK": {
+          "priceObservation": 5
+        },
+        "BF": {
+          "priceObservation": 1
+        },
+        "BW": {
+          "priceObservation": 1
+        },
+        "BS": {
+          "priceObservation": 1
+        },
+        "NG": {
+          "priceObservation": 2
+        },
+        "AM": {
+          "priceObservation": 1
+        },
+        "VE": {
+          "priceObservation": 2
+        },
+        "BO": {
+          "priceObservation": 1
+        },
+        "BI": {
+          "priceObservation": 1
+        },
+        "AZ": {
+          "priceObservation": 1
+        },
+        "ML": {
+          "priceObservation": 1
+        },
+        "BY": {
+          "priceObservation": 2
+        },
+        "NI": {
+          "priceObservation": 1
+        },
+        "CG": {
+          "priceObservation": 1
+        },
+        "MU": {
+          "priceObservation": 1
+        },
+        "YE": {
+          "priceObservation": 1
+        },
+        "CI": {
+          "priceObservation": 1
+        },
+        "KE": {
+          "priceObservation": 1
+        }
+      },
+      "usda-files": {
+        "US": {
+          "product": 2101270,
+          "nutrientProfile": 1924507
+        }
+      },
+      "wikidata-food-businesses": {
+        "BR": {
+          "organization": 22
+        },
+        "NZ": {
+          "organization": 10
+        },
+        "DE": {
+          "organization": 59
+        },
+        "UY": {
+          "organization": 17
+        },
+        "UA": {
+          "organization": 20
+        },
+        "SK": {
+          "organization": 7
+        },
+        "VE": {
+          "organization": 4
+        },
+        "JP": {
+          "organization": 126
+        },
+        "BD": {
+          "organization": 1
+        },
+        "DK": {
+          "organization": 37
+        },
+        "IT": {
+          "organization": 64
+        },
+        "FI": {
+          "organization": 28
+        },
+        "MD": {
+          "organization": 2
+        },
+        "CA": {
+          "organization": 57
+        },
+        "CY": {
+          "organization": 6
+        },
+        "CN": {
+          "organization": 20
+        },
+        "TR": {
+          "organization": 27
+        },
+        "FR": {
+          "organization": 27
+        },
+        "KR": {
+          "organization": 14
+        },
+        "NL": {
+          "organization": 84
+        },
+        "RU": {
+          "organization": 26
+        },
+        "EE": {
+          "organization": 7
+        },
+        "EG": {
+          "organization": 1
+        },
+        "GB": {
+          "organization": 43
+        },
+        "CH": {
+          "organization": 13
+        },
+        "AU": {
+          "organization": 21
+        },
+        "AR": {
+          "organization": 9
+        },
+        "GH": {
+          "organization": 3
+        },
+        "NG": {
+          "organization": 4
+        },
+        "IE": {
+          "organization": 6
+        },
+        "TW": {
+          "organization": 8
+        },
+        "NO": {
+          "organization": 8
+        },
+        "IL": {
+          "organization": 10
+        },
+        "SE": {
+          "organization": 12
+        },
+        "BG": {
+          "organization": 10
+        },
+        "IN": {
+          "organization": 8
+        },
+        "GE": {
+          "organization": 4
+        },
+        "CO": {
+          "organization": 2
+        },
+        "PL": {
+          "organization": 15
+        },
+        "BY": {
+          "organization": 15
+        },
+        "ID": {
+          "organization": 8
+        },
+        "IS": {
+          "organization": 5
+        },
+        "PA": {
+          "organization": 1
+        },
+        "PE": {
+          "organization": 9
+        },
+        "LU": {
+          "organization": 9
+        },
+        "MA": {
+          "organization": 5
+        },
+        "GR": {
+          "organization": 11
+        },
+        "SZ": {
+          "organization": 1
+        },
+        "ZA": {
+          "organization": 4
+        },
+        "HR": {
+          "organization": 4
+        },
+        "BZ": {
+          "organization": 2
+        },
+        "VN": {
+          "organization": 5
+        },
+        "XK": {
+          "organization": 2
+        },
+        "SA": {
+          "organization": 2
+        },
+        "TH": {
+          "organization": 4
+        },
+        "MK": {
+          "organization": 2
+        },
+        "BA": {
+          "organization": 2
+        },
+        "SG": {
+          "organization": 3
+        },
+        "IR": {
+          "organization": 7
+        },
+        "MY": {
+          "organization": 9
+        },
+        "RO": {
+          "organization": 9
+        },
+        "AT": {
+          "organization": 10
+        },
+        "KZ": {
+          "organization": 3
+        },
+        "SI": {
+          "organization": 2
+        },
+        "LT": {
+          "organization": 5
+        },
+        "MN": {
+          "organization": 1
+        },
+        "BH": {
+          "organization": 1
+        },
+        "PT": {
+          "organization": 6
+        },
+        "CZ": {
+          "organization": 8
+        },
+        "VG": {
+          "organization": 1
+        },
+        "LK": {
+          "organization": 3
+        },
+        "GT": {
+          "organization": 1
+        },
+        "BO": {
+          "organization": 1
+        },
+        "PK": {
+          "organization": 1
+        },
+        "LV": {
+          "organization": 3
+        },
+        "AL": {
+          "organization": 1
+        },
+        "CI": {
+          "organization": 1
+        },
+        "AZ": {
+          "organization": 1
+        },
+        "RS": {
+          "organization": 2
+        },
+        "GL": {
+          "organization": 2
+        },
+        "DO": {
+          "organization": 1
+        },
+        "SN": {
+          "organization": 1
+        },
+        "AM": {
+          "organization": 1
+        },
+        "NP": {
+          "organization": 1
+        },
+        "EC": {
+          "organization": 1
+        },
+        "UZ": {
+          "organization": 1
+        }
+      },
+      "overture-food-places": {
+        "MX": {
+          "site": 594643,
+          "retailer": 119273
+        },
+        "US": {
+          "site": 1693333,
+          "retailer": 249028
+        },
+        "BR": {
+          "site": 695188,
+          "retailer": 147619
+        },
+        "GB": {
+          "retailer": 55877,
+          "site": 326442
+        },
+        "ES": {
+          "site": 278023,
+          "retailer": 60910
+        },
+        "IT": {
+          "site": 577164,
+          "retailer": 132836
+        },
+        "TR": {
+          "site": 273368,
+          "retailer": 57648
+        },
+        "DE": {
+          "site": 453373,
+          "retailer": 113770
+        },
+        "IN": {
+          "site": 318122,
+          "retailer": 61871
+        },
+        "TH": {
+          "site": 558250,
+          "retailer": 39620
+        },
+        "ID": {
+          "site": 366920,
+          "retailer": 35698
+        },
+        "CN": {
+          "site": 38206,
+          "retailer": 770
+        },
+        "TW": {
+          "site": 276767,
+          "retailer": 18788
+        },
+        "JP": {
+          "site": 800748,
+          "retailer": 63615
+        },
+        "CA": {
+          "site": 157124,
+          "retailer": 31666
+        },
+        "AR": {
+          "site": 88424,
+          "retailer": 42565
+        },
+        "PL": {
+          "site": 84036,
+          "retailer": 26313
+        },
+        "AE": {
+          "site": 24905,
+          "retailer": 2707
+        },
+        "RU": {
+          "site": 81501,
+          "retailer": 21289
+        },
+        "EG": {
+          "retailer": 6619,
+          "site": 38352
+        },
+        "MY": {
+          "site": 188551,
+          "retailer": 15233
+        },
+        "KR": {
+          "site": 224177,
+          "retailer": 7476
+        },
+        "SV": {
+          "site": 9664,
+          "retailer": 1250
+        },
+        "PR": {
+          "site": 19973,
+          "retailer": 2159
+        },
+        "FR": {
+          "site": 298936,
+          "retailer": 75431
+        },
+        "HR": {
+          "site": 22345,
+          "retailer": 4724
+        },
+        "NL": {
+          "site": 69837,
+          "retailer": 18017
+        },
+        "GR": {
+          "retailer": 12017,
+          "site": 89448
+        },
+        "BA": {
+          "site": 8890,
+          "retailer": 808
+        },
+        "AU": {
+          "site": 140340,
+          "retailer": 29686
+        },
+        "HK": {
+          "site": 36228,
+          "retailer": 3368
+        },
+        "CZ": {
+          "site": 47835,
+          "retailer": 9646
+        },
+        "BG": {
+          "site": 26145,
+          "retailer": 4023
+        },
+        "VN": {
+          "site": 316160,
+          "retailer": 34804
+        },
+        "MM": {
+          "site": 10652,
+          "retailer": 1192
+        },
+        "PY": {
+          "site": 13265,
+          "retailer": 2759
+        },
+        "MA": {
+          "site": 18138,
+          "retailer": 1351
+        },
+        "PE": {
+          "retailer": 9612,
+          "site": 74959
+        },
+        "SE": {
+          "site": 45226,
+          "retailer": 9457
+        },
+        "ZA": {
+          "site": 56089,
+          "retailer": 17773
+        },
+        "RS": {
+          "site": 18917,
+          "retailer": 2566
+        },
+        "SK": {
+          "site": 17556,
+          "retailer": 3612
+        },
+        "DK": {
+          "site": 40157,
+          "retailer": 8285
+        },
+        "NZ": {
+          "retailer": 5338,
+          "site": 23764
+        },
+        "SY": {
+          "site": 3319,
+          "retailer": 200
+        },
+        "CR": {
+          "site": 20041,
+          "retailer": 4012
+        },
+        "PT": {
+          "site": 72861,
+          "retailer": 11523
+        },
+        "PH": {
+          "site": 206426,
+          "retailer": 20218
+        },
+        "CL": {
+          "site": 52406,
+          "retailer": 14358
+        },
+        "BO": {
+          "site": 15195,
+          "retailer": 1963
+        },
+        "CO": {
+          "retailer": 17073,
+          "site": 109458
+        },
+        "SA": {
+          "retailer": 2463,
+          "site": 32224
+        },
+        "BE": {
+          "site": 67119,
+          "retailer": 13872
+        },
+        "KH": {
+          "site": 18011,
+          "retailer": 2531
+        },
+        "NG": {
+          "site": 6829,
+          "retailer": 2035
+        },
+        "KG": {
+          "site": 1213,
+          "retailer": 84
+        },
+        "GE": {
+          "site": 7555,
+          "retailer": 665
+        },
+        "UY": {
+          "retailer": 2494,
+          "site": 6459
+        },
+        "LK": {
+          "retailer": 2006,
+          "site": 11845
+        },
+        "AL": {
+          "site": 7787,
+          "retailer": 579
+        },
+        "RO": {
+          "site": 37503,
+          "retailer": 8952
+        },
+        "BD": {
+          "site": 19222,
+          "retailer": 4134
+        },
+        "ZM": {
+          "site": 1587,
+          "retailer": 423
+        },
+        "AT": {
+          "site": 43064,
+          "retailer": 11152
+        },
+        "TT": {
+          "site": 3656,
+          "retailer": 611
+        },
+        "CH": {
+          "retailer": 10233,
+          "site": 40565
+        },
+        "CY": {
+          "site": 10056,
+          "retailer": 1225
+        },
+        "SG": {
+          "site": 29304,
+          "retailer": 2705
+        },
+        "FI": {
+          "site": 21017,
+          "retailer": 4353
+        },
+        "EC": {
+          "site": 38064,
+          "retailer": 5946
+        },
+        "JO": {
+          "site": 9335,
+          "retailer": 2123
+        },
+        "UA": {
+          "site": 36695,
+          "retailer": 8367
+        },
+        "SI": {
+          "site": 8409,
+          "retailer": 1447
+        },
+        "QA": {
+          "site": 5199,
+          "retailer": 442
+        },
+        "AM": {
+          "site": 3464,
+          "retailer": 374
+        },
+        "MQ": {
+          "site": 1256,
+          "retailer": 193
+        },
+        "IE": {
+          "site": 21339,
+          "retailer": 4222
+        },
+        "MD": {
+          "retailer": 537,
+          "site": 2687
+        },
+        "UG": {
+          "site": 2356,
+          "retailer": 358
+        },
+        "LT": {
+          "site": 6169,
+          "retailer": 1606
+        },
+        "IQ": {
+          "site": 6420,
+          "retailer": 571
+        },
+        "HU": {
+          "site": 33563,
+          "retailer": 10286
+        },
+        "KE": {
+          "retailer": 1463,
+          "site": 7445
+        },
+        "LU": {
+          "site": 3711,
+          "retailer": 586
+        },
+        "PS": {
+          "site": 3176,
+          "retailer": 590
+        },
+        "PK": {
+          "site": 23834,
+          "retailer": 2376
+        },
+        "MK": {
+          "site": 6852,
+          "retailer": 969
+        },
+        "PA": {
+          "site": 5053,
+          "retailer": 665
+        },
+        "MT": {
+          "site": 3720,
+          "retailer": 651
+        },
+        "TN": {
+          "site": 11742,
+          "retailer": 842
+        },
+        "EE": {
+          "retailer": 951,
+          "site": 4573
+        },
+        "NO": {
+          "site": 18284,
+          "retailer": 7249
+        },
+        "LA": {
+          "site": 6843,
+          "retailer": 538
+        },
+        "LY": {
+          "retailer": 372,
+          "site": 2644
+        },
+        "IL": {
+          "site": 23417,
+          "retailer": 4441
+        },
+        "FJ": {
+          "retailer": 176,
+          "site": 823
+        },
+        "IR": {
+          "site": 6081,
+          "retailer": 434
+        },
+        "GT": {
+          "site": 14060,
+          "retailer": 1955
+        },
+        "NP": {
+          "site": 9638,
+          "retailer": 1075
+        },
+        "NI": {
+          "site": 6860,
+          "retailer": 957
+        },
+        "OM": {
+          "site": 2881,
+          "retailer": 279
+        },
+        "ZW": {
+          "site": 1309,
+          "retailer": 466
+        },
+        "PG": {
+          "site": 327,
+          "retailer": 68
+        },
+        "UZ": {
+          "site": 3222,
+          "retailer": 384
+        },
+        "VE": {
+          "site": 9283,
+          "retailer": 1965
+        },
+        "DZ": {
+          "site": 7822,
+          "retailer": 1321
+        },
+        "LV": {
+          "site": 5285,
+          "retailer": 1320
+        },
+        "LB": {
+          "site": 8598,
+          "retailer": 954
+        },
+        "HN": {
+          "site": 7481,
+          "retailer": 1048
+        },
+        "NA": {
+          "site": 1002,
+          "retailer": 356
+        },
+        "AD": {
+          "site": 741,
+          "retailer": 91
+        },
+        "MN": {
+          "site": 2032,
+          "retailer": 291
+        },
+        "BT": {
+          "site": 306,
+          "retailer": 31
+        },
+        "DJ": {
+          "site": 99,
+          "retailer": 7
+        },
+        "LC": {
+          "site": 460,
+          "retailer": 41
+        },
+        "KZ": {
+          "site": 7927,
+          "retailer": 857
+        },
+        "GH": {
+          "site": 2465,
+          "retailer": 352
+        },
+        "BM": {
+          "site": 248,
+          "retailer": 45
+        },
+        "BJ": {
+          "site": 625,
+          "retailer": 56
+        },
+        "MC": {
+          "site": 338,
+          "retailer": 36
+        },
+        "AZ": {
+          "site": 6416,
+          "retailer": 344
+        },
+        "NC": {
+          "retailer": 165,
+          "site": 654
+        },
+        "AO": {
+          "retailer": 204,
+          "site": 1392
+        },
+        "BN": {
+          "site": 2065,
+          "retailer": 153
+        },
+        "CD": {
+          "site": 779,
+          "retailer": 126
+        },
+        "BH": {
+          "site": 3293,
+          "retailer": 284
+        },
+        "GN": {
+          "site": 277,
+          "retailer": 72
+        },
+        "TZ": {
+          "site": 2164,
+          "retailer": 293
+        },
+        "MZ": {
+          "retailer": 323,
+          "site": 1529
+        },
+        "AW": {
+          "site": 1093,
+          "retailer": 118
+        },
+        "SR": {
+          "site": 1026,
+          "retailer": 191
+        },
+        "BZ": {
+          "site": 1603,
+          "retailer": 189
+        },
+        "KW": {
+          "site": 6754,
+          "retailer": 481
+        },
+        "MO": {
+          "site": 4215,
+          "retailer": 268
+        },
+        "GF": {
+          "site": 398,
+          "retailer": 63
+        },
+        "GM": {
+          "site": 263,
+          "retailer": 27
+        },
+        "BW": {
+          "site": 946,
+          "retailer": 317
+        },
+        "BY": {
+          "retailer": 1397,
+          "site": 4550
+        },
+        "BB": {
+          "site": 972,
+          "retailer": 105
+        },
+        "AG": {
+          "retailer": 44,
+          "site": 421
+        },
+        "DO": {
+          "site": 10191,
+          "retailer": 1550
+        },
+        "BF": {
+          "site": 628,
+          "retailer": 98
+        },
+        "CW": {
+          "site": 774,
+          "retailer": 71
+        },
+        "CU": {
+          "site": 2522,
+          "retailer": 196
+        },
+        "HT": {
+          "site": 576,
+          "retailer": 88
+        },
+        "LS": {
+          "site": 267,
+          "retailer": 71
+        },
+        "MV": {
+          "site": 1454,
+          "retailer": 119
+        },
+        "ME": {
+          "site": 3237,
+          "retailer": 194
+        },
+        "PF": {
+          "site": 714,
+          "retailer": 102
+        },
+        "SC": {
+          "site": 228,
+          "retailer": 35
+        },
+        "MF": {
+          "site": 279,
+          "retailer": 20
+        },
+        "MU": {
+          "site": 2726,
+          "retailer": 368
+        },
+        "SD": {
+          "retailer": 145,
+          "site": 1368
+        },
+        "CI": {
+          "site": 2310,
+          "retailer": 226
+        },
+        "RE": {
+          "retailer": 452,
+          "site": 3243
+        },
+        "MG": {
+          "site": 1254,
+          "retailer": 121
+        },
+        "FO": {
+          "retailer": 61,
+          "site": 241
+        },
+        "CM": {
+          "site": 1424,
+          "retailer": 190
+        },
+        "JM": {
+          "site": 2259,
+          "retailer": 228
+        },
+        "BS": {
+          "retailer": 224,
+          "site": 1485
+        },
+        "SL": {
+          "site": 182,
+          "retailer": 44
+        },
+        "IM": {
+          "site": 463,
+          "retailer": 58
+        },
+        "CV": {
+          "site": 706,
+          "retailer": 59
+        },
+        "MW": {
+          "site": 479,
+          "retailer": 133
+        },
+        "TC": {
+          "site": 289,
+          "retailer": 17
+        },
+        "VU": {
+          "site": 137,
+          "retailer": 13
+        },
+        "IS": {
+          "site": 1890,
+          "retailer": 390
+        },
+        "GP": {
+          "site": 1555,
+          "retailer": 199
+        },
+        "BI": {
+          "site": 133,
+          "retailer": 20
+        },
+        "KY": {
+          "site": 456,
+          "retailer": 62
+        },
+        "TJ": {
+          "retailer": 27,
+          "site": 385
+        },
+        "RW": {
+          "site": 416,
+          "retailer": 54
+        },
+        "CK": {
+          "site": 106,
+          "retailer": 13
+        },
+        "JE": {
+          "retailer": 62,
+          "site": 561
+        },
+        "TL": {
+          "site": 211,
+          "retailer": 36
+        },
+        "GD": {
+          "site": 343,
+          "retailer": 37
+        },
+        "TG": {
+          "site": 501,
+          "retailer": 42
+        },
+        "GW": {
+          "site": 59,
+          "retailer": 10
+        },
+        "SN": {
+          "site": 1034,
+          "retailer": 232
+        },
+        "GY": {
+          "site": 640,
+          "retailer": 110
+        },
+        "GU": {
+          "site": 771,
+          "retailer": 91
+        },
+        "CG": {
+          "site": 404,
+          "retailer": 40
+        },
+        "ML": {
+          "retailer": 52,
+          "site": 234
+        },
+        "GG": {
+          "site": 305,
+          "retailer": 30
+        },
+        "AF": {
+          "site": 424,
+          "retailer": 97
+        },
+        "WS": {
+          "site": 114,
+          "retailer": 25
+        },
+        "PM": {
+          "retailer": 14,
+          "site": 18
+        },
+        "SO": {
+          "site": 258,
+          "retailer": 69
+        },
+        "TD": {
+          "retailer": 11,
+          "site": 79
+        },
+        "KN": {
+          "site": 292,
+          "retailer": 18
+        },
+        "VI": {
+          "site": 773,
+          "retailer": 64
+        },
+        "GA": {
+          "site": 462,
+          "retailer": 26
+        },
+        "SX": {
+          "site": 381,
+          "retailer": 28
+        },
+        "BL": {
+          "site": 111,
+          "retailer": 14
+        },
+        "LI": {
+          "site": 207,
+          "retailer": 52
+        },
+        "MP": {
+          "site": 249,
+          "retailer": 27
+        },
+        "VC": {
+          "site": 193,
+          "retailer": 23
+        },
+        "TO": {
+          "site": 74,
+          "retailer": 12
+        },
+        "ET": {
+          "site": 733,
+          "retailer": 73
+        },
+        "GQ": {
+          "site": 66,
+          "retailer": 6
+        },
+        "CF": {
+          "site": 45,
+          "retailer": 11
+        },
+        "YT": {
+          "site": 279,
+          "retailer": 42
+        },
+        "VG": {
+          "site": 208,
+          "retailer": 24
+        },
+        "GI": {
+          "site": 264,
+          "retailer": 28
+        },
+        "TM": {
+          "site": 147,
+          "retailer": 10
+        },
+        "DM": {
+          "site": 171,
+          "retailer": 25
+        },
+        "NE": {
+          "site": 129,
+          "retailer": 18
+        },
+        "YE": {
+          "site": 441,
+          "retailer": 66
+        },
+        "ST": {
+          "site": 61,
+          "retailer": 7
+        },
+        "BQ": {
+          "site": 213,
+          "retailer": 18
+        },
+        "SZ": {
+          "retailer": 147,
+          "site": 244
+        },
+        "GL": {
+          "site": 107,
+          "retailer": 39
+        },
+        "MR": {
+          "site": 117,
+          "retailer": 29
+        },
+        "SM": {
+          "retailer": 56,
+          "site": 252
+        },
+        "AI": {
+          "site": 132,
+          "retailer": 14
+        },
+        "FK": {
+          "site": 20,
+          "retailer": 5
+        },
+        "LR": {
+          "retailer": 34,
+          "site": 189
+        },
+        "SS": {
+          "site": 101,
+          "retailer": 21
+        },
+        "FM": {
+          "site": 26,
+          "retailer": 6
+        },
+        "SB": {
+          "site": 61,
+          "retailer": 12
+        },
+        "MH": {
+          "site": 17,
+          "retailer": 5
+        },
+        "PW": {
+          "site": 81,
+          "retailer": 3
+        },
+        "KM": {
+          "site": 37,
+          "retailer": 6
+        },
+        "NU": {
+          "site": 9
+        },
+        "MS": {
+          "site": 18,
+          "retailer": 6
+        },
+        "CX": {
+          "site": 13,
+          "retailer": 1
+        },
+        "SJ": {
+          "site": 23,
+          "retailer": 2
+        },
+        "AQ": {
+          "site": 12
+        },
+        "AS": {
+          "site": 66,
+          "retailer": 6
+        },
+        "NF": {
+          "retailer": 3,
+          "site": 29
+        },
+        "CC": {
+          "site": 4
+        },
+        "AX": {
+          "site": 42,
+          "retailer": 15
+        },
+        "TV": {
+          "site": 3
+        },
+        "ER": {
+          "site": 8
+        },
+        "KI": {
+          "site": 7,
+          "retailer": 3
+        },
+        "WF": {
+          "site": 5,
+          "retailer": 2
+        },
+        "KP": {
+          "retailer": 1,
+          "site": 23
+        },
+        "SH": {
+          "site": 12
+        },
+        "NR": {
+          "site": 3,
+          "retailer": 1
+        },
+        "IO": {
+          "site": 2
+        },
+        "TF": {
+          "site": 1
+        },
+        "VA": {
+          "retailer": 1
+        }
+      },
+      "fineli": {
+        "FI": {
+          "nutrientProfile": 4232
+        }
+      },
+      "foodfiles": {
+        "NZ": {
+          "nutrientProfile": 2857
+        }
+      },
+      "sweden-food": {
+        "SE": {
+          "nutrientProfile": 2606
+        }
+      }
+    },
+    "records": 22519902,
+    "profiles": 2961446,
+    "planningExercises": 2961446,
+    "recipeReferences": 3796,
+    "prices": 317898,
+    "organizationReferences": 1505,
+    "guidelineReferences": 100,
+    "retailerReferences": 1794885,
+    "siteReferences": 10886223
+  },
+  "countryIndexAcceptance": {
+    "entries": 19604175,
+    "postingFiles": 1987,
+    "status": "complete-checked-entry-derived-index",
+    "inputReleaseId": "expanded-places-national-20261013"
+  },
+  "notices": [
+    {
+      "sourceId": "overture-food-places",
+      "key": "notices/overture-food-places/2026-09-23.1/CDLA-Permissive-2.0.txt",
+      "bytes": 2354,
+      "sha256": "4531a67d443284d93ffed0803df5b10634aff21c3d77e381f2d48af01d875868",
+      "sourceUrl": "https://raw.githubusercontent.com/Community-Data-License-Agreements/Releases/main/CDLA-Permissive-2.0.txt"
+    },
+    {
+      "sourceId": "overture-food-places",
+      "key": "notices/overture-food-places/2026-09-23.1/Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sourceUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    },
+    {
+      "sourceId": "overture-food-places",
+      "key": "notices/overture-food-places/2026-09-23.1/FOURSQUARE-NOTICE.txt",
+      "bytes": 2048,
+      "sha256": "1c7389d2531da23690d7981eb007349f3ffa20ffde0f7cff195bf198b4e41d46",
+      "sourceUrl": "https://opensource.foursquare.com/places-notice-txt/"
+    }
+  ],
+  "manifestSha256": "a74b82eec8b70e47e304874c21740414242d371349b1449d38a1426d09adac90",
+  "publicationStatus": "live and verified",
+  "tests": {
+    "javascript": 115,
+    "python": 26,
+    "build": "passed"
+  },
+  "localLookupAcceptance": {
+    "checkedAt": "2026-10-13T09:34:17.004Z",
+    "releaseId": "expanded-country-search-20261013",
+    "mode": "local serving engine",
+    "queries": [
+      {
+        "filter": {
+          "source": "off",
+          "country": "AU",
+          "barcode": "9313958009720"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 34
+          }
+        ],
+        "pagination": false
+      },
+      {
+        "filter": {
+          "source": "usda-files",
+          "country": "US",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 121
+          },
+          {
+            "records": 2,
+            "ms": 116
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "prices",
+          "country": "FR",
+          "barcode": "3560070283484"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 16
+          },
+          {
+            "records": 2,
+            "ms": 12
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "wikibooks",
+          "query": "soup"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 7
+          },
+          {
+            "records": 2,
+            "ms": 6
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "afcd",
+          "country": "AU",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 11
+          },
+          {
+            "records": 2,
+            "ms": 16
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "ciqual",
+          "country": "FR",
+          "query": "lait"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 12
+          },
+          {
+            "records": 2,
+            "ms": 9
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "cofid",
+          "country": "GB",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 12
+          },
+          {
+            "records": 2,
+            "ms": 12
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "germany-bls",
+          "country": "DE",
+          "query": "Milch"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 9
+          },
+          {
+            "records": 2,
+            "ms": 13
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "matvaretabellen",
+          "country": "NO",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 12
+          },
+          {
+            "records": 2,
+            "ms": 26
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "frida",
+          "country": "DK",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 11
+          },
+          {
+            "records": 2,
+            "ms": 16
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "cnf",
+          "country": "CA",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 11
+          },
+          {
+            "records": 2,
+            "ms": 9
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "mext",
+          "country": "JP",
+          "query": "牛乳"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 7
+          },
+          {
+            "records": 2,
+            "ms": 7
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "wikidata-food-businesses",
+          "country": "AU"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 3
+          },
+          {
+            "records": 2,
+            "ms": 2
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "dietary-guidelines",
+          "country": "JP"
+        },
+        "pages": [
+          {
+            "records": 1,
+            "ms": 2
+          }
+        ],
+        "pagination": false
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "AU",
+          "kind": "retailer"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 37
+          },
+          {
+            "records": 2,
+            "ms": 40
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "JP",
+          "kind": "site"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 76
+          },
+          {
+            "records": 2,
+            "ms": 85
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "fineli",
+          "country": "FI",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 14
+          },
+          {
+            "records": 2,
+            "ms": 22
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "foodfiles",
+          "country": "NZ",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 14
+          },
+          {
+            "records": 2,
+            "ms": 14
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "sweden-food",
+          "country": "SE",
+          "query": "mjölk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 9
+          },
+          {
+            "records": 2,
+            "ms": 7
+          }
+        ],
+        "pagination": true
+      }
+    ],
+    "status": "All 18 source examples valid, country-matched and nonduplicated across pages"
+  },
+  "countryRegisterCount": 249,
+  "countryTaggedPlaceReferences": 242,
+  "sourceAccessRegister": {
+    "registeredLandingPages": 1303,
+    "scope": "Prior full access investigation retained; these supplemental sources are acquired, not inferred from landing access."
+  },
+  "limitations": [
+    "Source assertions are not independently verified ownership, inventory, dietary qualification or complete country coverage.",
+    "Wikibooks recipes remain discovery references requiring ingredient, quantity and cooking review.",
+    "Guideline references do not reproduce national dietary advice without permission.",
+    "FOODfiles 2024 and Fineli Release 20.0 are named complete downloads, not current 2026 online API datasets."
+  ],
+  "localAdditionalRecipeAndDietTables": {
+    "source": "fineli",
+    "recipeFormulae": 2032,
+    "dietaryAssertions": 27536,
+    "records": 29568,
+    "status": "all normalized records structurally exercised",
+    "publication": "local only; serving/cooking and dietary qualification review required",
+    "evidence": "collections/fineli-reference-exercise.json"
+  },
+  "worker": {
+    "sourceCommit": "f3f42f6403762193ec451d5312b3044d943c8d9b",
+    "deploymentId": "9c604dac-1bbe-4fe5-9b70-729672098486",
+    "versionId": "9b3be8e2-aba1-40ae-aa63-8a173c5254df",
+    "normalizedRuntimeSha256": "8fe1f20c76e9609c79471f8998a781e5a372af19a60863e0edacd6f924cbe961",
+    "excludedMetadata": [
+      "builtAt",
+      "sourceCommit"
+    ],
+    "runtimeReadBackVerified": true,
+    "cpuMs": 10000,
+    "vaultBindingReadBackVerified": true
+  },
+  "preservation": {
+    "accounts": 1,
+    "revisionSum": 2,
+    "stateBytes": 821,
+    "publicD1Rows": 0,
+    "rawProductCache": 0,
+    "rawPriceCache": 0,
+    "vaultBinding": "preserved",
+    "readBackAfterAllLiveQueries": true
+  },
+  "hostedAcceptance": {
+    "checkedAt": "2026-10-13T09:52:31.152Z",
+    "releaseId": "expanded-country-search-20261013",
+    "records": 22519902,
+    "sources": 18,
+    "status": "current curation, country index, full notices and retained preceding release verified",
+    "checked": [
+      {
+        "url": "https://offmenu-corpus.netlify.app/notices/overture-food-places/2026-09-23.1/CDLA-Permissive-2.0.txt",
+        "bytes": 2354,
+        "sha256": "4531a67d443284d93ffed0803df5b10634aff21c3d77e381f2d48af01d875868"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/notices/overture-food-places/2026-09-23.1/Apache-2.0.txt",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/notices/overture-food-places/2026-09-23.1/FOURSQUARE-NOTICE.txt",
+        "bytes": 2048,
+        "sha256": "1c7389d2531da23690d7981eb007349f3ffa20ffde0f7cff195bf198b4e41d46"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/releases/expanded-country-search-20261013/entries-0.json.gz",
+        "bytes": 44692,
+        "sha256": "6021035071d446cd46f2bb254c4cdecbb420158d7caf948878a4c74ebab9b11a"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/releases/expanded-country-search-20261013/countries/overture-food-places/AU-retailer.json.gz",
+        "bytes": 86760,
+        "sha256": "077695dfc13281b5b9c67e50e4d5091656e39c5f51f0a0daa875d29140cfc62b"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/releases/expanded-country-search-20261013/records/fineli/0.jsonl.gz",
+        "bytes": 56677,
+        "sha256": "522c27bf093b209da231e4be9b191830479470d07bdb20d87ad6ab93f2d2df94"
+      },
+      {
+        "url": "https://offmenu-corpus.netlify.app/releases/expanded-world-20261013/entries-0.json.gz",
+        "bytes": 44692,
+        "sha256": "6021035071d446cd46f2bb254c4cdecbb420158d7caf948878a4c74ebab9b11a"
+      }
+    ]
+  },
+  "liveLookupAcceptance": {
+    "checkedAt": "2026-10-13T09:54:16.922Z",
+    "releaseId": "expanded-country-search-20261013",
+    "mode": "live Worker",
+    "queries": [
+      {
+        "filter": {
+          "source": "off",
+          "country": "AU",
+          "barcode": "9313958009720"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 3966
+          }
+        ],
+        "pagination": false
+      },
+      {
+        "filter": {
+          "source": "usda-files",
+          "country": "US",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 4205
+          },
+          {
+            "records": 2,
+            "ms": 1322
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "prices",
+          "country": "FR",
+          "barcode": "3560070283484"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 2560
+          },
+          {
+            "records": 2,
+            "ms": 1998
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "wikibooks",
+          "query": "soup"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1741
+          },
+          {
+            "records": 2,
+            "ms": 693
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "afcd",
+          "country": "AU",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1613
+          },
+          {
+            "records": 2,
+            "ms": 688
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "ciqual",
+          "country": "FR",
+          "query": "lait"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 2623
+          },
+          {
+            "records": 2,
+            "ms": 897
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "cofid",
+          "country": "GB",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1664
+          },
+          {
+            "records": 2,
+            "ms": 1156
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "germany-bls",
+          "country": "DE",
+          "query": "Milch"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 2880
+          },
+          {
+            "records": 2,
+            "ms": 912
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "matvaretabellen",
+          "country": "NO",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1441
+          },
+          {
+            "records": 2,
+            "ms": 796
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "frida",
+          "country": "DK",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1519
+          },
+          {
+            "records": 2,
+            "ms": 815
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "cnf",
+          "country": "CA",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1428
+          },
+          {
+            "records": 2,
+            "ms": 795
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "mext",
+          "country": "JP",
+          "query": "牛乳"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1830
+          },
+          {
+            "records": 2,
+            "ms": 659
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "wikidata-food-businesses",
+          "country": "AU"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1366
+          },
+          {
+            "records": 2,
+            "ms": 646
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "dietary-guidelines",
+          "country": "JP"
+        },
+        "pages": [
+          {
+            "records": 1,
+            "ms": 1115
+          }
+        ],
+        "pagination": false
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "AU",
+          "kind": "retailer"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 2118
+          },
+          {
+            "records": 2,
+            "ms": 1612
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "JP",
+          "kind": "site"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 4417
+          },
+          {
+            "records": 2,
+            "ms": 2457
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "fineli",
+          "country": "FI",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1649
+          },
+          {
+            "records": 2,
+            "ms": 481
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "foodfiles",
+          "country": "NZ",
+          "query": "milk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 1919
+          },
+          {
+            "records": 2,
+            "ms": 782
+          }
+        ],
+        "pagination": true
+      },
+      {
+        "filter": {
+          "source": "sweden-food",
+          "country": "SE",
+          "query": "mjölk"
+        },
+        "pages": [
+          {
+            "records": 2,
+            "ms": 2245
+          },
+          {
+            "records": 2,
+            "ms": 881
+          }
+        ],
+        "pagination": true
+      }
+    ],
+    "status": "All 18 source examples valid, country-matched and nonduplicated across pages"
+  },
+  "liveCountryIndexAcceptance": {
+    "checkedAt": "2026-10-13T09:55:49.047Z",
+    "status": "large/default/text/country-kind pagination valid; unsupported tags unallocated",
+    "results": [
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "US",
+          "limit": "100"
+        },
+        "pages": [
+          {
+            "records": 20,
+            "ms": 7341
+          },
+          {
+            "records": 20,
+            "ms": 5926
+          }
+        ]
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "AU",
+          "kind": "retailer",
+          "limit": "20"
+        },
+        "pages": [
+          {
+            "records": 20,
+            "ms": 6655
+          },
+          {
+            "records": 20,
+            "ms": 8848
+          }
+        ]
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "AU",
+          "kind": "site",
+          "query": "pizza",
+          "limit": "20"
+        },
+        "pages": [
+          {
+            "records": 20,
+            "ms": 11559
+          },
+          {
+            "records": 18,
+            "ms": 9714
+          }
+        ]
+      },
+      {
+        "filter": {
+          "source": "overture-food-places",
+          "country": "XK",
+          "kind": "retailer",
+          "limit": "2"
+        },
+        "pages": [
+          {
+            "records": 0,
+            "ms": 219
+          }
+        ]
+      }
+    ]
+  },
+  "staticPublication": {
+    "siteId": "a1df1508-4bb9-4b55-ab1f-88611e456e61",
+    "deployId": "6acdfcc4d258289388093bce",
+    "state": "ready",
+    "publishedAt": "2026-10-13T09:52:17.531Z",
+    "url": "https://offmenu-corpus.netlify.app",
+    "previewUrl": "https://6acdfcc4d258289388093bce--offmenu-corpus.netlify.app",
+    "files": 74929,
+    "currentReleaseFiles": 46873,
+    "retainedRelease": "expanded-world-20261013",
+    "rawArchivesPublished": false,
+    "functionsDeployed": false
+  },
+  "countryCoverage": {
+    "countryQueues": 249,
+    "queuesWithCountryTaggedCuratedRecords": 243,
+    "overturePlaceReferenceCountries": 242,
+    "overtureRetailerReferenceCountries": 234,
+    "queuesWithoutCuratedRecords": [
+      "EH",
+      "GS",
+      "HM",
+      "PN",
+      "TK",
+      "UM"
+    ],
+    "completeCountryCoverage": "not established"
+  }
+}

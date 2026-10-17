@@ -1,0 +1,523 @@
+{
+  "schemaVersion": "offmenu-common-source-mappings/1",
+  "checkedAt": "2026-10-13T20:03:03.023614+00:00",
+  "contractVersion": "offmenu-common-contract/1",
+  "contractSha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+  "fieldMappings": {
+    "id": {
+      "target": "SourceRecord.identifier",
+      "datatype": "identifier",
+      "translation": "never",
+      "relation": "separate from canonical resource identity"
+    },
+    "provenance.*": {
+      "target": "Citation and SourceDataset",
+      "datatype": "citation fields",
+      "translation": "preserve original legal metadata; optional localized presentation",
+      "rule": "Original publisher URL, record ID, revision, history, content digest, licence and attribution stay attached"
+    },
+    "countries": {
+      "target": "Country/Market/CulturalRepresentation assertions",
+      "datatype": "identifier references",
+      "translation": "localized country label on referenced resource",
+      "rule": "Meaning is source-kind specific; never infer origin from language, source office or barcode prefix"
+    },
+    "data.name|data.foodName|data.title|data.names.*": {
+      "target": "Resource.names / CulturalRepresentation local names",
+      "datatype": "localized text",
+      "translation": "any supported locale, with original text hash and provenance",
+      "rule": "Names alone never establish identical food, product or recipe identity"
+    },
+    "data.identifiers": {
+      "target": "Product/Ingredient/Organization identifier assertions",
+      "datatype": "identifier references",
+      "translation": "never",
+      "rule": "Namespace, issuer, checksum, scope and dates retained; unreviewed identifiers stay source-scoped"
+    },
+    "data.basis": {
+      "target": "MetricBasisDefinition / Quantity",
+      "datatype": "quantity with denominator, unit and preparation state",
+      "translation": "locale formatting only",
+      "rule": "100 g, 100 ml, serving, whole-food and component bases remain distinct"
+    },
+    "data.nutrients.*": {
+      "target": "FoodCompositionObservation -> NutrientDefinition",
+      "datatype": "quantity observation",
+      "translation": "localized metric and unit labels",
+      "rule": "Preserve source component definition, value/unknown/trace/limit, unit, method, denominator and state; generic nutrient names do not prove method equivalence"
+    },
+    "data.price|data.amount|data.currency|data.observedAt": {
+      "target": "PriceObservation / Currency / Market",
+      "datatype": "economic quantity and date",
+      "translation": "locale formatting only",
+      "rule": "Retain observation date, market, package/basis and currency; no unrecorded exchange conversion"
+    },
+    "data.ingredients.*": {
+      "target": "IngredientMention -> FoodIngredient candidate; required Quantity",
+      "datatype": "ingredient relation + quantity + source text",
+      "translation": "shared ingredient labels and original/translated source wording separately",
+      "rule": "Keep preparation, alternatives, optionality, unresolved match, source measures/ranges and scaling rules"
+    },
+    "data.directions|data.directionsByLanguage.*": {
+      "target": "RecipeStep / Translation",
+      "datatype": "localized text and source order",
+      "translation": "whole instruction semantics with source text hash",
+      "rule": "A different-language variant is not a translation of identical instructions unless supported by source evidence"
+    },
+    "data.yield": {
+      "target": "RecipeVariant.hasYield -> Quantity",
+      "datatype": "count/portion quantity",
+      "translation": "locale formatting only",
+      "rule": "Unknown yield stays unknown; source batch and edible/served/eaten portions are not conflated"
+    },
+    "data.roles|data.locations|data.countryBasis": {
+      "target": "Organization/Producer/Supplier/Retailer/Site role and location assertions",
+      "datatype": "typed relation and geographic assertions",
+      "translation": "localized role/site labels",
+      "rule": "Do not promote name/candidate relationships into verified ownership or stock availability"
+    },
+    "data.sourceCulture|data.nativeName|data.sourceCuisineCountry|data.sourceOriginalLanguages|data.sourceBook": {
+      "target": "CulturalRepresentation / SourceDocument / local names",
+      "datatype": "localized text and typed identifiers",
+      "translation": "representation independent of source geography",
+      "rule": "Preserve edition, adaptation language and cultural/source context without forcing a national recipe identity"
+    },
+    "private inventory quantity/location/preparation/batch": {
+      "target": "InventoryLot / Batch / PreparationState / StockEvent",
+      "datatype": "private quantity and relationships",
+      "translation": "display only; stable identifiers and account scope unchanged",
+      "rule": "Never publish private inventory by linking a public ingredient/product"
+    },
+    "*unmapped*": {
+      "target": "UnmappedSourceFact + SchemaTypeProposal when needed",
+      "datatype": "recursively typed value",
+      "translation": "display text carries explicit language or und; identifiers stay fixed",
+      "rule": "Preserve new source values and their paths/citations; propose semantic mappings instead of dropping or relabelling them"
+    }
+  },
+  "sources": [
+    {
+      "sourceId": "off",
+      "sourceRecords": 5452981,
+      "releaseId": "2026-10-12",
+      "canonicalTypes": [
+        "FoodProduct",
+        "FoodCompositionObservation"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "ODbL / DbCL; images CC BY-SA",
+      "attribution": "Open Food Facts",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "usda-files",
+      "sourceRecords": 4025777,
+      "releaseId": "usda-2026-04",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "USDA FoodData Central public domain / CC0",
+      "attribution": "US Department of Agriculture, Agricultural Research Service, FoodData Central",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "prices",
+      "sourceRecords": 317898,
+      "releaseId": "2026-10-12",
+      "canonicalTypes": [
+        "PriceObservation"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "ODbL",
+      "attribution": "Open Prices",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "afcd",
+      "sourceRecords": 1801,
+      "releaseId": "3",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "FSANZ Data User Licence Agreement (CC BY-SA 3.0 AU based)",
+      "attribution": "Food Standards Australia New Zealand — Australian Food Composition Database Release 3",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "ciqual",
+      "sourceRecords": 3484,
+      "releaseId": "2025",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Etalab Licence Ouverte 2.0",
+      "attribution": "Anses. 2025. Ciqual French food composition table.",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "cofid",
+      "sourceRecords": 2887,
+      "releaseId": "2021",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Open Government Licence 3.0",
+      "attribution": "Public Health England — McCance and Widdowson's CoFID 2021",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "germany-bls",
+      "sourceRecords": 7140,
+      "releaseId": "4.0",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC BY 4.0",
+      "attribution": "Max Rubner-Institut — Bundeslebensmittelschlüssel BLS 4.0 (2025)",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "matvaretabellen",
+      "sourceRecords": 2121,
+      "releaseId": "2026",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Mattilsynet API reuse: source attribution required; see https://www.matvaretabellen.no/api/",
+      "attribution": "Mattilsynet — Matvaretabellen 2026",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "frida",
+      "sourceRecords": 1381,
+      "releaseId": "5.5",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC BY 4.0",
+      "attribution": "National Food Institute, Technical University of Denmark — Frida 5.5",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "wikidata-food-businesses",
+      "sourceRecords": 1505,
+      "releaseId": "2026-10-13-direct-types",
+      "canonicalTypes": [
+        "Organization",
+        "Producer",
+        "Supplier",
+        "Retailer",
+        "OwnershipAssertion"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC0 1.0",
+      "attribution": "Wikidata contributors",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "dietary-guidelines",
+      "sourceRecords": 100,
+      "releaseId": "fao-directory-20261013",
+      "canonicalTypes": [
+        "SourceDocument",
+        "DietaryType",
+        "SourceAssertion"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC0 1.0 for OffMenu original reference metadata; linked documents retain national owner rights",
+      "attribution": "OffMenu reference index; FAO dietary-guidelines country directory",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "wikibooks",
+      "sourceRecords": 3796,
+      "releaseId": "2026-10-13-live",
+      "canonicalTypes": [
+        "RecipeDiscoveryReference"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC BY-SA 4.0",
+      "attribution": "Wikibooks contributors",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "cnf",
+      "sourceRecords": 5690,
+      "releaseId": "2015",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Health Canada CNF 2015 copyright guidelines",
+      "attribution": "Canadian Nutrient File, Health Canada, 2015",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "mext",
+      "sourceRecords": 2538,
+      "releaseId": "2023-corrected-20260327-main",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "MEXT website content use rules",
+      "attribution": "Ministry of Education, Culture, Sports, Science and Technology, Japan",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "overture-food-places",
+      "sourceRecords": 12681108,
+      "releaseId": "2026-09-23.1",
+      "canonicalTypes": [
+        "Site",
+        "RetailOutlet",
+        "Retailer",
+        "Organization"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Per-record CDLA-Permissive-2.0 / Apache-2.0 / CC0-1.0; notices retained",
+      "attribution": "Overture Maps Foundation and original providers",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "fineli",
+      "sourceRecords": 4232,
+      "releaseId": "20.0",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "CC BY 4.0",
+      "attribution": "National Institute for Health and Welfare (THL), Fineli, Release 20.0",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "foodfiles",
+      "sourceRecords": 2857,
+      "releaseId": "2024-v01",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "FOODfiles terms: source data unchanged, attribution and downstream terms required",
+      "attribution": "New Zealand Food Composition Database, FOODfiles 2024 Version 01; Plant & Food Research and New Zealand Ministry of Health",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "sweden-food",
+      "sourceRecords": 2606,
+      "releaseId": "2026-07-01",
+      "canonicalTypes": [
+        "FoodPreparation",
+        "FoodCompositionObservation",
+        "NutrientDefinition",
+        "MetricBasisDefinition"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/manifest.json",
+      "licence": "Publisher reuse terms: source/version attribution, data must not be changed",
+      "attribution": "Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+      "mapping": "common-field-map/1",
+      "identityDefault": "source-scoped until a cited crosswalk is reviewed",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "world-recipes",
+      "sourceRecords": 25135,
+      "releaseId": "world-recipes-common-20261014",
+      "canonicalTypes": [
+        "RecipeConcept",
+        "RecipeVariant",
+        "IngredientMention",
+        "IngredientScalingRule",
+        "RecipeStep",
+        "CulturalRepresentation",
+        "HistoricalRecipeCandidate",
+        "Quantity"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/recipes/manifest.json",
+      "licence": "Per-record original licences; derivative requirements retained",
+      "mapping": "common-field-map/1",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "foodon",
+      "sourceRecords": 29255,
+      "releaseId": "2026-09-20",
+      "sourceRevision": "cd73540243a84bcd511a500d9a497d12d7dc02f6",
+      "canonicalTypes": [
+        "OntologyClass",
+        "OntologyAxiom",
+        "OntologyAnnotation",
+        "FormalExpression",
+        "ExternalConceptReference"
+      ],
+      "originalSource": "https://github.com/FoodOntology/foodon",
+      "sourceManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+      "licence": "CC-BY-4.0",
+      "attribution": "FoodOn contributors",
+      "mapping": "Own-namespace source classes and all direct annotations/expressions; imported ontology identities stay references",
+      "identityDefault": "Source ontology class identified by original URI; ingredient/diet equivalence not inferred",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "qudt-measurement-definitions",
+      "sourceRecords": 56,
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "canonicalTypes": [
+        "UnitDefinition"
+      ],
+      "originalSource": "https://github.com/qudt/qudt-public-repo/tree/v3.5.2",
+      "sourceManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+      "licence": "CC-BY-4.0",
+      "attribution": "QUDT.org",
+      "mapping": "Pinned source unit definitions and dimension-specific conversion metadata; conventional variants retained distinctly",
+      "identityDefault": "Original QUDT unit URI; no ingredient density, portion yield or ambiguous recipe-measure equivalence inferred",
+      "originalRecordsPreserved": true
+    },
+    {
+      "sourceId": "recipe-expansion-20261014",
+      "sourceRecords": 42,
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "canonicalTypes": [
+        "RecipeVariant",
+        "RecipeStep",
+        "IngredientMention",
+        "CulturalRepresentation"
+      ],
+      "sourceManifest": "https://offmenu-corpus.netlify.app/common-data/manifest.json",
+      "licence": "Per-record pinned repository CC0-1.0 / Unlicense dedications and attribution",
+      "mapping": "Source-scoped complete recipe statements and candidate measure/ingredient mappings; pinned original content and title provenance",
+      "publisherCoverage": {
+        "lvisintini/recetasdemami": 33,
+        "Remarknl/Indisch-eten": 1,
+        "chefdelakarma/libre_cuisine": 6,
+        "clicat/Ricette": 2,
+        "rochacbruno/vegan_recipes": 0
+      },
+      "languages": {
+        "es": 33,
+        "nl": 7,
+        "it": 2
+      },
+      "identityDefault": "Source recipe identity, with ingredient matches candidate only; no country, diet, translation or cross-recipe identity inferred",
+      "originalRecordsPreserved": true
+    }
+  ],
+  "sourceRecordTotal": 22574390,
+  "sourceCount": 22,
+  "privateAndLocalCompanions": {
+    "Fineli-20.0-reference-tables": [
+      "RecipeFormula",
+      "IngredientComponentRow",
+      "ProcessYieldFactor",
+      "DietFlagAssertion"
+    ],
+    "existingPrivateKinds": {
+      "product": "FoodProduct",
+      "nutrientProfile": "FoodCompositionObservation",
+      "priceObservation": "PriceObservation",
+      "retailer": "Retailer",
+      "recipe": "RecipeVariant",
+      "foodClassification": "ClassificationAssertion",
+      "foodNotice": "FoodNotice",
+      "pantryLot": "InventoryLot",
+      "mealPlan": "MealPlan",
+      "intakeRecord": "IntakeEvent",
+      "shoppingList": "ShoppingList",
+      "healthObservation": "HealthObservation",
+      "activity": "ActivityObservation",
+      "wasteRecord": "WasteEvent",
+      "organization": "Organization",
+      "ownershipRelation": "OwnershipAssertion",
+      "originAssertion": "OriginAssertion",
+      "certification": "CertificationAssertion",
+      "regulatoryProvision": "RegulatoryProvision",
+      "sourceAssertion": "SourceAssertion",
+      "basketDefinition": "BasketDefinition",
+      "basketLine": "BasketLine",
+      "foodConcept": "FoodConcept",
+      "comparisonResult": "StatisticalComparison",
+      "menuItem": "MenuItem",
+      "site": "Site",
+      "portion": "Portion",
+      "cookingTransformation": "CookingTransformation"
+    }
+  },
+  "countryLanguageRule": "Sources contribute to global canonical resources; source country and language are assertion context, not silo keys.",
+  "implementationStatus": "Declarative data mapping. The separate i18n implementation was merged to main at 776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f; application migration is outside this acquisition deliverable.",
+  "publicProjectionRule": "sourceRecords counts the admitted public curated projection, not every raw normalized archive row. Native archive counts and withheld reasons remain separately retained; aligning the corpus does not promote withheld raw/private fields."
+}

@@ -1,0 +1,1128 @@
+{
+  "schemaVersion": 1,
+  "runID": "bc801c83-aa35-42ee-8a46-051b0927f10e",
+  "checkedAt": "2026-10-14T05:37:28.752Z",
+  "state": "ready-for-morgan-review",
+  "command": "node scripts/run-third-party-compatibility.mjs",
+  "sources": {
+    "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "thirdParty": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+    "base": "776c0f7e3ddd19bfc380dce6cfc3fbfdb434613f",
+    "mainTree": "91c586e8017cf9ecf794523115f5b1299cd607b8",
+    "thirdPartyTree": "af10e6aed06a4c3cc4cd80f04d4cf59390741e29"
+  },
+  "runtime": {
+    "node": "v24.16.0",
+    "platform": "linux",
+    "architecture": "x64"
+  },
+  "runnerFiles": {
+    "scripts/run-third-party-compatibility.mjs": "5084a942a42c779d8f4541c0aa418848d0feb5f7481f4798a7123453775ef019",
+    "scripts/lib/third-party-compatibility.mjs": "b3ca9174e15a0d36452a555b5705eb4509a436cbd177c55d89c7b4fbc268c213",
+    "tests-compat/pinned-schema-runtime.test.mjs": "01988d49c3ddcd4f45702e9f547e820dafcba1c4daacfec925e8deef4847a042"
+  },
+  "checks": [
+    {
+      "name": "targeted-unit",
+      "files": [
+        "tests-web/third-party-schema.test.mjs",
+        "tests-web/care-cases.test.mjs",
+        "tests-web/care-community.test.mjs",
+        "tests-web/care-updates.test.mjs",
+        "tests-web/recipe-community.test.mjs",
+        "tests-web/community-ai.test.mjs",
+        "tests-web/personal-ai.test.mjs",
+        "tests-web/admin-settings.test.mjs",
+        "tests-web/admin-operations.test.mjs",
+        "tests-web/admin-mcp.test.mjs",
+        "tests-web/admin-runtime.test.mjs",
+        "tests-web/service-system.test.mjs",
+        "tests-web/service-support.test.mjs",
+        "tests-web/services-config-check.test.mjs",
+        "tests-web/locale-negotiation.test.mjs",
+        "tests-web/i18n.test.mjs"
+      ],
+      "command": [
+        "/usr/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=tap",
+        "tests-web/third-party-schema.test.mjs",
+        "tests-web/care-cases.test.mjs",
+        "tests-web/care-community.test.mjs",
+        "tests-web/care-updates.test.mjs",
+        "tests-web/recipe-community.test.mjs",
+        "tests-web/community-ai.test.mjs",
+        "tests-web/personal-ai.test.mjs",
+        "tests-web/admin-settings.test.mjs",
+        "tests-web/admin-operations.test.mjs",
+        "tests-web/admin-mcp.test.mjs",
+        "tests-web/admin-runtime.test.mjs",
+        "tests-web/service-system.test.mjs",
+        "tests-web/service-support.test.mjs",
+        "tests-web/services-config-check.test.mjs",
+        "tests-web/locale-negotiation.test.mjs",
+        "tests-web/i18n.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "counts": {
+        "tests": 107,
+        "pass": 107,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "passed": true,
+      "log": "output/third-party-compatibility/bc801c83-aa35-42ee-8a46-051b0927f10e/targeted-unit.tap",
+      "logSHA256": "477a59f997e78a9f99eddce693569b1d4a33dbc9495e314d175d86103a496517"
+    },
+    {
+      "name": "compiled-worker",
+      "files": [
+        "tests-edge/care.test.mjs",
+        "tests-edge/admin.test.mjs",
+        "tests-edge/admin-mcp.test.mjs",
+        "tests-edge/services.test.mjs",
+        "tests-edge/locale-html.test.mjs"
+      ],
+      "command": [
+        "/usr/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=tap",
+        "tests-edge/care.test.mjs",
+        "tests-edge/admin.test.mjs",
+        "tests-edge/admin-mcp.test.mjs",
+        "tests-edge/services.test.mjs",
+        "tests-edge/locale-html.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "passed": true,
+      "log": "output/third-party-compatibility/bc801c83-aa35-42ee-8a46-051b0927f10e/compiled-worker.tap",
+      "logSHA256": "90dfb59ceed752722d775f6452387769268deb068e8e3be83dba39ca72d0602e"
+    },
+    {
+      "name": "pinned-main-replay-runtime",
+      "files": [
+        "tests-compat/pinned-schema-runtime.test.mjs"
+      ],
+      "command": [
+        "/usr/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=tap",
+        "tests-compat/pinned-schema-runtime.test.mjs"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "passed": true,
+      "log": "output/third-party-compatibility/bc801c83-aa35-42ee-8a46-051b0927f10e/pinned-main-replay-runtime.tap",
+      "logSHA256": "4fd96845504ac518eece06d46140f496212490aa49ab03406fec4040d8ab53b7"
+    }
+  ],
+  "qualification": "Pinned synthetic compatibility only; READY FOR MORGAN REVIEW on success, not accepted or integrated.",
+  "gates": [
+    "No branch merge or deployment acceptance.",
+    "Google IDP and Mock Services peer changes are not composed.",
+    "Actual corpus transport/data, scanner binaries, extension package and real browser/device flows are not qualified.",
+    "Local runtime compatibility date 2026-08-06; deployed 2026-10-12 runtime remains unqualified.",
+    "Live origin access, subscriptions/billing/headroom, outbound sender/quota and trusted production admin role remain external gates."
+  ],
+  "composition": {
+    "manifestSHA256": "1f6b1ca92bad917777f0d6823c57e1b818a52f209c4dd5a9a8bbacb543427cde",
+    "mainChanges": [
+      "corpus/common-data-contract.json",
+      "corpus/common-source-mappings.json",
+      "docs/CODEX_HANDOVER.md",
+      "docs/I18N_DATA_HANDOFF.json",
+      "docs/OFFMENU_CUSTODY_HANDOVER_20261014.json",
+      "docs/bulk-food-common-qualification-20261014.json",
+      "docs/common-corpus-expansion-20261014.json",
+      "docs/common-data-type-discovery-20261014.json",
+      "docs/common-expansion-validation-design-20261014.json",
+      "docs/dataset-recovery-progress-20261014.json",
+      "docs/global-recipe-source-discovery-20261014.json",
+      "docs/historical-recipe-quality-20261014.json",
+      "docs/measurement-terminology-20261014.json",
+      "docs/national-common-qualification-20261014.json",
+      "docs/places-common-qualification-20261014.json",
+      "docs/recipe-expansion-20261014.json",
+      "docs/source-delivery-ledger.json",
+      "scripts/align-bulk-food-common.py",
+      "scripts/align-national-common.py",
+      "scripts/align-places-common.py",
+      "scripts/align-reference-common.py",
+      "scripts/assemble-common-corpus.py",
+      "scripts/collect-measurement-terminology-20261014.py",
+      "scripts/collect-recipe-expansion-20261014.py",
+      "scripts/discover-global-recipe-sources-20261014.py",
+      "scripts/prepare-world-recipes.mjs",
+      "scripts/publish-common-data.py",
+      "scripts/qualify-common-expansion.py",
+      "scripts/recover-historical-recipes-20261014.py",
+      "scripts/repair-bulk-controls-20261014.py",
+      "scripts/verify-bulk-repair-checkpoint.py",
+      "tests/test_bulk_control_recovery.py",
+      "tests/test_bulk_food_common.py",
+      "tests/test_bulk_recovery_inspection.py",
+      "tests/test_common_expansion_qualification.py",
+      "tests/test_common_publication.py",
+      "tests/test_historical_recipe_quality.py",
+      "tests/test_national_common.py",
+      "tests/test_places_common.py",
+      "tests/test_reference_common.py"
+    ],
+    "thirdPartyChanges": [
+      ".github/workflows/third-party-services.yml",
+      ".gitignore",
+      "cloud/admin-mcp-schema.sql",
+      "cloud/admin-mcp.mjs",
+      "cloud/admin-operations-schema.sql",
+      "cloud/admin-operations.mjs",
+      "cloud/admin-schema.sql",
+      "cloud/admin-settings.mjs",
+      "cloud/care-cases-schema.sql",
+      "cloud/care-cases.mjs",
+      "cloud/care-community-schema.sql",
+      "cloud/care-community.mjs",
+      "cloud/care-updates-schema.sql",
+      "cloud/care-updates.mjs",
+      "cloud/community-ai-schema.sql",
+      "cloud/community-ai.mjs",
+      "cloud/global-settings.mjs",
+      "cloud/handler.mjs",
+      "cloud/integrations.mjs",
+      "cloud/locale.mjs",
+      "cloud/personal-ai-schema.sql",
+      "cloud/personal-ai.mjs",
+      "cloud/recipe-community-schema.sql",
+      "cloud/recipe-community.mjs",
+      "cloud/schema.sql",
+      "cloud/service-config.mjs",
+      "cloud/service-observability.mjs",
+      "cloud/service-support.mjs",
+      "cloud/services-schema.sql",
+      "config/third-party.example.json",
+      "dev/wiremock/.gitignore",
+      "dev/wiremock/adapter.mjs",
+      "dev/wiremock/contracts.json",
+      "dev/wiremock/fixtures.mjs",
+      "dev/wiremock/mappings.mjs",
+      "dev/wiremock/runtime-lock.json",
+      "docs/admin-client.md",
+      "docs/admin-mcp.md",
+      "docs/admin-operations.md",
+      "docs/admin-settings.md",
+      "docs/care-cases.md",
+      "docs/care-client.md",
+      "docs/care-community.md",
+      "docs/care-updates.md",
+      "docs/community-ai.md",
+      "docs/customer-relations-architecture.md",
+      "docs/delivery-reconciliation.json",
+      "docs/i18n-coverage.json",
+      "docs/personal-ai.md",
+      "docs/recipe-community.md",
+      "docs/recommendation-delivery-register.json",
+      "docs/support-email-readiness.json",
+      "docs/third-party-acceptance.json",
+      "docs/third-party-capacity-readiness.md",
+      "docs/third-party-client.md",
+      "docs/third-party-email.md",
+      "docs/third-party-functional-validation.md",
+      "docs/third-party-integration-readiness.json",
+      "docs/third-party-live-readiness.json",
+      "docs/third-party-rollout-readiness.md",
+      "docs/third-party-service-disposition.json",
+      "docs/third-party-service-inventory.json",
+      "docs/third-party-services.md",
+      "extension/popup.js",
+      "public/access-ui.js",
+      "public/admin-model.js",
+      "public/admin-operations-ui.js",
+      "public/admin-ui.js",
+      "public/app.js",
+      "public/care-model.js",
+      "public/care-ui.js",
+      "public/community-ai-ui.js",
+      "public/i18n.js",
+      "public/index.html",
+      "public/locale-negotiation.js",
+      "public/locales/en.json",
+      "public/personal-ai-ui.js",
+      "public/recipe-community-model.js",
+      "public/recipe-community-ui.js",
+      "public/recipe-library-ui.js",
+      "public/services-model.js",
+      "public/services-ui.js",
+      "public/session-fetch.js",
+      "public/style.css",
+      "scripts/verify-third-party-config.mjs",
+      "tests-edge/admin-mcp.test.mjs",
+      "tests-edge/admin.test.mjs",
+      "tests-edge/care.test.mjs",
+      "tests-edge/services.test.mjs",
+      "tests-web/admin-client.test.mjs",
+      "tests-web/admin-mcp.test.mjs",
+      "tests-web/admin-operations.test.mjs",
+      "tests-web/admin-runtime.test.mjs",
+      "tests-web/admin-settings.test.mjs",
+      "tests-web/care-cases.test.mjs",
+      "tests-web/care-client.test.mjs",
+      "tests-web/care-community.test.mjs",
+      "tests-web/care-updates.test.mjs",
+      "tests-web/community-ai.test.mjs",
+      "tests-web/fixtures/pre-care-schema.sql",
+      "tests-web/personal-ai.test.mjs",
+      "tests-web/recipe-community-client.test.mjs",
+      "tests-web/recipe-community.test.mjs",
+      "tests-web/service-support.test.mjs",
+      "tests-web/service-system.test.mjs",
+      "tests-web/services-client.test.mjs",
+      "tests-web/services-config-check.test.mjs",
+      "tests-web/session-fetch.test.mjs",
+      "tests-web/third-party-schema.test.mjs"
+    ],
+    "leafCount": 368,
+    "overlappingEdits": [],
+    "manifestFile": "output/third-party-compatibility/bc801c83-aa35-42ee-8a46-051b0927f10e/composed-manifest.json",
+    "method": "Main leaf entries plus third-party delta from common ancestor; distinct overlapping edits fail closed. No Git merge/tree objects written."
+  },
+  "fixture": {
+    "files": 124,
+    "bytes": 1383682,
+    "maximumBytes": 16777216,
+    "dependencies": "/home/user/src/offmenu-third-party/node_modules",
+    "receipts": [
+      {
+        "path": "cloud/catalogue-schema.sql",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "1e24f1ddee83f29f4b4b2bf24192f1ee5b32618a",
+        "sha256": "cab38bc6743d57832dcc293474c15a708e6461f7ccce15c4dc77c821e56c8dff"
+      },
+      {
+        "path": "cloud/catalogue.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "e85fbb878f79b1a91136aa5b2a0cf2fd68920522",
+        "sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7"
+      },
+      {
+        "path": "cloud/corpus-schema.sql",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "e7ff749d07e263ec58868096fbb126d8ea3a4c79",
+        "sha256": "87fd745ba28de6db44e0c5e82bff4a9cd42435b0b6da4a60802b682d7743f254"
+      },
+      {
+        "path": "cloud/corpus.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "58e2084813acf66229d5e5e4938f77755642a7b1",
+        "sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5"
+      },
+      {
+        "path": "cloud/enrichment.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "7a4c8d61e6db6325f8e2921438e6e0829c852358",
+        "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d"
+      },
+      {
+        "path": "cloud/handler.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "ea428de727f9414a3ca0ac88d948af3ed7d339ef",
+        "sha256": "94b58e4661e0d4f9828be2cf0c47dbed92368648e40ebef29582d7af28907d8f"
+      },
+      {
+        "path": "cloud/integrations.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "a9dacf6332e65c387a4fcc808e6bcba3888550be",
+        "sha256": "7a11b3deb0bb7cd50d9ab55b5f7494ce490118157c577b4f403a24e95eb5761b"
+      },
+      {
+        "path": "cloud/kitchens.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "d540071640d11b36bc758e4485922e60fa3b5ca2",
+        "sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242"
+      },
+      {
+        "path": "cloud/locale.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "196417f50b2cc079a5934c19d647aa602df84c5a",
+        "sha256": "c1fb22bfbd8ade962d70a387433fde0458ce13e56d49d48ac388039dbad349d0"
+      },
+      {
+        "path": "cloud/provider-data.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "77156d0a0ad254fce1a6c0b1e4785acfb4baf773",
+        "sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c"
+      },
+      {
+        "path": "cloud/remove-source-replicas.sql",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "798c80ef48e199b72b90c0272e33eb37828e16bc",
+        "sha256": "833f8831f81bf55cfdca95ab236ca307867531c16339e7de458ff33e621bca26"
+      },
+      {
+        "path": "cloud/schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "e5ccc109e270a4ed195ebdd629baebb0b4be86d2",
+        "sha256": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380"
+      },
+      {
+        "path": "cloud/state.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "8b302dd39f9edfe093b8070508ac9a4c61034449",
+        "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b"
+      },
+      {
+        "path": "corpus/assert-curated.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "9e8803b26d983fef7f4aeeb3bc4ed70e2f9411f7",
+        "sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d"
+      },
+      {
+        "path": "corpus/engine.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "69de2178ab86981de96a8ad0e8c65a8ba71ac692",
+        "sha256": "cdcb587ec5a7bef519e313fd13fc79803fe0a3cf0f2cbb2ec01b45dca4c09497"
+      },
+      {
+        "path": "public/access-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "c78e7cb66c208e791d09059e954c7b6251f769e5",
+        "sha256": "5a394ea2b04fdba6ab39c6e53122a5c883040e353cdf98249bf213a527e85b15"
+      },
+      {
+        "path": "public/app.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "af85e55616983ca4b884aa051ef3a7007185a9a6",
+        "sha256": "95d7c9b104c8f9337919c12ce7db3ffbaa1753869296df2dbd2e196093613288"
+      },
+      {
+        "path": "public/basket-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "8f01a08c6ecb4fbc2de3c664a1aeeb1d6266544e",
+        "sha256": "232b09d7446c733d9992ef42c82dfcfcf36c2a2547d10ac2b7e2765cf6468bf3"
+      },
+      {
+        "path": "public/checkout-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "ef7d08ef121a28c5d3ddb49ab614c22339a01085",
+        "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+      },
+      {
+        "path": "public/common-corpus-locale.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "6887d007ae8fe705c936f61477f749f288259c10",
+        "sha256": "728a26ac7eae0a6e55fdf03df2d347ffb5fd7f7a8a44334b243cd6b7df2f14b7"
+      },
+      {
+        "path": "public/content-locale.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "877d9d36691fc60cbd8b3ef3c860b54e2e76088a",
+        "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+      },
+      {
+        "path": "public/cooking-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "e2734696fe0786a76f7a355ee7e83794151cce3f",
+        "sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7"
+      },
+      {
+        "path": "public/countries.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "5af4429faf87c7672c5675580556ee6fdd6a3e9c",
+        "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+      },
+      {
+        "path": "public/data-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "400cbf5c42fd9b4ead947eff730da30cfa2ff6e8",
+        "sha256": "ca5e89125bbc896cc7ec5f8e383d7875f1515dc6af2a6a92405efc5cd6e567ed"
+      },
+      {
+        "path": "public/data-workspace.html",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "2c71b1ce4fe9b811d27d186fcac9800a6b6f3a4d",
+        "sha256": "f46fce31724bc8c65154612eba34a433b02ea96e551b1e27e35fa8b99038454e"
+      },
+      {
+        "path": "public/data-workspace.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "5313551fc310f068d436878479f5bce6606e7268",
+        "sha256": "aaa2e7c1d0e8cf3102dd2a5d645261213aff2d1161423afd7a23b98542abdae6"
+      },
+      {
+        "path": "public/documents.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "1fec2f9e26207395feab45871336daf512e7ddf1",
+        "sha256": "a19e076a3e9924f0a20ffac53ab7169e1b55768953b39fe3b41a33b0f1bd1f54"
+      },
+      {
+        "path": "public/evidence-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "a32bf846fde7d67346223bd3f8e15ed79f2fcdd3",
+        "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9"
+      },
+      {
+        "path": "public/freshness-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "086134cb99662161ee1b996f7e4bf053f483a811",
+        "sha256": "c7a0d22bb09d060fd5b917a6076473f8b6da9d43a43db8dd92a49989234c9caf"
+      },
+      {
+        "path": "public/health-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "355f0d6a845c134da3ef53b87af4d0411b32a8f8",
+        "sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1"
+      },
+      {
+        "path": "public/household-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "a0a16fa01e2b88af94d4a04ab0bc86f237501244",
+        "sha256": "4263d2d566f39486c25486d96a34820490bbd259f8bdcea9c08f8390800d4b48"
+      },
+      {
+        "path": "public/i18n.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "476085e180cbc4f8b74945ffc862d5ccaeaba646",
+        "sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5"
+      },
+      {
+        "path": "public/icon.svg",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "4fc668830244347699666b50866251a83660910a",
+        "sha256": "7b3fe6361e2f845f22045f83db9124b0e88037d94a7c0b85979e503966bec608"
+      },
+      {
+        "path": "public/index.html",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "153d96713c68a755f2f73ac69dff18668125430f",
+        "sha256": "e5e743b17125fa9fced1a39cb37f3d52dd22ea2ded6aae29037c28dd9e951a8d"
+      },
+      {
+        "path": "public/ingredients.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "a1558c334ad47ac7c99e2d776decaba494c35f82",
+        "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+      },
+      {
+        "path": "public/insights-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "e2462e59c04f673c51500a1d7c9ed526fef75ceb",
+        "sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9"
+      },
+      {
+        "path": "public/insights-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "63635d7395c84db0a6046e3a9de6a89d71b24395",
+        "sha256": "08c11a72119728ed0263809df9f747544748c29373796406a628bbdfaf8bd2d2"
+      },
+      {
+        "path": "public/integrations.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "fccfc184dca0407cb150a9e04eb2efb12162faee",
+        "sha256": "c2267eae3fe78e1d7c457af0e325e95bef90828b9fe7919c883b3db128ce63f9"
+      },
+      {
+        "path": "public/journey-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "52a1e36b0651e0a4738a332a4f82a9cbc4a5ce66",
+        "sha256": "2cdc4131b6ef3661f62f765447adee0ee4c2c2e381d9b570ac51cc168fc1b8d1"
+      },
+      {
+        "path": "public/locale-negotiation.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "03fbe237f6ef061d6a0c74ea6b726fb64732014e",
+        "sha256": "926831cdb5ba16c9a9a47ce9e2b64a32dda8d25d2405b68ee08ba20d21992075"
+      },
+      {
+        "path": "public/locales/ar.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "9cb5613e516233e79ac0f5dc4580c98d06b225a8",
+        "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+      },
+      {
+        "path": "public/locales/en.json",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "4b4f9cd14a6c9783d2e97d85d59fe9efe09dddab",
+        "sha256": "ab73ccf035d1b5ab7eee8cf7440859a462efc4b22a7b392a23997694dc3f02a7"
+      },
+      {
+        "path": "public/manifest-ar.webmanifest",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "4928158def92f11ca21775ba5cb6a8a106231f0c",
+        "sha256": "f8819ebfb423affec304e8840019280959f6bf935e5512f7938f9ca47ef62efa"
+      },
+      {
+        "path": "public/manifest.webmanifest",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "232f14b46cbc13c122df0462a8c8342b6f99fcc1",
+        "sha256": "b5a0fdb7dca5fa7f2d72511c8e511a190b3fb8eca5f86e50ecb5503dae702caf"
+      },
+      {
+        "path": "public/menu-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "b92b731faae4ab915f6a24d64df2a2e0b88f9074",
+        "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+      },
+      {
+        "path": "public/model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "460e41c9c11fa2d4d13d1da206314722423e958c",
+        "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+      },
+      {
+        "path": "public/recipe-ingredient-aliases.json",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "45d76d62641ce3f08d4b0e73d88a87d64fa90972",
+        "sha256": "c2dbca1d379ce93fa4423993ed0d1ace7669447c7899be025b7af3a8855bb609"
+      },
+      {
+        "path": "public/recipe-library-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "36b47c03638255e42a33b7950b0f6da058e24949",
+        "sha256": "7558a5b2fc7f8cb1c3fafc100b3a585b0c52560842270261b0aad85c4670a912"
+      },
+      {
+        "path": "public/recipe-library-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "ab6fde8ee2dbc46c8e54ccc2908882033b10de92",
+        "sha256": "22847d90e0aa2c2bc3fd3566fab71d7087197f39f09ab9ec264d37d023e16b28"
+      },
+      {
+        "path": "public/recipe-review.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "91fe36b85a47eb70a491ac9cbf6b4660b76396fc",
+        "sha256": "06c291981207ee25288a8bdfe7f1c5fd8eee41eb266cf249f067fddcd4b7600c"
+      },
+      {
+        "path": "public/record-policy.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "c7fdc08e9075ef4b9e71dee0676e54cc4da97106",
+        "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc"
+      },
+      {
+        "path": "public/scanner-decode.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "f3c4795925fed680381899e4dc27209453660587",
+        "sha256": "d6bfb9568bce12335264af8aba953d9c6e294ee48c6212c765361547de657583"
+      },
+      {
+        "path": "public/scanner-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "f1ef9ffd6e7916f277173fe023567c336464de36",
+        "sha256": "df11379546c78c531bcd69574236fba89bd6446edae58ff3ed79bba3d99f49c1"
+      },
+      {
+        "path": "public/scanner-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "4adb6b12f4a59ba43456018e40f76076441aa2e2",
+        "sha256": "a24ccba829a402f3782832fe2b170af29f24686313fc11703fcec3e7e9fcfea3"
+      },
+      {
+        "path": "public/scanner-worker.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "259dd087fe4a1fbb8f5604fb95abf40191af5bc0",
+        "sha256": "9b27a0eeae589ee60719de41435bbef58d1f8f08a1092cb06e022263929ceea8"
+      },
+      {
+        "path": "public/sharing-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "6bafe618eae47e9a9ebc690ebca9fce27daecc03",
+        "sha256": "f84d30e1c236eb400e5e0587b764c470000a16f3ad7b2f6ec5e3cb6c183f1cc6"
+      },
+      {
+        "path": "public/sources.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "01069c7e14908d026a9f430ccea48901f008a96c",
+        "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+      },
+      {
+        "path": "public/style.css",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "d31ea4fe0ff076fed4d5f2e83bef75fa6ce4d901",
+        "sha256": "be617853adc235cc53cd4dbf9c09a6d62edbd5d34500da5fa74556bf72022108"
+      },
+      {
+        "path": "public/sw.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "7c98ee09d9dbc70994b13398a15a4571d4a6c05c",
+        "sha256": "0291d5c685298eb3d9d7e544beb8f7bbcc352835871288b0a0bf9c1715b0333f"
+      },
+      {
+        "path": "public/sync-model.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "11a9ad5b07226d881a7542f63ef58c6bd63b2596",
+        "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3"
+      },
+      {
+        "path": "public/sync-ui.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "b58c5abcae4472537ccc28b2fe8e2c8e15990106",
+        "sha256": "bf35b0e04b8c77f1e8f453124d12fee69b99e39d7210bb8763218c9ea00759db"
+      },
+      {
+        "path": "public/unified-data.js",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "17ab57d41ca3acbd527d205ed4b3d29609636cfc",
+        "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+      },
+      {
+        "path": "research/manifest.json",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "2668a300c6ba24b48ea7388fdb56824867ca9970",
+        "sha256": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483"
+      },
+      {
+        "path": "tests-edge/locale-html.test.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "ee0cc06142303f2f6c398113dddd5f327549300f",
+        "sha256": "d647167f91bac0ee03b9d2aa814a323df84f2958feca00546f0b5742e5b899dd"
+      },
+      {
+        "path": "tests-web/i18n.test.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "f8ccd37fd9afce2b4fd8ddb89fd41e54c0906846",
+        "sha256": "2b198c884328d9417edf0d5a8ab5425fb47deaaedbea47a9770f995ee63ec2bf"
+      },
+      {
+        "path": "tests-web/locale-negotiation.test.mjs",
+        "sourceCommit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+        "gitBlob": "aea9e26868bdc51e90b08932b8a70fb2538e4c4f",
+        "sha256": "4c1ece426feed389feccc3b2bd20498bb8ff27b0e299418e8efbbd9b5469d65a"
+      },
+      {
+        "path": "cloud/admin-mcp-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "852f96a87806b5f6a5df2d6adb8218081b5d43f3",
+        "sha256": "c69c297460f7ca598241a58e5d45dfa58612bf2ea19520469d3ad4d47ed0b5af"
+      },
+      {
+        "path": "cloud/admin-mcp.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "da23f6cc5cdfb20b44d8993fbea702358b854377",
+        "sha256": "820aa8f09ea943ce6f26c55d105861f273e41805aad201d310b0f17153898735"
+      },
+      {
+        "path": "cloud/admin-operations-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "ed3362e821d1729c3539d2a491703a8e7d0407aa",
+        "sha256": "db1705c5fde51620d2aa98fc5248b0fc30dc5c53c048e03c460c54b9247a9f88"
+      },
+      {
+        "path": "cloud/admin-operations.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "7ca8d8825964f6b2e21dc688f9daf49b09b10fd1",
+        "sha256": "d9768acfd996b58aa4fcda4a943a2294f2229a559327b1a89d000ebef67c26d4"
+      },
+      {
+        "path": "cloud/admin-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "40e4a6739858b6a36a1243a0f31a1eb2faf49cce",
+        "sha256": "67683533c4868c2e34972de5ea3ac65d199158819be33e2447a4ccacf6ace316"
+      },
+      {
+        "path": "cloud/admin-settings.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "8f5e730c2f737ed0634364f6b073661be8e9aacb",
+        "sha256": "d6ca6fb1f4b7788aca4de17c796b734f29b5ce55227c2f9bc4ea5cbbda8831e9"
+      },
+      {
+        "path": "cloud/care-cases-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "377a9aa29ec1738003f20d1c081397578c64f1b9",
+        "sha256": "fb76b5df85e18502ad845c2cfd333cbc3780db22b54071e382fc806fff73cda8"
+      },
+      {
+        "path": "cloud/care-cases.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "7932e187553ab5c30218a7cc4f0e5b87425388de",
+        "sha256": "c46d7ebf5fc5a5099c157371a34a0d5cc14f2b935c287be141e67b3b22fba1af"
+      },
+      {
+        "path": "cloud/care-community-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "b39becf07a0f99c1a63c498a31316521754c96be",
+        "sha256": "739b00f13093dc687d33df56d77034fb58747f9d52eae0575af2463299eb2270"
+      },
+      {
+        "path": "cloud/care-community.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "66680f5161a4fae982165a54eae272ba073d6e07",
+        "sha256": "ab312f15408e26570011eb9f13025967f2496752c9aab413cabc829038c2a9d7"
+      },
+      {
+        "path": "cloud/care-updates-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "f069cdb5db6e1290c54a87ace7c750ebd1a3016a",
+        "sha256": "4d8d8c510cfd0c5799686d13d155078fa5bed6818c74c9c8f8b0d5a92621c22d"
+      },
+      {
+        "path": "cloud/care-updates.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "50dd92c26d4af3776e751891d94ae1bff111b5a3",
+        "sha256": "a98609ea91ad987768b55c59f491ef3738af278d594301aebbcf9829cf623015"
+      },
+      {
+        "path": "cloud/community-ai-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "f50649ec3758f93441f376b7341e6dc2e54f1694",
+        "sha256": "1c42f235f0c0943a10e4b1668a8e2f1e18100dcd675bb5c39b02fa245aefa01d"
+      },
+      {
+        "path": "cloud/community-ai.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "db62bcbb8c01971486f58cd3ebe53b13b1fa0665",
+        "sha256": "b2212706dc2ad13fd84f1f2eb27fadf0ef0597fc47af190d729922ccc71272c6"
+      },
+      {
+        "path": "cloud/global-settings.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "2dcfe15af461a97a34e8ae84718c42e27bbe2bfb",
+        "sha256": "a332cf11ddd2e778519f32df5c21e679952a3eae22a1eecbcf80a3190ec50a48"
+      },
+      {
+        "path": "cloud/personal-ai-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "c5867441f3dadfb4ccd02ae4139b463fae5203cb",
+        "sha256": "0fd9193c2bf5a740b5a2b5f167d1ae7cec5c93422701637cf1a84bdd62a8b75e"
+      },
+      {
+        "path": "cloud/personal-ai.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "c2c534d60181a23993009686bb063074c089c940",
+        "sha256": "93c09b017d45609b320dcb8ce4ea246eae93e535b12af260116cefdd4ed0c9a3"
+      },
+      {
+        "path": "cloud/recipe-community-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "d78cff9d1d2132a8c38d639945bccfa7840b363e",
+        "sha256": "d469b04030360afde4550a46817066b79eb0122d9cbd0474ae7ab168b771dfb4"
+      },
+      {
+        "path": "cloud/recipe-community.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "eec91a2c643672ffc0a17911f519311ecd67e847",
+        "sha256": "782f410b1d01ef555556dfc914b09903b8fd1238ae1478aa9ee801296325cc3f"
+      },
+      {
+        "path": "cloud/service-config.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "995f215c2edd90691676a0eead733aa2f5d7b50c",
+        "sha256": "bf79c76108caf4754950e89c1af52a43ef8d7ebaef4e47c839b8d8a2e9369bc7"
+      },
+      {
+        "path": "cloud/service-observability.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "22a40d51537989694048847b798fc29d8528b9af",
+        "sha256": "ba4938348b1a08636c952c602b3de42cc3e1fcaeabcca10348e5328329b247c3"
+      },
+      {
+        "path": "cloud/service-support.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "5244a1cbf9e9c3a6686b94b0cb1a1ed0838a602e",
+        "sha256": "d5bc9cd3baaf9da35ecc360338738ec70195e3d1a0ddc2905a3c5b61296e971f"
+      },
+      {
+        "path": "cloud/services-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "9c85021337e1e19aa07902a524e819a638fe777b",
+        "sha256": "943a8b8a83376dbde2b14aa2e8d73de6879d3326d7ba2fe7a41c1e8f359b9f71"
+      },
+      {
+        "path": "config/third-party.example.json",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "e1885eb29cb2430babf466f7626257cc10297756",
+        "sha256": "b6182499b5082728b745b5398719f9210324e64d62300e2380d732a426039f4e"
+      },
+      {
+        "path": "docs/third-party-service-disposition.json",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "e8f8782a04306a60f9673a06002260cb9d3d7d53",
+        "sha256": "78857646cce8211041778ffafd6a4edc874ca336641ee9ed176a91c5c86d0a2d"
+      },
+      {
+        "path": "docs/third-party-service-inventory.json",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "9e045a1ae89a7105f5068f2c34fa885cab2932a6",
+        "sha256": "c4e529fdff627d5a66dd8c8045ade01828025baeae4dea023bc43b2f55d77294"
+      },
+      {
+        "path": "public/admin-model.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "92419482345d7791e4033fd0c8775296a35131b8",
+        "sha256": "93de743170678cd633eea2ea737da784386a8e2f3f42d3c0501eb809c50c8de9"
+      },
+      {
+        "path": "public/admin-operations-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "9479054b1d5c480c14ddda1b0ac80a609ac33336",
+        "sha256": "7d8e5385abd34b3bcfad22780482d0465b1333fee2c0d98c267242c366da186d"
+      },
+      {
+        "path": "public/admin-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "31e78788b70c32633c3b0ad90a8ab47d66467fdf",
+        "sha256": "5437925cabde6eec107532d9470dcefe3639f06e73a8aa96a6867b88718000e9"
+      },
+      {
+        "path": "public/care-model.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "4494f7fa20e15430aae6e3e0e569620de0c2868b",
+        "sha256": "81a5c3771f8420bc81129aeeb57309a0d851dd3878e3c1016895890e40e7f96e"
+      },
+      {
+        "path": "public/care-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "49c04698f612a4e9170717edf03ae068c0d0dec7",
+        "sha256": "a67258db6ef0c952450aeb089db3485021966dd0a837a1c0e96725ef7c0a581b"
+      },
+      {
+        "path": "public/community-ai-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "65af3a6ae1c3b478f8d13196b3ad45d47898bba2",
+        "sha256": "6c4bdbba7fc208a6340b696373ce4a7ca3d7d2243306ebf999d9033dd6eaf560"
+      },
+      {
+        "path": "public/personal-ai-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "709039913f1c75416ac11b1cce35aef33465659c",
+        "sha256": "79d6479ed36cb197ec270c993a501e8ec31e3c22b66603df112ff6c45ee01db8"
+      },
+      {
+        "path": "public/recipe-community-model.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "d850731caf57ef5c749ff735f26fc2936bd93334",
+        "sha256": "dde224681112c5085ef0038d57ab64e3a3e20eeba1a43da967e5ccbaa7c093d4"
+      },
+      {
+        "path": "public/recipe-community-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "98b45e64b6e5352f05c3f2bc99584fcd163e0e14",
+        "sha256": "9dd5d426122e602bcd8d42d9b74a44983323858afeb870c49f446b17e1be2acb"
+      },
+      {
+        "path": "public/services-model.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "79b802aea4f5ee9619845c5190e51238b03b2296",
+        "sha256": "05d3279638586ad890de104504b40466f13cbdd1bbb87d4091f1962c77ed1ff9"
+      },
+      {
+        "path": "public/services-ui.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "bd9446c7ee3d274bd60e57f30c953aa71e373909",
+        "sha256": "0db7f4719d4244ce28bf8e26763ac477f948d21aa3be4f31c95aeb49ecd397f4"
+      },
+      {
+        "path": "public/session-fetch.js",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "a009690a8531a241e67ef9927e56cb6436ad012e",
+        "sha256": "0c734d92db37d84c98448f32dfbbbd2fd97b582b32de7aabcc2574a1e20094ef"
+      },
+      {
+        "path": "scripts/verify-third-party-config.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "f3347a86daca61244d3f0397a0d09593cbbe034d",
+        "sha256": "6fc6baa44defd722a76762cb498e83a70f2950757a6450f724e1dce3e615087b"
+      },
+      {
+        "path": "tests-edge/admin-mcp.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "9501409b3e14491b0300c51935fcd3a81b4a70a1",
+        "sha256": "67b52203a3d2a3e3d3724bb66f1e830620eaf24e4dfe350a0874bbcbbf7349ef"
+      },
+      {
+        "path": "tests-edge/admin.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "03b82c7cf5086f0a7c60aef071e90f9bb69d7112",
+        "sha256": "a9002ce9701da4609873954a1052b9f7f3424c35f9062a378e85b38cb46d7380"
+      },
+      {
+        "path": "tests-edge/care.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "31b330033a23855b265ebd711bf8672d64f3214b",
+        "sha256": "aaac43c5948058c490bf86960541ef7942b96ff1332ce4f0bb7b7805cc685245"
+      },
+      {
+        "path": "tests-edge/services.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "06c66fb130903135b2f0d75f2d8606b289c8eabf",
+        "sha256": "b479170608906ec596df68f8556df06b55f643b544e4c3547399dca004b4d4f8"
+      },
+      {
+        "path": "tests-web/admin-mcp.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "64ad66ce84cbc987b6c31cc2955225a54d405f83",
+        "sha256": "cc89151b1c9c3dbd5de54ee387af951cc7fec980f6326ea110562387232485f8"
+      },
+      {
+        "path": "tests-web/admin-operations.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "3b0c51f01c1fb5f9d1ccfa337c31afde8b0b651b",
+        "sha256": "d6cd318924a19743e5a5ddd81d27257005dfa4372390540b76fd5d477e100f9d"
+      },
+      {
+        "path": "tests-web/admin-runtime.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "c061109f58f76595b5a9c73779a577640ef607b7",
+        "sha256": "a6695c3cd48245f46a31636651ef9f7bb817aac027f283aeb7ba061d9bc6671e"
+      },
+      {
+        "path": "tests-web/admin-settings.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "923c13fc05d670e4779698112d5afa0cbff1f2dd",
+        "sha256": "04346f982a9df317572455cf0a3a4bc00ec12e17bdfee36ff5929bb62cbc0b64"
+      },
+      {
+        "path": "tests-web/care-cases.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "dcb85ced847029edb566791dfb6aaecf711706cb",
+        "sha256": "0ef9a5cf2ce7d4acb9849cb8449c281be684dd05025f24e822e259cb32c5d9d9"
+      },
+      {
+        "path": "tests-web/care-community.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "528e501c1c252e0680f1726a2c79cb7fa163063e",
+        "sha256": "9127e4787b289a8208fb8bc1c83c389d828b72eb3187c5259c43f9561739121d"
+      },
+      {
+        "path": "tests-web/care-updates.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "6b276bdb3f274948f48a1261f1bc6c1c49c6bc84",
+        "sha256": "54259b706a55640ff29bae33b73cf7a6ecafabbf95f76d105f7cf30fa6bcbd1b"
+      },
+      {
+        "path": "tests-web/community-ai.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "80a876e2c51e936aba2350660347693134206e46",
+        "sha256": "62bf78c323dad68ba5d6ad722d0979a71db48d0742f2d8b6bc78ed5382d9baa2"
+      },
+      {
+        "path": "tests-web/fixtures/pre-care-schema.sql",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "62355c0030af5a27839c4ef9b6dd9503f02b5bd2",
+        "sha256": "c50975fb705949606efe6cf21ba7b2790d625df04cf6c5b83b1c73eafb6896e5"
+      },
+      {
+        "path": "tests-web/personal-ai.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "58865d1731cb0b4ab150df196d1e6e4b8d45e3a0",
+        "sha256": "344a511d8adf462158873aff2a99cd02859ac2194d7083f176fa7c76b55ee4e8"
+      },
+      {
+        "path": "tests-web/recipe-community.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "fcec44114b00676ecab9fcd11eeb22c146658868",
+        "sha256": "a3c638638d3725f56c4786bc01f2c2483530d6891339987fc07fd80ef6cc5b0e"
+      },
+      {
+        "path": "tests-web/service-support.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "fd6e3bfbe42fade3d88227385e3d33eb75b2c7df",
+        "sha256": "0ba262b68907bc4550eccf63ba618a828c7dbe4a013c8380c75a998c8dce5878"
+      },
+      {
+        "path": "tests-web/service-system.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "6e4f7dab84826ae062b10305f29b19776dec4360",
+        "sha256": "337b128cbe259500f1c067b391fab2f399b188f5c0ecc1739d88736f1c3c9c9a"
+      },
+      {
+        "path": "tests-web/services-config-check.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "c4eae672cb28c2b9e2ccfe0903d67dfb3251f9cc",
+        "sha256": "90618242a04d418c2f52dcade2b7930d521607a5c9fad75206f2c62d12c9714f"
+      },
+      {
+        "path": "tests-web/third-party-schema.test.mjs",
+        "sourceCommit": "84c4732af985965c3e5b00383acaa662bdd52ea6",
+        "gitBlob": "7d051c2d8957358ee79ecdf21c3cc558c6dc23bc",
+        "sha256": "8d4b5b1ab8c403c6dc515620b96a9ecfeaf387cb7275203899acc71dab88fb46"
+      }
+    ],
+    "esbuildVersion": "0.25.12",
+    "miniflareVersion": "4.20260730.0",
+    "workerdVersion": "1.20260730.1"
+  },
+  "schema": {
+    "baseline": "Actual pinned main cloud/schema.sql",
+    "mainSchemaSHA256": "c61138ef9abaff5b339ab4a94e02dba11502ebbd5a731b4c48db84c976dd320b",
+    "canonicalSchemaSHA256": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380",
+    "migrations": [
+      {
+        "path": "cloud/admin-schema.sql",
+        "sha256": "67683533c4868c2e34972de5ea3ac65d199158819be33e2447a4ccacf6ace316"
+      },
+      {
+        "path": "cloud/admin-operations-schema.sql",
+        "sha256": "db1705c5fde51620d2aa98fc5248b0fc30dc5c53c048e03c460c54b9247a9f88"
+      },
+      {
+        "path": "cloud/admin-mcp-schema.sql",
+        "sha256": "c69c297460f7ca598241a58e5d45dfa58612bf2ea19520469d3ad4d47ed0b5af"
+      },
+      {
+        "path": "cloud/services-schema.sql",
+        "sha256": "943a8b8a83376dbde2b14aa2e8d73de6879d3326d7ba2fe7a41c1e8f359b9f71"
+      },
+      {
+        "path": "cloud/care-cases-schema.sql",
+        "sha256": "fb76b5df85e18502ad845c2cfd333cbc3780db22b54071e382fc806fff73cda8"
+      },
+      {
+        "path": "cloud/care-community-schema.sql",
+        "sha256": "739b00f13093dc687d33df56d77034fb58747f9d52eae0575af2463299eb2270"
+      },
+      {
+        "path": "cloud/care-updates-schema.sql",
+        "sha256": "4d8d8c510cfd0c5799686d13d155078fa5bed6818c74c9c8f8b0d5a92621c22d"
+      },
+      {
+        "path": "cloud/recipe-community-schema.sql",
+        "sha256": "d469b04030360afde4550a46817066b79eb0122d9cbd0474ae7ab168b771dfb4"
+      },
+      {
+        "path": "cloud/community-ai-schema.sql",
+        "sha256": "1c42f235f0c0943a10e4b1668a8e2f1e18100dcd675bb5c39b02fa245aefa01d"
+      },
+      {
+        "path": "cloud/personal-ai-schema.sql",
+        "sha256": "0fd9193c2bf5a740b5a2b5f167d1ae7cec5c93422701637cf1a84bdd62a8b75e"
+      }
+    ]
+  },
+  "bundle": {
+    "sha256": "cc19003a18494fcb01912b3adf71f9e6e86986805fef95379fc89441aa99be14",
+    "syntheticAssets": [
+      "recipes.json",
+      "afcd-nutrient-details.json",
+      "scanner.wasm",
+      "retailer-extension.zip"
+    ],
+    "compiledBrowserEntries": [
+      "app.js",
+      "data-workspace.js",
+      "sw.js"
+    ],
+    "compatibilityDate": "2026-08-06"
+  },
+  "fixtureRemoved": true
+}

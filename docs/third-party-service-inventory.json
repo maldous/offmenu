@@ -1,0 +1,2650 @@
+{
+  "asOf": "2026-10-14",
+  "purpose": "Third-party history and OffMenu suitability inventory",
+  "official": [
+    {
+      "name": "Sentry Cloudflare integration",
+      "url": "https://docs.sentry.io/platforms/javascript/guides/cloudflare/",
+      "claim": "Official Cloudflare SDK guide; full page extraction unavailable in web tool"
+    },
+    {
+      "name": "Brevo SMTP",
+      "url": "https://developers.brevo.com/docs/smtp-integration",
+      "claim": "SMTP relay documentation"
+    },
+    {
+      "name": "Brevo storage",
+      "url": "https://help.brevo.com/hc/en-us/articles/360001005510-Data-storage-location",
+      "claim": "Database hosting in EU; France/Germany OVH and Belgium Google Cloud"
+    },
+    {
+      "name": "iubenda consent",
+      "url": "https://www.iubenda.com/en/help/1177-cookie-solution-getting-started/",
+      "claim": "Banner, preferences and script autoblocking features"
+    },
+    {
+      "name": "Sleekplan widget",
+      "url": "https://sleekplan.com/docs/install/widget.html",
+      "claim": "Feedback, roadmap and changelog widget documentation; search excerpt available"
+    },
+    {
+      "name": "AdSense new sites",
+      "url": "https://support.google.com/adsense/answer/12169212?hl=en",
+      "claim": "New-site review/approval process"
+    }
+  ],
+  "records": [
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare",
+      "category": "Hosting and identity",
+      "projects": [
+        "ANQR",
+        "USF",
+        "CIX",
+        "OffMenu"
+      ],
+      "status": "Implemented; historical deployment records",
+      "purpose": "DNS, edge/CDN, OffMenu Workers and D1",
+      "offmenuFit": "Existing OffMenu foundation",
+      "qualificationNeeded": "Confirm exact Workers/D1 entitlement and account limits; historical paid-plan descriptions differ from observed quotas",
+      "evidence": [
+        "/home/user/src/offmenu/docs/operations.md",
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "https://linear.app/maldous/issue/CIX-327#comment-bca87d5b-a900-4c2d-99b8-eeb7b3493c2d"
+      ]
+    },
+    {
+      "id": "netlify",
+      "name": "Netlify",
+      "category": "Hosting and identity",
+      "projects": [
+        "ANQR",
+        "USF",
+        "CIX",
+        "OffMenu"
+      ],
+      "status": "Implemented; historical deployment records",
+      "purpose": "Hosting, serverless/edge functions, static curation and identity",
+      "offmenuFit": "Existing OffMenu foundation",
+      "qualificationNeeded": "Verify each project binding and current plan; CIX preview reservations are not production deployment",
+      "evidence": [
+        "/home/user/src/offmenu/README.md",
+        "/home/user/src/offmenu/docs/curation-architecture.md",
+        "/home/user/src/bak/anqr/netlify.toml",
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "netlify-identity",
+      "name": "Netlify Identity",
+      "category": "Hosting and identity",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Implemented",
+      "purpose": "Account registration, recovery and Google sign-in",
+      "offmenuFit": "Retain existing account flow",
+      "qualificationNeeded": "Current provider settings and sender configuration",
+      "evidence": [
+        "/home/user/src/offmenu/cloud/handler.mjs"
+      ]
+    },
+    {
+      "id": "google-sign-in",
+      "name": "Google sign-in",
+      "category": "Hosting and identity",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Implemented; historical sign-in checks",
+      "purpose": "Managed OAuth login through Netlify Identity",
+      "offmenuFit": "Existing login option",
+      "qualificationNeeded": "End-to-end account restoration in target browsers",
+      "evidence": [
+        "/home/user/src/offmenu/README.md"
+      ]
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR",
+        "USF",
+        "CIX",
+        "OffMenu"
+      ],
+      "status": "Repository and workflow use evidenced",
+      "purpose": "Source hosting, Actions CI, issues, releases and packages",
+      "offmenuFit": "Existing development and release system",
+      "qualificationNeeded": "Repository visibility, per-project access and workflow budget",
+      "evidence": [
+        "/home/user/src/usf-v3/docs/historical-inventory.md",
+        "/home/user/src/cix/.github/workflows/governance.yml",
+        "/home/user/src/offmenu/docs/MIGRATION.md"
+      ]
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR",
+        "USF",
+        "CIX"
+      ],
+      "status": "Operational use evidenced",
+      "purpose": "Issues, project documents, handoffs and automation",
+      "offmenuFit": "OffMenu delivery tracking if desired",
+      "qualificationNeeded": "Select project/team; access to one project does not establish another",
+      "evidence": [
+        "/home/user/src/usf-v3/docs/hermes-management.md",
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "sentry",
+      "name": "Sentry",
+      "category": "Monitoring and quality",
+      "projects": [
+        "ANQR",
+        "USF",
+        "CIX"
+      ],
+      "status": "ANQR SDK implemented; USF deferred; CIX access qualified",
+      "purpose": "Browser/server/mobile errors, tracing and replay",
+      "offmenuFit": "Strong candidate for OffMenu errors",
+      "qualificationNeeded": "Confirm correct organisation/project: CIX discovery found a token exposing Paperly only; filter private pantry/account data",
+      "evidence": [
+        "/home/user/src/bak/anqr/packages/observability/logging/src/init-sentry-module.ts",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "https://linear.app/maldous/issue/CIX-327#comment-bca87d5b-a900-4c2d-99b8-eeb7b3493c2d"
+      ]
+    },
+    {
+      "id": "uptimerobot",
+      "name": "UptimeRobot",
+      "category": "Monitoring and quality",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical authenticated account read recorded",
+      "purpose": "Availability monitoring",
+      "offmenuFit": "Candidate for OffMenu uptime",
+      "qualificationNeeded": "OffMenu monitor, current allowance and alert receiver",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-327#comment-bca87d5b-a900-4c2d-99b8-eeb7b3493c2d",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "snyk",
+      "name": "Snyk",
+      "category": "Monitoring and quality",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical scanning configuration; CIX account read recorded",
+      "purpose": "Dependency and vulnerability scanning",
+      "offmenuFit": "Candidate for repository dependency checks",
+      "qualificationNeeded": "Project scope and current scan allowance",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "https://linear.app/maldous/issue/CIX-327#comment-bca87d5b-a900-4c2d-99b8-eeb7b3493c2d"
+      ]
+    },
+    {
+      "id": "sonar-sonarqube",
+      "name": "Sonar / SonarQube",
+      "category": "Monitoring and quality",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical self-hosted integration",
+      "purpose": "Static analysis and code quality gates",
+      "offmenuFit": "Optional development tool",
+      "qualificationNeeded": "Hosting responsibility; distinguish Sonar SaaS from self-hosted SonarQube",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "iubenda",
+      "name": "iubenda",
+      "category": "Consent and advertising",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "ANQR boot integration implemented; CIX candidate",
+      "purpose": "Cookie consent, autoblocking and policy widgets",
+      "offmenuFit": "Candidate if OffMenu adds tracking/ads",
+      "qualificationNeeded": "OffMenu-specific site/policy configuration, current plan and actual tracker blocking",
+      "evidence": [
+        "/home/user/src/bak/anqr/packages/platform/browser/src/boot/web-only-assets.ts",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "google-adsense",
+      "name": "Google AdSense",
+      "category": "Consent and advertising",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "ANQR integration implemented; CIX ads off",
+      "purpose": "Web advertising",
+      "offmenuFit": "Conditional monetisation candidate",
+      "qualificationNeeded": "OffMenu site approval and its own consent/ad configuration; historic publisher setup is not site approval",
+      "evidence": [
+        "/home/user/src/bak/anqr/packages/analytics/ads/src/components/ad-unit.tsx",
+        "/home/user/src/bak/anqr/packages/platform/browser/src/boot/web-only-assets.ts",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "google-admob",
+      "name": "Google AdMob",
+      "category": "Consent and advertising",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical mobile integration and console record",
+      "purpose": "Mobile advertising",
+      "offmenuFit": "Only relevant to a future native OffMenu app",
+      "qualificationNeeded": "Mobile release, app registration and provider approvals; older ANQR launch scope excluded native apps",
+      "evidence": [
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/docs/program/01-anqr-1.0-definition.md"
+      ]
+    },
+    {
+      "id": "google-funding-choices",
+      "name": "Google Funding Choices",
+      "category": "Consent and advertising",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical bookmark only",
+      "purpose": "Google consent/advertising message management",
+      "offmenuFit": "Alternative historical consent lead",
+      "qualificationNeeded": "No implemented flow established; compare with existing iubenda choice",
+      "evidence": [
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js"
+      ]
+    },
+    {
+      "id": "google-analytics",
+      "name": "Google Analytics",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical analytics documentation; runtime delivery via Zaraz",
+      "purpose": "Product usage and funnels",
+      "offmenuFit": "Conditional analytics candidate",
+      "qualificationNeeded": "Actual OffMenu events, consent and exclusion of private food/health/account data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/07-analytics-ads-attribution.md",
+        "/home/user/src/bak/anqr/packages/observability/telemetry/src/track-zaraz-event.ts"
+      ]
+    },
+    {
+      "id": "cloudflare-zaraz",
+      "name": "Cloudflare Zaraz",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Runtime integration implemented",
+      "purpose": "Browser event forwarding through Cloudflare",
+      "offmenuFit": "Possible analytics delivery reuse",
+      "qualificationNeeded": "Current account tool configuration; track calls do not prove which downstream tools were enabled",
+      "evidence": [
+        "/home/user/src/bak/anqr/packages/observability/telemetry/src/track-zaraz-event.ts"
+      ]
+    },
+    {
+      "id": "google-ads",
+      "name": "Google Ads",
+      "category": "Consent and advertising",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical inventory only",
+      "purpose": "Advertising acquisition/marketing",
+      "offmenuFit": "Optional promotion",
+      "qualificationNeeded": "Account and campaign evidence; separate from AdSense publisher monetisation",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "google-search-console",
+      "name": "Google Search Console",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical documentation; CIX candidate",
+      "purpose": "Search indexing and performance",
+      "offmenuFit": "Candidate for public OffMenu discovery",
+      "qualificationNeeded": "Verify OffMenu property ownership",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/07-analytics-ads-attribution.md",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "bing-webmaster-tools",
+      "name": "Bing Webmaster Tools",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical documentation; CIX candidate",
+      "purpose": "Search indexing and SEO",
+      "offmenuFit": "Candidate for public OffMenu discovery",
+      "qualificationNeeded": "Verify OffMenu site ownership",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "google-fonts",
+      "name": "Google Fonts",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Runtime integration implemented",
+      "purpose": "Noto Sans and script-specific web fonts",
+      "offmenuFit": "Optional multilingual typography",
+      "qualificationNeeded": "Compare external requests against bundled fonts",
+      "evidence": [
+        "/home/user/src/bak/anqr/packages/platform/browser/src/boot/web-only-assets.ts"
+      ]
+    },
+    {
+      "id": "google-maps-places",
+      "name": "Google Maps / Places",
+      "category": "Maps and localisation",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Maps links implemented; Places API historical inventory only",
+      "purpose": "Geographic links and location data",
+      "offmenuFit": "Optional store/location discovery",
+      "qualificationNeeded": "API access/use not proven by an ordinary Maps link",
+      "evidence": [
+        "/home/user/src/bak/anqr/apps/web/src/features/analyze/components/build-geo-details.tsx",
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "apple-maps",
+      "name": "Apple Maps",
+      "category": "Maps and localisation",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "External links implemented",
+      "purpose": "Open geographic locations",
+      "offmenuFit": "Optional links to stores",
+      "qualificationNeeded": "Link behaviour and target coverage",
+      "evidence": [
+        "/home/user/src/bak/anqr/apps/web/src/features/analyze/components/build-geo-details.tsx"
+      ]
+    },
+    {
+      "id": "openstreetmap",
+      "name": "OpenStreetMap",
+      "category": "Maps and localisation",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "External links implemented",
+      "purpose": "Open geographic locations",
+      "offmenuFit": "Optional store map links",
+      "qualificationNeeded": "A link is not evidence of tile/API hosting entitlement",
+      "evidence": [
+        "/home/user/src/bak/anqr/apps/web/src/features/analyze/components/build-geo-details.tsx"
+      ]
+    },
+    {
+      "id": "mymemory",
+      "name": "MyMemory",
+      "category": "Maps and localisation",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical utility/inventory record",
+      "purpose": "Translation API",
+      "offmenuFit": "Possible translation lead",
+      "qualificationNeeded": "Current terms, quota and translation review",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "brevo",
+      "name": "Brevo",
+      "category": "Email and support",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical SMTP configuration; CIX sender unverified",
+      "purpose": "SMTP email for notifications/support",
+      "offmenuFit": "Strong email candidate; EU storage described by vendor",
+      "qualificationNeeded": "OffMenu sender/domain authentication, account management access, current plan and delivery test",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "https://linear.app/maldous/issue/CIX-327#comment-bca87d5b-a900-4c2d-99b8-eeb7b3493c2d",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "gmail-google-smtp",
+      "name": "Gmail / Google SMTP",
+      "category": "Email and support",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "ANQR mailbox sync implemented; CIX SMTP history recorded",
+      "purpose": "Operational email ingest and SMTP",
+      "offmenuFit": "Operational support email lead",
+      "qualificationNeeded": "Do not infer bulk/transactional sending suitability from mailbox access",
+      "evidence": [
+        "/home/user/src/bak/anqr/harness/ops/integrations/email/email-ingest/sync-mail.mjs",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "msmtp-and-mbsync",
+      "name": "msmtp and mbsync",
+      "category": "Email and support",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical local integration",
+      "purpose": "SMTP client and mailbox synchronisation; software, not email vendor",
+      "offmenuFit": "Development/operations utilities",
+      "qualificationNeeded": "Underlying mailbox/SMTP vendor and deployment environment",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/integrations/email/email-ingest/sync-mail.mjs"
+      ]
+    },
+    {
+      "id": "agentmail",
+      "name": "AgentMail",
+      "category": "Email and support",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical authenticated read; empty inboxes recorded",
+      "purpose": "Agent email service",
+      "offmenuFit": "Operational automation candidate",
+      "qualificationNeeded": "No OffMenu inbox or delivery result established",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "sleekplan",
+      "name": "Sleekplan",
+      "category": "Email and support",
+      "projects": [
+        "ANQR",
+        "CIX"
+      ],
+      "status": "Historical feedback mention; CIX candidate",
+      "purpose": "Feedback board, roadmap and changelog",
+      "offmenuFit": "Candidate for public OffMenu feedback",
+      "qualificationNeeded": "Current account/product and plan; no live widget proven",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/07-analytics-ads-attribution.md",
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "category": "Email and support",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical authenticated reads and setup message evidenced",
+      "purpose": "Internal support intake and team coordination",
+      "offmenuFit": "Internal alerts/triage candidate",
+      "qualificationNeeded": "CIX automatic webhook pickup and private-case route remain unqualified; OffMenu channel separate",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence",
+        "https://linear.app/maldous/issue/CIX-62/sage-ops-07-configure-support-community-spam-and-abuse-controls"
+      ]
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "category": "Email and support",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical automation bookmark",
+      "purpose": "Communication via OpenClaw extension",
+      "offmenuFit": "Optional community/operations lead",
+      "qualificationNeeded": "Current account/channel and actual integration scope",
+      "evidence": [
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js"
+      ]
+    },
+    {
+      "id": "x-twitter",
+      "name": "X / Twitter",
+      "category": "Analytics and discovery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical brand-presence inventory",
+      "purpose": "Public marketing channel",
+      "offmenuFit": "Optional public communication",
+      "qualificationNeeded": "No posting automation established",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "apidog",
+      "name": "Apidog",
+      "category": "Engineering and delivery",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical account/plan candidate",
+      "purpose": "API documentation/testing",
+      "offmenuFit": "Optional OffMenu REST/MCP development tool",
+      "qualificationNeeded": "Current account and historical implementation not established",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-327#comment-519b90e7-3cd7-4957-a341-18c85ea39907"
+      ]
+    },
+    {
+      "id": "codemagic",
+      "name": "Codemagic",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "CI configuration and historical successful build commit",
+      "purpose": "iOS signing/build and TestFlight delivery",
+      "offmenuFit": "Future native-app delivery candidate",
+      "qualificationNeeded": "OffMenu native app and correct Apple credentials",
+      "evidence": [
+        "/home/user/src/bak/anqr/codemagic.yaml",
+        "git:/home/user/src/bak/anqr@aaba2e1e5"
+      ]
+    },
+    {
+      "id": "apple-developer-app-store-connect-testflight",
+      "name": "Apple Developer / App Store Connect / TestFlight",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical signing/distribution configuration",
+      "purpose": "iOS signing, beta testing and store distribution",
+      "offmenuFit": "Future native-app delivery candidate",
+      "qualificationNeeded": "Current membership; historical configuration does not establish ANQR or OffMenu launch readiness",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/codemagic.yaml",
+        "/home/user/src/bak/anqr/docs/program/01-anqr-1.0-definition.md"
+      ]
+    },
+    {
+      "id": "google-play-console",
+      "name": "Google Play Console",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Historical internal-track record",
+      "purpose": "Android distribution",
+      "offmenuFit": "Future native-app delivery candidate",
+      "qualificationNeeded": "Current publisher entitlement and actual native release qualification",
+      "evidence": [
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/docs/program/01-anqr-1.0-definition.md"
+      ]
+    },
+    {
+      "id": "capacitor",
+      "name": "Capacitor",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Mobile/browser integration implemented",
+      "purpose": "Native app shell; software rather than hosted SaaS",
+      "offmenuFit": "Optional path for a native OffMenu companion",
+      "qualificationNeeded": "Native platform implementation, maintenance and device checks",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/packages/platform/browser/src/boot/web-only-assets.ts"
+      ]
+    },
+    {
+      "id": "argos",
+      "name": "Argos",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Environment-name-only historical record",
+      "purpose": "Device/build variable",
+      "offmenuFit": "Insufficient evidence for a service decision",
+      "qualificationNeeded": "ARGOS_DEVICE_TYPE alone does not prove an Argos account or visual-testing service",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "firebase",
+      "name": "Firebase",
+      "category": "Hosting and identity",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Unresolved historical inventory placeholder",
+      "purpose": "Possible mobile/cloud support",
+      "offmenuFit": "No demonstrated need for existing OffMenu architecture",
+      "qualificationNeeded": "No active use established",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/01-service-runtime-matrix.md"
+      ]
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "category": "Engineering and delivery",
+      "projects": [
+        "ANQR"
+      ],
+      "status": "Explicitly unused in historical inventory",
+      "purpose": "Source/CI platform lead",
+      "offmenuFit": "No proven use within inspected project history",
+      "qualificationNeeded": "Historical table explicitly says currently unused",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md"
+      ]
+    },
+    {
+      "id": "chatgpt-sites",
+      "name": "ChatGPT Sites",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Site reservations and prototype records",
+      "purpose": "Prototype hosting/design comparison",
+      "offmenuFit": "Optional design/prototype tool",
+      "qualificationNeeded": "Reserved destinations are not production deployments",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-327/luca-establish-cix-website-foundation"
+      ]
+    },
+    {
+      "id": "magicpath",
+      "name": "MagicPath",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Connected and inspected; submission unconfirmed; holds recorded",
+      "purpose": "Design canvas and generated components",
+      "offmenuFit": "Optional design tool",
+      "qualificationNeeded": "Latest scope/hold and actual output acceptance; connectivity is not generation proof",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "lovable",
+      "name": "Lovable",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical submission accepted; build pending/unpublished",
+      "purpose": "Generated site/design comparison",
+      "offmenuFit": "Optional design tool",
+      "qualificationNeeded": "Actual build/export result and latest hold",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "google-drive-docs-sheets-slides",
+      "name": "Google Drive / Docs / Sheets / Slides",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical authenticated Google-services read",
+      "purpose": "Documents and artifact collaboration",
+      "offmenuFit": "Optional planning/documentation",
+      "qualificationNeeded": "Per-file permissions; CIX record groups Google services without proving every individual app workflow",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "chatgpt-pages-spaces-library",
+      "name": "ChatGPT Pages / Spaces / Library",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Historical connected/read records",
+      "purpose": "Documents and saved artifacts",
+      "offmenuFit": "Suitable for maintaining this inventory",
+      "qualificationNeeded": "Availability and document access; some historical sessions were empty",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "microsoft-teams",
+      "name": "Microsoft Teams",
+      "category": "Email and support",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Context requirement recorded; use not verified",
+      "purpose": "Team collaboration",
+      "offmenuFit": "Potential lead only",
+      "qualificationNeeded": "Correct tenant/context and authenticated workflow",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "category": "Design and authoring",
+      "projects": [
+        "CIX"
+      ],
+      "status": "Personal scope explicitly untested",
+      "purpose": "Music integration",
+      "offmenuFit": "No identified OffMenu requirement",
+      "qualificationNeeded": "Not evidence of actual project use",
+      "evidence": [
+        "https://linear.app/maldous/issue/CIX-330/quinn-verify-added-tooling-evidence"
+      ]
+    },
+    {
+      "id": "openai-codex",
+      "name": "OpenAI / Codex",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "anthropic-claude",
+      "name": "Anthropic / Claude",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "google-gemini-ai-studio",
+      "name": "Google Gemini / AI Studio",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical adapter plus current USF configured route",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs",
+        "/home/user/src/usf-v3/config/providers.json"
+      ]
+    },
+    {
+      "id": "cerebras",
+      "name": "Cerebras",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical adapter plus current USF configured route",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/usf-v3/config/providers.json"
+      ]
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "hugging-face",
+      "name": "Hugging Face",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "sambanova",
+      "name": "SambaNova",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "fireworks-ai",
+      "name": "Fireworks AI",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "together-ai",
+      "name": "Together AI",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "github-models",
+      "name": "GitHub Models",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "codebuff",
+      "name": "Codebuff",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Development or routed AI inference",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+        "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs"
+      ]
+    },
+    {
+      "id": "elevenlabs",
+      "name": "ElevenLabs",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Optional voice generation",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js"
+      ]
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama",
+      "category": "AI and automation",
+      "projects": [
+        "ANQR",
+        "USF"
+      ],
+      "status": "Historical API/CLI integration or provider record",
+      "purpose": "Local inference runtime",
+      "offmenuFit": "Development reuse; runtime food/recipe assistance only if selected",
+      "qualificationNeeded": "Historical route/key records do not prove successful calls, current credit, qualification or permission to process user data",
+      "evidence": [
+        "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+        "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js"
+      ]
+    },
+    {
+      "id": "arcee",
+      "name": "Arcee",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical credential-name metadata only",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical credential-name metadata only",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "nous",
+      "name": "Nous",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical credential-name metadata only",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "nvidia-inference",
+      "name": "NVIDIA inference",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical credential-name metadata only",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "z-ai-zhipu",
+      "name": "Z.ai / Zhipu",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical credential-name metadata only",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historically admitted OAuth provider",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "google-antigravity",
+      "name": "Google Antigravity",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historically configured CLI transport",
+      "purpose": "AI provider or coding transport",
+      "offmenuFit": "Development lead; no OffMenu runtime integration established",
+      "qualificationNeeded": "Historical configuration/admission is not successful-call or current-entitlement evidence",
+      "evidence": [
+        "/home/user/src/usf-v3/config/provider-legacy-observations.json"
+      ]
+    },
+    {
+      "id": "models-dev",
+      "name": "models.dev",
+      "category": "AI and automation",
+      "projects": [
+        "USF"
+      ],
+      "status": "Catalogue integration documented",
+      "purpose": "Model catalogue discovery",
+      "offmenuFit": "Development provider inventory",
+      "qualificationNeeded": "Catalogue facts do not prove a provider account",
+      "evidence": [
+        "/home/user/src/usf-v3/docs/operator/inspection.md"
+      ]
+    },
+    {
+      "id": "stardog",
+      "name": "Stardog",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical foundation implementation; retired from V3 topology",
+      "purpose": "Semantic graph database",
+      "offmenuFit": "Historical architecture only",
+      "qualificationNeeded": "No default OffMenu requirement; historical proof differs from managed-service suitability",
+      "evidence": [
+        "/home/user/src/usf-v3/docs/historical-inventory.md"
+      ]
+    },
+    {
+      "id": "usf-software-postgres",
+      "name": "Postgres",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-keycloak",
+      "name": "Keycloak",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-nats",
+      "name": "NATS",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-temporal",
+      "name": "Temporal",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-minio",
+      "name": "MinIO",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-openbao",
+      "name": "OpenBao",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-mailpit",
+      "name": "Mailpit",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-otel-collector",
+      "name": "OpenTelemetry Collector",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-prometheus",
+      "name": "Prometheus",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-grafana",
+      "name": "Grafana",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-loki",
+      "name": "Loki",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-tempo",
+      "name": "Tempo",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical canonical-dev-compose classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-pgadmin",
+      "name": "pgAdmin",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-localstack",
+      "name": "LocalStack",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-wiremock",
+      "name": "WireMock",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-alertmanager",
+      "name": "Alertmanager",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-alloy",
+      "name": "Grafana Alloy",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-windmill",
+      "name": "Windmill",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-pgbackrest",
+      "name": "pgBackRest",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-clamav",
+      "name": "ClamAV",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-caddy",
+      "name": "Caddy Gateway",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical profile-gated classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-redis",
+      "name": "Redis",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical test-staging-live-only classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-meilisearch",
+      "name": "Meilisearch",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical test-staging-live-only classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "usf-software-clickhouse",
+      "name": "ClickHouse",
+      "category": "Historical local infrastructure",
+      "projects": [
+        "USF"
+      ],
+      "status": "Historical test-staging-live-only classification",
+      "purpose": "Self-hosted development/infrastructure software in the USF provider map",
+      "offmenuFit": "Historical architecture lead; not an existing managed SaaS entitlement",
+      "qualificationNeeded": "Provider-map classification alone does not establish live production use; compare operational effort with current Workers/D1",
+      "evidence": [
+        "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json"
+      ]
+    },
+    {
+      "id": "offmenu-source-world-recipes",
+      "name": "Worldwide recipe library",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated full recipes",
+      "purpose": "recipe; Multilingual ingredients, source quantities and instructions, plus historical cookbooks. Unknown measures and food matches require review.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Per-recipe CC BY-SA 4.0, CC0 and Unlicense; attribution retained. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://offmenu-corpus.netlify.app/recipes/manifest.json"
+      ]
+    },
+    {
+      "id": "offmenu-source-sweden-food",
+      "name": "Swedish Food Composition Database",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Complete version 2026-07-01 export; source nutrient values retained unchanged.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Publisher reuse: attribution and unchanged data. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://soknaringsinnehall.livsmedelsverket.se/"
+      ]
+    },
+    {
+      "id": "offmenu-source-overture-food-places",
+      "name": "Overture food shops and venues",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated references",
+      "purpose": "retailer, site; Food venues, non-tobacco food stores, farmers markets and agricultural site references; source operation, country and category are unverified, inventory and ownership unknown.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Per-record CDLA Permissive 2.0, Apache 2.0 and CC0; notices retained. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://docs.overturemaps.org/guides/places/"
+      ]
+    },
+    {
+      "id": "offmenu-source-matvaretabellen",
+      "name": "Norwegian Food Composition Table",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Named 2026 composition release; preserve source references and unknown nutrient definitions.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Mattilsynet API reuse; source attribution required. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.matvaretabellen.no/api/"
+      ]
+    },
+    {
+      "id": "offmenu-source-wikidata-food-businesses",
+      "name": "Wikidata food business references",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated references",
+      "purpose": "organization; Direct type assertions for food manufacturers and grocery chains; country is a source assertion, coverage and ownership remain unverified.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC0 1.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.wikidata.org/wiki/Wikidata:Data_access"
+      ]
+    },
+    {
+      "id": "offmenu-source-dietary-guidelines",
+      "name": "National dietary guideline references",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated references",
+      "purpose": "sourceAssertion; Reference links only; national documents require separate permission and do not become personal diet rules.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC0 OffMenu reference metadata; national content rights retained. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.fao.org/nutrition/education/dietary-guidelines/regions/en/"
+      ]
+    },
+    {
+      "id": "offmenu-source-off",
+      "name": "Open Food Facts",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public API adapter implemented",
+      "purpose": "product, nutrientProfile; Global barcode lookup. Preserve attribution and share-alike obligations.",
+      "offmenuFit": "Existing OffMenu data integration",
+      "qualificationNeeded": "ODbL / DbCL; images CC BY-SA. Access mode: public-api. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://world.openfoodfacts.org"
+      ]
+    },
+    {
+      "id": "offmenu-source-prices",
+      "name": "Open Prices",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public API adapter implemented",
+      "purpose": "priceObservation, retailer; Dated observations with currency and location; uneven coverage, no stock guarantee.",
+      "offmenuFit": "Existing OffMenu data integration",
+      "qualificationNeeded": "ODbL. Access mode: public-api. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://prices.openfoodfacts.org"
+      ]
+    },
+    {
+      "id": "offmenu-source-wikibooks",
+      "name": "Wikibooks Cookbook",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Imported collection",
+      "purpose": "recipe; Current curated collection available to all profiles; original source wording and attribution retained.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC BY-SA 4.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents"
+      ]
+    },
+    {
+      "id": "offmenu-source-usda",
+      "name": "USDA FoodData Central",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Personal-credential adapter implemented; account/key not verified",
+      "purpose": "product, nutrientProfile; Generic and branded foods. Free downloadable data remains usable without an API key. API requests use your key.",
+      "offmenuFit": "Existing optional OffMenu provider workflow",
+      "qualificationNeeded": "CC0 / public domain. Access mode: byok. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://fdc.nal.usda.gov/api-guide/"
+      ]
+    },
+    {
+      "id": "offmenu-source-usda-files",
+      "name": "USDA downloadable datasets",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Import workflow",
+      "purpose": "product, nutrientProfile; Free data files need no API key. USDA JSON imports are normalized locally.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC0 / public domain. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://fdc.nal.usda.gov/download-datasets/"
+      ]
+    },
+    {
+      "id": "offmenu-source-afcd",
+      "name": "Australian Food Composition Database",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Australia-specific reference values; retain FSANZ limitations and licence notices.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC BY-SA 3.0 AU + FSANZ terms. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files"
+      ]
+    },
+    {
+      "id": "offmenu-source-ausnut",
+      "name": "AUSNUT",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Import workflow",
+      "purpose": "nutrientProfile, foodClassification; Survey food and nutrient datasets; use the applicable release and definitions.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "FSANZ data user licence. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.foodstandards.gov.au/science-data/food-nutrient-databases"
+      ]
+    },
+    {
+      "id": "offmenu-source-cofid",
+      "name": "UK CoFID",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Composition of the UK food supply; import with release and nutrient units.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Published government dataset; retain applicable OGL notices. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid"
+      ]
+    },
+    {
+      "id": "offmenu-source-cnf",
+      "name": "Canadian Nutrient File",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Bilingual nutrient tables and relational files; generic-food values are not a barcode price feed.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CNF copyright guidelines; source values unchanged, attribution required. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-2015-download-files.html"
+      ]
+    },
+    {
+      "id": "offmenu-source-ciqual",
+      "name": "ANSES CIQUAL",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; CIQUAL 2025 French food composition; import original identifiers, units and release attribution.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Etalab Licence Ouverte 2.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://ciqual.anses.fr/"
+      ]
+    },
+    {
+      "id": "offmenu-source-foodfiles",
+      "name": "New Zealand FOODfiles",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; FOODfiles 2024 Version 01; source values unchanged, publisher attribution and downstream terms required. Not the 2026 online search.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "FOODfiles terms of use. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://foodcomposition.co.nz/foodfiles/"
+      ]
+    },
+    {
+      "id": "offmenu-source-fineli",
+      "name": "Fineli",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Complete downloadable Release 20.0, 74-component snapshot; THL attribution, no endorsement. Not claimed current live API.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC BY 4.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://fineli.fi/fineli/fi/avoin-data"
+      ]
+    },
+    {
+      "id": "offmenu-source-frida",
+      "name": "DTU Frida",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Danish food composition; retain analytical basis and data version.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC BY 4.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://doi.org/10.11583/DTU.29500682"
+      ]
+    },
+    {
+      "id": "offmenu-source-nevo",
+      "name": "RIVM NEVO",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Terms review",
+      "purpose": "nutrientProfile; Dutch food composition; source-specific terms and coverage.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Verify access and reuse terms. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.rivm.nl/en/dutch-food-composition-database"
+      ]
+    },
+    {
+      "id": "offmenu-source-mext",
+      "name": "MEXT food composition",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; Japanese food composition; native names and external identifiers can be retained.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "MEXT content use rules; attribution and modification notice required. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.mext.go.jp/a_menu/syokuhinseibun/"
+      ]
+    },
+    {
+      "id": "offmenu-source-tbca",
+      "name": "TBCA",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Terms review",
+      "purpose": "nutrientProfile; Brazilian food composition; country provenance stays attached.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Verify reuse terms. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.tbca.net.br/"
+      ]
+    },
+    {
+      "id": "offmenu-source-china-cdc",
+      "name": "China CDC food composition",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Permission review",
+      "purpose": "nutrientProfile; Chinese-language reference foods. Preserve not-tested, not-detected, unknown and zero as distinct states.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "No open redistribution licence verified. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://nlc.chinanutri.cn/fq/"
+      ]
+    },
+    {
+      "id": "offmenu-source-china-samr",
+      "name": "China SAMR food inspections",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Official inspections",
+      "purpose": "foodNotice; Chinese public inspection notices and batch tables; noncompliance is not automatically a recall.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Reuse permission / terms review. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.samr.gov.cn/spcjs/"
+      ]
+    },
+    {
+      "id": "offmenu-source-india-ifct",
+      "name": "ICMR-NIN IFCT",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Written permission required",
+      "purpose": "nutrientProfile; Official Indian food composition. A readable PDF is not an open commercially reusable dataset.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "NIN prior written permission required for electronic product reuse. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.nin.res.in/ebooks/IFCT2017.pdf"
+      ]
+    },
+    {
+      "id": "offmenu-source-india-datakart",
+      "name": "GS1 India DataKart",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Your approved account",
+      "purpose": "product, nutrientProfile; Registered branded-product and GTIN data. User-owned approved credentials; adapter pending.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Solution-provider agreement / fees. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.gs1india.org/datakart/datakart-for-solution-providers"
+      ]
+    },
+    {
+      "id": "offmenu-source-indonesia-tkpi",
+      "name": "Indonesia TKPI",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Permission review",
+      "purpose": "nutrientProfile; Ministry of Health Indonesian food composition tables; preserve release and analytical basis.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Open commercial reuse not verified. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://repository.kemkes.go.id/book/668"
+      ]
+    },
+    {
+      "id": "offmenu-source-indonesia-bpom",
+      "name": "Indonesia BPOM",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Official lookup",
+      "purpose": "product, foodNotice; Processed-food registration and withdrawn-product lookup. BPOM registration IDs remain distinct from GTIN.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Bulk API / reuse terms not verified. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://cekbpom.pom.go.id/"
+      ]
+    },
+    {
+      "id": "offmenu-source-russia-nutrition",
+      "name": "Russian nutrition composition centre",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Request / permission required",
+      "purpose": "nutrientProfile; Russian per-100g food composition and cooking losses. Excel access requires a request and purpose.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "All rights reserved; reuse permission required. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://ion.ru/nauka/baza-dannykh-khimicheskogo-sostava/"
+      ]
+    },
+    {
+      "id": "offmenu-source-russia-gs1",
+      "name": "GS1 Russia",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Your member account",
+      "purpose": "product; Public individual GTIN lookup; API and bulk queries require membership.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "GS1 Russia membership / API terms. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.gs1ru.org/services/more_vbg/"
+      ]
+    },
+    {
+      "id": "offmenu-source-germany-bls",
+      "name": "Germany BLS 4.0",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Integrated lookup",
+      "purpose": "nutrientProfile; German and English food composition; retain MRI attribution, release and explicit nutrient units.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "CC BY 4.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://blsdb.de/download"
+      ]
+    },
+    {
+      "id": "offmenu-source-france-rappelconso",
+      "name": "France RappelConso",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Import workflow",
+      "purpose": "foodNotice; French recall data in CSV/JSON and API resources; preserve GTIN and lot/batch identity.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Licence Ouverte 2.0. Access mode: public-download. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://rappel.conso.gouv.fr/support/open-data"
+      ]
+    },
+    {
+      "id": "offmenu-source-infoods",
+      "name": "FAO / INFOODS directory",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Dataset discovery",
+      "purpose": "foodClassification, nutrientProfile; Discover regional food composition tables worldwide; not a single globally licensed database.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Each underlying dataset has its own terms. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.fao.org/infoods/infoods/tables-and-databases/en/"
+      ]
+    },
+    {
+      "id": "offmenu-source-fsa-alerts",
+      "name": "UK FSA food alerts",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public API adapter implemented",
+      "purpose": "foodNotice; Public allergy and recall notices. Confirm the original notice, affected batch and country.",
+      "offmenuFit": "Existing OffMenu data integration",
+      "qualificationNeeded": "Open Government Licence. Access mode: public-api. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://data.food.gov.uk/food-alerts/ui/reference"
+      ]
+    },
+    {
+      "id": "offmenu-source-fsa-ratings",
+      "name": "UK food hygiene ratings",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public API adapter implemented",
+      "purpose": "retailer; Inspection-date ratings for UK food businesses; not a food nutrition or stock feed.",
+      "offmenuFit": "Existing OffMenu data integration",
+      "qualificationNeeded": "FSA open data terms; badge terms separate. Access mode: public-api. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://ratings.food.gov.uk/open-data"
+      ]
+    },
+    {
+      "id": "offmenu-source-openfda",
+      "name": "openFDA food enforcement",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public API adapter implemented",
+      "purpose": "foodNotice; Historical enforcement research. FDA says not to use this feed for public alerts or recall lifecycle tracking.",
+      "offmenuFit": "Existing OffMenu data integration",
+      "qualificationNeeded": "US government data / openFDA terms. Access mode: public-api. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://open.fda.gov/apis/food/enforcement/"
+      ]
+    },
+    {
+      "id": "offmenu-source-fsanz-notices",
+      "name": "FSANZ recalls",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Official notices",
+      "purpose": "foodNotice; Read original country-specific notices; no automatic inventory match asserted.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Official notice reuse terms. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.foodstandards.gov.au/food-recalls"
+      ]
+    },
+    {
+      "id": "offmenu-source-canada-notices",
+      "name": "Canada recalls",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Official notices",
+      "purpose": "foodNotice; Official Canadian recall and safety notices.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Government reuse terms. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://recalls-rappels.canada.ca/en"
+      ]
+    },
+    {
+      "id": "offmenu-source-rasff",
+      "name": "EU RASFF",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Official notices",
+      "purpose": "foodNotice; European food and feed notifications; do not infer a personal product match.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "European Commission reuse terms. Access mode: external. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://webgate.ec.europa.eu/rasff-window/screen/search"
+      ]
+    },
+    {
+      "id": "offmenu-source-whichgrocer",
+      "name": "WhichGrocer",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Adapter pending",
+      "purpose": "product, priceObservation; Your issued API key, plan, attribution and retention rules. Retailer catalogue prices are not store availability.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Personal API plan / WhichGrocer terms. Access mode: byok. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.whichgrocer.com/developers"
+      ]
+    },
+    {
+      "id": "offmenu-source-spoonacular",
+      "name": "Spoonacular",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Adapter pending",
+      "purpose": "recipe, product, nutrientProfile; Your key and quota; recipe and nutrition caching / export depend on your plan.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Personal API plan terms. Access mode: byok. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://spoonacular.com/food-api/docs"
+      ]
+    },
+    {
+      "id": "offmenu-source-edamam",
+      "name": "Edamam",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Personal-credential adapter implemented; account/key not verified",
+      "purpose": "nutrientProfile, recipe; Food Database search uses your own app credentials. Attribution and storage restrictions remain.",
+      "offmenuFit": "Existing optional OffMenu provider workflow",
+      "qualificationNeeded": "Personal API plan terms. Access mode: byok. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.edamam.com/food-database-api-docs"
+      ]
+    },
+    {
+      "id": "offmenu-source-instacart",
+      "name": "Instacart",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Adapter pending",
+      "purpose": "shoppingList, retailer; Your key to create shoppable lists, subject to provider approval and supported markets.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Personal Developer Platform access / terms. Access mode: byok. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://docs.instacart.com/developer_platform_api/"
+      ]
+    },
+    {
+      "id": "offmenu-source-aldi",
+      "name": "ALDI country portals",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Country websites",
+      "purpose": "product, priceObservation; Choose the appropriate country retailer website and use your own browser session. No public global barcode-price API assumed.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Retailer terms; private observations. Access mode: browser. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://www.aldi.com/"
+      ]
+    },
+    {
+      "id": "offmenu-source-doordash",
+      "name": "DoorDash",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Approval required",
+      "purpose": "product, priceObservation, shoppingList; Your approved merchant credentials. An ordinary consumer login does not grant merchant API access.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Merchant / partner agreement. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.doordash.com/en-US/docs/marketplace/retail/about/integration_options/"
+      ]
+    },
+    {
+      "id": "offmenu-source-kroger",
+      "name": "Kroger",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: OAuth adapter pending",
+      "purpose": "product, priceObservation, shoppingList; Store-specific product and cart capabilities require your registered application and permissions.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Developer programme / user consent. Access mode: oauth. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.kroger.com/"
+      ]
+    },
+    {
+      "id": "offmenu-source-google-health",
+      "name": "Google Health",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Provider onboarding pending",
+      "purpose": "healthObservation, intakeRecord; Per-profile consent and approved application required; no new-project onboarding currently.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Google Health developer terms / explicit consent. Access mode: oauth. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developers.google.com/health"
+      ]
+    },
+    {
+      "id": "offmenu-source-health-connect",
+      "name": "Android Health Connect",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Native bridge pending",
+      "purpose": "healthObservation, intakeRecord; User grants per-data-type permissions in a native Android companion.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Device permissions and platform policy. Access mode: native. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.android.com/health-and-fitness/guides/health-connect"
+      ]
+    },
+    {
+      "id": "offmenu-source-healthkit",
+      "name": "Apple HealthKit",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Native bridge pending",
+      "purpose": "healthObservation, intakeRecord; Native Apple companion with explicit user consent; not browser-accessible.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Device permissions and platform policy. Access mode: native. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.apple.com/documentation/healthkit"
+      ]
+    },
+    {
+      "id": "offmenu-source-strava",
+      "name": "Strava",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: OAuth adapter pending",
+      "purpose": "activity; Personal exercise context; API permissions and downstream reuse restrictions apply.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Developer agreement / user consent. Access mode: oauth. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developers.strava.com/"
+      ]
+    },
+    {
+      "id": "offmenu-source-garmin",
+      "name": "Garmin Health",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Registry declaration: Approval required",
+      "purpose": "activity, healthObservation; Approved integration and each user’s consent, not a shared offmenu account.",
+      "offmenuFit": "Source candidate or curation input; registry label is not current serving proof",
+      "qualificationNeeded": "Approved programme / user consent. Access mode: partner. Verify actual publication, rights, coverage and account access for the selected workflow.",
+      "evidence": [
+        "/home/user/src/offmenu/public/sources.js",
+        "https://developer.garmin.com/health-api/overview/"
+      ]
+    },
+    {
+      "id": "offmenu-enrichment-gleif",
+      "name": "GLEIF",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public enrichment adapter implemented",
+      "purpose": "Company/organisation candidate enrichment and provenance",
+      "offmenuFit": "Existing optional public enrichment",
+      "qualificationNeeded": "Active source policy, match confidence and actual upstream availability",
+      "evidence": [
+        "/home/user/src/offmenu/cloud/enrichment.mjs"
+      ]
+    },
+    {
+      "id": "offmenu-enrichment-wikidata",
+      "name": "Wikidata",
+      "category": "Food and health data",
+      "projects": [
+        "OffMenu"
+      ],
+      "status": "Public enrichment adapter implemented",
+      "purpose": "Company/organisation candidate enrichment and provenance",
+      "offmenuFit": "Existing optional public enrichment",
+      "qualificationNeeded": "Active source policy, match confidence and actual upstream availability",
+      "evidence": [
+        "/home/user/src/offmenu/cloud/enrichment.mjs"
+      ]
+    }
+  ],
+  "scope": {
+    "repositories": [
+      "/home/user/src/offmenu",
+      "/home/user/src/anqr",
+      "/home/user/src/usf-v3",
+      "/home/user/src/cix",
+      "/home/user/src/bak/anqr",
+      "/home/user/src/bak/usf",
+      "/home/user/src/bak/v2/usf",
+      "/home/user/src/usf-v3-site",
+      "/home/user/src/cix-luca-react-site-20261011",
+      "/home/user/src/cix-luca-production-mobile-typography-20261011"
+    ],
+    "coordinationRecords": [
+      "CIX-327 description and all 515 returned comments",
+      "CIX-330",
+      "CIX-65",
+      "CIX-62",
+      "CIX-332",
+      "CIX managed service project"
+    ],
+    "history": "Selected archived ANQR commit subjects for service integration and mobile CI; retained USF historical inventory and provider records",
+    "coverageLimit": "Bounded reconstruction from accessible repository trees, retained historical registers, selected Git history and CIX Linear records. Not an exhaustive scan of every commit, worktree, provider account or erased history.",
+    "currentEntitlements": "No general entitlement, pricing, credit, plan, live-health or successful-call conclusion follows from historical account/configuration metadata.",
+    "privacy": "No credential values, shell profiles, private account snapshots or signed attachment URLs are included."
+  },
+  "counts": {
+    "total": 149,
+    "byCategory": {
+      "Hosting and identity": 5,
+      "Engineering and delivery": 9,
+      "Monitoring and quality": 4,
+      "Consent and advertising": 5,
+      "Analytics and discovery": 6,
+      "Maps and localisation": 4,
+      "Email and support": 8,
+      "Design and authoring": 6,
+      "AI and automation": 24,
+      "Historical local infrastructure": 25,
+      "Food and health data": 53
+    }
+  },
+  "nameClarification": "Century is interpreted provisionally as Sentry; no separate Century vendor was established in the scoped evidence.",
+  "unsubstantiatedExamples": [
+    "Stripe",
+    "Paddle",
+    "PayPal",
+    "Resend",
+    "Postmark",
+    "Mailgun",
+    "SendGrid",
+    "Cookiebot",
+    "OneTrust"
+  ],
+  "repositoryIdentities": [
+    {
+      "path": "/home/user/src/offmenu",
+      "head": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+      "branch": "main"
+    },
+    {
+      "path": "/home/user/src/anqr",
+      "head": "92ba820dd63e7461928bdeddfd8a430c4cc10a74",
+      "branch": "anqr-experience-realisation"
+    },
+    {
+      "path": "/home/user/src/usf-v3",
+      "head": "9c8fb901770dcc0ea94e1f04faa1682538ef7d2b",
+      "branch": "anqr-experience-realisation"
+    },
+    {
+      "path": "/home/user/src/cix",
+      "head": "2de34d1d617c7243a8ed17a644d121cbf5fafda0",
+      "branch": "main"
+    },
+    {
+      "path": "/home/user/src/bak/anqr",
+      "head": "a03cee561f2ad7bf9cb83f15eb857925c967e34f",
+      "branch": "symphony/integration"
+    },
+    {
+      "path": "/home/user/src/bak/usf",
+      "head": "028a9f964fd25c2fd774c1b4fde6ea1cebdf8312",
+      "branch": "main"
+    },
+    {
+      "path": "/home/user/src/bak/v2/usf",
+      "head": "2d7eb31f0d586b32008ba854dfca0fa8437054cf",
+      "branch": "graph/v2-bau-protected-2d7eb31"
+    },
+    {
+      "path": "/home/user/src/usf-v3-site",
+      "head": "c010c8319cc31e6fe00a28d4a85bba08dba00649",
+      "branch": "main"
+    },
+    {
+      "path": "/home/user/src/cix-luca-react-site-20261011",
+      "head": "738cc8ea88c3dcae54080c9dc0046fb54e750251",
+      "branch": "main"
+    },
+    {
+      "path": "/home/user/src/cix-luca-production-mobile-typography-20261011",
+      "head": null,
+      "branch": null
+    }
+  ],
+  "localEvidence": [
+    {
+      "path": "/home/user/src/bak/anqr/apps/web/src/features/analyze/components/build-geo-details.tsx",
+      "sha256": "179e7a009a4bb5d56ecece3d30fe845f7a7135d0f5a4df68e27aff80013266a3"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/codemagic.yaml",
+      "sha256": "8332af7767e96fad0fb827e08822eb27defb4b95a4f2b5fece9578a5b40bdbe9"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/docs/archive/discovery/01-service-runtime-matrix.md",
+      "sha256": "24bab7f51bf7d405e56a37983047c63e3dc821219878444883f0e1920933423b"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/docs/archive/discovery/07-analytics-ads-attribution.md",
+      "sha256": "312c2446136deb7255ea5b5d712665685662464779dc5b18ac121a1468a72dbc"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/docs/archive/discovery/08-external-services-inventory.md",
+      "sha256": "ce02554715aa86a2bc1f668f9cd90fe87c0bab40049722dcba9738df674ce495"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/docs/program/01-anqr-1.0-definition.md",
+      "sha256": "c8583ec146d22f13e1dad8cf891fa5c78d7c0b3e35ddd6c2239f561e0d759703"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/harness/ops/integrations/email/email-ingest/sync-mail.mjs",
+      "sha256": "cb3858340ee9a8b48e969ce1dff7caca9afe28b630fb4577725cffdf8bce1fd3"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/harness/ops/integrations/model/symphony-credit-gate/build-static-providers.mjs",
+      "sha256": "b3e50f01091f244acd655f8e0f8786bfa73bd3702caa235069cfce75380becdb"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/harness/ops/status-server/public/bookmarks-data.js",
+      "sha256": "99051b12a4088bfeb81b0950ac4a010e5c535170f5244d68bd05956123aea9cb"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/netlify.toml",
+      "sha256": "e509198a1e9c90c47a68e184a2468fa1ba369d520b549a3458bbe46e5ff658bc"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/packages/analytics/ads/src/components/ad-unit.tsx",
+      "sha256": "e06ff3cd63b08ddd7c9e2a8cb6f11a193f63a08a805541848771263d04833989"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/packages/observability/logging/src/init-sentry-module.ts",
+      "sha256": "6b7819acc1263ce5aeff2942a129a2793ec23633a996dbf7b69d008e6c3ebd12"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/packages/observability/telemetry/src/track-zaraz-event.ts",
+      "sha256": "aa4d61929ccce7a4317f4ef33a4eaf2799cc82ee62aca32e648617395e74c04a"
+    },
+    {
+      "path": "/home/user/src/bak/anqr/packages/platform/browser/src/boot/web-only-assets.ts",
+      "sha256": "aaa1e9b042082fda56e4c2504266152cf079a456758ca9c9581f9408ae18ac84"
+    },
+    {
+      "path": "/home/user/src/bak/usf/docs/architecture/provider-consolidation-map.json",
+      "sha256": "019c6bc95fe94ae6cf1633cbb21661256b988a2b3e41ee88d06d8e5f2b57d116"
+    },
+    {
+      "path": "/home/user/src/cix/.github/workflows/governance.yml",
+      "sha256": "6a85f0538e11f508a1d8a8bd169730932dab39442a90229629602e24343fd3ac"
+    },
+    {
+      "path": "/home/user/src/offmenu/README.md",
+      "sha256": "4b5634b3e5873c89a53426b72cbdff64b3ee7e4517e70af4809505eeb412c346"
+    },
+    {
+      "path": "/home/user/src/offmenu/cloud/enrichment.mjs",
+      "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d"
+    },
+    {
+      "path": "/home/user/src/offmenu/cloud/handler.mjs",
+      "sha256": "135084cff9d4ec6169c03a132e504c101a7d350a2de1a4c9c8077519cd9fdc4e"
+    },
+    {
+      "path": "/home/user/src/offmenu/docs/MIGRATION.md",
+      "sha256": "af108eb3acc32bde434c509c5ae10c8e7e2b1c50a08be208628483e366f0c39f"
+    },
+    {
+      "path": "/home/user/src/offmenu/docs/curation-architecture.md",
+      "sha256": "854234d63cfbdc6c5018ae315bd4a5568a41fb695fb90c52d3e55d39c802726e"
+    },
+    {
+      "path": "/home/user/src/offmenu/docs/operations.md",
+      "sha256": "60c8ac9b7aa4080b1208d79674d4e1f07f24b4d8a3bdbabb1e8c2ac8e8627769"
+    },
+    {
+      "path": "/home/user/src/offmenu/public/sources.js",
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+    },
+    {
+      "path": "/home/user/src/usf-v3/config/provider-legacy-observations.json",
+      "sha256": "df470db1ad1f4b73734b87ee40abcb5cb271132e97130d3734f6779f60843577"
+    },
+    {
+      "path": "/home/user/src/usf-v3/config/providers.json",
+      "sha256": "1b84e11f8028afd6fac898c8bca0ab8168b26dfea70d4948bbee1f091a24df19"
+    },
+    {
+      "path": "/home/user/src/usf-v3/docs/hermes-management.md",
+      "sha256": "e645a8f3f81473d1a61a8113a8ec471f04966942524d7bf100a53be0d9eab608"
+    },
+    {
+      "path": "/home/user/src/usf-v3/docs/historical-inventory.md",
+      "sha256": "5dd74a5fafb09dbad37f8e6f5fed74f9e6efeb9a2c1e69b6a2af605d667fdd5d"
+    },
+    {
+      "path": "/home/user/src/usf-v3/docs/operator/inspection.md",
+      "sha256": "1e7d4e79f9be6f3fdf576dc832a69e62cf63f786e31570a8951cc21abd246368"
+    }
+  ]
+}

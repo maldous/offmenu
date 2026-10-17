@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "offmenu-collection/1",
+  "sourceId": "foodfiles",
+  "releaseId": "2024-v01",
+  "status": "normalized",
+  "normalizedRows": 2857,
+  "counts": {
+    "raw": 2857,
+    "accepted": 2857,
+    "duplicates": 0,
+    "quarantined": 0,
+    "excluded": 0,
+    "records": 2857
+  },
+  "countries": {
+    "NZ": 2857
+  },
+  "archiveSha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+  "license": "FOODfiles terms: source data unchanged, attribution and downstream terms required",
+  "attribution": "New Zealand Food Composition Database, FOODfiles 2024 Version 01; Plant & Food Research and New Zealand Ministry of Health",
+  "sourceAcquisition": {
+    "key": "nz-foodfiles-2024.msi",
+    "url": "https://foodcomposition.co.nz/downloads/foodfiles-2024-v1.msi",
+    "bytes": 48361472,
+    "sha256": "fad47d11c97814b1d7be5a9d538f0b32cd4807b7d231e516e57c939c75a18a5f",
+    "contentType": "application/octet-stream"
+  },
+  "publication": "local only",
+  "completedAt": "2026-10-13T09:24:53.852045+00:00",
+  "nutrientObservations": 571495,
+  "matrixObservationCounts": {
+    "W": 414752,
+    "F": 148222,
+    "N": 8521
+  },
+  "foodNameSource": "Supplied Excel NAME.FT, avoiding one unescaped tilde in text NAME.FT sampling description; original text retained",
+  "scope": "All FOODfiles 2024 Version 01 food names and all 571,495 unabridged nutrient observations parsed; all 30 installer components retained locally. Canonical facts use whole-food W matrix only; fatty-acid F and nitrogen N matrices remain source-specific. Multiple energy, carbohydrate and fibre definitions remain distinct. Source values unaltered; selected FSANZ available-carbohydrate energy definition explicitly identified. Not the newer 2026 online-search data."
+}
