@@ -1,0 +1,61 @@
+ OFFMENU / PRODUCT STRATEGY / 09
+
+
+
+ Normalise once. Preserve the
+ evidence.
+ Normalisation, hashing, compression, embedding and distribution do not remove source rights. Physical separation helps
+ governance but does not itself settle derivative-database obligations.
+
+ Proposed data model
+  Entity                            Essential fields and distinction
+
+  Product / product version         Internal ID; original GTIN string; canonical GTIN where valid; market; brand; pack size;
+                                    label version; ingredient/allergen claims; source timestamp. A retail SKU is not a
+                                    universal product ID.
+
+  Ingredient / composition          Culinary identity, synonyms by locale, raw/cooked/drained form, edible portion, nutrient
+  record                            units/basis, portion or density evidence. Similar names do not prove nutritional
+                                    equivalence.
+
+  Recipe / ingredient line          Recipe version; source text; parsed amount/range/unit; optionality; preparation; yield;
+                                    mapped identity; parsing confidence; reviewed state; licensed instructions/images.
+
+  Lot / batch / serving / event     Household and location; received/opened/frozen dates;
+                                    use-by/best-before/check-reminder separately; quantity basis; cook batch;
+                                    served/eaten/saved/discarded events.
+
+  Offer / observation               Retailer and store; region; date; currency; pack quantity; price basis; loyalty condition;
+                                    promotion; availability evidence; delivery/minimum-order conditions.
+
+  Source assertion /                Provider, source ID/URL, retrieval and effective times, licence/version, attribution,
+  permission                        allowed uses/cache/export, transformation history, confidence and correction record.
+
+
+
+ Ingestion and publication pipeline
+ 1. Register the source and approved uses. 2. Retain raw evidence only where permitted. 3. Parse and
+ normalise into a source-labelled staging area. 4. Validate units, identities, duplicates and anomalies. 5.
+ Send uncertain mappings to review. 6. Publish a versioned feature projection. 7. Refresh, withdraw and
+ reprocess through the same auditable path.
+
+ Storage that fits the product
+ Keep licensed raw releases and large compressed snapshots in object storage where permitted. Use
+ indexed operational tables for fast barcode, ingredient and household queries. Deliver small
+ regional/offline packs and incremental updates. Retain commercial provider responses only within
+ permitted bounds; do not dump whole third-party catalogues into every phone or user-state snapshot.
+
+ Choose evidence by field, not one universal winner
+ Use exact current package evidence for product-specific labels; reviewed regional composition for generic
+ foods; explicit user corrections for that private lot. Retain conflicting assertions and show uncertainty.
+ Version nutrient calculations so a later upstream correction does not silently rewrite dietary history.
+
+ Licence release gate: complete attribution, adapted-content obligations, permitted caching/export, commercial use, image
+ rights and withdrawal handling. Never mix personal health records into a public share-alike data release. OFF, AFCD and
+ commercial API obligations differ. [8-16]
+
+
+
+
+OFFMENU / PRODUCT REVIEW / 12 OCT 2026                                                                                           9
+

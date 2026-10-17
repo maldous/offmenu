@@ -1,0 +1,153 @@
+{
+  "cases": 15,
+  "passed": 12,
+  "failed": 3,
+  "failedCases": [
+    {
+      "case": "malformed-required-review-entry",
+      "expectedExit": 2,
+      "expectedDurableBlockedReceipt": true,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 1,
+        "stdoutJSON": null,
+        "receipt": null,
+        "newReceiptCount": 0,
+        "stderrLast": "itflow-review/snapshot/scripts/offmenu-gitflow.py\", line 595, in main\n    g.receipt['status'] = getattr(g, a.operation)(a)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py\", line 196, in delivery\n    need(r.get('head') == head and r.get('state') == 'APPROVED', 'required review pending/failed/stale')\n         ^^^^^\nAttributeError: 'str' object has no attribute 'get'\n"
+      },
+      "passed": false
+    },
+    {
+      "case": "launcher-abbreviated-repo-override",
+      "expectedExit": 2,
+      "actualExit": 0,
+      "command": [
+        "python3",
+        "-B",
+        "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow-launch.py",
+        "--policy",
+        "/tmp/tmp5gnv36zr/policy.json",
+        "--evidence-dir",
+        "/tmp/tmp5gnv36zr/receipts",
+        "--rep",
+        "/tmp/tmp5gnv36zr/worker-09",
+        "start",
+        "--kind",
+        "feature",
+        "--task",
+        "alias-path",
+        "--check-only"
+      ],
+      "launcherCwd": "/tmp/tmp5gnv36zr/launcher-home/worker-09",
+      "requestedOtherRepo": "/tmp/tmp5gnv36zr/worker-09",
+      "receiptRepo": "/tmp/tmp5gnv36zr/worker-09",
+      "receiptStatus": "allowed",
+      "stderr": "",
+      "passed": false
+    },
+    {
+      "case": "normal-merge-receipt-to-retirement",
+      "expectedExit": 0,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmp63cf092_/worker-09",
+          "--policy",
+          "/tmp/tmp63cf092_/policy.json",
+          "--evidence-dir",
+          "/tmp/tmp63cf092_/receipts",
+          "retire",
+          "--worker",
+          "9",
+          "--start",
+          "/tmp/tmp63cf092_/receipts/normal-delivery-cycle-start-89f82431edd943788a888846ae6648c1.json",
+          "--ready",
+          "/tmp/tmp63cf092_/receipts/normal-delivery-cycle-ready-b651f7027c3945f5b172b829fc059564.json",
+          "--integration",
+          "/tmp/tmp63cf092_/receipts/gate-merge_receipt-0e3cf20a49bd46beb03cb345dd43b690.json",
+          "--check-only"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmp63cf092_/receipts/gate-retire-3a81f35594484d6fab79674d22018ac5.json",
+          "error": "missing completed receipt for this permanent worker"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.591182Z",
+          "repo": "/tmp/tmp63cf092_/worker-09",
+          "policy_sha256": "7046d503f2359103995bfc7132885cee94f2bd55849761ce64692291ea2f1d70",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.598126Z",
+              "line": "develop",
+              "lock": "/tmp/tmp63cf092_/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+              "completed_utc": "2026-10-14T08:56:50.603002Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "retire",
+          "worker": 9,
+          "head_before": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+          "tag_checks": [
+            {
+              "tag": "v1.0.0",
+              "exit_code": 0,
+              "utc": "2026-10-14T08:56:50.610082Z",
+              "stdout": "cbfe28866629e10f77ae343d11216b9a8e0f3b5c\trefs/tags/v1.0.0\n0a2e045f8a63a9b846c916a317293fbf820f3d02\trefs/tags/v1.0.0^{}\n",
+              "stderr": ""
+            }
+          ],
+          "error": "missing completed receipt for this permanent worker"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "mergeReceiptOperation": "merge_receipt",
+      "normalMergeParents": [
+        "0a2e045f8a63a9b846c916a317293fbf820f3d02",
+        "4785d0b9646c3bea70c878b4d377b1db07fa5d7b"
+      ],
+      "normalMergeTree": "7f384d7d13ec4ef6b4aa4299da8bfe25f5303545",
+      "readySHA": "4785d0b9646c3bea70c878b4d377b1db07fa5d7b",
+      "source": "4785d0b9646c3bea70c878b4d377b1db07fa5d7b",
+      "passed": false,
+      "qualification": "All release baseline/line/Morgan/ignored/dependency fixtures were explicitly synthetically qualified to isolate receipt compatibility; no real certification implied."
+    }
+  ]
+}

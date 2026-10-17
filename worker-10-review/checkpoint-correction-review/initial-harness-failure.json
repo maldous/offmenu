@@ -1,0 +1,6 @@
+{
+  "scope": "reviewer metadata fixture setup, not candidate regression",
+  "cause": "Reviewer created empty partial before invoking actual Checkpoint constructor; writer correctly refuses preexisting partial.",
+  "correction": "Create actual checkpoint while partial path absent, then restore owned empty partial for metadata read-only inspection.",
+  "candidateSourceChanged": false
+}

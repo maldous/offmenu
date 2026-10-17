@@ -1,0 +1,117 @@
+[
+  {
+    "path": "after.json",
+    "bytes": 5034,
+    "sha256": "fed9c80646d8c81eb1fba0b702be355bbc01af25e253b55131e4007b4bee717c"
+  },
+  {
+    "path": "before.json",
+    "bytes": 5034,
+    "sha256": "fed9c80646d8c81eb1fba0b702be355bbc01af25e253b55131e4007b4bee717c"
+  },
+  {
+    "path": "build-review.py",
+    "bytes": 8431,
+    "sha256": "6bc0b2786c9fd70db73304acf53a8ce32cbd2a7a12ce04a10fe6086e77d4789f"
+  },
+  {
+    "path": "immutable.patch",
+    "bytes": 25919,
+    "sha256": "67b0351117ea4c0e364e351be85a56a6f58bdbd482167b30e6009e4780c18673"
+  },
+  {
+    "path": "independent-command.json",
+    "bytes": 278,
+    "sha256": "a3d8e7adfb645d955260df7acc17ad443d43b2c05daa96ea3aee682a0431ae6a"
+  },
+  {
+    "path": "independent-probes.log",
+    "bytes": 3245,
+    "sha256": "e35009971b9821cd4e5829bbc0287fa601698e33edbe73bbb78959a03dadca92"
+  },
+  {
+    "path": "independent-probes.py",
+    "bytes": 7828,
+    "sha256": "6e9fb1329ecf9217536ab8d1fe69b15a3066c05baa82555182f30625cc6cabae"
+  },
+  {
+    "path": "independent-results.json",
+    "bytes": 78405,
+    "sha256": "8aa0f481685e7452d1f302576ca667b3238c7738904e9914e919b1c327d8d333"
+  },
+  {
+    "path": "inputs.json",
+    "bytes": 290,
+    "sha256": "4f2b3909281a63afec18e4c3cc865b1b74b5bb58c0b0c6d63d65e39501db67de"
+  },
+  {
+    "path": "owner-command.json",
+    "bytes": 353,
+    "sha256": "d86a8ed3ebb0beeea985297ea77620e5e16e470e339b605c56908414bc05f43d"
+  },
+  {
+    "path": "owner-result.json",
+    "bytes": 4766,
+    "sha256": "34adfd9124919bdb1b080cd7ab56f38072d006c4f8d25173d841ddd6c43d8c54"
+  },
+  {
+    "path": "owner-suite-isolation.json",
+    "bytes": 3459,
+    "sha256": "ecee0468969be404eb8364df2148e35ab822447d9e416eb1aeaa9197fa831279"
+  },
+  {
+    "path": "owner-tests.log",
+    "bytes": 7029,
+    "sha256": "e05e482632527255c3112a5f88e9ec08fed1eca9fd4373ceb5305fc18368421e"
+  },
+  {
+    "path": "readback.json",
+    "bytes": 506,
+    "sha256": "c24a00c8b2800e8bf9c90ef7ff821535af9939e9ba508c90ad96da7479780bea"
+  },
+  {
+    "path": "routine-command.json",
+    "bytes": 278,
+    "sha256": "fc4cc6d56b86c84d5e6237ac7b7050c86913120876df7e3bf186d1a5d4c23549"
+  },
+  {
+    "path": "routine-flow-probe.py",
+    "bytes": 3442,
+    "sha256": "e081b0a68f01cc01f9c89613f5c835ecedf8fb6b4f0f40aabd22b8c14eb124c7"
+  },
+  {
+    "path": "routine-flow-results.json",
+    "bytes": 810,
+    "sha256": "b6d38ab44159a0dc434b0879d4142748d6a4b52490114a951be9777a6b2dc65d"
+  },
+  {
+    "path": "routine-flow.log",
+    "bytes": 810,
+    "sha256": "b6d38ab44159a0dc434b0879d4142748d6a4b52490114a951be9777a6b2dc65d"
+  },
+  {
+    "path": "snapshot/docs/OFFMENU_GITFLOW.md",
+    "bytes": 30338,
+    "sha256": "31bfb171fe8469d0afdde82cdc146062f25df6d88937dad9bc2fac8740367799"
+  },
+  {
+    "path": "snapshot/scripts/offmenu-gitflow-launch.py",
+    "bytes": 1158,
+    "sha256": "29ff1115c840ce050d2d377dfc0b1f56852f1ad5e28223924078d60763c94603"
+  },
+  {
+    "path": "snapshot/scripts/offmenu-gitflow.py",
+    "bytes": 43252,
+    "sha256": "62fba21787928633f0e8bf5f475f127e4f635acea3845cb11cf42203db427122"
+  },
+  {
+    "path": "snapshot/tests-gitflow/test_offmenu_gitflow.py",
+    "bytes": 48973,
+    "sha256": "aca14b6754b0f34a0e24e6f267de0fe5c47c956ceba946c91bbba936bb45a48c"
+  },
+  {
+    "path": "source-receipts.json",
+    "bytes": 857,
+    "sha256": "d650863c8cabcb5f4ffb9f039877c81220c0cb8047be76e943c57c7ca975046c"
+  }
+]

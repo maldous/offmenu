@@ -1,0 +1,72 @@
+[
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker01-checkpoint-inventory-correction/result-receipt.json",
+    "sha256": "c633b75f974aa69f56be99e411eeab2596622ded9498395d680b5622e6e9a335",
+    "value": {
+      "utc": "2026-10-14T08:18:26.425192+00:00",
+      "branch": "feature/checkpoint-inventory-correction-20261014",
+      "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "head": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+      "parent": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "diffSha256": "6260e5dac320145456300ae3604683925e21b1bbdb10fb353ee0c1da5c687a80",
+      "approvedReceiptPreserved": true,
+      "acceptedTreePreserved": true,
+      "priorBranchPreserved": true,
+      "mainHeadPreserved": true,
+      "primaryIndexPreserved": true,
+      "nodeModulesPreserved": true,
+      "gitStatus": "?? node_modules",
+      "checks": {
+        "focusedTests": 11,
+        "exitCode": 0,
+        "whitespaceExitCode": 0,
+        "inheritedGitVariablesStripped": true,
+        "gitMutatingFixtures": false
+      },
+      "reviewStatus": "Pending independent exact-head/base review; no approval claimed",
+      "delivery": "Local result only; no push/PR/merge/actions/settings or corpus execution performed"
+    }
+  },
+  {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker01-checkpoint-inventory-correction/restored-limit-result.json",
+    "sha256": "8d286820e892cc4b3e3044683d781dde3b7d6d8240333594d8724934d23744a7",
+    "value": {
+      "utc": "2026-10-14T08:23:21.473751+00:00",
+      "branch": "feature/checkpoint-inventory-correction-20261014",
+      "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+      "head": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "deltaParent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+      "metadataCorrectionPreserved": true,
+      "deltaSha256": "3a5da6d6f2d08bf96c2c0f402cf7a4cfbda8a43d19621634d5077e977383da5c",
+      "beforeRegressionExitCode": 1,
+      "beforeFailures": "packet-size/limit 1/1 and 2/2: altered manifest coverage",
+      "afterRegressionExitCode": 0,
+      "afterCases": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "focusedTests": 12,
+      "focusedExitCode": 0,
+      "approvedReceiptPreserved": true,
+      "primaryMainUnchanged": true,
+      "primaryIndexUnchanged": true,
+      "status": "?? node_modules",
+      "review": "Pending root-assigned independent reviewer; no GitHub approval claimed/thread resolved",
+      "dataExecution": false
+    }
+  }
+]

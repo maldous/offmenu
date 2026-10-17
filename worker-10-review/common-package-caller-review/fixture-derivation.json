@@ -1,0 +1,5 @@
+{
+  "source": "tests-web/common-package-caller.test.mjs",
+  "cut": "prefix before first test; author fixture helper reused for DOM and tiny synthetic package only",
+  "derivedSha256": "2ee0923240d17c7cd9253469e47c1fff5890f72c4bda5726201f2aac880f4c2e"
+}

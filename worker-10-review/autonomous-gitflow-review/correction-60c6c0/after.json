@@ -1,0 +1,148 @@
+{
+  "mainHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "worker10HEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "worker10Branch": "feature/checkpoint-correction-review-20261014",
+  "worker09HEAD": "60c6c01142fa903b8a9b6d4658f5c91085409baa",
+  "identities": [
+    {
+      "path": "/home/user/src/offmenu/.git/HEAD",
+      "dev": 64512,
+      "ino": 14868439,
+      "size": 21,
+      "mode": 33204,
+      "mtimeNs": 1791868083845924473,
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/index",
+      "dev": 64512,
+      "ino": 14868426,
+      "size": 27304,
+      "mode": 33204,
+      "mtimeNs": 1791957650613992637,
+      "sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/worktrees/worker-10/index",
+      "dev": 64512,
+      "ino": 17848947,
+      "size": 27816,
+      "mode": 33204,
+      "mtimeNs": 1791966595783949955,
+      "sha256": "076b8c9cd24fb5ee3ca94225993d64103505892c183f10cebecc389edac6d297"
+    }
+  ],
+  "hooks": [
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/applypatch-msg.sample",
+      "mode": 509,
+      "size": 478,
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/commit-msg.sample",
+      "mode": 509,
+      "size": 896,
+      "sha256": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/fsmonitor-watchman.sample",
+      "mode": 509,
+      "size": 4726,
+      "sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/post-update.sample",
+      "mode": 509,
+      "size": 189,
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-applypatch.sample",
+      "mode": 509,
+      "size": 424,
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-commit.sample",
+      "mode": 509,
+      "size": 1643,
+      "sha256": "f9af7d95eb1231ecf2eba9770fedfa8d4797a12b02d7240e98d568201251244a"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-merge-commit.sample",
+      "mode": 509,
+      "size": 416,
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-push.sample",
+      "mode": 509,
+      "size": 1374,
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-rebase.sample",
+      "mode": 509,
+      "size": 4898,
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-receive.sample",
+      "mode": 509,
+      "size": 544,
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/prepare-commit-msg.sample",
+      "mode": 509,
+      "size": 1492,
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/push-to-checkout.sample",
+      "mode": 509,
+      "size": 2783,
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/sendemail-validate.sample",
+      "mode": 509,
+      "size": 2308,
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/update.sample",
+      "mode": 509,
+      "size": 3650,
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+    }
+  ],
+  "priorReview": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-review.json",
+    "dev": 64512,
+    "ino": 17884002,
+    "size": 55271,
+    "mode": 33204,
+    "mtimeNs": 1791968658425897903,
+    "sha256": "7d24479e7ca68f6867d9e59d81bcd756264174c4970a689254cf965c280d12e8"
+  },
+  "priorProbes": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-results.json",
+    "dev": 64512,
+    "ino": 17881456,
+    "size": 42096,
+    "mode": 33204,
+    "mtimeNs": 1791968210817277791,
+    "sha256": "4d8cdc3ce578d620e2719aad6d56ee713121a6820e0dd091b948a6eb04d05eae"
+  },
+  "triggerProposal": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/trigger-proposal.json",
+    "dev": 64512,
+    "ino": 17882739,
+    "size": 3467,
+    "mode": 33204,
+    "mtimeNs": 1791968430533522994,
+    "sha256": "9a0ef663bca50a8daf2b13c0fa70c6b0d5d32290c6a011aed6349121ac5218b7"
+  }
+}

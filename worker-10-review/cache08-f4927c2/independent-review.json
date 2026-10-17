@@ -1,0 +1,55 @@
+{
+  "schema": "offmenu-worker10-cache08-independent-review/1",
+  "utc": "2026-10-14T13:48:41.256113+00:00",
+  "actualPickup": {
+    "hostname": "foo",
+    "cwd": "/home/user/src/offmenu-workers/worker-10",
+    "thread": "01a138ed-be8c-7340-b25e-87bee9272d7e"
+  },
+  "reviewedCommit": "f4927c2fe0fd1bbd3727a2c6310f8af70b3b8ff6",
+  "tree": "fad6ebb24b917c0c91162b6a1da5341d1a27c69b",
+  "authoredBase": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "verdict": "PASS_AS_SCOPED_ASSESSMENT_ONLY",
+  "findings": [],
+  "publication": "HELD",
+  "production": "STOP",
+  "adoption": "Root assigns adoption; no implementation or release certification",
+  "evidence": {
+    "originalPDFPath": "/home/user/src/offmenu-workers/worker-59/research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+    "originalPDFSHA256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd",
+    "originalPDFHashIndependentlyVerified": true,
+    "pagesTextAndVisualInspected": [
+      6,
+      7,
+      9
+    ],
+    "pinnedSourceHashesVerified": 18,
+    "syntheticAssertionsIndependentlyReplayed": 17,
+    "syntheticResultMatchesCandidate": true,
+    "programHashMatches": true
+  },
+  "assessment": {
+    "cohortAndDifferencing": "Small-cell, intersection, complementary totals, homogeneity and overlapping-query examples are valid limited counterexamples. They establish no safe threshold or deployed leak. Distinct contributor limits, dimension catalogue and composition gates remain proposals.",
+    "linkability": "Stable pseudonym equality and retained time/location/household fields demonstrate potential linkage, not anonymity. Assessment explicitly requires whole information-environment and audience review.",
+    "temporalAndWithdrawal": "Adjacent snapshots and withdrawal recomputation can disclose event/contribution differences. PDF7 requires start/commit/private-serve rechecks and queued-job withdrawal handling; PDF9 requires derivative deletion and restore replay. Assessment correctly keeps those aggregate acceptance obligations unqualified and avoids universal retroactive-deletion promises.",
+    "privateSource": "Verified owner-bound personal SQL and no-store outputs are distinct from aggregate release. Sensitive-kind filters and tested household projection are limited function checks, not anonymization. Generic admission can allow non-marked public count=1; source permission is insufficient.",
+    "owner07": "45080c3 cloud/corpus.mjs is a curated reader, not a complete aggregate producer lineage contract; missing authoritative producer binding remains explicit.",
+    "owner29": "5a33fe8 adapter checks scope, epoch, policy documents/revisions, authoritative assertions and conditional SQL commit/read gates. Trusted caller payload completeness, contribution-purpose epochs and integrated withdrawal/restore behavior remain unqualified. No suppression/query-history/noise mechanism certified.",
+    "owner30": "da6d481 provider-account CAS request/spend reservation is not privacy accounting. Two permitted attempts replay in injected memory storage; no D1/durable-store behavior is independently qualified by this test.",
+    "architecture": "Selected handler/enrichment do not establish integrated 07->29->30 aggregate composition; controls table consistently labels implementation candidates versus proposals."
+  },
+  "limits": [
+    "Targeted exact-pin assessment review only; no complete repository security, regulatory, runtime or deployed-private-data audit.",
+    "17 assertions include arithmetic/Set/hash fixtures and selected in-memory function probes; not a passing aggregate privacy mechanism or deployed leak demonstration.",
+    "No private records, settings, provider calls, source acquisition, SQL changes, publication or production execution.",
+    "No source edits, checkout switches, fetches, installs, servers, new workers or sessions. New reviewer evidence only."
+  ],
+  "preservation": {
+    "protectedFilesAndPriorArtifactsUnchanged": true,
+    "protectedCount": 258,
+    "reviewerAndAuthorHeadsUnchanged": true,
+    "hooksPreserved": 14,
+    "mainIndexCommonPreserved": true
+  },
+  "readyForDistinctNextReview": true
+}

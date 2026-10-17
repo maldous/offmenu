@@ -1,0 +1,131 @@
+{
+  "schema": "offmenu-worker51-provenance-fix/1",
+  "finding": "W10-MEXT-F1",
+  "reviewer": 10,
+  "review_report": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/source50-51-20261015/independent-review.json",
+    "sha256": "de28404b528642b0ae05901207ea994b40a91a7eb31da2148a045ded83dd292e"
+  },
+  "independent_probes": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/source50-51-20261015/independent-provenance-probes.json",
+    "sha256": "79b9f3ecb52bee8a41eb47b27230cdfa207427155c47b8c6792bec48ea2cfe46"
+  },
+  "owner": 51,
+  "thread_id": "01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a",
+  "worktree": "/home/user/src/offmenu-workers/worker-51",
+  "branch": "feature/global-data-51-japan-20261015",
+  "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+  "reviewed_parent": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
+  "created_utc": "2026-10-14T14:30:50.738302+00:00",
+  "before_after_probes": [
+    {
+      "field": "release",
+      "value": "unreviewed-other-release",
+      "before_accepted": true,
+      "after_accepted": false,
+      "after_error": "Conflicting source release/workbook/document provenance"
+    },
+    {
+      "field": "workbookSha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "before_accepted": true,
+      "after_accepted": false,
+      "after_error": "Conflicting source release/workbook/document provenance"
+    },
+    {
+      "field": "memberSha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "before_accepted": true,
+      "after_accepted": false,
+      "after_error": "Conflicting worksheet/member/header provenance"
+    },
+    {
+      "field": "sheet",
+      "value": "other-worksheet",
+      "before_accepted": true,
+      "after_accepted": false,
+      "after_error": "Worksheet is not in pinned workbook"
+    },
+    {
+      "field": "url",
+      "value": "https://example.invalid/other",
+      "before_accepted": true,
+      "after_accepted": false,
+      "after_error": "Conflicting source release/workbook/document provenance"
+    }
+  ],
+  "actual_records": {
+    "count": 192,
+    "before_recordSetSha256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
+    "after_recordSetSha256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
+    "unchanged": true
+  },
+  "fix": "Bind publisher/release/workbook/document URL and worksheet member digest/schema/basis to trusted pinned workbook and pinned acquisition/release manifests. Before proof, compare all record cells with actual requested worksheet rows in one bounded pass per sheet; do not trust self-rehashed cells. Empty proofs rejected.",
+  "manifest_pins": {
+    "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
+    "sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
+    "acquisition_path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
+    "acquisition_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5"
+  },
+  "source_input_before_after": [
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+      "before_sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+      "after_sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
+      "unchanged": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
+      "before_sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
+      "after_sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
+      "unchanged": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
+      "before_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5",
+      "after_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5",
+      "unchanged": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/source-page.html",
+      "before_sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa",
+      "after_sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa",
+      "unchanged": true
+    },
+    {
+      "path": "/home/user/src/offmenu-data/mext-2023-main/normalized.jsonl.gz",
+      "before_sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1",
+      "after_sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1",
+      "unchanged": true
+    }
+  ],
+  "tests": {
+    "count": 9,
+    "result": "passed; original seven plus independent five provenance mutations and trusted row/header/self-rehash rejection",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_global_data_worker51.py -v"
+  },
+  "scope": [
+    "scripts/global-data-validation/worker-51.py",
+    "tests/test_global_data_worker51.py",
+    "docs/global-data-validation/worker-51-provenance-fix.json",
+    "docs/global-data-validation/worker-51-provenance-fix.md"
+  ],
+  "preserved": "Japanese labels/unknowns/components/source bytes and prior report/refs unchanged; main HEAD/index unchanged; no schema/importer/dependency edits",
+  "review_handoff": {
+    "reviewer": 10,
+    "status": "successor immutable delta review required; no independent acceptance claimed",
+    "compare": "reviewed parent 02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30 to successor author commit reported after commit",
+    "acceptance": "five retained probes reject; 192 actual records and existing seven regressions remain passing; source row/pin/docref validation reviewed"
+  },
+  "backup": "normal fast-forward private origin backup and independent ls-remote readback requested after commit; exact successor SHA reported externally",
+  "controls": {
+    "filesystem": "unrestricted danger-full-access",
+    "network": "enabled; zero source requests",
+    "mandatory_reviewer": "auto_review preserved",
+    "approval_policy": "unavailable",
+    "named_profile": "unavailable; not inferred"
+  },
+  "admitted": false,
+  "published": false,
+  "production": "STOP"
+}

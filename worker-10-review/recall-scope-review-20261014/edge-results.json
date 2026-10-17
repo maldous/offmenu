@@ -1,0 +1,2873 @@
+{
+  "schema": "offmenu.worker10.recall-scope-edges/1",
+  "candidate": "adf42e947b21c2d5441fcb69b683c931d726e31c",
+  "cases": 37,
+  "passed": 34,
+  "failed": 3,
+  "observations": [
+    {
+      "id": "baseline",
+      "expected": "matched",
+      "actual": "matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-ascii-space",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": " A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-trailing-space",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A ",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-zero-width",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A​",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-fullwidth",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "Ａ",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-cyrillic-lookalike",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "А",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-null-control",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A\u0000",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "lot-exact-case",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "a",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-precomposed-versus-decomposed",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "é"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "é",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-identical-opaque-lot",
+      "expected": "matched",
+      "actual": "matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "日本ロット-２"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "日本ロット-２",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-market-lookalike",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "ＡＵ",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-market"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-label-lookalike",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v１",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-label-version"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-fullwidth-gtin",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "４００６３８１３３３９３１",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-gtin"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "unicode-arabic-indic-gtin",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "٤٠٠٦٣٨١٣٣٣٩٣١",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-gtin"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "gtin-zero-width",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "4006381333931​",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-gtin"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "missing-market-with-all-batches",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          },
+          "allBatches": true
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-market"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "contradictory-batch-scope",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          },
+          "allBatches": true
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-lot-scope"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "null-label-restriction",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": null,
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-label-version"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "date-equal-inclusive-through",
+      "expected": "matched",
+      "actual": "matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-31"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "date-wrong-type-only",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "useBy": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-date"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "date-outside-with-unresolved-lot",
+      "expected": "not-matched",
+      "actual": "not-matched",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "labelVersion": "v1",
+        "bestBefore": "2026-11-01"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "not-matched",
+        "scopeMatch": "not-matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "outside-date",
+          "unresolved-lot"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "date-non-leap-day",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-02-01",
+            "through": "2026-03-01"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-02-29"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-date"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "date-reversed-range",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-11-01",
+            "through": "2026-10-01"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "unknown",
+        "evidenceStatus": "current",
+        "reasons": [
+          "unresolved-date"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "valid-until-equals-valid-from",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z",
+          "validUntil": "2026-10-13T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "fresh-until-before-retrieval",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-14T04:59:59Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "effective-date-after-retrieval",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-14T05:00:01Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "retrieval-after-asof",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:01Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "source-provenance-unresolved",
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:01Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "history-despite-current-looking-dates",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "historical",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "historical",
+        "reasons": [
+          "evidence-historical"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "absent-evidence",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "inspection-despite-current-lifecycle",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "inspection",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "declared-recall-action-unresolved"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "inspection",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "non-recall-regulatory-action",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "noncompliance",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "declared-recall-action-unresolved"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "noncompliance",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "missing-source-record",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "source-provenance-unresolved",
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "missing-declared-regulator",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [
+          "declared-recall-action-unresolved"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "submillisecond-effective-after-asof-and-retrieval",
+      "expected": "unknown",
+      "actual": "matched",
+      "passed": false,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0001Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-14T06:00:00.0009Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00.0005Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0001Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "submillisecond-retrieval-in-future",
+      "expected": "unknown",
+      "actual": "matched",
+      "passed": false,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0009Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00.0001Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.0009Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "submillisecond-freshness-before-actual-expiry",
+      "expected": "matched",
+      "actual": "unknown",
+      "passed": false,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-14T06:00:00.0009Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00.0001Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "id": "milliseconds-supported-ordering",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.009Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "inputLot": {
+        "barcode": "04006381333931",
+        "market": "AU",
+        "lotCode": "A",
+        "labelVersion": "v1",
+        "bestBefore": "2026-10-14"
+      },
+      "asOf": "2026-10-14T06:00:00.001Z",
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "unknown",
+        "scopeMatch": "matched",
+        "evidenceStatus": "unknown",
+        "reasons": [
+          "source-provenance-unresolved",
+          "evidence-unknown"
+        ],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T06:00:00.009Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "inputUnchanged": true
+    }
+  ],
+  "integrationPreconditionProbes": [
+    {
+      "id": "withdrawn-flag-outside-projection-schema",
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z",
+          "status": "withdrawn"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+    },
+    {
+      "id": "contradictory-action-original-text",
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator",
+          "originalText": "Synthetic original says inspection, not recall"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator",
+          "originalText": "Synthetic original says inspection, not recall"
+        },
+        "automaticSelection": false
+      },
+      "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+    },
+    {
+      "id": "source-regulator-disagreement",
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "synthetic-regulator-A"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z",
+          "regulator": "synthetic-regulator-B"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z",
+          "regulator": "synthetic-regulator-B"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "synthetic-regulator-A"
+        },
+        "automaticSelection": false
+      },
+      "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+    },
+    {
+      "id": "conflicting-top-level-date",
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        },
+        "validUntil": "2026-10-12T00:00:00Z"
+      },
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "https://source.invalid/notice",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+    },
+    {
+      "id": "non-url-provenance-text",
+      "inputNotice": {
+        "id": "reviewer-notice",
+        "action": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "synthetic-not-a-url",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "evidence": {
+          "kind": "current",
+          "validFrom": "2026-10-13T00:00:00Z",
+          "freshUntil": "2026-10-15T00:00:00Z"
+        },
+        "scope": {
+          "gtin": "4006381333931",
+          "markets": [
+            "AU"
+          ],
+          "lots": [
+            "A"
+          ],
+          "labelVersions": [
+            "v1"
+          ],
+          "dateRange": {
+            "field": "bestBefore",
+            "from": "2026-10-01",
+            "through": "2026-10-31"
+          }
+        }
+      },
+      "result": {
+        "noticeId": "reviewer-notice",
+        "applicability": "matched",
+        "scopeMatch": "matched",
+        "evidenceStatus": "current",
+        "reasons": [],
+        "provenance": {
+          "sourceId": "reviewer-source",
+          "recordId": "reviewer-record",
+          "url": "synthetic-not-a-url",
+          "retrievedAt": "2026-10-14T05:00:00Z"
+        },
+        "declaredAction": {
+          "type": "recall",
+          "regulator": "reviewer-regulator"
+        },
+        "automaticSelection": false
+      },
+      "qualification": "Unsupported/raw/conflicting fields must be resolved by Dataset01 owner projection/admission before model call; not claimed as a recognized input field."
+    }
+  ]
+}

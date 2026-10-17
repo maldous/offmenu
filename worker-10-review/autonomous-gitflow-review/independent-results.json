@@ -1,0 +1,1131 @@
+{
+  "candidate": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "cases": 15,
+  "passed": 12,
+  "failed": 3,
+  "results": [
+    {
+      "case": "client-unavailable-authorized",
+      "expectedExit": 0,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 0,
+        "stdoutJSON": {
+          "status": "allowed",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-f36248f93ee34c7791418966252903fa.json",
+          "error": null
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.716241Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.726967Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.732009Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "allowed",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "ea13a5439040351cf5ba2faeb24a900b79b0d91b5d39d023212f42f44dd1cb8d",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "advisory_disclosures": [
+            {
+              "state": "pending",
+              "open_findings": 0,
+              "reviewer": "codex"
+            }
+          ],
+          "candidate": "878d71878bce31302ff2091609fc3147c956d2df",
+          "base": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+          "pr": "https://example.invalid/fixture/pr",
+          "next_action": "normal provider merge with expected head; re-read exact base immediately before call",
+          "meaning": "preflight allowed only; no PR creation/push/merge performed"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "required-review-pending",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-36dcbbeb310b4767b3940a9fdd6ebd34.json",
+          "error": "required review pending/failed/stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.762855Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.774436Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.779194Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "390f105daaf5f62acb53cbdf499d65607d48276fe94ea398d0f020b36f3ea82e",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "error": "required review pending/failed/stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "required-check-failed",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-ebc2d48ef6fd4eea8269e0bec8b04faa.json",
+          "error": "required check pending/failed/stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.812942Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.824200Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.827940Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "f9355857db1aff4795ee5d2811b5a5d8e2ceeb95b3378a8dec40c94e5b210847",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "error": "required check pending/failed/stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "known-advisory-finding",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-f4985ed1f2de46039067be4e23bf55b8.json",
+          "error": "known later findings require normal correction and re-review"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.859003Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.871162Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.876941Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "ebab6332b5cc75606d887a8b04d13b4589b0f3d0c3a561727e491d0a0ad4971e",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "error": "known later findings require normal correction and re-review"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "security-undisposed",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-3387e91a211b4ebeab6712d53250b898.json",
+          "error": "mandatory security disposition pending/stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.908431Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.921162Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.926309Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "14c769988c3d281a3d30a98898b43638d92aa8aa99f37cd059ab2526319a5a88",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "advisory_disclosures": [
+            {
+              "state": "pending",
+              "open_findings": 0,
+              "reviewer": "codex"
+            }
+          ],
+          "error": "mandatory security disposition pending/stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "security-disposed",
+      "expectedExit": 0,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 0,
+        "stdoutJSON": {
+          "status": "allowed",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-efda73288a224d2495d6bf652e68dcf2.json",
+          "error": null
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:49.957343Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:49.969634Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:49.974240Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "allowed",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "c682c486ab692f55172bf67a9a84499f5f8afc8303d31ff2d409e808562cd4f8",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "advisory_disclosures": [
+            {
+              "state": "pending",
+              "open_findings": 0,
+              "reviewer": "codex"
+            }
+          ],
+          "security_confirmation": {
+            "state": "confirmed",
+            "head": "878d71878bce31302ff2091609fc3147c956d2df",
+            "base": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "candidate": "878d71878bce31302ff2091609fc3147c956d2df",
+          "base": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+          "pr": "https://example.invalid/fixture/pr",
+          "next_action": "normal provider merge with expected head; re-read exact base immediately before call",
+          "meaning": "preflight allowed only; no PR creation/push/merge performed"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "security-stale-base",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-63268c7eb0474e93bc080785c73b8a16.json",
+          "error": "mandatory security disposition pending/stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.011571Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.023774Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:50.029419Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "0628e4c7abfa4c9f415c168219e98e9ff02a2533443e399e974ee2a011f4828a",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "advisory_disclosures": [
+            {
+              "state": "pending",
+              "open_findings": 0,
+              "reviewer": "codex"
+            }
+          ],
+          "error": "mandatory security disposition pending/stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "platform-unconfirmed",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-07401346daa045b4991bc0b4baa14dff.json",
+          "error": "mandatory platform confirmation pending/stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.058907Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.070202Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:50.075110Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "00d29a6148aee492230ba3c1c52278ffe6732dbf0b818a9ac216f2204fd6a10e",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "enforcement": {
+            "accepted_by": "Matt",
+            "origin_protection": "unavailable",
+            "bypassable_outside_workflow": true,
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "origin_protected": false,
+          "advisory_disclosures": [
+            {
+              "state": "pending",
+              "open_findings": 0,
+              "reviewer": "codex"
+            }
+          ],
+          "error": "mandatory platform confirmation pending/stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "independent-self-review",
+      "expectedExit": 2,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmpjcif8q8n/receipts/gate-delivery-84eccb21764a467d8f6fb9708fda6117.json",
+          "error": "independent review of exact head/base is pending or stale"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.108651Z",
+          "repo": "/tmp/tmpjcif8q8n/worker-09",
+          "policy_sha256": "b2bed5afcaef7fc833851c2801d99ab71b5624953f709a8dd8cce76ddd12f80d",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.120252Z",
+              "line": "develop",
+              "lock": "/tmp/tmpjcif8q8n/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "b54891cadabae44c178c4b6696785aa3a024b0fa",
+              "completed_utc": "2026-10-14T08:56:50.125266Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "delivery",
+          "worker": 9,
+          "head_before": "878d71878bce31302ff2091609fc3147c956d2df",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmpjcif8q8n/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "snapshot_sha256": "afdaf9ca1220d2c4c6f168de64a8b98018f4e27ad79a56a308ae5c25c00d20a9",
+          "live_head_readback": "878d71878bce31302ff2091609fc3147c956d2df\trefs/heads/feature/delivery\n",
+          "error": "independent review of exact head/base is pending or stale"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "malformed-required-review-entry",
+      "expectedExit": 2,
+      "expectedDurableBlockedReceipt": true,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmpjcif8q8n/worker-09",
+          "--policy",
+          "/tmp/tmpjcif8q8n/policy.json",
+          "--evidence-dir",
+          "/tmp/tmpjcif8q8n/receipts",
+          "delivery",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmpjcif8q8n/snapshot.json",
+          "--head",
+          "878d71878bce31302ff2091609fc3147c956d2df",
+          "--base",
+          "b54891cadabae44c178c4b6696785aa3a024b0fa"
+        ],
+        "exitCode": 1,
+        "stdoutJSON": null,
+        "receipt": null,
+        "newReceiptCount": 0,
+        "stderrLast": "itflow-review/snapshot/scripts/offmenu-gitflow.py\", line 595, in main\n    g.receipt['status'] = getattr(g, a.operation)(a)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py\", line 196, in delivery\n    need(r.get('head') == head and r.get('state') == 'APPROVED', 'required review pending/failed/stale')\n         ^^^^^\nAttributeError: 'str' object has no attribute 'get'\n"
+      },
+      "passed": false
+    },
+    {
+      "case": "launcher-abbreviated-repo-override",
+      "expectedExit": 2,
+      "actualExit": 0,
+      "command": [
+        "python3",
+        "-B",
+        "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow-launch.py",
+        "--policy",
+        "/tmp/tmp5gnv36zr/policy.json",
+        "--evidence-dir",
+        "/tmp/tmp5gnv36zr/receipts",
+        "--rep",
+        "/tmp/tmp5gnv36zr/worker-09",
+        "start",
+        "--kind",
+        "feature",
+        "--task",
+        "alias-path",
+        "--check-only"
+      ],
+      "launcherCwd": "/tmp/tmp5gnv36zr/launcher-home/worker-09",
+      "requestedOtherRepo": "/tmp/tmp5gnv36zr/worker-09",
+      "receiptRepo": "/tmp/tmp5gnv36zr/worker-09",
+      "receiptStatus": "allowed",
+      "stderr": "",
+      "passed": false
+    },
+    {
+      "case": "launcher-explicit-repo-override-control",
+      "actualExit": 2,
+      "passed": true
+    },
+    {
+      "case": "normal-merge-receipt-to-retirement",
+      "expectedExit": 0,
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmp63cf092_/worker-09",
+          "--policy",
+          "/tmp/tmp63cf092_/policy.json",
+          "--evidence-dir",
+          "/tmp/tmp63cf092_/receipts",
+          "retire",
+          "--worker",
+          "9",
+          "--start",
+          "/tmp/tmp63cf092_/receipts/normal-delivery-cycle-start-89f82431edd943788a888846ae6648c1.json",
+          "--ready",
+          "/tmp/tmp63cf092_/receipts/normal-delivery-cycle-ready-b651f7027c3945f5b172b829fc059564.json",
+          "--integration",
+          "/tmp/tmp63cf092_/receipts/gate-merge_receipt-0e3cf20a49bd46beb03cb345dd43b690.json",
+          "--check-only"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmp63cf092_/receipts/gate-retire-3a81f35594484d6fab79674d22018ac5.json",
+          "error": "missing completed receipt for this permanent worker"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.591182Z",
+          "repo": "/tmp/tmp63cf092_/worker-09",
+          "policy_sha256": "7046d503f2359103995bfc7132885cee94f2bd55849761ce64692291ea2f1d70",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.598126Z",
+              "line": "develop",
+              "lock": "/tmp/tmp63cf092_/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+              "completed_utc": "2026-10-14T08:56:50.603002Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "retire",
+          "worker": 9,
+          "head_before": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+          "tag_checks": [
+            {
+              "tag": "v1.0.0",
+              "exit_code": 0,
+              "utc": "2026-10-14T08:56:50.610082Z",
+              "stdout": "cbfe28866629e10f77ae343d11216b9a8e0f3b5c\trefs/tags/v1.0.0\n0a2e045f8a63a9b846c916a317293fbf820f3d02\trefs/tags/v1.0.0^{}\n",
+              "stderr": ""
+            }
+          ],
+          "error": "missing completed receipt for this permanent worker"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "mergeReceiptOperation": "merge_receipt",
+      "normalMergeParents": [
+        "0a2e045f8a63a9b846c916a317293fbf820f3d02",
+        "4785d0b9646c3bea70c878b4d377b1db07fa5d7b"
+      ],
+      "normalMergeTree": "7f384d7d13ec4ef6b4aa4299da8bfe25f5303545",
+      "readySHA": "4785d0b9646c3bea70c878b4d377b1db07fa5d7b",
+      "source": "4785d0b9646c3bea70c878b4d377b1db07fa5d7b",
+      "passed": false,
+      "qualification": "All release baseline/line/Morgan/ignored/dependency fixtures were explicitly synthetically qualified to isolate receipt compatibility; no real certification implied."
+    },
+    {
+      "case": "normal-merge-does-not-silently-retire-or-free-next-task",
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmp63cf092_/worker-09",
+          "--policy",
+          "/tmp/tmp63cf092_/policy.json",
+          "--evidence-dir",
+          "/tmp/tmp63cf092_/receipts",
+          "start",
+          "--worker",
+          "9",
+          "--kind",
+          "feature",
+          "--task",
+          "next-normal-task",
+          "--check-only"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmp63cf092_/receipts/gate-start-15c7c18d9a984930823af0409cfbb095.json",
+          "error": "retained receipt history has an active task; review/integrate/retire before reuse"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.640990Z",
+          "repo": "/tmp/tmp63cf092_/worker-09",
+          "policy_sha256": "00f7374d7f9d76d14e26e675261dea673912e1ce27c5b151fd4826dcb4a38f65",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.646933Z",
+              "line": "develop",
+              "lock": "/tmp/tmp63cf092_/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+              "completed_utc": "2026-10-14T08:56:50.651880Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "start",
+          "worker": 9,
+          "head_before": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmp63cf092_/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "dispatch_base": "655d9b5b472edb356f86b9cc9b38786969c8eca4",
+          "dispatch_qualification": "reviewed-integration-line; release uncertified",
+          "error": "retained receipt history has an active task; review/integrate/retire before reuse"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    },
+    {
+      "case": "normal-parents-but-different-tree-rejected",
+      "actual": {
+        "command": [
+          "python3",
+          "-B",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+          "--repo",
+          "/tmp/tmp00duyk8u/worker-09",
+          "--policy",
+          "/tmp/tmp00duyk8u/policy.json",
+          "--evidence-dir",
+          "/tmp/tmp00duyk8u/receipts",
+          "merge_receipt",
+          "--worker",
+          "9",
+          "--snapshot",
+          "/tmp/tmp00duyk8u/bad-merged.json",
+          "--preflight",
+          "/tmp/tmp00duyk8u/receipts/gate-delivery-a58c6a4fec4d4637a474d664db42dcb6.json"
+        ],
+        "exitCode": 2,
+        "stdoutJSON": {
+          "status": "blocked",
+          "receipt": "/tmp/tmp00duyk8u/receipts/gate-merge_receipt-2e815ea8a9244ca686f957d8286b8cf3.json",
+          "error": "merged tree differs from exact reviewed candidate; incident, no automatic reset"
+        },
+        "receipt": {
+          "schema": "offmenu-gitflow-receipt/1",
+          "utc": "2026-10-14T08:56:50.792844Z",
+          "repo": "/tmp/tmp00duyk8u/worker-09",
+          "policy_sha256": "f6d7d56f931f4a7b0d0c9de9ee53b450a0c57f2ca61ba2fc889b3c40b687127a",
+          "fetches": [
+            {
+              "command": [
+                "git",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "origin",
+                "refs/heads/develop:refs/remotes/origin/develop"
+              ],
+              "started_utc": "2026-10-14T08:56:50.798681Z",
+              "line": "develop",
+              "lock": "/tmp/tmp00duyk8u/origin.git/offmenu-fetch.lock",
+              "exit_code": 0,
+              "sha": "c2412a9279d4fe4e3b8cc8a592c5f6a5710b1e94",
+              "completed_utc": "2026-10-14T08:56:50.803769Z",
+              "stdout": "",
+              "stderr": ""
+            }
+          ],
+          "status": "blocked",
+          "operation": "merge_receipt",
+          "worker": 9,
+          "head_before": "c2412a9279d4fe4e3b8cc8a592c5f6a5710b1e94",
+          "routine_authority": {
+            "authorizer": "Matt",
+            "project": "OffMenu",
+            "scope": "normal-qualified-gitflow",
+            "evidence": {
+              "path": "/tmp/tmp00duyk8u/morgan.txt",
+              "sha256": "659a9e9d2a0512b54fd893434d7c6a8034cbdef33a6490a686c1858afea09c10"
+            }
+          },
+          "error": "merged tree differs from exact reviewed candidate; incident, no automatic reset"
+        },
+        "newReceiptCount": 1,
+        "stderrLast": ""
+      },
+      "passed": true
+    }
+  ]
+}

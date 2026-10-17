@@ -1,0 +1,307 @@
+{
+  "schema": "offmenu.worker10.common-package-caller-independent-review/1",
+  "createdAt": "2026-10-14T07:58:29.560576+00:00",
+  "reviewer": {
+    "worker": 10,
+    "threadId": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+    "permanentCheckout": "/home/user/src/offmenu-workers/worker-10",
+    "actualBranch": "feature/common-package-caller-review-20261014",
+    "actualHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "baseline": "provisional; not host activation or accepted release evidence"
+  },
+  "candidate": {
+    "base": "c90438782dbfe1d1c84b4121a4f26d59f52e2495",
+    "candidate": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+    "transportDependency": "77eb80d0e91fd3b10e42d2df83fd71c70713564b",
+    "deltaSha256": "1162127f520e1874cb61e3be94ccee612242b8c6b24913d5cb58e2386a67ee06",
+    "matchesSuppliedDelta": true,
+    "transportBytesMatchSelectedDependency": true,
+    "snapshotBytes": 176670
+  },
+  "sourceHashes": [
+    {
+      "file": "package.json",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 709,
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+    },
+    {
+      "file": "tests-web/common-package-caller.test.mjs",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 17267,
+      "sha256": "66d7fba9af8c876f32e67a2ce9d1bbefe5be64bcd6b530301bf273235012b8ae"
+    },
+    {
+      "file": "public/i18n.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 8341,
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe"
+    },
+    {
+      "file": "public/locale-negotiation.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 2675,
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009"
+    },
+    {
+      "file": "public/locales/ar.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 27728,
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a"
+    },
+    {
+      "file": "public/content-locale.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 5887,
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d"
+    },
+    {
+      "file": "public/common-corpus-transport.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 20118,
+      "sha256": "6cea7d8c1801c27588d04e87580cf29fcf7220fe5a623333e0933f565d826903"
+    },
+    {
+      "file": "public/common-corpus-locale.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 11250,
+      "sha256": "9b7d585fab32aa842bf552108e0cff448e99042858ac069976a0910349464f01"
+    },
+    {
+      "file": "public/data-ui.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 30032,
+      "sha256": "738e1c597bcfa0069872df4ed0500860562cb0cbf2d6932cb0ac5c95d892d2a2"
+    },
+    {
+      "file": "public/unified-data.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 14640,
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749"
+    },
+    {
+      "file": "public/menu-model.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 3306,
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70"
+    },
+    {
+      "file": "public/checkout-model.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 3416,
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7"
+    },
+    {
+      "file": "public/model.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 4450,
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68"
+    },
+    {
+      "file": "public/ingredients.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 5143,
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575"
+    },
+    {
+      "file": "public/countries.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 1497,
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3"
+    },
+    {
+      "file": "public/sources.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 17882,
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933"
+    },
+    {
+      "file": "public/record-policy.js",
+      "commit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "bytes": 2329,
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc"
+    }
+  ],
+  "disposition": "Two P2 caller-boundary findings, plus explicit host invalidation/activation requirements. Focused synthetic caller behavior reproduced; Morgan owns final verdict and any integration.",
+  "accepted": false,
+  "integrated": false,
+  "hostActivated": false,
+  "liveReleaseQualified": false,
+  "browserQualified": false,
+  "findings": [
+    {
+      "id": "W10-C1-F1",
+      "severity": "P2",
+      "title": "Sparse receipt file arrays skip all selected-file validation",
+      "resultCommit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "locations": [
+        {
+          "file": "public/data-ui.js",
+          "line": 60
+        }
+      ],
+      "trigger": "Injected trusted loader returns a real valid corpus with receipt.files=new Array(1) for a one-file descriptor. Array.isArray and length checks pass; Array.some skips the empty slot.",
+      "impact": "Caller accepts a malformed receipt containing no selected-file row, renders one resource and returns that receipt. This breaks the explicit receipt match/traceability boundary. The reproduction still used the real pinned synthetic loader/corpus; no incorrect release, production exposure or malicious capability bypass is claimed. The selected transport itself returns dense receipts; this targets the generic caller result guard.",
+      "evidence": {
+        "id": "receipt-sparse-row",
+        "expectedRejected": true,
+        "rejected": false,
+        "passed": false,
+        "visibleRows": 1,
+        "notice": "\u062a\u0645 \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u062c\u0645\u0648\u0639\u0629 \u0644\u0644\u0645\u0639\u0627\u064a\u0646\u0629 \u0627\u0644\u0645\u062d\u0644\u064a\u0629. \u062a\u0628\u0642\u0649 \u0647\u0648\u064a\u0627\u062a \u0627\u0644\u0645\u0635\u0627\u062f\u0631 \u0648\u0627\u0644\u0627\u0633\u062a\u0634\u0647\u0627\u062f\u0627\u062a \u0648\u0627\u0644\u0643\u0645\u064a\u0627\u062a \u0643\u0645\u0627 \u0647\u064a\u061b \u0644\u0645 \u062a\u064f\u062d\u0641\u0638 \u0623\u064a \u062a\u063a\u064a\u064a\u0631\u0627\u062a.",
+        "sideEffects": [],
+        "saveDisabled": true,
+        "exportDisabled": true,
+        "transportCalls": 2,
+        "receiptLength": 1,
+        "receiptOwnIndexes": []
+      },
+      "repairRecommendation": "Validate each numeric receipt index explicitly (including own slot presence and non-null object shape) before accessing key/hash/bytes/indexes, or normalize to a dense sequence and reject missing rows. Keep exact file count/order/pin comparisons. Add a sparse-array negative alongside null/undefined rows.",
+      "source": "New caller guard introduced in this delta."
+    },
+    {
+      "id": "W10-C1-F2",
+      "severity": "P2",
+      "title": "Mutable admission object hides a policy-ID change during loading",
+      "resultCommit": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+      "locations": [
+        {
+          "file": "public/data-ui.js",
+          "line": 51
+        },
+        {
+          "file": "public/data-ui.js",
+          "line": 58
+        }
+      ],
+      "trigger": "Trusted authorize() returns its shared mutable policy object instead of a clone. During actual load, policy.policyId changes. The first admission.permission aliases the same object returned by the second authorization.",
+      "impact": "Both sides of the intended policy-ID stability check now read changed-policy, so loading/rendering succeeds despite policy identity changing. Equivalent cloned decisions correctly reject. This is a correctness defect in the promised stable admission comparison, not evidence that descriptor claims bypass authorization: both real callback decisions remained allowed and account/scope unchanged in this repro.",
+      "evidence": {
+        "id": "permission-policy-change-with-shared-mutable-decision",
+        "expectedRejected": true,
+        "rejected": false,
+        "passed": false,
+        "visibleRows": 1,
+        "notice": "\u062a\u0645 \u062a\u062d\u0645\u064a\u0644 \u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u062c\u0645\u0648\u0639\u0629 \u0644\u0644\u0645\u0639\u0627\u064a\u0646\u0629 \u0627\u0644\u0645\u062d\u0644\u064a\u0629. \u062a\u0628\u0642\u0649 \u0647\u0648\u064a\u0627\u062a \u0627\u0644\u0645\u0635\u0627\u062f\u0631 \u0648\u0627\u0644\u0627\u0633\u062a\u0634\u0647\u0627\u062f\u0627\u062a \u0648\u0627\u0644\u0643\u0645\u064a\u0627\u062a \u0643\u0645\u0627 \u0647\u064a\u061b \u0644\u0645 \u062a\u064f\u062d\u0641\u0638 \u0623\u064a \u062a\u063a\u064a\u064a\u0631\u0627\u062a.",
+        "sideEffects": [],
+        "saveDisabled": true,
+        "exportDisabled": true,
+        "transportCalls": 2,
+        "initialPolicyId": "synthetic-caller-display-only/1",
+        "confirmedPolicyId": "changed-policy",
+        "authorizerReturnsSharedObject": true
+      },
+      "repairRecommendation": "Snapshot the admission policy ID and all compared grant/account/scope fields into independent validated values immediately after authorization. Compare the second decision against that snapshot, not a provider-owned mutable object. Add shared-object and cloned-object policy change regression cases; retain the current owner/scope/selection checks.",
+      "source": "New authorization result retention/comparison introduced in this delta."
+    }
+  ],
+  "actualTests": {
+    "focusedAuthorTestsPassed": 27,
+    "focusedAuthorTestsFailed": 0,
+    "focusedTestNote": "13 top-level tests plus nested cases, executed using actual setupData, pinned transport/reader, synthetic gzip and minimal DOM. No entire transport suite repeated.",
+    "independentEdges": 26,
+    "independentEdgesPassed": 24,
+    "independentEdgesFailed": 2,
+    "commands": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "tests-web/common-package-caller.test.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot",
+        "exitCode": 0,
+        "logSha256": "953cab67b4e0578063d568facf5ed049428b26a7fd2249110ee5aeeea775b150"
+      },
+      {
+        "command": [
+          "node",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-cases.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review",
+        "exitCode": 1,
+        "logSha256": "a1911f8100b3fb9f1ac68bd6d2478f1c6707d22c442127f9622050ec3ec6b93b"
+      }
+    ],
+    "testLogs": [
+      "author-tests.log",
+      "edge-tests.log"
+    ],
+    "fullEdgeEvidence": "edge-results.json",
+    "fixtureReuse": "Reviewer extracts only prefix helper definitions from immutable author test into reviewer-fixtures.mjs for tiny package/DOM scaffolding; edge triggers and expectations independently authored. Fixture derivation hash retained.",
+    "integrationProbes": [
+      {
+        "case": "completed-private-load-account-change",
+        "hostResetCalled": false,
+        "visibleRows": 2,
+        "alicePrivateTextStillRendered": true,
+        "globalResolverRetainsAlicePrivateText": true,
+        "sideEffects": [],
+        "interpretation": "No active account/policy recheck on cached locale rendering; host identity reset remains required."
+      },
+      {
+        "case": "completed-private-load-account-change",
+        "hostResetCalled": true,
+        "visibleRows": 0,
+        "alicePrivateTextStillRendered": false,
+        "globalResolverRetainsAlicePrivateText": false,
+        "sideEffects": [],
+        "interpretation": "Existing host reset hook clears the cached reader/resolver."
+      },
+      {
+        "case": "rights-revoked-after-successful-load",
+        "authorizeCalls": 2,
+        "visibleRows": 1,
+        "translationStillRendered": true,
+        "sideEffects": [],
+        "interpretation": "Post-load cache uses a load-time authorization snapshot; no policy recheck on later locale render. Future host needs explicit invalidation or caller needs ongoing recheck if that is the intended contract."
+      }
+    ]
+  },
+  "capabilityAndBindingAssessment": {
+    "descriptorVersusCapability": "selectedCommonPackage is data. Availability of load alone or descriptor.permission allowed claims is refused; authorize must be an independently trusted host capability. Test policy is separately retained, synthetic and not a real producer admission.",
+    "schemaAndContract": "Caller checks schema/contract SHA256 syntax and includes qualification pins in canonical selection attested by independent authorize. It does not fetch/hash schema or contract bytes, and loader options omit qualification. Authentic producer schema/contract approval must therefore be established inside the trusted authorization capability; synthetic fixture hashes are not that proof.",
+    "releaseManifestFiles": "Exact release ID/accepted release + manifest URL/hash + file order/key/hash/compressed bytes/packet indexes compared at caller, with F1 dense-row exception. The selected transport SHA bytes match 77eb80d0e91fd3b10e42d2df83fd71c70713564b and independently validates synthetic package/contract version, streamed gzip bytes and structural schema.",
+    "accountAndScope": "Explicit guest/demo/user:<id> namespace, authorizer account match, matching privateOwnerId, public-only user scope and allowLocalRestricted=false. Descriptor readerOptions privileges are ignored. Current scope change is detected even when policy object is shared because primitive reader options were captured.",
+    "rightsRecheck": "Initial authorization then another after load, before first reader installation/render. Denial, selection change, account mismatch and cloned policy change fail; F2 mutable alias defeats policy-ID change check.",
+    "staleLoading": "Focused tests pass account/reset cancellation, no-reset account check after awaited work, pending authorization cancellation, newer load and stale completion, local-file interruption and abort-ignoring capability completion. No stale in-flight render observed in those checks.",
+    "immutablePresentation": "Focused checks preserve descriptor, original Arabic source/fingerprint, English translation/citations, IRI/expression text and source URLs; unresolved joins retained. Read-only save/export and preview locale changes cause no persistence/provider/session effects.",
+    "io": "Setup performs no automatic package I/O. Explicit load invokes only trusted injected test fetch; no automatic discovery or dependency chase, ambient/provider calls, save/export/profile persistence. Direct invocation of disabled controls remains guarded."
+  },
+  "hostAndCacheGaps": {
+    "actualHost": "public/app.js:180 invokes setupData without selectedCommonPackage/commonPackageLoader; no host action invokes loadSelectedCommonPackage. Feature entry activation, real descriptor/capability provisioning and real-release/browser/live hosting qualification are absent.",
+    "existingIdentityHook": "public/app.js:75 switchAccount calls dataUi.reset(), which clears cached reader/global resolver. This hook must be retained in any host activation.",
+    "cachedAccountProbe": "After completed Alice-private load, switching getter to Bob without host reset and triggering locale render retains two rows and Alice private resolver. Calling ui.reset first clears rows/resolver. This is host-lifecycle dependence, not a demonstrated production leak: actual host already calls reset and package loading is unactivated.",
+    "cachedPolicyProbe": "Policy allowed=false after a successful public load followed by locale render does not call authorize again; two original calls remain, translation still renders. No same-account policy-invalidation signal is wired. Declare whether load-time authorization is a session snapshot or add invalidation/recheck before cached render if rights must remain current. Treat this as an activation requirement, not passing rights-revocation evidence.",
+    "evidence": "host-caller-search.log and edge-results.json integration probes"
+  },
+  "preservation": {
+    "mainAndWorker10IdentityEqual": true,
+    "priorRecallArtifactsEqual": true,
+    "immutableSourceHashesEqual": true,
+    "worker10Status": "## feature/common-package-caller-review-20261014\n?? worker-10-review/\n",
+    "diffCheck": {
+      "exitCode": 0,
+      "output": ""
+    },
+    "noGitFixtureWrites": true,
+    "noRuntimeServersOrNetwork": "Focused Node tests with synthetic gzip + injected fetch and minimal DOM only; ambient network forbidden by fixture. No browser/runtime qualification."
+  },
+  "boundedSourceSnapshot": "17 selected tracked code/test/package metadata files, 176670 bytes; no corpus/dependency copies. Recursive relative imports only; source digests and caller delta hash verified. No installs, Git-writing fixtures, worktrees, extra agents/workers/sessions, servers or external writes.",
+  "controls": "Supplied filesystem/network retained; mandatory reviewer auto_review. Separate approval policy unavailable; no named profile inferred from unset environment. Git subprocesses remove inherited GIT_* and use explicit no-config/no-prompt/no-optional-lock policy.",
+  "limitations": [
+    "All caller presentation checks use minimal DOM stubs and trusted injected synthetic byte transport; no native browser, actual secure-context/CORS/HTTP Content-Encoding or production hosting qualification.",
+    "Trusted authorize/load capabilities are an external authority boundary. The caller cannot prove an injected authorizer did genuine producer rights/schema/contract qualification merely from its attestation.",
+    "Review does not repeat producer/transport full suite, access actual retained corpus partitions or admit any real source/release.",
+    "Both P2 findings target generic caller guard behavior and do not show an attack by untrusted descriptor data against an independently correct capability.",
+    "Local report/snapshots are untracked reviewer artifacts; source HEAD/branches/indexes and prior recall artifacts unchanged."
+  ],
+  "recommendedMorganNextStep": "Repair F1/F2 and recheck these exact edge cases. Before host activation, obtain independent producer admission/capability binding and explicit account/policy cache invalidation behavior, then qualify browser/live hosting/real-release paths separately.",
+  "idleAvailable": true,
+  "evidenceIndex": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/evidence-index.json",
+    "files": 32,
+    "sha256": "9f29eff4a3d1f6dd4a062f5c707470aeaf8378d8962ca2e4ed54d201f777348e"
+  }
+}

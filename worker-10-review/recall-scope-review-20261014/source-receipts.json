@@ -1,0 +1,32 @@
+[
+  {
+    "file": "public/recall-scope-model.js",
+    "bytes": 4548,
+    "sha256": "add959bd489e5ec0dd68a28d7cd927b8b791b315d58eee9e24a7ca32bb384b71",
+    "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+  },
+  {
+    "file": "public/evidence-model.js",
+    "bytes": 4860,
+    "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+    "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+  },
+  {
+    "file": "tests-web/recall-scope-model.test.mjs",
+    "bytes": 8777,
+    "sha256": "29d3f7701e02debce572b5102809031d4f43fade1468de2d194b67f30938021f",
+    "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+  },
+  {
+    "file": "docs/worker-26-recall-scope.md",
+    "bytes": 7051,
+    "sha256": "516aa06c546a7f86ae4518adadadfe2d298d5c7836bee8b8b4d3ea1248575253",
+    "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+  },
+  {
+    "file": "package.json",
+    "bytes": 709,
+    "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+    "commit": "adf42e947b21c2d5441fcb69b683c931d726e31c"
+  }
+]

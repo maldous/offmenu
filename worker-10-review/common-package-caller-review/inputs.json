@@ -1,0 +1,9 @@
+{
+  "base": "c90438782dbfe1d1c84b4121a4f26d59f52e2495",
+  "candidate": "f09e2a8bc9254acacb03bc6ea279a1c95e4708ee",
+  "transportDependency": "77eb80d0e91fd3b10e42d2df83fd71c70713564b",
+  "deltaSha256": "1162127f520e1874cb61e3be94ccee612242b8c6b24913d5cb58e2386a67ee06",
+  "matchesSuppliedDelta": true,
+  "transportBytesMatchSelectedDependency": true,
+  "snapshotBytes": 176670
+}

@@ -1,0 +1,74 @@
+OFFMENU / ENRICHMENT SOURCE DISCOVERY
+
+
+
+Recommended source sequence
+
+  Step                         Research-to-adoption decision                 Evidence to collect before integration
+
+
+  1. Shared public             OFF + FoodData Central + Wikidata +           Exact licence/version, field coverage,
+  backbone                     GLEIF + useful licensed national registries   product-to-company matching quality,
+                                                                             freshness and re-publication obligations.
+
+
+  2. Market and safety         Official product/operator registers,          Market/lot identifiers, jurisdiction and effective
+  detail                       current recall notices and additive legal     dates; separate historical enforcement
+                               sources                                       datasets from alert feeds.
+
+
+  3. Producer and claims       GLOBALG.A.P., organic registers,              Certificate scope/status, record identifiers,
+  depth                        Fairtrade, MSC/ASC,                           permitted machine access and product-level
+                               halal/kosher/non-GMO/vegan schemes            linkage.
+
+
+  4. Optional commercial       Orbis/D&B/OpenCorporates,                     Per-profile contract compatibility, incremental
+  enrichment                   GDSN/Syndigo/NIQ, Mintel and other            coverage, read/export rights and cost; no
+                               licensed intelligence                         integration commitment made here.
+
+
+  5. Uncovered local           Supplier claims, local markets,               Contributor identity/authority, private/public
+  supply                       cooperative records and permitted user        consent, label evidence and clear unresolved
+                               imports                                       relationships.
+
+
+Evaluate coverage by real tasks: barcode-to-product, product-to-owner, owner-to-parent, origin by field,
+current claim/certificate, recall-lot identification and menu-to-ingredient traceability. Report these separately
+per country and language; a provider's country presence does not establish field-level coverage.
+
+Refresh cadence should follow each source's publication pattern and the consequence of staleness. New recall
+notices and certificate suspensions deserve fast updates; annual size metrics should preserve fiscal year.
+Revalidate rights and withdrawn sources as well as content. These are proposed operating decisions, not
+implemented pipelines.
+
+Food composition and vocabulary can bridge the separate food/menu discovery work: FoodData Central
+contributes branded GTIN and nutrient fields; FoodOn and ChEBI help normalize food and ingredient identities.
+These joins must preserve recipe version, units and market. Generic nutrients or a chemical hazard record do
+not prove a particular meal's ingredients, exposure or suitability.
+
+Sources: G73 USDA FoodData Central API; G74 FoodData Central branded field definitions; G75 FoodData Central downloads;
+G76 FoodOn food ontology; G77 ChEBI chemical identifiers and ontology; G78 EFSA OpenFoodTox.
+
+
+
+Additional discovery candidates
+The following are named follow-up candidates, not verified integrations or licence clearances in this report:
+national trademark offices and EUIPO/TMview; GS1 member-organisation product pools including NPC, GS1
+China/ANCC and GS1 India DataKart; NIQ Brandbank, Trace One and other product-content vendors; VLOG,
+ProTerra, IFOAM/member certifiers, Ecocert, Control Union, Soil Association and national organic bodies;
+STAR-K/OK/Kosher Australia; BPJPH/MUIS and country halal bodies; GFCO product-level directory,
+Coeliac/AOECS schemes and the Vegan Society; Fairtrade International and national fair-trade bodies; local
+chambers, export-promotion boards, cooperative registers and farm-market associations.
+
+For further company background and supply-chain context, consider licensed S&P Global/Panjiva,
+ImportGenius, Creditsafe, Dun & Bradstreet local products, ESG/controversy vendors, public
+regulator/court/competition-authority filings, Business & Human Rights Resource Centre, government
+modern-slavery statements, CDP and producer-published sustainability reports. These may add context but do
+not prove retail product provenance. Public allegations must be attributed and kept separate from findings.
+
+For menus and retail observations, consider authorised Clover/Lightspeed/Shopify/WooCommerce catalogues,
+Open Food Network/other producer marketplaces, retailer exports, permitted recipe/menu JSON-LD, licensed
+
+
+12 Oct 2026 UTC • Discovery only • Source names are clickable                                                                     8
+

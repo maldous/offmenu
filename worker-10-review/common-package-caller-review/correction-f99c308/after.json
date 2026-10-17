@@ -1,0 +1,62 @@
+{
+  "mainHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "mainRef": "refs/heads/main",
+  "workerHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+  "workerRef": "refs/heads/feature/common-package-caller-review-20261014",
+  "identities": [
+    {
+      "path": "/home/user/src/offmenu/.git/HEAD",
+      "dev": 64512,
+      "ino": 14868439,
+      "size": 21,
+      "mode": 33204,
+      "mtimeNs": 1791868083845924473,
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/index",
+      "dev": 64512,
+      "ino": 14868426,
+      "size": 27304,
+      "mode": 33204,
+      "mtimeNs": 1791957650613992637,
+      "sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/worktrees/worker-10/index",
+      "dev": 64512,
+      "ino": 17846563,
+      "size": 27304,
+      "mode": 33204,
+      "mtimeNs": 1791964131278629343,
+      "sha256": "6007e3e2a4fff081930c39e2c434bdecf7edcb163bd8e4fa4d46956953ffe8f4"
+    }
+  ],
+  "priorReview": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/independent-review.json",
+    "dev": 64512,
+    "ino": 17846603,
+    "size": 19235,
+    "mode": 33204,
+    "mtimeNs": 1791964709563338704,
+    "sha256": "562aa65468f0197cb501e945fb0f7d82c92da523d81eab0c804be2cc8dd1afae"
+  },
+  "priorEdges": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-results.json",
+    "dev": 64512,
+    "ino": 17846596,
+    "size": 13510,
+    "mode": 33204,
+    "mtimeNs": 1791964500587655476,
+    "sha256": "6bfb6ec03561bcf5711c479aa828aaad1936532f6e5f699c02bdace31eed781b"
+  },
+  "pr1Readback": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/pr1-status-readback.json",
+    "dev": 64512,
+    "ino": 17830378,
+    "size": 5217,
+    "mode": 33204,
+    "mtimeNs": 1791965954573994820,
+    "sha256": "fd0cbb1deb9cf139ed0c07ac86bf840983b626dcd17b156c69c39654ec39832f"
+  }
+}

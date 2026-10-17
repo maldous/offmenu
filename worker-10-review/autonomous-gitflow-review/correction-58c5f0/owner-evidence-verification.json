@@ -1,0 +1,32 @@
+{
+  "before": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/before-reproduction.json",
+    "sha256": "ec08e80eab0f834506a504f72484d491cb9e2e49473e311a5839eab2d6a0a5a7",
+    "matchesOwnerManifest": true
+  },
+  "after": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/after-reproduction.json",
+    "sha256": "b6090b9a31ae9b4a78d3d405a700b9c33efb5d53ffd5e1b0b93650a52cff01b3",
+    "matchesOwnerManifest": true
+  },
+  "delta": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/correction.patch",
+    "sha256": "8b2efcbedee14d220dca39733ccc094a853a66aa7fd8e580a16d19d3d89c5614",
+    "matchesOwnerManifest": true
+  },
+  "complete_candidate": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/complete-candidate.patch",
+    "sha256": "0f84662bf38e4aafb1c475c2d2955871dbeb5b59284d104c88f3d4fa24b8b7db",
+    "matchesOwnerManifest": true
+  },
+  "owner_checks": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/focused-tests.log",
+    "sha256": "22e7abba4e87574efb5b3f708f161f83bbbd5d70faee6683340c65952dda1b4e",
+    "matchesOwnerManifest": true
+  },
+  "isolation_proof": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/branch-binding-correction/isolation-proof.json",
+    "sha256": "28cec146365c82ccddd79208ed71413ea6867ba824d890094e55f1affeb0d8cf",
+    "matchesOwnerManifest": true
+  }
+}

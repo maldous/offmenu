@@ -1,0 +1,386 @@
+{
+  "schema": "offmenu.worker10.checkpoint-correction-independent-review/1",
+  "createdAt": "2026-10-14T08:37:07.078036+00:00",
+  "reviewerThread": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+  "candidate": {
+    "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "metadataParent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+    "candidate": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "actualChangedPaths": [
+      "scripts/align-places-common.py",
+      "scripts/places-recovery-preflight.py",
+      "tests/test_places_checkpoint.py"
+    ],
+    "metadataDeltaSha256": "6260e5dac320145456300ae3604683925e21b1bbdb10fb353ee0c1da5c687a80",
+    "limitDeltaSha256": "3a5da6d6f2d08bf96c2c0f402cf7a4cfbda8a43d19621634d5077e977383da5c",
+    "chainSha256": "904ed8c8dfac4e80ac913e8113227fb21adb40feeadaa31e0f4e0701318ea674",
+    "sourceBytes": 126302
+  },
+  "sourceHashes": [
+    {
+      "file": "scripts/align-places-common.py",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 27888,
+      "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f"
+    },
+    {
+      "file": "scripts/places_checkpoint.py",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 5632,
+      "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+    },
+    {
+      "file": "scripts/places-recovery-preflight.py",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 4945,
+      "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+    },
+    {
+      "file": "tests/test_places_checkpoint.py",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 16930,
+      "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2"
+    },
+    {
+      "file": "tests/test_places_common.py",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 6855,
+      "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+    },
+    {
+      "file": "corpus/common-data.schema.json",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 17632,
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+    },
+    {
+      "file": "corpus/common-data-contract.json",
+      "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+      "bytes": 46420,
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+    }
+  ],
+  "disposition": "Both checkpoint metadata and reached-limit corrections independently reproduced at exact dfd7448. No new finding demonstrated. Recommend Morgan accept this bounded correction scope; no GitHub approval, thread resolution, publication, data adoption or release certification is claimed.",
+  "accepted": false,
+  "integrated": false,
+  "newFindings": [],
+  "reviewedChain": {
+    "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "metadataCommit": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+    "head": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "uniqueChangedPaths": [
+      "scripts/align-places-common.py",
+      "scripts/places-recovery-preflight.py",
+      "tests/test_places_checkpoint.py"
+    ],
+    "pathCount": 3,
+    "authorDeltaHashesMatch": true
+  },
+  "metadataAssessment": {
+    "file": "scripts/places-recovery-preflight.py",
+    "line": 27,
+    "behavior": "Looks for sibling OUTPUT.checkpoint.sqlite, strips .partial suffix to derive output, and uses encoded SQLite URI mode=ro&immutable=1. Matching version1 + pinned output metadata yields matching-output-metadata; no checkpoint integrity/resume certification is inferred.",
+    "independentCases": 10,
+    "cases": [
+      "actual writer class",
+      "absent sibling",
+      "obsolete in-directory JSON only",
+      "foreign output pin",
+      "unsupported version2",
+      "invalid SQLite",
+      "malformed JSON",
+      "missing state table",
+      "missing row",
+      "encoded whitespace/Unicode output path"
+    ],
+    "actualAlignmentCheckpointChecks": 8,
+    "readOnlyEvidence": "For all cases, complete file path/device/inode/mode/size/nanosecond-mtime/SHA256 footprints stayed identical; no journal/WAL/other sidecars appeared. Eight reached-limit cases also queried full actual align-produced checkpoints read-only before resuming."
+  },
+  "limitAssessment": {
+    "file": "scripts/align-places-common.py",
+    "line": 421,
+    "githubFinding": "https://github.com/maldous/offmenu/pull/1#discussion_r4268300505",
+    "parentBeforeControls": [
+      {
+        "parent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+        "packetSize": 1,
+        "limit": 1,
+        "manifestMismatchReproduced": true,
+        "differentFields": [
+          "observedSourceRecords",
+          "inputCoverage",
+          "sources",
+          "input",
+          "manifestPayloadSha256"
+        ],
+        "expectedSources": [
+          "overture-food-places"
+        ],
+        "resumedSources": [
+          "overture-food-places",
+          "wikidata-food-businesses"
+        ]
+      },
+      {
+        "parent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+        "packetSize": 2,
+        "limit": 2,
+        "manifestMismatchReproduced": true,
+        "differentFields": [
+          "observedSourceRecords",
+          "inputCoverage",
+          "sources",
+          "input",
+          "manifestPayloadSha256"
+        ],
+        "expectedSources": [
+          "overture-food-places"
+        ],
+        "resumedSources": [
+          "overture-food-places",
+          "wikidata-food-businesses"
+        ]
+      }
+    ],
+    "correction": "Restored reached limit breaks outer source loop at the restored source, preserving the uninterrupted source metadata set. The earlier continue admitted subsequent metadata without rows.",
+    "independentAfterCases": 8,
+    "parameterMatrix": [
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        3
+      ],
+      [
+        3,
+        3,
+        1
+      ],
+      [
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        5,
+        3
+      ],
+      [
+        3,
+        6,
+        3
+      ]
+    ],
+    "syntheticInput": "Three independent synthetic records per source in two sources, six total; not the owner fixture with two each. Interrupt immediately after checkpoint commit of reached count. Use saved creation timestamp for exact comparison.",
+    "outputEquality": "Every final manifest object and every output file byte (manifest and gzip packets) matched uninterrupted output; per-file SHA256/byte-size proof retained in independent-results.json. Includes packet/limit1/1 and2/2, first-source endpoint, second-source limits and multi-packet grouping."
+  },
+  "actualTests": {
+    "ownerFocusedChecksPassed": 12,
+    "ownerFocusedChecksFailed": 0,
+    "reviewerAfterCasesPassed": 18,
+    "reviewerAfterCasesFailed": 0,
+    "reviewerBeforeControlsReproduced": 2,
+    "commands": [
+      {
+        "command": [
+          "/home/user/src/offmenu/.venv/bin/python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_places_checkpoint.py",
+          "-v"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot",
+        "exitCode": 0,
+        "logSha256": "4b103160ee9d8d149d23277ff37d0ce62a3c6e160a272ae26c7791f30f2dd32c"
+      },
+      {
+        "command": [
+          "/home/user/src/offmenu/.venv/bin/python",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-probes.py"
+        ],
+        "exitCode": 0,
+        "logSha256": "9c8864f07a492bd178a251e779b64b6a417042f5c298c69e3b894146c7aada46"
+      },
+      {
+        "command": [
+          "/home/user/src/offmenu/.venv/bin/python",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-limit-controls.py"
+        ],
+        "exitCode": 0,
+        "logSha256": "8d9beda6006e1ebecb056145b85b8028626438494ec3105c3dbb20ab4d5d7790"
+      }
+    ],
+    "evidence": [
+      "author-tests.log",
+      "independent-probes.log",
+      "independent-results.json",
+      "parent-limit-controls.json",
+      "parent-limit-controls.log"
+    ],
+    "initialReviewerHarnessError": {
+      "scope": "reviewer metadata fixture setup, not candidate regression",
+      "cause": "Reviewer created empty partial before invoking actual Checkpoint constructor; writer correctly refuses preexisting partial.",
+      "correction": "Create actual checkpoint while partial path absent, then restore owned empty partial for metadata read-only inspection.",
+      "candidateSourceChanged": false
+    }
+  },
+  "authorReports": [
+    {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker01-checkpoint-inventory-correction/result-receipt.json",
+      "sha256": "c633b75f974aa69f56be99e411eeab2596622ded9498395d680b5622e6e9a335",
+      "value": {
+        "utc": "2026-10-14T08:18:26.425192+00:00",
+        "branch": "feature/checkpoint-inventory-correction-20261014",
+        "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "head": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+        "parent": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "diffSha256": "6260e5dac320145456300ae3604683925e21b1bbdb10fb353ee0c1da5c687a80",
+        "approvedReceiptPreserved": true,
+        "acceptedTreePreserved": true,
+        "priorBranchPreserved": true,
+        "mainHeadPreserved": true,
+        "primaryIndexPreserved": true,
+        "nodeModulesPreserved": true,
+        "gitStatus": "?? node_modules",
+        "checks": {
+          "focusedTests": 11,
+          "exitCode": 0,
+          "whitespaceExitCode": 0,
+          "inheritedGitVariablesStripped": true,
+          "gitMutatingFixtures": false
+        },
+        "reviewStatus": "Pending independent exact-head/base review; no approval claimed",
+        "delivery": "Local result only; no push/PR/merge/actions/settings or corpus execution performed"
+      }
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker01-checkpoint-inventory-correction/restored-limit-result.json",
+      "sha256": "8d286820e892cc4b3e3044683d781dde3b7d6d8240333594d8724934d23744a7",
+      "value": {
+        "utc": "2026-10-14T08:23:21.473751+00:00",
+        "branch": "feature/checkpoint-inventory-correction-20261014",
+        "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+        "head": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+        "deltaParent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+        "metadataCorrectionPreserved": true,
+        "deltaSha256": "3a5da6d6f2d08bf96c2c0f402cf7a4cfbda8a43d19621634d5077e977383da5c",
+        "beforeRegressionExitCode": 1,
+        "beforeFailures": "packet-size/limit 1/1 and 2/2: altered manifest coverage",
+        "afterRegressionExitCode": 0,
+        "afterCases": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "focusedTests": 12,
+        "focusedExitCode": 0,
+        "approvedReceiptPreserved": true,
+        "primaryMainUnchanged": true,
+        "primaryIndexUnchanged": true,
+        "status": "?? node_modules",
+        "review": "Pending root-assigned independent reviewer; no GitHub approval claimed/thread resolved",
+        "dataExecution": false
+      }
+    }
+  ],
+  "branchCustody": {
+    "priorBranch": "feature/common-package-caller-review-20261014",
+    "priorHEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "newBranch": "feature/checkpoint-correction-review-20261014",
+    "freshBase": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "switchExitCode": 0,
+    "untrackedFilesPreserved": 104,
+    "collisionGuard": "checked complete new-tree path intersections; switch --no-overwrite-ignore; refused existing branch; no reset/overwrite/ignore rule change",
+    "primaryMainAndIndexEqual": true,
+    "oldBranchPreserved": true,
+    "worker10IndexAfterAuthorizedSwitch": {
+      "path": "/home/user/src/offmenu/.git/worktrees/worker-10/index",
+      "dev": 64512,
+      "ino": 17848947,
+      "size": 27816,
+      "mode": 33204,
+      "mtimeNs": 1791966595783949955,
+      "sha256": "076b8c9cd24fb5ee3ca94225993d64103505892c183f10cebecc389edac6d297"
+    }
+  },
+  "freshFetch": {
+    "utc": "2026-10-14T08:29:55.774396+00:00",
+    "command": [
+      "flock",
+      "-w",
+      "30",
+      "/tmp/offmenu-develop-fetch.lock",
+      "git",
+      "--no-optional-locks",
+      "fetch",
+      "origin",
+      "develop"
+    ],
+    "exitCode": 0,
+    "output": "From github.com:maldous/offmenu\n * branch            develop    -> FETCH_HEAD\n"
+  },
+  "preservation": {
+    "primaryMainAndIndexPreserved": true,
+    "worker10IndexStableAfterAuthorizedBranchSwitch": true,
+    "all104PriorUntrackedFilesPreserved": true,
+    "oldBranchPreserved": true,
+    "authorReceiptHashesPreserved": true,
+    "allCandidateAndParentSnapshotHashesEqual": true,
+    "HEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "branch": "feature/checkpoint-correction-review-20261014",
+    "status": "## feature/checkpoint-correction-review-20261014\n?? worker-10-review/\n",
+    "diffCheck": {
+      "exitCode": 0,
+      "output": ""
+    }
+  },
+  "externalPreservationEvidence": "/home/user/Documents/Codex/2026-10-14/task-2/worker-10-review/checkpoint-correction-review/untracked-preservation-before.json",
+  "limits": [
+    "Metadata lookup is a read-only metadata snapshot only, not schema/integrity/resumability validation or live-WAL qualification.",
+    "No original corpus, partials, retained checkpoints or real data were read/mutated; all writes were own small temporary synthetic fixtures.",
+    "Fault injection occurs after successful SQLite save via exception cleanup; no new process-kill/power-loss qualification. Existing stale-lock/manual custody requirements remain unchanged.",
+    "No GitHub review/comment/resolution/approval was submitted; the linked bot COMMENTED P2 is behaviorally corrected here, not administratively resolved by Worker10.",
+    "Fresh baseline abe0ddc is provisional develop; no main promotion, accepted release or bulk execution authority inferred."
+  ],
+  "noAdditionalWorkersSessionsAgentsWorktreesServers": true,
+  "controls": "Filesystem/network supplied controls preserved; mandatory reviewer auto_review, separate approval policy unavailable. Every Git subprocess strips inherited GIT_* and uses explicit safe config/prompt/optional-lock policy. Locked fetch and guarded unique branch switch were the only authorized repository mutations; no persistent Git identity/config or ignore changes.",
+  "MorganVerdict": "pending",
+  "idleAvailable": true,
+  "evidenceIndex": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/evidence-index.json",
+    "files": 32,
+    "sha256": "e8b20bc80ea8ef6ea350def051fc7df60f34d330401f96c8308e413c15c37778"
+  }
+}

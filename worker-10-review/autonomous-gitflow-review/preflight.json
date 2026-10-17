@@ -1,0 +1,74 @@
+{
+  "schema": "offmenu.worker10.gitflow-review-preflight/1",
+  "observedAt": "2026-10-14T08:44:31.554318+00:00",
+  "requestedCandidate": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "actualWorker09HEAD": "e9f6eec4ea9de6b9a5b27bcd325183d0ca50b442",
+  "actualWorker09Branch": "feature/autonomous-gitflow-review-20261014",
+  "actualWorker09Status": "## feature/autonomous-gitflow-review-20261014\n",
+  "parent": "6b2edabd56d4de4506b36ddcbcbc61baeaa09ba5",
+  "expectedParent": "6b2edabd56d4de4506b36ddcbcbc61baeaa09ba5",
+  "base": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "mergeBaseMatches": true,
+  "changedPaths": [
+    "docs/OFFMENU_GITFLOW.md",
+    "scripts/offmenu-gitflow-launch.py",
+    "scripts/offmenu-gitflow.py",
+    "tests-gitflow/test_offmenu_gitflow.py"
+  ],
+  "sourceHashes": [
+    {
+      "file": "docs/OFFMENU_GITFLOW.md",
+      "sha256": "214ba300e0c61c0cd8dd8a7798baf62bdcec9bd3abce882a2f0f478d695b6c83",
+      "bytes": 29081
+    },
+    {
+      "file": "scripts/offmenu-gitflow-launch.py",
+      "sha256": "cc603f293d748c0ab6b7793ed6f637601ce98c808cd2b536be5bba9dedf31951",
+      "bytes": 1024
+    },
+    {
+      "file": "scripts/offmenu-gitflow.py",
+      "sha256": "c5038d05dc506c3caea09a5b0904d9374d763d4a5d37f3f3cdcd3ba387de95d5",
+      "bytes": 37582
+    },
+    {
+      "file": "tests-gitflow/test_offmenu_gitflow.py",
+      "sha256": "7de4f739b5098078a7c3864ec9c45b30e7d99cc4477858a46be3a95652aab719",
+      "bytes": 42121
+    }
+  ],
+  "deltaSha256": "46a58964409caaf2b2206e4a862abba15881bb284a08241325414716e66b583c",
+  "chainSha256": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb",
+  "ownerTestReceipt": {
+    "utc": "2026-10-14T08:39:56.847066+00:00",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests-gitflow",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 42,
+    "log": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/client-controls/focused-tests.log",
+    "sha256": "3b3e30be1063a512d9f90b5383e90126d7846f8de79d9f29ba67cb57f33266d7"
+  },
+  "ownerTestReceiptHashVerified": true,
+  "ownerFinalReport": {
+    "path": "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-autonomous-gitflow/result.json",
+    "sha256": "884d06202634a41a5447fe8dd1caf9b84093fe3ae50961b1b73ce19a90f810ef",
+    "head": "6b2edabd56d4de4506b36ddcbcbc61baeaa09ba5",
+    "status": "ready_for_independent_review"
+  },
+  "finalizationMismatch": "Latest owner result.json still names 6b2edabd, not requested e9f6eec. Dispatch says owner still finalizing and root will confirm final head.",
+  "independentTestsRun": false,
+  "branchSwitchPerformed": false,
+  "reviewState": "waiting for final exact-pin/report confirmation before substantive review/fixtures",
+  "worker10Branch": "feature/checkpoint-correction-review-20261014",
+  "worker10HEAD": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+  "reservation": "Existing permanent Worker10 only; prior reports/branches/hooks untouched; no installs/worktrees/sessions/orchestrator/actions/publishing or setting changes.",
+  "accepted": false
+}

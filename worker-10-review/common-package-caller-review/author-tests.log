@@ -1,0 +1,175 @@
+TAP version 13
+# Subtest: setupData exposes an explicit selected-package action without automatic I/O; real loader reaches existing rendering
+ok 1 - setupData exposes an explicit selected-package action without automatic I/O; real loader reaches existing rendering
+  ---
+  duration_ms: 20.701995
+  type: 'test'
+  ...
+# Subtest: bad manifest/file pins, permission, gzip and budgets reject at caller boundary before common rendering
+    # Subtest: manifest
+    ok 1 - manifest
+      ---
+      duration_ms: 1.171604
+      type: 'test'
+      ...
+    # Subtest: file
+    ok 2 - file
+      ---
+      duration_ms: 0.922721
+      type: 'test'
+      ...
+    # Subtest: permission
+    ok 3 - permission
+      ---
+      duration_ms: 0.525529
+      type: 'test'
+      ...
+    # Subtest: account
+    ok 4 - account
+      ---
+      duration_ms: 0.4154
+      type: 'test'
+      ...
+    # Subtest: policy
+    ok 5 - policy
+      ---
+      duration_ms: 0.912715
+      type: 'test'
+      ...
+    # Subtest: gzip
+    ok 6 - gzip
+      ---
+      duration_ms: 1.986448
+      type: 'test'
+      ...
+    # Subtest: budget
+    ok 7 - budget
+      ---
+      duration_ms: 0.798443
+      type: 'test'
+      ...
+    1..7
+ok 2 - bad manifest/file pins, permission, gzip and budgets reject at caller boundary before common rendering
+  ---
+  duration_ms: 7.187043
+  type: 'test'
+  ...
+# Subtest: account reset aborts a pending selected load; an injector ignoring abort cannot render stale results
+ok 3 - account reset aborts a pending selected load; an injector ignoring abort cannot render stale results
+  ---
+  duration_ms: 1.724357
+  type: 'test'
+  ...
+# Subtest: a changed account is checked after await even if its host omitted reset
+ok 4 - a changed account is checked after await even if its host omitted reset
+  ---
+  duration_ms: 1.673173
+  type: 'test'
+  ...
+# Subtest: a newer explicit load cancels the prior generation and stale completion never replaces its reader/notice
+ok 5 - a newer explicit load cancels the prior generation and stale completion never replaces its reader/notice
+  ---
+  duration_ms: 2.919844
+  type: 'test'
+  ...
+# Subtest: account identity namespaces cannot collide with guest/demo and reader privileges come from current account
+ok 6 - account identity namespaces cannot collide with guest/demo and reader privileges come from current account
+  ---
+  duration_ms: 2.40056
+  type: 'test'
+  ...
+# Subtest: descriptor permission self-assertion and a loader alone never establish independent admission
+ok 7 - descriptor permission self-assertion and a loader alone never establish independent admission
+  ---
+  duration_ms: 0.490339
+  type: 'test'
+  ...
+# Subtest: permission revocation and scope change during loading reject before render
+    # Subtest: denied
+    ok 1 - denied
+      ---
+      duration_ms: 1.485937
+      type: 'test'
+      ...
+    # Subtest: scope
+    ok 2 - scope
+      ---
+      duration_ms: 1.379455
+      type: 'test'
+      ...
+    # Subtest: selection
+    ok 3 - selection
+      ---
+      duration_ms: 1.425068
+      type: 'test'
+      ...
+    1..3
+ok 8 - permission revocation and scope change during loading reject before render
+  ---
+  duration_ms: 4.508002
+  type: 'test'
+  ...
+# Subtest: a pending authorization is cancelled by account reset before it can call the loader
+ok 9 - a pending authorization is cancelled by account reset before it can call the loader
+  ---
+  duration_ms: 0.437082
+  type: 'test'
+  ...
+# Subtest: loader receipt must match selected release, manifest, file bytes and packet indexes
+    # Subtest: release
+    ok 1 - release
+      ---
+      duration_ms: 2.207708
+      type: 'test'
+      ...
+    # Subtest: manifest
+    ok 2 - manifest
+      ---
+      duration_ms: 1.283904
+      type: 'test'
+      ...
+    # Subtest: bytes
+    ok 3 - bytes
+      ---
+      duration_ms: 1.147695
+      type: 'test'
+      ...
+    # Subtest: indexes
+    ok 4 - indexes
+      ---
+      duration_ms: 1.225764
+      type: 'test'
+      ...
+    1..4
+ok 10 - loader receipt must match selected release, manifest, file bytes and packet indexes
+  ---
+  duration_ms: 6.121648
+  type: 'test'
+  ...
+# Subtest: signed-in public-only permission does not automatically unlock private rows
+ok 11 - signed-in public-only permission does not automatically unlock private rows
+  ---
+  duration_ms: 1.376027
+  type: 'test'
+  ...
+# Subtest: legacy common-graph import still uses the existing renderer and stays read-only without package I/O
+ok 12 - legacy common-graph import still uses the existing renderer and stays read-only without package I/O
+  ---
+  duration_ms: 0.666496
+  type: 'test'
+  ...
+# Subtest: selecting a local graph file cancels an older package request before the file finishes reading
+ok 13 - selecting a local graph file cancels an older package request before the file finishes reading
+  ---
+  duration_ms: 2.020279
+  type: 'test'
+  ...
+1..13
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 101.675495

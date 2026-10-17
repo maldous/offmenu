@@ -1,0 +1,122 @@
+[
+  {
+    "path": "after.json",
+    "bytes": 4009,
+    "sha256": "ca1e61ee4bb7a2ef8ed07c0130ef16092487d52a81064d28f1fa152a99c74b76"
+  },
+  {
+    "path": "before.json",
+    "bytes": 4009,
+    "sha256": "ca1e61ee4bb7a2ef8ed07c0130ef16092487d52a81064d28f1fa152a99c74b76"
+  },
+  {
+    "path": "build-review.py",
+    "bytes": 10030,
+    "sha256": "eef37fa2598534884cb80201d412fb8674eb15b861014c0bebf7891c945ee2e8"
+  },
+  {
+    "path": "immutable.patch",
+    "bytes": 112435,
+    "sha256": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb"
+  },
+  {
+    "path": "independent-command.json",
+    "bytes": 260,
+    "sha256": "8cfdba646e2665b7153c5b99a2469fb46f972a1b0325edd89d1886e4fed9f0a8"
+  },
+  {
+    "path": "independent-probes.log",
+    "bytes": 5850,
+    "sha256": "e38fd01b34e042940399668048b944cde6c5197d885d257532fd371bda3ef301"
+  },
+  {
+    "path": "independent-probes.py",
+    "bytes": 8686,
+    "sha256": "12b5025e3740f5321cc52c3026f12bf7fd8a455f41e6069c68fbd8547de78541"
+  },
+  {
+    "path": "independent-results.json",
+    "bytes": 42096,
+    "sha256": "4d8cdc3ce578d620e2719aad6d56ee713121a6820e0dd091b948a6eb04d05eae"
+  },
+  {
+    "path": "initial-probe-harness-failure.json",
+    "bytes": 382,
+    "sha256": "36c071d8948e3330e89b838ee1b98888611e67909c89c79c2c21a61cec2a445e"
+  },
+  {
+    "path": "initial-probe-harness-failure.log",
+    "bytes": 1240,
+    "sha256": "e3bef6f5fcdad3ca36773a728042c881cd48c3751d1f94d095cf5bbc17ecb786"
+  },
+  {
+    "path": "inputs.json",
+    "bytes": 463,
+    "sha256": "89dd5c18ff8c202a2844c5a8e532a0b937875cccfa5f49397cd2d8681f8ccaa6"
+  },
+  {
+    "path": "owner-command.json",
+    "bytes": 487,
+    "sha256": "7fd16e050e4a3a3400f6bdc9a40440bae95097a43f2f57a4642b7fb7c5b3470e"
+  },
+  {
+    "path": "owner-evidence-readback.json",
+    "bytes": 4450,
+    "sha256": "56df94b0c45c90ed8bf4260dee237965eab7df56f042c0f94e490ed88b538b69"
+  },
+  {
+    "path": "owner-final-report.json",
+    "bytes": 7753,
+    "sha256": "088e971fde89b32fbc3c178979c7fab32fa4d2621ae13d543653f00a560535e4"
+  },
+  {
+    "path": "owner-suite-isolation.json",
+    "bytes": 3405,
+    "sha256": "8f358d64688dd79e66d1012b9c815c8ecf0f1fc947de8efceb804ac7c5344681"
+  },
+  {
+    "path": "owner-tests.log",
+    "bytes": 6303,
+    "sha256": "f84ee8ff7d8f75d43a988eb7ec7c59f2292e48583a8c35c3d958c2478a06d1c6"
+  },
+  {
+    "path": "preflight.json",
+    "bytes": 3111,
+    "sha256": "c509cf849b3a5f5779bedb287a967ac569f360abef9114b913d947d61be5c42e"
+  },
+  {
+    "path": "readback.json",
+    "bytes": 509,
+    "sha256": "1c7c92d78987452840326507f0228b6225f4860339c5ccad8dee4783ba498f19"
+  },
+  {
+    "path": "snapshot/docs/OFFMENU_GITFLOW.md",
+    "bytes": 29081,
+    "sha256": "214ba300e0c61c0cd8dd8a7798baf62bdcec9bd3abce882a2f0f478d695b6c83"
+  },
+  {
+    "path": "snapshot/scripts/offmenu-gitflow-launch.py",
+    "bytes": 1024,
+    "sha256": "cc603f293d748c0ab6b7793ed6f637601ce98c808cd2b536be5bba9dedf31951"
+  },
+  {
+    "path": "snapshot/scripts/offmenu-gitflow.py",
+    "bytes": 37582,
+    "sha256": "c5038d05dc506c3caea09a5b0904d9374d763d4a5d37f3f3cdcd3ba387de95d5"
+  },
+  {
+    "path": "snapshot/tests-gitflow/test_offmenu_gitflow.py",
+    "bytes": 42121,
+    "sha256": "7de4f739b5098078a7c3864ec9c45b30e7d99cc4477858a46be3a95652aab719"
+  },
+  {
+    "path": "source-receipts.json",
+    "bytes": 857,
+    "sha256": "effc1be5db7ada176e1d32453ff7ee65bd8bf7bec87503c4ac206ad0e2201257"
+  },
+  {
+    "path": "trigger-proposal.json",
+    "bytes": 3467,
+    "sha256": "9a0ef663bca50a8daf2b13c0fa70c6b0d5d32290c6a011aed6349121ac5218b7"
+  }
+]

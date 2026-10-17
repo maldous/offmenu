@@ -1,0 +1,36 @@
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmppul9kkzf/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmpk9hx_r5l/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmp6hz_8b_y/expected", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.0, "output": "/tmp/tmp6hz_8b_y/out", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmp8j03wh5u/expected", "packets": 1, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.0, "output": "/tmp/tmp8j03wh5u/out", "packets": 1, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.02, "output": "/tmp/tmpmggnn9_e/expected", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmpmggnn9_e/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.02, "output": "/tmp/tmptqq79lh3/expected", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmptqq79lh3/out", "packets": 4, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmpe3zj85ew/out", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/tmp5j9i4vur/expected", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/tmp5j9i4vur/out", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/tmpmlq2o76k/expected", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/tmpmlq2o76k/out", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/tmpmixgzrnj/expected", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 6, "elapsedSeconds": 0.01, "output": "/tmp/tmpmixgzrnj/out", "packets": 1, "relations": 0, "resources": 3, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmpbxvl6903/expected", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+{"assertions": 8, "elapsedSeconds": 0.01, "output": "/tmp/tmpbxvl6903/out", "packets": 2, "relations": 0, "resources": 4, "status": "aligned", "translations": 0}
+test_atomic_close_before_checkpoint_commit_is_recovered (test_places_checkpoint.PlacesCheckpointTests.test_atomic_close_before_checkpoint_commit_is_recovered) ... ok
+test_duplicate_identity_survives_resume_and_uncommitted_rows_roll_back (test_places_checkpoint.PlacesCheckpointTests.test_duplicate_identity_survives_resume_and_uncommitted_rows_roll_back) ... ok
+test_final_short_orphan_mismatch_stays_untouched_and_refused (test_places_checkpoint.PlacesCheckpointTests.test_final_short_orphan_mismatch_stays_untouched_and_refused) ... ok
+test_final_short_packet_close_resume_equals_uninterrupted (test_places_checkpoint.PlacesCheckpointTests.test_final_short_packet_close_resume_equals_uninterrupted) ... ok
+test_interrupted_resume_equals_uninterrupted_with_buffered_files (test_places_checkpoint.PlacesCheckpointTests.test_interrupted_resume_equals_uninterrupted_with_buffered_files) ... ok
+test_inventory_and_storage_fail_closed (test_places_checkpoint.PlacesCheckpointTests.test_inventory_and_storage_fail_closed) ... ok
+test_inventory_discovers_only_matching_sibling_checkpoint (test_places_checkpoint.PlacesCheckpointTests.test_inventory_discovers_only_matching_sibling_checkpoint) ... ok
+test_legacy_and_truncated_input_refused_without_adoption (test_places_checkpoint.PlacesCheckpointTests.test_legacy_and_truncated_input_refused_without_adoption) ... ok
+test_mid_packet_failure_rolls_back_cursor_and_identity (test_places_checkpoint.PlacesCheckpointTests.test_mid_packet_failure_rolls_back_cursor_and_identity) ... ok
+test_pin_output_corruption_and_stale_lock_refused (test_places_checkpoint.PlacesCheckpointTests.test_pin_output_corruption_and_stale_lock_refused) ... ok
+test_pinned_duplicate_and_truncated_gzip_fail_on_read (test_places_checkpoint.PlacesCheckpointTests.test_pinned_duplicate_and_truncated_gzip_fail_on_read) ... ok
+test_restored_limit_at_packet_boundary_matches_uninterrupted (test_places_checkpoint.PlacesCheckpointTests.test_restored_limit_at_packet_boundary_matches_uninterrupted) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.572s
+
+OK

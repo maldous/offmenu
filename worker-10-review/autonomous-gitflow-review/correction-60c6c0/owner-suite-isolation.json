@@ -1,0 +1,48 @@
+{
+  "contamination_target": "/tmp/tmpiiyze1uu/guard",
+  "variables": [
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    "GIT_COMMON_DIR",
+    "GIT_CONFIG_COUNT",
+    "GIT_CONFIG_KEY_0",
+    "GIT_CONFIG_PARAMETERS",
+    "GIT_CONFIG_VALUE_0",
+    "GIT_DIR",
+    "GIT_INDEX_FILE",
+    "GIT_NAMESPACE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_WORK_TREE"
+  ],
+  "sentinel_head_unchanged": true,
+  "sentinel_index_unchanged": true,
+  "sentinel_owner_bytes_unchanged": true,
+  "real_shared_before": {
+    "common_dir": "/home/user/src/offmenu/.git",
+    "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+  },
+  "real_shared_after": {
+    "common_dir": "/home/user/src/offmenu/.git",
+    "main": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "index_sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389"
+  },
+  "author_identity_unchanged": {
+    "head": "abe0ddc9db357b1e8d0d61825392d6b9923352f0",
+    "branch": "feature/checkpoint-correction-review-20261014"
+  },
+  "retained_receipt_hashes_unchanged": {
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gate-start-c5d4034743b04bfc97d58d2c17067c54.json": "6d7192350bddf31dca09fbed774d427bc3fff170876a3b58daaa79349fd12f98",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gitflow-enforcement-20261014-ready-bfdf5981b2544833b31a140415c91270.json": "08e84579aed0fff68bfcc5523725cd3da712001dab825095dfdbec5b33b66d8a",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gate-start-324fd1fb0d914c40816d24419fe9342a.json": "1e038d520d88801b33d74c8c9935c3905444f399f0c371d037ddf3bb1527f09a",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gitflow-enforcement-20261014-ready-4e6209a2010248999cdeb1adca45568f.json": "13d561dd29e1c246a13ac347fd9eab46c6b128e97c584e3890f7c7a86d362b41",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gate-start-dc0f8ddf66a248ec9c9923520e5fe5f8.json": "1c2c07cf9ed29d3c40bce2284e58983a570ee2fc15158f72d129694ffee53f9c",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gate-start-1e867813105a4396a5d97e40bd76d84c.json": "0b5190c1e43c4eb7ca57121cf797464841f425f5d6673a523347450ddb61d9b0",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gitflow-enforcement-20261014-ready-3d44e641c5244559a1a588eabdd61c32.json": "89a9918e26b359e64647b126852669054184626e2ae0038ed281077b8806d162",
+    "/home/user/Documents/Codex/2026-10-14/task-2/worker-09-gitflow/receipts/gitflow-enforcement-20261014-start-894a90ae392b40acab1e9d5a1923e0b7.json": "f8fe4be342c67a5c0357e866c6281e7e364a29c0b2953306a133fc7921eaaa88"
+  },
+  "tracked_code_hashes_unchanged": {
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/scripts/offmenu-gitflow.py": "62fba21787928633f0e8bf5f475f127e4f635acea3845cb11cf42203db427122",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/docs/OFFMENU_GITFLOW.md": "31bfb171fe8469d0afdde82cdc146062f25df6d88937dad9bc2fac8740367799",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/tests-gitflow/test_offmenu_gitflow.py": "aca14b6754b0f34a0e24e6f267de0fe5c47c956ceba946c91bbba936bb45a48c"
+  }
+}

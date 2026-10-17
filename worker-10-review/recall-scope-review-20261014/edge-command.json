@@ -1,0 +1,8 @@
+{
+  "command": [
+    "node",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-cases.mjs"
+  ],
+  "exitCode": 1,
+  "logSha256": "60f7f7976d437fe045b0cea9a007f65892e7013fa259069abae9f7159886a9c3"
+}

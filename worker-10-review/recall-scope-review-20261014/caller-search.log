@@ -1,0 +1,14 @@
+adf42e947b21c2d5441fcb69b683c931d726e31c:public/evidence-model.js:30:export function matchRecall(notice,lot){if(notice.market&&lot.market&&notice.market!==lot.market)return 'not-matched';if(!notice.gtin||canonicalGTIN(notice.gtin)!==canonicalGTIN(lot.barcode)||!canonicalGTIN(lot.barcode))return 'not-matched';if(notice.allBatches===true)return 'matched';if(!lot.lotCode)return 'possible';return notice.lots?.includes(lot.lotCode)?'matched':'not-matched';}
+adf42e947b21c2d5441fcb69b683c931d726e31c:public/recall-scope-model.js:14:export function evaluateRecallScope(notice = {}, lot = {}, { asOf } = {}) {
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/global-data.test.mjs:3:import {admission,canonicalGTIN,qualify,ownershipPath,matchRecall} from '../public/evidence-model.js';
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/global-data.test.mjs:16:test('GTIN keeps leading zeros; recall scope is explicit',()=>{assert.equal(canonicalGTIN('4006381333931'),'04006381333931');assert.equal(canonicalGTIN('4006381333932'),null);assert.equal(matchRecall({gtin:'4006381333931',allBatches:true},{barcode:'4006381333931'}),'matched');assert.equal(matchRecall({gtin:'4006381333931',lots:['A']},{barcode:'4006381333931'}),'possible');});
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:3:import { matchRecall } from '../public/evidence-model.js';
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:4:import { evaluateRecallScope } from '../public/recall-scope-model.js';
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:15:const evaluate = (n = notice(), l = lot(), clock = asOf) => evaluateRecallScope(n, l, { asOf: clock });
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:19:  assert.equal(matchRecall(legacy, lot()), 'matched');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:20:  assert.equal(matchRecall(legacy, { ...lot(), market: 'NZ' }), 'not-matched');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:21:  assert.equal(matchRecall(legacy, { ...lot(), lotCode: 'B' }), 'not-matched');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:22:  assert.equal(matchRecall(legacy, { ...lot(), lotCode: undefined }), 'possible');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:23:  assert.equal(matchRecall(legacy, { ...lot(), market: undefined }), 'matched');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:127:  assert.equal(evaluateRecallScope(notice(), lot()).applicability, 'unknown');
+adf42e947b21c2d5441fcb69b683c931d726e31c:tests-web/recall-scope-model.test.mjs:159:  assert.equal(evaluateRecallScope(null, null).applicability, 'unknown');

@@ -1,0 +1,90 @@
+# Worker29 server invalidation adapter — review candidate
+
+Fresh locked origin/develop base 908ca373dfc918f2e33fd5e44260879577bed5c5,
+fetch exit 0 completed 2026-10-14T10:12:58.039516+00:00.
+Prior dataset branch/86fda698 and dependency branch/f2e195b preserved.
+
+Existing gap: cloud/enrichment.mjs checks source policies but caches a normalized
+payload without an authoritative field dependency graph or producer epoch.
+cloud/provider-data.mjs filters individual records, not transitive graphs.
+CACHE-02/CACHE-04 owner-controlled server adoption is required.
+
+Only cloud/cache-invalidation-owner29.mjs and its test plus this note are new.
+No handler/schema/common caller changes. Adapter uses existing resolver_cache,
+source_policies and evidence_assertions through bound SQL. Key hashes verified
+owner/audience/source/query/producerEpoch; no plaintext query/account in keys.
+Envelope must explicitly contain scope, epochs, freshUntil, assertions and payload.
+Epochs pin every input source's exact policy document and integer revision.
+Every graph node must exactly match its authoritative evidence_assertions document
+(owner,id,source), current retention/freshness and availability. Reads and writes
+recheck all document/status/policy snapshots in a single SQL statement after
+async gates. Withdrawal withholds old entries without a cache sweep. Unknown
+or legacy envelopes cannot be reused. No false allergy/nutrition/safety admission.
+
+Minimal owner02 integration delta:
+1. Import cacheInvalidationAdapter and the dependency evaluator after independent
+   acceptance of f2e195bdcc5f00c0bccf1c4a475255b9211e5184. The latter is injected;
+   no copied helper or runtime Git dependency.
+2. Instantiate per request with env.DB, request clock, current field permission
+   function and durable budget reserve callback (coordinate Worker30). Authorize
+   owner/audience server-side; scope must come from verified auth, not request JSON.
+3. Build a complete bounded graph from authoritative assertion documents, exact
+   source policy epochs and a pinned producer/normalizer epoch. Existing enrichment
+   does not yet emit this contract. Coordinate owner07 for producer provenance.
+   Existing evidence JSON needs an explicit version/dependency normalization
+   contract; do not synthesize empty root dependencies or grant missing rights.
+4. Call resolve(scope,prepared,produce). A cache hit skips reserve/transport.
+   Prepared is a complete permission graph, not an already-admitted response.
+   Permission/dependency gates run before reserve and again before transport.
+   Produce returns a same-scope envelope; conditional persist and final read gate
+   must succeed before returning payload. Withheld/budget-denied never returns it.
+5. Translate fail-closed exceptions to no-store withheld responses. Keep lease,
+   backoff, budget-account binding, action/territory/consent and payload-to-assertion
+   normalization owner-controlled. This adapter neither creates grants nor proves
+   arbitrary payload facts; producer must bind all output fields to graph inputs.
+
+Bound: 256 assertions, 64 KiB envelopes, source identity fields delegated to pinned
+model's bounds. All assertions must be admitted: no partial field projection.
+Atomic gates establish validity at the final SQL statement, not perpetual future
+validity. Scope/callback inputs must be immutable trusted request-local data.
+Public support requires a public current policy; private data never widens scope.
+No automatic purchases, external source calls, installs, deployments or activation.
+
+Actual proof: node --test tests-web/cache-invalidation-owner29.test.mjs: 5/5 pass.
+Uses actual in-memory SQLite, existing catalogue DDL, D1-shaped prepared wrapper,
+pinned evaluator read via git show with GIT_* stripped, and existing admission.
+No Git-writing fixtures or real provider calls. Initial harness runs failed due
+syntax then redundant table DDL; repaired harness before the final passing runs.
+This proves the local adapter caller/store path, not deployed handler composition,
+D1 platform parity or full application acceptance. Independent exact-pin review
+and owner02 wiring remain pending. No normal publication before review.
+
+Supplied runtime controls: unrestricted filesystem/danger-full-access, network
+ enabled, mandatory reviewer auto_review; separate approval policy unavailable.
+No settings changes. Shared primary HEAD/main/index hashes checked before/after.
+
+## Worker33 expiry correction
+
+Review candidate 08e20815cb83b2f94cee54e1ed674382ea58d1cb had a medium
+expiry failure. Exact independent-probes.mjs from worker-33-cache-review was
+read without alteration. Its expiry test reproduced: 5 original checks passed,
+expiry check failed because admission preceded final statement preparation and
+source expiresAt was absent from the final SQL predicate.
+
+Final read/write statements now bind one trusted clock capture AFTER statement
+preparation for all temporal predicates. Source policy expiry parsed from the
+exact authoritative pinned document is an additional SQL bound predicate;
+malformed explicit expiry withholds. The same statement checks source active,
+revision/document, assertion document/status and row retention/freshness, plus
+assertion document retainUntil and envelope freshness. No mixed clock reads in
+that statement. This establishes permission at the captured commit-point clock;
+DB adapters and clocks must be trusted, not consumer-controlled, and response
+validity is not perpetual. External entitlement epoch gates remain owner-defined.
+
+All six Worker33 independent probes were incorporated without changing their
+assertions (setup imports use the preserved pinned helper). Additional write
+expiry at exact boundary and expiry during injected reservation checks passed.
+Final focused run: 13 passed, 0 failed. No transport occurs after reservation
+expiry; conditional insertion at expiry writes nothing. Exact new pin requires
+Worker33 independent re-review. Old pin retained as parent. f2e195b helper is
+still unaccepted for general adoption. Production STOP remains active.

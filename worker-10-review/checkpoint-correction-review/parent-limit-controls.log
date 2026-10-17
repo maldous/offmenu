@@ -1,0 +1,46 @@
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-parent-limit-control-hv_6ou09/expected", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 2, "elapsedSeconds": 0.01, "output": "/tmp/worker10-parent-limit-control-hv_6ou09/resumed", "packets": 1, "relations": 0, "resources": 1, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-parent-limit-control-zprekqbp/expected", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+{"assertions": 4, "elapsedSeconds": 0.01, "output": "/tmp/worker10-parent-limit-control-zprekqbp/resumed", "packets": 1, "relations": 0, "resources": 2, "status": "aligned", "translations": 0}
+[
+  {
+    "parent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+    "packetSize": 1,
+    "limit": 1,
+    "manifestMismatchReproduced": true,
+    "differentFields": [
+      "observedSourceRecords",
+      "inputCoverage",
+      "sources",
+      "input",
+      "manifestPayloadSha256"
+    ],
+    "expectedSources": [
+      "overture-food-places"
+    ],
+    "resumedSources": [
+      "overture-food-places",
+      "wikidata-food-businesses"
+    ]
+  },
+  {
+    "parent": "e8c248c0448ca25f87cd6277efcd4876715585d2",
+    "packetSize": 2,
+    "limit": 2,
+    "manifestMismatchReproduced": true,
+    "differentFields": [
+      "observedSourceRecords",
+      "inputCoverage",
+      "sources",
+      "input",
+      "manifestPayloadSha256"
+    ],
+    "expectedSources": [
+      "overture-food-places"
+    ],
+    "resumedSources": [
+      "overture-food-places",
+      "wikidata-food-businesses"
+    ]
+  }
+]

@@ -1,0 +1,84 @@
+diff --git a/public/data-ui.js b/public/data-ui.js
+index 1d0648d..3fc76a5 100644
+--- a/public/data-ui.js
++++ b/public/data-ui.js
+@@ -46,18 +46,24 @@ async function loadSelectedCommonPackage(){
+     const authorize=async()=>{
+       const permission=await awaitCurrent(()=>commonPackageLoader.authorize({selection:structuredClone(descriptor),accountKey:account,signal:controller.signal}));
+       check();
+-      const ownerId=permission?.scope?.privateOwnerId;
+-      if(permission?.allowed!==true||permission.accountKey!==account||typeof permission.policyId!=='string'||!permission.policyId||canonical(permission.selection)!==selectionStamp||!(ownerId===null||signed()&&ownerId===getUser().id))throw Error('Selected common package permission is unavailable for this profile and selection.');
+-      return {permission,readerOptions:{userId:ownerId,allowLocalRestricted:false}};
++      const allowed=permission?.allowed,authorizedAccount=permission?.accountKey,policyId=permission?.policyId,ownerId=permission?.scope?.privateOwnerId,authorizedSelection=canonical(permission?.selection);
++      if(allowed!==true||authorizedAccount!==account||typeof policyId!=='string'||!policyId||authorizedSelection!==selectionStamp||!(ownerId===null||typeof ownerId==='string'&&signed()&&ownerId===getUser().id))throw Error('Selected common package permission is unavailable for this profile and selection.');
++      // Retain independent primitive values, never a provider-owned decision or
++      // the readerOptions object later exposed to the loader capability.
++      return Object.freeze({allowed,accountKey:authorizedAccount,policyId,ownerId,selectionStamp:authorizedSelection});
+     };
+     check();const admission=await authorize();
+     const {manifestUrl,manifestSha256,acceptedReleases,files,allowedOrigins,limits}=transport;
+     // Keep independent receipt expectations; the capability cannot mutate this snapshot.
+-    const result=await awaitCurrent(()=>commonPackageLoader.load({...structuredClone({manifestUrl,manifestSha256,acceptedReleases,files,allowedOrigins,limits}),readerOptions:admission.readerOptions,signal:controller.signal}));
++    const result=await awaitCurrent(()=>commonPackageLoader.load({...structuredClone({manifestUrl,manifestSha256,acceptedReleases,files,allowedOrigins,limits}),readerOptions:{userId:admission.ownerId,allowLocalRestricted:false},signal:controller.signal}));
+     check();const confirmed=await authorize();
+-    if(confirmed.permission.policyId!==admission.permission.policyId||canonical(confirmed.readerOptions)!==canonical(admission.readerOptions))throw Error('Selected common package permission changed while loading.');
++    if(confirmed.allowed!==admission.allowed||confirmed.accountKey!==admission.accountKey||confirmed.policyId!==admission.policyId||confirmed.ownerId!==admission.ownerId||confirmed.selectionStamp!==admission.selectionStamp)throw Error('Selected common package permission changed while loading.');
+     const receipt=result?.receipt;
+-    if(receipt?.schemaVersion!=='offmenu-common-transport-receipt/1'||receipt.manifestUrl!==manifestUrl||receipt.manifestSha256!==manifestSha256||receipt.releaseId!==qualification.releaseId||!acceptedReleases?.some(row=>row.releaseId===receipt.releaseId&&row.manifestSha256===manifestSha256)||!Array.isArray(receipt.files)||receipt.files.length!==files.length||receipt.files.some((row,index)=>row.key!==files[index].key||row.sha256!==files[index].sha256||row.compressedBytes!==files[index].bytes||JSON.stringify(row.packetIndexes)!==JSON.stringify(files[index].packetIndexes??null)))throw Error('Common package loader receipt does not match the explicit selection.');
++    if(receipt?.schemaVersion!=='offmenu-common-transport-receipt/1'||receipt.manifestUrl!==manifestUrl||receipt.manifestSha256!==manifestSha256||receipt.releaseId!==qualification.releaseId||!acceptedReleases?.some(row=>row.releaseId===receipt.releaseId&&row.manifestSha256===manifestSha256)||!Array.isArray(receipt.files)||receipt.files.length!==files.length)throw Error('Common package loader receipt does not match the explicit selection.');
++    for(let index=0;index<files.length;index++){
++      const row=receipt.files[index],file=files[index];
++      if(!Object.hasOwn(receipt.files,index)||row===null||typeof row!=='object'||Array.isArray(row)||!['key','sha256','compressedBytes','packetIndexes'].every(key=>Object.hasOwn(row,key))||row.key!==file.key||row.sha256!==file.sha256||row.compressedBytes!==file.bytes||JSON.stringify(row.packetIndexes)!==JSON.stringify(file.packetIndexes??null))throw Error('Common package loader receipt does not match the explicit selection.');
++    }
+     useCommonReader(result.corpus,current,account,attempt);
+     return {receipt};
+   }catch(error){if(account!==accountKey())reset();if(active())setLocalizedText($('data-notice'),error.message);controller.abort(error);throw error;}
+diff --git a/tests-web/common-package-caller.test.mjs b/tests-web/common-package-caller.test.mjs
+index 4102242..a887744 100644
+--- a/tests-web/common-package-caller.test.mjs
++++ b/tests-web/common-package-caller.test.mjs
+@@ -163,6 +163,44 @@ test('loader receipt must match selected release, manifest, file bytes and packe
+     await assert.rejects(e.ui.loadSelectedCommonPackage(),/receipt/);assert.equal(e.$('data-results').children.length,0);assert.deepEqual(e.sideEffects,[]);
+   });
+ });
++test('sparse receipt arrays and non-object or inherited file rows reject before render',async t=>{
++  for(const kind of ['hole','null','undefined','array','inherited','inherited-fields'])await t.test(kind,async t=>{
++    const f=selection(),e=environment(t,f,async options=>{
++      const result=await f.load(options),row=result.receipt.files[0];
++      if(kind==='hole')result.receipt.files=new Array(1);
++      if(kind==='null')result.receipt.files=[null];
++      if(kind==='undefined')result.receipt.files=[undefined];
++      if(kind==='array')result.receipt.files=[Object.assign([],row)];
++      if(kind==='inherited'){
++        result.receipt.files=new Array(1);
++        Object.setPrototypeOf(result.receipt.files,Object.assign(Object.create(Array.prototype),{0:row}));
++      }
++      if(kind==='inherited-fields')result.receipt.files=[Object.create(row)];
++      return result;
++    });
++    await assert.rejects(e.ui.loadSelectedCommonPackage(),/receipt/);
++    assert.equal(e.$('data-results').children.length,0);assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);assert.deepEqual(e.sideEffects,[]);
++  });
++});
++test('mutable authorization decisions cannot hide policy or scope changes during loading',async t=>{
++  for(const kind of ['shared-policy','cloned-policy','shared-scope-and-loader-options'])await t.test(kind,async t=>{
++    const f=selection({permission:{accountKey:'user:alice'}});
++    if(kind!=='cloned-policy')f.authorize=async()=>f.policy;
++    const e=environment(t,f,async options=>{
++      const result=await f.load(options);
++      if(kind==='shared-scope-and-loader-options'){f.policy.scope.privateOwnerId='alice';options.readerOptions.userId='alice';}
++      else f.policy.policyId='changed-policy';
++      return result;
++    });
++    e.state.user={id:'alice'};
++    await assert.rejects(e.ui.loadSelectedCommonPackage(),/permission changed/);
++    assert.equal(e.$('data-results').children.length,0);assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);assert.deepEqual(e.sideEffects,[]);
++  });
++});
++test('a stable shared authorization object remains usable without retaining mutable grant references',async t=>{
++  const f=selection();f.authorize=async()=>f.policy;const before=structuredClone(f.policy),e=environment(t,f);
++  await e.ui.loadSelectedCommonPackage();assert.equal(e.$('data-results').children.length,1);assert.deepEqual(f.policy,before);assert.deepEqual(e.sideEffects,[]);
++});
+ test('signed-in public-only permission does not automatically unlock private rows',async t=>{
+   const f=selection({permission:{accountKey:'user:alice'}}),e=environment(t,f);e.state.user={id:'alice'};
+   await e.ui.loadSelectedCommonPackage();assert.equal(e.$('data-results').children.length,1);

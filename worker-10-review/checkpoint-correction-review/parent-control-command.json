@@ -1,0 +1,8 @@
+{
+  "command": [
+    "/home/user/src/offmenu/.venv/bin/python",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-limit-controls.py"
+  ],
+  "exitCode": 0,
+  "logSha256": "8d9beda6006e1ebecb056145b85b8028626438494ec3105c3dbb20ab4d5d7790"
+}

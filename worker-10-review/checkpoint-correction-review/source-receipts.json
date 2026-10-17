@@ -1,0 +1,44 @@
+[
+  {
+    "file": "scripts/align-places-common.py",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 27888,
+    "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f"
+  },
+  {
+    "file": "scripts/places_checkpoint.py",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 5632,
+    "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2"
+  },
+  {
+    "file": "scripts/places-recovery-preflight.py",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 4945,
+    "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963"
+  },
+  {
+    "file": "tests/test_places_checkpoint.py",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 16930,
+    "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2"
+  },
+  {
+    "file": "tests/test_places_common.py",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 6855,
+    "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348"
+  },
+  {
+    "file": "corpus/common-data.schema.json",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 17632,
+    "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c"
+  },
+  {
+    "file": "corpus/common-data-contract.json",
+    "commit": "dfd7448788aa199eff7bde20ffdbbf1161973427",
+    "bytes": 46420,
+    "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa"
+  }
+]

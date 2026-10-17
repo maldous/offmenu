@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/routine-flow-probe.py"
+  ],
+  "exitCode": 0,
+  "logSha256": "b6d38ab44159a0dc434b0879d4142748d6a4b52490114a951be9777a6b2dc65d"
+}

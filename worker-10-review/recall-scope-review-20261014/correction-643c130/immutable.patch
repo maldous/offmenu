@@ -1,0 +1,150 @@
+diff --git a/docs/worker-26-recall-scope.md b/docs/worker-26-recall-scope.md
+index 19045dd..2be9c60 100644
+--- a/docs/worker-26-recall-scope.md
++++ b/docs/worker-26-recall-scope.md
+@@ -60,10 +60,15 @@ Owner-reviewed notice projection:
+   attribution, source version and transformations. Metadata is cloned intact,
+   not a permission grant or a source authenticity check.
+ - `evidence`: `{kind:'current'|'historical', validFrom, freshUntil, validUntil?}`.
+-  Explicit UTC timestamps with `Z`, mandatory caller `asOf`; current requires
++  Explicit UTC timestamps with `Z`, optional fractional seconds of **one to
++  three digits**, mandatory caller `asOf`; current requires
+   `validFrom <= retrievedAt <= asOf < freshUntil`, and `asOf < validUntil`
+   if present. Freshness bounds are owner supplied, never guessed. Stale,
+-  malformed, future or absent bounds yield unknown. Historical stays historical.
++  malformed, future or absent bounds yield unknown. More than three fractional
++  digits in any current-evidence timestamp (including retrieval or `asOf`)
++  yield unknown, even with trailing zeros. Unsupported precision is rejected
++  before comparison, never rounded or truncated. Preserve original source
++  timestamp strings; do not shorten them to force admission. Historical stays historical.
+ - `scope`: `{gtin, markets, allBatches:true}` **or** `{gtin, markets, lots}`,
+   plus optional `labelVersions` and `dateRange:{field,from,through}`. Nonempty
+   exact string lists, valid GTIN strings, explicit batch scope. All-batches
+@@ -96,7 +101,7 @@ Cases cover legacy gap, all scope dimensions, date boundaries/types, malformed
+ scope/GTIN, historical and non-recall evidence, lifecycle/freshness/provenance,
+ exclusion precedence and input/output isolation.
+ 
+-Observed focused result: **14 tests passed, 0 failed** on Node `v24.16.0`.
++Initial candidate result: **14 tests passed, 0 failed** on Node `v24.16.0`.
+ No tests create Git fixtures or spawn child processes. Shared main controls
+ captured before editing and confirmed unchanged immediately before commit:
+ 
+@@ -113,3 +118,31 @@ HEAD/ref/index hashes are compared before and after. Review the immutable commit
+ and its parent diff; Morgan owns integration onto freshly fetched provisional
+ `develop` with recorded SHA/custody/review. No delivery register completion or
+ accepted release is claimed by this isolated model/test result.
++
++## W10-RECALL-F1 correction
++
++Worker 10 reviewed immutable candidate
++`adf42e947b21c2d5441fcb69b683c931d726e31c` and found that arbitrary fractional
++precision admitted by `instant()` exceeded the millisecond precision preserved
++by `Date.parse`. This could admit future effective/retrieval instants within
++the same millisecond, or treat a future submillisecond expiry as already expired.
++
++Before modifying the model, the expanded focused suite reproduced the defect:
++**15 passed, 1 failed**. The failing test retained the review's exact future
++effective/retrieval inputs, plus isolated high-precision timestamps at each
++gate. Existing and new millisecond controls passed. The exact high-precision
++freshness/validity boundary cases are retained with the revised `unknown`
++expectation: the model now explicitly admits at most millisecond precision,
++not full fractional precision. Original notice/provenance strings remain unchanged.
++
++The correction changes only the timestamp validator and its contract/tests.
++Regression coverage includes `validFrom`, `retrievedAt`, caller `asOf`,
++`freshUntil`, `validUntil`, excess trailing zeros, equal/one-millisecond
++effective/retrieval boundaries, exclusive expiry boundaries and equivalent
++one/two/three-digit fractional forms. After correction: **16 passed, 0 failed**.
++Two focused runner invocations total; no test-spawned processes or Git fixtures.
++
++The prior candidate remains the parent of a new correction commit on the same
++feature branch. Morgan owns disposition and integration; Worker 10's exact
++recheck of the new immutable pin is still required. Dataset01 retains source
++authority. No actual caller, source adoption or safety certification is implied.
+diff --git a/public/recall-scope-model.js b/public/recall-scope-model.js
+index 13ab83c..d83cdd7 100644
+--- a/public/recall-scope-model.js
++++ b/public/recall-scope-model.js
+@@ -4,8 +4,9 @@ const text = value => typeof value === 'string' && value.trim().length > 0;
+ const list = value => Array.isArray(value) && value.length > 0 && value.every(text);
+ const day = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+   && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
++// Date.parse preserves milliseconds only. Reject unsupported precision before comparison.
+ const instant = value => typeof value === 'string'
+-  && /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?Z$/.test(value)
++  && /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,3})?Z$/.test(value)
+   && day(value.slice(0, 10)) && Number.isFinite(Date.parse(value));
+ const dateFields = new Set(['useBy', 'bestBefore', 'productionDate']);
+ 
+diff --git a/tests-web/recall-scope-model.test.mjs b/tests-web/recall-scope-model.test.mjs
+index 24b0e2c..8f05bef 100644
+--- a/tests-web/recall-scope-model.test.mjs
++++ b/tests-web/recall-scope-model.test.mjs
+@@ -158,3 +158,67 @@ test('inputs stay unchanged and returned provenance/action are independent snaps
+   assert.deepEqual({ n, l }, before);
+   assert.equal(evaluateRecallScope(null, null).applicability, 'unknown');
+ });
++
++test('unsupported submillisecond precision is unknown at every temporal gate, never truncated', () => {
++  const cases = [
++    // W10-RECALL-F1: formerly matched even though effective/retrieval ordering fails.
++    { asOf: '2026-10-14T06:00:00.0005Z', retrievedAt: '2026-10-14T06:00:00.0001Z', validFrom: '2026-10-14T06:00:00.0009Z' },
++    { asOf: '2026-10-14T06:00:00.0001Z', retrievedAt: '2026-10-14T06:00:00.0009Z' },
++    // Before a high-precision expiry, the narrowed contract still requires unknown.
++    { asOf: '2026-10-14T06:00:00.0001Z', freshUntil: '2026-10-14T06:00:00.0009Z' },
++    { asOf: '2026-10-14T06:00:00.0001Z', validUntil: '2026-10-14T06:00:00.0009Z' },
++    // Isolate each timestamp: even apparently valid ordering must not admit >3 digits.
++    { validFrom: '2026-10-13T00:00:00.0001Z' },
++    { retrievedAt: '2026-10-14T05:00:00.0001Z' },
++    { asOf: '2026-10-14T06:00:00.0001Z' },
++    { freshUntil: '2026-10-15T00:00:00.0001Z' },
++    { validUntil: '2026-10-15T00:00:00.0001Z' },
++    // Reject excess precision even when trailing zeros happen to be representable.
++    { retrievedAt: '2026-10-14T05:00:00.0000Z' },
++    { validUntil: '2026-10-15T00:00:00.123456789Z' },
++  ];
++  const failures = [];
++  for (const patch of cases) {
++    const n = notice();
++    if (patch.retrievedAt) n.provenance.retrievedAt = patch.retrievedAt;
++    for (const field of ['validFrom', 'freshUntil', 'validUntil']) {
++      if (patch[field]) n.evidence[field] = patch[field];
++    }
++    const before = structuredClone(n);
++    const result = evaluate(n, lot(), patch.asOf ?? asOf);
++    if (result.applicability !== 'unknown' || result.evidenceStatus !== 'unknown') {
++      failures.push({ patch, actual: result.applicability, evidenceStatus: result.evidenceStatus });
++    }
++    assert.deepEqual(n, before);
++    assert.deepEqual(result.provenance, before.provenance);
++  }
++  assert.deepEqual(failures, []);
++});
++
++test('admitted millisecond precision preserves effective, retrieval and exclusive expiry ordering', () => {
++  for (const fraction of ['1', '10', '100']) {
++    const n = notice();
++    n.evidence.validFrom = `2026-10-14T06:00:00.${fraction}Z`;
++    n.provenance.retrievedAt = '2026-10-14T06:00:00.100Z';
++    assert.equal(evaluate(n, lot(), '2026-10-14T06:00:00.1Z').applicability, 'matched');
++  }
++  const clock = '2026-10-14T06:00:00.100Z';
++  for (const patch of [
++    { validFrom: '2026-10-14T06:00:00.101Z', retrievedAt: clock },
++    { retrievedAt: '2026-10-14T06:00:00.101Z' },
++    { validFrom: clock, retrievedAt: '2026-10-14T06:00:00.099Z' },
++    { freshUntil: clock }, { freshUntil: '2026-10-14T06:00:00.099Z' },
++    { validUntil: clock }, { validUntil: '2026-10-14T06:00:00.099Z' },
++  ]) {
++    const n = notice();
++    if (patch.retrievedAt) n.provenance.retrievedAt = patch.retrievedAt;
++    for (const field of ['validFrom', 'freshUntil', 'validUntil']) {
++      if (patch[field]) n.evidence[field] = patch[field];
++    }
++    assert.equal(evaluate(n, lot(), clock).applicability, 'unknown', JSON.stringify(patch));
++  }
++  for (const field of ['freshUntil', 'validUntil']) {
++    const n = notice(); n.evidence[field] = '2026-10-14T06:00:00.101Z';
++    assert.equal(evaluate(n, lot(), clock).applicability, 'matched', field);
++  }
++});

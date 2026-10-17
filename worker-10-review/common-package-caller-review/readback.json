@@ -1,0 +1,12 @@
+{
+  "mainAndWorker10IdentityEqual": true,
+  "priorRecallArtifactsEqual": true,
+  "immutableSourceHashesEqual": true,
+  "worker10Status": "## feature/common-package-caller-review-20261014\n?? worker-10-review/\n",
+  "diffCheck": {
+    "exitCode": 0,
+    "output": ""
+  },
+  "noGitFixtureWrites": true,
+  "noRuntimeServersOrNetwork": "Focused Node tests with synthetic gzip + injected fetch and minimal DOM only; ambient network forbidden by fixture. No browser/runtime qualification."
+}

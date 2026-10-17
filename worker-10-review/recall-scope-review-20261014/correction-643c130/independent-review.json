@@ -1,0 +1,131 @@
+{
+  "schema": "offmenu.worker10.recall-scope-correction-review/1",
+  "createdAt": "2026-10-14T07:39:52.445620+00:00",
+  "reviewerThread": "01a138ed-be8c-7340-b25e-87bee9272d7e",
+  "candidate": {
+    "base": "adf42e947b21c2d5441fcb69b683c931d726e31c",
+    "candidate": "643c130eed6d4d64a7e755d6c233128fa978aaa8",
+    "deltaSha256": "a76a4775ad593a46e6fc3e451d0fe8755e29a25dcb81783c2fb29964d4f4fe9f",
+    "matchesSuppliedDelta": true
+  },
+  "sources": [
+    {
+      "file": "public/recall-scope-model.js",
+      "bytes": 4643,
+      "sha256": "c365045904ddf3c0023d0a81d5902ce45ac6f31ef702c4b84065a3e97d8aaee5",
+      "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8"
+    },
+    {
+      "file": "public/evidence-model.js",
+      "bytes": 4860,
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8"
+    },
+    {
+      "file": "tests-web/recall-scope-model.test.mjs",
+      "bytes": 12012,
+      "sha256": "312908e57ddabba63387d4f60c0ed4296a1279bc77191fd91081bac16b64795e",
+      "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8"
+    },
+    {
+      "file": "docs/worker-26-recall-scope.md",
+      "bytes": 9124,
+      "sha256": "64ea175ff6db7e87713a617c8ac52ee275ad3d9681eb98e70d665f7c1cb7fa7f",
+      "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8"
+    },
+    {
+      "file": "package.json",
+      "bytes": 709,
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "commit": "643c130eed6d4d64a7e755d6c233128fa978aaa8"
+    }
+  ],
+  "disposition": "W10-RECALL-F1 correction independently reproduced under the explicitly narrowed admitted timestamp format. No new finding demonstrated. Recommend Morgan resolve this finding against exact 643c130; final verdict/integration remain Morgan-owned.",
+  "resolution": {
+    "finding": "W10-RECALL-F1",
+    "originalCandidate": "adf42e947b21c2d5441fcb69b683c931d726e31c",
+    "correctedCandidate": "643c130eed6d4d64a7e755d6c233128fa978aaa8",
+    "file": "public/recall-scope-model.js",
+    "line": 9,
+    "guard": "optional UTC fractional seconds now use \\d{1,3}; unsupported precision fails instant() before temporal comparison. No rounding/truncation performed.",
+    "document": "docs/worker-26-recall-scope.md:63 documents 1-3 digits, including explicit unknown for excess trailing zeros and preservation of source strings.",
+    "contractChange": "The former fully fractional timestamp contract is honestly narrowed. The prior high-precision freshness-before-expiry expectation of matched is unknown under this new contract, not retained as an unsupported precision success. Original review/repro files remain unchanged."
+  },
+  "actualChecks": {
+    "focusedAuthorTestsPassed": 16,
+    "focusedAuthorTestsFailed": 0,
+    "reviewerEdgesPassed": 87,
+    "reviewerEdgesFailed": 0,
+    "commands": [
+      {
+        "command": [
+          "node",
+          "--test",
+          "--test-reporter=tap",
+          "tests-web/recall-scope-model.test.mjs"
+        ],
+        "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot",
+        "exitCode": 0,
+        "logSha256": "0fd1d4262edad549285176785e3cda95b426c3935f0428a5980c1683a93841b5"
+      },
+      {
+        "command": [
+          "node",
+          "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-cases.mjs"
+        ],
+        "exitCode": 0,
+        "logSha256": "7fdd5ae7e3688b916daefff6f0c44bce5c9e6493c2065476cfd51fb36efb39a1",
+        "priorExpectationRevision": "Submillisecond freshness-before-expiry now expects unknown under explicit <=3-digit admission; prior artifact unchanged."
+      }
+    ],
+    "temporalFields": [
+      "asOf",
+      "validFrom",
+      "retrievedAt",
+      "freshUntil",
+      "validUntil"
+    ],
+    "excessPrecisionCases": "25 isolated >3-digit field probes across all five gates, including trailing zeros and 9/12 fractional digits. All return unknown for a matched-scope current-evidence fixture.",
+    "admittedPrecisionCases": "15 one/two/three-digit controls across all five gates match when chronology is valid.",
+    "boundaries": "Inclusive effective/retrieval/asOf equality passes; one-ms future effective/retrieval or retrieval before effective returns unknown. freshUntil/validUntil at or before asOf are unknown; one-ms after asOf matches.",
+    "priorCases": "All 37 earlier edge probes rerun, with exactly the documented high-precision freshness expectation revised to unknown. All pass. Five separate raw-conflict integration probes remain observations, not schema-conformance tests.",
+    "sourcePreservation": "Every reviewer edge verifies input unchanged; author regression verifies original notice/provenance and cloned returned provenance equality. Strings are not shortened to force admission.",
+    "automaticSelection": false
+  },
+  "newFindings": [],
+  "preservation": {
+    "sharedMainAndWorker10IdentityEqual": true,
+    "before": "before.json",
+    "after": "after.json",
+    "priorReviewAndReproByteMetadataEqual": true,
+    "snapshotSourceHashesEqual": true,
+    "authorFilesBranchesReceiptsUntouched": true,
+    "diffCheck": {
+      "exitCode": 0,
+      "output": ""
+    },
+    "gitWritingFixtures": "none",
+    "serversProviderCallsExtraWorkersSessionsWorktrees": "none",
+    "existingWorker10Branch": "refs/heads/feature/recall-scope-review-20261014",
+    "existingWorker10HEAD": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "localArtifactStatus": "Only reviewer artifacts under worker-10-review remain untracked; no source/index/ref writes."
+  },
+  "limits": [
+    "Same pure opt-in model; no new application caller/wiring is added by this fix.",
+    "Dataset01 retains identity/source/projection/admission/conflict authority; raw contradictory fields remain an owner preprocessing requirement.",
+    "No official recall/provider validation, recall eligibility determination, food-safety assurance or medical/regulatory certification.",
+    "Proven notice-scope exclusion still takes precedence over missing/invalid current evidence, as in the unchanged model contract; unsupported precision does not make a current match.",
+    "No product, combined runtime, release or ingestion acceptance performed.",
+    "Author before-fix 15-pass/1-fail claim is retained in candidate docs; reviewer independently ran the corrected 16-test suite and prior repros, not the author pre-fix invocation."
+  ],
+  "accepted": false,
+  "integrated": false,
+  "MorganVerdict": "pending",
+  "controls": "Supplied filesystem/network controls preserved, mandatory reviewer auto_review; separate approval policy unavailable. No named-profile inference.",
+  "idleAvailable": true,
+  "evidenceIndex": {
+    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/evidence-index.json",
+    "files": 16,
+    "sha256": "c6f4d9a020917d628db307811d64e0bfbff425a48cfc943b637cba3e2824522c"
+  }
+}

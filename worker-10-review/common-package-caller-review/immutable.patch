@@ -1,0 +1,291 @@
+diff --git a/public/data-ui.js b/public/data-ui.js
+index 400cbf5..1d0648d 100644
+--- a/public/data-ui.js
++++ b/public/data-ui.js
+@@ -6,10 +6,64 @@ import {MAJOR_COUNTRY_COVERAGE,SOURCES,sourceById,sourceMatches} from './sources
+ import {parseCSV,DATA_KINDS,normalizeOFF,normalizeUSDA,normalizeCSV,validateRecords,asOffNutriments} from './unified-data.js';
+ const $=id=>document.getElementById(id),el=(tag,content)=>{const element=document.createElement(tag);element.textContent=content;if(renderedLanguage(content))element.lang=renderedLanguage(content);element.dir='auto';return element;};
+ const KEY_PROVIDERS=['usda','edamam','whichgrocer','spoonacular','instacart'];
+-export function setupData({getData,getUser,isDemo,refreshSession,persist,download,applyNutrition,addRecipe}){let commonData=null,connections=[],records=[],csvText='',owner=null,generation=0,sourceCounts={},nextPublicCursor='',publicParams=null;
++// Opt-in package preview: the host injects selectedCommonPackage plus a trusted
++// commonPackageLoader {authorize,load}, then explicitly calls loadSelectedCommonPackage().
++// Selection: {transport:{manifestUrl,manifestSha256,acceptedReleases,files:[{key,
++// sha256,bytes,packetIndexes}],allowedOrigins,limits},qualification:{releaseId,
++// schemaSha256,contractSha256}}. These pins are data, never admission by themselves.
++// authorize({selection,accountKey,signal}) must consult independent trusted policy
++// and return {allowed,policyId,accountKey,selection,scope:{privateOwnerId:null|id}}.
++// It attests the exact selection/qualification pins; loader availability does not.
++// Account keys are guest, demo, user:<id>. Private scope needs matching owner
++// authorization; local-restricted access is disabled. Authorization is rechecked
++// after loading, before rendering. Qualification/admission/hosting remain owner gates.
++// load(options) accepts pinned transport options plus authoritative readerOptions
++// and AbortSignal, returning {corpus,receipt}. No ambient fetch or persistence.
++export function setupData({getData,getUser,isDemo,refreshSession,persist,download,applyNutrition,addRecipe,selectedCommonPackage=null,commonPackageLoader=null}){let commonData=null,commonLoad=null,commonAttempt=0,commonReadOnly=false,connections=[],records=[],csvText='',owner=null,generation=0,sourceCounts={},nextPublicCursor='',publicParams=null;
+ async function api(path,method='GET',body){const current=generation;if(getUser()&&!isDemo())await refreshSession();if(current!==generation)throw Error(t('Profile changed. Retry in your current profile.'));const r=await fetch(path,{method,headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(20000)}),v=await r.json();if(current!==generation)throw Error(t('Profile changed. Retry in your current profile.'));if(!r.ok)throw apiError(v,'Data request unavailable.');if(v.commonGraph?.schemaVersion==='offmenu-common/1')await useCommonGraph(v.commonGraph);return v;}
+-function clearCommon(){commonData=null;configureCorpusResolver(null);$('data-save').disabled=false;$('data-export').disabled=false;}
+-async function useCommonGraph(graph){const current=generation;const reader=await createCommonCorpus(graph,{userId:signed()?getUser().id:null});if(current!==generation)throw Error(t('Profile changed. Retry in your current profile.'));commonData=reader;configureCorpusResolver(reader.resolveField);records=[];$('data-save').disabled=true;$('data-export').disabled=true;renderRecords();setLocalizedText($('data-notice'),'Common corpus graph loaded for local preview. Source identities, citations and quantities are preserved; nothing is saved.');}
++function accountKey(){return isDemo()?'demo':getUser()?.id!=null?'user:'+getUser().id:'guest';}
++function clearCommon(readOnly=false){commonLoad?.abort();commonLoad=null;commonAttempt++;commonData=null;commonReadOnly=readOnly;configureCorpusResolver(null);$('data-save').disabled=readOnly;$('data-export').disabled=readOnly;}
++function useCommonReader(reader,current,account,attempt){if(account!==accountKey())reset();if(current!==generation||account!==accountKey()||attempt!==commonAttempt)throw Error(t('Profile changed. Retry in your current profile.'));if(reader?.schemaVersion!=='offmenu-common/1'||!['resources','assertions','relations','citations'].every(key=>Array.isArray(reader[key]))||!['resolveField','projectText','displayValue','displayIdentifier'].every(key=>typeof reader[key]==='function'))throw Error('Common package loader did not return a corpus reader.');commonData=reader;configureCorpusResolver(reader.resolveField);records=[];commonReadOnly=true;$('data-save').disabled=true;$('data-export').disabled=true;renderRecords();setLocalizedText($('data-notice'),'Common corpus graph loaded for local preview. Source identities, citations and quantities are preserved; nothing is saved.');}
++async function useCommonGraph(graph){clearCommon(true);records=[];$('data-results').replaceChildren();const current=generation,account=accountKey(),attempt=commonAttempt;const reader=await createCommonCorpus(graph,{userId:signed()?getUser().id:null});useCommonReader(reader,current,account,attempt);}
++async function loadSelectedCommonPackage(){
++  reset();generation++;clearCommon(true);records=[];nextPublicCursor='';publicParams=null;$('data-results').replaceChildren();
++  const current=generation,account=accountKey(),attempt=commonAttempt,controller=new AbortController();commonLoad=controller;
++  const canonical=value=>JSON.stringify(value,(_,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.keys(item).sort().map(key=>[key,item[key]])):item);
++  let selectionStamp;
++  const active=()=>current===generation&&account===accountKey()&&attempt===commonAttempt&&commonLoad===controller&&!controller.signal.aborted;
++  const check=()=>{if(account!==accountKey())reset();if(!active()||canonical(selectedCommonPackage)!==selectionStamp){controller.abort();controller.signal.throwIfAborted();}};
++  async function awaitCurrent(invoke){
++    check();let listener;
++    try{return await Promise.race([new Promise((_,reject)=>{listener=()=>reject(controller.signal.reason);controller.signal.addEventListener('abort',listener,{once:true});}),Promise.resolve().then(()=>{check();return invoke();})]);}
++    finally{if(listener)controller.signal.removeEventListener('abort',listener);}
++  }
++  try{
++    const descriptor=structuredClone(selectedCommonPackage),transport=descriptor?.transport,qualification=descriptor?.qualification;
++    selectionStamp=canonical(descriptor);
++    if(!selectionStamp||selectionStamp.length>65536||typeof commonPackageLoader?.load!=='function'||typeof commonPackageLoader?.authorize!=='function'||!transport)throw Error('No independently authorized common package loader is available.');
++    const hash=value=>typeof value==='string'&&value.length===64&&/^[a-f0-9]+$/.test(value);
++    if(!hash(transport.manifestSha256)||!hash(qualification?.schemaSha256)||!hash(qualification?.contractSha256)||typeof qualification?.releaseId!=='string'||!Array.isArray(transport.files)||!transport.files.length||!transport.files.every(file=>Number.isSafeInteger(file.bytes)&&file.bytes>0))throw Error('Selected common package qualification pins are incomplete.');
++    const authorize=async()=>{
++      const permission=await awaitCurrent(()=>commonPackageLoader.authorize({selection:structuredClone(descriptor),accountKey:account,signal:controller.signal}));
++      check();
++      const ownerId=permission?.scope?.privateOwnerId;
++      if(permission?.allowed!==true||permission.accountKey!==account||typeof permission.policyId!=='string'||!permission.policyId||canonical(permission.selection)!==selectionStamp||!(ownerId===null||signed()&&ownerId===getUser().id))throw Error('Selected common package permission is unavailable for this profile and selection.');
++      return {permission,readerOptions:{userId:ownerId,allowLocalRestricted:false}};
++    };
++    check();const admission=await authorize();
++    const {manifestUrl,manifestSha256,acceptedReleases,files,allowedOrigins,limits}=transport;
++    // Keep independent receipt expectations; the capability cannot mutate this snapshot.
++    const result=await awaitCurrent(()=>commonPackageLoader.load({...structuredClone({manifestUrl,manifestSha256,acceptedReleases,files,allowedOrigins,limits}),readerOptions:admission.readerOptions,signal:controller.signal}));
++    check();const confirmed=await authorize();
++    if(confirmed.permission.policyId!==admission.permission.policyId||canonical(confirmed.readerOptions)!==canonical(admission.readerOptions))throw Error('Selected common package permission changed while loading.');
++    const receipt=result?.receipt;
++    if(receipt?.schemaVersion!=='offmenu-common-transport-receipt/1'||receipt.manifestUrl!==manifestUrl||receipt.manifestSha256!==manifestSha256||receipt.releaseId!==qualification.releaseId||!acceptedReleases?.some(row=>row.releaseId===receipt.releaseId&&row.manifestSha256===manifestSha256)||!Array.isArray(receipt.files)||receipt.files.length!==files.length||receipt.files.some((row,index)=>row.key!==files[index].key||row.sha256!==files[index].sha256||row.compressedBytes!==files[index].bytes||JSON.stringify(row.packetIndexes)!==JSON.stringify(files[index].packetIndexes??null)))throw Error('Common package loader receipt does not match the explicit selection.');
++    useCommonReader(result.corpus,current,account,attempt);
++    return {receipt};
++  }catch(error){if(account!==accountKey())reset();if(active())setLocalizedText($('data-notice'),error.message);controller.abort(error);throw error;}
++  finally{if(commonLoad===controller)commonLoad=null;}
++}
++
+ function commonValueNode(value,language){
+   const node=el(value.kind==='expression'?'code':'span','');
+   if(value.kind==='text'){const projection=commonData.projectText(value,language);if(projection)showLocalized(node,projection);else setLocalizedText(node,'Unavailable source text');}
+@@ -39,7 +93,7 @@ function renderCommon(language){
+   }
+ }
+ function signed(){return !!getUser()&&!isDemo();}
+-function reset(){const next=isDemo()?'demo':getUser()?.id||'guest';if(owner!==next){owner=next;generation++;clearCommon();connections=[];records=[];csvText='';nextPublicCursor='';publicParams=null;$('provider-api-key').value='';$('provider-app-id').value='';$('provider-app-key').value='';$('data-file').value='';$('source-country').value='';$('source-type').value='';$('source-access').value='';$('source-search').value='';$('data-rights').checked=false;$('csv-mapping-panel').hidden=true;$('data-results').replaceChildren();$('provider-dialog').close();}}
++function reset(){const next=accountKey();if(owner!==next){owner=next;generation++;clearCommon(commonReadOnly);connections=[];records=[];csvText='';nextPublicCursor='';publicParams=null;$('provider-api-key').value='';$('provider-app-id').value='';$('provider-app-key').value='';$('data-file').value='';$('source-country').value='';$('source-type').value='';$('source-access').value='';$('source-search').value='';$('data-rights').checked=false;$('csv-mapping-panel').hidden=true;$('data-results').replaceChildren();$('provider-dialog').close();}}
+ async function render(){reset();const current=generation;renderSources();try{const coverage=await api('/api/data/coverage');sourceCounts=Object.fromEntries(coverage.publicRecordCounts.map(c=>[c.source_id,c.records]));renderSources();}catch{}setLocalizedText($('connections-note'),signed()?t('Your own provider credentials belong to this signed-in profile. They are encrypted on the server and excluded from backups and MCP / REST records.'):t('Public sources work without login. Sign in to store your personal provider credentials; the demo never stores real credentials.'));if(signed())try{const value=await api('/api/data/connections');if(current!==generation)return;connections=value.connections;$('connections-note').textContent+=t(value.vaultAvailable?'':t(' Credential vault setup is pending.'));renderSources();}catch(e){setLocalizedText($('connections-note'),e.message);}}
+ function renderSources(){renderCoverage();$('data-language').value=getData().profile.dataLanguage||'ui';const filters={country:$('source-country').value,type:$('source-type').value,access:$('source-access').value,query:$('source-search').value};$('connector-list').replaceChildren();for(const source of SOURCES.filter(s=>sourceMatches(s,filters))){const box=document.createElement('article'),badge=el('span',sourceCounts[source.id]?t("{v0} public normalized records", {v0:(sourceCounts[source.id].toLocaleString(getLanguage()))}):connections.some(c=>c.source_id===source.id)?t("Your credentials configured · {v0}", {v0:(t(source.adapter?'lookup available':'adapter pending'))}):t(source.status));badge.className='connector-status';box.append(badge,el('h3',source.name),el('small',(source.countries.length?source.countries.join(', '):'Global')+' · '+source.access),el('p',t(source.notes)),el('small',t("Data: {v0} · Rights: {v1}", {v0:(source.types.join(', ')),v1:(source.license)})));const link=el('a',source.access==='external'?t('Browse source ↗'):t('Source & access details ↗'));link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';box.append(link);if(KEY_PROVIDERS.includes(source.id)){const configure=el('button',connections.some(c=>c.source_id===source.id)?t('Manage my connection'):t('Add my credentials'));configure.className='outline';configure.disabled=!signed();configure.onclick=()=>openProvider(source);box.append(configure);}if(['off','prices','wikibooks','usda-files','fsa-alerts','fsa-ratings','openfda','afcd','ciqual','germany-bls','cofid'].includes(source.id)){const button=el('button',t('Explore normalized data'));button.onclick=()=>{$('data-source').value=source.id;$('data-query').focus();setLocalizedText($('data-source-description'),source.notes);};box.append(button);}if(['usda','edamam'].includes(source.id)&&connections.some(c=>c.source_id===source.id)){const button=el('button',t('Search with my connection'));button.onclick=()=>{$('data-source').value=source.id;$('data-query').focus();};box.append(button);}$('connector-list').append(box);}const links=$('retailer-browse-links');links.replaceChildren();const aldi=el('a',filters.country==='AU'?t('Browse ALDI Australia ↗'):t('Choose your ALDI country ↗'));aldi.href=filters.country==='AU'?'https://www.aldi.com.au/products':'https://www.aldi.com/';aldi.target='_blank';aldi.rel='noopener noreferrer';links.append(aldi,document.createElement('br'));const delivery=el('a',filters.country==='AU'?t('Check ALDI delivery on DoorDash ↗'):t('Browse DoorDash for your region ↗'));delivery.href=filters.country==='AU'?'https://www.doordash.com/p/aldi-australia/':'https://www.doordash.com/';delivery.target='_blank';delivery.rel='noopener noreferrer';links.append(delivery);setLocalizedText($('source-count'),"{v0} sources / services · {v1} in the global catalogue",{v0:($('connector-list').children.length),v1:(SOURCES.length)});}
+ for(const type of DATA_KINDS){const option=el('option',t(type));option.value=type;$('source-type').append(option);}for(const source of SOURCES.filter(s=>['off','prices','wikibooks','usda-files','fsa-alerts','fsa-ratings','openfda','usda','edamam','afcd','ciqual','germany-bls','cofid'].includes(s.id))){const option=el('option',source.name);option.value=source.id;$('data-source').append(option);}for(const source of SOURCES){const option=el('option',source.name);option.value=source.id;$('import-source').append(option);}$('import-source').value='personal-import';
+@@ -50,12 +104,12 @@ async function loadPublicPage(cursor=''){const params=new URLSearchParams(public
+ $('data-lookup-form').onsubmit=async e=>{e.preventDefault();try{clearCommon();nextPublicCursor='';const id=$('data-source').value;setLocalizedText($('data-notice'),'Loading normalized source records…');if(['usda','edamam'].includes(id)){const result=await api('/api/data/lookup','POST',{sourceId:id,query:$('data-query').value});records=validateRecords(result.records);setLocalizedText($('data-notice'),"{v0} normalized records. {v1}",{v0:(records.length),v1:(result.note||'')});renderRecords();}else{publicParams={source:id,query:$('data-query').value,barcode:$('data-barcode').value,country:$('source-country').value};await loadPublicPage();}}catch(e){setLocalizedText($('data-notice'),e.message);}};
+ 
+ function renderRecords(){const language=$('data-language').value==='ui'?getLanguage():$('data-language').value;if(commonData)return renderCommon(language);const target=$('data-results');target.replaceChildren();for(const r of records.slice(0,100)){const box=document.createElement('article');const title=el('h3','');showLocalized(title,localizedField(r,'name',language));if(!title.textContent)setLocalizedText(title,r.id);box.append(el('span',t(r.kind)),title,el('small',(r.countries.join(', ')||'Country unspecified / global')+' · '+r.provenance.attribution));if(r.kind==='priceObservation')box.append(el('p',(r.data.currency||'Currency unknown')+' '+(r.data.amount??'Unknown amount')+' · '+(r.data.observedAt||'Date unknown')+' · '+r.data.priceType+' · '+(r.data.retailer?.name||'Store not supplied')));if(r.kind==='nutrientProfile'){box.append(el('p',t("Basis: {v0} {v1}", {v0:(r.data.basis.amount),v1:(r.data.basis.unit)})));for(const [name,n]of Object.entries(r.data.nutrients||{}))if(n.value!=null&&['energy','protein','carbohydrate','fat','sugars','salt','sodium','saturatedFat','fibre','calcium','iron','potassium'].includes(name))box.append(el('small',name+': '+n.value+' '+n.unit+' · '));const select=document.createElement('select');select.setAttribute('aria-label',t("Inventory item to enrich with {v0}", {v0:(r.data.foodName)}));const empty=el('option',t('Choose a matching inventory item'));empty.value='';select.append(empty);for(const lot of getData().inventory.filter(l=>l.unit===r.data.basis.unit)){const option=el('option',lot.name+' · '+lot.ingredient);option.value=lot.id;select.append(option);}const button=el('button',t('Use this food data for that item'));button.className='outline';button.onclick=()=>{try{if(!$('data-rights').checked)throw Error(t('Confirm your source/plan permits storage before applying this data.'));const lot=getData().inventory.find(l=>l.id===select.value);if(!lot)throw Error(t('Choose the matching inventory item.'));const permission=recordPermission(r,{action:'derive',confirmed:$('data-rights').checked});if(!permission.allowed)throw Error(permission.reason);applyNutrition(lot,r,asOffNutriments(r,lot.unit));setLocalizedText($('data-notice'),"Nutrient data assigned to {v0}. Verify food identity, preparation and basis. Prior consumption snapshots are unchanged.",{v0:(lot.name)});}catch(e){setLocalizedText($('data-notice'),e.message);}};box.append(select,button);}if(r.kind==='recipe'&&addRecipe){const add=el('button',t('Add recipe for review'));add.onclick=()=>{try{addRecipe(r);setLocalizedText($('data-notice'),'Recipe saved. Review yield, ingredient matches and quantities before planning or cooking.');}catch(e){setLocalizedText($('data-notice'),e.message);}};box.append(add);}if(r.data.limitations)box.append(el('p',r.data.limitations));const detail=document.createElement('details');detail.append(el('summary',t('Unified record, provenance & licence')));const pre=el('pre',JSON.stringify(r,null,2));detail.append(pre);box.append(detail);target.append(box);}if(nextPublicCursor){const next=el('button',t('Next collection page'));next.onclick=async()=>{try{await loadPublicPage(nextPublicCursor);}catch(e){setLocalizedText($('data-notice'),e.message);}};target.append(next);}if(records.length>100)target.append(el('p',t("Showing the first 100 of {v0} records. Export retains the full batch.", {v0:(records.length)})));}
+-$('data-language').onchange=()=>{getData().profile.dataLanguage=$('data-language').value;persist();renderRecords();};
+-$('data-export').onclick=()=>{if(records.some(r=>r.provenance.visibility==='private')&&!$('data-rights').checked){setLocalizedText($('data-notice'),'Confirm your source/plan permits this export.');return;}const blocked=records.find(r=>!recordPermission(r,{action:'export',confirmed:$('data-rights').checked}).allowed);if(blocked){setLocalizedText($('data-notice'),recordPermission(blocked,{action:'export'}).reason);return;}download('offmenu-unified-data.json',JSON.stringify({schemaVersion:'1.0',records},null,2),'application/json');};
+-$('data-save').onclick=async()=>{try{if(!$('data-rights').checked)throw Error(t('Confirm you have permission to retain this data.'));if(!records.length)throw Error(t('Load or import records first.'));for(const r of records){const permission=recordPermission(r,{action:'persist',confirmed:true});if(!permission.allowed)throw Error(permission.reason);r.provenance.privateUseConfirmed=true;}if(signed()){const result=await api('/api/data/records','POST',{records,rightsConfirmed:true});setLocalizedText($('data-notice'),"{v0} records saved privately to this profile.",{v0:(result.saved)});}else{const {profile}=getData();const combined=[...new Map([...(profile.dataRecords||[]),...validateRecords(records,{privateOnly:true})].map(r=>[r.id,r])).values()];if(combined.length>500||JSON.stringify(combined).length>1_000_000)throw Error(t('Sign in for cloud record storage, or export this batch.'));profile.dataRecords=combined;persist();setLocalizedText($('data-notice'),'Saved privately in this browser profile.');}}catch(e){setLocalizedText($('data-notice'),e.message);}};
++$('data-language').onchange=()=>{if(!commonReadOnly){getData().profile.dataLanguage=$('data-language').value;persist();}renderRecords();};
++$('data-export').onclick=()=>{if(commonReadOnly)return;if(records.some(r=>r.provenance.visibility==='private')&&!$('data-rights').checked){setLocalizedText($('data-notice'),'Confirm your source/plan permits this export.');return;}const blocked=records.find(r=>!recordPermission(r,{action:'export',confirmed:$('data-rights').checked}).allowed);if(blocked){setLocalizedText($('data-notice'),recordPermission(blocked,{action:'export'}).reason);return;}download('offmenu-unified-data.json',JSON.stringify({schemaVersion:'1.0',records},null,2),'application/json');};
++$('data-save').onclick=async()=>{try{if(commonReadOnly)return;if(!$('data-rights').checked)throw Error(t('Confirm you have permission to retain this data.'));if(!records.length)throw Error(t('Load or import records first.'));for(const r of records){const permission=recordPermission(r,{action:'persist',confirmed:true});if(!permission.allowed)throw Error(permission.reason);r.provenance.privateUseConfirmed=true;}if(signed()){const result=await api('/api/data/records','POST',{records,rightsConfirmed:true});setLocalizedText($('data-notice'),"{v0} records saved privately to this profile.",{v0:(result.saved)});}else{const {profile}=getData();const combined=[...new Map([...(profile.dataRecords||[]),...validateRecords(records,{privateOnly:true})].map(r=>[r.id,r])).values()];if(combined.length>500||JSON.stringify(combined).length>1_000_000)throw Error(t('Sign in for cloud record storage, or export this batch.'));profile.dataRecords=combined;persist();setLocalizedText($('data-notice'),'Saved privately in this browser profile.');}}catch(e){setLocalizedText($('data-notice'),e.message);}};
+ $('data-my-records').onclick=async()=>{try{clearCommon();nextPublicCursor='';if(signed()){records=[];let cursor='';do{const page=await api('/api/data/records?'+new URLSearchParams({country:$('source-country').value,cursor,limit:'100'}));records.push(...page.records);cursor=page.nextCursor||'';}while(cursor);}else records=getData().profile.dataRecords||[];renderRecords();setLocalizedText($('data-notice'),"{v0} private profile records.",{v0:(records.length)});}catch(e){setLocalizedText($('data-notice'),e.message);}};
+-$('data-file').onchange=async()=>{try{const file=$('data-file').files[0];if(!file)return;if(file.size>2_000_000)throw Error(t('Import a file under 2 MB; split larger files into batches.'));const content=await file.text(),source=sourceById($('import-source').value);if(file.name.toLowerCase().endsWith('.csv')){csvText=content;buildMapping(content);$('csv-mapping-panel').hidden=false;setLocalizedText($('data-notice'),'Map the columns and confirm units before normalization.');return;}const v=JSON.parse(content);if(v.schemaVersion==='offmenu-common/1'){await useCommonGraph(v);return;}clearCommon();records=Array.isArray(v)?validateRecords(v,{privateOnly:true}):v.records?validateRecords(v.records,{privateOnly:true}):v.foods||v.fdcId?normalizeUSDA(v,source,{visibility:'private'}):v.product?normalizeOFF(v,source).map(r=>({...r,provenance:{...r.provenance,visibility:'private'}})):null;if(!records)throw Error(t('Use unified JSON, USDA food JSON, OFF product JSON, or CSV.'));records=validateRecords(records,{privateOnly:true});renderRecords();setLocalizedText($('data-notice'),"{v0} records normalized. Review before saving.",{v0:(records.length)});}catch(e){setLocalizedText($('data-notice'),e.message);}};
++$('data-file').onchange=async()=>{try{const file=$('data-file').files[0];if(!file)return;if(commonLoad){clearCommon(true);records=[];$('data-results').replaceChildren();}if(file.size>2_000_000)throw Error(t('Import a file under 2 MB; split larger files into batches.'));const content=await file.text(),source=sourceById($('import-source').value);if(file.name.toLowerCase().endsWith('.csv')){csvText=content;buildMapping(content);$('csv-mapping-panel').hidden=false;setLocalizedText($('data-notice'),'Map the columns and confirm units before normalization.');return;}const v=JSON.parse(content);if(v.schemaVersion==='offmenu-common/1'){await useCommonGraph(v);return;}clearCommon();records=Array.isArray(v)?validateRecords(v,{privateOnly:true}):v.records?validateRecords(v.records,{privateOnly:true}):v.foods||v.fdcId?normalizeUSDA(v,source,{visibility:'private'}):v.product?normalizeOFF(v,source).map(r=>({...r,provenance:{...r.provenance,visibility:'private'}})):null;if(!records)throw Error(t('Use unified JSON, USDA food JSON, OFF product JSON, or CSV.'));records=validateRecords(records,{privateOnly:true});renderRecords();setLocalizedText($('data-notice'),"{v0} records normalized. Review before saving.",{v0:(records.length)});}catch(e){setLocalizedText($('data-notice'),e.message);}};
+ function buildMapping(content){const headers=parseCSV(content)[0]||[];$('csv-column-map').replaceChildren();for(const [key,name]of [['name','Food / product name'],['id','Source record ID'],['barcode','Barcode (keep as text)'],['price','Price amount'],['currency','Currency code'],['date','Observation date'],['retailer','Retailer'],['energy','Energy kcal / 100'],['protein','Protein g / 100'],['fat','Fat g / 100'],['carbohydrate','Carbohydrate g / 100'],['sodium','Sodium mg / 100'],['fibre','Fibre g / 100'],['sugars','Sugars g / 100']]){const wrap=document.createElement('div'),label=el('label',t(name)),select=document.createElement('select');select.id='map-'+key;label.htmlFor=select.id;const blank=el('option',t('Not supplied'));blank.value='';select.append(blank);for(const header of headers){const option=el('option',header);option.value=header;select.append(option);}wrap.append(label,select);$('csv-column-map').append(wrap);}}
+ $('csv-normalize').onclick=()=>{try{const mapping={kind:$('csv-kind').value,country:$('source-country').value,basis:$('csv-basis').value,defaultCurrency:$('csv-currency').value.trim().toUpperCase(),language:$('csv-language').value.trim(),energyUnit:$('csv-energy-unit').value,sodiumUnit:$('csv-sodium-unit').value,preparationState:$('csv-state').value};for(const key of ['name','id','barcode','price','currency','date','retailer','energy','protein','fat','carbohydrate','sodium','fibre','sugars'])mapping[key]=$('map-'+key).value;if(!mapping.name)throw Error(t('Map the food / product name column.'));records=validateRecords(normalizeCSV(csvText,sourceById($('import-source').value),mapping),{privateOnly:true});renderRecords();setLocalizedText($('data-notice'),"{v0} records normalized from CSV. Confirm source terms before saving.",{v0:(records.length)});}catch(e){setLocalizedText($('data-notice'),e.message);}};
+ function renderCoverage(){const target=$('country-coverage');target.replaceChildren();const table=document.createElement('table'),head=document.createElement('tr');for(const h of ['Country','Native language support','National sources / access','Current offmenu coverage'])head.append(el('th',t(h)));table.append(head);for(const country of MAJOR_COUNTRY_COVERAGE){const row=document.createElement('tr');row.append(el('td',countryName(country.country)),el('td',t("{v0} · Unicode names / explicit units", {v0:(country.languages.join(', '))})));const sources=document.createElement('td');for(const id of country.national){const source=sourceById(id),link=el('a',source.name+' — '+(sourceCounts[id]?sourceCounts[id].toLocaleString(getLanguage())+' integrated profiles':source.status));link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';sources.append(link,document.createElement('br'));}row.append(sources,el('td',t("Global product / price lookup + national source workflows. {v0}", {v0:(t(country.note))})));table.append(row);}target.append(table);}
+-return {render,reset};}
++return {render,reset,loadSelectedCommonPackage};}
+diff --git a/tests-web/common-package-caller.test.mjs b/tests-web/common-package-caller.test.mjs
+new file mode 100644
+index 0000000..4102242
+--- /dev/null
++++ b/tests-web/common-package-caller.test.mjs
+@@ -0,0 +1,186 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {createHash} from 'node:crypto';
++import {gzipSync} from 'node:zlib';
++import {setupData} from '../public/data-ui.js';
++import {loadCommonCorpusPackage} from '../public/common-corpus-transport.js';
++import {configureCorpusResolver,localizedField} from '../public/content-locale.js';
++import {setLanguage} from '../public/i18n.js';
++
++const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
++const base='https://selected.test/package/';
++const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return {promise,resolve,reject};};
++function selection({gzip,limits,permission={}}={}){
++  const scope={visibility:'public'},id='https://مثال.test/عدس';
++  const citation={id:'urn:citation:selected',sourceId:'synthetic',originalRecordId:'0001',originalUrl:'https://مثال.test/مصدر',license:'CC0',attribution:'المصدر الأصلي',scope};
++  const name={kind:'text',id:'urn:text:selected',language:'ar',value:'عدس',sourceTextSha256:sha('عدس'),status:'source-asserted',citationIds:[citation.id]};
++  const resource={id,type:'urn:offmenu:type:Ingredient',identityStatus:'source-scoped',names:[name],citationIds:[citation.id],scope};
++  const graph={schemaVersion:'offmenu-common/1',resources:[resource,{...resource,id:'urn:private',scope:{visibility:'private',ownerId:'alice'},names:[{...name,id:'urn:text:private',value:'خاص',sourceTextSha256:sha('خاص')}]}],
++    assertions:[{id:'urn:assertion:iri',subjectId:id,propertyId:'urn:offmenu:property:sourceIRI',value:{kind:'uri',value:'https://例.test/餡'},status:'source-asserted',citationIds:[citation.id],sourcePath:'original.iri',scope},{id:'urn:assertion:expression',subjectId:id,propertyId:'urn:offmenu:property:expression',value:{kind:'expression',syntax:'rdf/xml',value:'<rdf:Description>餡</rdf:Description>'},status:'candidate',citationIds:[citation.id],sourcePath:'original.expression',scope}],
++    relations:[{id:'urn:relation:unresolved',subjectId:id,predicateId:'urn:offmenu:relation:candidateIdentity',objectId:'urn:external:unresolved',status:'candidate',citationIds:[citation.id],sourcePath:'source.join',scope}],citations:[citation],
++    translations:[{id:'urn:translation:en',textId:name.id,language:'en',value:'Lentils',sourceTextSha256:name.sourceTextSha256,translator:'source',method:'source-published',status:'published-source',citationIds:[citation.id],terminologyResourceIds:[]}]};
++  const compressed=gzip??gzipSync(JSON.stringify(graph)+'\n',{mtime:0}),key='terminology/part-0000.jsonl.gz';
++  const file={key,sha256:sha(compressed),bytes:compressed.length,packets:1};
++  const manifest=Buffer.from(JSON.stringify({schemaVersion:'offmenu-common-package/1',contractVersion:'offmenu-common-contract/1',releaseId:'synthetic-caller/1',status:'all-packets-schema-identity-citation-and-scope-checked',files:[file]}));
++  const manifestSha256=sha(manifest),calls=[];
++  const descriptor={transport:{manifestUrl:base+'manifest.json',manifestSha256,acceptedReleases:[{releaseId:'synthetic-caller/1',manifestSha256}],files:[{key,sha256:file.sha256,bytes:file.bytes,packetIndexes:[0]}],allowedOrigins:['https://selected.test'],...(limits?{limits}:{})},qualification:{releaseId:'synthetic-caller/1',schemaSha256:sha('synthetic fixture schema'),contractSha256:sha('synthetic fixture contract')}};
++  // Independent fixture policy is retained separately from the selected descriptor.
++  // It grants no producer admission outside this bounded synthetic test.
++  const policy={allowed:true,accountKey:'guest',policyId:'synthetic-caller-display-only/1',selection:structuredClone(descriptor),scope:{privateOwnerId:null},...permission};
++  const authorize=async()=>structuredClone(policy);
++  const load=options=>loadCommonCorpusPackage({...options,fetchImpl:async(url,init)=>{
++    calls.push({url,init});assert.equal(init.redirect,'error');assert.equal(init.credentials,'omit');
++    if(url===base+'manifest.json')return new Response(manifest);
++    if(url===base+key)return new Response(compressed);
++    throw Error('Unselected fetch');
++  }});
++  return {descriptor,load,authorize,policy,calls,graph,id,citation};
++}
++function environment(t,fixture,load=fixture.load){
++  class Element {
++    constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.dataset={};this.value='';this.disabled=false;this.hidden=false;this.checked=false;this.attributes={};this._text='';}
++    set textContent(value){this._text=String(value??'');this.children=[];}
++    get textContent(){return this._text+this.children.map(child=>child.textContent??String(child)).join('');}
++    append(...children){this.children.push(...children);}
++    replaceChildren(...children){this._text='';this.children=[...children];}
++    setAttribute(key,value){this.attributes[key]=value;}
++    close(){} focus(){}
++  }
++  const priorDocument=globalThis.document,priorFetch=globalThis.fetch,elements=new Map(),sideEffects=[];
++  const $=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
++  globalThis.document={getElementById:$,createElement:tag=>new Element(tag),createTextNode:value=>({textContent:String(value)})};
++  globalThis.fetch=async()=>{sideEffects.push('ambient-fetch');throw Error('Ambient network forbidden in caller tests');};
++  setLanguage('ar');
++  const state={user:null,demo:false,profile:{dataLanguage:'native'},inventory:[]};
++  const ui=setupData({getData:()=>state,getUser:()=>state.user,isDemo:()=>state.demo,refreshSession:async()=>sideEffects.push('session-refresh'),persist:()=>sideEffects.push('persist'),download:()=>sideEffects.push('download'),applyNutrition:()=>sideEffects.push('apply'),addRecipe:()=>sideEffects.push('add'),selectedCommonPackage:fixture.descriptor,commonPackageLoader:{load,authorize:fixture.authorize}});
++  t.after(()=>{ui.reset();configureCorpusResolver(null);setLanguage('en');globalThis.document=priorDocument;globalThis.fetch=priorFetch;});
++  const descendants=node=>node.children.flatMap(child=>[child,...(child.children?descendants(child):[])]);
++  return {ui,$,state,sideEffects,descendants};
++}
++test('setupData exposes an explicit selected-package action without automatic I/O; real loader reaches existing rendering',async t=>{
++  const f=selection(),before=structuredClone(f.descriptor),e=environment(t,f);
++  assert.equal(f.calls.length,0);assert.deepEqual(e.sideEffects,[]);
++  const {receipt}=await e.ui.loadSelectedCommonPackage();
++  assert.equal(f.calls.length,2);assert.equal(receipt.manifestSha256,f.descriptor.transport.manifestSha256);
++  const articles=e.$('data-results').children;assert.equal(articles.length,1);
++  const nodes=e.descendants(articles[0]),title=nodes.find(node=>node.tagName==='H3');
++  assert.equal(title.textContent,'عدس');assert.equal(title.lang,'ar');assert.equal(title.dir,'auto');
++  assert.ok(nodes.some(node=>node.textContent==='https://例.test/餡'&&node.lang==='und'));
++  assert.ok(nodes.some(node=>node.tagName==='CODE'&&node.dir==='ltr'&&node.textContent==='<rdf:Description>餡</rdf:Description>'));
++  assert.ok(nodes.some(node=>node.tagName==='A'&&node.href===new URL(f.citation.originalUrl).href));
++  assert.ok(articles[0].textContent.includes(f.citation.attribution+' · '+f.citation.license));
++  const projection=localizedField({commonResourceId:f.id},'name','en');
++  assert.equal(projection.value,'Lentils');assert.equal(projection.original,'عدس');assert.equal(projection.sourceTextSha256,f.graph.resources[0].names[0].sourceTextSha256);assert.deepEqual(projection.citations,[f.citation]);
++  e.$('data-language').value='en';e.$('data-language').onchange();
++  const english=e.descendants(e.$('data-results')).find(node=>node.tagName==='H3');assert.equal(english.textContent,'Lentils');assert.equal(english.lang,'en');
++  e.$('data-rights').checked=true;await e.$('data-save').onclick();e.$('data-export').onclick();
++  assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);assert.deepEqual(e.sideEffects,[]);assert.deepEqual(f.descriptor,before);
++});
++test('bad manifest/file pins, permission, gzip and budgets reject at caller boundary before common rendering',async t=>{
++  for(const kind of ['manifest','file','permission','account','policy','gzip','budget'])await t.test(kind,async t=>{
++    const f=selection(kind==='gzip'?{gzip:Buffer.from('invalid gzip')}:kind==='budget'?{limits:{compressedBytes:1}}:{});
++    if(kind==='manifest'){f.descriptor.transport.manifestSha256='0'.repeat(64);f.descriptor.transport.acceptedReleases[0].manifestSha256='0'.repeat(64);f.policy.selection=structuredClone(f.descriptor);}
++    if(kind==='file'){f.descriptor.transport.files[0].sha256='0'.repeat(64);f.policy.selection=structuredClone(f.descriptor);}
++    if(kind==='permission')f.policy.allowed=false;
++    if(kind==='account')f.policy.accountKey='user:alice';
++    if(kind==='policy')f.policy.selection.qualification.schemaSha256='0'.repeat(64);
++    const e=environment(t,f);
++    await assert.rejects(e.ui.loadSelectedCommonPackage());
++    assert.equal(e.$('data-results').children.length,0);assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);
++    e.$('data-rights').checked=true;await e.$('data-save').onclick();e.$('data-export').onclick();
++    assert.deepEqual(e.sideEffects,[]);
++    if(['permission','account','policy'].includes(kind))assert.equal(f.calls.length,0);
++  });
++});
++test('account reset aborts a pending selected load; an injector ignoring abort cannot render stale results',async t=>{
++  const f=selection(),gate=deferred(),entered=deferred();let request;
++  const e=environment(t,f,async options=>{request=options;const value=await f.load(options);entered.resolve();await gate.promise;return value;});
++  const pending=e.ui.loadSelectedCommonPackage();await entered.promise;
++  const cancelled=assert.rejects(pending);
++  e.state.user={id:'alice'};e.ui.reset();assert.equal(request.signal.aborted,true);
++  await cancelled;gate.resolve();
++  assert.equal(e.$('data-results').children.length,0);assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);assert.deepEqual(e.sideEffects,[]);
++});
++test('a changed account is checked after await even if its host omitted reset',async t=>{
++  const f=selection(),gate=deferred(),entered=deferred();let request;
++  const e=environment(t,f,async options=>{request=options;const result=await f.load(options);entered.resolve();await gate.promise;return result;});
++  const pending=e.ui.loadSelectedCommonPackage();await entered.promise;e.state.user={id:'alice'};gate.resolve();
++  await assert.rejects(pending);assert.equal(request.signal.aborted,true);assert.equal(e.$('data-results').children.length,0);assert.deepEqual(e.sideEffects,[]);
++});
++test('a newer explicit load cancels the prior generation and stale completion never replaces its reader/notice',async t=>{
++  const f=selection(),first=deferred(),entered=deferred(),rendered=[];let attempt=0,signal;
++  const e=environment(t,f,async options=>{
++    const id=++attempt,result=await f.load(options),reader=result.corpus;
++    if(id===1){signal=options.signal;entered.resolve();await first.promise;}
++    return {...result,corpus:{...reader,resolveField(...args){rendered.push(id);return reader.resolveField(...args);}}};
++  });
++  const one=e.ui.loadSelectedCommonPackage();await entered.promise;const cancelled=assert.rejects(one);await e.ui.loadSelectedCommonPackage();assert.equal(signal.aborted,true);
++  const notice=e.$('data-notice').textContent,content=e.$('data-results').textContent;
++  first.resolve();await cancelled;assert.deepEqual([...new Set(rendered)],[2]);
++  assert.equal(e.$('data-notice').textContent,notice);assert.equal(e.$('data-results').textContent,content);assert.deepEqual(e.sideEffects,[]);
++});
++test('account identity namespaces cannot collide with guest/demo and reader privileges come from current account',async t=>{
++  const f=selection({permission:{accountKey:'user:alice',scope:{privateOwnerId:'alice'}}});let received;
++  f.descriptor.transport.readerOptions={userId:'other',allowLocalRestricted:true};
++  f.policy.selection=structuredClone(f.descriptor);
++  const e=environment(t,f,options=>{received=options.readerOptions;return f.load(options);});e.state.user={id:'alice'};
++  await e.ui.loadSelectedCommonPackage();assert.deepEqual(received,{userId:'alice',allowLocalRestricted:false});assert.equal(e.$('data-results').children.length,2);
++  e.state.user={id:'guest'};e.ui.reset();await assert.rejects(e.ui.loadSelectedCommonPackage());assert.equal(e.$('data-results').children.length,0);
++});
++test('descriptor permission self-assertion and a loader alone never establish independent admission',async t=>{
++  const f=selection();f.descriptor.permission={allowed:true};f.authorize=undefined;
++  const e=environment(t,f);await assert.rejects(e.ui.loadSelectedCommonPackage(),/independently authorized/);
++  assert.equal(f.calls.length,0);assert.equal(e.$('data-results').children.length,0);assert.deepEqual(e.sideEffects,[]);
++});
++test('permission revocation and scope change during loading reject before render',async t=>{
++  for(const kind of ['denied','scope','selection'])await t.test(kind,async t=>{
++    const f=selection(),gate=deferred(),entered=deferred();
++    const e=environment(t,f,async options=>{const value=await f.load(options);entered.resolve();await gate.promise;return value;});
++    const pending=e.ui.loadSelectedCommonPackage();await entered.promise;
++    if(kind==='denied')f.policy.allowed=false;
++    if(kind==='scope')f.policy.scope={privateOwnerId:'alice'};
++    if(kind==='selection')f.descriptor.transport.files[0].packetIndexes=[1];
++    gate.resolve();await assert.rejects(pending);assert.equal(e.$('data-results').children.length,0);assert.deepEqual(e.sideEffects,[]);
++  });
++});
++test('a pending authorization is cancelled by account reset before it can call the loader',async t=>{
++  const f=selection(),gate=deferred(),entered=deferred();let signal;
++  f.authorize=async options=>{signal=options.signal;entered.resolve();await gate.promise;return structuredClone(f.policy);};
++  const e=environment(t,f),pending=e.ui.loadSelectedCommonPackage();await entered.promise;const cancelled=assert.rejects(pending);
++  e.state.demo=true;e.ui.reset();assert.equal(signal.aborted,true);await cancelled;gate.resolve();
++  assert.equal(f.calls.length,0);assert.equal(e.$('data-results').children.length,0);
++});
++test('loader receipt must match selected release, manifest, file bytes and packet indexes',async t=>{
++  for(const kind of ['release','manifest','bytes','indexes'])await t.test(kind,async t=>{
++    const f=selection(),e=environment(t,f,async options=>{
++      const result=await f.load(options);
++      if(kind==='release')result.receipt.releaseId='different-release';
++      if(kind==='manifest')result.receipt.manifestSha256='0'.repeat(64);
++      if(kind==='bytes')result.receipt.files[0].compressedBytes++;
++      if(kind==='indexes')result.receipt.files[0].packetIndexes=[1];
++      return result;
++    });
++    await assert.rejects(e.ui.loadSelectedCommonPackage(),/receipt/);assert.equal(e.$('data-results').children.length,0);assert.deepEqual(e.sideEffects,[]);
++  });
++});
++test('signed-in public-only permission does not automatically unlock private rows',async t=>{
++  const f=selection({permission:{accountKey:'user:alice'}}),e=environment(t,f);e.state.user={id:'alice'};
++  await e.ui.loadSelectedCommonPackage();assert.equal(e.$('data-results').children.length,1);
++  f.policy.scope={privateOwnerId:'bob'};await assert.rejects(e.ui.loadSelectedCommonPackage(),/permission/);assert.equal(e.$('data-results').children.length,0);
++});
++test('legacy common-graph import still uses the existing renderer and stays read-only without package I/O',async t=>{
++  const f=selection(),e=environment(t,f);e.$('data-language').value='native';
++  e.$('data-file').files=[{name:'fixture.json',size:4096,text:async()=>JSON.stringify(f.graph)}];
++  await e.$('data-file').onchange();
++  assert.equal(e.$('data-results').children.length,1);assert.equal(e.descendants(e.$('data-results')).find(node=>node.tagName==='H3').textContent,'عدس');
++  assert.equal(e.$('data-save').disabled,true);assert.equal(e.$('data-export').disabled,true);assert.equal(f.calls.length,0);assert.deepEqual(e.sideEffects,[]);
++});
++test('selecting a local graph file cancels an older package request before the file finishes reading',async t=>{
++  const f=selection(),gate=deferred(),entered=deferred(),file=deferred();let signal;
++  const e=environment(t,f,async options=>{signal=options.signal;const result=await f.load(options);entered.resolve();await gate.promise;return result;});
++  const pending=e.ui.loadSelectedCommonPackage();await entered.promise;const cancelled=assert.rejects(pending);
++  e.$('data-file').files=[{name:'fixture.json',size:4096,text:()=>file.promise}];
++  const importing=e.$('data-file').onchange();assert.equal(signal.aborted,true);await cancelled;
++  file.resolve(JSON.stringify(f.graph));await importing;const content=e.$('data-results').textContent;
++  gate.resolve();await new Promise(resolve=>setImmediate(resolve));assert.equal(e.$('data-results').textContent,content);assert.equal(e.$('data-results').children.length,1);assert.deepEqual(e.sideEffects,[]);
++});

@@ -1,0 +1,2040 @@
+{
+  "protected": [
+    {
+      "path": "/home/user/src/offmenu/.git/HEAD",
+      "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80",
+      "mode": 33204,
+      "mtime_ns": 1791868083845924473,
+      "ino": 14868439
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/index",
+      "sha256": "4332ef16a3df2cd9032b4f099a74425a111bd2e5448e0f5066c5f3f3cb54f389",
+      "mode": 33204,
+      "mtime_ns": 1791957650613992637,
+      "ino": 14868426
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/refs/heads/main",
+      "sha256": "4b9c51c3f104ae9af331274450d8d1fa2cf3b06df913f45339abc4a5536e408e",
+      "mode": 33204,
+      "mtime_ns": 1791957650610992600,
+      "ino": 14869685
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/worktrees/worker-10/index",
+      "sha256": "076b8c9cd24fb5ee3ca94225993d64103505892c183f10cebecc389edac6d297",
+      "mode": 33204,
+      "mtime_ns": 1791966595783949955,
+      "ino": 17848947
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/post-update.sample",
+      "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868401
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-push.sample",
+      "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868402
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/prepare-commit-msg.sample",
+      "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868403
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-merge-commit.sample",
+      "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868404
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-applypatch.sample",
+      "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868405
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-rebase.sample",
+      "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868406
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/sendemail-validate.sample",
+      "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868407
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/push-to-checkout.sample",
+      "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868408
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/update.sample",
+      "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868409
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-commit.sample",
+      "sha256": "f9af7d95eb1231ecf2eba9770fedfa8d4797a12b02d7240e98d568201251244a",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868410
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/pre-receive.sample",
+      "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989",
+      "mode": 33277,
+      "mtime_ns": 1791868079490886318,
+      "ino": 14868411
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/applypatch-msg.sample",
+      "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7",
+      "mode": 33277,
+      "mtime_ns": 1791868079491886327,
+      "ino": 14868412
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/fsmonitor-watchman.sample",
+      "sha256": "e0549964e93897b519bd8e333c037e51fff0f88ba13e086a331592bf801fa1d0",
+      "mode": 33277,
+      "mtime_ns": 1791868079491886327,
+      "ino": 14868413
+    },
+    {
+      "path": "/home/user/src/offmenu/.git/hooks/commit-msg.sample",
+      "sha256": "1f74d5e9292979b573ebd59741d46cb93ff391acdd083d340b94370753d92437",
+      "mode": 33277,
+      "mtime_ns": 1791868079491886327,
+      "ino": 14868414
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/source-receipts.json",
+      "sha256": "d91f8c783518874fbcd8aa0f75a16f7b0fc474c0e6ff6264a63e89ebbb69f0fd",
+      "mode": 33204,
+      "mtime_ns": 1791962469996675532,
+      "ino": 17844012
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/before.json",
+      "sha256": "7c9787459bdc48812cfc39af37870a3fd6fa2850a315b7ebc49f7c6beef0d129",
+      "mode": 33204,
+      "mtime_ns": 1791962469987675458,
+      "ino": 17844002
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-results.json",
+      "sha256": "7eb9e0472ccaf46a589ade2ee9faad5874e5eb9816665cc462d7ab8eeb91a46f",
+      "mode": 33204,
+      "mtime_ns": 1791962553537362465,
+      "ino": 17844018
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-command.json",
+      "sha256": "a3e5b7bb1f6c3962f986107640788e745c5bb73c825ffc33843c01665f50d0da",
+      "mode": 33204,
+      "mtime_ns": 1791962553541362498,
+      "ino": 17844020
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/author-tests.log",
+      "sha256": "3713cc9e9c5142b06e2f475fe91fa64461826b00829de025acbac975b03d7a49",
+      "mode": 33204,
+      "mtime_ns": 1791962470059676054,
+      "ino": 17844015
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/caller-search.log",
+      "sha256": "4f10c8583e278839b874418ea51660fc3246bd440026ca6b9e304b5ffc39c67f",
+      "mode": 33204,
+      "mtime_ns": 1791962470002675582,
+      "ino": 17844014
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/immutable.patch",
+      "sha256": "944fecd9cd50595f6fc371712d0baa14e19dbab079a04ed6720bce83783b224d",
+      "mode": 33204,
+      "mtime_ns": 1791962469996675532,
+      "ino": 17844011
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/independent-review.json",
+      "sha256": "4af999d4f82e3d3ef51ac973c2c6f3bcfdf28c4f856e2f0a192594649b8a2a8e",
+      "mode": 33204,
+      "mtime_ns": 1791962684612421832,
+      "ino": 17844895
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/after.json",
+      "sha256": "7c9787459bdc48812cfc39af37870a3fd6fa2850a315b7ebc49f7c6beef0d129",
+      "mode": 33204,
+      "mtime_ns": 1791962590499663306,
+      "ino": 17843329
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-tests.log",
+      "sha256": "60f7f7976d437fe045b0cea9a007f65892e7013fa259069abae9f7159886a9c3",
+      "mode": 33204,
+      "mtime_ns": 1791962553541362498,
+      "ino": 17844019
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/author-test-result.json",
+      "sha256": "36d9d1c5b1bf8a903d1296f6f10a936eed3ddd763563104a75c02dc9c5874f09",
+      "mode": 33204,
+      "mtime_ns": 1791962470059676054,
+      "ino": 17844016
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/readback.json",
+      "sha256": "f53c2c6bc7b28a607461db51d61e587f0683136214aa3c3a4a51e9e5722525b8",
+      "mode": 33204,
+      "mtime_ns": 1791962590501663322,
+      "ino": 17843330
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/evidence-index.json",
+      "sha256": "6449448ffa78e827aac007723a7be8626b94a4c7810d6d238f7a4ce7d8cc3902",
+      "mode": 33204,
+      "mtime_ns": 1791962684611421824,
+      "ino": 17844894
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/inputs.json",
+      "sha256": "353598790b930d94ae4319bba7363b089ab5b1ef52db97a20fb0777477f65731",
+      "mode": 33204,
+      "mtime_ns": 1791962469996675532,
+      "ino": 17844013
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/edge-cases.mjs",
+      "sha256": "2e36fa26b56ee94b127ffa3f11e8dcdb6b72809c3348029c0fd154fef82ee8d7",
+      "mode": 33204,
+      "mtime_ns": 1791962553500362163,
+      "ino": 17844017
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/source-receipts.json",
+      "sha256": "546707a77cf45109ae771abc353065aa9b1448be9824aa55e94acaf794bfd391",
+      "mode": 33204,
+      "mtime_ns": 1791964384950716517,
+      "ino": 17846589
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/host-caller-search.log",
+      "sha256": "a9d6d518f99a1307d05449483cf82de8fda6a955a84cf1b5be960f94bd1bd610",
+      "mode": 33204,
+      "mtime_ns": 1791964603012482352,
+      "ino": 17846600
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/before.json",
+      "sha256": "da5084531e2991fe1c0339de123e5410c657b24549b3c2224726d68b7e8c0733",
+      "mode": 33204,
+      "mtime_ns": 1791964384919716264,
+      "ino": 17843839
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-results.json",
+      "sha256": "6bfb6ec03561bcf5711c479aa828aaad1936532f6e5f699c02bdace31eed781b",
+      "mode": 33204,
+      "mtime_ns": 1791964500587655476,
+      "ino": 17846596
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-command.json",
+      "sha256": "b940ef63b46113558cf011a99038f3d04cbf0cab6028f7f765167b55b0935cd8",
+      "mode": 33204,
+      "mtime_ns": 1791964500591655508,
+      "ino": 17846598
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/author-tests.log",
+      "sha256": "953cab67b4e0578063d568facf5ed049428b26a7fd2249110ee5aeeea775b150",
+      "mode": 33204,
+      "mtime_ns": 1791964385073717519,
+      "ino": 17846591
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/immutable.patch",
+      "sha256": "1162127f520e1874cb61e3be94ccee612242b8c6b24913d5cb58e2386a67ee06",
+      "mode": 33204,
+      "mtime_ns": 1791964384948716501,
+      "ino": 17846588
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/author-command.json",
+      "sha256": "6b14b4b649e5b5271e208e76c91d5c34d946ace80ee6057c386cf1fa9b89afe3",
+      "mode": 33204,
+      "mtime_ns": 1791964385073717519,
+      "ino": 17846592
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/pr1-status-readback.json",
+      "sha256": "fd0cbb1deb9cf139ed0c07ac86bf840983b626dcd17b156c69c39654ec39832f",
+      "mode": 33204,
+      "mtime_ns": 1791965954573994820,
+      "ino": 17830378
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/independent-review.json",
+      "sha256": "562aa65468f0197cb501e945fb0f7d82c92da523d81eab0c804be2cc8dd1afae",
+      "mode": 33204,
+      "mtime_ns": 1791964709563338704,
+      "ino": 17846603
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/after.json",
+      "sha256": "da5084531e2991fe1c0339de123e5410c657b24549b3c2224726d68b7e8c0733",
+      "mode": 33204,
+      "mtime_ns": 1791964603006482303,
+      "ino": 17846599
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/fixture-derivation.json",
+      "sha256": "cef0d06c98707f6fde61d8b36f4095b83dfc48cc099f1668fa9a0ee6286a6aa7",
+      "mode": 33204,
+      "mtime_ns": 1791964385073717519,
+      "ino": 17846594
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-tests.log",
+      "sha256": "a1911f8100b3fb9f1ac68bd6d2478f1c6707d22c442127f9622050ec3ec6b93b",
+      "mode": 33204,
+      "mtime_ns": 1791964500591655508,
+      "ino": 17846597
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/readback.json",
+      "sha256": "9cea0eb59a7469082ad46e47a114d2b300219ac65debc6bfffd9b8137575d50c",
+      "mode": 33204,
+      "mtime_ns": 1791964603014482368,
+      "ino": 17846601
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/evidence-index.json",
+      "sha256": "9f29eff4a3d1f6dd4a062f5c707470aeaf8378d8962ca2e4ed54d201f777348e",
+      "mode": 33204,
+      "mtime_ns": 1791964709562338696,
+      "ino": 17846602
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/inputs.json",
+      "sha256": "48d87c0e0a0d248a6efe295ece475f4526f2410a8ad12b972c6aba9cec22d100",
+      "mode": 33204,
+      "mtime_ns": 1791964384950716517,
+      "ino": 17846590
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/edge-cases.mjs",
+      "sha256": "740738f6c09674bfc44deba2c8ea509ffaf05fe2f59cba50668bb88399660883",
+      "mode": 33204,
+      "mtime_ns": 1791964500489654683,
+      "ino": 17846595
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-probes.py",
+      "sha256": "66664c9b3bbf31912e8bf846f8673c61a0fd23e7d4b3d85fc2e72679ee21539d",
+      "mode": 33204,
+      "mtime_ns": 1791966859191999814,
+      "ino": 17843889
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/source-receipts.json",
+      "sha256": "1ad8d02999f67641f5b4febb593782b41b828eaae85293b870509c629990f660",
+      "mode": 33204,
+      "mtime_ns": 1791966689333677408,
+      "ino": 17848981
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-results.json",
+      "sha256": "5836c624021662ee69b560e05fb32429eb5702b196c25f31f5cfee92e704daaf",
+      "mode": 33204,
+      "mtime_ns": 1791966859607003047,
+      "ino": 17848918
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/initial-harness-failure.log",
+      "sha256": "545c2ca64d666f8f08d67973381ab3e52f634189545aaf06da8958b6097435a2",
+      "mode": 33204,
+      "mtime_ns": 1791966859191999814,
+      "ino": 17830738
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-command.json",
+      "sha256": "b8a9af998bc5678948d91b099519cee2ba8e0e5e0d70cfe7f84d33a434b28d44",
+      "mode": 33204,
+      "mtime_ns": 1791966859619003141,
+      "ino": 17849005
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-source-receipts.json",
+      "sha256": "e861e1f11f3e05819e3d36c52908ff08a4702c7dd8f440d032e9f3f13854ee03",
+      "mode": 33204,
+      "mtime_ns": 1791966926515524388,
+      "ino": 17849027
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/author-tests.log",
+      "sha256": "4b103160ee9d8d149d23277ff37d0ce62a3c6e160a272ae26c7791f30f2dd32c",
+      "mode": 33204,
+      "mtime_ns": 1791966689964682317,
+      "ino": 17848984
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-control-command.json",
+      "sha256": "59e86938ef7868eafbd96621cd20371a0e20773ae0fdf68692d7941972be5288",
+      "mode": 33204,
+      "mtime_ns": 1791966926668525581,
+      "ino": 17849031
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-probes.log",
+      "sha256": "9c8864f07a492bd178a251e779b64b6a417042f5c298c69e3b894146c7aada46",
+      "mode": 33204,
+      "mtime_ns": 1791966859619003141,
+      "ino": 17847512
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/immutable.patch",
+      "sha256": "904ed8c8dfac4e80ac913e8113227fb21adb40feeadaa31e0f4e0701318ea674",
+      "mode": 33204,
+      "mtime_ns": 1791966689333677408,
+      "ino": 17848973
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/initial-harness-failure.json",
+      "sha256": "c1858c375c17864c873288c27233c2bc3a96ce9ff1e1286c18d22b47852d0dea",
+      "mode": 33204,
+      "mtime_ns": 1791966859191999814,
+      "ino": 17846530
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-limit-controls.log",
+      "sha256": "8d9beda6006e1ebecb056145b85b8028626438494ec3105c3dbb20ab4d5d7790",
+      "mode": 33204,
+      "mtime_ns": 1791966926668525581,
+      "ino": 17849030
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/author-command.json",
+      "sha256": "0d5a2937bc06b3125d5fe160b6012aa2fb49f0eb0d206bcdf5ced9319b886b53",
+      "mode": 33204,
+      "mtime_ns": 1791966689964682317,
+      "ino": 17848988
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-limit-controls.py",
+      "sha256": "0c8ac63602667793a4bd61c71acd4424f9c1191389398d77b9466c83ebccbdbe",
+      "mode": 33204,
+      "mtime_ns": 1791966926515524388,
+      "ino": 17849028
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/independent-review.json",
+      "sha256": "9a45b15b9c06d39de93ba313aedfdba674689122842509cec9d4b3550c60509b",
+      "mode": 33204,
+      "mtime_ns": 1791967027080308351,
+      "ino": 17842611
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-limit-controls.json",
+      "sha256": "c90a955089b4b1ce95b879b56de88bc07452580a5eae87ea136380b4d9eea243",
+      "mode": 33204,
+      "mtime_ns": 1791966926658525502,
+      "ino": 17849029
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/author-receipts.json",
+      "sha256": "6e8b0ae346d8edc4aec57279580c355c476f39e99ad59b2456ee40fc055d7c78",
+      "mode": 33204,
+      "mtime_ns": 1791966689333677408,
+      "ino": 17848982
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/readback.json",
+      "sha256": "00a4a537a1a24dba1fa1fdc91fbd0fc2959dd53d1c85146bba65b439cbaa23e7",
+      "mode": 33204,
+      "mtime_ns": 1791967027077308328,
+      "ino": 17830695
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/evidence-index.json",
+      "sha256": "e8b20bc80ea8ef6ea350def051fc7df60f34d330401f96c8308e413c15c37778",
+      "mode": 33204,
+      "mtime_ns": 1791967027080308351,
+      "ino": 17830696
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/inputs.json",
+      "sha256": "216de1287a13f9769403bef8f6820c47ac1a1f4fdaa5ef31df4bdd7877bf1c78",
+      "mode": 33204,
+      "mtime_ns": 1791966689335677423,
+      "ino": 17848983
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-probes.py",
+      "sha256": "12b5025e3740f5321cc52c3026f12bf7fd8a455f41e6069c68fbd8547de78541",
+      "mode": 33204,
+      "mtime_ns": 1791968209577271061,
+      "ino": 17830718
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/build-review.py",
+      "sha256": "eef37fa2598534884cb80201d412fb8674eb15b861014c0bebf7891c945ee2e8",
+      "mode": 33204,
+      "mtime_ns": 1791968658402897761,
+      "ino": 17877804
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/source-receipts.json",
+      "sha256": "effc1be5db7ada176e1d32453ff7ee65bd8bf7bec87503c4ac206ad0e2201257",
+      "mode": 33204,
+      "mtime_ns": 1791967906697768147,
+      "ino": 17880179
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-results.json",
+      "sha256": "4d8cdc3ce578d620e2719aad6d56ee713121a6820e0dd091b948a6eb04d05eae",
+      "mode": 33204,
+      "mtime_ns": 1791968210817277791,
+      "ino": 17881456
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/before.json",
+      "sha256": "ca1e61ee4bb7a2ef8ed07c0130ef16092487d52a81064d28f1fa152a99c74b76",
+      "mode": 33204,
+      "mtime_ns": 1791967906702768169,
+      "ino": 17880181
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/owner-evidence-readback.json",
+      "sha256": "56df94b0c45c90ed8bf4260dee237965eab7df56f042c0f94e490ed88b538b69",
+      "mode": 33204,
+      "mtime_ns": 1791968295079743643,
+      "ino": 17881801
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/owner-final-report.json",
+      "sha256": "088e971fde89b32fbc3c178979c7fab32fa4d2621ae13d543653f00a560535e4",
+      "mode": 33204,
+      "mtime_ns": 1791967906697768147,
+      "ino": 17880180
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/preflight.json",
+      "sha256": "c509cf849b3a5f5779bedb287a967ac569f360abef9114b913d947d61be5c42e",
+      "mode": 33204,
+      "mtime_ns": 1791967471566433370,
+      "ino": 17846778
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-command.json",
+      "sha256": "8cfdba646e2665b7153c5b99a2469fb46f972a1b0325edd89d1886e4fed9f0a8",
+      "mode": 33204,
+      "mtime_ns": 1791968210824277829,
+      "ino": 17830720
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/owner-command.json",
+      "sha256": "7fd16e050e4a3a3400f6bdc9a40440bae95097a43f2f57a4642b7fb7c5b3470e",
+      "mode": 33204,
+      "mtime_ns": 1791967914203801274,
+      "ino": 17880498
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-probes.log",
+      "sha256": "e38fd01b34e042940399668048b944cde6c5197d885d257532fd371bda3ef301",
+      "mode": 33204,
+      "mtime_ns": 1791968210824277829,
+      "ino": 17830719
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/owner-tests.log",
+      "sha256": "f84ee8ff7d8f75d43a988eb7ec7c59f2292e48583a8c35c3d958c2478a06d1c6",
+      "mode": 33204,
+      "mtime_ns": 1791967914203801274,
+      "ino": 17880497
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/immutable.patch",
+      "sha256": "0b0cf5a0173b29dd50f05e25547fe8d19360c5c39209815d6f0d6fb457d37edb",
+      "mode": 33204,
+      "mtime_ns": 1791967906697768147,
+      "ino": 17880178
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/initial-probe-harness-failure.json",
+      "sha256": "36c071d8948e3330e89b838ee1b98888611e67909c89c79c2c21a61cec2a445e",
+      "mode": 33204,
+      "mtime_ns": 1791968209577271061,
+      "ino": 17881455
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/trigger-proposal.json",
+      "sha256": "9a0ef663bca50a8daf2b13c0fa70c6b0d5d32290c6a011aed6349121ac5218b7",
+      "mode": 33204,
+      "mtime_ns": 1791968430533522994,
+      "ino": 17882739
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/owner-suite-isolation.json",
+      "sha256": "8f358d64688dd79e66d1012b9c815c8ecf0f1fc947de8efceb804ac7c5344681",
+      "mode": 33204,
+      "mtime_ns": 1791967909344779801,
+      "ino": 17880184
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/independent-review.json",
+      "sha256": "7d24479e7ca68f6867d9e59d81bcd756264174c4970a689254cf965c280d12e8",
+      "mode": 33204,
+      "mtime_ns": 1791968658425897903,
+      "ino": 17884002
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/after.json",
+      "sha256": "ca1e61ee4bb7a2ef8ed07c0130ef16092487d52a81064d28f1fa152a99c74b76",
+      "mode": 33204,
+      "mtime_ns": 1791968295078743637,
+      "ino": 17881800
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/readback.json",
+      "sha256": "1c7c92d78987452840326507f0228b6225f4860339c5ccad8dee4783ba498f19",
+      "mode": 33204,
+      "mtime_ns": 1791968295084743671,
+      "ino": 17881802
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/evidence-index.json",
+      "sha256": "011fdcc7e1c8b1938079c2cd9550f6913484b09614c15300badb1a9b318c2783",
+      "mode": 33204,
+      "mtime_ns": 1791968658425897903,
+      "ino": 17884001
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/initial-probe-harness-failure.log",
+      "sha256": "e3bef6f5fcdad3ca36773a728042c881cd48c3751d1f94d095cf5bbc17ecb786",
+      "mode": 33204,
+      "mtime_ns": 1791968209577271061,
+      "ino": 17881454
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/inputs.json",
+      "sha256": "89dd5c18ff8c202a2844c5a8e532a0b937875cccfa5f49397cd2d8681f8ccaa6",
+      "mode": 33204,
+      "mtime_ns": 1791967906702768169,
+      "ino": 17880182
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/candidate.md",
+      "sha256": "8908efcbadf6d63ff207cd2e710f7f7c590d3ddc2666d02fefa38d8f9c19c101",
+      "mode": 33204,
+      "mtime_ns": 1791985642408489688,
+      "ino": 18007106
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/owner-replay.json",
+      "sha256": "aea1e37301bd488c8cd47c7ba2a6da52bdc681f9532bf2c7bc0adf201d2d6cbf",
+      "mode": 33204,
+      "mtime_ns": 1791985642467490002,
+      "ino": 18012053
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/before.json",
+      "sha256": "413ad5034607a6381737c594e78a1943c7f57ac10a001e0b98e89f65c166f8ab",
+      "mode": 33204,
+      "mtime_ns": 1791985642405489672,
+      "ino": 18004370
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/owner-probe.mjs",
+      "sha256": "f6eb13565ac716da156af50d97f56fe51f72597ae209c90584819c3f4894f2dc",
+      "mode": 33204,
+      "mtime_ns": 1791985642435489831,
+      "ino": 18012052
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/candidate.json",
+      "sha256": "137fa17bb4b5e1180e198423752207ae607d48066ee94d61457db9805d9985d0",
+      "mode": 33204,
+      "mtime_ns": 1791985642407489683,
+      "ino": 18004371
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/pdf-page-9.png",
+      "sha256": "c7fddab2f78f28e2d031847d01ba1c7724edf579bdad5f5f42afb7d63bd4c002",
+      "mode": 33204,
+      "mtime_ns": 1791985642884492220,
+      "ino": 18012058
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/owner-replay.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": 33204,
+      "mtime_ns": 1791985642467490002,
+      "ino": 18012054
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/original-pdf.txt",
+      "sha256": "0065003ad069515e1673b1c7af5a884281c814a572d9d1f9190c4b31027c3a94",
+      "mode": 33204,
+      "mtime_ns": 1791985642484490092,
+      "ino": 18012055
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/independent-review.json",
+      "sha256": "527459672c9c2427e6046c24f36ff11f359de55de4f5dea4c34942cf960ebfd9",
+      "mode": 33204,
+      "mtime_ns": 1791985721256912130,
+      "ino": 18010533
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/pdf-page-7.png",
+      "sha256": "6aa5dc2a1ca5d529eeeb4b246bcaf52106bd16a086c04a94bb5c280d6dc95ace",
+      "mode": 33204,
+      "mtime_ns": 1791985642739491449,
+      "ino": 18012057
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/pdf-page-6.png",
+      "sha256": "9e0aeafa5cc9fb6de2a0fef4aed287d34fec3a8c608f1973e8a4302d58b089d7",
+      "mode": 33204,
+      "mtime_ns": 1791985642604490731,
+      "ino": 18012056
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/after.json",
+      "sha256": "6464a5af8aae6ceb2d1ad4290d232d1026b1009f4f6a357a8260a044f77ab1e9",
+      "mode": 33204,
+      "mtime_ns": 1791985721254912120,
+      "ino": 18007107
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/evidence-index.json",
+      "sha256": "2d0150e31865fae471de376c0b99ea35b0e508718c793da7ac1e37a07ee3e6c9",
+      "mode": 33204,
+      "mtime_ns": 1791985721258912141,
+      "ino": 18010553
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/source-checks.json",
+      "sha256": "2eac41d69aec31cf361c7a4dbf2f282128f1ea39b6048035283ddb278adbbec0",
+      "mode": 33204,
+      "mtime_ns": 1791985642435489831,
+      "ino": 18012051
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/source-receipts.json",
+      "sha256": "f7d24a11657b82848ed8ae3c0d2397a01e3d8e74e6cec0019f6d3d8e8029b938",
+      "mode": 33204,
+      "mtime_ns": 1791963490745015817,
+      "ino": 17846544
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/before.json",
+      "sha256": "9502f79cb2aeb53207f8ce54433ac7abf95c283024a910067d2029b143a8da35",
+      "mode": 33204,
+      "mtime_ns": 1791963490736015732,
+      "ino": 17843991
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-results.json",
+      "sha256": "12bfefb550fd793675565bd85f43ffbf6bb42136c51299b5008e4e17dfc9c736",
+      "mode": 33204,
+      "mtime_ns": 1791963521273302363,
+      "ino": 17846548
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-command.json",
+      "sha256": "4c151bcf5f1f46f8a0a6eddf2438e800d70c97762b2e1ce25d97e5cb4a153ce2",
+      "mode": 33204,
+      "mtime_ns": 1791963521277302400,
+      "ino": 17846552
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/author-tests.log",
+      "sha256": "0fd1d4262edad549285176785e3cda95b426c3935f0428a5980c1683a93841b5",
+      "mode": 33204,
+      "mtime_ns": 1791963490811016439,
+      "ino": 17846546
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/immutable.patch",
+      "sha256": "a76a4775ad593a46e6fc3e451d0fe8755e29a25dcb81783c2fb29964d4f4fe9f",
+      "mode": 33204,
+      "mtime_ns": 1791963490738015751,
+      "ino": 17843992
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/independent-review.json",
+      "sha256": "66771499d37de1d09ac91097fbf61a123d93dc85c5947c2a09b7679eff6bc749",
+      "mode": 33204,
+      "mtime_ns": 1791963592445960322,
+      "ino": 17830394
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/after.json",
+      "sha256": "9502f79cb2aeb53207f8ce54433ac7abf95c283024a910067d2029b143a8da35",
+      "mode": 33204,
+      "mtime_ns": 1791963592441960286,
+      "ino": 17830379
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-tests.log",
+      "sha256": "7fdd5ae7e3688b916daefff6f0c44bce5c9e6493c2065476cfd51fb36efb39a1",
+      "mode": 33204,
+      "mtime_ns": 1791963521277302400,
+      "ino": 17846551
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/author-test-result.json",
+      "sha256": "3e638d89236ce3f8df2add4a67bc18d502a9bc477161eed908a33c6898e4210f",
+      "mode": 33204,
+      "mtime_ns": 1791963490811016439,
+      "ino": 17846547
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/evidence-index.json",
+      "sha256": "c6f4d9a020917d628db307811d64e0bfbff425a48cfc943b637cba3e2824522c",
+      "mode": 33204,
+      "mtime_ns": 1791963592445960322,
+      "ino": 17830382
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/inputs.json",
+      "sha256": "bee2b590ddaf2c2661bea884c06892eb730e3c1b1449892bd62e53d46745708b",
+      "mode": 33204,
+      "mtime_ns": 1791963490745015817,
+      "ino": 17846545
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-cases.mjs",
+      "sha256": "2d52be6be6003ba4641d2f8613f7e7943ab72c174e48cfd828377c85cfa82393",
+      "mode": 33204,
+      "mtime_ns": 1791963521237302027,
+      "ino": 17830507
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot/package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "mode": 33204,
+      "mtime_ns": 1791962469994675516,
+      "ino": 17844010
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot/package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "mode": 33204,
+      "mtime_ns": 1791963490745015817,
+      "ino": 17846543
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot/tests-web/recall-scope-model.test.mjs",
+      "sha256": "312908e57ddabba63387d4f60c0ed4296a1279bc77191fd91081bac16b64795e",
+      "mode": 33204,
+      "mtime_ns": 1791963490742015789,
+      "ino": 17846540
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot/public/recall-scope-model.js",
+      "sha256": "c365045904ddf3c0023d0a81d5902ce45ac6f31ef702c4b84065a3e97d8aaee5",
+      "mode": 33204,
+      "mtime_ns": 1791963490739015760,
+      "ino": 17846537
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot/public/evidence-model.js",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "mode": 33204,
+      "mtime_ns": 1791963490741015779,
+      "ino": 17846538
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/snapshot/docs/worker-26-recall-scope.md",
+      "sha256": "64ea175ff6db7e87713a617c8ac52ee275ad3d9681eb98e70d665f7c1cb7fa7f",
+      "mode": 33204,
+      "mtime_ns": 1791963490744015807,
+      "ino": 17846542
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot/tests-web/recall-scope-model.test.mjs",
+      "sha256": "29d3f7701e02debce572b5102809031d4f43fade1468de2d194b67f30938021f",
+      "mode": 33204,
+      "mtime_ns": 1791962469992675499,
+      "ino": 17844007
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot/public/recall-scope-model.js",
+      "sha256": "add959bd489e5ec0dd68a28d7cd927b8b791b315d58eee9e24a7ca32bb384b71",
+      "mode": 33204,
+      "mtime_ns": 1791962469989675474,
+      "ino": 17844004
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot/public/evidence-model.js",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "mode": 33204,
+      "mtime_ns": 1791962469990675483,
+      "ino": 17844005
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/snapshot/docs/worker-26-recall-scope.md",
+      "sha256": "516aa06c546a7f86ae4518adadadfe2d298d5c7836bee8b8b4d3ea1248575253",
+      "mode": 33204,
+      "mtime_ns": 1791962469993675508,
+      "ino": 17844009
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/source-receipts.json",
+      "sha256": "0d04458c131e09086dc396d3e7ebdd7cc2d6985b65749bd95ff2aa71da40adc7",
+      "mode": 33204,
+      "mtime_ns": 1791966164956612417,
+      "ino": 17847446
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/before.json",
+      "sha256": "0e1f3f9a7e42c61a300f1fae47034ff8ce726bb87de0adc59e4847a1495493b0",
+      "mode": 33204,
+      "mtime_ns": 1791966164930612216,
+      "ino": 17847376
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/edge-results.json",
+      "sha256": "aa60333ad4fc729a93b1eb199618133b78d568c93bccba5f3f627dde2af018d0",
+      "mode": 33204,
+      "mtime_ns": 1791966165180614144,
+      "ino": 17847452
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/edge-command.json",
+      "sha256": "4abe7474118f5ab2cbd04df86a1f536eaa4edaaffb0c5c91f87e357f14c6c2ea",
+      "mode": 33204,
+      "mtime_ns": 1791966165184614175,
+      "ino": 17847454
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/author-tests.log",
+      "sha256": "109a228349aaa6617d010499c729b7c6ba39a83566b6a9392a06f584f20c866b",
+      "mode": 33204,
+      "mtime_ns": 1791966165092613466,
+      "ino": 17847448
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/immutable.patch",
+      "sha256": "c1f989e373bc4ff4f4649ffba5633cf567cb927950b5748154f7b2a609703e35",
+      "mode": 33204,
+      "mtime_ns": 1791966164933612239,
+      "ino": 17847377
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/author-command.json",
+      "sha256": "cb229696b72dacb493f222f74e1ef1322b0d3288ad8a9f8e1810f53d5e50fc40",
+      "mode": 33204,
+      "mtime_ns": 1791966165092613466,
+      "ino": 17847449
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/independent-review.json",
+      "sha256": "0401c2e1824aef9c2cc43c2020ef0e35d32da78457b2047c24890cd129d70760",
+      "mode": 33204,
+      "mtime_ns": 1791966238373179198,
+      "ino": 17846607
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/after.json",
+      "sha256": "0e1f3f9a7e42c61a300f1fae47034ff8ce726bb87de0adc59e4847a1495493b0",
+      "mode": 33204,
+      "mtime_ns": 1791966224552072421,
+      "ino": 17846605
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/edge-tests.log",
+      "sha256": "3ebfb01bdee50eaf4f676e66f85470a603099b650e0f9fbb0114c4ff9334bef2",
+      "mode": 33204,
+      "mtime_ns": 1791966165184614175,
+      "ino": 17847453
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/evidence-index.json",
+      "sha256": "099b4fa18ac37eae6d188a7c0ddd1dacd11f12c6ebd8c69da2f0a0faa12bf9c5",
+      "mode": 33204,
+      "mtime_ns": 1791966224560072483,
+      "ino": 17846606
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/inputs.json",
+      "sha256": "4d44070d9c0749ec94cacda477636ae4424356fc1d9d6bd19a657677ddfbbd53",
+      "mode": 33204,
+      "mtime_ns": 1791966164956612417,
+      "ino": 17847447
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/edge-cases.mjs",
+      "sha256": "998288f198cd726406462e15fa32a4ce2cb921961ad793653099ae1c492f29de",
+      "mode": 33204,
+      "mtime_ns": 1791966165092613466,
+      "ino": 17847451
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "mode": 33204,
+      "mtime_ns": 1791964384921716281,
+      "ino": 17846568
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/package.json",
+      "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1",
+      "mode": 33204,
+      "mtime_ns": 1791966164934612247,
+      "ino": 17847378
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/tests-web/common-package-caller.test.mjs",
+      "sha256": "74cb50ec9fcac58183db220267d4adab05e466c2dd7958844addcb171f6d0295",
+      "mode": 33204,
+      "mtime_ns": 1791966164936612262,
+      "ino": 17847380
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/tests-web/reviewer-fixtures.mjs",
+      "sha256": "2ee0923240d17c7cd9253469e47c1fff5890f72c4bda5726201f2aac880f4c2e",
+      "mode": 33204,
+      "mtime_ns": 1791966165092613466,
+      "ino": 17847450
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/common-corpus-transport.js",
+      "sha256": "6cea7d8c1801c27588d04e87580cf29fcf7220fe5a623333e0933f565d826903",
+      "mode": 33204,
+      "mtime_ns": 1791966164942612309,
+      "ino": 17847387
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/menu-model.js",
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "mode": 33204,
+      "mtime_ns": 1791966164948612355,
+      "ino": 17847439
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/i18n.js",
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe",
+      "mode": 33204,
+      "mtime_ns": 1791966164937612270,
+      "ino": 17847382
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/ingredients.js",
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "mode": 33204,
+      "mtime_ns": 1791966164952612386,
+      "ino": 17847442
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/common-corpus-locale.js",
+      "sha256": "9b7d585fab32aa842bf552108e0cff448e99042858ac069976a0910349464f01",
+      "mode": 33204,
+      "mtime_ns": 1791966164944612324,
+      "ino": 17847388
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/locale-negotiation.js",
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009",
+      "mode": 33204,
+      "mtime_ns": 1791966164938612278,
+      "ino": 17847383
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/record-policy.js",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "mode": 33204,
+      "mtime_ns": 1791966164956612417,
+      "ino": 17847445
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/sources.js",
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "mode": 33204,
+      "mtime_ns": 1791966164954612401,
+      "ino": 17847444
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/checkout-model.js",
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "mode": 33204,
+      "mtime_ns": 1791966164949612363,
+      "ino": 17847440
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/unified-data.js",
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "mode": 33204,
+      "mtime_ns": 1791966164947612347,
+      "ino": 17847438
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/content-locale.js",
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d",
+      "mode": 33204,
+      "mtime_ns": 1791966164941612301,
+      "ino": 17847386
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/data-ui.js",
+      "sha256": "7bd92653a59239c2948278fff43746daf9660b73c37fda80d3f690be1234c72a",
+      "mode": 33204,
+      "mtime_ns": 1791966164945612332,
+      "ino": 17847389
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/countries.js",
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "mode": 33204,
+      "mtime_ns": 1791966164953612393,
+      "ino": 17847443
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/model.js",
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "mode": 33204,
+      "mtime_ns": 1791966164950612370,
+      "ino": 17847441
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot/public/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "mode": 33204,
+      "mtime_ns": 1791966164939612285,
+      "ino": 17847385
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/tests-web/common-package-caller.test.mjs",
+      "sha256": "66d7fba9af8c876f32e67a2ce9d1bbefe5be64bcd6b530301bf273235012b8ae",
+      "mode": 33204,
+      "mtime_ns": 1791964384922716289,
+      "ino": 17846570
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/tests-web/reviewer-fixtures.mjs",
+      "sha256": "2ee0923240d17c7cd9253469e47c1fff5890f72c4bda5726201f2aac880f4c2e",
+      "mode": 33204,
+      "mtime_ns": 1791964385073717519,
+      "ino": 17846593
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/common-corpus-transport.js",
+      "sha256": "6cea7d8c1801c27588d04e87580cf29fcf7220fe5a623333e0933f565d826903",
+      "mode": 33204,
+      "mtime_ns": 1791964384931716362,
+      "ino": 17846577
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/menu-model.js",
+      "sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "mode": 33204,
+      "mtime_ns": 1791964384937716411,
+      "ino": 17846581
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/i18n.js",
+      "sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe",
+      "mode": 33204,
+      "mtime_ns": 1791964384924716305,
+      "ino": 17846572
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/ingredients.js",
+      "sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "mode": 33204,
+      "mtime_ns": 1791964384941716444,
+      "ino": 17846584
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/common-corpus-locale.js",
+      "sha256": "9b7d585fab32aa842bf552108e0cff448e99042858ac069976a0910349464f01",
+      "mode": 33204,
+      "mtime_ns": 1791964384932716370,
+      "ino": 17846578
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/locale-negotiation.js",
+      "sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009",
+      "mode": 33204,
+      "mtime_ns": 1791964384926716321,
+      "ino": 17846573
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/record-policy.js",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "mode": 33204,
+      "mtime_ns": 1791964384946716485,
+      "ino": 17846587
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/sources.js",
+      "sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "mode": 33204,
+      "mtime_ns": 1791964384944716468,
+      "ino": 17846586
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/checkout-model.js",
+      "sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "mode": 33204,
+      "mtime_ns": 1791964384939716428,
+      "ino": 17846582
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/unified-data.js",
+      "sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "mode": 33204,
+      "mtime_ns": 1791964384936716403,
+      "ino": 17846580
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/content-locale.js",
+      "sha256": "1431349bdf6fdec6a24dc24a6d4d54a7c1e2bbc50a4729419645fbdb2e29c27d",
+      "mode": 33204,
+      "mtime_ns": 1791964384929716346,
+      "ino": 17846576
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/data-ui.js",
+      "sha256": "738e1c597bcfa0069872df4ed0500860562cb0cbf2d6932cb0ac5c95d892d2a2",
+      "mode": 33204,
+      "mtime_ns": 1791964384934716387,
+      "ino": 17846579
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/countries.js",
+      "sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "mode": 33204,
+      "mtime_ns": 1791964384943716460,
+      "ino": 17846585
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/model.js",
+      "sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "mode": 33204,
+      "mtime_ns": 1791964384940716436,
+      "ino": 17846583
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/snapshot/public/locales/ar.js",
+      "sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "mode": 33204,
+      "mtime_ns": 1791964384927716330,
+      "ino": 17846575
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/corpus/common-data-contract.json",
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "mode": 33204,
+      "mtime_ns": 1791966689325677345,
+      "ino": 17848972
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/corpus/common-data.schema.json",
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+      "mode": 33204,
+      "mtime_ns": 1791966689323677330,
+      "ino": 17848971
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/scripts/places-recovery-preflight.py",
+      "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963",
+      "mode": 33204,
+      "mtime_ns": 1791966689317677283,
+      "ino": 17847469
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/scripts/places_checkpoint.py",
+      "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2",
+      "mode": 33204,
+      "mtime_ns": 1791966689316677275,
+      "ino": 17846779
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/scripts/align-places-common.py",
+      "sha256": "955c382f7cda837903d119084ce838b82f9a207be0f6dfce9a73b7287cabb76f",
+      "mode": 33204,
+      "mtime_ns": 1791966689314677260,
+      "ino": 17842644
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/tests/test_places_common.py",
+      "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348",
+      "mode": 33204,
+      "mtime_ns": 1791966689321677314,
+      "ino": 17847485
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/snapshot/tests/test_places_checkpoint.py",
+      "sha256": "8b17619f5b125b152812912b8603b169775d0900d87a55c973496719a4d554a2",
+      "mode": 33204,
+      "mtime_ns": 1791966689319677299,
+      "ino": 17847484
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/corpus/common-data-contract.json",
+      "sha256": "b4fa5afb2f8cc77326299b55ccd75b93f121e807317fdc1f9953709e98faa0aa",
+      "mode": 33204,
+      "mtime_ns": 1791966926515524388,
+      "ino": 17849026
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/corpus/common-data.schema.json",
+      "sha256": "89ff701460e0c9c6e27c5d5ece7bd6868f26f55fc2aedd1d85c87b4408cf1f6c",
+      "mode": 33204,
+      "mtime_ns": 1791966926513524373,
+      "ino": 17849025
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/scripts/places-recovery-preflight.py",
+      "sha256": "2f31e36aa860d25322464b71788dedf8536b73547a44d1afde5ea384dce8c963",
+      "mode": 33204,
+      "mtime_ns": 1791966926509524341,
+      "ino": 17849020
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/scripts/places_checkpoint.py",
+      "sha256": "3d6de6b39bf70b1a2ca35b6cba451f88b1071e9e12aa14d74dacbe5d35d872d2",
+      "mode": 33204,
+      "mtime_ns": 1791966926507524326,
+      "ino": 17849019
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/scripts/align-places-common.py",
+      "sha256": "1bbf1aae52769139c3625b801ac6e3dcc0e7c8ec4788fcffd05aea86bae8384a",
+      "mode": 33204,
+      "mtime_ns": 1791966926506524318,
+      "ino": 17847476
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/tests/test_places_common.py",
+      "sha256": "6d63e6231936795be2e7ce2178b58570799f0f6d981b556ec32fda2699d15348",
+      "mode": 33204,
+      "mtime_ns": 1791966926512524365,
+      "ino": 17849023
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/checkpoint-correction-review/parent-snapshot/tests/test_places_checkpoint.py",
+      "sha256": "f262fb6cb6021c91c5c3824d590da9c0bded1fe31a577926be2d792713009505",
+      "mode": 33204,
+      "mtime_ns": 1791966926510524349,
+      "ino": 17849022
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/independent-probes.py",
+      "sha256": "5174351ad97222f8136e560d113d1477d487e196b9374a846ea58b9fb420e906",
+      "mode": 33204,
+      "mtime_ns": 1791972989675884811,
+      "ino": 18006288
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/routine-flow-probe.py",
+      "sha256": "5167360baed8f0c33c8cafdd94bc94a79ab8c92ac42f329635da881b87db1f4d",
+      "mode": 33204,
+      "mtime_ns": 1791972989675884811,
+      "ino": 18006289
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/independent-results.json",
+      "sha256": "742a38c7411f515e907a6325a6a68363ac9fe535f5389c0660ad5ee768bcfde5",
+      "mode": 33204,
+      "mtime_ns": 1791973081400646905,
+      "ino": 18006306
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/before.json",
+      "sha256": "f42fb84a5fed26aa7134043fabe3f22753b716376940c7ae66eb6f8e0121f1f4",
+      "mode": 33204,
+      "mtime_ns": 1791972931405399789,
+      "ino": 18006221
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/reviewed-delta.patch",
+      "sha256": "8b2efcbedee14d220dca39733ccc094a853a66aa7fd8e580a16d19d3d89c5614",
+      "mode": 33204,
+      "mtime_ns": 1791972931415399872,
+      "ino": 18006230
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/routine-flow-probe.py.log",
+      "sha256": "f9948adfa49050c5f899542fbcb9881b7389d690162fd708b753ddee28557acd",
+      "mode": 33204,
+      "mtime_ns": 1791973081924651254,
+      "ino": 18006309
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-evidence-verification.json",
+      "sha256": "309792e9f42daae5fd2102d10960df306d887e276a67aff604dea4a6944c43b4",
+      "mode": 33204,
+      "mtime_ns": 1791972931416399881,
+      "ino": 18006231
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/binding-probes.py",
+      "sha256": "cff93ede1efd5e84f0e23760e8eea66ab7d736631def79491b04b88f80133278",
+      "mode": 33204,
+      "mtime_ns": 1791973164829338810,
+      "ino": 18006305
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/routine-flow-results.json",
+      "sha256": "f9948adfa49050c5f899542fbcb9881b7389d690162fd708b753ddee28557acd",
+      "mode": 33204,
+      "mtime_ns": 1791973081913651163,
+      "ino": 18006308
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/binding-probes.log",
+      "sha256": "d10c7f887610af34597648e23f0e672992c03f011d7879c3e5823e949dd1aeb1",
+      "mode": 33204,
+      "mtime_ns": 1791973168250367159,
+      "ino": 18006311
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/independent-before-after.json",
+      "sha256": "220b267a4fb9e32a4cce67d8abf4c6771204848f0caa4769b90426576f2d311b",
+      "mode": 33204,
+      "mtime_ns": 1791973297508437119,
+      "ino": 18006317
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-result.json",
+      "sha256": "8fac105f868afbc6715ebc451c3c3bfa2389a5ea4736a2e52a9a80048060fc8c",
+      "mode": 33204,
+      "mtime_ns": 1791972931416399881,
+      "ino": 18006232
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-suite-isolation.json",
+      "sha256": "61949d2412677a39e7563e66fbe2036fee59a274c9666608d42cecb7e537ea0e",
+      "mode": 33204,
+      "mtime_ns": 1791972992805910844,
+      "ino": 18004221
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-suite-result.json",
+      "sha256": "89b57e70973f941562d9f28947be43469d718adca3e53cd4f68331d299a8fe1b",
+      "mode": 33204,
+      "mtime_ns": 1791973002093988081,
+      "ino": 18006292
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/independent-review.json",
+      "sha256": "b10dbb85c70c4e23ab5b3b7035d878cd6543ebcb9d6fb4e0adbc0691dea500a9",
+      "mode": 33204,
+      "mtime_ns": 1791973297508437119,
+      "ino": 18006318
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/after.json",
+      "sha256": "fe625a24d243101ad9b9fac4b43bad2bca8cdf9ebf14fb49b613df922fdf4455",
+      "mode": 33204,
+      "mtime_ns": 1791973236730934278,
+      "ino": 18006324
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/owner-suite.log",
+      "sha256": "703d35e9d57a8a59ff1f0bc25d131a3c49808e6f7a41f2d4732743f1d298ce69",
+      "mode": 33204,
+      "mtime_ns": 1791973002093988081,
+      "ino": 18006291
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/binding-results.json",
+      "sha256": "ec9bc2a71afb45788a37a6432e9c6460a51cf63a4f0a8e83cb4d2d2a59952d39",
+      "mode": 33204,
+      "mtime_ns": 1791973168241367084,
+      "ino": 18006310
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/independent-probes.py.log",
+      "sha256": "4e0beeee3d2947fe65090265cabee095c00c2e3c7e1d6f962b5afee0f9e22824",
+      "mode": 33204,
+      "mtime_ns": 1791973081409646979,
+      "ino": 18006307
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/evidence-index.json",
+      "sha256": "dc694aa89a903d7ae51ccf89237e084e896645445a47728d43ed1d2edcb49d48",
+      "mode": 33204,
+      "mtime_ns": 1791973297509437127,
+      "ino": 18006319
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-probes.py",
+      "sha256": "6e9fb1329ecf9217536ab8d1fe69b15a3066c05baa82555182f30625cc6cabae",
+      "mode": 33204,
+      "mtime_ns": 1791970174054218203,
+      "ino": 18004158
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/build-review.py",
+      "sha256": "6bc0b2786c9fd70db73304acf53a8ce32cbd2a7a12ce04a10fe6086e77d4789f",
+      "mode": 33204,
+      "mtime_ns": 1791970677779930214,
+      "ino": 18004622
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/routine-flow-probe.py",
+      "sha256": "e081b0a68f01cc01f9c89613f5c835ecedf8fb6b4f0f40aabd22b8c14eb124c7",
+      "mode": 33204,
+      "mtime_ns": 1791970427732681723,
+      "ino": 18004295
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/source-receipts.json",
+      "sha256": "d650863c8cabcb5f4ffb9f039877c81220c0cb8047be76e943c57c7ca975046c",
+      "mode": 33204,
+      "mtime_ns": 1791969887153060257,
+      "ino": 18003904
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-results.json",
+      "sha256": "8aa0f481685e7452d1f302576ca667b3238c7738904e9914e919b1c327d8d333",
+      "mode": 33204,
+      "mtime_ns": 1791970176348241606,
+      "ino": 18004178
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/before.json",
+      "sha256": "fed9c80646d8c81eb1fba0b702be355bbc01af25e253b55131e4007b4bee717c",
+      "mode": 33204,
+      "mtime_ns": 1791969887158060317,
+      "ino": 18003906
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/routine-flow.log",
+      "sha256": "b6d38ab44159a0dc434b0879d4142748d6a4b52490114a951be9777a6b2dc65d",
+      "mode": 33204,
+      "mtime_ns": 1791970428249686526,
+      "ino": 18004297
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/routine-command.json",
+      "sha256": "fc4cc6d56b86c84d5e6237ac7b7050c86913120876df7e3bf186d1a5d4c23549",
+      "mode": 33204,
+      "mtime_ns": 1791970428249686526,
+      "ino": 18004298
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-command.json",
+      "sha256": "a3d8e7adfb645d955260df7acc17ad443d43b2c05daa96ea3aee682a0431ae6a",
+      "mode": 33204,
+      "mtime_ns": 1791970176356241688,
+      "ino": 18004180
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/routine-flow-results.json",
+      "sha256": "b6d38ab44159a0dc434b0879d4142748d6a4b52490114a951be9777a6b2dc65d",
+      "mode": 33204,
+      "mtime_ns": 1791970428238686424,
+      "ino": 18004296
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/owner-command.json",
+      "sha256": "d86a8ed3ebb0beeea985297ea77620e5e16e470e339b605c56908414bc05f43d",
+      "mode": 33204,
+      "mtime_ns": 1791969895687162126,
+      "ino": 18003909
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-probes.log",
+      "sha256": "e35009971b9821cd4e5829bbc0287fa601698e33edbe73bbb78959a03dadca92",
+      "mode": 33204,
+      "mtime_ns": 1791970176356241688,
+      "ino": 18004179
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/owner-tests.log",
+      "sha256": "e05e482632527255c3112a5f88e9ec08fed1eca9fd4373ceb5305fc18368421e",
+      "mode": 33204,
+      "mtime_ns": 1791969895687162126,
+      "ino": 18003908
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/immutable.patch",
+      "sha256": "67b0351117ea4c0e364e351be85a56a6f58bdbd482167b30e6009e4780c18673",
+      "mode": 33204,
+      "mtime_ns": 1791969887145060162,
+      "ino": 18003895
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/owner-result.json",
+      "sha256": "34adfd9124919bdb1b080cd7ab56f38072d006c4f8d25173d841ddd6c43d8c54",
+      "mode": 33204,
+      "mtime_ns": 1791969887145060162,
+      "ino": 18003896
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/owner-suite-isolation.json",
+      "sha256": "ecee0468969be404eb8364df2148e35ab822447d9e416eb1aeaa9197fa831279",
+      "mode": 33204,
+      "mtime_ns": 1791969889577089251,
+      "ino": 18003907
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/independent-review.json",
+      "sha256": "be0e22ae2ca1f5ebff06f7bd44879fb1bcb0d8e210af231ca923715f70b3a901",
+      "mode": 33204,
+      "mtime_ns": 1791970677800930398,
+      "ino": 18004624
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/after.json",
+      "sha256": "fed9c80646d8c81eb1fba0b702be355bbc01af25e253b55131e4007b4bee717c",
+      "mode": 33204,
+      "mtime_ns": 1791970532284638831,
+      "ino": 18004377
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/readback.json",
+      "sha256": "c24a00c8b2800e8bf9c90ef7ff821535af9939e9ba508c90ad96da7479780bea",
+      "mode": 33204,
+      "mtime_ns": 1791970532290638885,
+      "ino": 18004378
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/evidence-index.json",
+      "sha256": "eb608dc2413a591967afa409ce93718fe4b92b3e85c0a4bcc76d844db86bcf4e",
+      "mode": 33204,
+      "mtime_ns": 1791970677800930398,
+      "ino": 18004623
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/inputs.json",
+      "sha256": "4f2b3909281a63afec18e4c3cc865b1b74b5bb58c0b0c6d63d65e39501db67de",
+      "mode": 33204,
+      "mtime_ns": 1791969887153060257,
+      "ino": 18003905
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/independent-probes.py",
+      "sha256": "a1b2227a44ca09c4c52d6194a0df92241cc3897f5fa3ccefb506af7a522b8c8e",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006434
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/routine-flow-probe.py",
+      "sha256": "91de072047de67fac48531dc8c6c76d64dd6418dafe9116e0527ead29853b590",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006435
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/independent-results.json",
+      "sha256": "41c94c2fbb6dda8c894af883f27f9642ee8e8d7b3306cf6ab465e0da59112660",
+      "mode": 33204,
+      "mtime_ns": 1791974510579125793,
+      "ino": 18006441
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/independent-F5-before-after.json",
+      "sha256": "a38a3dfbb095691e904f5cc1ee520588483b9975fd764f35c8a6f5bf8401d4e4",
+      "mode": 33204,
+      "mtime_ns": 1791974682647515700,
+      "ino": 18006219
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/before.json",
+      "sha256": "e38560b4563f0cb80510dd4f2055ed58565fb7484a34a0532c9111be094f3106",
+      "mode": 33204,
+      "mtime_ns": 1791974474573835512,
+      "ino": 18006422
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/reviewed-delta.patch",
+      "sha256": "8605777f5f16b1c5c852706a7f1c85fe2853e39d542a0ddb1bd5db7631b27189",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006431
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/local-adversarial-results.json",
+      "sha256": "eacbafeb84a702196e6419986e89448f48ddca64930cd62b4d800fd9f4d115b6",
+      "mode": 33204,
+      "mtime_ns": 1791974585600731300,
+      "ino": 18006448
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/routine-flow-probe.py.log",
+      "sha256": "1e4a89b2908094013de2df9983b8a374f583b5d77beabef77304bb9d28078367",
+      "mode": 33204,
+      "mtime_ns": 1791974511101130003,
+      "ino": 18006444
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-evidence-verification.json",
+      "sha256": "a453600ff85060d7724859cb76b8fbecefd283b6ce19ed1cf2aaadae1e6a576f",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006432
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/binding-probes.py",
+      "sha256": "d90eb704d6c58464937f73ed1d2687aaab3f8dd0f32ac32bb236f414dfe2d200",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006436
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/routine-flow-results.json",
+      "sha256": "1e4a89b2908094013de2df9983b8a374f583b5d77beabef77304bb9d28078367",
+      "mode": 33204,
+      "mtime_ns": 1791974511093129938,
+      "ino": 18006443
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-result.json",
+      "sha256": "d93b31ebdce749d33986c2380e7c4870ffd65e799222614e07324f48a6b2e334",
+      "mode": 33204,
+      "mtime_ns": 1791974474583835593,
+      "ino": 18006433
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-suite-isolation.json",
+      "sha256": "309ec115d30e9e266985f31e2c06f2cac2979070311e4ae262c0c01e372f9fc2",
+      "mode": 33204,
+      "mtime_ns": 1791974499518036591,
+      "ino": 18006438
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-suite-result.json",
+      "sha256": "354cb278501e1ea81b106a489c808987fc58c5e1ac52f091c623c5a705b5736f",
+      "mode": 33204,
+      "mtime_ns": 1791974508093105743,
+      "ino": 18006440
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/independent-review.json",
+      "sha256": "266976b89d796fe7b78c0f5d13503780d8c33da590f9581b59f999cb272f18b2",
+      "mode": 33204,
+      "mtime_ns": 1791974682648515708,
+      "ino": 18006452
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/after.json",
+      "sha256": "43598771ce98f95b01b597c9300239fd98ee2771bc227107dd936373a79c3d84",
+      "mode": 33204,
+      "mtime_ns": 1791974616571981487,
+      "ino": 18006450
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/local-adversarial-probes.py",
+      "sha256": "be5c0ef022f485d2ea89183acc829a63470a77148d7b9371685a99fb80bc53db",
+      "mode": 33204,
+      "mtime_ns": 1791974569089597977,
+      "ino": 18006447
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/owner-suite.log",
+      "sha256": "53cf33c792081f8adcfeec6a7a14456a32d675bbf2ecda5c9816be2b199e8ba8",
+      "mode": 33204,
+      "mtime_ns": 1791974508093105743,
+      "ino": 18006439
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/binding-results.json",
+      "sha256": "3fafb602a14e1d5de0174f55443a4409dc0616f7fb0f5315d6b680e7d1463a10",
+      "mode": 33204,
+      "mtime_ns": 1791974514046153757,
+      "ino": 18006445
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/local-adversarial-probes.log",
+      "sha256": "eff066926e0c025a0793c7c0e65337cfa2409fa0fbca5c68e098480ff0d28dbe",
+      "mode": 33204,
+      "mtime_ns": 1791974585607731357,
+      "ino": 18006449
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/independent-probes.py.log",
+      "sha256": "4e0beeee3d2947fe65090265cabee095c00c2e3c7e1d6f962b5afee0f9e22824",
+      "mode": 33204,
+      "mtime_ns": 1791974510589125873,
+      "ino": 18006442
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/evidence-index.json",
+      "sha256": "a46479d782ff5b81e4eb5c5d1fd570fbfe6f1dce6942450c3fe511f4725db201",
+      "mode": 33204,
+      "mtime_ns": 1791974682649515716,
+      "ino": 18006453
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/binding-probes.py.log",
+      "sha256": "48f2c85c9d73c8d10310c44e03ac21c2dd0c0dcb8c274cb20a532071c20c76e1",
+      "mode": 33204,
+      "mtime_ns": 1791974514054153821,
+      "ino": 18006446
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/snapshot/scripts/offmenu-gitflow.py",
+      "sha256": "a6c68f1d8dfeaa782ab240143baa7b6527816874aca769aab68b3e293a55857d",
+      "mode": 33204,
+      "mtime_ns": 1791972931409399822,
+      "ino": 18006226
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/snapshot/scripts/offmenu-gitflow-launch.py",
+      "sha256": "29ff1115c840ce050d2d377dfc0b1f56852f1ad5e28223924078d60763c94603",
+      "mode": 33204,
+      "mtime_ns": 1791972931410399831,
+      "ino": 18006227
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/snapshot/docs/OFFMENU_GITFLOW.md",
+      "sha256": "5ceb962d60f769edfe7a626c3811fc1774651161a02366f14e5be85cca37ead7",
+      "mode": 33204,
+      "mtime_ns": 1791972931407399806,
+      "ino": 18006224
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-58c5f0/snapshot/tests-gitflow/test_offmenu_gitflow.py",
+      "sha256": "e93bc6424d2045900956f39151d6919f8add7c668981909ea03ff15b84f4a3c9",
+      "mode": 33204,
+      "mtime_ns": 1791972931412399848,
+      "ino": 18006229
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow.py",
+      "sha256": "c5038d05dc506c3caea09a5b0904d9374d763d4a5d37f3f3cdcd3ba387de95d5",
+      "mode": 33204,
+      "mtime_ns": 1791967906690768116,
+      "ino": 17880175
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/scripts/offmenu-gitflow-launch.py",
+      "sha256": "cc603f293d748c0ab6b7793ed6f637601ce98c808cd2b536be5bba9dedf31951",
+      "mode": 33204,
+      "mtime_ns": 1791967906689768112,
+      "ino": 17880174
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/docs/OFFMENU_GITFLOW.md",
+      "sha256": "214ba300e0c61c0cd8dd8a7798baf62bdcec9bd3abce882a2f0f478d695b6c83",
+      "mode": 33204,
+      "mtime_ns": 1791967906687768103,
+      "ino": 17880172
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/snapshot/tests-gitflow/test_offmenu_gitflow.py",
+      "sha256": "7de4f739b5098078a7c3864ec9c45b30e7d99cc4477858a46be3a95652aab719",
+      "mode": 33204,
+      "mtime_ns": 1791967906692768125,
+      "ino": 17880177
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/scripts/offmenu-gitflow.py",
+      "sha256": "62fba21787928633f0e8bf5f475f127e4f635acea3845cb11cf42203db427122",
+      "mode": 33204,
+      "mtime_ns": 1791969887151060234,
+      "ino": 18003901
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/scripts/offmenu-gitflow-launch.py",
+      "sha256": "29ff1115c840ce050d2d377dfc0b1f56852f1ad5e28223924078d60763c94603",
+      "mode": 33204,
+      "mtime_ns": 1791969887150060221,
+      "ino": 18003900
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/docs/OFFMENU_GITFLOW.md",
+      "sha256": "31bfb171fe8469d0afdde82cdc146062f25df6d88937dad9bc2fac8740367799",
+      "mode": 33204,
+      "mtime_ns": 1791969887148060198,
+      "ino": 18003898
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-60c6c0/snapshot/tests-gitflow/test_offmenu_gitflow.py",
+      "sha256": "aca14b6754b0f34a0e24e6f267de0fe5c47c956ceba946c91bbba936bb45a48c",
+      "mode": 33204,
+      "mtime_ns": 1791969887153060257,
+      "ino": 18003903
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/snapshot/scripts/offmenu-gitflow.py",
+      "sha256": "7841e1ce2c1dcfaa24a0b9397cc747a36ae948c5d5333c91038dccf6a31784fd",
+      "mode": 33204,
+      "mtime_ns": 1791974474576835537,
+      "ino": 18006427
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/snapshot/scripts/offmenu-gitflow-launch.py",
+      "sha256": "29ff1115c840ce050d2d377dfc0b1f56852f1ad5e28223924078d60763c94603",
+      "mode": 33204,
+      "mtime_ns": 1791974474578835553,
+      "ino": 18006428
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/snapshot/docs/OFFMENU_GITFLOW.md",
+      "sha256": "ac01125436d4d9e0ad46d315be935d53bb954cd19b3383c6f31910d0dc75a990",
+      "mode": 33204,
+      "mtime_ns": 1791974474575835528,
+      "ino": 18006425
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/autonomous-gitflow-review/correction-b61617a/snapshot/tests-gitflow/test_offmenu_gitflow.py",
+      "sha256": "c809a424a141531a099cd3f0053f18743cea67fcedbd7736e4edabfdabd7f1dc",
+      "mode": 33204,
+      "mtime_ns": 1791974474580835569,
+      "ino": 18006430
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner30-budget",
+      "sha256": "292d117c5f4a59eb8b6803fa8669b29a19025033fddaa86c95b68ebba3cedd00",
+      "mode": 33204,
+      "mtime_ns": 1791985642434489826,
+      "ino": 18011998
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/generic-record-policy",
+      "sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "mode": 33204,
+      "mtime_ns": 1791985642414489720,
+      "ino": 18010525
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/generic-admission",
+      "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "mode": 33204,
+      "mtime_ns": 1791985642412489709,
+      "ino": 18010524
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/existing-handler",
+      "sha256": "1317a4a436d46ce9a7d761dec09e3342a3efaf4069b9d760228ddfd2a66c0027",
+      "mode": 33204,
+      "mtime_ns": 1791985642427489789,
+      "ino": 18010575
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/canonical-CACHE08",
+      "sha256": "c6c6278544e1082462f307c637238d43541c3361c0ee6dd5bbe53da2025693b1",
+      "mode": 33204,
+      "mtime_ns": 1791985642410489698,
+      "ino": 18010519
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/private-browser-export",
+      "sha256": "aaa2e7c1d0e8cf3102dd2a5d645261213aff2d1161423afd7a23b98542abdae6",
+      "mode": 33204,
+      "mtime_ns": 1791985642424489773,
+      "ino": 18010544
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner29-adapter",
+      "sha256": "afae73c7e55cdbee725a8a9cd59bf7150bfd3f6636313f2268ea998a9d72b193",
+      "mode": 33204,
+      "mtime_ns": 1791985642430489805,
+      "ino": 18011995
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/private-provider-records",
+      "sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "mode": 33204,
+      "mtime_ns": 1791985642417489736,
+      "ino": 18010527
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/personal-statistics",
+      "sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "mode": 33204,
+      "mtime_ns": 1791985642422489762,
+      "ino": 18010543
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/household-projection",
+      "sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "mode": 33204,
+      "mtime_ns": 1791985642418489741,
+      "ino": 18010540
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/personal-catalogue-settings",
+      "sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7",
+      "mode": 33204,
+      "mtime_ns": 1791985642415489725,
+      "ino": 18010526
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner29-dependency-helper",
+      "sha256": "a7a7bbcc468dadb156bfb36f282577f11d03e5c294548e949499703c79b0fdea",
+      "mode": 33204,
+      "mtime_ns": 1791985642432489816,
+      "ino": 18011997
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/existing-enrichment-resolver",
+      "sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "mode": 33204,
+      "mtime_ns": 1791985642425489778,
+      "ino": 18010556
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner30-caller-contract",
+      "sha256": "6edf1b6b9ea2ca0373f945b6aef06b41ecd72a6db27a2b78cb7d8e1974bee5f8",
+      "mode": 33204,
+      "mtime_ns": 1791985642435489831,
+      "ino": 18012050
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/authenticated-kitchen",
+      "sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+      "mode": 33204,
+      "mtime_ns": 1791985642419489746,
+      "ino": 18010541
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner29-caller-contract",
+      "sha256": "05f34b58cdcc82a93a5e3da73f5bed9582301750d626ba9b3bb8b9d3b7b37475",
+      "mode": 33204,
+      "mtime_ns": 1791985642431489810,
+      "ino": 18011996
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/state-validation",
+      "sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "mode": 33204,
+      "mtime_ns": 1791985642421489757,
+      "ino": 18010542
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/cache08-f4927c2/sources/owner07-retained-producer-path",
+      "sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5",
+      "mode": 33204,
+      "mtime_ns": 1791985642428489794,
+      "ino": 18011994
+    }
+  ],
+  "pickup": {
+    "host": "foo",
+    "cwd": "/home/user/src/offmenu-workers/worker-10",
+    "thread": "01a138ed-be8c-7340-b25e-87bee9272d7e"
+  },
+  "reviewerHead": "abe0ddc9db357b1e8d0d61825392d6b9923352f0"
+}

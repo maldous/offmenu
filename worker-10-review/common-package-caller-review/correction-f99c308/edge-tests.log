@@ -1,0 +1,34 @@
+{
+  "cases": 37,
+  "passed": 37,
+  "failed": 0,
+  "failedCases": [],
+  "integration": [
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": false,
+      "visibleRows": 2,
+      "alicePrivateTextStillRendered": true,
+      "globalResolverRetainsAlicePrivateText": true,
+      "sideEffects": [],
+      "interpretation": "No active account/policy recheck on cached locale rendering; host identity reset remains required."
+    },
+    {
+      "case": "completed-private-load-account-change",
+      "hostResetCalled": true,
+      "visibleRows": 0,
+      "alicePrivateTextStillRendered": false,
+      "globalResolverRetainsAlicePrivateText": false,
+      "sideEffects": [],
+      "interpretation": "Existing host reset hook clears the cached reader/resolver."
+    },
+    {
+      "case": "rights-revoked-after-successful-load",
+      "authorizeCalls": 2,
+      "visibleRows": 1,
+      "translationStillRendered": true,
+      "sideEffects": [],
+      "interpretation": "Post-load cache uses a load-time authorization snapshot; no policy recheck on later locale render. Future host needs explicit invalidation or caller needs ongoing recheck if that is the intended contract."
+    }
+  ]
+}

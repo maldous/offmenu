@@ -1,0 +1,9 @@
+{
+  "command": [
+    "node",
+    "/home/user/src/offmenu-workers/worker-10/worker-10-review/recall-scope-review-20261014/correction-643c130/edge-cases.mjs"
+  ],
+  "exitCode": 0,
+  "logSha256": "7fdd5ae7e3688b916daefff6f0c44bce5c9e6493c2065476cfd51fb36efb39a1",
+  "priorExpectationRevision": "Submillisecond freshness-before-expiry now expects unknown under explicit <=3-digit admission; prior artifact unchanged."
+}

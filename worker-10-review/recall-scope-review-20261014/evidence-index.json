@@ -1,0 +1,92 @@
+[
+  {
+    "path": "after.json",
+    "bytes": 1385,
+    "sha256": "7c9787459bdc48812cfc39af37870a3fd6fa2850a315b7ebc49f7c6beef0d129"
+  },
+  {
+    "path": "author-test-result.json",
+    "bytes": 328,
+    "sha256": "36d9d1c5b1bf8a903d1296f6f10a936eed3ddd763563104a75c02dc9c5874f09"
+  },
+  {
+    "path": "author-tests.log",
+    "bytes": 3259,
+    "sha256": "3713cc9e9c5142b06e2f475fe91fa64461826b00829de025acbac975b03d7a49"
+  },
+  {
+    "path": "before.json",
+    "bytes": 1385,
+    "sha256": "7c9787459bdc48812cfc39af37870a3fd6fa2850a315b7ebc49f7c6beef0d129"
+  },
+  {
+    "path": "caller-search.log",
+    "bytes": 2823,
+    "sha256": "4f10c8583e278839b874418ea51660fc3246bd440026ca6b9e304b5ffc39c67f"
+  },
+  {
+    "path": "edge-cases.mjs",
+    "bytes": 6110,
+    "sha256": "2e36fa26b56ee94b127ffa3f11e8dcdb6b72809c3348029c0fd154fef82ee8d7"
+  },
+  {
+    "path": "edge-command.json",
+    "bytes": 243,
+    "sha256": "a3e5b7bb1f6c3962f986107640788e745c5bb73c825ffc33843c01665f50d0da"
+  },
+  {
+    "path": "edge-results.json",
+    "bytes": 78585,
+    "sha256": "7eb9e0472ccaf46a589ade2ee9faad5874e5eb9816665cc462d7ab8eeb91a46f"
+  },
+  {
+    "path": "edge-tests.log",
+    "bytes": 2171,
+    "sha256": "60f7f7976d437fe045b0cea9a007f65892e7013fa259069abae9f7159886a9c3"
+  },
+  {
+    "path": "immutable.patch",
+    "bytes": 21320,
+    "sha256": "944fecd9cd50595f6fc371712d0baa14e19dbab079a04ed6720bce83783b224d"
+  },
+  {
+    "path": "inputs.json",
+    "bytes": 221,
+    "sha256": "353598790b930d94ae4319bba7363b089ab5b1ef52db97a20fb0777477f65731"
+  },
+  {
+    "path": "readback.json",
+    "bytes": 372,
+    "sha256": "f53c2c6bc7b28a607461db51d61e587f0683136214aa3c3a4a51e9e5722525b8"
+  },
+  {
+    "path": "snapshot/docs/worker-26-recall-scope.md",
+    "bytes": 7051,
+    "sha256": "516aa06c546a7f86ae4518adadadfe2d298d5c7836bee8b8b4d3ea1248575253"
+  },
+  {
+    "path": "snapshot/package.json",
+    "bytes": 709,
+    "sha256": "da7f853789e8e3a0c396319ef1448e6a6703ff97957a0371e44e20ec28a201c1"
+  },
+  {
+    "path": "snapshot/public/evidence-model.js",
+    "bytes": 4860,
+    "sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9"
+  },
+  {
+    "path": "snapshot/public/recall-scope-model.js",
+    "bytes": 4548,
+    "sha256": "add959bd489e5ec0dd68a28d7cd927b8b791b315d58eee9e24a7ca32bb384b71"
+  },
+  {
+    "path": "snapshot/tests-web/recall-scope-model.test.mjs",
+    "bytes": 8777,
+    "sha256": "29d3f7701e02debce572b5102809031d4f43fade1468de2d194b67f30938021f"
+  },
+  {
+    "path": "source-receipts.json",
+    "bytes": 1048,
+    "sha256": "d91f8c783518874fbcd8aa0f75a16f7b0fc474c0e6ff6264a63e89ebbb69f0fd"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "tests-web/common-package-caller.test.mjs"
+  ],
+  "cwd": "/home/user/src/offmenu-workers/worker-10/worker-10-review/common-package-caller-review/correction-f99c308/snapshot",
+  "exitCode": 0,
+  "logSha256": "109a228349aaa6617d010499c729b7c6ba39a83566b6a9392a06f584f20c866b"
+}

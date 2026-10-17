@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "candidate": "b61617a6d5896c2ea11bf81c4a3cfa4f93c130bf",
+  "noAcceptedReleasePolicy": true,
+  "startQualification": "reviewed-integration-line; release uncertified",
+  "linkedMergeStatus": "completed",
+  "retirementStatus": "completed",
+  "retirementQualification": "reviewed-integration-line; release uncertified",
+  "onlyOwnTempTaskBranchDeleted": true,
+  "freshNextStatus": "completed",
+  "freshNextBaseMatchesActualMerge": true,
+  "releaseHotfixStillRequireCertification": [
+    {
+      "kind": "release",
+      "status": "blocked",
+      "error": "no accepted release baseline"
+    },
+    {
+      "kind": "hotfix",
+      "status": "blocked",
+      "error": "no accepted release baseline"
+    }
+  ],
+  "productionPromotionOrCleanup": false,
+  "fixtureWorkingCopySurvives": true
+}

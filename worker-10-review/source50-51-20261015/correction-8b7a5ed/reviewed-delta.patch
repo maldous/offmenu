@@ -1,0 +1,339 @@
+diff --git a/docs/global-data-validation/worker-51-provenance-fix.json b/docs/global-data-validation/worker-51-provenance-fix.json
+new file mode 100644
+index 0000000..0baaa7f
+--- /dev/null
++++ b/docs/global-data-validation/worker-51-provenance-fix.json
+@@ -0,0 +1,131 @@
++{
++  "schema": "offmenu-worker51-provenance-fix/1",
++  "finding": "W10-MEXT-F1",
++  "reviewer": 10,
++  "review_report": {
++    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/source50-51-20261015/independent-review.json",
++    "sha256": "de28404b528642b0ae05901207ea994b40a91a7eb31da2148a045ded83dd292e"
++  },
++  "independent_probes": {
++    "path": "/home/user/src/offmenu-workers/worker-10/worker-10-review/source50-51-20261015/independent-provenance-probes.json",
++    "sha256": "79b9f3ecb52bee8a41eb47b27230cdfa207427155c47b8c6792bec48ea2cfe46"
++  },
++  "owner": 51,
++  "thread_id": "01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a",
++  "worktree": "/home/user/src/offmenu-workers/worker-51",
++  "branch": "feature/global-data-51-japan-20261015",
++  "base": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
++  "reviewed_parent": "02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30",
++  "created_utc": "2026-10-14T14:30:50.738302+00:00",
++  "before_after_probes": [
++    {
++      "field": "release",
++      "value": "unreviewed-other-release",
++      "before_accepted": true,
++      "after_accepted": false,
++      "after_error": "Conflicting source release/workbook/document provenance"
++    },
++    {
++      "field": "workbookSha256",
++      "value": "0000000000000000000000000000000000000000000000000000000000000000",
++      "before_accepted": true,
++      "after_accepted": false,
++      "after_error": "Conflicting source release/workbook/document provenance"
++    },
++    {
++      "field": "memberSha256",
++      "value": "0000000000000000000000000000000000000000000000000000000000000000",
++      "before_accepted": true,
++      "after_accepted": false,
++      "after_error": "Conflicting worksheet/member/header provenance"
++    },
++    {
++      "field": "sheet",
++      "value": "other-worksheet",
++      "before_accepted": true,
++      "after_accepted": false,
++      "after_error": "Worksheet is not in pinned workbook"
++    },
++    {
++      "field": "url",
++      "value": "https://example.invalid/other",
++      "before_accepted": true,
++      "after_accepted": false,
++      "after_error": "Conflicting source release/workbook/document provenance"
++    }
++  ],
++  "actual_records": {
++    "count": 192,
++    "before_recordSetSha256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
++    "after_recordSetSha256": "1fbc6e80160468e1d199ecdefe4842270242ae35b26dabbd21ff9a0d0e41103f",
++    "unchanged": true
++  },
++  "fix": "Bind publisher/release/workbook/document URL and worksheet member digest/schema/basis to trusted pinned workbook and pinned acquisition/release manifests. Before proof, compare all record cells with actual requested worksheet rows in one bounded pass per sheet; do not trust self-rehashed cells. Empty proofs rejected.",
++  "manifest_pins": {
++    "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
++    "sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
++    "acquisition_path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
++    "acquisition_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5"
++  },
++  "source_input_before_after": [
++    {
++      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx",
++      "before_sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
++      "after_sha256": "0d5a77077dd6cd91cbc2e6e317b8b218a38728c409eed452f1c10635a0d3099c",
++      "unchanged": true
++    },
++    {
++      "path": "/home/user/src/offmenu-data/mext-2023-main/manifest.json",
++      "before_sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
++      "after_sha256": "b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1",
++      "unchanged": true
++    },
++    {
++      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/acquisition.json",
++      "before_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5",
++      "after_sha256": "086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5",
++      "unchanged": true
++    },
++    {
++      "path": "/home/user/src/offmenu-data/national-originals/mext-2023/source-page.html",
++      "before_sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa",
++      "after_sha256": "955dd8e425b450f7d8a5f0670433dd46c4d786bc1a5c46ce58952bee683ec8aa",
++      "unchanged": true
++    },
++    {
++      "path": "/home/user/src/offmenu-data/mext-2023-main/normalized.jsonl.gz",
++      "before_sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1",
++      "after_sha256": "cd8af4f89b8f54b2db54d38c807999ce55f2374d9c4140db7d525c2bb5cfe3d1",
++      "unchanged": true
++    }
++  ],
++  "tests": {
++    "count": 9,
++    "result": "passed; original seven plus independent five provenance mutations and trusted row/header/self-rehash rejection",
++    "command": "PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests -p test_global_data_worker51.py -v"
++  },
++  "scope": [
++    "scripts/global-data-validation/worker-51.py",
++    "tests/test_global_data_worker51.py",
++    "docs/global-data-validation/worker-51-provenance-fix.json",
++    "docs/global-data-validation/worker-51-provenance-fix.md"
++  ],
++  "preserved": "Japanese labels/unknowns/components/source bytes and prior report/refs unchanged; main HEAD/index unchanged; no schema/importer/dependency edits",
++  "review_handoff": {
++    "reviewer": 10,
++    "status": "successor immutable delta review required; no independent acceptance claimed",
++    "compare": "reviewed parent 02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30 to successor author commit reported after commit",
++    "acceptance": "five retained probes reject; 192 actual records and existing seven regressions remain passing; source row/pin/docref validation reviewed"
++  },
++  "backup": "normal fast-forward private origin backup and independent ls-remote readback requested after commit; exact successor SHA reported externally",
++  "controls": {
++    "filesystem": "unrestricted danger-full-access",
++    "network": "enabled; zero source requests",
++    "mandatory_reviewer": "auto_review preserved",
++    "approval_policy": "unavailable",
++    "named_profile": "unavailable; not inferred"
++  },
++  "admitted": false,
++  "published": false,
++  "production": "STOP"
++}
+diff --git a/docs/global-data-validation/worker-51-provenance-fix.md b/docs/global-data-validation/worker-51-provenance-fix.md
+new file mode 100644
+index 0000000..3864cbd
+--- /dev/null
++++ b/docs/global-data-validation/worker-51-provenance-fix.md
+@@ -0,0 +1,9 @@
++# Worker 51 — W10-MEXT-F1 provenance correction
++
++Worker10 independently requested changes on exact candidate 02d5ad3c3c7b9736cfb65e0a49ffd656f9886d30. The five provenance probes were reproduced before editing: release, workbook hash, member hash, worksheet and publisher URL conflicts all passed proof while it reported original MEXT identity.
++
++The successor validates publisher/release/workbook/URL constants against exact retained workbook bytes and pinned release/acquisition manifests. The trusted worksheet index is derived from publisher OOXML workbook relationships and actual member bytes. Unit/component schema and edible-basis header references must match that trusted source. Proof then compares source cells against actual worksheet rows in a bounded pass, rejecting self-rehashed fabricated rows. A conflicting record fails before any successful source proof is returned; empty record proofs also fail.
++
++All five probes now reject. All192 actual records keep the exact prior adapted record-set digest, original Japanese labels/forms/components, nulls and lexical qualifiers. Nine tests pass (the original seven plus provenance/header/row/self-rehash probes). Five retained input hashes and primary main HEAD/index remain unchanged. Prior evidence reports are preserved rather than rewritten. No network source reads, source copies, dependencies, canonical schema or importer changes.
++
++Exact parent-to-successor delta requires the same Worker10 independent reviewer. This owner-side fix is not independent acceptance or corpus/publication qualification. A normal private-origin fast-forward backup with independent remote SHA readback follows the own commit. Production STOP.
+diff --git a/scripts/global-data-validation/worker-51.py b/scripts/global-data-validation/worker-51.py
+index 33d7a65..ada71db 100644
+--- a/scripts/global-data-validation/worker-51.py
++++ b/scripts/global-data-validation/worker-51.py
+@@ -13,6 +13,7 @@ import re
+ import xml.etree.ElementTree as ET
+ import zipfile
+ from decimal import Decimal, InvalidOperation
++from functools import lru_cache
+ from pathlib import Path
+ 
+ WORKBOOK = Path('/home/user/src/offmenu-data/national-originals/mext-2023/20260327-mxt_kagsei-mext-000029402_02.xlsx')
+@@ -23,6 +24,100 @@ SHEETS = ('1穀類', '6野菜類', '9藻類', '10魚介類', '11肉類', '13乳
+ NS = {'s': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
+ REL = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
+ MAX_RECORDS = 1000
++MANIFEST = WORKBOOK.parents[2] / 'mext-2023-main/manifest.json'
++MANIFEST_SHA256 = 'b6da8867f5606c64ac51b6d07be0cb8d2b7e4188f486d83a079c55833ce0b9f1'
++ACQUISITION = WORKBOOK.parent / 'acquisition.json'
++ACQUISITION_SHA256 = '086f45b4d68ae5696eb6af07e4247c762da96bc4fab909867af70059f5bbb7b5'
++
++
++@lru_cache(maxsize=1)
++def _trusted_workbook():
++    """Build source provenance from exact retained bytes, never record metadata."""
++    data = WORKBOOK.read_bytes()
++    if digest(data) != SHA256:
++        raise ValueError('Trusted workbook hash mismatch')
++    manifest_bytes, acquisition_bytes = MANIFEST.read_bytes(), ACQUISITION.read_bytes()
++    if digest(manifest_bytes) != MANIFEST_SHA256 or digest(acquisition_bytes) != ACQUISITION_SHA256:
++        raise ValueError('Retained release/acquisition manifest changed')
++    manifest, acquisition = json.loads(manifest_bytes), json.loads(acquisition_bytes)
++    acquired = next((x for x in acquisition if x['file'] == WORKBOOK.name), None)
++    if manifest['releaseId'] != RELEASE or manifest['archiveSha256'] != SHA256 or acquired != {
++        'url': SOURCE_URL, 'file': WORKBOOK.name, 'bytes': len(data), 'sha256': SHA256
++    }:
++        raise ValueError('Release/workbook/publisher document reference conflict')
++    with zipfile.ZipFile(io.BytesIO(data)) as z:
++        strings = tuple(display_text(si) for si in ET.fromstring(z.read('xl/sharedStrings.xml')).findall('s:si', NS))
++        relationships = {x.get('Id'): x.get('Target') for x in ET.fromstring(z.read('xl/_rels/workbook.xml.rels'))}
++        index = {}
++        for sheet in ET.fromstring(z.read('xl/workbook.xml')).findall('s:sheets/s:sheet', NS):
++            target = relationships[sheet.get(REL)]
++            member = target.lstrip('/') if target.startswith('/') else 'xl/' + target
++            blob = z.read(member)
++            index[sheet.get('name')] = (member, digest(blob), blob)
++    return strings, index
++
++
++@lru_cache(maxsize=19)
++def _trusted_sheet(sheet):
++    strings, index = _trusted_workbook()
++    if sheet not in index:
++        raise ValueError('Worksheet is not in pinned workbook')
++    member, member_sha, blob = index[sheet]
++    headers = {}
++    for _, el in ET.iterparse(io.BytesIO(blob), events=('end',)):
++        if el.tag == '{' + NS['s'] + '}row':
++            row = int(el.get('r'))
++            headers[row] = cells(el, strings)
++            el.clear()
++            if row == 12:
++                break
++    definitions = schema_from_headers(headers)
++    return member, member_sha, digest(canonical(definitions).encode('utf-8')), headers[2]['D2']
++
++
++def verify_provenance(record):
++    source = record['source']
++    expected = {'publisher': 'MEXT Japan', 'release': RELEASE, 'url': SOURCE_URL, 'workbookSha256': SHA256}
++    if any(source.get(k) != v for k, v in expected.items()):
++        raise ValueError('Conflicting source release/workbook/document provenance')
++    member, member_sha, schema_sha, basis = _trusted_sheet(source.get('sheet'))
++    expected = {'member': member, 'memberSha256': member_sha, 'componentSchemaSha256': schema_sha,
++                'basisHeaderCell': 'D2', 'basisHeaderLexical': basis}
++    if any(source.get(k) != v for k, v in expected.items()):
++        raise ValueError('Conflicting worksheet/member/header provenance')
++
++
++def verify_source_rows(records):
++    """One bounded source pass per requested sheet; reject self-rehashed rows."""
++    strings, index = _trusted_workbook()
++    requested = {}
++    for record in records:
++        sheet, row = record['source']['sheet'], record['source']['row']
++        if isinstance(row, bool) or not isinstance(row, int) or row < 13:
++            raise ValueError('Invalid source row locator')
++        if row in requested.setdefault(sheet, {}):
++            raise ValueError('Duplicate source row')
++        requested[sheet][row] = record
++    scanned = 0
++    for sheet, wanted in requested.items():
++        for _, el in ET.iterparse(io.BytesIO(index[sheet][2]), events=('end',)):
++            if el.tag != '{' + NS['s'] + '}row':
++                continue
++            row = int(el.get('r'))
++            values = cells(el, strings)
++            if row >= 13 and re.fullmatch(r'\d{5}', values.get('B' + str(row)) or ''):
++                scanned += 1
++                if scanned > MAX_RECORDS:
++                    raise ValueError('Source proof exceeds bounded row-scan limit')
++            if row in wanted:
++                record = wanted.pop(row)
++                if values != record['rawCellsForRoundtrip']:
++                    raise ValueError('Record cells differ from pinned worksheet row')
++            el.clear()
++            if not wanted:
++                break
++        if wanted:
++            raise ValueError('Source row absent from pinned worksheet')
+ 
+ 
+ def digest(data):
+@@ -152,6 +247,7 @@ def adapt(raw_cells, row_number, sheet, member, components, member_sha):
+ 
+ 
+ def roundtrip(record):
++    verify_provenance(record)
+     raw = record['rawCellsForRoundtrip']
+     if digest(canonical(raw).encode('utf-8')) != record['source']['recordCellsSha256']:
+         raise ValueError('Record source cells changed')
+@@ -228,8 +324,11 @@ def read_records(workbook=WORKBOOK, per_sheet=32, sheets=SHEETS):
+ 
+ 
+ def proof(records):
++    if not isinstance(records, (list, tuple)) or not 1 <= len(records) <= MAX_RECORDS:
++        raise ValueError('Proof requires 1 to 1000 actual source records')
+     for record in records:
+         roundtrip(record)
++    verify_source_rows(records)
+     pins = [{'code': r['foodCode'], 'sheet': r['source']['sheet'], 'row': r['source']['row'],
+              'sourceCellsSha256': r['source']['recordCellsSha256'], 'memberSha256': r['source']['memberSha256'],
+              'adaptedSha256': digest(canonical(r).encode('utf-8'))} for r in records]
+@@ -238,6 +337,8 @@ def proof(records):
+         for c in r['components']:
+             qualifiers[c['qualifier']] = qualifiers.get(c['qualifier'], 0) + 1
+     return {'schema': 'offmenu-global-japan-proof/1', 'workbookSha256': SHA256, 'release': RELEASE,
++            'sourceUrl': SOURCE_URL, 'sourceManifestSha256': MANIFEST_SHA256,
++            'acquisitionSha256': ACQUISITION_SHA256,
+             'recordCount': len(records), 'recordPins': pins, 'qualifierCounts': qualifiers,
+             'japaneseLabels': len(records), 'englishLabels': 0, 'roundtrip': 'passed exact source-cell lexical/digest checks',
+             'recordSetSha256': digest(canonical(pins).encode('utf-8')), 'networkBytes': 0, 'admitted': False}
+diff --git a/tests/test_global_data_worker51.py b/tests/test_global_data_worker51.py
+index 7fd9fd1..9399dd0 100644
+--- a/tests/test_global_data_worker51.py
++++ b/tests/test_global_data_worker51.py
+@@ -97,6 +97,40 @@ class JapanActualSourceTests(unittest.TestCase):
+         with self.assertRaises(ValueError):
+             adapter.read_records(Path('/does-not-exist'), 0)
+ 
++    def test_independent_review_five_conflicting_provenance_probes_reject(self):
++        for field, value in [('release', 'unreviewed-other-release'), ('workbookSha256', '0' * 64),
++                             ('memberSha256', '0' * 64), ('sheet', 'other-worksheet'),
++                             ('url', 'https://example.invalid/other')]:
++            with self.subTest(field=field):
++                record = copy.deepcopy(self.records[0])
++                record['source'][field] = value
++                with self.assertRaises(ValueError):
++                    adapter.proof([record])
++
++    def test_actual_member_header_row_and_rehashed_source_cells_are_bound(self):
++        for field, value in [('member', 'xl/worksheets/sheet99.xml'), ('basisHeaderLexical', '1g'),
++                             ('componentSchemaSha256', '0' * 64), ('publisher', 'other publisher')]:
++            with self.subTest(field=field):
++                record = copy.deepcopy(self.records[0]);record['source'][field] = value
++                with self.assertRaises(ValueError):
++                    adapter.proof([record])
++        # A valid different worksheet's metadata must not bless the original row.
++        record = copy.deepcopy(self.records[0])
++        other = self.by_code['06001']['source']
++        for field in ('sheet', 'member', 'memberSha256', 'componentSchemaSha256', 'basisHeaderLexical'):
++            record['source'][field] = other[field]
++        with self.assertRaises(ValueError):
++            adapter.proof([record])
++        # Self-consistent rehashed lexical data is still checked against actual bytes.
++        record = copy.deepcopy(self.records[0]);row = record['source']['row']
++        record['rawCellsForRoundtrip']['D' + str(row)] = 'invented Japanese label'
++        record['labels']['ja'] = record['form']['originalLabel'] = 'invented Japanese label'
++        record['source']['recordCellsSha256'] = adapter.digest(adapter.canonical(record['rawCellsForRoundtrip']).encode())
++        with self.assertRaises(ValueError):
++            adapter.proof([record])
++        with self.assertRaises(ValueError):
++            adapter.proof([])
++
+ 
+ if __name__ == '__main__':
+     unittest.main()

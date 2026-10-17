@@ -1,0 +1,110 @@
+[
+  {
+    "id": "canonical-CACHE08",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "docs/recommendation-delivery-register.json"
+  },
+  {
+    "id": "generic-admission",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "public/evidence-model.js"
+  },
+  {
+    "id": "generic-record-policy",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "public/record-policy.js"
+  },
+  {
+    "id": "personal-catalogue-settings",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/catalogue.mjs"
+  },
+  {
+    "id": "private-provider-records",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/provider-data.mjs"
+  },
+  {
+    "id": "household-projection",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "public/sync-model.js"
+  },
+  {
+    "id": "authenticated-kitchen",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/kitchens.mjs"
+  },
+  {
+    "id": "state-validation",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/state.mjs"
+  },
+  {
+    "id": "personal-statistics",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "public/health-model.js"
+  },
+  {
+    "id": "private-browser-export",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "public/data-workspace.js"
+  },
+  {
+    "id": "existing-enrichment-resolver",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/enrichment.mjs"
+  },
+  {
+    "id": "existing-handler",
+    "matches": true,
+    "commit": "5f5bdb6ae716cbf80fab1e174d1af2e354468ead",
+    "path": "cloud/handler.mjs"
+  },
+  {
+    "id": "owner07-retained-producer-path",
+    "matches": true,
+    "commit": "45080c376be9a91faf0d9846a82447931676a10f",
+    "path": "cloud/corpus.mjs"
+  },
+  {
+    "id": "owner29-adapter",
+    "matches": true,
+    "commit": "5a33fe809c07ffd439378d24dc31c057da8d7e89",
+    "path": "cloud/cache-invalidation-owner29.mjs"
+  },
+  {
+    "id": "owner29-caller-contract",
+    "matches": true,
+    "commit": "5a33fe809c07ffd439378d24dc31c057da8d7e89",
+    "path": "docs/worker-29-cache-invalidation-consumer.md"
+  },
+  {
+    "id": "owner29-dependency-helper",
+    "matches": true,
+    "commit": "f2e195bdcc5f00c0bccf1c4a475255b9211e5184",
+    "path": "public/assertion-dependency-model.js"
+  },
+  {
+    "id": "owner30-budget",
+    "matches": true,
+    "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+    "path": "cloud/durable-budget-owner30.mjs"
+  },
+  {
+    "id": "owner30-caller-contract",
+    "matches": true,
+    "commit": "da6d4817fef569bd7564f185702bb2d98f34754d",
+    "path": "docs/durable-budget-owner30.md"
+  }
+]

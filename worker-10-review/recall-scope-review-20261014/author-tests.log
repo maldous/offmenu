@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: legacy matcher already covers known GTIN/market/lot cases; missing market is the actual gap
+ok 1 - legacy matcher already covers known GTIN/market/lot cases; missing market is the actual gap
+  ---
+  duration_ms: 3.035381
+  type: 'test'
+  ...
+# Subtest: exact current scoped evidence matches with canonical leading-zero GTIN
+ok 2 - exact current scoped evidence matches with canonical leading-zero GTIN
+  ---
+  duration_ms: 0.353952
+  type: 'test'
+  ...
+# Subtest: each declared scope dimension independently excludes; exclusions are not a safety pass
+ok 3 - each declared scope dimension independently excludes; exclusions are not a safety pass
+  ---
+  duration_ms: 0.250448
+  type: 'test'
+  ...
+# Subtest: missing scoped identity is unknown, invalid GTIN is never a proven mismatch
+ok 4 - missing scoped identity is unknown, invalid GTIN is never a proven mismatch
+  ---
+  duration_ms: 0.21224
+  type: 'test'
+  ...
+# Subtest: all batches bypasses only lot code; market, date and label still constrain
+ok 5 - all batches bypasses only lot code; market, date and label still constrain
+  ---
+  duration_ms: 0.163421
+  type: 'test'
+  ...
+# Subtest: date range is inclusive and date types are never substituted
+ok 6 - date range is inclusive and date types are never substituted
+  ---
+  duration_ms: 0.174416
+  type: 'test'
+  ...
+# Subtest: malformed or incomplete notice scope remains unknown
+ok 7 - malformed or incomplete notice scope remains unknown
+  ---
+  duration_ms: 0.284578
+  type: 'test'
+  ...
+# Subtest: owner-reviewed unrestricted label/date fields need no invented restriction
+ok 8 - owner-reviewed unrestricted label/date fields need no invented restriction
+  ---
+  duration_ms: 0.079656
+  type: 'test'
+  ...
+# Subtest: historical scope matches stay historical and never become current applicability
+ok 9 - historical scope matches stay historical and never become current applicability
+  ---
+  duration_ms: 0.086267
+  type: 'test'
+  ...
+# Subtest: inspection, noncompliance or undeclared action is not inferred to be a recall
+ok 10 - inspection, noncompliance or undeclared action is not inferred to be a recall
+  ---
+  duration_ms: 0.688005
+  type: 'test'
+  ...
+# Subtest: missing, stale, future or invalid temporal evidence cannot yield a current match
+ok 11 - missing, stale, future or invalid temporal evidence cannot yield a current match
+  ---
+  duration_ms: 0.242416
+  type: 'test'
+  ...
+# Subtest: unresolved provenance, future retrieval or retrieval preceding effective evidence stays unknown
+ok 12 - unresolved provenance, future retrieval or retrieval preceding effective evidence stays unknown
+  ---
+  duration_ms: 0.134636
+  type: 'test'
+  ...
+# Subtest: known exclusion takes precedence over missing scope but claims only this notice
+ok 13 - known exclusion takes precedence over missing scope but claims only this notice
+  ---
+  duration_ms: 0.070043
+  type: 'test'
+  ...
+# Subtest: inputs stay unchanged and returned provenance/action are independent snapshots
+ok 14 - inputs stay unchanged and returned provenance/action are independent snapshots
+  ---
+  duration_ms: 0.203976
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 37.410593
