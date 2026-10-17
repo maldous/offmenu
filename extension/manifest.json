@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"offmenu retailer companion — preview","version":"0.1.0","description":"Review structured product and price data from your chosen retailer page, using your own browser session.","permissions":["activeTab","scripting"],"action":{"default_popup":"popup.html"}}

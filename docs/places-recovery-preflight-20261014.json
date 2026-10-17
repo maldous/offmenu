@@ -1,0 +1,97 @@
+{
+  "inventory": {
+    "root": "/home/user/src/offmenu-data/common-places-semantic-final-20261014.partial",
+    "historicalCount": 2393,
+    "currentCount": 2407,
+    "countDifference": 14,
+    "listingSha256": "2f99bbc31614f10be49b592ba753a096b6413f4777eb8b52f3f14d9e0f1107a6",
+    "retainedBytes": 2441520421,
+    "manifestExists": false,
+    "checkpointExists": false,
+    "boundedTailReceipts": [
+      {
+        "key": "packets/part-02393.jsonl.gz",
+        "bytes": 1017099,
+        "sha256": "88a23bbf3bdb78591a5b194b4ced4538912dca555fb6d8bf0cb1a6213ad66f1c"
+      },
+      {
+        "key": "packets/part-02394.jsonl.gz",
+        "bytes": 1010025,
+        "sha256": "95240c0b8dab66c82b794ce976bdc8d11bfff8582cce58a1ebe3814f130f4018"
+      },
+      {
+        "key": "packets/part-02395.jsonl.gz",
+        "bytes": 1014303,
+        "sha256": "90064441561689bfdf57259d2ee2e9a3de6cd791b03424caec6a07158acab2b5"
+      },
+      {
+        "key": "packets/part-02396.jsonl.gz",
+        "bytes": 1014080,
+        "sha256": "cc5348355dff2bc482a3c9159fa1bc715f35199aab70ef39dc8f651a5464b986"
+      },
+      {
+        "key": "packets/part-02397.jsonl.gz",
+        "bytes": 1009050,
+        "sha256": "24c3f8789d7c11ad063a6ea833f3a38c87959d10eff8925c096dd646d8bc8f26"
+      },
+      {
+        "key": "packets/part-02398.jsonl.gz",
+        "bytes": 1014918,
+        "sha256": "8cf411ec1cf26eb20c982a76f2810f2647b9f7e48c2f119d3f9c7224a915d9b2"
+      },
+      {
+        "key": "packets/part-02399.jsonl.gz",
+        "bytes": 1014548,
+        "sha256": "970a5880224f7f7fcdf250350a83af30c27b04a88470dd50fe7c6ef81e872d65"
+      },
+      {
+        "key": "packets/part-02400.jsonl.gz",
+        "bytes": 1016274,
+        "sha256": "4c92aef61d0894aa591b28b5062ef8584c6e79646641558384a5b7864f6eff1e"
+      },
+      {
+        "key": "packets/part-02401.jsonl.gz",
+        "bytes": 1010823,
+        "sha256": "54e95c7b2b4b398684134b8d906e59eee4602a74ded675d44f00057d8f20a590"
+      },
+      {
+        "key": "packets/part-02402.jsonl.gz",
+        "bytes": 1021027,
+        "sha256": "853851a6f241d74a93d7e270fb5b3127b460a8a050bd72374cec8163efc034cc"
+      },
+      {
+        "key": "packets/part-02403.jsonl.gz",
+        "bytes": 1012762,
+        "sha256": "9aa466c2bf0fc592824c239f674c39ef1ebe25f28aedabef7471f7ede932abce"
+      },
+      {
+        "key": "packets/part-02404.jsonl.gz",
+        "bytes": 1016337,
+        "sha256": "4468f13e1e42358b22835ed4ce67cadd5796f80aafaededfad11a7eebc5ef54e"
+      },
+      {
+        "key": "packets/part-02405.jsonl.gz",
+        "bytes": 1016525,
+        "sha256": "022470858d91bde0018322436914ce461dfc4073ea2714cc0f1e1dcc2c7bb14a"
+      },
+      {
+        "key": "packets/part-02406.jsonl.gz",
+        "bytes": 1017077,
+        "sha256": "402b60d9cc4704f0c798b89acfc264a19343233b775281cfe6f12a7993e2b6cc"
+      }
+    ],
+    "classification": "Count-only historical evidence cannot identify which files were added; tail receipts are candidates, not proven additions. No source comparison/adoption performed."
+  },
+  "storage": {
+    "availableBytes": 222259838976,
+    "additionalOutputBytes": 53687091200,
+    "checkpointBytes": 8589934592,
+    "scratchBytes": 64424509440,
+    "reserveBytes": 10737418240,
+    "requiredBytes": 137438953472,
+    "headroomBytes": 84820885504,
+    "capacityPass": true,
+    "executionAuthorized": false,
+    "rule": "Incremental peak includes retained originals, no reclaim or hardlink discount; allocation/recovery/qualification approval remains required."
+  }
+}

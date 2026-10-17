@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "offmenu-bulk-food-qualification/1",
+  "status": "corrected-full-run-ready",
+  "inputBoundary": {
+    "acceptedCuratedInput": "/home/user/src/offmenu-data/curated-expanded-country-search-20261013/blobs",
+    "rawArchivesPublished": false,
+    "rule": "Only accepted public curated record blobs are aligned. Native OFF, USDA and Open Prices downloads remain local evidence. Withheld records, contributor identities, proof images/IDs and prohibited raw fields are not promoted."
+  },
+  "benchmark": {
+    "validator": "jsonschema_rs Draft202012Validator with format validation",
+    "rowsPerSource": 1000,
+    "results": {
+      "off": {"seconds": 0.300, "gzipBytes": 1140632, "estimatedGib": 5.80, "estimatedMinutes": 27.3},
+      "usda-files": {"seconds": 0.450, "gzipBytes": 2163877, "estimatedGib": 8.11, "estimatedMinutes": 30.2},
+      "prices": {"seconds": 0.196, "gzipBytes": 513322, "estimatedGib": 0.15, "estimatedMinutes": 1.0}
+    },
+    "combinedEstimatedGib": 14.06,
+    "combinedEstimatedMinutes": 58.5,
+    "budgetGib": 25
+  },
+  "sourceCounts": {
+    "off": {"acceptedPublicRecords": 5452981, "nativeNormalizedRecords": 9614434, "withheld": 4161453},
+    "usda-files": {"acceptedPublicRecords": 4025777, "nativeNormalizedRecords": 4202558, "withheld": 176781},
+    "prices": {"acceptedPublicRecords": 317898, "nativeNormalizedRecords": 317898, "withheld": 0}
+  },
+  "mappingPolicy": "All output identities are source-scoped and names/labels retain cited source text. Source strings that are codes, units, identifiers, dates or IRIs remain fixed typed values. Each nutrient observation keeps its own source basis; original metric key, definition, qualifier, method and source-specific metadata are retained in a named cited structure assertion. No product, barcode, food, nutrient, retailer, country, origin, ingredient or dietary equivalence is inferred across sources.",
+  "proposedTypeExtensions": []
+}

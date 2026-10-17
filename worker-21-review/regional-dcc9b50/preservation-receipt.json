@@ -1,0 +1,20 @@
+{
+  "owner": 21,
+  "thread": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "worktree": "/home/user/src/offmenu-workers/worker-21",
+  "branch": "feature/lot-consumption-consumer-21-20261014",
+  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+  "head": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+  "local_checkpoint": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+  "origin_privacy": "private previously verified via connector",
+  "remote_ref": "refs/heads/feature/lot-consumption-consumer-21-20261014",
+  "push_exit": 0,
+  "readback": "9ca977a0ca2194fae6d11479789cd65fcfb0088a\trefs/heads/feature/lot-consumption-consumer-21-20261014\n",
+  "verified_remote_sha": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+  "independent_review": "Worker21 PASS exactF1 correction dcc9b50;3 focused checks",
+  "develop_merge": null,
+  "retained_recovery": "prior proofs and original failing reproducer retained",
+  "local_only_exceptions": "post-checkpoint receipts and earlier generated author harnesses",
+  "custody": "main/index unchanged",
+  "production": "STOP"
+}

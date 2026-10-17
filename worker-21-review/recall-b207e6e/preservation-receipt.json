@@ -1,0 +1,21 @@
+{
+  "owner": 21,
+  "thread": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "worktree": "/home/user/src/offmenu-workers/worker-21",
+  "branch": "feature/lot-consumption-consumer-21-20261014",
+  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+  "head": "03f4d8cb2dce9e816692d863cde64b261524aba9",
+  "local_checkpoint": "03f4d8cb2dce9e816692d863cde64b261524aba9",
+  "origin_private": "verified GitHub connector metadata in preceding preservation turn",
+  "remote_ref": "refs/heads/feature/lot-consumption-consumer-21-20261014",
+  "push_exit": 0,
+  "push_stderr": "To github.com:maldous/offmenu.git\n   f4e33c9..03f4d8c  HEAD -> feature/lot-consumption-consumer-21-20261014\n",
+  "remote_readback": "03f4d8cb2dce9e816692d863cde64b261524aba9\trefs/heads/feature/lot-consumption-consumer-21-20261014\n",
+  "remote_verified_sha": "03f4d8cb2dce9e816692d863cde64b261524aba9",
+  "review": "independent Worker21 scoped PASS of b207e6e;6 author+4 new probes",
+  "develop_merge": null,
+  "custody": "main/index unchanged; existing untracked recovery files preserved",
+  "local_only": "generated author harness and post-checkpoint receipts; prior review recovery files retained",
+  "own_candidate": "0b41286 preserved, awaiting35",
+  "production": "STOP"
+}

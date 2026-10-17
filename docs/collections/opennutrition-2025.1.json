@@ -1,0 +1,17 @@
+{
+  "release": "2025.1",
+  "rawRows": 326759,
+  "types": {
+    "everyday": 5299,
+    "prepared": 3836,
+    "grocery": 313442,
+    "restaurant": 4182
+  },
+  "duplicateIds": 0,
+  "missingBarcode": 13317,
+  "invalidJsonFields": 0,
+  "status": "full TSV structural reconciliation; not admitted to authoritative nutrition",
+  "estimatedFields": "unknown per-field provenance; preserve model estimates separately",
+  "checksumMatched": true,
+  "productionPublished": false
+}

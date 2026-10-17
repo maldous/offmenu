@@ -1,0 +1,759 @@
+{
+  "water": [
+    "water",
+    "eau",
+    "agua",
+    "acqua",
+    "wasser",
+    "voda",
+    "woda",
+    "вода",
+    "水",
+    "מים",
+    "ماء",
+    "tap water",
+    "víz",
+    "পানি",
+    "জল",
+    "νερό",
+    "น้ำ"
+  ],
+  "salt": [
+    "salt",
+    "sel",
+    "sal",
+    "sale",
+    "salz",
+    "sól",
+    "соль",
+    "盐",
+    "鹽",
+    "塩",
+    "מלח",
+    "só",
+    "লবণ",
+    "αλάτι",
+    "เกลือ"
+  ],
+  "rice": [
+    "rice",
+    "riz",
+    "arroz",
+    "riso",
+    "reis",
+    "ryż",
+    "рис",
+    "大米",
+    "米",
+    "long grain rice",
+    "basmati",
+    "jasmine rice",
+    "rizs",
+    "চাল",
+    "ρύζι",
+    "ข้าว"
+  ],
+  "onion": [
+    "onion",
+    "onions",
+    "oignon",
+    "oignons",
+    "cebolla",
+    "cebola",
+    "cipolla",
+    "zwiebel",
+    "cebula",
+    "лук",
+    "洋葱",
+    "玉ねぎ",
+    "hagyma",
+    "vöröshagyma",
+    "পেঁয়াজ",
+    "κρεμμύδι"
+  ],
+  "garlic": [
+    "garlic",
+    "ail",
+    "ajo",
+    "alho",
+    "aglio",
+    "knoblauch",
+    "czosnek",
+    "чеснок",
+    "大蒜",
+    "蒜",
+    "にんにく"
+  ],
+  "egg": [
+    "egg",
+    "eggs",
+    "œuf",
+    "œufs",
+    "oeuf",
+    "oeufs",
+    "huevo",
+    "huevos",
+    "ovo",
+    "ovos",
+    "uovo",
+    "uova",
+    "ei",
+    "eier",
+    "jajko",
+    "яйцо",
+    "яйца",
+    "鸡蛋",
+    "雞蛋",
+    "卵",
+    "tojás",
+    "tojások",
+    "ডিম",
+    "αυγό",
+    "αυγά",
+    "ไข่"
+  ],
+  "wheat flour": [
+    "flour",
+    "plain flour",
+    "all purpose flour",
+    "wheat flour",
+    "farine",
+    "harina",
+    "farina",
+    "weizenmehl",
+    "mehl",
+    "mąka",
+    "мука",
+    "面粉",
+    "小麦粉",
+    "liszt",
+    "ময়দা",
+    "αλεύρι"
+  ],
+  "sugar": [
+    "sugar",
+    "sucre",
+    "azúcar",
+    "acucar",
+    "açúcar",
+    "zucchero",
+    "zucker",
+    "cukier",
+    "сахар",
+    "白糖",
+    "砂糖",
+    "cukor",
+    "চিনি",
+    "ζάχαρη",
+    "น้ำตาล"
+  ],
+  "milk": [
+    "milk",
+    "lait",
+    "leche",
+    "leite",
+    "latte",
+    "milch",
+    "mleko",
+    "молоко",
+    "牛奶",
+    "牛乳",
+    "cow milk",
+    "tej",
+    "দুধ",
+    "γάλα",
+    "นม"
+  ],
+  "butter": [
+    "butter",
+    "beurre",
+    "mantequilla",
+    "manteiga",
+    "burro",
+    "masło",
+    "сливочное масло",
+    "黄油",
+    "バター",
+    "dairy butter",
+    "vaj",
+    "মাখন",
+    "βούτυρο"
+  ],
+  "olive oil": [
+    "olive oil",
+    "huile d'olive",
+    "aceite de oliva",
+    "azeite",
+    "olio d'oliva",
+    "olivenöl",
+    "橄榄油",
+    "extra virgin olive oil"
+  ],
+  "tomato": [
+    "tomato",
+    "tomatoes",
+    "tomate",
+    "tomates",
+    "pomodoro",
+    "pomodori",
+    "tomaten",
+    "pomidor",
+    "помидор",
+    "西红柿",
+    "番茄",
+    "トマト"
+  ],
+  "potato": [
+    "potato",
+    "potatoes",
+    "pomme de terre",
+    "pommes de terre",
+    "patata",
+    "patatas",
+    "batata",
+    "patate",
+    "kartoffel",
+    "kartoffeln",
+    "ziemniak",
+    "картофель",
+    "土豆",
+    "马铃薯",
+    "じゃがいも"
+  ],
+  "carrot": [
+    "carrot",
+    "carrots",
+    "carotte",
+    "carottes",
+    "zanahoria",
+    "cenoura",
+    "carota",
+    "karotte",
+    "möhre",
+    "marchew",
+    "морковь",
+    "胡萝卜",
+    "にんじん"
+  ],
+  "black pepper": [
+    "black pepper",
+    "poivre noir",
+    "pimienta negra",
+    "pepe nero",
+    "schwarzer pfeffer",
+    "黑胡椒"
+  ],
+  "chicken": [
+    "chicken",
+    "poulet",
+    "pollo",
+    "frango",
+    "hähnchen",
+    "курица",
+    "鸡肉",
+    "csirke",
+    "মুরগি",
+    "κοτόπουλο",
+    "ไก่"
+  ],
+  "beef": [
+    "beef",
+    "bœuf",
+    "boeuf",
+    "carne de res",
+    "manzo",
+    "rindfleisch",
+    "牛肉"
+  ],
+  "pork": [
+    "pork",
+    "porc",
+    "cerdo",
+    "porco",
+    "maiale",
+    "schweinefleisch",
+    "猪肉"
+  ],
+  "lemon": [
+    "lemon",
+    "lemons",
+    "citron",
+    "limón",
+    "limone",
+    "zitrone",
+    "柠檬"
+  ],
+  "ginger": [
+    "ginger",
+    "gingembre",
+    "jengibre",
+    "gengibre",
+    "zenzero",
+    "ingwer",
+    "生姜",
+    "姜"
+  ],
+  "coconut milk": [
+    "coconut milk",
+    "lait de coco",
+    "leche de coco",
+    "椰奶"
+  ],
+  "soy sauce": [
+    "soy sauce",
+    "sauce soja",
+    "salsa de soja",
+    "sojasauce",
+    "酱油",
+    "醬油",
+    "しょうゆ"
+  ],
+  "cooked rice": [
+    "cooked rice",
+    "riz cuit",
+    "arroz cocido",
+    "米饭",
+    "米飯",
+    "ご飯",
+    "ভাত",
+    "főtt rizs",
+    "ข้าวสุก"
+  ],
+  "peas": [
+    "peas",
+    "green peas",
+    "frozen peas"
+  ],
+  "red lentils": [
+    "red lentils",
+    "red lentil",
+    "split red lentils"
+  ],
+  "green lentils": [
+    "green lentils",
+    "brown lentils"
+  ],
+  "spinach": [
+    "spinach",
+    "baby spinach"
+  ],
+  "mushroom": [
+    "mushroom",
+    "mushrooms"
+  ],
+  "broccoli": [
+    "broccoli"
+  ],
+  "sweet potato": [
+    "sweet potato",
+    "sweet potatoes"
+  ],
+  "cucumber": [
+    "cucumber"
+  ],
+  "lemon juice": [
+    "lemon juice"
+  ],
+  "couscous": [
+    "couscous"
+  ],
+  "cumin": [
+    "cumin"
+  ],
+  "quinoa": [
+    "quinoa"
+  ],
+  "cauliflower": [
+    "cauliflower"
+  ],
+  "zucchini": [
+    "zucchini",
+    "courgette",
+    "courgettes"
+  ],
+  "eggplant": [
+    "eggplant",
+    "aubergine"
+  ],
+  "coriander": [
+    "coriander",
+    "cilantro"
+  ],
+  "apple": [
+    "apple",
+    "apples"
+  ],
+  "banana": [
+    "banana",
+    "bananas"
+  ],
+  "orange": [
+    "orange"
+  ],
+  "pear": [
+    "pear"
+  ],
+  "peach": [
+    "peach"
+  ],
+  "plum": [
+    "plum"
+  ],
+  "strawberry": [
+    "strawberry"
+  ],
+  "blueberry": [
+    "blueberry"
+  ],
+  "raspberry": [
+    "raspberry"
+  ],
+  "grapes": [
+    "grapes"
+  ],
+  "melon": [
+    "melon"
+  ],
+  "pineapple": [
+    "pineapple"
+  ],
+  "mango": [
+    "mango"
+  ],
+  "avocado": [
+    "avocado"
+  ],
+  "lettuce": [
+    "lettuce"
+  ],
+  "cabbage": [
+    "cabbage"
+  ],
+  "kale": [
+    "kale"
+  ],
+  "celery": [
+    "celery"
+  ],
+  "beetroot": [
+    "beetroot",
+    "beet"
+  ],
+  "pumpkin": [
+    "pumpkin",
+    "squash"
+  ],
+  "capsicum": [
+    "capsicum",
+    "bell pepper"
+  ],
+  "green beans": [
+    "green beans"
+  ],
+  "asparagus": [
+    "asparagus"
+  ],
+  "leek": [
+    "leek"
+  ],
+  "spring onion": [
+    "spring onion",
+    "scallion"
+  ],
+  "radish": [
+    "radish"
+  ],
+  "fennel": [
+    "fennel"
+  ],
+  "parsley": [
+    "parsley"
+  ],
+  "basil": [
+    "basil"
+  ],
+  "mint": [
+    "mint"
+  ],
+  "dill": [
+    "dill"
+  ],
+  "rosemary": [
+    "rosemary"
+  ],
+  "thyme": [
+    "thyme"
+  ],
+  "oregano": [
+    "oregano"
+  ],
+  "chilli": [
+    "chilli",
+    "chili"
+  ],
+  "brown sugar": [
+    "brown sugar"
+  ],
+  "maple syrup": [
+    "maple syrup"
+  ],
+  "sunflower oil": [
+    "sunflower oil"
+  ],
+  "canola oil": [
+    "canola oil",
+    "rapeseed oil"
+  ],
+  "sesame oil": [
+    "sesame oil"
+  ],
+  "vinegar": [
+    "vinegar"
+  ],
+  "rice vinegar": [
+    "rice vinegar"
+  ],
+  "cider vinegar": [
+    "cider vinegar"
+  ],
+  "cocoa butter": [
+    "cocoa butter"
+  ],
+  "cocoa powder": [
+    "cocoa powder"
+  ],
+  "coffee": [
+    "coffee"
+  ],
+  "tea": [
+    "tea"
+  ],
+  "chickpea flour": [
+    "chickpea flour",
+    "gram flour",
+    "besan"
+  ],
+  "rice flour": [
+    "rice flour"
+  ],
+  "corn flour": [
+    "corn flour",
+    "cornflour",
+    "maize flour"
+  ],
+  "almond flour": [
+    "almond flour"
+  ],
+  "oats": [
+    "oats"
+  ],
+  "buckwheat": [
+    "buckwheat"
+  ],
+  "millet": [
+    "millet"
+  ],
+  "corn": [
+    "corn",
+    "maize"
+  ],
+  "rice noodles": [
+    "rice noodles"
+  ],
+  "canned chickpeas": [
+    "canned chickpeas",
+    "chickpeas canned"
+  ],
+  "canned kidney beans": [
+    "canned kidney beans",
+    "kidney beans canned"
+  ],
+  "canned tomato": [
+    "canned tomato",
+    "canned tomatoes",
+    "tinned tomatoes"
+  ],
+  "coconut cream": [
+    "coconut cream"
+  ],
+  "almond milk": [
+    "almond milk"
+  ],
+  "oat milk": [
+    "oat milk"
+  ],
+  "soy milk": [
+    "soy milk",
+    "soya milk"
+  ],
+  "peanut butter": [
+    "peanut butter"
+  ],
+  "peanuts": [
+    "peanuts"
+  ],
+  "almonds": [
+    "almonds"
+  ],
+  "walnuts": [
+    "walnuts"
+  ],
+  "cashew": [
+    "cashew",
+    "cashews"
+  ],
+  "hazelnut": [
+    "hazelnut"
+  ],
+  "sesame seeds": [
+    "sesame seeds"
+  ],
+  "chia seeds": [
+    "chia seeds"
+  ],
+  "flaxseed": [
+    "flaxseed",
+    "linseed"
+  ],
+  "sunflower seeds": [
+    "sunflower seeds"
+  ],
+  "pumpkin seeds": [
+    "pumpkin seeds"
+  ],
+  "tofu": [
+    "tofu",
+    "bean curd"
+  ],
+  "tempeh": [
+    "tempeh"
+  ],
+  "chickpeas": [
+    "chickpeas"
+  ],
+  "kidney beans": [
+    "kidney beans"
+  ],
+  "black beans": [
+    "black beans"
+  ],
+  "cream": [
+    "cream",
+    "dairy cream"
+  ],
+  "cheese": [
+    "cheese",
+    "cheddar"
+  ],
+  "yoghurt": [
+    "yoghurt",
+    "yogurt"
+  ],
+  "whey": [
+    "whey"
+  ],
+  "bacon": [
+    "bacon"
+  ],
+  "turkey": [
+    "turkey"
+  ],
+  "duck": [
+    "duck"
+  ],
+  "lamb": [
+    "lamb"
+  ],
+  "veal": [
+    "veal"
+  ],
+  "venison": [
+    "venison"
+  ],
+  "sausage": [
+    "sausage"
+  ],
+  "ham": [
+    "ham"
+  ],
+  "gelatin": [
+    "gelatin",
+    "gelatine"
+  ],
+  "meat": [
+    "meat"
+  ],
+  "fish": [
+    "fish"
+  ],
+  "salmon": [
+    "salmon"
+  ],
+  "tuna": [
+    "tuna"
+  ],
+  "canned tuna": [
+    "canned tuna"
+  ],
+  "prawn": [
+    "prawn",
+    "shrimp",
+    "prawns",
+    "shrimps"
+  ],
+  "sardine": [
+    "sardine"
+  ],
+  "anchovy": [
+    "anchovy"
+  ],
+  "cod": [
+    "cod"
+  ],
+  "haddock": [
+    "haddock"
+  ],
+  "mussel": [
+    "mussel"
+  ],
+  "crab": [
+    "crab"
+  ],
+  "lobster": [
+    "lobster"
+  ],
+  "honey": [
+    "honey"
+  ],
+  "pasta": [
+    "pasta",
+    "spaghetti"
+  ],
+  "bread": [
+    "bread"
+  ],
+  "flatbread": [
+    "flatbread"
+  ],
+  "barley": [
+    "barley"
+  ],
+  "rye": [
+    "rye"
+  ],
+  "bulgur": [
+    "bulgur"
+  ],
+  "curry powder": [
+    "curry powder"
+  ],
+  "vegetable stock": [
+    "vegetable stock"
+  ],
+  "chicken stock": [
+    "chicken stock"
+  ],
+  "beef stock": [
+    "beef stock"
+  ]
+}
