@@ -1,0 +1,13 @@
+{
+  "source_and_primary_unchanged": true,
+  "prior_untracked_preserved": 7,
+  "new_artifacts_local_only": [
+    "/home/user/src/offmenu-workers/worker-21/worker-21-review/lot-baseline-4693-restoration/selection-packet.json",
+    "/home/user/src/offmenu-workers/worker-21/worker-21-review/lot-baseline-4693-restoration/selection-note.md",
+    "/home/user/src/offmenu-workers/worker-21/worker-21-review/lot-baseline-4693-restoration/lot-owner21-only.patch",
+    "/home/user/src/offmenu-workers/worker-21/worker-21-review/lot-baseline-4693-restoration/custody-readback.json"
+  ],
+  "head": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+  "target": "4693cbc3fe17cdde2e292e6eb00cd83769ee45ae",
+  "packet_sha256": "228aa03b4b8a8cdb80256b4a4fe1f9a4d6ad87b50a1e1318e92bd96eb49c449e"
+}

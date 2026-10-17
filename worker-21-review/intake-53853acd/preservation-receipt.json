@@ -1,0 +1,25 @@
+{
+  "owner": 21,
+  "thread": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "worktree": "/home/user/src/offmenu-workers/worker-21",
+  "branch": "feature/lot-consumption-consumer-21-20261014",
+  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+  "head": "f4e33c9304bf72c8482bae711138fd10c7cafa45",
+  "local_checkpoint": "f4e33c9304bf72c8482bae711138fd10c7cafa45",
+  "origin": "git@github.com:maldous/offmenu.git",
+  "privacy": "private; GitHub connector repository metadata verified",
+  "remote_ref": "refs/heads/feature/lot-consumption-consumer-21-20261014",
+  "push_exit": 0,
+  "push_stderr": "remote: \nremote: Create a pull request for 'feature/lot-consumption-consumer-21-20261014' on GitHub by visiting:        \nremote:      https://github.com/maldous/offmenu/pull/new/feature/lot-consumption-consumer-21-20261014        \nremote: \nTo github.com:maldous/offmenu.git\n * [new branch]      HEAD -> feature/lot-consumption-consumer-21-20261014\n",
+  "readback_exit": 0,
+  "readback": "f4e33c9304bf72c8482bae711138fd10c7cafa45\trefs/heads/feature/lot-consumption-consumer-21-20261014\n",
+  "remote_verified_sha": "f4e33c9304bf72c8482bae711138fd10c7cafa45",
+  "independent_review": "Worker21 intake review scoped PASS of53853acd; Worker21 lot candidate awaiting Worker35",
+  "develop_merge": null,
+  "recovery": "dataset and helper branches/pins retained",
+  "local_only_exceptions": [
+    "worker-21-review/intake-53853acd/author-checks.mjs (generated immutable-source test harness, excluded)",
+    "worker-21-review/intake-53853acd/preservation-receipt.json (post-checkpoint receipt)"
+  ],
+  "production": "STOP"
+}

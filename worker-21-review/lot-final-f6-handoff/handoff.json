@@ -1,0 +1,276 @@
+{
+  "owner": 21,
+  "thread": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "gateway": "01a130cd-91c1-73da-9978-889018a100dd",
+  "reviewer_reservation": "Worker34 exact lot composition review",
+  "createdUTC": "2026-10-15T12:15:16.678239+00:00",
+  "compositionSHA": "1cfa4611554e21e3d4d73111c8bbeccc025d56fd",
+  "compositionTree": "fdfe142c59c79bb4203faa4c665dee6801c9119e",
+  "compositionBase": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+  "preservationRef": "refs/preservation/worker21-lot-final-f6-review-20261015",
+  "kind": "Mechanical Git-object composition only; no checkout/index/branch source writes or product adoption",
+  "sourceCodeCommit": "0b41286ae2e56dc3b5e39248982716192c44ee76",
+  "preservedBranchHead": "9ca977a0ca2194fae6d11479789cd65fcfb0088a",
+  "ownedPaths": [
+    "cloud/lot-consumption-owner21.mjs",
+    "tests-web/lot-consumption-owner21.test.mjs",
+    "docs/worker-21-lot-consumption-consumer.md"
+  ],
+  "ownedBlobAndHashEvidence": [
+    {
+      "path": "cloud/lot-consumption-owner21.mjs",
+      "git_blob": "c1233d4a598997b3ef1de5fbb69c81e8fb918f03",
+      "sha256": "4224820975bb48052e28f2a6dd5581fb9dbc475ad47bae2d20354776bcff8d7e",
+      "bytes": 9763,
+      "baseline_status": "absent; unique addition",
+      "reviewed_and_preserved_bytes_equal": true
+    },
+    {
+      "path": "tests-web/lot-consumption-owner21.test.mjs",
+      "git_blob": "46690301c672d938073734f9c275522a24ec707c",
+      "sha256": "ababe06b478b9a89511f89e7cb7a552c927f8cf09bd7db0ad2b0d0103560fe34",
+      "bytes": 10278,
+      "baseline_status": "absent; unique addition",
+      "reviewed_and_preserved_bytes_equal": true
+    },
+    {
+      "path": "docs/worker-21-lot-consumption-consumer.md",
+      "git_blob": "3e15c55f5be702ac24c47c6a816d945fd978a9a2",
+      "sha256": "762672b6b183b26a5c6613af7367188abd4c11c95d20483531042c27c41f01f2",
+      "bytes": 9942,
+      "baseline_status": "absent; unique addition",
+      "reviewed_and_preserved_bytes_equal": true
+    }
+  ],
+  "dependencyClosure": [
+    {
+      "path": "cloud/state.mjs",
+      "qualified_f6_sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "prior_review_sha256": "801c68accc3a21fa59756e8cc8029251319ff0266ad93152563ad499f666b88b",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/model.js",
+      "qualified_f6_sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "prior_review_sha256": "1dad9d2d4abf1dd863313691bf20957dddd69e60206ff4e4a8def4eb7f86bd68",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/ingredients.js",
+      "qualified_f6_sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "prior_review_sha256": "137c865555f8ee7efd6daff978d81f8c74642f00f4fbdf8d2809610ac0bd9575",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/i18n.js",
+      "qualified_f6_sha256": "4ea82cfbbd6421bc2b390f09ddff733f06c6493933b37533edbf0a6e8e911fb5",
+      "prior_review_sha256": "682f78fc69b6ead8fbcd970e2f076dcdff8348d2210475681452d1f93a8ed9fe",
+      "unchanged_since_prior_review": false
+    },
+    {
+      "path": "public/locale-negotiation.js",
+      "qualified_f6_sha256": "f3d7a7d6cb03db4d31ab8caa967f4f172fdf6ff2990c9b42ec6cd7af36604fdb",
+      "prior_review_sha256": "1546a2356af07841d81d1d8f1aa60cbd0ed051ff92820f0fefb7a4e8cac34009",
+      "unchanged_since_prior_review": false
+    },
+    {
+      "path": "public/locales/ar.js",
+      "qualified_f6_sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "prior_review_sha256": "0a66fdd66a2b5c5236c9a2edc0ffd20c92db962bca9e4545a0c7855ffa36752a",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/insights-model.js",
+      "qualified_f6_sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9",
+      "prior_review_sha256": "86a2b1b8359581df5108b08c0b9cfbeee2ec5f84dba4ff230384cb1d165cf0f9",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/menu-model.js",
+      "qualified_f6_sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "prior_review_sha256": "fda28b63cf62714355f0211c8f37f26f0c6a1a8a2874f6642bc80d7d08a4fc70",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/checkout-model.js",
+      "qualified_f6_sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "prior_review_sha256": "988fd2fe386c165358e7809cd6024bdf3417f05d2c46ae164f60d230b58c3fd7",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/unified-data.js",
+      "qualified_f6_sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "prior_review_sha256": "d0abc4870d50457e92e57c6a29c4b6eeaddd46998f7e3826364163ecc4be6749",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/countries.js",
+      "qualified_f6_sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "prior_review_sha256": "f02dc404384423f74ba24a477946eec120d4657bc0d9d561735dff36a525bff3",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/cooking-model.js",
+      "qualified_f6_sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7",
+      "prior_review_sha256": "f41d1f8af6c018393e58445a91d46ec934069331121390e6c48dc80651a059c7",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/handler.mjs",
+      "qualified_f6_sha256": "6830b96f408d148e1250338f853af38ce7dc9f9bf8519b392c06bf274a895b52",
+      "prior_review_sha256": "1317a4a436d46ce9a7d761dec09e3342a3efaf4069b9d760228ddfd2a66c0027",
+      "unchanged_since_prior_review": false
+    },
+    {
+      "path": "cloud/integrations.mjs",
+      "qualified_f6_sha256": "7a11b3deb0bb7cd50d9ab55b5f7494ce490118157c577b4f403a24e95eb5761b",
+      "prior_review_sha256": "d0cccc40f6b0beda060c8b4cd45e50b982605310e044314527cfbaa47d3e0d58",
+      "unchanged_since_prior_review": false
+    },
+    {
+      "path": "cloud/provider-data.mjs",
+      "qualified_f6_sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "prior_review_sha256": "93b2c4b70712bc2eb6b8b0a956a0208c02558b8bfc7112ae4e4816028e13b93c",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/sources.js",
+      "qualified_f6_sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "prior_review_sha256": "8b723af894077fd0cacea40b8090fa1ac3400f2ffa515b0f4beb10f6b2ca1933",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/record-policy.js",
+      "qualified_f6_sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "prior_review_sha256": "9990e57b4d33a97cdccb590c1a619dc8630a47fef4569563804ad27e573951fc",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/corpus.mjs",
+      "qualified_f6_sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5",
+      "prior_review_sha256": "3549e3830709db84de4948389097f2240f2e64395ad8da54510777a12540bda5",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "corpus/assert-curated.mjs",
+      "qualified_f6_sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "prior_review_sha256": "c64ce47a881d987b4e3b48b84be1c22f1e95031a77d390d433404ed327bed69d",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "corpus/engine.mjs",
+      "qualified_f6_sha256": "cdcb587ec5a7bef519e313fd13fc79803fe0a3cf0f2cbb2ec01b45dca4c09497",
+      "prior_review_sha256": "cdcb587ec5a7bef519e313fd13fc79803fe0a3cf0f2cbb2ec01b45dca4c09497",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/catalogue.mjs",
+      "qualified_f6_sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7",
+      "prior_review_sha256": "b977fe74d7b886673a1f88647381e799ebae9a0bd34496cc55f95b7bbfe42af7",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "research/manifest.json",
+      "qualified_f6_sha256": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483",
+      "prior_review_sha256": "f4b575138d4e097855531c056032be3e8dca57043cd7543c0fe1ca62dd481483",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/evidence-model.js",
+      "qualified_f6_sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "prior_review_sha256": "b5f806696fb8296f5e3cb3d38ddbd458d86c3167aeeeab6094e78581b59dccd9",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/health-model.js",
+      "qualified_f6_sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "prior_review_sha256": "04448e0b34f8e92dcbab5006787af6683b41353bfb2e389181dd5ae8c739e5b1",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/basket-model.js",
+      "qualified_f6_sha256": "232b09d7446c733d9992ef42c82dfcfcf36c2a2547d10ac2b7e2765cf6468bf3",
+      "prior_review_sha256": "232b09d7446c733d9992ef42c82dfcfcf36c2a2547d10ac2b7e2765cf6468bf3",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/kitchens.mjs",
+      "qualified_f6_sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+      "prior_review_sha256": "63de27a7f2a7509b6b770458b5ab916654c5d289f7e4f11a316474c03562b242",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "public/sync-model.js",
+      "qualified_f6_sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "prior_review_sha256": "ba73ac030d9c773010dbf7bdb55c9c5e1b634353e4117f4152543221bb2863d3",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/enrichment.mjs",
+      "qualified_f6_sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "prior_review_sha256": "c54f7cc2dbf9232786c39dee6eeeadadcab1318f69c2261b8ab64a9586f31b4d",
+      "unchanged_since_prior_review": true
+    },
+    {
+      "path": "cloud/locale.mjs",
+      "qualified_f6_sha256": "c1fb22bfbd8ade962d70a387433fde0458ce13e56d49d48ac388039dbad349d0",
+      "prior_review_sha256": "8cd6f69a8e13a12086618ceed1f70ab9fa1618a5f28a20601a3d75d36415e402",
+      "unchanged_since_prior_review": false
+    }
+  ],
+  "schemaFixture": {
+    "path": "cloud/schema.sql",
+    "sha256": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380",
+    "prior_review_equal": false
+  },
+  "patchSHA256": "6721cfb32956f5483fcdc350765efbffa144f06b57dffda6f91f88365c20b527",
+  "priorAcceptance": {
+    "reviewer": "Worker35",
+    "thread": "01a13998-70e7-7a71-8067-040f953879ee",
+    "pin": "0b41286ae2e56dc3b5e39248982716192c44ee76",
+    "verdict": "PASS local adapter; production/adoption HOLD",
+    "receipt": "/home/user/Documents/Codex/2026-10-15/task-2/worker35-lot-consumption-review/receipt.json",
+    "receipt_sha256": "7369022174e4cd9ed5eed173e4e22f22c4d5f77c92a285c519402575ccd15b29",
+    "author_tests": "8 passed independently per retained exact-pin log",
+    "independent_probes": "Two-connection real SQLite, locks/CAS/rollback/replay/durable reopen/source/decimal/lineage checks; retained log hash verified",
+    "production_hold": true
+  },
+  "prior4693Packet": "/home/user/src/offmenu-workers/worker-21/worker-21-review/lot-baseline-4693-restoration/selection-packet.json",
+  "synchronizationReceipt": {
+    "path": "/home/user/Documents/Codex/2026-10-15/task/transition-codex-readiness-20261015/FINALSYNC64-f6cb92ae-20261015/worker-21.json",
+    "sha256": "d2e7e039fc9745c5d153057bb3c5c89ee6ff24b2488e0704f55457996c8a1fa0",
+    "status": "SYNCED-ORIGINAL-EXACT",
+    "untracked_files_verified": 11
+  },
+  "callerStoragePrerequisites": [
+    {
+      "owner": "02/04",
+      "gate": "Authoritative transaction store binds request to authenticated account/resource and current persisted session epoch; admission/revocation check, state CAS and immutable receipt commit in one synchronous transaction. tx.admit/state/operation/write/record must be synchronous and promise-returning operations rejected by store."
+    },
+    {
+      "owner": "02",
+      "gate": "Typed preservation of quantityObservation21 and lotLineage21 plus approved source metadata through validateLot/validateState, backup/restore, PUT and sync. Current projection drops these fields; no lossy fallback."
+    },
+    {
+      "owner": "02/03",
+      "gate": "Reserve actual UI/endpoint hook; POST/exact-Origin/resource authorization, 65536-byte command parsing, measured amount/unit/source provenance, reviewed full lot snapshot and revision, same operation ID through lost ack/status reconciliation, no bearer-only fallback."
+    },
+    {
+      "owner": "04/16",
+      "gate": "Explicit reviewed private session/operation-ledger bridge; resource/audience/method authorization, epoch-scoped replay/status and revoked-session denial. No arbitrary callback from client."
+    },
+    {
+      "owner": "19",
+      "gate": "Cooked lots remain rejected until batch/serving reconciliation; private-account-only scope does not authorize shared-kitchen adoption."
+    },
+    {
+      "owner": "manager",
+      "gate": "Select exact reviewed3-file delta on qualified baseline; independent target-composition verification before integration/adoption. No permission to fetch/merge/deploy derived from this packet."
+    }
+  ],
+  "verification": "Static exact-three-path/tree/blob/closure comparison only. No implementation or tests repeated. Prior Worker35 PASS applies isolated0b41286, not final-f6 composition.",
+  "reviewStatus": "AWAIT_WORKER34_EXACT_COMPOSITION_REVIEW",
+  "remoteBackup": "Not pushed in this handoff; immutable local preservation ref in shared Git common-dir",
+  "production": "STOP",
+  "sourceAdmission": "WITHHELD"
+}

@@ -1,0 +1,20 @@
+{
+  "owner": 21,
+  "thread": "01a138f9-d5c4-75c0-9ccb-91dac497b5a9",
+  "worktree": "/home/user/src/offmenu-workers/worker-21",
+  "branch": "feature/lot-consumption-consumer-21-20261014",
+  "base": "908ca373dfc918f2e33fd5e44260879577bed5c5",
+  "head": "8cea2dedd37c1866fbcc3324131e54892a3f044f",
+  "local_checkpoint": "8cea2dedd37c1866fbcc3324131e54892a3f044f",
+  "origin_privacy": "private previously verified via connector",
+  "remote_ref": "refs/heads/feature/lot-consumption-consumer-21-20261014",
+  "push_exit": 0,
+  "remote_readback": "8cea2dedd37c1866fbcc3324131e54892a3f044f\trefs/heads/feature/lot-consumption-consumer-21-20261014\n",
+  "remote_verified_sha": "8cea2dedd37c1866fbcc3324131e54892a3f044f",
+  "independent_review": "Worker21 CHANGES_REQUESTED b086c94 W21-REGIONAL-F1",
+  "develop_merge": null,
+  "retained_recovery": "prior lot/intake/recall/SI commits and generated test harnesses/receipts preserved",
+  "local_only_exceptions": "post-checkpoint receipts and generated earlier author harnesses",
+  "custody": "main/index unchanged",
+  "production": "STOP"
+}
