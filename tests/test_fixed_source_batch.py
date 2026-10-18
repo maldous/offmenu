@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 def module(name,file):
  spec=importlib.util.spec_from_file_location(name,ROOT/'scripts'/file);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 m=module('batch_fixture','acquire-fixed-batch.py');a=m.a
+def original_seven_selection():
+ return m.validate_selection(a.strict_json(a.preparation_module().pinned_bytes(ROOT,('docs/collection-selections/recipe-originals-batch-selection.json','2b12090957ddc6cd9ab4393a1d1ea731132836fa35532ee0f6af59bbda84bc02'))))
+m.selection_config=original_seven_selection
 dispatch=module('batch_dispatch','dispatch-foo-job.py')
 BODY=b'%PDF-1.7\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF\n'
 class Response:
@@ -179,7 +182,8 @@ class BatchTests(unittest.TestCase):
   with patch.object(a,'GUARD',88418025472):selected=m.selection_config()
   # Exact production selection, pretransport synthetic adverse observations.
   with patch.object(a,'GUARD',88418025472):r=m.run_batch(selected,adverse_evidence=[{'sourceKey':s['sourceKey']} for s in selected['sources']])
-  evidence=dispatch.safe_evidence(a.canonical(r));self.assertEqual(len(evidence['fixedSourceBatch']['items']),7)
+  with patch.object(m,'selection_config',return_value=selected),patch.object(dispatch,'diagnostic_evidence',side_effect=lambda v:{'fixedSourceBatch':m.sanitize_report(v)}):evidence=dispatch.safe_evidence(a.canonical(r))
+  self.assertEqual(len(evidence['fixedSourceBatch']['items']),7)
   self.assertEqual(evidence['fixedSourceBatch']['networkRequests'],0)
 
  def test_stdlib_chunked_response_reaches_eof_without_excess(self):
@@ -208,7 +212,8 @@ class BatchTests(unittest.TestCase):
    items.append(m.item_report(source,detail))
   report={'schemaVersion':m.SCHEMA,'batchId':selected['batchId'],'selectionSHA256':a.sha(a.canonical(selected)),
    'status':'complete','errorCode':None,'networkRequests':7,'networkBytesRead':sum(i['networkBytesRead'] for i in items),'items':items,**a.SAFETY}
-  evidence=dispatch.safe_evidence(a.canonical(report));self.assertEqual(evidence['fixedSourceBatch']['status'],'complete')
+  with patch.object(m,'selection_config',return_value=selected),patch.object(dispatch,'diagnostic_evidence',side_effect=lambda v:{'fixedSourceBatch':m.sanitize_report(v)}):evidence=dispatch.safe_evidence(a.canonical(report))
+  self.assertEqual(evidence['fixedSourceBatch']['status'],'complete')
   self.assertLess(len(a.canonical(report)),dispatch.MAX_DIAGNOSTIC_EVIDENCE)
  def test_main_keeps_completed_and_raised_after_meter_results(self):
   real=a.run_selected;count=0

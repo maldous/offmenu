@@ -12,11 +12,13 @@ ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('fixed_original_adapter',ROOT/'scripts/acquire-fixed-zenodo.py')
 a=importlib.util.module_from_spec(spec);spec.loader.exec_module(a)
 SCHEMA='offmenu-fixed-source-batch/1'
-BATCH_PIN=('docs/collection-selections/recipe-originals-batch-selection.json','2b12090957ddc6cd9ab4393a1d1ea731132836fa35532ee0f6af59bbda84bc02')
+BATCH_PIN=('docs/collection-selections/recipe-five-private-save-selection.json','c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb')
 MAX_SOURCES=8
 MAX_SECONDS=1200
 MAX_TOTAL_BYTES=256*1024**2
-ERRORS=a.ERRORS | {'fixed-batch-unconfigured','fixed-batch-invalid','batch-deadline-exhausted','batch-byte-limit','batch-request-limit'}
+save_spec=importlib.util.spec_from_file_location('fixed_private_save',ROOT/'scripts/save-private-original.py')
+save=importlib.util.module_from_spec(save_spec);save_spec.loader.exec_module(save)
+ERRORS=a.ERRORS | save.ERRORS | {'fixed-batch-unconfigured','fixed-batch-invalid','batch-deadline-exhausted','batch-byte-limit','batch-request-limit'}
 
 
 def bounded_text(value, maximum=2048):
@@ -26,6 +28,7 @@ def bounded_text(value, maximum=2048):
 def validate_selection(value):
     keys={'schemaVersion','batchId','sources','maximumRequests','maximumTransferBytes','wholeOperationSeconds',
           'minimumCacheSeconds','planningGuardBytes','floorAlreadyIncluded','evidence','coordinatorIntent'}
+    if isinstance(value,dict) and 'privateOriginalDownload' in value: keys.add('privateOriginalDownload')
     if not isinstance(value,dict) or set(value)!=keys or value['schemaVersion']!='offmenu-fixed-source-batch-selection/1':
         raise a.RefreshError('fixed-batch-invalid')
     if not bounded_text(value['batchId'],128) or not isinstance(value['sources'],list) or not 1<=len(value['sources'])<=MAX_SOURCES:
@@ -88,6 +91,7 @@ def validate_selection(value):
     for index,source in enumerate(value['sources']):
         for other in value['sources'][:index]:
             if a.exact_source_match(other,source) or a.exact_source_match(source,other): raise a.RefreshError('fixed-batch-invalid')
+    if 'privateOriginalDownload' in value: save.validate_mode(value['privateOriginalDownload'],value,a)
     return value
 
 
@@ -136,7 +140,11 @@ def item_report(source,detail=None,error=None,network=None):
         'originalAcquiredAt':validation.get('originalAcquiredAt'),
         'detailSHA256':None if detail is None else a.sha(a.canonical(detail)),
         'detailPersisted':bool(detail is not None and detail['receiptPersistence']=='written'),
-        'downstreamHolds':source['downstreamHolds']}
+        'downstreamHolds':source['downstreamHolds'],
+        'responsePolicy':None if detail is None else detail.get('responsePolicy'),
+        'originalDisposition':None if detail is None else detail.get('originalDisposition'),
+        'privateSaveState':None if detail is None else detail.get('privateSaveState'),
+        'localBodyBytes':0 if detail is None else detail.get('localBodyBytes',0)}
 
 
 def run_batch(selected, *, engine=a.CachedAcquirer, transport=None, adverse_evidence=()):
@@ -149,7 +157,8 @@ def run_batch(selected, *, engine=a.CachedAcquirer, transport=None, adverse_evid
             if time.monotonic()>=deadline: raise a.RefreshError('batch-deadline-exhausted')
             if meter['bodyBytesRead']>=meter['maximumBytes']: raise a.RefreshError('batch-byte-limit')
             if any(a.exact_source_match(evidence,source) for evidence in adverse_evidence): raise a.RefreshError('known-exact-source-observed')
-            detail=a.run_selected(source,engine=engine,transport=transport,deadline=deadline,batch_meter=meter)
+            detail=(save.run_selected(source,adapter=a,mode=selected['privateOriginalDownload'],transport=transport,deadline=deadline,batch_meter=meter)
+                    if 'privateOriginalDownload' in selected else a.run_selected(source,engine=engine,transport=transport,deadline=deadline,batch_meter=meter))
         except Exception as failure:
             error=str(failure) if isinstance(failure,a.RefreshError) and str(failure) in ERRORS else 'collector-rejected'
         consumed={key:meter[key]-before[key] for key in ('requests','bodyBytesRead')}
@@ -184,6 +193,9 @@ def sanitize_report(report):
         for key,limit in [('networkRequests',1),('networkBytesRead',source['hardTransferBytes']),('verifiedBytes',source['hardTransferBytes'])]:
             if type(item[key]) is not int or not 0<=item[key]<=limit: raise ValueError('invalid-batch-summary')
         a.validate_response_metadata(item['responseMetadata'])
+        save.validate_policy(item['responsePolicy'])
+        if item['originalDisposition'] not in {None,'saved-original','retained-original-no-network'} or item['privateSaveState'] not in {None,'none','partial-retained','uncommitted-original','saved-original'} or type(item['localBodyBytes']) is not int or not 0<=item['localBodyBytes']<=source['hardTransferBytes']: raise ValueError('invalid-batch-summary')
+        if 'privateOriginalDownload' in selected and success and item['originalDisposition'] is None: raise ValueError('invalid-batch-summary')
         if type(item['detailPersisted']) is not bool: raise ValueError('invalid-batch-summary')
         for key in ('originalSHA256','detailSHA256'):
             if item[key] is not None and (not isinstance(item[key],str) or not re.fullmatch('[a-f0-9]{64}',item[key])): raise ValueError('invalid-batch-summary')

@@ -314,7 +314,7 @@ def profile_steps(profile, code, trusted_sha=None):
         ]
     if profile == "selected-original-batch":
         steps += [
-            ("fixed-source-batch-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_source_batch.py"]),
+            ("fixed-source-batch-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_source*.py"]),
             ("selected-original-batch", ["readiness", "fixed-source-batch-tests"], [python, "-B", "scripts/acquire-fixed-batch.py"]),
         ]
     if profile == "swiss-private-original":
