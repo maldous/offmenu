@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "local-scope-revision-publication-held",
-  "asOfUTC": "2026-10-18T01:36:00Z",
+  "status": "published-integration-pr-open-ci-correction-reviewed-not-merged",
+  "asOfUTC": "2026-10-18T01:47:45Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -256,6 +256,13 @@
       "eventId": "consolidation-large-artifact-scope-revision-20261018",
       "status": "local-scope-revision-awaiting-review",
       "description": "Owner requires large files to remain exclusively on the Foo runner. Publication stopped before any assembly commit. The 361-file approval register is held for artifact classification and dependency-correct bounded reference replacements. No Foo retention or full develop baseline is claimed."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T01:47:45Z",
+      "eventId": "reviewed-consolidation-publication-and-initial-ci-reconciliation-20261018",
+      "status": "published-integration-initial-ci-failed-fix-reviewed",
+      "description": "PR35 draft targets develop at96cdcaa4. Exact361reviewed paths and modes match published tree; no extra changes/deletions;3bulk inventories excluded. Initial web CI661pass/1fail exposes historical receipt-ID assertion conflict. Exact one-file assertion reconciliation independently reviewed with18focused tests; not yet committed at receipt authoring. Full CI and merge remain pending.",
+      "anchorCommit": "96cdcaa4fa7b454f90fc366891471edb8705d1f4"
     }
   ],
   "lanes": [
@@ -1077,7 +1084,7 @@
     "note": "No new publication or develop merge claimed. Prior ledger bytes observed at selected base; writer must attach actual immutable candidate and merge receipts without inventing a self-referential commit."
   },
   "activeWork": [
-    "Sole repository writer and eventual combined assembly/CI/merge",
+    "Sole repository writer: publish reviewed receipt assertion reconciliation, rerun exact-head full CI, then qualified PR/merge handling",
     "Per-ref retention, provenance, source bodies and custody discrepancies",
     "Cloud/product/source-storage correction review and exact byte qualification",
     "Preserved product code and existing-path supersession; remaining416deltas open",
@@ -1428,13 +1435,13 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T01:36:00Z",
+    "asOfUTC": "2026-10-18T01:47:45Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
     "developLastVerifiedCommit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
     "integrationBranch": "integration/lossless-develop-baseline-20261018",
     "lastVerifiedIntegrationHead": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
     "finalCandidateCommit": null,
-    "finalCandidateState": "held-for-large-artifact-policy-and-dependent-verifier-revision",
+    "finalCandidateState": "integration-published-initial-ci-failed-reviewed-assertion-correction-pending",
     "developMergeVerified": false,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
@@ -2603,6 +2610,41 @@
       "requiredNextStep": "Classify artifacts by purpose, revise dependent documentation/verifiers, preserve hashes and provenance, verify Foo custody before asserting retention or deleting any local copy.",
       "branchState": "Integration branch at aee7d3221ba29de088cf929bcd96f3a4f2fba611; no assembly commit/PR or develop merge verified.",
       "localChecks": "Earlier 73-path local assembly:160 focused web,48 Python,51 syntax checks passed; knowledge verifier passed. These do not validate a revised scope or full baseline."
+    },
+    "publicationReceipt": {
+      "anchorCommit": "96cdcaa4fa7b454f90fc366891471edb8705d1f4",
+      "anchorTree": "584284f3189993bc50d85093686ea299af240127",
+      "pullRequest": 35,
+      "pullRequestUrl": "https://github.com/maldous/offmenu/pull/35",
+      "pullRequestState": "draft-open-target-develop",
+      "registerSha256": "3741fd0fc0d2dc35cb37aefd016b6df20c77022e8570dc63fec03bd4febeea1a",
+      "exactReviewedFilesVerifiedInAnchorTree": 361,
+      "reviewedPayloadBytes": 2748542,
+      "extraChangedPaths": 0,
+      "deletedBaselinePaths": 0,
+      "bulkInventoriesExcluded": 3,
+      "fooRetentionVerified": false,
+      "initialCI": {
+        "state": "failed-web-test-stage",
+        "webPassed": 661,
+        "webFailed": 1,
+        "failure": "Historical integration-owner03 assertion expected receipt ID undefined, conflicting with approved explicit receipt identity preservation. Later dependent stages not established by this run.",
+        "logSha256": "254e9d0299d69571e4710fdd91fe96917dae757f104387f59da4354632ffb044"
+      },
+      "reviewedPendingCorrection": {
+        "path": "tests-web/integration-owner03.test.mjs",
+        "gitBlob": "9d1239896d3e3e5040f61e654895c996f5f582d8",
+        "sha256": "11d09856047a9266e2e6c0abe4b8e58fc34a50f1dac0ef9fd9fb9bc681db8163",
+        "independentReviewSha256": "e96e27f994d3699b3bf955b592b70f3132fcfe46419584cdc2480fbc531799f8",
+        "focusedTestsPassed": 18,
+        "focusedTestsFailed": 0,
+        "scope": "Test title and receipt ID expectation only. Observation metadata remains excluded and analysis remains legacy-unqualified. No production code or security gate change.",
+        "publicationState": "reviewed-local-not-yet-committed-at-receipt-authoring"
+      },
+      "nextCommitSha": null,
+      "acceptedFullCICommit": null,
+      "mergedDevelopCommit": null,
+      "boundary": "This receipt anchors the existing published commit. It does not claim its own future commit SHA, passing full CI, ready PR, merge, deployment, Foo retention or completed source admission."
     }
   }
 }

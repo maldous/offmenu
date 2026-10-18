@@ -72,9 +72,9 @@ test('overflow and measured zero are preserved as unavailable analysis, never ze
   const zero={waste:[receipt],wasteObservations:[{...observation,quantity:0}]},before=structuredClone(zero);
   assert.match(wasteInsight(zero,{dates,context}).diagnostics[0],/Explicit measured zero/);assert.deepEqual(zero,before);
 });
-test('actual validateState still drops observation metadata: persistence gate is not disguised',()=>{
+test('actual validateState retains receipt identity while observation persistence remains gated',()=>{
   const validated=validateState({inventory:[lot],products:{},recipes:[],profile:{servings:1,waste:[receipt],wasteObservations:[observation]}});
-  assert.equal(validated.profile.wasteObservations,undefined);assert.equal(validated.profile.waste[0].id,undefined);
+  assert.equal(validated.profile.wasteObservations,undefined);assert.equal(validated.profile.waste[0].id,receipt.id);
   assert.equal(wasteInsight(validated.profile,{dates,context}).status,'legacy-unqualified');
 });
 
