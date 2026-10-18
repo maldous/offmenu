@@ -1,0 +1,661 @@
+{
+  "schemaVersion": "offmenu-bm-lc-sc-bindings/1",
+  "portfolio": [
+    "BM",
+    "LC",
+    "SC"
+  ],
+  "bindings": [
+    {
+      "id": "bm-recipe",
+      "country": "BM",
+      "sourceId": "0f438889a3ae627b6cb7",
+      "releaseId": "metadata-snapshot-f7fca67871a4f3bf",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/0f438889a3ae627b6cb7/receipt.json",
+        "sha256": "f7fca67871a4f3bfd1feb628078f69a3ad111b24077eb0ea20ea5631b167a12d",
+        "bytes": 1127
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/rights",
+        "recordedReleaseLabel": "/version"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
+        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
+        "bytes": 4562
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/0f438889a3ae627b6cb7/response-original.bin",
+        "sha256": "cbef70c9b299315199ccafe1ee44ac47d94ed583d69549d51743a5c378ddd460",
+        "bytes": 288338
+      },
+      "applicability": {
+        "country": "BM",
+        "types": [
+          "recipes",
+          "ingredients"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Yield8items is not8persons; source yieldUnit declaration in staged /yieldUnit, no conversion"
+        ]
+      },
+      "holds": [
+        "private-inspection-only; parse/transform/public redistribution not cleared"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": {
+        "sourceProjection": {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/recipe-observation.json",
+          "sha256": "5522b3e10ecd280ace878c403d8eb0b8d26e9921d8c83cab728ca48412131c68",
+          "bytes": 1654
+        },
+        "execution": "held-not-executed",
+        "fields": [
+          {
+            "datum": "yieldItemCount",
+            "selector": "/yieldItemCount",
+            "unitSelector": "/yieldUnit",
+            "basis": "source-defined item count; not persons/servings",
+            "conversion": null
+          },
+          {
+            "datum": "servings",
+            "selector": "/servings",
+            "unitSelector": null,
+            "basis": "unknown; preserve null",
+            "conversion": null
+          },
+          {
+            "datum": "nutrients",
+            "selector": "/nutrients",
+            "unitSelector": null,
+            "basis": "unknown; preserve null",
+            "conversion": null
+          }
+        ],
+        "sourceAttributionSelector": "/source",
+        "rightsSelector": "/rights"
+      }
+    },
+    {
+      "id": "bm-prices",
+      "country": "BM",
+      "sourceId": "113af8431c7b93915013",
+      "releaseId": "metadata-snapshot-ca2b535825952c4f",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/113af8431c7b93915013/receipt.json",
+        "sha256": "ca2b535825952c4fdf3c2fb99067595cba10ecb44675da3210fc28f13dace9a5",
+        "bytes": 1343
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/rights",
+        "recordedReleaseLabel": "/version"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
+        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
+        "bytes": 4562
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/113af8431c7b93915013/response-original.bin",
+        "sha256": "cf4bceee533696cb3093bec8d80ada7315e174300d9f470ea09270d239bfccc4",
+        "bytes": 401815
+      },
+      "applicability": {
+        "country": "BM",
+        "types": [
+          "prices/baskets"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Currency ISO unknown, dollar symbol insufficient; pack contradiction retained"
+        ]
+      },
+      "holds": [
+        "private-inspection-only; parse/transform/public redistribution not cleared"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": {
+        "sourceProjection": {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/price-observations.json",
+          "sha256": "81d58a4421fc4b2f0772eab63bda314ad6f470f6fc88357f39f454a542fd32ca",
+          "bytes": 10003
+        },
+        "execution": "held-not-executed",
+        "fields": [
+          {
+            "recordSelector": "/records/0",
+            "datum": "price.value",
+            "selector": "/records/0/price/value",
+            "unitSelector": "/records/0/price/currencyCode",
+            "basisSelector": "/records/0/price/basis",
+            "packageSelector": "/records/0/packageExpressionOriginal",
+            "citationSelector": "/records/0/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/1",
+            "datum": "price.value",
+            "selector": "/records/1/price/value",
+            "unitSelector": "/records/1/price/currencyCode",
+            "basisSelector": "/records/1/price/basis",
+            "packageSelector": "/records/1/packageExpressionOriginal",
+            "citationSelector": "/records/1/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/2",
+            "datum": "price.value",
+            "selector": "/records/2/price/value",
+            "unitSelector": "/records/2/price/currencyCode",
+            "basisSelector": "/records/2/price/basis",
+            "packageSelector": "/records/2/packageExpressionOriginal",
+            "citationSelector": "/records/2/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/3",
+            "datum": "price.value",
+            "selector": "/records/3/price/value",
+            "unitSelector": "/records/3/price/currencyCode",
+            "basisSelector": "/records/3/price/basis",
+            "packageSelector": "/records/3/packageExpressionOriginal",
+            "citationSelector": "/records/3/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/4",
+            "datum": "price.value",
+            "selector": "/records/4/price/value",
+            "unitSelector": "/records/4/price/currencyCode",
+            "basisSelector": "/records/4/price/basis",
+            "packageSelector": "/records/4/packageExpressionOriginal",
+            "citationSelector": "/records/4/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/5",
+            "datum": "price.value",
+            "selector": "/records/5/price/value",
+            "unitSelector": "/records/5/price/currencyCode",
+            "basisSelector": "/records/5/price/basis",
+            "packageSelector": "/records/5/packageExpressionOriginal",
+            "citationSelector": "/records/5/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          },
+          {
+            "recordSelector": "/records/6",
+            "datum": "price.value",
+            "selector": "/records/6/price/value",
+            "unitSelector": "/records/6/price/currencyCode",
+            "basisSelector": "/records/6/price/basis",
+            "packageSelector": "/records/6/packageExpressionOriginal",
+            "citationSelector": "/records/6/citation",
+            "conversion": null,
+            "unitQualification": "ISO unknown; symbol cannot resolve it"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bm-dietary-poster",
+      "country": "BM",
+      "sourceId": "e56a1d0c731df83ae2ae",
+      "releaseId": "metadata-snapshot-534ec3d87aa62191",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/e56a1d0c731df83ae2ae/receipt.json",
+        "sha256": "534ec3d87aa6219151de67deac61826af717bba382ffadd1e9b5fbee85e348aa",
+        "bytes": 1355
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/rights",
+        "recordedReleaseLabel": "/version"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
+        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
+        "bytes": 4562
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/originals/e56a1d0c731df83ae2ae/response-original.bin",
+        "sha256": "c51de0e30979359838200cbf1c4f01bf1c6df876aa7a8fae2df78ee543cd03ad",
+        "bytes": 3452805
+      },
+      "applicability": {
+        "country": "BM",
+        "types": [
+          "dietary references"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Not analytical composition; serving unit and edition unknown"
+        ]
+      },
+      "holds": [
+        "private-inspection-only; parse/transform/public redistribution not cleared"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": {
+        "sourceProjection": {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-16/BM/nutrition-dietary-reference.json",
+          "sha256": "ceb986002c587ef8d78504b9d9abdd21fa011fa235fa5112d1ca82a558bfc892",
+          "bytes": 1216
+        },
+        "execution": "held-not-executed",
+        "fields": [],
+        "reason": "Document reference only; edition/serving-unit unknown, no numeric guideline adopted"
+      }
+    },
+    {
+      "id": "bm-cpi",
+      "country": "BM",
+      "sourceId": "930de07af43b9d9e53e9",
+      "releaseId": "metadata-snapshot-aeb96e6b851185e9",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/BM/930de07af43b9d9e53e9/receipt.json",
+        "sha256": "aeb96e6b851185e9a56bea6d58bc6504776e56fa92198b4131eb9a0099b1b549",
+        "bytes": 9687
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/url",
+        "recordedUseStatement": "/rights",
+        "recordedReleaseLabel": "/version"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/BM/staged-observation-validation.json",
+        "sha256": "d9f33c1179d9aa85aad1fa86dcb7abd4da41df2fdaf4ee5038be1b9da01fc827",
+        "bytes": 4562
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/BM/930de07af43b9d9e53e9/publisher-response.html",
+        "sha256": "fdba5459ab5e74095ee9893e9dd693ad348a5f926767eb24c306d54c40315d4c",
+        "bytes": 180581
+      },
+      "applicability": {
+        "country": "BM",
+        "types": [
+          "prices/baskets"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Index not individual item prices or basket"
+        ]
+      },
+      "holds": [
+        "private-inspection-only; parse/transform/public redistribution not cleared"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": null
+    },
+    {
+      "id": "lc-collection",
+      "country": "LC",
+      "sourceId": "0216ce1356e651e204b8",
+      "releaseId": "metadata-snapshot-76d780b271fb9950",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/LC/0216ce1356e651e204b8/receipt.json",
+        "sha256": "76d780b271fb995055b901cbda70b5e917be9fe17a5ea6a30bdb4fd4f0a6fcf9",
+        "bytes": 3388
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/licence",
+        "recordedReleaseLabel": "/release"
+      },
+      "originalAcquiredAtSelector": "/requests/0/finishedUTC",
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/lastUTC",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/LC/source-reference-validation.json",
+        "sha256": "225da93da96e68a5f6258e9ec99534ef8d5b6fe4ff0456e90e752007de3a99d3",
+        "bytes": 5179
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/LC/0216ce1356e651e204b8/recipes-books.html",
+        "sha256": "bd9f83326fddfff02e6b2815c5eec0252d028d14a8fe6d451163727f0047aff3",
+        "bytes": 213774
+      },
+      "applicability": {
+        "country": "LC",
+        "types": [
+          "recipes"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Collection HTML metadata not book recipe/method/nutrient fields"
+        ]
+      },
+      "holds": [
+        "edition-onward-use-not-established; no-body-processing"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": null
+    },
+    {
+      "id": "sc-wine",
+      "country": "SC",
+      "sourceId": "06cd1b4ecb5884585fc5",
+      "releaseId": "metadata-snapshot-a7676ea634ce1800",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/06cd1b4ecb5884585fc5/receipt.json",
+        "sha256": "a7676ea634ce18004ac27a2cee414fa89ee290150a59ccecb711dce861ea95e3",
+        "bytes": 1961
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/licence",
+        "recordedReleaseLabel": "/release"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/response/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
+        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
+        "bytes": 9180
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/06cd1b4ecb5884585fc5/windsong-wine-202510.pdf",
+        "sha256": "b6e8f503db79130c2a6aeb5bd6396834bdddf49423fdf72a40cbdbabb299047f",
+        "bytes": 661249
+      },
+      "applicability": {
+        "country": "SC",
+        "types": [
+          "menus"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
+        ]
+      },
+      "holds": [
+        "no-adaptation-or-redistribution-grant; no-body-processing"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": null
+    },
+    {
+      "id": "sc-beverages",
+      "country": "SC",
+      "sourceId": "66f950a789d2da6a5736",
+      "releaseId": "metadata-snapshot-54c04d5431330b71",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/66f950a789d2da6a5736/receipt.json",
+        "sha256": "54c04d5431330b71514a81fba420f8d0a4064f1590c1906824fc4c7f34b87bf4",
+        "bytes": 1994
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/licence",
+        "recordedReleaseLabel": "/release"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/response/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
+        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
+        "bytes": 9180
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/66f950a789d2da6a5736/windsong-beverages-202603.pdf",
+        "sha256": "79d645abbac1708e8136a14457bfec8d4c2f38fb119b1f98b5f62de2fc7d4409",
+        "bytes": 7315113
+      },
+      "applicability": {
+        "country": "SC",
+        "types": [
+          "menus"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
+        ]
+      },
+      "holds": [
+        "no-adaptation-or-redistribution-grant; no-body-processing"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": null
+    },
+    {
+      "id": "sc-alacarte",
+      "country": "SC",
+      "sourceId": "73b54db5b114a91e662d",
+      "releaseId": "metadata-snapshot-5ad4a391a9a56f8b",
+      "releaseIdentityKind": "exact-retained-metadata-snapshot; dataset edition separate",
+      "scope": "retained-metadata-only",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/73b54db5b114a91e662d/receipt.json",
+        "sha256": "5ad4a391a9a56f8b00165a2c6bcea3bfc51d0d8f3175f3b983578978a63d269c",
+        "bytes": 2051
+      },
+      "selectors": {
+        "country": "/country",
+        "publisherLocator": "/canonicalURL",
+        "recordedUseStatement": "/licence",
+        "recordedReleaseLabel": "/release"
+      },
+      "originalAcquiredAtSelector": null,
+      "acquisitionTimeQualification": "LC finishedUTC is original HTTP response completion; other records lack independently qualified original completion clock in this binding, not filled from validation/mtime",
+      "originalObservationTimeSelector": "/response/utc",
+      "validationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-11/SC/original-integrity-validation.json",
+        "sha256": "5872ab0769567ceab3110912aa32cf5700948daba3a6de9eff9b0d57bea20554",
+        "bytes": 9180
+      },
+      "retainedBodyReferenceOnly": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/SC/73b54db5b114a91e662d/windsong-alacarte-20260904.pdf",
+        "sha256": "70d561fb30874c5c88d39721024a8c9406a15c2587f9bccfc9a1661c587806a5",
+        "bytes": 1999914
+      },
+      "applicability": {
+        "country": "SC",
+        "types": [
+          "menus"
+        ],
+        "scope": "Source-local evidence only; no national/category completeness",
+        "accepted": false
+      },
+      "nativeSemantics": {
+        "units": null,
+        "basis": null,
+        "canonicalEquivalence": null,
+        "reason": "No food-value processing selected. Exact units/basis/field dictionary and per-datum semantic acceptance missing.",
+        "knownConstraints": [
+          "Venue edition PDF not national coverage; no extracted menu field origins accepted"
+        ]
+      },
+      "holds": [
+        "no-adaptation-or-redistribution-grant; no-body-processing"
+      ],
+      "missingForBodyStaging": [
+        "operation-specific source-use decision",
+        "exact edition/record field-origin selectors and dictionary",
+        "independent scope/semantic acceptance"
+      ],
+      "adapterBinding": {
+        "sharedInterface": "offmenu.refresh.field_provenance.field_origin_errors",
+        "bodyAdapter": null,
+        "sourceContract": null,
+        "reason": "Metadata preflight only; no compatible accepted body adapter or rights contract selected"
+      },
+      "bodyFieldDeclarations": null
+    }
+  ],
+  "requiredCountryTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "coverage": "Source-local metadata only; absent types remain missing, none declared inapplicable",
+  "sharedDevelop": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "productionAdmission": false
+}

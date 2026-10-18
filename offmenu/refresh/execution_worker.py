@@ -2,6 +2,7 @@
 
 The audit hook protects trusted adapter mistakes; it is not a hostile-code sandbox.
 """
+from contextlib import ExitStack
 import gzip
 import hashlib
 import importlib.util
@@ -11,6 +12,9 @@ from pathlib import Path
 import resource
 import sys
 
+
+# Independently reviewed implementation identity, never supplied by a bundle.
+NATIONAL_ORIGIN_POLICY_SHA256 = "35141a082fe2048a432ecac9c9672d8224eaaffdc58a6e60e5189fa6dee67838"
 
 def main():
     sys.dont_write_bytecode = True
@@ -94,24 +98,41 @@ def main():
     seen = set()
     expanded = 0
     output = destination / 'candidate.jsonl'
-    with gzip.open(destination / 'normalized.jsonl.gz', 'rt', encoding='utf-8') as source, output.open('w', encoding='utf-8') as target:
-        while True:
-            line = source.readline(min(8 * 1024**2, MAX_OUTPUT - expanded + 1))
-            if not line:
-                break
-            expanded += len(line.encode('utf-8'))
-            if expanded > MAX_OUTPUT or not line.endswith('\n'):
-                raise ValueError('expanded-output-bound-exceeded')
-            packet = json.loads(line)
-            if not isinstance(packet, list) or len(packet) != 1:
-                raise ValueError('invalid-record-packet')
-            row = packet[0]
-            if row['kind'] != 'nutrientProfile' or row['schemaVersion'] != '1.0' or row['provenance']['sourceId'] != entry.source_id or row['id'] in seen:
-                raise ValueError('invalid-source-record')
-            seen.add(row['id'])
-            row['provenance']['fetchedAt'] = entry.acquired_at
-            row['provenance']['releaseId'] = entry.release_id
-            target.write(json.dumps(packet, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False) + '\n')
+    with ExitStack() as stack:
+        origins = None
+        if entry.source_id in ('afcd', 'mext'):
+            from offmenu.refresh.national_field_origins import NationalWorkbookOrigins
+            origins = stack.enter_context(NationalWorkbookOrigins(
+                entry.source_id, entry.release_id, bundle,
+                {name: digest for name, size, digest in entry.inputs}, module,
+                policy_pin=NATIONAL_ORIGIN_POLICY_SHA256))
+        candidate_bytes = 0
+        with gzip.open(destination / 'normalized.jsonl.gz', 'rt', encoding='utf-8') as source, output.open('w', encoding='utf-8') as target:
+            while True:
+                line = source.readline(min(8 * 1024**2, MAX_OUTPUT - expanded + 1))
+                if not line:
+                    break
+                expanded += len(line.encode('utf-8'))
+                if expanded > MAX_OUTPUT or not line.endswith('\n'):
+                    raise ValueError('expanded-output-bound-exceeded')
+                packet = json.loads(line)
+                if not isinstance(packet, list) or len(packet) != 1:
+                    raise ValueError('invalid-record-packet')
+                row = packet[0]
+                if row['kind'] != 'nutrientProfile' or row['schemaVersion'] != '1.0' or row['provenance']['sourceId'] != entry.source_id or row['id'] in seen:
+                    raise ValueError('invalid-source-record')
+                seen.add(row['id'])
+                row['provenance']['fetchedAt'] = entry.acquired_at
+                row['provenance']['releaseId'] = entry.release_id
+                if origins is not None:
+                    row = origins.annotate(row)
+                    packet = [row]
+                serialized = json.dumps(packet, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False) + '\n'
+                serialized_bytes = len(serialized.encode('utf-8'))
+                candidate_bytes += serialized_bytes
+                if serialized_bytes > 8 * 1024**2 or candidate_bytes > MAX_OUTPUT:
+                    raise ValueError('origin-expanded-output-bound-exceeded')
+                target.write(serialized)
     if len(seen) != entry.expected_records or sum(p.stat().st_size for p in destination.iterdir()) > MAX_OUTPUT:
         raise ValueError('output-contract-mismatch')
     h = hashlib.sha256()
@@ -125,6 +146,8 @@ def main():
                'scopeEvidenceSha256': entry.scope_evidence_sha256,
                'acceptedCount': None, 'acceptance': 'not-performed',
                'qualification': 'not-performed', 'publication': 'not-enabled'}
+    if entry.source_id in ('afcd', 'mext'):
+        receipt['fieldOriginPolicySha256'] = NATIONAL_ORIGIN_POLICY_SHA256
     # Legacy collectors advertise historical acceptance/count/scope assertions and
     # use wall-clock fetch times. Replace every legacy representation before the
     # directory can be returned, rather than exposing contradictory metadata.

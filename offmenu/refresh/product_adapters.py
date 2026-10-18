@@ -8,6 +8,7 @@ PRIVATE staging, not a public artifact (it can contain contributor metadata).
 Malformed releases fail atomically; retry the same immutable inputs in a fresh
 staging directory. A completed identical contract is checksum-verified and reused.
 """
+from contextlib import closing
 from dataclasses import asdict, dataclass
 from datetime import datetime
 import csv
@@ -364,6 +365,42 @@ def _food(context, db, row, limits):
                   'identifiers': identifiers, 'basis': basis, 'nutrients': nutrients}, ('US',), row.get('publication_date'))
 
 
+def _candidate_stats(path, limits):
+    """Recompute displayed metadata from the verified bounded candidate bytes."""
+    count = total = 0
+    kinds = {}
+    with path.open('rb') as source:
+        while True:
+            line = source.readline(limits.max_line_bytes + 1)
+            if not line:
+                break
+            total += len(line)
+            if len(line) > limits.max_line_bytes or total > limits.max_output_bytes:
+                raise RefreshError('product-retry-candidate-bound')
+            packet = strict_json(line)
+            if (not isinstance(packet, list) or len(packet) != 1
+                    or not isinstance(packet[0], dict) or not isinstance(packet[0].get('kind'), str)):
+                raise RefreshError('product-retry-candidate-shape')
+            kind = packet[0]['kind']
+            kinds[kind] = kinds.get(kind, 0) + 1
+            count += 1
+    return count, total, kinds
+
+
+def _candidate_manifest(context, files, contract, hashes, raw_rows, count, kinds, output_bytes):
+    return {'schemaVersion': 'offmenu-product-candidate/1', 'status': 'normalized-candidate',
+        'sourceId': context.source_id, 'releaseId': context.release_id,
+        'acquiredAt': context.acquired_at, 'cacheSeconds': context.cache_seconds,
+        'rightsEvidenceSha256': context.rights_evidence_sha256,
+        'scopeEvidenceSha256': context.scope_evidence_sha256,
+        'inputFiles': files, 'rawRows': raw_rows, 'normalizedRecords': count, 'kinds': kinds,
+        'candidateSha256': hashes['candidate.jsonl'], 'candidateBytes': output_bytes,
+        'outputHashes': hashes, 'contract': contract,
+        'sharedSourceKey': hashlib.sha256(canonical(contract)).hexdigest(),
+        'rawStorage': {'path': 'source.sqlite', 'visibility': 'private', 'publishable': False},
+        'accepted': False}
+
+
 def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
     """Make private candidate files, never an admission. inputs are role -> Path:
 
@@ -394,11 +431,19 @@ def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
         manifest = strict_json(manifest_path.read_bytes())
         if manifest.get('contract') != contract:
             raise RefreshError('product-retry-contract-mismatch')
-        for name, checksum in manifest['outputHashes'].items():
-            if name not in ('candidate.jsonl', 'source.sqlite') or _hash(_safe(destination / name), limits.max_output_bytes if name == 'candidate.jsonl' else limits.max_database_bytes) != checksum:
-                raise RefreshError('product-retry-output-mismatch')
-        if set(manifest['outputHashes']) != {'candidate.jsonl', 'source.sqlite'}:
+        hashes = manifest.get('outputHashes')
+        if not isinstance(hashes, dict) or set(hashes) != {'candidate.jsonl', 'source.sqlite'}:
             raise RefreshError('product-retry-output-mismatch')
+        for name, checksum in hashes.items():
+            if _hash(_safe(destination / name), limits.max_output_bytes if name == 'candidate.jsonl' else limits.max_database_bytes) != checksum:
+                raise RefreshError('product-retry-output-mismatch')
+        count, output_bytes, kinds = _candidate_stats(destination / 'candidate.jsonl', limits)
+        with closing(sqlite3.connect((destination / 'source.sqlite').as_uri() + '?mode=ro&immutable=1', uri=True)) as db:
+            raw_rows = db.execute('SELECT COUNT(*) FROM raw').fetchone()[0]
+        expected = _candidate_manifest(context, files, contract, hashes, raw_rows, count, kinds, output_bytes)
+        # Canonical bytes also distinguish JSON false from numeric zero.
+        if canonical(manifest) != canonical(expected):
+            raise RefreshError('product-retry-manifest-mismatch')
         return manifest
     destination.parent.mkdir(parents=True, exist_ok=True)
     pending = Path(tempfile.mkdtemp(prefix='.products-', dir=destination.parent))
@@ -452,17 +497,7 @@ def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
                for pin in files for role, path in paths.items() if role == pin['role']):
             raise RefreshError('product-input-changed')
         hashes = {name: _hash(pending / name) for name in ('candidate.jsonl', 'source.sqlite')}
-        manifest = {'schemaVersion': 'offmenu-product-candidate/1', 'status': 'normalized-candidate',
-            'sourceId': context.source_id, 'releaseId': context.release_id,
-            'acquiredAt': context.acquired_at, 'cacheSeconds': context.cache_seconds,
-            'rightsEvidenceSha256': context.rights_evidence_sha256,
-            'scopeEvidenceSha256': context.scope_evidence_sha256,
-            'inputFiles': files, 'rawRows': budget.rows, 'normalizedRecords': count, 'kinds': kinds,
-            'candidateSha256': hashes['candidate.jsonl'], 'candidateBytes': output_bytes,
-            'outputHashes': hashes, 'contract': contract,
-            'sharedSourceKey': hashlib.sha256(canonical(contract)).hexdigest(),
-            'rawStorage': {'path': 'source.sqlite', 'visibility': 'private', 'publishable': False},
-            'accepted': False}
+        manifest = _candidate_manifest(context, files, contract, hashes, budget.rows, count, kinds, output_bytes)
         (pending / 'manifest.json').write_bytes(canonical(manifest))
         if destination.exists():
             raise RefreshError('product-destination-race')

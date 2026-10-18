@@ -1,0 +1,210 @@
+"""Deterministic, offline JSON-stat coordinate selection; no canonical mapping.
+
+Only explicitly selected coordinates are materialized. Source rights, scope and
+acceptance are external pinned evidence, never inferred by this adapter.
+"""
+import argparse
+import hashlib
+import itertools
+import json
+import math
+from pathlib import Path
+
+VERSION = 'offmenu-jsonstat-selection/1'
+
+
+class SelectionError(ValueError):
+    pass
+
+
+class SourceFloat(float):
+    def __new__(cls, text):
+        obj = super().__new__(cls, text)
+        obj.lexical = text
+        return obj
+
+
+def require(condition, code):
+    if not condition:
+        raise SelectionError(code)
+
+
+def unique_pairs(pairs):
+    result = {}
+    for key, value in pairs:
+        require(key not in result, 'duplicate-json-key')
+        result[key] = value
+    return result
+
+
+def decode(payload):
+    try:
+        return json.loads(payload, object_pairs_hook=unique_pairs,
+                          parse_float=SourceFloat,
+                          parse_constant=lambda _: require(False, 'nonfinite-json-number'))
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        raise SelectionError('invalid-json') from exc
+
+
+def encoded(value):
+    return (json.dumps(value, ensure_ascii=False, sort_keys=True,
+                       separators=(',', ':'), allow_nan=False) + '\n').encode()
+
+
+def escape(token):
+    return str(token).replace('~', '~0').replace('/', '~1')
+
+
+def pin(path):
+    data = Path(path).read_bytes()
+    return {'path': str(Path(path).absolute()), 'bytes': len(data),
+            'sha256': hashlib.sha256(data).hexdigest()}
+
+
+def cell(container, index, name, *, optional=False):
+    """Presence is independent of null; pointers identify absent slots too."""
+    pointer = '/' + name + '/' + str(index)
+    if container is None and optional:
+        return False, None, pointer
+    if isinstance(container, dict):
+        return str(index) in container, container.get(str(index)), pointer
+    if isinstance(container, list):
+        return index < len(container), container[index] if index < len(container) else None, pointer
+    if name == 'status' and isinstance(container, str):
+        return True, container, '/status'
+    raise SelectionError('unsupported-' + name + '-container')
+
+
+def select(payload, selectors, provenance, *, max_coordinates=1845):
+    """Select code lists or all codes (null), preserving source position order."""
+    doc = decode(payload)
+    require(isinstance(doc, dict) and doc.get('class') == 'dataset'
+            and doc.get('version') == '2.0', 'expected-jsonstat2-dataset')
+    ids, sizes = doc.get('id'), doc.get('size')
+    require(isinstance(ids, list) and ids and all(isinstance(x, str) for x in ids)
+            and len(set(ids)) == len(ids), 'invalid-dimension-ids')
+    require(isinstance(sizes, list) and len(sizes) == len(ids)
+            and all(type(n) is int and n > 0 for n in sizes), 'invalid-dimension-sizes')
+    require(isinstance(selectors, dict) and set(selectors) == set(ids), 'selector-dimensions-mismatch')
+    require(type(max_coordinates) is int and 0 < max_coordinates <= 100000, 'invalid-coordinate-limit')
+    require(isinstance(provenance, dict) and provenance.get('publisher')
+            and provenance.get('dataset') and provenance.get('sourceURL')
+            and provenance.get('originalCaptureUTC') and provenance.get('modificationNotice')
+            and provenance.get('disclaimer') and provenance.get('rightsEvidence')
+            and provenance.get('scopeEvidence'), 'provenance-evidence-required')
+    axes, dimensions = [], {}
+    for axis, size in zip(ids, sizes):
+        dimension = doc.get('dimension', {}).get(axis, {})
+        category = dimension.get('category', {})
+        positions = category.get('index')
+        if isinstance(positions, list):
+            require(all(isinstance(x, str) for x in positions), 'invalid-category-code')
+            require(len(set(positions)) == len(positions), 'duplicate-category-code')
+            positions = {code: i for i, code in enumerate(positions)}
+        require(isinstance(positions, dict) and len(positions) == size
+                and all(isinstance(k, str) and type(v) is int for k, v in positions.items())
+                and set(positions.values()) == set(range(size)), 'invalid-category-index')
+        requested = selectors[axis]
+        require(requested is None or (isinstance(requested, list) and requested
+                and all(isinstance(x, str) for x in requested)
+                and len(set(requested)) == len(requested)), 'invalid-selector-codes')
+        require(requested is None or set(requested) <= set(positions), 'selector-code-absent:' + axis)
+        chosen = sorted((c for c in positions if requested is None or c in requested), key=positions.get)
+        labels = category.get('label', {})
+        require(isinstance(labels, dict), 'invalid-category-labels')
+        dimensions[axis] = {'sourceLabel': dimension.get('label'), 'selected': [
+            {'code': c, 'position': positions[c], 'label': labels.get(c)} for c in chosen]}
+        axes.append(dimensions[axis]['selected'])
+    require(math.prod(map(len, axes)) <= max_coordinates, 'selection-coordinate-limit')
+    sha = hashlib.sha256(payload).hexdigest()
+    rows = []
+    for coordinates in itertools.product(*axes):
+        flat = 0
+        for coord, size in zip(coordinates, sizes):
+            flat = flat * size + coord['position']
+        present, value, pointer = cell(doc.get('value'), flat, 'value')
+        require(not present or value is None or (type(value) is int or isinstance(value, SourceFloat))
+                and math.isfinite(value), 'selected-value-not-finite-number')
+        status_present, status, status_pointer = cell(doc.get('status'), flat, 'status', optional=True)
+        require(not status_present or status is None or isinstance(status, str), 'selected-status-invalid')
+        kind = 'absent' if not present else 'explicit-null' if value is None else 'numeric'
+        fields = {}
+        for axis, coord in zip(ids, coordinates):
+            fields[axis] = {**coord, 'origin': {
+                'codeIndex': '/dimension/' + escape(axis) + '/category/index',
+                'label': '/dimension/' + escape(axis) + '/category/label/' + escape(coord['code']),
+                'labelPresent': coord['label'] is not None}}
+        rows.append({'schemaVersion': VERSION, 'sourceSha256': sha,
+                     'flatIndex': flat, 'coordinates': fields,
+                     'valueState': kind, 'value': value,
+                     'valueLexical': getattr(value, 'lexical', str(value)) if kind == 'numeric' else None,
+                     'valueOrigin': {'pointer': pointer, 'present': present},
+                     'status': status, 'statusOrigin': {'pointer': status_pointer, 'present': status_present},
+                     'canonicalTargets': None})
+    counts = {k: sum(r['valueState'] == k for r in rows)
+              for k in ('numeric', 'explicit-null', 'absent')}
+    counts.update(coordinates=len(rows), statusPresent=sum(r['statusOrigin']['present'] for r in rows))
+    manifest = {'schemaVersion': VERSION, 'sourceSha256': sha, 'sourceBytes': len(payload),
+                'sourceLabel': doc.get('label'), 'sourceUpdated': doc.get('updated'),
+                'dimensionOrder': ids, 'sourceSizes': sizes, 'selectedDimensions': dimensions,
+                'selectors': selectors, 'counts': counts,
+                'sourceStatusDefinitions': doc.get('extension', {}).get('status'),
+                'sourceStatusDefinitionsOrigin': '/extension/status',
+                'provenance': provenance, 'state': 'source-native-candidate-awaiting-independent-review',
+                'canonicalMapping': False, 'goldAdmission': False, 'countryComplete': False}
+    return rows, manifest
+
+
+def materialize(source, sha256, expected_bytes, selectors, provenance, output, *, max_coordinates=1845):
+    payload = Path(source).read_bytes()
+    require(len(payload) == expected_bytes and hashlib.sha256(payload).hexdigest() == sha256,
+            'source-pin-mismatch')
+    rows, manifest = select(payload, selectors, provenance, max_coordinates=max_coordinates)
+    manifest['sourcePath'] = str(Path(source).absolute())
+    content = b''.join(encoded(row) for row in rows)
+    manifest['observations'] = {'path': 'source-observations.jsonl', 'bytes': len(content),
+                                'sha256': hashlib.sha256(content).hexdigest()}
+    # Bind the executable as well as all inputs: a retry cannot silently retain
+    # older output metadata after the adapter changes.
+    manifest['adapter'] = pin(__file__)
+    products = {'source-observations.jsonl': content, 'manifest.json': encoded(manifest)}
+    output = Path(output)
+    require(not output.is_symlink(), 'output-symlink-rejected')
+    existing = [name for name in products if (output / name).exists()]
+    for name in existing:
+        require(not (output / name).is_symlink() and (output / name).read_bytes() == products[name],
+                'existing-output-conflict:' + name)
+    if len(existing) == len(products):
+        return {'outcome': 'unchanged-input-no-op', 'writes': 0, 'networkDownloads': 0, 'counts': manifest['counts']}
+    output.mkdir(parents=True, exist_ok=True)
+    for name, content in products.items():
+        if name not in existing:
+            with (output / name).open('xb') as stream:
+                stream.write(content)
+    return {'outcome': 'materialized', 'writes': len(products) - len(existing),
+            'networkDownloads': 0, 'counts': manifest['counts']}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source', required=True)
+    parser.add_argument('--sha256', required=True)
+    parser.add_argument('--expected-bytes', type=int, required=True)
+    parser.add_argument('--selectors', required=True)
+    parser.add_argument('--provenance', required=True)
+    parser.add_argument('--output', required=True)
+    parser.add_argument('--max-coordinates', type=int, default=1845)
+    args = parser.parse_args()
+    try:
+        result = materialize(args.source, args.sha256, args.expected_bytes,
+                             decode(Path(args.selectors).read_bytes()),
+                             decode(Path(args.provenance).read_bytes()), args.output,
+                             max_coordinates=args.max_coordinates)
+    except (SelectionError, OSError, ValueError, TypeError, KeyError) as exc:
+        print(json.dumps({'outcome': 'failed', 'error': str(exc), 'networkDownloads': 0}))
+        raise SystemExit(2)
+    print(json.dumps(result, sort_keys=True))
+
+
+if __name__ == '__main__':
+    main()
