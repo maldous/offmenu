@@ -203,6 +203,12 @@ def plan(binding, inputs, *, now, operation='metadata-bind', previous_build=None
                                    'realBodyAdapter': 'UNSUPPORTED_FOR_THIS_METADATA_SCOPE'}}
 
     def stop(status, *codes):
+        if status == 'MALFORMED':
+            # Every malformed exit discards all partially assembled artifacts.
+            for name in ('applicability', 'sourceAssetClaim', 'metadataManifestPins',
+                         'sourceAssetVerifiedByThisPlan', 'sharedAdapterCandidates'):
+                result.pop(name, None)
+            result.update(record=None, buildKey=None, replay=None, cache=None)
         result.update(status=status, diagnostics=sorted(set(codes)))
         return result
 
@@ -328,10 +334,6 @@ def plan(binding, inputs, *, now, operation='metadata-bind', previous_build=None
         result['status'] = 'READY_METADATA_ONLY'
         return result
     except (_MetadataDepthExceeded, RecursionError):
-        # Discard partially assembled claims if another recursive operation fails.
-        for name in ('applicability', 'sourceAssetClaim', 'metadataManifestPins'):
-            result.pop(name, None)
-        result.update(record=None, buildKey=None, replay=None, cache=None)
         return stop('MALFORMED', 'metadata-depth-limit-exceeded')
     except (RefreshError, KeyError, TypeError, ValueError, OverflowError):
         # No source values, paths, credentials or exception text in diagnostics.

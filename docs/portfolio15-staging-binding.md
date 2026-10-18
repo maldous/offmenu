@@ -163,3 +163,8 @@ not six processed data releases. Source-specific manifests, rights, actual body
 custody, selectors, field semantics and independent acceptance remain typed
 dependencies. Raw data stays Foo; Finland/Frida, native NO/FR, 403, privacy,
 production/CIX and DEV7645 restrictions are unchanged.
+
+Every `MALFORMED` planner exit clears its record, build key, replay and cache,
+and removes partial applicability, source-asset, manifest and adapter claims.
+Binding identity, source holds and fixed diagnostics remain available; a malformed
+result cannot expose a partial candidate for downstream use.
