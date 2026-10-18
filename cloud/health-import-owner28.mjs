@@ -10,7 +10,7 @@ export function validateHealthImport(serialized, context = {}) {
   const deny = reason => ({status:'blocked',reason,records:[],rejected:[],writes:false});
   if (typeof serialized !== 'string' || new TextEncoder().encode(serialized).length > 65536) return deny('Envelope must be JSON within 64 KiB');
   let e; try {e=JSON.parse(serialized);} catch {return deny('Invalid JSON');}
-  const {owner, memberId, revision, consent, now} = context;
+  const {owner, memberId, revision, consent, now} = context ?? {};
   if (!id(owner) || !id(memberId) || !Number.isSafeInteger(revision) || revision < 0 || !Number.isFinite(now)) return deny('Trusted account context required');
   if (!keys(e,['schemaVersion','owner','memberId','revision','source','records']) || e.schemaVersion !== HEALTH_IMPORT_SCHEMA || e.owner !== owner || e.memberId !== memberId || e.revision !== revision) return deny('Schema, account or revision mismatch');
   if (!keys(e.source,['kind','sourceId','exportId']) || !id(e.source.sourceId) || !id(e.source.exportId)) return deny('Source identity required');

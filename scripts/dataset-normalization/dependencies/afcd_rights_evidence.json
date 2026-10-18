@@ -1,0 +1,19 @@
+{
+  "historical_receipt_sha256": "35e1cb8205a01750d6993da828f0391c97e0874a1bb31aa433f3cded60fced07",
+  "sourceEvidence": {
+    "licenceInterpretation": {
+      "grant": "clauses 3A/3B permit reproduction/collection/derivatives/distribution subject to terms",
+      "restrictions": "clauses 4A/4B/4C require the agreement, attribution/copyright, change notices, limitations and country notice; collection independent material is not automatically relicensed",
+      "thirdParty": "clause 5 covers licensed third-party material; rights/accuracy warranties are not supplied",
+      "limits": "data average/variability and cross-country suitability warnings retained; no logo/endorsement",
+      "licence": "FSANZ Data User Licence Agreement; based on CC BY-SA 3.0 AU, not generic site-footer licence"
+    }
+  },
+  "sourceNotices": {
+    "licenceUrl": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
+    "attribution": "© Food Standards Australia New Zealand — Australian Food Composition Database Release 3; changes: three retained rows selected and source fields serialized to CSV JSON, without nutrient conversion; no endorsement implied",
+    "limitationStatement": "There are limitations associated with food composition databases. Food composition data used in the database or databases may represent an average of the nutrient content of a particular sample of foods and ingredients, determined at a particular time. The nutrient composition of foods and ingredients can vary substantially between batches and brands because of a number of factors, including changes in season, processing practices and ingredient source, and methods of calculation.",
+    "countryNotice": "This work is based on Australian data. Australian data may not be appropriate for use in other countries.",
+    "changes": "three-row extraction + serialization only; no nutrient conversion; originals external"
+  }
+}

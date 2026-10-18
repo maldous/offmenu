@@ -5,6 +5,12 @@ import {validateHealthImport,HEALTH_IMPORT_SCHEMA} from '../cloud/health-import-
 const ctx={owner:'a',memberId:'m',revision:2,now:Date.parse('2026-10-15T00:00:00Z'),consent:{id:'grant:1',status:'active',owner:'a',memberId:'m',expiresAt:'2026-11-01T00:00:00Z',purposes:['health-import'],sources:['vendor:1'],types:['weight','steps']}};
 const envelope={schemaVersion:HEALTH_IMPORT_SCHEMA,owner:'a',memberId:'m',revision:2,source:{kind:'manual-export',sourceId:'vendor:1',exportId:'export:1'},records:[{id:'r',sourceRecordId:'native:r',type:'weight',unit:'kg',value:80,observedAt:'2026-10-14T00:00:00Z'}]};
 const run=(e=envelope,c=ctx)=>validateHealthImport(JSON.stringify(e),c);
+test('missing or null trusted context blocks without throwing or returning records',()=>{
+  const serialized=JSON.stringify(envelope);
+  const blocked={status:'blocked',reason:'Trusted account context required',records:[],rejected:[],writes:false};
+  assert.deepEqual(validateHealthImport(serialized),blocked);
+  for(const context of [undefined,null,{}])assert.deepEqual(validateHealthImport(serialized,context),blocked);
+});
 test('synthetic private preview preserves identities and does not write or mutate',()=>{const before=structuredClone(envelope),r=run();assert.equal(r.status,'preview');assert.equal(r.records[0].sourceRecordId,'native:r');assert.equal(r.records[0].status,'imported-unverified');assert.equal(r.writes,false);assert.deepEqual(envelope,before);});
 test('synthetic account member revision and current consent fail closed',()=>{for(const patch of [{owner:'b'},{memberId:'other'},{revision:3},{consent:{...ctx.consent,status:'revoked'}},{consent:{...ctx.consent,expiresAt:'2026-10-01T00:00:00Z'}}])assert.equal(run(envelope,{...ctx,...patch}).status,'blocked');});
 test('native sources and browser OAuth are not portable export authority',()=>{for(const kind of ['health-connect','healthkit','browser-oauth'])assert.equal(run({...envelope,source:{...envelope.source,kind}}).status,'blocked');});

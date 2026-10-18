@@ -1,0 +1,25 @@
+{
+  "schema": "offmenu.synthetic.contract.05.v1",
+  "owner": "05",
+  "disposition": "isolated-candidate-testing-only",
+  "receiptSchema": "offmenu.worker05.lifecycle.v2",
+  "accepted": false,
+  "routes": {
+    "lifecycle.ready": {"owner": "05", "path": "/__dev/status", "method": "GET"}
+  },
+  "receiptMapping": {
+    "processOwner": "worker-05",
+    "owner": "worker-05",
+    "freshState": true,
+    "stateNamespace": "actual Worker 05 namespace; never relabel as a Worker 08 run ID",
+    "birthIdentity": ["pid", "bootId", "startTicks", "startedAt"],
+    "applicationIdentity": ["applicationArtifact", "candidateSourceSha256", "pins"],
+    "acceptance": "not accepted; Morgan/independent review required"
+  },
+  "consumerGates": [
+    "Selected Worker 08 receipt schema offmenu.synthetic.receipt.v1 and owner worker-08 differ from the native Worker 05 custody schema/owner; consumer must map facts explicitly.",
+    "Selected Worker 08 expects approved composition verdict; candidate-selection testing authorization is not acceptance or promotion approval.",
+    "Worker 04/06 own auth/mock scenario contracts; Worker 05 does not synthesize their route responses.",
+    "Corpus07 remains PENDING until its immutable pin exists."
+  ]
+}

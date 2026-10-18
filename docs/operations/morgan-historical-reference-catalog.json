@@ -425,7 +425,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 8,
+        "allocation": {
+          "obligation": "COUNTRY-QUEUE",
+          "priority": 8,
+          "owner": "Existing country owners;44/38/20/53/59 reviewers",
+          "support": "Gateway allocation",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/29/priority",
+        "allocationJsonPointer": "/obligations/29/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "REVIEW-44",
@@ -541,7 +556,22 @@
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
       "relatedCurrentIssueNumbers": [
         32
-      ]
+      ],
+      "historicalPriority": {
+        "value": 13,
+        "allocation": {
+          "obligation": "SERVICES-GAPS",
+          "priority": 13,
+          "owner": "Existing integration writer01a1371c",
+          "support": "single GitFlow writer",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/37/priority",
+        "allocationJsonPointer": "/obligations/37/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "IDENTITY-ASSESSMENT",
@@ -557,7 +587,22 @@
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
       "relatedCurrentIssueNumbers": [
         32
-      ]
+      ],
+      "historicalPriority": {
+        "value": 12,
+        "allocation": {
+          "obligation": "IDENTITY-ASSESSMENT",
+          "priority": 12,
+          "owner": "Worker4",
+          "support": "05 runtime; third-party validator owner",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/38/priority",
+        "allocationJsonPointer": "/obligations/38/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "IDENTITY-DEV",
@@ -663,7 +708,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 5,
+        "allocation": {
+          "obligation": "FREEBUFF-COMPAT",
+          "priority": 5,
+          "owner": "Worker16",
+          "support": "64 integration",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/45/priority",
+        "allocationJsonPointer": "/obligations/45/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "ROUTING-FAILOVER",
@@ -719,7 +779,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 7,
+        "allocation": {
+          "obligation": "BACKLOG-AUDIT",
+          "priority": 7,
+          "owner": "Worker52",
+          "support": "audit only",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/49/priority",
+        "allocationJsonPointer": "/obligations/49/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "AUDIT-CLOUD-PDF-VERSIONS",
@@ -775,7 +850,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 14,
+        "allocation": {
+          "obligation": "ARCH-CURATED-CORPUS-DELIVERY",
+          "priority": 14,
+          "owner": "Worker13",
+          "support": "OffMenu - 00 - Development Prototypes edits",
+          "status": "current-event-reconciled"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/53/priority",
+        "allocationJsonPointer": "/obligations/53/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "INTERIM-CAPTURE-RETIREMENT",
@@ -795,7 +885,7 @@
       "id": "SESSION-DESCRIPTIVE-TITLES",
       "historicalState": "verified-64-unique",
       "historicalOwner": "Gateway",
-      "historicalNextAction": "Maintain unique task titles on assignment; unused OffMenu \u2014 NN; no execution authority from titles",
+      "historicalNextAction": "Maintain unique task titles on assignment; unused OffMenu — NN; no execution authority from titles",
       "sourceJsonPointer": "/obligations/55",
       "currentDisposition": "historical-unreconciled",
       "currentExecutionOwner": null,
@@ -831,7 +921,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 3,
+        "allocation": {
+          "obligation": "OFFMENU-MEMPALACE-ROUTE",
+          "priority": 3,
+          "owner": "Worker64",
+          "support": "sole shared configuration writer",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/57/priority",
+        "allocationJsonPointer": "/obligations/57/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "SUPERVISOR-INDEPENDENT-EVALUATION",
@@ -931,7 +1036,22 @@
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
       "relatedCurrentIssueNumbers": [
         33
-      ]
+      ],
+      "historicalPriority": {
+        "value": 9,
+        "allocation": {
+          "obligation": "DEV7645-COUNTRY-PROGRESS-VIEW",
+          "priority": 9,
+          "owner": "OffMenu - 00 - Development Prototypes",
+          "support": "6/12/13/59 exports",
+          "status": "current-event-reconciled"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/64/priority",
+        "allocationJsonPointer": "/obligations/64/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "COUNTRY-13",
@@ -959,7 +1079,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 10,
+        "allocation": {
+          "obligation": "PRIORITY-RECORD-PROVENANCE-CORRECTION",
+          "priority": 10,
+          "owner": "Worker1",
+          "support": "traceback only",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/66/priority",
+        "allocationJsonPointer": "/obligations/66/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "CORE-BARCODE-CANONICAL-IDENTITY",
@@ -973,7 +1108,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 11,
+        "allocation": {
+          "obligation": "CORE-BARCODE-CANONICAL-IDENTITY",
+          "priority": 11,
+          "owner": "Worker56",
+          "support": "schema proposal owner",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/67/priority",
+        "allocationJsonPointer": "/obligations/67/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
@@ -987,7 +1137,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 1,
+        "allocation": {
+          "obligation": "PERMANENT-LEDGER-OPERATIONAL-ADOPTION",
+          "priority": 1,
+          "owner": "Morgan durable parent",
+          "support": "64 implementation;14 evaluation",
+          "status": "current-event-reconciled"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/68/priority",
+        "allocationJsonPointer": "/obligations/68/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "BULK-IDLE-WORKER-RECOVERY",
@@ -1001,7 +1166,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 4,
+        "allocation": {
+          "obligation": "BULK-IDLE-WORKER-RECOVERY",
+          "priority": 4,
+          "owner": "Gateway",
+          "support": "Gateway dispatch authority",
+          "status": "current-event-reconciled"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/69/priority",
+        "allocationJsonPointer": "/obligations/69/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
@@ -1015,7 +1195,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 2,
+        "allocation": {
+          "obligation": "UNIVERSAL-LOCAL-WORKFLOW-ADOPTION",
+          "priority": 2,
+          "owner": "Worker6",
+          "support": "64 integration;14 evaluation",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/70/priority",
+        "allocationJsonPointer": "/obligations/70/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
@@ -1029,7 +1224,22 @@
       "currentWholeRequirementAcceptance": "not-established",
       "relatedCandidateIds": [],
       "note": "Historical owner/state/action retained as evidence, not a current assignment or permission. Current scope requires source-bound reconciliation.",
-      "relatedCurrentIssueNumbers": []
+      "relatedCurrentIssueNumbers": [],
+      "historicalPriority": {
+        "value": 6,
+        "allocation": {
+          "obligation": "CIX-LINEAR-LOCAL-LEDGER-BOUNDARY",
+          "priority": 6,
+          "owner": "Worker11",
+          "support": "read-only",
+          "status": "assigned-existing-owner"
+        },
+        "sourceCommit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "sourceSequence": 5271,
+        "sourceJsonPointer": "/obligations/71/priority",
+        "allocationJsonPointer": "/obligations/71/priorityAllocation",
+        "scope": "Historical parent ordering only; not a global child rank and not an authority/readiness grant"
+      }
     },
     {
       "id": "CORE-APP-SCANNER-DELIVERY",
@@ -1159,7 +1369,7 @@
       "id": "PRODUCT-PREFERENCE-QUALIFICATION",
       "historicalState": "open-tracking-gap-reconciled",
       "historicalOwner": "Gateway",
-      "historicalNextAction": "Use retained ENRICH02\u201306 source/implementation joins to identify exact existing custody/selected consumer input; no full reread or source acquisition.",
+      "historicalNextAction": "Use retained ENRICH02–06 source/implementation joins to identify exact existing custody/selected consumer input; no full reread or source acquisition.",
       "sourceJsonPointer": "/obligations/80",
       "currentDisposition": "historical-unreconciled",
       "currentExecutionOwner": null,
@@ -2274,5 +2484,154 @@
     ],
     "originalValuesPreservedInImmutableSource": "https://github.com/maldous/offmenu/blob/8c25c6d76088c958d17f7adc4a3c0af7aab5c298/operational-ledger/management-summary.json",
     "rule": "Use each row sourceJsonPointer to recover exact historical provenance. Historical states, owners, IDs and result hashes are unchanged; local paths are not public access links."
+  },
+  "priorityInterpretation": {
+    "restoredExplicitHistoricalParents": 14,
+    "unrankedHistoricalParents": 75,
+    "currentCandidatePriorityScope": "Local five-candidate proposal only, not original global priority",
+    "latestUserOverrides": [
+      "Tiny cloud mode",
+      "Freebuff stopped",
+      "CIX paused",
+      "Automatic continuation route already proven",
+      "Prioritize main corpus and maximum existing-ledger delivery",
+      "Morgan schedules and coordinates; sole publication worker writes",
+      "Global all-country dataset consolidation and deterministic end-state refresh harness; assess all outstanding sources together, not only incremental Norway/France",
+      "Latest ordering: TOP repository consolidation with ledger consistency; NEXT global all-country refresh."
+    ],
+    "rule": "Apply current explicit direction, authorization and ready dependencies before historical parent ordering. A newly cleared prerequisite is eligibility, not highest priority.",
+    "currentPrimaryAllocation": {
+      "recordedAtUTC": "2026-10-18T00:50:00Z",
+      "priority": "TOP",
+      "scope": "Single working develop repository consolidation and ledger consistency",
+      "next": "Global all-country deterministic refresh after repository consolidation",
+      "preserve": {
+        "minimumCacheReuseDays": 30,
+        "independentSourceFailures": true,
+        "perSourceProvenanceAndDiagnostics": true,
+        "noAIRuntime": true
+      },
+      "authority": "Coordinator-provided latest explicit user direction",
+      "limits": [
+        "No country-complete claim",
+        "Source/licence and actual platform holds remain",
+        "No production/main/deploy"
+      ]
+    },
+    "priorAllocation": {
+      "recordedAtUTC": "2026-10-18T00:27:00Z",
+      "priority": "primary-current-allocation",
+      "scope": "Global all-country dataset consolidation and deterministic end-state refresh harness; assess all outstanding sources together, not only incremental Norway/France",
+      "requirements": [
+        "Reuse cached inputs for at least 30 days; conditional refresh only after that interval",
+        "Complete scripts/adapters registry and harness",
+        "Continue independent sources after failures; capture per-source status, diagnostics and provenance",
+        "No AI runtime"
+      ],
+      "relationship": "Updates existing corpus/cache/ledger delivery requirements; no new duplicate tickets",
+      "authority": "Latest explicit user direction supersedes historical parent rank for current selection",
+      "limits": [
+        "No complete-coverage claim",
+        "Preserve source rights, platform restrictions and held data-job boundaries",
+        "Root reallocates workers to global inventory/harness/online-acquisition contracts"
+      ],
+      "supersededBy": "Latest repository-consolidation priority; retained for historical provenance only."
+    }
+  },
+  "currentReconciliationAnnotations": {
+    "recordedAtUTC": "2026-10-18T00:50:00Z",
+    "scope": "Append-only current annotations; original89/43/5 rows retained with14restored historical parent priorities",
+    "mealAvailability": {
+      "itemId": "owner22-meal-availability-pure-local",
+      "source": {
+        "commit": "8c25c6d76088c958d17f7adc4a3c0af7aab5c298",
+        "path": "docs/handover/2026-10-17/operational-ledger/management-summary.json",
+        "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93"
+      },
+      "status": "historical-helper-F1-closed-producer-scoped-pass-current-integration-held",
+      "sourceRecords": [
+        {
+          "pointer": "/workQueue/items/39",
+          "sequence": null,
+          "resultEventId": null,
+          "dispositionKind": null
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/24",
+          "sequence": 1284,
+          "resultEventId": "worker22-meal-availability-pure-local-result-21e02009-20261016",
+          "dispositionKind": "dispatched"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/25",
+          "sequence": 1303,
+          "resultEventId": "worker18-meal22-21e020-review-result-20261016",
+          "dispositionKind": "dispatched"
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/26",
+          "sequence": 1314,
+          "resultEventId": "worker22-meal22-W18-F1-result-de9eeb22-20261016",
+          "dispositionKind": "dispatched"
+        },
+        {
+          "pointer": "/pendingManagementActions/disposed/43",
+          "sequence": 1318,
+          "resultEventId": "worker18-meal22-F1-de9eeb-review-result-20261016",
+          "dispositionKind": "blocked"
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/166",
+          "sequence": 1445,
+          "resultEventId": "worker22-match-stock-producer-result-a2c2a43d-20261016",
+          "dispositionKind": null
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/170",
+          "sequence": 1458,
+          "resultEventId": "worker18-producer-a2c2-review-result-20261016",
+          "dispositionKind": null
+        },
+        {
+          "pointer": "/pendingManagementActions/awaitingEvidenceOrDisposition/27",
+          "sequence": 1464,
+          "resultEventId": "worker22-producer-F1-result-59ec1cc7-20261016",
+          "dispositionKind": null
+        },
+        {
+          "pointer": "/pendingManagementActions/pending/246",
+          "sequence": 1827,
+          "resultEventId": "worker18-producer-F1-59ec1c-review-result-20261016",
+          "dispositionKind": null
+        }
+      ],
+      "codeIdentity": {
+        "correctedHelperCommit": "de9eeb224c8d584fcb986f7cd8b0c65d48469807",
+        "preservedCommit": "59ec1cc73c94deb27f564c63741e1f91cd547bdf",
+        "helperPath": "dev/meal-availability.mjs",
+        "helperGitBlob": "ddcbe4fb85b4aae52aa3d0e243d6fece8213565b",
+        "producerPath": "dev/match-recipe-stock-input.mjs",
+        "producerGitBlob": "8d9c341ca2063963b2bf4a8bc3eff4c0bc609172",
+        "producerTestGitBlob": "2f0cf4d579424d21160ae86de1ab273abca8f81a",
+        "currentBase": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+        "currentHelperRead": "GitHub contents NOT_FOUND"
+      },
+      "correction": "The historical picked-up row is incomplete as downstream evidence: results1284/1314 and review1303/disposed1318 establish scoped helper correction; producer1464/review1827 establish scoped producer PASS. Preserve the original row; do not say no result/review exists.",
+      "parentFeatureClosed": false,
+      "currentRuntimeIntegrationAccepted": false,
+      "originalReceiptBodiesReverified": false,
+      "remaining": [
+        "Exact current caller ingredient identity, physical basis, amount, source admission and snapshot/account round-trip",
+        "Bind acceptance to exact target; no name-based substitution",
+        "Retain current integration/publication/source holds"
+      ],
+      "localEvidenceSha256": "aeedcbcfe1896fa80b857359e27aef7a9b8265909d65b392f57d9331a12fa05d"
+    },
+    "latestSelection": {
+      "top": "Single working develop repository consolidation with ledger consistency",
+      "next": "Global all-country deterministic refresh using existing knowledge/code after consolidation",
+      "historicalRankDoesNotOverrideLatestUserSelection": true
+    },
+    "repositoryAcceptance": "Local package approval only; no assembled candidate, develop merge or whole-feature/country acceptance claimed"
   }
 }

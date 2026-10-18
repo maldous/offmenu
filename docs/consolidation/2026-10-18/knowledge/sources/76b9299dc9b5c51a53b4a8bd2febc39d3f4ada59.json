@@ -1,0 +1,23 @@
+{
+  "localRoot": "/home/user/src/offmenu-data/common-data-reviewed-package-20261014",
+  "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d",
+  "acceptedReleases": [
+    {
+      "releaseId": "common-data-20261014",
+      "manifestSha256": "c15005b224ae18c1e660837c6ac9fab88beb0b4d53ce34db6a5a87f12f6d919d"
+    }
+  ],
+  "files": [
+    {
+      "key": "concepts/part-0000.jsonl.gz",
+      "sha256": "e76f179db6c135b37fdfb18ed58aa39d7cc1abb95d91e497721cb2eb6b411553",
+      "packetIndexes": [0, 249, 499]
+    }
+  ],
+  "limits": {
+    "files": 1,
+    "compressedBytes": 131072,
+    "decompressedBytes": 8388608,
+    "packets": 500
+  }
+}
