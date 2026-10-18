@@ -49,6 +49,29 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(out['originalDownloadMetadata'], {})
         self.assertEqual(out['provenance'], {})
 
+    def test_repository_collector_manifest_shapes(self):
+        # Exact top-level field shapes emitted by collect-jsonl.mjs/collect-national.py.
+        for raw in (
+            {'schemaVersion':'offmenu-collection/1','sourceId':'off','releaseId':'r',
+             'archiveSha256':'A'*64,'status':'normalized','completedAt':'2026-10-12T01:02:03.456Z',
+             'partitions':[{'key':'private','sha256':'b'*64}], 'counts':{'raw':10}},
+            {'schemaVersion':'offmenu-collection/1','sourceId':'cofid','releaseId':'r',
+             'archiveSha256':'c'*64,'status':'normalized','completedAt':'2026-10-12T01:02:03.456789+00:00',
+             'sourceFiles':[{'path':'private','sha256':'d'*64}], 'normalizedRows':10}):
+            out=m.sanitize(json.dumps(raw).encode(),'x')
+            self.assertEqual(out['collectionMetadata'],{'archiveSha256':raw['archiveSha256'].lower(),'completedAt':raw['completedAt']})
+            self.assertEqual(out['originalDownloadMetadata'],{})
+            self.assertFalse(out['provenanceVerified'])
+            self.assertIn('not acquisition or freshness',out['collectionMetadataMeaning'])
+            self.assertNotIn('private',json.dumps(out))
+            self.assertNotIn('sourceFiles',out)
+
+    def test_collection_metadata_rejects_invalid_values(self):
+        for value in (None,True,123,{},[], 'secret', '2026-99-99T01:02:03Z', '2026-10-12'):
+            out=m.sanitize(json.dumps({'archiveSha256':value,'completedAt':value}).encode(),'x')
+            self.assertEqual(out['collectionMetadata'],{})
+            self.assertEqual(out['originalDownloadMetadata'],{})
+
     def test_collect_only_exact_paths(self):
         paths = []
         def read(path, owner):

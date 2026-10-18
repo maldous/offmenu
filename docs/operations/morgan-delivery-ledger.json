@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "owner-proxy-collector-reviewed-awaiting-publication-and-execution",
-  "asOfUTC": "2026-10-18T03:26:00Z",
+  "status": "pr39-merged-owner-handoff-held-for-schema-correction",
+  "asOfUTC": "2026-10-18T03:37:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -102,7 +102,7 @@
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
     "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
-    "selectedRepositoryBase": "d8e212fb7927e4dca0610e974be97076679c1e32",
+    "selectedRepositoryBase": "9e2d20083feca6b1558ef401f852e5650b226ca7",
     "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
@@ -312,6 +312,13 @@
       "eventId": "owner-proxy-five-file-review-complete",
       "status": "source-reviewed-not-executed",
       "description": "Independent23tests and exact five-file collector/wrapper/tests/docs manifest accepted. Composed source batch excludes withdrawn admin helper. Actual execution remains owner step absent verified supported identity route, using isolated pinned worktree and one sanitized PR30 receipt."
+    },
+    {
+      "atUTC": "2026-10-18T03:37:00Z",
+      "event": "PR39 merged; owner handoff held for concrete archiveSha256/completedAt schema correction",
+      "commit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "ownerExecution": false,
+      "sourceAdmissions": 0
     }
   ],
   "lanes": [
@@ -1119,16 +1126,16 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "merged-develop-pr38-postmerge-application-ci-passed",
-    "verifiedPriorCommit": "d8e212fb7927e4dca0610e974be97076679c1e32",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/d8e212fb7927e4dca0610e974be97076679c1e32",
+    "status": "pr39-merged-head-ci-passed-schema-correction-pending",
+    "verifiedPriorCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/9e2d20083feca6b1558ef401f852e5650b226ca7",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only",
-    "note": "PR38 and postmerge CI verified. Service extension withdrawn; replacement normal-user metadata collector is independently reviewed, awaiting publication/CI and actual owner execution."
+    "note": "PR39 merge and both exact-head CI runs verified. Owner handoff held before execution for concrete manifest schema correction. No service extension or source admission."
   },
   "activeWork": [
     "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
@@ -2586,25 +2593,21 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "pullRequest": "https://github.com/maldous/offmenu/pull/38",
-      "merge": "d8e212fb7927e4dca0610e974be97076679c1e32",
-      "tree": "c5d29f6f4ef7bae1534399778b725cf4bf22d6b1",
-      "premergeRuns": [
-        39093118562,
-        39093112905
+      "pr": 39,
+      "url": "https://github.com/maldous/offmenu/pull/39",
+      "mergedCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "tree": "f12117651550293d483eeb2f1b16dccf5eb4ff55",
+      "reviewedHead": "245f67e7123d8d5c10461bac065a037f75312ab8",
+      "exactHeadCIRuns": [
+        39093904683,
+        39093898110
       ],
-      "postmergeRun": 39093301057,
-      "postmergeJob": 117574407327,
-      "applicationConclusion": "success",
-      "testCounts": {
-        "webPassed": 677,
-        "localeEdgePassed": 11,
-        "pythonRun": 723,
-        "pythonSkipped": 4,
-        "portableOcrPassed": 6
+      "postmergeCI": {
+        "runId": 39094155901,
+        "conclusion": "success",
+        "head": "9e2d20083feca6b1558ef401f852e5650b226ca7"
       },
-      "receiptComment": "https://github.com/maldous/offmenu/pull/38#issuecomment-6245140103",
-      "boundary": "Source-only offline adapters/documentary rights and custody; zero production admissions, no owner/service/access execution."
+      "scope": "Six exact reviewed paths; owner handoff held for subsequent producer-schema correction. No execution/admission."
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -3109,6 +3112,27 @@
       "holds": "Historical security incidents and skipped scanner/environment/source/health holds remain.",
       "postmergeRun": 39091802482,
       "postmergeJob": 117569943743
+    },
+    "priorPR38CompletionReceipt": {
+      "pullRequest": "https://github.com/maldous/offmenu/pull/38",
+      "merge": "d8e212fb7927e4dca0610e974be97076679c1e32",
+      "tree": "c5d29f6f4ef7bae1534399778b725cf4bf22d6b1",
+      "premergeRuns": [
+        39093118562,
+        39093112905
+      ],
+      "postmergeRun": 39093301057,
+      "postmergeJob": 117574407327,
+      "applicationConclusion": "success",
+      "testCounts": {
+        "webPassed": 677,
+        "localeEdgePassed": 11,
+        "pythonRun": 723,
+        "pythonSkipped": 4,
+        "portableOcrPassed": 6
+      },
+      "receiptComment": "https://github.com/maldous/offmenu/pull/38#issuecomment-6245140103",
+      "boundary": "Source-only offline adapters/documentary rights and custody; zero production admissions, no owner/service/access execution."
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -3297,7 +3321,7 @@
       },
       "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
     },
-    "nextDependency": "After reviewed collector publication/fullCI, obtain one sanitized metadata receipt using a verified supported owner identity route or isolated immutable owner command; no sudo/service/mount/access change. Qualify real source admission separately using exact release/rights/hash/time evidence.",
+    "nextDependency": "Review and publish bounded owner collector schema correction, then execute pinned normal-user receipt through verified owner identity; qualify source bindings separately.",
     "currentSourceAcquisitionBindings": 0,
     "actualPayloadAcceptance": false,
     "globalDatasetCompletion": false,
@@ -3677,6 +3701,63 @@
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission."
     },
     "ownerMetadataCollector": {
+      "state": "pr39-merged-correction-review-pending-owner-handoff-held",
+      "files": [
+        {
+          "path": "docs/owner-manifest-metadata.md",
+          "bytes": 7409,
+          "sha256": "91ac1ac8aabd1923e3fe0b0f6b36c6570b97c4be44caf0c33036aeef73034517",
+          "gitBlob": "704ac7f49533e951513a11e4ea917d6189e9c049",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/collect-owner-manifest-metadata.py",
+          "bytes": 10304,
+          "sha256": "456e32de0c97fc66e2bea2dcc090d89c850d5538d126a18af7662acd37c0d293",
+          "gitBlob": "4f02c2a51008ac4a7e91b446494dab8d2152fc63",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/run-owner-manifest-metadata.py",
+          "bytes": 8915,
+          "sha256": "8082d8e88cc1191de8c069ef030418177d6779445ff717f738cbd25ad4c6b8cf",
+          "gitBlob": "3b03c7ecc73526061f8b3936ff2ba5a15be21dcf",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_batch.py",
+          "bytes": 5651,
+          "sha256": "5a569cbb49016e5a4c9785e3916fbee594d974c15f8fbb9240b789a1397bae67",
+          "gitBlob": "774306daf8d9dcafe2cdd7df0bc3fac1666578de",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_metadata.py",
+          "bytes": 9750,
+          "sha256": "ef2a9c6ea5f52825439d10aec0c6ba4af2ddcbfd1e4b18726dc22993946ac1ad",
+          "gitBlob": "a1110d67403ec1dc2d7e9853b6ab06686014518f",
+          "mode": "100644"
+        }
+      ],
+      "focusedTests": 25,
+      "receiptDestination": "maldous/offmenu PR30; existing approved destination",
+      "executionBoundary": "Actual execution remains owner step unless supported existing owner identity route is verified. No floating branch or overwrite of dirty checkout. Existing gh authentication only; no credential entry, login or grant.",
+      "adminHelperIntegrated": false,
+      "actualExecution": false,
+      "receiptPublished": false,
+      "mergedCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "reviewedHead": "245f67e7123d8d5c10461bac065a037f75312ab8",
+      "headCIRuns": [
+        39093904683,
+        39093898110
+      ],
+      "correctionReason": "Actual repository producers emit archiveSha256/completedAt, omitted by initial whitelist; owner command held before execution.",
+      "correctionSemantics": "Source-declared archive-or-bundle identity and normalization completion only; no acquisition or freshness inference.",
+      "correctionSource": "https://github.com/maldous/offmenu/pull/39#discussion_r4305577437",
+      "priorManifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
+      "correctionManifestBoundary": "Exact revised external manifest is frozen after ledger serialization; no self-reference."
+    },
+    "priorOwnerCollectorPreparation": {
       "state": "independently-reviewed-not-executed",
       "manifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
       "files": [
@@ -4003,5 +4084,71 @@
       "Close preserved payload-location/rights/adapter compatibility gaps with bounded evidence; do not invent source routes or permissions",
       "No additional offline census job without a concrete new input or changed condition"
     ]
+  },
+  "priorPR39PreparationCurrentState": {
+    "status": "owner-proxy-collector-reviewed-awaiting-publication-and-execution",
+    "asOfUTC": "2026-10-18T03:26:00Z",
+    "publication": {
+      "status": "merged-develop-pr38-postmerge-application-ci-passed",
+      "verifiedPriorCommit": "d8e212fb7927e4dca0610e974be97076679c1e32",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/d8e212fb7927e4dca0610e974be97076679c1e32",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only",
+      "note": "PR38 and postmerge CI verified. Service extension withdrawn; replacement normal-user metadata collector is independently reviewed, awaiting publication/CI and actual owner execution."
+    },
+    "currentExecution": {
+      "sourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "sourceStatus": "Reviewed global-readiness offline assessment passed all12steps on Foo; no acquisition/source admission or country completion",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Normal-user fixed-manifest collector independently reviewed; waiting source publication/fullCI and verified existing owner execution route or one owner command. Real source custody/freshness/admission remains unresolved."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "latestExecutedControlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "c9adb646d4051457f54451b64c2b86d08ac102b1",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+      "selectedRepositoryBase": "d8e212fb7927e4dca0610e974be97076679c1e32",
+      "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Publish reviewed normal-user collector and obtain one sanitized PR30 metadata receipt through existing owner identity; no service-extension approval pending.",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    }
   }
 }
