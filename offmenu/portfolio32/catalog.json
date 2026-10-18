@@ -1,0 +1,812 @@
+{
+  "schemaVersion": "worker32-portfolio-bindings/1",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "countries": [
+    "GB",
+    "GD",
+    "GE",
+    "GF"
+  ],
+  "requiredDataTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "metadataOnly": true,
+  "sourceProcessingAuthorized": false,
+  "sources": [
+    {
+      "binding": {
+        "key": "gb-phe-2016",
+        "country": "GB",
+        "source_id": "gb-phe-retained-contexts",
+        "release_id": "PHE-Aug2016",
+        "metadata_path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/GB/field-evidence-after4621/GB62-field-evidence-bindings.json",
+        "metadata_sha256": "46a9fb6640416d1e76182e0f3c16bccc0abefdbefdbb02b5c93941ff086ab511",
+        "acquired_at": "2026-10-15T22:43:58.339517+00:00",
+        "expected_contexts": 62,
+        "expected_record_refs": 558,
+        "holds": []
+      },
+      "applicability": {
+        "countries": [
+          "GB"
+        ],
+        "dataTypes": [
+          "dietary-reference-source-input-metadata"
+        ],
+        "excluded": [
+          "clinical/current-policy recommendations",
+          "canonical nutrient equivalence",
+          "Guernsey inheritance"
+        ],
+        "wholeCountryCoverage": false
+      },
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/GB/field-evidence-after4621/manifest.json",
+          "sha256": "29694a3dc623c2e2427115e0058487776d827e3b616a359d5e4e23843172b9f3"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-32/continuation-01/receipt.json",
+          "sha256": "ec5e881d9c6b2f3856f02a9ed1809f8c5bb70c22c24d53dd89a020049d4544f7",
+          "selector": "/utc"
+        }
+      ],
+      "rightsEvidence": {
+        "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-32/continuation-01/source-verification.json",
+        "sha256": "3f35036080f32a3f4b1a87692fe79701fcb3b3d3542f9b0bb2043465066480f7",
+        "selector": "/sourceLicence"
+      },
+      "rightsMeaning": "Existing PHE historical retention with attribution/OGL conditions, logo and identified third-party exceptions. No new use decision; metadata binding is selected, source-body operations and acceptance are not.",
+      "originDeclarations": {
+        "input": "retained-contexts.json",
+        "context": "/bindings/{index}",
+        "cohort": "/bindings/{index}/cohortApplicabilityEvidence",
+        "originalParsedArtifact": "/bindings/{index}/sourceArtifact",
+        "values": "Binding FIELDS maps exact metadata JSON pointers; nested targets are opaque and never followed."
+      },
+      "unknowns": [
+        "All ten target/use/admission fields null",
+        "physical/serving basis null",
+        "current policy validity null",
+        "Table4 context39 subnoteBinding null STOP",
+        "mg/d stays literal d"
+      ],
+      "sourceProcessingAuthorized": false,
+      "sourceInputDeclarations": [
+        {
+          "sourceInputId": "gb-phe-2016-contexts",
+          "country": "GB",
+          "inputKind": "retained-source-context-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/GB/field-evidence-after4621/GB62-field-evidence-bindings.json",
+            "sha256": "46a9fb6640416d1e76182e0f3c16bccc0abefdbefdbb02b5c93941ff086ab511"
+          },
+          "selector": "/bindings",
+          "fields": {
+            "input": "retained-contexts.json",
+            "context": "/bindings/{index}",
+            "cohort": "/bindings/{index}/cohortApplicabilityEvidence",
+            "originalParsedArtifact": "/bindings/{index}/sourceArtifact",
+            "values": "Binding FIELDS maps exact metadata JSON pointers; nested targets are opaque and never followed."
+          },
+          "nativeUnitBasis": "Literal per-context fields only; no conversion",
+          "processing": "metadata-only"
+        }
+      ]
+    },
+    {
+      "binding": {
+        "key": "gd-retained-receipts",
+        "country": "GD",
+        "source_id": "gd-retained-receipts",
+        "release_id": "retained-receipt-metadata-20261017",
+        "metadata_path": null,
+        "metadata_sha256": null,
+        "acquired_at": null,
+        "expected_contexts": 0,
+        "expected_record_refs": 0,
+        "holds": [
+          "derived-recipe-use-not-selected"
+        ]
+      },
+      "applicability": {
+        "countries": [
+          "GD"
+        ],
+        "dataTypes": [
+          "source-receipt-metadata"
+        ],
+        "wholeCountryCoverage": false
+      },
+      "evidence": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+          "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+        }
+      ],
+      "rightsMeaning": "Eight GFNC images are not parsed recipes. Historical CPI/menu acquisition metadata does not establish national prices or derivative-use permission.",
+      "sourceProcessingAuthorized": false,
+      "unknowns": [
+        "No selected source-field candidate manifest or acceptance scope; acquisition and validation age remain distinct."
+      ],
+      "sourceInputDeclarations": [
+        {
+          "sourceInputId": "gd-receipt-0",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/0",
+          "fieldSelectors": {
+            "sourceURL": "/sources/0/sourceURL",
+            "sourceReleaseLiteral": "/sources/0/sourceReleaseLiteral",
+            "statusLiteral": "/sources/0/statusLiteral",
+            "rightsEvidence": "/sources/0/rightsEvidence",
+            "finiteExtentLiteral": "/sources/0/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/0/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/0/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/0/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-1",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/1",
+          "fieldSelectors": {
+            "sourceURL": "/sources/1/sourceURL",
+            "sourceReleaseLiteral": "/sources/1/sourceReleaseLiteral",
+            "statusLiteral": "/sources/1/statusLiteral",
+            "rightsEvidence": "/sources/1/rightsEvidence",
+            "finiteExtentLiteral": "/sources/1/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/1/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/1/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/1/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-2",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/2",
+          "fieldSelectors": {
+            "sourceURL": "/sources/2/sourceURL",
+            "sourceReleaseLiteral": "/sources/2/sourceReleaseLiteral",
+            "statusLiteral": "/sources/2/statusLiteral",
+            "rightsEvidence": "/sources/2/rightsEvidence",
+            "finiteExtentLiteral": "/sources/2/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/2/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/2/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/2/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-3",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/3",
+          "fieldSelectors": {
+            "sourceURL": "/sources/3/sourceURL",
+            "sourceReleaseLiteral": "/sources/3/sourceReleaseLiteral",
+            "statusLiteral": "/sources/3/statusLiteral",
+            "rightsEvidence": "/sources/3/rightsEvidence",
+            "finiteExtentLiteral": "/sources/3/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/3/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/3/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/3/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-4",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/4",
+          "fieldSelectors": {
+            "sourceURL": "/sources/4/sourceURL",
+            "sourceReleaseLiteral": "/sources/4/sourceReleaseLiteral",
+            "statusLiteral": "/sources/4/statusLiteral",
+            "rightsEvidence": "/sources/4/rightsEvidence",
+            "finiteExtentLiteral": "/sources/4/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/4/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/4/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/4/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-5",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/5",
+          "fieldSelectors": {
+            "sourceURL": "/sources/5/sourceURL",
+            "sourceReleaseLiteral": "/sources/5/sourceReleaseLiteral",
+            "statusLiteral": "/sources/5/statusLiteral",
+            "rightsEvidence": "/sources/5/rightsEvidence",
+            "finiteExtentLiteral": "/sources/5/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/5/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/5/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/5/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-6",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/6",
+          "fieldSelectors": {
+            "sourceURL": "/sources/6/sourceURL",
+            "sourceReleaseLiteral": "/sources/6/sourceReleaseLiteral",
+            "statusLiteral": "/sources/6/statusLiteral",
+            "rightsEvidence": "/sources/6/rightsEvidence",
+            "finiteExtentLiteral": "/sources/6/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/6/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/6/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/6/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-7",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/7",
+          "fieldSelectors": {
+            "sourceURL": "/sources/7/sourceURL",
+            "sourceReleaseLiteral": "/sources/7/sourceReleaseLiteral",
+            "statusLiteral": "/sources/7/statusLiteral",
+            "rightsEvidence": "/sources/7/rightsEvidence",
+            "finiteExtentLiteral": "/sources/7/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/7/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/7/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/7/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-8",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/8",
+          "fieldSelectors": {
+            "sourceURL": "/sources/8/sourceURL",
+            "sourceReleaseLiteral": "/sources/8/sourceReleaseLiteral",
+            "statusLiteral": "/sources/8/statusLiteral",
+            "rightsEvidence": "/sources/8/rightsEvidence",
+            "finiteExtentLiteral": "/sources/8/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/8/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/8/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/8/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-9",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/9",
+          "fieldSelectors": {
+            "sourceURL": "/sources/9/sourceURL",
+            "sourceReleaseLiteral": "/sources/9/sourceReleaseLiteral",
+            "statusLiteral": "/sources/9/statusLiteral",
+            "rightsEvidence": "/sources/9/rightsEvidence",
+            "finiteExtentLiteral": "/sources/9/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/9/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/9/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/9/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-10",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/10",
+          "fieldSelectors": {
+            "sourceURL": "/sources/10/sourceURL",
+            "sourceReleaseLiteral": "/sources/10/sourceReleaseLiteral",
+            "statusLiteral": "/sources/10/statusLiteral",
+            "rightsEvidence": "/sources/10/rightsEvidence",
+            "finiteExtentLiteral": "/sources/10/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/10/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/10/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/10/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-11",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/11",
+          "fieldSelectors": {
+            "sourceURL": "/sources/11/sourceURL",
+            "sourceReleaseLiteral": "/sources/11/sourceReleaseLiteral",
+            "statusLiteral": "/sources/11/statusLiteral",
+            "rightsEvidence": "/sources/11/rightsEvidence",
+            "finiteExtentLiteral": "/sources/11/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/11/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/11/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/11/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "gd-receipt-12",
+          "country": "GD",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/12",
+          "fieldSelectors": {
+            "sourceURL": "/sources/12/sourceURL",
+            "sourceReleaseLiteral": "/sources/12/sourceReleaseLiteral",
+            "statusLiteral": "/sources/12/statusLiteral",
+            "rightsEvidence": "/sources/12/rightsEvidence",
+            "finiteExtentLiteral": "/sources/12/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/12/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/12/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/12/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        }
+      ]
+    },
+    {
+      "binding": {
+        "key": "ge-retained-receipts",
+        "country": "GE",
+        "source_id": "ge-retained-receipts",
+        "release_id": "retained-receipt-metadata-20261017",
+        "metadata_path": null,
+        "metadata_sha256": null,
+        "acquired_at": null,
+        "expected_contexts": 0,
+        "expected_record_refs": 0,
+        "holds": [
+          "source-field-and-use-scope-not-selected"
+        ]
+      },
+      "applicability": {
+        "countries": [
+          "GE"
+        ],
+        "dataTypes": [
+          "source-receipt-metadata"
+        ],
+        "wholeCountryCoverage": false
+      },
+      "evidence": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+          "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+        }
+      ],
+      "rightsMeaning": "Order2003 is not2009FCT; CPI index is not itemprice; menu effective date and source-field semantics unresolved.",
+      "sourceProcessingAuthorized": false,
+      "unknowns": [
+        "No selected source-field candidate manifest or acceptance scope; acquisition and validation age remain distinct."
+      ],
+      "sourceInputDeclarations": [
+        {
+          "sourceInputId": "ge-receipt-13",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/13",
+          "fieldSelectors": {
+            "sourceURL": "/sources/13/sourceURL",
+            "sourceReleaseLiteral": "/sources/13/sourceReleaseLiteral",
+            "statusLiteral": "/sources/13/statusLiteral",
+            "rightsEvidence": "/sources/13/rightsEvidence",
+            "finiteExtentLiteral": "/sources/13/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/13/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/13/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/13/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-14",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/14",
+          "fieldSelectors": {
+            "sourceURL": "/sources/14/sourceURL",
+            "sourceReleaseLiteral": "/sources/14/sourceReleaseLiteral",
+            "statusLiteral": "/sources/14/statusLiteral",
+            "rightsEvidence": "/sources/14/rightsEvidence",
+            "finiteExtentLiteral": "/sources/14/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/14/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/14/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/14/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-15",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/15",
+          "fieldSelectors": {
+            "sourceURL": "/sources/15/sourceURL",
+            "sourceReleaseLiteral": "/sources/15/sourceReleaseLiteral",
+            "statusLiteral": "/sources/15/statusLiteral",
+            "rightsEvidence": "/sources/15/rightsEvidence",
+            "finiteExtentLiteral": "/sources/15/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/15/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/15/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/15/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-16",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/16",
+          "fieldSelectors": {
+            "sourceURL": "/sources/16/sourceURL",
+            "sourceReleaseLiteral": "/sources/16/sourceReleaseLiteral",
+            "statusLiteral": "/sources/16/statusLiteral",
+            "rightsEvidence": "/sources/16/rightsEvidence",
+            "finiteExtentLiteral": "/sources/16/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/16/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/16/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/16/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-17",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/17",
+          "fieldSelectors": {
+            "sourceURL": "/sources/17/sourceURL",
+            "sourceReleaseLiteral": "/sources/17/sourceReleaseLiteral",
+            "statusLiteral": "/sources/17/statusLiteral",
+            "rightsEvidence": "/sources/17/rightsEvidence",
+            "finiteExtentLiteral": "/sources/17/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/17/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/17/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/17/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-18",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/18",
+          "fieldSelectors": {
+            "sourceURL": "/sources/18/sourceURL",
+            "sourceReleaseLiteral": "/sources/18/sourceReleaseLiteral",
+            "statusLiteral": "/sources/18/statusLiteral",
+            "rightsEvidence": "/sources/18/rightsEvidence",
+            "finiteExtentLiteral": "/sources/18/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/18/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/18/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/18/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-19",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/19",
+          "fieldSelectors": {
+            "sourceURL": "/sources/19/sourceURL",
+            "sourceReleaseLiteral": "/sources/19/sourceReleaseLiteral",
+            "statusLiteral": "/sources/19/statusLiteral",
+            "rightsEvidence": "/sources/19/rightsEvidence",
+            "finiteExtentLiteral": "/sources/19/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/19/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/19/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/19/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-20",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/20",
+          "fieldSelectors": {
+            "sourceURL": "/sources/20/sourceURL",
+            "sourceReleaseLiteral": "/sources/20/sourceReleaseLiteral",
+            "statusLiteral": "/sources/20/statusLiteral",
+            "rightsEvidence": "/sources/20/rightsEvidence",
+            "finiteExtentLiteral": "/sources/20/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/20/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/20/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/20/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        },
+        {
+          "sourceInputId": "ge-receipt-21",
+          "country": "GE",
+          "inputKind": "retained-source-receipt-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/sources/21",
+          "fieldSelectors": {
+            "sourceURL": "/sources/21/sourceURL",
+            "sourceReleaseLiteral": "/sources/21/sourceReleaseLiteral",
+            "statusLiteral": "/sources/21/statusLiteral",
+            "rightsEvidence": "/sources/21/rightsEvidence",
+            "finiteExtentLiteral": "/sources/21/finiteExtentLiteral",
+            "sourceScopeLiteral": "/sources/21/sourceScopeLiteral",
+            "declaredSourceBodyOnlyNotDereferenced": "/sources/21/declaredSourceBodyOnlyNotDereferenced",
+            "currentCustodyConfirmed": "/sources/21/currentCustodyConfirmed"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "unknownMeaning": "Not supplied in this pinned annotation; validation time and names do not fill acquisition/units/basis.",
+          "processing": "Receipt fields only; source processing not selected; nested source pointers opaque."
+        }
+      ]
+    },
+    {
+      "binding": {
+        "key": "gf-partial-original",
+        "country": "GF",
+        "source_id": "gf-partial-original",
+        "release_id": "retained-receipt-metadata-20261017",
+        "metadata_path": null,
+        "metadata_sha256": null,
+        "acquired_at": null,
+        "expected_contexts": 0,
+        "expected_record_refs": 0,
+        "holds": [
+          "partial-source-no-retry"
+        ]
+      },
+      "applicability": {
+        "countries": [
+          "GF"
+        ],
+        "dataTypes": [
+          "source-receipt-metadata"
+        ],
+        "wholeCountryCoverage": false
+      },
+      "evidence": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/GF/completion-evidence.json",
+          "sha256": "d0e09497c557fa23f0e5b85af98734897271ba9083d9acd38cb5d5bf85261db1"
+        }
+      ],
+      "rightsMeaning": "Only16777216/33138801advertisedbytes retained; no retry, capincrease, concatenation or complete booklet processing.",
+      "sourceProcessingAuthorized": false,
+      "unknowns": [
+        "No selected source-field candidate manifest or acceptance scope; acquisition and validation age remain distinct."
+      ],
+      "sourceInputDeclarations": [
+        {
+          "sourceInputId": "gf-partial-extent",
+          "country": "GF",
+          "inputKind": "retained-partial-extent-metadata",
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-32/B02-W32/GD-GE-retained-metadata-resolution.json",
+            "sha256": "aa0f615b7af87acbbf1b97269fbf272094a3e65483a4d9dcdb07244215b92404"
+          },
+          "selector": "/GFunchanged",
+          "fieldSelectors": {
+            "retainedBytes": "/GFunchanged/retainedBytes",
+            "advertisedBytes": "/GFunchanged/advertisedBytes",
+            "partial": "/GFunchanged/partial",
+            "retry": "/GFunchanged/retry"
+          },
+          "originalAcquiredAt": null,
+          "nativeUnit": null,
+          "nativeBasis": null,
+          "processing": "Partial-source hold; no body/concatenation/retry/cap change."
+        }
+      ]
+    }
+  ],
+  "sharedInterfaces": [
+    "offmenu.refresh.core.strict_json",
+    "offmenu.refresh.serialization.encode_records",
+    "offmenu.refresh.field_provenance.field_origin_errors",
+    "offmenu.refresh.acceptance.qualify"
+  ],
+  "holds": [
+    "Finland/Frida and nativeNO/FR remain separate/unmodified",
+    "No rawbody/network/acquisition or rights expansion",
+    "No production/CIX/DEV7645 actions"
+  ],
+  "scope": "References and field declarations only; not a SourceContract, permission grant, complete country inventory or source acceptance.",
+  "sharedCapabilityDependencies": [
+    {
+      "code": "generic-pure-cache-planner-unavailable",
+      "base": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "effect": "Portfolio cache/replay intent only, no installed generic cache planner or operational acquirer. Does not block retained metadata binding.",
+      "owner": "Morgan/integration00 if central extension selected"
+    },
+    {
+      "code": "phe-body-adapter-unsupported",
+      "effect": "No real source-body adapter/registry route/production SourceContract installed. Current metadata-only package remains usable.",
+      "owner": "Morgan/integration00 for any later exact selection"
+    }
+  ]
+}

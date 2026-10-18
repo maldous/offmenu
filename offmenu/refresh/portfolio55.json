@@ -1,0 +1,346 @@
+{
+  "schemaVersion": "offmenu-portfolio55-metadata/1",
+  "bindings": [
+    {
+      "country": "BW",
+      "contractVersion": "worker55-metadata-binding/1",
+      "holds": [
+        "BOBS-historical-receipt-conflict",
+        "CPI5-use-attribution-selector-mapping-unqualified"
+      ],
+      "sourceId": null,
+      "releaseId": null,
+      "applicability": "No qualified country/type binding; all six requested category requirements remain open.",
+      "retainedEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/BW/category-coverage-and-gaps.json",
+        "sha256": "c66c77bc4c8e6eb6b9c5e36ef019e7b6eb86eb4cc4c7bc107e19c99e3fd4ab17"
+      },
+      "sourceBodiesRead": false
+    },
+    {
+      "country": "GA",
+      "contractVersion": "worker55-metadata-binding/1",
+      "holds": [
+        "IHPC61-derivative-use-attribution-mapping-unqualified",
+        "composition24-regional-not-national",
+        "GNI55-export-use-held"
+      ],
+      "sourceId": null,
+      "releaseId": null,
+      "applicability": "No qualified country/type binding; all six requested category requirements remain open.",
+      "retainedEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/GA/category-coverage-and-gaps.json",
+        "sha256": "04360ca8db76ab3901b60d8bdfa35bac6ccbd5814023d53a09c625494ce08b8b"
+      },
+      "sourceBodiesRead": false
+    },
+    {
+      "country": "KH",
+      "contractVersion": "worker55-metadata-binding/1",
+      "holds": [
+        "CAS53-use-aggregate-selector-unit-basis-unqualified",
+        "composition51-approved-export-missing"
+      ],
+      "sourceId": null,
+      "releaseId": null,
+      "applicability": "No qualified country/type binding; all six requested category requirements remain open.",
+      "retainedEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/KH/category-coverage-and-gaps.json",
+        "sha256": "b686d6bd507642a6d0842d5ce95fbde39ffacf144228a47d6bb05abf6a3c9a8d"
+      },
+      "sourceBodiesRead": false
+    },
+    {
+      "country": "MY",
+      "contractVersion": "worker55-metadata-binding/1",
+      "sourceId": "DOSM:cpi_2d",
+      "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+      "holds": [],
+      "originalAcquiredAt": "2026-10-14T22:13:28.105750+00:00",
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/a062a3fe4d3753230bcf/receipt.json",
+        "bytes": 2090,
+        "sha256": "69910b051279aac55a6f9e1295a8b0bb2e4cb64435dc10c62e9d577aaf1259dd"
+      },
+      "referencePeriod": {
+        "start": "1980-01",
+        "end": "2026-08"
+      },
+      "publisherReleaseLiteral": "2026-09-18 12:25",
+      "publisherTimezone": null,
+      "pins": {
+        "original": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/a062a3fe4d3753230bcf/cpi-2d-full.csv",
+          "bytes": 148705,
+          "sha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6"
+        },
+        "publisherMetadata": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+          "bytes": 130935,
+          "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+        },
+        "normalized": {
+          "path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/source-observations.jsonl",
+          "sha256": "d43fc7b21fe76dde0a56859177e68c98bc38ab67545deb222abc22cb3a39ede0",
+          "bytes": 9372815,
+          "rows": 7840,
+          "manifest_path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/manifest.json",
+          "manifest_sha256": "053fbef431771a063a83f43943b3ed5e6d9c80f8e497682d64a28d651c1f107a"
+        },
+        "normalizer": {
+          "path": "/home/user/src/offmenu-workers/worker-38/scripts/normalize-my-cpi-worker38.py",
+          "sha256": "044b55559f0973ac47d90d1c183e0de77a83ff8c47407acf1acc936198dd5fb7"
+        },
+        "retainedHandoff": {
+          "path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/handoff.json",
+          "sha256": "9589987be36f54864fd35dcabc336baa5dd86270e9d98783c2124f7b4902226e"
+        },
+        "definitions": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/MY-series-source-definitions.json",
+          "sha256": "06066a989541d3a3fa5e451e9578f5e043e32c9177cbbc9eb244035d97be39ba"
+        },
+        "restoredManifest": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/M-RESTORE-20261018-W55/manifest-corrected.json",
+          "sha256": "80363c78413623deee7072a237632b5b82b3d50aeada52078ba0307d2b87807a"
+        }
+      },
+      "inputPins": {
+        "cpi-2d-full.csv": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6"
+      },
+      "fieldBindings": {
+        "sourceDate": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "date",
+          "selector": "CSV physical data row/sourceRow (header excluded); column date"
+        },
+        "sourceDivision": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "division",
+          "selector": "CSV physical data row/sourceRow (header excluded); column division"
+        },
+        "sourceIndexLexeme": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "index",
+          "selector": "CSV physical data row/sourceRow (header excluded); column index"
+        }
+      },
+      "nativeBasis": {
+        "measure": "StatisticalIndexObservation",
+        "unit": "index points",
+        "baseYear": 2010,
+        "baseValue": 100,
+        "frequency": "MONTHLY",
+        "currency": null,
+        "itemPrice": null,
+        "basketWeights": null,
+        "exactFormula": null,
+        "expenditureWeightReferencePeriod": null,
+        "canonicalTarget": null
+      },
+      "series": [
+        {
+          "sourceCode": "01",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Food & Beverages",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/01"
+          }
+        },
+        {
+          "sourceCode": "02",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Alcoholic Beverages & Tobacco",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/02"
+          }
+        },
+        {
+          "sourceCode": "03",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Clothing & Footwear",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/03"
+          }
+        },
+        {
+          "sourceCode": "04",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Housing, Utilities, Gas & Other Fuels",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/04"
+          }
+        },
+        {
+          "sourceCode": "05",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Household Furnishings, Equipment & Maintenance",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/05"
+          }
+        },
+        {
+          "sourceCode": "06",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Health",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/06"
+          }
+        },
+        {
+          "sourceCode": "07",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Transport",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/07"
+          }
+        },
+        {
+          "sourceCode": "08",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Information & Communication",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/08"
+          }
+        },
+        {
+          "sourceCode": "09",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Recreation, Sport & Culture",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/09"
+          }
+        },
+        {
+          "sourceCode": "10",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Education",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/10"
+          }
+        },
+        {
+          "sourceCode": "11",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Restaurant & Accommodation Services",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/11"
+          }
+        },
+        {
+          "sourceCode": "12",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Insurance & Financial Services",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/12"
+          }
+        },
+        {
+          "sourceCode": "13",
+          "sourceRole": "division",
+          "sourceLabelLiteral": "Personal Care, Social Protection & Miscellaneous Goods and Services",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/13"
+          }
+        },
+        {
+          "sourceCode": "overall",
+          "sourceRole": "headline-overall",
+          "sourceLabelLiteral": "Overall",
+          "sourceLabelLocator": {
+            "source": {
+              "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+              "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+            },
+            "embeddedJSONPointer": "/props/pageProps/translations/overall"
+          }
+        }
+      ],
+      "applicability": {
+        "country": "MY",
+        "type": "source-scoped statistical CPI index only",
+        "notCovered": [
+          "ingredients",
+          "recipes",
+          "nutrition",
+          "retailers/providers",
+          "item prices",
+          "dietary references"
+        ]
+      },
+      "retainedCountsNotRecomputed": {
+        "normalized": 7840,
+        "numeric": 6376,
+        "sourceMissing": 1464,
+        "series": 14,
+        "months": 560,
+        "goldAdmitted": 0
+      },
+      "pending": [
+        "normalization20 source-row review",
+        "reviewed legacy-to-shared-envelope caller conversion",
+        "schema56/canonical dictionary custody",
+        "fresh source preparation and independent code review/develop integration"
+      ],
+      "sourceUse": "Retained metadata records CC-BY-4.0 with DOSM attribution; no new grant or distribution decision.",
+      "nullZeroPolicy": "Empty source index remains source-missing, never numeric zero; lexical text retained. No transformation executed here."
+    }
+  ]
+}

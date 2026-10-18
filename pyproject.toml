@@ -22,4 +22,6 @@ include = ["offmenu*"]
 [tool.setuptools.package-data]
 offmenu = ["web.html"]
 
-"offmenu.refresh" = ["portfolio37_bindings.json"]
+"offmenu.refresh" = ["portfolio37_bindings.json", "owner19_bindings.json", "owner20_bindings.json", "portfolio_w35.json", "portfolio47_sources.json", "portfolio_owner51.json", "portfolio55.json"]
+"offmenu.refresh.portfolios" = ["worker23.json"]
+"offmenu.portfolio32" = ["catalog.json"]

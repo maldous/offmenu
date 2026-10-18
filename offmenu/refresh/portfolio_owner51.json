@@ -1,0 +1,367 @@
+{
+  "schemaVersion": "offmenu-owner51-staging-bindings/1",
+  "owner": 51,
+  "portfolio": [
+    "MW",
+    "PW",
+    "SE",
+    "SN"
+  ],
+  "acceptedCodeBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "scope": "Metadata copied from retained worker checkpoint; pins documented, not reread or requalified in this code-only assignment. No production SourceContract factory.",
+  "sourceBodyReadsEnabled": false,
+  "acquisitionEnabled": false,
+  "productionAccepted": false,
+  "goldAdmitted": false,
+  "countryCoverageComplete": false,
+  "sharedApis": [
+    "serialization.encode_records",
+    "field_provenance.field_origin_errors",
+    "acceptance.SourceContract",
+    "acceptance.qualify",
+    "core.strict_json",
+    "core.timestamp",
+    "core.safe_path"
+  ],
+  "refreshPolicy": {
+    "execution": "offline-no-AI",
+    "minimumReuseSeconds": 2592000,
+    "originalAcquiredAt": "source acquisition receipt UTC, immutable",
+    "validatedAt": "separate validation/check timestamp; never resets acquisition age",
+    "stale": "hold; separately authorized source-use and revalidation required, no automatic network",
+    "sameInput": "identical canonical fixture JSONL; existing identical fixture output no-op",
+    "productionOutput": "disabled pending exact reviewed rights/scope and source-contract integration",
+    "isolation": "diagnose_many reports every selected fixture independently"
+  },
+  "bindings": [
+    {
+      "country": "SE",
+      "sourceId": "konsumentverket-household-costs",
+      "releaseId": "household-costs-2026-retained-20261014",
+      "releaseIdAuthority": "local documentary binding label, not publisher-issued identifier",
+      "publisher": "Konsumentverket",
+      "title": "Hushållskostnader 2026",
+      "domain": "referenceCost",
+      "applicability": "Individual estimated monthly food reference costs in two scenarios and ten age columns; not retail observations, basket quantities or nutrient composition",
+      "status": "metadata-only-production-held",
+      "source": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/SE/52377a3ea3de961894b2/original.pdf",
+        "sha256": "7f77e062e3a035fae56cec44b36dc60a27dedb4347d728d17f2054427cb27837",
+        "bytes": 1027444,
+        "pages": 2
+      },
+      "acquisitionReceipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/SE/52377a3ea3de961894b2/receipt.json",
+        "sha256": "1c80344ce015ee6fd6539acd20fbbe7df37ac3a9da0e52169274e7f3e94d1e84"
+      },
+      "originalAcquiredAt": "2026-10-14T22:13:35.858382+00:00",
+      "acquiredAtLocator": "/responses/0/utc",
+      "candidate": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/SE/food-cost-table-continuation-20261017/food-cost-table.private-candidate.json",
+        "sha256": "a75c54e63ace017dbce93bfc86680d240c75948ed6d8717771c0319b464c1dec"
+      },
+      "validationReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/SE/food-cost-table-continuation-20261017/receipt.json",
+        "sha256": "ef98792f3f3155d1359fade0978e7223dc38e4dee9552202f23fcaccc7397c7b"
+      },
+      "validatedAt": "2026-10-17T10:04:09.347615+11:00",
+      "review": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/review-author51-SE20-result4396/manifest.json",
+        "sha256": "85b66c95e24f2e769a4a31b2baf6979bab12c613e6e42e01fc4c46e36a6fda24",
+        "scope": "Frozen-render fidelity only; 19 checks; no rights or currency/admission acceptance",
+        "resultSequence": 4581
+      },
+      "authorResultSequence": 4396,
+      "dispositionSequence": 4584,
+      "retainedCounts": {
+        "sourceCells": 20,
+        "scenarios": 2,
+        "ageColumns": 10,
+        "incrementalCells": 19,
+        "overlapPriorCell": 1
+      },
+      "nativeBasis": {
+        "periodLiteral": "per månad",
+        "currencyLiteral": null,
+        "currencyISO": null,
+        "currencyUnknownReason": "No currency literal/ISO in retained table cells; related publisher kr statement is separate evidence and does not establish ISO",
+        "value": "Preserve valueLiteral, sourceAgeColumn, sourceRowLabel, footnotes, page and bounding boxes; no value or basis conversion"
+      },
+      "containerSelector": "/records",
+      "fieldBindings": [
+        {
+          "candidateSelector": "/records/{index}/scenarioId",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/sourceRowLabel",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/sourceFootnoteMarker",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/sourceAgeColumn",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/valueLiteral",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/valueDecimal",
+          "origin": "prior derived lexical number; derivation not rerun or accepted",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/periodLiteral",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/currencyLiteral",
+          "origin": "explicit unknown",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/currencyISO",
+          "origin": "explicit unknown",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/sourceLocator",
+          "origin": "source-literal",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        },
+        {
+          "candidateSelector": "/records/{index}/reusesPriorCandidate",
+          "origin": "prior overlap pin",
+          "rawCoordinate": "PDF p1 table1; candidate /sourceLocator includes age-column ordinal and header/value bounding boxes; actual cell coordinates remain in retained candidate",
+          "target": "future native referenceCost field; no current production mapping"
+        }
+      ],
+      "metadataSelectors": {
+        "tableHeading": "/tableHeading",
+        "footnotes": "/sourceFootnotes",
+        "tablePage": "/sourceTablePage",
+        "sourceRole": "/sourceRole"
+      },
+      "requiredInventoryChecks": [
+        "20 unique recordIds",
+        "2 scenarios x10 source age columns",
+        "19 incremental +1 previously retained cell",
+        "all-meals-at-home and weekday-lunch-excluded stay separate",
+        "footnote markers1/2 remain tied to original rows",
+        "currencyLiteral and currencyISO remain null",
+        "original raw/candidate/review artifacts unchanged"
+      ],
+      "remainingDependencies": [
+        {
+          "category": "source-use-restriction",
+          "owner": "Morgan/source-use reviewer",
+          "required": "Exact retain/parse/transform rights evidence and private source scope; public acquisition/fidelity hashes do not grant this"
+        },
+        {
+          "category": "missing-input",
+          "owner": "independent scope reviewer via Morgan",
+          "required": "Code-owned reviewed exact input/ID/count and per-datum source-coordinate/value validation contract"
+        },
+        {
+          "category": "authorization",
+          "owner": "integration00 + independent reviewer",
+          "required": "Review immutable commit and integrate binding without accepting country or gold data"
+        }
+      ],
+      "productionCountsThisAssignment": {
+        "sourceBodyReads": 0,
+        "fetched": 0,
+        "parsed": 0,
+        "normalized": 0,
+        "mapped": 0,
+        "reviewed": 0,
+        "goldAdmitted": 0
+      }
+    },
+    {
+      "country": "MW",
+      "sourceId": "malawi-historical-iycn-recipe",
+      "releaseId": "December-2011",
+      "domains": {
+        "recipe": "One private source-literal recipe retained; not country complete",
+        "nutrition": "Analytical dataset/method dictionary absent; no nutrition equivalence/clinical acceptance"
+      },
+      "status": "metadata-only-production-held",
+      "candidate": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/MW/instant-cassava-porridge.private-candidate.json",
+        "sha256": "edf5110b40f9cad3d07a69285ed0208569f913fd429a26c93afdd95c5d72c655"
+      },
+      "retainedCounts": {
+        "recipes": 1,
+        "ingredients": 4,
+        "methodSteps": 5
+      },
+      "source": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/MW/round2-87ba6684ea1fa71208e4/original.pdf",
+        "sha256": "8a3cc756c67b66ee0c4d3b6d6043553e4c817b4e84feeff39d4be709f1f21965",
+        "bytes": 297844,
+        "pages": 24
+      },
+      "selector": "Recipe PDF page15 / printed page11; retained recipe selectors not reread here; field mapping unavailable in this task",
+      "unknowns": [
+        "analytical units/bases/method/component and row identities",
+        "current accepted dietary/clinical context",
+        "original acquisition UTC not copied from checkpoint; unavailable here"
+      ],
+      "remainingDependencies": [
+        {
+          "category": "missing-input",
+          "owner": "source lead61 + Morgan",
+          "required": "Eligible analytical dataset with method/unit/preparation/basis/row/component dictionary"
+        },
+        {
+          "category": "technical-and-source-use",
+          "owner": "Morgan/source owner",
+          "required": "Prior DNS/access no-retry hold remains; no acquisition attempt by51"
+        },
+        {
+          "category": "authorization",
+          "owner": "source-use and independent reviewer",
+          "required": "Exact recipe staging rights/scope contract before production mapping"
+        }
+      ]
+    },
+    {
+      "country": "PW",
+      "sourceId": "palau-bounded-paper-leads",
+      "releaseId": null,
+      "domain": "paperMetadata",
+      "status": "access-denied-no-eligible-body",
+      "retainedCounts": {
+        "articleBodies": 0,
+        "parsedRecords": 0
+      },
+      "provenance": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-39/PW/b4ed35c215ec0f82174b/receipt.json",
+          "sha256": "ac16a468084eff061dd495d7f9cc7b5096787fc8e3260e747db3d4fea7704d07",
+          "doi": "10.1038/s42949-026-00472-4",
+          "selector": "/requests/1",
+          "status": 303
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-39/PW/ffde3b8a1b64a2eb7dd6/receipt.json",
+          "sha256": "41690f94a8a3ee768faec09072fc8a9c946b8dd234e973ed8731178ba9f8bc2a",
+          "doi": "10.1136/bmjnph-2025-001225",
+          "selector": "/requests/1",
+          "status": 403
+        }
+      ],
+      "unknowns": [
+        "No eligible article body or data schema, units, basis, record IDs or original acquisition UTC in this binding"
+      ],
+      "remainingDependencies": [
+        {
+          "category": "source-use-and-access-denial",
+          "owner": "Morgan/source owner",
+          "required": "Resolve existing no-retry denied-action hold with specific new authority; NC claim is not access permission"
+        },
+        {
+          "category": "missing-input",
+          "owner": "source lead39 through Morgan",
+          "required": "Eligible retained artifact and exact rights/scope contract; no substitute source or actor retry"
+        }
+      ]
+    },
+    {
+      "country": "SN",
+      "sourceId": "senegal-ird-digital-edition",
+      "releaseId": "digital-edition-identity-retained",
+      "domain": "editionMetadata",
+      "status": "producer-proven-body-operation-held",
+      "editionMetadata": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/SN/digital-print-edition-identity.json",
+      "producerProof": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/B03-W51/sn-native-producer-proof.json",
+      "producerThread": "01a139b7-e9d7-7161-a3ef-51e6e965866b",
+      "source": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/SN/10bb855bf864710c7970/Senegal-IRD-quantitative-food-recipes-open-access.pdf",
+        "sha256": "7237cac3628e7053acf0a224e70516d6090f88185778667bd3323bc420269e86",
+        "bytes": 7428765
+      },
+      "retainedCounts": {
+        "digitalPages": 175,
+        "printPages": 216,
+        "isbnChecks": 3,
+        "qualifiedMeasureRows": 0
+      },
+      "unknowns": [
+        "Current body-operation custody/scope",
+        "No qualified page/table/row/unit/basis mapping",
+        "Original acquisition UTC not available in this binding"
+      ],
+      "remainingDependencies": [
+        {
+          "category": "authorization-and-custody",
+          "owner": "Morgan/source owner62",
+          "required": "Exact current body-operation custody and source-use scope; producer proof alone insufficient"
+        },
+        {
+          "category": "missing-input",
+          "owner": "portfolio51 after explicit authorization",
+          "required": "Qualified page/table/row measure evidence and native units/bases; no current body read"
+        },
+        {
+          "category": "technical-and-denial",
+          "owner": "Morgan/source owner",
+          "required": "Zero-byte alternate ministry booklet remains no-retry"
+        }
+      ]
+    }
+  ],
+  "fixture": {
+    "scope": "two wholly authored synthetic cells, not SE data",
+    "sourceId": "owner51-authored-fixture",
+    "releaseId": "synthetic-v1",
+    "bundle": "tests/fixtures/owner51",
+    "expectedRecords": 2,
+    "expectedIds": [
+      "fixture-home:a",
+      "fixture-lunch:b"
+    ],
+    "productionApplicable": false
+  },
+  "holds": [
+    "Mandatory auto_review and independent immutable review; source approval is not inferred from bytes or fidelity review",
+    "Raw remains Foo; no raw/source-body reading under this assignment",
+    "PW 303/403 and MW source-access failures no-retry",
+    "SN producer proof is not custody transfer or current body-operation permission",
+    "Finland/Frida/NO-FR denied-action holds preserved",
+    "No scaling, inferred ISO currency, nutrition equivalence, clinical acceptance or country completion",
+    "CIX and production remain paused; integration00 alone integrates shared code; Morgan schedules/reconciles"
+  ],
+  "unsupportedCapabilities": {
+    "genericPureCachePlanner": "Absent at accepted abec baseline; do not use Wikibooks-specific core.cache_policy or operational CachedAcquirer for real held inputs. Local clock diagnostic is authored-fixture-only, not a new shared planner.",
+    "productionBodyAdapter": "Not implemented/authorized for real MW/PW/SE/SN input. Current package is documentary metadata plus authored fixture binding.",
+    "productionReferenceCostSchema": "Not established by this authored-fixture referenceCost kind. Real source staging requires independent schema/scope/field-value review."
+  },
+  "interfaceReceipt": {
+    "path": "/home/user/Documents/Codex/2026-10-18/offmenu-worker00-portfolio-baseline-interface/baseline-interface-receipt.json",
+    "sha256": "f94fbf0a42b5d7906e20ace0416295ae569ee400ddfd770f90a427f803d3b7cb",
+    "ledgerResultSequence": 5798,
+    "verifiedByWorker51": true
+  }
+}

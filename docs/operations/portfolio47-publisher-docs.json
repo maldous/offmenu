@@ -1,0 +1,25 @@
+{
+  "appliesToRetainedAugust2026": null,
+  "classificationEdition": null,
+  "datasetReuseEntitlement": null,
+  "documentTitle": "Consumer Price Index (CPI) - Metadata",
+  "editionDate": null,
+  "interpretation": "Context evidence only. Keep the observed workbook December2013=100 basis and unknown current-method applicability separate; no automatic unit/category/currency mapping or rights decision.",
+  "locators": [
+    "page2: sections2.1/2.2",
+    "page3: sections2.3/3.1",
+    "page5: section3.3"
+  ],
+  "methodSummary": "The hosted metadata describes a national household goods/services CPI, COICOP with a local digit extension, weights based on a2004–2005household survey, geometric elementary aggregates and regional mean-change imputation. It discusses the2007base; this does not establish applicability to the retained August2026workbook.",
+  "otherDocumentAttempt": {
+    "HTTPStatus": null,
+    "URL": "https://cas.gov.lb/wp-content/uploads/2024/10/Explanatory-Note-on-CPI-Inflation-Measures.pdf",
+    "readerResult": "Internal Error ()",
+    "retried": false
+  },
+  "publisher": "Central Administration of Statistics, Lebanon",
+  "readerObservationDate": "2026-10-18",
+  "retrievalScope": "Official public methodology document through web reader, no dataset download/local raw-body retention or source cache alteration.",
+  "schemaVersion": "offmenu-public-method-document-observation/1",
+  "sourceURL": "https://cas.gov.lb/wp-content/uploads/2026/06/CPI-Metadata.pdf"
+}
