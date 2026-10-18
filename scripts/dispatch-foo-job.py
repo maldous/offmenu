@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -141,6 +141,7 @@ def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
         "offmenu-global-readiness/1": ("global-readiness.py", "globalReadiness"),
+        "offmenu-offline-reconciliation/1": ("offline-reconciliation.py", "offlineReconciliation"),
         "offmenu-ledger-structural-audit/1": ("offmenu_ledger_audit.py", "ledgerAudit"),
         "offmenu-selected-data-inventory/1": ("inspect-selected-datasets.py", "selectedDataInventory"),
     }
@@ -300,6 +301,10 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "offline-reconciliation":
+        steps.append(("reconciliation-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_offline_reconciliation.py"]))
+        for mode in ("source-claims", "transfer-receipts", "native-continuity", "disk-reservations", "pending-ownership"):
+            steps.append((mode, ["readiness", "reconciliation-tests"], [python, "-B", "scripts/offline-reconciliation.py", "--mode", mode]))
     if profile == "global-readiness":
         observed = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         steps += [
@@ -364,6 +369,14 @@ def run_step(step_id, command, code):
                 result.update(status='failed', exitCode=3, errorCode='native-candidate-not-established')
             elif step_id == 'ciqual-native-retry' and receipt.get('created') is not False:
                 result.update(status='failed', exitCode=3, errorCode='native-idempotency-not-established')
+        if step_id in {"source-claims", "transfer-receipts", "native-continuity", "disk-reservations", "pending-ownership"} and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("offlineReconciliation", {})
+            if report.get("mode") != step_id:
+                result.update(status="failed", exitCode=3, errorCode="reconciliation-report-invalid")
+            elif result["exitCode"] == 2 and report.get("status") == "blocked":
+                result["status"] = "blocked"
+            elif result["exitCode"] != 0 or report.get("status") != "complete":
+                result.update(status="failed", exitCode=3, errorCode="reconciliation-not-established")
         if step_id in {"global-runtime", "global-coverage"} and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("globalReadiness", {})
             expected_kind = "runtime" if step_id == "global-runtime" else "coverage"
@@ -469,6 +482,11 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
                       diagnosticScope="structural-ledger-and-selected-cache-metadata",
                       corpusAcceptanceEstablished=False)
+    if request["profile"] == "offline-reconciliation":
+        report.update(maximumParallelChildren=1, diagnosticScope="fixed-path-offline-metadata-observations",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, nativeProcessesObserved=False,
+                      safeToAcquireEstablished=False)
     if request["profile"] == "global-readiness":
         report.update(maximumParallelChildren=2, diagnosticScope="fixed-scope-offline-global-readiness",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,
@@ -567,4 +585,5 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
