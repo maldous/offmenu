@@ -1,0 +1,167 @@
+{
+  "observedAt": "2026-10-18T13:36:22Z",
+  "evidencePath": "/workspace/shared/offmenu-fixed-collection/verification/actual-v2-exact.json",
+  "evidenceSHA256": "408b58302fc3a4fd498497e8b769d374261b9002b04f368249bb6d088e8b294c",
+  "ledgerPath": "/home/user/Documents/Codex/2026-10-13/task-3/permanent-ledger/events.jsonl",
+  "ledgerSHA256": "3250630ed138b0b1d3ae90e41a1c2d2d9db5095a0650e6e17be61cc58efb2d7e",
+  "parsedRecords": 9395,
+  "maximumSequence": 9395,
+  "selectedEvents": [
+    {
+      "eventId": "worker41-current-country-handover-intent-20261018",
+      "sequence": 9140,
+      "timestamp": "2026-10-18T12:27:58.584891+00:00"
+    },
+    {
+      "eventId": "worker41-current-country-handover-outcome-20261018",
+      "sequence": 9151,
+      "timestamp": "2026-10-18T12:28:26.254959+00:00"
+    },
+    {
+      "eventId": "W05-SOURCE-PREP-AFTER8942-result",
+      "sequence": 9214,
+      "timestamp": "2026-10-18T12:31:06.518886+00:00"
+    },
+    {
+      "eventId": "W05-SOURCE-PREP-AFTER8942-notification-intent",
+      "sequence": 9242,
+      "timestamp": "2026-10-18T12:31:54.617232+00:00"
+    },
+    {
+      "eventId": "worker41-recipe-composition-prep-after8942-result-20261018",
+      "sequence": 9245,
+      "timestamp": "2026-10-18T12:32:00.185005+00:00"
+    },
+    {
+      "eventId": "W05-SOURCE-PREP-AFTER8942-notification-transport",
+      "sequence": 9253,
+      "timestamp": "2026-10-18T12:32:20.209604+00:00"
+    },
+    {
+      "eventId": "worker41-recipe-composition-prep-after8942-gateway-intent-20261018",
+      "sequence": 9255,
+      "timestamp": "2026-10-18T12:32:21.358468+00:00"
+    },
+    {
+      "eventId": "worker64-SB20-Helti-execution-guard-input-20261018",
+      "sequence": 9256,
+      "timestamp": "2026-10-18T12:32:21.371214+00:00"
+    },
+    {
+      "eventId": "worker64-SB20-Helti-prospective-acquisition-contract-input-20261018",
+      "sequence": 9259,
+      "timestamp": "2026-10-18T12:32:32.280947+00:00"
+    },
+    {
+      "eventId": "worker64-SB20-Helti-canonical-contract-preparation-result-20261018",
+      "sequence": 9261,
+      "timestamp": "2026-10-18T12:32:39.757949+00:00"
+    },
+    {
+      "eventId": "worker41-recipe-composition-prep-after8942-gateway-outcome-20261018",
+      "sequence": 9268,
+      "timestamp": "2026-10-18T12:33:10.026283+00:00"
+    },
+    {
+      "eventId": "worker64-SB20-Helti-prospective-contract-turn-end-20261018",
+      "sequence": 9281,
+      "timestamp": "2026-10-18T12:33:55.545745+00:00"
+    },
+    {
+      "eventId": "worker58-ready-followon-RU-PG-pickup-capacity-20261018",
+      "sequence": 9290,
+      "timestamp": "2026-10-18T12:34:35.724153+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-pickup",
+      "sequence": 9293,
+      "timestamp": "2026-10-18T12:34:47.077818+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-pickup-20261018",
+      "sequence": 9296,
+      "timestamp": "2026-10-18T12:34:59.624209+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-result",
+      "sequence": 9297,
+      "timestamp": "2026-10-18T12:35:04.469762+00:00"
+    },
+    {
+      "eventId": "owner59-ready-followons-private-originals-pickup",
+      "sequence": 9301,
+      "timestamp": "2026-10-18T12:35:18.488128+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-transport",
+      "sequence": 9302,
+      "timestamp": "2026-10-18T12:35:18.662026+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-blocked-result-20261018",
+      "sequence": 9304,
+      "timestamp": "2026-10-18T12:35:30.434041+00:00"
+    },
+    {
+      "eventId": "worker58-ready-followon-RU-PG-accounting-clarified-20261018",
+      "sequence": 9311,
+      "timestamp": "2026-10-18T12:36:05.896465+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-clarified-pickup",
+      "sequence": 9332,
+      "timestamp": "2026-10-18T12:37:00.927029+00:00"
+    },
+    {
+      "eventId": "worker58-ready-followon-RU-PG-result-20261018",
+      "sequence": 9340,
+      "timestamp": "2026-10-18T12:37:34.152401+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-floor-clarification-20261018",
+      "sequence": 9341,
+      "timestamp": "2026-10-18T12:37:56.644351+00:00"
+    },
+    {
+      "eventId": "worker58-ready-followon-RU-PG-notification-checkpoint-20261018",
+      "sequence": 9342,
+      "timestamp": "2026-10-18T12:38:00.120446+00:00"
+    },
+    {
+      "eventId": "owner59-ready-followons-private-originals-final-result",
+      "sequence": 9345,
+      "timestamp": "2026-10-18T12:39:25.741922+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-selected-result",
+      "sequence": 9349,
+      "timestamp": "2026-10-18T12:39:37.066236+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-result-20261018",
+      "sequence": 9357,
+      "timestamp": "2026-10-18T12:40:07.979396+00:00"
+    },
+    {
+      "eventId": "W63-READY-FOLLOWON-20261018-selected-transport",
+      "sequence": 9358,
+      "timestamp": "2026-10-18T12:40:10.299588+00:00"
+    },
+    {
+      "eventId": "owner59-ready-followons-private-originals-transport-checkpoint",
+      "sequence": 9361,
+      "timestamp": "2026-10-18T12:40:18.390928+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-notification-intent-20261018",
+      "sequence": 9364,
+      "timestamp": "2026-10-18T12:40:22.270462+00:00"
+    },
+    {
+      "eventId": "worker28-selected-recipe-transfer-notification-outcome-20261018",
+      "sequence": 9371,
+      "timestamp": "2026-10-18T12:41:03.087194+00:00"
+    }
+  ],
+  "caveat": "Metadata projection; not a current complete claim index. No later source-specific acquisition event for PY/BA/TW/SB found in available records through 9395. Historical preparation is not active pickup. EE/RU/PG/LV/LY/GW subsequently acquired; PE stopped."
+}

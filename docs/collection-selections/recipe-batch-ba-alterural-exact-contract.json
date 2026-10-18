@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "offmenu-source-original-proposal/1",
+  "preparedAtUTC": "2026-10-18T19:58:25.727890+00:00",
+  "sourceKey": "ba08-alterural-cooking-booklet-original-20261018",
+  "status": "PREPARED_FOR_ROOT_SELECTION",
+  "runtimeEnabled": false,
+  "source": {
+    "title": "Cooking Booklet / Susan Herrmann Loomis",
+    "publisher": "Alterural",
+    "country": "BA",
+    "release": null,
+    "releaseQualification": "Exact filename/edition retained; release year and pages not established. Do not infer from website copyright.",
+    "coverage": "Publisher-hosted genuine cooking booklet; recipe and ingredient counts unknown; country relevance from owner08 qualified source preparation, not national coverage.",
+    "language": "Not body-verified",
+    "sourceRole": "genuine_recipe_collection_original",
+    "exactURL": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf",
+    "publisherPage": "https://alterural.ba/",
+    "expectedBytes": 3105263,
+    "expectedMIME": "application/pdf",
+    "originalSHA256": null,
+    "publisherChecksum": null
+  },
+  "privateCustodyRights": {
+    "assessment": "Original owner08 source preparation qualified publisher-hosted unchanged private-reference copy. Current zero-body HEAD returns public PDF. No open reuse licence or commercial/derivative/translation/corpus grant inferred.",
+    "sourceEvidencePin": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-08/recipe-ingredient-preparation-after8942/prepared-source-portfolio.json",
+      "sha256": "5dc0a33601a3fe16e39a817886f743b3afa00b74ded0183713a1cd42741b39ee",
+      "snapshotVerification": "actual-v2-exact observed whole metadata hash match"
+    },
+    "allowedScope": "Private unchanged original on Foo with initial transfer/integrity/format checks only",
+    "documentNotices": "Uninspected; any restriction found during permitted initial check retains a hold."
+  },
+  "freshHEAD": {
+    "url": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf",
+    "method": "HEAD",
+    "payloadBytesRead": 0,
+    "checkedAtUTC": "2026-10-18T19:52:51.092613+00:00",
+    "status": 200,
+    "finalURL": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf",
+    "headers": {
+      "content-length": "3105263",
+      "content-type": "application/pdf"
+    }
+  },
+  "proposal": {
+    "maxTotalBytes": 4194304,
+    "maxBodyBytes": 4194304,
+    "maxWholeGETs": 1,
+    "maxRedirects": 0,
+    "maxRetries": 0,
+    "rangeOrResume": false,
+    "maxSeconds": 900,
+    "maxStallSeconds": 60,
+    "physicalPreallocationBytes": 4194304,
+    "allocationRequiredBeforeGET": true,
+    "maxBytesBasis": "New proposed 4MiB source-specific ceiling above exact 3,105,263-byte HEAD; replaces only this candidate portion of older unselected 12MiB two-file plan.",
+    "validators": "No ETag/Last-Modified advertised in current HEAD; require exact HTTP200,length and PDF signature, EOF, initial integrity, whole SHA at first allowed acquisition."
+  },
+  "claimStatus": {
+    "historicalOwner": 8,
+    "originalProducerThread": "01a138d3-4664-7ee0-9611-61d149582d53",
+    "preparationEvent": 9219,
+    "gatewayMessage": "01a14eff-da89-76cb-9cf5-0105220aaa96",
+    "historicalState": "Preparation only; no original body GET, claim or physical allocation.",
+    "laterReconciliation": "No later matching acquisition or pickup identified in available Gateway reports and native event projection through9395; projection is bounded, not live complete claims.",
+    "currentAdmission": null,
+    "sourceIdentityCheck": "source-identity-candidate-check.json; no positive match in2,129 held descriptors.",
+    "runtimeRule": "Reuse or block positive actual same-source held/partial/live claim; do not treat old preparation as competing admission or impose unrelated universal-clearance gate."
+  },
+  "exclusions": [
+    {
+      "source": "WHO FEEDcities Sarajevo2019",
+      "exactURL": "https://cdn.who.int/media/docs/librariesprovider2/country-sites/bosnia-and-herzegovina/who-feed-sarajevo-report_web.pdf",
+      "state": "HEAD403_NO_RETRY",
+      "checkedAtUTC": "2026-10-18T19:52:51.089824+00:00",
+      "bodyBytes": 0
+    },
+    {
+      "source": "GIZ Food Beyond Borders2020",
+      "state": "HELD_REUSE_OWNER06",
+      "bytes": 6232880,
+      "sha256": "cc04cc4cad1d2d32c027984f988644b9cd244770718f309d6469e53add5a5f7b",
+      "receiptSHA256": "cf66e8f429a0a51e920a407bbc896f969f9ffc579fa1b09f9a0694e351381af9"
+    }
+  ],
+  "boundary": {
+    "rawBodiesDownloadedByThisTask": false,
+    "sourceActivated": false,
+    "rootSoleDispatchWriter": true
+  }
+}

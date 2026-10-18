@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "offmenu-source-original-proposal/1",
+  "preparedAtUTC": "2026-10-18T19:51:55.516710+00:00",
+  "sourceKey": "sb20-helti-kaikai-2025-whole-original-20261018",
+  "status": "ROOT_SELECTED_NEXT_CANDIDATE_PENDING_FOCUSED_REVIEW",
+  "runtimeEnabled": false,
+  "source": {
+    "title": "Helti Kaikai Cookbook",
+    "publisher": "Kastom Gaden Association, Honiara, Solomon Islands",
+    "release": "November 2025; exact original filename dated 24nov2025",
+    "country": "SB",
+    "coverage": "Publisher-authored Solomon Islands cooking collection with local plant and fish recipes. Preserve original ingredient forms, units, amounts, names and directions; exact recipe count, PDF pages and complete national coverage unverified.",
+    "language": "Publisher landing in English with Solomons Pijin/local dish labels; PDF language not inspected.",
+    "sourceRole": "genuine_recipe_collection_original",
+    "exactURL": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+    "publisherPage": "https://kastomgaden.org/projects/helti-kaikai-cookbook/",
+    "partnerPage": "https://terracircle.org.au/projects/helti-kaikai-cookbook/",
+    "expectedBytes": 27578590,
+    "expectedMIME": "application/pdf",
+    "originalSHA256": null,
+    "publisherChecksum": null
+  },
+  "privateCustodyRights": {
+    "assessment": "Public publisher-offered whole PDF supports the proposed unchanged private reference download; no login, click-through, fee or express private-copy restriction observed on the publisher/partner landing.",
+    "evidence": [
+      {
+        "url": "https://kastomgaden.org/projects/helti-kaikai-cookbook/",
+        "observation": "Publisher says it published Helti Kaikai in November 2025 and explicitly offers Download PDF [27.6MB].",
+        "checkedAtUTC": "2026-10-18T19:51:06Z"
+      },
+      {
+        "url": "https://terracircle.org.au/projects/helti-kaikai-cookbook/",
+        "observation": "Project partner offers exact same publisher-hosted PDF; HTML href extracted directly without fetching PDF."
+      }
+    ],
+    "copyright": "Publisher copyright notice retained. No blanket open reuse licence inferred.",
+    "allowedScope": "Private unchanged original retention and initial transfer/integrity/format checks on Foo only.",
+    "notGranted": [
+      "publication",
+      "redistribution",
+      "commercial corpus incorporation",
+      "translation",
+      "normalization",
+      "gold",
+      "image reuse"
+    ],
+    "stopIf": "Any source-specific no-read/copy restriction or access/terms boundary encountered during permitted initial checks remains a hold; no bypass or alternative route."
+  },
+  "freshHEAD": {
+    "url": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+    "method": "HEAD",
+    "payloadBytesRead": 0,
+    "checkedAtUTC": "2026-10-18T19:51:06.970673+00:00",
+    "status": 200,
+    "finalUrl": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+    "headers": {
+      "content-type": "application/pdf",
+      "last-modified": "Mon, 24 Nov 2025 04:23:00 GMT",
+      "etag": "\"1a4d0de-6923dda4-323ed3b838988e76;;;\"",
+      "content-length": "27578590"
+    }
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+    "body": null,
+    "headers": {
+      "Accept-Encoding": "identity",
+      "If-Match": "\"1a4d0de-6923dda4-323ed3b838988e76;;;\""
+    },
+    "maximumGETs": 1,
+    "maximumRetries": 0,
+    "redirectsAllowed": false,
+    "rangeAllowed": false,
+    "resumeAllowed": false,
+    "credentialsAllowed": false,
+    "cookiesAllowed": false,
+    "urlExpansionAllowed": false,
+    "ifMatchStatus": "Optional in original9261 proposal; proposed here using freshly observed exact ETag. A412 must terminate, not trigger a retry."
+  },
+  "proposedBounds": {
+    "expectedBodyBytes": 27578590,
+    "maximumBodyBytes": 33376202,
+    "maximumTotalTransferBytes": 33554432,
+    "historicalMetadataDebitBytes": 178230,
+    "maximumSecondsIncludingTransferAndIntegrity": 10800,
+    "stallTimeoutSeconds": 60,
+    "maximumParallelDownloads": 1,
+    "destination": "Existing approved Foo raw-original store, chosen by fixed-profile implementation. No cloud or GitHub raw-original copy.",
+    "physicalPreallocationBytes": 33554432,
+    "note": "Original owner20/64 32MiB contract ceiling retained; initial metadata debit is historical, not new measured wire cost. Existing reviewed runner may apply stricter bounds. Fresh capacity/commitment checks retain floor once; old planning total is not current authoritative reservation sum."
+  },
+  "claimAndCustody": {
+    "historicalOwner": 20,
+    "historicalNativeThread": "01a138f8-9d74-75c2-b5f4-b487f610f5e6",
+    "historicalPreparationResult": 9116,
+    "historicalContractPreparationResult": 9261,
+    "originalContractGeneration": 1,
+    "originalSelectionAuthorized": false,
+    "originalSelectionHumanOriginConfirmed": false,
+    "originalSelectionState": "DRAFT_NOT_PICKED_UP_OR_ACQUIRED",
+    "recordedDedup": "Owner64 result9261 reports no exact-source match in bounded shared claims and owner20/48/current249/journal check; no universal absence claim.",
+    "newCurrentClaimScanPerformed": false,
+    "actualCompetingAdmissionObserved": false,
+    "gatewayRead": "Read latest Gateway through final failed turn and preparation9261; no later SB acquisition/pickup observed in returned messages. This is not a complete current host claim listing.",
+    "requiredSpecificCheck": "Fixed profile should reconcile this exact URL, filename/release aliases, known source key and existing matching terminal/partial receipts. Preserve existing owner20 custody. No whole-pool audit prerequisite.",
+    "nativeThreadReadBlocker": "Current cloud_threads.read on native20 returns unsupported placement format version1; no alternate direct host route attempted.",
+    "PH20": "Completely separate source hold. No PH20 GET, retry, resume, claim release or160MiB reservation release authorized by this SB proposal."
+  },
+  "immutableOriginalEvidence": [
+    {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/recipe-source-preparation-20261018/prospective-asset-manifest.json",
+      "sha256": "dc39da95057cac1372d3c02dd6774e7420c63c593644d12770f76b500d275b26"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/recipe-source-preparation-20261018/preparation-result.json",
+      "sha256": "3084200dcd9d045eee2d0a5d846a8d432b1f93193f9aa846d46a48879e09b98e"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-18/worker64-acquisition-continuity/SB20-Helti-Kaikai-prospective-contract/acquisition-contract.json",
+      "sha256": "9497451acb5d8ec76053a8107ca7a3f6f9310cb447822332f8cfcd430961173a"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-18/worker64-acquisition-continuity/SB20-Helti-Kaikai-prospective-contract/execution-guard-input.json",
+      "sha256": "1a2bb92d0d60b2036529daae7ff21a99b50bdc4dc13a24c7fb8b451c8ab5c31b"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-18/worker64-acquisition-continuity/SB20-Helti-Kaikai-prospective-contract/contract-preparation-result.json",
+      "sha256": "93a32ac5d7dda74109d36549918c49b4a1de8d7755c8840e32be1a7f5245b704"
+    }
+  ],
+  "gatewayEvidence": {
+    "threadId": "01a130cd-91c1-73da-9978-889018a100dd",
+    "messageId": "01a14f00-df86-70c4-9d9d-72e2fb040b1b",
+    "turnId": "01a14efe-9de8-707f-8220-28919efc67ec",
+    "originalPreparationMessageId": "01a14efc-be66-770d-9ff5-10b6589ac51c"
+  },
+  "operations": {
+    "rawPDFGETs": 0,
+    "PDFPayloadBytesRead": 0,
+    "HEADs": 1,
+    "claimsCreated": 0,
+    "dispatches": 0,
+    "sourceActivation": false,
+    "repositoryChanges": false,
+    "normalizedRecords": 0,
+    "acceptedCountries": 0
+  }
+}

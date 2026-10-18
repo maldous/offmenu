@@ -215,7 +215,8 @@ def source_spec(selected):
     return SourceSpec(source_key=contract['key'], url=contract['url'],
         policy_fingerprint=contract['fingerprint'], rights_reference=selected['rightsReference'],
         enabled=True, rights_approved=True, held=False, ttl_seconds=TTL,
-        max_bytes=contract['expectedBytes'] or contract['maxBytes'], release=selected['release'])
+        max_bytes=contract['expectedBytes'] or contract['maxBytes'], release=selected['release'],
+        query_keys=tuple(selected.get('queryKeys',())))
 
 
 def validate_original(result, selected, deadline):
@@ -232,6 +233,11 @@ def validate_original(result, selected, deadline):
         if validation['kind'] == 'csv-header':
             header = stream.readline(8193)
             if len(header) > 8192 or header.rstrip(b'\r\n') != validation['delimiter'].join(validation['fields']).encode('utf-8'):
+                raise RefreshError('source-header-mismatch')
+        elif validation['kind'] == 'pdf-original':
+            if stream.read(5)!=b'%PDF-': raise RefreshError('source-header-mismatch')
+            stream.seek(max(0,before.st_size-4096))
+            if not re.search(rb'%%EOF[\x00\x09\x0a\x0c\x0d\x20]*$',stream.read(4096)):
                 raise RefreshError('source-header-mismatch')
         elif validation['kind'] == 'prefix':
             prefix=bytes.fromhex(validation['hex'])
@@ -262,7 +268,7 @@ def validate_original(result, selected, deadline):
             ('sha256' in contract['checksums'] and digest256.hexdigest() != contract['checksums']['sha256'])):
         raise RefreshError('source-sha256-mismatch')
     return {'bytes': count, 'sha256': result.sha256, 'publisherMD5Verified': 'md5' in contract['checksums'],
-            'headerVerified': validation['kind'] in {'csv-header','prefix','xlsx'},
+            'headerVerified': validation['kind'] in {'csv-header','prefix','xlsx','pdf-original'},
             'originalAcquiredAt': result.provenance['originalAcquiredAt']}
 
 
@@ -339,7 +345,7 @@ def release_own_reservation(path, fd, identity):
     path.unlink()
 
 
-def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=None):
+def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=None, batch_meter=None):
     contract = source_contract(selected)
     source_key, source_url, fingerprint = contract['key'], contract['url'], contract['fingerprint']
     maximum, reservation_bytes, seconds = contract['maxBytes'], contract['expectedBytes'] or contract['maxBytes'], contract['seconds']
@@ -373,6 +379,8 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
         def read(self, size):
             deadline_check(deadline)
             remaining = maximum - meter['bodyBytesRead']
+            if batch_meter is not None:
+                remaining = min(remaining,batch_meter['maximumBytes']-batch_meter['bodyBytesRead'])
             if remaining <= 0:
                 # HTTP Content-Length ends this body exactly; never read an extra byte.
                 # Real HTTPSFileTransport exposes the stdlib framing state as well.
@@ -384,6 +392,7 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
                 raise RefreshError('network-byte-limit')
             block = self.response.read(min(size, remaining))
             meter['bodyBytesRead'] += len(block)
+            if batch_meter is not None: batch_meter['bodyBytesRead'] += len(block)
             deadline_check(deadline)
             if meter['bodyBytesRead'] > maximum:
                 raise RefreshError('network-byte-limit')
@@ -392,12 +401,13 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
             self.response.close()
 
     def counted(source, headers):
-        if meter['requests']:
+        if meter['requests'] or (batch_meter is not None and batch_meter['requests']>=batch_meter['maximumRequests']):
             raise RefreshError('network-request-limit')
         if source.identity() != spec.identity() or headers != {'Accept-Encoding': 'identity'}:
             raise RefreshError('request-contract-mismatch')
         deadline_check(deadline)
         meter['requests'] += 1
+        if batch_meter is not None: batch_meter['requests'] += 1
         response = (transport(source, headers, deadline=deadline) if transport is not None
                     else HTTPSFileTransport()(source, headers, deadline=deadline))
         report['responseMetadata'] = response_metadata(response.status, response.headers, request_url=source_url)
@@ -406,7 +416,9 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
             expected=selected.get('expectedResponse')
             if expected is not None and response.status == 200:
                 actual={key:headers_seen.get(key) for key in expected}
-                if actual != expected or 'transfer-encoding' in headers_seen:
+                if actual != expected or ('transfer-encoding' in headers_seen and (
+                        contract['expectedBytes'] is not None or 'content-length' in headers_seen
+                        or headers_seen['transfer-encoding'].lower()!='chunked')):
                     raise RefreshError('source-response-contract-changed')
         except (RefreshError,ValueError,TypeError):
             response.close()
