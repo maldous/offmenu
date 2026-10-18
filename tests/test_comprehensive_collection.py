@@ -85,13 +85,32 @@ class Tests(unittest.TestCase):
     row.update(status='validated-proposal',errorCode=None)
     row['parser'].update(status='passed',errorCode=None,pdfinfoVersion='2'+'.1'*31,pdftotextVersion='2'+'.1'*31,pdfinfoExitCode=0,pdftotextExitCode=0,pageCount=2000,encrypted=False,allPagesTraversed=True,textBytesExamined=16777216)
     row['proposedDisposition']={'kind':'validated-retained-original-reference/1','relativePath':'collection/private-originals/'+row['sourceContractSHA256']+'/original.partial','sourceContractSHA256':row['sourceContractSHA256'],'sha256':row['retainedSHA256'],'bytes':row['retainedBytes'],'preserveOriginalBytes':True,'preserveFailedIntent':True,'originalAcquiredAt':None,'scope':'private-unchanged-original-structural-validation-only'}
+   # Preserve the full988 mixed scenario and enrich it with independently verified
+   # prior successful/reused acquisitions and preparation/stat metadata.
+   prior=json.loads((ROOT/'tests/fixtures/comprehensive-prior-result-metadata.json').read_bytes())
+   prior_rows={row['assetIndex']:row for row in prior['changes']};outcomes=g.expand_outcomes(report['assetOutcomeGroups'],len(manifest['assets']));old_outcomes=g.expand_outcomes(prior['assetOutcomeGroups'],len(manifest['assets']));replaced=0
+   for row in report['changes']:
+    old=prior_rows.get(row['assetIndex'])
+    if old is None:continue
+    for field in ('acquisition','preparation'):
+     if old.get(field) is not None:row[field]=deepcopy(old[field]);replaced+=1
+    outcomes[row['assetIndex']]=old_outcomes[row['assetIndex']]
+   report['statOutcomeGroups']=deepcopy(prior['statOutcomeGroups'])
+   report['networkRequests']=sum(row['acquisition']['networkRequests'] for row in report['changes'] if row['acquisition'] is not None)
+   report['networkBytesRead']=sum(row['acquisition']['networkBytesRead'] for row in report['changes'] if row['acquisition'] is not None)
+   report['preparedBytes']=sum(row['preparation']['preparedBytes'] for row in report['changes'] if row['preparation'] is not None)
+   _,_,binding=g.retained_collection.validate_combined(selected,manifest,ROOT)
+   report['reuseOutcomeJoins']=g.intake.join_outcomes(selected['knownIntakeSuccessor']['reuseJoins'],manifest,outcomes,binding_manifest=binding)
+   report['assetOutcomeGroups']=g.group_outcomes(outcomes);report['cellStageCounts']=g.country_cells(manifest,outcomes)
+   self.assertEqual(replaced,50);self.assertEqual(g.MAX_SUMMARY,96*1024)
    g.sanitize_report(report)
+   with patch.object(g,'MAX_OWNER_COMPREHENSIVE_SUMMARY',len(g.a.canonical(report))-1),self.assertRaises(ValueError):g.sanitize_report(report)
    self.assertTrue(set(self.plan['proposedMediaAssetIds'])<=set(calls));self.assertEqual(set(stream_calls),set(self.plan['proposedStreamingAssetIds']));self.assertEqual(len(stream_calls),60)
    account=report['retainedOriginalVerification'];self.assertEqual(account['reservedOriginalReadBytes'],28437596435);self.assertLessEqual(account['verifiedOriginalPayloadBytes'],28437595507)
    if not mixed:self.assertEqual(account['verifiedOriginalPayloadBytes'],28437595507)
    else:self.assertTrue(any(row['state']=='uncertain' for row in account['jobOutcomeGroups']))
    self.assertEqual(len(report['reuseOutcomeJoins']),22);self.assertEqual(len(report['retainedPreparationDiagnostics']['items']),22);self.assertEqual(len(report['retainedTaiwanRecoveryProposals']),3)
-   self.assertLess(len(g.a.canonical(report)),g.MAX_SUMMARY);self.assertLess(len(report['changes']),100)
+   self.assertLess(len(g.a.canonical(report)),g.MAX_OWNER_COMPREHENSIVE_SUMMARY);self.assertLess(len(report['changes']),100)
    envelope={'schemaVersion':'offmenu-owner-manual-global-result/1','executionContext':'owner-manual-foo','invokingUID':1000,'outputRoot':'/home/test/src/offmenu-data/owner-collection-runtime','handover':{'handoffId':p.HANDOFF,'runtimeConfigSHA256':p.RUNTIME_SHA256,'dispatchHoldSHA256':p.HOLD_SHA256,'executionContext':'owner-manual-foo','runnerResumeRequiresOutcomeImport':True},'historicalRunnerRootAccess':{'/srv/offmenu-refresh/outputs/collection':'inaccessible','/srv/offmenu-refresh/cache':'absent'},'nativeClaimsRoot':p.NATIVE_CLAIMS,'nativeCoverageExhaustive':False,'globalReportSHA256':g.a.sha(g.a.canonical(report)),'globalReport':report}
    with patch.object(p.os,'getuid',return_value=1000),patch.object(p.os,'geteuid',return_value=1000),patch.object(p.pwd,'getpwuid',return_value=SimpleNamespace(pw_dir='/home/test')):
     receipt,files,raw=p.build_payload(envelope,g)
@@ -100,5 +119,5 @@ class Tests(unittest.TestCase):
     published=[row for name,raw in files if '/assets-' in name for row in json.loads(raw)['rows']]
     self.assertEqual(sum('retainedVerification' in row for row in published),988)
    self.assertEqual(receipt['expandedCounts'],{'assets':4753,'countryTypeCells':3237,'statPaths':1937});self.assertLessEqual(len(files),p.MAX_FILES);self.assertLessEqual(sum(len(b) for _,b in files),p.MAX_TOTAL)
-   print('COMPREHENSIVE_BOUNDS',json.dumps({'summaryBytes':len(g.a.canonical(report)),'publisherFiles':len(files),'publisherBytes':sum(len(b) for _,b in files),'mediaJobs':len(calls),'streamingJobs':len(stream_calls)}))
+   print('COMPREHENSIVE_BOUNDS',json.dumps({'summaryBytes':len(g.a.canonical(report)),'envelopeBytes':len(p.canonical(envelope)),'summaryLimit':g.MAX_OWNER_COMPREHENSIVE_SUMMARY,'publisherFiles':len(files),'publisherBytes':sum(len(b) for _,b in files),'mediaJobs':len(calls),'streamingJobs':len(stream_calls)}))
 if __name__=='__main__':unittest.main()

@@ -27,8 +27,9 @@ SELECTION_PIN=('docs/collection-selections/global-original-selection.json','12bb
 MANIFEST_PIN=('docs/collection-selections/global-known-assets-runtime.json','d846a735762e627fbf69475da958f39fa68418bea19c6b186e516f9e7feef270')
 OWNER_PIN=('docs/collection-selections/owner-local-runtime.json','8dd3372dd9c2f4f0ec5f845cdc1a97c64addf8fe12ccecc26603128bb2bf514b')
 LEGACY_OWNER_PIN=OWNER_PIN
-OWNER_SUCCESSOR_PROFILE_PIN=None # Parent adoption pins an additive user-mode profile; runner/default remains unchanged.
-MAX_ASSETS=10000;MAX_SECONDS=1200;MAX_OUTPUT_BYTES=1024**3;MAX_SUMMARY=96*1024
+OWNER_REUSE_PIN=('docs/collection-selections/owner001-exact-reuse-lineage.json','c3d1654ad8f3c6bdad821229afcf6aea69e2f4a975350bd9af875c4ca1f47fb4')
+OWNER_SUCCESSOR_PROFILE_PIN=('docs/collection-selections/owner-comprehensive-profile.json','0b964d31b4889f85643e248f77df1048619c85078487825d32b84b287f273e5f') # Parent adoption pins an additive user-mode profile; runner/default remains unchanged.
+MAX_ASSETS=10000;MAX_SECONDS=1200;MAX_OUTPUT_BYTES=1024**3;MAX_SUMMARY=96*1024;MAX_OWNER_COMPREHENSIVE_SUMMARY=120*1024
 STATES=('ready-nextstage','held','unsupported','error','unverified','missing-contract','retained','eligible')
 CUSTODY=('unverified','held','no-path','inaccessible','path-absent','unsafe-path','not-regular','extent-mismatch','stat-observed','verified-original')
 GLOBAL_ERRORS={'global-worker-cancelled','global-preparation-state-uncertain','global-resource-capacity-unavailable','global-outer-failure','global-config-invalid','global-deadline-exhausted','global-output-budget','global-checkpoint-failed','global-preparation-unavailable','global-original-unavailable','global-source-conflict','global-local-read-budget'}
@@ -799,7 +800,9 @@ def sanitize_report(report):
  for parser in caps['optionalParsers'].values():
   if set(parser)!={'available','version'} or type(parser['available']) is not bool or (parser['version'] is not None and (not isinstance(parser['version'],str) or not re.fullmatch('[a-zA-Z0-9.+_() -]{1,128}',parser['version']))):raise ValueError('invalid-global-summary')
  if report['status']=='complete' and (report['globalErrors'] or any(r['stage']=='error' for r in outcomes)):raise ValueError('invalid-global-summary')
- if len(a.canonical(report))>MAX_SUMMARY:raise ValueError('invalid-global-summary')
+ # The validated owner-only retained composition has more closed outcome metadata.
+ summary_limit=MAX_OWNER_COMPREHENSIVE_SUMMARY if binding_manifest is not None and selected['retainedVerification']['status']=='parent-reviewed-owner-manual' else MAX_SUMMARY
+ if len(a.canonical(report))>summary_limit:raise ValueError('invalid-global-summary')
  return report
 
 
@@ -830,6 +833,15 @@ class OwnerRuntime:
   return {'handoffId':self.config['handoffId'],'runtimeConfigSHA256':OWNER_PIN[1],
    'dispatchHoldSHA256':self.config['dispatchHoldPin']['sha256'],'executionContext':'owner-manual-foo',
    'runnerResumeRequiresOutcomeImport':True}
+ def reuse_provenance(self,source,existing):
+  current=self.provenance()
+  if existing.get('ownerHandover')==current:return current
+  lineage=pinned(OWNER_REUSE_PIN)
+  if (self.config.get('handoffId')!=lineage['targetHandoffId'] or self.config.get('predecessorOwnerRuntimePin')!=lineage['predecessorOwnerRuntimePin']
+      or self.uid!=lineage['ownerUID'] or str(self.root)!=lineage['outputRoot'] or existing.get('state')!='verified'):raise a.RefreshError('private-save-intent-uncertain')
+  rows=[r for r in lineage['rows'] if r['sourceKey']==source['sourceKey'] and r['sourceContractSHA256']==a.sha(a.canonical(source))]
+  if len(rows)!=1 or existing!=rows[0]['expectedIntent'] or a.sha(a.canonical(existing))!=rows[0]['expectedIntentSHA256']:raise a.RefreshError('private-save-intent-uncertain')
+  return lineage['predecessorHandover']
  def admit(self,work,source,intent,old_claim,prior,deadline):
   a.deadline_check(deadline)
   if source['sourceKey'] not in self.config['sourceKeys']:raise a.RefreshError('owner-handover-invalid')
@@ -892,7 +904,7 @@ def publisher_module():
  if OWNER_PIN!=LEGACY_OWNER_PIN:
   config=owner_config(selection_config());pin=config['dispatchHoldPin'];hold=pinned((pin['path'],pin['sha256']))
   if not re.fullmatch('[a-f0-9]{40}',hold['source'].get('trustedCommit') or ''):raise a.RefreshError('owner-handover-invalid')
-  m.HANDOFF=config['handoffId'];m.HANDOFF_PATH=pin['path'];m.HOLD_SHA256=pin['sha256'];m.RUNTIME_SHA256=OWNER_PIN[1];m.BASE_SOURCE=hold['source']['trustedCommit'];m.DEST='docs/handover/2026-10-18/foo-owner-custody/manual-global/'+m.HANDOFF
+  m.HANDOFF=config['handoffId'];m.HANDOFF_PATH=pin['path'];m.HOLD_SHA256=pin['sha256'];m.RUNTIME_SHA256=OWNER_PIN[1];m.BASE_SOURCE=hold['source']['trustedCommit'];hold_raw=a.preparation_module().pinned_bytes(ROOT,(pin['path'],pin['sha256']));m.HOLD_BLOB=m.blob_sha(hold_raw);m.HOLD_BYTES=len(hold_raw);m.DEST='docs/handover/2026-10-18/foo-owner-custody/manual-global/'+m.HANDOFF
  return m
 
 def saved_manual_result(runtime,envelope=None):

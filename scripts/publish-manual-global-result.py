@@ -9,6 +9,7 @@ BRANCH='integration/foo-owner-custody-snapshot-20261018'
 ANCHOR='4aa0976b9dc509b91f76874717f9de5e5e5529df'
 HANDOFF='owner-local-global-20261018-001'
 HANDOFF_PATH='docs/operations/global-collection-manual-handoff-20261018.json'
+HOLD_BLOB='edd18af68f570ce15acd83dc71323af20da46683';HOLD_BYTES=8676
 HOLD_SHA256='fa87ebcb5463ffdec2f7bbfe0141da0c518b40a59c29297646b92a0644e165f1'
 BASE_SOURCE='24b8bb0fa0eb7c7f6632aade4dcb6d8d9ee49793'
 DEST='docs/handover/2026-10-18/foo-owner-custody/manual-global/'+HANDOFF
@@ -192,10 +193,10 @@ def verify_active_handover(g,api=None):
     ref=api.call('GET','repos/'+REPOSITORY+'/git/ref/heads/'+branch)
     commit=ref.get('object',{}).get('sha');require(isinstance(commit,str) and GIT_RE.fullmatch(commit),'manual-handoff-current-head-invalid')
     item=contents(api,path,commit)
-    require(isinstance(item,dict) and item.get('type')=='file' and item.get('sha')=='edd18af68f570ce15acd83dc71323af20da46683' and item.get('size')==8676 and item.get('encoding')=='base64','manual-handoff-no-longer-active')
+    require(isinstance(item,dict) and item.get('type')=='file' and item.get('sha')==HOLD_BLOB and item.get('size')==HOLD_BYTES and item.get('encoding')=='base64','manual-handoff-no-longer-active')
     try:raw=base64.b64decode(item.get('content','').replace('\n',''),validate=True);value=json.loads(raw)
     except (ValueError,TypeError):raise PublicationError('manual-handoff-no-longer-active') from None
-    require(len(raw)==8676 and blob_sha(raw)==item['sha'] and sha(raw)==HOLD_SHA256,'manual-handoff-no-longer-active')
+    require(len(raw)==HOLD_BYTES and blob_sha(raw)==item['sha'] and sha(raw)==HOLD_SHA256,'manual-handoff-no-longer-active')
     require(value['handoffId']==HANDOFF and value['overlapHold']['active'] is True and value['overlapHold']['automaticRunnerSubmissionPermitted'] is False and value['source']['trustedCommit']==BASE_SOURCE,'manual-handoff-no-longer-active')
     expected={x['sourceKey']:sha(g.a.canonical(x)) for x in g.selection_config()['sources']}
     actual={x['sourceKey']:x['sourceContractSHA256'] for x in value['selectedSources']}

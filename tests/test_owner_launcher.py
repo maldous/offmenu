@@ -31,6 +31,19 @@ class LauncherTests(unittest.TestCase):
   root=self.home/'offmenu-global-collection';root.mkdir(mode=0o700,exist_ok=True);(root/'sources').mkdir(mode=0o700,exist_ok=True);(root/'pins').mkdir(mode=0o700,exist_ok=True);source=root/'sources'/commit;source.mkdir(exist_ok=True);(source/'.git').mkdir(exist_ok=True);return root,source
  def legacy(self):
   root=self.home/'offmenu-global-collection';root.mkdir(mode=0o700,exist_ok=True);legacy=root/'source';legacy.mkdir();(legacy/'prior-code').write_bytes(b'preserved');(root/'source-pin.json').write_text(json.dumps(m.PREDECESSOR));(root/'run').write_bytes(m.wrapper_bytes(legacy));return root,legacy
+ def versioned_predecessor(self):
+  root,source=self.installed_layout(m.VERSIONED_PREDECESSOR['commit']);(source/'prior-code').write_bytes(b'preserved');(root/'pins'/(m.VERSIONED_PREDECESSOR['commit']+'.json')).write_text(json.dumps(m.VERSIONED_PREDECESSOR));(root/'run').write_bytes(m.wrapper_bytes(source));return root,source
+ def test_exact_versioned_upgrade_preserves_prior_code_and_pin(self):
+  root,prior=self.versioned_predecessor();pin=root/'pins'/(m.VERSIONED_PREDECESSOR['commit']+'.json');before=pin.read_bytes();_,source=self.installed_layout()
+  with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):m.install('a'*40,'b'*40)
+  self.assertEqual((prior/'prior-code').read_bytes(),b'preserved');self.assertEqual(pin.read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.wrapper_bytes(source));self.assertEqual(verify.call_args_list[0].args[1],m.VERSIONED_PREDECESSOR)
+ def test_changed_versioned_pin_never_fetches(self):
+  root,prior=self.versioned_predecessor();(root/'pins'/(m.VERSIONED_PREDECESSOR['commit']+'.json')).write_text(json.dumps({'commit':'c'*40,'tree':'d'*40}))
+  with patch.object(m,'git',side_effect=AssertionError('fetch')),self.assertRaises(ValueError):m.install('a'*40,'b'*40)
+ def test_versioned_failed_switch_preserves_wrapper(self):
+  root,prior=self.versioned_predecessor();before=(root/'run').read_bytes();self.installed_layout()
+  with patch.object(m,'verify_source'),patch.object(m.os,'replace',side_effect=OSError('synthetic')),self.assertRaises(OSError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before);self.assertEqual((prior/'prior-code').read_bytes(),b'preserved')
  def test_install_is_pinned_and_repeat_non_destructive(self):
   pin={'commit':'a'*40,'tree':'b'*40};root,source=self.installed_layout()
   with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):

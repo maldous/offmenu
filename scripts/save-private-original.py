@@ -132,6 +132,7 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
    if owner_runtime is not None:base['ownerHandover']=owner_runtime.provenance()
    if intent.exists():
     existing,_=a.read_metadata(intent)
+    if owner_runtime is not None:base['ownerHandover']=owner_runtime.reuse_provenance(source,existing)
     if existing.get('state')!='verified' or any(existing.get(k)!=v for k,v in base.items()):raise a.RefreshError('private-save-intent-uncertain')
     if partial.exists() or reservation.exists():raise a.RefreshError('private-original-conflict')
     saved,_=a.read_metadata(provenance,expected_sha256=existing.get('provenanceSHA256'))
