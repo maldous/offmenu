@@ -2,6 +2,11 @@
 """One reviewed private original through the existing acquisition engine."""
 from __future__ import annotations
 import hashlib
+import http.client
+import ssl
+import threading
+from datetime import datetime, timezone
+from urllib.parse import urlsplit, urljoin
 import importlib.util
 import json
 import os
@@ -23,6 +28,10 @@ LEGACY_CACHE = Path('/srv/offmenu-refresh/cache')
 SELECTION_PIN = ('docs/collection-selections/zenodo15169428-selection.json',
                  'fc52fa57a04e389a5ec47509d8043477312bc4de2aae78267ca13a99c10b7bfd')
 SCHEMA = 'offmenu-fixed-original-summary/1'
+DIAGNOSTIC_SCHEMA = 'offmenu-fixed-response-metadata/1'
+DIAGNOSTIC_PIN = ('docs/collection-selections/zenodo15169428-head-diagnostic.json',
+                  '1bfe2d00a02353e92bcf9c7177865ba4e1153380e5a2cb35eed0f4515646af79')
+PRIOR_DETAIL_SHA256 = '81f842a01b388b3924ae56d240b5e13653daec1221eedd934a550abe2f935260'
 SOURCE_KEY = 'global.zenodo15169428.datasetcsv.v1'
 EXPECTED_BYTES = 110013794
 EXPECTED_MD5 = '986efafad65c7969fde13a46d2defba0'
@@ -121,7 +130,7 @@ def owned_directory(path, *, create=False):
     return path
 
 
-def read_metadata(path):
+def read_metadata(path, *, expected_sha256=None):
     path = safe_path(path)
     fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     with os.fdopen(fd, 'rb') as stream:
@@ -133,6 +142,8 @@ def read_metadata(path):
     identity = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
     if len(raw) > MAX_METADATA or identity(before) != identity(after) or identity(after) != identity(path.stat()):
         raise RefreshError('runner-metadata-scan-incomplete')
+    if expected_sha256 is not None and sha(raw) != expected_sha256:
+        raise RefreshError('fixed-evidence-invalid')
     return strict_json(raw), len(raw)
 
 
@@ -279,7 +290,7 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
     report = {'schemaVersion': 'offmenu-fixed-original-detail/1', 'sourceKey': SOURCE_KEY,
         'selectionSHA256': SELECTION_PIN[1], 'scope': 'global-private-original-custody',
         'status': 'blocked', 'errorCode': None, 'cacheStatus': None, 'validation': None,
-        'network': meter, 'capacity': {'planningGuardBytes': GUARD, 'floorAlreadyIncluded': True,
+        'network': meter, 'responseMetadata': None, 'capacity': {'planningGuardBytes': GUARD, 'floorAlreadyIncluded': True,
             'sourceReservationBytes': EXPECTED_BYTES, 'physicalReservationEstablished': False},
         'downstreamHolds': selected['downstreamHolds'], 'claimCoverage': None,
         'claimFailureStatePersisted': None, 'receiptPersistence': 'pending', **SAFETY}
@@ -311,6 +322,7 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
         meter['requests'] += 1
         response = (transport(source, headers, deadline=deadline) if transport is not None
                     else HTTPSFileTransport()(source, headers, deadline=deadline))
+        report['responseMetadata'] = response_metadata(response.status, response.headers)
         return CountedResponse(response)
 
     acquirer = engine(cache, {SOURCE_KEY: spec}, transport=counted, retries=0,
@@ -420,6 +432,7 @@ def summary_report(detail=None, error=None):
         'errorCode': error if detail is None else detail['errorCode'],
         'selectionSHA256': SELECTION_PIN[1], 'detailSHA256': None if detail is None else sha(canonical(detail)),
         'detailPersisted': bool(detail is not None and detail['receiptPersistence'] == 'written'),
+        'responseMetadata': None if detail is None else detail.get('responseMetadata'),
         'networkRequests': 0 if detail is None else detail['network']['requests'],
         'networkBytesRead': 0 if detail is None else detail['network']['bodyBytesRead'],
         'verifiedBytes': validation.get('bytes', 0), 'originalSHA256': validation.get('sha256'),
@@ -430,7 +443,9 @@ def summary_report(detail=None, error=None):
 
 
 def sanitize_report(value):
-    keys = {'schemaVersion','sourceKey','status','errorCode','selectionSHA256','detailSHA256','detailPersisted',
+    if isinstance(value,dict) and value.get('schemaVersion') == DIAGNOSTIC_SCHEMA:
+        return sanitize_diagnostic(value)
+    keys = {'schemaVersion','sourceKey','status','errorCode','selectionSHA256','detailSHA256','detailPersisted','responseMetadata',
         'networkRequests','networkBytesRead','verifiedBytes','originalSHA256','publisherMD5Verified',
         'headerVerified','minimumCacheSeconds','wholeOperationSeconds'} | set(SAFETY)
     if (not isinstance(value, dict) or set(value) != keys or value['schemaVersion'] != SCHEMA
@@ -438,6 +453,7 @@ def sanitize_report(value):
             or value['status'] not in {'blocked', 'failed', 'verified-private-original'}
             or value['errorCode'] not in ERRORS | {None}):
         raise ValueError('invalid-summary')
+    validate_response_metadata(value['responseMetadata'])
     if type(value['detailPersisted']) is not bool:
         raise ValueError('invalid-summary')
     success = value['status'] == 'verified-private-original'
@@ -461,10 +477,203 @@ def sanitize_report(value):
     return dict(value)
 
 
+
+def status_class(status):
+    if status is None: return 'unavailable'
+    if status in (401,403,407): return 'denial-or-auth-required'
+    if status == 429: return 'rate-limited'
+    return ('informational' if status < 200 else 'success' if status < 300 else
+            'redirect' if status < 400 else 'client-error' if status < 500 else 'server-error')
+
+
+def response_metadata(status, headers):
+    """Keep bounded response facts, never Location values, queries or parameters."""
+    status = status if type(status) is int and 100 <= status <= 599 else None
+    selected = {'content-type': [], 'content-length': [], 'location': []}
+    for key, value in (headers.items() if isinstance(headers,dict) else headers):
+        if isinstance(key,str) and key.lower() in selected:
+            selected[key.lower()].append(value)
+    def single(key):
+        values=selected[key]
+        return values[0] if len(values)==1 and isinstance(values[0],str) else None
+    rawtype=single('content-type'); content_type=None
+    if rawtype is not None:
+        media=rawtype.split(';',1)[0].strip().lower()
+        if len(media)<=127 and re.fullmatch(r'[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+',media):
+            content_type=media
+    rawlength=single('content-length'); length=None
+    if rawlength is not None and len(rawlength)<=20 and re.fullmatch(r'[0-9]+',rawlength):
+        candidate=int(rawlength)
+        if candidate <= 2**63-1: length=candidate
+    location={'present':bool(selected['location']),'classification':'absent',
+              'sameRequestPath':None,'queryOrFragmentPresent':False}
+    rawlocation=single('location')
+    if selected['location']:
+        location['classification']='invalid'
+        if rawlocation is not None and len(rawlocation)<=2048 and not any(ord(c)<32 or ord(c)==127 for c in rawlocation):
+            try:
+                parsed=urlsplit(urljoin(URL,rawlocation)); original=urlsplit(URL)
+                location['queryOrFragmentPresent']=bool(parsed.query or parsed.fragment)
+                if parsed.username is None and parsed.password is None and parsed.hostname:
+                    if parsed.scheme != 'https': location['classification']='non-https'
+                    elif parsed.hostname.lower()==original.hostname and parsed.port in (None,443):
+                        location['classification']='same-host'
+                        location['sameRequestPath']=parsed.path==original.path
+                    else: location['classification']='cross-host'
+            except ValueError:
+                pass
+    return {'httpStatus':status,'httpStatusClass':status_class(status),
+            'contentTypePresent':bool(selected['content-type']),'contentType':content_type,
+            'contentLengthPresent':bool(selected['content-length']),'contentLength':length,
+            'location':location,'duplicateMetadataHeaders':any(len(v)>1 for v in selected.values())}
+
+
+def validate_response_metadata(value):
+    if value is None: return
+    keys={'httpStatus','httpStatusClass','contentTypePresent','contentType',
+          'contentLengthPresent','contentLength','location','duplicateMetadataHeaders'}
+    if not isinstance(value,dict) or set(value)!=keys: raise ValueError('invalid-response-metadata')
+    status=value['httpStatus']
+    if status is not None and (type(status) is not int or not 100<=status<=599): raise ValueError('invalid-response-metadata')
+    if value['httpStatusClass']!=status_class(status): raise ValueError('invalid-response-metadata')
+    media=value['contentType']
+    if media is not None and (not isinstance(media,str) or len(media)>127 or not re.fullmatch(r'[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+',media)):
+        raise ValueError('invalid-response-metadata')
+    length=value['contentLength']
+    if length is not None and (type(length) is not int or not 0<=length<=2**63-1): raise ValueError('invalid-response-metadata')
+    for key in ('contentTypePresent','contentLengthPresent','duplicateMetadataHeaders'):
+        if type(value[key]) is not bool: raise ValueError('invalid-response-metadata')
+    loc=value['location']
+    if (not isinstance(loc,dict) or set(loc)!={'present','classification','sameRequestPath','queryOrFragmentPresent'}
+            or loc['classification'] not in {'absent','invalid','same-host','cross-host','non-https'}
+            or type(loc['present']) is not bool or type(loc['queryOrFragmentPresent']) is not bool
+            or (loc['sameRequestPath'] is not None and type(loc['sameRequestPath']) is not bool)):
+        raise ValueError('invalid-response-metadata')
+
+
+DIAGNOSTIC_ERRORS={None,'diagnostic-input-invalid','prior-failure-evidence-mismatch',
+    'prior-intent-not-held','diagnostic-already-attempted','diagnostic-request-failed',
+    'diagnostic-result-write-failed','diagnostic-deadline-exceeded'}
+DIAGNOSTIC_FALSE={'sourceContentsRead':False,'sourceContentsUploaded':False,
+    'sourceClaimsChanged':False,'originalGETRetried':False,'acquisitionEnabledByDiagnostic':False,
+    'priorGETStatusRecovered':False,'priorGETCauseEstablished':False}
+
+
+def diagnostic_report():
+    return {'schemaVersion':DIAGNOSTIC_SCHEMA,'sourceKey':SOURCE_KEY,'method':'HEAD',
+        'diagnosticSHA256':DIAGNOSTIC_PIN[1],'priorDetailSHA256':PRIOR_DETAIL_SHA256,
+        'priorGETHttpStatus':None,'status':'blocked','errorCode':'diagnostic-input-invalid',
+        'observedAt':datetime.now(timezone.utc).isoformat(),'networkRequests':0,'networkBodyBytesRead':0,
+        'redirectsFollowed':0,'responseMetadata':None,'detailPersisted':False,
+        'stopAfterResponse':True,'bodyChallengeNotInspected':True,**DIAGNOSTIC_FALSE}
+
+
+def sanitize_diagnostic(value):
+    if not isinstance(value,dict) or set(value)!=set(diagnostic_report()): raise ValueError('invalid-diagnostic')
+    expected={'schemaVersion':DIAGNOSTIC_SCHEMA,'sourceKey':SOURCE_KEY,'method':'HEAD',
+        'diagnosticSHA256':DIAGNOSTIC_PIN[1],'priorDetailSHA256':PRIOR_DETAIL_SHA256}
+    if any(value[k]!=v for k,v in expected.items()): raise ValueError('invalid-diagnostic')
+    if value['status'] not in {'observed','blocked','failed'} or value['errorCode'] not in DIAGNOSTIC_ERRORS:
+        raise ValueError('invalid-diagnostic')
+    if (value['status']=='observed')!=(value['errorCode'] is None): raise ValueError('invalid-diagnostic')
+    if type(value['networkRequests']) is not int or not 0<=value['networkRequests']<=1: raise ValueError('invalid-diagnostic')
+    for key in ('networkBodyBytesRead','redirectsFollowed'):
+        if type(value[key]) is not int or value[key]!=0: raise ValueError('invalid-diagnostic')
+    for key,expected in {**DIAGNOSTIC_FALSE,'stopAfterResponse':True,'bodyChallengeNotInspected':True}.items():
+        if value[key] is not expected: raise ValueError('invalid-diagnostic')
+    if value['priorGETHttpStatus'] is not None or type(value['detailPersisted']) is not bool:
+        raise ValueError('invalid-diagnostic')
+    if not isinstance(value['observedAt'],str) or not re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:.]+\+00:00',value['observedAt']):
+        raise ValueError('invalid-diagnostic')
+    validate_response_metadata(value['responseMetadata'])
+    if value['status']=='observed' and (value['responseMetadata'] is None or value['networkRequests']!=1):
+        raise ValueError('invalid-diagnostic')
+    return dict(value)
+
+
+def run_diagnostic(*, connection_factory=None):
+    """One prospective HEAD. Never read body, clear claims, or authorize a GET."""
+    report=diagnostic_report(); connection=None; watchdog=None; response=None
+    deadline=time.monotonic()+30
+    try:
+        prep=preparation_module()
+        selected=strict_json(prep.pinned_bytes(ROOT,DIAGNOSTIC_PIN))
+        if (selected.get('method')!='HEAD' or selected.get('url')!=URL
+                or selected.get('headers')!={'Accept-Encoding':'identity'}
+                or selected.get('maximumRequests')!=1 or selected.get('maximumBodyBytes')!=0
+                or selected.get('priorGet',{}).get('detailSHA256')!=PRIOR_DETAIL_SHA256):
+            raise RefreshError('diagnostic-input-invalid')
+        work=owned_directory(owned_directory(OUTPUT)/'collection')
+        with writer_lock(work/'fixed-selection.lock'):
+            prior,_=read_metadata(work/('zenodo15169428-result-'+PRIOR_DETAIL_SHA256+'.json'),expected_sha256=PRIOR_DETAIL_SHA256)
+            if (prior.get('sourceKey')!=SOURCE_KEY or prior.get('status')!='failed'
+                    or prior.get('errorCode')!='source-response-not-permitted'
+                    or prior.get('network')!={'requests':1,'bodyBytesRead':0}):
+                raise RefreshError('prior-failure-evidence-mismatch')
+            claim_path=work/'intents'/(sha(URL.encode())+'.json')
+            claim,_=read_metadata(claim_path)
+            if (claim.get('sourceKey')!=SOURCE_KEY or claim.get('state')!='failed-no-retry'
+                    or claim.get('errorCode')!='source-response-not-permitted'):
+                raise RefreshError('prior-intent-not-held')
+            marker=safe_path(work/('zenodo-head-'+DIAGNOSTIC_PIN[1]+'.intent.json'))
+            try:
+                fd=os.open(marker,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            except FileExistsError:
+                raise RefreshError('diagnostic-already-attempted') from None
+            with os.fdopen(fd,'wb') as stream:
+                stream.write(canonical({'diagnosticSHA256':DIAGNOSTIC_PIN[1],'method':'HEAD','maximumRequests':1}))
+                stream.flush();os.fsync(stream.fileno())
+            remaining=deadline-time.monotonic()
+            if remaining<=0: raise RefreshError('diagnostic-deadline-exceeded')
+            parts=urlsplit(URL)
+            factory=connection_factory or http.client.HTTPSConnection
+            connection=factory(parts.hostname,443,timeout=min(30,remaining),context=ssl.create_default_context())
+            expired=threading.Event()
+            def abort():
+                expired.set()
+                sock=connection.sock
+                if sock is not None:
+                    try: sock.shutdown(2)
+                    except OSError: pass
+                connection.close()
+            watchdog=threading.Timer(remaining,abort);watchdog.daemon=True;watchdog.start()
+            report['networkRequests']=1
+            connection.request('HEAD',parts.path,headers={'Accept-Encoding':'identity'})
+            response=connection.getresponse()
+            report['responseMetadata']=response_metadata(response.status,response.getheaders())
+            if expired.is_set() or time.monotonic()>=deadline:
+                raise RefreshError('diagnostic-deadline-exceeded')
+            report.update(status='observed',errorCode=None)
+            # No response.read(), redirects, challenge parsing or acquisition call.
+    except (RefreshError,OSError,ValueError,TypeError,KeyError,http.client.HTTPException) as error:
+        code=str(error) if isinstance(error,RefreshError) and str(error) in DIAGNOSTIC_ERRORS else (
+            'diagnostic-request-failed' if report['networkRequests'] else 'diagnostic-input-invalid')
+        report.update(status='failed' if report['networkRequests'] else 'blocked',errorCode=code)
+    finally:
+        if watchdog is not None: watchdog.cancel()
+        try:
+            if response is not None: response.close()
+            if connection is not None: connection.close()
+        except (OSError,http.client.HTTPException):
+            report.update(status='failed' if report['networkRequests'] else 'blocked',errorCode='diagnostic-request-failed')
+    try:
+        report['detailPersisted']=True
+        work=owned_directory(owned_directory(OUTPUT)/'collection')
+        write_immutable(work/('zenodo-head-result-'+sha(canonical(report))+'.json'),report)
+    except (OSError,ValueError,TypeError,KeyError):
+        report.update(status='failed' if report['networkRequests'] else 'blocked',
+                      errorCode='diagnostic-result-write-failed',detailPersisted=False)
+    return sanitize_diagnostic(report)
+
 def main(argv=None):
+    args = sys.argv[1:] if argv is None else argv
+    if args == ['--response-metadata']:
+        report = run_diagnostic()
+        print(canonical(report).decode(), end='')
+        return 0 if report['status'] == 'observed' else 2
     deadline = time.monotonic() + MAX_SECONDS
     try:
-        if (sys.argv[1:] if argv is None else argv):
+        if args:
             raise RefreshError('unexpected-arguments')
         selected = load_selection()
         deadline_check(deadline)
