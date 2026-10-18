@@ -1,0 +1,101 @@
+[
+  {
+    "fileID": "13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp",
+    "viewURL": "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view?usp=sharing",
+    "checkedAtUTC": "2026-10-18T20:01:12.557804+00:00",
+    "originalPayloadBytesRead": 0,
+    "headChain": [
+      {
+        "url": "https://drive.usercontent.google.com/uc?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+        "status": 303,
+        "headers": {
+          "content-type": "application/binary",
+          "location": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+          "content-length": "0"
+        }
+      },
+      {
+        "url": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_1.pdf\"",
+          "content-length": "30653686",
+          "last-modified": "Wed, 17 Oct 2018 17:47:23 GMT"
+        }
+      }
+    ],
+    "htmlBytes": 86413,
+    "htmlSHA256": "4584cf87680cac3de45f755584b74986c9ef87393266443769143e905559bb90",
+    "htmlTitle": [
+      "RECETARIO_MERIENDA_ESCOLAR_1.pdf - Google Drive"
+    ],
+    "advertisedURL": "https://drive.usercontent.google.com/uc?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download"
+  },
+  {
+    "fileID": "1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE",
+    "viewURL": "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view?usp=sharing",
+    "checkedAtUTC": "2026-10-18T20:01:12.558688+00:00",
+    "originalPayloadBytesRead": 0,
+    "headChain": [
+      {
+        "url": "https://drive.usercontent.google.com/uc?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+        "status": 303,
+        "headers": {
+          "content-type": "application/binary",
+          "location": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+          "content-length": "0"
+        }
+      },
+      {
+        "url": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_2.pdf\"",
+          "content-length": "73938718",
+          "last-modified": "Fri, 14 Sep 2018 19:52:39 GMT"
+        }
+      }
+    ],
+    "htmlBytes": 85466,
+    "htmlSHA256": "06defe518cbcd67e5f997844071b8564a661cf285b852e27c20599a1a031a3e6",
+    "htmlTitle": [
+      "RECETARIO_MERIENDA_ESCOLAR_2.pdf - Google Drive"
+    ],
+    "advertisedURL": "https://drive.usercontent.google.com/uc?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download"
+  },
+  {
+    "fileID": "158UT3Kjp04JH_q8yxX60KrSAVGevzhbE",
+    "viewURL": "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view?usp=sharing",
+    "checkedAtUTC": "2026-10-18T20:01:12.559216+00:00",
+    "originalPayloadBytesRead": 0,
+    "headChain": [
+      {
+        "url": "https://drive.usercontent.google.com/uc?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+        "status": 303,
+        "headers": {
+          "content-type": "application/binary",
+          "location": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+          "content-length": "0"
+        }
+      },
+      {
+        "url": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf\"",
+          "content-length": "17928840",
+          "last-modified": "Thu, 15 Oct 2020 15:38:47 GMT"
+        }
+      }
+    ],
+    "htmlBytes": 86672,
+    "htmlSHA256": "ebdced0080aaaa22f8e41ed2d37ca25004ff8b8e634cf89542cef8aa06c0dacc",
+    "htmlTitle": [
+      "Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf - Google Drive"
+    ],
+    "advertisedURL": "https://drive.usercontent.google.com/uc?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download"
+  }
+]

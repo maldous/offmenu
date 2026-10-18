@@ -1,0 +1,1687 @@
+{
+  "schemaVersion": "offmenu-known-source-contract-enrichment/1",
+  "preparedUTC": "2026-10-18T20:44:54.995521+00:00",
+  "sourceBodiesRead": 0,
+  "sourceBodyDownloads": 0,
+  "newNetworkRequestsForKnownEnrichment": 0,
+  "executionPerformed": false,
+  "rootReviewRequired": true,
+  "scope": "13 exact current source keys for global known249+shared manifest. Does not replace canonical assets, change source ownership, infer national completeness, or create a new coordinator.",
+  "permissionBooleanSemantics": "These booleans support only bounded local structural handling for private reference, conditional on preserving any actual source/document no-read, no-copy or other restriction. They do not authorize public or commercial reuse, normalization, translation or gold. No unsupported universal copying ban is inferred from the absence of an open licence.",
+  "records": [
+    {
+      "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+      "fixedContract": {
+        "aliases": [
+          "便當食譜(花蓮縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E8%8A%B1%E8%93%AE%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-private-original-recovery/overlay/docs/collection-selections/recipe-five-private-save-selection.json",
+        "sha256": "c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb",
+        "bytes": 9896
+      },
+      "contractSelector": "/sources/0",
+      "set": "next-five",
+      "country": "TW",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+      "aliases": [
+        "便當食譜(花蓮縣).pdf"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": null,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+          "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab",
+          "bytes": 18584
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved primary branch declaration grants free nonexclusive reproduction, adaptation and editing with attribution, subject to personal-data, other-IP, specially reserved-work and third-party moral-right exceptions. Supports private bounded structural read/extract/copy; actual document-specific notices remain uninspected. This does not grant corpus/gold approval.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 16777216,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+      "fixedContract": {
+        "aliases": [
+          "便當食譜(宜蘭縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%AE%9C%E8%98%AD%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-private-original-recovery/overlay/docs/collection-selections/recipe-five-private-save-selection.json",
+        "sha256": "c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb",
+        "bytes": 9896
+      },
+      "contractSelector": "/sources/1",
+      "set": "next-five",
+      "country": "TW",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+      "aliases": [
+        "便當食譜(宜蘭縣).pdf"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": null,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+          "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab",
+          "bytes": 18584
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved primary branch declaration grants free nonexclusive reproduction, adaptation and editing with attribution, subject to personal-data, other-IP, specially reserved-work and third-party moral-right exceptions. Supports private bounded structural read/extract/copy; actual document-specific notices remain uninspected. This does not grant corpus/gold approval.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 16777216,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+      "fixedContract": {
+        "aliases": [
+          "便當食譜(台東縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%8F%B0%E6%9D%B1%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-private-original-recovery/overlay/docs/collection-selections/recipe-five-private-save-selection.json",
+        "sha256": "c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb",
+        "bytes": 9896
+      },
+      "contractSelector": "/sources/2",
+      "set": "next-five",
+      "country": "TW",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+      "aliases": [
+        "便當食譜(台東縣).pdf"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": null,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+          "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab",
+          "bytes": 18584
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved primary branch declaration grants free nonexclusive reproduction, adaptation and editing with attribution, subject to personal-data, other-IP, specially reserved-work and third-party moral-right exceptions. Supports private bounded structural read/extract/copy; actual document-specific notices remain uninspected. This does not grant corpus/gold approval.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 16777216,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "py-drive-health1",
+      "fixedContract": {
+        "aliases": [
+          "Recetario_Jornada_Cocina_Navidad_2021_10_12_2021.pdf",
+          "https://drive.google.com/file/d/1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP/view?usp=sharing",
+          "https://drive.google.com/file/d/1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP/view",
+          "1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP",
+          "PY-DRIVE-HEALTH1",
+          "https://drive.usercontent.google.com/uc?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 3450289,
+        "expectedResponse": {
+          "content-disposition": "attachment; filename=\"Recetario_Jornada_Cocina_Navidad_2021_10_12_2021.pdf\"",
+          "content-length": "3450289",
+          "content-type": "application/octet-stream",
+          "last-modified": "Tue, 24 May 2022 12:22:57 GMT"
+        },
+        "hardTransferBytes": 3538944,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-py-two-workshop-exact-contracts.json",
+        "queryKeys": [
+          "id",
+          "export"
+        ],
+        "release": "Filename indicates December10,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+        "rightsReference": "https://www.inan.gov.py/site/?page_id=60",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "py-drive-health1",
+        "url": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-private-original-recovery/overlay/docs/collection-selections/recipe-five-private-save-selection.json",
+        "sha256": "c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb",
+        "bytes": 9896
+      },
+      "contractSelector": "/sources/3",
+      "set": "next-five",
+      "country": "PY",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+      "aliases": [
+        "Recetario_Jornada_Cocina_Navidad_2021_10_12_2021.pdf",
+        "https://drive.google.com/file/d/1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP/view?usp=sharing",
+        "https://drive.google.com/file/d/1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP/view",
+        "1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP",
+        "PY-DRIVE-HEALTH1",
+        "https://drive.usercontent.google.com/uc?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download"
+      ],
+      "release": "Filename indicates December10,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+      "expectedBytes": 3450289,
+      "publisherChecksums": {},
+      "recordedMedia": "application/octet-stream",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/py-two-workshop-exact-contracts.json",
+          "sha256": "29e472d96a38876f5999e3f8fe537d10352ebfdb811bb73e88cbdf828768b4b7",
+          "bytes": 9078
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 3538944,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "py-drive-health2",
+      "fixedContract": {
+        "aliases": [
+          "Recetario_Jornada_Cocina_Navidad_2021_17_12_2021.pdf",
+          "https://drive.google.com/file/d/1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o/view?usp=sharing",
+          "https://drive.google.com/file/d/1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o/view",
+          "1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o",
+          "PY-DRIVE-HEALTH2",
+          "https://drive.usercontent.google.com/uc?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 7587546,
+        "expectedResponse": {
+          "content-disposition": "attachment; filename=\"Recetario_Jornada_Cocina_Navidad_2021_17_12_2021.pdf\"",
+          "content-length": "7587546",
+          "content-type": "application/octet-stream",
+          "last-modified": "Tue, 24 May 2022 12:23:00 GMT"
+        },
+        "hardTransferBytes": 7667712,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-py-two-workshop-exact-contracts.json",
+        "queryKeys": [
+          "id",
+          "export"
+        ],
+        "release": "Filename indicates December17,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+        "rightsReference": "https://www.inan.gov.py/site/?page_id=60",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "py-drive-health2",
+        "url": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-private-original-recovery/overlay/docs/collection-selections/recipe-five-private-save-selection.json",
+        "sha256": "c5ba55a9ca56c6f2bf42153ed3f3096b57a17845b0d4b9ebcd04caafcda24dcb",
+        "bytes": 9896
+      },
+      "contractSelector": "/sources/4",
+      "set": "next-five",
+      "country": "PY",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+      "aliases": [
+        "Recetario_Jornada_Cocina_Navidad_2021_17_12_2021.pdf",
+        "https://drive.google.com/file/d/1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o/view?usp=sharing",
+        "https://drive.google.com/file/d/1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o/view",
+        "1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o",
+        "PY-DRIVE-HEALTH2",
+        "https://drive.usercontent.google.com/uc?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download"
+      ],
+      "release": "Filename indicates December17,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+      "expectedBytes": 7587546,
+      "publisherChecksums": {},
+      "recordedMedia": "application/octet-stream",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/py-two-workshop-exact-contracts.json",
+          "sha256": "29e472d96a38876f5999e3f8fe537d10352ebfdb811bb73e88cbdf828768b4b7",
+          "bytes": 9078
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 7667712,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "py-drive-school1",
+      "fixedContract": {
+        "aliases": [
+          "PY-DRIVE-SCHOOL1",
+          "RECETARIO_MERIENDA_ESCOLAR_1.pdf",
+          "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view?usp=sharing",
+          "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view",
+          "13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp",
+          "https://drive.usercontent.google.com/uc?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 30653686,
+        "expectedResponse": {
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_1.pdf\"",
+          "content-length": "30653686",
+          "content-type": "application/octet-stream",
+          "last-modified": "Wed, 17 Oct 2018 17:47:23 GMT"
+        },
+        "hardTransferBytes": 30736384,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/py-larger-three-exact-contracts.json",
+        "queryKeys": [
+          "id",
+          "export"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://www.inan.gov.py/site/?page_id=60",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "py-drive-school1",
+        "url": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 300
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-py-larger-fixed/overlay/docs/collection-selections/py-larger-three-selection.json",
+        "sha256": "c38b807f30c7ce2c62e393119796c6c33b72137fddfa8f360ff558019b764f9f",
+        "bytes": 5475
+      },
+      "contractSelector": "/sources/0",
+      "set": "next-three",
+      "country": "PY",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+      "aliases": [
+        "PY-DRIVE-SCHOOL1",
+        "RECETARIO_MERIENDA_ESCOLAR_1.pdf",
+        "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view?usp=sharing",
+        "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view",
+        "13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp",
+        "https://drive.usercontent.google.com/uc?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": 30653686,
+      "publisherChecksums": {},
+      "recordedMedia": "application/octet-stream",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/py-larger-three-exact-contracts.json",
+          "sha256": "4dbcd7d6a3d3c0a0b787439617d67ebc814bc24064c0a9357b2c64259fcc4c49",
+          "bytes": 11145
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 30736384,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "py-drive-school2",
+      "fixedContract": {
+        "aliases": [
+          "PY-DRIVE-SCHOOL2",
+          "RECETARIO_MERIENDA_ESCOLAR_2.pdf",
+          "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view?usp=sharing",
+          "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view",
+          "1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE",
+          "https://drive.usercontent.google.com/uc?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 73938718,
+        "expectedResponse": {
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_2.pdf\"",
+          "content-length": "73938718",
+          "content-type": "application/octet-stream",
+          "last-modified": "Fri, 14 Sep 2018 19:52:39 GMT"
+        },
+        "hardTransferBytes": 74055680,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/py-larger-three-exact-contracts.json",
+        "queryKeys": [
+          "id",
+          "export"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://www.inan.gov.py/site/?page_id=60",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "py-drive-school2",
+        "url": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 600
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-py-larger-fixed/overlay/docs/collection-selections/py-larger-three-selection.json",
+        "sha256": "c38b807f30c7ce2c62e393119796c6c33b72137fddfa8f360ff558019b764f9f",
+        "bytes": 5475
+      },
+      "contractSelector": "/sources/1",
+      "set": "next-three",
+      "country": "PY",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+      "aliases": [
+        "PY-DRIVE-SCHOOL2",
+        "RECETARIO_MERIENDA_ESCOLAR_2.pdf",
+        "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view?usp=sharing",
+        "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view",
+        "1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE",
+        "https://drive.usercontent.google.com/uc?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": 73938718,
+      "publisherChecksums": {},
+      "recordedMedia": "application/octet-stream",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/py-larger-three-exact-contracts.json",
+          "sha256": "4dbcd7d6a3d3c0a0b787439617d67ebc814bc24064c0a9357b2c64259fcc4c49",
+          "bytes": 11145
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 74055680,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "py-drive-veg",
+      "fixedContract": {
+        "aliases": [
+          "PY-DRIVE-VEG",
+          "Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf",
+          "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view?usp=sharing",
+          "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view",
+          "158UT3Kjp04JH_q8yxX60KrSAVGevzhbE",
+          "https://drive.usercontent.google.com/uc?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 17928840,
+        "expectedResponse": {
+          "content-disposition": "attachment; filename=\"Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf\"",
+          "content-length": "17928840",
+          "content-type": "application/octet-stream",
+          "last-modified": "Thu, 15 Oct 2020 15:38:47 GMT"
+        },
+        "hardTransferBytes": 18022400,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/py-larger-three-exact-contracts.json",
+        "queryKeys": [
+          "id",
+          "export"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://www.inan.gov.py/site/?page_id=60",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "py-drive-veg",
+        "url": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 300
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-py-larger-fixed/overlay/docs/collection-selections/py-larger-three-selection.json",
+        "sha256": "c38b807f30c7ce2c62e393119796c6c33b72137fddfa8f360ff558019b764f9f",
+        "bytes": 5475
+      },
+      "contractSelector": "/sources/2",
+      "set": "next-three",
+      "country": "PY",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+      "aliases": [
+        "PY-DRIVE-VEG",
+        "Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf",
+        "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view?usp=sharing",
+        "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view",
+        "158UT3Kjp04JH_q8yxX60KrSAVGevzhbE",
+        "https://drive.usercontent.google.com/uc?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": 17928840,
+      "publisherChecksums": {},
+      "recordedMedia": "application/octet-stream",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/py-larger-three-exact-contracts.json",
+          "sha256": "4dbcd7d6a3d3c0a0b787439617d67ebc814bc24064c0a9357b2c64259fcc4c49",
+          "bytes": 11145
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 18022400,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "ch.fsvo.food-composition.v7_1.xlsx",
+      "fixedContract": {
+        "HEADs": 0,
+        "aliases": [
+          "Swiss_food_composition_database.xlsx",
+          "S062",
+          "CH-FSVO-v7.1",
+          "https://www.naehrwertdaten.ch/en/downloads/"
+        ],
+        "attribution": "Swiss Food Composition Database, version 7.1, Federal Food Safety and Veterinary Office (FSVO).",
+        "cacheSeconds": 2592000,
+        "checksums": {},
+        "coordinatorSelection": {
+          "boundedNoExactConflict": true,
+          "discoveryCitationIsOwnedOriginal": false,
+          "nativeCoverageExhaustive": false,
+          "owner": 0,
+          "rootSelected": true,
+          "semanticAdmissionRequiredForOriginalCustody": false,
+          "singleWriter": true,
+          "universalClearanceRequired": false
+        },
+        "downstreamHolds": [
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "evidence": [
+          {
+            "path": "docs/collection-selections/swiss-v71-source-evidence.json",
+            "sha256": "ce0c272072de774effd377d7eee7933f85c079a34193d21e2419d0559ddac028"
+          }
+        ],
+        "expectedBytes": 1014249,
+        "expectedResponse": {
+          "content-length": "1014249",
+          "content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "etag": "\"f79e9-656a6dba75380\"",
+          "last-modified": "Wed, 15 Jul 2026 14:08:30 GMT"
+        },
+        "floorAlreadyIncluded": true,
+        "hardTransferBytes": 1014249,
+        "maximumGETs": 1,
+        "planningGuardBytes": 88418025472,
+        "ranges": 0,
+        "redirects": 0,
+        "release": "Version 7.1, July 2026",
+        "retries": 0,
+        "rightsQualification": "Publisher-specific permission for commercial and scientific dataset use with attribution; no invented Creative Commons licence.",
+        "rightsReference": "https://www.naehrwertdaten.ch/en/downloads/",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceKey": "ch.fsvo.food-composition.v7_1.xlsx",
+        "url": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
+        "validation": {
+          "kind": "xlsx"
+        },
+        "wholeOperationSeconds": 120
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-swiss-fixed/composed/docs/collection-selections/swiss-v71-selection.json",
+        "sha256": "14f516e7c7a8b2eca7645bd13b5608b7d332217412dd97920da1e0c45fb0d042",
+        "bytes": 1713
+      },
+      "contractSelector": "/",
+      "set": "retained-swiss",
+      "country": "CH",
+      "type": "food_composition",
+      "countryComplete": false,
+      "assetIdAliases": [
+        "citation:e5257cd3056bff96665c5250"
+      ],
+      "exactURL": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
+      "aliases": [
+        "Swiss_food_composition_database.xlsx",
+        "S062",
+        "CH-FSVO-v7.1",
+        "https://www.naehrwertdaten.ch/en/downloads/"
+      ],
+      "release": "Version 7.1, July 2026",
+      "expectedBytes": 1014249,
+      "publisherChecksums": {},
+      "recordedMedia": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "expectedFormat": "xlsx",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/swiss-v71-prospective-acquisition-proposal.json",
+          "sha256": "e01b86e51bef64265dbdf9c79fefe0a8b205e3c8f22633ba1a3c7f1f64310cd7",
+          "bytes": 11077
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved dataset-specific publisher permission permits commercial/scientific use with source acknowledgment. Private local read/extract/copy supported; no invented Creative Commons licence; unrelated site photographs/marks excluded.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "verified-private-original",
+        "verifiedBytes": 1014249,
+        "sha256": "323bae2eecd639d2c3b3bf3797d30b1426ccb0253fb62810f522778b38089196",
+        "originalAcquiredAt": "2026-10-18T20:00:40.613218+00:00",
+        "detailSHA256": "2585d9ee57fa32f72bc13aea6ab10fa44720ab63856011bd7ca76765c1a4ebb2",
+        "evidencePins": [
+          {
+            "path": "/workspace/shared/runner-restore-readonly/swiss-source-report.json",
+            "sha256": "812ce553964f295418e6722ec1af8043442d66fd831326238912c84d08274560",
+            "bytes": 2798
+          }
+        ],
+        "action": "REUSE_VERIFIED_RETAINED_ORIGINAL_NO_NEW_GET",
+        "qualification": "Recorded successful runner receipt; current physical rehash performed only by existing runner."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-sheets",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 1014249,
+          "maxPages": null,
+          "maxSheets": 64,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "sb20-helti-kaikai-2025-whole-original-20261018",
+      "fixedContract": {
+        "aliases": [
+          "Helti-Kaikai-Cookbook-24nov2025.pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 27578590,
+        "expectedResponse": {
+          "content-length": "27578590",
+          "content-type": "application/pdf",
+          "etag": "\"1a4d0de-6923dda4-323ed3b838988e76;;;\"",
+          "last-modified": "Mon, 24 Nov 2025 04:23:00 GMT"
+        },
+        "hardTransferBytes": 33554432,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-sb-helti-exact-contract.json",
+        "queryKeys": [],
+        "release": "November 2025; exact original filename dated 24nov2025",
+        "rightsReference": "https://kastomgaden.org/projects/helti-kaikai-cookbook/",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "sb20-helti-kaikai-2025-whole-original-20261018",
+        "url": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 300
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-recipe-fixed-batch/overlay/docs/collection-selections/recipe-originals-batch-selection.json",
+        "sha256": "2b12090957ddc6cd9ab4393a1d1ea731132836fa35532ee0f6af59bbda84bc02",
+        "bytes": 10587
+      },
+      "contractSelector": "/sources/0",
+      "set": "retained-sb-ba",
+      "country": "SB",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://kastomgaden.org/wp-content/uploads/2025/11/Helti-Kaikai-Cookbook-24nov2025.pdf",
+      "aliases": [
+        "Helti-Kaikai-Cookbook-24nov2025.pdf"
+      ],
+      "release": "November 2025; exact original filename dated 24nov2025",
+      "expectedBytes": 27578590,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/sb-helti-exact-contract.json",
+          "sha256": "e7dea360b4eb3dc1b3d5712133964712b748a8379d4d9fb3357e14c79ec13332",
+          "bytes": 7988
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "verified-private-original",
+        "verifiedBytes": 27578590,
+        "sha256": "133e96044ab6d7d26bf2158deccd0d9d96daee75381bba5795d7039712d9bc1c",
+        "originalAcquiredAt": "2026-10-18T20:10:43.091712+00:00",
+        "detailSHA256": "9f36aec42a01793d312a2283161b53fe65368ec2d9b1cfe0997029b49f17f5eb",
+        "evidencePins": [
+          {
+            "path": "/workspace/shared/runner-restore-readonly/recipe-batch-source-report.json",
+            "sha256": "423972355cb5c7007ccfc2add61eed2a503e4ce53cc93597e5e0d213e48a7265",
+            "bytes": 8939
+          }
+        ],
+        "action": "REUSE_VERIFIED_RETAINED_ORIGINAL_NO_NEW_GET",
+        "qualification": "Recorded successful runner receipt; current physical rehash performed only by existing runner."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 33554432,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "ba08-alterural-cooking-booklet-original-20261018",
+      "fixedContract": {
+        "aliases": [
+          "Cooking Booklet prepress.compressed.pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": 3105263,
+        "expectedResponse": {
+          "content-length": "3105263",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 4194304,
+        "historicalPreparationExceptions": [
+          {
+            "metadataPath": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-08/recipe-ingredient-preparation-after8942/prepared-source-portfolio.json",
+            "metadataSHA256": "5dc0a33601a3fe16e39a817886f743b3afa00b74ded0183713a1cd42741b39ee",
+            "sourceUrl": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf"
+          }
+        ],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-ba-alterural-exact-contract.json",
+        "queryKeys": [],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://alterural.ba/",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "ba08-alterural-cooking-booklet-original-20261018",
+        "url": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "contractPin": {
+        "path": "/workspace/shared/offmenu-recipe-fixed-batch/overlay/docs/collection-selections/recipe-originals-batch-selection.json",
+        "sha256": "2b12090957ddc6cd9ab4393a1d1ea731132836fa35532ee0f6af59bbda84bc02",
+        "bytes": 10587
+      },
+      "contractSelector": "/sources/1",
+      "set": "retained-sb-ba",
+      "country": "BA",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://alterural.ba/uploads/PDF%20fajlovi/Cooking%20Booklet%20prepress.compressed.pdf",
+      "aliases": [
+        "Cooking Booklet prepress.compressed.pdf"
+      ],
+      "release": "Exact publisher filename; edition/date unestablished",
+      "expectedBytes": 3105263,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/collection-recovery-queue-20261018/ba-alterural-exact-contract.json",
+          "sha256": "742d9aeac36a1b16dd0a98dd03c7a97158614b87bb547891d5696ff9acc94de2",
+          "bytes": 4695
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "The primary publisher offers the exact original as a public private-reference download. Ordinary private reading and bounded local structural text extraction of that authorized reference copy are proposed within the latest authorized preparation scope. Earlier initial-integrity-only workflow wording is not evidence of a publisher no-read or no-extract ban. No public/redistribution/commercial/translation/gold grant is inferred; contrary document-specific restrictions, if encountered, remain holds.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "verified-private-original",
+        "verifiedBytes": 3105263,
+        "sha256": "805406e0924089b9c14ec366ab294dc96030e5f38625fa61498305a29ee06f40",
+        "originalAcquiredAt": "2026-10-18T20:10:48.844997+00:00",
+        "detailSHA256": "22e9fe465b575e29ee8a0efad145450ee0f4e9a6183daffccd890519c07c52cf",
+        "evidencePins": [
+          {
+            "path": "/workspace/shared/runner-restore-readonly/recipe-batch-source-report.json",
+            "sha256": "423972355cb5c7007ccfc2add61eed2a503e4ce53cc93597e5e0d213e48a7265",
+            "bytes": 8939
+          }
+        ],
+        "action": "REUSE_VERIFIED_RETAINED_ORIGINAL_NO_NEW_GET",
+        "qualification": "Recorded successful runner receipt; current physical rehash performed only by existing runner."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 4194304,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "be-brussels-adult-recipes",
+      "fixedContract": {
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceKey": "be-brussels-adult-recipes",
+        "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_07_RecettesAdultes_FR.PDF",
+        "aliases": [
+          "IF_AD_07_RecettesAdultes_FR",
+          "RecettesAdultes"
+        ],
+        "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+        "rightsReference": "https://environnement.brussels/citoyen/mentions-legales",
+        "privateCustodyApproved": true,
+        "sourceAcquisitionHeld": false,
+        "downstreamHolds": [
+          "commercial-reuse-unqualified",
+          "redistribution-unselected",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "checksums": {},
+        "hardTransferBytes": 16777216,
+        "wholeOperationSeconds": 180,
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "qualificationReference": "docs/collection-selections/belgium-permission-evidence.json",
+        "queryKeys": [],
+        "expectedResponse": {
+          "content-type": "application/pdf",
+          "content-disposition": "inline; filename=\"IF_AD_07_RecettesAdultes_FR.pdf\""
+        },
+        "historicalPreparationExceptions": []
+      },
+      "contractPin": {
+        "path": "/workspace/shared/missing-country-originals-20261019/belgium-two-fixed-contracts.json",
+        "sha256": "4c12c144d97edf7aa88e430b95cd629ea7357aabeeafbf58a7912cefe02ad96a",
+        "bytes": 3127
+      },
+      "contractSelector": "/sources/0",
+      "set": "selected-brussels",
+      "country": "BE",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_07_RecettesAdultes_FR.PDF",
+      "aliases": [
+        "IF_AD_07_RecettesAdultes_FR",
+        "RecettesAdultes"
+      ],
+      "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+      "expectedBytes": null,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/missing-country-originals-20261019/belgium-permission-evidence.json",
+          "sha256": "0c7895dce194e92cf36ce923e5dfaa66c11f73c4c13dd57b846b0db2c35c029c",
+          "bytes": 1268
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "commercial-reuse-unqualified",
+        "redistribution-unselected",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved primary legal notice explicitly permits personal downloading and reproduction. Private bounded text extraction is treated as reproduction for personal reference, conditional on retaining source credit and whole original; no public or commercial derivative use implied.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 16777216,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    },
+    {
+      "sourceKey": "be-brussels-child-recipes",
+      "fixedContract": {
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceKey": "be-brussels-child-recipes",
+        "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_08_RecettesEnfants_FR.PDF",
+        "aliases": [
+          "IF_AD_08_RecettesEnfants_FR",
+          "RecettesEnfants"
+        ],
+        "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+        "rightsReference": "https://environnement.brussels/citoyen/mentions-legales",
+        "privateCustodyApproved": true,
+        "sourceAcquisitionHeld": false,
+        "downstreamHolds": [
+          "commercial-reuse-unqualified",
+          "redistribution-unselected",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "checksums": {},
+        "hardTransferBytes": 16777216,
+        "wholeOperationSeconds": 180,
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "qualificationReference": "docs/collection-selections/belgium-permission-evidence.json",
+        "queryKeys": [],
+        "expectedResponse": {
+          "content-type": "application/pdf",
+          "content-disposition": "inline; filename=\"IF_AD_08_RecettesEnfants_FR.pdf\""
+        },
+        "historicalPreparationExceptions": []
+      },
+      "contractPin": {
+        "path": "/workspace/shared/missing-country-originals-20261019/belgium-two-fixed-contracts.json",
+        "sha256": "4c12c144d97edf7aa88e430b95cd629ea7357aabeeafbf58a7912cefe02ad96a",
+        "bytes": 3127
+      },
+      "contractSelector": "/sources/1",
+      "set": "selected-brussels",
+      "country": "BE",
+      "type": "recipes",
+      "countryComplete": false,
+      "assetIdAliases": [],
+      "exactURL": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_08_RecettesEnfants_FR.PDF",
+      "aliases": [
+        "IF_AD_08_RecettesEnfants_FR",
+        "RecettesEnfants"
+      ],
+      "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+      "expectedBytes": null,
+      "publisherChecksums": {},
+      "recordedMedia": "application/pdf",
+      "expectedFormat": "pdf",
+      "expectedFormatBasis": "Exact reviewed fixed source validation kind, not filename inference.",
+      "permissionEvidencePins": [
+        {
+          "path": "/workspace/shared/missing-country-originals-20261019/belgium-permission-evidence.json",
+          "sha256": "0c7895dce194e92cf36ce923e5dfaa66c11f73c4c13dd57b846b0db2c35c029c",
+          "bytes": 1268
+        }
+      ],
+      "sourceStageHolds": [],
+      "downstreamHolds": [
+        "commercial-reuse-unqualified",
+        "redistribution-unselected",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "permissions": {
+        "read": true,
+        "extract": true,
+        "copy": true
+      },
+      "permissionFacts": "Saved primary legal notice explicitly permits personal downloading and reproduction. Private bounded text extraction is treated as reproduction for personal reference, conditional on retaining source credit and whole original; no public or commercial derivative use implied.",
+      "permissionInterpretation": "Evidence classification for root review, not a new legal agreement or blanket downstream authorization. Known source-specific denial/privacy/copy restrictions prevail. Do not turn older workflow scope into an invented no-read hold.",
+      "extractionParameters": {
+        "encoding": null,
+        "delimiter": null,
+        "hasHeader": null,
+        "jsonRecordPath": null,
+        "xmlRecordTag": null,
+        "sheetIndexes": null,
+        "pageStart": null,
+        "pageEnd": null
+      },
+      "missingContractFields": [],
+      "parameterGapReason": "Unknown actual page or sheet counts are evidence to discover locally, not an admission blocker. Preserve actual selected indices/ranges and counts in the local receipt. No source evidence reviewed here limits authorized reading to particular pages/sheets.",
+      "recordedCustody": {
+        "status": "No terminal successful receipt established in this bounded enrichment",
+        "action": "Existing root-reviewed acquisition policy and exact matching claim/cache checks apply; no independent authority here."
+      },
+      "preparationDisposition": "BOUNDED_ALL_PAGES_OR_SHEETS_AUTO_DISCOVERY_SUPPORTED_PENDING_HANDLER_REVIEW",
+      "extractionSelection": {
+        "mode": "bounded-auto-discovery",
+        "scope": "all-discovered-pages",
+        "recordActualParametersLocally": true,
+        "noAI": true,
+        "noSourceUploads": true,
+        "noExternalLinkOrFormulaExecution": true,
+        "noOCRInstallation": true,
+        "suggestedSafetyCaps": {
+          "maxInputBytes": 16777216,
+          "maxPages": 2048,
+          "maxSheets": null,
+          "maxOutputBytes": 67108864,
+          "maxSeconds": 180
+        },
+        "capQualification": "Finite proposed safety ceilings for author/reviewer adoption, not observed extent or source coverage. Unsupported parser or exceeded cap must yield explicit retained-original stage failure without discarding acquisition."
+      }
+    }
+  ],
+  "counts": {
+    "sourceKeys": 13,
+    "pdf": 12,
+    "xlsx": 1,
+    "heldSuccessfulReuseOnly": 3,
+    "privateCopyReadPermissionSupported": 13,
+    "extractPermissionSupported": 13,
+    "boundedAutoDiscoveryContracts": 13
+  },
+  "preserveHolds": [
+    "FI",
+    "Frida",
+    "NO-FR",
+    "all source/privacy/custody/denial holds",
+    "Zenodo15169428",
+    "WHO Sarajevo",
+    "Crete copying ban",
+    "RecipeNLG agreement",
+    "PH20",
+    "CA26"
+  ],
+  "rootDirection": "Parent instruction20:44:55UTC: unknown page counts/sheet indices need not block safe authorized extraction; configure bounded all-pages/sheets auto-discovery and record actual parameters locally. No independent dispatch."
+}

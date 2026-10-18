@@ -75,16 +75,26 @@ def write_private_intent(path,value,a):
 
 def validate_mode(mode,selected,a):
  expected={'mode','diagnosticReportPin','minimumOriginalDedupSeconds','httpResponseCacheEnabled','preserveFailedIntents','predecessors'}
+ if isinstance(mode,dict) and 'freshSources' in mode:expected.add('freshSources')
  if (not isinstance(mode,dict) or set(mode)!=expected or mode['mode']!='owner-directed-private-original-save/1'
      or mode['minimumOriginalDedupSeconds']!=a.TTL or mode['httpResponseCacheEnabled'] is not False or mode['preserveFailedIntents'] is not True):raise a.RefreshError('private-save-contract-invalid')
- pin=mode['diagnosticReportPin']
- if not isinstance(pin,dict) or set(pin)!={'path','sha256'} or pin['path']!='docs/collection-selections/recipe-five-recovery-observation.json' or not re.fullmatch('[a-f0-9]{64}',pin['sha256']):raise a.RefreshError('private-save-contract-invalid')
- observed=a.strict_json(a.preparation_module().pinned_bytes(ROOT,(pin['path'],pin['sha256'])))['steps'][-1]['evidence']['batchRecoveryDiagnostic']
- if observed['status']!='complete' or observed['priorGETCauseEstablished'] is not False or observed['networkBodyBytesRead']!=0:raise a.RefreshError('private-save-contract-invalid')
- if len(selected['sources'])!=5 or len(mode['predecessors'])!=5:raise a.RefreshError('private-save-contract-invalid')
- for source,prior,item in zip(selected['sources'],mode['predecessors'],observed['items']):
-  if (set(prior)!={'sourceKey','sourceContractSHA256','detailSHA256','intentSHA256'} or prior['sourceKey']!=source['sourceKey'] or prior['sourceContractSHA256']!=a.sha(a.canonical(source))
-      or item['sourceKey']!=source['sourceKey'] or item['priorDetailSHA256']!=prior['detailSHA256'] or item['localState']['intentSHA256']!=prior['intentSHA256']
+ fresh=mode.get('freshSources',[]);predecessors=mode['predecessors']
+ if (not isinstance(fresh,list) or len(set(fresh))!=len(fresh) or any(not isinstance(k,str) for k in fresh)
+     or not isinstance(predecessors,list)):raise a.RefreshError('private-save-contract-invalid')
+ keys=[s['sourceKey'] for s in selected['sources']];previous_keys=[p.get('sourceKey') for p in predecessors]
+ if len(set(previous_keys))!=len(previous_keys) or set(fresh)&set(previous_keys) or set(keys)!=set(fresh)|set(previous_keys):raise a.RefreshError('private-save-contract-invalid')
+ pin=mode['diagnosticReportPin'];observed=None
+ if predecessors:
+  if not isinstance(pin,dict) or set(pin)!={'path','sha256'} or pin['path']!='docs/collection-selections/recipe-five-recovery-observation.json' or not re.fullmatch('[a-f0-9]{64}',pin['sha256']):raise a.RefreshError('private-save-contract-invalid')
+  observed=a.strict_json(a.preparation_module().pinned_bytes(ROOT,(pin['path'],pin['sha256'])))['steps'][-1]['evidence']['batchRecoveryDiagnostic']
+  if observed['status']!='complete' or observed['priorGETCauseEstablished'] is not False or observed['networkBodyBytesRead']!=0:raise a.RefreshError('private-save-contract-invalid')
+ elif pin is not None:raise a.RefreshError('private-save-contract-invalid')
+ for source in selected['sources']:
+  if source['sourceKey'] in fresh:continue
+  prior=next(p for p in predecessors if p['sourceKey']==source['sourceKey'])
+  item=next((i for i in observed['items'] if i['sourceKey']==source['sourceKey']),None)
+  if (set(prior)!={'sourceKey','sourceContractSHA256','detailSHA256','intentSHA256'} or prior['sourceContractSHA256']!=a.sha(a.canonical(source)) or item is None
+      or item['priorDetailSHA256']!=prior['detailSHA256'] or item['localState']['intentSHA256']!=prior['intentSHA256']
       or item['localState']['detailSHA256Verified'] is not True or item['localState']['intentState']!='failed-no-retry'
       or any(item['localState'][key]['state']!='absent' for key in ('currentMetadata','recoveryMetadata','partialBody','sourceReservation'))
       or item['responseMetadata']['httpStatus']!=200):raise a.RefreshError('private-save-contract-invalid')
@@ -93,10 +103,10 @@ def validate_mode(mode,selected,a):
 def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None):
  a=adapter;contract=a.source_contract(source);fingerprint=contract['fingerprint'];maximum=contract['maxBytes'];seconds=contract['seconds']
  deadline=min(deadline if deadline is not None else float('inf'),time.monotonic()+seconds)
- prior=next(p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']);meter={'requests':0,'bodyBytesRead':0}
+ prior=next((p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']),None);diagnostic_sha=(mode['diagnosticReportPin'] or {}).get('sha256');meter={'requests':0,'bodyBytesRead':0}
  report={'schemaVersion':'offmenu-private-original-save-detail/1','sourceKey':source['sourceKey'],'selectionSHA256':fingerprint,
   'status':'blocked','errorCode':None,'cacheStatus':None,'validation':None,'network':meter,'responseMetadata':None,'responsePolicy':None,
-  'originalDisposition':None,'privateSaveState':'none','localBodyBytes':0,'predecessor':prior,'diagnosticReportSHA256':mode['diagnosticReportPin']['sha256'],
+  'originalDisposition':None,'privateSaveState':'none','localBodyBytes':0,'predecessor':prior,'diagnosticReportSHA256':diagnostic_sha,
   'minimumOriginalDedupSeconds':a.TTL,'httpResponseCacheEnabled':False,'priorGETCauseEstablished':False,
   'receiptPersistence':'pending','downstreamHolds':source['downstreamHolds'],**a.SAFETY}
  response=None;reservation_fd=reservation_identity=None;claimed=False;folder=None;intent=None;partial_created=False;original_created=False
@@ -107,10 +117,15 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
    original=folder/'original.pdf';partial=folder/'original.partial';provenance=folder/'provenance.json';intent=folder/'successor-intent.json';reservation=folder/'reservation.bin'
    old_claim=work/'intents'/(a.sha(source['url'].encode())+'.json')
    report['claimCoverage']=a.inspect_runner_metadata((a.LEGACY_CACHE,work),source,intent,old_claim,deadline)
-   a.read_metadata(old_claim,expected_sha256=prior['intentSHA256'])
-   state=diagnostic_module().local_state(work,source,prior)
-   if state['intentSHA256']!=prior['intentSHA256'] or any(state[key]['state']!='absent' for key in ('currentMetadata','recoveryMetadata','partialBody','sourceReservation')):raise a.RefreshError('predecessor-evidence-mismatch')
-   base={'schemaVersion':'offmenu-private-original-successor/1','sourceKey':source['sourceKey'],'url':source['url'],'sourceContractSHA256':fingerprint,'predecessor':prior,'diagnosticReportSHA256':mode['diagnosticReportPin']['sha256'],'owner':0}
+   if prior is not None:
+    a.read_metadata(old_claim,expected_sha256=prior['intentSHA256'])
+    state=diagnostic_module().local_state(work,source,prior)
+    if state['intentSHA256']!=prior['intentSHA256'] or any(state[key]['state']!='absent' for key in ('currentMetadata','recoveryMetadata','partialBody','sourceReservation')):raise a.RefreshError('predecessor-evidence-mismatch')
+   else:
+    if source['sourceKey'] not in mode.get('freshSources',[]):raise a.RefreshError('private-save-contract-invalid')
+    cached=work/'source-cache/requests'/a.sha(a.canonical(a.source_spec(source).identity()))
+    if old_claim.exists() or any((cached/name).exists() for name in ('current.json','recovery.json','body.partial')) or (work/('reservation-'+a.sha(source['url'].encode())+'.bin')).exists():raise a.RefreshError('source-claim-uncertain')
+   base={'schemaVersion':'offmenu-private-original-successor/1','sourceKey':source['sourceKey'],'url':source['url'],'sourceContractSHA256':fingerprint,'predecessor':prior,'diagnosticReportSHA256':diagnostic_sha,'owner':0}
    if intent.exists():
     existing,_=a.read_metadata(intent)
     if existing.get('state')!='verified' or any(existing.get(k)!=v for k,v in base.items()):raise a.RefreshError('private-save-intent-uncertain')

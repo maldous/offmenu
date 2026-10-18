@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -79,7 +79,7 @@ def canonical(value):
 
 
 def report_limit(value):
-    return MAX_SURVEY_REPORT if value.get('profile') == 'national-schema-survey' else MAX_REPORT
+    return MAX_SURVEY_REPORT if value.get('profile') in {'national-schema-survey','global-collection'} else MAX_REPORT
 
 
 def atomic_json(path, value):
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-global-collection-result/1": ("collect-fixed-global.py", "globalCollection"),
         "offmenu-fixed-batch-recovery-diagnostic/1": ("diagnose-fixed-batch.py", "batchRecoveryDiagnostic"),
         "offmenu-fixed-source-batch/1": ("acquire-fixed-batch.py", "fixedSourceBatch"),
         "offmenu-fixed-swiss-original/1": ("acquire-fixed-swiss.py", "fixedSwissOriginal"),
@@ -189,7 +190,7 @@ def diagnostic_evidence(value):
             return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
         if not isinstance(sanitized, dict) or sanitized.get("schemaVersion") != schema:
             return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
-        if len(canonical(sanitized)) > MAX_DIAGNOSTIC_EVIDENCE:
+        if len(canonical(sanitized)) > (MAX_SURVEY_EVIDENCE if schema=='offmenu-global-collection-result/1' else MAX_DIAGNOSTIC_EVIDENCE):
             return {"diagnosticEvidenceError": "diagnostic-evidence-limit-exceeded"}
         return {key: sanitized}
     except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, RecursionError):
@@ -312,6 +313,12 @@ def profile_steps(profile, code, trusted_sha=None):
             ("batch-recovery-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_batch_recovery_diagnostic.py"]),
             ("batch-recovery-diagnostic", ["readiness", "batch-recovery-tests"], [python, "-B", "scripts/diagnose-fixed-batch.py"]),
         ]
+    if profile == "global-collection":
+        return steps + [
+            ("global-collection-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_global_collection.py"]),
+            ("media-preparation-tests", ["readiness", "global-collection-tests"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_media_preparation.py"]),
+            ("global-collection", ["readiness", "global-collection-tests", "media-preparation-tests"], [python, "-B", "scripts/collect-fixed-global.py"]),
+        ]
     if profile == "selected-original-batch":
         steps += [
             ("fixed-source-batch-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_source*.py"]),
@@ -392,7 +399,7 @@ def profile_steps(profile, code, trusted_sha=None):
 def run_step(step_id, command, code):
     try:
         result = (run_child(command, code, timeout=210) if step_id == "batch-recovery-diagnostic"
-                  else run_child(command, code, timeout=1230) if step_id == "selected-original-batch"
+                  else run_child(command, code, timeout=1230) if step_id in {"selected-original-batch", "global-collection"}
                   else run_child(command, code, timeout=150) if step_id == "swiss-private-original"
                   else run_child(command, code, timeout=930) if step_id == "zenodo-private-original"
                   else run_child(command, code, timeout=60) if step_id == "zenodo-response-metadata"
@@ -426,6 +433,14 @@ def run_step(step_id, command, code):
                 result["status"] = "blocked"
             elif report.get("status") != "complete-with-errors" or result["exitCode"] != 2:
                 result.update(status="failed", exitCode=3, errorCode="batch-recovery-report-invalid")
+        if step_id == "global-collection" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("globalCollection", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") not in {"complete-with-errors", "summary-projection-failed"} or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="global-collection-report-invalid")
         if step_id == "selected-original-batch" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("fixedSourceBatch", {})
             if report.get("status") == "complete" and result["exitCode"] == 0:
@@ -579,6 +594,10 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(maximumParallelChildren=1, diagnosticScope="five-failed-source-metadata-and-HEAD-diagnostics",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,
                       candidateGenerationEnabled=False, networkAcquisitionEnabled=False)
+    if request["profile"] == "global-collection":
+        report.update(maximumParallelChildren=1, diagnosticScope="all-known249-and-shared-fixed-collection-and-preparation",
+                      sourceContentsUploaded=False, nativeClaimCoverageExhaustive=False,
+                      unknownClaimsAssumedEmpty=False, countryCoverageComplete=False)
     if request["profile"] == "selected-original-batch":
         report.update(maximumParallelChildren=1, diagnosticScope="seven-selected-private-recipe-originals",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "offmenu-publisher-permission-evidence/1",
+  "observedUTC": "2026-10-18T20:39:56Z",
+  "sourceURL": "https://environnement.brussels/citoyen/mentions-legales",
+  "primaryPublisher": "Bruxelles Environnement",
+  "sourceTitle": "Mentions légales",
+  "publisherPageDate": "2026-07-01",
+  "section": "Droits de propriété intellectuelle",
+  "exactExcerpt": "vous avez le droit de télécharger et de reproduire les informations figurant sur ce site pour votre usage personnel.",
+  "evidenceMethod": "Primary publisher result text retrieved by web search; no source PDF body requested",
+  "interpretation": "Explicit private personal downloading and reproduction permission; source acknowledgement required by opening section. Publisher reserves intellectual property, including photos/maps; no separate logo/mark use. This is source-policy evidence only, no commercial/downstream licence, live-claim clearance or executable admission.",
+  "relatedPrimaryDownloadPage": "https://environnement.brussels/pro/services-et-demandes/conseils-et-accompagnement/outils-et-conseils-gratuits-pour-devenir-une-cantine-durable",
+  "coveredCandidateIDs": [
+    "be-brussels-adult-recipes",
+    "be-brussels-child-recipes"
+  ],
+  "noTermsAcceptancePerformed": true
+}
