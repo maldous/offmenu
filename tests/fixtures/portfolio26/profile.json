@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "nutrientProfile",
+  "id": "authored-cnf-1",
+  "provenance": {
+    "sourceId": "cnf",
+    "releaseId": "2015"
+  },
+  "data": {
+    "basis": {
+      "amount": 100,
+      "unit": "g"
+    },
+    "nutrients": {
+      "protein": {
+        "value": 1.25,
+        "unit": "g",
+        "qualifier": "source-reported",
+        "name": "AUTHORED PROTEIN",
+        "sourceComponent": "authored-only"
+      }
+    }
+  }
+}
