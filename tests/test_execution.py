@@ -26,7 +26,7 @@ class ExecutionTests(unittest.TestCase):
     def test_release_mismatch_and_missing_parser(self):
         plan = execution.execution_plan({'sources': [{'sourceId': 'cnf', 'historicalCapability': execution._release('cnf')}]})
         self.assertIn('discovery-release-mismatch', plan['sources'][0]['errors'])
-        self.assertFalse(plan['sources'][0]['parserImplemented'])
+        self.assertTrue(plan['sources'][0]['parserImplemented'])
 
     def test_contract_checks_exact_set_hash_time_and_links(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -55,7 +55,7 @@ class ExecutionTests(unittest.TestCase):
         repository = Path(__file__).resolve().parents[1]
         if not (repository / 'scripts/import-afcd.py').exists():
             self.skipTest('requires composed repository with pinned legacy scripts')
-        for source in execution.ADAPTERS:
+        for source in ('afcd', 'mext', 'cofid', 'germany-bls', 'sweden-food'):
             with self.subTest(source=source), tempfile.TemporaryDirectory() as folder:
                 root = Path(folder); bundle = root / 'bundle'; bundle.mkdir()
                 def book(name, sheets):

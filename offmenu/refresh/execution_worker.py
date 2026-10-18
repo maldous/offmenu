@@ -76,6 +76,9 @@ def main():
     module_spec = importlib.util.spec_from_file_location('reviewed_historical_handler', handler)
     module = importlib.util.module_from_spec(module_spec)
     module_spec.loader.exec_module(module)
+    from offmenu.refresh.national_tabular import ADAPTERS as TABULAR_ADAPTERS, preflight
+    if entry.source_id in TABULAR_ADAPTERS:
+        preflight(entry.source_id, bundle, module)
     if spec['mode'] == 'records':
         records = getattr(module, spec['function'])(bundle)
         destination.mkdir()
