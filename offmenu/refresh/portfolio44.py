@@ -10,10 +10,11 @@ import json
 import os
 from pathlib import Path
 import stat
+import tempfile
 
 from .acceptance import fingerprint
 from .acquisition import MIN_TTL
-from .core import RefreshError, safe_path, strict_json, timestamp
+from .core import RefreshError, canonical, safe_path, strict_json, timestamp
 from .field_provenance import datum_pointers, field_origin_errors
 from .reference_adapters import candidate_bytes
 
@@ -309,6 +310,26 @@ def read_metadata(binding):
         return None
 
 
+def _publish_new(path, content):
+    """Expose a complete single file exclusively; never replace another output.
+
+    The pair is not atomic. If only one identical member is visible after a
+    failure, main may complete the other on retry. Staging is in the same private
+    directory; only this invocation's temporary is cleaned up on exceptions.
+    """
+    path = safe_path(path)
+    fd, name = tempfile.mkstemp(prefix='.' + path.name + '-', suffix='.pending', dir=path.parent)
+    temporary = Path(name)
+    try:
+        with os.fdopen(fd, 'wb') as stream:
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.link(temporary, path, follow_symlinks=False)  # Exclusive, no clobber.
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def main(argv=None):
     from .portfolio44_catalog import BINDINGS
     parser = argparse.ArgumentParser(description=__doc__)
@@ -332,15 +353,21 @@ def main(argv=None):
             output.mkdir(parents=True, exist_ok=True)
             candidate = safe_path(output / 'candidate.jsonl')
             manifest = safe_path(output / 'manifest.json')
-            if candidate.exists() or manifest.exists():
+            candidate_exists, manifest_exists = candidate.exists(), manifest.exists()
+            if candidate_exists and _read_regular(candidate, len(content)) != content:
+                raise RefreshError('output-exists-use-new-directory')
+            if manifest_exists and canonical(strict_json(_read_regular(manifest, MAX_METADATA))) != canonical(result['manifest']):
+                raise RefreshError('output-exists-use-new-directory')
+            if not candidate_exists:
+                _publish_new(candidate, content)
+            if not manifest_exists:
+                _publish_new(manifest, json.dumps(result['manifest'], sort_keys=True).encode() + b'\n')
+            if not candidate_exists or not manifest_exists:
                 if (_read_regular(candidate, len(content)) != content
-                        or strict_json(_read_regular(manifest, MAX_METADATA)) != result['manifest']):
-                    raise RefreshError('output-exists-use-new-directory')
-            else:
-                with candidate.open('xb') as stream:
-                    stream.write(content)
-                with manifest.open('xb') as stream:
-                    stream.write(json.dumps(result['manifest'], sort_keys=True).encode() + b'\n')
+                        or canonical(strict_json(_read_regular(manifest, MAX_METADATA))) != canonical(result['manifest'])):
+                    raise RefreshError('published-metadata-pair-mismatch')
+            if candidate_exists != manifest_exists:
+                result['replay'] = 'recovered-identical-partial'
         print(json.dumps(result, sort_keys=True, allow_nan=False))
         return 0 if result['status'] == 'ready' else 2
     except (OSError, ValueError, RecursionError):
