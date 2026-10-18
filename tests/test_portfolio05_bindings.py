@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import tarfile
 import unittest
 import zipfile
 from unittest.mock import patch
@@ -117,6 +118,62 @@ class Portfolio05Bindings(unittest.TestCase):
             self.assertEqual([x['status'] for x in result['sources']], ['missing', 'malformed', 'valid'])
             self.assertEqual(result['sourceBodiesRead'], 0)
             self.assertEqual(result['networkRequests'], 0)
+
+    def test_receipt_replacement_fifo_never_reopens_unbounded(self):
+        spec, payload = authored()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target = root/'changed.json'
+            target.write_bytes(payload)
+            good = root/'good.json'
+            good.write_bytes(payload)
+            spec['receipt']['path'] = str(target)
+            sibling = copy.deepcopy(spec)
+            sibling['sourceId'] = 'sibling'
+            sibling['receipt']['path'] = str(good)
+            real_open = os.open
+            swapped = False
+            def raced_open(path, flags, *args, **kwargs):
+                nonlocal swapped
+                if path == target.name and kwargs.get('dir_fd') is not None and not swapped:
+                    self.assertTrue(flags & os.O_NONBLOCK, 'reject regression before FIFO could block')
+                    self.assertTrue(flags & os.O_NOFOLLOW)
+                    target.rename(root/'protected-original.json')
+                    os.mkfifo(target)
+                    swapped = True
+                return real_open(path, flags, *args, **kwargs)
+            with patch.object(binding, 'configuration', return_value={'sources': [spec, sibling], 'evidencePins': []}), \
+                 patch.object(binding.os, 'open', side_effect=raced_open), \
+                 patch.object(Path, 'read_bytes', side_effect=AssertionError('unbounded path reopen')):
+                result = binding.inspect_portfolio(now=NOW)
+            self.assertTrue(swapped)
+            self.assertEqual([x['status'] for x in result['sources']], ['malformed', 'valid'])
+            self.assertEqual((root/'protected-original.json').read_bytes(), payload)
+
+    def test_receipt_growth_read_is_capped_and_rejected(self):
+        spec, payload = authored()
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp)/'receipt.json'
+            target.write_bytes(payload)
+            spec['receipt']['path'] = str(target)
+            real_fdopen = os.fdopen
+            sizes = []
+            class GrowingStream:
+                def __init__(self, stream): self.stream = stream
+                def __enter__(self): self.stream.__enter__(); return self
+                def __exit__(self, *args): return self.stream.__exit__(*args)
+                def fileno(self): return self.stream.fileno()
+                def read(self, size):
+                    sizes.append(size)
+                    with target.open('ab') as stream:
+                        stream.write(b'x'*(binding.MAX_RECEIPT*2))
+                    return self.stream.read(size)
+            with patch.object(binding, 'configuration', return_value={'sources': [spec], 'evidencePins': []}), \
+                 patch.object(binding.os, 'fdopen', side_effect=lambda *args, **kw: GrowingStream(real_fdopen(*args, **kw))), \
+                 patch.object(Path, 'read_bytes', side_effect=AssertionError('unbounded path reopen')):
+                result = binding.inspect_portfolio(now=NOW)
+            self.assertEqual(sizes, [len(payload)+1])
+            self.assertEqual(result['sources'][0]['status'], 'malformed')
 
     def test_production_configuration_keeps_every_source_held(self):
         config = binding.configuration()
@@ -273,10 +330,16 @@ raise SystemExit(status)
             wheels = root/'wheels'
             wheels.mkdir()
             build = subprocess.run([sys.executable, '-I', '-B', '-c',
-                'from setuptools.build_meta import build_wheel; build_wheel('+repr(str(wheels))+')'],
+                'from setuptools.build_meta import build_wheel, build_sdist; '
+                'build_wheel('+repr(str(wheels))+'); build_sdist('+repr(str(wheels))+')'],
                 cwd=source, capture_output=True, text=True, timeout=60)
             self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
             wheel, = wheels.glob('*.whl')
+            sdist, = wheels.glob('*.tar.gz')
+            with tarfile.open(sdist) as archive:
+                names = archive.getnames()
+                self.assertTrue(any(n.endswith('/offmenu/refresh/portfolio05_sources.py') for n in names))
+                self.assertFalse(any(n.endswith('/offmenu/refresh/portfolio05_sources.json') for n in names))
             installed = root/'installed'
             with zipfile.ZipFile(wheel) as archive:
                 self.assertIn('offmenu/refresh/portfolio05_sources.py', archive.namelist())

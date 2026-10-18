@@ -36,7 +36,13 @@ portfolio adapter. `inspect_portfolio(now=..., previous=...)` reads only bounded
 exactly pinned receipt files. It never follows original-artifact paths. Duplicate
 JSON keys, receipt drift, missing fields, invalid country/clock/field types and
 unavailable files produce fixed diagnostics isolated to each source. Missing,
-malformed, held, stale and valid are distinct outcomes; stale means the prior
+Receipt bytes come from one bounded regular descriptor with no-follow directory
+traversal and a nonblocking final open. Those same bytes are checked for exact
+length/hash and passed to the binder; there is no verify/read_bytes/verify path
+reopen. Growth is capped at expected length+1 and rejected. A bad receipt stays
+isolated from its siblings.
+
+Malformed, held, stale and valid are distinct outcomes; stale means the prior
 metadata candidate hash differs from current content/policy, not a cache-age
 decision. Holds take precedence. Diagnostics contain no source
 body, unselected receipt fields, signed URLs or exception contents.
@@ -56,7 +62,8 @@ a dataset. This package supplies no recipe or measured nutrient/price records.
 The configuration is an inert owned Python declaration imported with the package,
 not a JSON file that depends on an undeclared package-data convention. The normal
 setuptools wheel contains it without any shared packaging change. An offline
-authored smoke test builds a wheel from source in scratch, extracts it outside
+authored smoke test builds wheel and sdist in scratch, verifies the module in
+both artifacts, and extracts the wheel outside
 the checkout, imports with isolated Python and loads all eight held declarations
 with receipt/resource reads prohibited. The returned configuration is a defensive
 copy. This proves installed-artifact configuration availability; it does not
@@ -72,7 +79,7 @@ retain uncertainty; filenames and PDF page totals do not invent editions.
 
 Shared `field_provenance.field_origin_errors` checks all scalar origins. The
 portfolio wrapper also resolves actual receipt values and compares each source
-field. Shared `core.strict_json`, `core.verify`, canonical serialization and
+field. Shared `core.strict_json`, canonical serialization and
 `serialization.encode_records` are reused. Tests hand the authored metadata
 candidate to shared `acceptance.qualify` using a trusted **test-code**
 `SourceContract(fixture=True)`. Actual-source contracts are not generated from

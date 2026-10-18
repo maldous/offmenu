@@ -12,7 +12,7 @@ from pathlib import Path
 import stat
 import sys
 
-from .core import RefreshError, canonical, sha, strict_json, timestamp, verify, safe_path
+from .core import RefreshError, canonical, sha, strict_json, timestamp, safe_path
 from .field_provenance import datum_pointers, field_origin_errors
 from .serialization import encode_records
 from .portfolio05_sources import CONFIGURATION
@@ -145,23 +145,22 @@ def bind(spec, payload, *, now, previous_candidate_sha256=None):
 def inspect_portfolio(*, now, previous=None):
     """Independent fixed diagnostics; one failing receipt cannot abort siblings.
 
-    Reads exact allowlisted metadata only, bounded before/after pin verification.
+    Reads exact allowlisted metadata once through a bounded regular descriptor.
     Original paths in receipts are never opened, stat-ed, imported or followed.
     """
     config = configuration()
     rows = []
     for spec in config['sources']:
         try:
-            path = safe_path(spec['receipt']['path'])
-            if not path.exists():
+            expected = spec['receipt']
+            if type(expected['bytes']) is not int or not 0 < expected['bytes'] <= MAX_RECEIPT:
+                raise RefreshError('metadata-input-bound')
+            try:
+                payload = _read_bounded_regular(expected['path'], expected['bytes'], 'metadata-input')
+            except FileNotFoundError:
                 payload = None
-            else:
-                actual = verify(path, {'bytes': spec['receipt']['bytes'],
-                                       'sha256': spec['receipt']['sha256']})
-                if actual['bytes'] > MAX_RECEIPT:
-                    raise RefreshError('metadata-input-bound')
-                payload = path.read_bytes()
-                verify(path, actual)
+            if payload is not None and (len(payload) != expected['bytes'] or sha(payload) != expected['sha256']):
+                raise RefreshError('metadata-input-pin-mismatch')
             rows.append(bind(spec, payload, now=now,
                              previous_candidate_sha256=(previous or {}).get(spec['sourceId'])))
         except (OSError, ValueError):
@@ -174,12 +173,8 @@ def inspect_portfolio(*, now, previous=None):
             'countryAcceptance': False, 'evidencePins': config['evidencePins']}
 
 
-def previous_candidates(path):
-    """Read an optional report without following links or blocking on a FIFO.
-
-    Owned entrypoint repair only. No raw source/cache/acceptance operations.
-    Validate the opened descriptor, not just a path inspected before open.
-    """
+def _read_bounded_regular(path, maximum, label):
+    """Owned metadata boundary: one fd, bounded bytes, no path reopen."""
     directory = descriptor = None
     try:
         path = safe_path(path)
@@ -192,18 +187,30 @@ def previous_candidates(path):
         descriptor = os.open(path.name, flags | os.O_NONBLOCK, dir_fd=directory)
         before = os.fstat(descriptor)
         if not stat.S_ISREG(before.st_mode):
-            raise RefreshError('previous-report-regular-file-required')
-        if before.st_size > MAX_PREVIOUS:
-            raise RefreshError('previous-report-bound')
+            raise RefreshError(label + '-regular-file-required')
+        if before.st_size > maximum:
+            raise RefreshError(label + '-bound')
         with os.fdopen(descriptor, 'rb') as stream:
             descriptor = None
-            raw = stream.read(MAX_PREVIOUS + 1)
+            raw = stream.read(maximum + 1)
             after = os.fstat(stream.fileno())
         identity = lambda st: (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
         if identity(before) != identity(after) or len(raw) != before.st_size:
-            raise RefreshError('previous-report-changed-during-read')
-        if len(raw) > MAX_PREVIOUS:
-            raise RefreshError('previous-report-bound')
+            raise RefreshError(label + '-changed-during-read')
+        if len(raw) > maximum:
+            raise RefreshError(label + '-bound')
+        return raw
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+        if directory is not None:
+            os.close(directory)
+
+
+def previous_candidates(path):
+    """Read an optional report using the same owned bounded fd boundary."""
+    try:
+        raw = _read_bounded_regular(path, MAX_PREVIOUS, 'previous-report')
         report = strict_json(raw)
         if not isinstance(report, dict) or not isinstance(report.get('sources'), list):
             raise RefreshError('previous-report-malformed')
@@ -224,11 +231,6 @@ def previous_candidates(path):
         raise RefreshError('previous-report-file-unavailable') from None
     except (ValueError, TypeError, KeyError, UnicodeError, RecursionError):
         raise RefreshError('previous-report-malformed') from None
-    finally:
-        if descriptor is not None:
-            os.close(descriptor)
-        if directory is not None:
-            os.close(directory)
 
 
 def main(argv=None):
