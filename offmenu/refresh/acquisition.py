@@ -16,7 +16,7 @@ import shutil
 import ssl
 import time
 import threading
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qsl
 from email.utils import parsedate_to_datetime
 
 from .core import (RefreshError, atomic_json, canonical, digest, fsync_directory,
@@ -26,8 +26,11 @@ MIN_TTL = 30 * 86400
 MAX_BODY = 64 * 1024 * 1024  # Default only; larger sources require runner resource policy.
 MAX_REVIEWED_BODY = 1024 ** 4
 MAX_METADATA = 1024 * 1024
+MAX_REGISTRY_METADATA = 32 * MAX_METADATA  # Pinned all249 metadata, never a raw payload.
 RETAINED_HEADERS = frozenset(('etag', 'last-modified', 'cache-control', 'expires', 'age', 'vary', 'content-encoding'))
 POLICIES = frozenset(('reuse', 'refresh', 'revalidate', 'force-download'))
+BINDING_STATES = frozenset(('held-locally-with-evidence', 'found-ready',
+    'queued-downloading-partial', 'found-blocked-exactreason', 'unknown-notyetfound'))
 
 
 @dataclass(frozen=True)
@@ -44,6 +47,10 @@ class SourceSpec:
     acquisition_version: str = 'https-file-v1'
     release: str = 'mutable'
     cache_scope: str = 'public'
+    query_keys: tuple = ()
+    request_method: str = 'GET'
+    request_body: str = ''
+    public_read_only_post: bool = False
 
     def validate(self):
         if not re.fullmatch(r'[a-z0-9][a-z0-9._-]{0,127}', self.source_key):
@@ -56,13 +63,50 @@ class SourceSpec:
         if not self.enabled or not self.rights_approved or self.held:
             raise RefreshError('source-acquisition-gate-closed')
         parts = urlsplit(self.url)
-        # Initial adapter deliberately excludes query tokens, auth, redirects,
-        # nonstandard ports and custom representation headers.
+        # Only reviewed exact public query keys and canonical read-only JSON POST.
+        # Credentials, redirect discovery and arbitrary request headers stay closed.
         if (parts.scheme != 'https' or not parts.hostname or parts.username
-                or parts.password or parts.query or parts.fragment
+                or parts.password or parts.fragment
                 or parts.port not in (None, 443) or '\\' in self.url
                 or any(ord(c) < 33 or ord(c) > 126 for c in self.url)):
             raise RefreshError('unsupported-source-locator')
+        if (not isinstance(self.query_keys, (tuple, list))
+                or any(not isinstance(k, str) or not re.fullmatch(r'[A-Za-z0-9_.-]{1,64}', k)
+                       or re.search(r'token|key|secret|pass|auth|credential|signature', k, re.I)
+                       for k in self.query_keys)
+                or len(set(self.query_keys)) != len(self.query_keys)):
+            raise RefreshError('invalid-reviewed-query-contract')
+        query = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=True)
+        if (len({k for k, v in query}) != len(query)
+                or set(k for k, v in query) != set(self.query_keys)
+                or any(any(ord(c) < 32 or ord(c) == 127 for c in k + v) for k, v in query)):
+            raise RefreshError('unsupported-source-locator-query')
+        if type(self.public_read_only_post) is not bool or not isinstance(self.request_body, str):
+            raise RefreshError('invalid-reviewed-request-contract')
+        if self.request_method == 'GET':
+            if self.request_body or self.public_read_only_post:
+                raise RefreshError('invalid-reviewed-request-contract')
+        elif self.request_method == 'POST':
+            if not self.public_read_only_post or not 1 <= len(self.request_body.encode('utf-8')) <= 65536:
+                raise RefreshError('read-only-public-post-not-approved')
+            try:
+                body = strict_json(self.request_body.encode('utf-8'))
+                if not isinstance(body, dict) or canonical(body) != self.request_body.encode('utf-8'):
+                    raise ValueError()
+                def public_fields(value):
+                    if isinstance(value, dict):
+                        for key, item in value.items():
+                            if re.search(r'token|api.?key|secret|password|authorization|credential|signature', key, re.I):
+                                raise ValueError()
+                            public_fields(item)
+                    elif isinstance(value, list):
+                        for item in value:
+                            public_fields(item)
+                public_fields(body)
+            except (ValueError, UnicodeError, RecursionError):
+                raise RefreshError('invalid-public-json-post-body') from None
+        else:
+            raise RefreshError('unsupported-source-method')
         if (not re.fullmatch(r'[0-9a-f]{64}', self.policy_fingerprint)
                 or not self.rights_reference or not self.acquisition_version
                 or not self.release):
@@ -72,12 +116,18 @@ class SourceSpec:
             raise RefreshError('invalid-acquisition-bounds')
 
     def identity(self):
-        return {'sourceKey': self.source_key, 'url': self.url,
+        identity = {'sourceKey': self.source_key, 'url': self.url,
                 'policyFingerprint': self.policy_fingerprint,
                 'rightsReference': self.rights_reference, 'cacheScope': self.cache_scope,
                 'acquisitionVersion': self.acquisition_version, 'release': self.release,
                 'representation': {'Accept-Encoding': 'identity'},
                 'maxBytes': self.max_bytes, 'ttlSeconds': self.ttl_seconds}
+        if self.query_keys:
+            identity['queryKeys'] = sorted(self.query_keys)
+        if self.request_method != 'GET':
+            identity['request'] = {'method': self.request_method, 'contentType': 'application/json',
+                                   'body': self.request_body, 'publicReadOnly': self.public_read_only_post}
+        return identity
 
 
 @dataclass(frozen=True)
@@ -122,7 +172,12 @@ class HTTPSFileTransport:
         watchdog.daemon = True
         watchdog.start()
         try:
-            connection.request('GET', parts.path or '/', headers=headers)
+            target = (parts.path or '/') + ('?' + parts.query if parts.query else '')
+            if spec.request_method == 'POST':
+                connection.request('POST', target, body=spec.request_body.encode('utf-8'),
+                                   headers={**headers, 'Content-Type': 'application/json'})
+            else:
+                connection.request('GET', target, headers=headers)
             active_socket[0] = connection.sock
             response = connection.getresponse()
             if expired.is_set():
@@ -270,7 +325,20 @@ class CachedAcquirer:
             raise RefreshError('invalid-acquisition-record')
         expected = {'schemaVersion', 'request', 'sha256', 'bytes', 'headers',
                     'originalAcquiredAt', 'checkedAt', 'result'}
-        if set(value) != expected or value['result'] not in ('downloaded-200', 'identical-body-200', 'not-modified-304'):
+        if 'retainedOrigin' in value:
+            expected.add('retainedOrigin')
+            origin = value['retainedOrigin']
+            if (not isinstance(origin, dict) or set(origin) != {'path', 'evidence', 'verifiedAt'}
+                    or not isinstance(origin['path'], str)
+                    or not isinstance(origin['evidence'], dict)
+                    or set(origin['evidence']) != {'path', 'sha256'}
+                    or not isinstance(origin['evidence']['sha256'], str)
+                    or not re.fullmatch(r'[0-9a-f]{64}', origin['evidence']['sha256'])
+                    or not timestamp(value['originalAcquiredAt']) <= timestamp(origin['verifiedAt']) <= now):
+                raise RefreshError('invalid-retained-origin')
+        if (set(value) != expected or value['result'] not in
+                ('downloaded-200', 'identical-body-200', 'not-modified-304', 'retained-import')
+                or (value['result'] == 'retained-import' and 'retainedOrigin' not in value)):
             raise RefreshError('invalid-acquisition-record')
         if not timestamp(value['originalAcquiredAt']) <= timestamp(value['checkedAt']) <= now:
             raise RefreshError('invalid-acquisition-time')
@@ -288,6 +356,106 @@ class CachedAcquirer:
         if digest(self._body(value['sha256']), max_bytes=spec.max_bytes) != {'sha256': value['sha256'], 'bytes': value['bytes']}:
             raise RefreshError('cached-body-corrupt')
         return value
+
+    def import_retained(self, source_key, retained, *, now=None):
+        """Copy an exact reviewed original, preserving acquisition time. No network.
+
+        `retained` is trusted operation configuration, not discovered metadata.
+        Its evidence pin binds custody/source-use; it grants no permission itself.
+        Completed objects recover normally; interrupted copies restart from zero.
+        """
+        spec = self.sources.get(source_key)
+        if spec is None or spec.source_key != source_key:
+            raise RefreshError('source-not-allowlisted')
+        spec.validate()
+        now = now or datetime.now(timezone.utc)
+        if now.tzinfo is None or now.utcoffset().total_seconds() != 0:
+            raise RefreshError('policy-clock-must-be-utc')
+        if (not isinstance(retained, dict) or set(retained) !=
+                {'path', 'sha256', 'bytes', 'originalAcquiredAt', 'headers', 'evidence'}
+                or type(retained['bytes']) is not int
+                or not 1 <= retained['bytes'] <= spec.max_bytes
+                or not isinstance(retained['sha256'], str)
+                or not re.fullmatch(r'[0-9a-f]{64}', retained['sha256'])):
+            raise RefreshError('invalid-retained-contract')
+        if spec.max_bytes > self.budget.max_transfer_bytes:
+            raise RefreshError('source-exceeds-runner-byte-budget')
+        acquired = timestamp(retained['originalAcquiredAt'])
+        if acquired > now:
+            raise RefreshError('invalid-acquisition-time')
+        pin = retained['evidence']
+        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+                or digest(pin['path'], max_bytes=MAX_METADATA)['sha256'] != pin['sha256']):
+            raise RefreshError('retained-evidence-mismatch')
+        headers = _headers(retained['headers'])
+        if not set(headers) <= RETAINED_HEADERS:
+            raise RefreshError('invalid-retained-headers')
+        _retention(headers)
+        original = safe_path(retained['path'])
+        expected = {k: retained[k] for k in ('sha256', 'bytes')}
+        identity = spec.identity()
+        self.root.mkdir(parents=True, exist_ok=True)
+        with writer_lock(self.root / 'acquisition.lock'):
+            directory = safe_path(self.root / 'requests' / sha(canonical(identity)))
+            directory.mkdir(parents=True, exist_ok=True)
+            record = safe_path(directory / 'current.json')
+            pending = safe_path(directory / 'recovery.json')
+            if pending.exists():
+                self._commit(record, self._load(pending, identity, spec, now, recovery=True))
+            previous = self._load(record, identity, spec, now)
+            if previous:
+                # Never overwrite a previously acquired different representation.
+                if {k: previous[k] for k in expected} != expected:
+                    raise RefreshError('retained-cache-conflict')
+                return self._result(previous, 'retained-already-cached')
+            if digest(original, max_bytes=spec.max_bytes) != expected:
+                raise RefreshError('retained-original-mismatch')
+            target = self._body(retained['sha256'])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            partial = safe_path(directory / 'body.partial')
+            deadline = time.monotonic() + self.budget.max_seconds
+            try:
+                if target.exists():
+                    if digest(target, max_bytes=spec.max_bytes) != expected:
+                        raise RefreshError('cached-body-corrupt')
+                else:
+                    if shutil.disk_usage(self.root).free < retained['bytes'] + self.budget.minimum_free_bytes:
+                        raise RefreshError('insufficient-acquisition-disk-budget')
+                    if partial.exists():
+                        partial.unlink()
+                    count, hasher = 0, hashlib.sha256()
+                    with original.open('rb') as source, partial.open('xb') as output:
+                        while True:
+                            if time.monotonic() >= deadline:
+                                raise RefreshError('acquisition-duration-limit-exceeded')
+                            block = source.read(min(1024 * 1024, retained['bytes'] - count + 1))
+                            if not block:
+                                break
+                            count += len(block)
+                            if count > retained['bytes']:
+                                raise RefreshError('retained-original-mismatch')
+                            if shutil.disk_usage(self.root).free < len(block) + self.budget.minimum_free_bytes:
+                                raise RefreshError('insufficient-acquisition-disk-budget')
+                            hasher.update(block)
+                            output.write(block)
+                        output.flush()
+                        os.fsync(output.fileno())
+                    if {'sha256': hasher.hexdigest(), 'bytes': count} != expected:
+                        raise RefreshError('retained-original-mismatch')
+                    # Hard-link promotion is no-overwrite even if another writer appears.
+                    os.link(partial, target)
+                    fsync_directory(target.parent)
+                value = {'schemaVersion': 'offmenu-acquisition/1', 'request': identity,
+                         **expected, 'headers': headers,
+                         'originalAcquiredAt': retained['originalAcquiredAt'],
+                         'checkedAt': retained['originalAcquiredAt'], 'result': 'retained-import',
+                         'retainedOrigin': {'path': str(original), 'evidence': pin,
+                                            'verifiedAt': now.isoformat()}}
+                self._commit(record, value)
+                return self._result(value, 'retained-import')
+            finally:
+                if partial.exists():
+                    partial.unlink()
 
     def _body(self, checksum):
         return safe_path(self.root / 'objects' / checksum)
@@ -378,7 +546,7 @@ class CachedAcquirer:
                         if digest(target, max_bytes=spec.max_bytes) != {'sha256': checksum, 'bytes': count}:
                             raise RefreshError('cached-body-corrupt')
                     else:
-                        os.replace(partial, target)
+                        os.link(partial, target)  # Never replace an existing object.
                         fsync_directory(target.parent)
                     identical = previous is not None and checksum == previous['sha256']
                     value = {'schemaVersion': 'offmenu-acquisition/1', 'request': identity,
@@ -423,3 +591,387 @@ class CachedAcquirer:
 
 class _Retryable(Exception):
     pass
+
+
+def collect_registry(registry_path, registry_sha256, output, *, transport=None, now=None):
+    """Run a pinned reviewed acquisition selection, not the discovery registry.
+
+    Bindings are evidence-backed applicability edges, never country completion.
+    One source/release representation runs once regardless of its consumers.
+    Each source checkpoints independently; a failed source cannot hide others.
+    The caller must qualify actual host, source rights and competing claims.
+    """
+    raw_path = safe_path(registry_path)
+    if digest(raw_path, max_bytes=MAX_REGISTRY_METADATA)['sha256'] != registry_sha256:
+        raise RefreshError('collection-registry-pin-mismatch')
+    registry = strict_json(raw_path.read_bytes())
+    version = registry.get('schemaVersion') if isinstance(registry, dict) else None
+    expected = {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
+    if version in ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3'):
+        expected.add('assetCatalog')
+        describe_collection_registry(registry)
+    if (not isinstance(registry, dict) or set(registry) != expected
+            or version not in ('offmenu-acquisition-selection/1', 'offmenu-acquisition-selection/2',
+                               'offmenu-acquisition-selection/3')
+            or not isinstance(registry['sources'], list)
+            or not isinstance(registry['bindings'], list)):
+        raise RefreshError('invalid-collection-registry')
+
+    def verify_pin(pin):
+        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+                or digest(pin['path'], max_bytes=8 * MAX_METADATA)['sha256'] != pin['sha256']):
+            raise RefreshError('collection-evidence-pin-mismatch')
+
+    if not isinstance(registry['evidence'], list) or not registry['evidence']:
+        raise RefreshError('collection-evidence-required')
+    for pin in registry['evidence']:
+        verify_pin(pin)
+    resources = registry['resources']
+    if (not isinstance(resources, dict) or set(resources) !=
+            {'storageRoot', 'maxTransferBytes', 'minimumFreeBytes', 'maxSeconds'}):
+        raise RefreshError('invalid-runner-resource-budget')
+    root = safe_path(resources['storageRoot'])
+    budget = ResourceBudget(root, resources['maxTransferBytes'],
+                            resources['minimumFreeBytes'], resources['maxSeconds'])
+    # Validate the aggregate budget before any source reads or requests.
+    CachedAcquirer(root, {}, resource_budget=budget)
+    output = safe_path(output)
+    output.mkdir(parents=True, exist_ok=True)
+    now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None or now.utcoffset().total_seconds() != 0:
+        raise RefreshError('policy-clock-must-be-utc')
+    keys, representations = set(), set()
+    for entry in registry['sources']:
+        if not isinstance(entry, dict) or not isinstance(entry.get('spec'), dict):
+            raise RefreshError('invalid-collection-source')
+        spec = SourceSpec(**entry['spec'])
+        representation = (spec.url, spec.release, spec.acquisition_version, spec.cache_scope,
+                          spec.request_method, spec.request_body)
+        if spec.source_key in keys or representation in representations:
+            raise RefreshError('duplicate-source-release-use-bindings')
+        keys.add(spec.source_key)
+        representations.add(representation)
+    bindings, edges = {}, set()
+    for binding in registry['bindings']:
+        if (not isinstance(binding, dict) or set(binding) != {'sourceKey', 'country', 'type', 'evidence'}
+                or binding['sourceKey'] not in keys
+                or not isinstance(binding['country'], str)
+                or not re.fullmatch(r'[A-Z]{2}', binding['country'])
+                or not isinstance(binding['type'], str) or not binding['type']):
+            raise RefreshError('invalid-source-country-type-binding')
+        verify_pin(binding['evidence'])
+        edge = (binding['sourceKey'], binding['country'], binding['type'])
+        if edge in edges:
+            raise RefreshError('duplicate-source-country-type-binding')
+        edges.add(edge)
+        bindings.setdefault(binding['sourceKey'], []).append(binding)
+    if set(bindings) != keys:
+        raise RefreshError('unmapped-collection-source')
+    meter = {'requests': 0, 'bodyBytesRead': 0}
+    deadline = time.monotonic() + budget.max_seconds
+
+    class MeteredResponse:
+        def __init__(self, response):
+            self.response = response
+            self.status, self.headers = response.status, response.headers
+        def read(self, size):
+            if time.monotonic() >= deadline:
+                raise RefreshError('batch-duration-limit-exceeded')
+            remaining = budget.max_transfer_bytes - meter['bodyBytesRead']
+            if remaining <= 0:
+                # Never read one byte beyond the selected aggregate allowance.
+                # Without an EOF already observed, completeness stays unverified.
+                raise RefreshError('batch-transfer-budget-exceeded')
+            block = self.response.read(min(size, remaining))
+            meter['bodyBytesRead'] += len(block)
+            if time.monotonic() >= deadline:
+                raise RefreshError('batch-duration-limit-exceeded')
+            if meter['bodyBytesRead'] > budget.max_transfer_bytes:
+                raise RefreshError('batch-transfer-budget-exceeded')
+            return block
+        def close(self):
+            self.response.close()
+
+    def metered(spec, headers):
+        if time.monotonic() >= deadline:
+            raise RefreshError('batch-duration-limit-exceeded')
+        if meter['bodyBytesRead'] >= budget.max_transfer_bytes:
+            raise RefreshError('batch-transfer-budget-exceeded')
+        meter['requests'] += 1
+        response = (transport(spec, headers) if transport is not None else
+                    HTTPSFileTransport()(spec, headers, deadline=deadline))
+        return MeteredResponse(response)
+
+    report = {'schemaVersion': 'offmenu-raw-collection-report/1',
+              'registry': {'path': str(raw_path), 'sha256': registry_sha256},
+              'observedAt': now.isoformat(), 'resources': resources, 'sources': [],
+              'network': meter, 'scope': 'selected raw originals only',
+              'parsed': 0, 'normalized': 0, 'goldAdmitted': 0,
+              'countryComplete': False}
+    if version in ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3'):
+        report['assetCatalogSummary'] = {k: v for k, v in describe_collection_registry(registry).items()
+                                         if k != 'unresolved'}
+
+    def checkpoint():
+        evidence = output / 'evidence' / (sha(canonical(report)) + '.json')
+        if evidence.exists():
+            if evidence.read_bytes() != canonical(report):
+                raise RefreshError('collection-report-evidence-corrupt')
+        else:
+            atomic_json(evidence, report)
+        atomic_json(output / 'collection-report.json', report)
+
+    # One owned batch at a time in this output; acquirer also locks shared cache.
+    with writer_lock(output / 'collection.lock'):
+        for entry in sorted(registry['sources'], key=lambda item: item['spec']['source_key']):
+            spec = SourceSpec(**entry['spec'])
+            row = {'sourceKey': spec.source_key, 'release': spec.release,
+                   'bindings': sorted(bindings[spec.source_key], key=lambda x: (x['country'], x['type'])),
+                   'outcome': 'failed', 'networkRequests': 0, 'networkBytesRead': 0}
+            before = dict(meter)
+            try:
+                if set(entry) != {'spec', 'operation', 'claim', 'holds', 'retained'}:
+                    raise RefreshError('invalid-collection-source-contract')
+                claim = entry['claim']
+                if (not isinstance(claim, dict) or set(claim) != {'owner', 'state', 'evidence'}
+                        or type(claim['owner']) is not int or claim['owner'] != 0
+                        or claim['state'] != 'selected'):
+                    raise RefreshError('collection-claim-not-selected')
+                verify_pin(claim['evidence'])
+                if not isinstance(entry['holds'], list) or entry['holds']:
+                    raise RefreshError('collection-source-held')
+                spec.validate()
+                if time.monotonic() >= deadline:
+                    raise RefreshError('batch-duration-limit-exceeded')
+                acquirer = CachedAcquirer(root, {spec.source_key: spec}, transport=metered,
+                                          resource_budget=budget)
+                if entry['operation'] == 'retained-copy':
+                    imported = acquirer.import_retained(spec.source_key, entry['retained'], now=now)
+                    row['retainedImportStatus'] = imported.status
+                    result = acquirer.acquire(spec.source_key, fetch_policy='reuse', now=now)
+                elif entry['operation'] == 'https-refresh' and entry['retained'] is None:
+                    result = acquirer.acquire(spec.source_key, fetch_policy='refresh', now=now)
+                else:
+                    raise RefreshError('unsupported-collection-operation')
+                row.update(outcome='verified-local-original', status=result.status,
+                           path=str(result.path), sha256=result.sha256, bytes=result.bytes,
+                           provenance=result.provenance)
+            except (RefreshError, OSError, ValueError, TypeError, KeyError) as error:
+                # Never echo an arbitrary provider error/locator/header into a report.
+                row['error'] = str(error) if isinstance(error, RefreshError) else type(error).__name__
+            row['networkRequests'] = meter['requests'] - before['requests']
+            row['networkBytesRead'] = meter['bodyBytesRead'] - before['bodyBytesRead']
+            report['sources'].append(row)
+            checkpoint()
+        report['verifiedSources'] = sum(r['outcome'] == 'verified-local-original' for r in report['sources'])
+        report['failedSources'] = len(report['sources']) - report['verifiedSources']
+        checkpoint()
+    return report
+
+
+def describe_collection_registry(registry):
+    """Metadata-only inventory qualification; never opens a dataset original.
+
+    Catalog descriptors retain unknown provenance and desired citations. Only
+    reviewed `sources` entries are executable; catalog presence never enables one.
+    Country requirements are owned evidence from57, not inferred type coverage.
+    """
+    if (not isinstance(registry, dict)
+            or registry.get('schemaVersion') not in
+            ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3')):
+        raise RefreshError('collection-catalog-v2-required')
+    catalog = registry.get('assetCatalog')
+    if (not isinstance(catalog, dict) or set(catalog) !=
+            {'version', 'assets', 'requirements', 'evidence', 'qualification'}
+            or not isinstance(catalog['version'], str) or not catalog['version']
+            or not isinstance(catalog['evidence'], list) or not catalog['evidence']
+            or not isinstance(catalog['assets'], list)
+            or not isinstance(catalog['requirements'], list)):
+        raise RefreshError('invalid-collection-catalog')
+    verified_metadata_pins = set()
+    for pin in catalog['evidence']:
+        key = _country_metadata_pin_key(pin)
+        if digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']:
+            raise RefreshError('collection-catalog-evidence-mismatch')
+        verified_metadata_pins.add(key)
+    assets, locators, origins, local, desired, unresolved = {}, set(), set(), set(), set(), []
+    for asset in catalog['assets']:
+        fields = {'assetId', 'kind', 'publisherCitation', 'request', 'release', 'datatype',
+                  'format', 'destination', 'integrity', 'budget', 'holds', 'reuse', 'purpose',
+                  'actualScope', 'localEvidence', 'provenance', 'sourceKeys', 'unresolved'}
+        if (not isinstance(asset, dict) or set(asset) != fields
+                or not isinstance(asset['assetId'], str) or not asset['assetId']
+                or asset['assetId'] in assets or not isinstance(asset['sourceKeys'], list)
+                or not isinstance(asset['unresolved'], list)):
+            raise RefreshError('invalid-collection-asset-descriptor')
+        key = asset['assetId']
+        assets[key] = asset
+        if asset['request'] and asset['request'].get('url'):
+            locators.add(key)
+        if asset['publisherCitation']:
+            origins.add(key)
+        if asset['localEvidence']:
+            local.add(key)
+        if asset['kind'] == 'desired-source-citation':
+            desired.add(key)
+        if asset['unresolved']:
+            unresolved.append({'assetId': key, 'kind': asset['kind'],
+                               'missing': asset['unresolved'], 'provenance': asset['provenance']})
+    source_keys = {entry['spec']['source_key'] for entry in registry['sources']}
+    catalog_keys = [key for asset in assets.values() for key in asset['sourceKeys']]
+    if set(catalog_keys) != source_keys or len(catalog_keys) != len(source_keys):
+        raise RefreshError('collection-selected-asset-binding-mismatch')
+    selected = {entry['spec']['source_key']: entry['spec'] for entry in registry['sources']}
+    for asset in assets.values():
+        for key in asset['sourceKeys']:
+            spec = SourceSpec(**selected[key])
+            request = asset['request']
+            if (not isinstance(request, dict) or request.get('url') != spec.url
+                    or request.get('method') != spec.request_method
+                    or (spec.request_method == 'POST' and request.get('body') != spec.request_body)
+                    or asset['release'] != spec.release
+                    or asset['destination'] != registry['resources']['storageRoot']
+                    or asset['budget'] != registry['resources']):
+                raise RefreshError('collection-selected-asset-contract-mismatch')
+    rows, countries, mapped = set(), set(), 0
+    for row in catalog['requirements']:
+        fields = {'country', 'type', 'assetIds', 'status', 'coverageQualification', 'evidence'}
+        if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
+            fields.add('bindings')
+        if (not isinstance(row, dict) or set(row) != fields
+                or not re.fullmatch(r'[A-Z]{2}', row['country'])
+                or not isinstance(row['type'], str) or not row['type']
+                or not isinstance(row['assetIds'], list)
+                or not set(row['assetIds']) <= assets.keys()
+                or row['evidence'] not in catalog['evidence']):
+            raise RefreshError('invalid-collection-requirement')
+        key = (row['country'], row['type'])
+        if key in rows:
+            raise RefreshError('duplicate-collection-requirement')
+        rows.add(key)
+        countries.add(row['country'])
+        mapped += bool(row['assetIds'])
+        if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
+            _validate_country_bindings(row, assets, verified_metadata_pins)
+    return {'catalogVersion': catalog['version'], 'assetDescriptors': len(assets),
+            'knownRecordedLocatorDescriptors': len(locators),
+            'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
+            'declaredLocalDescriptors': len(local), 'desiredSourceCitations': len(desired),
+            'selectedExecutableSources': len(source_keys), 'countriesRepresented': len(countries),
+            'countryTypeRequirements': len(rows), 'requirementsWithDeclaredAssetEdges': mapped,
+            'requirementsWithoutDeclaredAssetEdges': len(rows) - mapped,
+            'mappingComplete': False, 'countryComplete': False,
+            'qualification': catalog['qualification'], 'unresolved': unresolved}
+
+
+def _country_metadata_pin_key(pin):
+    if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+            or not isinstance(pin['path'], str) or not pin['path'].strip()
+            or not isinstance(pin['sha256'], str)
+            or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
+        raise RefreshError('invalid-country-metadata-evidence-pin')
+    return pin['path'], pin['sha256']
+
+
+def _validate_country_bindings(row, assets, verified_metadata_pins):
+    """Existence, provenance, rights and coverage are independent dimensions."""
+    if not isinstance(row['bindings'], list) or not row['bindings']:
+        raise RefreshError('country-binding-required-use-explicit-unknown')
+    seen = set()
+    for binding in row['bindings']:
+        if (not isinstance(binding, dict) or set(binding) !=
+                {'assetId', 'state', 'owner', 'citation', 'release', 'localPointer', 'receipt',
+                 'receiptDate', 'nextAction', 'pointerScope', 'rights', 'coverage', 'blockedReason'}
+                or binding['state'] not in BINDING_STATES
+                or binding['pointerScope'] not in ('direct', 'shared', 'other-country', 'unknown')
+                or (binding['owner'] is not None and type(binding['owner']) is not int)
+                or not isinstance(binding['nextAction'], str) or not binding['nextAction']
+                or not isinstance(binding['rights'], dict)
+                or not isinstance(binding['coverage'], dict)):
+            raise RefreshError('invalid-country-binding')
+        key = binding['assetId']
+        if key in seen:
+            raise RefreshError('duplicate-country-asset-binding')
+        seen.add(key)
+        if key is not None and (key not in assets or key not in row['assetIds']):
+            raise RefreshError('country-binding-asset-mismatch')
+        pin = binding['receipt']
+        if pin is not None and _country_metadata_pin_key(pin) not in verified_metadata_pins:
+            raise RefreshError('country-binding-receipt-not-verified-in-catalogue')
+        if binding['receiptDate'] is not None:
+            timestamp(binding['receiptDate'])
+        applicability = binding['coverage'].get('applicability', 'unknown')
+        if applicability not in ('unknown', 'reference-only', 'applicable', 'not-applicable'):
+            raise RefreshError('invalid-country-binding-applicability')
+        if applicability == 'not-applicable':
+            reason = binding['coverage'].get('notApplicableJustification')
+            if (not isinstance(reason, dict) or set(reason) != {'detail', 'evidence'}
+                    or not isinstance(reason['detail'], str) or not reason['detail']
+                    or not isinstance(reason['evidence'], dict)
+                    or set(reason['evidence']) != {'path', 'sha256'}
+                    or not isinstance(reason['evidence']['path'], str)
+                    or not reason['evidence']['path'].strip()
+                    or not isinstance(reason['evidence']['sha256'], str)
+                    or not re.fullmatch(r'[0-9a-f]{64}', reason['evidence']['sha256'])):
+                raise RefreshError('not-applicable-requires-explicit-justification')
+            if _country_metadata_pin_key(reason['evidence']) not in verified_metadata_pins:
+                raise RefreshError('not-applicable-evidence-not-verified-in-catalogue')
+        if binding['state'] != 'unknown-notyetfound' and (key is None or pin is None):
+            raise RefreshError('country-binding-evidence-required')
+        if binding['state'] == 'held-locally-with-evidence':
+            path = binding['localPointer']
+            local = assets[key]['localEvidence'] or {}
+            if (not isinstance(path, str) or not path
+                    or path != local.get('declaredPath')):
+                raise RefreshError('held-country-binding-local-pointer-required')
+        if key is not None:
+            local = assets[key]['localEvidence'] or {}
+            if (local.get('existenceState') == 'held-locally-with-evidence'
+                    and binding['state'] != 'held-locally-with-evidence'):
+                raise RefreshError('known-held-asset-must-not-be-downgraded')
+        if binding['state'] == 'found-ready' and (
+                not isinstance(binding['citation'], dict) or not binding['citation']
+                or not isinstance(binding['release'], str) or not binding['release']):
+            raise RefreshError('ready-country-binding-contract-incomplete')
+        if binding['state'] == 'found-blocked-exactreason':
+            reason = binding['blockedReason']
+            if (not isinstance(reason, dict) or set(reason) != {'category', 'detail'}
+                    or reason['category'] not in ('source-use', 'access', 'technical', 'budget', 'authorization')
+                    or not isinstance(reason['detail'], str) or not reason['detail']):
+                raise RefreshError('exact-country-binding-blocker-required')
+        elif binding['blockedReason'] is not None:
+            raise RefreshError('unexpected-country-binding-blocker')
+    # Validate the complete declared edge set, not only nonnull bindings that
+    # happened to be supplied. A null unknown must not hide a known-held edge.
+    if set(row['assetIds']) != seen - {None}:
+        raise RefreshError('country-binding-declared-asset-edge-missing')
+
+
+def lookup_country_sources(registry, country, required_type=None):
+    """Read-only country index from the SAME registry used by collect_registry.
+
+    Does not fetch, stat/hash source payloads, infer N/A, enable a SourceSpec,
+    change a receipt clock, or reinterpret a missing join as an absent file.
+    """
+    if (registry.get('schemaVersion') != 'offmenu-acquisition-selection/3'
+            or not isinstance(country, str) or not re.fullmatch(r'[A-Z]{2}', country)
+            or (required_type is not None and
+                (not isinstance(required_type, str) or not required_type))):
+        raise RefreshError('country-index-v3-and-exact-country-type-required')
+    # The metadata boundary verifies only the reviewed catalogue's declared
+    # metadata pins. Binding/NA references must be members of that verified set;
+    # never open an arbitrary receipt pointer (which could be a source payload).
+    describe_collection_registry(registry)
+    rows = [r for r in registry['assetCatalog']['requirements'] if r['country'] == country
+            and (required_type is None or r['type'] == required_type)]
+    if not rows:
+        raise RefreshError('country-type-not-indexed')
+    result = []
+    for row in sorted(rows, key=lambda r: r['type']):
+        result.append({'country': country, 'type': row['type'], 'bindings': row['bindings'],
+                       'qualification': row['coverageQualification'], 'sourceEvidence': row['evidence']})
+    return {'schemaVersion': 'offmenu-country-source-lookup/1',
+            'registryVersion': registry['assetCatalog']['version'], 'country': country,
+            'requirements': result, 'countryComplete': False, 'acquisitionEnabledByLookup': False,
+            'qualification': 'Recorded evidence only; existence separate from provenance/rights/coverage. '
+                             'Unknown is not absence or N/A. Collector admission remains independent.'}
