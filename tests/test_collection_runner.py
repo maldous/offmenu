@@ -218,6 +218,87 @@ class CollectionRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(RefreshError, 'selected-asset-binding-mismatch'):
             self.run_batch(Transport())
 
+    def country_index(self):
+        self.catalog()
+        self.registry['schemaVersion'] = 'offmenu-acquisition-selection/3'
+        asset = self.registry['assetCatalog']['assets'][0]
+        asset['localEvidence'] = {'declaredPath': '/fixture/original.zip',
+                                  'existenceState': 'held-locally-with-evidence'}
+        unknown = {'assetId': None, 'state': 'unknown-notyetfound', 'owner': None,
+                   'citation': None, 'release': None, 'localPointer': None, 'receipt': None,
+                   'receiptDate': None, 'nextAction': 'Existing owner locates exact source evidence',
+                   'pointerScope': 'unknown', 'rights': {'status': 'unknown'},
+                   'coverage': {'status': 'unknown'}, 'blockedReason': None}
+        import copy
+        for row in self.registry['assetCatalog']['requirements']:
+            row['bindings'] = [copy.deepcopy(unknown)]
+        held = self.registry['assetCatalog']['requirements'][0]['bindings'][0]
+        held.update(assetId='known', state='held-locally-with-evidence', owner=27,
+                    citation={'publisher': 'fixture'}, release='fixture-release',
+                    localPointer='/fixture/original.zip', receipt=self.pin, pointerScope='shared')
+        return held
+
+    def test_country_lookup_keeps_known_file_held_with_unknown_clock_rights_coverage(self):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        self.country_index()
+        with patch('offmenu.refresh.acquisition.digest', side_effect=AssertionError('no source hashing')):
+            report = lookup_country_sources(self.registry, 'AU', 'foods')
+        row = report['requirements'][0]['bindings'][0]
+        self.assertEqual(row['state'], 'held-locally-with-evidence')
+        self.assertEqual(row['localPointer'], '/fixture/original.zip')
+        self.assertIsNone(row['receiptDate'])
+        self.assertEqual(row['rights']['status'], 'unknown')
+        self.assertFalse(report['acquisitionEnabledByLookup'])
+        self.assertFalse(report['countryComplete'])
+
+    def test_country_lookup_unknown_is_explicit_not_missing_or_not_applicable(self):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        self.country_index()
+        report = lookup_country_sources(self.registry, 'BE')
+        self.assertEqual(report['requirements'][0]['bindings'][0]['state'], 'unknown-notyetfound')
+        with self.assertRaisesRegex(RefreshError, 'not-indexed'):
+            lookup_country_sources(self.registry, 'BE', 'unknown-type')
+
+    def test_country_lookup_rejects_downgrade_and_wrong_shared_pointer(self):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        held = self.country_index()
+        held['state'] = 'unknown-notyetfound'
+        with self.assertRaisesRegex(RefreshError, 'must-not-be-downgraded'):
+            lookup_country_sources(self.registry, 'AU')
+        held['state'] = 'held-locally-with-evidence'
+        held['localPointer'] = '/unrelated/file'
+        with self.assertRaisesRegex(RefreshError, 'local-pointer-required'):
+            lookup_country_sources(self.registry, 'AU')
+
+    def test_country_lookup_requires_exact_blocker_and_real_evidence_for_active_states(self):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        self.country_index()
+        row = self.registry['assetCatalog']['requirements'][1]
+        row['assetIds'] = ['known']
+        self.registry['assetCatalog']['assets'][0]['localEvidence'] = None
+        blocked = row['bindings'][0]
+        blocked.update(assetId='known', state='found-blocked-exactreason', receipt=self.pin)
+        with self.assertRaisesRegex(RefreshError, 'exact-country-binding-blocker'):
+            lookup_country_sources(self.registry, 'BE')
+        blocked['blockedReason'] = {'category': 'access', 'detail': 'Exact fixture source403; stop requests'}
+        report = lookup_country_sources(self.registry, 'BE')
+        self.assertEqual(report['requirements'][0]['bindings'][0]['blockedReason']['category'], 'access')
+        blocked.update(state='queued-downloading-partial', blockedReason=None, receipt=None)
+        with self.assertRaisesRegex(RefreshError, 'evidence-required'):
+            lookup_country_sources(self.registry, 'BE')
+
+    def test_country_lookup_not_applicable_requires_specific_justification(self):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        self.country_index()
+        binding = self.registry['assetCatalog']['requirements'][1]['bindings'][0]
+        binding['coverage']['applicability'] = 'not-applicable'
+        with self.assertRaisesRegex(RefreshError, 'explicit-justification'):
+            lookup_country_sources(self.registry, 'BE')
+        binding['coverage']['notApplicableJustification'] = {
+            'detail': 'Synthetic reviewed scope excludes this requirement', 'evidence': self.pin}
+        result = lookup_country_sources(self.registry, 'BE')
+        self.assertEqual(result['requirements'][0]['bindings'][0]['coverage']['applicability'], 'not-applicable')
+
     def test_registry_and_binding_evidence_fail_before_source_request(self):
         path = self.root / 'registry.json'
         path.write_bytes(canonical(self.registry))

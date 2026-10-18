@@ -238,3 +238,58 @@ These fields qualify a reviewed static contract, not arbitrary interactive API
 access; all existing gates and holds run first. Multi-document/paginated sets
 must remain explicit pending contracts unless each exact reviewed member is
 separately selected. No MK/MAKSTAT claim or transfer is taken over by these tests.
+
+## Country/type lookup from the same registry
+
+Selection v3 keeps v2's root and asset fields and adds exactly `bindings` to
+every `assetCatalog.requirements` row. Each binding has these exact fields:
+
+```text
+assetId, state, owner, citation, release, localPointer, receipt, receiptDate,
+nextAction, pointerScope, rights, coverage, blockedReason
+```
+
+The supported states are `held-locally-with-evidence`, `found-ready`,
+`queued-downloading-partial`, `found-blocked-exactreason` and
+`unknown-notyetfound`. Every indexed country/type needs at least an explicit
+unknown binding. A found/active state needs a canonical asset ID and exact
+receipt pin. A held source needs its actual declared local pointer; shared or
+other-country references point to the same original asset, never a country copy.
+`owner` is the country binding's current delivery owner; original acquisition
+custody remains separately recorded in the asset's `localEvidence`.
+
+Existence is independent of provenance, rights and coverage. Known held USDA or
+other originals cannot be downgraded to discovery/unknown because their original
+receipt clock, rights assessment or complete type coverage is unresolved. Missing
+receipt clocks remain null; verification/mtime never supplies an acquisition date.
+Held data with operation restrictions remains held with those independent holds;
+the collector still rejects unapproved/held `SourceSpec` entries before source
+reads. A lookup never enables a source or grants access to a payload.
+
+Blocked bindings require an exact source-use/access/technical/budget/authorization
+reason. Unsupported or unlinked metadata stays unknown rather than becoming a
+licence denial or a claim that a file is absent. `coverage.applicability` defaults
+to unknown. `not-applicable` requires explicit `notApplicableJustification` with
+detail and an evidence pin; missing source links never create N/A.
+
+```sh
+python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+  --collection-registry SAME_REGISTRY --registry-sha256 SHA --country US
+python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
+  --collection-registry SAME_REGISTRY --registry-sha256 SHA \
+  --country AU --required-type food_composition
+```
+
+The read-only `lookup_country_sources(registry, country, required_type=None)`
+function returns recorded bindings and qualifications without fetching or
+statting/hashing source payloads. The CLI verifies the pinned metadata registry
+and its metadata evidence before lookup. The same input remains usable by the
+existing `collect_registry`; no second registry/controller or new source wave
+is created. Pinned registry metadata may be at most32MiB for the all249 descriptors
+and bindings; this does not increase any raw acquisition/response budget.
+
+The current v3 metadata remains partially reconciled: 225 report rows are not
+fully reconciled and all249 complete-local-copy totals stay null. Owner57 retains
+mapping authority. Known owner-receipt existence evidence and targeted US/AU/BE
+file metadata support held pointers; none establishes complete country/type
+coverage, current payload hashes, runtime adoption or a new download grant.

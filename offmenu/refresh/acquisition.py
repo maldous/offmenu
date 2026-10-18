@@ -26,8 +26,11 @@ MIN_TTL = 30 * 86400
 MAX_BODY = 64 * 1024 * 1024  # Default only; larger sources require runner resource policy.
 MAX_REVIEWED_BODY = 1024 ** 4
 MAX_METADATA = 1024 * 1024
+MAX_REGISTRY_METADATA = 32 * MAX_METADATA  # Pinned all249 metadata, never a raw payload.
 RETAINED_HEADERS = frozenset(('etag', 'last-modified', 'cache-control', 'expires', 'age', 'vary', 'content-encoding'))
 POLICIES = frozenset(('reuse', 'refresh', 'revalidate', 'force-download'))
+BINDING_STATES = frozenset(('held-locally-with-evidence', 'found-ready',
+    'queued-downloading-partial', 'found-blocked-exactreason', 'unknown-notyetfound'))
 
 
 @dataclass(frozen=True)
@@ -599,16 +602,17 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
     The caller must qualify actual host, source rights and competing claims.
     """
     raw_path = safe_path(registry_path)
-    if digest(raw_path, max_bytes=8 * MAX_METADATA)['sha256'] != registry_sha256:
+    if digest(raw_path, max_bytes=MAX_REGISTRY_METADATA)['sha256'] != registry_sha256:
         raise RefreshError('collection-registry-pin-mismatch')
     registry = strict_json(raw_path.read_bytes())
     version = registry.get('schemaVersion') if isinstance(registry, dict) else None
     expected = {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
-    if version == 'offmenu-acquisition-selection/2':
+    if version in ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3'):
         expected.add('assetCatalog')
         describe_collection_registry(registry)
     if (not isinstance(registry, dict) or set(registry) != expected
-            or version not in ('offmenu-acquisition-selection/1', 'offmenu-acquisition-selection/2')
+            or version not in ('offmenu-acquisition-selection/1', 'offmenu-acquisition-selection/2',
+                               'offmenu-acquisition-selection/3')
             or not isinstance(registry['sources'], list)
             or not isinstance(registry['bindings'], list)):
         raise RefreshError('invalid-collection-registry')
@@ -704,7 +708,7 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
               'network': meter, 'scope': 'selected raw originals only',
               'parsed': 0, 'normalized': 0, 'goldAdmitted': 0,
               'countryComplete': False}
-    if version == 'offmenu-acquisition-selection/2':
+    if version in ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3'):
         report['assetCatalogSummary'] = {k: v for k, v in describe_collection_registry(registry).items()
                                          if k != 'unresolved'}
 
@@ -773,7 +777,8 @@ def describe_collection_registry(registry):
     Country requirements are owned evidence from57, not inferred type coverage.
     """
     if (not isinstance(registry, dict)
-            or registry.get('schemaVersion') != 'offmenu-acquisition-selection/2'):
+            or registry.get('schemaVersion') not in
+            ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3')):
         raise RefreshError('collection-catalog-v2-required')
     catalog = registry.get('assetCatalog')
     if (not isinstance(catalog, dict) or set(catalog) !=
@@ -828,8 +833,10 @@ def describe_collection_registry(registry):
                 raise RefreshError('collection-selected-asset-contract-mismatch')
     rows, countries, mapped = set(), set(), 0
     for row in catalog['requirements']:
-        if (not isinstance(row, dict) or set(row) !=
-                {'country', 'type', 'assetIds', 'status', 'coverageQualification', 'evidence'}
+        fields = {'country', 'type', 'assetIds', 'status', 'coverageQualification', 'evidence'}
+        if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
+            fields.add('bindings')
+        if (not isinstance(row, dict) or set(row) != fields
                 or not re.fullmatch(r'[A-Z]{2}', row['country'])
                 or not isinstance(row['type'], str) or not row['type']
                 or not isinstance(row['assetIds'], list)
@@ -842,6 +849,8 @@ def describe_collection_registry(registry):
         rows.add(key)
         countries.add(row['country'])
         mapped += bool(row['assetIds'])
+        if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
+            _validate_country_bindings(row, assets)
     return {'catalogVersion': catalog['version'], 'assetDescriptors': len(assets),
             'knownRecordedLocatorDescriptors': len(locators),
             'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
@@ -851,3 +860,101 @@ def describe_collection_registry(registry):
             'requirementsWithoutDeclaredAssetEdges': len(rows) - mapped,
             'mappingComplete': False, 'countryComplete': False,
             'qualification': catalog['qualification'], 'unresolved': unresolved}
+
+
+def _validate_country_bindings(row, assets):
+    """Existence, provenance, rights and coverage are independent dimensions."""
+    if not isinstance(row['bindings'], list) or not row['bindings']:
+        raise RefreshError('country-binding-required-use-explicit-unknown')
+    seen = set()
+    for binding in row['bindings']:
+        if (not isinstance(binding, dict) or set(binding) !=
+                {'assetId', 'state', 'owner', 'citation', 'release', 'localPointer', 'receipt',
+                 'receiptDate', 'nextAction', 'pointerScope', 'rights', 'coverage', 'blockedReason'}
+                or binding['state'] not in BINDING_STATES
+                or binding['pointerScope'] not in ('direct', 'shared', 'other-country', 'unknown')
+                or (binding['owner'] is not None and type(binding['owner']) is not int)
+                or not isinstance(binding['nextAction'], str) or not binding['nextAction']
+                or not isinstance(binding['rights'], dict)
+                or not isinstance(binding['coverage'], dict)):
+            raise RefreshError('invalid-country-binding')
+        key = binding['assetId']
+        if key in seen:
+            raise RefreshError('duplicate-country-asset-binding')
+        seen.add(key)
+        if key is not None and (key not in assets or key not in row['assetIds']):
+            raise RefreshError('country-binding-asset-mismatch')
+        pin = binding['receipt']
+        if pin is not None and (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+                or not isinstance(pin['path'], str) or not pin['path']
+                or not isinstance(pin['sha256'], str)
+                or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
+            raise RefreshError('invalid-country-binding-receipt')
+        if binding['receiptDate'] is not None:
+            timestamp(binding['receiptDate'])
+        applicability = binding['coverage'].get('applicability', 'unknown')
+        if applicability not in ('unknown', 'reference-only', 'applicable', 'not-applicable'):
+            raise RefreshError('invalid-country-binding-applicability')
+        if applicability == 'not-applicable':
+            reason = binding['coverage'].get('notApplicableJustification')
+            if (not isinstance(reason, dict) or set(reason) != {'detail', 'evidence'}
+                    or not isinstance(reason['detail'], str) or not reason['detail']
+                    or not isinstance(reason['evidence'], dict)
+                    or set(reason['evidence']) != {'path', 'sha256'}
+                    or not isinstance(reason['evidence']['path'], str)
+                    or not isinstance(reason['evidence']['sha256'], str)
+                    or not re.fullmatch(r'[0-9a-f]{64}', reason['evidence']['sha256'])):
+                raise RefreshError('not-applicable-requires-explicit-justification')
+        if binding['state'] != 'unknown-notyetfound' and (key is None or pin is None):
+            raise RefreshError('country-binding-evidence-required')
+        if binding['state'] == 'held-locally-with-evidence':
+            path = binding['localPointer']
+            local = assets[key]['localEvidence'] or {}
+            if (not isinstance(path, str) or not path
+                    or path != local.get('declaredPath')):
+                raise RefreshError('held-country-binding-local-pointer-required')
+        if key is not None:
+            local = assets[key]['localEvidence'] or {}
+            if (local.get('existenceState') == 'held-locally-with-evidence'
+                    and binding['state'] != 'held-locally-with-evidence'):
+                raise RefreshError('known-held-asset-must-not-be-downgraded')
+        if binding['state'] == 'found-ready' and (
+                not isinstance(binding['citation'], dict) or not binding['citation']
+                or not isinstance(binding['release'], str) or not binding['release']):
+            raise RefreshError('ready-country-binding-contract-incomplete')
+        if binding['state'] == 'found-blocked-exactreason':
+            reason = binding['blockedReason']
+            if (not isinstance(reason, dict) or set(reason) != {'category', 'detail'}
+                    or reason['category'] not in ('source-use', 'access', 'technical', 'budget', 'authorization')
+                    or not isinstance(reason['detail'], str) or not reason['detail']):
+                raise RefreshError('exact-country-binding-blocker-required')
+        elif binding['blockedReason'] is not None:
+            raise RefreshError('unexpected-country-binding-blocker')
+
+
+def lookup_country_sources(registry, country, required_type=None):
+    """Read-only country index from the SAME registry used by collect_registry.
+
+    Does not fetch, stat/hash source payloads, infer N/A, enable a SourceSpec,
+    change a receipt clock, or reinterpret a missing join as an absent file.
+    """
+    if (registry.get('schemaVersion') != 'offmenu-acquisition-selection/3'
+            or not isinstance(country, str) or not re.fullmatch(r'[A-Z]{2}', country)
+            or (required_type is not None and
+                (not isinstance(required_type, str) or not required_type))):
+        raise RefreshError('country-index-v3-and-exact-country-type-required')
+    rows = [r for r in registry['assetCatalog']['requirements'] if r['country'] == country
+            and (required_type is None or r['type'] == required_type)]
+    if not rows:
+        raise RefreshError('country-type-not-indexed')
+    assets = {a['assetId']: a for a in registry['assetCatalog']['assets']}
+    result = []
+    for row in sorted(rows, key=lambda r: r['type']):
+        _validate_country_bindings(row, assets)
+        result.append({'country': country, 'type': row['type'], 'bindings': row['bindings'],
+                       'qualification': row['coverageQualification'], 'sourceEvidence': row['evidence']})
+    return {'schemaVersion': 'offmenu-country-source-lookup/1',
+            'registryVersion': registry['assetCatalog']['version'], 'country': country,
+            'requirements': result, 'countryComplete': False, 'acquisitionEnabledByLookup': False,
+            'qualification': 'Recorded evidence only; existence separate from provenance/rights/coverage. '
+                             'Unknown is not absence or N/A. Collector admission remains independent.'}

@@ -33,20 +33,29 @@ def main():
  p.add_argument('--collection-registry',type=Path)
  p.add_argument('--registry-sha256')
  p.add_argument('--describe-registry',action='store_true',help='Metadata-only catalog summary and unresolved descriptors; no acquisition')
+ p.add_argument('--country',help='Read-only exact country source lookup from the same v3 registry, e.g. US')
+ p.add_argument('--required-type',help='Optional exact canonical type for --country')
  a=p.parse_args()
  if bool(a.collection_registry)!=bool(a.registry_sha256):p.error('Collection requires exact registry path and SHA-256')
  if a.describe_registry and not a.collection_registry:p.error('Describe requires a pinned collection registry')
+ if a.country and not a.collection_registry:p.error('Country lookup requires a pinned collection registry')
+ if a.country and a.describe_registry:p.error('Select country lookup or describe')
+ if a.required_type and not a.country:p.error('Required type needs country lookup')
  if a.collection_registry:
   import sys
   sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-  from offmenu.refresh.acquisition import collect_registry,describe_collection_registry
+  from offmenu.refresh.acquisition import collect_registry,describe_collection_registry,lookup_country_sources,MAX_REGISTRY_METADATA
   from offmenu.refresh.core import RefreshError,digest,strict_json,safe_path,atomic_json
   try:
-   if a.describe_registry:
+   if a.describe_registry or a.country:
     path=safe_path(a.collection_registry)
-    if digest(path,max_bytes=8*1024*1024)['sha256']!=a.registry_sha256:raise RefreshError('collection-registry-pin-mismatch')
-    report=describe_collection_registry(strict_json(path.read_bytes()))
+    if digest(path,max_bytes=MAX_REGISTRY_METADATA)['sha256']!=a.registry_sha256:raise RefreshError('collection-registry-pin-mismatch')
+    registry=strict_json(path.read_bytes());report=describe_collection_registry(registry)
     output=safe_path(a.output);output.mkdir(parents=True,exist_ok=True)
+    if a.country:
+     report=lookup_country_sources(registry,a.country,a.required_type)
+     atomic_json(output/('country-'+a.country+'-sources.json'),report)
+     print(json.dumps({'status':'country-source-lookup','country':a.country,'requirements':len(report['requirements']),'acquisitionEnabledByLookup':False}));return 0
     atomic_json(output/'unresolved-descriptors.json',{'scope':'sanitized metadata-only descriptors; no dataset bodies or acquisition','assets':report.pop('unresolved')})
     atomic_json(output/'registry-summary.json',report)
     print(json.dumps(report));return 0
