@@ -1,5 +1,6 @@
 """Authored metadata fixtures only. No historical source bodies or network."""
 import copy
+import gc
 import json
 import os
 from pathlib import Path
@@ -7,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import weakref
 from unittest.mock import patch
 
 from offmenu import portfolio_bm_lc_sc as portfolio
@@ -16,6 +18,32 @@ FIXTURE = Path(__file__).parent / 'fixtures/bm-lc-sc/metadata.json'
 
 
 class PortfolioBindingTests(unittest.TestCase):
+    def assert_reader_descriptors_closed(self, operation):
+        """Track only reader-owned descriptor generations, not process totals."""
+        actual_open, actual_close = os.open, os.close
+        live, acquired = set(), []
+
+        def track_open(*args, **kwargs):
+            fd = actual_open(*args, **kwargs)
+            live.add(fd)
+            acquired.append(fd)
+            return fd
+
+        def track_close(fd):
+            actual_close(fd)  # Observe a completed close, not merely its call.
+            live.discard(fd)
+
+        try:
+            with patch.object(portfolio.os, 'open', side_effect=track_open), \
+                    patch.object(portfolio.os, 'close', side_effect=track_close):
+                operation()
+            self.assertTrue(acquired, 'reader did not acquire any descriptors')
+            self.assertFalse(live, 'reader-owned descriptors remain open')
+        finally:
+            # Negative-control leaks must not escape this authored test helper.
+            for fd in live:
+                actual_close(fd)
+
     def setUp(self):
         self.raw = FIXTURE.read_bytes()
         self.binding = {'id': 'synthetic-lc', 'country': 'LC', 'sourceId': 'authored',
@@ -113,12 +141,64 @@ class PortfolioBindingTests(unittest.TestCase):
                 with self.assertRaises((OSError, ValueError)):
                     portfolio.read_metadata({'path': str(path)})
             self.assertEqual(portfolio.read_metadata({'path': str(good)}), self.raw)
-            count = lambda: len(list(Path('/proc/self/fd').iterdir()))
-            before = count()
-            with patch.object(portfolio.os, 'read', side_effect=OSError('private error')):
-                with self.assertRaises(OSError):
-                    portfolio.read_metadata({'path': str(good)})
-            self.assertEqual(count(), before)
+            def failed_read():
+                with patch.object(portfolio.os, 'read', side_effect=OSError('private error')):
+                    with self.assertRaises(OSError):
+                        portfolio.read_metadata({'path': str(good)})
+            self.assert_reader_descriptors_closed(failed_read)
+
+    def test_reader_cleanup_ignores_unrelated_cyclic_file_collection(self):
+        with tempfile.TemporaryDirectory() as temp:
+            good = Path(temp) / 'metadata.json'; good.write_bytes(self.raw)
+            enabled = gc.isenabled()
+            gc.disable()
+            try:
+                class UnrelatedCycle:
+                    def __init__(self):
+                        self.stream = tempfile.TemporaryFile()
+                        self.cycle = self
+
+                    def __del__(self):
+                        self.stream.close()
+
+                unrelated = UnrelatedCycle()
+                reference = weakref.ref(unrelated)
+                del unrelated
+                actual_read = os.read
+
+                def collect_then_read(fd, size):
+                    gc.collect()  # May close unrelated descriptors in this process.
+                    return actual_read(fd, size)
+
+                def read():
+                    with patch.object(portfolio.os, 'read', side_effect=collect_then_read):
+                        self.assertEqual(portfolio.read_metadata({'path': str(good)}), self.raw)
+                self.assert_reader_descriptors_closed(read)
+                self.assertIsNone(reference(), 'unrelated cyclic file was not collected')
+            finally:
+                gc.collect()
+                if enabled:
+                    gc.enable()
+
+    def test_reader_cleanup_assertion_detects_an_actual_omitted_close(self):
+        with tempfile.TemporaryDirectory() as temp:
+            good = Path(temp) / 'metadata.json'; good.write_bytes(self.raw)
+
+            def leak_one_close():
+                tracked_close = portfolio.os.close
+                skipped = False
+
+                def omit_once(fd):
+                    nonlocal skipped
+                    if not skipped:
+                        skipped = True
+                        return
+                    tracked_close(fd)
+
+                with patch.object(portfolio.os, 'close', side_effect=omit_once):
+                    self.assertEqual(portfolio.read_metadata({'path': str(good)}), self.raw)
+            with self.assertRaisesRegex(AssertionError, 'reader-owned descriptors remain open'):
+                self.assert_reader_descriptors_closed(leak_one_close)
 
     def test_future_unknown_and_invalid_clocks_fail_closed(self):
         self.assertEqual(self.assess(now='2026-09-01T00:00:00Z')['status'], 'malformed')
