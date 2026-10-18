@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from offmenu.refresh import acceptance as q
 from offmenu.refresh import worker46_bindings as b
@@ -132,6 +133,32 @@ class MetadataBindingTests(unittest.TestCase):
 
 
 class CliIngressRegressionTests(unittest.TestCase):
+    def test_depth_guard_rejects_before_decoder_independent_of_runtime(self):
+        raw = b'{"rw-codebook":' + b'['*b.MAX_JSON_DEPTH + b'0' + b']'*b.MAX_JSON_DEPTH + b'}'
+        output = StringIO()
+        with patch.object(b, 'strict_json', side_effect=AssertionError('decoder reached')) as decoder:
+            self.assertEqual(b.main(['assess', '--now', NOW],
+                stdin=BytesIO(raw), stdout=output), 2)
+        decoder.assert_not_called()
+        self.assertEqual(json.loads(output.getvalue()), {'error': 'portfolio-metadata-invalid'})
+
+    def test_explicit_container_depth_boundary(self):
+        def nested(depth):
+            return b'{"rw-codebook":' + b'['*depth + b'0' + b']'*depth + b'}'
+        # The outer object counts as one container.
+        accepted = self.cli(nested(b.MAX_JSON_DEPTH-1))
+        self.assertEqual(accepted.returncode, 0, accepted.stderr)
+        self.assertEqual(json.loads(accepted.stdout)['rw-codebook']['errors'], ['metadata-shape-invalid'])
+        self.assert_invalid(self.cli(nested(b.MAX_JSON_DEPTH)))
+
+    def test_quoted_brackets_and_escaped_quotes_do_not_add_depth(self):
+        meta = {'rw-codebook': b.metadata_template('rw-codebook')}
+        meta['rw-codebook']['activeHolds'] = ['authored "quoted" \\ ' + '[{]}'*1000]
+        result = self.cli(json.dumps(meta).encode())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['rw-codebook']['status'], 'held')
+        self.assertEqual(json.loads(result.stdout)['rw-codebook']['errors'], ['source-held'])
+
     def cli(self, raw):
         return subprocess.run([sys.executable, '-B', '-m',
             'offmenu.refresh.worker46_bindings', 'assess', '--now', NOW],

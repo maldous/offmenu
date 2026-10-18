@@ -18,11 +18,14 @@ python -m unittest discover -s tests -p test_worker46_bindings.py -v
 
 `catalog` emits declared metadata, not verified custody. `assess` limits metadata
 JSON to 64 KiB of UTF-8 bytes (reading one extra sentinel byte before decoding),
-rejects duplicate keys, nonfinite numbers, excessive JSON depth and unknown
+rejects duplicate keys, nonfinite numbers, container nesting beyond 64 and unknown
 bindings, and writes canonical JSON to stdout. It accepts no source or
 output paths. Missing selected bindings are diagnosed independently. A valid
 report exits 0 even when individual bindings are held, missing or stale; malformed
 portfolio JSON exits 2 with a fixed diagnostic. Inspect each binding's `status`.
+The outer object counts toward the 64-container nesting limit. A byte scanner
+checks nesting before the JSON decoder, independently of interpreter recursion
+behavior; brackets inside strings and escaped quotes do not count as containers.
 
 The library `replay_intent(key, metadata, now=UTC, previous_identity=SHA, mode=...)`
 also emits a content identity/no-op decision. It uses the shared automatic-mode

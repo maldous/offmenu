@@ -18,6 +18,7 @@ from .national_tabular import valid_input_name
 from .serialization import encode_records
 
 VERSION = 'worker46-source-bindings/1'
+MAX_JSON_DEPTH = 64
 POLICY = shared.fingerprint({'version': VERSION, 'scope': 'private-source-native',
     'conversion': 'none', 'unknowns': 'explicit-null', 'admission': False})
 RW_HEADERS = ('Tab', 'Column', 'description_abstract', 'title', 'Measurement',
@@ -343,6 +344,34 @@ def authored_fixture(key, records, *, acquired_at='2026-10-14T00:00:00Z'):
             'manifest': manifest, 'rows': rows}
 
 
+def _check_json_depth(raw):
+    """Bound container nesting before decoding; quoted brackets are literals.
+
+    This lexical guard does not replace strict_json's grammar validation. UTF-8
+    continuation bytes cannot alias the ASCII quote, escape or bracket bytes.
+    """
+    depth = 0
+    quoted = escaped = False
+    for char in raw:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif char == 92:
+                escaped = True
+            elif char == 34:
+                quoted = False
+        elif char == 34:
+            quoted = True
+        elif char in (91, 123):
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise BindingError('metadata-depth-exceeded')
+        elif char in (93, 125):
+            depth -= 1
+            if depth < 0:
+                raise BindingError('metadata-structure-invalid')
+
+
 def main(argv=None, *, stdin=None, stdout=None):
     """Metadata JSON via stdin only; never accepts raw-source or output paths."""
     import argparse
@@ -365,6 +394,7 @@ def main(argv=None, *, stdin=None, stdout=None):
             encoded = raw.encode('utf-8') if isinstance(raw, str) else raw
             if len(encoded) > 65536:
                 raise BindingError('metadata-limit-exceeded')
+            _check_json_depth(encoded)
             result = assess_portfolio(strict_json(encoded.decode('utf-8')), now=args.now)
         except (TypeError, ValueError, UnicodeError, RecursionError):
             stdout.write(shared.canonical({'error': 'portfolio-metadata-invalid'}).decode())
