@@ -108,3 +108,79 @@ bodies, interruption recovery, retry bounds, response-size restrictions,
 retention directives, secret-header exclusion, symlink rejection, immutable
 evidence tampering, publisher Retry-After, cumulative transfer and disk budgets,
 large-source configuration gates, and post-EOF walltime enforcement.
+
+## Pinned raw collection selections
+
+The existing `scripts/collect-source-access.py OUTPUT` retains its legacy landing
+access mode. Actual raw collection is explicit:
+
+```sh
+python3 -B scripts/collect-source-access.py REPORT_DIRECTORY \
+  --collection-registry /absolute/reviewed-selection.json \
+  --registry-sha256 EXACT_REVIEWED_SELECTION_SHA256
+```
+
+This invokes `offmenu.refresh.acquisition.collect_registry`, using the same
+`CachedAcquirer`, locks, content-addressed objects and recovery receipts. It
+does not invoke host bootstrap, source parsers, fixture admission, normalization,
+AI, or gold/publication. The hash identifies configuration; it grants no rights.
+
+The selection schema `offmenu-acquisition-selection/1` has exactly five fields:
+
+- `resources`: `storageRoot`, `maxTransferBytes`, `minimumFreeBytes`, `maxSeconds`.
+  The caller qualifies actual execution host and storage separately. Byte and
+  deadline limits also apply across the batch, including failed network reads.
+- `sources`: entries with `spec` (the existing `SourceSpec` fields), `operation`,
+  `claim`, `holds`, `retained`. Operations are `https-refresh` or `retained-copy`.
+  A claim is `{owner: 0, state: "selected", evidence: {path, sha256}}`: this
+  bounded runner is currently assigned to existing Worker00. Other-owner claims,
+  explicit holds, unapproved sources and unsupported operations fail closed.
+  The operator must reconcile actual competing claims before selection; this
+  local check does not replace Gateway's allocation authority.
+- `bindings`: `{sourceKey, country, type, evidence: {path, sha256}}` edges. Multiple
+  countries/types share a single source entry. Duplicate representation aliases
+  are rejected; duplicate edges are rejected. All selected sources need an edge.
+- `evidence`: exact local `{path, sha256}` pins binding current source-use,
+  custody and selection contracts. Evidence and applicability are verified before
+  acquisition; content interpretation is outside this operation.
+- `schemaVersion`: the schema name above.
+
+Country inventory57's `all249-source-collection-v2.json` and its current-report
+caveats are reviewed metadata intake, **not** a runtime acquisition registry or a
+universal download grant. Copying inventory rows into a selection cannot qualify
+rights, source release, payload completeness, actual custody or competing claims.
+NZ/LK unresolved provenance and active acquisition claims remain separate holds.
+Current source-specific budget decisions must accompany the relevant selection;
+one source's approved budget does not authorize another source's transfer.
+
+`retained-copy` supplies exactly `path`, `sha256`, `bytes`, `originalAcquiredAt`,
+`headers` and `evidence`. Only the bounded nonsecret retained-header allowlist is
+accepted. Import checks exact existing original bytes and pinned custody evidence,
+streams a verified local copy and uses no-overwrite object promotion. Its receipt
+uses `result: retained-import` and `retainedOrigin`, preserving the original
+acquisition/validation timestamp. Local verification time is separately recorded;
+it never creates a new 30-day window. Existing HTTP retention restrictions still
+apply. A stale retained selection fails offline; no fallback download is inferred.
+The canonical public source URL identifies provenance, never a historical signed
+transport URL. Source receipt pins preserve the original provenance without
+copying credentials into reports.
+
+Each source checkpoints an immutable report plus `collection-report.json` before
+the next source. Failure is isolated and recorded; rerunning re-verifies cache
+bytes and resumes completed objects. Partial copies/transfers restart, never
+append. Existing serial cache locking remains; no new concurrency cap, background
+controller, claim allocator or scheduler is introduced. Evidence paths must be
+stable for a run. Whole-selection structural/pin errors fail before any request.
+
+Reports distinguish verified local originals, failures, applicability edges,
+actual network requests/body bytes and original acquisition provenance. They
+explicitly report zero parsing/normalization/gold admission and do not infer
+country completion. `retainedImportStatus` separates first local import from an
+already cached repeat. The CLI returns nonzero for a rejected selection or any
+failed source, while retaining the complete per-source report.
+
+The orchestration tests cover many-to-many deduplication, unchanged repeat,
+conditional due refresh, held/forbidden isolation, aggregate byte bounds, stale
+retained age, original/cache corruption, claim and evidence failures, and safe
+restart. Live retained-copy acceptance is recorded outside Git in the exact
+worker result packet; synthetic HTTP tests do not establish live provider access.
