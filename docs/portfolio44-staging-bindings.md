@@ -24,8 +24,8 @@ metadata, not accepted food records, a source grant or country completion.
 `bind_receipt` is pure; `bind_many` isolates each loader/format failure. All error
 messages are fixed codes. Inputs are bounded at 64 KiB, exact size/hash checked,
 strict JSON decoded, with missing/null/unbound kept distinct. Output-directory
-reuse requires identical candidate and manifest bytes; it leaves their mtimes
-unchanged. Changed or partial/tampered output requires a new directory.
+reuse requires identical candidate bytes and a matching manifest; it leaves their
+bytes and mtimes unchanged. Changed/tampered output requires a new directory.
 
 Every scalar under `/data` has shared `fieldOrigins` coverage. Receipt values
 carry exact JSON pointers and receipt pins; missing declarations, scope labels,
@@ -128,3 +128,25 @@ Parser or traversal RecursionError is also converted to a fixed malformed
 diagnostic and cannot suppress later peers. Focused regressions cover both
 reported failures and required normal/no-op/qualification controls; previous
 unaffected source and shared-batch evidence is reused, not replayed.
+
+## PR48 comment4306286782: identical partial output recovery
+
+Each new file is completely staged and flushed in the private output directory
+before exclusive publication. A failure during manifest staging/publication may
+leave the already-complete candidate visible. An identical retry verifies that
+candidate with the existing descriptor reader, then publishes only the missing
+manifest; a matching manifest-only pair can similarly complete its candidate.
+The result reports `recovered-identical-partial`. The next run is a no-op.
+
+Mismatching, malformed, symlinked or nonregular existing members remain errors;
+they are never overwritten or deleted. Exception cleanup removes only this
+invocation's staging temporary. This is bounded identical-pair recovery, **not**
+universal two-output crash atomicity, crash-orphan cleanup or a concurrency lock.
+Source operations, admission and rights remain closed.
+
+Manifest identity uses the existing canonical JSON serialization at both the
+prepublication and readback checks. This preserves JSON scalar types, refusing
+`true` in place of `1` or `0` in place of `false`, while accepting differences in
+whitespace and object key order. A mismatching manifest-only output is preserved
+and its missing candidate is not published. Focused authored controls cover both
+boundaries and legitimate recovery followed by an unchanged no-op.
