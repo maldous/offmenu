@@ -14,6 +14,7 @@ import re
 import socket
 import shutil
 import ssl
+import stat
 import time
 import threading
 from urllib.parse import urlsplit, parse_qsl
@@ -268,7 +269,12 @@ class CachedAcquirer:
             raise RefreshError('invalid-retry-bound')
         self.retries, self.sleep = retries, sleep
 
-    def acquire(self, source_key, *, fetch_policy='reuse', now=None):
+    def _deadline(self, deadline):
+        operation_deadline = time.monotonic() + self.budget.max_seconds
+        return min(operation_deadline, deadline) if deadline is not None else operation_deadline
+
+    def acquire(self, source_key, *, fetch_policy='reuse', now=None, deadline=None):
+        deadline = self._deadline(deadline)
         if fetch_policy not in POLICIES:
             raise RefreshError('unsupported-fetch-policy')
         spec = self.sources.get(source_key)
@@ -290,9 +296,9 @@ class CachedAcquirer:
             record = safe_path(directory / 'current.json')
             pending = safe_path(directory / 'recovery.json')
             if pending.exists():
-                recovered = self._load(pending, identity, spec, now, recovery=True)
+                recovered = self._load(pending, identity, spec, now, recovery=True, deadline=deadline)
                 self._commit(record, recovered)
-            previous = self._load(record, identity, spec, now)
+            previous = self._load(record, identity, spec, now, deadline=deadline)
             if previous:
                 acquired = timestamp(previous['checkedAt'])
                 fresh = ((now - acquired).total_seconds() < spec.ttl_seconds
@@ -306,9 +312,9 @@ class CachedAcquirer:
                 raise RefreshError('cache-stale' if previous else 'cache-missing')
             if shutil.disk_usage(self.root).free < spec.max_bytes + self.budget.minimum_free_bytes:
                 raise RefreshError('insufficient-acquisition-disk-budget')
-            return self._fetch(spec, record, identity, previous, fetch_policy, now)
+            return self._fetch(spec, record, identity, previous, fetch_policy, now, deadline)
 
-    def _load(self, record, identity, spec, now, *, recovery=False):
+    def _load(self, record, identity, spec, now, *, recovery=False, deadline=None):
         if not record.exists():
             return None
         if not record.is_file() or record.stat().st_size > MAX_METADATA:
@@ -353,17 +359,18 @@ class CachedAcquirer:
         _retention(headers)
         if not self._body(value['sha256']).is_file():
             raise RefreshError('cached-body-missing')
-        if digest(self._body(value['sha256']), max_bytes=spec.max_bytes) != {'sha256': value['sha256'], 'bytes': value['bytes']}:
+        if digest(self._body(value['sha256']), max_bytes=spec.max_bytes, deadline=deadline) != {'sha256': value['sha256'], 'bytes': value['bytes']}:
             raise RefreshError('cached-body-corrupt')
         return value
 
-    def import_retained(self, source_key, retained, *, now=None):
+    def import_retained(self, source_key, retained, *, now=None, deadline=None):
         """Copy an exact reviewed original, preserving acquisition time. No network.
 
         `retained` is trusted operation configuration, not discovered metadata.
         Its evidence pin binds custody/source-use; it grants no permission itself.
         Completed objects recover normally; interrupted copies restart from zero.
         """
+        deadline = self._deadline(deadline)
         spec = self.sources.get(source_key)
         if spec is None or spec.source_key != source_key:
             raise RefreshError('source-not-allowlisted')
@@ -385,7 +392,7 @@ class CachedAcquirer:
             raise RefreshError('invalid-acquisition-time')
         pin = retained['evidence']
         if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
-                or digest(pin['path'], max_bytes=MAX_METADATA)['sha256'] != pin['sha256']):
+                or digest(pin['path'], max_bytes=MAX_METADATA, deadline=deadline)['sha256'] != pin['sha256']):
             raise RefreshError('retained-evidence-mismatch')
         headers = _headers(retained['headers'])
         if not set(headers) <= RETAINED_HEADERS:
@@ -401,22 +408,21 @@ class CachedAcquirer:
             record = safe_path(directory / 'current.json')
             pending = safe_path(directory / 'recovery.json')
             if pending.exists():
-                self._commit(record, self._load(pending, identity, spec, now, recovery=True))
-            previous = self._load(record, identity, spec, now)
+                self._commit(record, self._load(pending, identity, spec, now, recovery=True, deadline=deadline))
+            previous = self._load(record, identity, spec, now, deadline=deadline)
             if previous:
                 # Never overwrite a previously acquired different representation.
                 if {k: previous[k] for k in expected} != expected:
                     raise RefreshError('retained-cache-conflict')
                 return self._result(previous, 'retained-already-cached')
-            if digest(original, max_bytes=spec.max_bytes) != expected:
+            if digest(original, max_bytes=spec.max_bytes, deadline=deadline) != expected:
                 raise RefreshError('retained-original-mismatch')
             target = self._body(retained['sha256'])
             target.parent.mkdir(parents=True, exist_ok=True)
             partial = safe_path(directory / 'body.partial')
-            deadline = time.monotonic() + self.budget.max_seconds
             try:
                 if target.exists():
-                    if digest(target, max_bytes=spec.max_bytes) != expected:
+                    if digest(target, max_bytes=spec.max_bytes, deadline=deadline) != expected:
                         raise RefreshError('cached-body-corrupt')
                 else:
                     if shutil.disk_usage(self.root).free < retained['bytes'] + self.budget.minimum_free_bytes:
@@ -429,6 +435,8 @@ class CachedAcquirer:
                             if time.monotonic() >= deadline:
                                 raise RefreshError('acquisition-duration-limit-exceeded')
                             block = source.read(min(1024 * 1024, retained['bytes'] - count + 1))
+                            if time.monotonic() >= deadline:
+                                raise RefreshError('acquisition-duration-limit-exceeded')
                             if not block:
                                 break
                             count += len(block)
@@ -440,11 +448,15 @@ class CachedAcquirer:
                             output.write(block)
                         output.flush()
                         os.fsync(output.fileno())
+                    if time.monotonic() >= deadline:
+                        raise RefreshError('acquisition-duration-limit-exceeded')
                     if {'sha256': hasher.hexdigest(), 'bytes': count} != expected:
                         raise RefreshError('retained-original-mismatch')
                     # Hard-link promotion is no-overwrite even if another writer appears.
                     os.link(partial, target)
                     fsync_directory(target.parent)
+                if time.monotonic() >= deadline:
+                    raise RefreshError('acquisition-duration-limit-exceeded')
                 value = {'schemaVersion': 'offmenu-acquisition/1', 'request': identity,
                          **expected, 'headers': headers,
                          'originalAcquiredAt': retained['originalAcquiredAt'],
@@ -463,13 +475,12 @@ class CachedAcquirer:
     def _result(self, value, status):
         return AcquisitionResult(self._body(value['sha256']), value['sha256'], value['bytes'], status, value)
 
-    def _fetch(self, spec, record, identity, previous, policy, now):
+    def _fetch(self, spec, record, identity, previous, policy, now, deadline):
         request_headers = {'Accept-Encoding': 'identity'}
         if previous and policy != 'force-download':
             for old, new in (('etag', 'If-None-Match'), ('last-modified', 'If-Modified-Since')):
                 if previous['headers'].get(old):
                     request_headers[new] = previous['headers'][old]
-        deadline = time.monotonic() + self.budget.max_seconds
         transferred = 0
         for attempt in range(self.retries + 1):
             response = None
@@ -543,7 +554,7 @@ class CachedAcquirer:
                     target = self._body(checksum)
                     target.parent.mkdir(parents=True, exist_ok=True)
                     if target.exists():
-                        if digest(target, max_bytes=spec.max_bytes) != {'sha256': checksum, 'bytes': count}:
+                        if digest(target, max_bytes=spec.max_bytes, deadline=deadline) != {'sha256': checksum, 'bytes': count}:
                             raise RefreshError('cached-body-corrupt')
                     else:
                         os.link(partial, target)  # Never replace an existing object.
@@ -593,6 +604,26 @@ class _Retryable(Exception):
     pass
 
 
+def _registry_snapshot(path):
+    """Read one bounded regular-file snapshot for both pinning and parsing."""
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, 'rb') as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode):
+            raise RefreshError('regular-file-required')
+        if before.st_size > MAX_REGISTRY_METADATA:
+            raise RefreshError('asset-size-limit-exceeded')
+        raw = stream.read(MAX_REGISTRY_METADATA + 1)
+        if len(raw) > MAX_REGISTRY_METADATA:
+            raise RefreshError('asset-size-limit-exceeded')
+        after = os.fstat(stream.fileno())
+    current = path.stat()
+    fields = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+    if fields(before) != fields(after) or fields(after) != fields(current):
+        raise RefreshError('input-changed-during-read')
+    return raw
+
+
 def collect_registry(registry_path, registry_sha256, output, *, transport=None, now=None):
     """Run a pinned reviewed acquisition selection, not the discovery registry.
 
@@ -602,9 +633,10 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
     The caller must qualify actual host, source rights and competing claims.
     """
     raw_path = safe_path(registry_path)
-    if digest(raw_path, max_bytes=MAX_REGISTRY_METADATA)['sha256'] != registry_sha256:
+    raw = _registry_snapshot(raw_path)
+    if sha(raw) != registry_sha256:
         raise RefreshError('collection-registry-pin-mismatch')
-    registry = strict_json(raw_path.read_bytes())
+    registry = strict_json(raw)
     version = registry.get('schemaVersion') if isinstance(registry, dict) else None
     expected = {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
     if version in ('offmenu-acquisition-selection/2', 'offmenu-acquisition-selection/3'):
@@ -746,11 +778,11 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
                 acquirer = CachedAcquirer(root, {spec.source_key: spec}, transport=metered,
                                           resource_budget=budget)
                 if entry['operation'] == 'retained-copy':
-                    imported = acquirer.import_retained(spec.source_key, entry['retained'], now=now)
+                    imported = acquirer.import_retained(spec.source_key, entry['retained'], now=now, deadline=deadline)
                     row['retainedImportStatus'] = imported.status
-                    result = acquirer.acquire(spec.source_key, fetch_policy='reuse', now=now)
+                    result = acquirer.acquire(spec.source_key, fetch_policy='reuse', now=now, deadline=deadline)
                 elif entry['operation'] == 'https-refresh' and entry['retained'] is None:
-                    result = acquirer.acquire(spec.source_key, fetch_policy='refresh', now=now)
+                    result = acquirer.acquire(spec.source_key, fetch_policy='refresh', now=now, deadline=deadline)
                 else:
                     raise RefreshError('unsupported-collection-operation')
                 row.update(outcome='verified-local-original', status=result.status,
