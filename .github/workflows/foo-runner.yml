@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original, selected-original-batch, batch-recovery-diagnostic]
+        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original, selected-original-batch, batch-recovery-diagnostic, global-collection]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]
@@ -34,7 +34,7 @@ jobs:
     env:
       # Replace only after the code/fixture/dispatcher commit is independently
       # reviewed and published. This placeholder deliberately prevents execution.
-      TRUSTED_CODE_SHA: 7ca8bd3a8ee101ea514c594a0e1e41a10079257b
+      TRUSTED_CODE_SHA: 5feb5139f1c6bd9b7d99b2f9469b3df64da9d560
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify trusted revision is configured
@@ -122,7 +122,7 @@ jobs:
       contents: write
       pull-requests: read
     env:
-      TRUSTED_CODE_SHA: 7ca8bd3a8ee101ea514c594a0e1e41a10079257b
+      TRUSTED_CODE_SHA: 5feb5139f1c6bd9b7d99b2f9469b3df64da9d560
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify terminal Foo job and prepare bounded evidence
@@ -169,14 +169,15 @@ jobs:
           MAX_RECEIPT = 16 * 1024
           MAX_API = 1024 * 1024
           PROFILES = {'readiness', 'inventory', 'offline-replay', 'smoke',
-                      'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native', 'global-readiness', 'offline-reconciliation', 'collection-prepare', 'zenodo-private-original', 'zenodo-response-metadata', 'swiss-private-original', 'selected-original-batch', 'batch-recovery-diagnostic'}
+                      'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native', 'global-readiness', 'offline-reconciliation', 'collection-prepare', 'zenodo-private-original', 'zenodo-response-metadata', 'swiss-private-original', 'selected-original-batch', 'batch-recovery-diagnostic', 'global-collection'}
           STEP_IDS = {'readiness', 'inventory', 'refresh-tests', 'offline-replay',
                       'replay-idempotency', 'ledger-tests', 'ledger-audit',
                       'dataset-tests', 'selected-data-inventory', 'schema-survey-tests',
                       'schema-survey', 'ciqual-native-tests',
                       'ciqual-native-candidate', 'ciqual-native-retry', 'global-readiness-tests', 'global-runtime', 'global-coverage', 'global-registry-tests', 'global-harness-tests', 'reconciliation-tests',
-                      'source-claims', 'transfer-receipts', 'native-continuity', 'disk-reservations', 'pending-ownership', 'collection-preparation-tests', 'collection-prepare', 'zenodo-original-tests', 'zenodo-private-original', 'zenodo-response-tests', 'zenodo-response-metadata', 'swiss-original-tests', 'swiss-private-original', 'fixed-source-batch-tests', 'selected-original-batch', 'batch-recovery-tests', 'batch-recovery-diagnostic'}
+                      'source-claims', 'transfer-receipts', 'native-continuity', 'disk-reservations', 'pending-ownership', 'collection-preparation-tests', 'collection-prepare', 'zenodo-original-tests', 'zenodo-private-original', 'zenodo-response-tests', 'zenodo-response-metadata', 'swiss-original-tests', 'swiss-private-original', 'fixed-source-batch-tests', 'selected-original-batch', 'batch-recovery-tests', 'batch-recovery-diagnostic', 'global-collection-tests', 'media-preparation-tests', 'global-collection'}
           PROFILE_STEPS = {
+              'global-collection': ['readiness', 'global-collection-tests', 'media-preparation-tests', 'global-collection'],
               'batch-recovery-diagnostic': ['readiness', 'batch-recovery-tests', 'batch-recovery-diagnostic'],
               'selected-original-batch': ['readiness', 'fixed-source-batch-tests', 'selected-original-batch'],
               'swiss-private-original': ['readiness', 'swiss-original-tests', 'swiss-private-original'],
