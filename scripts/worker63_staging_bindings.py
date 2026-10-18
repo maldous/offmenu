@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Offline metadata bindings for portfolio63; never a source admission factory."""
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
+import os
+import stat
 from pathlib import Path
 import re
 import sys
@@ -12,11 +15,12 @@ sys.path.insert(0, str(ROOT))
 from offmenu.refresh.acquisition import MIN_TTL
 from offmenu.refresh.field_provenance import datum_pointers, field_origin_errors
 from offmenu.refresh.national_tabular import bundle_files
-from offmenu.refresh.core import (RefreshError, atomic_json, canonical, digest,
+from offmenu.refresh.core import (RefreshError, canonical,
                                  safe_path, strict_json, timestamp)
 
 COUNTRIES = ('GW', 'PE', 'TV', 'ZM')
 MAX_METADATA = 1024 * 1024
+MAX_REPORT = 8 * 1024 * 1024
 CONFIG = ROOT / 'config/staging/worker63-bindings.json'
 HEX = re.compile(r'[0-9a-f]{64}')
 
@@ -39,17 +43,84 @@ def pointer(value, selector):
     return value
 
 
-def read_metadata(path):
+
+@contextmanager
+def _parent_descriptor(path, *, create=False):
+    """Walk the caller-owned path without following directory symlink races."""
+    if '..' in Path(path).parts:
+        raise RefreshError('binding-path-invalid')
     path = safe_path(path)
-    # This API is metadata-only. Original references are never resolved/opened.
-    if path.suffix != '.json':
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC
+    directory = os.open(path.anchor, flags)
+    try:
+        for component in path.parts[1:-1]:
+            try:
+                child = os.open(component, flags, dir_fd=directory)
+            except FileNotFoundError:
+                if not create:
+                    raise
+                try:
+                    os.mkdir(component, dir_fd=directory)
+                except FileExistsError:
+                    pass
+                child = os.open(component, flags, dir_fd=directory)
+            os.close(directory)
+            directory = child
+        yield directory, path.name
+    finally:
+        os.close(directory)
+
+
+def _identity(value):
+    return (value.st_dev, value.st_ino, value.st_mode, value.st_size,
+            value.st_mtime_ns, value.st_ctime_ns)
+
+
+def _read_at(directory, name, limit):
+    """Bound and verify the actual descriptor, not a pre-read pathname."""
+    flags = os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC
+    try:
+        descriptor = os.open(name, flags, dir_fd=directory)
+    except FileNotFoundError:
+        raise
+    except OSError as exc:
+        raise RefreshError('binding-file-open-invalid') from exc
+    try:
+        before = os.fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode):
+            raise RefreshError('binding-file-not-regular')
+        if before.st_size > limit:
+            raise RefreshError('binding-file-bound-exceeded')
+        chunks, size = [], 0
+        while True:
+            chunk = os.read(descriptor, min(65536, limit - size + 1))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            size += len(chunk)
+            if size > limit:
+                raise RefreshError('binding-file-bound-exceeded')
+        after = os.fstat(descriptor)
+        named = os.stat(name, dir_fd=directory, follow_symlinks=False)
+        if (_identity(before) != _identity(after) or _identity(after) != _identity(named)
+                or size != after.st_size):
+            raise RefreshError('binding-file-changed-during-read')
+        return b''.join(chunks)
+    finally:
+        os.close(descriptor)
+
+
+def _bounded_read(path, limit):
+    with _parent_descriptor(path) as (directory, name):
+        return _read_at(directory, name, limit)
+
+
+def read_metadata(path):
+    # Original references are never resolved/opened. Replay/config are JSON too.
+    if Path(path).suffix != '.json':
         raise RefreshError('metadata-json-only')
-    before = digest(path, max_bytes=MAX_METADATA)
-    raw = path.read_bytes()
-    after = digest(path, max_bytes=MAX_METADATA)
-    if before != after or hashlib.sha256(raw).hexdigest() != before['sha256']:
-        raise RefreshError('metadata-changed-during-read')
-    return raw, before
+    raw = _bounded_read(path, MAX_METADATA)
+    return raw, {'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
 
 
 
@@ -203,14 +274,33 @@ def evaluate_portfolio(config, *, now, previous=None, loader=read_metadata):
             'networkRequests': 0, 'wholeCountriesComplete': 0}
 
 
+
 def write_if_changed(path, report):
-    path = safe_path(path)
     body = canonical(report)
-    if path.exists():
-        if path.read_bytes() == body:
-            return 'unchanged-no-op'
-        raise RefreshError('binding-output-generation-conflict')
-    atomic_json(path, report)
+    if len(body) > MAX_REPORT:
+        raise RefreshError('binding-file-bound-exceeded')
+    with _parent_descriptor(path, create=True) as (directory, name):
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC
+        try:
+            descriptor = os.open(name, flags, 0o600, dir_fd=directory)
+        except FileExistsError:
+            if _read_at(directory, name, MAX_REPORT) == body:
+                return 'unchanged-no-op'
+            raise RefreshError('binding-output-generation-conflict')
+        try:
+            remaining = memoryview(body)
+            while remaining:
+                count = os.write(descriptor, remaining)
+                if count <= 0:
+                    raise RefreshError('binding-report-write-failed')
+                remaining = remaining[count:]
+            os.fsync(descriptor)
+            if _identity(os.fstat(descriptor)) != _identity(os.stat(name, dir_fd=directory, follow_symlinks=False)):
+                raise RefreshError('binding-output-generation-conflict')
+        finally:
+            # Failed/partial generations remain visible, never a success result;
+            # do not unlink a path that may belong to a concurrent writer.
+            os.close(descriptor)
     return 'metadata-report-written'
 
 
@@ -251,7 +341,7 @@ def stage_metadata(spec, result, destination):
         if actual != set(files):
             raise RefreshError('metadata-stage-generation-conflict')
         for name, raw in files.items():
-            if safe_path(target/name).read_bytes() != raw:
+            if _bounded_read(target/name, MAX_REPORT) != raw:
                 raise RefreshError('metadata-stage-generation-conflict')
         return {'status': 'unchanged-no-op', 'metadataRecords': len(rows), 'sourceAcceptance': False}
     # Output root is a caller-owned, new generation; originals are not resolved.
@@ -272,7 +362,7 @@ def main(argv=None):
     p.add_argument('--metadata-output-root', type=Path, help='New caller-owned metadata-only bundle generation.')
     a = p.parse_args(argv)
     try:
-        config = strict_json(CONFIG.read_bytes())
+        config = strict_json(read_metadata(CONFIG)[0])
         previous = strict_json(read_metadata(a.previous)[0]) if a.previous else None
         report = evaluate_portfolio(config, now=a.now, previous=previous)
         if a.metadata_output_root:

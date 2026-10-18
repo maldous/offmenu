@@ -24,7 +24,7 @@ never echo parser exceptions or arbitrary source values.
 
 The only readable inputs are the configuration's pinned JSON metadata assets,
 bounded to 1 MiB each. Original asset paths/hashes are **references only**, never
-opened, statted or rehashed. `safe_path`, `strict_json`, `digest`, `canonical`,
+opened, statted or rehashed. `safe_path`, `strict_json`, `canonical`,
 `timestamp`, `bundle_files`, `datum_pointers` and `field_origin_errors` reuse
 existing generic contracts. No country engine or shared adapter registry is copied.
 
@@ -94,3 +94,21 @@ shared export; no test ran then. The corrected prepared checkout runs passed.
 No reported code pass substitutes for independent exact review/Morgan verdict or
 fresh-develop integration. Integrator00 receives the exact commit/patch/checks
 through Gateway; no remote push, merge or shared source mutation is performed.
+
+## F1/F2 review correction
+
+Metadata/config/replay reads use one nonblocking, no-follow descriptor, bounded
+at 1 MiB, with regular-file and before/after descriptor/path identity checks.
+Existing report and staged-snapshot comparisons use the same bounded reader
+with an 8 MiB limit. Directory traversal also uses no-follow descriptors.
+New reports use exclusive creation: an intervening different generation is
+preserved and raises `binding-output-generation-conflict`; identical bytes are
+a no-op. A failed partial write remains a failed generation and is not unlinked.
+
+The focused delta command is:
+`PYTHONDONTWRITEBYTECODE=1 python -B -m unittest discover -s tests -p 'test_worker63_io_corrections.py' -v`.
+Its authored temporary files exercise FIFOs with bounded/reaped child processes,
+descriptor replacement, input bounds, competing generation creation and replay.
+The original positive reviewer coverage remains credited to review of d2e579e;
+the country metadata execution and original suite are not replayed for this delta.
+Independent SAME52 review of the successor remains required.
