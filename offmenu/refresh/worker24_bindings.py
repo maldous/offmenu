@@ -5,14 +5,18 @@ SourceContracts, acceptance receipts or automatic refresh jobs are installed.
 """
 import argparse
 from copy import deepcopy
-from pathlib import Path
 import re
 
-from .core import RefreshError, canonical, sha, strict_json, timestamp
+from .core import RefreshError, canonical, sha, timestamp
 from .field_provenance import field_origin_errors
+from .worker24_catalogue import BINDINGS
 
-CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker24/bindings.json'
 COUNTRIES = {'PF', 'SL', 'TF', 'UY'}
+
+
+def catalogue():
+    """Return an isolated copy of the inert packaged metadata declarations."""
+    return deepcopy(BINDINGS)
 
 
 def origin_template(profile, input_path, record_id):
@@ -137,8 +141,8 @@ def main():
     parser.add_argument('--now', required=True, help='Explicit UTC observation timestamp')
     parser.add_argument('--previous-key')
     args = parser.parse_args()
-    # Fixed committed metadata only. Paths embedded in it are never followed.
-    document = strict_json(CONFIG.read_bytes())
+    # Fixed packaged declarations only. Embedded paths are never followed.
+    document = catalogue()
     print(canonical(plan(document, now=args.now, previous_key=args.previous_key)).decode(), end='')
 
 

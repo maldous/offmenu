@@ -1,5 +1,8 @@
 """Authored synthetic metadata/cells only; no retained source bodies opened."""
 from copy import deepcopy
+import ast
+import contextlib
+import io
 import json
 import os
 from pathlib import Path
@@ -109,7 +112,7 @@ class Worker24Bindings(unittest.TestCase):
         self.assertIn('binding-selector-mismatch', binding.authored_row_errors(profile, 'authored.csv', row))
 
     def test_committed_metadata_no_payload_reads_and_expected_holds(self):
-        document = json.loads(binding.CONFIG.read_text())
+        document = binding.catalogue()
         # A planner attempting to follow embedded evidence/candidate/raw paths fails.
         with patch('pathlib.Path.open', side_effect=AssertionError('unexpected file read')):
             result = binding.plan(document, now='2026-10-18T00:00:00Z')
@@ -125,6 +128,36 @@ class Worker24Bindings(unittest.TestCase):
         self.assertFalse(binding.plan(document, now='2026-10-18T00:00:00Z', previous_key=key)['metadataNoOp'])
         document['profiles'].append(deepcopy(document['profiles'][0]))
         self.assertEqual(binding.plan(document, now='2026-10-18T00:00:00Z')['profiles'][1]['diagnostics'], ['duplicate-country-binding'])
+
+
+class PackagedCatalogueTests(unittest.TestCase):
+    def test_literal_equivalence_and_copy_isolation(self):
+        frozen = json.loads((Path(__file__).parents[1] /
+                             'docs/operations/worker24/bindings.json').read_text())
+        source = Path(binding.__file__).with_name('worker24_catalogue.py')
+        tree = ast.parse(source.read_text())
+        self.assertEqual(len(tree.body), 2)  # docstring + inert literal assignment
+        self.assertIsInstance(tree.body[1], ast.Assign)
+        self.assertEqual(tree.body[1].targets[0].id, 'BINDINGS')
+        self.assertEqual(ast.literal_eval(tree.body[1].value), frozen)
+        first = binding.catalogue()
+        self.assertEqual(first, frozen)
+        first['profiles'][0]['inputs'][0]['sha256'] = 'changed-only-in-copy'
+        self.assertEqual(binding.catalogue(), frozen)
+        self.assertEqual(binding.plan(binding.catalogue(), now='2026-10-18T00:00:00Z'),
+                         binding.plan(frozen, now='2026-10-18T00:00:00Z'))
+
+    def test_diagnostic_catalogue_needs_no_repository_resource(self):
+        output = io.StringIO()
+        with patch('pathlib.Path.open', side_effect=AssertionError('no repository resource')):
+            with patch.object(diagnostic, 'read_metadata_evidence',
+                              side_effect=RefreshError('metadata-evidence-unavailable')):
+                with contextlib.redirect_stdout(output):
+                    code = diagnostic.main(['--foo-metadata'])
+        self.assertEqual(code, 2)
+        rows = json.loads(output.getvalue())['results']
+        self.assertEqual(len(rows), 11)
+        self.assertTrue(all(r['code'] == 'metadata-evidence-unavailable' for r in rows))
 
 
 class MetadataReaderTests(unittest.TestCase):
@@ -189,7 +222,7 @@ class MetadataReaderTests(unittest.TestCase):
             # Test only the successor. Timeout prevents a regression hanging CI.
             code = ('from pathlib import Path; import sys; '
                     'from offmenu.refresh import worker24_metadata_diagnostic as d; '
-                    'd.CONFIG=Path(sys.argv[1]); '
+                    'import json; d.catalogue=lambda:json.loads(d.read_metadata_evidence(sys.argv[1])); '
                     'raise SystemExit(d.main(["--foo-metadata"]))')
             run = subprocess.run([sys.executable, '-B', '-c', code, str(config)],
                                  capture_output=True, timeout=3)
@@ -200,7 +233,8 @@ class MetadataReaderTests(unittest.TestCase):
                              ['metadata-evidence-not-regular', 'metadata-selector-matched'])
             self.assertEqual(regular.read_bytes(), raw)
             self.assertEqual(config.read_bytes(), before)
-            # The config reader is guarded by the same descriptor boundary.
+            # Test-only authored catalogue injection exercises the reader too;
+            # the real catalogue is an inert module with no config-path read.
             run = subprocess.run([sys.executable, '-B', '-c', code, str(fifo)],
                                  capture_output=True, timeout=3)
             self.assertEqual(run.returncode, 2, run.stderr)

@@ -11,7 +11,10 @@ python3 -m offmenu.refresh.worker24_bindings --now 2026-10-18T00:00:00Z
 python3 -m unittest discover -s tests -p test_worker24_bindings.py
 ```
 
-The CLI reads only committed binding metadata. Embedded absolute evidence and
+The CLI loads the inert `worker24_catalogue.BINDINGS` module included in wheel
+and sdist builds. Its literals exactly match the retained `bindings.json`
+document; runtime loading does not depend on that repository document.
+Embedded absolute evidence and
 candidate paths are Foo custody pointers, never opened by the CLI. The report
 does not certify current asset availability, bytes, rights or data acceptance.
 The original immutable candidates/manifests remain unchanged. This metadata

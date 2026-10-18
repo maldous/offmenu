@@ -10,7 +10,7 @@ from pathlib import Path
 import stat
 
 from .core import RefreshError, canonical, sha, strict_json
-from .worker24_bindings import CONFIG
+from .worker24_bindings import catalogue
 
 MAX_EVIDENCE_BYTES = 256 * 1024
 
@@ -93,7 +93,7 @@ def main(argv=None):
                         help='Explicitly read private pinned metadata evidence on Foo')
     parser.parse_args(argv)
     try:
-        document = strict_json(read_metadata_evidence(CONFIG))
+        document = catalogue()
     except (RefreshError, ValueError) as exc:
         code = str(exc) if isinstance(exc, RefreshError) else 'metadata-config-invalid'
         print(canonical({'errorCode': code, 'sourceBodiesRead': 0,
