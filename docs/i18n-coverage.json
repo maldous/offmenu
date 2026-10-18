@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2805,
+  "messages": 2811,
   "arabicTranslated": 376,
-  "arabicMissing": 2429,
+  "arabicMissing": 2435,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -495,6 +495,18 @@
     "./admin-ui.js": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "./auth-principal.mjs": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "./auth.mjs": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
       ],
       "arabic": false
     },
@@ -2319,6 +2331,12 @@
     "Australian Food Composition Database": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Authentication is temporarily unavailable.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
       ],
       "arabic": false
     },
@@ -7992,6 +8010,18 @@
     "Leave kitchen": {
       "sources": [
         "public/sharing-ui.js"
+      ],
+      "arabic": false
+    },
+    "Legacy authentication is not available in this authentication mode.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "Legacy authentication verifier is required.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
       ],
       "arabic": false
     },
@@ -14505,6 +14535,12 @@
       "sources": [
         "public/app.js",
         "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Unsupported OffMenu authentication mode.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
       ],
       "arabic": false
     },
