@@ -1,0 +1,1111 @@
+{
+  "schemaVersion": "offmenu-public-permissions-evidence/1",
+  "observedDate": "2026-10-18",
+  "acceptedCommitContext": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+  "mappingEvidenceBlob": "858c4de5f6e27deb049ee8bc27567a40461bad49",
+  "scope": "Read-only official publisher pages/terms and historical compact mappings; no dataset bodies, account actions or agreements accepted. All conditional permission evidence requires exact representation and operation scope before admission.",
+  "records": [
+    {
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "discoveryIds": [
+        "discovery:S006",
+        "src-f9f626f37499"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://support.openfoodfacts.org/help/en-gb/12-donnees-api/94-y-a-t-il-des-conditions-pour-utiliser-l-api",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "medium",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Publisher support states database is ODbL. Main data/terms endpoint was robots-blocked in this research; no bypass attempted. Retained October 12 snapshot not corroborated by exact official snapshot receipt.",
+      "conditions": [
+        "ODbL attribution/share-alike obligations; image rights separate",
+        "Need exact dump receipt and applicable full terms before executable admission"
+      ],
+      "releaseBinding": "family-policy only; exact snapshot unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "usda-files",
+      "releaseId": "usda-2026-04",
+      "discoveryIds": [
+        "discovery:S008",
+        "discovery:S009",
+        "src-a3e445b08d87",
+        "src-b7d2c93ba7e9"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://fdc.nal.usda.gov/download-datasets/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://fdc.nal.usda.gov/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+          "format": "zip",
+          "evidence": "official HTML href; no body requested"
+        },
+        {
+          "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_csv_2026-04-30.zip",
+          "format": "zip",
+          "evidence": "official HTML href; no body requested"
+        },
+        {
+          "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_branded_food_json_2026-04-30.zip",
+          "format": "zip",
+          "evidence": "official HTML href; no body requested"
+        },
+        {
+          "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_branded_food_csv_2026-04-30.zip",
+          "format": "zip",
+          "evidence": "official HTML href; no body requested"
+        },
+        {
+          "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_csv_2026-04-30.zip",
+          "format": "zip",
+          "evidence": "official HTML href; no body requested"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "permission-evidenced",
+        "retain": "permission-evidenced",
+        "parse": "permission-evidenced",
+        "transform": "permission-evidenced",
+        "serve": "permission-evidenced",
+        "redistribute": "permission-evidenced"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "FDC states datasets are public domain under CC0 and no permission is needed; source citation requested. Official download page lists April 30 2026 CSV/JSON components and combined CSV archive.",
+      "conditions": [
+        "Preserve source/type/date and provenance; citation requested",
+        "No API credentials implied; file distribution scope only"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "discoveryIds": [
+        "discovery:S007"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://github.com/openfoodfacts/open-prices/blob/main/docs/guides/data.md",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "medium",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "releaseBinding": "family rights verified; moving daily export cannot establish retained snapshot identity",
+      "evidenceSummary": "Publisher data guide identifies ODbL, source attribution and restrictions on combining nonfree data. It links daily regenerated gzipped JSONL exports. This corroborates family rights but does not verify the October 12 retained snapshot; software AGPL licence is not the data licence.",
+      "conditions": [
+        "ODbL attribution and applicable share-alike duties",
+        "Full licence/representation review and exact October12 snapshot receipt still required"
+      ],
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "afcd",
+      "releaseId": "3",
+      "discoveryIds": [
+        "discovery:S327"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/science-data/monitoringnutrients/afcd/datauserlicenceagreement",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Food%20Details.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Nutrient%20profiles.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Recipes.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Nutrient%20details.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Food%20group%20information.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Reference%20List.xlsx",
+          "format": "xlsx",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        },
+        {
+          "url": "https://www.foodstandards.gov.au/sites/default/files/2025-12/About%20the%20Australian%20Food%20Composition%20Database%20-%20Release%203.pdf",
+          "format": "pdf",
+          "evidence": "href extracted from official release HTML; body not requested; URL not guaranteed immutable"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {
+        "losslessSchemaMapping": "conditional",
+        "normalizationWithChanges": "permitted under licence conditions; retain scientific source qualifiers",
+        "curation": "conditional; changes identified, no publisher endorsement"
+      },
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Release 3 page provides six Excel data files for import and manipulation. FSANZ custom licence permits copying and adapting, with additional conditions beyond ordinary CC BY-SA. Licence page updated 2025-02-25; release page 2025-12-23.",
+      "conditions": [
+        "FSANZ attribution, work title, copyright and licence notices",
+        "Derivative distribution under the FSANZ licence; unrelated collection material not automatically covered",
+        "Distribute licence, limitation-of-data statement and Australian-data suitability notice",
+        "Identify modifications; no implied endorsement; logos excluded",
+        "Current terms are evidence only; prior acceptance and release-specific receipt not established"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "localBasenameMapping": {
+        "Food-Details.xlsx": "AFCD Release 3 - Food Details.xlsx",
+        "Nutrient-profiles.xlsx": "AFCD Release 3 - Nutrient profiles.xlsx",
+        "Nutrient-details.xlsx": "AFCD Release 3 - Nutrient details.xlsx"
+      },
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "ciqual",
+      "releaseId": "2025",
+      "discoveryIds": [
+        "discovery:S060"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "unknown",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unassessed",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "operationalHold": "Existing native replay/crash restrictions unchanged; this batch does not reauthorize execution",
+      "evidenceSummary": "Not re-researched in this bounded permissions batch; existing rights and operational records remain separate.",
+      "runtimePolicyAssessment": "native execution crash/replay restriction unchanged; not a source-use legal prohibition",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "cofid",
+      "releaseId": "2021",
+      "discoveryIds": [
+        "discovery:S096"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://assets.publishing.service.gov.uk/media/60538e66d3bf7f03249bac58/McCance_and_Widdowsons_Composition_of_Foods_integrated_dataset_2021.pdf",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "url": "https://assets.publishing.service.gov.uk/media/60538b91e90e07527df82ae4/McCance_Widdowsons_Composition_of_Foods_Integrated_Dataset_2021..xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href"
+        },
+        {
+          "url": "https://assets.publishing.service.gov.uk/media/60538ba4e90e07527f645f88/CoFID_oldFoods.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "medium",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Publisher identifies 2021 dataset and separate old-foods workbook; page links OGL v3. Guide distinguishes per-100g foods from per-100mL alcoholic drinks and component-denominator worksheets.",
+      "conditions": [
+        "OGL attribution; check embedded workbook notices against retained bytes",
+        "Old foods remain separate; no unqualified current-food inference"
+      ],
+      "releaseBinding": "2021 release corroborated; OGL footer evidence, exact file copyright notices not inspected",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "germany-bls",
+      "releaseId": "4.0",
+      "discoveryIds": [
+        "discovery:S059"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://blsdb.de/download",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "format": "zip",
+          "url": null,
+          "publisherLandingUrl": "https://blsdb.de/download",
+          "evidence": "version-labelled BLS_4_0_2025_DE.zip is linked through transient token; token intentionally omitted; no payload downloaded"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Official download explicitly identifies BLS 4.0 (2025), DOI 10.25826/Data20251217-134202-0 and CC BY 4.0 with Max Rubner-Institut attribution.",
+      "conditions": [
+        "Retain MRI citation and change notices",
+        "Download HTML supplies a transient tokenized ZIP link; do not hardcode or retain that token"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "matvaretabellen",
+      "releaseId": "2026",
+      "discoveryIds": [
+        "discovery:S061"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "unknown",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unassessed",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "operationalHold": "Existing native replay/crash restrictions unchanged; this batch does not reauthorize execution",
+      "evidenceSummary": "Not re-researched in this bounded permissions batch; existing rights and operational records remain separate.",
+      "runtimePolicyAssessment": "native execution crash/replay restriction unchanged; not a source-use legal prohibition",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "frida",
+      "releaseId": "5.5",
+      "discoveryIds": [
+        "discovery:S087"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://frida.fooddata.dk/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unknown",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "releaseBinding": "exact current permission/retained-source scope not fully verified",
+      "evidenceSummary": "Official host redirects to fcdb.fooddata.dk and returns JavaScript loading shell; current 5.5 release rights not verified. Retained CC BY 4.0 claim remains historical. Four-definition basis/curation boundary unchanged.",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "wikidata-food-businesses",
+      "releaseId": "2026-10-13-direct-types",
+      "discoveryIds": [
+        "src-347e5b7c5cf8"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "permission-evidenced",
+        "retain": "permission-evidenced",
+        "parse": "permission-evidenced",
+        "transform": "permission-evidenced",
+        "serve": "permission-evidenced",
+        "redistribute": "permission-evidenced"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Structured main/Property/Lexeme/EntitySchema data are CC0; other text namespaces are CC BY-SA. October 13 retained snapshot is local-derived and needs query/revision receipts.",
+      "conditions": [
+        "Limit CC0 grant to structured-data namespaces; preserve references"
+      ],
+      "releaseBinding": "family rights verified; exact retained snapshot identity unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "discoveryIds": [
+        "discovery:S004"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.fao.org/contact-us/terms/en/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {
+        "originalBibliographicLinkMetadata": "separate original-work claim requires retained evidence",
+        "copiedFAOProseOrNationalDocuments": "unknown/restricted; do not import blanket CC0 claim"
+      },
+      "confidence": "unknown",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "releaseBinding": "exact current permission/retained-source scope not fully verified",
+      "evidenceSummary": "FAO permits links without prior permission. General website content has noncommercial reuse limits and requires permission for adaptations/commercial reuse; linked national documents retain their own rights. OffMenu original reference-metadata CC0 claim does not license FAO prose or national documents.",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "wikibooks",
+      "releaseId": "2026-10-13-live",
+      "discoveryIds": [],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://en.wikibooks.org/wiki/Wikibooks:Copyrights",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Wikibooks text may be copied, modified and redistributed under CC BY-SA 4.0 with attribution. Per-page exceptions and non-text media require separate checks.",
+      "conditions": [
+        "Preserve page/revision/history references, authorship attribution, licence and change notices",
+        "Do not treat images as automatically covered"
+      ],
+      "releaseBinding": "family policy verified; October 13 snapshot and per-record exceptions unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "cnf",
+      "releaseId": "2015",
+      "discoveryIds": [
+        "discovery:S221"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/canadian-nutrient-file-2015-download-files.html",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://www.canada.ca/content/dam/hc-sc/migration/hc-sc/fn-an/alt_formats/pdf/nutrition/fiche-nutri-data/user_guide_utilisation-eng.pdf",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://open.canada.ca/data/en/dataset/089885f9-ed53-44e6-854a-14d21a1ec2e0",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {
+        "losslessSchemaMapping": "conditional: preserve values, qualifiers and provenance; exact contract review required",
+        "servingSizeExpression": "explicitly permitted",
+        "alterNutrientValues": "restricted"
+      },
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "CNF 2015 guide permits commercial and noncommercial reuse without further permission; nutrient values must not be modified, but different serving sizes are expressly allowed. Portal labels OGL-Canada. Preserve stricter release-specific guidance pending reconciliation.",
+      "conditions": [
+        "Credit Canadian Nutrient File, Health Canada, 2015",
+        "Do not imply official version or endorsement; reference only, not medical advice",
+        "2015 parser is not a 2026 release parser"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "mext",
+      "releaseId": "2023-corrected-20260327-main",
+      "discoveryIds": [
+        "discovery:S164"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/mext_00001.html",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://www.mext.go.jp/a_menu/syokuhinseibun/index.htm",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://www.mext.go.jp/b_menu/1351168.htm",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://www.mext.go.jp/b_menu/1366610.htm",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_0001.pdf",
+          "format": "pdf",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20230428-mxt_kagsei-mext_00001_021.pdf",
+          "format": "pdf",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_04.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_05.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_06.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_07.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20230428-mxt_kagsei-mext_00001_031.pdf",
+          "format": "pdf",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_09.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_10.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_11.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20230428-mxt_kagsei-mext_00001_041.pdf",
+          "format": "pdf",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_13.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_14.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_15.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20230525-mxt_kagsei-mext_00001_001.pdf",
+          "format": "pdf",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        },
+        {
+          "url": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_16.xlsx",
+          "format": "xlsx",
+          "evidence": "official release HTML href; no body requested; URL alone is not immutable pin"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {
+        "losslessSchemaMapping": "conditional",
+        "adaptation": "conditional on attribution and modification notice",
+        "specialDenominatorCompanions": "outside main-table projection; no per-100g inference",
+        "paidBookOrEbookDistribution": "separate permission/fee review"
+      },
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Publisher release page lists March 27 2026 corrections and Excel/PDF files. Food-data page specifically permits secondary use including applications. Website rules revised August 17 2026 permit copy, transmission and adaptation including commercial use, with source/change notices. Annex reserves potential notification/fees for paid book or ebook distribution.",
+      "conditions": [
+        "Cite MEXT and Standard Tables 2023, corrected 2026-03-27",
+        "Identify processing; do not represent modified work as government-created",
+        "Third-party rights and logos remain excluded",
+        "Paid book/ebook distribution requires separate review; this exception is not an application-use prohibition"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "normalizationAsset": "https://www.mext.go.jp/content/20260327-mxt_kagsei-mext-000029402_02.xlsx",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "overture-food-places",
+      "releaseId": "2026-09-23.1",
+      "discoveryIds": [
+        "discovery:S044"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://docs.overturemaps.org/blog/2026/09/23/release-notes/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://docs.overturemaps.org/release-calendar/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://docs.overturemaps.org/guides/places/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://docs.overturemaps.org/attribution/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [
+        {
+          "url": "s3://overturemaps-us-west-2/release/2026-09-23.1",
+          "format": "GeoParquet release prefix",
+          "evidence": "official release notes; exact object set/hashes not enumerated"
+        }
+      ],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Release 2026-09-23.1 is official. Places is multi-license: CDLA-Permissive-2.0, Apache-2.0 for Foursquare, CC0 for AllThePlaces. Publisher retains public release files up to 60 days; this is a publisher-hosting policy, not an inferred customer deletion obligation.",
+      "conditions": [
+        "Retain per-record sources/licences; Apache licence and NOTICE/change requirements for Foursquare",
+        "Do not collapse into one licence or transfer rights from other themes",
+        "No nationwide coverage acceptance from global source"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "fineli",
+      "releaseId": "20.0",
+      "discoveryIds": [
+        "discovery:S357"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "unknown",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unassessed",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "operationalHold": "Fineli force-download/zero-interpretation hold unchanged",
+      "evidenceSummary": "Not re-researched in this bounded permissions batch; existing rights and operational records remain separate.",
+      "runtimePolicyAssessment": "source-use force-download/zero-interpretation hold unchanged regardless of public licence",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "foodfiles",
+      "releaseId": "2024-v01",
+      "discoveryIds": [
+        "discovery:S341"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://www.foodcomposition.co.nz/foodfiles/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://foodcomposition.co.nz/terms/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://foodcomposition.co.nz/frequently-asked-questions/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {
+        "losslessSchemaMapping": "conditional/interpretation; prove original values and form preserved",
+        "alterSourceData": "restricted",
+        "separateDerivedValues": "unknown; no blanket curation grant"
+      },
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Publisher confirms FOODfiles 2024 Version 01 (no 2026 release), MSI distribution with Excel and tilde-delimited text. Terms grant use/reproduction subject to original unaltered presentation and prohibit data modification.",
+      "conditions": [
+        "Original data presentation and publisher attribution required",
+        "Custom indemnity/terms remain relevant; no acceptance action performed",
+        "MSI installer not downloaded or run"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "sweden-food",
+      "releaseId": "2026-07-01",
+      "discoveryIds": [
+        "discovery:S066"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://soknaringsinnehall.livsmedelsverket.se/",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {
+        "losslessSchemaMapping": "conditional/interpretation: may differ from data alteration; exact contract review needed",
+        "alterSourceValues": "restricted",
+        "derivedSeparateObservations": "unknown; not covered by blanket transform permission"
+      },
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Publisher identifies version 2026-07-01 and offers full Excel per-100g export. Reuse is encouraged with exact source/version credit, but data must not be changed.",
+      "conditions": [
+        "Credit Livsmedelsverkets Livsmedelsdatabas version 2026-07-01",
+        "Preserve original data; do not silently recalculate or curate numeric values"
+      ],
+      "releaseBinding": "publisher release and terms corroborated; exact retained bytes remain unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "world-recipes",
+      "releaseId": "world-recipes-common-20261014",
+      "discoveryIds": [],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unknown",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "releaseBinding": "exact current permission/retained-source scope not fully verified",
+      "evidenceSummary": "Mixed-source local compilation; rights are per record. A compilation label cannot grant all upstream recipe text or adaptation rights. Recover pinned per-record source/licence manifests.",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "foodon",
+      "releaseId": "2026-09-20",
+      "discoveryIds": [
+        "discovery:S047",
+        "src-6891d88a841d"
+      ],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://github.com/FoodOntology/foodon/blob/master/LICENSE.txt",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://foodon.org/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://github.com/FoodOntology/foodon/blob/cd73540243a84bcd511a500d9a497d12d7dc02f6/LICENSE.txt",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "CC BY 4.0 licence verified on official repository at exact retained revision cd73540243a84bcd511a500d9a497d12d7dc02f6. Source payload and imported-term scope remain independently unverified.",
+      "conditions": [
+        "Credit FoodOn contributors; mark changes",
+        "Imported ontology terms may carry separate origin notices; scope own namespace only"
+      ],
+      "releaseBinding": "exact retained revision licence verified; payload identity and ontology subset not reverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "qudt-measurement-definitions",
+      "releaseId": "qudt-measurement-definitions-3.5.2-20261014",
+      "discoveryIds": [],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [
+        {
+          "url": "https://qudt.org/",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://github.com/qudt/qudt-public-repo/releases/tag/v3.5.2",
+          "observedDate": "2026-10-18"
+        },
+        {
+          "url": "https://github.com/qudt/qudt-public-repo/blob/v3.5.2/LICENSE.md",
+          "observedDate": "2026-10-18"
+        }
+      ],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "conditional",
+        "retain": "conditional",
+        "parse": "conditional",
+        "transform": "conditional",
+        "serve": "conditional",
+        "redistribute": "conditional"
+      },
+      "transformScopes": {},
+      "confidence": "high",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "evidenceSummary": "Official release v3.5.2 dated 2026-09-22 and licence at that tag verified: CC BY 4.0, attribution QUDT.org. Exact retained subset and source byte hashes not reverified.",
+      "conditions": [
+        "Attribution, source/link and change notices",
+        "Definition identity and conversion semantics require independent review"
+      ],
+      "releaseBinding": "exact release-tag licence corroborated; retained byte identities unverified",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    },
+    {
+      "sourceId": "recipe-expansion-20261014",
+      "releaseId": "recipe-expansion-qualified-20261014",
+      "discoveryIds": [],
+      "observedDate": "2026-10-18",
+      "publisherEvidence": [],
+      "endpointEvidence": [],
+      "rightsByOperation": {
+        "discover": "public-metadata-readable",
+        "fetch": "unknown",
+        "retain": "unknown",
+        "parse": "unknown",
+        "transform": "unknown",
+        "serve": "unknown",
+        "redistribute": "unknown"
+      },
+      "transformScopes": {},
+      "confidence": "unknown",
+      "permissionAcceptanceVerified": false,
+      "payloadRead": false,
+      "payloadDigestVerified": false,
+      "executableAdmission": false,
+      "rightsInterpretation": "Evidence classification only; not legal advice, runtime authorization, acceptance or release-payload validation.",
+      "releaseBinding": "exact current permission/retained-source scope not fully verified",
+      "evidenceSummary": "Local compilation claims repository CC0/Unlicense; exact commits and recipe/licence paths must be recovered and checked for lvisintini/recetasdemami, Remarknl/Indisch-eten, chefdelakarma/libre_cuisine and clicat/Ricette. No blanket repository grant inferred.",
+      "runtimePolicyAssessment": "not changed by permissions research",
+      "custodyAssessment": "not assessed here; use independent cache-custody evidence",
+      "operationInferenceNote": "Operation classifications infer implementation scope from publisher language; they are not an authoritative legal opinion. Unknowns remain blocked at admission."
+    }
+  ],
+  "frozenAt": "2026-10-18T03:07:30Z"
+}

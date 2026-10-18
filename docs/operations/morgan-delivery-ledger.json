@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "global-dataset-batch-prepared-not-executed-pr36-merged",
-  "asOfUTC": "2026-10-18T02:44:00Z",
+  "status": "global-completion-open-reviewed-offline-bindings-prepared",
+  "asOfUTC": "2026-10-18T03:13:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -67,9 +67,9 @@
     "originalHistoryEdited": false
   },
   "currentExecution": {
-    "sourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
-    "controlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
-    "sourceStatus": "Application CI passed configured steps; France native002 terminal native crash, further data jobs held",
+    "sourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "controlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+    "sourceStatus": "Reviewed global-readiness offline assessment passed all12steps on Foo; no acquisition/source admission or country completion",
     "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
     "resultsPr": "https://github.com/maldous/offmenu/pull/31",
     "production": "paused",
@@ -84,29 +84,29 @@
       "source pins",
       "PR30"
     ],
-    "sourceUrl": "https://github.com/maldous/offmenu/commit/72a8a74919773238e402b2a6f5a089bf8a4cefa2",
-    "controlUrl": "https://github.com/maldous/offmenu/commit/0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+    "sourceUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "controlUrl": "https://github.com/maldous/offmenu/commit/160bd4db49faa46636fd27d70cc3d65557f5f2fb",
     "capacity": {
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Global composed source batch awaiting final review/publication; actual source acquisition/admission remains unbound. PR36 merged with successful postmerge CI."
+      "currentBlocker": "Five offline parser adapters reviewed; zero production admissions. Pinned v1 service target is identified; live drift remains unverified and additional metadata views require separately reviewed extension and specific security approval before change."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
-    "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
-    "latestExecutedControlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+    "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "latestExecutedControlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
     "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
     "resultsPrReadback": {
-      "head": "55975255474e17d5f82906f8a5dafb319ad18934",
+      "head": "c9adb646d4051457f54451b64c2b86d08ac102b1",
       "state": "open",
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
     "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
-    "selectedRepositoryBase": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
-    "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
+    "selectedRepositoryBase": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
-      "next": "Publish one reviewed composed global harness, coverage, acquisition and readiness batch; then separately verify control pins before bounded Foo assessment",
+      "next": "Qualify the next eligible source/cache/rights binding with verified provenance and acquisition freshness; no repeat census or automatic network admission",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -288,6 +288,18 @@
       "eventId": "pr36-merged-global-composed-batch-prepared",
       "status": "verified-merge-global-code-prepared-not-executed",
       "description": "PR36 merged as1c1c3dd with identical accepted tree and successful postmerge CI39090830874. Global dataset completion is primary. Coverage/harness/acquisition reviewed; readiness metadata route is being bound to exact already-tracked files. No data execution, new access or acceptance claimed."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T03:00:00Z",
+      "eventId": "global-readiness-001-terminal-verified",
+      "status": "offline-assessment-success-country-completion-open",
+      "description": "PR37 merged; one global-readiness request on Foo21 completed all12steps and publisher successfully. Exact receipt/digest/run/head identities reconciled with PR31 webhook, no duplicate request. Metadata assessment249countries3237cells1303sources complete, acceptedCountryDomainCells0 and sourcesComplete0. Full3.13MB report retained on Foo; acquisition remains unbound and freshness unknown."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T03:13:00Z",
+      "eventId": "reviewed-offline-binding-scaffolding-and-custody-docs",
+      "status": "prepared-not-executed",
+      "description": "Four source/test/doc paths independently reviewed with six tests including five isolated synthetic parser executions. Custody and rights documentation reviewed separately; sixteen metadata-file views remain a proposed access dependency requiring specific approval. No production admission, payload acceptance or new job."
     }
   ],
   "lanes": [
@@ -653,10 +665,10 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "TOP: global all-country dataset completion through reviewed deterministic coverage, registry, cache/acquisition and harness implementation",
-    "Publish one composed reviewed global source batch; preserve existing failclosed develop workflow and separately review active-control promotion",
-    "Verify trusted source/control pins and run only authorized bounded Foo assessment; report missing or held data distinctly from country acceptance",
-    "Keep original acquisition timestamps and at least30-day cache reuse; no AI runtime, unreviewed source bindings or optional helper batches"
+    "TOP: qualify dependency-ready source/domain bindings for actual country dataset completion, rather than count successful census as completion",
+    "Use existing verified cached inputs and at least30-day reuse; establish original acquisition timestamps or retain freshness unknown",
+    "Close preserved payload-location/rights/adapter compatibility gaps with bounded evidence; do not invent source routes or permissions",
+    "No additional offline census job without a concrete new input or changed condition"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1095,21 +1107,21 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "merged-develop-pr36-postmerge-application-ci-passed",
-    "verifiedPriorCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+    "status": "merged-develop-pr37-offline-foo-census-terminal-success",
+    "verifiedPriorCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only",
-    "note": "Actual PR36 merge and postmerge CI verified. Global batch is prepared locally pending final review/publication; no execution or dataset acceptance claimed."
+    "note": "Actual merged source and one terminal offline assessment verified. This receipt update has no claimed own future commit SHA; source acquisition/admission and country completion remain open."
   },
   "activeWork": [
-    "Global source batch composition and independent final review; no runtime/source acceptance yet",
-    "Separate protected-control profile/pin review and exact terminal receipt verification before any Foo assessment",
-    "Preserve all historical obligations, source/health/security holds and unresolved raw-payload custody"
+    "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
+    "Preserve all source/native-crash/health/security/environment restrictions and honest unsupported/held states",
+    "Keep proven automatic completion route enabled; reconcile next unique real request only after independent source qualification"
   ],
   "supersededOperationalCheckpoint": {
     "asOfUTC": "2026-10-18T00:18:00Z",
@@ -1455,13 +1467,13 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T02:44:00Z",
+    "asOfUTC": "2026-10-18T03:00:00Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "developLastVerifiedCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
-    "integrationBranch": "integration/bounded-recovery-20261018",
-    "lastVerifiedIntegrationHead": "7e456a06fbf293d0e784774daf67c368edf81602",
-    "finalCandidateCommit": "7e456a06fbf293d0e784774daf67c368edf81602",
-    "finalCandidateState": "pr36-merged-postmerge-application-ci-passed-open-holds",
+    "developLastVerifiedCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "integrationBranch": "integration/global-dataset-foundation-20261018",
+    "lastVerifiedIntegrationHead": "063dfc1a0f97401e851a23033ecf480b6bab0d16",
+    "finalCandidateCommit": "063dfc1a0f97401e851a23033ecf480b6bab0d16",
+    "finalCandidateState": "pr37-merged-postmerge-application-ci-passed-offline-census-complete",
     "developMergeVerified": true,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
@@ -2562,29 +2574,25 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "head": "7e456a06fbf293d0e784774daf67c368edf81602",
-      "merge": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
-      "tree": "efa8ac054dd0a9050afee9918b04b8731ec48406",
-      "pullRequest": "https://github.com/maldous/offmenu/pull/36",
+      "pullRequest": "https://github.com/maldous/offmenu/pull/37",
+      "merge": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "tree": "a951263921ae7c367a92e4ccfa684a04f7d899ab",
       "premergeRuns": [
-        39090615301,
-        39090612864
+        39091472916,
+        39091464824
       ],
-      "postmergeRun": 39090830874,
-      "postmergeJob": 117567035783,
       "applicationConclusion": "success",
       "testCounts": {
         "webPassed": 677,
         "localeEdgePassed": 11,
-        "pythonRun": 637,
+        "pythonRun": 717,
         "pythonSkipped": 4,
         "portableOcrPassed": 6
       },
-      "gitGuardianDelta": "success; prior historical incidents remain open",
-      "sonar": "skipped/open",
-      "snyk": "skipped/open",
-      "sourceScope": "six reviewed source/test paths plus two deterministic catalogues and existing ledger; helper activation and raw body/state-fetch exclusions unchanged",
-      "terminalReceipt": "https://github.com/maldous/offmenu/pull/36#issuecomment-6244812445"
+      "postmergeApplicationCI": "success",
+      "holds": "Historical security incidents and skipped scanner/environment/source/health holds remain.",
+      "postmergeRun": 39091802482,
+      "postmergeJob": 117569943743
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -3043,6 +3051,31 @@
         "url": "https://github.com/maldous/offmenu/actions/runs/39088973540"
       },
       "snapshotBoundary": "Earlier files/package approvals, scopeRevision, publicationReceipt, finalIndependentAcceptance and work roster remain historical snapshots; this receipt supersedes their pending-merge language, not their unclosed semantic/rights/security holds."
+    },
+    "priorPR36CompletionReceipt": {
+      "head": "7e456a06fbf293d0e784774daf67c368edf81602",
+      "merge": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "tree": "efa8ac054dd0a9050afee9918b04b8731ec48406",
+      "pullRequest": "https://github.com/maldous/offmenu/pull/36",
+      "premergeRuns": [
+        39090615301,
+        39090612864
+      ],
+      "postmergeRun": 39090830874,
+      "postmergeJob": 117567035783,
+      "applicationConclusion": "success",
+      "testCounts": {
+        "webPassed": 677,
+        "localeEdgePassed": 11,
+        "pythonRun": 637,
+        "pythonSkipped": 4,
+        "portableOcrPassed": 6
+      },
+      "gitGuardianDelta": "success; prior historical incidents remain open",
+      "sonar": "skipped/open",
+      "snyk": "skipped/open",
+      "sourceScope": "six reviewed source/test paths plus two deterministic catalogues and existing ledger; helper activation and raw body/state-fetch exclusions unchanged",
+      "terminalReceipt": "https://github.com/maldous/offmenu/pull/36#issuecomment-6244812445"
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -3189,8 +3222,8 @@
   },
   "globalDatasetBatch": {
     "priority": "primary",
-    "state": "source-packages-independently-reviewed-awaiting-publication-and-full-ci",
-    "baseCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+    "state": "source-merged-offline-assessment-complete-acquisition-not-enabled",
+    "baseCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
     "discoveryScope": {
       "countries": 249,
       "domainsPerCountry": 13,
@@ -3216,7 +3249,7 @@
       "readiness": "independently-reviewed fixed-checkout metadata registration, isolated tests, source/control destination separation"
     },
     "metadataRoute": {
-      "status": "fixed-checkout-exact-pin-registration-independently-reviewed-not-yet-executed-on-Foo",
+      "status": "exact-checkout-pins-verified-on-Foo",
       "matrix": {
         "path": "docs/country-delivery-matrix.json",
         "gitBlob": "12a40e7c7fbe8f42b30e865bfce5656dd27ac92b",
@@ -3231,11 +3264,11 @@
       },
       "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
     },
-    "nextDependency": "Accept composed source, verify full CI and immutable source SHA, then separately reviewed protected-control exact profile allowlist and both trusted pins before one bounded Foo assessment. No dispatch performed.",
+    "nextDependency": "Resolve exact existing metadata custody and required narrow file-view permissions through specific approval; then independently qualify source-specific admission using rights, release identity, expected hashes and original acquisition times. Offline adapters alone do not authorize execution.",
     "currentSourceAcquisitionBindings": 0,
     "actualPayloadAcceptance": false,
     "globalDatasetCompletion": false,
-    "fooExecutionPerformed": false,
+    "fooExecutionPerformed": true,
     "rawSourceFreshness": "unknown unless independently verified acquisition metadata",
     "holds": "All source-use/licence, native-crash diagnostic, health, runtime, environment and raw-payload custody holds remain. No native retries, unrestricted fetch, new grants or production changes.",
     "sourceFileCount": 15,
@@ -3311,6 +3344,455 @@
         "sha256": "4b7922851b365963833a262c38f4a41a7ca6bc1380de0fed58659c694bda493c"
       }
     ],
-    "sourceManifestBoundary": "Fourteen source/test/docs/template paths pinned; this ledger is the fifteenth path and its own final hash belongs in the external integration manifest, avoiding self-reference."
+    "sourceManifestBoundary": "Fourteen source/test/docs/template paths pinned; this ledger is the fifteenth path and its own final hash belongs in the external integration manifest, avoiding self-reference.",
+    "executionReceipt": {
+      "jobId": "global-readiness-20261018-001",
+      "profile": "global-readiness",
+      "runId": 39091957512,
+      "runAttempt": 1,
+      "runUrl": "https://github.com/maldous/offmenu/actions/runs/39091957512",
+      "workflowId": 387731309,
+      "workflowPath": ".github/workflows/foo-runner.yml",
+      "controlSha": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "sourceSha": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "sourceJobId": 117570396754,
+      "sourceRunnerId": 21,
+      "sourceRunnerName": "foo-offmenu",
+      "publisherJobId": 117570456812,
+      "sourceConclusion": "success",
+      "publisherConclusion": "success",
+      "workflowTerminalConclusion": "success",
+      "requestIdentity": "b8ac16747d2e1f9c19556a0bbada4eab71de54377bc7558faf9b8e4949b2548c",
+      "compactReportBytes": 11287,
+      "compactReportSha256": "4ea02df3713a0a6425ab816228408a60aea8a709937e16e425e42b22f8473799",
+      "resultsHead": "c9adb646d4051457f54451b64c2b86d08ac102b1",
+      "PR31": "open,author6347545,repo1416253963,head offmenu-runner-results,base main",
+      "webhookDelivery": "d92a60c0-ca9f-11f1-83ca-642813008895",
+      "idempotencyKey": "1416253963:39091957512:1:117570396754",
+      "submissionCount": 1,
+      "steps": [
+        {
+          "stepId": "readiness",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "global-readiness-tests",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "global-runtime",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "global-registry-tests",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "global-harness-tests",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "global-coverage",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "inventory",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "dataset-tests",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "selected-data-inventory",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "refresh-tests",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "offline-replay",
+          "status": "passed",
+          "exitCode": 0
+        },
+        {
+          "stepId": "replay-idempotency",
+          "status": "passed",
+          "exitCode": 0
+        }
+      ],
+      "coverage": {
+        "cacheFreshness": "unknown",
+        "countryCoverageComplete": false,
+        "datasetCacheCustodyVerified": false,
+        "downloads": 0,
+        "fullReportRetainedLocally": true,
+        "globalSummary": {
+          "assessmentComplete": true,
+          "countryCoverageComplete": false,
+          "executionComplete": false,
+          "networkRequests": 0,
+          "registryComplete": true,
+          "reportBytes": 3133704,
+          "reportSha256": "587912492b24500f8410576e56511d90239dc1fe9c723018d5d48664369b13ce",
+          "schemaVersion": "offmenu-global-run-summary/1",
+          "selectedScopeComplete": false,
+          "stageStatusCounts": {
+            "blocked": 0,
+            "failed": 0,
+            "held": 36,
+            "quarantined": 0,
+            "reused": 0,
+            "succeeded": 0,
+            "unsupported": 11691
+          },
+          "status": "incomplete",
+          "summary": {
+            "acceptedCountryDomainCells": 0,
+            "countries": 249,
+            "requiredCountryDomainCells": 3237,
+            "sources": 1303,
+            "sourcesComplete": 0,
+            "sourcesIncomplete": 1303,
+            "sourcesWithHistoricalHandlers": 22,
+            "sourcesWithoutHistoricalHandlers": 1281
+          }
+        },
+        "kind": "coverage",
+        "metadataOrigin": "trusted-code-checkout",
+        "metadataPinsVerified": true,
+        "minimumReuseDays": 30,
+        "mtimeUsedForFreshness": false,
+        "observedAt": "2026-10-18T02:58:29Z",
+        "originalAcquiredAt": null,
+        "reason": "complete",
+        "registeredMetadata": true,
+        "schemaVersion": "offmenu-global-readiness/1",
+        "sourceContentsUploaded": false,
+        "sourceWrites": 0,
+        "status": "complete"
+      },
+      "runtime": {
+        "cacheFreshness": "unknown",
+        "cgroupAncestorLimitsVerified": false,
+        "countryCoverageComplete": false,
+        "cpuAffinityCount": 32,
+        "currentCgroupLimits": {
+          "cpuPeriodMicros": 100000,
+          "cpuQuotaMicros": 200000,
+          "memoryBytes": 3221225472,
+          "observed": true,
+          "tasks": 256
+        },
+        "downloads": 0,
+        "effectiveServiceConfigurationVerified": false,
+        "expectedServiceLimits": {
+          "cpuPercent": 200,
+          "memoryBytes": 3221225472,
+          "tasks": 256
+        },
+        "kind": "runtime",
+        "minimumReuseDays": 30,
+        "mtimeUsedForFreshness": false,
+        "normalUser": true,
+        "observedAt": "2026-10-18T02:58:29Z",
+        "originalAcquiredAt": null,
+        "processLimits": {
+          "addressSpace": [
+            null,
+            null
+          ],
+          "cpuSeconds": [
+            null,
+            null
+          ],
+          "openFiles": [
+            524288,
+            524288
+          ]
+        },
+        "pythonVersion": [
+          3,
+          12,
+          3
+        ],
+        "reason": "complete",
+        "schemaVersion": "offmenu-global-readiness/1",
+        "scopes": {
+          "dedicatedOutput": {
+            "availableBytes": 113478844416,
+            "availableInodes": 95151294,
+            "observed": true,
+            "readOnly": false
+          },
+          "selectedCache": {
+            "availableBytes": 113478844416,
+            "availableInodes": 95151294,
+            "observed": true,
+            "readOnly": true
+          }
+        },
+        "sourceContentsUploaded": false,
+        "sourceWrites": 0,
+        "status": "complete",
+        "wholeHostCapacityEstablished": false
+      },
+      "selectedAssetsBoundary": "Existing selected NO/FR hashes matched acquisition receipts; original acquiredAt/freshness remain unknown, acceptance/rights decision not performed. FI remains held with missing acquisition/manifest. This is not proof of all preserved payload custody.",
+      "fullDetailedReport": "3133704bytes retained only on Foo, SHA256587912492b24500f8410576e56511d90239dc1fe9c723018d5d48664369b13ce; compact metadata only published."
+    },
+    "nextBindingImplementation": {
+      "state": "independently-reviewed-offline-scaffolding-awaiting-composed-publication-ci",
+      "implementedStaticAdapters": 5,
+      "productionAdmissions": 0,
+      "acceptedDatasets": 0,
+      "tests": "Six independently rerun tests include five real isolated parser subprocesses with synthetic workbooks; no real data acceptance.",
+      "sourceFiles": [
+        {
+          "path": "docs/source-execution-plan.md",
+          "gitBlob": "4f0667056d22e44194163d8921ef1b2762839f8d",
+          "sha256": "6b90d2e97622a0be3baed2f8b15354ee0f93c351fa9dd2d35e49e98dd4d9b784"
+        },
+        {
+          "path": "offmenu/refresh/execution.py",
+          "gitBlob": "dbb6913773ee52cb30b489671091416a938948b5",
+          "sha256": "a063d6d96db4be304870a9d6bd9caa0dc1240a00d5132e6ae6d992d6cbce961e"
+        },
+        {
+          "path": "offmenu/refresh/execution_worker.py",
+          "gitBlob": "0ff952083d4a2e3fdf29e1498c27b5f70a5d91b5",
+          "sha256": "895a98ad78e483e58691fb03e6fb6051288833d08d5fdcc75e2f1dcb04344634"
+        },
+        {
+          "path": "tests/test_execution.py",
+          "gitBlob": "0d96931cd715a12d7439e0e75653d5d798efe9d2",
+          "sha256": "ade9ae475aafe0a6b1c2fa7b430d7b6a1eff8f4a64b0ae4d4cab36b87ddf5799"
+        }
+      ],
+      "documentation": {
+        "custody": "Independently reviewed plan and summary profile; candidate locations are not verified grants or payload custody.",
+        "rights": "Independently reviewed documentary evidence only; current source admission and redistribution acceptance remain unestablished."
+      },
+      "accessDependency": {
+        "status": "pending-specific-security-approval-before-change",
+        "requestedMetadataViews": 16,
+        "exactServiceConfigurationTarget": "Pinned v1 helper identifies offmenu-runner.service, /etc/systemd/system/offmenu-runner.service.d/40-selected-datasets-v1.conf and private snapshot /var/lib/offmenu-selected-datasets-v1; live configuration drift remains unverified; new versioned metadata-only extension awaiting separate review and action-time approval.",
+        "boundary": "Small pinned metadata-file views only proposed; no raw payload import, new mount, broad filesystem access or existing cache grant expansion in this batch."
+      },
+      "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission."
+    }
+  },
+  "priorGlobalPreparationCurrentState": {
+    "status": "global-dataset-batch-prepared-not-executed-pr36-merged",
+    "asOfUTC": "2026-10-18T02:44:00Z",
+    "publication": {
+      "status": "merged-develop-pr36-postmerge-application-ci-passed",
+      "verifiedPriorCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only",
+      "note": "Actual PR36 merge and postmerge CI verified. Global batch is prepared locally pending final review/publication; no execution or dataset acceptance claimed."
+    },
+    "activeWork": [
+      "Global source batch composition and independent final review; no runtime/source acceptance yet",
+      "Separate protected-control profile/pin review and exact terminal receipt verification before any Foo assessment",
+      "Preserve all historical obligations, source/health/security holds and unresolved raw-payload custody"
+    ],
+    "nextPriorities": [
+      "TOP: global all-country dataset completion through reviewed deterministic coverage, registry, cache/acquisition and harness implementation",
+      "Publish one composed reviewed global source batch; preserve existing failclosed develop workflow and separately review active-control promotion",
+      "Verify trusted source/control pins and run only authorized bounded Foo assessment; report missing or held data distinctly from country acceptance",
+      "Keep original acquisition timestamps and at least30-day cache reuse; no AI runtime, unreviewed source bindings or optional helper batches"
+    ],
+    "currentExecution": {
+      "sourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "sourceStatus": "Application CI passed configured steps; France native002 terminal native crash, further data jobs held",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Global composed source batch awaiting final review/publication; actual source acquisition/admission remains unbound. PR36 merged with successful postmerge CI."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "latestExecutedControlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "55975255474e17d5f82906f8a5dafb319ad18934",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+      "selectedRepositoryBase": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Publish one reviewed composed global harness, coverage, acquisition and readiness batch; then separately verify control pins before bounded Foo assessment",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    },
+    "globalDatasetBatch": {
+      "priority": "primary",
+      "state": "source-packages-independently-reviewed-awaiting-publication-and-full-ci",
+      "baseCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "discoveryScope": {
+        "countries": 249,
+        "domainsPerCountry": 13,
+        "countryDomainCells": 3237,
+        "sources": 1303
+      },
+      "normalizationAssessment": {
+        "historicalHandlerCandidates": 17,
+        "held": 4,
+        "unsupported": 1282,
+        "meaning": "Metadata source-record states, not executable source bindings or accepted country datasets."
+      },
+      "retainedCapabilities": {
+        "releases": 22,
+        "historicalReleaseHandlers": 21,
+        "familyMappings": 23,
+        "discoveryRecordsWithHandlerEvidence": 22
+      },
+      "packages": {
+        "coverage": "independently-reviewed metadata reconciliation",
+        "globalHarness": "independently-reviewed with cross-reviewed supporting-capability preservation",
+        "acquisition": "independently-reviewed 36 unit tests and seven probes; zero production source bindings",
+        "readiness": "independently-reviewed fixed-checkout metadata registration, isolated tests, source/control destination separation"
+      },
+      "metadataRoute": {
+        "status": "fixed-checkout-exact-pin-registration-independently-reviewed-not-yet-executed-on-Foo",
+        "matrix": {
+          "path": "docs/country-delivery-matrix.json",
+          "gitBlob": "12a40e7c7fbe8f42b30e865bfce5656dd27ac92b",
+          "bytes": 133210,
+          "sha256": "894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8"
+        },
+        "ledger": {
+          "path": "docs/source-delivery-ledger.json",
+          "gitBlob": "f1244dfa959c845c5cff8279226cc4abbba82089",
+          "bytes": 1701843,
+          "sha256": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf"
+        },
+        "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
+      },
+      "nextDependency": "Accept composed source, verify full CI and immutable source SHA, then separately reviewed protected-control exact profile allowlist and both trusted pins before one bounded Foo assessment. No dispatch performed.",
+      "currentSourceAcquisitionBindings": 0,
+      "actualPayloadAcceptance": false,
+      "globalDatasetCompletion": false,
+      "fooExecutionPerformed": false,
+      "rawSourceFreshness": "unknown unless independently verified acquisition metadata",
+      "holds": "All source-use/licence, native-crash diagnostic, health, runtime, environment and raw-payload custody holds remain. No native retries, unrestricted fetch, new grants or production changes.",
+      "sourceFileCount": 15,
+      "sourceManifest": [
+        {
+          "path": "offmenu/refresh/coverage.py",
+          "gitBlob": "7fe6a8237c454476d1c2dc263591f47c54630eed",
+          "sha256": "1213f502419c00ff40179f83bcaf0bdd3679a8e451f827886d923f5314d9996f"
+        },
+        {
+          "path": "offmenu/refresh/capabilities.py",
+          "gitBlob": "be6972f3ae42eba0a8829294a488020260df501b",
+          "sha256": "c72077936890c45f97ee5691487b17744fd9bf87be7b47147fe823ab991db710"
+        },
+        {
+          "path": "tests/test_global_coverage.py",
+          "gitBlob": "8706b8e212284c8d6987357c1632e705c62b66a2",
+          "sha256": "5658ba5befdc979a85f09cc4414658b8f53a895dbbc68ccb3829109c652813ef"
+        },
+        {
+          "path": "docs/global-coverage-assessment.md",
+          "gitBlob": "e39ad2b72a913a45d5af274d81ff8c2beaca69d0",
+          "sha256": "c9cfa1c7dac114339ae8d2c199723f47e4c92bb135f5c0ef7277d5acdc78bb79"
+        },
+        {
+          "path": "offmenu/refresh/global_run.py",
+          "gitBlob": "e8d2da6c1dc82b394f51a9f37535ee047cf31b5d",
+          "sha256": "75974aadf86c8cb36e4b7ccb35d807b939030604cef8264ec76e49674f30514a"
+        },
+        {
+          "path": "tests/test_refresh_global_run.py",
+          "gitBlob": "b8bcdd99a9690015334bc865e3f6ef2aec0c6b6f",
+          "sha256": "d7ed9da6637cbc5973bc00fc056d96aec90b13e3f27809892fe2333a90d07dd7"
+        },
+        {
+          "path": "docs/corpus-refresh-global-run.md",
+          "gitBlob": "7114980736397edf55e151cdbcbe92733cf1b109",
+          "sha256": "f1bbb3dbe5e18975502ebb592fae7d3942fdd00546ea4c3cf88b4b5a351c107c"
+        },
+        {
+          "path": "offmenu/refresh/acquisition.py",
+          "gitBlob": "b9348bd09b94559280cb57d267cfcb5f0f5885cf",
+          "sha256": "fb5d74d9e751495a96a583bb6ae8028bbdd1af8a91c001964c3e33eea4c67a4e"
+        },
+        {
+          "path": "tests/test_refresh_acquisition.py",
+          "gitBlob": "ffd60df9b2cf79fd76fefb9a6be5c0c0d4359598",
+          "sha256": "079355e0eaf87a1d81a39273d00db84a8c702e2f29a4a938b7ecea589b065f88"
+        },
+        {
+          "path": "docs/refresh-acquisition-contract.md",
+          "gitBlob": "e5dbe381a480661b2fa88f5711b2e745b1d070bc",
+          "sha256": "18ad30b8890df912dd9d77fb778c054c356bf148e13a5118fc7adf040d17dbfe"
+        },
+        {
+          "path": "scripts/dispatch-foo-job.py",
+          "gitBlob": "f9fd96d325cc273202f545078266c9533c650369",
+          "sha256": "e85bde2423affa8764e23160a34eef87e92f9574d2b71616323cc27f980cb0ed"
+        },
+        {
+          "path": "scripts/global-readiness.py",
+          "gitBlob": "57cbfd0ed32b60d03915b7e02661221ea41b7123",
+          "sha256": "e808c62e7d5254f7165cb57922983f4db80c38ca302ba22a58d1df080af90a5f"
+        },
+        {
+          "path": "tests/test_global_readiness.py",
+          "gitBlob": "0045e33554667f22c8fa8339cc19920b31b465fa",
+          "sha256": "dd3c82f39dae57e2ee6870e0ea16d16a8ce4016012d6815e86556efbffdf8226"
+        },
+        {
+          "path": ".github/workflows/foo-runner.yml",
+          "gitBlob": "3b487342fc6fac3ec19266e1cbcf6c9d51e1294b",
+          "sha256": "4b7922851b365963833a262c38f4a41a7ca6bc1380de0fed58659c694bda493c"
+        }
+      ],
+      "sourceManifestBoundary": "Fourteen source/test/docs/template paths pinned; this ledger is the fifteenth path and its own final hash belongs in the external integration manifest, avoiding self-reference."
+    }
   }
 }
