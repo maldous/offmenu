@@ -1,0 +1,461 @@
+{
+  "schemaVersion": "owner28-staging-bindings/1",
+  "requestId": "M-STAGING-BIND-20261018-W28",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "metadataOnly": true,
+  "countryComplete": false,
+  "bindings": [
+    {
+      "id": "ee-tai-1",
+      "country": "EE",
+      "release": "sha256:fe42638b899300535164a61cd85261e635dac2df56b75894d0b521ca0bfa5db4",
+      "originalAcquiredAt": "2026-10-14T22:20:00.891046+00:00",
+      "metadataInputs": [
+        {
+          "key": "ee-tai-1",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/27a6ef6709c9b0c2f63f/receipt.json",
+          "sha256": "cdb8fb3a0276ca6a4f40d89fca600d438c16a8a7b8d81b11092a2e0ac2db029d",
+          "bytes": 1709,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "ee-tai-1",
+          "pointer": "/country",
+          "expected": "EE"
+        },
+        {
+          "input": "ee-tai-1",
+          "pointer": "/network/0/sha256",
+          "expected": "fe42638b899300535164a61cd85261e635dac2df56b75894d0b521ca0bfa5db4"
+        }
+      ],
+      "holds": [
+        "derivative-use-evidence-missing"
+      ],
+      "dataTypeApplicability": {
+        "proposed": [
+          "recipes",
+          "dietary references"
+        ],
+        "accepted": [],
+        "scope": "Document context only, not complete categories"
+      },
+      "declaredOriginal": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/27a6ef6709c9b0c2f63f/menus-recipes-part1.pdf",
+        "sha256": "fe42638b899300535164a61cd85261e635dac2df56b75894d0b521ca0bfa5db4",
+        "bytes": 8922724,
+        "availabilityReverified": false
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "Exact bibliographic and field-level semantic scope",
+        "Action-specific derivative and retention permission"
+      ],
+      "validationAgeDoesNotReplaceAcquisition": true
+    },
+    {
+      "id": "ee-tai-2",
+      "country": "EE",
+      "release": "sha256:f15a55b3a9eaa6321a6e909bbb18b8e937bee225c0803c1662c242a8ca1074ee",
+      "originalAcquiredAt": "2026-10-14T22:20:05.895363+00:00",
+      "metadataInputs": [
+        {
+          "key": "ee-tai-2",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/a0ce022d6547dd1f2178/receipt.json",
+          "sha256": "588b053b6a140bd7dc4fb4a37d34a75bea705e0a372f0a3bddf5bccd2a35daf0",
+          "bytes": 1742,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "ee-tai-2",
+          "pointer": "/country",
+          "expected": "EE"
+        },
+        {
+          "input": "ee-tai-2",
+          "pointer": "/network/0/sha256",
+          "expected": "f15a55b3a9eaa6321a6e909bbb18b8e937bee225c0803c1662c242a8ca1074ee"
+        }
+      ],
+      "holds": [
+        "derivative-use-evidence-missing"
+      ],
+      "dataTypeApplicability": {
+        "proposed": [
+          "recipes",
+          "dietary references"
+        ],
+        "accepted": [],
+        "scope": "Document context only, not complete categories"
+      },
+      "declaredOriginal": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/a0ce022d6547dd1f2178/menus-recipes-part2.pdf",
+        "sha256": "f15a55b3a9eaa6321a6e909bbb18b8e937bee225c0803c1662c242a8ca1074ee",
+        "bytes": 4156768,
+        "availabilityReverified": false
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "Exact bibliographic and field-level semantic scope",
+        "Action-specific derivative and retention permission"
+      ],
+      "validationAgeDoesNotReplaceAcquisition": true
+    },
+    {
+      "id": "ee-tai-3",
+      "country": "EE",
+      "release": "sha256:9f2572df466a5e33c3c0034d04de950de774b99976c2ccd9ecfe1e56d18358cb",
+      "originalAcquiredAt": "2026-10-14T22:09:38.033841+00:00",
+      "metadataInputs": [
+        {
+          "key": "ee-tai-3",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/ad335ffa781919cf2551/receipt.json",
+          "sha256": "07a7e05707ed62bd5ba29d3c5edac4bf0575d24dfa00a10091566d11d3c6ef80",
+          "bytes": 1815,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "ee-tai-3",
+          "pointer": "/country",
+          "expected": "EE"
+        },
+        {
+          "input": "ee-tai-3",
+          "pointer": "/network/0/sha256",
+          "expected": "9f2572df466a5e33c3c0034d04de950de774b99976c2ccd9ecfe1e56d18358cb"
+        }
+      ],
+      "holds": [
+        "derivative-use-evidence-missing"
+      ],
+      "dataTypeApplicability": {
+        "proposed": [
+          "recipes",
+          "dietary references"
+        ],
+        "accepted": [],
+        "scope": "Document context only, not complete categories"
+      },
+      "declaredOriginal": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/EE/ad335ffa781919cf2551/toidusoovituste_lisad.pdf",
+        "sha256": "9f2572df466a5e33c3c0034d04de950de774b99976c2ccd9ecfe1e56d18358cb",
+        "bytes": 1439679,
+        "availabilityReverified": false
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "Exact bibliographic and field-level semantic scope",
+        "Action-specific derivative and retention permission"
+      ],
+      "validationAgeDoesNotReplaceAcquisition": true
+    },
+    {
+      "id": "eg-reviewed-methodology-metadata",
+      "country": "EG",
+      "release": "2020:doi:10.1596/978-1-4648-1467-9",
+      "originalAcquiredAt": "2026-10-14T22:09:47.823788+00:00",
+      "metadataInputs": [
+        {
+          "key": "eg-receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-42/EG/receipt.json",
+          "sha256": "bbc440630e85fc824cba2bf23297c1e2ce867762d8c9f73a60fc46e0dc5358cc",
+          "bytes": 4614,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        },
+        {
+          "key": "eg-selection",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/EG/methodology-selection-and-rights.json",
+          "sha256": "e312860750ded310676f1b9bbcf2384aa9a3bed8feaceed6e4ce42632351f214",
+          "bytes": 2698,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        },
+        {
+          "key": "eg-checkpoint",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/EG/reviewed-candidate-checkpoint-v1.json",
+          "sha256": "b32b40900f8bb0d0abc835696e57bffead706ee0cdd69a1264ae0478aecf3b19",
+          "bytes": 8491,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        },
+        {
+          "key": "eg-review",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-10/reviews/author28-result3881-20261017/review-receipt.json",
+          "sha256": "77c04fa13f3e907d400450dbbfb210335034bbbccc8ce77181d95744f3cfb16d",
+          "bytes": 19622,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "eg-receipt",
+          "pointer": "/country",
+          "expected": "EG"
+        },
+        {
+          "input": "eg-receipt",
+          "pointer": "/sha256",
+          "expected": "6a9a218d4920c01e065572d098bdedea5a1656c10c4d03850ffa3e217f9df78d"
+        },
+        {
+          "input": "eg-selection",
+          "pointer": "/retainedSentenceCount",
+          "expected": 3
+        },
+        {
+          "input": "eg-selection",
+          "pointer": "/physicalPdfPageOneBased",
+          "expected": 136
+        },
+        {
+          "input": "eg-checkpoint",
+          "pointer": "/recordCount",
+          "expected": 3
+        },
+        {
+          "input": "eg-review",
+          "pointer": "/reviewer",
+          "expected": 10
+        },
+        {
+          "input": "eg-review",
+          "pointer": "/verdict",
+          "expected": "PASS_SCOPED_NEW_DELTA_WITH_LIMITS"
+        }
+      ],
+      "holds": [],
+      "sourceProcessingEnabled": false,
+      "dataTypeApplicability": {
+        "proposed": [
+          "dietary references"
+        ],
+        "accepted": [],
+        "scope": "Historical methodology reference; not current advice, clinical intake, composition or prices"
+      },
+      "sourceRecordSelectors": [
+        {
+          "id": "EG:WB:978-1-4648-1467-9:p107:methodology:1",
+          "candidatePointer": "/records/0",
+          "physicalPdfPage": 136,
+          "printedPage": "107",
+          "embeddedPageLabel": "108",
+          "section": "Limitations of the methodology used",
+          "literalSpan": {
+            "representation": "whitespace-collapsed pypdf section text",
+            "startCodepoint": 36,
+            "endCodepointExclusive": 215
+          }
+        },
+        {
+          "id": "EG:WB:978-1-4648-1467-9:p107:methodology:2",
+          "candidatePointer": "/records/1",
+          "physicalPdfPage": 136,
+          "printedPage": "107",
+          "embeddedPageLabel": "108",
+          "section": "Limitations of the methodology used",
+          "literalSpan": {
+            "representation": "whitespace-collapsed pypdf section text",
+            "startCodepoint": 581,
+            "endCodepointExclusive": 713
+          }
+        },
+        {
+          "id": "EG:WB:978-1-4648-1467-9:p107:methodology:3",
+          "candidatePointer": "/records/2",
+          "physicalPdfPage": 136,
+          "printedPage": "107",
+          "embeddedPageLabel": "108",
+          "section": "Limitations of the methodology used",
+          "literalSpan": {
+            "representation": "whitespace-collapsed pypdf section text",
+            "startCodepoint": 1059,
+            "endCodepointExclusive": 1147
+          }
+        }
+      ],
+      "declaredCandidate": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/EG/methodology-normalized-candidate.json",
+        "sha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+        "bytes": 6005
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "Narrative record has no numeric unit, basis, food identity or nutrient identity"
+      ],
+      "rightsAndScope": "Exact existing three-record local candidate scope, CC BY3.0IGO attribution/adaptation and third-party exclusions from pinned selection; metadata binding not new permission",
+      "remainingIntegrationBlockers": [
+        "Exact reviewed staging representation/SourceContract not installed",
+        "Review4267 management-effect owner identity remains Morgan reconciliation",
+        "Source-specific 30day retention and cache admission not installed"
+      ],
+      "proposedFieldOrigins": {
+        "/data/country": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "country",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "/data/referenceText": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "englishReadingText",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "/data/referenceKind": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "recordType",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "/data/unit": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "unit",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "/data/basis": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "basis",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "/data/edition": {
+          "sourceInput": "methodology-normalized-candidate.json",
+          "inputSha256": "0851af984c5a8f9bcbeef13f1befc11d178c5f69d70cec2fccb09c2c2f4383a8",
+          "sourceRecordSelector": "/records/{index}",
+          "sourceField": "sourceEdition",
+          "representation": "Already-reviewed retained candidate, not newPDFextraction",
+          "canonicalAcceptance": false
+        },
+        "note": "Template declarations only: exact perrecord IDs/page/span are sourceRecordSelectors; unknown narrative unit/basis remain explicitnull. Shared field_origin_errors checks authored fixturecoverage; no actual3recordtransform executed."
+      }
+    },
+    {
+      "id": "eh-ec-context-metadata",
+      "country": "EH",
+      "release": "SWD(2022)448-final:2023-01-13",
+      "originalAcquiredAt": "2026-10-14T22:10:09.746562+00:00",
+      "metadataInputs": [
+        {
+          "key": "eh-receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-43/EH/acquisition-receipt.json",
+          "sha256": "07d45892cfa274c1a682be9b4246fa2ca2737a7952354cc45d1fed89164888a9",
+          "bytes": 6963,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "eh-receipt",
+          "pointer": "/country",
+          "expected": "EH"
+        },
+        {
+          "input": "eh-receipt",
+          "pointer": "/artifact/sha256",
+          "expected": "5c33cbe5ad1ba007d15c833a7375fa5e1c605bb15f4b951ab0c1ba5aaa98302e"
+        }
+      ],
+      "holds": [
+        "derivative-use-evidence-missing",
+        "territorial-record-membership-unqualified"
+      ],
+      "dataTypeApplicability": {
+        "proposed": [
+          "retailers/providers"
+        ],
+        "accepted": [],
+        "scope": "EU trade context; not accepted company register, EH territorial provider membership or MA substitution"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "Exact action-specific use and per-record territorial applicability"
+      ]
+    },
+    {
+      "id": "er-wfp-original-gap",
+      "country": "ER",
+      "release": "package:4702c45e-cd9e-4e85-aab3-ef506a946a10",
+      "originalAcquiredAt": null,
+      "metadataInputs": [
+        {
+          "key": "er-return",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/B02-W28/ER1-metadata24-return-bound-v1.json",
+          "sha256": "1930316902c645b0247b6c9299600cbc7b3db9d384cd62d592ac8a45bf9d4d19",
+          "bytes": 7843,
+          "readScope": "Existing metadata only; locator paths never followed by portfolio binding."
+        }
+      ],
+      "selectors": [
+        {
+          "input": "er-return",
+          "pointer": "/requestId",
+          "expected": "B02-W28-ER1"
+        },
+        {
+          "input": "er-return",
+          "pointer": "/resolvedFields/source24OriginalStatus",
+          "expected": "NO_RETAINED_ORIGINAL_IN_INSPECTED_SOURCE24_RECEIPT_SCOPE"
+        }
+      ],
+      "holds": [
+        "historical14-dispatch-uncertain-no-retry"
+      ],
+      "dataTypeApplicability": {
+        "proposed": [
+          "prices/baskets"
+        ],
+        "accepted": [],
+        "scope": "Declared historical2007–2009 dataset metadata; not retained original or current price coverage"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "unknowns": [
+        "No acquired original path/SHA/extent/current custodian/use decision",
+        "Source24 already answered metadata question; do not route back"
+      ],
+      "blockerClass": "Missing input and historical technical dispatch hold, not inferred legal prohibition"
+    }
+  ],
+  "sharedContracts": {
+    "offmenu/refresh/core.py": "09bcd8d4c61d76d19b8544dbee36b6f596a97bb2",
+    "offmenu/refresh/acceptance.py": "4f9707402e1bc02575a37185d2bb59ba73cca128",
+    "offmenu/refresh/field_provenance.py": "5105a3587ee53f466b44c36db63ec9cbd20f3638",
+    "offmenu/refresh/serialization.py": "844842cbe5c76491d7205e67c4edfc0ca1b13e1a",
+    "offmenu/refresh/acquisition.py": "b9348bd09b94559280cb57d267cfcb5f0f5885cf"
+  },
+  "allCountriesRequiredDataTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "sourceHoldsPreserved": [
+    "Finland",
+    "Frida",
+    "native NO/FR crash restrictions",
+    "403/private/credential/actual-denial holds"
+  ],
+  "noSharedAdmissionsOrActionsInstalled": true
+}

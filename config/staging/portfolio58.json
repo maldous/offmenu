@@ -1,0 +1,794 @@
+{
+  "schemaVersion": "offmenu-portfolio58-config/1",
+  "owner": 58,
+  "scope": "Metadata declarations only. No SourceContract admissions or acquisition enabled.",
+  "bindings": [
+    {
+      "sourceId": "ru-article1483",
+      "country": "RU",
+      "releaseId": "DOI:10.25712/ASTU.2072-8921.2026.01.017",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/RU/candidate-validation.json",
+        "sha256": "4dbcec105ac96560ad91bb9ae0ce83f2b0bd6fcaf7654394bf0b6d6e32911843"
+      },
+      "original": {
+        "sha256": "995afb1d7ef86c0f873aae2d5ec2c52ce3f15db707dc33f70e942a5e17e71ce6",
+        "bytes": 541466
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "sourceLines": "/sourceLineCountMeasured",
+        "unknownFieldCount": "/unknownFieldsPreserved",
+        "noNumericConversion": "/noNumericMeaningConversion"
+      },
+      "declarations": {
+        "country": "RU",
+        "sourceRole": "Reviewed two-paragraph Russian formulation prose; no full quantified recipe",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "quantities",
+          "5-percent measurement basis",
+          "yield",
+          "method",
+          "canonical IDs"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "ingredients",
+          "recipes"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "new-staging-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/RU/continuation-399bacfc028cbbee06fc/receipt.json",
+          "sha256": "928d2f88ec7a8e3cd5acede6c637da4d41bb7c3e53f3f71a70e061c494003c48"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/RU/continuation-399bacfc028cbbee06fc/receipt.json",
+          "sha256": "928d2f88ec7a8e3cd5acede6c637da4d41bb7c3e53f3f71a70e061c494003c48"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "nc-isee-cpi",
+      "country": "NC",
+      "releaseId": "retained-2026-10-indiceprix-mois",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/NC/workbook-inspection.json",
+        "sha256": "252df5224339499073b07d26deedd74e0c4480d97e772a0334811af9564e044d"
+      },
+      "original": {
+        "sha256": "042ce77865149528c16ab2b9bc4664ecca587331126fc0b98abcca2299541292",
+        "bytes": 756736
+      },
+      "originalAcquiredAt": "2026-10-14T22:13:21.996491+00:00",
+      "validationObservedAt": null,
+      "selectors": {
+        "format": "/format",
+        "sourceRoleEvidence": "/semantics/sourceRole",
+        "indexBaseEvidence": "/semantics/indexBaseEvidence",
+        "weightsBasisEvidence": "/semantics/weightsBasisEvidence",
+        "updateEvidence": "/semantics/updatedEvidence",
+        "sheetCount": "/sheetCount"
+      },
+      "declarations": {
+        "country": "NC",
+        "sourceRole": "CPI indices/weights; converted-copy metadata; not item prices",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "exact original-format cells/cached values",
+          "per-cell period/category origin",
+          "normalization rights"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "prices/baskets"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "native-biff-fidelity-not-verified",
+        "private-normalization-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/NC/8ea3084aabaf8d8406ff/receipt.json",
+          "sha256": "9aa9cd15a5c2178a3c7a7b11891430a96d6ff48be9cbe27c9f9061c506462b17"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/NC/8ea3084aabaf8d8406ff/receipt.json",
+          "sha256": "9aa9cd15a5c2178a3c7a7b11891430a96d6ff48be9cbe27c9f9061c506462b17"
+        },
+        "selector": "/finishedUTC",
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "nc-actionsport-booklet",
+      "country": "NC",
+      "releaseId": "retained-upload-2025-06",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/NC/retained-document-validation.json",
+        "sha256": "0ca8eda478aced00400c0562f4133c083ae97e58083ad4ce5b21c691aec51e4e"
+      },
+      "original": {
+        "sha256": "71c805733f22eb94a668c354d348c7433afc9d184704431cb3c17c3ec49271aa",
+        "bytes": 3886787
+      },
+      "originalAcquiredAt": "2026-10-14T22:48:46.536986+00:00",
+      "validationObservedAt": null,
+      "selectors": {
+        "pageCount": "/sources/0/pageCountMeasured",
+        "roleEvidence": "/sources/0/sourceRoleValidated",
+        "privateReadBasis": "/sources/0/privateReadBasis"
+      },
+      "declarations": {
+        "country": "NC",
+        "sourceRole": "Local recipe booklet; page count is not recipe count",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "validated recipe count/amounts/method/yield"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "recipes"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "recipe-staging-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/NC/d4adefb78cb5ea0b1c37/receipt.json",
+          "sha256": "9e6de72e8669412d58826af8bf0f37925b2b104ea84d1e945d9459ade7a17811"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/NC/d4adefb78cb5ea0b1c37/receipt.json",
+          "sha256": "9e6de72e8669412d58826af8bf0f37925b2b104ea84d1e945d9459ade7a17811"
+        },
+        "selector": "/finishedUTC",
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "nf-baileys-menu",
+      "country": "NF",
+      "releaseId": "retained-url-20261014",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/NF/retained-document-validation.json",
+        "sha256": "4e9121b37a6ac03caf2f6d5efbbbc3fe21b119436e3b5492c9ec93b5df605830"
+      },
+      "original": {
+        "sha256": "b7eecb46847cd4a8113059cba9a833ca4861f9aa3f0b7ce101ac81e2ab12a09e",
+        "bytes": 1223052
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "pageCount": "/sources/0/pageCountMeasured",
+        "roleEvidence": "/sources/0/sourceRoleValidated",
+        "privateReadBasis": "/sources/0/privateReadBasis"
+      },
+      "declarations": {
+        "country": "NF",
+        "sourceRole": "One restaurant menu",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "ISOcurrency",
+          "effective menu date",
+          "portion/package"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "retailers/providers",
+          "prices/baskets"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "actual-custody-unresolved",
+        "derivative-use-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/NF/7d08078af7c301c53b54/receipt.json",
+          "sha256": "47a67adc212b7384ab86d39f243fbedb8bb2b1b681923a7716930e92f1387474"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/NF/7d08078af7c301c53b54/receipt.json",
+          "sha256": "47a67adc212b7384ab86d39f243fbedb8bb2b1b681923a7716930e92f1387474"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "nf-nirc-audit",
+      "country": "NF",
+      "releaseId": "cover-OCTOBER-2022",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/NF/retained-document-validation.json",
+        "sha256": "4e9121b37a6ac03caf2f6d5efbbbc3fe21b119436e3b5492c9ec93b5df605830"
+      },
+      "original": {
+        "sha256": "bd6e839b622585d81df487a5a96d0ef76c216392bcfc4362cff9a6f14521659c",
+        "bytes": 3625411
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "pageCount": "/sources/1/pageCountMeasured",
+        "roleEvidence": "/sources/1/sourceRoleValidated",
+        "privateReadBasis": "/sources/1/privateReadBasis"
+      },
+      "declarations": {
+        "country": "NF",
+        "sourceRole": "Agricultural audit; not entity producer register",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "entity register completeness",
+          "derivative use"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "retailers/providers"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "actual-custody-unresolved",
+        "derivative-use-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/NF/bf46e7fa22ac3980bded/receipt.json",
+          "sha256": "ec84ffaaf9371c4fe46d91ec20764b6548635dd078b29fef54e42a22c32ad68e"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/NF/bf46e7fa22ac3980bded/receipt.json",
+          "sha256": "ec84ffaaf9371c4fe46d91ec20764b6548635dd078b29fef54e42a22c32ad68e"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "pg-nso-cpi",
+      "country": "PG",
+      "releaseId": "December-quarter-2023",
+      "metadata": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/PG/retained-document-validation.json",
+        "sha256": "7b8257e6f23828cec8e65a8c746dbfb5d7f1a9752535a43e293f914321f5a8b6"
+      },
+      "original": {
+        "sha256": "30c5e795f9fd142626727b885ca7ff4525ad7c4efa4a13c1f56bf727d6f683cb",
+        "bytes": 3138980
+      },
+      "originalAcquiredAt": "2026-10-14T21:14:43.007737+00:00",
+      "validationObservedAt": null,
+      "selectors": {
+        "pageCount": "/sources/0/pageCountMeasured",
+        "roleEvidence": "/sources/0/sourceRoleValidated",
+        "privateReadBasis": "/sources/0/privateReadBasis",
+        "metricFamilies": "/sources/0/table7/metricFamilies",
+        "nativeBaseLiteral": "/sources/0/table7/sourceFootnoteLiteral",
+        "periods": "/sources/0/table7/observedPeriods"
+      },
+      "declarations": {
+        "country": "PG",
+        "sourceRole": "CPI report; no item currency prices",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "currency/package/item merchant observations"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "prices/baskets"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "item-price-source-role-mismatch",
+        "private-normalization-scope-not-reviewed"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-11/be5294e2123c17d621ad/receipt.json",
+          "sha256": "f7cb0fb50b8c0e01b8fe6e1448bf4426b079bd45aedde16ac7425b4ea223c3d5"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-11/be5294e2123c17d621ad/receipt.json",
+          "sha256": "f7cb0fb50b8c0e01b8fe6e1448bf4426b079bd45aedde16ac7425b4ea223c3d5"
+        },
+        "selector": "/requests/0/completedUTC",
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "pg-aciar-proceedings",
+      "country": "PG",
+      "releaseId": "2001-pr99",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+        "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+      },
+      "original": {
+        "sha256": null,
+        "bytes": null
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "barrier": "/barrier",
+        "extent": "/extent",
+        "statusEvidence": "/status"
+      },
+      "declarations": {
+        "country": "PG",
+        "sourceRole": "Bibliographic lead; no acquired proceedings body",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "publication-specific acquisition and processing permission",
+          "finite original"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "nutrition",
+          "ingredients"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "original-not-acquired",
+        "publication-specific-source-use-unresolved"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "pg-cookbook",
+      "country": "PG",
+      "releaseId": "ISBN0869350242",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+        "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+      },
+      "original": {
+        "sha256": null,
+        "bytes": null
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "statusEvidence": "/continuation/results/0/status",
+        "scopeEvidence": "/continuation/results/0/reason"
+      },
+      "declarations": {
+        "country": "PG",
+        "sourceRole": "Cookbook excerpts lead; no acquired chapter/file",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "digitalauthorization",
+          "finite extent"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "recipes"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "original-not-acquired",
+        "publication-specific-source-use-unresolved"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    },
+    {
+      "sourceId": "pg-foodplants",
+      "country": "PG",
+      "releaseId": "2018-foodplants-lead",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+        "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+      },
+      "original": {
+        "sha256": null,
+        "bytes": null
+      },
+      "originalAcquiredAt": null,
+      "validationObservedAt": null,
+      "selectors": {
+        "statusEvidence": "/continuation/results/1/status",
+        "scopeEvidence": "/continuation/results/1/reason"
+      },
+      "declarations": {
+        "country": "PG",
+        "sourceRole": "Reference-book lead; no quantitative composition release",
+        "nativeUnit": null,
+        "measurementBasis": null,
+        "unknowns": [
+          "acquisition grant",
+          "quantitative release/extent"
+        ],
+        "rawSourceSelectorsAreDeclarationsOnly": true,
+        "eligibleCountryTypes": [
+          "ingredients",
+          "nutrition"
+        ]
+      },
+      "scope": "retained-inspection-metadata-only",
+      "holds": [
+        "original-not-acquired",
+        "publication-specific-source-use-unresolved"
+      ],
+      "evidencePins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/correction4285-v1/manifest.json",
+          "sha256": "6b9a67dde5998a2662d1b145ed86a9392095c2b44590eec151ecb5d5b1af773b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-58/B03-W58/resolution.json",
+          "sha256": "dce0f068947e71c3f3d75bf1c4c779da128ef1125c9e693fc30fbb3c1682ff12"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        }
+      ],
+      "acquisitionTimeOrigin": {
+        "receipt": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/PG/receipt.json",
+          "sha256": "5fcff80bc3bf915ebcafc2b85f7bf602ad831f84794cebdb2df6e39a9c3879a6"
+        },
+        "selector": null,
+        "qualification": "Source response completion, not request time, validation time or filesystemmtime. Null remains unknown."
+      },
+      "validationTimeOrigin": {
+        "selector": null,
+        "qualification": "No exact observation timestamp established by bound inspection artifact; preserved null, never inferred frommtime."
+      }
+    }
+  ],
+  "countryTypeApplicability": [
+    {
+      "country": "RU",
+      "type": "ingredients",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "ru-article1483"
+      ]
+    },
+    {
+      "country": "RU",
+      "type": "recipes",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "ru-article1483"
+      ]
+    },
+    {
+      "country": "RU",
+      "type": "nutrition",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "RU",
+      "type": "retailers/providers",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "RU",
+      "type": "prices/baskets",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "RU",
+      "type": "dietary references",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NC",
+      "type": "ingredients",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NC",
+      "type": "recipes",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "nc-actionsport-booklet"
+      ]
+    },
+    {
+      "country": "NC",
+      "type": "nutrition",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NC",
+      "type": "retailers/providers",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NC",
+      "type": "prices/baskets",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "nc-isee-cpi"
+      ]
+    },
+    {
+      "country": "NC",
+      "type": "dietary references",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NF",
+      "type": "ingredients",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NF",
+      "type": "recipes",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NF",
+      "type": "nutrition",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "NF",
+      "type": "retailers/providers",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "nf-baileys-menu",
+        "nf-nirc-audit"
+      ]
+    },
+    {
+      "country": "NF",
+      "type": "prices/baskets",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "nf-baileys-menu"
+      ]
+    },
+    {
+      "country": "NF",
+      "type": "dietary references",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "PG",
+      "type": "ingredients",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "pg-aciar-proceedings",
+        "pg-foodplants"
+      ]
+    },
+    {
+      "country": "PG",
+      "type": "recipes",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "pg-cookbook"
+      ]
+    },
+    {
+      "country": "PG",
+      "type": "nutrition",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "pg-aciar-proceedings",
+        "pg-foodplants"
+      ]
+    },
+    {
+      "country": "PG",
+      "type": "retailers/providers",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    },
+    {
+      "country": "PG",
+      "type": "prices/baskets",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": [
+        "pg-nso-cpi"
+      ]
+    },
+    {
+      "country": "PG",
+      "type": "dietary references",
+      "status": "unaccepted",
+      "applicability": "required-country-type; source leads do not prove coverage",
+      "sources": []
+    }
+  ]
+}
