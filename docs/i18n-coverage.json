@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2811,
+  "messages": 2812,
   "arabicTranslated": 376,
-  "arabicMissing": 2435,
+  "arabicMissing": 2436,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -926,7 +926,6 @@
     },
     "./state.mjs": {
       "sources": [
-        "cloud/handler.mjs",
         "cloud/kitchens.mjs",
         "cloud/meal-preference-owner20.mjs",
         "cloud/personal-ai.mjs",
@@ -12489,6 +12488,12 @@
     "Saved in this browser.": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Saved meal preferences could not be validated. Your cloud copy is unchanged; keep your local copy and contact support.": {
+      "sources": [
+        "cloud/handler.mjs"
       ],
       "arabic": false
     },

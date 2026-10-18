@@ -86,3 +86,25 @@ export function updateAccountMealPreferences(value, context, action) {
   state.profile.members = state.profile.members.map(m => m.id === c.memberId ? {...m, mealPreferences: next} : m);
   return state;
 }
+
+// Read boundary only: validate stored preference custody without projecting or
+// normalizing unrelated legacy state. The caller must not persist this read.
+export function validateStoredAccountMealPreferences(value, accountId) {
+  id(accountId);
+  const members = value?.profile?.members;
+  if (!Array.isArray(members)) return value;
+  const scoped = members.filter(member => member && own(member, 'mealPreferences'));
+  if (!scoped.length) return value;
+  const seen = new Set();
+  for (const member of members) {
+    if (!member) continue;
+    if (seen.has(member.id)) throw Error('Duplicate household member ID.');
+    seen.add(member.id);
+  }
+  for (const member of scoped) {
+    const d = Object.getOwnPropertyDescriptor(member, 'mealPreferences');
+    if (!own(d, 'value') || !d.enumerable) throw Error('Invalid stored preference field.');
+    validateMealPreferences(d.value, accountId, member.id);
+  }
+  return value;
+}
