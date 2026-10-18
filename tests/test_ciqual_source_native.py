@@ -185,6 +185,43 @@ class SourceNativeTests(unittest.TestCase):
         self.assertEqual(dictionary['rows'][2]['2']['raw'], '328')
         self.assertEqual(dictionary['rows'][1]['3']['raw'], 'Authored unreviewed meaning 2')
 
+    def test_xml_identity_whitespace_matches_survey_and_preserves_raw_text(self):
+        blobs = dict(self.blobs)
+        tree = ET.fromstring(blobs['FR_IDENTITIES'])
+        original = [entry.find('alim_code').text for entry in tree]
+        for entry in tree:
+            field = entry.find('alim_code')
+            field.text = '\n\t ' + field.text + ' \n'
+        blobs['FR_IDENTITIES'] = ET.tostring(tree)
+        # The exact existing survey contract already admits this XML spelling.
+        observed = xml.survey({xml.WORKBOOK: blobs['FR_WORKBOOK'], xml.IDENTITIES: blobs['FR_IDENTITIES']})
+        self.assertEqual(observed, self.spec['survey'])
+        rows, _, _ = native._extract(blobs, self.spec)
+        for row, code in zip(rows, original):
+            self.assertEqual(row['id'], 'ciqual:2025:food:' + code)
+            self.assertEqual(row['data']['identityXml']['alim_code']['raw'], '\n\t ' + code + ' \n')
+        identities = native._xml_identities(blobs['FR_IDENTITIES'], self.spec['survey']['xml'])
+        self.assertEqual(set(identities), set(original))
+
+    def test_xml_identity_trim_keeps_grammar_duplicates_attributes_and_hash_strict(self):
+        for invalid in ('1 001', '1001.0', '1e3', None):
+            tree = ET.fromstring(self.blobs['FR_IDENTITIES'])
+            tree[0].find('alim_code').text = invalid
+            with self.subTest(invalid=invalid), self.assertRaisesRegex(native.NativeError, '^native-food-id$'):
+                native._xml_identities(ET.tostring(tree), self.spec['survey']['xml'])
+        tree = ET.fromstring(self.blobs['FR_IDENTITIES'])
+        tree[0].find('alim_code').set('unreviewed', 'true')
+        with self.assertRaisesRegex(native.NativeError, '^native-food-id$'):
+            native._xml_identities(ET.tostring(tree), self.spec['survey']['xml'])
+        tree = ET.fromstring(self.blobs['FR_IDENTITIES'])
+        tree[1].find('alim_code').text = ' 1001\n'
+        with self.assertRaisesRegex(native.NativeError, '^native-duplicate-food-id$'):
+            native._xml_identities(ET.tostring(tree), self.spec['survey']['xml'])
+        tree = ET.fromstring(self.blobs['FR_IDENTITIES'])
+        tree[0].find('alim_code').text = '01001'
+        with self.assertRaisesRegex(native.NativeError, '^native-identity-set-drift$'):
+            native._xml_identities(ET.tostring(tree), self.spec['survey']['xml'])
+
     def test_missing_and_blank_remain_distinct(self):
         ctx = xml._Context()
         absent = native.lexical_cell(None, [], ctx)

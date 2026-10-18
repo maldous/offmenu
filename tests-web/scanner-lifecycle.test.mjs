@@ -50,3 +50,10 @@ test('new devices use front bench mode and saved camera choice is retained',asyn
  scanner=setupScanner({canScan:()=>true,onCode(){},onStream(){}});await scanner.start();
  assert.equal(e.$('scanner-mode').value,'stand');assert.equal(constraints[1].video.facingMode.ideal,'environment');scanner.stop();
 });
+
+test('denied checkout permission opens neither camera nor photo decoder',async()=>{
+ let requests=0,accepted=0;const e=environment(async()=>{requests++;return camera();});
+ const scanner=setupScanner({canScan:()=>false,onCode(){accepted++;},onStream(){}});
+ await scanner.start();e.$('scanner-photo').files=[{size:100}];await e.$('scanner-photo').onchange();
+ assert.equal(requests,0);assert.equal(accepted,0);assert.equal(e.$('scanner-photo').value,'');
+});

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
   "status": "reviewed-forward-update-awaiting-root-publication",
-  "asOfUTC": "2026-10-18T00:01:00Z",
+  "asOfUTC": "2026-10-18T00:13:25Z",
   "coordinator": "Morgan/root",
   "purpose": "Small successor operations checkpoint for the currently selected automatic route and concurrent lanes. References immutable ledger history; does not replace its base/journal or claim semantic replay.",
   "instructionContext": {
@@ -55,9 +55,9 @@
     "originalHistoryEdited": false
   },
   "currentExecution": {
-    "sourceCommit": "e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
-    "controlCommit": "b71341e0cb0848f78c943f2548585e3f33e3f7ea",
-    "sourceStatus": "Reviewed survey005 executed; terminal incomplete; no retry admitted",
+    "sourceCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+    "controlCommit": "2d22a21a4b9ca3a922c208d524eb08049eaed597",
+    "sourceStatus": "France native001 terminal failed; independently reviewed fixes pending publication",
     "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
     "resultsPr": "https://github.com/maldous/offmenu/pull/31",
     "production": "paused",
@@ -72,15 +72,17 @@
       "source pins",
       "PR30"
     ],
-    "sourceUrl": "https://github.com/maldous/offmenu/commit/e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
-    "controlUrl": "https://github.com/maldous/offmenu/commit/b71341e0cb0848f78c943f2548585e3f33e3f7ea",
+    "sourceUrl": "https://github.com/maldous/offmenu/commit/1f9c29f81f171a35c51a351d122efed2469b31e0",
+    "controlUrl": "https://github.com/maldous/offmenu/commit/2d22a21a4b9ca3a922c208d524eb08049eaed597",
     "capacity": {
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Previously reported pending-initialization tasks consumed capacity; exact current slot count not re-established in this forward update. UI/tooling independent review is active. Seven-total and one-Foo-runner limits remain."
+      "currentBlocker": "Exact live slot count is not re-established in this update. UI04 regression work and CI locale correction are active; seven-total and one-Foo-runner limits remain."
     },
-    "coordinatorRole": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts."
+    "coordinatorRole": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts.",
+    "latestExecutedSourceCommit": "e938264e9299e5a7531d12f1bfc2dc1e8f543b63",
+    "latestExecutedControlCommit": "b71341e0cb0848f78c943f2548585e3f33e3f7ea"
   },
   "chronologicalEvents": [
     {
@@ -183,21 +185,38 @@
       "kind": "coordinator-confirmed-lane-update",
       "id": "runtime-restriction-and-review-progress-20261018",
       "outcome": "Shared runtime diagnostics blocked by platform cybersecurity-risk screen; no retry/bypass. France independent review and normal fixed-profile integration continue. Better Auth nine native D1 tests passed pending freeze/review. UI/tooling assessment complete, independent adversarial review active. No new Foo job submitted."
+    },
+    {
+      "atUTC": null,
+      "recordedAtUTC": "2026-10-18T00:07:00Z",
+      "kind": "coordinator-confirmed-publication-and-lane-progress",
+      "id": "publication-ci-and-approved-corrections-20261018-0007",
+      "sourceCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+      "outcome": "France fixed-profile independently approved and published, awaiting completion-publisher allowlist before actual run. Better Auth unmounted foundation approved with nine native D1 checks and published; offline integration paused for actual CI locale failure, worker fixing without weaker gates. UI/tooling decisions approved/corrected/published retaining stack; UI04 regression active. Product source-permission two-file fix independently approved, baseline 2/4 versus candidate 4/4, no authorization expansion, publication pending. Runtime investigation remains platform-blocked."
+    },
+    {
+      "atUTC": "2026-10-18T00:10:39Z",
+      "kind": "verified-runtime-result",
+      "id": "ciqualNative001",
+      "runId": 39081727972,
+      "evidence": "ciqualNative001",
+      "outcome": "France candidate blocked by XML identity whitespace mismatch; verified survey trims this field, native join did not. Correction under independent review. No unchanged retry."
     }
   ],
   "lanes": [
     {
       "id": "corpus-no-fr",
-      "status": "runtime-investigation-blocked-france-review-and-integration-active",
-      "owner": "France independent review/integration worker; shared runtime investigation blocked; Morgan coordinates",
-      "pickupEvidence": "Coordinator confirms shared runtime worker turn failed on platform cybersecurity-risk restriction; France independent review and normal fixed-profile integration continue",
-      "latestResult": "survey005 terminal incomplete",
+      "status": "runtime-investigation-blocked-france-approved-awaiting-publisher-allowlist",
+      "owner": "France fixed-profile integration worker; shared runtime investigation blocked; Morgan coordinates",
+      "pickupEvidence": "Coordinator confirms France fixed-profile independently approved and published; minimal completion-publisher allowlist update remains before actual run",
+      "latestResult": "France native001: native-food-id structured failure; XML trim correction in review. Norway native crash investigation remains platform-blocked.",
       "output": "Independently reviewed France native handler and normal fixed-profile integration; shared runtime diagnosis remains unresolved",
-      "next": "Do not retry or bypass blocked runtime diagnostics. Continue separately authorized France independent review and normal fixed-profile integration; no new job has been submitted.",
+      "next": "Publish reviewed XML identity correction and run new unique France002 batch; preserve raw text and source-use holds.",
       "dependencies": [
-        "Exact reviewed correction bytes",
+        "Minimal completion-publisher allowlist update",
         "Single control writer",
-        "Actual runtime receipt"
+        "Actual runtime receipt",
+        "Separate source semantics and admission decisions"
       ],
       "completionRequires": [
         "Norway exact crash cause and qualified correction with actual bounded runtime evidence",
@@ -207,9 +226,10 @@
       "evidence": [
         "survey003",
         "survey004",
-        "survey005"
+        "survey005",
+        "ciqualNative001"
       ],
-      "latestReview": "Norway005 independently reviewed and executed; local tests do not establish Foo success",
+      "latestReview": "France fixed-profile independently approved; survey005 remains latest reconciled terminal runtime result. Local/review success does not establish runtime or corpus acceptance.",
       "activeSubtasks": [
         {
           "scope": "Shared runtime native crash investigation",
@@ -219,10 +239,11 @@
           "restriction": "No retry, bypass, or delegated equivalent diagnostics; this ledger update performs no diagnostics."
         },
         {
-          "scope": "France native handler independent review and normal fixed-profile integration",
+          "scope": "France native handler and fixed-profile execution integration",
           "owner": "France review/integration worker",
-          "status": "active",
-          "runtimeJobSubmitted": false
+          "status": "independently-approved-published-awaiting-completion-publisher-allowlist",
+          "runtimeJobSubmitted": false,
+          "next": "Minimal completion-publisher allowlist update before actual run"
         }
       ],
       "runtimeInvestigationBlocker": {
@@ -234,11 +255,11 @@
     },
     {
       "id": "better-auth",
-      "status": "implementation-tests-passed-pending-freeze-and-review",
+      "status": "unmounted-foundation-approved-published-ci-locale-fix-active",
       "owner": "Better Auth implementation worker; Morgan coordinates",
-      "pickupEvidence": "Coordinator reports nine native D1 tests passed; implementation freeze and independent review remain pending",
+      "pickupEvidence": "Coordinator confirms unmounted Better Auth foundation independently approved with nine native D1 checks and published; next offline integration paused for actual CI i18n:check failure",
       "issue": "https://github.com/maldous/offmenu/issues/32",
-      "output": "First bounded Better Auth implementation and compatibility tests, independently reviewed before adoption",
+      "output": "Published independently approved unmounted foundation, CI locale correction and subsequent offline integration; no production migration",
       "dependencies": [
         "Existing identity-provider and access-control contracts",
         "Stable user ID mapping",
@@ -255,14 +276,26 @@
         "backend": "Cloudflare Worker + D1",
         "identity": "Netlify Identity 2.0.0 proxy",
         "criticalConstraint": "Stable user-ID mappings key private data",
-        "stage": "First implementation has nine passing native D1 tests; freeze/review pending; rollout not established"
+        "stage": "Unmounted foundation independently approved and published; offline integration paused for actual CI locale failure; rollout not established"
       },
-      "next": "Freeze exact implementation and test evidence, then independent review before adoption",
+      "next": "Fix public/locales/en.json without weakening i18n:check, verify the actual CI result, then resume scoped offline integration",
       "latestResult": {
         "nativeD1TestsPassed": 9,
-        "freeze": "pending",
-        "independentReview": "pending",
+        "freeze": "completed",
+        "independentReview": "approved",
+        "publicationCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+        "mounted": false,
         "productionMigrationEstablished": false
+      },
+      "currentBlocker": {
+        "kind": "actual-ci-failure",
+        "check": "i18n:check",
+        "path": "public/locales/en.json",
+        "runId": 39081522395,
+        "runUrl": "https://github.com/maldous/offmenu/actions/runs/39081522395",
+        "status": "worker-fixing",
+        "constraint": "Do not weaken or bypass gate",
+        "dependentWork": "Next offline integration paused"
       }
     },
     {
@@ -279,12 +312,12 @@
         "Root publishes exact reviewed files and verifies immutable readback"
       ],
       "semanticProjection": "pending",
-      "latestResult": "Checkpoint75cb5963021397a537098b192c4ac6e7d030f0ab published with exact readback per coordinator; this forward update awaits root publication"
+      "latestResult": "Published checkpoint at 1f9c29f81f171a35c51a351d122efed2469b31e0 read back exactly per coordinator; current forward update awaits root publication"
     },
     {
       "id": "tooling-ui-design",
-      "status": "assessment-complete-independent-adversarial-review-active",
-      "owner": "Independent adversarial reviewer, previously France implementation author",
+      "status": "decisions-approved-published-ui04-regression-active",
+      "owner": "UI04 regression worker; Morgan coordinates",
       "issue": "https://github.com/maldous/offmenu/issues/33",
       "output": "Source-linked prior UI/dev-server/landing/app feedback reconciliation; current-stack alternatives/impacts; independent adversarial decision review; final standards and scoped backlog",
       "dependencies": [
@@ -299,9 +332,17 @@
         "Read actual official Emil Kowalski skills at 2d228630ba1446365f614a108cb8252f1feda202 when doing UI work; retain MIT notice if copied",
         "No speculative replacement design or unrequested heavy mandatory developer checks"
       ],
-      "pickupEvidence": "Coordinator confirms UI/tooling assessment completed and independent adversarial review is running",
-      "assignmentStatus": "Active independent adversarial review; earlier capacity-rejected assignment is historical, not current",
-      "next": "Reconcile independent adversarial findings with recovered prior UI feedback and existing issue33 before final decisions or scoped implementation"
+      "pickupEvidence": "Coordinator confirms independently approved and corrected UI/tooling decisions published; UI04 regression worker active",
+      "assignmentStatus": "Decision review completed; bounded UI04 regression work active",
+      "next": "Complete scoped UI04 regression evidence against published decisions and retained current stack",
+      "latestResult": {
+        "decisions": "independently-approved-and-corrected",
+        "publicationCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+        "documentationPath": "docs/ui/tooling-review",
+        "documentationUrl": "https://github.com/maldous/offmenu/tree/1f9c29f81f171a35c51a351d122efed2469b31e0/docs/ui/tooling-review",
+        "currentStackRetained": true,
+        "ui04Regression": "active"
+      }
     },
     {
       "id": "sonar",
@@ -318,13 +359,13 @@
     },
     {
       "id": "product-acceptance-joins",
-      "status": "candidate-queue-unassigned",
-      "owner": null,
+      "status": "source-permission-fix-approved-awaiting-publication",
+      "owner": "Product acceptance worker; independent review completed; Morgan publishes",
       "output": "Exact existing product output/review/current-caller acceptance joins",
       "dependencies": [
-        "Free capacity",
-        "Coordinator selects bounded work and owner",
-        "No overlap with auth/state or UI writers"
+        "Root publishes exact approved two-file correction",
+        "Immutable readback and test evidence",
+        "No overlap with auth/state/UI writers"
       ],
       "candidateTaskIds": [
         "product-source-permission-join",
@@ -332,7 +373,21 @@
         "product-meal-availability-join",
         "product-meal-preference-persistence",
         "product-scanner-device-acceptance"
-      ]
+      ],
+      "pickupEvidence": "Coordinator confirms malformed dependency expiry fail-open found in public/record-policy.js; bounded two-file correction independently approved",
+      "next": "Publish exact approved two-file correction, verify readback and tests; reconcile scoped source-permission acceptance without closing unrelated product parents",
+      "selectedCandidateId": "product-source-permission-join",
+      "latestResult": {
+        "finding": "Malformed dependency expiry could fail open in public/record-policy.js",
+        "independentReview": "approved",
+        "changedFiles": 2,
+        "baselineChecksPassed": 2,
+        "baselineChecksTotal": 4,
+        "candidateChecksPassed": 4,
+        "candidateChecksTotal": 4,
+        "authorizationExpanded": false,
+        "publication": "pending"
+      }
     },
     {
       "id": "phase-durability",
@@ -374,7 +429,6 @@
     }
   ],
   "pendingUnassignedCandidateIds": [
-    "product-source-permission-join",
     "product-shopping-deficit-join",
     "product-meal-availability-join",
     "product-meal-preference-persistence",
@@ -385,11 +439,11 @@
   ],
   "nextPriorities": [
     "Respect shared runtime investigation platform restriction: no retry or bypass",
-    "Continue France independent review and normal fixed-profile integration without claiming a new submitted job",
-    "Freeze Better Auth implementation after nine native D1 tests, then independently review",
-    "Complete UI/tooling independent adversarial review against existing issue33 and prior feedback",
-    "Root publishes this bounded ledger update in its next batch and verifies exact readback",
-    "Backfill eligible independent work only within actual available capacity and existing approvals"
+    "Complete minimal France completion-publisher allowlist prerequisite before actual execution",
+    "Repair actual i18n:check locale failure without weakening gates, verify CI, then resume Better Auth offline integration",
+    "Publish approved two-file source-permission correction and verify exact readback",
+    "Complete scoped UI04 regression evidence against published current-stack decisions",
+    "Root publishes this ledger forward update in batch and verifies readback"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -490,6 +544,72 @@
       "reportSha256": "07c98b2070dee5aca6fc31e2fdafd8ed6bf032108f0fe05ff22df3f401e8072e",
       "verification": "Actual artifact ZIP SHA, sole evidence.json, receipt/run/job identities and terminal publisher verified",
       "outcome": "Norway EN parse completed; NB decoded then SIGSEGV at structural walk. France also SIGSEGV in previously passing workbook parser. Decoder-only cause not established; shared runtime investigation active. No retry of unchanged batch."
+    },
+    "ciqualNative001": {
+      "receipt": {
+        "artifact": {
+          "id": 12119281621,
+          "retentionDays": 14,
+          "sha256": "0a6e5531dccc62bac8baa1d495323e64a0e00fa1ce07632eae5b70afc66a5a17",
+          "url": "https://github.com/maldous/offmenu/actions/runs/39081727972/artifacts/12119281621"
+        },
+        "consumerMustVerifyTerminalRun": true,
+        "controlSha": "2d22a21a4b9ca3a922c208d524eb08049eaed597",
+        "idempotencyKey": "1416253963:39081727972:1:117539886655",
+        "publicationAttempt": 1,
+        "report": {
+          "reportSha256": "8f8a52afb26a77857f6d4db7eb969d1a518103f7b3af4ad314da6b58acc4e090",
+          "requestIdentity": "0a93799a9e4ef8c6301c823d6b46262fccee1881866ef9a2fdeea2639cebaefb",
+          "status": "failed",
+          "steps": [
+            {
+              "durationSeconds": 0.015,
+              "exitCode": 0,
+              "status": "passed",
+              "stepId": "readiness"
+            },
+            {
+              "durationSeconds": 0.339,
+              "exitCode": 0,
+              "status": "passed",
+              "stepId": "ciqual-native-tests"
+            },
+            {
+              "durationSeconds": 4.073,
+              "exitCode": 2,
+              "status": "failed",
+              "stepId": "ciqual-native-candidate"
+            },
+            {
+              "durationSeconds": 0,
+              "exitCode": null,
+              "status": "skipped",
+              "stepId": "ciqual-native-retry"
+            }
+          ],
+          "validation": "verified"
+        },
+        "repositoryId": 1416253963,
+        "request": {
+          "jobId": "ciqual-source-native-20261018-001",
+          "profile": "ciqual-source-native",
+          "schemaVersion": 1
+        },
+        "runAttempt": 1,
+        "runId": 39081727972,
+        "runNumber": 12,
+        "runUrl": "https://github.com/maldous/offmenu/actions/runs/39081727972",
+        "schemaVersion": "offmenu-completion-receipt/1",
+        "sourceJobConclusion": "failure",
+        "sourceJobId": 117539886655,
+        "sourceRunnerId": 21,
+        "trustedCodeSha": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+        "workflowId": 387731309,
+        "workflowRunTerminalAtPublish": false
+      },
+      "terminalRunVerified": true,
+      "artifactZipShaVerified": true,
+      "result": "native-food-id; normal structured failure; no native crash; retry correctly skipped"
     }
   },
   "sideEffects": {
@@ -594,18 +714,19 @@
   ],
   "publication": {
     "status": "forward-update-not-yet-published",
-    "verifiedPriorCommit": "75cb5963021397a537098b192c4ac6e7d030f0ab",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/75cb5963021397a537098b192c4ac6e7d030f0ab",
+    "verifiedPriorCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/1f9c29f81f171a35c51a351d122efed2469b31e0",
     "earlierVerifiedCommits": [
-      "3a103bc7c380da01c83fcda35d82c92741379804"
+      "3a103bc7c380da01c83fcda35d82c92741379804",
+      "75cb5963021397a537098b192c4ac6e7d030f0ab"
     ],
     "writer": "Morgan/root only",
-    "note": "Coordinator reports exact readback at prior commit. Only matching lane states updated here; root publishes in batch and verifies immutable readback."
+    "note": "Prior source/checkpoint publication and exact readback confirmed by coordinator. This matching-lane forward update awaits root batch publication and readback."
   },
   "activeWork": [
-    "France independent review and normal fixed-profile integration",
-    "Better Auth implementation freeze and independent-review preparation",
-    "UI/tooling independent adversarial review",
-    "Ledger forward update"
+    "France XML identity correction independent review",
+    "UI04 read-only checkout correction independent review",
+    "Approved i18n catalogue and record-policy fixes awaiting combined publication",
+    "Better Auth next offline integration, after CI correction"
   ]
 }

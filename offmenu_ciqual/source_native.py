@@ -136,11 +136,14 @@ def _xml_identities(raw, expected):
             fields[child.tag] = {'raw': child.text, 'attributes': dict(child.attrib)}
         _require(set(fields) == wanted, 'native-identity-field-set')
         raw_code = fields['alim_code']['raw']
-        _require(isinstance(raw_code, str) and xml.CODE.fullmatch(raw_code) is not None
+        # Match the already verified survey's XML identity semantics exactly.
+        # Keep the unmodified XML text in fields; only the join key is trimmed.
+        code = raw_code.strip() if isinstance(raw_code, str) else None
+        _require(code is not None and xml.CODE.fullmatch(code) is not None
                  and not fields['alim_code']['attributes'], 'native-food-id')
-        _require(raw_code not in identities, 'native-duplicate-food-id')
+        _require(code not in identities, 'native-duplicate-food-id')
         _require(bool(fields['alim_nom_fr']['raw']), 'native-french-name-missing')
-        identities[raw_code] = fields
+        identities[code] = fields
     _require(len(identities) == expected['entryCount']
              and xml._digest(identities) == expected['foodCodes']['setSha256'],
              'native-identity-set-drift')

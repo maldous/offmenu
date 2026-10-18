@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2799,
+  "messages": 2805,
   "arabicTranslated": 376,
-  "arabicMissing": 2423,
+  "arabicMissing": 2429,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -2095,6 +2095,12 @@
     "An analytics consent purpose must be configured.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An explicit session expiry and renewal policy is required.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -5011,6 +5017,18 @@
     "Email a copy to my verified account address.": {
       "sources": [
         "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Email authentication requires an explicit enabled setting.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "Email authentication requires verification/reset delivery and an explicit signup policy.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -9404,6 +9422,24 @@
     "Observation time is invalid.": {
       "sources": [
         "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires a native D1 binding.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires a separately provisioned secret of at least 32 characters.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires an explicit HTTPS origin.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -16144,6 +16180,7 @@
     },
     "https:": {
       "sources": [
+        "cloud/auth.mjs",
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
