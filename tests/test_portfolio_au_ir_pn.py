@@ -1,5 +1,6 @@
 """Authored metadata and one synthetic record only; never read country bodies."""
 import copy
+import ast
 from datetime import datetime, timezone
 import hashlib
 import contextlib
@@ -232,6 +233,20 @@ class MetadataEntrypointTests(unittest.TestCase):
             with patch('offmenu.refresh.portfolio_au_ir_pn.os.read', side_effect=mutate_after_read):
                 with self.assertRaisesRegex(RefreshError, '^metadata-changed-during-read$'):
                     _read_metadata(p)
+
+
+class InstalledCatalogueTests(unittest.TestCase):
+    def test_inert_literal_matches_original_pins_and_is_copy_isolated(self):
+        root = Path(__file__).resolve().parents[1]
+        original = strict_json((root/'docs/operations/portfolio-au-ir-pn.json').read_bytes())
+        module = root/'offmenu/refresh/portfolio_au_ir_pn_catalogue.py'
+        tree = ast.parse(module.read_text())
+        self.assertEqual(len(tree.body), 2)  # Docstring and one literal assignment.
+        self.assertIsInstance(tree.body[1], ast.Assign)
+        self.assertEqual(ast.literal_eval(tree.body[1].value), original)
+        self.assertEqual(catalogue(), original)
+        changed = catalogue(); changed['profiles'][0]['holds'].clear()
+        self.assertEqual(catalogue(), original)
 
 
 if __name__ == '__main__':

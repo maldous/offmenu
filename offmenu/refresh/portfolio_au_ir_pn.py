@@ -5,17 +5,17 @@ Uses shared strict JSON, timestamps, provenance diagnostics and stage receipts.
 No declared source path is opened. OS isolation remains the integrator's boundary.
 """
 import argparse
+from copy import deepcopy
 import json
 import os
-from pathlib import Path
 import stat
 
 from .acceptance import fingerprint
 from .core import RefreshError, safe_path, strict_json, timestamp
 from .field_provenance import field_origin_errors
 from .global_run import StageResult
+from .portfolio_au_ir_pn_catalogue import CATALOGUE
 
-CATALOGUE = Path(__file__).resolve().parents[2] / 'docs/operations/portfolio-au-ir-pn.json'
 MAX_METADATA = 256 * 1024
 READ_ERRORS = frozenset(('metadata-not-regular', 'metadata-bound-exceeded',
                          'metadata-changed-during-read'))
@@ -58,7 +58,7 @@ def _read_metadata(path):
 
 
 def catalogue():
-    return strict_json(CATALOGUE.read_bytes())
+    return deepcopy(CATALOGUE)
 
 
 def origin_errors(row, input_pins, *, policy_pins=()):

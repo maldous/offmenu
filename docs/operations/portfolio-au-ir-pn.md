@@ -6,6 +6,14 @@ Owned paths are this document, `portfolio-au-ir-pn.json`,
 `offmenu/refresh/portfolio_au_ir_pn.py`, and its dedicated test file.
 There are no shared-core, source-reader, runner, production or admission edits.
 
+The fixed runtime catalogue is now the inert literal Python module
+`offmenu/refresh/portfolio_au_ir_pn_catalogue.py`, automatically included by the
+existing `offmenu*` package discovery. The JSON remains a checkout evidence copy,
+not a runtime resource dependency. Literal equivalence covers every source pin,
+hold and unknown; `catalogue()` returns an independent copy. No shared packaging
+configuration is changed. Wheel/sdist loading must work outside the checkout
+without a `docs/` directory; this addresses live PR43 P1 comment4305926950.
+
 The catalogue contains six trusted portfolio declarations: AFCD Release 3,
 ABS 2025 statistical weights, three FSANZ notices, the IR PERSIAN supplement v1,
 and two explicitly missing/held PN inputs. Paths and SHA256 references identify
