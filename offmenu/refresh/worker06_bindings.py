@@ -5,6 +5,7 @@ This portfolio module only projects pinned validation metadata. It cannot create
 a trusted SourceContract or enable a production source from a descriptor.
 """
 import argparse
+from copy import deepcopy
 import hashlib
 import json
 import os
@@ -15,18 +16,18 @@ from .acceptance import fingerprint
 from .acquisition import MIN_TTL
 from .core import RefreshError, strict_json, timestamp
 from .field_provenance import field_origin_errors
+from .worker06_catalog import CONFIGURATION
 
 VERSION = 'worker06-metadata-binding/1'
 POLICY = fingerprint({'version': VERSION, 'scope': 'metadata-only',
                       'unknown': None, 'minimumReuseSecondsRequired': MIN_TTL,
                       'cachePlanning': 'unsupported-real-source-cache-planner'})
 MAX_METADATA = 128 * 1024
-DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / 'docs/operations/worker06-staging-bindings.json'
 
 
-def load_config(path=DEFAULT_CONFIG):
+def load_config():
     """Load reviewed portfolio configuration, never a SourceContract factory."""
-    config = strict_json(Path(path).read_bytes())
+    config = deepcopy(CONFIGURATION)
     if config.get('schemaVersion') != VERSION or not isinstance(config.get('bindings'), list):
         raise RefreshError('binding-config-invalid')
     ids = [b['id'] for b in config['bindings']]

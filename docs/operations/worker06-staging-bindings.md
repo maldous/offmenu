@@ -12,6 +12,7 @@ From the repository, run:
 python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z > /private/foo/metadata-report.json
 python3 -m offmenu.refresh.worker06_bindings --now 2026-10-18T00:00:00Z --previous /private/foo/metadata-report.json
 python3 -m unittest tests.test_worker06_bindings -v
+python3 -m unittest tests.test_worker06_packaging -v
 ```
 
 Use an existing private Foo output directory. The module prints JSON and never
@@ -38,7 +39,11 @@ independent bindings still report. The explicit UTC clock makes runs repeatable.
 
 ## Bound source scope
 
-The JSON configuration has13 source entries: ME8, MF2, MG1, MH2. These are
+The owned `offmenu.refresh.worker06_catalog` declaration has13 source entries:
+ME8, MF2, MG1, MH2. `load_config()` imports the packaged Python literal and returns
+a defensive deep copy; it does not look outside the installed package for a
+repository JSON resource. The entire declaration is value-identical to the
+reviewed predecessor JSON, including all source pins and holds. These are
 metadata bindings, not13 datasets, normalized observations or accepted records.
 Each entry pins the exact validation manifest and JSON selector, original source
 receipt path/hash, release label, country and role. Retained payload pins are
@@ -109,8 +114,14 @@ retained explicit denials remain in that future trusted contract. No new grant
 is required merely because a custodian is missing; positive existing evidence
 may qualify a narrowly reviewed operation. Missing evidence is not a denial.
 
-Integrator00 can integrate these four portfolio-only files after designated
+Integrator00 can integrate these owned portfolio files after designated
 independent review. No shared-interface mutation is proposed in this batch.
+The live PR43 catalogue finding4305926950 is addressed for Worker06 by this
+owned declaration. An authored offline test builds an sdist from the package
+source, rebuilds its wheel, and checks installed catalogue loading/defensive
+copy with resource and retained metadata reads forbidden. Shared packaging
+rules are unchanged. Author evidence does not close the PR thread or replace
+independent delta review/current-head CI.
 If a future body format requires another generic handler, its exact interface
 and reviewed semantic/custody contract must be selected with00; this module
 does not silently install one. All source-domain acceptance and country
