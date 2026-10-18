@@ -1,0 +1,364 @@
+{
+  "schemaVersion": "portfolio22-reviewed-code-config/1",
+  "scope": "metadata-only, not a SourceContract or production admission",
+  "profiles": {
+    "CF": {
+      "country": "CF",
+      "sourceId": "wfp-cf-cb558a54-357a-4bcd-9edd-30caf65b1bd7",
+      "releaseId": "2026-10-11T10:10:05.452162",
+      "originalAcquiredAt": "2026-10-14T22:18:04.007808+00:00",
+      "candidateKind": "priceObservation",
+      "applicability": [
+        "CF/prices-baskets/source-monitored-market-only"
+      ],
+      "sourceCustody": "Historical62receipt; native source-custodian identity unqualified, original raw remains Foo",
+      "candidateRepresentation": "bare-record-jsonl; NOT shared singleton-array-jsonl",
+      "expectedRecords": 31384,
+      "assets": [
+        {
+          "role": "original",
+          "path": "wfp_food_prices_caf.csv",
+          "bytes": 3710160,
+          "sha256": "07246af7a73687075c461e3191309ea11cc58197fb10c6ff4e71bfe6f6102043"
+        },
+        {
+          "role": "retained-candidate",
+          "path": "CF-price-observations.candidate.jsonl",
+          "bytes": 65197188,
+          "sha256": "5678a6aca7d53565293ac97a3b44c2fbe961936abf5563c8b810abbca28d9028"
+        }
+      ],
+      "retainedManifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-22/manifest.json",
+          "sha256": "0a48869d1bb8f7a1cb46ab16609eb90b4acf51f704d6c6520003219526da1bf7"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/2fabaae88905a3467dc2/receipt.json",
+          "sha256": "db70867a2521a7ef46e002a77b4da0d8618e2c6339c31495df210391cad8782b"
+        }
+      ],
+      "fieldOrigins": [
+        {
+          "target": "/data/observedAt",
+          "sourceSelector": "csv-column:date"
+        },
+        {
+          "target": "/data/name",
+          "sourceSelector": "csv-column:commodity"
+        },
+        {
+          "target": "/data/amount",
+          "sourceSelector": "csv-column:price",
+          "lexicalRetained": "/data/sourceFields/price"
+        },
+        {
+          "target": "/data/unit",
+          "sourceSelector": "csv-column:unit"
+        },
+        {
+          "target": "/data/currency",
+          "sourceSelector": "csv-column:currency"
+        },
+        {
+          "target": "/data/sourceFields/commodity_id",
+          "sourceSelector": "csv-column:commodity_id"
+        },
+        {
+          "target": "/data/retailer/externalId",
+          "sourceSelector": "csv-column:market_id",
+          "role": "publisher-market-not-merchant"
+        },
+        {
+          "target": "/data/retailer/name",
+          "sourceSelector": "csv-column:market",
+          "role": "publisher-market-not-merchant"
+        },
+        {
+          "target": "/data/sourceFields/date",
+          "sourceSelector": "csv-column:date",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/admin1",
+          "sourceSelector": "csv-column:admin1",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/admin2",
+          "sourceSelector": "csv-column:admin2",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/market",
+          "sourceSelector": "csv-column:market",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/market_id",
+          "sourceSelector": "csv-column:market_id",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/latitude",
+          "sourceSelector": "csv-column:latitude",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/longitude",
+          "sourceSelector": "csv-column:longitude",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/category",
+          "sourceSelector": "csv-column:category",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/commodity",
+          "sourceSelector": "csv-column:commodity",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/commodity_id",
+          "sourceSelector": "csv-column:commodity_id",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/unit",
+          "sourceSelector": "csv-column:unit",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/priceflag",
+          "sourceSelector": "csv-column:priceflag",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/pricetype",
+          "sourceSelector": "csv-column:pricetype",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/currency",
+          "sourceSelector": "csv-column:currency",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/price",
+          "sourceSelector": "csv-column:price",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/data/sourceFields/usdprice",
+          "sourceSelector": "csv-column:usdprice",
+          "interpretation": "exact original lexical field, no canonical equivalence"
+        },
+        {
+          "target": "/id",
+          "sourceSelector": "csv-record-ordinal-within-pinned-release",
+          "interpretation": "Source row ordinal, not commodity/ingredient identity"
+        },
+        {
+          "target": "/provenance/fetchedAt",
+          "sourceSelector": "acquisition-receipt:/responses/1/utc",
+          "interpretation": "Original acquisition, not current validation clock"
+        }
+      ],
+      "nativeUnits": [
+        "KG",
+        "L",
+        "Packet",
+        "Unit",
+        "400 G",
+        "Sack",
+        "Package",
+        "1.5 L"
+      ],
+      "nativeCurrency": "XAF",
+      "canonicalCurrencyId": null,
+      "preparationState": null,
+      "metricBasisId": null,
+      "analyticalMethodId": null,
+      "collectionMethodLiteral": "Registry",
+      "nonfoodExcluded": 147,
+      "foodEligibility": null,
+      "licenceDeclaration": "CC BY3.0 IGO; exact publisher package declaration only",
+      "redistributionDisposition": "not qualified; private metadata planning only",
+      "productionAdmission": false,
+      "dataBlockers": [
+        "new-source-body-processing-not-selected",
+        "trusted-production-source-contract-not-installed",
+        "legacy-jsonl-framing-needs-reviewed-projection",
+        "accepted-commodity-state-basis-targets-missing",
+        "rights-scope-field-origin-acceptance-pending"
+      ],
+      "collectionMethodEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/faa351d16a0cae95ea2e/wfp-cf-package.json",
+        "sha256": "5cb2cf9806937eb36889aeba40d13a922b139a8483ab5f4e9e5f2f2574e473b0",
+        "selector": "/result/methodology",
+        "role": "Collection declaration Registry; not food-state or nutrient assay"
+      },
+      "licenceEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/faa351d16a0cae95ea2e/wfp-cf-package.json",
+        "sha256": "5cb2cf9806937eb36889aeba40d13a922b139a8483ab5f4e9e5f2f2574e473b0",
+        "selector": "/result/license_id",
+        "role": "Publisher dataset declaration only, not a rights/admission contract"
+      },
+      "scopeReviewPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-17/worker52-real-candidate-review/review-2662.json",
+          "sha256": "fa42d4c889e210ce61e742076fc318278aeb7d037132fe9b2dfe59ae905dfcd9",
+          "scope": "private source-preserving candidate only"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-17/worker52-CF2828-mapping-review/review-receipt.json",
+          "sha256": "fbbf13c8b1a7c80dba8c2d9919ce9e3d995ef66ed18fc6b7db60d9cbc5e551a6",
+          "scope": "source-role/literal proposal only"
+        }
+      ],
+      "requiredCountryDataTypes": [
+        "ingredients",
+        "recipes",
+        "nutrition",
+        "retailers/providers",
+        "prices/baskets",
+        "dietary references"
+      ],
+      "retainedSourceReceiptPins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/20797fb87bde24e19c0a/receipt.json",
+          "sha256": "130f0954d6f432a211a7b217f19aa9d525de96b3fdc0ac4c0493f6bed1b10a6e"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/2fabaae88905a3467dc2/receipt.json",
+          "sha256": "db70867a2521a7ef46e002a77b4da0d8618e2c6339c31495df210391cad8782b"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/CF/faa351d16a0cae95ea2e/receipt.json",
+          "sha256": "b8fe32041c4e75c600e85ab85ca5d7ee8ce8caca3aa544df4785b96b8df73635"
+        }
+      ],
+      "sourcePriceBasis": {
+        "literalField": "csv-column:unit",
+        "quantity": null,
+        "packageSize": null,
+        "metricBasisId": null,
+        "nutritionOrAssayBasis": null,
+        "meaning": "Source observation denomination only; no density/serving/package conversion"
+      }
+    },
+    "BY": {
+      "country": "BY",
+      "sourceId": null,
+      "releaseId": null,
+      "originalAcquiredAt": null,
+      "assets": [],
+      "fieldOrigins": [],
+      "productionAdmission": false,
+      "dataBlockers": [
+        "zero-byte-dns-acquisition-gap",
+        "eligible-original-and-use-missing"
+      ],
+      "requiredCountryDataTypes": [
+        "ingredients",
+        "recipes",
+        "nutrition",
+        "retailers/providers",
+        "prices/baskets",
+        "dietary references"
+      ],
+      "retainedGapReport": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/BY/category-coverage-and-gaps.json",
+        "scope": "Prior inspected retained evidence only; not global absence",
+        "sha256": "8e1e70062e90e09dd841c1e5c1f080222763d6c2aae2a633ec9af8fbfc53c002"
+      },
+      "retainedSourceReceiptPins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-54/BY/045a5f2800f44bd1d16f7a00/receipt.json",
+          "sha256": "a8ad2e22ff73419541babc4480713b2179a0ece4415d9d7c8747fee76d24fb68"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-54/BY/continuation-primary-source-gap/receipt.json",
+          "sha256": "f1ed7b20ff55827764cbca2fbc27a2fb11757b277a3bfb1ad1a94f4eb0c6ef70"
+        }
+      ]
+    },
+    "CC": {
+      "country": "CC",
+      "sourceId": null,
+      "releaseId": null,
+      "originalAcquiredAt": null,
+      "assets": [],
+      "fieldOrigins": [],
+      "productionAdmission": false,
+      "dataBlockers": [
+        "cookbook-edition-membership-and-reuse-unqualified",
+        "metadata-is-not-recipe-data"
+      ],
+      "requiredCountryDataTypes": [
+        "ingredients",
+        "recipes",
+        "nutrition",
+        "retailers/providers",
+        "prices/baskets",
+        "dietary references"
+      ],
+      "retainedGapReport": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/CC/category-coverage-and-gaps.json",
+        "scope": "Prior inspected retained evidence only; not global absence",
+        "sha256": "c90fdf4ee746df4dc5904b27963f6e4d6b1176c068aee816176ccf13cfae0874"
+      },
+      "retainedSourceReceiptPins": [],
+      "retainedPublisherMetadataManifest": {
+        "path": "/home/user/Documents/Codex/2026-10-16/owner-22-country-delta03/manifest.json",
+        "sha256": "e4de045a6bc944a34b447fc494984fd0d25010e7ba1103064b876d6016e79e8d",
+        "scope": "Previously qualified publisher identity metadata only, no cookbook original or reuse grant"
+      }
+    },
+    "CD": {
+      "country": "CD",
+      "sourceId": null,
+      "releaseId": null,
+      "originalAcquiredAt": null,
+      "assets": [],
+      "fieldOrigins": [],
+      "productionAdmission": false,
+      "dataBlockers": [
+        "retained-csv-missing",
+        "unfollowed-302-no-reroute-hold"
+      ],
+      "requiredCountryDataTypes": [
+        "ingredients",
+        "recipes",
+        "nutrition",
+        "retailers/providers",
+        "prices/baskets",
+        "dietary references"
+      ],
+      "retainedGapReport": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-22/CD/category-coverage-and-gaps.json",
+        "scope": "Prior inspected retained evidence only; not global absence",
+        "sha256": "535f47985d84df04dae1c90d136c019945223a54ccbd9dd1f5ad387e93185b1e"
+      },
+      "retainedSourceReceiptPins": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/CD/160244affa483065e093/receipt.json",
+          "sha256": "9dab03a6ed5bfe8f93517f9f745e0a0624f06fc04b3f7878bdc1a3ff2d49cc40"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/CD/5858b34ffeb00e704173/receipt.json",
+          "sha256": "632ae72c6bbd141d9583c95d66f081a3d7ccf8e797c9dfa80c922c389c7ec827"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/CD/623e375fc4f9f6b55a60/receipt.json",
+          "sha256": "b766b8ef04ebec3cdea78690d68dc0f730027f90eee5988f64538eb4188164dc"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-61/CD/864be77a40f88c1974b0/receipt.json",
+          "sha256": "6366c083aee670f865949f91960bbf4bc80f5b748ccec4265a1d5c45de81e285"
+        }
+      ]
+    }
+  }
+}
