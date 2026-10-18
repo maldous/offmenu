@@ -2,6 +2,7 @@
 """Fixed owner-directed original saving. No HTTP cache or response reuse."""
 from __future__ import annotations
 import hashlib,http.client,importlib.util,os,re,stat,time,tempfile
+from contextlib import nullcontext
 from offmenu.refresh.core import fsync_directory
 from datetime import datetime,timezone
 from pathlib import Path
@@ -100,7 +101,7 @@ def validate_mode(mode,selected,a):
       or item['responseMetadata']['httpStatus']!=200):raise a.RefreshError('private-save-contract-invalid')
  return mode
 
-def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None):
+def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None):
  a=adapter;contract=a.source_contract(source);fingerprint=contract['fingerprint'];maximum=contract['maxBytes'];seconds=contract['seconds']
  deadline=min(deadline if deadline is not None else float('inf'),time.monotonic()+seconds)
  prior=next((p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']),None);diagnostic_sha=(mode['diagnosticReportPin'] or {}).get('sha256');meter={'requests':0,'bodyBytesRead':0}
@@ -112,7 +113,7 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
  response=None;reservation_fd=reservation_identity=None;claimed=False;folder=None;intent=None;partial_created=False;original_created=False
  try:
   root=a.owned_directory(a.OUTPUT);work=a.owned_directory(root/'collection')
-  with a.writer_lock(work/'fixed-selection.lock'):
+  with (coordinator.source_session(work) if coordinator is not None else a.writer_lock(work/'fixed-selection.lock')):
    originals=private_directory(work/'private-originals',a);folder=private_directory(originals/fingerprint,a)
    original=folder/'original.pdf';partial=folder/'original.partial';provenance=folder/'provenance.json';intent=folder/'successor-intent.json';reservation=folder/'reservation.bin'
    old_claim=work/'intents'/(a.sha(source['url'].encode())+'.json')
@@ -140,10 +141,14 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     fd=os.open(a.safe_path(intent),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
     with os.fdopen(fd,'wb') as stream:stream.write(a.canonical({**base,'state':'saving'}));stream.flush();os.fsync(stream.fileno())
     fsync_directory(folder);claimed=True
-    reservation_fd,reservation_identity=a.reserve(reservation,folder,deadline,expected_bytes=contract['expectedBytes'] or maximum,max_bytes=maximum)
+    reservation_fd,reservation_identity=(coordinator.reserve(source['sourceKey'],reservation,folder,deadline,contract['expectedBytes'] or maximum,maximum) if coordinator is not None else a.reserve(reservation,folder,deadline,expected_bytes=contract['expectedBytes'] or maximum,max_bytes=maximum))
     if batch_meter is not None and (batch_meter['requests']>=batch_meter['maximumRequests'] or batch_meter['bodyBytesRead']>=batch_meter['maximumBytes']):raise a.RefreshError('network-request-limit')
-    a.deadline_check(deadline);spec=a.source_spec(source);spec.validate();meter['requests']=1
-    if batch_meter is not None:batch_meter['requests']+=1
+    a.deadline_check(deadline);spec=a.source_spec(source);spec.validate()
+    if batch_meter is not None:
+     if hasattr(batch_meter,'start_request'):batch_meter.start_request()
+     else:batch_meter['requests']+=1
+    meter['requests']=1
+    if coordinator is not None:coordinator.transfer_start()
     response=transport(spec,{'Accept-Encoding':'identity'},deadline=deadline) if transport is not None else a.HTTPSFileTransport()(spec,{'Accept-Encoding':'identity'},deadline=deadline)
     report['responseMetadata']=a.response_metadata(response.status,response.headers,request_url=source['url']);report['responsePolicy']=policy_facts(response.headers)
     if response.status!=200:raise a.RefreshError('source-response-not-permitted')
@@ -153,16 +158,20 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     with os.fdopen(fd,'wb') as stream:
      while True:
       a.deadline_check(deadline);remaining=maximum-meter['bodyBytesRead']
-      if batch_meter is not None:remaining=min(remaining,batch_meter['maximumBytes']-batch_meter['bodyBytesRead'])
+      if batch_meter is not None:remaining=min(remaining,batch_meter.remaining_bytes() if hasattr(batch_meter,'remaining_bytes') else batch_meter['maximumBytes']-batch_meter['bodyBytesRead'])
       if remaining<=0:
        framed=getattr(response,'response',None)
        if framed_length==meter['bodyBytesRead'] and (framed is None or (getattr(framed,'length',None)==0 and not getattr(framed,'chunked',True))):break
        raise a.RefreshError('network-byte-limit')
       block=response.read(min(65536,remaining));meter['bodyBytesRead']+=len(block)
-      if batch_meter is not None:batch_meter['bodyBytesRead']+=len(block)
+      if batch_meter is not None:
+       if hasattr(batch_meter,'record_bytes'):batch_meter.record_bytes(len(block))
+       else:batch_meter['bodyBytesRead']+=len(block)
       if not block:break
       if a.capacity(folder)<a.GUARD+len(block):raise a.RefreshError('capacity-planning-bound-not-protected')
-      stream.write(block);digest.update(block);report.update(privateSaveState='partial-retained',localBodyBytes=meter['bodyBytesRead']);a.deadline_check(deadline)
+      if coordinator is not None:coordinator.write(source['sourceKey'],stream,block,folder)
+      else:stream.write(block)
+      digest.update(block);report.update(privateSaveState='partial-retained',localBodyBytes=meter['bodyBytesRead']);a.deadline_check(deadline)
      stream.flush();os.fsync(stream.fileno())
     if framed_length is not None and meter['bodyBytesRead']!=framed_length:raise a.RefreshError('source-length-mismatch')
     acquired=datetime.now(timezone.utc).isoformat();result=SimpleNamespace(path=partial,sha256=digest.hexdigest(),bytes=meter['bodyBytesRead'],provenance={'originalAcquiredAt':acquired})
@@ -170,7 +179,8 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     os.link(a.safe_path(partial),a.safe_path(original));original_created=True;partial.unlink();fsync_directory(folder);report.update(privateSaveState='uncommitted-original',localBodyBytes=result.bytes)
     saved={**base,'sha256':result.sha256,'bytes':result.bytes,'originalAcquiredAt':acquired,'rightsReference':source['rightsReference'],'release':source['release'],
      'minimumOriginalDedupSeconds':a.TTL,'httpResponseCacheEnabled':False,'responsePolicy':report['responsePolicy'],'downstreamHolds':source['downstreamHolds']}
-    a.write_immutable(provenance,saved);fsync_directory(folder);write_private_intent(intent,{**base,'state':'verified','sha256':result.sha256,'bytes':result.bytes,'provenanceSHA256':a.sha(a.canonical(saved))},a)
+    a.write_immutable(provenance,saved);fsync_directory(folder)
+    with (coordinator.intent_write() if coordinator is not None else nullcontext()):write_private_intent(intent,{**base,'state':'verified','sha256':result.sha256,'bytes':result.bytes,'provenanceSHA256':a.sha(a.canonical(saved))},a)
     report.update(status='verified-private-original',validation=validation,originalDisposition='saved-original',privateSaveState='saved-original')
  except (a.RefreshError,OSError,ValueError,TypeError,KeyError,http.client.HTTPException) as error:
   code=str(error) if isinstance(error,a.RefreshError) and str(error) in a.ERRORS|ERRORS else 'local-io-failure' if isinstance(error,OSError) else 'collector-rejected'
@@ -183,14 +193,17 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     except FileNotFoundError:pass
     except (OSError,a.RefreshError):pass
   if claimed:
-   try:write_private_intent(intent,{**base,'state':'failed-no-retry','errorCode':code,'network':dict(meter),'privateSaveState':report['privateSaveState'],'localBodyBytes':report['localBodyBytes']},a)
+   try:
+    with (coordinator.intent_write() if coordinator is not None else nullcontext()):write_private_intent(intent,{**base,'state':'failed-no-retry','errorCode':code,'network':dict(meter),'privateSaveState':report['privateSaveState'],'localBodyBytes':report['localBodyBytes']},a)
    except (a.RefreshError,OSError,ValueError,TypeError,KeyError):report['errorCode']='claim-state-write-failed'
  finally:
   try:
    if response is not None:response.close()
   except (OSError,http.client.HTTPException):report.update(status='failed',errorCode='local-io-failure',validation=None,originalDisposition=None)
   if reservation_fd is not None:
-   try:a.release_own_reservation(reservation,reservation_fd,reservation_identity)
+   try:
+    if coordinator is not None:coordinator.release(source['sourceKey'],reservation,reservation_fd,reservation_identity)
+    else:a.release_own_reservation(reservation,reservation_fd,reservation_identity)
    except (a.RefreshError,OSError,ValueError,TypeError,KeyError):report.update(status='failed' if meter['requests'] else 'blocked',errorCode='reservation-release-failed',validation=None,originalDisposition=None)
  try:
   report['receiptPersistence']='written';work=a.owned_directory(a.owned_directory(a.OUTPUT)/'collection')

@@ -1,5 +1,7 @@
 """Synthetic-only tests: never obtain or read production source bodies."""
 import hashlib
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 import io
 import json
 import os
@@ -19,8 +21,78 @@ import zipfile
 from offmenu.refresh import media_preparation as m
 
 
+def _spawn_prepare(payload):
+    contract, original, output = payload
+    return m.prepare_asset(contract, original, output, time.monotonic() + 10,
+                           maximum_output_bytes=128 * m.MiB, minimum_free_bytes=0)
+
+
+def _abandon_storage_lock(lock, ready):
+    lock.acquire()
+    ready.set()
+    os._exit(0)
+
+
+def _spawn_terminable_prepare(payload, pid_path, block_handshake=False):
+    def fake_parser(*args):
+        child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'])
+        Path(pid_path).write_text(str(child.pid))
+        time.sleep(30)
+    m._prepare = fake_parser
+    if block_handshake:
+        original_json = m.strict_json
+        def delayed_handshake(raw):
+            value = original_json(raw)
+            if isinstance(value, dict) and value.get('phase') == 'session-ready':
+                Path(pid_path + '.handshake').write_text('received-not-consumed')
+                time.sleep(30)
+            return value
+        m.strict_json = delayed_handshake
+    _spawn_prepare(payload)
+
+
+def _initialize_overlap_probe(lock, active, peak, barrier):
+    m.configure_storage_lock(lock)
+    original_prepare = m._prepare
+    def measured_prepare(*args):
+        with active.get_lock():
+            active.value += 1
+            peak.value = max(peak.value, active.value)
+        try:
+            barrier.wait(timeout=5)
+            return original_prepare(*args)
+        finally:
+            with active.get_lock():
+                active.value -= 1
+    m._prepare = measured_prepare
+
+
+class _TrackingRLock:
+    def __init__(self, lock, active, maximum):
+        self.lock, self.active, self.maximum = lock, active, maximum
+        self.depth = 0
+
+    def acquire(self, timeout):
+        acquired = self.lock.acquire(timeout=timeout)
+        if acquired:
+            if self.depth == 0:
+                with self.active.get_lock():
+                    self.active.value += 1
+                    self.maximum.value = max(self.maximum.value, self.active.value)
+            self.depth += 1
+        return acquired
+
+    def release(self):
+        self.depth -= 1
+        if self.depth == 0:
+            with self.active.get_lock():
+                self.active.value -= 1
+        self.lock.release()
+
+
 class PreparationTests(unittest.TestCase):
     def setUp(self):
+        m.configure_storage_lock(None)
         self.guard_patch = patch.object(m, 'PLANNING_GUARD_BYTES', 0)
         self.guard_patch.start()
         self.temp = tempfile.TemporaryDirectory()
@@ -31,6 +103,7 @@ class PreparationTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
         self.guard_patch.stop()
+        m.configure_storage_lock(None)
 
     def contract(self, data, mime, params=None):
         return {'schemaVersion': m.SCHEMA, 'assetId': 'synthetic.asset.v1',
@@ -94,6 +167,17 @@ class PreparationTests(unittest.TestCase):
     def test_inconsistent_csv_fails(self):
         self.assert_failed(self.prepare(b'a,b\n1,2,3\n', 'text/csv',
              {'encoding': 'utf-8', 'delimiter': ',', 'hasHeader': True}), 'parser-invalid-input')
+
+    def test_failed_parser_unremoved_scratch_marks_accounting_uncertain(self):
+        raw = b'a,b\n1,2\n1,2,3\n'
+        with patch.object(m.shutil, 'rmtree', return_value=None):
+            result = self.prepare(raw, 'text/csv',
+                 {'encoding': 'utf-8', 'delimiter': ',', 'hasHeader': True})
+        self.assert_failed(result, 'parser-invalid-input')
+        self.assertEqual(result['outputs'], [])
+        self.assertFalse(result['storageAccountingComplete'])
+        self.assertTrue(list(self.output.glob('.preparing-*')))
+        self.assertEqual(self.original.read_bytes(), raw)
 
     def test_json_byte_preserved(self):
         data = b'{ "items": [ {"secret": 1.2345678901234567890}, {"x": 2} ] }\n'
@@ -326,7 +410,8 @@ class PreparationTests(unittest.TestCase):
         first = self.prepare(data, 'application/json', {'jsonRecordPath': []})
         second = self.prepare(data, 'application/json', {'jsonRecordPath': []})
         self.assertEqual(first['outputs'], second['outputs'])
-        self.assertEqual(len(list(self.output.iterdir())), 1)
+        self.assertEqual(len([p for p in self.output.iterdir() if not p.name.startswith('.')]), 1)
+        self.assertTrue(second['preparationReused'])
 
     def test_permissive_output_directory_rejected(self):
         self.output.mkdir(mode=0o755)
@@ -486,6 +571,232 @@ class PreparationTests(unittest.TestCase):
         else:
             os.kill(child_pid, signal.SIGKILL)
             self.fail('Owned parser descendant survived worker leader death')
+
+    def test_ready_receipt_reuses_without_parser(self):
+        raw = b'[1,2]'
+        first = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assertEqual(first['receiptDisposition'], 'written')
+        self.assertGreater(first['receiptBytes'], 0)
+        with patch.object(m, 'capabilities', side_effect=AssertionError('reuse must not invoke parser')):
+            second = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assertTrue(second['preparationReused'])
+        self.assertEqual(second['receiptDisposition'], 'verified-reused')
+        self.assertEqual(first['outputs'], second['outputs'])
+        self.assertEqual(first['receiptSHA256'], second['receiptSHA256'])
+
+    def test_ready_receipt_no_read_hold_wins_before_reuse(self):
+        raw = b'[1]'
+        first = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        contract = self.contract(raw, 'application/json', {'jsonRecordPath': []})
+        contract['holds'] = ['read']
+        with patch.object(m, '_read_original', side_effect=AssertionError('held original must not be opened')):
+            result = m.prepare_asset(contract, self.original, self.output, time.monotonic() + 1)
+        self.assertEqual(result['status'], 'held')
+        self.assertFalse(result['preparationReused'])
+        self.assertTrue((self.output / first['outputs'][0]['outputId']).exists())
+
+    def test_ready_receipt_extract_hold_wins_before_reuse(self):
+        raw = b'[1]'
+        self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        with patch.object(m, '_read_ready_receipt', side_effect=AssertionError('hold before receipt')):
+            result = self.prepare(raw, 'application/json', {'jsonRecordPath': []},
+                                  lambda c: c['holds'].append('extract'))
+        self.assert_failed(result, 'extract-permission-held')
+
+    def test_ready_receipt_changed_output_invalidates(self):
+        raw = b'[1]'
+        first = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        (self.output / first['outputs'][0]['outputId']).write_bytes(b'[9]')
+        result = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assert_failed(result, 'receipt-invalid')
+        self.assertFalse(result['preparationReused'])
+        self.assertEqual(self.original.read_bytes(), raw)
+
+    def test_ready_receipt_wrong_version_invalidates(self):
+        raw = b'[1]'
+        first = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        path = self.output / '.ready-receipts' / (first['contractSHA256'] + '.json')
+        receipt = json.loads(path.read_bytes())
+        receipt['result']['handlerVersion'] = 'bounded-structural-preparation/1'
+        path.write_text(json.dumps(receipt))
+        result = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assert_failed(result, 'receipt-invalid')
+
+    def test_ready_receipt_unknown_metadata_never_echoes(self):
+        raw = b'[1]'
+        first = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        path = self.output / '.ready-receipts' / (first['contractSHA256'] + '.json')
+        receipt = json.loads(path.read_bytes())
+        receipt['result']['metrics']['unexpected'] = 'SECRET-RAW-SOURCE'
+        path.write_text(json.dumps(receipt))
+        result = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assert_failed(result, 'receipt-invalid')
+        self.assertNotIn('SECRET-RAW-SOURCE', json.dumps(result))
+
+    def test_receipt_failure_preserves_verified_outputs_and_charges_bytes(self):
+        raw = b'[1]'
+        with patch.object(m, '_write_ready_receipt', side_effect=m.PreparationError('receipt-write-failed')):
+            result = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assertEqual(result['status'], 'failed')
+        self.assertEqual(result['errorCode'], 'receipt-write-failed')
+        self.assertEqual(result['receiptDisposition'], 'write-failed')
+        self.assertFalse(result['nextStageReady'])
+        self.assertFalse(result['preparationReused'])
+        self.assertEqual(sum(x['bytes'] for x in result['outputs']), len(raw))
+        self.assertTrue((self.output / result['outputs'][0]['outputId']).exists())
+
+    def test_linked_receipt_durability_failure_keeps_its_bytes_charged(self):
+        raw = b'[1]'
+        original_fsync = os.fsync
+        def fail_receipt_directory(fd):
+            path = os.readlink(f'/proc/self/fd/{fd}')
+            if path.endswith('/.ready-receipts'):
+                raise OSError('synthetic-directory-fsync-failure')
+            return original_fsync(fd)
+        with patch.object(m.os, 'fsync', side_effect=fail_receipt_directory):
+            result = self.prepare(raw, 'application/json', {'jsonRecordPath': []})
+        self.assertEqual(result['status'], 'failed')
+        self.assertEqual(result['errorCode'], 'receipt-write-failed')
+        self.assertFalse(result['nextStageReady'])
+        receipt = self.output / '.ready-receipts' / (result['contractSHA256'] + '.json')
+        self.assertEqual(result['receiptBytes'], receipt.stat().st_size)
+        self.assertEqual(result['receiptSHA256'], hashlib.sha256(receipt.read_bytes()).hexdigest())
+        self.assertGreater(sum(x['bytes'] for x in result['outputs']), 0)
+
+    def test_receipt_within_worker_storage_grant(self):
+        result = self.prepare(b'[1]', 'application/json', {'jsonRecordPath': []})
+        used = result['receiptBytes'] + sum(x['bytes'] for x in result['outputs'])
+        self.assertLessEqual(used, result['outputBudget']['maximumOutputBytes'])
+        receipt = self.output / '.ready-receipts' / (result['contractSHA256'] + '.json')
+        self.assertEqual(hashlib.sha256(receipt.read_bytes()).hexdigest(), result['receiptSHA256'])
+        self.assertEqual(receipt.stat().st_mode & 0o077, 0)
+
+    def test_spawn_pool_shared_storage_lock_and_reuse(self):
+        ctx = multiprocessing.get_context('spawn')
+        active, maximum = ctx.Value('i', 0), ctx.Value('i', 0)
+        lock = _TrackingRLock(ctx.RLock(), active, maximum)
+        payloads = []
+        for index in range(3):
+            raw = json.dumps([{'n': index}] * 100).encode()
+            original, output = self.root / f'original-{index}', self.root / f'prepared-{index}'
+            original.write_bytes(raw)
+            contract = self.contract(raw, 'application/json', {'jsonRecordPath': []})
+            contract['assetId'] = f'synthetic.asset.{index}'
+            payloads.append((contract, str(original), str(output)))
+        with ProcessPoolExecutor(max_workers=2, mp_context=ctx, initializer=m.configure_storage_lock,
+                                 initargs=(lock,)) as pool:
+            first = list(pool.map(_spawn_prepare, payloads))
+            second = list(pool.map(_spawn_prepare, payloads))
+        self.assertTrue(all(x['status'] == 'ready' for x in first), first)
+        self.assertTrue(all(x['preparationReused'] for x in second), second)
+        self.assertEqual(maximum.value, 1)
+        self.assertEqual(active.value, 0)
+        self.assertEqual([x['assetId'] for x in first], [p[0]['assetId'] for p in payloads])
+
+    def test_real_spawn_preparation_workers_overlap(self):
+        ctx = multiprocessing.get_context('spawn')
+        active, peak = ctx.Value('i', 0), ctx.Value('i', 0)
+        lock, barrier = ctx.RLock(), ctx.Barrier(2)
+        payloads = []
+        for index in range(2):
+            raw = json.dumps([{'n': index}] * 500).encode()
+            original, output = self.root / f'overlap-original-{index}', self.root / f'overlap-prepared-{index}'
+            original.write_bytes(raw)
+            contract = self.contract(raw, 'application/json', {'jsonRecordPath': []})
+            contract['assetId'] = f'synthetic.overlap.{index}'
+            payloads.append((contract, str(original), str(output)))
+        with ProcessPoolExecutor(max_workers=2, mp_context=ctx, initializer=_initialize_overlap_probe,
+                                 initargs=(lock, active, peak, barrier)) as pool:
+            results = list(pool.map(_spawn_prepare, payloads))
+        self.assertTrue(all(x['status'] == 'ready' for x in results), results)
+        self.assertEqual(peak.value, 2)
+        self.assertEqual(active.value, 0)
+
+    def test_abandoned_shared_lock_exits_by_deadline(self):
+        ctx = multiprocessing.get_context('spawn')
+        lock, ready = ctx.RLock(), ctx.Event()
+        child = ctx.Process(target=_abandon_storage_lock, args=(lock, ready))
+        child.start()
+        self.assertTrue(ready.wait(3))
+        child.join(3)
+        self.assertFalse(child.is_alive())
+        m.configure_storage_lock(lock)
+        raw = b'[1]'
+        self.original.write_bytes(raw)
+        start = time.monotonic()
+        result = m.prepare_asset(self.contract(raw, 'application/json', {'jsonRecordPath': []}),
+                                 self.original, self.output, start + 0.15, minimum_free_bytes=0)
+        self.assert_failed(result, 'deadline-exceeded')
+        self.assertLess(time.monotonic() - start, 2)
+
+    def test_outer_spawn_sigterm_cleans_inner_parser_group(self):
+        ctx = multiprocessing.get_context('spawn')
+        raw = b'[1]'
+        self.original.write_bytes(raw)
+        payload = (self.contract(raw, 'application/json', {'jsonRecordPath': []}),
+                   str(self.original), str(self.output))
+        pid_path = self.root / 'descendant-pid'
+        outer = ctx.Process(target=_spawn_terminable_prepare, args=(payload, str(pid_path)))
+        outer.start()
+        try:
+            for _ in range(300):
+                if pid_path.exists():
+                    break
+                time.sleep(0.01)
+            else:
+                self.fail('Parser descendant did not start')
+            child_pid = int(pid_path.read_text())
+            outer.terminate()
+            outer.join(3)
+            self.assertFalse(outer.is_alive())
+            for _ in range(100):
+                status = Path(f'/proc/{child_pid}/stat')
+                if not status.exists() or status.read_text().split()[2] == 'Z':
+                    break
+                time.sleep(0.01)
+            else:
+                os.kill(child_pid, signal.SIGKILL)
+                self.fail('Inner parser descendant survived outer SIGTERM')
+        finally:
+            if outer.is_alive():
+                outer.kill()
+                outer.join()
+        self.assertEqual(self.original.read_bytes(), raw)
+
+    def test_outer_sigterm_before_handshake_consumption_cleans_group(self):
+        ctx = multiprocessing.get_context('spawn')
+        raw = b'[1]'
+        self.original.write_bytes(raw)
+        payload = (self.contract(raw, 'application/json', {'jsonRecordPath': []}),
+                   str(self.original), str(self.output))
+        pid_path = self.root / 'early-descendant-pid'
+        marker = Path(str(pid_path) + '.handshake')
+        outer = ctx.Process(target=_spawn_terminable_prepare, args=(payload, str(pid_path), True))
+        outer.start()
+        try:
+            for _ in range(300):
+                if pid_path.exists() and marker.exists():
+                    break
+                time.sleep(0.01)
+            else:
+                self.fail('Pre-consumption handshake window did not start')
+            child_pid = int(pid_path.read_text())
+            outer.terminate()
+            outer.join(3)
+            self.assertFalse(outer.is_alive())
+            for _ in range(100):
+                status = Path(f'/proc/{child_pid}/stat')
+                if not status.exists() or status.read_text().split()[2] == 'Z':
+                    break
+                time.sleep(0.01)
+            else:
+                os.kill(child_pid, signal.SIGKILL)
+                self.fail('Parser descendant survived pre-handshake SIGTERM')
+        finally:
+            if outer.is_alive():
+                outer.kill()
+                outer.join()
+        self.assertEqual(self.original.read_bytes(), raw)
 
     def test_sanitized_untrusted_exception(self):
         with patch.object(m, '_read_original', side_effect=OSError('SECRET /private/path')):

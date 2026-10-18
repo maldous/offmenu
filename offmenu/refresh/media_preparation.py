@@ -8,6 +8,7 @@ is isolated in a resource-limited process; unsupported stages remain explicit.
 from __future__ import annotations
 
 import csv
+import contextlib
 import hashlib
 import importlib.metadata
 import importlib.util
@@ -26,6 +27,7 @@ import stat
 import struct
 import sys
 import tempfile
+import threading
 import time
 import zipfile
 from html.parser import HTMLParser
@@ -35,7 +37,7 @@ from .core import RefreshError, canonical, safe_path, sha, strict_json
 
 SCHEMA = 'offmenu-media-preparation-contract/1'
 REPORT_SCHEMA = 'offmenu-media-preparation-result/1'
-VERSION = 'bounded-structural-preparation/1'
+VERSION = 'bounded-structural-preparation/2'
 MiB = 1024 * 1024
 MAX_ORIGINAL_BYTES = 1024 * MiB
 MAX_PARSE_BYTES = 128 * MiB
@@ -54,6 +56,9 @@ MAX_XML_DEPTH = 128
 MAX_FIELD_BYTES = MiB
 MAX_SECONDS = 300
 MAX_MEMORY_BYTES = 768 * MiB
+MAX_RECEIPT_BYTES = MiB
+RECEIPT_SCHEMA = 'offmenu-media-ready-receipt/1'
+_STORAGE_LOCK = None
 PLANNING_GUARD_BYTES = 88418025472
 POPPLER_PATHS = {'pdfinfo': '/usr/bin/pdfinfo', 'pdftotext': '/usr/bin/pdftotext'}
 MIMES = frozenset({
@@ -84,7 +89,7 @@ ERROR_CODES = frozenset({
     'archive-unsafe', 'archive-expansion-limit', 'archive-invalid',
     'pdf-encrypted', 'pdf-page-limit', 'pdf-ocr-required',
     'sheet-limit', 'cell-limit', 'output-limit', 'output-unavailable',
-    'output-conflict', 'capacity-floor-protected', 'member-contracts-required', 'text-format-contract-required', 'selection-partial',
+    'output-conflict', 'capacity-floor-protected', 'receipt-invalid', 'receipt-write-failed', 'member-contracts-required', 'text-format-contract-required', 'selection-partial',
 })
 
 
@@ -93,6 +98,56 @@ class PreparationError(Exception):
         self.metrics = metrics
         self.code = code if code in ERROR_CODES else 'parser-invalid-input'
         self.status = status
+
+
+def configure_storage_lock(lock):
+    """Spawn-pool initializer hook; pass a same-context multiprocessing RLock.
+
+    Never call prepare_asset from a thread pool: its isolated parser uses fork.
+    The outer spawn workers inherit only this process-safe semaphore, and their
+    inner parser children inherit it again without pickling per-task locks.
+    """
+    global _STORAGE_LOCK
+    if lock is not None and (not callable(getattr(lock, 'acquire', None))
+                             or not callable(getattr(lock, 'release', None))):
+        raise ValueError('invalid-storage-lock')
+    _STORAGE_LOCK = lock
+
+
+@contextlib.contextmanager
+def _storage_guard(deadline):
+    _check(deadline)
+    lock = _STORAGE_LOCK
+    acquired = lock is None
+    try:
+        if lock is not None:
+            acquired = lock.acquire(timeout=max(0, deadline - time.monotonic()))
+        if not acquired:
+            raise PreparationError('deadline-exceeded')
+        _check(deadline)
+        yield
+    finally:
+        if lock is not None and acquired:
+            lock.release()
+
+
+def _write_guarded(stream, block, folder, minimum_free_bytes, deadline):
+    # Unbuffered writes make the guard cover the actual allocation, not merely a
+    # userspace buffer that another process could flush after releasing its lock.
+    for offset in range(0, len(block), 65536):
+        chunk = memoryview(block)[offset:offset + 65536]
+        with _storage_guard(deadline):
+            space = os.statvfs(folder)
+            if space.f_bavail * space.f_frsize < minimum_free_bytes + len(chunk):
+                raise PreparationError('capacity-floor-protected')
+            written = 0
+            while written < len(chunk):
+                _check(deadline)
+                count = stream.write(chunk[written:])
+                if count is None or count <= 0:
+                    raise PreparationError('output-unavailable')
+                written += count
+                _check(deadline)
 
 
 def _check(deadline):
@@ -366,18 +421,14 @@ class _Writer:
         target = self.folder / name
         digest, count = hashlib.sha256(), 0
         fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
-        with os.fdopen(fd, 'wb') as stream:
+        with os.fdopen(fd, 'wb', buffering=0) as stream:
             for block in blocks:
                 _check(self.deadline)
                 count += len(block)
                 self.total += len(block)
                 if self.total > self.maximum_output_bytes:
                     raise PreparationError('output-limit')
-                space = os.statvfs(self.folder)
-                if space.f_bavail * space.f_frsize < self.minimum_free_bytes + len(block):
-                    raise PreparationError('capacity-floor-protected')
-                stream.write(block)
-                _check(self.deadline)
+                _write_guarded(stream, block, self.folder, self.minimum_free_bytes, self.deadline)
                 digest.update(block)
             stream.flush()
             os.fsync(stream.fileno())
@@ -838,10 +889,13 @@ def _poppler(tool, arguments, data, deadline, maximum):
                     stream.close()
 
 
-def _worker(conn, data, media, params, folder, deadline, caps, maximum_output_bytes, minimum_free_bytes):
+def _worker(conn, data, media, params, folder, deadline, caps, maximum_output_bytes, minimum_free_bytes, session_owned_flag=None):
     try:
         import resource
         os.setsid()
+        if session_owned_flag is not None:
+            session_owned_flag.value = 1
+        signal.signal(signal.SIGTERM, signal.SIG_DFL)
         conn.send_bytes(canonical({'phase': 'session-ready', 'pid': os.getpid()}))
         # Parser diagnostics can contain raw source text: they are not receipts.
         null = os.open(os.devnull, os.O_WRONLY)
@@ -911,6 +965,203 @@ def _file_hash(path, deadline):
     return digest.hexdigest(), count
 
 
+def _read_ready_receipt(directory, contract, report, deadline, maximum_output_bytes):
+    path = safe_path(directory / '.ready-receipts' / (report['contractSHA256'] + '.json'))
+    if not path.exists():
+        return None
+    try:
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(fd, 'rb') as stream:
+            before = os.fstat(stream.fileno())
+            if (not stat.S_ISREG(before.st_mode) or before.st_uid != os.getuid()
+                    or before.st_mode & 0o077 or not 1 <= before.st_size <= MAX_RECEIPT_BYTES):
+                raise PreparationError('receipt-invalid')
+            raw = stream.read(MAX_RECEIPT_BYTES + 1)
+            _check(deadline)
+            after = os.fstat(stream.fileno())
+        if (_identity(before) != _identity(after) or _identity(after) != _identity(path.stat())
+                or len(raw) > MAX_RECEIPT_BYTES):
+            raise PreparationError('receipt-invalid')
+        value = strict_json(raw)
+        if (not isinstance(value, dict) or set(value) != {'schemaVersion', 'contractSHA256', 'result'}
+                or value['schemaVersion'] != RECEIPT_SCHEMA
+                or value['contractSHA256'] != report['contractSHA256']):
+            raise PreparationError('receipt-invalid')
+        saved = value['result']
+        if not isinstance(saved, dict) or set(saved) != set(report):
+            raise PreparationError('receipt-invalid')
+        for key in ('schemaVersion', 'handlerVersion', 'assetId', 'contractSHA256', 'actualMediaType',
+                    'originalSHA256', 'originalBytes', 'bounds'):
+            if saved[key] != report[key]:
+                raise PreparationError('receipt-invalid')
+        if (saved['status'] != 'ready' or saved['errorCode'] is not None
+                or saved['nextStageReady'] is not True or saved['nextStage'] != 'source-specific-processing'
+                or saved['stages'] != {'integrity': 'passed', 'media': 'passed', 'extraction': 'passed'}
+                or saved['storageAccountingComplete'] is not True
+                or saved['networkRequests'] != 0 or any(saved[key] is not False for key in
+                    ('originalModified', 'normalizationPerformed', 'translationPerformed',
+                     'goldAdmissionEstablished', 'sourceContentsInReport'))):
+            raise PreparationError('receipt-invalid')
+        parser = saved['parser']
+        if (not isinstance(parser, dict) or set(parser) != {'name', 'version'}
+                or parser['name'] not in {'python-stdlib', 'pypdf', 'poppler-pdftotext', 'xlrd'}
+                or not isinstance(parser['version'], str)
+                or not re.fullmatch(r'[0-9A-Za-z.+_-]{1,64}', parser['version'])):
+            raise PreparationError('receipt-invalid')
+        _validate_saved_metadata(saved, contract)
+        outputs = saved['outputs']
+        if not isinstance(outputs, list) or not 1 <= len(outputs) <= MAX_OUTPUT_FILES:
+            raise PreparationError('receipt-invalid')
+        total = len(raw)
+        for output in outputs:
+            if (not isinstance(output, dict) or set(output) != {'outputId', 'sha256', 'bytes', 'format'}
+                    or not isinstance(output['sha256'], str) or not re.fullmatch(r'[0-9a-f]{64}', output['sha256'])
+                    or not isinstance(output['outputId'], str)
+                    or not re.fullmatch(re.escape(output['sha256']) + r'\.(?:jsonl|json|xml|bin)', output['outputId'])
+                    or type(output['bytes']) is not int or not 0 <= output['bytes'] <= MAX_OUTPUT_BYTES
+                    or output['format'] not in {'source-structure-jsonl', 'validated-original-json',
+                                                'validated-original-xml', 'unpacked-source-member'}):
+                raise PreparationError('receipt-invalid')
+            total += output['bytes']
+            if total > maximum_output_bytes:
+                raise PreparationError('output-limit')
+            target = safe_path(directory / output['outputId'])
+            info = target.stat()
+            if info.st_uid != os.getuid() or info.st_mode & 0o077:
+                raise PreparationError('receipt-invalid')
+            if _file_hash(target, deadline) != (output['sha256'], output['bytes']):
+                raise PreparationError('receipt-invalid')
+        _check(deadline)
+        return saved, sha(raw), len(raw)
+    except PreparationError:
+        raise
+    except (OSError, RefreshError, ValueError, KeyError, TypeError, RecursionError):
+        raise PreparationError('receipt-invalid') from None
+
+
+def _validate_saved_metadata(saved, contract):
+    """Private receipts are data: never echo unexpected strings into a report."""
+    params = saved['parameters']
+    generated = {
+        'encoding': ENCODINGS, 'quoteCharacter': {'"'}, 'escapeMode': {'double-quote'},
+        'blankRows': {'omitted'}, 'values': {'unmodified-source-strings'},
+        'representation': {'byte-preserved', 'text-nodes', 'ordered-text-part-paragraphs'},
+        'dtd': {'rejected'}, 'entities': {'rejected'},
+        'scripts': {'never-executed-and-omitted'}, 'externalResources': {'never-fetched'},
+        'archiveCRC': {'verified-all-members'}, 'nestedArchives': {'never-recursed'},
+        'textParts': {'main-headers-footers-footnotes-endnotes-comments'},
+        'embeddedObjects': {'never-executed'}, 'formulas': {'preserved-never-evaluated', 'cached-values-only-not-evaluated'},
+        'dates': {'source-serial-preserved'}, 'externalLinks': {'never-followed'},
+        'extractionMode': {'plain'}, 'ocr': {'not-run'}, 'embeddedScripts': {'never-executed'},
+    }
+    if not isinstance(params, dict) or len(params) > 40:
+        raise PreparationError('receipt-invalid')
+    for key, value in contract['parameters'].items():
+        if params.get(key) != value:
+            raise PreparationError('receipt-invalid')
+    for key, value in params.items():
+        if key in contract['parameters']:
+            continue
+        if key in ('pageStart', 'pageEnd'):
+            valid = type(value) is int and 1 <= value <= MAX_PAGES
+        elif key == 'sheetIndexes':
+            valid = (isinstance(value, list) and 1 <= len(value) <= MAX_SHEETS
+                     and all(type(x) is int and 0 <= x < MAX_SHEETS for x in value))
+        else:
+            valid = key in generated and isinstance(value, str) and value in generated[key]
+        if not valid:
+            raise PreparationError('receipt-invalid')
+    metrics = saved['metrics']
+    numeric = {'recordCount', 'pageCount', 'sheetCount', 'archiveMemberCount', 'rowCount',
+               'columnCount', 'elementCount', 'textPartCount', 'selectedSheetCount', 'cellCount',
+               'selectedPageCount', 'pagesWithoutText'}
+    if not isinstance(metrics, dict) or set(metrics) - numeric - {'ocrNeeded', 'sheets', 'selectedExtentComplete'}:
+        raise PreparationError('receipt-invalid')
+    for key, value in metrics.items():
+        if key in numeric:
+            valid = value is None or (type(value) is int and 0 <= value <= MAX_CELLS)
+        elif key == 'ocrNeeded':
+            valid = value in ('not-applicable', 'not-indicated')
+        elif key == 'selectedExtentComplete':
+            valid = value is True
+        else:
+            valid = (isinstance(value, list) and len(value) <= MAX_SHEETS and all(
+                isinstance(x, dict) and set(x) == {'sheetIndex', 'rowCount'}
+                and type(x['sheetIndex']) is int and 0 <= x['sheetIndex'] < MAX_SHEETS
+                and type(x['rowCount']) is int and 0 <= x['rowCount'] <= MAX_RECORDS for x in value))
+        if not valid:
+            raise PreparationError('receipt-invalid')
+
+
+def _write_ready_receipt(directory, report, deadline, minimum_free_bytes):
+    temporary = None
+    linked = False
+    raw = b''
+    failure = None
+    try:
+        raw = canonical({'schemaVersion': RECEIPT_SCHEMA, 'contractSHA256': report['contractSHA256'],
+                         'result': report})
+        if len(raw) > MAX_RECEIPT_BYTES:
+            raise PreparationError('receipt-write-failed')
+        with _storage_guard(deadline):
+            folder = _private_directory(directory / '.ready-receipts')
+            fd, name = tempfile.mkstemp(prefix='.ready-', dir=folder)
+            temporary = Path(name)
+            with os.fdopen(fd, 'wb', buffering=0) as stream:
+                _write_guarded(stream, raw, folder, minimum_free_bytes, deadline)
+                os.fsync(stream.fileno())
+                _check(deadline)
+            target = safe_path(folder / (report['contractSHA256'] + '.json'))
+            try:
+                os.link(temporary, target)
+                linked = True
+            except FileExistsError:
+                # One deduplicated asset per global plan; an unexpected competing
+                # receipt is a conflict, not permission to overwrite a checkpoint.
+                info = target.stat()
+                if (info.st_uid != os.getuid() or info.st_mode & 0o077
+                        or _file_hash(target, deadline) != (sha(raw), len(raw))):
+                    raise PreparationError('receipt-write-failed')
+                linked = True
+            temporary.unlink()
+            temporary = None
+            # Persist both the checkpoint entry and any newly created directory
+            # entries before a ready receipt can escape this process.
+            for durable_directory in (folder, directory, directory.parent):
+                fd = os.open(durable_directory, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(fd)
+                finally:
+                    os.close(fd)
+                _check(deadline)
+        return sha(raw), len(raw)
+    except PreparationError as error:
+        failure = error
+        if linked:
+            error.receipt_bytes, error.receipt_sha256 = len(raw), sha(raw)
+        raise
+    except (OSError, RefreshError, ValueError, TypeError):
+        error = PreparationError('receipt-write-failed')
+        failure = error
+        if linked:
+            error.receipt_bytes, error.receipt_sha256 = len(raw), sha(raw)
+        raise error from None
+    finally:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                if failure is not None:
+                    try:
+                        retained_bytes = temporary.stat().st_size
+                        failure.receipt_bytes = len(raw) if linked else retained_bytes
+                        failure.receipt_sha256 = sha(raw) if linked or retained_bytes == len(raw) else None
+                    except OSError:
+                        failure.storage_accounting_complete = False
+                # Preserve the pending failure/SystemExit. The coordinator keeps
+                # reservations for explicitly incomplete accounting or worker death.
+
+
 def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, *,
                   maximum_output_bytes=MAX_OUTPUT_BYTES, minimum_free_bytes=None):
     """Return sanitized stage evidence; never treats receipt/download as extraction approval.
@@ -928,6 +1179,8 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
               'actualMediaType': None, 'mediaEvidence': None, 'originalSHA256': None,
               'originalBytes': None, 'parser': None, 'parameters': None, 'metrics': None,
               'outputs': [], 'nextStage': None, 'nextStageReady': False,
+              'preparationReused': False, 'receiptDisposition': 'not-written',
+              'receiptSHA256': None, 'receiptBytes': 0, 'storageAccountingComplete': True,
               'bounds': {'originalBytes': MAX_ORIGINAL_BYTES, 'parseBytes': MAX_PARSE_BYTES,
                          'outputBytes': MAX_OUTPUT_BYTES, 'outputFiles': MAX_OUTPUT_FILES, 'archiveExpandedBytes': MAX_ARCHIVE_BYTES,
                          'archiveMembers': MAX_MEMBERS, 'archiveMemberBytes': MAX_MEMBER_BYTES,
@@ -939,8 +1192,12 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
     process = None
     parent_conn = None
     owned_process_group = False
+    session_owned_flag = None
     scratch = None
     promoted = []
+    preserve_promoted = False
+    previous_sigterm = None
+    sigterm_installed = False
     current_stage = 'integrity'
     try:
         contract = validate_contract(asset_contract)
@@ -980,6 +1237,28 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
             raise PreparationError('copy-permission-held', 'held')
         if not retain:
             raise PreparationError('parser-input-limit', 'unsupported')
+        _check(deadline)
+        directory = _private_directory(output_dir)
+        if safe_path(original_path).parent == directory:
+            raise PreparationError('output-unavailable')
+        reused = _read_ready_receipt(directory, contract, report, deadline, maximum_output_bytes)
+        if reused is not None:
+            saved, receipt_sha, receipt_bytes = reused
+            if _identity(safe_path(original_path).stat()) != original_identity:
+                raise PreparationError('original-changed')
+            for key in ('parser', 'parameters', 'metrics', 'outputs', 'nextStage', 'nextStageReady'):
+                report[key] = saved[key]
+            report.update(status='ready', errorCode=None, preparationReused=True,
+                          receiptDisposition='verified-reused', receiptSHA256=receipt_sha,
+                          receiptBytes=receipt_bytes)
+            report['stages']['extraction'] = 'passed'
+            _check(deadline)
+            return report
+        if maximum_output_bytes <= MAX_RECEIPT_BYTES:
+            raise PreparationError('output-limit')
+        parser_output_limit = maximum_output_bytes - MAX_RECEIPT_BYTES
+        if threading.current_thread() is not threading.main_thread():
+            raise PreparationError('parser-isolation-unavailable', 'unsupported')
         caps = capabilities()
         parser_name = ('pypdf' if caps['optionalParsers']['pypdf']['available'] else 'poppler') if media == 'application/pdf' else 'xlrd' if media == 'application/vnd.ms-excel' else 'python-stdlib'
         parser_version = caps['pythonVersion'] if parser_name == 'python-stdlib' else caps['optionalParsers'][parser_name]['version']
@@ -987,14 +1266,19 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
         if not caps['isolatedWorker']:
             raise PreparationError('parser-isolation-unavailable', 'unsupported')
         _check(deadline)
-        directory = _private_directory(output_dir)
-        if safe_path(original_path).parent == directory:
-            raise PreparationError('output-unavailable')
         scratch = Path(tempfile.mkdtemp(prefix='.preparing-', dir=directory))
+        def terminate_prepare(signum, frame):
+            # SystemExit propagates only after finally has killed the owned parser
+            # session. An outer pool SIGTERM must not leave Poppler descendants.
+            raise SystemExit(128 + signum)
+        previous_sigterm = signal.getsignal(signal.SIGTERM)
+        signal.signal(signal.SIGTERM, terminate_prepare)
+        sigterm_installed = True
         ctx = multiprocessing.get_context('fork')
         parent_conn, child_conn = ctx.Pipe(duplex=False)
+        session_owned_flag = ctx.RawValue('b', 0)
         process = ctx.Process(target=_worker, args=(child_conn, data, media, contract['parameters'],
-                                                   str(scratch), deadline, caps, maximum_output_bytes, minimum_free_bytes), daemon=True)
+                                                   str(scratch), deadline, caps, parser_output_limit, minimum_free_bytes, session_owned_flag), daemon=True)
         process.start()
         child_conn.close()
         while True:
@@ -1050,17 +1334,28 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
                       parameters=result['parameters'], metrics=result['metrics'], outputs=outputs,
                       nextStage=result['nextStage'], nextStageReady=result['nextStageReady'])
         report['stages']['extraction'] = 'passed'
+        if report['status'] == 'ready':
+            preserve_promoted = True
+            try:
+                receipt_sha, receipt_bytes = _write_ready_receipt(directory, report, deadline, minimum_free_bytes)
+            except PreparationError as error:
+                report.update(receiptDisposition='write-failed',
+                              receiptBytes=getattr(error, 'receipt_bytes', 0),
+                              receiptSHA256=getattr(error, 'receipt_sha256', None),
+                              storageAccountingComplete=getattr(error, 'storage_accounting_complete', True))
+                raise
+            report.update(receiptDisposition='written', receiptSHA256=receipt_sha, receiptBytes=receipt_bytes)
     except PreparationError as error:
-        report.update(status=error.status, errorCode=error.code)
+        report.update(status=error.status, errorCode=error.code, nextStageReady=False)
         report['stages'][current_stage] = error.status
     except (OSError, RefreshError, ValueError, TypeError, KeyError):
-        report.update(status='failed', errorCode='output-unavailable' if current_stage == 'extraction' else 'original-unavailable')
+        report.update(status='failed', nextStageReady=False, errorCode='output-unavailable' if current_stage == 'extraction' else 'original-unavailable')
         report['stages'][current_stage] = 'failed'
     finally:
         if process is not None:
             # The handshake proves this is our session. Clean it even if its
             # worker leader died while an inherited Poppler child survived.
-            if owned_process_group:
+            if owned_process_group or (session_owned_flag is not None and session_owned_flag.value == 1):
                 try:
                     os.killpg(process.pid, signal.SIGKILL)
                 except ProcessLookupError:
@@ -1068,15 +1363,35 @@ def prepare_asset(asset_contract, original_path, output_dir, absolute_deadline, 
             elif process.is_alive():
                 process.kill()
             process.join()
+        if sigterm_installed:
+            signal.signal(signal.SIGTERM, previous_sigterm)
         if parent_conn is not None:
             parent_conn.close()
-        if report['status'] in ('failed', 'held'):
+        if report['status'] in ('failed', 'held') and not preserve_promoted:
             for target, identity in promoted:
                 try:
                     if _identity(target.stat()) == identity:
                         target.unlink()
                 except OSError:
                     pass
+                # A failed deletion or replaced owned path is unaccounted
+                # capacity, even when no derivative receipt was returned.
+                try:
+                    target.lstat()
+                except FileNotFoundError:
+                    pass
+                except OSError:
+                    report['storageAccountingComplete'] = False
+                else:
+                    report['storageAccountingComplete'] = False
         if scratch is not None:
             shutil.rmtree(scratch, ignore_errors=True)
+            try:
+                scratch.lstat()
+            except FileNotFoundError:
+                pass
+            except OSError:
+                report['storageAccountingComplete'] = False
+            else:
+                report['storageAccountingComplete'] = False
     return report

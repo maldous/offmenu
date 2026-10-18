@@ -35,18 +35,32 @@ remaining five have fresh exclusive intents. The source list sums to 217,907,200
 bytes and at most ten GETs, zero HEADs/retries/redirects. Unknown TW/Brussels extents
 have explicit 16MiB ceilings; a cap is never presented as an observed byte size.
 
-One serial transfer and one per-host transfer are permitted, with two-second minimum
-start spacing per host. Acquisition and preparation share a 1,200-second envelope;
+The immutable selection requests up to eight I/O workers and eight preparation
+workers. CPU affinity, the current cgroup and its visible limiting ancestors,
+available RAM and cgroup memory headroom determine the effective limits at startup.
+Each preparation process family budgets 2.5 GiB plus a two-GiB coordinator reserve;
+unknown resource limits disable preparation and conservatively cap I/O at two.
+The actual observations and effective/peak worker counts are in the result.
+One transfer per host is permitted, with at least two seconds after its previous
+completion before another request. Different eligible hosts progress concurrently. Acquisition and preparation share a 1,200-second envelope;
 20 seconds are reserved for final checkpoint/report work. The existing child cap is
 1,230 seconds and the workflow remains 25 minutes. Eligible source attempts precede
 preparation, so parser work cannot consume their initial opportunity. Deadline
 exhaustion is an explicit per-asset result.
 
-Fresh source-local claims, cache metadata and partial/reservation checks run under
-the existing lock. The 88,418,025,472-byte planning guard already includes its floor.
+The existing exclusive writer lease covers the complete global command. Source-local
+claim/cache scans, durable intent writes and aggregate physical reservation admission
+are serialized; body transfers remain concurrent. Shared request/byte counters are
+atomic. In-flight unallocated maxima remain charged until each buffered write is
+flushed. A failed source does not cancel independent sources. The 88,418,025,472-byte planning guard already includes its floor.
 Each transfer physically reserves its selected extent/cap and checks live free space
 before each body write. Preparation has a separate one-GiB whole-run output ceiling,
-physical per-item reservation, live free-space guard and finite parser bounds.
+physical per-item reservations capped at 128 MiB, a shared process-safe storage
+lock around live floor checks and writes, and finite parser bounds. Spawned outer
+workers isolate the fork-based parsers from acquisition threads. Uncertain worker
+termination retains its physical reservation and conservatively charges its grant,
+with an explicit per-asset error and uncertain-byte total; it does not free guessed
+capacity. Pool cleanup is bounded inside the final report margin.
 
 The existing CachedAcquirer and shared HTTP-cache retention policy are unchanged.
 The reviewed owner-directed private-original saving mode stores files beneath the
@@ -70,6 +84,13 @@ limits produce closed outcomes while preserving originals. PDF pages and workboo
 sheets use bounded local discovery with actual selected extents recorded. Nothing
 normalizes, translates, admits gold, deploys, executes source content or follows
 external document links.
+
+Ready preparation receipts are durable in stable exact-contract directories. Reuse
+requires current permissions/holds, the unchanged original and every output hash,
+size and safe private path, plus the current handler version. Valid receipts avoid
+re-parsing; newly prepared-byte accounting is zero on reuse. Actual parser parameters
+and output identities remain in full private checkpoints. Successful original GETs
+are never repeated on restart, and uncertain/failed intents remain blocking.
 
 No actual global acquisition or source-body preparation is performed by the cloud
 fixture suite. Root owns the one later submission after the complete freeze review.

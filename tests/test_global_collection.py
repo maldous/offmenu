@@ -7,6 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def module(name,file):
  spec=importlib.util.spec_from_file_location(name,ROOT/file);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 g=module('global_fixture','scripts/collect-fixed-global.py')
+REAL_RESOURCES=g.effective_resources
 f=module('global_save_fixture','tests/test_fixed_source_private_save.py')
 class GlobalTests(unittest.TestCase):
  tearDown=f.SaveTests.tearDown
@@ -16,7 +17,9 @@ class GlobalTests(unittest.TestCase):
   f.SaveTests.setUp(self)
   for key,value in [('a',f.a),('b',f.m),('save',f.save)]:self.stack.enter_context(patch.object(g,key,value))
   self.stack.enter_context(patch.object(g.time,'sleep',return_value=None))
-  self.selected['schemaVersion']='offmenu-global-source-selection/1';self.selected['preparation']=[]
+  self.selected['schemaVersion']='offmenu-global-source-selection/1';self.selected['preparation']=[];self.selected['parallelism']={**g.DEFAULT_PARALLELISM,'minimumHostStartSpacingSeconds':0}
+  resources={'logicalCPUs':24,'affinityCPUs':24,'cgroupCPUCap':24,'effectiveCPUs':24,'memoryAvailableBytes':64*1024**3,'cgroupMemoryHeadroomBytes':64*1024**3,'effectiveMemoryBytes':64*1024**3,'resourceLimitsIncomplete':False,'ioWorkers':8,'preparationWorkers':8,'perHostWorkers':1,'memoryPerPreparationBytes':2560*1024**2,'memoryReserveBytes':2*1024**3}
+  self.stack.enter_context(patch.object(g,'effective_resources',return_value=resources))
   countries=[chr(65+i//26)+chr(65+i%26) for i in range(249)];types=['type'+str(i) for i in range(13)]
   assets=[]
   for source in self.selected['sources']:
@@ -38,7 +41,7 @@ class GlobalTests(unittest.TestCase):
   def run(*args,**kwargs):
    nonlocal calls
    calls+=1
-   if calls==2:kwargs['batch_meter']['requests']+=1;raise RuntimeError('private-error')
+   if args[0]['sourceKey']==self.selected['sources'][1]['sourceKey']:kwargs['batch_meter'].start_request();raise RuntimeError('private-error')
    return real(*args,**kwargs)
   with patch.object(f.save,'run_selected',side_effect=run):report=self.clean_global(self.execute())
   self.assertEqual(report['networkRequests'],5);self.assertEqual(report['networkBytesRead'],len(f.BODY)*4);self.assertEqual(report['changes'][1]['acquisition']['networkRequests'],1);self.assertNotIn('private-error',json.dumps(report))
@@ -106,7 +109,7 @@ class GlobalTests(unittest.TestCase):
  def test_full_actual_cardinality_complete_projection(self):
   actual_manifest=g.manifest_config();actual_selected=g.pinned(g.SELECTION_PIN);self.manifest=actual_manifest;self.selected=actual_selected
   def acquire(source,**kwargs):
-   count=source['expectedBytes'] or 4096;kwargs['batch_meter']['requests']+=1;kwargs['batch_meter']['bodyBytesRead']+=count
+   count=source['expectedBytes'] or 4096;kwargs['batch_meter'].start_request();kwargs['batch_meter'].record_bytes(count)
    return {'status':'verified-private-original','errorCode':None,'network':{'requests':1,'bodyBytesRead':count},'responseMetadata':f.a.response_metadata(200,source['expectedResponse'],request_url=source['url']),
     'cacheStatus':None,'validation':{'bytes':count,'sha256':'a'*64,'originalAcquiredAt':'2026-10-18T21:00:00+00:00'},'receiptPersistence':'written','responsePolicy':f.save.policy_facts([('Cache-Control','private,no-store')]),'originalDisposition':'saved-original','privateSaveState':'saved-original','localBodyBytes':count}
   def prepare(asset_id,contract,path,folder,deadline,remaining):
@@ -126,5 +129,106 @@ class GlobalTests(unittest.TestCase):
   self.assertEqual(dispatch.parse_request(f.a.canonical(request)),request);self.assertEqual(dispatch.report_limit(request),128*1024)
   with self.assertRaises(dispatch.JobError):dispatch.parse_request(f.a.canonical({**request,'url':'https://example.org'}))
   self.assertEqual([row[0] for row in dispatch.profile_steps('global-collection',ROOT)],['readiness','global-collection-tests','media-preparation-tests','global-collection'])
+class ParallelTests(unittest.TestCase):
+ setUp=GlobalTests.setUp
+ tearDown=GlobalTests.tearDown
+ execute=GlobalTests.execute
+ clean_global=GlobalTests.clean_global
+ transport=GlobalTests.transport
+ folder=GlobalTests.folder
+ def test_real_io_overlap_host_limit_independent_failure_and_resume(self):
+  import threading
+  lock=threading.Lock();both=threading.Event();active={};peak=0;first=set();violations=[]
+  def transport(spec,headers,*,deadline):
+   nonlocal peak
+   host=g.urlsplit(spec.url).hostname
+   with lock:
+    active[host]=active.get(host,0)+1;peak=max(peak,sum(active.values()));first.add(host)
+    if active[host]>1:violations.append(host)
+    if len(first)>=2:both.set()
+   self.assertTrue(both.wait(3),'different hosts never overlapped')
+   response=self.transport(spec,headers,deadline=deadline)
+   if spec.source_key==self.selected['sources'][0]['sourceKey']:response.status=403
+   def close():
+    with lock:active[host]-=1
+   response.close=close;return response
+  report=self.clean_global(g.run_global(self.manifest,self.selected,transport=transport))
+  self.assertGreaterEqual(peak,2);self.assertEqual(violations,[]);self.assertEqual(report['networkRequests'],5)
+  self.assertEqual(report['changes'][0]['acquisition']['errorCode'],'source-response-not-permitted')
+  self.assertEqual(sum(x['acquisition']['status']=='verified-private-original' for x in report['changes']),4)
+  calls=len(self.calls);again=self.clean_global(g.run_global(self.manifest,self.selected,transport=lambda *a,**k:(_ for _ in ()).throw(AssertionError('repeat GET'))))
+  self.assertEqual(again['networkRequests'],0);self.assertEqual(len(self.calls),calls)
+  self.assertEqual([r['assetIndex'] for r in report['changes']],sorted(r['assetIndex'] for r in report['changes']))
+ def test_real_spawn_global_preparation_independent_failure_and_resume(self):
+  self.selected['sources']=[];self.selected['maximumRequests']=0;self.selected['maximumTransferBytes']=0;self.selected['preparation']=[]
+  for index in range(3):
+   raw=(b'a,b\n1,2\n'*1000) if index<2 else b'not JSON'
+   path=self.root/('original-'+str(index));path.write_bytes(raw)
+   contract={'schemaVersion':g.media.SCHEMA,'assetId':self.manifest['assets'][index]['assetId'],'expectedSHA256':f.a.sha(raw),'expectedBytes':len(raw),'expectedMediaTypes':['text/csv'] if index<2 else ['application/json'],'permissions':{'read':True,'extract':True,'copy':True},'holds':[],'parameters':{'encoding':'utf-8','delimiter':',','hasHeader':True} if index<2 else {}}
+   self.manifest['assets'][index].update(disposition='retained',retainedOriginal={'path':str(path),'sha256':f.a.sha(raw),'bytes':len(raw)},preparationContract=contract)
+  first=self.clean_global(self.execute());self.assertEqual(first['networkRequests'],0);self.assertGreaterEqual(first['observedPeakPreparations'],2)
+  self.assertEqual([x['preparation']['status'] for x in first['changes']],['ready','ready','failed']);self.assertGreater(first['preparedBytes'],0)
+  second=self.clean_global(self.execute());self.assertEqual(second['preparedBytes'],0);self.assertTrue(all(x['preparation']['preparationReused'] for x in second['changes'][:2]))
+  self.manifest['assets'][0]['sourceStageHolds']=['read'];third=self.clean_global(self.execute());held=third['changes'][0]['preparation'];self.assertEqual(held['status'],'held');self.assertFalse(held['preparationReused']);self.assertEqual(held['stages']['integrity'],'held')
+ def test_global_spawn_deadline_reaps_workers_and_reports_all_rows(self):
+  import multiprocessing
+  self.selected['sources']=[];self.selected['maximumRequests']=0;self.selected['maximumTransferBytes']=0;self.selected['preparation']=[]
+  path=self.root/'deadline.csv';raw=b'a,b\n1,2\n';path.write_bytes(raw)
+  contract={'schemaVersion':g.media.SCHEMA,'assetId':self.manifest['assets'][0]['assetId'],'expectedSHA256':f.a.sha(raw),'expectedBytes':len(raw),'expectedMediaTypes':['text/csv'],'permissions':{'read':True,'extract':True,'copy':True},'holds':[],'parameters':{'encoding':'utf-8','delimiter':',','hasHeader':True}}
+  self.manifest['assets'][0].update(disposition='retained',retainedOriginal={'path':str(path),'sha256':f.a.sha(raw),'bytes':len(raw)},preparationContract=contract)
+  before={p.pid for p in multiprocessing.active_children()};start=time.monotonic()
+  with patch.object(g,'MAX_SECONDS',20.01):report=self.execute()
+  self.assertLess(time.monotonic()-start,5);self.assertEqual(report['assetCount'],9);self.assertEqual(report['networkRequests'],0)
+  self.assertEqual({p.pid for p in multiprocessing.active_children()}-before,set())
+ def test_unknown_preparation_failure_preserves_reserved_budget_and_continues(self):
+  self.selected['sources']=[];self.selected['maximumRequests']=0;self.selected['maximumTransferBytes']=0;self.selected['preparation']=[]
+  for index in range(2):
+   path=self.root/('uncertain-'+str(index));raw=b'a,b\n1,2\n';path.write_bytes(raw)
+   contract={'schemaVersion':g.media.SCHEMA,'assetId':self.manifest['assets'][index]['assetId'],'expectedSHA256':f.a.sha(raw),'expectedBytes':len(raw),'expectedMediaTypes':['text/csv'],'permissions':{'read':True,'extract':True,'copy':True},'holds':[],'parameters':{'encoding':'utf-8','delimiter':',','hasHeader':True}}
+   self.manifest['assets'][index].update(disposition='retained',retainedOriginal={'path':str(path),'sha256':f.a.sha(raw),'bytes':len(raw)},preparationContract=contract)
+  calls=[]
+  def prepare(asset,contract,path,folder,deadline,maximum):
+   calls.append(asset)
+   if asset==self.manifest['assets'][0]['assetId']:(folder/'private-partial').write_bytes(b'abc');raise SystemExit('terminated-child')
+   return {'status':'unsupported','errorCode':'parser-unavailable','stages':{'integrity':'passed','media':'passed','extraction':'unsupported'},'actualMediaType':'text/csv','originalSHA256':contract['expectedSHA256'],'originalBytes':contract['expectedBytes'],'outputs':[],'nextStageReady':False,'metrics':{}},None,0
+  report=self.clean_global(self.execute(prepare=prepare));self.assertEqual(len(calls),2);self.assertEqual(report['preparedUncertainBytes'],128*1024**2)
+  self.assertEqual(report['preparationUncertainGrants'],[[0,128*1024**2]]);self.assertEqual(len(list((self.work/'global-preparation').glob('*/reservation.bin'))),1)
+ def test_atomic_request_and_byte_budget(self):
+  from concurrent.futures import ThreadPoolExecutor
+  budget=g.SharedBudget(4,40)
+  def attempt(i):
+   child=budget.child(str(i),10)
+   try:child.start_request();child.record_bytes(10);return True
+   except f.a.RefreshError:return False
+  with ThreadPoolExecutor(max_workers=16) as pool:results=list(pool.map(attempt,range(50)))
+  self.assertEqual(sum(results),4);self.assertEqual(budget.snapshot()['requests'],4);self.assertEqual(budget.snapshot()['bodyBytesRead'],40)
+ def test_nested_cgroup_ancestor_cpu_and_memory_caps(self):
+  real=g.effective_resources.__wrapped__ if hasattr(g.effective_resources,'__wrapped__') else REAL_RESOURCES
+  files={'/proc/self/cgroup':'0::/user.slice/app','/proc/self/mountinfo':'29 23 0:26 / /sys/fs/cgroup rw - cgroup2 cgroup rw','/proc/meminfo':'MemAvailable: 67108864 kB'}
+  for folder,cpu,cap,used in [('', 'max 100000','max','0'),('/user.slice','200000 100000',str(8*1024**3),str(2*1024**3)),('/user.slice/app','800000 100000',str(16*1024**3),str(1024**3))]:
+   root='/sys/fs/cgroup'+folder;files.update({root+'/cpu.max':cpu,root+'/memory.max':cap,root+'/memory.current':used})
+  with patch.object(g.os,'cpu_count',return_value=24),patch.object(g.os,'sched_getaffinity',return_value=set(range(24))):result=real(g.DEFAULT_PARALLELISM,files.__getitem__)
+  self.assertEqual(result['effectiveCPUs'],2);self.assertEqual(result['effectiveMemoryBytes'],6*1024**3);self.assertEqual(result['preparationWorkers'],1);self.assertFalse(result['resourceLimitsIncomplete'])
+  files.pop('/sys/fs/cgroup/cpu.max');files.pop('/sys/fs/cgroup/memory.max')
+  def host_root(path):
+   if path not in files:raise FileNotFoundError(path)
+   return files[path]
+  result=real(g.DEFAULT_PARALLELISM,host_root);self.assertEqual(result['preparationWorkers'],1);self.assertFalse(result['resourceLimitsIncomplete'])
+  files.pop('/sys/fs/cgroup/user.slice/app/cpu.max');result=real(g.DEFAULT_PARALLELISM,files.__getitem__);self.assertEqual(result['preparationWorkers'],0);self.assertTrue(result['resourceLimitsIncomplete'])
+ def test_capacity_accounts_for_other_active_output_and_flushes(self):
+  import os
+  lockpath=self.work/'fixed-selection.lock'
+  with f.a.writer_lock(lockpath) as fd:
+   coordinator=g.ParallelCoordinator(self.work,fd)
+   with patch.object(f.a,'capacity',return_value=300),patch.object(f.a,'reserve',return_value=(None,None)):
+    coordinator.reserve('one',self.work/'r1',self.work,time.monotonic()+10,100,100)
+    with self.assertRaises(f.a.RefreshError):coordinator.reserve('two',self.work/'r2',self.work,time.monotonic()+10,100,150)
+   stream=io.BytesIO();flushed=[]
+   class Stream:
+    def write(self,block):return stream.write(block)
+    def flush(self):flushed.append(True)
+   with patch.object(f.a,'capacity',return_value=300):coordinator.write('one',Stream(),b'abc',self.work)
+   self.assertEqual(flushed,[True]);self.assertEqual(coordinator.active['one'],97)
+
 # Inherited source fixtures keep previous safety behavior under the global adapter.
 if __name__=='__main__':unittest.main()
