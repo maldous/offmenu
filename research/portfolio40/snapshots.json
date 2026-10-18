@@ -1,0 +1,149 @@
+{
+  "HT-5f6f909f1586f5ef9788": {
+    "sourceId": "HT-5f6f909f1586f5ef9788",
+    "releaseId": "IHSI new CPI methodology2021 document",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/HT/5f6f909f1586f5ef9788/receipt.json",
+      "sha256": "95870b99290f41061abd2c62b720968d216850ca3e4f9d336be797eae9f83c35"
+    },
+    "acquiredAt": "2026-10-14T22:09:18.219816+00:00",
+    "inputFiles": [
+      {
+        "path": "original.pdf",
+        "bytes": 4550675,
+        "sha256": "da1f3c6eeb91afc41e7cb45a927651bd3b38610cecfed57586b260cab862af5e"
+      }
+    ],
+    "validatedAt": null
+  },
+  "HT-a59fe127cc9a7db4822a": {
+    "sourceId": "HT-a59fe127cc9a7db4822a",
+    "releaseId": "Karibe Hotel Haiti complete published diner/lunch/cocktail menu,2016 route",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/round2/HT/a59fe127cc9a7db4822a/receipt.json",
+      "sha256": "eb73fa74420beecf8c5cbabe6f31d0dee6564c7986d09648e3c42917faf49a56"
+    },
+    "acquiredAt": "2026-10-14T22:47:04.242391+00:00",
+    "inputFiles": [
+      {
+        "path": "original.pdf",
+        "bytes": 10599557,
+        "sha256": "0f3d94a9a76e250c9a154c96b4327b8ea141349c72f264abc54dcb816689cbeb"
+      }
+    ],
+    "validatedAt": null
+  },
+  "HU-0214848ea5148c243698": {
+    "sourceId": "HU-0214848ea5148c243698",
+    "releaseId": "Publisher GYERE recipe booklet; edition from cover",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/0214848ea5148c243698/receipt.json",
+      "sha256": "d57dce6435ab6448668250fd525ea5cb2421744048e83b6e733bad533b36aa5a"
+    },
+    "acquiredAt": "2026-10-14T22:13:50.022963+00:00",
+    "inputFiles": [
+      {
+        "path": "original.pdf",
+        "bytes": 5139955,
+        "sha256": "046d2bd04f5d8063f836328e4def964d6b7c4b28585fdeac471a1a368df46e5c"
+      }
+    ],
+    "validatedAt": null
+  },
+  "HU-770b729cb6964bda5fff": {
+    "sourceId": "HU-770b729cb6964bda5fff",
+    "releaseId": "Statistical Pocketbook of Hungary2025",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/770b729cb6964bda5fff/receipt.json",
+      "sha256": "296b2800633d6bdda06a94e3d9ef5a5131921f871a21290761bd0a11410de20d"
+    },
+    "acquiredAt": "2026-10-14T22:13:54.774888+00:00",
+    "inputFiles": [
+      {
+        "path": "original.pdf",
+        "bytes": 4326167,
+        "sha256": "ba1847cd5565b738c75ade757cc7cfea97cd883775874d3eb910000a84e878da"
+      }
+    ],
+    "validatedAt": null
+  },
+  "HU-ec35fb4f4ea6d9937780": {
+    "sourceId": "HU-ec35fb4f4ea6d9937780",
+    "releaseId": "STADAT ara0004 annual averages1995\u20132025 updated2026-03-24",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/ec35fb4f4ea6d9937780/receipt.json",
+      "sha256": "bce64966f8c0b830caff4b4cdff17553b5288fb37fb48c98562c682843e0dad7"
+    },
+    "acquiredAt": "2026-10-14T22:10:03.527609+00:00",
+    "inputFiles": [
+      {
+        "path": "original-table.html",
+        "bytes": 335720,
+        "sha256": "a9b88035da992e9b27dfb8e890878911c01a4cee1303cd592e566eba2c1e1f22"
+      }
+    ],
+    "validatedAt": null
+  },
+  "ID-1164ec57d6d2c351c653": {
+    "sourceId": "ID-1164ec57d6d2c351c653",
+    "releaseId": "2026;2021-2025",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/ID/1164ec57d6d2c351c653/receipt.json",
+      "sha256": "7cebe9641d1264943ce5fbc11c7689229fc17aa60d4ad806cf57e7c28821914d"
+    },
+    "acquiredAt": "2026-10-14T22:08:57.707745+00:00",
+    "inputFiles": [
+      {
+        "path": "original.pdf",
+        "bytes": 9988741,
+        "sha256": "91c458ff6131a471995b430bfaf214ff9225bc1845cf23a72f5c12ddbd65d07c"
+      }
+    ],
+    "validatedAt": null
+  },
+  "IE-owner-44": {
+    "sourceId": "IE-owner-44",
+    "releaseId": "recorded-edition-unresolved",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/IE/recalls/owner-44/acquisition-receipt.json",
+      "sha256": "28734269a8c852d6dc51f93a51a40bee9d1b25ab3430a499b451311e387ec5c7"
+    },
+    "acquiredAt": null,
+    "inputFiles": [],
+    "validatedAt": null
+  },
+  "IE-agricultural-price-AHM05": {
+    "sourceId": "IE-agricultural-price-AHM05",
+    "releaseId": "AHM05 complete served cube; capture revision in response",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/agricultural-price-AHM05/receipt.json",
+      "sha256": "9c4237af2bf1af6bd718a40c9fc749bc2c6f831e7e306e269808ce5de7fd4437"
+    },
+    "acquiredAt": "2026-10-14T22:12:15.225271+00:00",
+    "inputFiles": [
+      {
+        "path": "original.json",
+        "bytes": 28616,
+        "sha256": "d6515b1d7a86b4ee4957562c02bc0561fc397ed5eaa5d2f9b2d6203ca877d79c"
+      }
+    ],
+    "validatedAt": null
+  },
+  "IE-hse-healthy-meal-recipes": {
+    "sourceId": "IE-hse-healthy-meal-recipes",
+    "releaseId": "HSE healthy-meal recipebook; capture revision unknown",
+    "receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/round2/hse-healthy-meal-recipes/receipt.json",
+      "sha256": "22f06ceda95acd8a0310d3d301b8ca40d2b3ae715b6becf037913c2f695e5c04"
+    },
+    "acquiredAt": "2026-10-14T22:46:47.590695+00:00",
+    "inputFiles": [
+      {
+        "path": "publisher-original.pdf",
+        "bytes": 4389559,
+        "sha256": "97af434746d69c32c94fa082d45c2004b5c635dde532bec6244b911d1d215964"
+      }
+    ],
+    "validatedAt": null
+  }
+}

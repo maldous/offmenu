@@ -1,0 +1,26 @@
+{
+  "scope": "Official publisher documentation only; no dataset/book/report body fetched; no rights activated.",
+  "observedUTC": "2026-10-18T05:01:40.887626+00:00",
+  "sources": [
+    {
+      "publisher": "IEOM",
+      "url": "https://www.ieom.fr/Mentions-legales?lang=fr",
+      "sections": [
+        "Les engagements",
+        "La citation",
+        "La reproduction electronique",
+        "La creation archives"
+      ],
+      "observation": "Personal-use copying and short attributed citation are described. Other electronic reproduction and archival uses are restricted. No blanket data-derivative or30dayautomatedcache permission established for the retainedWFreport. Exact publication/operation scope remains held.",
+      "retrieval": "Official HTML page via web tool; not source report body."
+    },
+    {
+      "publisher": "SPC",
+      "url": "https://www.spc.int/SPCterm/disclamer",
+      "result": "403 Forbidden",
+      "disposition": "Stopped; no retry/alternate route. This database-term route does not establish cookbook rights.",
+      "publicationSpecificPermission": "unknown"
+    }
+  ],
+  "excluded": "Search results for unrelatedSPCpublications/software licences not applied to PasifikaPlates. No publisher contact, CAPTCHA bypass, newdata downloads or denied-route retries."
+}

@@ -1,0 +1,12 @@
+{
+  "fixture": "AUTHORED_NOT_PUBLISHER_DATA",
+  "originalAcquiredAt": "2026-10-01T00:00:00Z",
+  "lastValidatedAt": "2026-10-17T00:00:00Z",
+  "nativeUnits": null,
+  "nativeBasis": null,
+  "originalBytes": 0,
+  "zero": 0,
+  "false": false,
+  "lexical": "1,300 ml",
+  "unusedRawPath": "/never/open/source-body.pdf"
+}

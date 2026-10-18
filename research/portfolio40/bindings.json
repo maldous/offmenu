@@ -1,0 +1,604 @@
+{
+  "schemaVersion": "offmenu-portfolio40-binding-config/1",
+  "scope": "Unreviewed metadata configuration; raw bytes never read, passed through or committed",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "bindings": [
+    {
+      "sourceId": "HT-5f6f909f1586f5ef9788",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "IHSI new CPI methodology2021 document",
+      "country": "HT",
+      "types": [
+        "prices/baskets"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/HT/5f6f909f1586f5ef9788/receipt.json",
+        "sha256": "95870b99290f41061abd2c62b720968d216850ca3e4f9d336be797eae9f83c35"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HT/deliverable-validation.json",
+        "sha256": "82609471baf8b1d2dc6b9b76c9db7e1cf9a92a406c4721e1333182ba45e99156"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:09:18.219816+00:00",
+      "inputFiles": [
+        {
+          "path": "original.pdf",
+          "bytes": 4550675,
+          "sha256": "da1f3c6eeb91afc41e7cb45a927651bd3b38610cecfed57586b260cab862af5e"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/HT/5f6f909f1586f5ef9788/original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence": "Public primary publisher document retrieval permitted without login/terms agreement; exact redistribution/extraction licence unverified",
+        "status": "obtained_complete_named_original"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HT/deliverable-validation.json",
+          "sha256": "82609471baf8b1d2dc6b9b76c9db7e1cf9a92a406c4721e1333182ba45e99156"
+        },
+        "selector": "/receipts/0"
+      }
+    },
+    {
+      "sourceId": "HT-a59fe127cc9a7db4822a",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "Karibe Hotel Haiti complete published diner/lunch/cocktail menu,2016 route",
+      "country": "HT",
+      "types": [
+        "recipes"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/round2/HT/a59fe127cc9a7db4822a/receipt.json",
+        "sha256": "eb73fa74420beecf8c5cbabe6f31d0dee6564c7986d09648e3c42917faf49a56"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HT/deliverable-validation.json",
+        "sha256": "82609471baf8b1d2dc6b9b76c9db7e1cf9a92a406c4721e1333182ba45e99156"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:47:04.242391+00:00",
+      "inputFiles": [
+        {
+          "path": "original.pdf",
+          "bytes": 10599557,
+          "sha256": "0f3d94a9a76e250c9a154c96b4327b8ea141349c72f264abc54dcb816689cbeb"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-34/round2/HT/a59fe127cc9a7db4822a/original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence": "Direct public primary publisher/merchant original; private acquisition only without login/terms agreement; no redistribution, extraction, nutrition or dataset-admission permission inferred"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HT/deliverable-validation.json",
+          "sha256": "82609471baf8b1d2dc6b9b76c9db7e1cf9a92a406c4721e1333182ba45e99156"
+        },
+        "selector": "/receipts/2"
+      }
+    },
+    {
+      "sourceId": "HU-0214848ea5148c243698",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "Publisher GYERE recipe booklet; edition from cover",
+      "country": "HU",
+      "types": [
+        "recipes"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/0214848ea5148c243698/receipt.json",
+        "sha256": "d57dce6435ab6448668250fd525ea5cb2421744048e83b6e733bad533b36aa5a"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+        "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:13:50.022963+00:00",
+      "inputFiles": [
+        {
+          "path": "original.pdf",
+          "bytes": 5139955,
+          "sha256": "046d2bd04f5d8063f836328e4def964d6b7c4b28585fdeac471a1a368df46e5c"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/0214848ea5148c243698/original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence_scope": {
+          "acquisition": "Public primary publisher intended reading/download, no account/payment/agreement; no commercial or redistribution grant inferred",
+          "redistribution": "Not cleared; do not publish raw source or infer corpus admission.",
+          "terms_accepted": false,
+          "credentials_used": false,
+          "paid_access": false
+        },
+        "status": "obtained-original-document"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+          "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+        },
+        "selector": "/receipts/0"
+      }
+    },
+    {
+      "sourceId": "HU-770b729cb6964bda5fff",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "Statistical Pocketbook of Hungary2025",
+      "country": "HU",
+      "types": [
+        "prices/baskets"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/770b729cb6964bda5fff/receipt.json",
+        "sha256": "296b2800633d6bdda06a94e3d9ef5a5131921f871a21290761bd0a11410de20d"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+        "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:13:54.774888+00:00",
+      "inputFiles": [
+        {
+          "path": "original.pdf",
+          "bytes": 4326167,
+          "sha256": "ba1847cd5565b738c75ade757cc7cfea97cd883775874d3eb910000a84e878da"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/770b729cb6964bda5fff/original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence_scope": {
+          "acquisition": "Public primary publisher intended reading/download, no account/payment/agreement; no commercial or redistribution grant inferred",
+          "redistribution": "Not cleared; do not publish raw source or infer corpus admission.",
+          "terms_accepted": false,
+          "credentials_used": false,
+          "paid_access": false
+        },
+        "status": "obtained-original-document"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+          "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+        },
+        "selector": "/receipts/1"
+      }
+    },
+    {
+      "sourceId": "HU-ec35fb4f4ea6d9937780",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "STADAT ara0004 annual averages1995\u20132025 updated2026-03-24",
+      "country": "HU",
+      "types": [
+        "prices/baskets"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/ec35fb4f4ea6d9937780/receipt.json",
+        "sha256": "bce64966f8c0b830caff4b4cdff17553b5288fb37fb48c98562c682843e0dad7"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+        "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:10:03.527609+00:00",
+      "inputFiles": [
+        {
+          "path": "original-table.html",
+          "bytes": 335720,
+          "sha256": "a9b88035da992e9b27dfb8e890878911c01a4cee1303cd592e566eba2c1e1f22"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/HU/ec35fb4f4ea6d9937780/original-table.html"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence_scope": {
+          "acquisition": "Public primary publisher intended reading/download, no account/payment/agreement; no commercial or redistribution grant inferred",
+          "redistribution": "Not cleared; do not publish raw source or infer corpus admission.",
+          "terms_accepted": false,
+          "credentials_used": false,
+          "paid_access": false
+        },
+        "status": "obtained-original-document"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/HU/deliverable-validation.json",
+          "sha256": "07ef706a5a2773bb100978a402079617363f8f476b9fe31fc0551688822d1845"
+        },
+        "selector": "/receipts/2"
+      }
+    },
+    {
+      "sourceId": "ID-1164ec57d6d2c351c653",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "2026;2021-2025",
+      "country": "ID",
+      "types": [
+        "nutrition"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/ID/1164ec57d6d2c351c653/receipt.json",
+        "sha256": "7cebe9641d1264943ce5fbc11c7689229fc17aa60d4ad806cf57e7c28821914d"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/ID/deliverable-validation.json",
+        "sha256": "17284a6d6b78785db944f8d113148a7e54724af2ed1098d393e63d5f39cbd264"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:08:57.707745+00:00",
+      "inputFiles": [
+        {
+          "path": "original.pdf",
+          "bytes": 9988741,
+          "sha256": "91c458ff6131a471995b430bfaf214ff9225bc1845cf23a72f5c12ddbd65d07c"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/ID/1164ec57d6d2c351c653/original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence": null,
+        "acquisitionPermission": "Public primary-publisher publication for local original-document inspection; no terms acceptance/login. No redistribution licence inferred.",
+        "redistribution": "unverified; no publication/admission"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/ID/deliverable-validation.json",
+          "sha256": "17284a6d6b78785db944f8d113148a7e54724af2ed1098d393e63d5f39cbd264"
+        },
+        "selector": "/receipts/0"
+      }
+    },
+    {
+      "sourceId": "IE-owner-44",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "recorded-edition-unresolved",
+      "country": "IE",
+      "types": [
+        "prices/baskets"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/IE/recalls/owner-44/acquisition-receipt.json",
+        "sha256": "28734269a8c852d6dc51f93a51a40bee9d1b25ab3430a499b451311e387ec5c7"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+        "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": null,
+      "inputFiles": [],
+      "recordedOriginalPaths": [],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved",
+        "actual-FSAI-403-no-retry-or-reroute"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "licence": "unavailable; public viewing is not reuse permission",
+        "status": "BLOCKED_RETAINED_PUBLISHER_HTTP_403"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+          "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+        },
+        "selector": "/receipts/0"
+      }
+    },
+    {
+      "sourceId": "IE-agricultural-price-AHM05",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "AHM05 complete served cube; capture revision in response",
+      "country": "IE",
+      "types": [
+        "prices/baskets"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/agricultural-price-AHM05/receipt.json",
+        "sha256": "9c4237af2bf1af6bd718a40c9fc749bc2c6f831e7e306e269808ce5de7fd4437"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+        "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:12:15.225271+00:00",
+      "inputFiles": [
+        {
+          "path": "original.json",
+          "bytes": 28616,
+          "sha256": "d6515b1d7a86b4ee4957562c02bc0561fc397ed5eaa5d2f9b2d6203ca877d79c"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/agricultural-price-AHM05/original.json"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "redistribution_qualification": "independent review required",
+        "licence_evidence": "CC BY4.0 official CSO copyright policy https://www.cso.ie/en/aboutus/whoweare/copyrightpolicy/"
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+          "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+        },
+        "selector": "/receipts/1"
+      }
+    },
+    {
+      "sourceId": "IE-hse-healthy-meal-recipes",
+      "sourceIdMeaning": "Portfolio binding ID derived from country and exact receipt directory; NOT global source-family ID or new release alias",
+      "releaseId": "HSE healthy-meal recipebook; capture revision unknown",
+      "country": "IE",
+      "types": [
+        "recipes"
+      ],
+      "typeApplicability": "Proposed source-role association only, no complete coverage or semantic equivalence",
+      "receipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/round2/hse-healthy-meal-recipes/receipt.json",
+        "sha256": "22f06ceda95acd8a0310d3d301b8ca40d2b3ae715b6becf037913c2f695e5c04"
+      },
+      "qualification": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+        "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+      },
+      "scopeEvidence": null,
+      "acquiredAt": "2026-10-14T22:46:47.590695+00:00",
+      "inputFiles": [
+        {
+          "path": "publisher-original.pdf",
+          "bytes": 4389559,
+          "sha256": "97af434746d69c32c94fa082d45c2004b5c635dde532bec6244b911d1d215964"
+        }
+      ],
+      "recordedOriginalPaths": [
+        "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-38/IE/round2/hse-healthy-meal-recipes/publisher-original.pdf"
+      ],
+      "sharedHandler": null,
+      "holds": [
+        "source-body-operation-unselected",
+        "source-use-qualification-unresolved",
+        "HSE-commercial-translation-redistribution-specific-hold"
+      ],
+      "use": {
+        "status": "unresolved-for-transform",
+        "decision": null,
+        "attribution": null
+      },
+      "fields": {
+        "nativeValue": {
+          "role": "proposed metadata-declaration target, not observed source column",
+          "origin": null,
+          "nativeUnit": null,
+          "nativeBasis": null
+        }
+      },
+      "retainedUseEvidence": {
+        "redistribution": "not cleared; separate publisher licence required beforecommercial reuse/admission",
+        "remaining_rights": "Only unchanged acquisition for public reading documented. Before commercial recipe/menu normalization, redistribution, translations or admission, require actual publisher/author-specific grant; unknowns stayunknown."
+      },
+      "typedRemaining": [
+        "source-specific-scope-and-use-decision",
+        "real-field-selector-and-unit-basis",
+        "reviewed-generic-adapter-binding",
+        "staging-acceptance-not-selected"
+      ],
+      "evidenceManifestPointer": {
+        "source": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-40/IE/deliverable-validation.json",
+          "sha256": "abd64554aa308b94d1b42afcd1f602c89d041ae29c522915c69b813318bb818b"
+        },
+        "selector": "/receipts/2"
+      }
+    }
+  ]
+}

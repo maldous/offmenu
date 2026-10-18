@@ -1,0 +1,1 @@
+Authored synthetic receipt metadata only; no publisher/source dataset bytes. Tests derive pin-correct malformed, held, missing and stale variations from this small fixture. Zero/false/unknown/lexical values are intentional. No production SourceContract or acquisition gate is created.

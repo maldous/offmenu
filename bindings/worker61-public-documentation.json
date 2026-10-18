@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "offmenu-worker61-public-documentation/1",
+  "observedOn": "2026-10-18",
+  "documents": [
+    {
+      "url": "https://www.insee.fr/fr/information/2008466",
+      "publisher": "Insee",
+      "title": "Mentions légales et crédits",
+      "publisherUpdatedOn": "2026-04-13",
+      "locators": ["Propriété intellectuelle et liens", "Conditions générales d’utilisation"],
+      "generalNotice": "Public information defaults to Open Licence 2.0 unless stated otherwise. Credit Insee, include known update date, preserve meaning. Automated access must respect service operation and restrictions; dedicated distribution routes are preferred for bulk use. Branding and navigation-screen reproduction have separate limits.",
+      "exactCredit": "Source : Insee",
+      "appliesAs": "General publisher documentation candidate, not exact-workbook inspection or a release of source/action holds.",
+      "remaining": "Bind exact retained file and any specific exception before selecting processing; no additional publisher grant is assumed necessary by default.",
+      "rawPageRetained": false,
+      "rawPageSha256": null
+    }
+  ],
+  "otherSources": "No exact public use/format dictionary was established for NU/TO/YT in this bounded documentation search. Existing body/custody/privacy/transport holds prevail; no dataset page or original was acquired.",
+  "operationEnabled": false
+}
