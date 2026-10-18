@@ -38,6 +38,8 @@ def _pointer(document, pointer):
         raise ValueError('invalid-selector')
     value = document
     for part in pointer[1:].split('/'):
+        if re.search(r'~(?:[^01]|$)', part):
+            raise ValueError('invalid-selector')
         key = part.replace('~1', '/').replace('~0', '~')
         if isinstance(value, list):
             if not key.isdecimal() or str(int(key)) != key:
@@ -104,7 +106,8 @@ def evaluate_binding(spec, evidence, *, now, previous_key=None):
                 value = _pointer(doc, declaration['pointer'])
                 if not (value is None or isinstance(value, (str, bool, int, float))):
                     raise ValueError('scalar-field-required')
-                if 'expected' in declaration and value != declaration['expected']:
+                if 'expected' in declaration and (type(value) is not type(declaration['expected'])
+                                                 or value != declaration['expected']):
                     errors.add('field-literal-mismatch')
                 data[field] = value
                 origins[target] = {'kind': 'source', 'sourceId': spec['sourceId'],
