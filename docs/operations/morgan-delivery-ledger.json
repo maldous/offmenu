@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "published-integration-pr-open-ci-correction-reviewed-not-merged",
-  "asOfUTC": "2026-10-18T01:47:45Z",
+  "status": "published-nonproduction-baseline-application-ci-passed-open-security-findings-not-merged",
+  "asOfUTC": "2026-10-18T01:59:55Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -263,6 +263,13 @@
       "status": "published-integration-initial-ci-failed-fix-reviewed",
       "description": "PR35 draft targets develop at96cdcaa4. Exact361reviewed paths and modes match published tree; no extra changes/deletions;3bulk inventories excluded. Initial web CI661pass/1fail exposes historical receipt-ID assertion conflict. Exact one-file assertion reconciliation independently reviewed with18focused tests; not yet committed at receipt authoring. Full CI and merge remain pending.",
       "anchorCommit": "96cdcaa4fa7b454f90fc366891471edb8705d1f4"
+    },
+    {
+      "recordedAtUTC": "2026-10-18T01:59:55Z",
+      "eventId": "exact-head-application-ci-and-open-security-disposition-20261018",
+      "status": "nonproduction-acceptance-normal-merge-pending",
+      "description": "Head74a404c4 passes push+PR configuration/application CI through web/i18n/build/edge/fullPython/OCR. Four environment-specific Python skips and optional Sonar/Snyk remain open. Fresh GitGuardian flags the same two historical synthetic-fixture incidents; bounded review supports ordinary nonproduction merge with findings documented open, without suppression or security clearance. This receipt publication and actual merge remain pending.",
+      "anchorCommit": "74a404c419a620ff1952a59e6f5255e00ff262df"
     }
   ],
   "lanes": [
@@ -1072,19 +1079,19 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "local-ledger-candidate-not-published",
-    "verifiedPriorCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+    "status": "published-integration-pr35-exact-head-application-ci-passed-not-merged",
+    "verifiedPriorCommit": "74a404c419a620ff1952a59e6f5255e00ff262df",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/74a404c419a620ff1952a59e6f5255e00ff262df",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only within confirmed resumed scope after state reconciliation",
-    "note": "No new publication or develop merge claimed. Prior ledger bytes observed at selected base; writer must attach actual immutable candidate and merge receipts without inventing a self-referential commit."
+    "note": "Exact tested anchor recorded. This ledger delta is not yet published at authoring; its eventual commit must obtain exact-head CI before normal merge. No merged develop, security clearance, deployment or health completion is claimed."
   },
   "activeWork": [
-    "Sole repository writer: publish reviewed receipt assertion reconciliation, rerun exact-head full CI, then qualified PR/merge handling",
+    "Sole repository writer: publish final bounded receipt, verify exact final-head CI, and perform ordinary expected-head develop merge within repository rules; preserve all open security/health/source holds",
     "Per-ref retention, provenance, source bodies and custody discrepancies",
     "Cloud/product/source-storage correction review and exact byte qualification",
     "Preserved product code and existing-path supersession; remaining416deltas open",
@@ -1435,13 +1442,13 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T01:47:45Z",
+    "asOfUTC": "2026-10-18T01:59:55Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
     "developLastVerifiedCommit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
     "integrationBranch": "integration/lossless-develop-baseline-20261018",
     "lastVerifiedIntegrationHead": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
     "finalCandidateCommit": null,
-    "finalCandidateState": "integration-published-initial-ci-failed-reviewed-assertion-correction-pending",
+    "finalCandidateState": "exact-head-application-and-tree-accepted-normal-merge-pending-open-security-findings",
     "developMergeVerified": false,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
@@ -2645,6 +2652,100 @@
       "acceptedFullCICommit": null,
       "mergedDevelopCommit": null,
       "boundary": "This receipt anchors the existing published commit. It does not claim its own future commit SHA, passing full CI, ready PR, merge, deployment, Foo retention or completed source admission."
+    },
+    "priorPublicationSnapshotBeforeFinalCI": {
+      "status": "local-ledger-candidate-not-published",
+      "verifiedPriorCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only within confirmed resumed scope after state reconciliation",
+      "note": "No new publication or develop merge claimed. Prior ledger bytes observed at selected base; writer must attach actual immutable candidate and merge receipts without inventing a self-referential commit."
+    },
+    "finalIndependentAcceptance": {
+      "testedHead": "74a404c419a620ff1952a59e6f5255e00ff262df",
+      "testedTree": "8b19347fd5ebe9af6c7cdcfbdbf4abe472edf774",
+      "pullRequest": 35,
+      "pullRequestUrl": "https://github.com/maldous/offmenu/pull/35",
+      "repositoryScope": "Nonproduction develop baseline only; runtime/handler activation scope unchanged.",
+      "remoteTreeReview": "Fresh untruncated1047-entry Git tree; same four reviewed modifications after original96cdcaa4 assembly. Current correction blobs match exact approvals; all3excluded bulk paths absent. Original361allowlist rechecked from reconstructed retained review metadata.",
+      "applicationCI": {
+        "conclusion": "success",
+        "pullRequestRun": 39088114105,
+        "pullRequestJob": 117558868574,
+        "pushRun": 39088112074,
+        "pushJob": 117558862478,
+        "verifiedStages": [
+          "configuration",
+          "web",
+          "i18n",
+          "build",
+          "locale-edge",
+          "full-Python-discovery",
+          "portable-receipt-OCR"
+        ],
+        "reportedCounts": {
+          "webPassed": 662,
+          "webFailed": 0,
+          "pythonTestsRun": 637,
+          "pythonSkips": 4,
+          "ocrPassed": 6
+        },
+        "countsEvidence": "Writer full-log readback; independent exact-head run/job/stage success readback.",
+        "environmentLimitedPythonSkips": [
+          "CIQUAL frozen CPython/Expat/zlib profile unavailable",
+          "Norway frozen CPython/zlib profile unavailable",
+          "Retained local OCR archive unavailable",
+          "Local curated places source unavailable"
+        ]
+      },
+      "securityDisposition": {
+        "checkRun": 117558863331,
+        "checkConclusion": "failure",
+        "incidentIds": [
+          38328288,
+          38340252
+        ],
+        "freshCheckComparison": "Exact same two historical incident IDs, commits and cited files/lines as previously reviewed; no new incident reported by this check.",
+        "incidentSources": [
+          {
+            "incident": 38328288,
+            "commit": "5722ca925e0c8543a8dc58f40d94e7f1768f475b",
+            "path": "tests/test_foo_setup_batch.py",
+            "line": 68,
+            "assessment": "Mocked OS account lookup and subprocess test; cited source contains no actual credential identified."
+          },
+          {
+            "incident": 38340252,
+            "commit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
+            "path": "tests-edge/better-auth.test.mjs",
+            "line": 156,
+            "assessment": "Synthetic example.test account and local Miniflare/D1 fixture; no real external-account credential identified."
+          }
+        ],
+        "uncertainty": "Exact detector substring unavailable; annotations_count0. Bounded source inspection supports synthetic-fixture classification, not universal absence of secrets.",
+        "mergeDisposition": "Supports ordinary nonproduction develop merge with these findings explicitly open, subject to actual repository merge rules and exact-head checks. No alert dismissal, suppression, security-check weakening or bypass.",
+        "alertsRemainOpen": true,
+        "securityClearance": false,
+        "sonar": "skipped; separate assessment/remediation lane remains open",
+        "snyk": "skipped; remains open"
+      },
+      "remainingBoundaries": [
+        "Full CI success does not complete the health programme or runtime/source acceptance.",
+        "All existing health, environment, source/licence/privacy, Foo runtime and admission holds remain unchanged.",
+        "Foo bulk retention remains unverified; no local deletion authorized.",
+        "No production deployment, release, credential rotation or preservation-ref deletion."
+      ],
+      "mergeState": {
+        "merged": false,
+        "mergedDevelopCommit": null,
+        "ownReceiptCommit": null,
+        "normalMergeSupported": true,
+        "conditions": "Publish reviewed ledger delta; verify actual final-head CI and current PR/base; use ordinary expected-head merge only. Honor repository enforcement, no bypass."
+      }
     }
   }
 }
