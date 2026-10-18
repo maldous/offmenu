@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "check:generated": "node scripts/check-generated-extension.mjs",
     "test": "node --test tests-web/*.test.mjs",
     "i18n:extract": "node scripts/i18n-catalogue.mjs",
     "i18n:check": "node scripts/i18n-catalogue.mjs --check",

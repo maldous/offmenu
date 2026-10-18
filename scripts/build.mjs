@@ -1,10 +1,11 @@
 import {workerRuntimeBuildOptions} from './worker-build-options.mjs';
+import {extensionBuildOptions} from './extension-build-options.mjs';
 import {execFileSync} from 'node:child_process';
 import {build} from 'esbuild';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 execFileSync('node',['scripts/i18n-catalogue.mjs','--check'],{stdio:'inherit'});
 await build({entryPoints:['netlify-return/i18n-source.js'],bundle:true,minify:true,outfile:'netlify-return/i18n.js'});
-await build({entryPoints:['extension/popup-source.js'],bundle:true,minify:true,outfile:'extension/popup.js'});
+await build(extensionBuildOptions);
 await mkdir('dist',{recursive:true});
 await build({entryPoints:['public/sw.js'],bundle:true,minify:true,format:'iife',outfile:'dist/sw.js'});
 await build({entryPoints:['public/data-workspace.js'],bundle:true,minify:true,format:'esm',outfile:'dist/data-workspace.js'});
