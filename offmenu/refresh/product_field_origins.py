@@ -13,7 +13,7 @@ from .core import RefreshError, canonical
 from .field_provenance import datum_pointers, field_origin_errors
 from . import product_adapters as adapters
 
-ADAPTER_SHA256 = '37fd03dcd459dea0d0edd7491aa0dc6ea71c851e79ea68b72bd74c4ff0efc42f'
+ADAPTER_SHA256 = '561f95d72d5a1c3f6ddbfeda55a569cd8aff8fe23ea32713c87d9219db81ff86'
 
 
 @dataclass(frozen=True)

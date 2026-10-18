@@ -16,7 +16,7 @@ from . import acceptance, field_provenance, product_qualification
 from .acceptance import contract_fingerprint, fingerprint, qualify
 from .core import RefreshError, canonical, strict_json
 from .field_provenance import field_origin_errors
-from .product_adapters import ProductContext, ProductLimits, _hash, _safe, _zip_metadata
+from .product_adapters import ProductContext, ProductLimits, _candidate_stats, _hash, _safe, _zip_metadata
 from .product_field_origins import ProductOriginEmitter
 from .product_qualification import qualify_product_candidate
 
@@ -37,6 +37,15 @@ def _members(archive, limits):
                 raise RefreshError('product-origin-duplicate-table')
             result[path.stem] = member.filename
     return result
+
+
+def _stage_manifest(source_manifest, stage_contract, hashes, count, candidate_bytes, originals):
+    return {**source_manifest, 'schemaVersion': VERSION, 'status': 'origin-enriched-candidate',
+            'candidateSha256': hashes['candidate.jsonl'], 'candidateBytes': candidate_bytes,
+            'normalizedRecords': count, 'outputHashes': hashes, 'originStageContract': stage_contract,
+            'originCoverage': 'complete-data-scalars', 'accepted': False,
+            'rawStorage': {'externalNormalization': True, 'sha256': originals['source.sqlite'],
+                           'visibility': 'private', 'publishable': False}}
 
 
 def qualify_product_origins(contract, bundle, roles, normalized_destination, destination,
@@ -94,6 +103,10 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
             for name, digest in manifest['outputHashes'].items():
                 if _hash(_safe(destination / name), limits.max_output_bytes) != digest:
                     raise RefreshError('product-origin-stage-output-mismatch')
+            count, candidate_bytes, _ = _candidate_stats(destination / 'candidate.jsonl', limits)
+            expected = _stage_manifest(source_manifest, stage_contract, manifest['outputHashes'], count, candidate_bytes, originals)
+            if canonical(manifest) != canonical(expected):
+                raise RefreshError('product-origin-stage-manifest-mismatch')
             qualification = qualify(enriched_contract, root, destination / 'candidate.jsonl', manifest)
             return {'candidate': destination / 'candidate.jsonl', 'sidecar': destination / 'field-origins.jsonl',
                     'manifest': manifest, 'qualification': qualification}
@@ -132,11 +145,7 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
             if (root / path).stat().st_size != asset.bytes or _hash(_safe(root / path)) != asset.sha256:
                 raise RefreshError('product-origin-input-changed')
         hashes = {name: _hash(pending / name) for name in ('candidate.jsonl', 'field-origins.jsonl')}
-        manifest = {**source_manifest, 'schemaVersion': VERSION, 'status': 'origin-enriched-candidate',
-                    'candidateSha256': hashes['candidate.jsonl'], 'candidateBytes': candidate_bytes,
-                    'normalizedRecords': count, 'outputHashes': hashes, 'originStageContract': stage_contract,
-                    'originCoverage': 'complete-data-scalars', 'accepted': False,
-                    'rawStorage': {'externalNormalization': True, 'sha256': originals['source.sqlite'], 'visibility': 'private', 'publishable': False}}
+        manifest = _stage_manifest(source_manifest, stage_contract, hashes, count, candidate_bytes, originals)
         qualification = qualify(enriched_contract, root, pending / 'candidate.jsonl', manifest)
         (pending / 'manifest.json').write_bytes(canonical(manifest))
         if destination.exists():

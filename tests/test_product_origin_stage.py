@@ -141,5 +141,28 @@ class ProductOriginStageTest(unittest.TestCase):
         self.assertEqual(list(self.f.root.glob('.product-origins-*')), [])
 
 
+    def test_retry_revalidates_complete_private_stage_manifest(self):
+        first = self.run_stage()
+        expected = first['manifest']
+        manifest_path = self.f.root/'enriched/manifest.json'
+        originals = {name: (self.f.root/'enriched'/name).read_bytes()
+                     for name in ('candidate.jsonl', 'field-origins.jsonl')}
+        mutations = {'accepted': True, 'status': 'accepted-source-scope',
+            'rawStorage': {'visibility': 'public', 'publishable': True},
+            'schemaVersion': 'other', 'candidateSha256': 'f'*64,
+            'candidateBytes': 0, 'normalizedRecords': 999,
+            'originCoverage': 'unchecked', 'inputFiles': [],
+            'normalizationManifestSha256': 'f'*64,
+            'unexpected': 'not part of an origin-stage manifest'}
+        for key, value in [*mutations.items(), ('accepted', 0)]:
+            with self.subTest(field=key, value=value):
+                manifest_path.write_text(json.dumps({**expected, key: value}))
+                with self.assertRaisesRegex(RefreshError, 'stage-manifest-mismatch'):
+                    self.run_stage()
+        manifest_path.write_text(json.dumps(expected))
+        self.assertEqual(self.run_stage()['manifest'], expected)
+        for name, body in originals.items():
+            self.assertEqual((self.f.root/'enriched'/name).read_bytes(), body)
+
 if __name__ == '__main__':
     unittest.main()

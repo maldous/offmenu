@@ -316,5 +316,42 @@ class ProductAdaptersTest(unittest.TestCase):
             self.run_off(path)
 
 
+    def test_retry_revalidates_complete_candidate_manifest(self):
+        source = self.off()
+        expected = self.run_off(source)
+        manifest_path = self.root/'output/manifest.json'
+        originals = {name: (self.root/'output'/name).read_bytes()
+                     for name in ('candidate.jsonl', 'source.sqlite')}
+        mutations = {'accepted': True, 'status': 'accepted-source-scope',
+            'schemaVersion': 'other', 'candidateSha256': 'f'*64,
+            'candidateBytes': 0, 'normalizedRecords': 999, 'rawRows': 999,
+            'kinds': {}, 'sourceId': 'prices', 'releaseId': 'other',
+            'acquiredAt': '2020-01-01T00:00:00Z', 'cacheSeconds': 1,
+            'rightsEvidenceSha256': 'f'*64, 'scopeEvidenceSha256': 'f'*64,
+            'inputFiles': [], 'sharedSourceKey': 'f'*64,
+            'rawStorage': {'visibility': 'public', 'publishable': True},
+            'unexpected': 'not part of a candidate manifest'}
+        for key, value in [*mutations.items(), ('accepted', 0)]:
+            with self.subTest(field=key, value=value):
+                changed = {**expected, key: value}
+                manifest_path.write_text(json.dumps(changed))
+                with self.assertRaisesRegex(RefreshError, 'retry-manifest-mismatch'):
+                    self.run_off(source)
+        manifest_path.write_text(json.dumps(expected))
+        self.assertEqual(self.run_off(source), expected)
+        for name, body in originals.items():
+            self.assertEqual((self.root/'output'/name).read_bytes(), body)
+
+    def test_valid_unchanged_replay_all_product_sources(self):
+        sources = [('off', {'products': self.off()}), ('prices', self.prices()),
+                   ('usda-files', {'archive': self.archive()})]
+        for source_id, inputs in sources:
+            with self.subTest(source=source_id):
+                context = replace(self.context, source_id=source_id)
+                destination = self.root/('replay-' + source_id)
+                first = normalize_products(context, inputs, destination)
+                self.assertEqual(normalize_products(context, inputs, destination), first)
+                self.assertIs(first['accepted'], False)
+
 if __name__ == '__main__':
     unittest.main()
