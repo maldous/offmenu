@@ -4,6 +4,7 @@ Uses the shared strict JSON, path, field-origin and serialization contracts.
 Inputs and output are bounded metadata, not recipe/CPI/nutrient payloads.
 """
 import argparse
+from copy import deepcopy
 from contextlib import contextmanager
 import fcntl
 import json
@@ -19,8 +20,8 @@ from .refresh.core import (RefreshError, atomic_json, canonical, safe_path, sha,
 from .refresh.field_provenance import datum_pointers, field_origin_errors
 from .refresh.national_tabular import valid_input_name
 from .refresh.serialization import encode_records
+from .portfolio_worker09_sources import CONFIGURATION
 
-CONFIG = Path(__file__).resolve().parents[1] / 'config/portfolio-worker09-bindings.json'
 MAX_METADATA = 256 * 1024
 MAX_RECORDS = 32
 MIN_REUSE_SECONDS = 30 * 86400
@@ -30,6 +31,11 @@ ROLES = {'recipe-index-link', 'recipe-submission-link', 'cookbook-catalogue-link
 KI_FIELDS = ('country', 'id', 'canonical_url', 'version', 'category',
              'dataset_acquired', 'redistribution_rights', 'acquisition_rights',
              'http_status', 'bytes', 'sha256', 'utc', 'scope')
+
+
+def configuration():
+    """Packaged inert declarations; no checkout or runtime resource file read."""
+    return deepcopy(CONFIGURATION)
 
 
 def _require(condition, code):
@@ -58,7 +64,15 @@ def _load_pin(root, item):
              'metadata-input-pin-invalid')
     p = safe_path(safe_path(root) / item['path'])
     try:
-        with p.open('rb') as stream:
+        before = p.lstat()
+        _require(stat.S_ISREG(before.st_mode), 'metadata-input-not-regular')
+        descriptor = os.open(p, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(descriptor, 'rb') as stream:
+            opened = os.fstat(stream.fileno())
+            _require(stat.S_ISREG(opened.st_mode), 'metadata-input-not-regular')
+            _require((before.st_dev, before.st_ino) == (opened.st_dev, opened.st_ino),
+                     'metadata-input-changed')
+            _require(opened.st_size <= MAX_METADATA, 'metadata-input-too-large')
             raw = stream.read(MAX_METADATA + 1)
     except FileNotFoundError:
         raise RefreshError('metadata-input-missing') from None
@@ -345,7 +359,7 @@ def _main(argv=None):
     parser.add_argument('--validated-at', help='UTC validation observation; does not reset acquisition')
     args = parser.parse_args(argv)
     root, output = safe_path(args.metadata_root), safe_path(args.output)
-    config = strict_json(CONFIG.read_bytes())
+    config = configuration()
     # A root is only an explicit prefix for pinned JSON names; no inventory or
     # source path from inside an input document is followed.
     for b in config['bindings']:

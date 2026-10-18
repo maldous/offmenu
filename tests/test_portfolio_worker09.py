@@ -4,6 +4,8 @@ from contextlib import redirect_stdout
 import io
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -54,6 +56,83 @@ class PortfolioBindings(unittest.TestCase):
         report = binding.build(self.config(), self.root, now=now or self.now,
                                validated_at=validated or now or self.now)
         return report, report['results'][0]
+
+    def test_packaged_configuration_is_exact_and_defensive(self):
+        config = binding.configuration()
+        self.assertEqual(sha(canonical(config)),
+                         '4950407bc0b0dd2b311bbfcef71cc0802204cfeb19ab51ff4fb231f0abd17e1b')
+        config['bindings'][0]['state'] = 'changed-by-caller'
+        self.assertEqual(binding.configuration()['bindings'][0]['state'], 'metadata')
+
+    def test_reader_uses_one_nonblocking_verified_descriptor(self):
+        original = os.open
+        flags = []
+        def observed(path, mode, *args, **kwargs):
+            flags.append(mode)
+            return original(path, mode, *args, **kwargs)
+        with patch.object(binding.os, 'open', side_effect=observed):
+            _, result = self.run_binding()
+        self.assertEqual(result['status'], 'metadata-candidate')
+        self.assertTrue(flags)
+        self.assertTrue(all(f & os.O_NOFOLLOW and f & os.O_NONBLOCK for f in flags))
+
+    def test_reader_rejects_replacement_between_lstat_and_open(self):
+        target = self.root / 'candidate.json'
+        raw = target.read_bytes()
+        original = os.open
+        for special, expected in [(True, 'metadata-input-not-regular'),
+                                  (False, 'metadata-input-changed')]:
+            with self.subTest(special=special):
+                fired = []
+                def replace_then_open(path, flags, *args, **kwargs):
+                    if Path(path) == target and not fired:
+                        fired.append(True)
+                        replacement = self.root / 'replacement.json'
+                        if special:
+                            os.mkfifo(replacement)
+                        else:
+                            replacement.write_bytes(raw)
+                        os.replace(replacement, target)
+                    return original(path, flags, *args, **kwargs)
+                with patch.object(binding.os, 'open', side_effect=replace_then_open):
+                    _, result = self.run_binding()
+                self.assertEqual(result['diagnostics'], [expected])
+                self.assertTrue(fired)
+                target.unlink()
+                target.write_bytes(raw)
+
+    def test_nonregular_and_oversize_pins_return_fixed_diagnostics(self):
+        (self.root / 'directory.json').mkdir()
+        self.entry['input']['path'] = 'directory.json'
+        _, result = self.run_binding()
+        self.assertEqual(result['diagnostics'], ['metadata-input-not-regular'])
+        self.entry['input']['path'] = 'large.json'
+        (self.root / 'large.json').write_bytes(b'x' * (binding.MAX_METADATA + 1))
+        _, result = self.run_binding()
+        self.assertEqual(result['diagnostics'], ['metadata-input-too-large'])
+
+    def test_fifo_input_cli_returns_isolated_diagnostics_and_valid_sibling(self):
+        good = deepcopy(self.entry)
+        good.update(id='valid-sibling', input=self.write('sibling.json',
+                    (self.root / 'candidate.json').read_bytes()))
+        (self.root / 'candidate.json').unlink()
+        os.mkfifo(self.root / 'candidate.json')
+        script = """import json,sys
+from offmenu import portfolio_worker09 as b
+c=json.loads(sys.stdin.read())
+b.configuration=lambda:c
+raise SystemExit(b.main(['--metadata-root',sys.argv[1],'--output',sys.argv[2],
+                        '--now','2026-10-02T00:00:00Z']))
+"""
+        r = subprocess.run([sys.executable, '-B', '-c', script,
+                            str(self.root), str(self.output)],
+                           input=json.dumps(self.config([self.entry, good])),
+                           capture_output=True, text=True, timeout=2)
+        self.assertEqual(r.returncode, 2, r.stderr)
+        report = json.loads((self.output / 'report.json').read_text())
+        self.assertEqual([r['status'] for r in report['results']],
+                         ['malformed-input', 'metadata-candidate'])
+        self.assertEqual(report['results'][0]['diagnostics'], ['metadata-input-not-regular'])
 
     def test_valid_metadata_has_exact_field_origins_and_unknown_units(self):
         report, result = self.run_binding()
@@ -207,7 +286,7 @@ class PortfolioBindings(unittest.TestCase):
         bad.update(id='missing-fixture', input={**bad['input'], 'path': 'missing.json'})
         config = Path(self.temp.name) / 'config.json'
         config.write_bytes(canonical(self.config([self.entry, bad])))
-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()):
+        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()):
             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
                                    '--now', self.now])
         self.assertEqual(status, 2)
@@ -216,7 +295,7 @@ class PortfolioBindings(unittest.TestCase):
                          ['metadata-candidate', 'missing-input'])
 
     def test_real_portfolio_configuration_retains_all_six_category_gaps(self):
-        config = json.loads(binding.CONFIG.read_text())
+        config = binding.configuration()
         self.assertEqual(config['countries'], ['BH', 'KI', 'RE'])
         self.assertEqual(len(config['requiredDomains']), 6)
         self.assertFalse(config['sourceOperationsAuthorized'])
@@ -228,7 +307,7 @@ class PortfolioBindings(unittest.TestCase):
         config = Path(self.temp.name) / 'bad-config.json'
         config.write_text('{invalid')
         error = io.StringIO()
-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
+        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
                                    '--now', self.now])
         self.assertEqual(status, 2)
@@ -236,7 +315,7 @@ class PortfolioBindings(unittest.TestCase):
         config.write_bytes(canonical(self.config()))
         self.output.write_text('occupied by an unrelated file')
         error = io.StringIO()
-        with patch.object(binding, 'CONFIG', config), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
+        with patch.object(binding, 'configuration', side_effect=lambda: json.loads(config.read_bytes())), redirect_stdout(io.StringIO()), patch('sys.stderr', error):
             status = binding.main(['--metadata-root', str(self.root), '--output', str(self.output),
                                    '--now', self.now])
         self.assertEqual(status, 2)

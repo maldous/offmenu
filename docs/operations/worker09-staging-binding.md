@@ -17,7 +17,7 @@ python3 -m offmenu.portfolio_worker09 \
 
 The output directory must be exclusive and separate from every selected input's
 directory. The root is a prefix for exact relative JSON pins in
-`config/portfolio-worker09-bindings.json`; no inventory, glob, URL access,
+`offmenu/portfolio_worker09_sources.py`; no inventory, glob, URL access,
 archive extraction or publisher-body path inside a receipt is followed. No
 third-party packages, credentials, AI calls or network are required.
 
@@ -109,6 +109,29 @@ immutable replay/no-op, URL/path restrictions and typed CLI failures:
 python3 -m unittest discover -s tests -p test_portfolio_worker09.py -v
 ```
 
+## PR43 catalogue and metadata-reader correction
+
+The fixed catalogue is now an inert Python declaration, included by existing
+`offmenu*` package discovery. `configuration()` returns a defensive copy; no
+checkout `config/` directory is needed at runtime. Exact JSON-to-AST literal
+comparison preserves every prior source pin, selector, clock, scope and hold,
+and the canonical policy hash remains unchanged. No shared packaging file changed.
+Offline wheel and sdist extraction checks run outside the checkout with no site
+packages or corpus. Both load the catalogue and produce two missing-input plus
+three held-input diagnostics against an empty metadata root, rather than failing
+to find the fixed catalogue (PR43 comment4305926950, owned Worker09 scope).
+
+The metadata reader rejects a nonregular path before open, then uses
+`O_NOFOLLOW | O_NONBLOCK` and checks regular type, inode identity and bounded size
+on the opened descriptor. It reads at most MAX_METADATA+1 bytes through that same
+descriptor and authenticates the exact byte count/hash before parsing. A FIFO or
+replacement file returns an isolated fixed diagnostic; a valid following binding
+still runs (PR43 comment4305926954). Authored probes cover the CLI FIFO timeout
+regression, replacement between lstat/open, directory/oversize rejection and
+normal reads. Prior output-lock and malformed-ID fixes remain intact. This is
+not a new grant to inspect source bodies or a sandbox against same-user changes
+to parent directories.
+
 ## Integration and remaining blockers
 
 Only the portfolio module/config/tests/document are owned here. Shared helpers
@@ -123,7 +146,7 @@ metadata-reference candidate schema/handler and trusted scope/rights contract;
 no source manifest or CLI flag may construct a `SourceContract` grant. That
 future shared registration is a proposed integration dependency, not edited
 core or activated execution. Independent review and develop integration of
-these four paths remain required before the next request.
+the owned portfolio paths remain required before the next request.
 
 Actual BH/KI content extraction, recipe rights/body selectors, KI CPI reuse and
 table/unit/base selectors, all other six-domain inputs, and30day retention terms
