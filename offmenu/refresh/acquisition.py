@@ -16,7 +16,7 @@ import shutil
 import ssl
 import time
 import threading
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qsl
 from email.utils import parsedate_to_datetime
 
 from .core import (RefreshError, atomic_json, canonical, digest, fsync_directory,
@@ -44,6 +44,10 @@ class SourceSpec:
     acquisition_version: str = 'https-file-v1'
     release: str = 'mutable'
     cache_scope: str = 'public'
+    query_keys: tuple = ()
+    request_method: str = 'GET'
+    request_body: str = ''
+    public_read_only_post: bool = False
 
     def validate(self):
         if not re.fullmatch(r'[a-z0-9][a-z0-9._-]{0,127}', self.source_key):
@@ -56,13 +60,50 @@ class SourceSpec:
         if not self.enabled or not self.rights_approved or self.held:
             raise RefreshError('source-acquisition-gate-closed')
         parts = urlsplit(self.url)
-        # Initial adapter deliberately excludes query tokens, auth, redirects,
-        # nonstandard ports and custom representation headers.
+        # Only reviewed exact public query keys and canonical read-only JSON POST.
+        # Credentials, redirect discovery and arbitrary request headers stay closed.
         if (parts.scheme != 'https' or not parts.hostname or parts.username
-                or parts.password or parts.query or parts.fragment
+                or parts.password or parts.fragment
                 or parts.port not in (None, 443) or '\\' in self.url
                 or any(ord(c) < 33 or ord(c) > 126 for c in self.url)):
             raise RefreshError('unsupported-source-locator')
+        if (not isinstance(self.query_keys, (tuple, list))
+                or any(not isinstance(k, str) or not re.fullmatch(r'[A-Za-z0-9_.-]{1,64}', k)
+                       or re.search(r'token|key|secret|pass|auth|credential|signature', k, re.I)
+                       for k in self.query_keys)
+                or len(set(self.query_keys)) != len(self.query_keys)):
+            raise RefreshError('invalid-reviewed-query-contract')
+        query = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=True)
+        if (len({k for k, v in query}) != len(query)
+                or set(k for k, v in query) != set(self.query_keys)
+                or any(any(ord(c) < 32 or ord(c) == 127 for c in k + v) for k, v in query)):
+            raise RefreshError('unsupported-source-locator-query')
+        if type(self.public_read_only_post) is not bool or not isinstance(self.request_body, str):
+            raise RefreshError('invalid-reviewed-request-contract')
+        if self.request_method == 'GET':
+            if self.request_body or self.public_read_only_post:
+                raise RefreshError('invalid-reviewed-request-contract')
+        elif self.request_method == 'POST':
+            if not self.public_read_only_post or not 1 <= len(self.request_body.encode('utf-8')) <= 65536:
+                raise RefreshError('read-only-public-post-not-approved')
+            try:
+                body = strict_json(self.request_body.encode('utf-8'))
+                if not isinstance(body, dict) or canonical(body) != self.request_body.encode('utf-8'):
+                    raise ValueError()
+                def public_fields(value):
+                    if isinstance(value, dict):
+                        for key, item in value.items():
+                            if re.search(r'token|api.?key|secret|password|authorization|credential|signature', key, re.I):
+                                raise ValueError()
+                            public_fields(item)
+                    elif isinstance(value, list):
+                        for item in value:
+                            public_fields(item)
+                public_fields(body)
+            except (ValueError, UnicodeError, RecursionError):
+                raise RefreshError('invalid-public-json-post-body') from None
+        else:
+            raise RefreshError('unsupported-source-method')
         if (not re.fullmatch(r'[0-9a-f]{64}', self.policy_fingerprint)
                 or not self.rights_reference or not self.acquisition_version
                 or not self.release):
@@ -72,12 +113,18 @@ class SourceSpec:
             raise RefreshError('invalid-acquisition-bounds')
 
     def identity(self):
-        return {'sourceKey': self.source_key, 'url': self.url,
+        identity = {'sourceKey': self.source_key, 'url': self.url,
                 'policyFingerprint': self.policy_fingerprint,
                 'rightsReference': self.rights_reference, 'cacheScope': self.cache_scope,
                 'acquisitionVersion': self.acquisition_version, 'release': self.release,
                 'representation': {'Accept-Encoding': 'identity'},
                 'maxBytes': self.max_bytes, 'ttlSeconds': self.ttl_seconds}
+        if self.query_keys:
+            identity['queryKeys'] = sorted(self.query_keys)
+        if self.request_method != 'GET':
+            identity['request'] = {'method': self.request_method, 'contentType': 'application/json',
+                                   'body': self.request_body, 'publicReadOnly': self.public_read_only_post}
+        return identity
 
 
 @dataclass(frozen=True)
@@ -122,7 +169,12 @@ class HTTPSFileTransport:
         watchdog.daemon = True
         watchdog.start()
         try:
-            connection.request('GET', parts.path or '/', headers=headers)
+            target = (parts.path or '/') + ('?' + parts.query if parts.query else '')
+            if spec.request_method == 'POST':
+                connection.request('POST', target, body=spec.request_body.encode('utf-8'),
+                                   headers={**headers, 'Content-Type': 'application/json'})
+            else:
+                connection.request('GET', target, headers=headers)
             active_socket[0] = connection.sock
             response = connection.getresponse()
             if expired.is_set():
@@ -550,9 +602,13 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
     if digest(raw_path, max_bytes=8 * MAX_METADATA)['sha256'] != registry_sha256:
         raise RefreshError('collection-registry-pin-mismatch')
     registry = strict_json(raw_path.read_bytes())
-    if (not isinstance(registry, dict) or set(registry) !=
-            {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
-            or registry['schemaVersion'] != 'offmenu-acquisition-selection/1'
+    version = registry.get('schemaVersion') if isinstance(registry, dict) else None
+    expected = {'schemaVersion', 'resources', 'sources', 'bindings', 'evidence'}
+    if version == 'offmenu-acquisition-selection/2':
+        expected.add('assetCatalog')
+        describe_collection_registry(registry)
+    if (not isinstance(registry, dict) or set(registry) != expected
+            or version not in ('offmenu-acquisition-selection/1', 'offmenu-acquisition-selection/2')
             or not isinstance(registry['sources'], list)
             or not isinstance(registry['bindings'], list)):
         raise RefreshError('invalid-collection-registry')
@@ -585,7 +641,8 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
         if not isinstance(entry, dict) or not isinstance(entry.get('spec'), dict):
             raise RefreshError('invalid-collection-source')
         spec = SourceSpec(**entry['spec'])
-        representation = (spec.url, spec.release, spec.acquisition_version, spec.cache_scope)
+        representation = (spec.url, spec.release, spec.acquisition_version, spec.cache_scope,
+                          spec.request_method, spec.request_body)
         if spec.source_key in keys or representation in representations:
             raise RefreshError('duplicate-source-release-use-bindings')
         keys.add(spec.source_key)
@@ -647,6 +704,9 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
               'network': meter, 'scope': 'selected raw originals only',
               'parsed': 0, 'normalized': 0, 'goldAdmitted': 0,
               'countryComplete': False}
+    if version == 'offmenu-acquisition-selection/2':
+        report['assetCatalogSummary'] = {k: v for k, v in describe_collection_registry(registry).items()
+                                         if k != 'unresolved'}
 
     def checkpoint():
         evidence = output / 'evidence' / (sha(canonical(report)) + '.json')
@@ -703,3 +763,91 @@ def collect_registry(registry_path, registry_sha256, output, *, transport=None, 
         report['failedSources'] = len(report['sources']) - report['verifiedSources']
         checkpoint()
     return report
+
+
+def describe_collection_registry(registry):
+    """Metadata-only inventory qualification; never opens a dataset original.
+
+    Catalog descriptors retain unknown provenance and desired citations. Only
+    reviewed `sources` entries are executable; catalog presence never enables one.
+    Country requirements are owned evidence from57, not inferred type coverage.
+    """
+    if (not isinstance(registry, dict)
+            or registry.get('schemaVersion') != 'offmenu-acquisition-selection/2'):
+        raise RefreshError('collection-catalog-v2-required')
+    catalog = registry.get('assetCatalog')
+    if (not isinstance(catalog, dict) or set(catalog) !=
+            {'version', 'assets', 'requirements', 'evidence', 'qualification'}
+            or not isinstance(catalog['version'], str) or not catalog['version']
+            or not isinstance(catalog['evidence'], list) or not catalog['evidence']
+            or not isinstance(catalog['assets'], list)
+            or not isinstance(catalog['requirements'], list)):
+        raise RefreshError('invalid-collection-catalog')
+    for pin in catalog['evidence']:
+        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+                or digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']):
+            raise RefreshError('collection-catalog-evidence-mismatch')
+    assets, locators, origins, local, desired, unresolved = {}, set(), set(), set(), set(), []
+    for asset in catalog['assets']:
+        fields = {'assetId', 'kind', 'publisherCitation', 'request', 'release', 'datatype',
+                  'format', 'destination', 'integrity', 'budget', 'holds', 'reuse', 'purpose',
+                  'actualScope', 'localEvidence', 'provenance', 'sourceKeys', 'unresolved'}
+        if (not isinstance(asset, dict) or set(asset) != fields
+                or not isinstance(asset['assetId'], str) or not asset['assetId']
+                or asset['assetId'] in assets or not isinstance(asset['sourceKeys'], list)
+                or not isinstance(asset['unresolved'], list)):
+            raise RefreshError('invalid-collection-asset-descriptor')
+        key = asset['assetId']
+        assets[key] = asset
+        if asset['request'] and asset['request'].get('url'):
+            locators.add(key)
+        if asset['publisherCitation']:
+            origins.add(key)
+        if asset['localEvidence']:
+            local.add(key)
+        if asset['kind'] == 'desired-source-citation':
+            desired.add(key)
+        if asset['unresolved']:
+            unresolved.append({'assetId': key, 'kind': asset['kind'],
+                               'missing': asset['unresolved'], 'provenance': asset['provenance']})
+    source_keys = {entry['spec']['source_key'] for entry in registry['sources']}
+    catalog_keys = [key for asset in assets.values() for key in asset['sourceKeys']]
+    if set(catalog_keys) != source_keys or len(catalog_keys) != len(source_keys):
+        raise RefreshError('collection-selected-asset-binding-mismatch')
+    selected = {entry['spec']['source_key']: entry['spec'] for entry in registry['sources']}
+    for asset in assets.values():
+        for key in asset['sourceKeys']:
+            spec = SourceSpec(**selected[key])
+            request = asset['request']
+            if (not isinstance(request, dict) or request.get('url') != spec.url
+                    or request.get('method') != spec.request_method
+                    or (spec.request_method == 'POST' and request.get('body') != spec.request_body)
+                    or asset['release'] != spec.release
+                    or asset['destination'] != registry['resources']['storageRoot']
+                    or asset['budget'] != registry['resources']):
+                raise RefreshError('collection-selected-asset-contract-mismatch')
+    rows, countries, mapped = set(), set(), 0
+    for row in catalog['requirements']:
+        if (not isinstance(row, dict) or set(row) !=
+                {'country', 'type', 'assetIds', 'status', 'coverageQualification', 'evidence'}
+                or not re.fullmatch(r'[A-Z]{2}', row['country'])
+                or not isinstance(row['type'], str) or not row['type']
+                or not isinstance(row['assetIds'], list)
+                or not set(row['assetIds']) <= assets.keys()
+                or row['evidence'] not in catalog['evidence']):
+            raise RefreshError('invalid-collection-requirement')
+        key = (row['country'], row['type'])
+        if key in rows:
+            raise RefreshError('duplicate-collection-requirement')
+        rows.add(key)
+        countries.add(row['country'])
+        mapped += bool(row['assetIds'])
+    return {'catalogVersion': catalog['version'], 'assetDescriptors': len(assets),
+            'knownRecordedLocatorDescriptors': len(locators),
+            'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
+            'declaredLocalDescriptors': len(local), 'desiredSourceCitations': len(desired),
+            'selectedExecutableSources': len(source_keys), 'countriesRepresented': len(countries),
+            'countryTypeRequirements': len(rows), 'requirementsWithDeclaredAssetEdges': mapped,
+            'requirementsWithoutDeclaredAssetEdges': len(rows) - mapped,
+            'mappingComplete': False, 'countryComplete': False,
+            'qualification': catalog['qualification'], 'unresolved': unresolved}

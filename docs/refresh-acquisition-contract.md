@@ -58,8 +58,9 @@ implemented. An interrupted transfer cannot be reported as complete.
 
 ## Transport bounds and deliberate limits
 
-- Standard-library HTTPS GET only; no redirects, cookies, credentials, proxy
-  discovery, query strings, custom ports, custom headers or decompression.
+- Standard-library HTTPS with exact reviewed public GET/query or read-only JSON
+  POST contracts; no redirects, cookies, credentials, proxy discovery, custom
+  ports, caller-defined headers or decompression.
 - Only fixed reviewed exact locators; no URL expansion, alternate hosts or
   fallback source requests. Request header is Accept-Encoding: identity, plus
   applicable validators.
@@ -125,7 +126,8 @@ This invokes `offmenu.refresh.acquisition.collect_registry`, using the same
 does not invoke host bootstrap, source parsers, fixture admission, normalization,
 AI, or gold/publication. The hash identifies configuration; it grants no rights.
 
-The selection schema `offmenu-acquisition-selection/1` has exactly five fields:
+The backwards-compatible selection schema `offmenu-acquisition-selection/1` has
+exactly five fields:
 
 - `resources`: `storageRoot`, `maxTransferBytes`, `minimumFreeBytes`, `maxSeconds`.
   The caller qualifies actual execution host and storage separately. Byte and
@@ -184,3 +186,55 @@ conditional due refresh, held/forbidden isolation, aggregate byte bounds, stale
 retained age, original/cache corruption, claim and evidence failures, and safe
 restart. Live retained-copy acceptance is recorded outside Git in the exact
 worker result packet; synthetic HTTP tests do not establish live provider access.
+
+## Historical descriptors and reviewed request extensions
+
+`offmenu-acquisition-selection/2` adds exactly `assetCatalog` to v1's five fields.
+The catalog is `{version, assets, requirements, evidence, qualification}`. Each
+asset has exactly these fields:
+
+```text
+assetId, kind, publisherCitation, request, release, datatype, format, destination,
+integrity, budget, holds, reuse, purpose, actualScope, localEvidence, provenance,
+sourceKeys, unresolved
+```
+
+Unknown fields use null or an explicit unresolved list. A catalog descriptor
+does not become executable: `sourceKeys` binds exactly the selected `sources`,
+with no duplicate or missing executable binding. Other historical originals,
+supporting/failed/derived metadata and desired citations retain distinct kinds.
+`requirements` rows are `{country, type, assetIds, status,
+coverageQualification, evidence}`; absent asset links remain absent. Registry
+version and exact SHA identify a run; ledger results separately bind that identity.
+Catalog evidence is pinned local metadata, not fresh proof of raw-file presence.
+
+```sh
+python3 -B scripts/collect-source-access.py METADATA_OUTPUT \
+  --collection-registry REGISTRY --registry-sha256 SHA --describe-registry
+```
+
+This opens metadata only, writes `registry-summary.json` and the sanitized
+`unresolved-descriptors.json`, and performs no acquisition or raw-body hashing.
+Counts distinguish declared local descriptors, desired citations, recorded
+locators, publisher citation metadata and unresolved descriptors. Publisher
+citation counts include documentary citations and are not counts of qualified
+original custodians. Requirement edges report declared mapping presence, not
+semantic acceptance or full coverage. The current metadata reports deliberately
+retain `mappingComplete: false` and `countryComplete: false`;57 reconciles actual
+coverage and missing owner/provenance evidence.
+
+`SourceSpec` now optionally accepts `query_keys` (default empty),
+`request_method` (default GET), `request_body` (default empty) and
+`public_read_only_post` (default false). Existing default GET identities remain
+byte-compatible. Query keys must match the exact reviewed URL, be unique and
+exclude credential/token/signature keys. Query values are never expanded.
+POST requires an explicit reviewed public-read-only assertion and a canonical
+JSON object body of at most64KiB. Credential fields, arbitrary methods, request
+headers, redirects, signed URLs and automatic pagination stay unsupported.
+The exact POST method/content-type/body/read-only policy binds cache identity;
+different queries/bodies cannot reuse a different response representation.
+The transport sends the exact public query/body to the exact fixed HTTPS host.
+These fields qualify a reviewed static contract, not arbitrary interactive API
+access; all existing gates and holds run first. Multi-document/paginated sets
+must remain explicit pending contracts unless each exact reviewed member is
+separately selected. No MK/MAKSTAT claim or transfer is taken over by these tests.

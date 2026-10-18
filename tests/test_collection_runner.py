@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import Mock, patch
 
 from offmenu.refresh.acquisition import collect_registry
 from offmenu.refresh.core import RefreshError, canonical, sha
@@ -72,6 +73,46 @@ class CollectionRunnerTests(unittest.TestCase):
         self.assertEqual(result['sources'][0]['provenance']['originalAcquiredAt'], NOW.isoformat())
         self.assertEqual(result['network']['bodyBytesRead'], 0)
 
+    def test_exact_reviewed_public_query_and_read_only_post_contracts(self):
+        query = replace(SPEC, url='https://publisher.example/api?id=foods', query_keys=['id'])
+        query.validate()
+        self.assertEqual(query.identity()['queryKeys'], ['id'])
+        for bad in (replace(query, query_keys=[]),
+                    replace(query, url='https://publisher.example/api?token=secret', query_keys=['token']),
+                    replace(query, url='https://publisher.example/api?id=1&id=2'),
+                    replace(query, url='https://publisher.example/api?id=%0A')):
+            with self.assertRaises((RefreshError, ValueError)):
+                bad.validate()
+        body = canonical({'query': [], 'response': {'format': 'JSON-stat2'}}).decode()
+        post = replace(SPEC, request_method='POST', request_body=body, public_read_only_post=True)
+        post.validate()
+        self.assertEqual(post.identity()['request']['body'], body)
+        self.assertNotEqual(post.identity(), SPEC.identity())
+        for bad in (replace(post, public_read_only_post=False),
+                    replace(post, request_body='{"password":"never"}'),
+                    replace(post, request_body='{"query": []}'), replace(post, request_method='DELETE')):
+            with self.assertRaises(RefreshError):
+                bad.validate()
+
+    def test_transport_sends_exact_query_and_post_body_without_credentials(self):
+        from offmenu.refresh.acquisition import HTTPSFileTransport
+        query = replace(SPEC, url='https://publisher.example/api?id=foods', query_keys=['id'])
+        body = canonical({'query': [], 'response': {'format': 'JSON-stat2'}}).decode()
+        post = replace(query, request_method='POST', request_body=body, public_read_only_post=True)
+        for spec in (query, post):
+            conn = Mock()
+            conn.getresponse.return_value.getheaders.return_value = []
+            conn.getresponse.return_value.status = 200
+            with patch('offmenu.refresh.acquisition.http.client.HTTPSConnection', return_value=conn):
+                response = HTTPSFileTransport()(spec, {'Accept-Encoding': 'identity'})
+                response.close()
+            args, kwargs = conn.request.call_args
+            self.assertEqual(args, (spec.request_method, '/api?id=foods'))
+            if spec.request_method == 'POST':
+                self.assertEqual(kwargs['body'], body.encode())
+                self.assertEqual(kwargs['headers']['Content-Type'], 'application/json')
+            self.assertNotIn('Authorization', kwargs['headers'])
+
     def test_held_source_isolated_and_not_requested(self):
         self.registry['sources'][0]['holds'] = ['source-use restriction']
         other = replace(SPEC, source_key='z-independent', url='https://publisher.example/other')
@@ -126,6 +167,56 @@ class CollectionRunnerTests(unittest.TestCase):
         t = Transport()
         self.assertEqual(self.run_batch(t)['sources'][0]['error'], 'collection-claim-not-selected')
         self.assertEqual(t.calls, [])
+
+    def catalog(self):
+        self.registry['schemaVersion'] = 'offmenu-acquisition-selection/2'
+        self.registry['assetCatalog'] = {'version': 'test-v1', 'qualification': 'fixture metadata only',
+            'evidence': [self.pin], 'requirements': [
+                {'country': 'AU', 'type': 'foods', 'assetIds': ['known'], 'status': 'partial',
+                 'coverageQualification': 'selected test scope only', 'evidence': self.pin},
+                {'country': 'BE', 'type': 'recipes', 'assetIds': [], 'status': 'unknown',
+                 'coverageQualification': 'missing input', 'evidence': self.pin}],
+            'assets': [{'assetId': 'known', 'kind': 'declared-raw-original',
+                'publisherCitation': None, 'request': {'url': SPEC.url, 'method': 'GET'}, 'release': SPEC.release,
+                'datatype': 'test', 'format': None, 'destination': self.registry['resources']['storageRoot'], 'integrity': None,
+                'budget': self.registry['resources'], 'holds': [], 'reuse': {'minimumDays': 30}, 'purpose': None,
+                'actualScope': {'complete': False}, 'localEvidence': None, 'provenance': [self.pin],
+                'sourceKeys': [SPEC.source_key], 'unresolved': ['publisher-citation']} ]}
+
+    def test_v2_metadata_counts_preserve_missing_coverage_and_never_read_raw(self):
+        from offmenu.refresh.acquisition import describe_collection_registry
+        self.catalog()
+        import offmenu.refresh.acquisition as acquisition
+        original_digest = acquisition.digest
+        def evidence_only(path, **kwargs):
+            self.assertEqual(Path(path), self.evidence)
+            return original_digest(path, **kwargs)
+        with patch.object(acquisition, 'digest', side_effect=evidence_only):
+            report = describe_collection_registry(self.registry)
+        self.assertEqual(report['countriesRepresented'], 2)
+        self.assertEqual(report['requirementsWithoutDeclaredAssetEdges'], 1)
+        self.assertEqual(report['unresolvedDescriptors'], 1)
+        self.assertFalse(report['mappingComplete'])
+        self.assertFalse(report['countryComplete'])
+
+    def test_v2_catalog_does_not_enable_unselected_sources(self):
+        import copy
+        self.catalog()
+        desired = copy.deepcopy(self.registry['assetCatalog']['assets'][0])
+        desired.update(assetId='desired', kind='desired-source-citation', sourceKeys=[])
+        self.registry['assetCatalog']['assets'].append(desired)
+        t = Transport(Response())
+        report = self.run_batch(t)
+        self.assertEqual(len(t.calls), 1)
+        self.assertEqual(report['verifiedSources'], 1)
+        self.assertEqual(report['assetCatalogSummary']['desiredSourceCitations'], 1)
+        self.assertEqual(report['assetCatalogSummary']['selectedExecutableSources'], 1)
+
+    def test_v2_unmapped_executable_source_fails_before_request(self):
+        self.catalog()
+        self.registry['assetCatalog']['assets'][0]['sourceKeys'] = []
+        with self.assertRaisesRegex(RefreshError, 'selected-asset-binding-mismatch'):
+            self.run_batch(Transport())
 
     def test_registry_and_binding_evidence_fail_before_source_request(self):
         path = self.root / 'registry.json'

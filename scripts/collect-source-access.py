@@ -32,14 +32,25 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('output',type=Path)
  p.add_argument('--collection-registry',type=Path)
  p.add_argument('--registry-sha256')
+ p.add_argument('--describe-registry',action='store_true',help='Metadata-only catalog summary and unresolved descriptors; no acquisition')
  a=p.parse_args()
  if bool(a.collection_registry)!=bool(a.registry_sha256):p.error('Collection requires exact registry path and SHA-256')
+ if a.describe_registry and not a.collection_registry:p.error('Describe requires a pinned collection registry')
  if a.collection_registry:
   import sys
   sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-  from offmenu.refresh.acquisition import collect_registry
-  from offmenu.refresh.core import RefreshError
-  try:report=collect_registry(a.collection_registry,a.registry_sha256,a.output)
+  from offmenu.refresh.acquisition import collect_registry,describe_collection_registry
+  from offmenu.refresh.core import RefreshError,digest,strict_json,safe_path,atomic_json
+  try:
+   if a.describe_registry:
+    path=safe_path(a.collection_registry)
+    if digest(path,max_bytes=8*1024*1024)['sha256']!=a.registry_sha256:raise RefreshError('collection-registry-pin-mismatch')
+    report=describe_collection_registry(strict_json(path.read_bytes()))
+    output=safe_path(a.output);output.mkdir(parents=True,exist_ok=True)
+    atomic_json(output/'unresolved-descriptors.json',{'scope':'sanitized metadata-only descriptors; no dataset bodies or acquisition','assets':report.pop('unresolved')})
+    atomic_json(output/'registry-summary.json',report)
+    print(json.dumps(report));return 0
+   report=collect_registry(a.collection_registry,a.registry_sha256,a.output)
   except (RefreshError,OSError,ValueError,TypeError,KeyError) as error:
    print(json.dumps({'status':'collection-rejected','error':str(error) if isinstance(error,RefreshError) else type(error).__name__}));return 2
   print(json.dumps({'status':'collection-reported','verifiedSources':report['verifiedSources'],'failedSources':report['failedSources'],'network':report['network'],'countryComplete':False}))
