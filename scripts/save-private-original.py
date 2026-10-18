@@ -8,7 +8,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 from types import SimpleNamespace
 ROOT=Path(__file__).resolve().parents[1]
-ERRORS={'private-save-contract-invalid','predecessor-evidence-mismatch','private-original-conflict','private-custody-permissions-invalid','private-save-intent-uncertain','invalid-response-headers'}
+ERRORS={'private-save-contract-invalid','predecessor-evidence-mismatch','private-original-conflict','private-custody-permissions-invalid','private-save-intent-uncertain','invalid-response-headers','owner-native-claims-unavailable','owner-handover-invalid'}
 IGNORED_NON_RENDERED={'set-cookie','server-timing','content-security-policy','content-security-policy-report-only'}
 POLICY_KEYS={'cacheControlPrivate','cacheControlNoStore','cacheControlNoCache','vary','contentEncoding','setCookieFields','nonRenderedCSPFields','httpResponseCached','httpCacheReuse'}
 
@@ -101,7 +101,7 @@ def validate_mode(mode,selected,a):
       or item['responseMetadata']['httpStatus']!=200):raise a.RefreshError('private-save-contract-invalid')
  return mode
 
-def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None):
+def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None,owner_runtime=None):
  a=adapter;contract=a.source_contract(source);fingerprint=contract['fingerprint'];maximum=contract['maxBytes'];seconds=contract['seconds']
  deadline=min(deadline if deadline is not None else float('inf'),time.monotonic()+seconds)
  prior=next((p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']),None);diagnostic_sha=(mode['diagnosticReportPin'] or {}).get('sha256');meter={'requests':0,'bodyBytesRead':0}
@@ -117,16 +117,19 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
    originals=private_directory(work/'private-originals',a);folder=private_directory(originals/fingerprint,a)
    original=folder/'original.pdf';partial=folder/'original.partial';provenance=folder/'provenance.json';intent=folder/'successor-intent.json';reservation=folder/'reservation.bin'
    old_claim=work/'intents'/(a.sha(source['url'].encode())+'.json')
-   report['claimCoverage']=a.inspect_runner_metadata((a.LEGACY_CACHE,work),source,intent,old_claim,deadline)
-   if prior is not None:
+   if owner_runtime is not None:
+    report['claimCoverage']=owner_runtime.admit(work,source,intent,old_claim,prior,deadline)
+   else:report['claimCoverage']=a.inspect_runner_metadata((a.LEGACY_CACHE,work),source,intent,old_claim,deadline)
+   if prior is not None and owner_runtime is None:
     a.read_metadata(old_claim,expected_sha256=prior['intentSHA256'])
     state=diagnostic_module().local_state(work,source,prior)
     if state['intentSHA256']!=prior['intentSHA256'] or any(state[key]['state']!='absent' for key in ('currentMetadata','recoveryMetadata','partialBody','sourceReservation')):raise a.RefreshError('predecessor-evidence-mismatch')
-   else:
+   elif prior is None:
     if source['sourceKey'] not in mode.get('freshSources',[]):raise a.RefreshError('private-save-contract-invalid')
     cached=work/'source-cache/requests'/a.sha(a.canonical(a.source_spec(source).identity()))
     if old_claim.exists() or any((cached/name).exists() for name in ('current.json','recovery.json','body.partial')) or (work/('reservation-'+a.sha(source['url'].encode())+'.bin')).exists():raise a.RefreshError('source-claim-uncertain')
-   base={'schemaVersion':'offmenu-private-original-successor/1','sourceKey':source['sourceKey'],'url':source['url'],'sourceContractSHA256':fingerprint,'predecessor':prior,'diagnosticReportSHA256':diagnostic_sha,'owner':0}
+   base={'schemaVersion':'offmenu-private-original-successor/1','sourceKey':source['sourceKey'],'url':source['url'],'sourceContractSHA256':fingerprint,'predecessor':prior,'diagnosticReportSHA256':diagnostic_sha,'owner':0 if owner_runtime is None else owner_runtime.uid}
+   if owner_runtime is not None:base['ownerHandover']=owner_runtime.provenance()
    if intent.exists():
     existing,_=a.read_metadata(intent)
     if existing.get('state')!='verified' or any(existing.get(k)!=v for k,v in base.items()):raise a.RefreshError('private-save-intent-uncertain')

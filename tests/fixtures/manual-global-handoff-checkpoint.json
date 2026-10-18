@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "offmenu-manual-global-handoff-checkpoint/1",
+  "handoffId": "owner-local-global-20261018-001",
+  "recordedAt": "2026-10-18T21:57:26.585Z",
+  "disposition": "manual-selected-awaiting-owner-execution",
+  "coordinator": "root",
+  "source": {
+    "repository": "maldous/offmenu",
+    "trustedCommit": "24b8bb0fa0eb7c7f6632aade4dcb6d8d9ee49793",
+    "tree": "0a37818dea2f985fe342e27d9479a492aab36037",
+    "profile": "global-collection",
+    "entrypoint": "scripts/collect-fixed-global.py",
+    "selectionPath": "docs/collection-selections/global-original-selection.json",
+    "selectionBlob": "23b13dff157f3e6982f7841dcab7c961a1d955fa",
+    "selectionSHA256": "12bb04632ea6bbe078b68d28efab566f38c942e39a4339e91f02a738d7fe1008",
+    "runtimeManifestSHA256": "d846a735762e627fbf69475da958f39fa68418bea19c6b186e516f9e7feef270",
+    "sourceContractCount": 10
+  },
+  "selectedSources": [
+    {
+      "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+      "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9",
+      "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+      "expectedBytes": null,
+      "hardTransferBytes": 16777216
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+      "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39",
+      "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+      "expectedBytes": null,
+      "hardTransferBytes": 16777216
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+      "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc",
+      "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+      "expectedBytes": null,
+      "hardTransferBytes": 16777216
+    },
+    {
+      "sourceKey": "py-drive-health1",
+      "sourceContractSHA256": "047ce52c55f691b64f53f304718f12423b4b94a2a4509033226e4794ad98af04",
+      "url": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+      "expectedBytes": 3450289,
+      "hardTransferBytes": 3538944
+    },
+    {
+      "sourceKey": "py-drive-health2",
+      "sourceContractSHA256": "13a65d6a69c6ea61e10d5a5d091512105f1918c8e3b10e9e3471592bd6b29deb",
+      "url": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+      "expectedBytes": 7587546,
+      "hardTransferBytes": 7667712
+    },
+    {
+      "sourceKey": "py-drive-school1",
+      "sourceContractSHA256": "ec26eca78d79af04f779c7bb0d0e5740a83339a17c3bc4f83624a999c507b3b9",
+      "url": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+      "expectedBytes": 30653686,
+      "hardTransferBytes": 30736384
+    },
+    {
+      "sourceKey": "py-drive-school2",
+      "sourceContractSHA256": "72eb60e3a5984d8b5e09ae84792daae22851092e1bfb99b8ce6af5f44afc82ea",
+      "url": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+      "expectedBytes": 73938718,
+      "hardTransferBytes": 74055680
+    },
+    {
+      "sourceKey": "py-drive-veg",
+      "sourceContractSHA256": "7f13d163d6d979a2f9f004d000dbb72494a0228d7303b389e03d58405f0b2daa",
+      "url": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+      "expectedBytes": 17928840,
+      "hardTransferBytes": 18022400
+    },
+    {
+      "sourceKey": "be-brussels-adult-recipes",
+      "sourceContractSHA256": "b30062d3b55a47b2c2c4f1687a9fe6fc49e8fd392467c58a93c3eba471e8aa95",
+      "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_07_RecettesAdultes_FR.PDF",
+      "expectedBytes": null,
+      "hardTransferBytes": 16777216
+    },
+    {
+      "sourceKey": "be-brussels-child-recipes",
+      "sourceContractSHA256": "e0c172f3647a54d16cf5be5f394d6a71a7b22ae5b532f444203600085b915f52",
+      "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_08_RecettesEnfants_FR.PDF",
+      "expectedBytes": null,
+      "hardTransferBytes": 16777216
+    }
+  ],
+  "runnerState": {
+    "control": "e0beddcb69e81eef68e9e17ae6845ce633b899e8",
+    "requestBlob": "2b975e2191b9dfa3670cd4d5c2dd58b999c1c738",
+    "request": {
+      "schemaVersion": 1,
+      "jobId": "batch-recovery-diagnostic-20261018-001",
+      "profile": "batch-recovery-diagnostic"
+    },
+    "inProgressTotal": 0,
+    "queuedTotal": 0,
+    "observedAt": "2026-10-18T21:55:48Z"
+  },
+  "manualExecution": {
+    "selected": true,
+    "started": false,
+    "completionObserved": false,
+    "ownerLocalImplementation": "pending-separate-reviewed-publication",
+    "normalUserRequired": true,
+    "permissionExpansionAuthorized": false,
+    "sourceBodiesPublished": false
+  },
+  "overlapHold": {
+    "active": true,
+    "scope": "all-ten-selected-source-contracts-and-their-exact-source-aliases",
+    "automaticRunnerSubmissionPermitted": false,
+    "rule": "Root must not dispatch an overlapping runner job while this manual handoff is selected, running, or outcome-uncertain. Reconcile and import the actual manual outcome and custody before releasing any overlapping contract.",
+    "releaseRequires": "Explicit coordinator disposition after verified actual manual outcomes, or an explicit cancellation before execution; never elapsed time alone.",
+    "knownQueuedControlRuns": 0,
+    "knownInProgressControlRuns": 0,
+    "nativeWorkersUniversallyStopped": false
+  },
+  "custodyRequirements": {
+    "preserveHistoricalFailedIntents": true,
+    "preserveExistingOriginalsAndPartials": true,
+    "noFreshNamespaceForgettingExistingCustody": true,
+    "successorMustBindHandoffAndExactPredecessorHashes": true,
+    "freshNativeAndLocalClaimsCheckBeforeEachGET": true,
+    "unknownOrConflictingCustodyBlocksAffectedSource": true,
+    "originalMinimumDedupSeconds": 2592000,
+    "manualOutputsNeedSourceContractLengthDigestAndTerminalDisposition": true,
+    "rawFilesStayOnFoo": true
+  },
+  "historicalFailedPredecessors": [
+    {
+      "detailSHA256": "160db999e3d0990176bf60ef20bb9c29c9c286cfe9d871bb68c30e7a166ece45",
+      "intentSHA256": "bbd221aae3121c967ed9778951797a680eb7fa25999996b0f881636429b4ac3d",
+      "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9",
+      "sourceKey": "tw41-eastern-afa-14103-regional-bento-original"
+    },
+    {
+      "detailSHA256": "545714b5d26a8ad714e854b2815c3e9f0a920958fda2b8f5a0984ffeb7d754d0",
+      "intentSHA256": "b8450b8c92001f000ad4dbffaebbcca626e7a9cebd7fc4f2b9fca301c58efbbc",
+      "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39",
+      "sourceKey": "tw41-eastern-afa-14102-regional-bento-original"
+    },
+    {
+      "detailSHA256": "050e3fe23ec3dc4bf5ce6d9bb7cfe4601c870aa5fa8bd22bb48e4d00c46375ed",
+      "intentSHA256": "6b019a0f8614682b648598b358398b37eb8ee9b8301f0f8545e7a51e3b07abb7",
+      "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc",
+      "sourceKey": "tw41-eastern-afa-14101-regional-bento-original"
+    },
+    {
+      "detailSHA256": "7e021c50141682443151191a8b96cd81a4874897fd620ae63a99e4736ee14789",
+      "intentSHA256": "4d5e0fc9edc523af9874116c146cf19a22710b6b2e12ed0de3b619851f69a72d",
+      "sourceContractSHA256": "047ce52c55f691b64f53f304718f12423b4b94a2a4509033226e4794ad98af04",
+      "sourceKey": "py-drive-health1"
+    },
+    {
+      "detailSHA256": "56b98f7a59ee0068a2daeb117e3748993fd57bcdc4fee9ee0c6b632bb688a5fa",
+      "intentSHA256": "a95dbef7ba44ab2d418dac1c1a0bca1090b526f8286ba3183712a98e21234bb5",
+      "sourceContractSHA256": "13a65d6a69c6ea61e10d5a5d091512105f1918c8e3b10e9e3471592bd6b29deb",
+      "sourceKey": "py-drive-health2"
+    }
+  ],
+  "priorDiagnostic": {
+    "runId": 39163218410,
+    "attempt": 1,
+    "receiptCommit": "cba3e79bd8ed15e0d05fbdcdd21fb04bf7154cc3",
+    "sourceReportSHA256": "f305aec76c63259342d1e7cbfb4677536e1799f8bcf168a48cbc7f32c9017bd8",
+    "noOriginalBodyRead": true,
+    "historicalGETCauseEstablished": false
+  },
+  "routePreservation": {
+    "workflowUnchanged": true,
+    "runnerServiceUnchanged": true,
+    "completionPR": 31,
+    "completionPRUnchanged": true,
+    "webhookUnchanged": true,
+    "requestUnchanged": true,
+    "nativeReceiptPath": ".github/offmenu-runner/latest-session-receipt.json",
+    "legacyReceiptPath": ".github/offmenu-runner/latest-receipt.json"
+  },
+  "outcome": {
+    "networkRequests": null,
+    "acceptedOriginals": null,
+    "acceptedBytes": null,
+    "preparedOutputs": null,
+    "terminalReceipt": null
+  }
+}

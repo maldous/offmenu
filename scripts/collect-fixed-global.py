@@ -3,7 +3,7 @@
 from __future__ import annotations
 from collections import Counter,defaultdict
 from copy import deepcopy
-import importlib.util,json,os,re,stat,sys,time,threading,math,multiprocessing
+import importlib.util,json,os,pwd,re,stat,sys,time,threading,math,multiprocessing
 from contextlib import contextmanager,nullcontext
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor,wait,FIRST_COMPLETED
 from pathlib import Path
@@ -16,6 +16,7 @@ from offmenu.refresh import media_preparation as media
 SCHEMA='offmenu-global-collection-result/1'
 SELECTION_PIN=('docs/collection-selections/global-original-selection.json','12bb04632ea6bbe078b68d28efab566f38c942e39a4339e91f02a738d7fe1008')
 MANIFEST_PIN=('docs/collection-selections/global-known-assets-runtime.json','d846a735762e627fbf69475da958f39fa68418bea19c6b186e516f9e7feef270')
+OWNER_PIN=('docs/collection-selections/owner-local-runtime.json','8dd3372dd9c2f4f0ec5f845cdc1a97c64addf8fe12ccecc26603128bb2bf514b')
 MAX_ASSETS=10000;MAX_SECONDS=1200;MAX_OUTPUT_BYTES=1024**3;MAX_SUMMARY=96*1024
 STATES=('ready-nextstage','held','unsupported','error','unverified','missing-contract','retained','eligible')
 CUSTODY=('unverified','held','no-path','inaccessible','path-absent','unsafe-path','not-regular','extent-mismatch','stat-observed','verified-original')
@@ -279,12 +280,12 @@ def runtime_capabilities():
    'stdlibFormats':['csv','tsv','json','xml','html','zip','xlsx','docx'],
    'optionalParsers':{key:{'available':False,'version':None} for key in ('pypdf','xlrd','poppler')}}
 
-def run_global(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None):
+def run_global(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,owner_runtime=None):
  work=a.owned_directory(a.owned_directory(a.OUTPUT)/'collection')
  with a.writer_lock(work/'fixed-selection.lock') as lease:
-  return _run_global_locked(manifest,selected,transport=transport,adverse_evidence=adverse_evidence,prepare=prepare,progress=progress,lease=lease)
+  return _run_global_locked(manifest,selected,transport=transport,adverse_evidence=adverse_evidence,prepare=prepare,progress=progress,lease=lease,owner_runtime=owner_runtime)
 
-def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,lease=None):
+def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,lease=None,owner_runtime=None):
  source_assets={}
  for i,asset in enumerate(manifest['assets']):
   if asset.get('sourceKey'):source_assets.setdefault(asset['sourceKey'],[]).append(i)
@@ -323,7 +324,7 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
    if time.monotonic()>=deadline:raise a.RefreshError('global-deadline-exhausted')
    indices=source_assets[source['sourceKey']]
    if any(a.exact_source_match(e,source) for e in adverse_evidence) or any(manifest['assets'][i]['disposition']!='eligible' for i in indices):raise a.RefreshError('global-source-conflict')
-   detail=save.run_selected(source,adapter=a,mode=selected['privateOriginalDownload'],transport=transport,deadline=deadline,batch_meter=child,coordinator=coordinator)
+   detail=save.run_selected(source,adapter=a,mode=selected['privateOriginalDownload'],transport=transport,deadline=deadline,batch_meter=child,coordinator=coordinator,owner_runtime=owner_runtime)
   except Exception as failure:error=str(failure) if isinstance(failure,a.RefreshError) and str(failure) in ERRORS else 'collector-rejected'
   return b.item_report(source,detail,error,child.snapshot())
  def acquired(source,item):
@@ -604,13 +605,139 @@ def sanitize_report(report):
  return report
 
 
+class OwnerRuntime:
+ """Exact one-time cross-route handover; stable owner-local custody thereafter."""
+ def __init__(self,config,selected):
+  self.config=config;self.selected=selected;self.uid=os.getuid()
+  if self.uid==0:raise a.RefreshError('owner-handover-invalid')
+  self.home=a.owned_directory(Path(pwd.getpwuid(self.uid).pw_dir))
+  parent=a.owned_directory(self.home/'src/offmenu-data')
+  self.root=save.private_directory(parent/'owner-collection-runtime',a)
+  work=save.private_directory(self.root/'collection',a)
+  save.private_directory(work/'intents',a);save.private_directory(self.root/'tmp',a)
+  self.native=Path(config['nativeClaimsRoot']);self.runner_work=Path('/srv/offmenu-refresh/outputs/collection');self.runner_cache=Path('/srv/offmenu-refresh/cache')
+  self.access={str(p):self.access_state(p) for p in (self.runner_work,self.runner_cache)}
+ @staticmethod
+ def access_state(path):
+  try:
+   path=a.safe_path(path);info=path.stat()
+   if not stat.S_ISDIR(info.st_mode):return 'not-directory'
+   with os.scandir(path) as entries:next(entries,None)
+   return 'readable'
+  except FileNotFoundError:return 'absent'
+  except PermissionError:return 'inaccessible'
+  except a.RefreshError:return 'unsafe-path'
+  except OSError:return 'io-uncertain'
+ def provenance(self):
+  return {'handoffId':self.config['handoffId'],'runtimeConfigSHA256':OWNER_PIN[1],
+   'dispatchHoldSHA256':self.config['dispatchHoldPin']['sha256'],'executionContext':'owner-manual-foo',
+   'runnerResumeRequiresOutcomeImport':True}
+ def admit(self,work,source,intent,old_claim,prior,deadline):
+  a.deadline_check(deadline)
+  if source['sourceKey'] not in self.config['sourceKeys']:raise a.RefreshError('owner-handover-invalid')
+  if self.access_state(self.native)!='readable':raise a.RefreshError('owner-native-claims-unavailable')
+  urls=[source['url']]+[u for u in source.get('aliases',[]) if u.startswith(('https://','http://'))]
+  for url in urls:
+   path=a.safe_path(self.native/(a.sha(url.encode())+'.json'))
+   try:path.lstat()
+   except FileNotFoundError:continue
+   raise a.RefreshError('known-exact-source-alternate-cache')
+  # Local old-style claims are never migrated or treated as our predecessor.
+  cached=work/'source-cache/requests'/a.sha(a.canonical(a.source_spec(source).identity()))
+  if old_claim.exists() or any((cached/n).exists() for n in ('current.json','recovery.json','body.partial')) or (work/('reservation-'+a.sha(source['url'].encode())+'.bin')).exists():raise a.RefreshError('source-claim-uncertain')
+  coverage=a.inspect_runner_metadata((self.native,work),source,intent,old_claim,deadline)
+  for historical in (self.runner_work,self.runner_cache):
+   state=self.access_state(historical)
+   if state in {'absent','inaccessible'}:continue # Exact source-bound dispatch hold + pinned diagnostic, never an empty-catalogue assertion.
+   if state!='readable':raise a.RefreshError('owner-handover-invalid')
+   historical_claim=self.runner_work/'intents'/(a.sha(source['url'].encode())+'.json')
+   if historical==self.runner_work:
+    cached=historical/'source-cache/requests'/a.sha(a.canonical(a.source_spec(source).identity()))
+    private=historical/'private-originals'/a.sha(a.canonical(source))
+    if any(a.safe_path(cached/n).exists() for n in ('current.json','recovery.json','body.partial')) or a.safe_path(historical/('reservation-'+a.sha(source['url'].encode())+'.bin')).exists() or a.safe_path(private).exists():raise a.RefreshError('source-claim-uncertain')
+   if historical==self.runner_work and prior is not None:
+    a.read_metadata(historical_claim,expected_sha256=prior['intentSHA256'])
+    observed=save.diagnostic_module().local_state(self.runner_work,source,prior)
+    if observed['intentSHA256']!=prior['intentSHA256'] or any(observed[k]['state']!='absent' for k in ('currentMetadata','recoveryMetadata','partialBody','sourceReservation')):raise a.RefreshError('predecessor-evidence-mismatch')
+   elif historical==self.runner_work and historical_claim.exists():raise a.RefreshError('source-claim-uncertain')
+   extra=a.inspect_runner_metadata((historical,),source,intent,historical_claim if prior is not None else old_claim,deadline)
+   for key in ('entriesExamined','metadataFilesRead','metadataBytesRead','missingRoots'):coverage[key]+=extra[key]
+  return coverage
+
+def owner_config(selected):
+ value=a.strict_json(a.preparation_module().pinned_bytes(ROOT,OWNER_PIN))
+ if (value.get('schemaVersion')!='offmenu-owner-local-runtime/1' or value.get('mode')!='owner-local'
+     or value.get('runtimeRootSuffix')!='src/offmenu-data/owner-collection-runtime'
+     or value.get('nativeClaimsRoot')!='/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims'
+     or value.get('sourceKeys')!=[s['sourceKey'] for s in selected['sources']]
+     or value.get('sourceContractSHA256')!=[a.sha(a.canonical(s)) for s in selected['sources']]
+     or value.get('runnerMustRemainPausedUntilManualOutcomeImported') is not True
+     or value.get('globalRequestAdmitted') is not False):raise a.RefreshError('owner-handover-invalid')
+ # validate_mode verifies every predecessor against the exact published five-source diagnostic.
+ save.validate_mode(selected['privateOriginalDownload'],selected,a)
+ pin=value['dispatchHoldPin'];hold=a.strict_json(a.preparation_module().pinned_bytes(ROOT,(pin['path'],pin['sha256'])))
+ if (hold.get('handoffId')!=value['handoffId'] or [r['sourceKey'] for r in hold['selectedSources']]!=value['sourceKeys']
+     or [r['sourceContractSHA256'] for r in hold['selectedSources']]!=value['sourceContractSHA256']
+     or hold['historicalFailedPredecessors']!=selected['privateOriginalDownload']['predecessors']
+     or hold['overlapHold']['active'] is not True or hold['overlapHold']['automaticRunnerSubmissionPermitted'] is not False
+     or hold['runnerState']['queuedTotal']!=0 or hold['runnerState']['inProgressTotal']!=0):raise a.RefreshError('owner-handover-invalid')
+ return value
+
+def manual_envelope(report,runtime):
+ return {'schemaVersion':'offmenu-owner-manual-global-result/1','executionContext':'owner-manual-foo',
+  'invokingUID':runtime.uid,'outputRoot':str(runtime.root),'handover':runtime.provenance(),
+  'historicalRunnerRootAccess':runtime.access,'nativeClaimsRoot':str(runtime.native),'nativeCoverageExhaustive':False,
+  'globalReportSHA256':a.sha(a.canonical(report)),'globalReport':report}
+
+def publisher_module():
+ spec=importlib.util.spec_from_file_location('manual_results_publisher',ROOT/'scripts/publish-manual-global-result.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+
+def saved_manual_result(runtime,envelope=None):
+ folder=save.private_directory(runtime.root/'collection/manual-results',a)
+ if envelope is not None:
+  raw=a.canonical(envelope);digest=a.sha(raw);name='result-'+digest+'.json'
+  a.write_immutable(folder/name,envelope)
+  save.write_private_intent(folder/'latest.json',{'schemaVersion':'offmenu-manual-result-pointer/1','resultFilename':name,'resultSHA256':digest},a)
+ else:
+  pointer,_=a.read_metadata(folder/'latest.json')
+  if set(pointer)!={'schemaVersion','resultFilename','resultSHA256'} or pointer['schemaVersion']!='offmenu-manual-result-pointer/1' or not re.fullmatch(r'result-[a-f0-9]{64}\.json',pointer['resultFilename']) or pointer['resultFilename']!='result-'+pointer['resultSHA256']+'.json':raise a.RefreshError('owner-handover-invalid')
+  name=pointer['resultFilename'];digest=pointer['resultSHA256'];envelope,_=a.read_metadata(folder/name,expected_sha256=digest)
+ return envelope,folder/name,digest
+
+def verify_manual_handover():
+ return publisher_module().verify_active_handover(sys.modules[__name__])
+
+def publish_manual_result(envelope):
+ return publisher_module().publish_result(envelope,sys.modules[__name__])
+
 def main(argv=None):
- report=blocked_report('global-config-invalid');selected=None;progress={}
+ report=blocked_report('global-config-invalid');selected=None;progress={};runtime=None;old_output=a.OUTPUT
+ args=sys.argv[1:] if argv is None else argv
+ if args==['--mode','user','--publish-only']:
+  try:
+   selected=selection_config();runtime=OwnerRuntime(owner_config(selected),selected);envelope,path,digest=saved_manual_result(runtime)
+   publication=publish_manual_result(envelope)
+   print(a.canonical({'schemaVersion':'offmenu-manual-command-outcome/1','resultPath':str(path),'resultSHA256':digest,'collectionStatus':envelope['globalReport']['status'],'publication':publication}).decode(),end='');return 0 if publication.get('verified') is True or publication.get('status') in {'published-and-verified','verified-existing','verified-after-uncertain-write'} else 3
+  except Exception:
+   print(a.canonical({'schemaVersion':'offmenu-manual-command-outcome/1','publication':{'status':'failed-local-results-retained'},'publishOnly':True,'networkRequests':0}).decode(),end='');return 3
  try:
-  if sys.argv[1:] if argv is None else argv:raise a.RefreshError('unexpected-arguments')
+  if args not in ([],['--mode','user'],['--mode','runner']):raise a.RefreshError('unexpected-arguments')
   selected=selection_config();manifest=manifest_config();prep=a.preparation_module();snapshot=prep.imported_snapshot(ROOT);adopted=a.strict_json(prep.pinned_bytes(ROOT,prep.SUMMARY_PIN))
-  report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress);report=sanitize_report(report)
+  if args==['--mode','user']:
+   runtime=OwnerRuntime(owner_config(selected),selected);verify_manual_handover();a.OUTPUT=runtime.root
+  report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress,owner_runtime=runtime);report=sanitize_report(report)
  except Exception:
   if selected is not None and 'meter' in progress:report=projection_failure(selected,progress)
- print(a.canonical(report).decode(),end='');return 0 if report['status']=='complete' else 2
+  elif runtime is not None:report=blocked_report('owner-handover-invalid')
+ finally:a.OUTPUT=old_output
+ if runtime is None:
+  print(a.canonical(report).decode(),end='');return 0 if report['status']=='complete' else 2
+ envelope=manual_envelope(report,runtime);outcome={'schemaVersion':'offmenu-manual-command-outcome/1','collectionStatus':report['status'],'publication':{'status':'not-attempted'},'resultPath':None,'resultSHA256':None}
+ try:
+  envelope,path,digest=saved_manual_result(runtime,envelope);outcome.update(resultPath=str(path),resultSHA256=digest)
+  outcome['publication']=publish_manual_result(envelope)
+ except Exception:outcome['publication']={'status':'failed-local-results-retained'}
+ print(a.canonical(outcome).decode(),end='')
+ if outcome['publication'].get('status') not in {'published-and-verified','verified-existing','verified-after-uncertain-write'}:return 3
+ return 0 if report['status']=='complete' else 2
 if __name__=='__main__':raise SystemExit(main())
