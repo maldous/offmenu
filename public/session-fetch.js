@@ -10,6 +10,13 @@ export function sessionFetch({identity,refresh,currentUser,request=fetch,changed
   if((actual?.id||null)!==started.owner)throw changed();
   const response=await request(path,options);
   check();
-  return response;
+  // A body may arrive after headers. Reject it if another account took over.
+  const guarded=response=>new Proxy(response,{get(target,key){
+   const value=Reflect.get(target,key,target);
+   if(key==='clone')return ()=>{check();return guarded(target.clone());};
+   if(['json','text','blob','arrayBuffer','formData','bytes'].includes(key)&&typeof value==='function')return async(...args)=>{check();const body=await value.apply(target,args);check();return body;};
+   return typeof value==='function'?value.bind(target):value;
+  }});
+  return guarded(response);
  };
 }
