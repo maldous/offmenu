@@ -25,6 +25,9 @@ ADAPTERS = {
  'cofid': {'files': ('cofid2021.xlsx',), 'mode': 'records', 'function': 'cofid', 'dependencies': ()},
  'germany-bls': {'files': ('BLS_4_0_Daten_2025_DE.xlsx', 'BLS_4_0_Components_DE_EN.xlsx'), 'mode': 'records', 'function': 'bls', 'dependencies': ()},
 }
+from .national_tabular import ADAPTERS as TABULAR_ADAPTERS, valid_input_name, bundle_files
+ADAPTERS.update(TABULAR_ADAPTERS)
+
 # Review additions in code. Neither an arbitrary input-lock nor a CLI option can
 # install an admission, waive a hold, or create an acquisition rights decision.
 ADMISSIONS = {}
@@ -97,12 +100,12 @@ def verify_contract(entry, bundle):
     if type(entry.expected_records) is not int or entry.expected_records <= 0:
         raise RefreshError('execution-record-contract-required')
     names = [x[0] for x in entry.inputs]
-    if len(names) != len(set(names)) or any(not isinstance(n, str) or Path(n).name != n or n in ('.', '..') for n in names):
+    if len(names) != len(set(names)) or any(not valid_input_name(n) for n in names):
         raise RefreshError('execution-input-name-invalid')
     if not set(ADAPTERS[entry.source_id]['files']) <= set(names) or sum(x[1] for x in entry.inputs) > MAX_INPUT:
         raise RefreshError('execution-input-contract-incomplete')
     bundle = _safe(bundle)
-    if set(p.name for p in bundle.iterdir()) != set(names):
+    if bundle_files(bundle, names) != set(names):
         raise RefreshError('execution-bundle-set-mismatch')
     for name, size, digest in entry.inputs:
         _pin(bundle / name, size, digest)

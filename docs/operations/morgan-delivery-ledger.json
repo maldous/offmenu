@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "pr39-merged-owner-handoff-held-for-schema-correction",
-  "asOfUTC": "2026-10-18T03:37:00Z",
+  "status": "global-staging-adapter-composition-reviewed-awaiting-publication",
+  "asOfUTC": "2026-10-18T03:48:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Normal-user fixed-manifest collector independently reviewed; waiting source publication/fullCI and verified existing owner execution route or one owner command. Real source custody/freshness/admission remains unresolved."
+      "currentBlocker": "Corrected PR40 is merged and full CI passed; pinned owner command delivered. Actual owner execution/sanitized metadata receipt awaits observation while independent global staging work proceeds."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
@@ -102,11 +102,11 @@
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
     "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
-    "selectedRepositoryBase": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+    "selectedRepositoryBase": "66d9aa67ac3406f897c86c53bda7210780dd6538",
     "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
-      "next": "Publish reviewed normal-user collector and obtain one sanitized PR30 metadata receipt through existing owner identity; no service-extension approval pending.",
+      "next": "Deliver comprehensive deterministic all-country/type STAGING with every-datum provenance; publish reviewed adapter/acceptance source and qualify actual source contracts. Reconcile owner metadata receipt when actually received.",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -114,6 +114,16 @@
         "No AI runtime"
       ],
       "sourceRightsAndDataJobHoldsRemain": true
+    },
+    "placementPolicy": {
+      "decisionInputs": [
+        "actual cloud/Foo CPU and memory capacity",
+        "queue latency",
+        "available tools",
+        "data locality and transfer cost",
+        "granted permissions"
+      ],
+      "policy": "Dynamic placement, not rigid small-cloud/large-Foo split. Large/raw datasets exclusively remain on Foo. Use focused tests before costly handoff when useful; no dogmatic duplicate full gates."
     }
   },
   "chronologicalEvents": [
@@ -319,6 +329,12 @@
       "commit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
       "ownerExecution": false,
       "sourceAdmissions": 0
+    },
+    {
+      "atUTC": "2026-10-18T03:48:00Z",
+      "event": "PR40 correction merged and postmerge CI passed; current global STAGING completion contract reconciled, four source-family subsets prepared, existing UI lane resumed",
+      "sourceExecution": false,
+      "allCountryStagingComplete": false
     }
   ],
   "lanes": [
@@ -445,8 +461,8 @@
     },
     {
       "id": "tooling-ui-design",
-      "status": "preserve-current-design-and-reviewed-code-render-acceptance-open",
-      "owner": "Product/cloud review lanes during consolidation",
+      "status": "active-design-finalization-existing-issue33",
+      "owner": "finalize_offmenu_ui_design",
       "issue": "https://github.com/maldous/offmenu/issues/33",
       "output": "Source-linked prior UI/dev-server/landing/app feedback reconciliation; current-stack alternatives/impacts; independent adversarial decision review; final standards and scoped backlog",
       "dependencies": [
@@ -462,8 +478,8 @@
         "No speculative replacement design or unrequested heavy mandatory developer checks"
       ],
       "pickupEvidence": "Coordinator reports UI02 render blocked by execution-environment Chromium socket limitation; worker checking supported managed-browser availability",
-      "assignmentStatus": "Current review allocations replace historical UI02-active worker claim",
-      "next": "Preserve localized scanner and existing UI feedback; no new visual acceptance claimed.",
+      "assignmentStatus": "Started after reference lane completed and handed off approved source",
+      "next": "Implement reviewed landing/auth/app playground on existing DEV7645; reconcile prior feedback and Emil Kowalski guidance, vanilla JS without React/Preact. No production changes; actual render/design acceptance pending.",
       "latestResult": {
         "decisions": "independently-approved-and-corrected",
         "publicationCommit": "1f9c29f81f171a35c51a351d122efed2469b31e0",
@@ -478,7 +494,13 @@
         "next": "Check supported managed-browser availability",
         "renderAccepted": false
       },
-      "currentAsOfUTC": "2026-10-18T00:50:00Z"
+      "currentAsOfUTC": "2026-10-18T03:48:00Z",
+      "priorAllocation": {
+        "status": "preserve-current-design-and-reviewed-code-render-acceptance-open",
+        "owner": "Product/cloud review lanes during consolidation",
+        "assignmentStatus": "Current review allocations replace historical UI02-active worker claim",
+        "next": "Preserve localized scanner and existing UI feedback; no new visual acceptance claimed."
+      }
     },
     {
       "id": "sonar",
@@ -1126,16 +1148,16 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "pr39-merged-head-ci-passed-schema-correction-pending",
-    "verifiedPriorCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/9e2d20083feca6b1558ef401f852e5650b226ca7",
+    "status": "pr40-merged-postmerge-ci-success-next-global-source-batch-local",
+    "verifiedPriorCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/66d9aa67ac3406f897c86c53bda7210780dd6538",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only",
-    "note": "PR39 merge and both exact-head CI runs verified. Owner handoff held before execution for concrete manifest schema correction. No service extension or source admission."
+    "note": "Corrected owner command delivered by coordinator; actual owner execution/receipt unobserved. Four reviewed family subsets composed locally; full new-head CI pending."
   },
   "activeWork": [
     "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
@@ -2593,21 +2615,18 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "pr": 39,
-      "url": "https://github.com/maldous/offmenu/pull/39",
-      "mergedCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
-      "tree": "f12117651550293d483eeb2f1b16dccf5eb4ff55",
-      "reviewedHead": "245f67e7123d8d5c10461bac065a037f75312ab8",
-      "exactHeadCIRuns": [
-        39093904683,
-        39093898110
+      "pr": 40,
+      "url": "https://github.com/maldous/offmenu/pull/40",
+      "mergedCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "tree": "0db0d00d6c9bc51761e26eccd17cbf644d1532d9",
+      "reviewedHead": "c857d8b559418015d81d156f206a337d4679d8f0",
+      "headCIRuns": [
+        39094434083,
+        39094427330
       ],
-      "postmergeCI": {
-        "runId": 39094155901,
-        "conclusion": "success",
-        "head": "9e2d20083feca6b1558ef401f852e5650b226ca7"
-      },
-      "scope": "Six exact reviewed paths; owner handoff held for subsequent producer-schema correction. No execution/admission."
+      "postmergeCI": 39094602229,
+      "applicationCI": "success;748Python tests with4retained environment skips",
+      "scope": "Five-path producer-schema correction; actual source execution not implied"
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -3133,6 +3152,23 @@
       },
       "receiptComment": "https://github.com/maldous/offmenu/pull/38#issuecomment-6245140103",
       "boundary": "Source-only offline adapters/documentary rights and custody; zero production admissions, no owner/service/access execution."
+    },
+    "priorPR39CompletionReceipt": {
+      "pr": 39,
+      "url": "https://github.com/maldous/offmenu/pull/39",
+      "mergedCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "tree": "f12117651550293d483eeb2f1b16dccf5eb4ff55",
+      "reviewedHead": "245f67e7123d8d5c10461bac065a037f75312ab8",
+      "exactHeadCIRuns": [
+        39093904683,
+        39093898110
+      ],
+      "postmergeCI": {
+        "runId": 39094155901,
+        "conclusion": "success",
+        "head": "9e2d20083feca6b1558ef401f852e5650b226ca7"
+      },
+      "scope": "Six exact reviewed paths; owner handoff held for subsequent producer-schema correction. No execution/admission."
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -3321,7 +3357,7 @@
       },
       "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
     },
-    "nextDependency": "Review and publish bounded owner collector schema correction, then execute pinned normal-user receipt through verified owner identity; qualify source bindings separately.",
+    "nextDependency": "Publish reviewed coherent adapter/acceptance source batch; reconcile owner metadata receipt when actually delivered; qualify exact source contracts and field-origin validators before live staging acceptance.",
     "currentSourceAcquisitionBindings": 0,
     "actualPayloadAcceptance": false,
     "globalDatasetCompletion": false,
@@ -3647,8 +3683,8 @@
         "newAccessGrant": false,
         "adminHelperApproved": false,
         "adminHelperExecuted": false,
-        "collectorState": "Five-file fixed-path normal-user collector/wrapper/tests/docs independently reviewed; publication/CI and actual owner execution pending",
-        "next": "Publish exact reviewed source; supply immutable-commit/hash pinned isolated-worktree command for ordinary owner user if no supported existing-identity execution route is verified. One sanitized PR30 receipt; no login, sudo, service/mount/access change."
+        "collectorState": "Corrected PR40 merged, exact-head and postmerge CI success; pinned owner command delivered, actual execution/receipt unobserved.",
+        "next": "Reconcile actual sanitized owner receipt when delivered; qualify source metadata/custody without new access grants. Independent all-country staging work proceeds."
       },
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission.",
       "supersededTemporaryServiceExtensionProposal": {
@@ -3701,6 +3737,112 @@
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission."
     },
     "ownerMetadataCollector": {
+      "state": "corrected-pr40-merged-command-delivered-owner-execution-unobserved",
+      "files": [
+        {
+          "path": "docs/owner-manifest-metadata.md",
+          "bytes": 7409,
+          "sha256": "91ac1ac8aabd1923e3fe0b0f6b36c6570b97c4be44caf0c33036aeef73034517",
+          "gitBlob": "704ac7f49533e951513a11e4ea917d6189e9c049",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/collect-owner-manifest-metadata.py",
+          "bytes": 10304,
+          "sha256": "456e32de0c97fc66e2bea2dcc090d89c850d5538d126a18af7662acd37c0d293",
+          "gitBlob": "4f02c2a51008ac4a7e91b446494dab8d2152fc63",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/run-owner-manifest-metadata.py",
+          "bytes": 8915,
+          "sha256": "8082d8e88cc1191de8c069ef030418177d6779445ff717f738cbd25ad4c6b8cf",
+          "gitBlob": "3b03c7ecc73526061f8b3936ff2ba5a15be21dcf",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_batch.py",
+          "bytes": 5651,
+          "sha256": "5a569cbb49016e5a4c9785e3916fbee594d974c15f8fbb9240b789a1397bae67",
+          "gitBlob": "774306daf8d9dcafe2cdd7df0bc3fac1666578de",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_metadata.py",
+          "bytes": 9750,
+          "sha256": "ef2a9c6ea5f52825439d10aec0c6ba4af2ddcbfd1e4b18726dc22993946ac1ad",
+          "gitBlob": "a1110d67403ec1dc2d7e9853b6ab06686014518f",
+          "mode": "100644"
+        }
+      ],
+      "focusedTests": 25,
+      "receiptDestination": "maldous/offmenu PR30; existing approved destination",
+      "executionBoundary": "Actual execution remains owner step unless supported existing owner identity route is verified. No floating branch or overwrite of dirty checkout. Existing gh authentication only; no credential entry, login or grant.",
+      "adminHelperIntegrated": false,
+      "actualExecution": false,
+      "receiptPublished": false,
+      "mergedCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "reviewedHead": "c857d8b559418015d81d156f206a337d4679d8f0",
+      "headCIRuns": [
+        39094434083,
+        39094427330
+      ],
+      "correctionReason": "Actual repository producers emit archiveSha256/completedAt, omitted by initial whitelist; owner command held before execution.",
+      "correctionSemantics": "Source-declared archive-or-bundle identity and normalization completion only; no acquisition or freshness inference.",
+      "correctionSource": "https://github.com/maldous/offmenu/pull/39#discussion_r4305577437",
+      "priorManifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
+      "correctionManifestBoundary": "Exact revised external manifest is frozen after ledger serialization; no self-reference.",
+      "postmergeCI": 39094602229,
+      "commandDeliveredByCoordinator": true
+    },
+    "priorOwnerCollectorPreparation": {
+      "state": "independently-reviewed-not-executed",
+      "manifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
+      "files": [
+        {
+          "path": "docs/owner-manifest-metadata.md",
+          "bytes": 7037,
+          "sha256": "39dde9af4c496a8b6c345f659b6190177ae2e6a3026830fcab0f4f220add1ef8",
+          "gitBlob": "43f7a733fc575310fb6001e3aab78760fa972ad4",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/collect-owner-manifest-metadata.py",
+          "bytes": 9390,
+          "sha256": "aee29be3dd46d41669db27d8d0ad6c3f62b0292af70ab9c2ec3e7472d91ad51d",
+          "gitBlob": "55e6298541e299176850b67cf39366befe5ff18a",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/run-owner-manifest-metadata.py",
+          "bytes": 8915,
+          "sha256": "be80a8f4dfeac8cdc1e7a38b4b8033e1c4380995ed4117701cc65e190fa5acb2",
+          "gitBlob": "82537d6895f95ef3c5efea5de6dcf36eebc9b5e1",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_batch.py",
+          "bytes": 5651,
+          "sha256": "5a569cbb49016e5a4c9785e3916fbee594d974c15f8fbb9240b789a1397bae67",
+          "gitBlob": "774306daf8d9dcafe2cdd7df0bc3fac1666578de",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_metadata.py",
+          "bytes": 8141,
+          "sha256": "75b58645a5521ddc2d94cba157985791af096b1862084f31f44f93cca5315b0b",
+          "gitBlob": "c70b89056654b2948d7366f1f70a7182d3a302ff",
+          "mode": "100644"
+        }
+      ],
+      "focusedTests": 23,
+      "receiptDestination": "maldous/offmenu PR30; existing approved destination",
+      "executionBoundary": "Actual execution remains owner step unless supported existing owner identity route is verified. No floating branch or overwrite of dirty checkout. Existing gh authentication only; no credential entry, login or grant.",
+      "adminHelperIntegrated": false,
+      "actualExecution": false,
+      "receiptPublished": false
+    },
+    "priorOwnerSchemaCorrection": {
       "state": "pr39-merged-correction-review-pending-owner-handoff-held",
       "files": [
         {
@@ -3757,52 +3899,242 @@
       "priorManifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
       "correctionManifestBoundary": "Exact revised external manifest is frozen after ledger serialization; no self-reference."
     },
-    "priorOwnerCollectorPreparation": {
-      "state": "independently-reviewed-not-executed",
-      "manifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
+    "stagingCompletionContract": {
+      "scope": "Every registered country and required data type extracted and normalized to STAGING with origin/provenance for every normalized datum. Golden volume is later, not this milestone.",
+      "acceptanceCriteria": [
+        "Every country/type has an explicit completed/partial/held/unsupported/failed status backed by source execution evidence",
+        "Every normalized datum retains source/release/record and field-origin evidence; source schemas and semantic validators enforce field coordinates",
+        "Repeatable deterministic script/CLI rerun without any model or AI runtime dependency",
+        "Under30days reuse verified cached content with zero automatic downloads",
+        "At or beyond30days eligible sources conditionally revalidate; unchanged content is a no-op and acquisition provenance is retained",
+        "Isolate failures by source/release/stage and produce a comprehensive bounded error report while independent work continues"
+      ],
+      "implementedEvidence": [
+        "Existing coverage matrix/harness exhaustively assess249countries/13domains/1303sources",
+        "Cache/acquisition library has minimum30day reuse and conditional validation tests",
+        "Reviewed adapters and acceptance stages now have synthetic cross-family tests",
+        "Reviewed per-datum field_provenance helper validates tagged source/derived-multiple-input/constant origin coverage and identity; no automatic adapter enforcement or value/transform verification."
+      ],
+      "outstanding": [
+        "Production source contracts and qualified actual payload execution are not installed",
+        "Full live STAGING completion remains unestablished",
+        "Generic record/asset provenance does not automatically guarantee every field origin; strict source-specific field-origin validators remain required",
+        "Explicit revalidate/force-download APIs exist; automated production orchestration must enforce the under30day zero-download rule without selecting those override modes",
+        "Wire and independently verify source-specific field-origin emitters/semantic callbacks; helper presence alone does not complete every-datum provenance."
+      ],
+      "acceptedCountryDomainCells": 0,
+      "allCountryStagingComplete": false
+    },
+    "nextAdapterBatch": {
+      "state": "four-family-subsets-independently-reviewed-composed-local-not-published",
+      "packages": [
+        {
+          "name": "national",
+          "manifestSha256": "441364ef2f02a7352386f402743cfcef7f1b420f4d7945dbb95d086fc13e96d7"
+        },
+        {
+          "name": "reference",
+          "manifestSha256": "10f782fdc479cfea8ec1692b62fdd4f96efdc85bd6aaf20d03b71d957147de6d"
+        },
+        {
+          "name": "product",
+          "manifestSha256": "aee2b266d107a9efaf8ddd2f7c8d994baf8777dabf8da527ead69248b928164f"
+        },
+        {
+          "name": "acceptance",
+          "manifestSha256": "a7031802b12ef5b73ac6605ef5e19d7891467c65799bc7e0b47aa1809794d711"
+        },
+        {
+          "name": "field-provenance",
+          "manifestSha256": "b10106263b0c9458c7acc3100cc7b340a4dd99dcafb022ddcd3602334082c336"
+        },
+        {
+          "name": "source-adapter-mapping",
+          "manifestSha256": "3ef9c5cec7ca09e53311df88628744bffbd9d0a67ebba5ff6e2216155499ddfe"
+        }
+      ],
       "files": [
         {
-          "path": "docs/owner-manifest-metadata.md",
-          "bytes": 7037,
-          "sha256": "39dde9af4c496a8b6c345f659b6190177ae2e6a3026830fcab0f4f220add1ef8",
-          "gitBlob": "43f7a733fc575310fb6001e3aab78760fa972ad4",
+          "path": "docs/operations/national-tabular-offline-contract.md",
+          "mode": "100644",
+          "bytes": 6961,
+          "sha256": "58e6cdf9cf3a18cce56b62032704302ba45b73883936d9f63cc9837f915c3bca",
+          "gitBlob": "fcff9925b0af096c8e7440c50ec890702b9b12e9"
+        },
+        {
+          "path": "docs/product-offline-adapters.md",
+          "mode": "100644",
+          "bytes": 6159,
+          "sha256": "f153a4aa910895d08a84643df13cfc3d198d8e7c0f98de53c3a4812177793722",
+          "gitBlob": "27575041fcf6b39fb08f13a96539c07a30dc44b0"
+        },
+        {
+          "path": "docs/reference-adapters.md",
+          "mode": "100644",
+          "bytes": 5553,
+          "sha256": "3058ee9e41b1ca05679f5e61d07bc937bcbaf0fbc63b023a0672cecf4ca22ced",
+          "gitBlob": "e82baadd977c10895a4f0e53f54d7325b4748d2e"
+        },
+        {
+          "path": "docs/source-acceptance-contract.md",
+          "mode": "100644",
+          "bytes": 7604,
+          "sha256": "fa2854987046f37c4257bccaaf6446d10c279624a14eea57084f05ad40027499",
+          "gitBlob": "ea1e680dab5a382738fe00ac73c17b89ba681470"
+        },
+        {
+          "path": "offmenu/refresh/acceptance.py",
+          "mode": "100644",
+          "bytes": 24998,
+          "sha256": "6472d5b54abecb062bad46d7132c5ecd69b049421751b9ce02c1c783325192b5",
+          "gitBlob": "4f9707402e1bc02575a37185d2bb59ba73cca128"
+        },
+        {
+          "path": "offmenu/refresh/execution.py",
+          "mode": "100644",
+          "bytes": 13396,
+          "sha256": "7d3e02a1415a2ce81adb85c568607c6ee4a82cb0eed9a361936bfe5f85d4020d",
+          "gitBlob": "95c5eb8dd238825ab152bf7c5b84e6d4070a64ee"
+        },
+        {
+          "path": "offmenu/refresh/execution_worker.py",
+          "mode": "100644",
+          "bytes": 8621,
+          "sha256": "f582477d10370412218e9489fc6e9504feff947be43f5c7dd99a255ecf2a01f9",
+          "gitBlob": "3f1bb4e913f45c2d411560156d5e0a90754e1491"
+        },
+        {
+          "path": "offmenu/refresh/global_run.py",
+          "mode": "100644",
+          "bytes": 16286,
+          "sha256": "6c2e85c7e1b8bea3c41a70fa1aa13fa7382adda2b9bbf6243d24b3670f2f69ee",
+          "gitBlob": "fa429ce56f9e98f10749b0d93317970b29a8bd44"
+        },
+        {
+          "path": "offmenu/refresh/national_tabular.py",
+          "mode": "100644",
+          "bytes": 10276,
+          "sha256": "e6ab0f34abb9f41b1a4d1aa494e43bfa957a033a79622016632acc8fd399ea7a",
+          "gitBlob": "5284d3a501fb77dcc3f80abc1ed063ce42cf850a"
+        },
+        {
+          "path": "offmenu/refresh/product_adapters.py",
+          "mode": "100644",
+          "bytes": 25169,
+          "sha256": "37fd03dcd459dea0d0edd7491aa0dc6ea71c851e79ea68b72bd74c4ff0efc42f",
+          "gitBlob": "654d625e2ab6a4acf5784d2c99e4893431bd2469"
+        },
+        {
+          "path": "offmenu/refresh/product_qualification.py",
+          "mode": "100644",
+          "bytes": 4740,
+          "sha256": "8cc4e837ec14f945db854d3a856eba03689f26f8fa66bd8ef61a6e5d3d96db04",
+          "gitBlob": "2f33ae74317c0ad9c905a0edc5a99a7bc7bce200"
+        },
+        {
+          "path": "offmenu/refresh/reference_adapters.py",
+          "mode": "100644",
+          "bytes": 21512,
+          "sha256": "6482ee341d06b35c34af2a03648581028a957663f78398b3b5582cad42cf0527",
+          "gitBlob": "bb464cfddb3d7b3049778c8e7e2449e905dcb227"
+        },
+        {
+          "path": "schemas/reference-candidate.schema.json",
+          "mode": "100644",
+          "bytes": 10040,
+          "sha256": "cf06c3e25965b2b951a4690b4cf98923918fb13ae3d48426a0836480fbaf9fb2",
+          "gitBlob": "2a6fce6867378e6e7e0c14dfab5cdb6e551ad819"
+        },
+        {
+          "path": "tests/test_execution.py",
+          "mode": "100644",
+          "bytes": 10036,
+          "sha256": "dc1d21723f4b7967d8df2d5a63b3b79f2e80058abddb308f18d6c02a184bf832",
+          "gitBlob": "d87e8c53c7810112d71b294d841d54f4a3e9a66b"
+        },
+        {
+          "path": "tests/test_national_tabular.py",
+          "mode": "100644",
+          "bytes": 10855,
+          "sha256": "e2ad3a56bb5d78b246ced525f1a1ee503bf8dd73f513e32caf422b063b1fc898",
+          "gitBlob": "554588fdf5adbaa3af87108c76758f467067f818"
+        },
+        {
+          "path": "tests/test_product_adapters.py",
+          "mode": "100644",
+          "bytes": 16839,
+          "sha256": "e73367f7a2b12de4aef6f6dc2f09547dc0497bd52a3ca31ce7f4ac5337a885c3",
+          "gitBlob": "23902974b6e95c0fef13380b7b0939a191cfc72e"
+        },
+        {
+          "path": "tests/test_product_qualification.py",
+          "mode": "100644",
+          "bytes": 5827,
+          "sha256": "16048341aaca9ba13db818c4dc78c13eb2f448c80f35af162d9b527f92484bf9",
+          "gitBlob": "ae772b9cf489e0b7a806ae8bbdcf8b9e23c1c8c2"
+        },
+        {
+          "path": "tests/test_reference_acceptance.py",
+          "mode": "100644",
+          "bytes": 3495,
+          "sha256": "d7d2f1c698fdccf4246d6f8fa9da836ac5ae9c383c95a4c760c99ac67de5a158",
+          "gitBlob": "0f50d5063e633b4844560480615141f7ee12bd79"
+        },
+        {
+          "path": "tests/test_reference_adapters.py",
+          "mode": "100644",
+          "bytes": 10186,
+          "sha256": "43f8d58fe529f5b674e10350f5dada34ef45b04a0cecfde37d6ad49766ec3967",
+          "gitBlob": "87b9616f417bfd2b659d489e146bb7950d00d151"
+        },
+        {
+          "path": "tests/test_refresh_acceptance.py",
+          "mode": "100644",
+          "bytes": 15082,
+          "sha256": "9b5c136d355195c50751f1659e65f9059eb10d3a5b24da6f6a7d5964a35a7215",
+          "gitBlob": "53f3568b70a41599a212acf0f34dc110c85ecbfb"
+        },
+        {
+          "path": "offmenu/refresh/field_provenance.py",
+          "mode": "100644",
+          "bytes": 4492,
+          "sha256": "2231641ea454496c6256ea96233c176b112a632bba52b122fb9a9d7051ffad98",
+          "gitBlob": "5105a3587ee53f466b44c36db63ec9cbd20f3638"
+        },
+        {
+          "path": "tests/test_refresh_field_provenance.py",
+          "mode": "100644",
+          "bytes": 2823,
+          "sha256": "e959c7f77a5daa0fd57310ed4cc1a3ea37c10344525eb5d0893205b977bf7f2e",
+          "gitBlob": "e6e90b9294f146fedafa7569aed319795946346a"
+        },
+        {
+          "path": "docs/discovery-adapter-mapping.md",
+          "bytes": 4209,
+          "sha256": "fe062f09b6128c3221b567c29ca2dab3dc07d22b6a7bb099c164d907ebb929db",
+          "gitBlob": "e6318e27c216c5218acd404911954d670e77d0f0",
           "mode": "100644"
         },
         {
-          "path": "scripts/collect-owner-manifest-metadata.py",
-          "bytes": 9390,
-          "sha256": "aee29be3dd46d41669db27d8d0ad6c3f62b0292af70ab9c2ec3e7472d91ad51d",
-          "gitBlob": "55e6298541e299176850b67cf39366befe5ff18a",
+          "path": "offmenu/refresh/adapter_mapping.py",
+          "bytes": 5834,
+          "sha256": "05f906a8d8f178c6da7f42d7f9d7693264f93d8d57fe2ea5d076b2dc6148373e",
+          "gitBlob": "c9544041022f54f0bb3a0772872b091529496ebb",
           "mode": "100644"
         },
         {
-          "path": "scripts/run-owner-manifest-metadata.py",
-          "bytes": 8915,
-          "sha256": "be80a8f4dfeac8cdc1e7a38b4b8033e1c4380995ed4117701cc65e190fa5acb2",
-          "gitBlob": "82537d6895f95ef3c5efea5de6dcf36eebc9b5e1",
-          "mode": "100644"
-        },
-        {
-          "path": "tests/test_owner_manifest_batch.py",
-          "bytes": 5651,
-          "sha256": "5a569cbb49016e5a4c9785e3916fbee594d974c15f8fbb9240b789a1397bae67",
-          "gitBlob": "774306daf8d9dcafe2cdd7df0bc3fac1666578de",
-          "mode": "100644"
-        },
-        {
-          "path": "tests/test_owner_manifest_metadata.py",
-          "bytes": 8141,
-          "sha256": "75b58645a5521ddc2d94cba157985791af096b1862084f31f44f93cca5315b0b",
-          "gitBlob": "c70b89056654b2948d7366f1f70a7182d3a302ff",
+          "path": "tests/test_adapter_mapping.py",
+          "bytes": 5528,
+          "sha256": "8f57bcb83e9107b914ae96c637654de3a33cc68fa9cc2857717e5e7ba4a3a5df",
+          "gitBlob": "37ee086e271b17f8a629985e7526ed7fd9eb8e85",
           "mode": "100644"
         }
       ],
-      "focusedTests": 23,
-      "receiptDestination": "maldous/offmenu PR30; existing approved destination",
-      "executionBoundary": "Actual execution remains owner step unless supported existing owner identity route is verified. No floating branch or overwrite of dirty checkout. Existing gh authentication only; no credential entry, login or grant.",
-      "adminHelperIntegrated": false,
-      "actualExecution": false,
-      "receiptPublished": false
+      "combinedFocusedTests": 209,
+      "productionAdmissions": 0,
+      "actualPayloadExecution": false,
+      "fieldProvenanceBoundary": "Record/asset checks implemented; every datum field coordinates require source-specific schema/semantic enforcement.",
+      "mappingScope": "Explicit candidate metadata only:15 retained adapters linked to18 discoveries;3support-only documents;4holds/CNF mismatch; no executable bindings or admissions inferred."
     }
   },
   "priorGlobalPreparationCurrentState": {
@@ -4150,5 +4482,77 @@
         "sourceRightsAndDataJobHoldsRemain": true
       }
     }
+  },
+  "priorPR40CurrentState": {
+    "status": "pr39-merged-owner-handoff-held-for-schema-correction",
+    "asOfUTC": "2026-10-18T03:37:00Z",
+    "publication": {
+      "status": "pr39-merged-head-ci-passed-schema-correction-pending",
+      "verifiedPriorCommit": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only",
+      "note": "PR39 merge and both exact-head CI runs verified. Owner handoff held before execution for concrete manifest schema correction. No service extension or source admission."
+    },
+    "currentExecution": {
+      "sourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "sourceStatus": "Reviewed global-readiness offline assessment passed all12steps on Foo; no acquisition/source admission or country completion",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Normal-user fixed-manifest collector independently reviewed; waiting source publication/fullCI and verified existing owner execution route or one owner command. Real source custody/freshness/admission remains unresolved."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "latestExecutedControlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "c9adb646d4051457f54451b64c2b86d08ac102b1",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+      "selectedRepositoryBase": "9e2d20083feca6b1558ef401f852e5650b226ca7",
+      "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Publish reviewed normal-user collector and obtain one sanitized PR30 metadata receipt through existing owner identity; no service-extension approval pending.",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    },
+    "nextPriorities": [
+      "TOP: qualify dependency-ready source/domain bindings for actual country dataset completion, rather than count successful census as completion",
+      "Use existing verified cached inputs and at least30-day reuse; establish original acquisition timestamps or retain freshness unknown",
+      "Close preserved payload-location/rights/adapter compatibility gaps with bounded evidence; do not invent source routes or permissions",
+      "No additional offline census job without a concrete new input or changed condition"
+    ]
   }
 }

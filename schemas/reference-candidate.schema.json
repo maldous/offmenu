@@ -1,0 +1,426 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:schema:reference-candidate:1",
+  "title": "Offline reference candidate; no admission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "countries",
+    "provenance",
+    "data"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "kind": {
+      "enum": [
+        "organization",
+        "recipe-discovery-reference",
+        "ontology-class",
+        "unit-reference",
+        "place-reference"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "countries": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceId",
+        "recordId",
+        "releaseId",
+        "fetchedAt",
+        "archiveSha256",
+        "sourcePath",
+        "sourceFormat",
+        "historicalHandlerGitBlob",
+        "licenses",
+        "url",
+        "licenseUrl",
+        "transform",
+        "rightsEvidenceStatus",
+        "authorizedOperations"
+      ],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recordId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fetchedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "archiveSha256": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sourcePath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceFormat": {
+          "type": "string",
+          "minLength": 1
+        },
+        "historicalHandlerGitBlob": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licenseUrl": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transform": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licenses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "CC0-1.0",
+              "CC-BY-SA-4.0",
+              "CC-BY-4.0",
+              "Apache-2.0",
+              "CDLA-Permissive-2.0"
+            ]
+          }
+        },
+        "rightsEvidenceStatus": {
+          "const": "requires-operation-specific-review"
+        },
+        "authorizedOperations": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "reviewStatus",
+        "automaticPlanningEligible"
+      ],
+      "properties": {
+        "reviewStatus": {
+          "const": "source-reference-unreviewed"
+        },
+        "automaticPlanningEligible": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "organization"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "sourceId": {
+                "const": "wikidata-food-businesses"
+              }
+            }
+          },
+          "data": {
+            "required": [
+              "names",
+              "originalBindings",
+              "ownershipVerified",
+              "roles",
+              "sourceRows"
+            ],
+            "properties": {
+              "roles": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "food-manufacturer",
+                    "supermarket-chain",
+                    "grocery-store-chain"
+                  ]
+                }
+              },
+              "names": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "originalBindings": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "sourceRows": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "ownershipVerified": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "recipe-discovery-reference"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "sourceId": {
+                "const": "wikibooks"
+              }
+            }
+          },
+          "data": {
+            "required": [
+              "historyUrl",
+              "name",
+              "originalSource",
+              "originalText",
+              "quantitiesResolved",
+              "revisionId"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "originalSource": {
+                "type": "object"
+              },
+              "originalText": {
+                "type": "string"
+              },
+              "revisionId": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "historyUrl": {
+                "type": "string"
+              },
+              "quantitiesResolved": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "ontology-class"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "sourceId": {
+                "const": "foodon"
+              }
+            }
+          },
+          "data": {
+            "required": [
+              "definitionXml",
+              "elementIndex",
+              "foodIdentityEquivalenceInferred",
+              "namespaceDeclarations",
+              "originalXml",
+              "reuseScope"
+            ],
+            "properties": {
+              "originalXml": {
+                "type": "string",
+                "minLength": 1
+              },
+              "namespaceDeclarations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "elementIndex": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "definitionXml": {
+                "type": "string"
+              },
+              "reuseScope": {
+                "type": "string"
+              },
+              "foodIdentityEquivalenceInferred": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "unit-reference"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "sourceId": {
+                "const": "qudt-measurement-definitions"
+              }
+            }
+          },
+          "data": {
+            "required": [
+              "densityOrYieldEquivalenceInferred",
+              "interpretation",
+              "originalTurtleBlock",
+              "originalTurtlePreamble"
+            ],
+            "properties": {
+              "originalTurtleBlock": {
+                "type": "string",
+                "minLength": 1
+              },
+              "originalTurtlePreamble": {
+                "type": "string"
+              },
+              "interpretation": {
+                "type": "string"
+              },
+              "densityOrYieldEquivalenceInferred": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "place-reference"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "sourceId": {
+                "const": "overture-food-places"
+              }
+            }
+          },
+          "data": {
+            "required": [
+              "inventoryAvailability",
+              "menuCoverage",
+              "name",
+              "originalSource",
+              "ownershipVerified",
+              "sourceProviders"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "originalSource": {
+                "type": "object"
+              },
+              "sourceProviders": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "license"
+                  ],
+                  "properties": {
+                    "license": {
+                      "enum": [
+                        "Apache-2.0",
+                        "CDLA-Permissive-2.0",
+                        "CC0-1.0"
+                      ]
+                    }
+                  }
+                }
+              },
+              "ownershipVerified": {
+                "const": false
+              },
+              "inventoryAvailability": {
+                "const": "unknown"
+              },
+              "menuCoverage": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

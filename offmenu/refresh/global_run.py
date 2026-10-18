@@ -97,6 +97,7 @@ boundary is required before dispatch. Production bindings remain absent here.
     handlers: dict = field(default_factory=dict)
     admission: str = 'unassessed'
     resource_boundary_verified: bool = False
+    endstate: dict = field(default_factory=dict)
 
 
 def _blocked(status, code):
@@ -105,6 +106,8 @@ def _blocked(status, code):
 
 def _source(source, binding, limits, fetch_policy, force_rebuild):
     rows = {}
+    if binding is not None:
+        binding.endstate.clear()  # Endstate evidence is per-run, never retained state.
     held = source.get('status') == 'held' or bool(source.get('holds'))
     gate = ('source-held' if held else
             'reviewed-handler-binding-missing' if binding is None else
@@ -137,6 +140,12 @@ def _source(source, binding, limits, fetch_policy, force_rebuild):
             # Exception messages may contain credentials, paths or response data.
             rows[stage] = _blocked('failed', 'stage-execution-failed')
     complete = all(row['status'] in SUCCESS for row in rows.values())
+    from .acceptance import _valid_acceptance_receipt, fingerprint
+    endstate = binding.endstate if binding is not None else {}
+    acceptance = endstate.get('acceptance')
+    verified_acceptance = (isinstance(acceptance, dict)
+                           and _valid_acceptance_receipt(acceptance) and complete
+                           and fingerprint(acceptance) in rows['accept']['evidence'])
     return {'sourceId': source['sourceId'],
             'discoveryStatus': source.get('status', 'unassessed'),
             'holds': list(source.get('holds', [])),
@@ -153,14 +162,18 @@ def _source(source, binding, limits, fetch_policy, force_rebuild):
             'normalizationStatus': source.get('normalizationStatus', 'unassessed'),
             'stages': rows,
             'selectedSourceComplete': complete,
-            'acceptedCount': rows['accept']['observedCount'] if complete else None}
+            'normalizedCandidate': rows['normalize']['status'] in SUCCESS,
+            'qualificationResults': endstate.get('qualifications', {}),
+            'sourceAcceptance': acceptance if verified_acceptance else None,
+            'acceptedCount': acceptance['acceptedCount'] if complete and verified_acceptance else None}
 
 
-def run(coverage, *, bindings=None, limits=None, fetch_policy='reuse', force_rebuild=False):
+def run(coverage, *, bindings=None, limits=None, fetch_policy='reuse', force_rebuild=False,
+        cell_requirements=(), acceptance_receipts=None):
     """One job per source, sorted independent results, exhaustive country coverage.
 
-Country evidence is retained from the coverage contract, never promoted from
-successful source execution. This version lacks reviewed country-domain bindings.
+Country evidence requires independent reviewed cell requirements and acceptance
+receipts bound to completed source stages; parser success alone cannot promote it.
 Threads only coordinate bounded adapters; this is not an OS isolation boundary.
 """
     from .coverage import COUNTRIES, DOMAINS
@@ -190,12 +203,24 @@ Threads only coordinate bounded adapters; this is not an OS isolation boundary.
                                    fetch_policy, force_rebuild)
                        for row in ordered[start:start + workers]]
             source_results.extend(future.result() for future in futures)
+    from .acceptance import assess_cells, fingerprint
+    # Only receipts bound to successful current accept stages qualify this run.
+    accepted_evidence = {evidence for source in source_results
+                         if source['selectedSourceComplete']
+                         for evidence in source['stages']['accept']['evidence']}
+    verified_receipts = [receipt for receipt in (acceptance_receipts or {}).values()
+                         if fingerprint(receipt) in accepted_evidence]
+    cell_results = assess_cells(cell_requirements,
+                                verified_receipts,
+                                countries=COUNTRIES, domains=DOMAINS)
     failures = sum(not row['selectedSourceComplete'] for row in source_results)
     report = {
-        'schemaVersion': 'offmenu-global-run/1', 'status': 'incomplete',
+        'schemaVersion': 'offmenu-global-run/1',
+        'status': 'complete' if failures == 0 and cell_results['countryCoverageComplete'] else 'incomplete',
         'assessmentComplete': True, 'registryComplete': True,
         'executionComplete': failures == 0, 'selectedScopeComplete': failures == 0,
-        'countryCoverageComplete': False,
+        'countryCoverageComplete': cell_results['countryCoverageComplete'],
+        'countryDomainAcceptance': cell_results['cells'],
         'inventoryPins': coverage.get('inventoryPins', {}),
         'retainedReleases': coverage.get('retainedReleases', []),
         'supportingHandlers': coverage.get('supportingHandlers', []),
@@ -208,11 +233,12 @@ Threads only coordinate bounded adapters; this is not an OS isolation boundary.
         'sources': source_results,
         'summary': {'countries': 249, 'requiredCountryDomainCells': 249 * len(DOMAINS),
                     'sources': len(source_results), 'sourcesComplete': len(source_results) - failures,
-                    'sourcesIncomplete': failures, 'acceptedCountryDomainCells': 0,
+                    'sourcesIncomplete': failures, 'acceptedCountryDomainCells': cell_results['acceptedCountryDomainCells'],
                     'sourcesWithHistoricalHandlers': coverage.get('summary', {}).get('sourcesWithHistoricalHandlers'),
                     'sourcesWithoutHistoricalHandlers': coverage.get('summary', {}).get('sourcesWithoutHistoricalHandlers')},
-        'limitations': ['reviewed-country-domain-acceptance-bindings-missing',
-                        'production-and-cix-remain-paused'],
+        'limitations': ([] if cell_results['countryCoverageComplete'] else
+                        ['reviewed-country-domain-acceptance-incomplete']) +
+                        ['production-and-cix-remain-paused'],
     }
     return report
 
