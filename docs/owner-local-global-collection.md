@@ -43,5 +43,24 @@ invented. Publisher failures retain local results. `--mode user --publish-only`
 loads the stable saved result and retries publication without entering any
 acquisition or preparation path; an uncertain GitHub update is reconciled before
 any new update. The complete immutable source checkout and final command are
-provided with the reviewed source commit. No installation or new credentials are
-part of that command.
+provided with the reviewed source commit. No package installation or new credentials
+are part of that command.
+
+## Repeatable owner launcher
+
+The reviewed `scripts/run-global-on-foo.py` provides one-time `--install COMMIT TREE`
+setup into the private `~/offmenu-global-collection` directory. Setup verifies the
+exact detached checkout and every reviewed dependency, and refuses mismatched or
+unsafe existing installations. It does not invoke collection. After setup, run
+`~/offmenu-global-collection/run` from any directory. Publication-only recovery is
+`~/offmenu-global-collection/run --publish-only`.
+
+The launcher retains existing `GH_TOKEN`/`GITHUB_TOKEN` credentials only as inherited
+environment values; they are never command arguments or saved in files. GitHub
+configuration location is retained, while unrelated Git, shell and Python
+configuration variables are removed. The global entrypoint removes both token
+variables for the entire acquisition/preparation worker phase and restores them
+in a `finally` block for GitHub publication. No credential creation/login occurs.
+The initial delivered launcher failed before acquisition because its clean
+environment omitted the owner's existing `GITHUB_TOKEN`; this corrects that
+handoff without changing source selection, custody rules or dataset permissions.

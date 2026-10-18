@@ -710,6 +710,15 @@ def verify_manual_handover():
 def publish_manual_result(envelope):
  return publisher_module().publish_result(envelope,sys.modules[__name__])
 
+@contextmanager
+def without_github_credentials():
+ # Only the GitHub preflight/publisher may inherit these existing credentials.
+ credentials={key:os.environ.pop(key) for key in ('GH_TOKEN','GITHUB_TOKEN') if key in os.environ}
+ try:yield
+ finally:
+  for key in ('GH_TOKEN','GITHUB_TOKEN'):os.environ.pop(key,None)
+  os.environ.update(credentials)
+
 def main(argv=None):
  report=blocked_report('global-config-invalid');selected=None;progress={};runtime=None;old_output=a.OUTPUT
  args=sys.argv[1:] if argv is None else argv
@@ -725,7 +734,8 @@ def main(argv=None):
   selected=selection_config();manifest=manifest_config();prep=a.preparation_module();snapshot=prep.imported_snapshot(ROOT);adopted=a.strict_json(prep.pinned_bytes(ROOT,prep.SUMMARY_PIN))
   if args==['--mode','user']:
    runtime=OwnerRuntime(owner_config(selected),selected);verify_manual_handover();a.OUTPUT=runtime.root
-  report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress,owner_runtime=runtime);report=sanitize_report(report)
+  with without_github_credentials():
+   report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress,owner_runtime=runtime);report=sanitize_report(report)
  except Exception:
   if selected is not None and 'meter' in progress:report=projection_failure(selected,progress)
   elif runtime is not None:report=blocked_report('owner-handover-invalid')

@@ -2,7 +2,7 @@
 from copy import deepcopy
 from types import SimpleNamespace
 from pathlib import Path
-import importlib.util,json,os,time,unittest,io
+import importlib.util,json,os,time,unittest,io,subprocess,sys
 from contextlib import redirect_stdout
 from unittest.mock import patch
 ROOT=Path(__file__).resolve().parents[1]
@@ -112,4 +112,22 @@ class OwnerTests(unittest.TestCase):
   with patch.object(g,'selection_config',return_value=self.selected),patch.object(g,'manifest_config',return_value=self.manifest),patch.object(g,'owner_config',return_value=runtime.config),patch.object(g,'OwnerRuntime',return_value=runtime),patch.object(g,'verify_manual_handover',side_effect=ValueError('revoked')),patch.object(g,'run_global',side_effect=AssertionError('acquisition')),patch.object(g,'publish_manual_result',return_value={'status':'published-and-verified'}),redirect_stdout(io.StringIO()):
    self.assertEqual(g.main(['--mode','user']),2)
   envelope,_,_=g.saved_manual_result(runtime);self.assertEqual(envelope['globalReport']['errorCode'],'owner-handover-invalid');self.assertEqual(envelope['globalReport']['networkRequests'],0)
+ def test_github_tokens_absent_in_worker_child_and_restored_on_exception(self):
+  with patch.dict(os.environ,{'GH_TOKEN':'synthetic-gh','GITHUB_TOKEN':'synthetic-github'}):
+   with self.assertRaises(RuntimeError):
+    with g.without_github_credentials():
+     self.assertNotIn('GH_TOKEN',os.environ);self.assertNotIn('GITHUB_TOKEN',os.environ)
+     subprocess.run([sys.executable,'-I','-c',"import os; assert 'GH_TOKEN' not in os.environ and 'GITHUB_TOKEN' not in os.environ"],check=True)
+     raise RuntimeError('synthetic')
+   self.assertEqual(os.environ['GH_TOKEN'],'synthetic-gh');self.assertEqual(os.environ['GITHUB_TOKEN'],'synthetic-github')
+ def test_main_auth_only_preflight_and_publication_including_publish_only(self):
+  runtime=self.runtime();report=self.run_owner(runtime);observed=[]
+  def auth(*args):
+   self.assertEqual(os.environ.get('GITHUB_TOKEN'),'synthetic-github');observed.append('auth');return {'status':'verified-existing'}
+  def collect(*args,**kwargs):
+   self.assertNotIn('GH_TOKEN',os.environ);self.assertNotIn('GITHUB_TOKEN',os.environ);observed.append('collect');return report
+  with patch.dict(os.environ,{'GITHUB_TOKEN':'synthetic-github'}),patch.object(g,'selection_config',return_value=self.selected),patch.object(g,'manifest_config',return_value=self.manifest),patch.object(g,'owner_config',return_value=runtime.config),patch.object(g,'OwnerRuntime',return_value=runtime),patch.object(g.b,'source_conflicts',return_value=[]),patch.object(g,'run_global',side_effect=collect),patch.object(g,'verify_manual_handover',side_effect=auth),patch.object(g,'publish_manual_result',side_effect=auth),redirect_stdout(io.StringIO()) as out:
+   g.main(['--mode','user']);self.assertEqual(observed,['auth','collect','auth'])
+   g.main(['--mode','user','--publish-only']);self.assertEqual(observed,['auth','collect','auth','auth'])
+   self.assertNotIn('synthetic-github',out.getvalue())
 if __name__=='__main__':unittest.main()
