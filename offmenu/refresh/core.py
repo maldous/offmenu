@@ -13,6 +13,7 @@ import sqlite3
 import stat
 import subprocess
 import sys
+import time
 import uuid
 import zlib
 from datetime import datetime, timezone
@@ -136,7 +137,11 @@ def safe_path(path):
     return path
 
 
-def digest(path, *, max_bytes=None):
+def digest(path, *, max_bytes=None, deadline=None):
+    def check_deadline():
+        if deadline is not None and time.monotonic() >= deadline:
+            raise RefreshError('acquisition-duration-limit-exceeded')
+    check_deadline()
     path = safe_path(path)
     before = path.stat()
     if not stat.S_ISREG(before.st_mode):
@@ -150,8 +155,10 @@ def digest(path, *, max_bytes=None):
             raise RefreshError('input-changed-during-read')
         consumed = 0
         while True:
+            check_deadline()
             limit = min(1024 * 1024, max_bytes - consumed + 1) if max_bytes is not None else 1024 * 1024
             block = stream.read(limit)
+            check_deadline()  # Includes a slow EOF, before accepting the digest.
             if not block:
                 break
             consumed += len(block)
@@ -163,6 +170,7 @@ def digest(path, *, max_bytes=None):
     fields = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
     if fields(before) != fields(after) or fields(after) != fields(current):
         raise RefreshError('input-changed-during-read')
+    check_deadline()
     return {'bytes': after.st_size, 'sha256': value.hexdigest()}
 
 
@@ -211,12 +219,20 @@ def atomic_json(path, value):
 def writer_lock(path):
     """Kernel ownership survives neither exit nor SIGKILL; keep the inode stable."""
     path = safe_path(path)
-    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
     try:
+        opened = os.fstat(descriptor)
+        if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
+            raise RefreshError('unsafe-writer-lock')
         try:
             fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError as error:
             raise RefreshError('writer-lock-held') from error
+        # Recheck the opened inode before writing: a lock alias must never
+        # truncate another file, including one linked during acquisition.
+        locked = os.fstat(descriptor)
+        if not stat.S_ISREG(locked.st_mode) or locked.st_nlink != 1:
+            raise RefreshError('unsafe-writer-lock')
         os.ftruncate(descriptor, 0)
         os.write(descriptor, canonical({'pid': os.getpid()}))
         os.fsync(descriptor)
