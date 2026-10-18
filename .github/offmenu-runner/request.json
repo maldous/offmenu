@@ -1,5 +1,5 @@
 {
   "schemaVersion": 1,
-  "jobId": "global-readiness-20261018-001",
-  "profile": "global-readiness"
+  "jobId": "offline-reconciliation-20261018-001",
+  "profile": "offline-reconciliation"
 }
