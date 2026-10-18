@@ -1,0 +1,3693 @@
+{
+  "schemaVersion": "offmenu-next-composition-originals-batch-v1",
+  "preparedAtUTC": "2026-10-18T14:36:00Z",
+  "scope": "One focused metadata-only pass. Prioritized two publisher original composition releases. Candidate download contracts are not acquisitions, original-custody receipts, source-use admissions or country completeness.",
+  "resultSummary": {
+    "independentSourceSets": 2,
+    "countries": [
+      "CH",
+      "TZ"
+    ],
+    "publisherOfferedOriginalFiles": 35,
+    "compositionOrIdentityFiles": 34,
+    "portionSizeSupportFiles": 1,
+    "observedTotalBytes": 3683359,
+    "switzerlandBytes": 1014249,
+    "tanzaniaBytes": 2669110,
+    "newOriginalsAcquired": 0,
+    "unconditionallyDispatchableNow": 0,
+    "publisherRightsQualifiedPendingLiveOwnerChecks": 1,
+    "purposeOrPermissionHeldFiles": 34,
+    "qualification": "One Swiss XLSX is source-offer/rights qualified, pending current owner checks. Tanzania is a concrete 34-file public offer with a public-health grant and a commercial-purpose copying-and-distribution restriction. Private-custody scope is not explicit, so retain its unresolved-purpose/permission hold without claiming that every private download is prohibited. Thirty-five files do not mean 35 independent datasets."
+  },
+  "inputPins": {
+    "adoptedR6": {
+      "repository": "maldous/offmenu",
+      "commit": "b15de9593d242d36a63d2b00dd6078d57b4d82a3",
+      "entryPath": "docs/registry-candidate/2026-10-18/CURRENT249.json",
+      "registrySHA256": "c24dbcb802d1f0d8fe617f08de42c28a60c216a1f136614509b990d7d1d63bab",
+      "countryIndexSummary": {
+        "path": "/workspace/shared/adopted-country-index-summary-20261018.json",
+        "bytes": 1704567,
+        "sha256": "554b66c8ab159ce01de6b9042ec624ebe31e8beb570b0395d0be6a4f83235880"
+      },
+      "heldCorrections": {
+        "path": "/workspace/shared/adopted-country-physical-evidence-corrections-20261018.json",
+        "bytes": 167715,
+        "sha256": "b35ad11a4d3cb03af8e3493a961ded381b48fa9174e0d1529d23b95295c9bacd"
+      },
+      "assetMetadataChunks": {
+        "paths": [
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-007.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-008.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-009.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-010.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-011.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-012.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-013.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-014.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-015.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-016.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-017.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-018.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-019.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-020.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-021.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-022.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-023.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-024.json",
+          "docs/registry-candidate/2026-10-18/current249-r6/assets/chunk-025.json"
+        ],
+        "combinedLocalFile": {
+          "path": "/workspace/shared/composition-metadata/all-assets.json",
+          "bytes": 6967835,
+          "sha256": "4ba5100758453c870ead6bd90ce0a456b115e7fe85f685a9f11925f1c23dbde7"
+        },
+        "assetRecordsRead": 2129,
+        "summarySourceDescriptors": 1933,
+        "summaryHeldAssetIDs": 1160,
+        "summaryHeldIDsMissingFromReadChunks": [],
+        "qualification": "All positive held IDs in the adopted summary are represented. Earlier descriptor-only chunks are represented by the summary, not claimed to be fully reread."
+      }
+    },
+    "latestOwnerSnapshot": {
+      "sourceCommit": "4aa0976b9dc509b91f76874717f9de5e5e5529df",
+      "path": "/workspace/shared/offmenu-fixed-collection/verification/actual-v2-exact.json",
+      "bytes": 1104001,
+      "sha256": "408b58302fc3a4fd498497e8b769d374261b9002b04f368249bb6d088e8b294c",
+      "gitBlobSHA1": "f4506a58914e0be199527eb6f918b00803ca661e",
+      "allThreeExpectedValuesIndependentlyVerified": true,
+      "snapshotIsLiveOwnershipClearance": false
+    }
+  },
+  "reconciliation": {
+    "method": [
+      "Compare each exact primary URL and exact filename case-insensitively against serialized full r6 asset metadata, all adopted-summary descriptors, exact held corrections and all latest snapshot metadata.",
+      "Inspect CH/TZ country-source records and broader publisher/name aliases, preserving positive held records.",
+      "Retain known source URL, local path, recorded hash and byte count as a joined tuple only when supplied together. Do not join adjacent flattened snapshot rows.",
+      "Country requirement status is a locator and coverage signal only; UNVERIFIED or discovery-only is never evidence of physical absence."
+    ],
+    "additionalAliasChecks": {
+      "naehrwertdaten.ch": {
+        "r6_assets": true,
+        "adopted_summary": false,
+        "exact_held_corrections": false,
+        "latest_owner_snapshot": false
+      },
+      "Swiss_food_composition_database": {
+        "r6_assets": false,
+        "adopted_summary": false,
+        "exact_held_corrections": false,
+        "latest_owner_snapshot": false
+      },
+      "nutritionsource.hsph.harvard.edu": {
+        "r6_assets": false,
+        "adopted_summary": false,
+        "exact_held_corrections": false,
+        "latest_owner_snapshot": false
+      },
+      "tanzania-food-composition": {
+        "r6_assets": false,
+        "adopted_summary": false,
+        "exact_held_corrections": false,
+        "latest_owner_snapshot": false
+      },
+      "amincereals_090405": {
+        "r6_assets": false,
+        "adopted_summary": false,
+        "exact_held_corrections": false,
+        "latest_owner_snapshot": false
+      }
+    },
+    "candidateExactIdentityMatches": 0,
+    "scopeLimitations": [
+      "Source bodies were not downloaded into the workspace or rehashed. Public publisher pages and document front-matter were consulted for release and rights metadata.",
+      "Snapshot is bounded, possibly truncated, historical evidence. Unknown, renamed or unrecorded originals cannot be ruled out.",
+      "No live claim ledger read, claim acquisition, capacity reservation or owner workspace inspection was performed."
+    ],
+    "countryComparisons": {
+      "CH": {
+        "requirementLocators": {
+          "food_composition": {
+            "path": "requirements/chunk-003.json",
+            "jsonPointer": "/records/147"
+          },
+          "food_identity": {
+            "path": "requirements/chunk-003.json",
+            "jsonPointer": "/records/148"
+          }
+        },
+        "r6HeldPeer": {
+          "assetId": "file:930def049e8a95bce788b332",
+          "sourceURL": "https://data.snb.ch/api/cube/plkopr/data/csv/de",
+          "recordedSHA256": "19efd609cd2ea6d1db7b8d4ae1a41367647fc8bcf67e17c2153a4650d502bdde",
+          "recordedBytes": 81307,
+          "declaredPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/CH/ff87f83bfcf0b8843d75/CH-SNB-plkopr-full.csv",
+          "typeHints": [
+            "retailers_prices"
+          ],
+          "reasonNotEquivalent": "SNB basket/price series, not FSVO food composition workbook."
+        },
+        "snapshotCountrySourceRows": [
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/66",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "sourceId": "sge-recipe-catalogue",
+              "sourceUrl": "https://www.sge-ssn.ch/de/empfehlungen/offizielle-empfehlungen/rezepte/",
+              "status": "existing-release-metadata-reuse-no-transfer"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/76",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "sourceId": "sge-recipe-catalogue-exact-path",
+              "sourceUrl": "https://www.sge-ssn.ch/de/empfehlungen/offizielle-empfehlungen/rezepte/",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/86",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-367cf9e3f4d62938",
+              "sourceUrl": "https://www.sge-ssn.ch/media/yzdbfeou/7_veganes-ofengemuese-tempeh.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/92",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-39e9b5c3345417c0",
+              "sourceUrl": "https://www.sge-ssn.ch/media/swic3vx3/1_veganes-birchermuesli.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/98",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-3d0013a7bbfcb972",
+              "sourceUrl": "https://www.sge-ssn.ch/media/taej5hsb/2_rezept-linsenlasagne.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/104",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-45e45f6ad1693697",
+              "sourceUrl": "https://www.sge-ssn.ch/media/ipvj1xsf/5_vegane-ofen-suesskartoffeln.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/110",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-52d4c2fa590c23f9",
+              "sourceUrl": "https://www.sge-ssn.ch/media/ibof5cpm/de_spinatroulade-mit-huelsenfrucht-gemuese-cassoulet.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/116",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-5f3890edbcb14ecc",
+              "sourceUrl": "https://www.sge-ssn.ch/media/mjtlpp3u/de_birchermueesli.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/122",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-70c55735816c7c7c",
+              "sourceUrl": "https://www.sge-ssn.ch/media/ezmk3ukl/9_vegane-pilz-spinat-pfanne.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/128",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-73026089acf74721",
+              "sourceUrl": "https://www.sge-ssn.ch/media/onrl5oro/3_veganer-linsensalat.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/134",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-7dd0d780128c22a0",
+              "sourceUrl": "https://www.sge-ssn.ch/media/bjpbwzmb/4_veganes-randen-risotto.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/140",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-a5d3839d770d0c7f",
+              "sourceUrl": "https://www.sge-ssn.ch/media/r31fc32s/de_gemuese-tofu-reispfanne.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/146",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-a642f5ad04f3aa6c",
+              "sourceUrl": "https://www.sge-ssn.ch/media/1mjdofst/de_omeletten-mit-champignons.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/152",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-b276702603f5b602",
+              "sourceUrl": "https://www.sge-ssn.ch/media/qh1awiw5/de_huettenkaese-gschwellti-gemuesesticks.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/158",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-b6510b5384a916e7",
+              "sourceUrl": "https://www.sge-ssn.ch/media/ol0djd00/de_brotlasagne-mit-gemuese.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/164",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-c6b1dd314136da93",
+              "sourceUrl": "https://www.sge-ssn.ch/media/oyefee2r/de_spaghetti-mit-gemuesesauce.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/170",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-c9e649bb9a9255a7",
+              "sourceUrl": "https://www.sge-ssn.ch/media/k3hfxdxa/de_pizza-ai-funghi.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/176",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-e1e7d047759e01f5",
+              "sourceUrl": "https://www.sge-ssn.ch/media/p04aonez/de_wurzelgemuese-risotto-mit-gremolata.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/182",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-ed0d35d272eae314",
+              "sourceUrl": "https://www.sge-ssn.ch/media/1tblzbs3/10_vegane-broccoli-bohnen-reispfanne.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/188",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-eec8110ef9b38d66",
+              "sourceUrl": "https://www.sge-ssn.ch/media/bymgh2o1/6_vegane-gemuese-quinoa-bowl.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/194",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-f235de2b97e7ae3c",
+              "sourceUrl": "https://www.sge-ssn.ch/media/seaflqvt/8_vegane-tofu-zucchetti-pfanne.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/1/reconciliation/records/200",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/recipe-ingredient-after8942-20261018/result-manifest.json",
+            "metadataSHA256": "ec6c98300ae5c33e0a04b8cfe929494133ee820eb02f63f0314bdaa9e63fd8d8",
+            "record": {
+              "country": "CH",
+              "kind": "genuine-recipe-original",
+              "sourceId": "sge-f53f447ae34f07bb",
+              "sourceUrl": "https://www.sge-ssn.ch/media/lftd13z1/de_ofenkartoffeln-mit-kraeuterquark-und-gemuesechili.pdf",
+              "status": "complete-original-initial-integrity-pass"
+            }
+          },
+          {
+            "snapshotPointer": "/metadata/52/reconciliation/records/3453",
+            "metadataPath": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/later-next-eleven-refill-packets/owner-29/current249-source-type-index.json",
+            "metadataSHA256": "5c786e4b83943ef9744f0383c065b7005612dbb56fb15d31a7bc90c7c53c9727",
+            "record": {
+              "bytes": 81307,
+              "country": "CH",
+              "sha256": "19efd609cd2ea6d1db7b8d4ae1a41367647fc8bcf67e17c2153a4650d502bdde",
+              "sourceUrl": "https://data.snb.ch/api/cube/plkopr/data/csv/de",
+              "typeHints": [
+                "retailers_prices"
+              ]
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/4/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/e1d244616f3cc1e53f612eee2028121b23a0ff71dcd3661f083ccc9a912b40d4.json",
+            "metadataSHA256": "ea799552641924a0ba66ee987f70c35b420c365e3d43f7d3fd2190b910f610ad",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/de/empfehlungen/offizielle-empfehlungen/rezepte/"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/6/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/367cf9e3f4d62938ec4ddf100d92a67d05f66daf353849f0271170c4181f9296.json",
+            "metadataSHA256": "6e0b8b2d016bcee013a27c4bdab55ffcc264e3dfca4d5d7c44612b2cf84e9359",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/yzdbfeou/7_veganes-ofengemuese-tempeh.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/7/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/39e9b5c3345417c065fd433759d23a2c5c9ba6388522bd5ddc1df6eb9e9ccb2f.json",
+            "metadataSHA256": "005c3f2f2fd7c24895214488dc18f101b59d90cc8551db8bd89bdabaa6166f13",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/swic3vx3/1_veganes-birchermuesli.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/8/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/3d0013a7bbfcb972a75f53e2c0fa104bf70cc09a7c7067152dde5a8b8819fbca.json",
+            "metadataSHA256": "b5f4f581c9aca2ba63988e152a1bbeeae20bf639aa8775f3c49eab09533240f6",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/taej5hsb/2_rezept-linsenlasagne.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/9/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/45e45f6ad1693697a76995469e3aa196e1b1beef0c171afda5fed811486c65f1.json",
+            "metadataSHA256": "18d699d0851eccaad97d0da443a8d5c9a00cd60cd093aaeae32ac4d5421f85ca",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/ipvj1xsf/5_vegane-ofen-suesskartoffeln.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/10/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/52d4c2fa590c23f96623fde6fef09cf28a0fa3720da1ef5197b65d133cae1ad9.json",
+            "metadataSHA256": "871dac6441819508f89183f95a6eb1bb933f43ca05ed23af8e342a1e18f7247e",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/ibof5cpm/de_spinatroulade-mit-huelsenfrucht-gemuese-cassoulet.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/11/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/5f3890edbcb14eccad7fb648cdf509049b73fefab3d261a76a733576cd5504ba.json",
+            "metadataSHA256": "2e37322799b9c52fa0f218d5f8be9ea460af9b5460c20d9a8ebbaa2940518d2d",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/mjtlpp3u/de_birchermueesli.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/12/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/70c55735816c7c7c19e16361d9a565283f60d0dfdd7895422ba68cde8712e963.json",
+            "metadataSHA256": "1e471fd4e4868132f8c5aa7defa241e2be321604a7c8ebc03eb9002e8009ddbc",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/ezmk3ukl/9_vegane-pilz-spinat-pfanne.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/13/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/73026089acf7472155d216d4209dac68cbfe71528ff928731d51ff97e49de249.json",
+            "metadataSHA256": "39a201c111d2587d2c7d9a380dfad1e8d33615de84f54e198c727c121e9ff614",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/onrl5oro/3_veganer-linsensalat.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/14/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/7dd0d780128c22a091b29e00cf16d8b69a6a36688577dfd110d272596069e625.json",
+            "metadataSHA256": "6273c85e1d0166be53fc65f616d7d7cb18088f3d3214600eacdbefd5bd1c7086",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/bjpbwzmb/4_veganes-randen-risotto.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/15/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/a5d3839d770d0c7fe4dd3080fcee957a2f4482c27491d68614bf13122d7b1769.json",
+            "metadataSHA256": "a4c11e0b2a3bb8570c45e133b722bc29a25ae9e1952a61890d937f4e36beec2a",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/r31fc32s/de_gemuese-tofu-reispfanne.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/16/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/a642f5ad04f3aa6c1c0a02133e257f09b9f62bab35a2a8ced858b69528e9b15d.json",
+            "metadataSHA256": "54bd3959c0637337aa3d5e24021ffa162367ce392b7678fdf5f72e408dc83cba",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/1mjdofst/de_omeletten-mit-champignons.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/17/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/b276702603f5b6029b83c4e1c656034c0b50c98bf73d14ac276c11e870ebcf1b.json",
+            "metadataSHA256": "3227d28d65a22bf915e0a44b83794cb4d064aeb527762671a237099509ad33b2",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/qh1awiw5/de_huettenkaese-gschwellti-gemuesesticks.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/18/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/b6510b5384a916e7804cb7aa3464608a0e52f4bc65ec911bf9deba18d77208e6.json",
+            "metadataSHA256": "3ab5f94dd7182b0f16215ad6d559fc9cc4cec54cc74f6213228b6a17f20cc725",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/ol0djd00/de_brotlasagne-mit-gemuese.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/19/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/c6b1dd314136da93da5fa7ffa621d6d25c7737f5a302566b4c1145f40e2c257a.json",
+            "metadataSHA256": "35e92b244b8e85a2daef2d5c47762c466f41113fb89677d63d7056e1f76e112e",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/oyefee2r/de_spaghetti-mit-gemuesesauce.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/20/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/c9e649bb9a9255a7bd8c73d86c16a66d559afa8147b32d89460cc2c82ade5912.json",
+            "metadataSHA256": "7ecaa06bc9717fc898221075b70d316446288417d4e5fabe705b1715caf637ae",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/k3hfxdxa/de_pizza-ai-funghi.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/21/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/e1e7d047759e01f572459ce92d9fecfbd018553425ba984e31863bfa6a20a238.json",
+            "metadataSHA256": "0fe9c2a474688a3570b25aac859111a1afa213d515cca5d5ba39eae9a03481e4",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/p04aonez/de_wurzelgemuese-risotto-mit-gremolata.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/22/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/ed0d35d272eae314e1089964a5ae1e7ca72e40ffee4aa0108ce9379bf258936d.json",
+            "metadataSHA256": "51552501328b377348be3db1fafa01197a6a10354fb2e530d4f3cc10cc16b2fb",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/1tblzbs3/10_vegane-broccoli-bohnen-reispfanne.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/23/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/eec8110ef9b38d66b6dd6f2a2b88b773023e89a16ab8688e7a766bbd2a6d2eda.json",
+            "metadataSHA256": "e6568454ef65d5b79c40f537d22e0c68a9e44d8e8278bde4e1bd7ed12b1bed1b",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/bymgh2o1/6_vegane-gemuese-quinoa-bowl.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/24/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/f235de2b97e7ae3c0a3e451837dbf5055e763f7168e38c001bfb4a2d6a957da5.json",
+            "metadataSHA256": "6ef18a691196254d2b7156dbc8b96ee18737da96e40934fb29ab7653c961ffcb",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/seaflqvt/8_vegane-tofu-zucchetti-pfanne.pdf"
+            }
+          },
+          {
+            "snapshotPointer": "/discoveredMetadata/25/reconciliation/records/0",
+            "metadataPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/f53f447ae34f07bb4caa36f90b98ac94923eb46ab47e0a6596572d66450df518.json",
+            "metadataSHA256": "144d3a16310bd2c4b387016b9cc323f1cec01a87c4dead6728f0866503e78eeb",
+            "record": {
+              "country": "CH",
+              "owner": 4,
+              "sourceUrl": "https://www.sge-ssn.ch/media/lftd13z1/de_ofenkartoffeln-mit-kraeuterquark-und-gemuesechili.pdf"
+            }
+          }
+        ],
+        "snapshotPeerInterpretation": "Positive SNB price and SGE recipe/catalogue records remain held evidence. These distinct publisher/source identities do not establish custody of the FSVO workbook. No adjacent hash/path joins have been invented."
+      },
+      "TZ": {
+        "requirementLocators": {
+          "food_composition": {
+            "path": "requirements/chunk-016.json",
+            "jsonPointer": "/records/62"
+          },
+          "food_identity": {
+            "path": "requirements/chunk-016.json",
+            "jsonPointer": "/records/63"
+          }
+        },
+        "r6HeldCountryAssetIDs": [],
+        "observedExactCandidateIdentityMatches": 0,
+        "qualification": "No exact Tanzania candidate URL or filename appears in the bounded inputs. This is a new-candidate result, not proof of global physical absence."
+      }
+    }
+  },
+  "rightsPolicies": {
+    "CH-FSVO": {
+      "publisher": "Federal Food Safety and Veterinary Office (FSVO), Switzerland",
+      "releaseEvidenceURL": "https://www.naehrwertdaten.ch/en/downloads/",
+      "rightsEvidenceURLs": [
+        "https://www.naehrwertdaten.ch/en/downloads/",
+        "https://www.naehrwertdaten.ch/en/legal-information/"
+      ],
+      "licenseIdentifier": null,
+      "licenseDescription": "Publisher-specific permission; do not invent a Creative Commons license.",
+      "privateCopy": "Explicit free downloadable XLSX offered without an observed login or acceptance step.",
+      "downstreamReuse": "The download page expressly permits commercial and scientific dataset use subject to source acknowledgment. General legal-page copyright remains; this is not permission to reuse all site content, marks or photographs.",
+      "legalInterpretationQualification": "The dataset-specific permission is the operative evidence for the dataset; retain the general legal notice and attribution in the owner source-use record. This is evidence classification, not a legal opinion.",
+      "attributionProposed": "Swiss Food Composition Database, version 7.1, Federal Food Safety and Veterinary Office (FSVO).",
+      "noAgreementAccepted": true,
+      "exactPermissionExcerpts": [
+        "the data may also be used for commercial purposes",
+        "subject to acknowledgment of the source"
+      ]
+    },
+    "TZ-TFCT": {
+      "publishers": [
+        "Muhimbili University of Health and Allied Sciences (MUHAS)",
+        "Tanzania Food and Nutrition Centre (TFNC)",
+        "Harvard School of Public Health (HSPH)"
+      ],
+      "releaseEvidenceURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "rightsEvidenceURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2023/09/Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf#page=4",
+      "rightsLocator": "PDF physical page 4, printed page iii; copyright and copying paragraphs, lines 50–55 in browser extraction.",
+      "licenseIdentifier": null,
+      "licenseDescription": "Joint copyright. The book permits copying and distribution for public-health research and service programs; its exact commercial restriction uses the conjunction copied and distributed. Authors approval is also required before adding foods or recipes.",
+      "privateCopy": "A public download is offered, with no separate private-download prohibition observed. The scope of permission for OffMenu private custody remains unresolved because the commercial-purpose clause does not separately define private acquisition. Do not infer that our purpose qualifies; retain the hold pending source-use qualification.",
+      "downstreamReuse": "Commercial copying and distribution require authors permission under the quoted clause. Commercial integration and modification are not affirmatively cleared by the observed grant; adding foods or recipes requires authors approval. Do not promote this to a broad commercial-use license.",
+      "spreadsheetRightsQualification": "A separate XLS-specific license was not observed without opening originals. Conservatively retain the accompanying book restrictions for all companion sheets until scope is verified.",
+      "noAgreementAccepted": true,
+      "exactCommercialRestriction": "No part of this document should be copied and distributed for commercial purpose without the permission of the authors.",
+      "restrictionScopeQualification": "The text expressly addresses copying and distribution for commercial purpose. It does not separately mention downloading, private archival custody or an undistributed private copy within a commercial project. Consequently this review does not claim that the publisher explicitly forbids every private download. Nor does public availability establish that OffMenu has a qualifying public-health purpose or commercial-copy permission. The acquisition hold is a conservative unresolved-purpose/permission classification, not an observed publisher denial of an ordinary private GET."
+    }
+  },
+  "sourceSets": [
+    {
+      "id": "CH-FSVO-v7.1",
+      "country": "CH",
+      "title": "Swiss Food Composition Database",
+      "publisherLandingURL": "https://www.naehrwertdaten.ch/en/downloads/",
+      "release": "7.1",
+      "releaseDateEvidence": "Page update and file last-modified: 2026-07-15.",
+      "fileCount": 1,
+      "content": "Original publisher food identity and nutrient composition workbook.",
+      "coverageQualification": "No workbook body/schema inspection was performed; no row count or complete national coverage asserted."
+    },
+    {
+      "id": "TZ-TFCT-2008-2012",
+      "country": "TZ",
+      "title": "Tanzania Food Composition Tables",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "release": "First edition 2008; companion Excel last uploaded 2012; September 2023 authors note",
+      "fileCount": 34,
+      "compositionXLSCount": 32,
+      "fullTablePDFCount": 1,
+      "portionSizeXLSCount": 1,
+      "content": "Publisher describes over 400 foods/local dishes and 47 nutrients, with multilingual food names; eight food-group families each have four nutrient sheets. Portion-size workbook is supporting evidence, not another nutrient table.",
+      "coverageQualification": "Compiled food table includes borrowed/imputed information and recipes, not exclusively new laboratory measurements. 2024 HTTP modification dates do not establish a second edition."
+    }
+  ],
+  "contracts": [
+    {
+      "contractId": "CH-composition-original-01",
+      "country": "CH",
+      "sourceSetId": "CH-FSVO-v7.1",
+      "publisherLandingURL": "https://www.naehrwertdaten.ch/en/downloads/",
+      "exactPrimaryDownloadURL": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
+      "observedHref": true,
+      "filename": "Swiss_food_composition_database.xlsx",
+      "role": "food_composition_and_identity",
+      "foodGroup": null,
+      "nutrientSubset": null,
+      "expectedFormat": "XLSX",
+      "expectedMIME": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "release": "Version 7.1, July 2026",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:12.638778+00:00",
+        "status": 200,
+        "finalUrl": "https://naehrwertdaten.ch/wp-content/uploads/2026/07/Swiss_food_composition_database.xlsx",
+        "headers": {
+          "content-length": "1014249",
+          "content-type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "etag": "\"f79e9-656a6dba75380\"",
+          "last-modified": "Wed, 15 Jul 2026 14:08:30 GMT"
+        }
+      },
+      "observedSizeBytes": 1014249,
+      "proposedHardMaximumBytes": 1014249,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "CH-FSVO",
+      "privateCopyDisposition": "candidate_after_live_owner_claim_checks",
+      "downstreamReuseDisposition": "publisher_allows_commercial_and_scientific_use_with_attribution; separate_admission_required",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-01",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2023/09/Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf",
+      "observedHref": true,
+      "filename": "Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf",
+      "role": "food_composition_and_identity",
+      "foodGroup": null,
+      "nutrientSubset": null,
+      "expectedFormat": "PDF",
+      "expectedMIME": "application/pdf",
+      "release": "First edition November 2008; September 2023 authors update cover note",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2023/09/Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:12.639789+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2023/09/Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf",
+        "headers": {
+          "content-length": "1750070",
+          "content-type": "application/pdf",
+          "etag": "\"660af5dc-1ab436\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 1750070,
+      "proposedHardMaximumBytes": 1750070,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-02",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/amincereals_090405.xls",
+      "observedHref": true,
+      "filename": "amincereals_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Cereals",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/amincereals_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:12.640332+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/amincereals_090405.xls",
+        "headers": {
+          "content-length": "19456",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4c00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 19456,
+      "proposedHardMaximumBytes": 19456,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-03",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/macrocereals_091101.xls",
+      "observedHref": true,
+      "filename": "macrocereals_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Cereals",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/macrocereals_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:12.640961+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/macrocereals_091101.xls",
+        "headers": {
+          "content-length": "34816",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-8800\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 34816,
+      "proposedHardMaximumBytes": 34816,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-04",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/mineralscereals_091101.xls",
+      "observedHref": true,
+      "filename": "mineralscereals_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Cereals",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/mineralscereals_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:12.642356+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/mineralscereals_091101.xls",
+        "headers": {
+          "content-length": "25600",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-6400\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 25600,
+      "proposedHardMaximumBytes": 25600,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-05",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/vitamincereals_091101.xls",
+      "observedHref": true,
+      "filename": "vitamincereals_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Cereals",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/vitamincereals_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:17.909858+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/vitamincereals_091101.xls",
+        "headers": {
+          "content-length": "28672",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-7000\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 28672,
+      "proposedHardMaximumBytes": 28672,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-06",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegamino_090406.xls",
+      "observedHref": true,
+      "filename": "fruitvegamino_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Fruits and vegetables",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegamino_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:17.914827+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegamino_090406.xls",
+        "headers": {
+          "content-length": "32768",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-8000\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 32768,
+      "proposedHardMaximumBytes": 32768,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-07",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmacro_091101.xls",
+      "observedHref": true,
+      "filename": "fruitvegmacro_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Fruits and vegetables",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmacro_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:18.000126+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmacro_091101.xls",
+        "headers": {
+          "content-length": "49152",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-c000\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 49152,
+      "proposedHardMaximumBytes": 49152,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-08",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmin_090405.xls",
+      "observedHref": true,
+      "filename": "fruitvegmin_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Fruits and vegetables",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmin_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:18.004247+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegmin_090405.xls",
+        "headers": {
+          "content-length": "31232",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-7a00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 31232,
+      "proposedHardMaximumBytes": 31232,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-09",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegvitamin_0901101.xls",
+      "observedHref": true,
+      "filename": "fruitvegvitamin_0901101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Fruits and vegetables",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegvitamin_0901101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:19.382280+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/fruitvegvitamin_0901101.xls",
+        "headers": {
+          "content-length": "38400",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-9600\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 38400,
+      "proposedHardMaximumBytes": 38400,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-10",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_amino_090405.xls",
+      "observedHref": true,
+      "filename": "legumes_amino_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Legumes",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_amino_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:21.457188+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_amino_090405.xls",
+        "headers": {
+          "content-length": "20992",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5200\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 20992,
+      "proposedHardMaximumBytes": 20992,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-11",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-macro_090405.xls",
+      "observedHref": true,
+      "filename": "legumes-macro_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Legumes",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-macro_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:21.474444+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-macro_090405.xls",
+        "headers": {
+          "content-length": "25088",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-6200\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 25088,
+      "proposedHardMaximumBytes": 25088,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-12",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_minerals_091101.xls",
+      "observedHref": true,
+      "filename": "legumes_minerals_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Legumes",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_minerals_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:21.487669+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes_minerals_091101.xls",
+        "headers": {
+          "content-length": "19456",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4c00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 19456,
+      "proposedHardMaximumBytes": 19456,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-13",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-vitamin_090405.xls",
+      "observedHref": true,
+      "filename": "legumes-vitamin_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Legumes",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-vitamin_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:21.491522+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/legumes-vitamin_090405.xls",
+        "headers": {
+          "content-length": "20992",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5200\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 20992,
+      "proposedHardMaximumBytes": 20992,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-14",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsamin_090406.xls",
+      "observedHref": true,
+      "filename": "brothsamin_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Local broths",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsamin_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:21.539016+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsamin_090406.xls",
+        "headers": {
+          "content-length": "18944",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4a00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 18944,
+      "proposedHardMaximumBytes": 18944,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-15",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmacro_090406.xls",
+      "observedHref": true,
+      "filename": "brothsmacro_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Local broths",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmacro_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:24.413386+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmacro_090406.xls",
+        "headers": {
+          "content-length": "21504",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5400\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 21504,
+      "proposedHardMaximumBytes": 21504,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-16",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmine_090406.xls",
+      "observedHref": true,
+      "filename": "brothsmine_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Local broths",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmine_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:24.465552+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsmine_090406.xls",
+        "headers": {
+          "content-length": "18432",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4800\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 18432,
+      "proposedHardMaximumBytes": 18432,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-17",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsvit_090406.xls",
+      "observedHref": true,
+      "filename": "brothsvit_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Local broths",
+      "nutrientSubset": "Vitamins",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsvit_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:24.483814+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/brothsvit_090406.xls",
+        "headers": {
+          "content-length": "18944",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4a00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 18944,
+      "proposedHardMaximumBytes": 18944,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-18",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatamino_090406.xls",
+      "observedHref": true,
+      "filename": "milkmeatamino_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Meat, poultry, fish and milk",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatamino_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:24.506641+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatamino_090406.xls",
+        "headers": {
+          "content-length": "25600",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-6400\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 25600,
+      "proposedHardMaximumBytes": 25600,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-19",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmacro_090405.xls",
+      "observedHref": true,
+      "filename": "milkmeatmacro_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Meat, poultry, fish and milk",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmacro_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:24.526467+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmacro_090405.xls",
+        "headers": {
+          "content-length": "34304",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-8600\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 34304,
+      "proposedHardMaximumBytes": 34304,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-20",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmineral_090406.xls",
+      "observedHref": true,
+      "filename": "milkmeatmineral_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Meat, poultry, fish and milk",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmineral_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:27.472563+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatmineral_090406.xls",
+        "headers": {
+          "content-length": "24064",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5e00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 24064,
+      "proposedHardMaximumBytes": 24064,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-21",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatvitam_090405.xls",
+      "observedHref": true,
+      "filename": "milkmeatvitam_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Meat, poultry, fish and milk",
+      "nutrientSubset": "Vitamins",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatvitam_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:27.486014+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/milkmeatvitam_090405.xls",
+        "headers": {
+          "content-length": "26112",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-6600\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 26112,
+      "proposedHardMaximumBytes": 26112,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-22",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousamin_091103.xls",
+      "observedHref": true,
+      "filename": "miscellaneousamin_091103.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Miscellaneous foods",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousamin_091103.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:27.493407+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousamin_091103.xls",
+        "headers": {
+          "content-length": "19456",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4c00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 19456,
+      "proposedHardMaximumBytes": 19456,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-23",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmacro_0911063.xls",
+      "observedHref": true,
+      "filename": "miscellaneousmacro_0911063.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Miscellaneous foods",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmacro_0911063.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:27.507181+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmacro_0911063.xls",
+        "headers": {
+          "content-length": "23552",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5c00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 23552,
+      "proposedHardMaximumBytes": 23552,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-24",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmin_091103.xls",
+      "observedHref": true,
+      "filename": "miscellaneousmin_091103.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Miscellaneous foods",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmin_091103.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:27.540396+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousmin_091103.xls",
+        "headers": {
+          "content-length": "18432",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4800\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 18432,
+      "proposedHardMaximumBytes": 18432,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-25",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousvit_091103.xls",
+      "observedHref": true,
+      "filename": "miscellaneousvit_091103.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Miscellaneous foods",
+      "nutrientSubset": "Vitamins",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousvit_091103.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:30.480629+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/miscellaneousvit_091103.xls",
+        "headers": {
+          "content-length": "19968",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4e00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 19968,
+      "proposedHardMaximumBytes": 19968,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-26",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsamino_090406.xls",
+      "observedHref": true,
+      "filename": "oilsfatsamino_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Oils and fats",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsamino_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:30.500434+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsamino_090406.xls",
+        "headers": {
+          "content-length": "16384",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4000\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 16384,
+      "proposedHardMaximumBytes": 16384,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-27",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmacro_090406.xls",
+      "observedHref": true,
+      "filename": "oilsfatsmacro_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Oils and fats",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmacro_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:30.508522+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmacro_090406.xls",
+        "headers": {
+          "content-length": "16896",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4200\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 16896,
+      "proposedHardMaximumBytes": 16896,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-28",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmin_090405.xls",
+      "observedHref": true,
+      "filename": "oilsfatsmin_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Oils and fats",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmin_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:30.520375+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsmin_090405.xls",
+        "headers": {
+          "content-length": "15872",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-3e00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 15872,
+      "proposedHardMaximumBytes": 15872,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-29",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsvitam_090406.xls",
+      "observedHref": true,
+      "filename": "oilsfatsvitam_090406.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Oils and fats",
+      "nutrientSubset": "Vitamins",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsvitam_090406.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:30.553499+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/oilsfatsvitam_090406.xls",
+        "headers": {
+          "content-length": "15872",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-3e00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 15872,
+      "proposedHardMaximumBytes": 15872,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-30",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberamino_090405.xls",
+      "observedHref": true,
+      "filename": "rootstuberamino_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Roots, tubers and banana",
+      "nutrientSubset": "Amino acids",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberamino_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:33.554825+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberamino_090405.xls",
+        "headers": {
+          "content-length": "22016",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5600\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 22016,
+      "proposedHardMaximumBytes": 22016,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-31",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubermacro_090405.xls",
+      "observedHref": true,
+      "filename": "rootstubermacro_090405.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Roots, tubers and banana",
+      "nutrientSubset": "Macronutrients",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubermacro_090405.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:33.562451+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubermacro_090405.xls",
+        "headers": {
+          "content-length": "26624",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-6800\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 26624,
+      "proposedHardMaximumBytes": 26624,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-32",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberminer_091101.xls",
+      "observedHref": true,
+      "filename": "rootstuberminer_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Roots, tubers and banana",
+      "nutrientSubset": "Minerals",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberminer_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:33.581530+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstuberminer_091101.xls",
+        "headers": {
+          "content-length": "19968",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-4e00\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 19968,
+      "proposedHardMaximumBytes": 19968,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-33",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubervit_091101.xls",
+      "observedHref": true,
+      "filename": "rootstubervit_091101.xls",
+      "role": "food_group_nutrient_table",
+      "foodGroup": "Roots, tubers and banana",
+      "nutrientSubset": "Vitamins",
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubervit_091101.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:33.635045+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/rootstubervit_091101.xls",
+        "headers": {
+          "content-length": "22016",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-5600\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 22016,
+      "proposedHardMaximumBytes": 22016,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    },
+    {
+      "contractId": "TZ-composition-original-34",
+      "country": "TZ",
+      "sourceSetId": "TZ-TFCT-2008-2012",
+      "publisherLandingURL": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "exactPrimaryDownloadURL": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/adultchildren__portion_data_base09.xls",
+      "observedHref": true,
+      "filename": "adultchildren__portion_data_base09.xls",
+      "role": "portion_size_support",
+      "foodGroup": null,
+      "nutrientSubset": null,
+      "expectedFormat": "XLS",
+      "expectedMIME": "application/vnd.ms-excel",
+      "release": "First-edition companion Excel series; publisher says last uploaded in 2012",
+      "releaseNotInferredFromHTTPDate": true,
+      "headObservation": {
+        "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/adultchildren__portion_data_base09.xls",
+        "method": "HEAD",
+        "payloadBytesRead": 0,
+        "checkedAtUTC": "2026-10-18T14:32:33.656489+00:00",
+        "status": 200,
+        "finalUrl": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2012/10/adultchildren__portion_data_base09.xls",
+        "headers": {
+          "content-length": "147456",
+          "content-type": "application/vnd.ms-excel",
+          "etag": "\"660af5dc-24000\"",
+          "last-modified": "Mon, 01 Apr 2024 17:58:52 GMT"
+        }
+      },
+      "observedSizeBytes": 147456,
+      "proposedHardMaximumBytes": 147456,
+      "sizeBudgetQualification": "Exact Content-Length observed by HEAD; not payload verification or a reservation. Stop and reassess if size, redirect, MIME, release or validators change. No automatic budget expansion.",
+      "publisherChecksum": null,
+      "payloadSHA256": null,
+      "checksumQualification": "No cryptographic publisher checksum observed. No original payload read or locally rehashed in this pass. ETag is a validator, not asserted to be a checksum.",
+      "custodyComparison": {
+        "status": "no_exact_source_identity_match_in_bounded_metadata",
+        "queryResults": {
+          "r6_assets": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "adopted_summary": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "exact_held_corrections": {
+            "exactURLMention": false,
+            "filenameMention": false
+          },
+          "latest_owner_snapshot": {
+            "exactURLMention": false,
+            "filenameMention": false
+          }
+        },
+        "hashComparison": "unavailable until publisher checksum or authorized owner-side acquisition; differently named or undocumented copies remain possible",
+        "liveOwnershipClearance": false,
+        "physicalAbsenceProven": false
+      },
+      "rightsPolicyRef": "TZ-TFCT",
+      "privateCopyDisposition": "hold_for_purpose_and_commercial_copy_permission_qualification",
+      "downstreamReuseDisposition": "commercial_copying_and_distribution_requires_authors_permission; other_commercial_use_not_qualified; private_custody_scope_unresolved",
+      "acquired": false,
+      "acquisitionExecuted": false,
+      "remainingClaimCheckRefs": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "TZ1",
+        "TZ2"
+      ]
+    }
+  ],
+  "remainingClaimChecks": [
+    {
+      "id": "C1",
+      "action": "In the authorized owner environment, read current claim, receipt and source-custody metadata for the exact URL, redirects, filename, publisher/release aliases and any known checksum. Reuse an existing held copy if found.",
+      "blocking": true
+    },
+    {
+      "id": "C2",
+      "action": "Confirm active source-specific holds and claimed owner. Do not steal, expire, release or rewrite another worker claim from this snapshot.",
+      "blocking": true
+    },
+    {
+      "id": "C3",
+      "action": "Confirm current storage/quota, permissible destination and budget reservation for the exact observed byte total. This JSON creates no reservation.",
+      "blocking": true
+    },
+    {
+      "id": "C4",
+      "action": "Recheck publisher offering and current rights at time of an authorized owner-side GET. Stop on new terms, login, access restriction or withheld bulk export; never bypass.",
+      "blocking": true
+    },
+    {
+      "id": "C5",
+      "action": "If explicitly authorized and all gates pass, acquire only the exact offered original to the approved private owner destination, with a hard size cap; record URL, release, MIME, length, actual SHA-256, timestamps, provenance and immutable receipt. Do not transfer raw originals to cloud, GitHub or this JSON.",
+      "blocking": true
+    },
+    {
+      "id": "C6",
+      "action": "Preserve original bytes; no spreadsheet execution, macros, scraping, normalization, country-complete label, ingestion or commercial reuse admission is authorized by this metadata pass.",
+      "blocking": true
+    },
+    {
+      "id": "TZ1",
+      "action": "Qualify the intended OffMenu private-custody purpose against the exact copying-and-distribution clause, without assuming public-health status or inferring an explicit ban on all private downloads. Reconcile any existing applicable permission. If author permission or legal interpretation is needed, keep the hold; no author outreach or agreement acceptance is authorized here.",
+      "blocking": true
+    },
+    {
+      "id": "TZ2",
+      "action": "Confirm whether companion XLS files have more specific permission. Until then retain the document restriction and block downstream commercial use and addition of foods/recipes.",
+      "blocking": true
+    }
+  ],
+  "alreadyHeldExactExclusions": [
+    {
+      "assetId": "file:38c6b236b9fb5268f5b92227",
+      "sourceURL": "https://www.fao.org/fileadmin/templates/food_composition/documents/FCDB_7_4_14.xlsx",
+      "recordedIntegrity": {
+        "sha256": "899a0346fd8a8e0cc65c87688ae719cd7d3f0c99bf15c2aa8a53ce2314cfa9e0",
+        "bytes": 775096,
+        "qualification": "Owner-recorded source-object extent/hash via exact57 metadata; no00rawbodycheck, not an independent food-record count"
+      },
+      "localEvidence": {
+        "declaredPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-15/BD/batch8053-bd-fct2013-xlsx-19b221e6447ab75d51f5/original.xlsx",
+        "custodian": 15,
+        "reportingOwner": 15,
+        "existenceState": "held-locally-with-evidence",
+        "receipt": {
+          "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/country-row-view-after-D.json",
+          "sha256": "4f319a53e231bf62e8fb9808b0aec1c9dc88ebad98ae2fe1b936de87e714442b"
+        },
+        "existenceQualification": "Exact57 sourceFiles/country-pointer identity with finite owner declaration; no00rawread/stat/hash; no source-use/type coverage admission",
+        "current57PointerEvidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/country-row-view-after-D.json",
+            "sha256": "4f319a53e231bf62e8fb9808b0aec1c9dc88ebad98ae2fe1b936de87e714442b"
+          },
+          "selector": "/sourceFiles/38c6b236b9fb5268f5b92227",
+          "rightsAndUseQualification": "Unqualified;public access not derivative/republication entitlement",
+          "coverageQualification": "Unchanged public official reference original for private local inspection;selection8053"
+        },
+        "selectedCurrent249Evidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-pending-envelope-C/current249-source-type-index-after-pending-C.json",
+            "sha256": "031eaa49c3278486d5fb3b427821970a135fb88d8287264d8cc9d87916af47e8"
+          },
+          "selector": "/sourceDescriptors/38c6b236b9fb5268f5b92227",
+          "qualification": "Literal metadata source evidence; canonical kind/type/rights/clocks unchanged"
+        },
+        "checkedMetadataObservations": [
+          {
+            "bundle": "G",
+            "source": {
+              "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/bundle-G-checked-evidence-only-merge-result.json",
+              "sha256": "376b57b41470e426b7d3b4796c5b05e235155883a6bde645782886be700a354d"
+            },
+            "selector": "/evidenceFindings/36",
+            "recordedState": "held-locally-with-evidence",
+            "qualification": "Previously missing ID is now present in selected full249; exactstableID/path/hash/countryguard passed after all new descriptor joins. Metadata only; no type/kind/rights/clock adoption."
+          }
+        ]
+      },
+      "disposition": "already_held_do_not_redownload"
+    },
+    {
+      "assetId": "file:65df44e6a8d3cf6fcd47c48e",
+      "sourceURL": "https://www.fao.org/fileadmin/templates/food_composition/documents/FCT_10_2_14_final_version.pdf",
+      "recordedIntegrity": {
+        "sha256": "9728be753c4675e0673d02624297d81d1da41fea8a78fa36dee586aa9224cb93",
+        "bytes": 5467777,
+        "qualification": "Owner-recorded source-object extent/hash via exact57 metadata; no00rawbodycheck, not an independent food-record count"
+      },
+      "localEvidence": {
+        "declaredPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-15/BD/batch8053-bd-fct2013-pdf-b31e5e8e223a969a3892/original.pdf",
+        "custodian": 15,
+        "reportingOwner": 15,
+        "existenceState": "held-locally-with-evidence",
+        "receipt": {
+          "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/country-row-view-after-D.json",
+          "sha256": "4f319a53e231bf62e8fb9808b0aec1c9dc88ebad98ae2fe1b936de87e714442b"
+        },
+        "existenceQualification": "Exact57 sourceFiles/country-pointer identity with finite owner declaration; no00rawread/stat/hash; no source-use/type coverage admission",
+        "current57PointerEvidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/country-row-view-after-D.json",
+            "sha256": "4f319a53e231bf62e8fb9808b0aec1c9dc88ebad98ae2fe1b936de87e714442b"
+          },
+          "selector": "/sourceFiles/65df44e6a8d3cf6fcd47c48e",
+          "rightsAndUseQualification": "Unqualified;public access not derivative/republication entitlement",
+          "coverageQualification": "Unchanged public official reference original for private local inspection;selection8053"
+        },
+        "selectedCurrent249Evidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-pending-envelope-C/current249-source-type-index-after-pending-C.json",
+            "sha256": "031eaa49c3278486d5fb3b427821970a135fb88d8287264d8cc9d87916af47e8"
+          },
+          "selector": "/sourceDescriptors/65df44e6a8d3cf6fcd47c48e",
+          "qualification": "Literal metadata source evidence; canonical kind/type/rights/clocks unchanged"
+        },
+        "checkedMetadataObservations": [
+          {
+            "bundle": "G",
+            "source": {
+              "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/bundle-G-checked-evidence-only-merge-result.json",
+              "sha256": "376b57b41470e426b7d3b4796c5b05e235155883a6bde645782886be700a354d"
+            },
+            "selector": "/evidenceFindings/69",
+            "recordedState": "held-locally-with-evidence",
+            "qualification": "Previously missing ID is now present in selected full249; exactstableID/path/hash/countryguard passed after all new descriptor joins. Metadata only; no type/kind/rights/clock adoption."
+          }
+        ]
+      },
+      "disposition": "already_held_do_not_redownload"
+    },
+    {
+      "assetId": "file:c9a2d4471f728c93435cb64d",
+      "sourceURL": "https://www.fao.org/fileadmin/templates/food_composition/documents/Lesotho_1-127_pages.pdf",
+      "recordedIntegrity": {
+        "sha256": "3df750134a06b9f774099d1534d2325076b44b5e0324547a30ac1c60c9554638",
+        "bytes": 8452001,
+        "extent": "RECORDED_METADATA_HASH; NO_AGGREGATOR_BODY_REHASH",
+        "actualRehashedByThisProjection": false
+      },
+      "localEvidence": {
+        "declaredPath": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-32/78d0f7da554c5bf8b204/Lesotho_1-127_pages.pdf",
+        "reportedStatus": null,
+        "custodian": 32,
+        "qualification": "57 metadata descriptor; no current raw stat/hash in projection",
+        "existenceState": "held-locally-with-evidence",
+        "receipt": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-53/LOCAL-SOURCE-COPIES-20261018/source-copy-inventory-v2.json",
+          "sha256": "7a267859a83bcfd4583969907d4710ecdd0256abacdf38f609e01f99cfb30e3e"
+        },
+        "existenceQualification": "Owner receipt/57 metadata evidence; not a fresh stat/hash by00 unless separately noted",
+        "checkedMetadataObservations": [
+          {
+            "bundle": "E",
+            "source": {
+              "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/bundle-E-checked-evidence-only-merge-result.json",
+              "sha256": "e33cdf7039c188c45effdaa315d8ff895fbd776ad6f7f426892e4ca7bd98201c"
+            },
+            "selector": "/evidenceFindings/202",
+            "recordedState": "held-locally-with-evidence",
+            "qualification": "Exact current ID/path/recorded hash joined to57-checked metadata; no new payload check, source-kind/type/rights admission or clock change."
+          }
+        ],
+        "current57PointerEvidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-helper-merges/country-row-view-after-D.json",
+            "sha256": "4f319a53e231bf62e8fb9808b0aec1c9dc88ebad98ae2fe1b936de87e714442b"
+          },
+          "selector": "/sourceFiles/c9a2d4471f728c93435cb64d",
+          "rightsAndUseQualification": "Existing source-specific holds preserved; currentusequalificationnot established here",
+          "coverageQualification": " Own LK/LR/LS/LT exact retained source receipt graph and existing bound originals only. No global scan, archive rehash, source processing or country completion."
+        },
+        "selectedCurrent249Evidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-18/country-collection-inventory/worker57/checked-pending-envelope-C/current249-source-type-index-after-pending-C.json",
+            "sha256": "031eaa49c3278486d5fb3b427821970a135fb88d8287264d8cc9d87916af47e8"
+          },
+          "selector": "/sourceDescriptors/c9a2d4471f728c93435cb64d",
+          "qualification": "Literal metadata source evidence; canonical kind/type/rights/clocks unchanged"
+        }
+      },
+      "disposition": "already_held_do_not_redownload"
+    }
+  ],
+  "preservedExclusionFamilies": [
+    "USDA FoodData Central",
+    "Open Food Facts",
+    "WAFCT",
+    "Congo Basin FCT",
+    "MEXT Japan",
+    "Australian AFCD and AUSNUT",
+    "UK CoFID",
+    "French Ciqual",
+    "Six already-held FAO workbooks",
+    "Positive existing Canada CNF2015, Germany BLS4.0, Korea national composition XLSX, Peru TPCA2025, Brazil TACO and Comoros nutrient XLSX metadata"
+  ],
+  "preservedNoReadOrNoBypassHolds": [
+    "Fineli",
+    "Frida",
+    "Native Norway/France restricted routes",
+    "Zenodo asset 15169428",
+    "FooDB",
+    "UniTools"
+  ],
+  "furtherDiscoveryDisposition": [
+    {
+      "country": "LS",
+      "title": "Lesotho FCT workbook",
+      "exactURL": "https://www.fao.org/fileadmin/templates/food_composition/documents/LesFCT_final_copyrevised1.xlsm",
+      "status": "HTTP403_access_hold_no_retry_or_alternate_route",
+      "note": "Separate workbook identity from already-held Lesotho PDF. Do not execute macros."
+    },
+    {
+      "country": "MZ",
+      "title": "Mozambique food composition tables",
+      "exactURL": "https://helda.helsinki.fi/bitstream/handle/10138/337295/Food_composition_tables_for_Mozambique.pdf?sequence=1",
+      "status": "AnubisAccessDenied_hold_no_retry_or_alternate_route"
+    },
+    {
+      "country": "SZ",
+      "title": "Eswatini food composition table 2019",
+      "exactURL": "https://agrinfosystems.gov.sz/assets/uploadsEswatini%20food%20composition%20table.pdf",
+      "observedSizeBytes": 926349,
+      "status": "rights_hold",
+      "note": "Copyright front-matter requires permission for reproduction/storage/transmission; do not treat public PDF as storage/reuse clearance."
+    },
+    {
+      "country": "NZ",
+      "title": "FOODfiles 2024",
+      "landingURL": "https://www.foodcomposition.co.nz/foodfiles/",
+      "status": "installation_agreement_hold",
+      "note": "48 MB MSI publisher offer; requires terms acceptance during installation. No installation or agreement accepted."
+    },
+    {
+      "country": "MW",
+      "title": "Malawian food composition table 2019",
+      "exactURL": "https://dl.tufts.edu/downloads/g158bw806?filename=d217r336d.pdf",
+      "publisherLandingURL": "https://dl.tufts.edu/concern/pdfs/d217r336d",
+      "observedSizeBytes": 18165775,
+      "status": "deferred_not_dispatchable",
+      "remainingChecks": "Copyright Not Evaluated notice; full exact custody/rights qualification unfinished. Not included in the 35-file batch."
+    },
+    {
+      "country": "KG",
+      "title": "Kyrgyzstan food composition table 2022",
+      "exactURL": "https://www.vup.sk/resources/documents/216.pdf",
+      "status": "rights_conflict_hold",
+      "note": "Book noncommercial/commercial-permission restriction conflicts with a separate author deposit CC-BY label. Resolve scope and exact artifact identity first."
+    },
+    {
+      "country": "CO",
+      "title": "Colombian food composition table 2018",
+      "exactURL": "https://www.icbf.gov.co/system/files/tcac_web.pdf",
+      "status": "deferred_HTTP500_and_rights_unqualified"
+    },
+    {
+      "country": "IN",
+      "title": "Indian Food Composition Tables 2017",
+      "exactURL": "https://www.nin.res.in/ebooks/IFCT2017.pdf",
+      "publisherLandingURL": "https://www.nin.res.in/downloads/index.html",
+      "status": "current_offer_and_rights_hold",
+      "note": "Historic direct URL alone is not a current publisher bulk offer; current download page/full-copy link and publisher restrictions require qualification."
+    }
+  ],
+  "metadataEvidenceFiles": [
+    {
+      "path": "/workspace/shared/composition-metadata/exact-publisher-links.json",
+      "bytes": 7549,
+      "sha256": "3d6a8fc1a693e891157ff67b1a87d1ddf6cbb98d580645e756954205cf149d49"
+    },
+    {
+      "path": "/workspace/shared/composition-metadata/head-results.json",
+      "bytes": 21135,
+      "sha256": "4b4e69891b54b1da716a1731ff5a08d59e969733a8c83f5b72f80ebeb7b59132"
+    }
+  ],
+  "operationalChanges": {
+    "sourceGETsIntoWorkspace": 0,
+    "sourceFilesAcquired": 0,
+    "rawDatasetsUploaded": 0,
+    "claimsChanged": false,
+    "reservationsChanged": false,
+    "scrapersRun": false,
+    "agreementsAccepted": false,
+    "liveOwnerClearanceClaimed": false,
+    "canonicalIndexChanged": false
+  },
+  "supportingCitationEvidence": [
+    {
+      "country": "CH",
+      "url": "https://www.naehrwertdaten.ch/en/downloads/",
+      "supports": [
+        "current version 7.1",
+        "publisher direct XLSX offer",
+        "free download",
+        "commercial and scientific dataset use with source acknowledgment"
+      ],
+      "observedAtUTC": "2026-10-18T14:35:40Z"
+    },
+    {
+      "country": "CH",
+      "url": "https://www.naehrwertdaten.ch/en/legal-information/",
+      "supports": [
+        "general Federal copyright notice",
+        "no transfer of ownership on download",
+        "retain general website reproduction notice alongside dataset-specific grant"
+      ],
+      "observedAtUTC": "2026-10-18T14:35:40Z"
+    },
+    {
+      "country": "TZ",
+      "url": "https://nutritionsource.hsph.harvard.edu/food-tables/",
+      "supports": [
+        "first edition 2008",
+        "Excel last uploaded 2012",
+        "September 2023 update still describes second edition as future",
+        "PDF plus 33 companion XLS hrefs observed"
+      ],
+      "observedAtUTC": "2026-10-18T14:35:40Z"
+    },
+    {
+      "country": "TZ",
+      "url": "https://nutritionsource.hsph.harvard.edu/wp-content/uploads/2023/09/Tanzania-Food-Composition-Tables_Sept-2023-Update.pdf#page=4",
+      "supports": [
+        "joint copyright",
+        "public-health research and service-program permission",
+        "exact commercial restriction",
+        "authors approval before adding foods/recipes"
+      ],
+      "locator": "physical page 4 / printed page iii",
+      "observedAtUTC": "2026-10-18T14:35:50Z"
+    }
+  ]
+}

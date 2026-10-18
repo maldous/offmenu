@@ -16,11 +16,12 @@ import stat
 import sys
 import tempfile
 import time
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from offmenu.refresh.acquisition import CachedAcquirer, HTTPSFileTransport, ResourceBudget, SourceSpec
+from offmenu.refresh.acquisition import CachedAcquirer, HTTPSFileTransport, ResourceBudget, SourceSpec, _headers
 from offmenu.refresh.core import RefreshError, atomic_json, canonical, safe_path, sha, strict_json, writer_lock
 
 OUTPUT = Path('/srv/offmenu-refresh/outputs')
@@ -56,6 +57,7 @@ ERRORS = {'unexpected-arguments', 'fixed-selection-invalid', 'fixed-evidence-inv
           'capacity-planning-bound-not-protected', 'operation-deadline-exceeded',
           'source-length-mismatch', 'source-md5-mismatch', 'source-sha256-mismatch',
           'source-header-mismatch', 'source-changed-during-validation',
+          'source-response-contract-changed', 'source-xlsx-invalid',
           'network-request-limit', 'request-contract-mismatch',
           'network-byte-limit', 'collector-rejected', 'local-io-failure',
           'claim-state-write-failed', 'reservation-release-failed', 'result-write-failed',
@@ -104,6 +106,16 @@ def load_selection():
 
 
 def exact_source_match(value, selected):
+    if selected.get('schemaVersion') == 'offmenu-fixed-source-contract/1':
+        aliases = {x.casefold() for x in (selected['sourceKey'], selected['url'], *selected['aliases'])}
+        for algorithm, digest in selected['checksums'].items():
+            aliases.update((digest, algorithm + ':' + digest))
+        def walk(item):
+            if isinstance(item, str): return item.casefold() in aliases
+            if isinstance(item, dict): return any(walk(k) or walk(v) for k,v in item.items())
+            if isinstance(item, list): return any(walk(v) for v in item)
+            return False
+        return walk(value)
     aliases = {x.casefold() for x in (selected['sourceKey'], selected['url'], selected['expectedMD5'],
                '15169428', *selected['aliases'])}
     def walk(item):
@@ -115,8 +127,7 @@ def exact_source_match(value, selected):
         if isinstance(item, dict):
             return any((key in {'recordId','record_id','zenodoRecordId'} and str(x) == '15169428')
                        or walk(key) or walk(x) for key, x in item.items())
-        if isinstance(item, list):
-            return any(walk(x) for x in item)
+        if isinstance(item, list): return any(walk(x) for x in item)
         return False
     return walk(value)
 
@@ -187,48 +198,101 @@ def inspect_runner_metadata(roots, selected, own_current, own_claim, deadline):
             'nativeCoverageExhaustive': False}
 
 
+def source_contract(selected):
+    if selected.get('schemaVersion') == 'offmenu-fixed-source-contract/1':
+        return {'key':selected['sourceKey'], 'url':selected['url'], 'fingerprint':sha(canonical(selected)),
+                'expectedBytes':selected['expectedBytes'], 'maxBytes':selected['hardTransferBytes'],
+                'seconds':selected['wholeOperationSeconds'], 'checksums':selected['checksums'],
+                'validation':selected['validation']}
+    return {'key':SOURCE_KEY, 'url':URL, 'fingerprint':SELECTION_PIN[1],
+            'expectedBytes':EXPECTED_BYTES, 'maxBytes':MAX_BYTES, 'seconds':MAX_SECONDS,
+            'checksums':{'md5':EXPECTED_MD5},
+            'validation':{'kind':'csv-header','delimiter':';','fields':selected.get('headerFields',[])}}
+
+
 def source_spec(selected):
-    return SourceSpec(source_key=SOURCE_KEY, url=URL,
-        policy_fingerprint=SELECTION_PIN[1], rights_reference=selected['rightsReference'],
+    contract = source_contract(selected)
+    return SourceSpec(source_key=contract['key'], url=contract['url'],
+        policy_fingerprint=contract['fingerprint'], rights_reference=selected['rightsReference'],
         enabled=True, rights_approved=True, held=False, ttl_seconds=TTL,
-        max_bytes=EXPECTED_BYTES, release=selected['release'])
+        max_bytes=contract['expectedBytes'] or contract['maxBytes'], release=selected['release'])
 
 
 def validate_original(result, selected, deadline):
+    contract = source_contract(selected)
+    expected, maximum, validation = contract['expectedBytes'], contract['maxBytes'], contract['validation']
     path = safe_path(result.path)
     fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     count, digest256, digestmd5 = 0, hashlib.sha256(), hashlib.md5(usedforsecurity=False)
     with os.fdopen(fd, 'rb') as stream:
         before = os.fstat(stream.fileno())
-        if not stat.S_ISREG(before.st_mode) or before.st_size != EXPECTED_BYTES:
+        if (not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= maximum
+                or (expected is not None and before.st_size != expected)):
             raise RefreshError('source-length-mismatch')
-        header = stream.readline(8193)
-        if len(header) > 8192 or header.rstrip(b'\r\n') != ';'.join(selected['headerFields']).encode('utf-8'):
-            raise RefreshError('source-header-mismatch')
+        if validation['kind'] == 'csv-header':
+            header = stream.readline(8193)
+            if len(header) > 8192 or header.rstrip(b'\r\n') != validation['delimiter'].join(validation['fields']).encode('utf-8'):
+                raise RefreshError('source-header-mismatch')
+        elif validation['kind'] == 'prefix':
+            prefix=bytes.fromhex(validation['hex'])
+            if stream.read(len(prefix)) != prefix: raise RefreshError('source-header-mismatch')
+        elif validation['kind'] != 'xlsx':
+            raise RefreshError('fixed-selection-invalid')
         stream.seek(0)
         while True:
             deadline_check(deadline)
-            block = stream.read(min(1024 * 1024, EXPECTED_BYTES - count + 1))
+            block = stream.read(min(1024 * 1024, maximum - count + 1))
             deadline_check(deadline)
-            if not block:
-                break
+            if not block: break
             count += len(block)
-            if count > EXPECTED_BYTES:
-                raise RefreshError('source-length-mismatch')
-            digest256.update(block)
-            digestmd5.update(block)
+            if count > maximum: raise RefreshError('source-length-mismatch')
+            digest256.update(block); digestmd5.update(block)
+        if validation['kind'] == 'xlsx':
+            stream.seek(0)
+            validate_xlsx(stream, deadline)
         after = os.fstat(stream.fileno())
     identity = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
     if identity(before) != identity(after) or identity(after) != identity(path.stat()):
         raise RefreshError('source-changed-during-validation')
-    if count != EXPECTED_BYTES or result.bytes != EXPECTED_BYTES:
+    if (expected is not None and count != expected) or result.bytes != count:
         raise RefreshError('source-length-mismatch')
-    if digestmd5.hexdigest() != EXPECTED_MD5:
+    if 'md5' in contract['checksums'] and digestmd5.hexdigest() != contract['checksums']['md5']:
         raise RefreshError('source-md5-mismatch')
-    if digest256.hexdigest() != result.sha256:
+    if (digest256.hexdigest() != result.sha256 or
+            ('sha256' in contract['checksums'] and digest256.hexdigest() != contract['checksums']['sha256'])):
         raise RefreshError('source-sha256-mismatch')
-    return {'bytes': count, 'sha256': result.sha256, 'publisherMD5Verified': True,
-            'headerVerified': True, 'originalAcquiredAt': result.provenance['originalAcquiredAt']}
+    return {'bytes': count, 'sha256': result.sha256, 'publisherMD5Verified': 'md5' in contract['checksums'],
+            'headerVerified': validation['kind'] in {'csv-header','prefix','xlsx'},
+            'originalAcquiredAt': result.provenance['originalAcquiredAt']}
+
+
+def validate_xlsx(original, deadline):
+    """Validate bounded OOXML container and every ZIP CRC, without extraction/execution."""
+    try:
+        with zipfile.ZipFile(original) as archive:
+            members=archive.infolist(); names=[m.filename for m in members]
+            if (not 1<=len(members)<=256 or len(set(names))!=len(names)
+                    or not {'[Content_Types].xml','_rels/.rels','xl/workbook.xml'}<=set(names)
+                    or not any(re.fullmatch(r'xl/worksheets/sheet[0-9]+\.xml',n) for n in names)
+                    or sum(m.file_size for m in members)>32*1024*1024):
+                raise ValueError()
+            total=0
+            for member in members:
+                deadline_check(deadline)
+                name=member.filename
+                if (name.startswith('/') or '\\' in name or '..' in Path(name).parts
+                        or member.flag_bits&1 or name.lower().endswith('vbaproject.bin')
+                        or member.file_size>max(1,member.compress_size)*200): raise ValueError()
+                with archive.open(member) as stream:
+                    while True:
+                        deadline_check(deadline)
+                        block=stream.read(65536)
+                        deadline_check(deadline)
+                        if not block: break
+                        total+=len(block)
+                        if total>32*1024*1024: raise ValueError()
+    except (zipfile.BadZipFile,NotImplementedError,RuntimeError,ValueError,EOFError):
+        raise RefreshError('source-xlsx-invalid') from None
 
 
 def capacity(path):
@@ -236,9 +300,11 @@ def capacity(path):
     return value.f_bavail * value.f_frsize
 
 
-def reserve(path, cache, deadline):
+def reserve(path, cache, deadline, *, expected_bytes=None, max_bytes=None):
+    expected_bytes = EXPECTED_BYTES if expected_bytes is None else expected_bytes
+    max_bytes = MAX_BYTES if max_bytes is None else max_bytes
     deadline_check(deadline)
-    if capacity(cache) < GUARD + MAX_BYTES + EXPECTED_BYTES:
+    if capacity(cache) < GUARD + max_bytes + expected_bytes:
         raise RefreshError('capacity-planning-bound-not-protected')
     try:
         fd = os.open(safe_path(path), os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
@@ -247,12 +313,12 @@ def reserve(path, cache, deadline):
     try:
         if not hasattr(os, 'posix_fallocate'):
             raise RefreshError('physical-reservation-unavailable')
-        os.posix_fallocate(fd, 0, EXPECTED_BYTES)
+        os.posix_fallocate(fd, 0, expected_bytes)
         os.fsync(fd)
         info = os.fstat(fd)
-        if info.st_size != EXPECTED_BYTES or info.st_blocks * 512 < EXPECTED_BYTES:
+        if info.st_size != expected_bytes or info.st_blocks * 512 < expected_bytes:
             raise RefreshError('physical-reservation-insufficient')
-        if capacity(cache) < GUARD + MAX_BYTES:
+        if capacity(cache) < GUARD + max_bytes:
             raise RefreshError('capacity-planning-bound-not-protected')
         deadline_check(deadline)
         return fd, (info.st_dev, info.st_ino)
@@ -274,7 +340,10 @@ def release_own_reservation(path, fd, identity):
 
 
 def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=None):
-    deadline = deadline if deadline is not None else time.monotonic() + MAX_SECONDS
+    contract = source_contract(selected)
+    source_key, source_url, fingerprint = contract['key'], contract['url'], contract['fingerprint']
+    maximum, reservation_bytes, seconds = contract['maxBytes'], contract['expectedBytes'] or contract['maxBytes'], contract['seconds']
+    deadline = min(deadline if deadline is not None else float('inf'), time.monotonic() + seconds)
     root = owned_directory(OUTPUT)
     work = owned_directory(root / 'collection', create=True)
     cache = owned_directory(work / 'source-cache', create=True)
@@ -284,30 +353,39 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
     spec = source_spec(selected)
     key = sha(canonical(spec.identity()))
     current = cache / 'requests' / key / 'current.json'
-    claim_path = claims / (sha(URL.encode()) + '.json')
-    reservation = work / ('reservation-' + sha(URL.encode()) + '.bin')
+    claim_path = claims / (sha(source_url.encode()) + '.json')
+    reservation = work / ('reservation-' + sha(source_url.encode()) + '.bin')
     meter = {'requests': 0, 'bodyBytesRead': 0}
-    report = {'schemaVersion': 'offmenu-fixed-original-detail/1', 'sourceKey': SOURCE_KEY,
-        'selectionSHA256': SELECTION_PIN[1], 'scope': 'global-private-original-custody',
+    report = {'schemaVersion': 'offmenu-fixed-original-detail/1', 'sourceKey': source_key,
+        'selectionSHA256': fingerprint, 'scope': 'global-private-original-custody',
         'status': 'blocked', 'errorCode': None, 'cacheStatus': None, 'validation': None,
         'network': meter, 'responseMetadata': None, 'capacity': {'planningGuardBytes': GUARD, 'floorAlreadyIncluded': True,
-            'sourceReservationBytes': EXPECTED_BYTES, 'physicalReservationEstablished': False},
+            'sourceReservationBytes': reservation_bytes, 'physicalReservationEstablished': False},
         'downstreamHolds': selected['downstreamHolds'], 'claimCoverage': None,
         'claimFailureStatePersisted': None, 'receiptPersistence': 'pending', **SAFETY}
 
     class CountedResponse:
-        def __init__(self, response):
+        def __init__(self, response, normalized):
             self.response = response
             self.status, self.headers = response.status, response.headers
+            length = normalized.get('content-length', '')
+            self.framed_length = int(length) if length.isdigit() and 'transfer-encoding' not in normalized else None
         def read(self, size):
             deadline_check(deadline)
-            remaining = MAX_BYTES - meter['bodyBytesRead']
+            remaining = maximum - meter['bodyBytesRead']
             if remaining <= 0:
+                # HTTP Content-Length ends this body exactly; never read an extra byte.
+                # Real HTTPSFileTransport exposes the stdlib framing state as well.
+                framed = getattr(self.response, 'response', None)
+                if (self.framed_length == meter['bodyBytesRead']
+                        and (framed is None or (getattr(framed, 'length', None) == 0
+                                              and not getattr(framed, 'chunked', True)))):
+                    return b''
                 raise RefreshError('network-byte-limit')
             block = self.response.read(min(size, remaining))
             meter['bodyBytesRead'] += len(block)
             deadline_check(deadline)
-            if meter['bodyBytesRead'] > MAX_BYTES:
+            if meter['bodyBytesRead'] > maximum:
                 raise RefreshError('network-byte-limit')
             return block
         def close(self):
@@ -322,11 +400,21 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
         meter['requests'] += 1
         response = (transport(source, headers, deadline=deadline) if transport is not None
                     else HTTPSFileTransport()(source, headers, deadline=deadline))
-        report['responseMetadata'] = response_metadata(response.status, response.headers)
-        return CountedResponse(response)
+        report['responseMetadata'] = response_metadata(response.status, response.headers, request_url=source_url)
+        try:
+            headers_seen = _headers(response.headers)
+            expected=selected.get('expectedResponse')
+            if expected is not None and response.status == 200:
+                actual={key:headers_seen.get(key) for key in expected}
+                if actual != expected or 'transfer-encoding' in headers_seen:
+                    raise RefreshError('source-response-contract-changed')
+        except (RefreshError,ValueError,TypeError):
+            response.close()
+            raise
+        return CountedResponse(response, headers_seen)
 
-    acquirer = engine(cache, {SOURCE_KEY: spec}, transport=counted, retries=0,
-        resource_budget=ResourceBudget(cache, MAX_BYTES, minimum_free_bytes=GUARD, max_seconds=MAX_SECONDS))
+    acquirer = engine(cache, {source_key: spec}, transport=counted, retries=0,
+        resource_budget=ResourceBudget(cache, maximum, minimum_free_bytes=GUARD, max_seconds=seconds))
     claimed, reservation_fd, reservation_identity = False, None, None
     with writer_lock(work / 'fixed-selection.lock'):
         try:
@@ -341,30 +429,30 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
                 if (not isinstance(claim,dict) or set(claim) != {'schemaVersion','sourceKey','selectionSHA256','requestIdentitySHA256',
                                    'url','owner','state','sha256','bytes','originalAcquiredAt'}
                         or claim.get('schemaVersion') != 'offmenu-fixed-source-intent/1'
-                        or type(claim.get('owner')) is not int or claim['owner'] != 0 or claim.get('url') != URL
-                        or claim.get('selectionSHA256') != SELECTION_PIN[1] or claim.get('sourceKey') != SOURCE_KEY
+                        or type(claim.get('owner')) is not int or claim['owner'] != 0 or claim.get('url') != source_url
+                        or claim.get('selectionSHA256') != fingerprint or claim.get('sourceKey') != source_key
                         or claim.get('requestIdentitySHA256') != key or claim.get('state') != 'verified'):
                     raise RefreshError('source-claim-uncertain')
             if claim is None:
                 # Claim both reuse and a possible first GET before any cache action.
                 # A failed/interrupted intent is never silently cleared for another GET.
-                intent = {'schemaVersion': 'offmenu-fixed-source-intent/1', 'sourceKey': SOURCE_KEY,
-                    'selectionSHA256': SELECTION_PIN[1], 'requestIdentitySHA256': key,
-                    'url': URL, 'owner': 0, 'state': 'acquiring'}
+                intent = {'schemaVersion': 'offmenu-fixed-source-intent/1', 'sourceKey': source_key,
+                    'selectionSHA256': fingerprint, 'requestIdentitySHA256': key,
+                    'url': source_url, 'owner': 0, 'state': 'acquiring'}
                 fd = os.open(safe_path(claim_path), os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
                 with os.fdopen(fd, 'wb') as stream:
                     stream.write(canonical(intent)); stream.flush(); os.fsync(stream.fileno())
                 claimed = True
             try:
-                result = acquirer.acquire(SOURCE_KEY, fetch_policy='reuse', deadline=deadline)
+                result = acquirer.acquire(source_key, fetch_policy='reuse', deadline=deadline)
             except RefreshError as error:
                 if str(error) != 'cache-missing' or claim is not None:
                     raise
                 report['capacity']['availableBeforeReservationBytes'] = capacity(cache)
-                reservation_fd, reservation_identity = reserve(reservation, cache, deadline)
+                reservation_fd, reservation_identity = reserve(reservation, cache, deadline, expected_bytes=reservation_bytes, max_bytes=maximum)
                 report['capacity']['physicalReservationEstablished'] = True
                 report['capacity']['availableAfterReservationBytes'] = capacity(cache)
-                result = acquirer.acquire(SOURCE_KEY, fetch_policy='refresh', deadline=deadline)
+                result = acquirer.acquire(source_key, fetch_policy='refresh', deadline=deadline)
             if claim is not None and (claim['sha256'] != result.sha256 or claim['bytes'] != result.bytes
                     or claim['originalAcquiredAt'] != result.provenance['originalAcquiredAt']):
                 raise RefreshError('source-claim-uncertain')
@@ -372,12 +460,12 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
             report['validation'] = validate_original(result, selected, deadline)
             deadline_check(deadline)
             atomic_json(claim_path, {'schemaVersion': 'offmenu-fixed-source-intent/1',
-                'sourceKey': SOURCE_KEY, 'selectionSHA256': SELECTION_PIN[1],
-                'requestIdentitySHA256': key, 'url': URL, 'owner': 0, 'state': 'verified',
+                'sourceKey': source_key, 'selectionSHA256': fingerprint,
+                'requestIdentitySHA256': key, 'url': source_url, 'owner': 0, 'state': 'verified',
                 'sha256': result.sha256, 'bytes': result.bytes,
                 'originalAcquiredAt': result.provenance['originalAcquiredAt']})
             report['status'] = 'verified-private-original'
-        except (RefreshError, OSError, ValueError, TypeError, KeyError) as error:
+        except (RefreshError, OSError, ValueError, TypeError, KeyError, http.client.HTTPException) as error:
             code = str(error) if isinstance(error, RefreshError) and str(error) in ERRORS else (
                 'local-io-failure' if isinstance(error, OSError) else 'collector-rejected')
             report['errorCode'] = code
@@ -386,8 +474,8 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
             if claimed:
                 try:
                     atomic_json(claim_path, {'schemaVersion': 'offmenu-fixed-source-intent/1',
-                    'sourceKey': SOURCE_KEY, 'selectionSHA256': SELECTION_PIN[1],
-                    'requestIdentitySHA256': key, 'url': URL, 'owner': 0,
+                    'sourceKey': source_key, 'selectionSHA256': fingerprint,
+                    'requestIdentitySHA256': key, 'url': source_url, 'owner': 0,
                     'state': 'failed-no-retry', 'errorCode': code, 'network': dict(meter)})
                     report['claimFailureStatePersisted'] = True
                 except (OSError, ValueError, TypeError, KeyError):
@@ -402,7 +490,7 @@ def run_selected(selected, *, engine=CachedAcquirer, transport=None, deadline=No
                                   errorCode='reservation-release-failed', validation=None)
         report['receiptPersistence'] = 'written'
         try:
-            write_immutable(work / ('zenodo15169428-result-' + sha(canonical(report)) + '.json'), report)
+            write_immutable(work / (('fixed-source-result-' if selected.get('schemaVersion') == 'offmenu-fixed-source-contract/1' else 'zenodo15169428-result-') + sha(canonical(report)) + '.json'), report)
         except (OSError, ValueError, TypeError, KeyError):
             report.update(status='failed' if meter['requests'] else 'blocked',
                           errorCode='result-write-failed', validation=None, receiptPersistence='failed')
@@ -486,7 +574,7 @@ def status_class(status):
             'redirect' if status < 400 else 'client-error' if status < 500 else 'server-error')
 
 
-def response_metadata(status, headers):
+def response_metadata(status, headers, *, request_url=URL):
     """Keep bounded response facts, never Location values, queries or parameters."""
     status = status if type(status) is int and 100 <= status <= 599 else None
     selected = {'content-type': [], 'content-length': [], 'location': []}
@@ -512,7 +600,7 @@ def response_metadata(status, headers):
         location['classification']='invalid'
         if rawlocation is not None and len(rawlocation)<=2048 and not any(ord(c)<32 or ord(c)==127 for c in rawlocation):
             try:
-                parsed=urlsplit(urljoin(URL,rawlocation)); original=urlsplit(URL)
+                parsed=urlsplit(urljoin(request_url,rawlocation)); original=urlsplit(request_url)
                 location['queryOrFragmentPresent']=bool(parsed.query or parsed.fragment)
                 if parsed.username is None and parsed.password is None and parsed.hostname:
                     if parsed.scheme != 'https': location['classification']='non-https'
