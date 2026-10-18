@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "global-staging-adapter-composition-reviewed-awaiting-publication",
-  "asOfUTC": "2026-10-18T03:48:00Z",
+  "status": "pr41-merged-source-origin-integration-reviewed-local",
+  "asOfUTC": "2026-10-18T04:00:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Corrected PR40 is merged and full CI passed; pinned owner command delivered. Actual owner execution/sanitized metadata receipt awaits observation while independent global staging work proceeds."
+      "currentBlocker": "Supported read-only Foo metadata task admitted under existing normal-user capability and dedup checks; result unobserved. Global staging implementation proceeds independently."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
@@ -102,11 +102,11 @@
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
     "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
-    "selectedRepositoryBase": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+    "selectedRepositoryBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
     "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
-      "next": "Deliver comprehensive deterministic all-country/type STAGING with every-datum provenance; publish reviewed adapter/acceptance source and qualify actual source contracts. Reconcile owner metadata receipt when actually received.",
+      "next": "Complete deterministic all-country/type STAGING with every-datum provenance through qualified source bindings; integrate reviewed actual origin emitters and reconcile owner receipt.",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -335,6 +335,18 @@
       "event": "PR40 correction merged and postmerge CI passed; current global STAGING completion contract reconciled, four source-family subsets prepared, existing UI lane resumed",
       "sourceExecution": false,
       "allCountryStagingComplete": false
+    },
+    {
+      "atUTC": "2026-10-18T04:00:00Z",
+      "event": "PR41 merged; national/product actual origin integration reviewed locally; existing UI acceptance expanded systematically",
+      "sourceExecution": false,
+      "stagingComplete": false
+    },
+    {
+      "atUTC": "2026-10-18T04:03:00Z",
+      "event": "Supported Foo read-only collector task admitted; private result pending; manual duplication discouraged",
+      "threadId": "01a14d2c-61b4-76e5-a5b1-7892e2b9d005",
+      "completionObserved": false
     }
   ],
   "lanes": [
@@ -494,13 +506,19 @@
         "next": "Check supported managed-browser availability",
         "renderAccepted": false
       },
-      "currentAsOfUTC": "2026-10-18T03:48:00Z",
+      "currentAsOfUTC": "2026-10-18T04:00:00Z",
       "priorAllocation": {
         "status": "preserve-current-design-and-reviewed-code-render-acceptance-open",
         "owner": "Product/cloud review lanes during consolidation",
         "assignmentStatus": "Current review allocations replace historical UI02-active worker claim",
         "next": "Preserve localized scanner and existing UI feedback; no new visual acceptance claimed."
-      }
+      },
+      "acceptanceCriteria": [
+        "Repository-owned reusable tokens/components/state APIs and working catalog/examples shared across landing/auth/app",
+        "Branding/typography, spacing/motion, responsive accessibility and light/dark/system themes, concise usage docs and focused checks",
+        "Systematic standards/journeys matrix for i18n/RTL/accessibility/colorvision/large-text/family roles/privacy/security/provider integration/support/diagnostics/telemetry/performance with applicability,priority,evidence,demo routes",
+        "Current vanilla JS, no React/Preact or speculative infrastructure; actual DEV7645 playground, no production change"
+      ]
     },
     {
       "id": "sonar",
@@ -1148,16 +1166,16 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "pr40-merged-postmerge-ci-success-next-global-source-batch-local",
-    "verifiedPriorCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/66d9aa67ac3406f897c86c53bda7210780dd6538",
+    "status": "pr41-merged-full-head-ci-success-next-origin-batch-local",
+    "verifiedPriorCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only",
-    "note": "Corrected owner command delivered by coordinator; actual owner execution/receipt unobserved. Four reviewed family subsets composed locally; full new-head CI pending."
+    "note": "PR41 exact26paths and full CI accepted and merged. Origin integration reviewed locally; supported read-only metadata task admitted with private result pending, no GitHub comment/control/service changes."
   },
   "activeWork": [
     "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
@@ -2615,18 +2633,23 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "pr": 40,
-      "url": "https://github.com/maldous/offmenu/pull/40",
-      "mergedCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
-      "tree": "0db0d00d6c9bc51761e26eccd17cbf644d1532d9",
-      "reviewedHead": "c857d8b559418015d81d156f206a337d4679d8f0",
+      "pr": 41,
+      "url": "https://github.com/maldous/offmenu/pull/41",
+      "mergedCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "tree": "cc06fde03b4f4b8d074e72aeb3e040a91e01dfc5",
+      "reviewedHead": "82505cb97a85573aabaa85840e11edbf3ec52e71",
       "headCIRuns": [
-        39094434083,
-        39094427330
+        39095368531,
+        39095355035
       ],
-      "postmergeCI": 39094602229,
-      "applicationCI": "success;748Python tests with4retained environment skips",
-      "scope": "Five-path producer-schema correction; actual source execution not implied"
+      "applicationCI": "success;677web/846Python with4retained environment skips;edge/build/i18n/OCR checks passed",
+      "postmergeCI": {
+        "runId": 39095502371,
+        "status": "completed",
+        "conclusion": "success",
+        "head": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302"
+      },
+      "scope": "26 reviewed source/test/contract/ledger paths; no live payload execution or source admissions"
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -3169,6 +3192,20 @@
         "head": "9e2d20083feca6b1558ef401f852e5650b226ca7"
       },
       "scope": "Six exact reviewed paths; owner handoff held for subsequent producer-schema correction. No execution/admission."
+    },
+    "priorPR40CompletionReceipt": {
+      "pr": 40,
+      "url": "https://github.com/maldous/offmenu/pull/40",
+      "mergedCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "tree": "0db0d00d6c9bc51761e26eccd17cbf644d1532d9",
+      "reviewedHead": "c857d8b559418015d81d156f206a337d4679d8f0",
+      "headCIRuns": [
+        39094434083,
+        39094427330
+      ],
+      "postmergeCI": 39094602229,
+      "applicationCI": "success;748Python tests with4retained environment skips",
+      "scope": "Five-path producer-schema correction; actual source execution not implied"
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -3357,7 +3394,7 @@
       },
       "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
     },
-    "nextDependency": "Publish reviewed coherent adapter/acceptance source batch; reconcile owner metadata receipt when actually delivered; qualify exact source contracts and field-origin validators before live staging acceptance.",
+    "nextDependency": "Publish reviewed source-origin integration; reconcile actual owner metadata receipt, qualify exact source-specific semantics/contracts and execute useful admitted staging work without inventing whole-country completion.",
     "currentSourceAcquisitionBindings": 0,
     "actualPayloadAcceptance": false,
     "globalDatasetCompletion": false,
@@ -3684,7 +3721,7 @@
         "adminHelperApproved": false,
         "adminHelperExecuted": false,
         "collectorState": "Corrected PR40 merged, exact-head and postmerge CI success; pinned owner command delivered, actual execution/receipt unobserved.",
-        "next": "Reconcile actual sanitized owner receipt when delivered; qualify source metadata/custody without new access grants. Independent all-country staging work proceeds."
+        "next": "Reconcile actual private result from admitted supported Foo task or already-run owner receipt after deduplication; no new access grants or duplicate execution."
       },
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission.",
       "supersededTemporaryServiceExtensionProposal": {
@@ -3737,7 +3774,7 @@
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission."
     },
     "ownerMetadataCollector": {
-      "state": "corrected-pr40-merged-command-delivered-owner-execution-unobserved",
+      "state": "corrected-collector-source-merged-supported-readonly-task-admitted-result-unobserved",
       "files": [
         {
           "path": "docs/owner-manifest-metadata.md",
@@ -3793,7 +3830,14 @@
       "priorManifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
       "correctionManifestBoundary": "Exact revised external manifest is frozen after ledger serialization; no self-reference.",
       "postmergeCI": 39094602229,
-      "commandDeliveredByCoordinator": true
+      "commandDeliveredByCoordinator": true,
+      "supportedReadOnlyTask": {
+        "threadId": "01a14d2c-61b4-76e5-a5b1-7892e2b9d005",
+        "turnId": "01a14d2c-6d20-75d8-b971-bb3045e32a92",
+        "state": "admitted-result-unobserved",
+        "scope": "Reviewed collector only if existing normal-user capability and dedup checks permit; private result to coordinator, no GitHub comment/control/service/UI changes",
+        "manualDuplication": "Coordinator instructed owner not to duplicate manual command if not already run"
+      }
     },
     "priorOwnerCollectorPreparation": {
       "state": "independently-reviewed-not-executed",
@@ -3913,7 +3957,8 @@
         "Existing coverage matrix/harness exhaustively assess249countries/13domains/1303sources",
         "Cache/acquisition library has minimum30day reuse and conditional validation tests",
         "Reviewed adapters and acceptance stages now have synthetic cross-family tests",
-        "Reviewed per-datum field_provenance helper validates tagged source/derived-multiple-input/constant origin coverage and identity; no automatic adapter enforcement or value/transform verification."
+        "Reviewed per-datum field_provenance helper validates tagged source/derived-multiple-input/constant origin coverage and identity; no automatic adapter enforcement or value/transform verification.",
+        "Reviewed AFCD/MEXT actual worker origin integration and product offline origin-stage wrapper tested in composed synthetic cases; actual source qualification/live staging remains outstanding."
       ],
       "outstanding": [
         "Production source contracts and qualified actual payload execution are not installed",
@@ -3926,7 +3971,7 @@
       "allCountryStagingComplete": false
     },
     "nextAdapterBatch": {
-      "state": "four-family-subsets-independently-reviewed-composed-local-not-published",
+      "state": "merged-pr41-full-head-ci-passed",
       "packages": [
         {
           "name": "national",
@@ -4134,7 +4179,120 @@
       "productionAdmissions": 0,
       "actualPayloadExecution": false,
       "fieldProvenanceBoundary": "Record/asset checks implemented; every datum field coordinates require source-specific schema/semantic enforcement.",
-      "mappingScope": "Explicit candidate metadata only:15 retained adapters linked to18 discoveries;3support-only documents;4holds/CNF mismatch; no executable bindings or admissions inferred."
+      "mappingScope": "Explicit candidate metadata only:15 retained adapters linked to18 discoveries;3support-only documents;4holds/CNF mismatch; no executable bindings or admissions inferred.",
+      "mergedCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "headCIRuns": [
+        39095368531,
+        39095355035
+      ],
+      "headPythonTests": 846,
+      "environmentSkips": 4
+    },
+    "fieldOriginIntegration": {
+      "state": "independently-reviewed-local-composition-not-published",
+      "packages": [
+        {
+          "name": "national-origin-worker",
+          "manifestSha256": "638a05b6f0e01d07f99cc8aeef70399afd9310844e3a8c6ca8ed75b8dc30b074"
+        },
+        {
+          "name": "product-origin-stage",
+          "manifestSha256": "d8133423ed4612a9d674c633a5959017c189dcb06a828965a0e8ec5edf7df14b"
+        }
+      ],
+      "files": [
+        {
+          "path": "docs/operations/national-field-origins.md",
+          "mode": "100644",
+          "bytes": 6112,
+          "sha256": "a133a5772152014c14c61c26c9b9d3678f21ae37becc470c15b15108a255e0d8",
+          "gitBlob": "e21b4d61a1bf8367d819ccd9ed063e5585f057e7"
+        },
+        {
+          "path": "docs/product-origin-stage.md",
+          "mode": "100644",
+          "bytes": 3609,
+          "sha256": "f586a88898d2d564442c6785bb3c1c9c9fea0d3ce60b11a9a71e3215aa925f7f",
+          "gitBlob": "287450f87efbbd2d7bbfabab8b5fef32ac5d56dc"
+        },
+        {
+          "path": "offmenu/refresh/execution_worker.py",
+          "mode": "100644",
+          "bytes": 9947,
+          "sha256": "98456098b6c0204946cd550a13aba432f941722243f2c66a3cda355ec9130be3",
+          "gitBlob": "1b10d7f2e247ed5f21075f9eba6ba9dad2c39730"
+        },
+        {
+          "path": "offmenu/refresh/national_field_origins.py",
+          "mode": "100644",
+          "bytes": 16417,
+          "sha256": "35141a082fe2048a432ecac9c9672d8224eaaffdc58a6e60e5189fa6dee67838",
+          "gitBlob": "9c8ade1c3fd49244bf4277785df9f9e25035fefc"
+        },
+        {
+          "path": "offmenu/refresh/product_field_origins.py",
+          "mode": "100644",
+          "bytes": 15718,
+          "sha256": "50437b66330a5289412fe195e08a9352160d32c0da3396049d281ffb585e0f50",
+          "gitBlob": "6b1a062c45d26c450e23f0a21c4387d889ef742f"
+        },
+        {
+          "path": "offmenu/refresh/product_origin_stage.py",
+          "mode": "100644",
+          "bytes": 9432,
+          "sha256": "a1b85b95c84626be9c5a4e9e3f6df3826310fdc154506bf6e3aa1b7ec2e7f6e8",
+          "gitBlob": "28f95a457fbf4469fa2e68cb547eca9d1c75608e"
+        },
+        {
+          "path": "tests/test_execution.py",
+          "mode": "100644",
+          "bytes": 10142,
+          "sha256": "5472f54d7f73f2cf665c379607e32844ab14f2316543596cf0c7343c778fbcd1",
+          "gitBlob": "5c2ff3be5051bb74143be05a93fdc81763a51219"
+        },
+        {
+          "path": "tests/test_national_field_origins.py",
+          "mode": "100644",
+          "bytes": 14498,
+          "sha256": "f6f000722beb7f44d7d6462add0d230667a966095faf1f017d49066a4d366484",
+          "gitBlob": "218227f36914211f8bd67dce75411c5140ada7ac"
+        },
+        {
+          "path": "tests/test_national_origin_worker.py",
+          "mode": "100644",
+          "bytes": 7830,
+          "sha256": "6b76e7f716380fbc607a224363e75844f6ee22ebccebc4c0c71ea49c59a66dbd",
+          "gitBlob": "b07b4960c888dbef4964b91ff64f2081a9d7dc99"
+        },
+        {
+          "path": "tests/test_product_field_origins.py",
+          "mode": "100644",
+          "bytes": 7620,
+          "sha256": "484259594650d9219f5fa78892ccd4a1d54f07fcc35300a74c1db17c904c062e",
+          "gitBlob": "a9f24cbcd820b259f15e8330f80d01853b8a1cc7"
+        },
+        {
+          "path": "tests/test_product_origin_stage.py",
+          "mode": "100644",
+          "bytes": 7396,
+          "sha256": "e09fdb00927e16e67dfdc09062cc83fc70bcc9131f0c06fbea054d5465c673cc",
+          "gitBlob": "6c3a3c36dd3743a033e90b9aa011b28141b6abf6"
+        }
+      ],
+      "combinedTests": 265,
+      "nationalScope": [
+        "AFCD",
+        "MEXT"
+      ],
+      "nationalMechanism": "Actual isolated worker stamps source metadata, serializes tagged origins, regenerates candidate/gzip/receipt under unchanged output limits and literal policy hash.",
+      "productMechanism": "Offline wrapper verifies original normalized artifacts and bundle members, emits atomic candidate/sidecar and qualifies source semantics plus shared origin coverage.",
+      "boundaries": [
+        "No production scheduler selection/admissions or source contracts installed",
+        "Other national families and reference field-origin wiring remain incomplete",
+        "Every-datum staging acceptance requires actual source validation and recorded per-field semantics, not helper presence alone"
+      ],
+      "actualSourceExecution": false,
+      "productionAdmissions": 0
     }
   },
   "priorGlobalPreparationCurrentState": {
@@ -4554,5 +4712,81 @@
       "Close preserved payload-location/rights/adapter compatibility gaps with bounded evidence; do not invent source routes or permissions",
       "No additional offline census job without a concrete new input or changed condition"
     ]
+  },
+  "priorPR41CurrentState": {
+    "status": "global-staging-adapter-composition-reviewed-awaiting-publication",
+    "asOfUTC": "2026-10-18T03:48:00Z",
+    "publication": {
+      "status": "pr40-merged-postmerge-ci-success-next-global-source-batch-local",
+      "verifiedPriorCommit": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only",
+      "note": "Corrected owner command delivered by coordinator; actual owner execution/receipt unobserved. Four reviewed family subsets composed locally; full new-head CI pending."
+    },
+    "currentExecution": {
+      "sourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "sourceStatus": "Reviewed global-readiness offline assessment passed all12steps on Foo; no acquisition/source admission or country completion",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Corrected PR40 is merged and full CI passed; pinned owner command delivered. Actual owner execution/sanitized metadata receipt awaits observation while independent global staging work proceeds."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "latestExecutedControlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "c9adb646d4051457f54451b64c2b86d08ac102b1",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+      "selectedRepositoryBase": "66d9aa67ac3406f897c86c53bda7210780dd6538",
+      "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Deliver comprehensive deterministic all-country/type STAGING with every-datum provenance; publish reviewed adapter/acceptance source and qualify actual source contracts. Reconcile owner metadata receipt when actually received.",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      },
+      "placementPolicy": {
+        "decisionInputs": [
+          "actual cloud/Foo CPU and memory capacity",
+          "queue latency",
+          "available tools",
+          "data locality and transfer cost",
+          "granted permissions"
+        ],
+        "policy": "Dynamic placement, not rigid small-cloud/large-Foo split. Large/raw datasets exclusively remain on Foo. Use focused tests before costly handoff when useful; no dogmatic duplicate full gates."
+      }
+    }
   }
 }

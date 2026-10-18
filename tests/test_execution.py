@@ -66,7 +66,7 @@ class ExecutionTests(unittest.TestCase):
                     wb.save(bundle / name)
                 count = 1
                 if source == 'afcd':
-                    book('Food-Details.xlsx', {'Food details': [['Public Food Key', 'Food Description'], ['F1', 'Synthetic']]})
+                    book('Food-Details.xlsx', {'Food details': [['Public Food Key', 'Food Description', 'Sampling Details', 'Specific Gravity', 'Analysed Portion', 'Unanalysed Portion'], ['F1', 'Synthetic', None, None, None, None]]})
                     rows = [['Public Food Key', 'Class', 'Method', 'Name', 'Protein (g)'], ['F1', 'test', 'test', 'Synthetic', 1.0]]
                     book('Nutrient-profiles.xlsx', {'All solids & liquids per 100 g': rows, 'Liquids only per 100 mL': rows})
                     book('Nutrient-details.xlsx', {'Synthetic': [['metadata']]}); count = 2
