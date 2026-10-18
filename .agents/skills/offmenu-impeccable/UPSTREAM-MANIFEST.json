@@ -117,9 +117,10 @@
       "upstream_sha256": "16ba7fca1973c5faf53dd2ca523559129c0fe9e5f8d50b645f527afa78186cd2",
       "upstream_bytes": 9450,
       "adaptation": [
+        "Replaced JSX, className, component tags, and JSX event bindings with plain HTML, CSS, and DOM event handling",
         "Adjusted scope/routing for the static subset"
       ],
-      "adapted_sha256": "17f8b343206a92a0601a0032bf615f78a1592c22aa2bc8fb138d34291250badf"
+      "adapted_sha256": "0b53c746461b8a962ada9b0c3b059de0db155bd36daba78b53fec13222b4229b"
     },
     {
       "destination": "references/layout.md",

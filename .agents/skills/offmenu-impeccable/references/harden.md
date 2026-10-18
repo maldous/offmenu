@@ -92,12 +92,19 @@ Systematically improve resilience:
 - Test with longest language (usually German)
 - Avoid fixed widths on text containers
 
-```jsx
-// ❌ Bad: Assumes short English text
-<button className="w-24">Submit</button>
+```html
+<!-- Let translated labels wrap instead of fixing the button width. -->
+<button type="submit" class="submit-action">Submit</button>
+```
 
-// ✅ Good: Adapts to content
-<button className="px-4 py-2">Submit</button>
+```css
+.submit-action {
+  max-inline-size: 100%;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 ```
 
 **RTL (Right-to-Left) support**:
@@ -147,15 +154,37 @@ t('items', { count }) // Handles complex plural rules
 - Offer offline mode (if applicable)
 - Handle timeout scenarios
 
-```jsx
-// Error states with recovery
-{error && (
-  <ErrorMessage>
-    <p>Failed to load data. {error.message}</p>
-    <button onClick={retry}>Try again</button>
-  </ErrorMessage>
-)}
+```html
+<div id="load-error" role="alert" hidden>
+  <p>We could not load the data. Please try again.</p>
+  <button type="button" id="retry-load">Try again</button>
+</div>
 ```
+
+```javascript
+// Pass the existing application loader to this framework-independent helper.
+function attachLoadRecovery(loadData) {
+  const errorPanel = document.getElementById("load-error");
+  const retryButton = document.getElementById("retry-load");
+
+  async function attemptLoad() {
+    errorPanel.hidden = true;
+    retryButton.disabled = true;
+    try {
+      await loadData();
+    } catch {
+      errorPanel.hidden = false;
+    } finally {
+      retryButton.disabled = false;
+    }
+  }
+
+  retryButton.addEventListener("click", attemptLoad);
+  return attemptLoad;
+}
+```
+
+Use a reviewed user-facing error message; do not render raw server errors or exception details.
 
 **Form validation errors**:
 - Inline errors near fields
