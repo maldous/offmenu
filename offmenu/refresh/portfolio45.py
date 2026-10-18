@@ -16,8 +16,42 @@ from .field_provenance import field_origin_errors
 from .portfolio45_catalog import CATALOG
 
 MAX_BYTES = 32768
+MAX_JSON_DEPTH = 48
 KEYS = {'bindingId', 'row', 'inputSha256', 'manifestSha256',
         'originalAcquiredAt', 'validatedAt', 'priorReplayKey'}
+
+
+class MetadataNestingError(ValueError):
+    """Explicit ingress depth violation, independent of decoder recursion."""
+
+
+def load_metadata_json(raw):
+    """Bound serialized container nesting before the shared JSON decoder.
+
+Only JSON structural bytes outside strings contribute to depth; escaped quotes
+and backslashes do not end strings. Full syntax/UTF-8/duplicate-key validation
+stays with strict_json. This does not depend on a Python recursion threshold.
+"""
+    if not isinstance(raw, bytes) or len(raw) > 16 * MAX_BYTES:
+        raise ValueError('metadata-json-byte-bound')
+    depth, in_string, escaped = 0, False, False
+    for byte in raw:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif byte == 92:  # backslash
+                escaped = True
+            elif byte == 34:  # quote
+                in_string = False
+        elif byte == 34:
+            in_string = True
+        elif byte in (91, 123):  # array/object open
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise MetadataNestingError('json-nesting-limit')
+        elif byte in (93, 125):
+            depth -= 1
+    return strict_json(raw)
 
 
 def read_metadata_input(path):
@@ -214,10 +248,12 @@ def main():
         if args.templates and args.input is None:
             result = [template(b) for b in catalog()['bindings']]
         elif args.input is not None and args.as_of and not args.templates:
-            result = assess_many(strict_json(read_metadata_input(args.input)), as_of=args.as_of)
+            result = assess_many(load_metadata_json(read_metadata_input(args.input)), as_of=args.as_of)
         else:
             raise ValueError('select-templates-or-input-with-clock')
         print(canonical(result).decode())
+    except MetadataNestingError:
+        parser.exit(2, 'metadata-input-invalid: json-nesting-limit\n')
     except (ValueError, OSError, UnicodeError, TypeError, RecursionError) as error:
         parser.exit(2, 'metadata-input-invalid: ' + type(error).__name__ + '\n')
 
