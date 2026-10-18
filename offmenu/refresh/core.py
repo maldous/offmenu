@@ -13,6 +13,7 @@ import sqlite3
 import stat
 import subprocess
 import sys
+import time
 import uuid
 import zlib
 from datetime import datetime, timezone
@@ -136,7 +137,11 @@ def safe_path(path):
     return path
 
 
-def digest(path, *, max_bytes=None):
+def digest(path, *, max_bytes=None, deadline=None):
+    def check_deadline():
+        if deadline is not None and time.monotonic() >= deadline:
+            raise RefreshError('acquisition-duration-limit-exceeded')
+    check_deadline()
     path = safe_path(path)
     before = path.stat()
     if not stat.S_ISREG(before.st_mode):
@@ -150,8 +155,10 @@ def digest(path, *, max_bytes=None):
             raise RefreshError('input-changed-during-read')
         consumed = 0
         while True:
+            check_deadline()
             limit = min(1024 * 1024, max_bytes - consumed + 1) if max_bytes is not None else 1024 * 1024
             block = stream.read(limit)
+            check_deadline()  # Includes a slow EOF, before accepting the digest.
             if not block:
                 break
             consumed += len(block)
@@ -163,6 +170,7 @@ def digest(path, *, max_bytes=None):
     fields = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
     if fields(before) != fields(after) or fields(after) != fields(current):
         raise RefreshError('input-changed-during-read')
+    check_deadline()
     return {'bytes': after.st_size, 'sha256': value.hexdigest()}
 
 

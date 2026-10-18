@@ -2,6 +2,9 @@
 from dataclasses import asdict, replace
 from datetime import timedelta
 import json
+import hashlib
+import os
+from contextlib import contextmanager
 from pathlib import Path
 import tempfile
 import unittest
@@ -12,6 +15,34 @@ from unittest.mock import Mock, patch
 from offmenu.refresh.acquisition import collect_registry
 from offmenu.refresh.core import RefreshError, canonical, sha
 from test_refresh_acquisition import SPEC, NOW, Response, Transport
+
+
+@contextmanager
+def delayed_reads(path, clock, delay, *, eof_only=False):
+    """Advance a fake clock on actual synthetic-file reads, without sleeping."""
+    original_open = Path.open
+    reads = []
+    class Stream:
+        def __init__(self, stream):
+            self.stream = stream
+        def __enter__(self):
+            self.stream.__enter__()
+            return self
+        def __exit__(self, *args):
+            return self.stream.__exit__(*args)
+        def fileno(self):
+            return self.stream.fileno()
+        def read(self, size):
+            block = self.stream.read(size)
+            reads.append(len(block))
+            if not eof_only or not block:
+                clock[0] += delay
+            return block
+    def opened(candidate, *args, **kwargs):
+        stream = original_open(candidate, *args, **kwargs)
+        return Stream(stream) if candidate == path and args == ('rb',) else stream
+    with patch.object(Path, 'open', opened):
+        yield reads
 
 
 class CollectionRunnerTests(unittest.TestCase):
@@ -440,6 +471,137 @@ class CollectionRunnerTests(unittest.TestCase):
         self.assertEqual(result['verifiedSources'], 1)
         self.assertEqual(Path(result['sources'][0]['path']).read_bytes(), b'original untouched bytes\n')
         self.assertFalse((directory / 'body.partial').exists())
+
+    def test_registry_replacement_after_hash_uses_pinned_snapshot(self):
+        path = self.root / 'registry.json'
+        raw = canonical(self.registry)
+        path.write_bytes(raw)
+        pinned = sha(raw)
+        replacement = {**self.registry, 'sources': [], 'bindings': []}
+        real_sha256 = hashlib.sha256
+        replaced = []
+        def hashing(*args, **kwargs):
+            hasher = real_sha256(*args, **kwargs)
+            wrapper = Mock(wraps=hasher)
+            def hexdigest():
+                result = hasher.hexdigest()
+                if result == pinned and not replaced:
+                    path.write_bytes(canonical(replacement))
+                    replaced.append(True)
+                return result
+            wrapper.hexdigest.side_effect = hexdigest
+            return wrapper
+        transport = Transport(Response())
+        with patch('hashlib.sha256', hashing):
+            result = collect_registry(path, pinned, self.root / 'reports',
+                                      transport=transport, now=NOW)
+        self.assertEqual(replaced, [True])
+        self.assertEqual(result['verifiedSources'], 1)
+        self.assertEqual(len(transport.calls), 1)
+
+    def test_registry_snapshot_rejects_oversize_and_nonregular_inputs(self):
+        path = self.root / 'registry.json'
+        path.write_bytes(b' ' * 65)
+        with patch('offmenu.refresh.acquisition.MAX_REGISTRY_METADATA', 64):
+            with self.assertRaisesRegex(RefreshError, 'asset-size-limit-exceeded'):
+                collect_registry(path, sha(path.read_bytes()), self.root / 'reports')
+        fifo = self.root / 'registry.fifo'
+        os.mkfifo(fifo)
+        with self.assertRaisesRegex(RefreshError, 'regular-file-required'):
+            collect_registry(fifo, '0' * 64, self.root / 'reports')
+        self.assertFalse((self.root / 'reports').exists())
+
+    def test_registry_growth_is_bounded_before_parse(self):
+        path = self.root / 'registry.json'
+        path.write_bytes(b'{}')
+        real_fdopen = os.fdopen
+        sizes = []
+        def fdopen(*args, **kwargs):
+            stream = real_fdopen(*args, **kwargs)
+            wrapper = Mock(wraps=stream)
+            def read(size):
+                sizes.append(size)
+                path.write_bytes(b' ' * 100)
+                return stream.read(size)
+            wrapper.read.side_effect = read
+            wrapper.__enter__ = Mock(return_value=wrapper)
+            wrapper.__exit__ = Mock(side_effect=lambda *args: stream.close())
+            return wrapper
+        with patch('offmenu.refresh.acquisition.MAX_REGISTRY_METADATA', 64), \
+                patch('offmenu.refresh.acquisition.os.fdopen', fdopen):
+            with self.assertRaisesRegex(RefreshError, 'asset-size-limit-exceeded'):
+                collect_registry(path, sha(b'{}'), self.root / 'reports')
+        self.assertEqual(sizes, [65])
+
+    def test_retained_initial_hash_obeys_deadline_including_slow_eof(self):
+        body = self.retained()
+        transport = Transport()
+        for eof_only in (False, True):
+            with self.subTest(eof_only=eof_only):
+                clock = [0]
+                with patch('time.monotonic', lambda: clock[0]), \
+                        delayed_reads(body, clock, 31, eof_only=eof_only) as reads:
+                    result = self.run_batch(transport)
+                self.assertEqual(result['sources'][0]['error'], 'acquisition-duration-limit-exceeded')
+                self.assertEqual(len(reads), 2 if eof_only else 1)
+                self.assertFalse(list((self.root / 'cache').glob('requests/*/current.json')))
+                self.assertFalse(list((self.root / 'cache').glob('requests/*/body.partial')))
+        self.assertEqual(transport.calls, [])
+        self.assertEqual(body.read_bytes(), b'original untouched bytes\n')
+
+    def test_retained_hash_and_copy_share_one_operation_deadline(self):
+        from offmenu.refresh.acquisition import CachedAcquirer, ResourceBudget
+        body = self.retained()
+        cache = self.root / 'cache'
+        acquirer = CachedAcquirer(cache, {SPEC.source_key: SPEC},
+            resource_budget=ResourceBudget(cache, 1024, minimum_free_bytes=0, max_seconds=1))
+        clock = [0]
+        with patch('time.monotonic', lambda: clock[0]), delayed_reads(body, clock, 0.3):
+            with self.assertRaisesRegex(RefreshError, 'acquisition-duration-limit-exceeded'):
+                acquirer.import_retained(SPEC.source_key, self.registry['sources'][0]['retained'], now=NOW)
+        self.assertFalse(list(cache.glob('requests/*/current.json')))
+        self.assertFalse(list(cache.glob('requests/*/body.partial')))
+        self.assertFalse(list(cache.glob('objects/*')))
+
+    def test_retained_hash_uses_remaining_collection_batch_time(self):
+        body = self.retained()
+        self.registry['resources']['maxSeconds'] = 1
+        first = replace(SPEC, source_key='a-initial', url='https://publisher.example/first')
+        self.registry['sources'].append(self.entry(first))
+        self.registry['bindings'].append(self.binding(first.source_key, 'AU', 'foods'))
+        clock = [0]
+        response = Response()
+        original_read = response.read
+        def read(size):
+            clock[0] = 0.8
+            return original_read(size)
+        response.read = read
+        transport = Transport(response)
+        with patch('time.monotonic', lambda: clock[0]), delayed_reads(body, clock, 0.3):
+            result = self.run_batch(transport)
+        self.assertEqual(result['verifiedSources'], 1)
+        self.assertEqual(result['sources'][1]['error'], 'acquisition-duration-limit-exceeded')
+        self.assertEqual(len(transport.calls), 1)
+        self.assertEqual(len(list((self.root / 'cache').glob('requests/*/current.json'))), 1)
+
+    def test_retained_cached_body_hash_also_obeys_deadline(self):
+        self.retained()
+        result = self.run_batch(Transport())
+        body = Path(result['sources'][0]['path'])
+        record = next((self.root / 'cache').glob('requests/*/current.json'))
+        before = record.read_bytes()
+        clock = [0]
+        with patch('time.monotonic', lambda: clock[0]), delayed_reads(body, clock, 31):
+            result = self.run_batch(Transport())
+        self.assertEqual(result['sources'][0]['error'], 'acquisition-duration-limit-exceeded')
+        self.assertEqual(record.read_bytes(), before)
+
+    def test_digest_expired_deadline_opens_no_file(self):
+        from offmenu.refresh.core import digest
+        with patch('time.monotonic', return_value=1), patch.object(Path, 'open') as opened:
+            with self.assertRaisesRegex(RefreshError, 'acquisition-duration-limit-exceeded'):
+                digest(self.evidence, max_bytes=1024, deadline=1)
+        opened.assert_not_called()
 
     def test_cumulative_batch_budget_counts_discarded_and_success_bytes(self):
         self.registry['resources']['maxTransferBytes'] = 128
