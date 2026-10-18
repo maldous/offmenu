@@ -153,7 +153,7 @@ class QueueTests(unittest.TestCase):
 
     def test_no_arbitrary_commands_from_request(self):
         for profile in jobs.PROFILES:
-            for _, _, command in jobs.profile_steps(profile, ROOT):
+            for _, _, command in jobs.profile_steps(profile, ROOT, "a" * 40):
                 self.assertIsInstance(command, list)
                 self.assertNotIn("bash", command)
                 self.assertNotIn("sudo", command)

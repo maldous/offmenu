@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "offmenu-ui-tooling-independent-review/1",
+  "status": "approved-as-corrected",
+  "checkedAtUTC": "2026-10-18T00:03:00Z",
+  "sourceCommit": "314822f900c49953aeca04d82ce0957d851d19c9",
+  "issue": "https://github.com/maldous/offmenu/issues/33",
+  "originalDecisionSha256": "d1d0d13833f19afe676059171c07fe9b861e4494ca721e777cdf7bc93a4f5597",
+  "revisedDecisionSha256": "5b21b3b33df4d2aab39bbaadf93f116861286c77efc73cfc5e2f7e912e7a96d4",
+  "sourceFileHashesVerified": true,
+  "findings": [
+    {
+      "id": "UI-REVIEW-01",
+      "severity": "medium",
+      "status": "corrected",
+      "summary": "Existing CSS reduced-motion rule was falsely reported absent. Removed duplicate repair and scoped UI-03 to demonstrated JS-feedback/press-state gaps.",
+      "source": "https://github.com/maldous/offmenu/blob/314822f900c49953aeca04d82ce0957d851d19c9/public/style.css#L2",
+      "gitBlob": "d31ea4fe0ff076fed4d5f2e83bef75fa6ce4d901",
+      "sourceSha256": "be617853adc235cc53cd4dbf9c09a6d62edbd5d34500da5fa74556bf72022108",
+      "localCopyDifference": "one extra trailing newline only"
+    }
+  ],
+  "clarifications": [
+    "Biome pilot optional, separately assigned, not UI prerequisite",
+    "Physical-device checks apply to affected device workflows, not assessment closure or orthogonal CSS",
+    "Source implementation presence is not live end-to-end proof",
+    "Raw recovered conversations remain private review inputs"
+  ],
+  "decisions": {
+    "baseline": "keep-current",
+    "biome": "defer-optional-pilot",
+    "nestjs-trpc": "do-not-adopt",
+    "shadcn-ui": "do-not-adopt-react-stack",
+    "nuqs": "do-not-adopt"
+  },
+  "productionChanges": false,
+  "packageInstallations": 0,
+  "uiCodeChanges": false,
+  "runtimeDeviceTestingPerformed": false,
+  "remainingDecisionBlockers": []
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "active-coordinator-checkpoint",
-  "asOfUTC": "2026-10-17T23:59:15Z",
+  "status": "reviewed-forward-update-awaiting-root-publication",
+  "asOfUTC": "2026-10-18T00:01:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Small successor operations checkpoint for the currently selected automatic route and concurrent lanes. References immutable ledger history; does not replace its base/journal or claim semantic replay.",
   "instructionContext": {
@@ -78,7 +78,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Two pending-initialization tasks consume slots. Freed useful slots are refilled; UI/tooling is now running."
+      "currentBlocker": "Previously reported pending-initialization tasks consumed capacity; exact current slot count not re-established in this forward update. UI/tooling independent review is active. Seven-total and one-Foo-runner limits remain."
     },
     "coordinatorRole": "Coordination and task management: priorities, dependencies, ledger completeness, dispatch, result verification, capacity refill and user updates. Concurrent workers own substantive investigation, implementation, review and artifacts."
   },
@@ -176,17 +176,24 @@
       "runId": 39080970551,
       "outcome": "Norway EN parse completed; NB decoded then SIGSEGV at structural walk. France also SIGSEGV in previously passing workbook parser. Decoder-only cause not established; shared runtime investigation active. No retry of unchanged batch.",
       "evidence": "survey005"
+    },
+    {
+      "atUTC": null,
+      "recordedAtUTC": "2026-10-18T00:01:00Z",
+      "kind": "coordinator-confirmed-lane-update",
+      "id": "runtime-restriction-and-review-progress-20261018",
+      "outcome": "Shared runtime diagnostics blocked by platform cybersecurity-risk screen; no retry/bypass. France independent review and normal fixed-profile integration continue. Better Auth nine native D1 tests passed pending freeze/review. UI/tooling assessment complete, independent adversarial review active. No new Foo job submitted."
     }
   ],
   "lanes": [
     {
       "id": "corpus-no-fr",
-      "status": "active-shared-runtime-investigation-and-france-integration",
-      "owner": "Active Norway correction and France native-candidate workers; Morgan/root integrates",
-      "pickupEvidence": "Coordinator reports active distinct Norway correction and France native-candidate work at checkpoint handoff",
+      "status": "runtime-investigation-blocked-france-review-and-integration-active",
+      "owner": "France independent review/integration worker; shared runtime investigation blocked; Morgan coordinates",
+      "pickupEvidence": "Coordinator confirms shared runtime worker turn failed on platform cybersecurity-risk restriction; France independent review and normal fixed-profile integration continue",
       "latestResult": "survey005 terminal incomplete",
-      "output": "Reviewed Norway targeted correction and France native candidate, followed by actual bounded runtime and separate acceptance evidence",
-      "next": "Resolve concrete shared runtime cause and independently integrate France native wrapper; no blind rerun",
+      "output": "Independently reviewed France native handler and normal fixed-profile integration; shared runtime diagnosis remains unresolved",
+      "next": "Do not retry or bypass blocked runtime diagnostics. Continue separately authorized France independent review and normal fixed-profile integration; no new job has been submitted.",
       "dependencies": [
         "Exact reviewed correction bytes",
         "Single control writer",
@@ -206,21 +213,30 @@
       "activeSubtasks": [
         {
           "scope": "Shared runtime native crash investigation",
-          "owner": "Corpus worker",
-          "status": "active"
+          "owner": "Corpus investigation worker",
+          "status": "blocked-platform-restriction",
+          "blocker": "Worker turn failed with a cybersecurity-risk screen while preparing bounded diagnostics",
+          "restriction": "No retry, bypass, or delegated equivalent diagnostics; this ledger update performs no diagnostics."
         },
         {
-          "scope": "France native handler review and runner integration",
-          "owner": "Corpus review worker",
-          "status": "active"
+          "scope": "France native handler independent review and normal fixed-profile integration",
+          "owner": "France review/integration worker",
+          "status": "active",
+          "runtimeJobSubmitted": false
         }
-      ]
+      ],
+      "runtimeInvestigationBlocker": {
+        "reportedBy": "Coordinator",
+        "recordedAtUTC": "2026-10-18T00:01:00Z",
+        "status": "blocked-platform-restriction",
+        "details": "Platform cybersecurity-risk screen during preparation of bounded diagnostics; investigation did not complete. No retry or bypass."
+      }
     },
     {
       "id": "better-auth",
-      "status": "active-first-implementation",
+      "status": "implementation-tests-passed-pending-freeze-and-review",
       "owner": "Better Auth implementation worker; Morgan coordinates",
-      "pickupEvidence": "Coordinator confirms architecture plan completed with 13 tests and first implementation active; production migration remains unestablished",
+      "pickupEvidence": "Coordinator reports nine native D1 tests passed; implementation freeze and independent review remain pending",
       "issue": "https://github.com/maldous/offmenu/issues/32",
       "output": "First bounded Better Auth implementation and compatibility tests, independently reviewed before adoption",
       "dependencies": [
@@ -239,12 +255,19 @@
         "backend": "Cloudflare Worker + D1",
         "identity": "Netlify Identity 2.0.0 proxy",
         "criticalConstraint": "Stable user-ID mappings key private data",
-        "stage": "Architecture planning followed by active first implementation; rollout not established"
+        "stage": "First implementation has nine passing native D1 tests; freeze/review pending; rollout not established"
+      },
+      "next": "Freeze exact implementation and test evidence, then independent review before adoption",
+      "latestResult": {
+        "nativeD1TestsPassed": 9,
+        "freeze": "pending",
+        "independentReview": "pending",
+        "productionMigrationEstablished": false
       }
     },
     {
       "id": "ledger-reconciliation",
-      "status": "active-maintenance",
+      "status": "forward-update-prepared-awaiting-root-publication",
       "owner": "Ledger reconciliation worker prepares artifacts; Morgan verifies and publishes",
       "pickupEvidence": "Existing draft and full catalog read; current evidence reconciled without duplicate requirements",
       "output": "Sanitized checkpoint, historical reference catalog and validated publication manifest",
@@ -256,12 +279,12 @@
         "Root publishes exact reviewed files and verifies immutable readback"
       ],
       "semanticProjection": "pending",
-      "latestResult": "Published checkpoint3a103bc7 with exact readback; current forward update records005"
+      "latestResult": "Checkpoint75cb5963021397a537098b192c4ac6e7d030f0ab published with exact readback per coordinator; this forward update awaits root publication"
     },
     {
       "id": "tooling-ui-design",
-      "status": "active",
-      "owner": null,
+      "status": "assessment-complete-independent-adversarial-review-active",
+      "owner": "Independent adversarial reviewer, previously France implementation author",
       "issue": "https://github.com/maldous/offmenu/issues/33",
       "output": "Source-linked prior UI/dev-server/landing/app feedback reconciliation; current-stack alternatives/impacts; independent adversarial decision review; final standards and scoped backlog",
       "dependencies": [
@@ -276,8 +299,9 @@
         "Read actual official Emil Kowalski skills at 2d228630ba1446365f614a108cb8252f1feda202 when doing UI work; retain MIT notice if copied",
         "No speculative replacement design or unrequested heavy mandatory developer checks"
       ],
-      "pickupEvidence": "Confirmed worker start after ledger slot freed; direct prior UI requirements recovered and being reconciled",
-      "assignmentStatus": "Backfill attempted; rejected by seven-total thread limit. Two stale pending-initialization tasks consume capacity; no active tooling worker."
+      "pickupEvidence": "Coordinator confirms UI/tooling assessment completed and independent adversarial review is running",
+      "assignmentStatus": "Active independent adversarial review; earlier capacity-rejected assignment is historical, not current",
+      "next": "Reconcile independent adversarial findings with recovered prior UI feedback and existing issue33 before final decisions or scoped implementation"
     },
     {
       "id": "sonar",
@@ -360,11 +384,12 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "Finish active Norway targeted correction and France native candidate through reviewed automatic route; observe actual runtime receipts",
-    "Continue active first Better Auth implementation and bounded compatibility tests in parallel",
-    "Automatically backfill freed capacity with one eligible bounded product acceptance join; recover existing outputs before implementing",
-    "Preserve exact six projector sources/dependencies and reconcile known response/request pairs before semantic ledger migration",
-    "Obtain actual Sonar assessment evidence and independently qualified fixes without treating a skipped scan as a pass"
+    "Respect shared runtime investigation platform restriction: no retry or bypass",
+    "Continue France independent review and normal fixed-profile integration without claiming a new submitted job",
+    "Freeze Better Auth implementation after nine native D1 tests, then independently review",
+    "Complete UI/tooling independent adversarial review against existing issue33 and prior feedback",
+    "Root publishes this bounded ledger update in its next batch and verifies exact readback",
+    "Backfill eligible independent work only within actual available capacity and existing approvals"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -568,15 +593,19 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "published-and-read-back",
-    "verifiedPriorCommit": "3a103bc7c380da01c83fcda35d82c92741379804",
-    "writer": "Morgan",
-    "note": "Current forward update records survey005 and live assignments; immutable readback required after publication."
+    "status": "forward-update-not-yet-published",
+    "verifiedPriorCommit": "75cb5963021397a537098b192c4ac6e7d030f0ab",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/75cb5963021397a537098b192c4ac6e7d030f0ab",
+    "earlierVerifiedCommits": [
+      "3a103bc7c380da01c83fcda35d82c92741379804"
+    ],
+    "writer": "Morgan/root only",
+    "note": "Coordinator reports exact readback at prior commit. Only matching lane states updated here; root publishes in batch and verifies immutable readback."
   },
   "activeWork": [
-    "Shared runtime crash investigation after survey005",
-    "France source-native independent review and runner integration",
-    "Better Auth first implementation freeze",
-    "UI/tooling requirements and adversarial assessment"
+    "France independent review and normal fixed-profile integration",
+    "Better Auth implementation freeze and independent-review preparation",
+    "UI/tooling independent adversarial review",
+    "Ledger forward update"
   ]
 }

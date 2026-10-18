@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics]
+        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]

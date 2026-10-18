@@ -1,2 +1,3 @@
 include offmenu_norway/contract.json
 include offmenu_ciqual/contract.json
+include offmenu_ciqual/native-contract-v1.json

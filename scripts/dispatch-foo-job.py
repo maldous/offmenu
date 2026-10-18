@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -157,6 +157,15 @@ def diagnostic_evidence(value):
             return {"schemaSurvey": clean}
         except Exception:
             return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
+    if schema == 'offmenu-ciqual-source-native-receipt/1':
+        try:
+            root = str(Path(__file__).resolve().parent.parent)
+            if root not in sys.path:
+                sys.path.insert(0, root)
+            from offmenu.refresh.native_ciqual import sanitize_receipt
+            return {'ciqualNative': sanitize_receipt(value)}
+        except Exception:
+            return {'diagnosticEvidenceError': 'invalid-diagnostic-schema'}
     if not isinstance(schema, str) or schema not in schemas:
         return {}
     filename, key = schemas[schema]
@@ -202,6 +211,16 @@ def safe_evidence(raw):
     if isinstance(value.get("errorCode"), str) and value.get("errorCode") in {"unfinished-run-requires-resume", "writer-lock-held", "no-matching-run-to-resume",
                                   "online-acquisition-not-implemented", "operation-failed-inspect-local-state"}:
         evidence["errorCode"] = value["errorCode"]
+    if value.get('schemaVersion') == 'offmenu-refresh-error/1':
+        try:
+            root = str(Path(__file__).resolve().parent.parent)
+            if root not in sys.path:
+                sys.path.insert(0, root)
+            from offmenu.refresh.native_ciqual import ERROR_CODES
+            if value.get('errorCode') in ERROR_CODES:
+                evidence['errorCode'] = value['errorCode']
+        except (ImportError, TypeError):
+            pass
     return evidence
 
 
@@ -274,12 +293,24 @@ def run_child(command, code, timeout=240):
             "evidence": evidence}
 
 
-def profile_steps(profile, code):
+def profile_steps(profile, code, trusted_sha=None):
     python = sys.executable
     replay = [python, "-B", "-m", "offmenu.refresh", "replay",
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "ciqual-source-native":
+        root = str(Path(__file__).resolve().parent.parent)
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        from offmenu.refresh.native_ciqual import selected_output
+        candidate = [python, '-B', '-m', 'offmenu.refresh', 'candidate-ciqual-selected',
+                     '--output', str(selected_output(trusted_sha))]
+        steps += [
+            ('ciqual-native-tests', ['readiness'], [python, '-B', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_ciqual_source_native*.py']),
+            ('ciqual-native-candidate', ['readiness', 'ciqual-native-tests'], candidate),
+            ('ciqual-native-retry', ['ciqual-native-candidate'], list(candidate)),
+        ]
     if profile == "national-schema-survey":
         steps += [
             ("schema-survey-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_refresh_survey*.py"]),
@@ -312,6 +343,12 @@ def run_step(step_id, command, code):
             result["durationSeconds"] += previous["durationSeconds"]
         if step_id == "replay-idempotency" and result["status"] == "passed" and result["evidence"].get("resultAction") != "verified-no-op":
             result.update(status="failed", exitCode=3, errorCode="idempotency-not-established")
+        if step_id in {'ciqual-native-candidate', 'ciqual-native-retry'} and result['status'] == 'passed':
+            receipt = result['evidence'].get('ciqualNative', {})
+            if receipt.get('status') != 'private-source-native-extracted':
+                result.update(status='failed', exitCode=3, errorCode='native-candidate-not-established')
+            elif step_id == 'ciqual-native-retry' and receipt.get('created') is not False:
+                result.update(status='failed', exitCode=3, errorCode='native-idempotency-not-established')
         if step_id == "schema-survey" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("schemaSurvey", {})
             if report.get("surveyComplete") is True and result["exitCode"] == 0:
@@ -379,7 +416,7 @@ def parallel_diagnostics(steps, code):
 
 
 def run_profile(request, sha, code, run_id, attempt):
-    steps = profile_steps(request["profile"], code)
+    steps = profile_steps(request["profile"], code, sha)
     cancelled = False
     if request["profile"] == "delivery-diagnostics":
         by_id, cancelled = parallel_diagnostics(steps, code)
@@ -389,6 +426,11 @@ def run_profile(request, sha, code, run_id, attempt):
             blocked = [dep for dep in dependencies if by_id[dep]["status"] != "passed"]
             result = skipped(cancelled, blocked) if cancelled or blocked else run_step(step_id, command, code)
             cancelled = cancelled or result["status"] == "cancelled"
+            if step_id == 'ciqual-native-retry' and result['status'] == 'passed':
+                first = by_id['ciqual-native-candidate']['evidence']['ciqualNative']
+                repeated = result['evidence']['ciqualNative']
+                if {k: v for k, v in first.items() if k != 'created'} != {k: v for k, v in repeated.items() if k != 'created'}:
+                    result.update(status='failed', exitCode=3, errorCode='native-retry-artifacts-changed')
             by_id[step_id] = result
     results = [by_id[step_id] | {"stepId": step_id, "dependsOn": dependencies}
                for step_id, dependencies, _ in steps]
@@ -407,6 +449,10 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(diagnosticScope="selected-no-fr-schema-and-dictionaries",
                       corpusAcceptanceEstablished=False, candidateGenerationEnabled=False,
                       sourceContentsUploaded=False, structuralDictionaryLabelsIncluded=True)
+    if request['profile'] == 'ciqual-source-native':
+        report.update(candidateGenerationEnabled=True, corpusAcceptanceEstablished=False,
+                      sourceContentsUploaded=False, externalPublication=False,
+                      countryCoverageComplete=False, candidateScope='private-source-native')
     return report
 
 

@@ -43,6 +43,8 @@ def main(argv=None):
     fixture_flags.add_argument('--force-refresh', action='store_true', help='Unavailable; never downloads or overrides admission.')
     survey = commands.add_parser('survey-selected', help='Read-only schema evidence for exact selected NO/FR inputs; no candidates.')
     survey.add_argument('--workspace', required=True, type=Path)
+    native = commands.add_parser('candidate-ciqual-selected', help='Extract exact retained CIQUAL into private source-native artifacts; no acceptance.')
+    native.add_argument('--output', required=True, type=Path)
     args = parser.parse_args(argv)
     operation_id = uuid.uuid4().hex
     try:
@@ -52,6 +54,16 @@ def main(argv=None):
                 result = survey_selected(args.workspace)
             except SurveyError as error:
                 raise RefreshError(str(error)) from None
+        elif args.command == 'candidate-ciqual-selected':
+            from offmenu_ciqual.source_native import build_selected
+            from offmenu_ciqual.xmlxlsx import DataError
+            from .native_ciqual import sanitize_receipt, ERROR_CODES
+            from .survey import SurveyError
+            try:
+                result = sanitize_receipt(build_selected(args.output))
+            except (SurveyError, DataError) as error:
+                code = str(error) if str(error) in ERROR_CODES else 'operation-failed-inspect-local-state'
+                raise RefreshError(code) from None
         elif args.command == 'plan-fixture':
             from .policy import load_evidence, plan_fixture
             result = plan_fixture(args.fixture, load_evidence(args.evidence) if args.evidence else None,
@@ -75,6 +87,8 @@ def main(argv=None):
     except (Exception, KeyboardInterrupt) as error:
         result = {'schemaVersion': 'offmenu-refresh-error/1', 'status': 'failed', 'errorCode': 'operation-failed-inspect-local-state', 'operationId': operation_id, **getattr(error, 'refresh_context', {})}
     print(json.dumps(result, sort_keys=True, allow_nan=False))
+    if args.command == 'candidate-ciqual-selected':
+        return 0 if result.get('status') == 'private-source-native-extracted' else 2
     if args.command == 'survey-selected':
         return 0 if result.get('surveyComplete') is True else 2
     return 2 if result.get('status') == 'failed' else 0
