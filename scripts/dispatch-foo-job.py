@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-fixed-batch-recovery-diagnostic/1": ("diagnose-fixed-batch.py", "batchRecoveryDiagnostic"),
         "offmenu-fixed-source-batch/1": ("acquire-fixed-batch.py", "fixedSourceBatch"),
         "offmenu-fixed-swiss-original/1": ("acquire-fixed-swiss.py", "fixedSwissOriginal"),
         "offmenu-global-readiness/1": ("global-readiness.py", "globalReadiness"),
@@ -306,6 +307,11 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "batch-recovery-diagnostic":
+        steps += [
+            ("batch-recovery-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_batch_recovery_diagnostic.py"]),
+            ("batch-recovery-diagnostic", ["readiness", "batch-recovery-tests"], [python, "-B", "scripts/diagnose-fixed-batch.py"]),
+        ]
     if profile == "selected-original-batch":
         steps += [
             ("fixed-source-batch-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_source_batch.py"]),
@@ -385,7 +391,8 @@ def profile_steps(profile, code, trusted_sha=None):
 
 def run_step(step_id, command, code):
     try:
-        result = (run_child(command, code, timeout=1230) if step_id == "selected-original-batch"
+        result = (run_child(command, code, timeout=210) if step_id == "batch-recovery-diagnostic"
+                  else run_child(command, code, timeout=1230) if step_id == "selected-original-batch"
                   else run_child(command, code, timeout=150) if step_id == "swiss-private-original"
                   else run_child(command, code, timeout=930) if step_id == "zenodo-private-original"
                   else run_child(command, code, timeout=60) if step_id == "zenodo-response-metadata"
@@ -411,6 +418,14 @@ def run_step(step_id, command, code):
                 result["status"] = "blocked"
             elif report.get("status") != "failed" or result["exitCode"] != 2:
                 result.update(status="failed", exitCode=3, errorCode="fixed-response-report-invalid")
+        if step_id == "batch-recovery-diagnostic" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("batchRecoveryDiagnostic", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "complete-with-errors" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="batch-recovery-report-invalid")
         if step_id == "selected-original-batch" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("fixedSourceBatch", {})
             if report.get("status") == "complete" and result["exitCode"] == 0:
@@ -558,6 +573,10 @@ def run_profile(request, sha, code, run_id, attempt):
                       corpusAcceptanceEstablished=False)
     if request["profile"] == "zenodo-response-metadata":
         report.update(maximumParallelChildren=1, diagnosticScope="one-prospective-HEAD-response-metadata",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, networkAcquisitionEnabled=False)
+    if request["profile"] == "batch-recovery-diagnostic":
+        report.update(maximumParallelChildren=1, diagnosticScope="five-failed-source-metadata-and-HEAD-diagnostics",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,
                       candidateGenerationEnabled=False, networkAcquisitionEnabled=False)
     if request["profile"] == "selected-original-batch":
