@@ -1,0 +1,200 @@
+{
+  "repository": "https://github.com/pbakaus/impeccable",
+  "tag": "skill-v4.6.0",
+  "commit": "8a0e198da34ebc5b936a9d5975fb7a3b1cf353b7",
+  "tag_signature": "unsigned upstream tag; identity verified by official-site link and repository metadata",
+  "retrieved_at_utc": "2026-10-18T21:13:36Z",
+  "files": [
+    {
+      "destination": "references/adapt.md",
+      "upstream_path": ".agents/skills/impeccable/reference/adapt.md",
+      "upstream_git_blob_sha1": "85f7c022f5c65baebdd8df16b996898a4f520e3a",
+      "upstream_sha256": "871a8e4d749b807c693ebabd83defbd6c76e1bd2a0f53a28a460cb1308ba8634",
+      "upstream_bytes": 11301,
+      "adaptation": [
+        "Omitted native-platform routing",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "5f3fb0d892f644ee5adca49f3c4b44b16dec22ef6b69460d30cb6f4f21621485"
+    },
+    {
+      "destination": "references/animate.md",
+      "upstream_path": ".agents/skills/impeccable/reference/animate.md",
+      "upstream_git_blob_sha1": "c8fb9e038bb74a125646b64c49bc39711f63e8f4",
+      "upstream_sha256": "d658c48ffbe0031e8e3b318996cad6ceafe29e40aa50d5bb25e4bf1d6839dc7c",
+      "upstream_bytes": 5236,
+      "adaptation": [
+        "Omitted native-platform routing",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "1837e5d9955b51d29091fab4bd3465c5dd0ac2abe06032b3f648a6b53605efe9"
+    },
+    {
+      "destination": "references/audit.md",
+      "upstream_path": ".agents/skills/impeccable/reference/audit.md",
+      "upstream_git_blob_sha1": "fc9c3112427e0162d1eaa3fa0b9dd776e83f5a3d",
+      "upstream_sha256": "41764be7bf974b95ee469f11c496714b4b3cf2ba594c0b8f838a0742680229a9",
+      "upstream_bytes": 8528,
+      "adaptation": [
+        "Omitted native-platform routing",
+        "Removed upstream command-menu instructions and bundled-detector requirement",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "6fda5d437dd01c32e62979454e5c175251d27c73885d5c53a5167027984e62d4"
+    },
+    {
+      "destination": "references/bolder.md",
+      "upstream_path": ".agents/skills/impeccable/reference/bolder.md",
+      "upstream_git_blob_sha1": "0ea9bcc0eb5f94d06bb3c3b52c5079eb1d0ca22a",
+      "upstream_sha256": "f964506c0fae87b3c2c1db7016ddc9be9ef970bbcf5548d684b997b5d5991586",
+      "upstream_bytes": 3564,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "983da2ea96df57d3f9b8cdc6356b7874f2cc8e4dc7fcd03851e088bdd41243cc"
+    },
+    {
+      "destination": "references/clarify.md",
+      "upstream_path": ".agents/skills/impeccable/reference/clarify.md",
+      "upstream_git_blob_sha1": "4506a31c95e02b2ad918367a0ef4461643d51532",
+      "upstream_sha256": "173dd66abe65633910dcb04a51f40d6ff2a793f87088f022a02fc4cad24dd133",
+      "upstream_bytes": 4590,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "52fabb4bb06f99f76debb76f4d70a18a0573e8040e4117637cc2a2a778b98a75"
+    },
+    {
+      "destination": "references/colorize.md",
+      "upstream_path": ".agents/skills/impeccable/reference/colorize.md",
+      "upstream_git_blob_sha1": "02fa661efac9229d6e869a20ef8ee928d4b986a0",
+      "upstream_sha256": "bc5f71f1129d0f2c310d913d07c8dc609a1d25644121bd78c308f42d52a0b9e9",
+      "upstream_bytes": 4537,
+      "adaptation": [
+        "Omitted live-mode parameter instructions",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "b65373ad7c1a7115e43668891e643d1ecf6044b8a335bf65259ccf4e8cd1c328"
+    },
+    {
+      "destination": "references/craft-floor.md",
+      "upstream_path": ".agents/skills/impeccable/reference/craft-floor.md",
+      "upstream_git_blob_sha1": "ae213ce801ebb2085033b309b4144e8d7e9996ba",
+      "upstream_sha256": "e802e4f7bdc89050a9c0f2ca506e1d493a2316e6e810c0336c57aa073717ef3e",
+      "upstream_bytes": 5500,
+      "adaptation": [
+        "Made generic aesthetic rules subordinate to the approved OffMenu brief",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "6a3feacac8563923dc2019583e636e130160c6908d1e4b347b1b2b22614bb1fe"
+    },
+    {
+      "destination": "references/delight.md",
+      "upstream_path": ".agents/skills/impeccable/reference/delight.md",
+      "upstream_git_blob_sha1": "60a8e83ee48d50901acfa886d3ec4bc72b40ec6f",
+      "upstream_sha256": "098a891028ce59c212b747d3c70468dd750aff7053a703d1336045ed31e0da7c",
+      "upstream_bytes": 3716,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "3e290d68d7b022e86257729282180b6abad3f809285a4c228b384eb4d6f43954"
+    },
+    {
+      "destination": "references/distill.md",
+      "upstream_path": ".agents/skills/impeccable/reference/distill.md",
+      "upstream_git_blob_sha1": "13f6cd5840c2030406c8fa59b70cb5fa86c239ab",
+      "upstream_sha256": "ea8432c90c30ecb0426662a681ead5c0941113079704e1a766cda09e85b15b4f",
+      "upstream_bytes": 5717,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "c4fe10aef6886ddbf4f5a6a7f918d12d2f55d28ef045acc2cee40224c4e31d82"
+    },
+    {
+      "destination": "references/harden.md",
+      "upstream_path": ".agents/skills/impeccable/reference/harden.md",
+      "upstream_git_blob_sha1": "124742e1cca3caff2c495009a8f408382e73e7d1",
+      "upstream_sha256": "16ba7fca1973c5faf53dd2ca523559129c0fe9e5f8d50b645f527afa78186cd2",
+      "upstream_bytes": 9450,
+      "adaptation": [
+        "Replaced JSX, className, component tags, and JSX event bindings with plain HTML, CSS, and DOM event handling",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "0b53c746461b8a962ada9b0c3b059de0db155bd36daba78b53fec13222b4229b"
+    },
+    {
+      "destination": "references/layout.md",
+      "upstream_path": ".agents/skills/impeccable/reference/layout.md",
+      "upstream_git_blob_sha1": "aa547c742fc373bc459bdbb7977683441aa48ec0",
+      "upstream_sha256": "0bc7d7971b3edf2acd0580e847458dc6d84129d90715b452799ace3bed815c7c",
+      "upstream_bytes": 5161,
+      "adaptation": [
+        "Omitted live-mode parameter instructions",
+        "Omitted native-platform routing",
+        "Replaced optional detector execution with existing project checks",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "adaf993e02810fe297fc40627e5da35a95aa06626ebc8f5754a205e9d884d25c"
+    },
+    {
+      "destination": "references/operate.md",
+      "upstream_path": ".agents/skills/impeccable/reference/operate.md",
+      "upstream_git_blob_sha1": "524f2c3ae9fa497284e9699f3ca5320cce5d05cf",
+      "upstream_sha256": "a9d2203acd45ca33a13d5c68b02b23ed512425ac15f0e8438318ed124b43729d",
+      "upstream_bytes": 4145,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "30286801c520533ad507cfb1b860754ba64c127139324bb86a0bac557e94b1e5"
+    },
+    {
+      "destination": "references/optimize.md",
+      "upstream_path": ".agents/skills/impeccable/reference/optimize.md",
+      "upstream_git_blob_sha1": "fc56c22376854d77e8099b925232bba25001e5e6",
+      "upstream_sha256": "f672ef8251a3ed4051a053d30819664951b17540b2899acd27d20e500c234abc",
+      "upstream_bytes": 7614,
+      "adaptation": [
+        "Removed React-specific examples and new-service suggestions",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "6e0a5bb59758be41cf819431bea388453d1ee50a7e586c44f3f7da2c839618e5"
+    },
+    {
+      "destination": "references/polish.md",
+      "upstream_path": ".agents/skills/impeccable/reference/polish.md",
+      "upstream_git_blob_sha1": "f93170f773cac058f51e289603aed7575d62a6a2",
+      "upstream_sha256": "81666fc7f783b4e3514db6554e713dc0479bd9cdedb06e93d15f8b579aae869a",
+      "upstream_bytes": 6646,
+      "adaptation": [
+        "Removed engine context, hooks, and review-store execution",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "b00217f9c07b8b69696d1c48562b2b119840cad4a7d29a10c54a3d9e3ed50492"
+    },
+    {
+      "destination": "references/quieter.md",
+      "upstream_path": ".agents/skills/impeccable/reference/quieter.md",
+      "upstream_git_blob_sha1": "870ea86599bebf65509291df22533e4b5c3d4ceb",
+      "upstream_sha256": "190a4e642ca362d7499f3c3ab123e21f18f75457d11f072b545a183f296e6495",
+      "upstream_bytes": 4952,
+      "adaptation": [
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "f3654a9540f74ef69f7049efea53804753129d001509d10d0a4ae3b25ebde974"
+    },
+    {
+      "destination": "references/typeset.md",
+      "upstream_path": ".agents/skills/impeccable/reference/typeset.md",
+      "upstream_git_blob_sha1": "6f117f429cdefe60c0a07cbd5f02f72a40eb8a7d",
+      "upstream_sha256": "442749aed338f51c1a3ccfb182c6ade9b74b90590b67984062ac94a5b100e914",
+      "upstream_bytes": 5256,
+      "adaptation": [
+        "Omitted live-mode parameter instructions",
+        "Omitted native-platform routing",
+        "Replaced optional detector execution with existing project checks",
+        "Adjusted scope/routing for the static subset"
+      ],
+      "adapted_sha256": "82fc45c080d257399e21669a9abaec24b4f76f69e07a44675535d7a232c02707"
+    }
+  ]
+}
