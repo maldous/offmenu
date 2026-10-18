@@ -8,6 +8,7 @@ REPOSITORY='maldous/offmenu'; REPOSITORY_ID=1416253963; OWNER_ID=6347545
 BRANCH='integration/foo-owner-custody-snapshot-20261018'
 ANCHOR='4aa0976b9dc509b91f76874717f9de5e5e5529df'
 HANDOFF='owner-local-global-20261018-001'
+HANDOFF_PATH='docs/operations/global-collection-manual-handoff-20261018.json'
 HOLD_SHA256='fa87ebcb5463ffdec2f7bbfe0141da0c518b40a59c29297646b92a0644e165f1'
 BASE_SOURCE='24b8bb0fa0eb7c7f6632aade4dcb6d8d9ee49793'
 DEST='docs/handover/2026-10-18/foo-owner-custody/manual-global/'+HANDOFF
@@ -63,9 +64,13 @@ def build_payload(envelope,g):
     files=[('summary.json',canonical(envelope))];counts={'assets':0,'countryTypeCells':0,'statPaths':0}
     if report['status'] in {'complete','complete-with-errors'}:
         outcomes=g.expand_outcomes(report['assetOutcomeGroups'],len(manifest['assets']));changes={x['assetIndex']:x for x in report['changes']}
-        assets=[]
+        assets=[];retained_observations={}
+        if 'retainedOriginalVerification' in report:retained_observations=g.retained_collection.observations(report['retainedOriginalVerification'])
         for i,(asset,outcome) in enumerate(zip(manifest['assets'],outcomes)):
             assets.append({'assetIndex':i,'assetId':asset['assetId'],'countryHints':asset.get('countryHints',[]),'sourceKey':asset.get('sourceKey'),'recordedDisposition':asset.get('disposition'),'holds':asset.get('holds',[]),'sourceStageHolds':asset.get('sourceStageHolds',[]),'outcome':outcome,'change':changes.get(i)})
+        for index,state in retained_observations.items():
+            original=manifest['assets'][index]['retainedOriginal'];verified=state=='completed-verified'
+            assets[index]['retainedVerification']={'state':state,'integrityVerified':verified,'originalSHA256':original['sha256'] if verified else None,'originalBytes':original['bytes'] if verified else None,'networkRequests':0,'sourceIdentityInferred':False,'parserReadinessInferred':False}
         matrix=report['cellStageCounts'];overrides=dict(matrix['overrides']);cells=[]
         for i,cell in enumerate(manifest['cells']):
             cells.append({'cellIndex':i,'country':cell['country'],'type':cell['type'],'canonicalStatus':cell['retainedStatus'],'countryTypeComplete':False,'stageCounts':dict(zip(g.STATES,overrides.get(i,matrix['default'])))})
@@ -183,7 +188,7 @@ def verify_active_handover(g,api=None):
     """Read-only check of the current source-bound overlap hold before owner GETs."""
     api=BudgetAPI(api if api is not None else github_api(g));api.end=min(api.end,time.monotonic()+60);api.api.deadline=api.end;identity(api)
     branch='integration/runner-cutover-disposition-20261018'
-    path='docs/operations/global-collection-manual-handoff-20261018.json'
+    path=HANDOFF_PATH
     ref=api.call('GET','repos/'+REPOSITORY+'/git/ref/heads/'+branch)
     commit=ref.get('object',{}).get('sha');require(isinstance(commit,str) and GIT_RE.fullmatch(commit),'manual-handoff-current-head-invalid')
     item=contents(api,path,commit)
