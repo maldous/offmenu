@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original]
+        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native, global-readiness, offline-reconciliation, collection-prepare, zenodo-private-original, zenodo-response-metadata, swiss-private-original, selected-original-batch]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]
@@ -34,7 +34,7 @@ jobs:
     env:
       # Replace only after the code/fixture/dispatcher commit is independently
       # reviewed and published. This placeholder deliberately prevents execution.
-      TRUSTED_CODE_SHA: 70da171ac2d594b8c6bebf0317278c8d72402464
+      TRUSTED_CODE_SHA: d41ebfc607fc577dc8c52461a87d4f88fcd8493b
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify trusted revision is configured
@@ -122,7 +122,7 @@ jobs:
       contents: write
       pull-requests: read
     env:
-      TRUSTED_CODE_SHA: 70da171ac2d594b8c6bebf0317278c8d72402464
+      TRUSTED_CODE_SHA: d41ebfc607fc577dc8c52461a87d4f88fcd8493b
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify terminal Foo job and prepare bounded evidence
@@ -169,14 +169,15 @@ jobs:
           MAX_RECEIPT = 16 * 1024
           MAX_API = 1024 * 1024
           PROFILES = {'readiness', 'inventory', 'offline-replay', 'smoke',
-                      'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native', 'global-readiness', 'offline-reconciliation', 'collection-prepare', 'zenodo-private-original', 'zenodo-response-metadata', 'swiss-private-original'}
+                      'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native', 'global-readiness', 'offline-reconciliation', 'collection-prepare', 'zenodo-private-original', 'zenodo-response-metadata', 'swiss-private-original', 'selected-original-batch'}
           STEP_IDS = {'readiness', 'inventory', 'refresh-tests', 'offline-replay',
                       'replay-idempotency', 'ledger-tests', 'ledger-audit',
                       'dataset-tests', 'selected-data-inventory', 'schema-survey-tests',
                       'schema-survey', 'ciqual-native-tests',
                       'ciqual-native-candidate', 'ciqual-native-retry', 'global-readiness-tests', 'global-runtime', 'global-coverage', 'global-registry-tests', 'global-harness-tests', 'reconciliation-tests',
-                      'source-claims', 'transfer-receipts', 'native-continuity', 'disk-reservations', 'pending-ownership', 'collection-preparation-tests', 'collection-prepare', 'zenodo-original-tests', 'zenodo-private-original', 'zenodo-response-tests', 'zenodo-response-metadata', 'swiss-original-tests', 'swiss-private-original'}
+                      'source-claims', 'transfer-receipts', 'native-continuity', 'disk-reservations', 'pending-ownership', 'collection-preparation-tests', 'collection-prepare', 'zenodo-original-tests', 'zenodo-private-original', 'zenodo-response-tests', 'zenodo-response-metadata', 'swiss-original-tests', 'swiss-private-original', 'fixed-source-batch-tests', 'selected-original-batch'}
           PROFILE_STEPS = {
+              'selected-original-batch': ['readiness', 'fixed-source-batch-tests', 'selected-original-batch'],
               'swiss-private-original': ['readiness', 'swiss-original-tests', 'swiss-private-original'],
               'zenodo-response-metadata': ['readiness', 'zenodo-response-tests', 'zenodo-response-metadata'],
               'zenodo-private-original': ['readiness', 'zenodo-original-tests', 'zenodo-private-original'],
