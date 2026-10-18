@@ -9,7 +9,7 @@ on:
         description: Bounded command batch
         type: choice
         default: smoke
-        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics]
+        options: [smoke, readiness, inventory, offline-replay, delivery-diagnostics, ciqual-source-native]
   push:
     branches: [offmenu-runner-jobs]
     paths: [.github/offmenu-runner/request.json]
@@ -34,7 +34,7 @@ jobs:
     env:
       # Replace only after the code/fixture/dispatcher commit is independently
       # reviewed and published. This placeholder deliberately prevents execution.
-      TRUSTED_CODE_SHA: e938264e9299e5a7531d12f1bfc2dc1e8f543b63
+      TRUSTED_CODE_SHA: 1f9c29f81f171a35c51a351d122efed2469b31e0
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify trusted revision is configured
@@ -122,7 +122,7 @@ jobs:
       contents: write
       pull-requests: read
     env:
-      TRUSTED_CODE_SHA: e938264e9299e5a7531d12f1bfc2dc1e8f543b63
+      TRUSTED_CODE_SHA: 1f9c29f81f171a35c51a351d122efed2469b31e0
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Verify terminal Foo job and prepare bounded evidence
@@ -169,11 +169,12 @@ jobs:
           MAX_RECEIPT = 16 * 1024
           MAX_API = 1024 * 1024
           PROFILES = {'readiness', 'inventory', 'offline-replay', 'smoke',
-                      'delivery-diagnostics', 'national-schema-survey'}
+                      'delivery-diagnostics', 'national-schema-survey', 'ciqual-source-native'}
           STEP_IDS = {'readiness', 'inventory', 'refresh-tests', 'offline-replay',
                       'replay-idempotency', 'ledger-tests', 'ledger-audit',
                       'dataset-tests', 'selected-data-inventory', 'schema-survey-tests',
-                      'schema-survey'}
+                      'schema-survey', 'ciqual-native-tests',
+                      'ciqual-native-candidate', 'ciqual-native-retry'}
           PROFILE_STEPS = {
               'readiness': ['readiness'],
               'inventory': ['readiness', 'inventory'],
@@ -183,6 +184,8 @@ jobs:
                                        'dataset-tests', 'selected-data-inventory', 'refresh-tests',
                                        'offline-replay', 'replay-idempotency'],
               'national-schema-survey': ['readiness', 'schema-survey-tests', 'schema-survey'],
+              'ciqual-source-native': ['readiness', 'ciqual-native-tests',
+                                       'ciqual-native-candidate', 'ciqual-native-retry'],
           }
           STEP_STATES = {'passed', 'failed', 'blocked', 'cancelled', 'timeout',
                          'output-limit', 'skipped'}
