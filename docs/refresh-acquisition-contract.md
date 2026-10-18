@@ -258,6 +258,11 @@ other-country references point to the same original asset, never a country copy.
 `owner` is the country binding's current delivery owner; original acquisition
 custody remains separately recorded in the asset's `localEvidence`.
 
+Every declared `assetIds` edge must have its corresponding nonnull binding.
+A separate null unknown binding may coexist with held references, but cannot
+replace or hide one. This is checked for the complete row, not just supplied
+nonnull bindings.
+
 Existence is independent of provenance, rights and coverage. Known held USDA or
 other originals cannot be downgraded to discovery/unknown because their original
 receipt clock, rights assessment or complete type coverage is unresolved. Missing
@@ -272,6 +277,17 @@ licence denial or a claim that a file is absent. `coverage.applicability` defaul
 to unknown. `not-applicable` requires explicit `notApplicableJustification` with
 detail and an evidence pin; missing source links never create N/A.
 
+Receipt and N/A evidence pins require nonempty paths and exact membership in
+the reviewed `assetCatalog.evidence` metadata set. Those catalogue files are
+actually hash-verified before qualified states are returned by `describe`, the
+pinned CLI, or direct lookup. A pinned registry alone does not prove referenced
+metadata exists or matches. Arbitrary receipt/N/A pointers outside the verified
+set are rejected without opening them. Metadata verification may read/hash the
+declared metadata witnesses; it never stats/hashes an original source payload,
+resets its acquisition clock, or enables a SourceSpec. Existing v3 configurations
+must explicitly catalogue their verified receipt witnesses; preserve original
+source/custody qualifications when doing so.
+
 ```sh
 python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
   --collection-registry SAME_REGISTRY --registry-sha256 SHA --country US
@@ -281,9 +297,9 @@ python3 -B scripts/collect-source-access.py LOOKUP_OUTPUT \
 ```
 
 The read-only `lookup_country_sources(registry, country, required_type=None)`
-function returns recorded bindings and qualifications without fetching or
-statting/hashing source payloads. The CLI verifies the pinned metadata registry
-and its metadata evidence before lookup. The same input remains usable by the
+function verifies the metadata catalogue and returns recorded bindings and
+qualifications without fetching or statting/hashing source payloads. The CLI
+also verifies the pinned metadata registry. The same input remains usable by the
 existing `collect_registry`; no second registry/controller or new source wave
 is created. Pinned registry metadata may be at most32MiB for the all249 descriptors
 and bindings; this does not increase any raw acquisition/response budget.

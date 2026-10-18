@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import subprocess
+import sys
 from unittest.mock import Mock, patch
 
 from offmenu.refresh.acquisition import collect_registry
@@ -241,7 +243,12 @@ class CollectionRunnerTests(unittest.TestCase):
     def test_country_lookup_keeps_known_file_held_with_unknown_clock_rights_coverage(self):
         from offmenu.refresh.acquisition import lookup_country_sources
         self.country_index()
-        with patch('offmenu.refresh.acquisition.digest', side_effect=AssertionError('no source hashing')):
+        import offmenu.refresh.acquisition as acquisition
+        original_digest = acquisition.digest
+        def metadata_only(path, **kwargs):
+            self.assertEqual(Path(path), self.evidence)
+            return original_digest(path, **kwargs)
+        with patch('offmenu.refresh.acquisition.digest', side_effect=metadata_only):
             report = lookup_country_sources(self.registry, 'AU', 'foods')
         row = report['requirements'][0]['bindings'][0]
         self.assertEqual(row['state'], 'held-locally-with-evidence')
@@ -276,6 +283,10 @@ class CollectionRunnerTests(unittest.TestCase):
         row = self.registry['assetCatalog']['requirements'][1]
         row['assetIds'] = ['known']
         self.registry['assetCatalog']['assets'][0]['localEvidence'] = None
+        # Lookup now validates the complete metadata catalogue. Keep the other
+        # fixture row consistent when this test removes its shared local proof.
+        other = self.registry['assetCatalog']['requirements'][0]['bindings'][0]
+        other.update(state='unknown-notyetfound', localPointer=None)
         blocked = row['bindings'][0]
         blocked.update(assetId='known', state='found-blocked-exactreason', receipt=self.pin)
         with self.assertRaisesRegex(RefreshError, 'exact-country-binding-blocker'):
@@ -298,6 +309,104 @@ class CollectionRunnerTests(unittest.TestCase):
             'detail': 'Synthetic reviewed scope excludes this requirement', 'evidence': self.pin}
         result = lookup_country_sources(self.registry, 'BE')
         self.assertEqual(result['requirements'][0]['bindings'][0]['coverage']['applicability'], 'not-applicable')
+
+    def lookup_cli(self, label='lookup-regression'):
+        path = self.root / 'lookup-registry.json'
+        path.write_bytes(canonical(self.registry))
+        output = self.root / label
+        command = [sys.executable, '-B', str(Path(__file__).resolve().parents[1] /
+                   'scripts/collect-source-access.py'), str(output), '--collection-registry',
+                   str(path), '--registry-sha256', sha(path.read_bytes()), '--country', 'AU']
+        return subprocess.run(command, capture_output=True, text=True), output
+
+    def test_declared_held_edge_cannot_be_hidden_by_null_unknown_api(self):
+        import copy
+        from offmenu.refresh.acquisition import lookup_country_sources, describe_collection_registry
+        self.country_index()
+        row = self.registry['assetCatalog']['requirements'][0]
+        row['bindings'] = [copy.deepcopy(self.registry['assetCatalog']['requirements'][1]['bindings'][0])]
+        self.assertEqual(row['assetIds'], ['known'])
+        with self.assertRaisesRegex(RefreshError, 'declared-asset-edge'):
+            describe_collection_registry(self.registry)
+        with self.assertRaisesRegex(RefreshError, 'declared-asset-edge'):
+            lookup_country_sources(self.registry, 'AU')
+
+    def test_declared_held_edge_cannot_be_hidden_by_null_unknown_cli(self):
+        import copy
+        self.country_index()
+        self.registry['assetCatalog']['requirements'][0]['bindings'] = [copy.deepcopy(
+            self.registry['assetCatalog']['requirements'][1]['bindings'][0])]
+        result, output = self.lookup_cli()
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn('declared-asset-edge', result.stdout)
+        self.assertFalse((output / 'country-AU-sources.json').exists())
+
+    def test_declared_held_edge_survives_separate_unknown_binding(self):
+        import copy
+        from offmenu.refresh.acquisition import lookup_country_sources
+        self.country_index()
+        row = self.registry['assetCatalog']['requirements'][0]
+        row['bindings'].append(copy.deepcopy(self.registry['assetCatalog']['requirements'][1]['bindings'][0]))
+        result = lookup_country_sources(self.registry, 'AU')
+        held = result['requirements'][0]['bindings'][0]
+        self.assertEqual(held['assetId'], 'known')
+        self.assertEqual(held['state'], 'held-locally-with-evidence')
+        self.assertEqual(held['localPointer'], '/fixture/original.zip')
+        self.assertIsNone(held['receiptDate'])
+        self.assertEqual(result['requirements'][0]['bindings'][1]['state'], 'unknown-notyetfound')
+
+    def assert_unverified_country_pin_rejected(self, label):
+        from offmenu.refresh.acquisition import lookup_country_sources
+        with self.subTest(boundary='API'):
+            with self.assertRaises(RefreshError):
+                lookup_country_sources(self.registry, 'AU')
+        with self.subTest(boundary='pinned CLI'):
+            result, output = self.lookup_cli(label)
+            self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+            self.assertFalse((output / 'country-AU-sources.json').exists())
+
+    def test_qualified_pin_missing_receipt_is_rejected_api_and_cli(self):
+        held = self.country_index()
+        held['receipt'] = {'path': str(self.root / 'never-existed.json'), 'sha256': '0' * 64}
+        self.assert_unverified_country_pin_rejected('missing-receipt')
+
+    def test_qualified_pin_wrong_receipt_hash_is_rejected_api_and_cli(self):
+        held = self.country_index()
+        path = self.root / 'changed-receipt.json'
+        path.write_bytes(b'{"metadata":"actual bytes differ"}')
+        held['receipt'] = {'path': str(path), 'sha256': '0' * 64}
+        self.assert_unverified_country_pin_rejected('wrong-receipt')
+
+    def test_qualified_pin_unlisted_receipt_is_not_read_as_payload(self):
+        held = self.country_index()
+        path = self.root / 'unregistered-payload.bin'
+        path.write_bytes(b'Fixture body must not be opened as country evidence')
+        held['receipt'] = {'path': str(path), 'sha256': sha(path.read_bytes())}
+        self.assert_unverified_country_pin_rejected('unlisted-receipt')
+
+    def test_qualified_pin_bad_catalogue_hash_is_rejected_api_and_cli(self):
+        held = self.country_index()
+        path = self.root / 'declared-metadata.json'
+        path.write_bytes(b'{"metadata":"changed"}')
+        held['receipt'] = {'path': str(path), 'sha256': '0' * 64}
+        self.registry['assetCatalog']['evidence'].append(held['receipt'])
+        self.assert_unverified_country_pin_rejected('bad-catalogue-hash')
+
+    def test_qualified_pin_empty_na_evidence_is_rejected_api_and_cli(self):
+        held = self.country_index()
+        held['coverage'].update(applicability='not-applicable', notApplicableJustification={
+            'detail': 'Specific scope exclusion needs real evidence',
+            'evidence': {'path': '', 'sha256': '0' * 64}})
+        self.assert_unverified_country_pin_rejected('empty-na-evidence')
+
+    def test_qualified_pin_unlisted_na_evidence_is_rejected_api_and_cli(self):
+        held = self.country_index()
+        path = self.root / 'unlisted-na-evidence.json'
+        path.write_bytes(b'{"metadata":"unreviewed scope"}')
+        held['coverage'].update(applicability='not-applicable', notApplicableJustification={
+            'detail': 'Specific scope exclusion needs registered metadata evidence',
+            'evidence': {'path': str(path), 'sha256': sha(path.read_bytes())}})
+        self.assert_unverified_country_pin_rejected('unlisted-na-evidence')
 
     def test_registry_and_binding_evidence_fail_before_source_request(self):
         path = self.root / 'registry.json'

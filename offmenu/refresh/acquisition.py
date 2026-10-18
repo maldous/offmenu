@@ -788,10 +788,12 @@ def describe_collection_registry(registry):
             or not isinstance(catalog['assets'], list)
             or not isinstance(catalog['requirements'], list)):
         raise RefreshError('invalid-collection-catalog')
+    verified_metadata_pins = set()
     for pin in catalog['evidence']:
-        if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
-                or digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']):
+        key = _country_metadata_pin_key(pin)
+        if digest(pin['path'], max_bytes=16 * MAX_METADATA)['sha256'] != pin['sha256']:
             raise RefreshError('collection-catalog-evidence-mismatch')
+        verified_metadata_pins.add(key)
     assets, locators, origins, local, desired, unresolved = {}, set(), set(), set(), set(), []
     for asset in catalog['assets']:
         fields = {'assetId', 'kind', 'publisherCitation', 'request', 'release', 'datatype',
@@ -850,7 +852,7 @@ def describe_collection_registry(registry):
         countries.add(row['country'])
         mapped += bool(row['assetIds'])
         if registry['schemaVersion'] == 'offmenu-acquisition-selection/3':
-            _validate_country_bindings(row, assets)
+            _validate_country_bindings(row, assets, verified_metadata_pins)
     return {'catalogVersion': catalog['version'], 'assetDescriptors': len(assets),
             'knownRecordedLocatorDescriptors': len(locators),
             'publisherCitationDescriptors': len(origins), 'unresolvedDescriptors': len(unresolved),
@@ -862,7 +864,16 @@ def describe_collection_registry(registry):
             'qualification': catalog['qualification'], 'unresolved': unresolved}
 
 
-def _validate_country_bindings(row, assets):
+def _country_metadata_pin_key(pin):
+    if (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
+            or not isinstance(pin['path'], str) or not pin['path'].strip()
+            or not isinstance(pin['sha256'], str)
+            or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
+        raise RefreshError('invalid-country-metadata-evidence-pin')
+    return pin['path'], pin['sha256']
+
+
+def _validate_country_bindings(row, assets, verified_metadata_pins):
     """Existence, provenance, rights and coverage are independent dimensions."""
     if not isinstance(row['bindings'], list) or not row['bindings']:
         raise RefreshError('country-binding-required-use-explicit-unknown')
@@ -885,11 +896,8 @@ def _validate_country_bindings(row, assets):
         if key is not None and (key not in assets or key not in row['assetIds']):
             raise RefreshError('country-binding-asset-mismatch')
         pin = binding['receipt']
-        if pin is not None and (not isinstance(pin, dict) or set(pin) != {'path', 'sha256'}
-                or not isinstance(pin['path'], str) or not pin['path']
-                or not isinstance(pin['sha256'], str)
-                or not re.fullmatch(r'[0-9a-f]{64}', pin['sha256'])):
-            raise RefreshError('invalid-country-binding-receipt')
+        if pin is not None and _country_metadata_pin_key(pin) not in verified_metadata_pins:
+            raise RefreshError('country-binding-receipt-not-verified-in-catalogue')
         if binding['receiptDate'] is not None:
             timestamp(binding['receiptDate'])
         applicability = binding['coverage'].get('applicability', 'unknown')
@@ -902,9 +910,12 @@ def _validate_country_bindings(row, assets):
                     or not isinstance(reason['evidence'], dict)
                     or set(reason['evidence']) != {'path', 'sha256'}
                     or not isinstance(reason['evidence']['path'], str)
+                    or not reason['evidence']['path'].strip()
                     or not isinstance(reason['evidence']['sha256'], str)
                     or not re.fullmatch(r'[0-9a-f]{64}', reason['evidence']['sha256'])):
                 raise RefreshError('not-applicable-requires-explicit-justification')
+            if _country_metadata_pin_key(reason['evidence']) not in verified_metadata_pins:
+                raise RefreshError('not-applicable-evidence-not-verified-in-catalogue')
         if binding['state'] != 'unknown-notyetfound' and (key is None or pin is None):
             raise RefreshError('country-binding-evidence-required')
         if binding['state'] == 'held-locally-with-evidence':
@@ -930,6 +941,10 @@ def _validate_country_bindings(row, assets):
                 raise RefreshError('exact-country-binding-blocker-required')
         elif binding['blockedReason'] is not None:
             raise RefreshError('unexpected-country-binding-blocker')
+    # Validate the complete declared edge set, not only nonnull bindings that
+    # happened to be supplied. A null unknown must not hide a known-held edge.
+    if set(row['assetIds']) != seen - {None}:
+        raise RefreshError('country-binding-declared-asset-edge-missing')
 
 
 def lookup_country_sources(registry, country, required_type=None):
@@ -943,14 +958,16 @@ def lookup_country_sources(registry, country, required_type=None):
             or (required_type is not None and
                 (not isinstance(required_type, str) or not required_type))):
         raise RefreshError('country-index-v3-and-exact-country-type-required')
+    # The metadata boundary verifies only the reviewed catalogue's declared
+    # metadata pins. Binding/NA references must be members of that verified set;
+    # never open an arbitrary receipt pointer (which could be a source payload).
+    describe_collection_registry(registry)
     rows = [r for r in registry['assetCatalog']['requirements'] if r['country'] == country
             and (required_type is None or r['type'] == required_type)]
     if not rows:
         raise RefreshError('country-type-not-indexed')
-    assets = {a['assetId']: a for a in registry['assetCatalog']['assets']}
     result = []
     for row in sorted(rows, key=lambda r: r['type']):
-        _validate_country_bindings(row, assets)
         result.append({'country': country, 'type': row['type'], 'bindings': row['bindings'],
                        'qualification': row['coverageQualification'], 'sourceEvidence': row['evidence']})
     return {'schemaVersion': 'offmenu-country-source-lookup/1',
