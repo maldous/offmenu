@@ -97,6 +97,25 @@ independent review and develop integration. Golden promotion remains later.
 
 ## Verification
 
+### PR48 explicit JSON nesting correction
+
+CLI serialized JSON now has an explicit maximum of48 nested array/object
+containers. A bounded byte scan checks nesting **before** `strict_json`, ignoring
+structural characters inside strings and handling escaped quotes/backslashes.
+The shared decoder still owns full syntax, UTF-8 and duplicate-key validation.
+Over-depth input consistently exits2 with the fixed diagnostic
+`metadata-input-invalid: json-nesting-limit`, independent of whether a runtime's
+JSON decoder raises `RecursionError`. Direct Python API per-peer containment is
+unchanged; this new48-container contract applies to serialized CLI JSON ingress.
+
+`python3 -B -m unittest tests.test_portfolio45_depth_delta -v` exercises boundary,
+mixed-container, escaped-string, permissive-decoder, actual CLI and ordinary-held
+controls using authored data. Seven tests passed on available Python3.12.3.
+Python3.14 was unavailable locally and was **not run**. The permissive-decoder
+probe establishes pre-decode rejection, not a claim of executing Python3.14.
+Prior reader/isolation, selector/hold, cache-intent and replay scopes remain under
+their existing evidence; SAME33 reviews this owned delta before00 integration.
+
 ### Reviewer33 correction (6428)
 
 The local CLI now opens metadata once using no-follow directory descriptors and
