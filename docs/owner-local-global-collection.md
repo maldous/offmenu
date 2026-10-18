@@ -64,3 +64,31 @@ in a `finally` block for GitHub publication. No credential creation/login occurs
 The initial delivered launcher failed before acquisition because its clean
 environment omitted the owner's existing `GITHUB_TOKEN`; this corrects that
 handoff without changing source selection, custody rules or dataset permissions.
+
+## Reviewed resource/retained-partial correction
+
+The resource observer now accepts absent cgroup-v2 child CPU/memory interfaces
+only when the readable immediate parent's subtree control proves that controller
+is disabled there. All visible ancestor and separately listed v1 limits still
+apply. Missing enabled interfaces, hidden parents, denied or malformed readings
+remain incomplete and disable preparation. The published closed diagnostic gives
+interface categories and error counts without paths or controller contents. The
+first manual run did not record sufficient controller detail to establish its
+specific resource-detection failure.
+
+User mode also reads the three exact retained Taiwan partials under the existing
+exclusive collection lease, with a 30-second diagnostic allowance inside the
+whole-operation deadline. It publishes hashes and bounded PDF boundary facts,
+never body snippets. Prior failed intents remain blocking; this does not retry,
+repair, promote, or clear them. The seven successful private originals retain
+the existing no-network reuse checks, and preparation can proceed when measured
+resource bounds admit it. All source contracts and permissions are unchanged.
+
+The same `--install COMMIT TREE` setup supports only the exact reviewed legacy
+installation at d97316cf3bdd9fce2d415b87a708d071ad8074e7 (tree
+f05dd477739b713ddc9b0a31074ffa54b182e1c4), or a fresh install/same-target retry.
+It verifies the old clean checkout and all pins, preserves it and its original
+pin, installs code in `sources/<commit>`, then atomically switches the known
+`run` wrapper. Failed setup before that switch leaves the previous command usable.
+It never moves datasets, claims, reservations, or preparation receipts. Unknown
+or changed installations are rejected. The everyday command is unchanged.

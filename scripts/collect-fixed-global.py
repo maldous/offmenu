@@ -12,6 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 spec=importlib.util.spec_from_file_location('global_fixed_batch',ROOT/'scripts/acquire-fixed-batch.py');b=importlib.util.module_from_spec(spec);spec.loader.exec_module(b)
 a=b.a;save=b.save
+spec=importlib.util.spec_from_file_location('global_retained_taiwan',ROOT/'scripts/diagnose-retained-taiwan.py');taiwan=importlib.util.module_from_spec(spec);spec.loader.exec_module(taiwan)
 from offmenu.refresh import media_preparation as media
 SCHEMA='offmenu-global-collection-result/1'
 SELECTION_PIN=('docs/collection-selections/global-original-selection.json','12bb04632ea6bbe078b68d28efab566f38c942e39a4339e91f02a738d7fe1008')
@@ -78,59 +79,102 @@ class ParallelCoordinator:
    try:a.release_own_reservation(path,fd,identity)
    finally:self.active.pop(key,None)
 
+RESOURCE_PROBLEMS={'membership-unavailable','membership-invalid','mountinfo-unavailable','mount-invalid','controller-mount-unresolved','cpu-limit-unresolved','memory-limit-unresolved','ancestor-depth-limit'}
+RESOURCE_READ_LABELS={'cgroup':'membership','mountinfo':'mountinfo','meminfo':'host-memory','cpu.max':'cpu-limit','cpu.cfs_quota_us':'cpu-limit','cpu.cfs_period_us':'cpu-period','memory.max':'memory-limit','memory.limit_in_bytes':'memory-limit','memory.current':'memory-current','memory.usage_in_bytes':'memory-current','cgroup.subtree_control':'parent-subtree-control'}
+def validate_resource_diagnostics(value):
+ keys={'schemaVersion','cgroupKinds','matchedMounts','levelsChecked','disabledCPUInterfaces','disabledMemoryInterfaces','rootExemptInterfaces','readFailures','problemCodes'}
+ if not isinstance(value,dict) or set(value)!=keys or value['schemaVersion']!='offmenu-resource-observation/1':raise ValueError('invalid-global-summary')
+ if value['cgroupKinds']!=sorted(set(value['cgroupKinds'])) or any(x not in {'cgroup','cgroup2'} for x in value['cgroupKinds']):raise ValueError('invalid-global-summary')
+ for key in keys-{'schemaVersion','cgroupKinds','readFailures','problemCodes'}:
+  if type(value[key]) is not int or not 0<=value[key]<=65536:raise ValueError('invalid-global-summary')
+ if not isinstance(value['problemCodes'],list) or value['problemCodes']!=sorted(set(value['problemCodes'])) or any(x not in RESOURCE_PROBLEMS for x in value['problemCodes']):raise ValueError('invalid-global-summary')
+ if not isinstance(value['readFailures'],list) or len(value['readFailures'])>32:raise ValueError('invalid-global-summary')
+ seen=set()
+ for row in value['readFailures']:
+  if not isinstance(row,dict) or set(row)!={'interface','state','count'} or row['interface'] not in set(RESOURCE_READ_LABELS.values()) or row['state'] not in {'absent','permission-denied','io-error','invalid'} or type(row['count']) is not int or not 1<=row['count']<=65536:raise ValueError('invalid-global-summary')
+  pair=(row['interface'],row['state'])
+  if pair in seen:raise ValueError('invalid-global-summary')
+  seen.add(pair)
+ return value
+
 def effective_resources(config,read_text=None):
- read_text=read_text or (lambda path:Path(path).read_text()[:65536]);missing=set()
+ def bounded_read(path):
+  with open(path,encoding='utf-8') as stream:return stream.read(65537)
+ read_text=read_text or bounded_read;missing=set();failures=Counter();problems=set();kinds=set()
+ diagnostics={'schemaVersion':'offmenu-resource-observation/1','cgroupKinds':[],'matchedMounts':0,'levelsChecked':0,'disabledCPUInterfaces':0,'disabledMemoryInterfaces':0,'rootExemptInterfaces':0,'readFailures':[],'problemCodes':[]}
  def read(path):
-  try:return read_text(path).strip()
-  except FileNotFoundError:missing.add(path);return None
-  except (OSError,ValueError,KeyError):return None
+  try:
+   value=read_text(path)
+   if not isinstance(value,str) or len(value)>65536:raise ValueError('bounded-resource-read')
+   return value.strip()
+  except FileNotFoundError:missing.add(path);state='absent'
+  except PermissionError:state='permission-denied'
+  except (OSError,KeyError):state='io-error'
+  except ValueError:state='invalid'
+  failures[(RESOURCE_READ_LABELS[Path(path).name],state)]+=1;return None
+ def absent_uncontrolled(controller,path,location,ceiling,root):
+  # Missing is accepted only with positive evidence of absent local control.
+  if str(path) not in missing:return False
+  if location==ceiling:
+   if root=='/':diagnostics['rootExemptInterfaces']+=1;return True
+   return False # A hidden parent cannot prove a delegated root unconstrained.
+  enabled=read(str(location.parent/'cgroup.subtree_control'))
+  if enabled is None or any(not re.fullmatch('[a-z][a-z0-9_]*',word) for word in enabled.split()):return False
+  if controller in enabled.split():return False
+  diagnostics['disabledCPUInterfaces' if controller=='cpu' else 'disabledMemoryInterfaces']+=1;return True
  try:affinity=len(os.sched_getaffinity(0))
  except (AttributeError,OSError):affinity=os.cpu_count() or 1
- observed=os.cpu_count() or 1;quotas=[];headrooms=[];unknown=False
+ observed=os.cpu_count() or 1;quotas=[];headrooms=[]
  membership=read('/proc/self/cgroup');mounts=read('/proc/self/mountinfo');controllers={}
  if membership and mounts:
   for row in membership.splitlines():
    fields=row.split(':',2)
    if len(fields)==3 and fields[2].startswith('/') and '..' not in Path(fields[2]).parts:
     for c in fields[1].split(','):controllers[c]=fields[2]
+   else:problems.add('membership-invalid')
   found=set()
   for row in mounts.splitlines():
    fields=row.split()
    try:
     sep=fields.index('-');kind=fields[sep+1]
     if kind not in {'cgroup','cgroup2'}:continue
-    root,mount=fields[3:5]
-    if '\\' in root+mount or not mount.startswith('/'):unknown=True;continue
+    kinds.add(kind);root,mount=fields[3:5]
+    if '\\' in root+mount or not mount.startswith('/') or not root.startswith('/') or '..' in Path(root).parts+Path(mount).parts:problems.add('mount-invalid');continue
     names=[''] if kind=='cgroup2' else fields[sep+3].split(',')
     for name in names:
      if name not in controllers or (kind=='cgroup' and name not in {'cpu','memory'}):continue
      current=controllers[name]
      if root!='/' and current!=root and not current.startswith(root.rstrip('/')+'/'):continue
      relative=current[len(root):].lstrip('/') if root!='/' else current.lstrip('/')
-     location=Path(mount)/relative;ceiling=Path(mount);found.add(name)
+     location=Path(mount)/relative;ceiling=Path(mount);found.add(name);diagnostics['matchedMounts']+=1;depth=0
      while True:
+      depth+=1;diagnostics['levelsChecked']+=1
+      if depth>64:problems.add('ancestor-depth-limit');break
       if kind=='cgroup2' or name=='cpu':
-       q=read(str(location/('cpu.max' if kind=='cgroup2' else 'cpu.cfs_quota_us')))
+       path=location/('cpu.max' if kind=='cgroup2' else 'cpu.cfs_quota_us');q=read(str(path))
        if kind=='cgroup2':
         parts=(q or '').split();period=parts[1] if len(parts)==2 else None;quota=parts[0] if len(parts)==2 else None
        else:quota=q;period=read(str(location/'cpu.cfs_period_us'))
-       if quota in {'max','-1'}:pass
-       elif kind=='cgroup2' and location==ceiling and root=='/' and str(location/'cpu.max') in missing:pass
-       elif quota and quota.isdigit() and period and period.isdigit() and int(period)>0:quotas.append(max(1,int(quota)//int(period)))
-       else:unknown=True
+       if quota=='-1' and kind=='cgroup':pass
+       elif quota=='max' and period and period.isdigit() and int(period)>0:pass
+       elif kind=='cgroup2' and absent_uncontrolled('cpu',path,location,ceiling,root):pass
+       elif quota and quota.isdigit() and period and period.isdigit() and int(period)>0 and int(quota)>0:quotas.append(max(1,int(quota)//int(period)))
+       else:problems.add('cpu-limit-unresolved')
       if kind=='cgroup2' or name=='memory':
-       cap=read(str(location/('memory.max' if kind=='cgroup2' else 'memory.limit_in_bytes')));used=read(str(location/('memory.current' if kind=='cgroup2' else 'memory.usage_in_bytes')))
+       path=location/('memory.max' if kind=='cgroup2' else 'memory.limit_in_bytes');cap=read(str(path));used=read(str(location/('memory.current' if kind=='cgroup2' else 'memory.usage_in_bytes')))
        if cap=='max':pass
-       elif kind=='cgroup2' and location==ceiling and root=='/' and str(location/'memory.max') in missing:pass
+       elif kind=='cgroup2' and absent_uncontrolled('memory',path,location,ceiling,root):pass
        elif cap and cap.isdigit() and used and used.isdigit():
         if int(cap)<1024**6:headrooms.append(max(0,int(cap)-int(used)))
-       else:unknown=True
+       else:problems.add('memory-limit-unresolved')
       if location==ceiling:break
-      if ceiling not in location.parents:unknown=True;break
+      if ceiling not in location.parents:problems.add('mount-invalid');break
       location=location.parent
-   except (ValueError,IndexError):unknown=True
-  if '' not in found and not {'cpu','memory'}<=found:unknown=True
- else:unknown=True
+   except (ValueError,IndexError):problems.add('mount-invalid')
+  if ('' not in found and not {'cpu','memory'}<=found) or not (set(controllers)&{'cpu','memory'})<=found:problems.add('controller-mount-unresolved')
+ else:
+  if not membership:problems.add('membership-unavailable')
+  if not mounts:problems.add('mountinfo-unavailable')
  quota=min(quotas) if quotas else None;cgroup=min(headrooms) if headrooms else None
  cpus=max(1,min(affinity,observed,quota if quota is not None else observed));mem=None;info=read('/proc/meminfo')
  if info:
@@ -138,8 +182,10 @@ def effective_resources(config,read_text=None):
   if match:mem=int(match.group(1))*1024
  available=min(x for x in (mem,cgroup) if x is not None) if mem is not None or cgroup is not None else 0
  usable=max(0,available-config['memoryReserveBytes']);prep=min(config['preparationWorkers'],cpus,usable//config['memoryPerPreparationBytes'],MAX_OUTPUT_BYTES//config['maximumOutputPerPreparationBytes'])
+ unknown=bool(problems)
  if unknown:cpus=1;prep=0
- io=min(config['ioWorkers'],max(1,cpus*2));return {'logicalCPUs':observed,'affinityCPUs':affinity,'cgroupCPUCap':quota,'effectiveCPUs':cpus,'memoryAvailableBytes':mem,'cgroupMemoryHeadroomBytes':cgroup,'effectiveMemoryBytes':available,'resourceLimitsIncomplete':unknown,'ioWorkers':io,'preparationWorkers':prep,'perHostWorkers':config['perHostWorkers'],'memoryPerPreparationBytes':config['memoryPerPreparationBytes'],'memoryReserveBytes':config['memoryReserveBytes']}
+ diagnostics.update(cgroupKinds=sorted(kinds),readFailures=[{'interface':k[0],'state':k[1],'count':v} for k,v in sorted(failures.items())],problemCodes=sorted(problems));validate_resource_diagnostics(diagnostics)
+ io=min(config['ioWorkers'],max(1,cpus*2));return {'logicalCPUs':observed,'affinityCPUs':affinity,'cgroupCPUCap':quota,'effectiveCPUs':cpus,'memoryAvailableBytes':mem,'cgroupMemoryHeadroomBytes':cgroup,'effectiveMemoryBytes':available,'resourceLimitsIncomplete':unknown,'ioWorkers':io,'preparationWorkers':prep,'perHostWorkers':config['perHostWorkers'],'memoryPerPreparationBytes':config['memoryPerPreparationBytes'],'memoryReserveBytes':config['memoryReserveBytes'],'diagnostics':diagnostics}
 
 DEFAULT_PARALLELISM={'ioWorkers':8,'preparationWorkers':8,'perHostWorkers':1,'minimumHostStartSpacingSeconds':2,'memoryReserveBytes':2*1024**3,'memoryPerPreparationBytes':2560*1024**2,'maximumOutputPerPreparationBytes':128*1024**2}
 
@@ -297,6 +343,7 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
  if progress is not None:progress.update(meter=meter,changes=changes)
  persisted=0;output_bytes=0;checkpoints={};errors=[];manifest_sha=a.sha(a.canonical(manifest))
  work=a.owned_directory(a.owned_directory(a.OUTPUT)/'collection');root=save.private_directory(work/'global-collection',a);run_dir=save.private_directory(root/manifest_sha,a)
+ taiwan_diagnostics=taiwan.run_diagnostics(a.OUTPUT,min(deadline,time.monotonic()+30)) if owner_runtime is not None else None
  stat_rows=[];asset_paths=defaultdict(list)
  for target in manifest.get('statTargets',[]):
   extents={x.get('bytes') for x in target.get('recordedIdentities',[]) if type(x.get('bytes')) is int}
@@ -479,6 +526,7 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
   'statPathCount':len(stat_rows),'statOutcomeGroups':[{'state':state,'pathRanges':ranges([i for i,value in enumerate(stat_rows) if value==state])} for state in sorted(set(stat_rows))],
   'checkpointCount':persisted,'checkpointIndexSHA256':a.sha(a.canonical(sorted(checkpoints.items()))),'detailSHA256':None,'detailPersisted':False,
   'runtimeCapabilities':capabilities,'resourceObservation':resources,'globalErrors':sorted(set(errors)),'maximumParallelTransfers':resources['ioWorkers'],'maximumPerHostTransfers':config['perHostWorkers'],'maximumParallelPreparations':resources['preparationWorkers'],'observedPeakTransfers':peak_io,'observedPeakPreparations':peak_prep,'wholeOperationSeconds':MAX_SECONDS,**a.SAFETY}
+ if taiwan_diagnostics is not None:report['retainedTaiwanDiagnostics']=taiwan.sanitize_diagnostics(taiwan_diagnostics)
  detail={'schemaVersion':'offmenu-global-collection-detail/1','summary':report,'checkpoints':sorted(checkpoints.items()),'assetOutcomes':outcomes};digest=a.sha(a.canonical(detail))
  try:a.write_immutable(run_dir/('result-'+digest+'.json'),detail);report.update(detailSHA256=digest,detailPersisted=True)
  except (a.RefreshError,OSError,ValueError,TypeError,KeyError):report['globalErrors']=sorted(set(report['globalErrors']+['global-checkpoint-failed']));report['status']='complete-with-errors'
@@ -548,7 +596,8 @@ def sanitize_report(report):
   if report!=blocked_report(report.get('errorCode')) or report['errorCode'] not in ERRORS:raise ValueError('invalid-global-summary')
   return report
  keys={'schemaVersion','status','errorCode','manifestSHA256','selectionSHA256','assetCount','countryCount','typeCount','networkRequests','networkBytesRead','preparedBytes','preparedUncertainBytes','preparationUncertainGrants','assetOutcomeGroups','cellStageCounts','changes','statPathCount','statOutcomeGroups','checkpointCount','checkpointIndexSHA256','detailSHA256','detailPersisted','runtimeCapabilities','globalErrors','maximumParallelTransfers','maximumPerHostTransfers','maximumParallelPreparations','observedPeakTransfers','observedPeakPreparations','resourceObservation','wholeOperationSeconds'}|set(a.SAFETY)
- if set(report)!=keys:raise ValueError('invalid-global-summary')
+ if set(report) not in (keys,keys|{'retainedTaiwanDiagnostics'}):raise ValueError('invalid-global-summary')
+ if 'retainedTaiwanDiagnostics' in report:taiwan.sanitize_diagnostics(report['retainedTaiwanDiagnostics'])
  manifest=manifest_config();selected=selection_config();outcomes=expand_outcomes(report['assetOutcomeGroups'],len(manifest['assets']))
  if report['schemaVersion']!=SCHEMA or report['status'] not in {'complete','complete-with-errors'} or report['errorCode'] is not None or report['manifestSHA256']!=a.sha(a.canonical(manifest)) or report['selectionSHA256']!=a.sha(a.canonical(selected)) or report['assetCount']!=len(outcomes) or report['countryCount']!=249 or report['typeCount']!=13:raise ValueError('invalid-global-summary')
  if report['cellStageCounts']!=country_cells(manifest,outcomes) or any(report[k] is not v for k,v in a.SAFETY.items()):raise ValueError('invalid-global-summary')
@@ -586,7 +635,10 @@ def sanitize_report(report):
  if type(report['checkpointCount']) is not int or not 0<=report['checkpointCount']<=len(outcomes) or type(report['detailPersisted']) is not bool or report['maximumPerHostTransfers']!=1 or report['wholeOperationSeconds']!=MAX_SECONDS:raise ValueError('invalid-global-summary')
  resource=report['resourceObservation']
  resource_keys={'logicalCPUs','affinityCPUs','cgroupCPUCap','effectiveCPUs','memoryAvailableBytes','cgroupMemoryHeadroomBytes','effectiveMemoryBytes','resourceLimitsIncomplete','ioWorkers','preparationWorkers','perHostWorkers','memoryPerPreparationBytes','memoryReserveBytes'}
- if not isinstance(resource,dict) or set(resource)!=resource_keys or type(resource['resourceLimitsIncomplete']) is not bool:raise ValueError('invalid-global-summary')
+ if not isinstance(resource,dict) or set(resource) not in (resource_keys,resource_keys|{'diagnostics'}) or type(resource['resourceLimitsIncomplete']) is not bool:raise ValueError('invalid-global-summary')
+ if 'diagnostics' in resource:
+  validate_resource_diagnostics(resource['diagnostics'])
+  if resource['resourceLimitsIncomplete']!=bool(resource['diagnostics']['problemCodes']):raise ValueError('invalid-global-summary')
  for key in resource_keys-{'resourceLimitsIncomplete'}:
   if resource[key] is None and key in {'cgroupCPUCap','memoryAvailableBytes','cgroupMemoryHeadroomBytes'}:continue
   if type(resource[key]) is not int or not 0<=resource[key]<=1024**6:raise ValueError('invalid-global-summary')

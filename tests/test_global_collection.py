@@ -118,9 +118,25 @@ class GlobalTests(unittest.TestCase):
    return result,None,0
   with patch.object(f.save,'run_selected',side_effect=acquire),patch.object(g,'stat_original',return_value='stat-observed'):
    report=g.run_global(actual_manifest,actual_selected,transport=lambda *a:None,prepare=prepare)
+  report['retainedTaiwanDiagnostics']=g.taiwan.run_diagnostics(self.root,time.monotonic()+1)
   report=self.clean_global(report);self.assertEqual(report['assetCount'],len(actual_manifest['assets']));self.assertEqual(report['networkRequests'],10);self.assertEqual(report['statPathCount'],1937)
   self.assertGreaterEqual(len(report['changes']),40);self.assertLess(len(f.a.canonical(report)),g.MAX_SUMMARY)
   dispatch=module('global_actual_projection','scripts/dispatch-foo-job.py');evidence=dispatch.safe_evidence(f.a.canonical(report));self.assertEqual(evidence.get('globalCollection'),report,evidence)
+ def test_owner_diagnostic_is_inside_existing_lease_and_deadline(self):
+  import fcntl,os
+  self.selected['sources']=[];self.selected['maximumRequests']=0;self.selected['maximumTransferBytes']=0;self.selected['preparation']=[]
+  observed=[];original=g.taiwan.run_diagnostics
+  def diagnostic(root,deadline):
+   self.assertEqual(root,f.a.OUTPUT);self.assertGreater(deadline,time.monotonic());self.assertLessEqual(deadline,time.monotonic()+30)
+   fd=os.open(self.work/'fixed-selection.lock',os.O_RDONLY)
+   try:
+    with self.assertRaises(BlockingIOError):fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+   finally:os.close(fd)
+   observed.append(True);return original(root,deadline)
+  with patch.object(g.taiwan,'run_diagnostics',side_effect=diagnostic):report=self.clean_global(self.execute(owner_runtime=object()))
+  self.assertEqual(observed,[True]);self.assertEqual(report['networkRequests'],0);self.assertIn('retainedTaiwanDiagnostics',report)
+  report['retainedTaiwanDiagnostics']['rawBytes']='forbidden'
+  with self.assertRaises(ValueError):self.clean_global(report)
  def test_projection_fallback_preserves_completed_sources_and_meter(self):
   report=self.execute();progress={'meter':{'requests':report['networkRequests'],'bodyBytesRead':report['networkBytesRead']},'changes':report['changes']}
   failure=g.projection_failure(self.selected,progress);clean=self.clean_global(failure);self.assertEqual(clean['networkRequests'],5);self.assertEqual(len(clean['completedSources']),5)

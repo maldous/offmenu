@@ -27,19 +27,41 @@ class LauncherTests(unittest.TestCase):
   env=m.clean_environment();env['GITHUB_TOKEN']='synthetic-launcher-existing';env.pop('GH_TOKEN',None);env['GH_CONFIG_DIR']=str(self.home/'empty')
   result=subprocess.run(['/usr/bin/gh','auth','git-credential','get'],input=b'protocol=https\nhost=github.com\n\n',stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,timeout=5,check=True)
   self.assertIn(b'password=synthetic-launcher-existing',result.stdout)
+ def installed_layout(self,commit='a'*40):
+  root=self.home/'offmenu-global-collection';root.mkdir(mode=0o700,exist_ok=True);(root/'sources').mkdir(mode=0o700,exist_ok=True);(root/'pins').mkdir(mode=0o700,exist_ok=True);source=root/'sources'/commit;source.mkdir(exist_ok=True);(source/'.git').mkdir(exist_ok=True);return root,source
+ def legacy(self):
+  root=self.home/'offmenu-global-collection';root.mkdir(mode=0o700,exist_ok=True);legacy=root/'source';legacy.mkdir();(legacy/'prior-code').write_bytes(b'preserved');(root/'source-pin.json').write_text(json.dumps(m.PREDECESSOR));(root/'run').write_bytes(m.wrapper_bytes(legacy));return root,legacy
  def test_install_is_pinned_and_repeat_non_destructive(self):
-  pin={'commit':'a'*40,'tree':'b'*40};root=self.home/'offmenu-global-collection';source=root/'source';root.mkdir(mode=0o700);source.mkdir();(source/'.git').mkdir()
+  pin={'commit':'a'*40,'tree':'b'*40};root,source=self.installed_layout()
   with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):
-   m.install(**pin);before={p.name:p.read_bytes() for p in root.iterdir() if p.is_file()};m.install(**pin)
-   self.assertEqual(before,{p.name:p.read_bytes() for p in root.iterdir() if p.is_file()});self.assertEqual(verify.call_count,2)
-  self.assertEqual(json.loads((root/'source-pin.json').read_text()),pin);self.assertEqual((root/'run').stat().st_mode&0o777,0o700)
+   m.install(**pin);before=(root/'run').read_bytes();m.install(**pin);self.assertEqual(before,(root/'run').read_bytes());self.assertEqual(verify.call_count,2)
+  self.assertEqual(json.loads((root/'pins'/(pin['commit']+'.json')).read_text()),pin);self.assertEqual((root/'run').stat().st_mode&0o777,0o700)
   with patch.object(m,'verify_source'),self.assertRaises(ValueError):m.install('c'*40,'b'*40)
+ def test_exact_legacy_upgrade_preserves_old_code_and_pin(self):
+  root,legacy=self.legacy();before=(root/'source-pin.json').read_bytes();_,source=self.installed_layout()
+  with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):m.install('a'*40,'b'*40)
+  self.assertEqual((legacy/'prior-code').read_bytes(),b'preserved');self.assertEqual((root/'source-pin.json').read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.wrapper_bytes(source));self.assertEqual(verify.call_args_list[0].args[1],m.PREDECESSOR)
+ def test_failed_upgrade_leaves_previous_command_usable(self):
+  root,legacy=self.legacy();before=(root/'run').read_bytes()
+  with patch.object(m,'verify_source'),patch.object(m,'git',side_effect=subprocess.SubprocessError('synthetic')),self.assertRaises(subprocess.SubprocessError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before);self.assertEqual((legacy/'prior-code').read_bytes(),b'preserved')
+ def test_failed_atomic_switch_preserves_prior_wrapper(self):
+  root,legacy=self.legacy();before=(root/'run').read_bytes();self.installed_layout()
+  with patch.object(m,'verify_source'),patch.object(m.os,'replace',side_effect=OSError('synthetic')),self.assertRaises(OSError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before);self.assertEqual((legacy/'prior-code').read_bytes(),b'preserved')
+ def test_versioned_pin_must_match_source_directory(self):
+  root,source=self.installed_layout();(root/'pins'/('a'*40+'.json')).write_text(json.dumps({'commit':'c'*40,'tree':'b'*40}))
+  with patch.object(m,'__file__',str(source/'scripts/run-global-on-foo.py')),patch.object(m,'verify_source') as verify,self.assertRaises(ValueError):m.run()
+  verify.assert_not_called()
+ def test_unknown_legacy_pin_never_fetches(self):
+  root,legacy=self.legacy();(root/'source-pin.json').write_text(json.dumps({'commit':'c'*40,'tree':'d'*40}))
+  with patch.object(m,'git',side_effect=AssertionError('fetch')),self.assertRaises(ValueError):m.install('a'*40,'b'*40)
  def test_symlink_install_rejected_without_overwrite(self):
   root=self.home/'offmenu-global-collection';root.symlink_to(self.home/'absent')
   with self.assertRaises(ValueError):m.install('a'*40,'b'*40)
   self.assertTrue(root.is_symlink())
  def test_run_from_arbitrary_cwd_inherited_auth_and_publish_only(self):
-  root=self.home/'offmenu-global-collection';source=root/'source';root.mkdir(mode=0o700);source.mkdir();(root/'source-pin.json').write_text(json.dumps({'commit':'a'*40,'tree':'b'*40}))
+  root,source=self.installed_layout();(root/'pins'/('a'*40+'.json')).write_text(json.dumps({'commit':'a'*40,'tree':'b'*40}))
   with patch.dict(os.environ,{'GITHUB_TOKEN':'synthetic-existing'}),patch.object(m,'__file__',str(source/'scripts/run-global-on-foo.py')),patch.object(m,'verify_source'),patch.object(m.os,'chdir') as cd,patch.object(m.os,'execvpe') as execute:
    m.run(True);args=execute.call_args.args;self.assertEqual(args[2]['GITHUB_TOKEN'],'synthetic-existing');self.assertNotIn('synthetic-existing',repr(args[:2]));self.assertEqual(args[1][-1],'--publish-only');cd.assert_called_once_with(source)
  def test_bad_launcher_args_stop(self):
@@ -47,8 +69,8 @@ class LauncherTests(unittest.TestCase):
  def test_insecure_root_and_source_or_pin_symlinks_stop(self):
   root=self.home/'offmenu-global-collection';root.mkdir(mode=0o755)
   with self.assertRaises(ValueError):m.install('a'*40,'b'*40)
-  root.chmod(0o700);source=root/'source';source.symlink_to(self.home/'absent')
+  root.chmod(0o700);(root/'sources').mkdir(mode=0o700);source=root/'sources'/('a'*40);source.symlink_to(self.home/'absent')
   with self.assertRaises(ValueError):m.install('a'*40,'b'*40)
-  source.unlink();source.mkdir();(root/'source-pin.json').symlink_to(self.home/'absent')
-  with self.assertRaises(OSError):m.run()
+  source.unlink();source.mkdir();(root/'pins'/('a'*40+'.json')).symlink_to(self.home/'absent')
+  with patch.object(m,'__file__',str(source/'scripts/run-global-on-foo.py')),self.assertRaises(OSError):m.run()
 if __name__=='__main__':unittest.main()
