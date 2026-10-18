@@ -1,0 +1,321 @@
+{
+  "schemaVersion": "offmenu-ciqual-artifact-path-map/1",
+  "baseCommit": "c1f80fe606933b429170d29cb5363f18a4bf2bb1",
+  "approvedManifestSha256": "b5e5fd80357a3fecbc0ba16393766782ca2e25423984522ec4cc34eb1fff9fcf",
+  "notes": "All paths are original-artifact-relative or repository-relative. The immutable source manifest retains its original pre-review status; verification-summary.json records the final independent review. Omitted artifacts are not runtime dependencies.",
+  "files": [
+    {
+      "sourcePath": "README.md",
+      "sourceBytes": 9984,
+      "sourceSha256": "9d00e1e78cb90ba8f2022c557277b74c7d5bc496ee9b7e94abd709f647143487",
+      "disposition": "omitted",
+      "reason": "Standalone development narrative or raw test/verification output replaced by the repository guide and verification summary."
+    },
+    {
+      "sourcePath": "candidate-A/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "39a78c9608372669d40658208a488ca81d69582a99843275aaa3da1e3a3ab19c",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-A/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "3f3fbabb83c473727bafeb5e630f98e3d4eea226d2362f26705fcad4263eff02",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-A/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-B/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "39a78c9608372669d40658208a488ca81d69582a99843275aaa3da1e3a3ab19c",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-B/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "3f3fbabb83c473727bafeb5e630f98e3d4eea226d2362f26705fcad4263eff02",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-B/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-A/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "2193b44f4762b878c2ade9824e5197256d9f98cf5ceb74b0b72143fd737a160b",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-A/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-A/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-B/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "2193b44f4762b878c2ade9824e5197256d9f98cf5ceb74b0b72143fd737a160b",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-B/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v2-B/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "omitted",
+      "reason": "Superseded output; only approved revision-3 golden candidates are integrated."
+    },
+    {
+      "sourcePath": "candidate-v3-A/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "fcd10294f7ca91a4d02e41cb16cc10f398d280a64bd38639a1c1f239c5548f74",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/content-manifest.json",
+      "bytes": 2519,
+      "sha256": "fcd10294f7ca91a4d02e41cb16cc10f398d280a64bd38639a1c1f239c5548f74",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "candidate-v3-A/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/normalized.jsonl.gz",
+      "bytes": 2008,
+      "sha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "candidate-v3-A/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-A/source-metadata.json",
+      "bytes": 14589,
+      "sha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "candidate-v3-B/content-manifest.json",
+      "sourceBytes": 2519,
+      "sourceSha256": "fcd10294f7ca91a4d02e41cb16cc10f398d280a64bd38639a1c1f239c5548f74",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/content-manifest.json",
+      "bytes": 2519,
+      "sha256": "fcd10294f7ca91a4d02e41cb16cc10f398d280a64bd38639a1c1f239c5548f74",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "candidate-v3-B/normalized.jsonl.gz",
+      "sourceBytes": 2008,
+      "sourceSha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/normalized.jsonl.gz",
+      "bytes": 2008,
+      "sha256": "0a6b36715f964e4c63d176f8545da9a16f7a58bef9a693259efc454e0bfda0f4",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "candidate-v3-B/source-metadata.json",
+      "sourceBytes": 14589,
+      "sourceSha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/approved-artifact/candidate-v3-B/source-metadata.json",
+      "bytes": 14589,
+      "sha256": "62d189688fe60ff884e1a7921d796abc9dba7441517f35e50e361f401c5703d1",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "fixture-acquisition-evidence.json",
+      "sourceBytes": 303,
+      "sourceSha256": "bb061c6a29b1a9300d7b3b1319000c5b5c92659ece4b670b64ce7a310f3da2c0",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual-acquisition-evidence.json",
+      "bytes": 303,
+      "sha256": "bb061c6a29b1a9300d7b3b1319000c5b5c92659ece4b670b64ce7a310f3da2c0",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "fixtures.lock.json",
+      "sourceBytes": 1278,
+      "sourceSha256": "eed889c5ee6d4683cdfc3d410c497dcbc794712a42befa8217f46bdf502b7b19",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual.lock.json",
+      "bytes": 1278,
+      "sha256": "eed889c5ee6d4683cdfc3d410c497dcbc794712a42befa8217f46bdf502b7b19",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "offmenu_ciqual/__init__.py",
+      "sourceBytes": 84,
+      "sourceSha256": "bf5378e2f3a3ddb59907e3bbeea08d0b53c5eccd9dcf162b17181c7549a04b2d",
+      "disposition": "included",
+      "path": "offmenu_ciqual/__init__.py",
+      "bytes": 84,
+      "sha256": "bf5378e2f3a3ddb59907e3bbeea08d0b53c5eccd9dcf162b17181c7549a04b2d",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "offmenu_ciqual/adapter.py",
+      "sourceBytes": 20510,
+      "sourceSha256": "e03806266867a124eeddadfc1bbd37150261bd78d68e9a3f76009741675778b3",
+      "disposition": "included",
+      "path": "offmenu_ciqual/adapter.py",
+      "bytes": 20510,
+      "sha256": "e03806266867a124eeddadfc1bbd37150261bd78d68e9a3f76009741675778b3",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "offmenu_ciqual/contract.json",
+      "sourceBytes": 14547,
+      "sourceSha256": "f48ebfacd71ff2be2fadf7a1fefe47b037137ec128f847cbec8b4ebf71f125f2",
+      "disposition": "included",
+      "path": "offmenu_ciqual/contract.json",
+      "bytes": 14547,
+      "sha256": "f48ebfacd71ff2be2fadf7a1fefe47b037137ec128f847cbec8b4ebf71f125f2",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "offmenu_ciqual/xmlxlsx.py",
+      "sourceBytes": 18570,
+      "sourceSha256": "96ba971dbae538c93c873ce5b31a11291ea63e54273f53a7f4471fae9277baed",
+      "disposition": "included",
+      "path": "offmenu_ciqual/xmlxlsx.py",
+      "bytes": 18570,
+      "sha256": "96ba971dbae538c93c873ce5b31a11291ea63e54273f53a7f4471fae9277baed",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "reference/collect-national.py",
+      "sourceBytes": 9061,
+      "sourceSha256": "3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual-reference/collect-national.py",
+      "bytes": 9061,
+      "sha256": "3f1140b6809d4909a8be415ad51a67ee6677ad57c17d580ec5fbda57edc196e5",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "reference/import-national-tables.py",
+      "sourceBytes": 8953,
+      "sourceSha256": "99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual-reference/import-national-tables.py",
+      "bytes": 8953,
+      "sha256": "99216f9ed0aa279b0e15b194c2782dcd8548b86362ea9c55038ad287162cf6c8",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "source-evidence.json",
+      "sourceBytes": 2499,
+      "sourceSha256": "40efe70306cf6d2b623ef74ce9e523c19ff282e5c9d165db017c0f6a546d3c69",
+      "disposition": "included",
+      "path": "docs/evidence/ciqual-synthetic/source-evidence.json",
+      "bytes": 2499,
+      "sha256": "40efe70306cf6d2b623ef74ce9e523c19ff282e5c9d165db017c0f6a546d3c69",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "test-results-optimized.txt",
+      "sourceBytes": 98,
+      "sourceSha256": "b5573352a3088864660b3c417201ed293d352c56620cb86aa5ef0be396edd1d9",
+      "disposition": "omitted",
+      "reason": "Standalone development narrative or raw test/verification output replaced by the repository guide and verification summary."
+    },
+    {
+      "sourcePath": "test-results.txt",
+      "sourceBytes": 7969,
+      "sourceSha256": "dd12474e07cc2bf208f1f33a77d0d180bdbc89a4cba911a9bb9afbb45512bd67",
+      "disposition": "omitted",
+      "reason": "Standalone development narrative or raw test/verification output replaced by the repository guide and verification summary."
+    },
+    {
+      "sourcePath": "tests/fixture_factory.py",
+      "sourceBytes": 7376,
+      "sourceSha256": "eaf4a0e325dbafd93fedb9f448264189f6c30c2c830ab293e48a462d5c516ae1",
+      "disposition": "included",
+      "path": "tests/ciqual_fixture_factory.py",
+      "bytes": 7376,
+      "sha256": "eaf4a0e325dbafd93fedb9f448264189f6c30c2c830ab293e48a462d5c516ae1",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "tests/fixtures/ciqual/Table Ciqual 2025_ENG_2025_11_03.xlsx",
+      "sourceBytes": 2261,
+      "sourceSha256": "555b46416047ce7c37057bcea88beb003b0395aae95a41af9c60b24d75d77d33",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual/Table Ciqual 2025_ENG_2025_11_03.xlsx",
+      "bytes": 2261,
+      "sha256": "555b46416047ce7c37057bcea88beb003b0395aae95a41af9c60b24d75d77d33",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "tests/fixtures/ciqual/alim_2025_11_03.xml",
+      "sourceBytes": 428,
+      "sourceSha256": "9cc203dad64108478783ca35f4fc05b4b61e9d935be5e61880b9c06ac28722a5",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual/alim_2025_11_03.xml",
+      "bytes": 428,
+      "sha256": "9cc203dad64108478783ca35f4fc05b4b61e9d935be5e61880b9c06ac28722a5",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "tests/fixtures/ciqual/ciqual-columns.json",
+      "sourceBytes": 14303,
+      "sourceSha256": "256064ab8ce591bb88b4a76fbb523e0cbc8c770e5a4c3514e4d4df588f0a95ff",
+      "disposition": "included",
+      "path": "tests/fixtures/ciqual/ciqual-columns.json",
+      "bytes": 14303,
+      "sha256": "256064ab8ce591bb88b4a76fbb523e0cbc8c770e5a4c3514e4d4df588f0a95ff",
+      "byteIdentical": true
+    },
+    {
+      "sourcePath": "tests/test_ciqual_adapter.py",
+      "sourceBytes": 26607,
+      "sourceSha256": "1cff87754a732abb9cac7290d9a941b5526e4d0e411b57927b0690ddb7b88cf6",
+      "change": "Only relocate the synthetic fixture helper import and pinned legacy reference directory; test logic unchanged.",
+      "disposition": "included",
+      "path": "tests/test_ciqual_adapter.py",
+      "bytes": 26636,
+      "sha256": "691d80dbd4f3add49c7b463f2fde58fca49ea222f87ad5cc4a09b617a95e7d80",
+      "byteIdentical": false
+    },
+    {
+      "sourcePath": "verification.json",
+      "sourceBytes": 1331,
+      "sourceSha256": "898d6f3bf17bdac7869bd48cc0f158dcc8b6c4dd7147b3a4ef3c23b3859ab554",
+      "disposition": "omitted",
+      "reason": "Standalone development narrative or raw test/verification output replaced by the repository guide and verification summary."
+    }
+  ]
+}

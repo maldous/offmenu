@@ -9,7 +9,7 @@ export function recordPermission(record,{action='display',confirmed=false,policy
  if(SENSITIVE_KINDS.has(record.kind))return deny('Use the separately consented private health/history workflow');
  for(const key of ['retainUntil','accessExpiresAt'])if(p[key]&&(!Number.isFinite(Date.parse(p[key]))||Date.parse(p[key])<=now))return deny('Record retention or access expired');
  if(['withdrawn','quarantined'].includes(p.status))return deny('Source record unavailable');
- if(p.dependencies?.some(d=>d.allowed!==true||d.retainUntil&&Date.parse(d.retainUntil)<=now))return deny('An input dependency does not permit reuse');
+ if(p.dependencies?.some(d=>d.allowed!==true||d.retainUntil&&(!Number.isFinite(Date.parse(d.retainUntil))||Date.parse(d.retainUntil)<=now)))return deny('An input dependency does not permit reuse');
  if(policy){
   if(policy.active!==true||policy.expiresAt&&(!Number.isFinite(Date.parse(policy.expiresAt))||Date.parse(policy.expiresAt)<=now))return deny('Source policy inactive or expired');
   if(!policy.actions?.includes(action)||!policy.audiences?.includes('private'))return deny('Source policy does not permit this private action');

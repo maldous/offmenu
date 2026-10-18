@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2799,
+  "messages": 2994,
   "arabicTranslated": 376,
-  "arabicMissing": 2423,
+  "arabicMissing": 2618,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -32,6 +32,7 @@
     },
     " AND ": {
       "sources": [
+        "cloud/cache-invalidation-owner29.mjs",
         "cloud/care-cases.mjs"
       ],
       "arabic": false
@@ -370,6 +371,7 @@
     },
     "../public/evidence-model.js": {
       "sources": [
+        "cloud/business-identity-owner27.mjs",
         "cloud/catalogue.mjs",
         "cloud/enrichment.mjs"
       ],
@@ -498,6 +500,18 @@
       ],
       "arabic": false
     },
+    "./auth-principal.mjs": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "./auth.mjs": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
     "./care-cases.mjs": {
       "sources": [
         "cloud/admin-mcp.mjs",
@@ -617,6 +631,14 @@
     "./enrichment.mjs": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "./evidence-model.js": {
+      "sources": [
+        "public/business-evidence-model.js",
+        "public/package-restriction-evidence.js",
+        "public/recall-scope-model.js"
       ],
       "arabic": false
     },
@@ -762,7 +784,8 @@
         "public/household-model.js",
         "public/journey-ui.js",
         "public/menu-model.js",
-        "public/recipe-review.js"
+        "public/recipe-review.js",
+        "public/stock-transition-model.js"
       ],
       "arabic": false
     },
@@ -914,7 +937,6 @@
     },
     "./state.mjs": {
       "sources": [
-        "cloud/handler.mjs",
         "cloud/kitchens.mjs",
         "cloud/meal-preference-owner20.mjs",
         "cloud/personal-ai.mjs",
@@ -1570,6 +1592,18 @@
       ],
       "arabic": false
     },
+    "Accessor/sparse input rejected": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Accessors, symbols and hidden fields are not plain JSON data": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
     "Account ": {
       "sources": [
         "public/sharing-ui.js"
@@ -1590,6 +1624,25 @@
       ],
       "arabic": false
     },
+    "Account scope mismatch": {
+      "sources": [
+        "public/plan-template-model.js",
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Account scope mismatch.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
+    "Account selection binding unavailable": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Account service is required.": {
       "sources": [
         "cloud/service-config.mjs"
@@ -1603,9 +1656,33 @@
       ],
       "arabic": true
     },
+    "Account unavailable": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Account/session consent required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
     "Acquisition and modelled baskets are not observed consumption. Unknown amounts are not zero.": {
       "sources": [
         "public/basket-model.js"
+      ],
+      "arabic": false
+    },
+    "Activity not found": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Activity provenance required": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -1618,6 +1695,12 @@
     "Actual cooking lots · homogeneous-dish estimate": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Actual package, lot or menu binding required": {
+      "sources": [
+        "public/package-restriction-evidence.js"
       ],
       "arabic": false
     },
@@ -2011,6 +2094,18 @@
       ],
       "arabic": false
     },
+    "Ambiguous alias or conflicting canonical role": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Ambiguous civil time requires earlier or later": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Amount": {
       "sources": [
         "public/documents.js",
@@ -2095,6 +2190,12 @@
     "An analytics consent purpose must be configured.": {
       "sources": [
         "cloud/service-config.mjs"
+      ],
+      "arabic": false
+    },
+    "An explicit session expiry and renewal policy is required.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -2262,6 +2363,12 @@
       ],
       "arabic": false
     },
+    "Assertion state is not explicitly admitted active": {
+      "sources": [
+        "public/business-evidence-model.js"
+      ],
+      "arabic": false
+    },
     "Assign to me": {
       "sources": [
         "public/care-ui.js"
@@ -2316,9 +2423,21 @@
       ],
       "arabic": false
     },
+    "Authentication is temporarily unavailable.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
     "Authoritative observation read context unavailable.": {
       "sources": [
         "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Authoritative permission callback required": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -2570,6 +2689,24 @@
       ],
       "arabic": false
     },
+    "Bounded observation array required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Bounded ordinary array required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Bounded projection, time and explicit jurisdiction/market required": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
     "Bowl, top shelf, door…": {
       "sources": [
         "public/index.html"
@@ -2587,7 +2724,8 @@
         "cloud/state.mjs",
         "public/index.html",
         "public/insights-model.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/plan-template-model.js"
       ],
       "arabic": true
     },
@@ -3117,6 +3255,12 @@
       ],
       "arabic": false
     },
+    "Choose a new week": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
     "Choose a person to compare a daily goal.": {
       "sources": [
         "public/insights-ui.js"
@@ -3269,6 +3413,18 @@
     "Choose your own check interval from the label and storage conditions.": {
       "sources": [
         "public/freshness-ui.js"
+      ],
+      "arabic": false
+    },
+    "Civil date outside supported years 1900..9998": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Civil time does not exist in this time zone": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -3757,6 +3913,12 @@
       ],
       "arabic": false
     },
+    "Confirm a new supported transition.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "Confirm a valid email request before it is sent.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -3838,6 +4000,12 @@
     "Confirmed cleanup receipts record removal from inventory. Estimated freshness reminders prompt inspection; they are not use-by dates or safety assessments.": {
       "sources": [
         "public/documents.js"
+      ],
+      "arabic": false
+    },
+    "Confirmed receipt/source binding required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
       ],
       "arabic": false
     },
@@ -3939,6 +4107,18 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Context choice not authorized": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Context exceeds bounds": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
     },
     "Context report": {
       "sources": [
@@ -4271,6 +4451,24 @@
       ],
       "arabic": true
     },
+    "Current preference provenance required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Current private source rights required": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Current receipt review consent required": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "Current scoped evidence not established": {
       "sources": [
         "public/evidence-model.js"
@@ -4335,6 +4533,12 @@
     "Daily nutrient bars, with values listed beside each bar": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Daily recurrence cannot specify weekdays": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -4443,6 +4647,18 @@
       ],
       "arabic": false
     },
+    "Dated cost estimate only. Availability, suitability, rights, consent and purchase authority require separate review.": {
+      "sources": [
+        "public/offer-comparison-model.js"
+      ],
+      "arabic": false
+    },
+    "Dated instant with explicit offset required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Dated observations with currency and location; uneven coverage, no stock guarantee.": {
       "sources": [
         "public/sources.js"
@@ -4464,6 +4680,12 @@
     "Days with records": {
       "sources": [
         "public/insights-ui.js"
+      ],
+      "arabic": false
+    },
+    "Declaration kind cannot change": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -4554,6 +4776,24 @@
       ],
       "arabic": true
     },
+    "Dense ordinary array required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Descriptive analytical reference coverage only. No ranking, medical selection, safety or adequacy certification.": {
+      "sources": [
+        "cloud/named-reference-owner22.mjs"
+      ],
+      "arabic": false
+    },
+    "Descriptive planned intervals only; no actual exercise, energy, prescription or clinical inference": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Designed to travel.": {
       "sources": [
         "public/index.html"
@@ -4616,7 +4856,8 @@
         "public/index.html",
         "public/insights-model.js",
         "public/insights-ui.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/plan-template-model.js"
       ],
       "arabic": true
     },
@@ -4832,6 +5073,12 @@
       ],
       "arabic": true
     },
+    "Duplicate activity ID": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Duplicate checkout items.": {
       "sources": [
         "public/checkout-model.js"
@@ -4841,6 +5088,12 @@
     "Duplicate cooking batches.": {
       "sources": [
         "public/cooking-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate declaration": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -4868,6 +5121,12 @@
       ],
       "arabic": false
     },
+    "Duplicate observation ID": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
     "Duplicate observation identity.": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -4877,6 +5136,18 @@
     "Duplicate or missing ": {
       "sources": [
         "public/common-corpus-locale.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate recurrence weekday": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate reviewed line ID": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -4892,9 +5163,27 @@
       ],
       "arabic": false
     },
+    "Duplicate source line ID": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "Duplicate source record ID": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Duplicate waste receipt IDs.": {
+      "sources": [
+        "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Duration must be positive minutes at millisecond precision, at most seven days, or unknown": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -4920,6 +5209,12 @@
     "EXISTS(SELECT 1 FROM owner04_d1_operations o WHERE o.session_id=? AND o.subject=? AND o.realm=? AND o.epoch=? AND o.operation_id=? AND o.commit_token=? AND json_extract(o.result_json,'$.status')='committed')": {
       "sources": [
         "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
+    "EXISTS(SELECT 1 FROM source_policies WHERE id=? AND document=? AND revision=? AND active=1)": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs"
       ],
       "arabic": false
     },
@@ -5011,6 +5306,18 @@
     "Email a copy to my verified account address.": {
       "sources": [
         "public/services-ui.js"
+      ],
+      "arabic": false
+    },
+    "Email authentication requires an explicit enabled setting.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "Email authentication requires verification/reset delivery and an explicit signup policy.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -5258,6 +5565,18 @@
       ],
       "arabic": false
     },
+    "Entry outside source week": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
+    "Envelope exceeds 64 KiB": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs"
+      ],
+      "arabic": false
+    },
     "Envelope must be JSON within 64 KiB": {
       "sources": [
         "cloud/health-import-owner28.mjs"
@@ -5386,6 +5705,18 @@
       ],
       "arabic": false
     },
+    "Exact current source identities unresolved": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact observation timestamp required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
     "Example": {
       "sources": [
         "cloud/provider-data.mjs"
@@ -5436,6 +5767,42 @@
       ],
       "arabic": true
     },
+    "Expected 1–200 OCR lines": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected a dense ordinary array": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected a record": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected acyclic plain JSON data": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected at most 32 explicit terms of 1–100 characters": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected plain JSON data": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
     "Expiry": {
       "sources": [
         "public/app.js",
@@ -5462,15 +5829,39 @@
       ],
       "arabic": false
     },
+    "Explicit account, calendar date and currency required": {
+      "sources": [
+        "public/offer-comparison-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit activity-schedule consent required": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit basis amount, g/ml, preparation state, units and source/derived method; null is unknown.": {
       "sources": [
         "cloud/provider-data.mjs"
       ],
       "arabic": false
     },
+    "Explicit bounded text required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit calendar interval required": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit clock, account, consent and market required": {
+      "sources": [
+        "public/package-restriction-evidence.js"
       ],
       "arabic": false
     },
@@ -5483,6 +5874,36 @@
     "Explicit confirmation of the current scoped proposal required": {
       "sources": [
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit decision for every source line required": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit declaration kind/status required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit destination container required.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit home scope required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit image consent and bounded retention required": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -5510,9 +5931,34 @@
       ],
       "arabic": false
     },
+    "Explicit qualifiers required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Explicit realm and bounded server TTL required": {
       "sources": [
         "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
+    "Explicit receipt review required": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Explicit rule and at most 200 assertions required": {
+      "sources": [
+        "public/package-restriction-evidence.js"
+      ],
+      "arabic": false
+    },
+    "Explicit scope required": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs",
+        "public/meal-preference-model.js"
       ],
       "arabic": false
     },
@@ -6403,6 +6849,12 @@
       ],
       "arabic": true
     },
+    "Home scopes belong to carer declarations": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Household": {
       "sources": [
         "public/documents.js"
@@ -6609,6 +7061,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Identity mapping not current/admitted/typed": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
     },
     "Illustration of the offmenu home checkout": {
       "sources": [
@@ -6937,6 +7395,12 @@
       ],
       "arabic": false
     },
+    "Invalid DST disambiguation": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid HTTP bridge configuration": {
       "sources": [
         "cloud/queue-state-bridge-owner16.mjs"
@@ -6952,6 +7416,12 @@
     "Invalid JSON tree": {
       "sources": [
         "cloud/queue-state-bridge-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid OCR confidence": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -7015,6 +7485,12 @@
       ],
       "arabic": false
     },
+    "Invalid calendar instant": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid care case.": {
       "sources": [
         "cloud/care-cases.mjs"
@@ -7039,9 +7515,21 @@
       ],
       "arabic": false
     },
+    "Invalid civil date": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid cleanup history.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid clock or retention deadline": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -7129,6 +7617,12 @@
     "Invalid data display language.": {
       "sources": [
         "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid date": {
+      "sources": [
+        "public/plan-template-model.js"
       ],
       "arabic": false
     },
@@ -7350,9 +7844,39 @@
       ],
       "arabic": false
     },
+    "Invalid observation timestamp.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid observed unit": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid or decreasing clock": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid or duplicate lot identity.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid or expired token": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid or full transition journal.": {
+      "sources": [
+        "public/stock-transition-model.js"
       ],
       "arabic": false
     },
@@ -7464,6 +7988,30 @@
       ],
       "arabic": false
     },
+    "Invalid quantity": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid reason": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid receipt ID.": {
+      "sources": [
+        "cloud/state.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid receipt ledger": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid recipe file": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -7512,6 +8060,12 @@
       ],
       "arabic": false
     },
+    "Invalid reset fields": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid resource": {
       "sources": [
         "cloud/queue-state-bridge-owner16.mjs"
@@ -7549,9 +8103,21 @@
       ],
       "arabic": false
     },
+    "Invalid schedule transition": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid scope.": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid selection": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
       ],
       "arabic": false
     },
@@ -7634,6 +8200,12 @@
       ],
       "arabic": false
     },
+    "Invalid spice preference": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid spice preference.": {
       "sources": [
         "cloud/meal-preference-owner20.mjs"
@@ -7652,10 +8224,40 @@
       ],
       "arabic": false
     },
+    "Invalid target IDs": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid template entry": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid template size": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
+    "Invalid time zone": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Invalid tool arguments.": {
       "sources": [
         "cloud/admin-mcp.mjs",
         "cloud/personal-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "Invalid transition journal.": {
+      "sources": [
+        "public/stock-transition-model.js"
       ],
       "arabic": false
     },
@@ -7977,6 +8579,18 @@
       ],
       "arabic": false
     },
+    "Legacy authentication is not available in this authentication mode.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
+    "Legacy authentication verifier is required.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
+      ],
+      "arabic": false
+    },
     "Let’s see what’s hiding.": {
       "sources": [
         "public/index.html"
@@ -8289,7 +8903,8 @@
         "cloud/state.mjs",
         "public/index.html",
         "public/insights-model.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/plan-template-model.js"
       ],
       "arabic": true
     },
@@ -8487,6 +9102,12 @@
       ],
       "arabic": false
     },
+    "Measured quantity/unit required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
     "Measured yield required": {
       "sources": [
         "public/basket-model.js"
@@ -8520,6 +9141,12 @@
     "Member": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Member mismatch": {
+      "sources": [
+        "public/meal-preference-model.js"
       ],
       "arabic": false
     },
@@ -9071,6 +9698,12 @@
       ],
       "arabic": false
     },
+    "No recorded frozen state; review source history.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "No remaining matching inventory item in this source location. Nothing removed.": {
       "sources": [
         "public/app.js",
@@ -9377,9 +10010,21 @@
       ],
       "arabic": false
     },
+    "Observation clock required.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "Observation date": {
       "sources": [
         "public/data-ui.js"
+      ],
+      "arabic": false
+    },
+    "Observation exceeds confirmed discard": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
       ],
       "arabic": false
     },
@@ -9395,6 +10040,24 @@
       ],
       "arabic": false
     },
+    "Observation identity mismatch": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Observation precedes recorded history.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
+    "Observation provenance required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
     "Observation scope/provenance incomplete.": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -9404,6 +10067,30 @@
     "Observation time is invalid.": {
       "sources": [
         "public/integration-owner03.mjs"
+      ],
+      "arabic": false
+    },
+    "Occurrence bound exceeded; narrow the range": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires a native D1 binding.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires a separately provisioned secret of at least 32 characters.": {
+      "sources": [
+        "cloud/auth.mjs"
+      ],
+      "arabic": false
+    },
+    "OffMenu authentication requires an explicit HTTPS origin.": {
+      "sources": [
+        "cloud/auth.mjs"
       ],
       "arabic": false
     },
@@ -9512,6 +10199,12 @@
       ],
       "arabic": false
     },
+    "Offset does not match declared time zone": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Oh, so that’s what’s": {
       "sources": [
         "public/index.html",
@@ -9552,6 +10245,24 @@
     "Only controls reported by this camera are shown. Preview mirroring and rotation do not change barcode decoding.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Only explicit daily/weekly recurrence supported": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Only explicit taste fields may change": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Only lot and preference IDs allowed": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
       ],
       "arabic": false
     },
@@ -9785,6 +10496,18 @@
       ],
       "arabic": false
     },
+    "Ordinary JSON required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Ordinary object required": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Origin": {
       "sources": [
         "cloud/admin-operations.mjs",
@@ -9797,6 +10520,7 @@
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
+        "cloud/lot-restriction-owner28.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
@@ -9818,6 +10542,7 @@
         "cloud/handler.mjs",
         "cloud/integrations.mjs",
         "cloud/kitchens.mjs",
+        "cloud/lot-restriction-owner28.mjs",
         "cloud/personal-ai.mjs",
         "cloud/provider-data.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
@@ -9892,6 +10617,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "POST required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
     },
     "PUBLIC KNOWLEDGE. PERSONAL CONNECTIONS.": {
       "sources": [
@@ -10191,6 +10922,12 @@
       ],
       "arabic": false
     },
+    "Physical envelope exceeds 64 KiB": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs"
+      ],
+      "arabic": false
+    },
     "Pick your pantry, fridge or freezer. Put its contents on the bench so you can see what’s there.": {
       "sources": [
         "public/index.html",
@@ -10298,6 +11035,12 @@
     "Potassium": {
       "sources": [
         "public/menu-model.js"
+      ],
+      "arabic": false
+    },
+    "Preference scope/version mismatch": {
+      "sources": [
+        "public/meal-preference-model.js"
       ],
       "arabic": false
     },
@@ -10617,6 +11360,12 @@
       ],
       "arabic": false
     },
+    "Provide 1–100 selected lines and at most 100 store fees": {
+      "sources": [
+        "public/offer-comparison-model.js"
+      ],
+      "arabic": false
+    },
     "Provide a bounded release reference.": {
       "sources": [
         "public/care-ui.js"
@@ -10927,6 +11676,12 @@
     "Quantity not specified": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "Quantity total overflow": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
       ],
       "arabic": false
     },
@@ -11291,6 +12046,12 @@
       ],
       "arabic": true
     },
+    "Receipt retention expired": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "Recent recipes": {
       "sources": [
         "public/recipe-community-ui.js"
@@ -11532,6 +12293,12 @@
       ],
       "arabic": false
     },
+    "Recurrence end precedes start": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Redirect destination: {v0}": {
       "sources": [
         "public/access-ui.js"
@@ -11566,6 +12333,18 @@
     "Registered branded-product and GTIN data. User-owned approved credentials; adapter pending.": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Relationship not current/admitted or endpoints unresolved": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
+      ],
+      "arabic": false
+    },
+    "Relationship role mismatch": {
+      "sources": [
+        "cloud/business-identity-owner27.mjs"
       ],
       "arabic": false
     },
@@ -11723,6 +12502,12 @@
       ],
       "arabic": false
     },
+    "Replacement ID mismatch": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Reply": {
       "sources": [
         "cloud/care-community.mjs",
@@ -11787,6 +12572,12 @@
     "Request unavailable.": {
       "sources": [
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "Required gates": {
+      "sources": [
+        "cloud/cache-invalidation-owner29.mjs"
       ],
       "arabic": false
     },
@@ -11950,6 +12741,12 @@
       ],
       "arabic": false
     },
+    "Review every source line": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "Review for my kitchen": {
       "sources": [
         "public/index.html",
@@ -12074,6 +12871,12 @@
       ],
       "arabic": true
     },
+    "Reviewed source week required": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
     "Reviewed unit": {
       "sources": [
         "public/recipe-library-ui.js"
@@ -12083,6 +12886,18 @@
     "Reviewed {v0} public contributions: {v1}.": {
       "sources": [
         "public/community-ai-ui.js"
+      ],
+      "arabic": false
+    },
+    "Revision conflict": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Revision required": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
       ],
       "arabic": false
     },
@@ -12426,6 +13241,12 @@
       ],
       "arabic": false
     },
+    "Saved meal preferences could not be validated. Your cloud copy is unchanged; keep your local copy and contact support.": {
+      "sources": [
+        "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
     "Saved on this device": {
       "sources": [
         "public/index.html",
@@ -12555,6 +13376,12 @@
       ],
       "arabic": false
     },
+    "Schedule owner mismatch": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Schema, account or revision mismatch": {
       "sources": [
         "cloud/health-import-owner28.mjs"
@@ -12564,6 +13391,18 @@
     "Scope missing": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Scoped restriction decision; no medical or cross-contact guarantee": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Scoped scheme and certifier evidence not established": {
+      "sources": [
+        "public/package-restriction-evidence.js"
       ],
       "arabic": false
     },
@@ -12642,6 +13481,12 @@
       ],
       "arabic": false
     },
+    "Selected carer unavailable for home": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Selected context": {
       "sources": [
         "public/care-ui.js"
@@ -12654,9 +13499,27 @@
       ],
       "arabic": false
     },
+    "Selected home unavailable": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Selected protocol and server transport hooks required": {
       "sources": [
         "cloud/queue-state-entry-owner16.mjs"
+      ],
+      "arabic": false
+    },
+    "Selection required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Selection too large": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
       ],
       "arabic": false
     },
@@ -13142,6 +14005,12 @@
       ],
       "arabic": true
     },
+    "Sign-in required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
     "Signed in as {v0}": {
       "sources": [
         "public/app.js"
@@ -13191,7 +14060,8 @@
         "cloud/state.mjs",
         "public/index.html",
         "public/insights-model.js",
-        "public/locales/ar.js"
+        "public/locales/ar.js",
+        "public/plan-template-model.js"
       ],
       "arabic": true
     },
@@ -13388,6 +14258,12 @@
       ],
       "arabic": false
     },
+    "Source, scope, rights revision and valid temporal evidence required": {
+      "sources": [
+        "public/business-evidence-model.js"
+      ],
+      "arabic": false
+    },
     "Source-specific identity": {
       "sources": [
         "public/common-corpus-locale.js",
@@ -13455,6 +14331,12 @@
       ],
       "arabic": false
     },
+    "Stale schedule revision": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Start a discussion": {
       "sources": [
         "public/care-ui.js"
@@ -13464,6 +14346,12 @@
     "Start cleanup for this location": {
       "sources": [
         "public/freshness-ui.js"
+      ],
+      "arabic": false
+    },
+    "Start date must be a selected weekday": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -13506,6 +14394,12 @@
       ],
       "arabic": false
     },
+    "Stock or journal changed; review again.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "Stock removal is not a measured-waste or cost observation.": {
       "sources": [
         "public/integration-owner03.mjs"
@@ -13531,6 +14425,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Storage scope mismatch": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
     },
     "Storage unavailable": {
       "sources": [
@@ -13787,6 +14687,12 @@
     "Target": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Target ID collision": {
+      "sources": [
+        "public/plan-template-model.js"
       ],
       "arabic": false
     },
@@ -14094,6 +15000,12 @@
       ],
       "arabic": false
     },
+    "Transition already recorded.": {
+      "sources": [
+        "public/stock-transition-model.js"
+      ],
+      "arabic": false
+    },
     "Translation is stale; showing the original source text.": {
       "sources": [
         "public/data-ui.js",
@@ -14124,6 +15036,12 @@
     "Trusted administrator required.": {
       "sources": [
         "cloud/recipe-community.mjs"
+      ],
+      "arabic": false
+    },
+    "Trusted dependencies required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
       ],
       "arabic": false
     },
@@ -14310,6 +15228,12 @@
       ],
       "arabic": false
     },
+    "Unexpected preference field": {
+      "sources": [
+        "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
     "Unified offmenu JSON, USDA JSON, Open Food Facts product JSON, or mapped CSV. Files are reviewed locally before saving privately. Source licences and country context are retained.": {
       "sources": [
         "public/index.html"
@@ -14325,6 +15249,30 @@
     "Unified schema & conventions ↗": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Unique need ids required; aggregate the same need before quoting": {
+      "sources": [
+        "public/offer-comparison-model.js"
+      ],
+      "arabic": false
+    },
+    "Unique non-personal assertion and exact subject ID required": {
+      "sources": [
+        "public/business-evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "Unique non-personal typed identity required": {
+      "sources": [
+        "public/business-evidence-model.js"
+      ],
+      "arabic": false
+    },
+    "Unique store fee ids required": {
+      "sources": [
+        "public/offer-comparison-model.js"
       ],
       "arabic": false
     },
@@ -14365,9 +15313,27 @@
       ],
       "arabic": false
     },
+    "Unknown carer home scope": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Unknown catalogue kind": {
       "sources": [
         "cloud/catalogue.mjs"
+      ],
+      "arabic": false
+    },
+    "Unknown context action": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Unknown declaration": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -14405,6 +15371,12 @@
     "Unknown source": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Unknown time zone": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -14459,6 +15431,12 @@
       ],
       "arabic": false
     },
+    "Unsafe object property": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Unsaved local changes retained. Export or save before loading cloud data.": {
       "sources": [
         "public/app.js"
@@ -14469,6 +15447,12 @@
       "sources": [
         "public/app.js",
         "public/checkout-model.js"
+      ],
+      "arabic": false
+    },
+    "Unsupported OffMenu authentication mode.": {
+      "sources": [
+        "cloud/auth-runtime.mjs"
       ],
       "arabic": false
     },
@@ -14484,9 +15468,21 @@
       ],
       "arabic": false
     },
+    "Unsupported context fields": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Unsupported curation origin": {
       "sources": [
         "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "Unsupported predicate or incompatible typed value": {
+      "sources": [
+        "public/business-evidence-model.js"
       ],
       "arabic": false
     },
@@ -14574,6 +15570,18 @@
       ],
       "arabic": false
     },
+    "Use a named time zone": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Use a positive civil range of at most 366 days": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "Use a small JSON request.": {
       "sources": [
         "cloud/service-support.mjs"
@@ -14583,6 +15591,18 @@
     "Use an API credential issued to you for this service. Retailer account passwords belong in the retailer’s own login page.": {
       "sources": [
         "public/index.html"
+      ],
+      "arabic": false
+    },
+    "Use an explicit civil date YYYY-MM-DD": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Use an explicit civil time HH:mm": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -14763,6 +15783,18 @@
       ],
       "arabic": true
     },
+    "Verified actual lot/product identity required": {
+      "sources": [
+        "cloud/lot-restriction-owner28.mjs"
+      ],
+      "arabic": false
+    },
+    "Verified exact identities and evaluation time required": {
+      "sources": [
+        "public/business-evidence-model.js"
+      ],
+      "arabic": false
+    },
     "Verify access and reuse terms": {
       "sources": [
         "public/sources.js"
@@ -14778,6 +15810,12 @@
     "Versioned personal records": {
       "sources": [
         "cloud/integrations.mjs"
+      ],
+      "arabic": false
+    },
+    "Versioned same-account context required": {
+      "sources": [
+        "public/meal-context-model.js"
       ],
       "arabic": false
     },
@@ -14861,6 +15899,12 @@
       ],
       "arabic": false
     },
+    "Week must start Monday": {
+      "sources": [
+        "public/plan-template-model.js"
+      ],
+      "arabic": false
+    },
     "Week of": {
       "sources": [
         "public/documents.js"
@@ -14872,6 +15916,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Weekly recurrence needs ISO weekdays": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
     },
     "Weekly totals · {v0} to {v1}": {
       "sources": [
@@ -15013,6 +16063,18 @@
       ],
       "arabic": false
     },
+    "Window end must follow start": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
+    "Windows belong to fasting declarations": {
+      "sources": [
+        "public/meal-context-model.js"
+      ],
+      "arabic": false
+    },
     "Withdraw": {
       "sources": [
         "public/care-ui.js"
@@ -15034,6 +16096,12 @@
     "Write a reply first.": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Write conflict or authorization revoked": {
+      "sources": [
+        "cloud/waste-observation-owner24.mjs"
       ],
       "arabic": false
     },
@@ -15398,6 +16466,30 @@
     "a[href^=\"/data-workspace.html\"]": {
       "sources": [
         "public/app.js"
+      ],
+      "arabic": false
+    },
+    "activity ID": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "activity entry": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "activity label": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "activity provenance": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -15801,6 +16893,12 @@
       ],
       "arabic": false
     },
+    "content digest": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "contribution not admitted": {
       "sources": [
         "public/evidence-model.js"
@@ -16036,6 +17134,12 @@
       ],
       "arabic": false
     },
+    "expansion range": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "feedback board": {
       "sources": [
         "cloud/service-config.mjs"
@@ -16144,8 +17248,10 @@
     },
     "https:": {
       "sources": [
+        "cloud/auth.mjs",
         "cloud/community-ai.mjs",
         "cloud/integrations.mjs",
+        "cloud/named-reference-owner22.mjs",
         "cloud/queue-state-bridge-owner16.mjs",
         "cloud/service-config.mjs",
         "cloud/session-state-d1-owner04.mjs",
@@ -16181,6 +17287,12 @@
     "id,title,body,revision": {
       "sources": [
         "cloud/community-ai.mjs"
+      ],
+      "arabic": false
+    },
+    "image ID": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -16389,6 +17501,12 @@
       ],
       "arabic": false
     },
+    "occurrence bound": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "offmenu": {
       "sources": [
         "public/documents.js",
@@ -16561,6 +17679,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "owner ID": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
     },
     "owner mismatch": {
       "sources": [
@@ -16764,6 +17888,12 @@
       ],
       "arabic": false
     },
+    "recurrence interval": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "red lentils|red lentil|split red lentils": {
       "sources": [
         "public/ingredients.js"
@@ -16803,7 +17933,8 @@
     "review:": {
       "sources": [
         "public/ingredients.js",
-        "public/integrations.js"
+        "public/integrations.js",
+        "public/model.js"
       ],
       "arabic": false
     },
@@ -16840,6 +17971,18 @@
     "scanner.wasm": {
       "sources": [
         "cloud/handler.mjs"
+      ],
+      "arabic": false
+    },
+    "schedule entries (at most 500)": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "schedule state": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -16897,6 +18040,12 @@
       ],
       "arabic": false
     },
+    "source line ID": {
+      "sources": [
+        "public/receipt-review-model.js"
+      ],
+      "arabic": false
+    },
     "source policy expired": {
       "sources": [
         "public/evidence-model.js"
@@ -16911,7 +18060,14 @@
     },
     "source record ID": {
       "sources": [
+        "public/activity-schedule-model.js",
         "public/shopping-handoff-model.js"
+      ],
+      "arabic": false
+    },
+    "source text": {
+      "sources": [
+        "public/receipt-review-model.js"
       ],
       "arabic": false
     },
@@ -16966,6 +18122,12 @@
     "state:read-write": {
       "sources": [
         "cloud/session-state-d1-owner04.mjs"
+      ],
+      "arabic": false
+    },
+    "subject ID": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -17043,6 +18205,12 @@
       ],
       "arabic": false
     },
+    "time zone": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "tofu|bean curd": {
       "sources": [
         "public/ingredients.js"
@@ -17052,6 +18220,12 @@
     "topic-reply:": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "transition context": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },
@@ -17085,6 +18259,12 @@
       ],
       "arabic": false
     },
+    "user intensity label": {
+      "sources": [
+        "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
     "user-contributed promotion disabled": {
       "sources": [
         "cloud/admin-operations.mjs"
@@ -17100,6 +18280,12 @@
     "water|tap water": {
       "sources": [
         "public/ingredients.js"
+      ],
+      "arabic": false
+    },
+    "weekly weekdays": {
+      "sources": [
+        "public/activity-schedule-model.js"
       ],
       "arabic": false
     },

@@ -1,0 +1,42 @@
+{
+  "morgan-batches-20261017/current-checkpoint.json": {
+    "bytes": 8163,
+    "gitBlob": "f8e0dcb874290eab15efc2292b3aea4509f613ac",
+    "sha256": "330f6b5c1c7c7e6ef29472c38ad39110b54147a755b82120782c2c2df42092e7"
+  },
+  "morgan-batches-20261017/transport-checkpoint-current.json": {
+    "bytes": 1043,
+    "gitBlob": "371a24521c12a4b049de476fc099801bdf58b720",
+    "sha256": "7528a43cc703cf4c3ac7879d85e45a042e87d94b3f90af09bb63ebc6f575d9e8"
+  },
+  "operational-ledger/authority.json": {
+    "bytes": 583,
+    "gitBlob": "9dc8327ac792cbbd73c766a93549c319987735c5",
+    "sha256": "bdd835b7c9c8071fe6c6168e546585c7d6bfed72ffc194a2a7d79ff708bdb7b4"
+  },
+  "operational-ledger/base-initial-copy.json": {
+    "bytes": 96358,
+    "gitBlob": "f8f58ff354750faf598d6c2fde0ccf8e91307173",
+    "sha256": "5be4d6decc6191b7f4608b92637c3f52f08cdf2a1a5109ce1a6ac7f211a0f2f3"
+  },
+  "operational-ledger/events.jsonl": {
+    "bytes": 9647254,
+    "gitBlob": "80cac7cac22bb9689312615fdf20f4f5a41e6b64",
+    "sha256": "227231014083074bf3b61b8d02b889e9c7576e359d9ed94e682433316bd8d071"
+  },
+  "operational-ledger/handover.json": {
+    "bytes": 1594,
+    "gitBlob": "eb1a37bbe94b826c5047fd9239b6fa624e7a6b57",
+    "sha256": "cd69b9e14b08a309ec63c31e69af2ad843b3aadfe7458003709f01e8fdc2a541"
+  },
+  "operational-ledger/interim-obligation-index.json": {
+    "bytes": 316718,
+    "gitBlob": "2c6564f1ee88b9cb29a1e2eaa7cbd12316fd9808",
+    "sha256": "f52ce5a9c748a10b5fa3562d03a1dadc8aebaf96eac073b7a800e532b9611d5a"
+  },
+  "operational-ledger/management-summary.json": {
+    "bytes": 3282752,
+    "gitBlob": "577ffcc448672c8de789a17f96a829338f787bfe",
+    "sha256": "40014e707e50501103f269e32eb0d5751f2d67b57b49a7a5fbe3be0e62480c93"
+  }
+}

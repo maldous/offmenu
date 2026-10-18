@@ -16,3 +16,9 @@ test('unknown scan is accepted as one reviewable package',()=>{const lot=makeAut
 test('held barcode does not repeat; removal re-arms it',()=>{const gate=createScanGate();assert.equal(gate.read('1111',0),true);assert.equal(gate.read('1111',100),false);assert.equal(gate.read('1111',500),false);assert.equal(gate.read('2222',600),true);assert.equal(gate.read('2222',900),false);gate.miss(1800);assert.equal(gate.read('2222',1900),true);});
 test('cloud profile preserves feedback and final receipt',()=>{const s={inventory:[],products:{},recipes:[],selections:[],profile:{country:'AU',units:'metric',servings:2,feedback:{sound:true,vibration:false,screen:true,light:false,speech:false},lastReceipt:{...session(),finishedAt:'2026-10-12T09:01:00Z'}}};assert.equal(validateState(s).profile.feedback.sound,true);assert.equal(validateState(s).profile.lastReceipt.items[0].name,'Rice');});
 test('unreviewed ingredient suggestions do not satisfy recipes',()=>{const lot={ingredient:'rice',quantity:1000,unit:'g',needsReview:true};const r={servings:1,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};assert.equal(matchMeals([lot],[r],1,'2026-10-12')[0].status,'missing');});
+
+test('ambiguous multipacks and unmeasured or zero pack amounts remain reviewable package counts',()=>{
+ for(const product of [{quantity:'6 x 400 g'},{},{quantity:'0 g'},{product_quantity:0,product_quantity_unit:'g'}]){
+  assert.deepEqual(packAmount(product),{quantity:1,unit:'count',amountBasis:'package'});
+ }
+});

@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "scope": "Local publication-candidate validation; no publication or runtime acceptance implied",
+  "checks": [
+    "JSON roundtrip",
+    "All 89 unique historical obligation IDs equal immutable source summary",
+    "All 43 unique bounded item IDs equal immutable source summary",
+    "Historical states, owners, IDs, event identifiers, source pointers and result hashes preserved",
+    "40 private filesystem locator fields sanitized with immutable source provenance retained",
+    "Unique existing lane IDs; no duplicate requirements created",
+    "Latest survey004 terminal incomplete distinguished from hosted publisher success",
+    "Verified source/control, run/artifact and automatic-cycle links retained",
+    "Existing supervisor guidance updated for coordinator-only role",
+    "Honest seven-total capacity blocker and queued UI lane",
+    "No GitHub or Foo writes"
+  ],
+  "files": {
+    "docs/operations/morgan-delivery-ledger.json": "7b5fca3db18759594063fac667e2cc702d19bacb92768b34407659902471a0ea",
+    "docs/operations/morgan-historical-reference-catalog.json": "b750b2791f0f153f2b40bb1a85898a35069f41252aec0ede78283e98abd8f903",
+    "README.md": "59ef2011501ef0ddd17d222390d5521579c99667593b02a457b5a08280836d96"
+  },
+  "remainingLimitations": [
+    "Whole-requirement semantic projection pending",
+    "Current active-work statuses are coordinator-confirmed, not completion evidence",
+    "Root publication and immutable readback pending",
+    "Some historical provenance documents have hashes but no separately published manifest URL"
+  ]
+}

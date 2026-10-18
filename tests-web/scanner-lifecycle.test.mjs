@@ -50,3 +50,28 @@ test('new devices use front bench mode and saved camera choice is retained',asyn
  scanner=setupScanner({canScan:()=>true,onCode(){},onStream(){}});await scanner.start();
  assert.equal(e.$('scanner-mode').value,'stand');assert.equal(constraints[1].video.facingMode.ideal,'environment');scanner.stop();
 });
+
+test('denied checkout permission opens neither camera nor photo decoder',async()=>{
+ let requests=0,accepted=0;const e=environment(async()=>{requests++;return camera();});
+ const scanner=setupScanner({canScan:()=>false,onCode(){accepted++;},onStream(){}});
+ await scanner.start();e.$('scanner-photo').files=[{size:100}];await e.$('scanner-photo').onchange();
+ assert.equal(requests,0);assert.equal(accepted,0);assert.equal(e.$('scanner-photo').value,'');
+});
+
+test('explicit preference storage is isolated from global storage and retains current localization',()=>{
+ const e=environment(async()=>camera());const writes=[];
+ const storage={getItem:key=>{assert.equal(key,'offmenu-scanner-v2');return JSON.stringify({mode:'stand',camera:'environment',mirror:false});},setItem:(...args)=>writes.push(args)};
+ Object.defineProperty(globalThis,'localStorage',{configurable:true,get(){throw Error('Global storage denied');}});
+ try{
+ const scanner=setupScanner({canScan:()=>true,onCode(){},onStream(){},storage});
+ assert.equal(e.$('scanner-mode').value,'stand');e.$('scanner-mode').value='bench';e.$('scanner-mode').onchange();
+ assert.equal(writes.length,1);assert.equal(JSON.parse(writes[0][1]).camera,'user');scanner.stop();
+ }finally{Object.defineProperty(globalThis,'localStorage',{configurable:true,writable:true,value:{getItem:()=>null,setItem(){}}});}
+});
+test('blocked default storage remains optional and never prevents scanner setup',()=>{
+ const e=environment(async()=>camera());Object.defineProperty(globalThis,'localStorage',{configurable:true,get(){throw Error('Global storage denied');}});
+ try{
+ const scanner=setupScanner({canScan:()=>false,onCode(){},onStream(){}});
+ assert.equal(e.$('scanner-mode').value,'bench');e.$('scanner-mode').onchange();scanner.stop();
+ }finally{Object.defineProperty(globalThis,'localStorage',{configurable:true,writable:true,value:{getItem:()=>null,setItem(){}}});}
+});

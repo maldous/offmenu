@@ -7,7 +7,7 @@ import {normalizeOFF,normalizePrices} from '../public/unified-data.js';
 import {providerDataRoutes} from './provider-data.mjs';
 import {integrationRoutes} from './integrations.mjs';
 import {cleanupAdminMcp} from './admin-mcp.mjs';
-import {validateState} from './state.mjs';
+import {validateAccountMealState,validateStoredAccountMealPreferences} from './meal-preference-owner20.mjs';
 import {serviceRoutes,serviceCSP,serviceHTML} from './service-config.mjs';
 import {serviceSupportRoutes,cleanupServiceRequests} from './service-support.mjs';
 import {diagnosticRoutes,reportDiagnostic,routeGroup} from './service-observability.mjs';
@@ -54,8 +54,8 @@ if(url.pathname==='/api/state'){
  if(!['GET','PUT'].includes(request.method))return reply({error:'Method not allowed'},405);
  if(request.method==='PUT'&&request.headers.get('Origin')!==url.origin)return reply({error:'Origin mismatch'},403);
  const user=await verifiedUser(request);if(!user)return reply({error:'Sign in to access cloud data.'},401);
- if(request.method==='GET'){const row=await env.DB.prepare('SELECT revision,state_json AS data,updated_at FROM user_state WHERE user_id=?').bind(user.id).first();return reply({revision:row?.revision||0,state:row?JSON.parse(row.data):null,updated_at:row?.updated_at||null});}
- let body,state;try{body=await boundedJSON(request);state=validateState(body.state);if(!Number.isSafeInteger(body.revision)||body.revision<0)throw Error('Invalid revision.');}catch(e){return reply({error:e.message},400);}
+ if(request.method==='GET'){const row=await env.DB.prepare('SELECT revision,state_json AS data,updated_at FROM user_state WHERE user_id=?').bind(user.id).first();let state=null;try{if(row)state=validateStoredAccountMealPreferences(JSON.parse(row.data),user.id);}catch{return reply({error:'Saved meal preferences could not be validated. Your cloud copy is unchanged; keep your local copy and contact support.',code:'invalid_saved_meal_preferences'},409);}return reply({revision:row?.revision||0,state,updated_at:row?.updated_at||null});}
+ let body,state;try{body=await boundedJSON(request);state=validateAccountMealState(body.state,user.id);if(!Number.isSafeInteger(body.revision)||body.revision<0)throw Error('Invalid revision.');}catch(e){return reply({error:e.message},400);}
  const now=new Date().toISOString();const row=body.revision===0?await env.DB.prepare('INSERT INTO user_state(user_id,revision,state_json,updated_at) VALUES(?,1,?,?) ON CONFLICT(user_id) DO NOTHING RETURNING revision').bind(user.id,JSON.stringify(state),now).first():await env.DB.prepare('UPDATE user_state SET revision=revision+1,state_json=?,updated_at=? WHERE user_id=? AND revision=? RETURNING revision').bind(JSON.stringify(state),now,user.id,body.revision).first();
  if(!row)return reply({error:'A newer cloud save exists. Load it before saving; export your local copy first.'},409);return reply({revision:row.revision,updated_at:now});
 }

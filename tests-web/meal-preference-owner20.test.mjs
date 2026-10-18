@@ -10,7 +10,7 @@ const context = {accountId: 'account-a', memberId: 'sam', consent: true};
 const pref = () => ({version: 1, scope: {accountId: 'account-a', memberId: 'sam'}, likes: ['rice'], textures: ['Crisp'], spice: null});
 const state = () => ({inventory: [], products: {}, recipes: [], selections: [], profile: {country: 'AU', units: 'metric', servings: 1, members: [{id: 'sam', name: 'Sam', portion: 1, avoid: ['onion'], advisors: ['vegan'], restrictions: [{type: 'allergy', term: 'peanut'}], mealPreferences: pref()}]}});
 
-test('actual /api/state PUT currently drops envelope: central owner integration remains required', async () => {
+test('actual /api/state PUT preserves the authenticated account preference envelope', async () => {
   const originalFetch = globalThis.fetch;
   let stored;
   globalThis.fetch = async url => {
@@ -26,7 +26,7 @@ test('actual /api/state PUT currently drops envelope: central owner integration 
   try {
     const response = await handler.fetch(new Request('https://synthetic.invalid/api/state', {method: 'PUT', headers: {Origin: 'https://synthetic.invalid', Authorization: 'Bearer synthetic', 'Content-Type': 'application/json'}, body: JSON.stringify({revision: 0, state: state()})}), {DB});
     assert.equal(response.status, 200);
-    assert.equal(stored.profile.members[0].mealPreferences, undefined);
+    assert.deepEqual(stored.profile.members[0].mealPreferences, pref());
     assert.deepEqual(stored.profile.members[0].restrictions, state().profile.members[0].restrictions);
   } finally { globalThis.fetch = originalFetch; }
 });
@@ -100,4 +100,74 @@ test('private preferences are excluded from actual shared kitchen projection and
   const account = validateAccountMealState(state(), 'account-a'), kitchen = kitchenProjection(account);
   assert.equal(kitchen.profile.members, undefined);
   assert.deepEqual(applyKitchen(account, kitchen).profile.members, account.profile.members);
+});
+
+async function accountRequest({method='PUT', input=state(), revision=0, user='account-a', origin='https://synthetic.invalid', stored, conflict=false, auth=true}={}) {
+  const originalFetch=globalThis.fetch, calls=[];
+  globalThis.fetch=async url=>{assert.equal(url,'https://offmenu-accounts.netlify.app/.netlify/identity/user');return Response.json({id:user});};
+  const DB={prepare(sql){return {bind(...values){calls.push({sql,values});return {first:async()=>{
+    if(sql.startsWith('SELECT'))return stored;
+    return conflict?null:{revision:revision+1};
+  }};}};}};
+  try {
+    const headers={Origin:origin,'Content-Type':'application/json'};
+    if(auth)headers.Authorization='Bearer synthetic';
+    const response=await handler.fetch(new Request('https://synthetic.invalid/api/state',{method,headers,...(method==='PUT'?{body:JSON.stringify({state:input,revision})}:{})}),{DB});
+    return {status:response.status,body:await response.json(),calls};
+  } finally {globalThis.fetch=originalFetch;}
+}
+
+test('actual GET roundtrip retains preferences and all unprojected legacy metadata without writes',async()=>{
+  const input=state();input.extraLegacy={kept:true};input.profile.custom='legacy';
+  input.profile.members[0].custom='also retained';
+  const result=await accountRequest({method:'GET',stored:{revision:4,data:JSON.stringify(input),updated_at:'synthetic'}});
+  assert.equal(result.status,200);assert.deepEqual(result.body.state,input);assert.equal(result.calls.length,1);
+  assert.match(result.calls[0].sql,/SELECT/);assert.deepEqual(result.calls[0].values,['account-a']);
+});
+
+test('actual GET legacy shape remains readable and empty account remains null',async()=>{
+  for(const legacy of [{profile:{custom:'old'}},{profile:{members:[{id:'a'},{id:'a'}]}},null]){
+    const result=await accountRequest({method:'GET',stored:{revision:1,data:JSON.stringify(legacy)}});
+    assert.equal(result.status,200);assert.deepEqual(result.body.state,legacy);
+  }
+  const empty=await accountRequest({method:'GET'});assert.equal(empty.status,200);assert.equal(empty.body.state,null);assert.equal(empty.body.revision,0);
+});
+
+test('actual GET rejects foreign or malformed stored preferences without returning state or rewriting',async()=>{
+  const invalids=[];
+  const foreign=state();foreign.profile.members[0].mealPreferences.scope.accountId='account-b';invalids.push(foreign);
+  const wrongMember=state();wrongMember.profile.members[0].mealPreferences.scope.memberId='other';invalids.push(wrongMember);
+  const malformed=state();malformed.profile.members[0].mealPreferences.spice='safe';invalids.push(malformed);
+  const duplicate=state();duplicate.profile.members.push({...duplicate.profile.members[0]});invalids.push(duplicate);
+  for(const input of invalids){
+    const result=await accountRequest({method:'GET',stored:{revision:3,data:JSON.stringify(input)}});
+    assert.equal(result.status,409);assert.equal(result.body.code,'invalid_saved_meal_preferences');assert.equal(result.body.state,undefined);
+    assert.equal(result.calls.length,1);assert.match(result.calls[0].sql,/SELECT/);
+  }
+});
+
+test('actual PUT refuses foreign account/member, malformed preference and duplicate members before DB',async()=>{
+  const inputs=[];
+  for(const key of ['accountId','memberId']){const input=state();input.profile.members[0].mealPreferences.scope[key]='foreign';inputs.push(input);}
+  const malformed=state();malformed.profile.members[0].mealPreferences.spice='safe';inputs.push(malformed);
+  const duplicate=state();duplicate.profile.members.push(structuredClone(duplicate.profile.members[0]));inputs.push(duplicate);
+  for(const input of inputs){const result=await accountRequest({input});assert.equal(result.status,400);assert.equal(result.calls.length,0);}
+});
+
+test('actual PUT revision update binds authenticated identity and preserves restrictions',async()=>{
+  const result=await accountRequest({revision:3});assert.equal(result.status,200);assert.equal(result.body.revision,4);
+  assert.match(result.calls[0].sql,/UPDATE user_state/);
+  assert.deepEqual(result.calls[0].values.slice(2),['account-a',3]);
+  const saved=JSON.parse(result.calls[0].values[0]);assert.deepEqual(saved.profile.members[0].mealPreferences,pref());
+  assert.deepEqual(saved.profile.members[0].restrictions,state().profile.members[0].restrictions);
+  const legacy=state();delete legacy.profile.members[0].mealPreferences;
+  const legacyResult=await accountRequest({input:legacy});assert.equal(legacyResult.status,200);
+  assert.equal(JSON.parse(legacyResult.calls[0].values[1]).profile.members[0].mealPreferences,undefined);
+});
+
+test('existing authentication, origin, revision and CAS gates stay enforced',async()=>{
+  for(const [options,status] of [[{auth:false},401],[{origin:'https://other.invalid'},403],[{revision:-1},400],[{revision:0.5},400]]){
+    const result=await accountRequest(options);assert.equal(result.status,status);assert.equal(result.calls.length,0);
+  }
+  const conflict=await accountRequest({revision:2,conflict:true});assert.equal(conflict.status,409);
 });

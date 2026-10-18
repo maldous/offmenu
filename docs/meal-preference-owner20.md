@@ -1,7 +1,8 @@
 # Worker 20 — persisted preference consumer proposal
 
-READY FOR MORGAN REVIEW; independent review and central-owner adoption pending.
-No production hook is installed, and this is not shipped household functionality.
+Historical standalone acceptance record follows. See the 18 October 2026
+current-source candidate section below for the bounded private-state integration.
+Independent review and publication are pending; no production deployment occurred.
 
 Branch `feature/meal-preference-consumer-20-20261014` starts at fresh origin/develop
 `908ca373dfc918f2e33fd5e44260879577bed5c5`. Fetch under
@@ -161,3 +162,43 @@ mandatory auto_review; separate approval policy unavailable. No settings changed
 Root must select an existing independent reviewer for the retained helper and this
 exact result commit before adoption. Morgan owns final verdict. Pending owner wiring
 and session qualification are explicit remaining contracts, not completion claims.
+
+
+
+## Current-source private state candidate — 18 October 2026
+
+Baseline: `72a8a74919773238e402b2a6f5a089bf8a4cefa2`. Recovered this document,
+the adapter and focused tests before changes. Retrieved all 46 files in the
+focused test's static relative-import closure at that exact immutable pin.
+The historical eight tests passed, including its negative actual-handler PUT
+probe: HTTP 200 with the preference envelope silently omitted from stored JSON.
+That is now fresh synthetic evidence, not merely a historical reported gap.
+
+The offline candidate selects the existing authenticated `user.id` for private
+PUT validation through `validateAccountMealState`. No identity, session mapping,
+origin, request-size, revision/CAS, database schema or shared kitchen path changes.
+GET uses `validateStoredAccountMealPreferences` as a nonprojecting check: account,
+member, envelope and duplicate identity validation when preferences exist, while
+returning the exact parsed saved state. It does not run the generic state projector,
+normalize legacy metadata or perform writes. A failed stored preference check
+returns 409 with `invalid_saved_meal_preferences`, no state body, and a message to
+keep the local copy/contact support. It does not silently clear or repair data.
+Legacy states without preferences retain their prior read behavior.
+
+Focused actual-handler tests now cover initial and revision-update preservation,
+GET exact metadata retention, legacy/empty reads, foreign account/member and
+malformed envelope rejection, no-write reads, duplicate identities, authentication,
+origin, revision and CAS gates, alongside the retained adapter/allergy/kitchen
+checks. Candidate: 14 passed, zero failed. The same regression suite against the
+unchanged baseline fails four groups and passes ten; the retained historical suite
+passes eight. Test transport and storage are synthetic identity responses and a
+fake DB, never real accounts, provider calls, or persisted user data. These checks
+are wiring evidence, not native D1 durability or provider-authentication evidence.
+
+This candidate does not ship household preference functionality end to end. The
+actual UI editor still reconstructs members and has no adopted taste controls;
+client restore/account-switch custody, explicit consent withdrawal/retention,
+session integration and whole-product acceptance remain separate open work.
+No preference ranking or safety/clinical inference is introduced. Existing
+allergy/restriction behavior remains independently tested. No production action,
+source permission change, migration, or runtime diagnostic occurred.

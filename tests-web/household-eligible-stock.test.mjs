@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {pantryDuration} from '../public/household-model.js';
+const date='2026-10-18';
+const recipe={id:'rice',title:'Synthetic measured rice',servings:1,ingredients:[{ingredient:'rice',quantity:100,unit:'g'}]};
+const lot=(overrides={})=>({ingredient:'rice',quantity:100,unit:'g',...overrides});
+const count=inventory=>pantryDuration([recipe],inventory,[],1,date,1);
+test('expired stock cannot be consumed instead of fresh stock and double-count meals',()=>assert.equal(count([lot({expires:'2026-10-17'}),lot()]).meals,1));
+test('valid fresh stock remains usable; inputs are not mutated',()=>{const input=[lot({quantity:200})];assert.equal(count(input).meals,2);assert.equal(input[0].quantity,200)});
+test('expiry on the selected day remains eligible',()=>assert.equal(count([lot({expires:date})]).meals,1));
+test('review-required and expired-only stock do not produce meals',()=>{assert.equal(count([lot({needsReview:true})]).meals,0);assert.equal(count([lot({expires:'2026-10-17'})]).meals,0)});
+test('nonfinite and string stock quantities cannot promise measured meals',()=>{for(const quantity of [Infinity,NaN,'100'])assert.equal(count([lot({quantity})]).meals,0)});
+test('negative stock does not offset a valid eligible lot',()=>assert.equal(count([lot({quantity:-100}),lot()]).meals,1));

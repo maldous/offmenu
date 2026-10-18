@@ -1,3 +1,4 @@
+import {workerRuntimeBuildOptions} from './worker-build-options.mjs';
 import {execFileSync} from 'node:child_process';
 import {build} from 'esbuild';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
@@ -22,5 +23,5 @@ assets['app.js']=await readFile('dist/app.js','utf8');
 const template=await readFile('cloud/handler.mjs','utf8');
 const release={sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),builtAt:new Date().toISOString()};
 await writeFile('cloud/generated.mjs','const ASSETS='+JSON.stringify(assets)+';\nconst RELEASE='+JSON.stringify(release)+';\n'+template);
-await build({entryPoints:['cloud/generated.mjs'],bundle:true,minify:true,format:'esm',platform:'browser',outfile:'dist/worker.mjs'});
+await build({...workerRuntimeBuildOptions,entryPoints:['cloud/generated.mjs'],bundle:true,minify:true,format:'esm',platform:'browser',outfile:'dist/worker.mjs'});
 console.log('Built worker with '+Object.keys(assets).length+' assets');

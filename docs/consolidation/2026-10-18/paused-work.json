@@ -1,0 +1,496 @@
+{
+  "schemaVersion": "offmenu-paused-work/1",
+  "baseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+  "artifacts": [
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "base-cli.json",
+      "sha256": "e24e0f565d26b9327e70815ace4afaa75296e84ac2fcae9a7a11f2d9f384b550",
+      "bytes": 6572,
+      "gitBlob": "29f58007a6bfb1ce70fa1883a3ed9bc96a6cb6ab",
+      "disposition": "held",
+      "acceptance": "unfinished-not-accepted",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/__init__.py",
+      "sha256": "f3280c1d71bb6ad5879662d0b043e13017140df6e2108412c8370256c0669c8f",
+      "bytes": 65,
+      "gitBlob": "d1812428f5e39d2f7a13d3a88630268f39a89535",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/__init__.py",
+      "sha256": "b23c71cafa64a7689e3df759d19bac61601033a376dc23201f885b6c3fde01c4",
+      "bytes": 108,
+      "gitBlob": "8cc3eff3769c8adc2507843750da258c7d149d4d",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/__main__.py",
+      "sha256": "4be19df109903ad23cd7f32173df31bf9bf717f59d4ac587f57852d2fe828319",
+      "bytes": 6230,
+      "gitBlob": "4ddf72a25cb4cf20af5189b801a9a820d3d26569",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/core.py",
+      "sha256": "e127b0a3111340d27284fb47415e83fad3edff13ed7e79961253eb0bd38f5ce9",
+      "bytes": 27934,
+      "gitBlob": "09bcd8d4c61d76d19b8544dbee36b6f596a97bb2",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/fixture_resources.py",
+      "sha256": "f1df4d02e70e120ff3ec92e46fab888525739c49d7c14a1ab7a0f6ba1dc89354",
+      "bytes": 7333,
+      "gitBlob": "64862432b12acc7d9a90bbcc187e1688f149e76b",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/global_run.py",
+      "sha256": "f8e631aacec9e327f92c38c7ea20bed00cfdc17585333a02e1f21d2f174f2b29",
+      "bytes": 10366,
+      "gitBlob": "f71b16afd1898488681832e31e0beaf3fea78dc0",
+      "disposition": "held",
+      "acceptance": "unfinished-not-accepted",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/inventory.py",
+      "sha256": "a2048ed7341dae5fc2f8248e05ab177b6b611ec5db09b8bdb09e7b654f785b65",
+      "bytes": 4268,
+      "gitBlob": "1dc6895eea1b1aff9363eb5a7ee76788894c8701",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/native_ciqual.py",
+      "sha256": "8dd568b7081b9bc304e40cb65b571ff1278b18ba4cf10d46d58a9874022f9ae5",
+      "bytes": 5134,
+      "gitBlob": "e275e7e6504e0ad339f4a7bfafcdf7e49cfdd338",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/policy.py",
+      "sha256": "fc7f05b41645cf976425090ed965f3947c7aeed38ab7de0ea7b11eff2c6ea340",
+      "bytes": 3032,
+      "gitBlob": "3708c3311af7d5a636a20f553e791270105640bc",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/registry.py",
+      "sha256": "d924111f8a671318a2047eee34c518200673634f52f5b320612f0a12bc1bd191",
+      "bytes": 8137,
+      "gitBlob": "27c78f6e06ce2a6c874f11756b6dbaa81c39be82",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/runner.py",
+      "sha256": "81181bf218f8c61bfaf71ad45624e5574a1743ddb98b1bf3ca073755aa4d0540",
+      "bytes": 5565,
+      "gitBlob": "08e7e7b77b5eff1dd96d13f442f33a1d94f565a5",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/serialization.py",
+      "sha256": "16cb770c11ab35f310333777323347f10ef5e897dd4574a002c34e6580ebbd70",
+      "bytes": 1057,
+      "gitBlob": "844842cbe5c76491d7205e67c4edfc0ca1b13e1a",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/survey.py",
+      "sha256": "d723804533f89cb1791a4840104e7ddde1bda0d619eb9432dd558af3bfe8eb87",
+      "bytes": 34838,
+      "gitBlob": "6656b49245efdd50339a8f8cacacd6a3a62672ad",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/survey_ciqual.py",
+      "sha256": "350c44acd6cd24fa4511c0faf137e7fb9b69dfdfc9eb69eb3e7adde2621fb4fa",
+      "bytes": 60166,
+      "gitBlob": "9bc58eb85026cef0cd07998f88fc52f4befd90f5",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu/refresh/survey_norway.py",
+      "sha256": "34def7bcb4a368f5912da0ae6c8437cbfd1c229a5446b18fd16ec91723ff5e53",
+      "bytes": 34937,
+      "gitBlob": "d388cd1d5ec962b4a5eb7c505426d1695bfaa401",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu_norway/__init__.py",
+      "sha256": "605fb350bd663bababe7ce91542ffa604d6d784010ad54603946222b9f9f18cf",
+      "bytes": 82,
+      "gitBlob": "5c2cc1a79092e74df9c89b6f7fc1066b522f2e38",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu_norway/adapter.py",
+      "sha256": "b5225d0b93cf191526c311fecdeb2c1c88773a719128dfb349e4a573ac1d1c66",
+      "bytes": 22998,
+      "gitBlob": "fe28ce0bd93dddcaf15edb3511d5e1f036844442",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/offmenu_norway/contract.json",
+      "sha256": "4c247021c66685e0bdea1ad10e0aea1a31d1403f821207893165dc913687b7ac",
+      "bytes": 1286,
+      "gitBlob": "442fcc28844089742edf6e1d5add1db8bc5e13a6",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-global-harness",
+      "path": "repo/scripts/collect-wikibooks.py",
+      "sha256": "96be160ff2c070066018572db291b3c77aacc717c63c511c258edece36d3961c",
+      "bytes": 5827,
+      "gitBlob": "7b6c8a006651f1e746ce0b12f023ab269673fd15",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "paused-manifest.json",
+      "sha256": "72b5943130485e6ccfe2d7ac2cf1ec9ae2287bc274186327dc11001c442faddb",
+      "bytes": 942,
+      "gitBlob": "103ea489c1bef033cc5ca533f7aab3b439594f68",
+      "disposition": "held",
+      "acceptance": "unfinished-not-accepted",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/__init__.py",
+      "sha256": "f3280c1d71bb6ad5879662d0b043e13017140df6e2108412c8370256c0669c8f",
+      "bytes": 65,
+      "gitBlob": "d1812428f5e39d2f7a13d3a88630268f39a89535",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/__init__.py",
+      "sha256": "b23c71cafa64a7689e3df759d19bac61601033a376dc23201f885b6c3fde01c4",
+      "bytes": 108,
+      "gitBlob": "8cc3eff3769c8adc2507843750da258c7d149d4d",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/__main__.py",
+      "sha256": "4be19df109903ad23cd7f32173df31bf9bf717f59d4ac587f57852d2fe828319",
+      "bytes": 6230,
+      "gitBlob": "4ddf72a25cb4cf20af5189b801a9a820d3d26569",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/acquisition.py",
+      "sha256": "8d1200d56edb68ef93fc8e1737f4991d517b0bb5843222c7ef92c78d38938824",
+      "bytes": 17304,
+      "gitBlob": "e88eea0bc47fcd532d1ea9f97c30df9d7d8550ec",
+      "disposition": "held",
+      "acceptance": "unfinished-not-accepted",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/core.py",
+      "sha256": "e127b0a3111340d27284fb47415e83fad3edff13ed7e79961253eb0bd38f5ce9",
+      "bytes": 27934,
+      "gitBlob": "09bcd8d4c61d76d19b8544dbee36b6f596a97bb2",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/fixture_resources.py",
+      "sha256": "f1df4d02e70e120ff3ec92e46fab888525739c49d7c14a1ab7a0f6ba1dc89354",
+      "bytes": 7333,
+      "gitBlob": "64862432b12acc7d9a90bbcc187e1688f149e76b",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/inventory.py",
+      "sha256": "a2048ed7341dae5fc2f8248e05ab177b6b611ec5db09b8bdb09e7b654f785b65",
+      "bytes": 4268,
+      "gitBlob": "1dc6895eea1b1aff9363eb5a7ee76788894c8701",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/native_ciqual.py",
+      "sha256": "8dd568b7081b9bc304e40cb65b571ff1278b18ba4cf10d46d58a9874022f9ae5",
+      "bytes": 5134,
+      "gitBlob": "e275e7e6504e0ad339f4a7bfafcdf7e49cfdd338",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/policy.py",
+      "sha256": "fc7f05b41645cf976425090ed965f3947c7aeed38ab7de0ea7b11eff2c6ea340",
+      "bytes": 3032,
+      "gitBlob": "3708c3311af7d5a636a20f553e791270105640bc",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/registry.py",
+      "sha256": "d924111f8a671318a2047eee34c518200673634f52f5b320612f0a12bc1bd191",
+      "bytes": 8137,
+      "gitBlob": "27c78f6e06ce2a6c874f11756b6dbaa81c39be82",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/runner.py",
+      "sha256": "81181bf218f8c61bfaf71ad45624e5574a1743ddb98b1bf3ca073755aa4d0540",
+      "bytes": 5565,
+      "gitBlob": "08e7e7b77b5eff1dd96d13f442f33a1d94f565a5",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/serialization.py",
+      "sha256": "16cb770c11ab35f310333777323347f10ef5e897dd4574a002c34e6580ebbd70",
+      "bytes": 1057,
+      "gitBlob": "844842cbe5c76491d7205e67c4edfc0ca1b13e1a",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/survey.py",
+      "sha256": "d723804533f89cb1791a4840104e7ddde1bda0d619eb9432dd558af3bfe8eb87",
+      "bytes": 34838,
+      "gitBlob": "6656b49245efdd50339a8f8cacacd6a3a62672ad",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/survey_ciqual.py",
+      "sha256": "350c44acd6cd24fa4511c0faf137e7fb9b69dfdfc9eb69eb3e7adde2621fb4fa",
+      "bytes": 60166,
+      "gitBlob": "9bc58eb85026cef0cd07998f88fc52f4befd90f5",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu/refresh/survey_norway.py",
+      "sha256": "34def7bcb4a368f5912da0ae6c8437cbfd1c229a5446b18fd16ec91723ff5e53",
+      "bytes": 34937,
+      "gitBlob": "d388cd1d5ec962b4a5eb7c505426d1695bfaa401",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu_norway/__init__.py",
+      "sha256": "605fb350bd663bababe7ce91542ffa604d6d784010ad54603946222b9f9f18cf",
+      "bytes": 82,
+      "gitBlob": "5c2cc1a79092e74df9c89b6f7fc1066b522f2e38",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu_norway/adapter.py",
+      "sha256": "b5225d0b93cf191526c311fecdeb2c1c88773a719128dfb349e4a573ac1d1c66",
+      "bytes": 22998,
+      "gitBlob": "fe28ce0bd93dddcaf15edb3511d5e1f036844442",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/offmenu_norway/contract.json",
+      "sha256": "4c247021c66685e0bdea1ad10e0aea1a31d1403f821207893165dc913687b7ac",
+      "bytes": 1286,
+      "gitBlob": "442fcc28844089742edf6e1d5add1db8bc5e13a6",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/scripts/collect-wikibooks.py",
+      "sha256": "96be160ff2c070066018572db291b3c77aacc717c63c511c258edece36d3961c",
+      "bytes": 5827,
+      "gitBlob": "7b6c8a006651f1e746ce0b12f023ab269673fd15",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/corpus-refresh/input-manifest.json",
+      "sha256": "4f6037f075e9a51c4f01c79cd2ab67ed4d3748c9b32cadaccb9de412bebed512",
+      "bytes": 498,
+      "gitBlob": "403ef292022951857e589b89b033a3fea7d658b3",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/corpus-refresh/recipes_parsed.json",
+      "sha256": "39a50fb82754cc31ac04f4a2a52c5e27da5c22c9b369efefa4474c380f256650",
+      "bytes": 621,
+      "gitBlob": "0e86908dc6b81edf5d512b9c78cac3e6c8f13916",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/norway/en-foods.json",
+      "sha256": "1312499bc9b232c611c5b6b82804b5a92513848b9a0768995346115bc0438a22",
+      "bytes": 2542,
+      "gitBlob": "e593e70496d19fad6e34cc242977c76c8c41d75e",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/norway/en-nutrients.json",
+      "sha256": "ccaba42b324e9d4376eeaf100a75b71ea9fe5922ba225b6be521a2b3525e4517",
+      "bytes": 1547,
+      "gitBlob": "9c1c992177e118c1c763ee8788192de1bb22a12d",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/norway/en-sources.json",
+      "sha256": "fb573244e2490452aeba90aa0127ca040a6c0bdb14e15979440f9728358af229",
+      "bytes": 159,
+      "gitBlob": "86dce6cc777bafed244790c92c3e29b95406a64b",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/norway/nb-foods.json",
+      "sha256": "8b07f6003eec9fcaec290fb0da983495f9971b15f5df72fddab9a664b77a6f8c",
+      "bytes": 166,
+      "gitBlob": "5dfbd474a70cf22b6c054fda01ae9ee70f748d70",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/fixtures/norway.lock.json",
+      "sha256": "0e39e65eb38e0353abbf54514c8e163a347f5945f2357420f13a233ddf1e3d28",
+      "bytes": 1066,
+      "gitBlob": "46ea9b8656484fb74d3aec42b3508028fbadfb60",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/test_corpus_refresh.py",
+      "sha256": "e510a90d5ce4b40d0332c0219b32453e7291541332883c11d6405d78a6a5030a",
+      "bytes": 15084,
+      "gitBlob": "94ef401ea67592bd2d0223b571300410a03abb15",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    },
+    {
+      "workspace": "offmenu-online-acquisition",
+      "path": "repo/tests/test_refresh_registry.py",
+      "sha256": "de59cb209afeedfa239d1fa4a5e920dcfac86f23217c5ed15ae3e80d16ef2a39",
+      "bytes": 19156,
+      "gitBlob": "cb44cbd09c06d6101fcb537be7dc808f7e497a89",
+      "disposition": "equivalent",
+      "acceptance": "already-pinned-baseline-copy",
+      "reason": "Local work is paused; no new global acquisition or harness code is added by this package."
+    }
+  ]
+}
