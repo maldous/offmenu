@@ -155,6 +155,8 @@ def inspect_binding(binding, *, now, previous_key=None):
     if errors:
         return {'stage': StageResult('failed', errors[0]).receipt(), 'errors': errors}
     result = {k: binding[k] for k in ('bindingId', 'sourceId', 'releaseId', 'country', 'types', 'origins', 'unknowns')}
+    if 'nativeBasis' in binding:
+        result['nativeBasis'] = deepcopy(binding['nativeBasis'])
     result.update(bodyOperations=[], acceptedRecords=None, countryComplete=False,
                   metadataBytesVerified=False, payloadBytesVerified=False,
                   fieldOriginsStatus='declared-not-row-verified',
@@ -169,6 +171,7 @@ def inspect_binding(binding, *, now, previous_key=None):
         result.update(stage=StageResult('unsupported', 'portfolio-manifest-missing').receipt(),
                       errors=['portfolio-manifest-missing'], packageAction='missing-no-read')
         return result
+    missing_code = 'portfolio-manifest-missing'
     try:
         cache = cache_metadata(binding, now=now)
         manifest = _read_metadata(reference)
@@ -187,6 +190,7 @@ def inspect_binding(binding, *, now, previous_key=None):
         references = binding.get('provenanceEvidence', []) + [
             x['evidence'] for x in binding['origins'] if 'evidence' in x]
         seen_evidence = set()
+        missing_code = 'portfolio-evidence-missing'
         for evidence in references:
             # Different pins for the same locator must not silently collapse.
             identity = fingerprint(evidence)
@@ -213,7 +217,7 @@ def inspect_binding(binding, *, now, previous_key=None):
             code = 'portfolio-metadata-malformed'
         status = 'quarantined' if code == 'portfolio-metadata-stale' else 'failed'
         if isinstance(error, FileNotFoundError):
-            status, code = 'unsupported', 'portfolio-manifest-missing'
+            status, code = 'unsupported', missing_code
         result.update(stage=StageResult(status, code).receipt(), errors=[code], packageAction='not-bound')
     return result
 

@@ -34,6 +34,54 @@ def binding(path=FIXTURES / 'manifest.json'):
 
 
 class Portfolio26Tests(unittest.TestCase):
+    def test_inspection_and_plan_preserve_declared_basis_and_unknowns(self):
+        # Catalogue declarations only; every metadata call below is an authored stub.
+        for spec in portfolio.configuration()['bindings']:
+            with self.subTest(binding=spec['bindingId']):
+                expected_basis = copy.deepcopy(spec['nativeBasis'])
+                expected_unknowns = copy.deepcopy(spec['unknowns'])
+                manifest = copy.deepcopy(spec.get('manifestIdentity') or {})
+                with patch.object(portfolio, '_read_metadata', return_value=manifest):
+                    inspected = portfolio.inspect_binding(spec, now='2026-10-18T00:00:00Z')
+                    report = portfolio.plan({'bindings': [spec]}, now='2026-10-18T00:00:00Z')
+                for row in (inspected, report['bindings'][0]):
+                    self.assertEqual(expected_basis, row['nativeBasis'])
+                    self.assertEqual(expected_unknowns, row['unknowns'])
+                if spec['sourceId'] in ('cnf', 'germany-bls'):
+                    self.assertEqual('succeeded', inspected['stage']['status'])
+                if isinstance(expected_basis, dict):
+                    inspected['nativeBasis']['authored-mutation'] = True
+                    self.assertEqual(expected_basis, spec['nativeBasis'])
+        spec = binding()  # Absence is preserved; no basis is inferred for this fixture.
+        self.assertNotIn('nativeBasis', portfolio.inspect_binding(spec, now=NOW))
+
+    def test_missing_secondary_evidence_is_distinct_private_and_peer_isolated(self):
+        for location in ('provenance', 'origin'):
+            with self.subTest(location=location), tempfile.TemporaryDirectory() as directory:
+                missing = Path(directory) / 'private-authored-evidence.json'
+                evidence = {'path': str(missing), 'sha256': '0' * 64}
+                spec, peer = binding(), binding()
+                if location == 'provenance':
+                    spec['provenanceEvidence'] = [evidence]
+                else:
+                    spec['origins'][0]['evidence'] = evidence
+                peer.update(bindingId='authored-held-peer', holds=['authored-hold'])
+                report = portfolio.plan({'bindings': [spec, peer]}, now=NOW)
+                row = report['bindings'][0]
+                self.assertEqual('unsupported', row['stage']['status'])
+                self.assertEqual('portfolio-evidence-missing', row['stage']['code'])
+                self.assertEqual(['portfolio-evidence-missing'], row['errors'])
+                diagnostics = canonical({'stage': row['stage'], 'errors': row['errors']}).decode()
+                self.assertNotIn(str(missing), diagnostics)
+                self.assertNotIn('private-authored-evidence', diagnostics)
+                self.assertEqual('held', report['bindings'][1]['stage']['status'])
+                self.assertEqual(24, len(report['countryTypes']))
+                self.assertEqual(0, report['sourceBodyReads'])
+                # Restoring just the authored secondary prerequisite restores binding.
+                missing.write_bytes(b'{"fixture":"authored evidence"}')
+                evidence['sha256'] = hashlib.sha256(missing.read_bytes()).hexdigest()
+                self.assertEqual('succeeded', portfolio.inspect_binding(spec, now=NOW)['stage']['status'])
+
     def test_packaged_catalogue_is_literal_equivalent_and_default_needs_no_file(self):
         source = Path(portfolio.__file__).with_name('portfolio26_catalogue.py').read_text()
         tree = ast.parse(source)
