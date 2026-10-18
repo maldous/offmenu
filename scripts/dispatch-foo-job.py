@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-global-readiness/1": ("global-readiness.py", "globalReadiness"),
         "offmenu-ledger-structural-audit/1": ("offmenu_ledger_audit.py", "ledgerAudit"),
         "offmenu-selected-data-inventory/1": ("inspect-selected-datasets.py", "selectedDataInventory"),
     }
@@ -299,6 +300,15 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "global-readiness":
+        observed = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        steps += [
+            ("global-readiness-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_global_readiness.py"]),
+            ("global-runtime", ["readiness", "global-readiness-tests"], [python, "-B", "scripts/global-readiness.py", "--mode", "runtime", "--observed-at", observed]),
+            ("global-registry-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_global_coverage.py"]),
+            ("global-harness-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_refresh_global_run.py"]),
+            ("global-coverage", ["readiness", "global-readiness-tests", "global-registry-tests", "global-harness-tests"], [python, "-B", "scripts/global-readiness.py", "--mode", "coverage", "--observed-at", observed]),
+        ]
     if profile == "ciqual-source-native":
         root = str(Path(__file__).resolve().parent.parent)
         if root not in sys.path:
@@ -316,9 +326,14 @@ def profile_steps(profile, code, trusted_sha=None):
             ("schema-survey-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_refresh_survey*.py"]),
             ("schema-survey", ["readiness", "schema-survey-tests"], [python, "-B", "-m", "offmenu.refresh", "survey-selected", "--workspace", str(OUTPUT / "schema-surveys")]),
         ]
-    if profile in {"inventory", "smoke", "delivery-diagnostics"}:
+    if profile in {"inventory", "smoke", "delivery-diagnostics", "global-readiness"}:
         steps.append(("inventory", ["readiness"], [python, "-B", "-m", "offmenu.refresh", "inventory",
                                                   "--root", str(CACHE), "--max-entries", "10000", "--max-depth", "4"]))
+    if profile == "global-readiness":
+        steps += [
+            ("dataset-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_selected_dataset_metadata.py"]),
+            ("selected-data-inventory", ["readiness", "dataset-tests"], [python, "-B", "scripts/inspect-selected-datasets.py", "--cache-root", str(CACHE)]),
+        ]
     if profile == "delivery-diagnostics":
         steps += [
             ("ledger-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_offmenu_ledger_audit.py"]),
@@ -326,7 +341,7 @@ def profile_steps(profile, code, trusted_sha=None):
             ("dataset-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_selected_dataset_metadata.py"]),
             ("selected-data-inventory", ["readiness", "dataset-tests"], [python, "-B", "scripts/inspect-selected-datasets.py", "--cache-root", str(CACHE)]),
         ]
-    if profile in {"offline-replay", "smoke", "delivery-diagnostics"}:
+    if profile in {"offline-replay", "smoke", "delivery-diagnostics", "global-readiness"}:
         steps += [("refresh-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_corpus_refresh.py"]),
                   ("offline-replay", ["readiness", "refresh-tests"], replay),
                   ("replay-idempotency", ["offline-replay"], replay)]
@@ -349,6 +364,15 @@ def run_step(step_id, command, code):
                 result.update(status='failed', exitCode=3, errorCode='native-candidate-not-established')
             elif step_id == 'ciqual-native-retry' and receipt.get('created') is not False:
                 result.update(status='failed', exitCode=3, errorCode='native-idempotency-not-established')
+        if step_id in {"global-runtime", "global-coverage"} and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("globalReadiness", {})
+            expected_kind = "runtime" if step_id == "global-runtime" else "coverage"
+            if report.get("kind") != expected_kind:
+                result.update(status="failed", exitCode=3, errorCode="global-readiness-report-invalid")
+            elif result["exitCode"] == 2 and report.get("status") == "blocked":
+                result["status"] = "blocked"
+            elif result["exitCode"] != 0 or report.get("status") != "complete":
+                result.update(status="failed", exitCode=3, errorCode="global-readiness-not-established")
         if step_id == "schema-survey" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("schemaSurvey", {})
             if report.get("surveyComplete") is True and result["exitCode"] == 0:
@@ -418,7 +442,7 @@ def parallel_diagnostics(steps, code):
 def run_profile(request, sha, code, run_id, attempt):
     steps = profile_steps(request["profile"], code, sha)
     cancelled = False
-    if request["profile"] == "delivery-diagnostics":
+    if request["profile"] in {"delivery-diagnostics", "global-readiness"}:
         by_id, cancelled = parallel_diagnostics(steps, code)
     else:
         by_id = {}
@@ -445,6 +469,10 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
                       diagnosticScope="structural-ledger-and-selected-cache-metadata",
                       corpusAcceptanceEstablished=False)
+    if request["profile"] == "global-readiness":
+        report.update(maximumParallelChildren=2, diagnosticScope="fixed-scope-offline-global-readiness",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False)
     if request["profile"] == "national-schema-survey":
         report.update(diagnosticScope="selected-no-fr-schema-and-dictionaries",
                       corpusAcceptanceEstablished=False, candidateGenerationEnabled=False,
@@ -539,3 +567,4 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
