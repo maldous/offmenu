@@ -133,6 +133,19 @@ def sanitize(body, candidate):
     for key in ('downloaded_at', 'retrieved_at', 'fetched_at'):
         value = raw.get(key)
         if isinstance(value, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2}))?', value): download[key] = value
+    # Repository collectors declare archive/bundle identity and normalization time.
+    # Neither establishes original acquisition time, payload custody, or freshness.
+    collection = {}
+    archive = raw.get('archiveSha256')
+    if isinstance(archive, str) and re.fullmatch(r'[0-9a-fA-F]{64}', archive):
+        collection['archiveSha256'] = archive.lower()
+    completed = raw.get('completedAt')
+    if isinstance(completed, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})', completed):
+        try:
+            datetime.fromisoformat(completed.replace('Z', '+00:00'))
+            collection['completedAt'] = completed
+        except ValueError:
+            pass
     provenance = {}
     for key in ('url', 'source_url', 'download_url', 'homepage'):
         value = public_origin(raw.get(key))
@@ -141,7 +154,9 @@ def sanitize(body, candidate):
     if isinstance(raw.get('license'), str) and raw['license'] in licenses: provenance['license'] = raw['license']
     return {'schemaVersion': 'offmenu-manifest-metadata/2', 'candidate': candidate,
             'manifestSha256': hashlib.sha256(body).hexdigest(), 'manifestBytes': len(body),
-            'originalDownloadMetadata': download, 'provenance': provenance,
+            'originalDownloadMetadata': download, 'collectionMetadata': collection,
+            'collectionMetadataMeaning': 'source-declared archive-or-bundle identity and normalization completion; not acquisition or freshness evidence',
+            'provenance': provenance,
             'provenanceVerified': False}
 
 def collect(owner):

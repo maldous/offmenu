@@ -19,7 +19,7 @@ import time
 import uuid
 
 COLLECTOR = 'collect-owner-manifest-metadata.py'
-COLLECTOR_SHA256 = 'aee29be3dd46d41669db27d8d0ad6c3f62b0292af70ab9c2ec3e7472d91ad51d'
+COLLECTOR_SHA256 = '456e32de0c97fc66e2bea2dcc090d89c850d5538d126a18af7662acd37c0d293'
 REPO = 'maldous/offmenu'
 COMMENT = 'repos/maldous/offmenu/issues/30/comments'
 CAP = 65536
