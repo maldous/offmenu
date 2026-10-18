@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "published-nonproduction-baseline-application-ci-passed-open-security-findings-not-merged",
-  "asOfUTC": "2026-10-18T01:59:55Z",
+  "status": "merged-nonproduction-baseline-postmerge-ci-passed-open-holds",
+  "asOfUTC": "2026-10-18T02:20:26Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Six assigned lanes plus coordinator. Sole writer reports owner resume confirmation; fresh integration-branch read remains aee7d322, no content commit or PR yet. Exact prior denial outputs unavailable; interrupted create_blob preparation was reported aborted by user. Other lanes continue authorized independent code/data-metadata review; no blind retry or substitute."
+      "currentBlocker": "PR35 merged and postmerge CI passed. Next six-file recovery candidate has 18 passing focused tests; independent review and sole-writer assignment pending."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
@@ -101,8 +101,8 @@
       "state": "open",
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
-    "publicationWriter": "integrate_verified_develop_baseline; sole GitHub writer, owner resume confirmed, exact prior interruption/remote state under reconciliation",
-    "selectedRepositoryBase": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+    "publicationWriter": "None assigned to this recovery candidate; parent assigns sole writer after independent review",
+    "selectedRepositoryBase": "2266e85046eb22d5baccba09149c0f3b70dadd25",
     "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
     "currentUserPriority": {
       "top": "Repository consolidation and ledger consistency",
@@ -270,6 +270,12 @@
       "status": "nonproduction-acceptance-normal-merge-pending",
       "description": "Head74a404c4 passes push+PR configuration/application CI through web/i18n/build/edge/fullPython/OCR. Four environment-specific Python skips and optional Sonar/Snyk remain open. Fresh GitGuardian flags the same two historical synthetic-fixture incidents; bounded review supports ordinary nonproduction merge with findings documented open, without suppression or security clearance. This receipt publication and actual merge remain pending.",
       "anchorCommit": "74a404c419a620ff1952a59e6f5255e00ff262df"
+    },
+    {
+      "recordedAtUTC": "2026-10-18T02:20:26Z",
+      "eventId": "pr35-merge-readback-and-next-bounded-recovery",
+      "status": "merged-baseline-next-candidate-local",
+      "description": "Verified develop and accepted tree, terminal PR35 receipt and postmerge run39088973540 success. Recovered six exact immutable Git blobs and ran18focused tests with merged-baseline dependencies. Next batch review/publication pending; historical snapshots and all holds retained."
     }
   ],
   "lanes": [
@@ -635,12 +641,10 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "TOP: consolidate existing repository into one working develop baseline with ledger\u2194repository consistency",
-    "Sole writer reconciles prior interruption and current remote state before any retry",
-    "Complete independent remaining product/docs/knowledge semantic dispositions; no blanket416closure",
-    "After authorized assembly run combined tests and reconcile exact paths/SHAs/results",
-    "Merge only with reviewed known-working baseline and verified receipt; preserve all operational route refs",
-    "NEXT: global all-country deterministic refresh using retained knowledge and existing adapters; preserve30day reuse and source holds"
+    "TOP: review and integrate next dependency-ready recovery batch on verified merged develop with one parent-assigned writer",
+    "Retain exact historical provenance and complete remaining semantic dispositions without blanket closure",
+    "After authorized assembly run combined CI and verify exact immutable publication/merge receipts",
+    "NEXT: global all-country deterministic refresh remains subject to source/runtime holds and 30-day cached-input reuse"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1079,24 +1083,21 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "published-integration-pr35-exact-head-application-ci-passed-not-merged",
-    "verifiedPriorCommit": "74a404c419a620ff1952a59e6f5255e00ff262df",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/74a404c419a620ff1952a59e6f5255e00ff262df",
+    "status": "merged-develop-pr35-postmerge-application-ci-passed",
+    "verifiedPriorCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/2266e85046eb22d5baccba09149c0f3b70dadd25",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
-    "writer": "integrate_verified_develop_baseline only within confirmed resumed scope after state reconciliation",
-    "note": "Exact tested anchor recorded. This ledger delta is not yet published at authoring; its eventual commit must obtain exact-head CI before normal merge. No merged develop, security clearance, deployment or health completion is claimed."
+    "writer": "Next recovery publication writer remains parent-assigned; preparation only",
+    "note": "PR35 is merged. Historical premerge publication/acceptance snapshots are preserved. This next recovery candidate is local and not yet independently approved or published."
   },
   "activeWork": [
-    "Sole repository writer: publish final bounded receipt, verify exact final-head CI, and perform ordinary expected-head develop merge within repository rules; preserve all open security/health/source holds",
-    "Per-ref retention, provenance, source bodies and custody discrepancies",
-    "Cloud/product/source-storage correction review and exact byte qualification",
-    "Preserved product code and existing-path supersession; remaining416deltas open",
-    "Source/storage/cache preserved implementations and corpus/knowledge metadata",
-    "Independent code/baseline tests and revised artifact-scope ledger reconciliation"
+    "Prepare six-file dependency-ready recovery batch and existing ledger reconciliation for independent review; no publication yet",
+    "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
+    "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
   ],
   "supersededOperationalCheckpoint": {
     "asOfUTC": "2026-10-18T00:18:00Z",
@@ -1442,14 +1443,14 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T01:59:55Z",
+    "asOfUTC": "2026-10-18T02:20:26Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "developLastVerifiedCommit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+    "developLastVerifiedCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
     "integrationBranch": "integration/lossless-develop-baseline-20261018",
-    "lastVerifiedIntegrationHead": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "finalCandidateCommit": null,
-    "finalCandidateState": "exact-head-application-and-tree-accepted-normal-merge-pending-open-security-findings",
-    "developMergeVerified": false,
+    "lastVerifiedIntegrationHead": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
+    "finalCandidateCommit": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
+    "finalCandidateState": "pr35-merged-postmerge-application-ci-passed-open-holds",
+    "developMergeVerified": true,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
     "approvalRegisterSha256": "26267a9ad32ba68bac7ed81ba0b6e857d2645fe99c1a2b6472d6bef4b58fb3b1",
@@ -2545,20 +2546,23 @@
       "Historical source/licence and actual approval holds remain"
     ],
     "writerAuthorizationState": {
-      "status": "owner-resume-confirmed-state-reconciliation",
-      "source": "Sole writer report00:50UTC; fresh integration branch read at selected base",
-      "priorDenialsReported": 3,
-      "exactDenialOutputs": "unavailable-to-QA",
-      "visibleInterruption": "create_blob preparation cell interrupted, aborted by user; not proof of a content write",
-      "blindRetryAllowed": false,
-      "rule": "Sole writer must reconcile exact state before any retry; no substitute writer"
+      "status": "next-recovery-preparation-only",
+      "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "candidateCommit": null,
-      "candidateTests": null,
-      "mergedDevelopCommit": null,
-      "immutableReadback": null,
-      "status": "pending-writer-verified-receipt"
+      "status": "verified-merged-nonproduction-baseline",
+      "candidateCommit": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
+      "mergedDevelopCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "tree": "88985711aca313902cb85d8277b9f76ac8439043",
+      "pullRequest": 35,
+      "immutableReadback": "https://github.com/maldous/offmenu/pull/35#issuecomment-6244568689",
+      "postmergeCI": {
+        "runId": 39088973540,
+        "headSha": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+        "conclusion": "success",
+        "url": "https://github.com/maldous/offmenu/actions/runs/39088973540"
+      },
+      "snapshotBoundary": "Earlier files/package approvals, scopeRevision, publicationReceipt, finalIndependentAcceptance and work roster remain historical snapshots; this receipt supersedes their pending-merge language, not their unclosed semantic/rights/security holds."
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -2746,6 +2750,153 @@
         "normalMergeSupported": true,
         "conditions": "Publish reviewed ledger delta; verify actual final-head CI and current PR/base; use ordinary expected-head merge only. Honor repository enforcement, no bypass."
       }
+    },
+    "priorPreMergeCurrentState": {
+      "status": "published-nonproduction-baseline-application-ci-passed-open-security-findings-not-merged",
+      "asOfUTC": "2026-10-18T01:59:55Z",
+      "publication": {
+        "status": "published-integration-pr35-exact-head-application-ci-passed-not-merged",
+        "verifiedPriorCommit": "74a404c419a620ff1952a59e6f5255e00ff262df",
+        "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/74a404c419a620ff1952a59e6f5255e00ff262df",
+        "earlierVerifiedCommits": [
+          "3a103bc7c380da01c83fcda35d82c92741379804",
+          "75cb5963021397a537098b192c4ac6e7d030f0ab",
+          "1f9c29f81f171a35c51a351d122efed2469b31e0"
+        ],
+        "writer": "integrate_verified_develop_baseline only within confirmed resumed scope after state reconciliation",
+        "note": "Exact tested anchor recorded. This ledger delta is not yet published at authoring; its eventual commit must obtain exact-head CI before normal merge. No merged develop, security clearance, deployment or health completion is claimed."
+      },
+      "activeWork": [
+        "Sole repository writer: publish final bounded receipt, verify exact final-head CI, and perform ordinary expected-head develop merge within repository rules; preserve all open security/health/source holds",
+        "Per-ref retention, provenance, source bodies and custody discrepancies",
+        "Cloud/product/source-storage correction review and exact byte qualification",
+        "Preserved product code and existing-path supersession; remaining416deltas open",
+        "Source/storage/cache preserved implementations and corpus/knowledge metadata",
+        "Independent code/baseline tests and revised artifact-scope ledger reconciliation"
+      ],
+      "nextPriorities": [
+        "TOP: consolidate existing repository into one working develop baseline with ledger↔repository consistency",
+        "Sole writer reconciles prior interruption and current remote state before any retry",
+        "Complete independent remaining product/docs/knowledge semantic dispositions; no blanket416closure",
+        "After authorized assembly run combined tests and reconcile exact paths/SHAs/results",
+        "Merge only with reviewed known-working baseline and verified receipt; preserve all operational route refs",
+        "NEXT: global all-country deterministic refresh using retained knowledge and existing adapters; preserve30day reuse and source holds"
+      ],
+      "repositoryCurrentFields": {
+        "asOfUTC": "2026-10-18T01:59:55Z",
+        "developLastVerifiedCommit": "922ab2d3f0cb56f0b034752f13b24c391b14744a",
+        "lastVerifiedIntegrationHead": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
+        "finalCandidateCommit": null,
+        "finalCandidateState": "exact-head-application-and-tree-accepted-normal-merge-pending-open-security-findings",
+        "developMergeVerified": false,
+        "completionReceipt": {
+          "candidateCommit": null,
+          "candidateTests": null,
+          "mergedDevelopCommit": null,
+          "immutableReadback": null,
+          "status": "pending-writer-verified-receipt"
+        },
+        "writerAuthorizationState": {
+          "status": "owner-resume-confirmed-state-reconciliation",
+          "source": "Sole writer report00:50UTC; fresh integration branch read at selected base",
+          "priorDenialsReported": 3,
+          "exactDenialOutputs": "unavailable-to-QA",
+          "visibleInterruption": "create_blob preparation cell interrupted, aborted by user; not proof of a content write",
+          "blindRetryAllowed": false,
+          "rule": "Sole writer must reconcile exact state before any retry; no substitute writer"
+        }
+      },
+      "executionCoordination": {
+        "capacity": {
+          "totalConcurrentCapIncludingCoordinator": 7,
+          "fooRunnerConcurrency": 1,
+          "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+          "currentBlocker": "Six assigned lanes plus coordinator. Sole writer reports owner resume confirmation; fresh integration-branch read remains aee7d322, no content commit or PR yet. Exact prior denial outputs unavailable; interrupted create_blob preparation was reported aborted by user. Other lanes continue authorized independent code/data-metadata review; no blind retry or substitute."
+        },
+        "publicationWriter": "integrate_verified_develop_baseline; sole GitHub writer, owner resume confirmed, exact prior interruption/remote state under reconciliation",
+        "selectedRepositoryBase": "aee7d3221ba29de088cf929bcd96f3a4f2fba611"
+      }
+    },
+    "nextRecoveryCandidate": {
+      "status": "prepared-local-awaiting-independent-review",
+      "baseCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "files": [
+        {
+          "path": "public/session-fetch.js",
+          "gitBlob": "dafeb773ae47b245830553cf3390eabb0cb92f4e",
+          "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3",
+          "bytes": 1126,
+          "mode": "100644",
+          "baselineGitBlob": "a009690a8531a241e67ef9927e56cb6436ad012e",
+          "scope": "session response-method guard"
+        },
+        {
+          "path": "tests-web/session-fetch.test.mjs",
+          "gitBlob": "a1d8bcc197d48a098df4a32a661732e0dfefc2a9",
+          "sha256": "d8e846cce50de701501f45c3047c1975a991cf9f77d0f236a0e715f7e94ff0e8",
+          "bytes": 2342,
+          "mode": "100644",
+          "baselineGitBlob": "ba775623f9b0468035cf9c9718b8d9a23234043b",
+          "scope": "session response-method guard"
+        },
+        {
+          "path": "public/dimensional-unit-engine.js",
+          "gitBlob": "cbb231eaf8e00c0a68dd25422492f4ddb0ddce34",
+          "sha256": "f39fd8d9395bc5a7259b632f3c09e9bfe2208399fa29a6bc212ca327dec443c9",
+          "bytes": 3795,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "tests-web/dimensional-unit-engine.test.mjs",
+          "gitBlob": "895ed9f74895fa95857873a3ed91a408b18524ba",
+          "sha256": "db27504dd4f7773abaa6a8f344eda75c7c8c3fde2790770a68e2e3eac3035fe6",
+          "bytes": 4738,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "public/reference-profile-model.js",
+          "gitBlob": "cf4f5b9a41cd2a50a6391b3480d5149d72c6a1fd",
+          "sha256": "576c65d02058f88d7ca1b19bd67353a2cfeae474eb776b01fb0341eb72e3fcc4",
+          "bytes": 5132,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "tests-web/reference-profile-model.test.mjs",
+          "gitBlob": "5aa5c8c62d4d7f76eb524598ea631359521a36e5",
+          "sha256": "144c7ac4e3b85cd3d674b081de2f649eb4b33601df40754a056af26785f050ef",
+          "bytes": 7062,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        }
+      ],
+      "focusedTests": {
+        "node": "v24.19.0",
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "helperTests": 13,
+        "sessionTests": 5,
+        "baselineSessionAgainstCandidateTests": {
+          "passed": 3,
+          "failed": 2
+        },
+        "scope": "Bounded harness with exact merged-baseline dependencies; not full checkout or CI"
+      },
+      "boundaries": [
+        "Session guard covers body-reading methods and clone; raw response.body streams remain unguarded",
+        "Active sessionFetch consumers cover care/community/personal-AI/admin/private-services. Existing app.js cloudRequest for /api/state still uses raw fetch and is unchanged; the /api/state URL in session tests is synthetic and does not establish state-route integration",
+        "Helpers remain standalone with no caller wiring, source admission, rights grant or nutritional/clinical qualification",
+        "No production, data job, runtime diagnostic, source hold or cleanup changes",
+        "No bulk generated discovery data; Foo custody remains unverified",
+        "Future publication commit and CI are not claimed"
+      ]
     }
   }
 }
