@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "global-completion-open-reviewed-offline-bindings-prepared",
-  "asOfUTC": "2026-10-18T03:13:00Z",
+  "status": "owner-proxy-collector-reviewed-awaiting-publication-and-execution",
+  "asOfUTC": "2026-10-18T03:26:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Five offline parser adapters reviewed; zero production admissions. Pinned v1 service target is identified; live drift remains unverified and additional metadata views require separately reviewed extension and specific security approval before change."
+      "currentBlocker": "Normal-user fixed-manifest collector independently reviewed; waiting source publication/fullCI and verified existing owner execution route or one owner command. Real source custody/freshness/admission remains unresolved."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
@@ -102,11 +102,11 @@
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
     "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
-    "selectedRepositoryBase": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "selectedRepositoryBase": "d8e212fb7927e4dca0610e974be97076679c1e32",
     "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
-      "next": "Qualify the next eligible source/cache/rights binding with verified provenance and acquisition freshness; no repeat census or automatic network admission",
+      "next": "Publish reviewed normal-user collector and obtain one sanitized PR30 metadata receipt through existing owner identity; no service-extension approval pending.",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -300,6 +300,18 @@
       "eventId": "reviewed-offline-binding-scaffolding-and-custody-docs",
       "status": "prepared-not-executed",
       "description": "Four source/test/doc paths independently reviewed with six tests including five isolated synthetic parser executions. Custody and rights documentation reviewed separately; sixteen metadata-file views remain a proposed access dependency requiring specific approval. No production admission, payload acceptance or new job."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T03:23:00Z",
+      "eventId": "pr38-verified-service-extension-withdrawn",
+      "status": "owner-proxy-preparation-only",
+      "description": "Verified PR38 merge and postmerge application CI. Parent conveyed that temporary metadata service-extension request was withdrawn; admin helper remains unapproved/unexecuted. Replacement normal-user owner-readable fixed-manifest collector is being reviewed, with no service/mount/new access changes. No new request or source admission."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T03:26:00Z",
+      "eventId": "owner-proxy-five-file-review-complete",
+      "status": "source-reviewed-not-executed",
+      "description": "Independent23tests and exact five-file collector/wrapper/tests/docs manifest accepted. Composed source batch excludes withdrawn admin helper. Actual execution remains owner step absent verified supported identity route, using isolated pinned worktree and one sanitized PR30 receipt."
     }
   ],
   "lanes": [
@@ -1107,16 +1119,16 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "merged-develop-pr37-offline-foo-census-terminal-success",
-    "verifiedPriorCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+    "status": "merged-develop-pr38-postmerge-application-ci-passed",
+    "verifiedPriorCommit": "d8e212fb7927e4dca0610e974be97076679c1e32",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/d8e212fb7927e4dca0610e974be97076679c1e32",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
     "writer": "integrate_verified_develop_baseline only",
-    "note": "Actual merged source and one terminal offline assessment verified. This receipt update has no claimed own future commit SHA; source acquisition/admission and country completion remain open."
+    "note": "PR38 and postmerge CI verified. Service extension withdrawn; replacement normal-user metadata collector is independently reviewed, awaiting publication/CI and actual owner execution."
   },
   "activeWork": [
     "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
@@ -1467,13 +1479,13 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T03:00:00Z",
+    "asOfUTC": "2026-10-18T03:23:00Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "developLastVerifiedCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
-    "integrationBranch": "integration/global-dataset-foundation-20261018",
-    "lastVerifiedIntegrationHead": "063dfc1a0f97401e851a23033ecf480b6bab0d16",
-    "finalCandidateCommit": "063dfc1a0f97401e851a23033ecf480b6bab0d16",
-    "finalCandidateState": "pr37-merged-postmerge-application-ci-passed-offline-census-complete",
+    "developLastVerifiedCommit": "d8e212fb7927e4dca0610e974be97076679c1e32",
+    "integrationBranch": "integration/source-binding-foundation-20261018",
+    "lastVerifiedIntegrationHead": "c8e9b98595542f3f30f655dcef831ad39f3e7947",
+    "finalCandidateCommit": "c8e9b98595542f3f30f655dcef831ad39f3e7947",
+    "finalCandidateState": "pr38-merged-postmerge-application-ci-passed-zero-admissions",
     "developMergeVerified": true,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
@@ -2574,25 +2586,25 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "pullRequest": "https://github.com/maldous/offmenu/pull/37",
-      "merge": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
-      "tree": "a951263921ae7c367a92e4ccfa684a04f7d899ab",
+      "pullRequest": "https://github.com/maldous/offmenu/pull/38",
+      "merge": "d8e212fb7927e4dca0610e974be97076679c1e32",
+      "tree": "c5d29f6f4ef7bae1534399778b725cf4bf22d6b1",
       "premergeRuns": [
-        39091472916,
-        39091464824
+        39093118562,
+        39093112905
       ],
+      "postmergeRun": 39093301057,
+      "postmergeJob": 117574407327,
       "applicationConclusion": "success",
       "testCounts": {
         "webPassed": 677,
         "localeEdgePassed": 11,
-        "pythonRun": 717,
+        "pythonRun": 723,
         "pythonSkipped": 4,
         "portableOcrPassed": 6
       },
-      "postmergeApplicationCI": "success",
-      "holds": "Historical security incidents and skipped scanner/environment/source/health holds remain.",
-      "postmergeRun": 39091802482,
-      "postmergeJob": 117569943743
+      "receiptComment": "https://github.com/maldous/offmenu/pull/38#issuecomment-6245140103",
+      "boundary": "Source-only offline adapters/documentary rights and custody; zero production admissions, no owner/service/access execution."
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -3076,6 +3088,27 @@
       "snyk": "skipped/open",
       "sourceScope": "six reviewed source/test paths plus two deterministic catalogues and existing ledger; helper activation and raw body/state-fetch exclusions unchanged",
       "terminalReceipt": "https://github.com/maldous/offmenu/pull/36#issuecomment-6244812445"
+    },
+    "priorPR37CompletionReceipt": {
+      "pullRequest": "https://github.com/maldous/offmenu/pull/37",
+      "merge": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "tree": "a951263921ae7c367a92e4ccfa684a04f7d899ab",
+      "premergeRuns": [
+        39091472916,
+        39091464824
+      ],
+      "applicationConclusion": "success",
+      "testCounts": {
+        "webPassed": 677,
+        "localeEdgePassed": 11,
+        "pythonRun": 717,
+        "pythonSkipped": 4,
+        "portableOcrPassed": 6
+      },
+      "postmergeApplicationCI": "success",
+      "holds": "Historical security incidents and skipped scanner/environment/source/health holds remain.",
+      "postmergeRun": 39091802482,
+      "postmergeJob": 117569943743
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -3264,7 +3297,7 @@
       },
       "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
     },
-    "nextDependency": "Resolve exact existing metadata custody and required narrow file-view permissions through specific approval; then independently qualify source-specific admission using rights, release identity, expected hashes and original acquisition times. Offline adapters alone do not authorize execution.",
+    "nextDependency": "After reviewed collector publication/fullCI, obtain one sanitized metadata receipt using a verified supported owner identity route or isolated immutable owner command; no sudo/service/mount/access change. Qualify real source admission separately using exact release/rights/hash/time evidence.",
     "currentSourceAcquisitionBindings": 0,
     "actualPayloadAcceptance": false,
     "globalDatasetCompletion": false,
@@ -3552,6 +3585,58 @@
       "fullDetailedReport": "3133704bytes retained only on Foo, SHA256587912492b24500f8410576e56511d90239dc1fe9c723018d5d48664369b13ce; compact metadata only published."
     },
     "nextBindingImplementation": {
+      "state": "pr38-merged-offline-scaffolding-no-production-admissions",
+      "implementedStaticAdapters": 5,
+      "productionAdmissions": 0,
+      "acceptedDatasets": 0,
+      "tests": "Six independently rerun tests include five real isolated parser subprocesses with synthetic workbooks; no real data acceptance.",
+      "sourceFiles": [
+        {
+          "path": "docs/source-execution-plan.md",
+          "gitBlob": "4f0667056d22e44194163d8921ef1b2762839f8d",
+          "sha256": "6b90d2e97622a0be3baed2f8b15354ee0f93c351fa9dd2d35e49e98dd4d9b784"
+        },
+        {
+          "path": "offmenu/refresh/execution.py",
+          "gitBlob": "dbb6913773ee52cb30b489671091416a938948b5",
+          "sha256": "a063d6d96db4be304870a9d6bd9caa0dc1240a00d5132e6ae6d992d6cbce961e"
+        },
+        {
+          "path": "offmenu/refresh/execution_worker.py",
+          "gitBlob": "0ff952083d4a2e3fdf29e1498c27b5f70a5d91b5",
+          "sha256": "895a98ad78e483e58691fb03e6fb6051288833d08d5fdcc75e2f1dcb04344634"
+        },
+        {
+          "path": "tests/test_execution.py",
+          "gitBlob": "0d96931cd715a12d7439e0e75653d5d798efe9d2",
+          "sha256": "ade9ae475aafe0a6b1c2fa7b430d7b6a1eff8f4a64b0ae4d4cab36b87ddf5799"
+        }
+      ],
+      "documentation": {
+        "custody": "Independently reviewed plan and summary profile; candidate locations are not verified grants or payload custody.",
+        "rights": "Independently reviewed documentary evidence only; current source admission and redistribution acceptance remain unestablished."
+      },
+      "accessDependency": {
+        "status": "temporary-service-extension-withdrawn-owner-proxy-independently-reviewed",
+        "scope": "Normal-user fixed owner-readable manifest metadata collection and sanitized receipt, using existing identity only.",
+        "serviceOrMountChanges": false,
+        "newAccessGrant": false,
+        "adminHelperApproved": false,
+        "adminHelperExecuted": false,
+        "collectorState": "Five-file fixed-path normal-user collector/wrapper/tests/docs independently reviewed; publication/CI and actual owner execution pending",
+        "next": "Publish exact reviewed source; supply immutable-commit/hash pinned isolated-worktree command for ordinary owner user if no supported existing-identity execution route is verified. One sanitized PR30 receipt; no login, sudo, service/mount/access change."
+      },
+      "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission.",
+      "supersededTemporaryServiceExtensionProposal": {
+        "status": "pending-specific-security-approval-before-change",
+        "requestedMetadataViews": 16,
+        "exactServiceConfigurationTarget": "Pinned v1 helper identifies offmenu-runner.service, /etc/systemd/system/offmenu-runner.service.d/40-selected-datasets-v1.conf and private snapshot /var/lib/offmenu-selected-datasets-v1; live configuration drift remains unverified; new versioned metadata-only extension awaiting separate review and action-time approval.",
+        "boundary": "Small pinned metadata-file views only proposed; no raw payload import, new mount, broad filesystem access or existing cache grant expansion in this batch."
+      },
+      "publishedHead": "c8e9b98595542f3f30f655dcef831ad39f3e7947",
+      "mergedDevelopCommit": "d8e212fb7927e4dca0610e974be97076679c1e32"
+    },
+    "priorBindingPreparationSnapshot": {
       "state": "independently-reviewed-offline-scaffolding-awaiting-composed-publication-ci",
       "implementedStaticAdapters": 5,
       "productionAdmissions": 0,
@@ -3590,6 +3675,53 @@
         "boundary": "Small pinned metadata-file views only proposed; no raw payload import, new mount, broad filesystem access or existing cache grant expansion in this batch."
       },
       "runtimeScope": "No execution profile/pin/request changes, no new Foo job, no network acquisition or source admission."
+    },
+    "ownerMetadataCollector": {
+      "state": "independently-reviewed-not-executed",
+      "manifestSha256": "35ef5efac9b0bb046400946d3c94700f2bec86882c8676908a181c91f284b78b",
+      "files": [
+        {
+          "path": "docs/owner-manifest-metadata.md",
+          "bytes": 7037,
+          "sha256": "39dde9af4c496a8b6c345f659b6190177ae2e6a3026830fcab0f4f220add1ef8",
+          "gitBlob": "43f7a733fc575310fb6001e3aab78760fa972ad4",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/collect-owner-manifest-metadata.py",
+          "bytes": 9390,
+          "sha256": "aee29be3dd46d41669db27d8d0ad6c3f62b0292af70ab9c2ec3e7472d91ad51d",
+          "gitBlob": "55e6298541e299176850b67cf39366befe5ff18a",
+          "mode": "100644"
+        },
+        {
+          "path": "scripts/run-owner-manifest-metadata.py",
+          "bytes": 8915,
+          "sha256": "be80a8f4dfeac8cdc1e7a38b4b8033e1c4380995ed4117701cc65e190fa5acb2",
+          "gitBlob": "82537d6895f95ef3c5efea5de6dcf36eebc9b5e1",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_batch.py",
+          "bytes": 5651,
+          "sha256": "5a569cbb49016e5a4c9785e3916fbee594d974c15f8fbb9240b789a1397bae67",
+          "gitBlob": "774306daf8d9dcafe2cdd7df0bc3fac1666578de",
+          "mode": "100644"
+        },
+        {
+          "path": "tests/test_owner_manifest_metadata.py",
+          "bytes": 8141,
+          "sha256": "75b58645a5521ddc2d94cba157985791af096b1862084f31f44f93cca5315b0b",
+          "gitBlob": "c70b89056654b2948d7366f1f70a7182d3a302ff",
+          "mode": "100644"
+        }
+      ],
+      "focusedTests": 23,
+      "receiptDestination": "maldous/offmenu PR30; existing approved destination",
+      "executionBoundary": "Actual execution remains owner step unless supported existing owner identity route is verified. No floating branch or overwrite of dirty checkout. Existing gh authentication only; no credential entry, login or grant.",
+      "adminHelperIntegrated": false,
+      "actualExecution": false,
+      "receiptPublished": false
     }
   },
   "priorGlobalPreparationCurrentState": {
@@ -3794,5 +3926,82 @@
       ],
       "sourceManifestBoundary": "Fourteen source/test/docs/template paths pinned; this ledger is the fifteenth path and its own final hash belongs in the external integration manifest, avoiding self-reference."
     }
+  },
+  "priorPR38CurrentState": {
+    "status": "global-completion-open-reviewed-offline-bindings-prepared",
+    "asOfUTC": "2026-10-18T03:13:00Z",
+    "publication": {
+      "status": "merged-develop-pr37-offline-foo-census-terminal-success",
+      "verifiedPriorCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "integrate_verified_develop_baseline only",
+      "note": "Actual merged source and one terminal offline assessment verified. This receipt update has no claimed own future commit SHA; source acquisition/admission and country completion remain open."
+    },
+    "currentExecution": {
+      "sourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "sourceStatus": "Reviewed global-readiness offline assessment passed all12steps on Foo; no acquisition/source admission or country completion",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Five offline parser adapters reviewed; zero production admissions. Pinned v1 service target is identified; live drift remains unverified and additional metadata views require separately reviewed extension and specific security approval before change."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "latestExecutedControlCommit": "160bd4db49faa46636fd27d70cc3d65557f5f2fb",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "c9adb646d4051457f54451b64c2b86d08ac102b1",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+      "selectedRepositoryBase": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
+      "sourceCommitMeaning": "Latest executed immutable source/control for offline global-readiness. Historical France native crash and no-retry restrictions are preserved in prior snapshots and holds.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Qualify the next eligible source/cache/rights binding with verified provenance and acquisition freshness; no repeat census or automatic network admission",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    },
+    "activeWork": [
+      "Global country dataset completion remains primary: qualify executable source bindings against rights/release/adapter and verified cache acquisition evidence",
+      "Preserve all source/native-crash/health/security/environment restrictions and honest unsupported/held states",
+      "Keep proven automatic completion route enabled; reconcile next unique real request only after independent source qualification"
+    ],
+    "nextPriorities": [
+      "TOP: qualify dependency-ready source/domain bindings for actual country dataset completion, rather than count successful census as completion",
+      "Use existing verified cached inputs and at least30-day reuse; establish original acquisition timestamps or retain freshness unknown",
+      "Close preserved payload-location/rights/adapter compatibility gaps with bounded evidence; do not invent source routes or permissions",
+      "No additional offline census job without a concrete new input or changed condition"
+    ]
   }
 }
