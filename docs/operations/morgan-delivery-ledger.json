@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "merged-nonproduction-baseline-postmerge-ci-passed-open-holds",
-  "asOfUTC": "2026-10-18T02:20:26Z",
+  "status": "global-dataset-completion-primary-pr36-bounded-ci-correction",
+  "asOfUTC": "2026-10-18T02:32:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "PR35 merged and postmerge CI passed. Next six-file recovery candidate has 18 passing focused tests; independent review and sole-writer assignment pending."
+      "currentBlocker": "Global harness/acquisition preparation is primary and independent. PR36 head96b5b6cac41cdb94499026af882b96f30ddb6e5d passed677webtests; deterministic catalogue correction under review, full CI pending."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
@@ -101,12 +101,12 @@
       "state": "open",
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
-    "publicationWriter": "None assigned to this recovery candidate; parent assigns sole writer after independent review",
+    "publicationWriter": "integrate_verified_develop_baseline; sole authorized repository writer",
     "selectedRepositoryBase": "2266e85046eb22d5baccba09149c0f3b70dadd25",
     "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
     "currentUserPriority": {
-      "top": "Repository consolidation and ledger consistency",
-      "next": "Global all-country deterministic refresh",
+      "top": "Global all-country dataset completion",
+      "next": "Finish bounded PR36 recovery safely; no further optional helper batches",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -276,6 +276,12 @@
       "eventId": "pr35-merge-readback-and-next-bounded-recovery",
       "status": "merged-baseline-next-candidate-local",
       "description": "Verified develop and accepted tree, terminal PR35 receipt and postmerge run39088973540 success. Recovered six exact immutable Git blobs and ran18focused tests with merged-baseline dependencies. Next batch review/publication pending; historical snapshots and all holds retained."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T02:32:00Z",
+      "eventId": "global-datasets-primary-pr36-bounded-followthrough",
+      "status": "priority-updated-no-data-completion-claim",
+      "description": "Parent conveyed owner priority correction: global country dataset completion is primary after PR35. Existing PR36 is bounded secondary follow-through; current677webtests pass but i18n inventory needs exact generator regeneration. Source/runtime/rights/health/Foo custody holds unchanged; no new data execution or admission claimed."
     }
   ],
   "lanes": [
@@ -641,10 +647,9 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "TOP: review and integrate next dependency-ready recovery batch on verified merged develop with one parent-assigned writer",
-    "Retain exact historical provenance and complete remaining semantic dispositions without blanket closure",
-    "After authorized assembly run combined CI and verify exact immutable publication/merge receipts",
-    "NEXT: global all-country deterministic refresh remains subject to source/runtime holds and 30-day cached-input reuse"
+    "TOP: global all-country dataset completion through existing deterministic registry/harness and preserved implementations; retain all source/runtime holds and cached-input reuse requirements",
+    "Finish PR36 with reviewed deterministic catalogue correction, full CI and expected-head merge; bounded secondary work",
+    "Do not start optional helper recovery batches; preserve exact provenance and remaining semantic/custody dispositions"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1095,7 +1100,8 @@
     "note": "PR35 is merged. Historical premerge publication/acceptance snapshots are preserved. This next recovery candidate is local and not yet independently approved or published."
   },
   "activeWork": [
-    "Prepare six-file dependency-ready recovery batch and existing ledger reconciliation for independent review; no publication yet",
+    "Global country dataset completion and independent deterministic harness/acquisition preparation are highest priority",
+    "Sole writer finishes existing PR36 without delaying independent global preparation; no optional helper batch expansion",
     "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
     "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
   ],
@@ -2775,7 +2781,7 @@
         "Independent code/baseline tests and revised artifact-scope ledger reconciliation"
       ],
       "nextPriorities": [
-        "TOP: consolidate existing repository into one working develop baseline with ledger↔repository consistency",
+        "TOP: consolidate existing repository into one working develop baseline with ledger\u2194repository consistency",
         "Sole writer reconciles prior interruption and current remote state before any retry",
         "Complete independent remaining product/docs/knowledge semantic dispositions; no blanket416closure",
         "After authorized assembly run combined tests and reconcile exact paths/SHAs/results",
@@ -2898,5 +2904,70 @@
         "Future publication commit and CI are not claimed"
       ]
     }
+  },
+  "priorRecoveryPreparationCurrentState": {
+    "status": "merged-nonproduction-baseline-postmerge-ci-passed-open-holds",
+    "asOfUTC": "2026-10-18T02:20:26Z",
+    "currentExecution": {
+      "sourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "sourceStatus": "Application CI passed configured steps; France native002 terminal native crash, further data jobs held",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "PR35 merged and postmerge CI passed. Next six-file recovery candidate has 18 passing focused tests; independent review and sole-writer assignment pending."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "latestExecutedControlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "55975255474e17d5f82906f8a5dafb319ad18934",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "None assigned to this recovery candidate; parent assigns sole writer after independent review",
+      "selectedRepositoryBase": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
+      "currentUserPriority": {
+        "top": "Repository consolidation and ledger consistency",
+        "next": "Global all-country deterministic refresh",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    },
+    "nextPriorities": [
+      "TOP: review and integrate next dependency-ready recovery batch on verified merged develop with one parent-assigned writer",
+      "Retain exact historical provenance and complete remaining semantic dispositions without blanket closure",
+      "After authorized assembly run combined CI and verify exact immutable publication/merge receipts",
+      "NEXT: global all-country deterministic refresh remains subject to source/runtime holds and 30-day cached-input reuse"
+    ],
+    "activeWork": [
+      "Prepare six-file dependency-ready recovery batch and existing ledger reconciliation for independent review; no publication yet",
+      "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
+      "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
+    ]
   }
 }

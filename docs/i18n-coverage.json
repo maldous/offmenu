@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 2994,
+  "messages": 3000,
   "arabicTranslated": 376,
-  "arabicMissing": 2618,
+  "arabicMissing": 2624,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -3853,9 +3853,27 @@
       ],
       "arabic": false
     },
+    "Complete numerator and positive compatible denominator required": {
+      "sources": [
+        "public/reference-profile-model.js"
+      ],
+      "arabic": false
+    },
+    "Complete numerator required": {
+      "sources": [
+        "public/reference-profile-model.js"
+      ],
+      "arabic": false
+    },
     "Complete orders in the retailer website. This extension does not access passwords, cookies, payment details or checkout controls. It uses no offmenu-owned retailer credentials.": {
       "sources": [
         "extension/popup.html"
+      ],
+      "arabic": false
+    },
+    "Complete person-day amount and named compatible life-stage reference required": {
+      "sources": [
+        "public/reference-profile-model.js"
       ],
       "arabic": false
     },
@@ -4791,6 +4809,12 @@
     "Descriptive planned intervals only; no actual exercise, energy, prescription or clinical inference": {
       "sources": [
         "public/activity-schedule-model.js"
+      ],
+      "arabic": false
+    },
+    "Descriptive reference coverage only. No adequacy, deficiency, safety or overall health ranking. Admission and comparison gates remain with the caller.": {
+      "sources": [
+        "public/reference-profile-model.js"
       ],
       "arabic": false
     },
@@ -5794,6 +5818,12 @@
     "Expected at most 32 explicit terms of 1–100 characters": {
       "sources": [
         "public/meal-preference-model.js"
+      ],
+      "arabic": false
+    },
+    "Expected bounded basket/1.1 result": {
+      "sources": [
+        "public/reference-profile-model.js"
       ],
       "arabic": false
     },
@@ -15804,6 +15834,12 @@
     "Verify reuse terms": {
       "sources": [
         "public/sources.js"
+      ],
+      "arabic": false
+    },
+    "Version-bound serving mass or fraction required": {
+      "sources": [
+        "public/reference-profile-model.js"
       ],
       "arabic": false
     },
