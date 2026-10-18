@@ -1,0 +1,35 @@
+{
+  "fixture": "authored-only",
+  "inputs": [
+    {
+      "path": "table.csv",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "bytes": 17,
+      "headers": [
+        "authored label",
+        "authored value"
+      ],
+      "releaseId": "authored-member-v1",
+      "selector": "/tables/0",
+      "selectorEvidence": {
+        "path": "evidence.json",
+        "sha256": "965af6bbc96692f416c88ed42b3380435a6f92d1a022486bffc118f33ca78cfd"
+      }
+    },
+    {
+      "path": "products.csv",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "bytes": 23,
+      "headers": [
+        "authored id",
+        "authored name"
+      ],
+      "releaseId": "authored-resource-v2",
+      "selector": "/tables/1",
+      "selectorEvidence": {
+        "path": "evidence.json",
+        "sha256": "965af6bbc96692f416c88ed42b3380435a6f92d1a022486bffc118f33ca78cfd"
+      }
+    }
+  ]
+}

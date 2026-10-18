@@ -1,0 +1,19 @@
+{
+  "captureAt": "2026-10-01T00:00:00Z",
+  "sourceId": "authored-w07",
+  "release": "fixture-1",
+  "measure": {
+    "value": "1,25",
+    "unit": "g",
+    "basis": {
+      "amount": "100",
+      "unit": "g"
+    }
+  },
+  "zero": 0,
+  "unknown": null,
+  "names": [
+    "Samoa",
+    "American Samoa"
+  ]
+}

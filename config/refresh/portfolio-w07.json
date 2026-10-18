@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "offmenu-w07-bindings/1",
+  "scope": "retained-metadata-only; no SourceContract, source body operation or source permission",
+  "requiredCountries": [
+    "AQ",
+    "AR",
+    "AS",
+    "AT"
+  ],
+  "requiredDataTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "bindings": [
+    {
+      "bindingId": "aq-ase-education",
+      "country": "AQ",
+      "dataType": "recipes",
+      "sourceId": "ase-polar-education",
+      "releaseId": "Polar-Explorer-Cookbook-publisher-original",
+      "sourceRole": "education-article",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "not-applicable-to-type",
+      "manifest": {
+        "path": "metadata/aq-ase-education.json",
+        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-20/AQ/receipt.json",
+        "bytes": 18798,
+        "sha256": "abeb889c1a0e531659057651f494bcbc56dc583f0dee512e38524c2505100db5"
+      },
+      "acquiredAtSelector": "/responses/0/utc",
+      "acquisitionKind": "original-response-receipt",
+      "fields": [
+        {
+          "name": "description",
+          "selector": "/data_contexts/0",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "education-article-is-not-cookbook",
+        "source-use-unqualified"
+      ],
+      "sourceDataOperations": []
+    },
+    {
+      "bindingId": "ar-provincial-recipe",
+      "country": "AR",
+      "dataType": "recipes",
+      "sourceId": "buenos-aires-provincial-recetario",
+      "releaseId": "May2023/January2025",
+      "sourceRole": "provincial-recipe-document",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "source-context-only",
+      "manifest": {
+        "path": "metadata/ar-provincial-recipe.json",
+        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/AR/0c345194eb5b0bfc330e/receipt.json",
+        "bytes": 1907,
+        "sha256": "0bf3950dbaf4547aadbffdfcc8a97e228d6af1df9e45692729d3b5cc867fe67b"
+      },
+      "acquiredAtSelector": "/requests/0/utc",
+      "acquisitionKind": "original-response-receipt",
+      "fields": [
+        {
+          "name": "extent",
+          "selector": "/extent",
+          "unitSelector": null,
+          "basisSelector": null
+        },
+        {
+          "name": "use",
+          "selector": "/licence",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "recipe-use-and-semantic-acceptance-unqualified"
+      ],
+      "sourceDataOperations": []
+    },
+    {
+      "bindingId": "as-agricultural-census",
+      "country": "AS",
+      "dataType": "retailers/providers",
+      "sourceId": "usda-nass-as-census",
+      "releaseId": "2023-released-2025-04-24",
+      "sourceRole": "aggregate-agriculture-statistics",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "not-applicable-to-type",
+      "manifest": {
+        "path": "metadata/as-agricultural-census.json",
+        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-24/AS/c135db833dfd5ef7/receipt.json",
+        "bytes": 2147,
+        "sha256": "31563b6f386762acd0ea769a6eb038c7ec05719df5decf0c63a34cdae17f891d"
+      },
+      "acquiredAtSelector": "/utc",
+      "acquisitionKind": "original-response-receipt",
+      "fields": [
+        {
+          "name": "extent",
+          "selector": "/extent",
+          "unitSelector": null,
+          "basisSelector": null
+        },
+        {
+          "name": "use",
+          "selector": "/rightsBasis",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "aggregate-statistics-not-provider-identities",
+        "source-admission-withheld"
+      ],
+      "sourceDataOperations": []
+    },
+    {
+      "bindingId": "as-pndb-metadata",
+      "country": "AS",
+      "dataType": "nutrition",
+      "sourceId": "SPC_REG_2020_PNDB_v01_M",
+      "releaseId": "01",
+      "sourceRole": "regional-reference-metadata",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "unknown",
+      "manifest": {
+        "path": "metadata/as-pndb-metadata.json",
+        "localPath": "/home/user/src/offmenu-data/source-access-20261013/8ae1579251539fe2b3ba7a67.json",
+        "bytes": 830,
+        "sha256": "47af2c8434c72ad9b2b7b2bdf1477613bde1cc23f9a82acb0767089ba2f97217"
+      },
+      "acquiredAtSelector": "/checkedAt",
+      "acquisitionKind": "metadata-response",
+      "fields": [
+        {
+          "name": "captureScope",
+          "selector": "/scope",
+          "unitSelector": null,
+          "basisSelector": null
+        },
+        {
+          "name": "rightsDecision",
+          "selector": "/rightsDecision",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "AS-membership-unknown-not-excluded",
+        "dataset-specific-use-unqualified",
+        "units-basis-definitions-unqualified"
+      ],
+      "sourceDataOperations": []
+    },
+    {
+      "bindingId": "at-market-error",
+      "country": "AT",
+      "dataType": "retailers/providers",
+      "sourceId": "vienna-market-catalogue",
+      "releaseId": "snapshot-20261015",
+      "sourceRole": "http-error-nondata",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "not-applicable-to-type",
+      "manifest": {
+        "path": "metadata/at-market-error.json",
+        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/AT/receipt.json",
+        "bytes": 8305,
+        "sha256": "438e6b48c4475554cd5675eff2d9ff8f315c440354c1ef97278446c1ba2a81f7"
+      },
+      "acquiredAtSelector": "/responses/0/utc",
+      "acquisitionKind": "original-response-receipt",
+      "fields": [
+        {
+          "name": "httpStatus",
+          "selector": "/responses/0/status",
+          "unitSelector": null,
+          "basisSelector": null
+        },
+        {
+          "name": "extent",
+          "selector": "/extent",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "http404-is-not-market-data",
+        "no-retry"
+      ],
+      "sourceDataOperations": []
+    },
+    {
+      "bindingId": "at-corema-image",
+      "country": "AT",
+      "dataType": "recipes",
+      "sourceId": "corema-w1.95",
+      "releaseId": "snapshot20261015",
+      "sourceRole": "image-object-reference",
+      "operation": "stage-retained-metadata",
+      "metadataUse": "permitted-retained-metadata",
+      "applicability": "source-context-only",
+      "manifest": {
+        "path": "metadata/at-corema-image.json",
+        "localPath": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/AT/receipt.json",
+        "bytes": 8305,
+        "sha256": "438e6b48c4475554cd5675eff2d9ff8f315c440354c1ef97278446c1ba2a81f7"
+      },
+      "acquiredAtSelector": "/continuation/responses/0/utc",
+      "acquisitionKind": "original-response-receipt",
+      "fields": [
+        {
+          "name": "textUseStatus",
+          "selector": "/continuation/results/1/status",
+          "unitSelector": null,
+          "basisSelector": null
+        }
+      ],
+      "holds": [
+        "image-licence-not-recipe-text-use",
+        "commercial-recipe-use-unqualified"
+      ],
+      "sourceDataOperations": []
+    }
+  ],
+  "unfilledCells": "Every country/type cell still requires its own source manifest, applicable use, field origins and independent semantic/scope acceptance. This is not country coverage.",
+  "ASMembershipEvidence": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-07/B01-W07/AS-eligibility-evidence.json",
+    "sha256": "ec48632abf5f798c004fb003b8da16babfc47a7577c32968c92616344190b0b6",
+    "scope": "Retained evidence pointer only; AS membership unknown; no country eligibility grant."
+  }
+}

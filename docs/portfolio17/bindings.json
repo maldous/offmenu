@@ -1,0 +1,589 @@
+{
+  "schemaVersion": "offmenu-portfolio17-bindings/1",
+  "scope": "Metadata code only; no source-body or payload admission. Evidence pins retained from selected receipts; body paths never opened.",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "bindings": [
+    {
+      "bindingId": "nz-cheapeats",
+      "country": "NZ",
+      "type": "recipes",
+      "sourceId": "heartfoundation-cheapeats",
+      "releaseId": "May2025-receipt-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-17/NZ/receipt.json",
+          "sha256": "58af057d2a687211f742a1df0604a1b5ef85d8469aca2c1dda1c6c4f2b0a7ad2",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/sources/1/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/sources/1/originals"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/sources/1/licence"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": {
+        "evidence": "receipt",
+        "selector": "/sources/1/requests/0/utc"
+      },
+      "retentionEvidence": null,
+      "acquisitionScope": "receipt-reported-original-document",
+      "holds": [
+        "private-extraction-held",
+        "source-retention-unqualified"
+      ],
+      "requiredInputs": [
+        {
+          "field": "private recipe-use/retention/attribution decision",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "exact recipe/page selector",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "si-recipe-book",
+      "country": "SI",
+      "type": "recipes",
+      "sourceId": "slovenian-presidency-recipe-book",
+      "releaseId": "English02June2021-receipt-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-54/SI/3fe7c22fa1f2325b5d91ad39/receipt.json",
+          "sha256": "6854c47e45f324da71db5d68f857ed8433a4545cd63f6fa96403c59b776ca6f0",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/version"
+        },
+        "originalPath": {
+          "evidence": "receipt",
+          "selector": "/path"
+        },
+        "originalSha256": {
+          "evidence": "receipt",
+          "selector": "/sha256"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/redistribution_licence"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": {
+        "evidence": "receipt",
+        "selector": "/utc"
+      },
+      "retentionEvidence": null,
+      "acquisitionScope": "receipt-reported-original-document",
+      "holds": [
+        "source-use-and-native-custody-unresolved"
+      ],
+      "requiredInputs": [
+        {
+          "field": "actual native custodian",
+          "owner": 54,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "edition/recipe selector/use/retention grant",
+          "owner": 54,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "si-statistical",
+      "country": "SI",
+      "type": "prices/baskets",
+      "sourceId": "stat-si-doc14458",
+      "releaseId": "September2025-receipt-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-54/SI/bd6927bd1123d445c44ea00b/receipt.json",
+          "sha256": "dde28e741a9461564928be7ef12475f6c5b7ced840a657e029f48896ece45bf1",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/version"
+        },
+        "originalPath": {
+          "evidence": "receipt",
+          "selector": "/path"
+        },
+        "originalSha256": {
+          "evidence": "receipt",
+          "selector": "/sha256"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/acquisition_rights"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": {
+        "evidence": "receipt",
+        "selector": "/utc"
+      },
+      "retentionEvidence": null,
+      "acquisitionScope": "receipt-reported-original-document",
+      "holds": [
+        "source-use-and-native-custody-unresolved"
+      ],
+      "requiredInputs": [
+        {
+          "field": "exact issuer/edition/attribution",
+          "owner": 54,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "source-native observation unit/basis/selector",
+          "owner": 54,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "retention/use decision",
+          "owner": 54,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "sy-worldbank",
+      "country": "SY",
+      "type": "prices/baskets",
+      "sourceId": "worldbank-catalog4507",
+      "releaseId": "2025-11-24-publisher-metadata",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-17/SY/receipt.json",
+          "sha256": "1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/sources/1/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/sources/1/originals"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/sources/1/licence"
+        },
+        "responseKind": {
+          "evidence": "receipt",
+          "selector": "/sources/1/requests/0/content_type"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "metadata-page-only-no-dataset-acquired",
+      "holds": [
+        "metadata-only-no-dataset",
+        "exact-source-use-and-retention-unbound"
+      ],
+      "requiredInputs": [
+        {
+          "field": "retained CSV manifest and release/hash",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "geo_id/year/month/currency and commodity field selectors",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "exact licence/attribution/retention decision",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "sy-wfp",
+      "country": "SY",
+      "type": "prices/baskets",
+      "sourceId": "wfp-0000166460",
+      "releaseId": "April2025-receipt-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-17/SY/receipt.json",
+          "sha256": "1c63f5cbb2e67f4956d9dd12e1b228febab1570632fee4c5f908e988e517a05c",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/sources/0/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/sources/0/originals"
+        },
+        "status": {
+          "evidence": "receipt",
+          "selector": "/sources/0/requests/0/status"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/sources/0/licence"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "failed-response-only",
+      "holds": [
+        "http403-no-retry-no-alternate-actor"
+      ],
+      "requiredInputs": [
+        {
+          "field": "no dataset original; failed response cannot stage data",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "ug-harvestplus",
+      "country": "UG",
+      "type": "nutrition",
+      "sourceId": "harvestplus-uganda2012",
+      "releaseId": "2012-metadata-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-acquisition-20261015/UG/composition/owner-43/acquisition-receipt.json",
+          "sha256": "a5f2baf9349231f16e10ad6c4396048fb074a156dd132ea80f29439e517b7524",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/releaseIdentity"
+        },
+        "originalPath": {
+          "evidence": "receipt",
+          "selector": "/datasetPath"
+        },
+        "originalAcquired": {
+          "evidence": "receipt",
+          "selector": "/datasetAcquired"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/rights"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "catalogue-and-rights-metadata-only",
+      "holds": [
+        "publisher-use-held-no-original"
+      ],
+      "requiredInputs": [
+        {
+          "field": "publisher permission",
+          "owner": 43,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "retained original/table selector/unit/basis/method",
+          "owner": 43,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "retention/attribution",
+          "owner": 43,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "ug-handbook",
+      "country": "UG",
+      "type": "dietary references",
+      "sourceId": "usaid-pa00tbct",
+      "releaseId": "2015-10",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-44/UG/1466e2066fbe86a459dd/receipt.json",
+          "sha256": "1cce17c2444d29f5fb78c45e0135f3968666d802808c9dbd0f6148495473743a",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/original_files"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/acquisition_rights"
+        },
+        "failure": {
+          "evidence": "receipt",
+          "selector": "/requests/0/error"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "failure-metadata-only",
+      "holds": [
+        "dns-failure-no-retry"
+      ],
+      "requiredInputs": [
+        {
+          "field": "no retained original or accepted use/selector manifest",
+          "owner": 44,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "ug-ubos",
+      "country": "UG",
+      "type": "prices/baskets",
+      "sourceId": "ubos-cpi",
+      "releaseId": "2026-07",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-followthrough-20261015/owner-44/UG/58ce006d2e28b4180e8f/receipt.json",
+          "sha256": "fe89bef5781eec1c271af8a2ea2a91f0a045e2445212650b2e1f9da2148cfc96",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/original_files"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/acquisition_rights"
+        },
+        "failure": {
+          "evidence": "receipt",
+          "selector": "/requests/0/error"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "failure-metadata-only",
+      "holds": [
+        "tls-failure-no-bypass"
+      ],
+      "requiredInputs": [
+        {
+          "field": "no retained original or accepted use/selector manifest",
+          "owner": 44,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    },
+    {
+      "bindingId": "ug-unbs-systems",
+      "country": "UG",
+      "type": "retailers/providers",
+      "sourceId": "unbs-certified-systems",
+      "releaseId": "2026-10-13-snapshot-receipt-declared",
+      "adapterSourceId": null,
+      "evidence": {
+        "receipt": {
+          "path": "originals/country-acquisition-20261015/source-queue/owner-17/4345c0e3ab7660712861/receipt.json",
+          "sha256": "9c8965bb8498b88c3d8ae56340269e99748728835af9313ed0f9dba9c99ec1fc",
+          "metadataOnly": true
+        }
+      },
+      "fields": {
+        "releaseLiteral": {
+          "evidence": "receipt",
+          "selector": "/release"
+        },
+        "originalManifest": {
+          "evidence": "receipt",
+          "selector": "/originals"
+        },
+        "useEvidence": {
+          "evidence": "receipt",
+          "selector": "/access/rights_decision"
+        },
+        "scope": {
+          "evidence": "receipt",
+          "selector": "/extent"
+        },
+        "nativeUnit": {
+          "unknown": true
+        },
+        "nativeBasis": {
+          "unknown": true
+        },
+        "recordSelector": {
+          "unknown": true
+        }
+      },
+      "originalAcquisition": null,
+      "retentionEvidence": null,
+      "acquisitionScope": "retained-HTML-reference-not-read",
+      "holds": [
+        "primary-licence-review-held",
+        "no-countrywide-coverage"
+      ],
+      "requiredInputs": [
+        {
+          "field": "company/scope field selector dictionary",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        },
+        {
+          "field": "private use/retention/attribution decision",
+          "owner": 17,
+          "state": "NOT_HELD_OR_UNQUALIFIED"
+        }
+      ]
+    }
+  ],
+  "countryRequirements": {
+    "NZ": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "SI": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "SY": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "UG": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ]
+  }
+}

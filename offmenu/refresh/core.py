@@ -211,12 +211,20 @@ def atomic_json(path, value):
 def writer_lock(path):
     """Kernel ownership survives neither exit nor SIGKILL; keep the inode stable."""
     path = safe_path(path)
-    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    descriptor = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
     try:
+        opened = os.fstat(descriptor)
+        if not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1:
+            raise RefreshError('unsafe-writer-lock')
         try:
             fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError as error:
             raise RefreshError('writer-lock-held') from error
+        # Recheck the opened inode before writing: a lock alias must never
+        # truncate another file, including one linked during acquisition.
+        locked = os.fstat(descriptor)
+        if not stat.S_ISREG(locked.st_mode) or locked.st_nlink != 1:
+            raise RefreshError('unsafe-writer-lock')
         os.ftruncate(descriptor, 0)
         os.write(descriptor, canonical({'pid': os.getpid()}))
         os.fsync(descriptor)

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "offmenu-portfolio18-metadata/1",
+  "bindingId": "authored-only",
+  "sourceId": "authored-source",
+  "releaseId": "fixture-v1",
+  "inputs": {
+    "tiny.csv": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "originalAcquiredAt": "2026-10-01T00:00:00Z",
+  "validatedAt": "2026-10-02T00:00:00Z"
+}

@@ -1,0 +1,29 @@
+{
+  "fixture": "authored synthetic metadata only; no publisher rows or source bodies",
+  "tables": [
+    {
+      "source": {
+        "path": "/authored-only/table.csv",
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "bytes": 17
+      },
+      "header": [
+        "authored label",
+        "authored value"
+      ],
+      "version": "authored-member-v1"
+    },
+    {
+      "source": {
+        "path": "/authored-only/products.csv",
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "bytes": 23
+      },
+      "header": [
+        "authored id",
+        "authored name"
+      ],
+      "resourceVersion": "authored-resource-v2"
+    }
+  ]
+}
