@@ -1,0 +1,379 @@
+{
+  "schemaVersion": "offmenu-portfolio63-bindings/1",
+  "bindings": [
+    {
+      "country": "GW",
+      "sourceKey": "gw-wafct2019-regional",
+      "declaredIdentity": {
+        "sourceId": "4e56d6ada736c17d1f91",
+        "release": "WAFCT2019",
+        "geography": "Western Africa",
+        "countryMembership": null
+      },
+      "metadataAssets": [
+        {
+          "id": "gw-manifest",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-34/GW-WAFCT2019-regional-research/manifest.json",
+          "sha256": "a5022e94042afcc622b576d771f86af2e06e6d00c8b6bd6a4e7ad4a936e6d8f5",
+          "selectors": [
+            "/sourceAsset",
+            "/sourceSheet",
+            "/counts",
+            "/stageCounts"
+          ]
+        },
+        {
+          "id": "gw-use",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-34/GW-WAFCT2019-regional-research/use-and-attribution.json",
+          "sha256": "a59b13dff74d77a028becba0bb6f27034fc179e2b1dfaff8959e121f817cd42f",
+          "selectors": [
+            "/selectedUse",
+            "/copyrightCell",
+            "/citationCell",
+            "/notGrantedOrPerformed"
+          ]
+        }
+      ],
+      "fieldOriginDeclarations": {
+        "metadataId": "gw-manifest",
+        "worksheet": "03 NV_sum_39 (per 100g EP)",
+        "basis": "per 100g EP",
+        "valueOrigin": "source row and original cell address/type/literal retained in existing derived candidate; not reopened",
+        "qualifier": "9GW label mentions are multi-country fortified-oil descriptions; no analytical sample/market membership",
+        "canonicalUnit": null
+      },
+      "originalReferencesOnly": [
+        {
+          "sourceReference": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-34/4e56d6ada736c17d1f91/WAFCT_2019.xlsx",
+          "recordedSHA256": "bca8e44f7a41fdd538998d9e31849ed26af4703ddb5a451803d73a2d9532cc85",
+          "acquiredAt": "2026-10-14T21:12:44.402358+00:00",
+          "acquisitionTimeOrigin": "gw-manifest:/sourceAsset/utc",
+          "bodyReadAuthorizedByBinding": false
+        }
+      ],
+      "holds": [
+        "country-membership-unreviewed",
+        "canonical-adaptation-commercial-use-not-cleared",
+        "no-data-stage-admission"
+      ],
+      "unknowns": [
+        "GW sample geography",
+        "canonical nutrient definitions",
+        "preparation/market qualification"
+      ],
+      "countryTypeApplicability": [
+        {
+          "type": "ingredients",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "recipes",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "nutrition",
+          "applicability": "unreviewed",
+          "role": "regional-source-nutrition-context"
+        },
+        {
+          "type": "retailers/providers",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "prices/baskets",
+          "applicability": "unreviewed",
+          "role": "regional-source-nutrition-context"
+        },
+        {
+          "type": "dietary references",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        }
+      ]
+    },
+    {
+      "country": "PE",
+      "sourceKey": "pe-ins-composition-reference",
+      "declaredIdentity": {
+        "sourceId": "INS:20.500.14196/1773",
+        "release": null,
+        "repositoryYear": "2023",
+        "pdfFrontMatter": "11 edición digital (Marzo 2025)"
+      },
+      "metadataAssets": [
+        {
+          "id": "pe-receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/PE/composition/owner-13/acquisition-receipt.json",
+          "sha256": "2d22375c2e4c76304c89ad53ac7ae89c8303cbd3e7474bd85bd8beaf80e41d4f",
+          "selectors": [
+            "/publisher",
+            "/releaseIdentity",
+            "/rights",
+            "/originals/0"
+          ]
+        }
+      ],
+      "fieldOriginDeclarations": {
+        "metadataId": "pe-receipt",
+        "rightsPointer": "/rights",
+        "nutrientColumns": null,
+        "preparation": null,
+        "nativeUnit": null,
+        "basis": null,
+        "declarationOnly": true
+      },
+      "originalReferencesOnly": [
+        {
+          "sourceReference": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/PE/composition/owner-13/tpca-2025-2.pdf",
+          "recordedSHA256": "f6b32f1834b9640b533cb06cdca40b4946f331ebbd69b3bd11a59af5e4848485",
+          "acquiredAt": "2026-10-14T20:48:26.473192+00:00",
+          "acquisitionTimeOrigin": "pe-receipt:/sourceRequests/2/finishedUTC",
+          "bodyReadAuthorizedByBinding": false
+        }
+      ],
+      "holds": [
+        "commercial-transformed-use-conflict-unresolved",
+        "MINSA403-no-retry",
+        "original-native-custody-unestablished"
+      ],
+      "unknowns": [
+        "edition reconciliation",
+        "nutrient table selectors/unit/basis",
+        "operation-specific reuse decision"
+      ],
+      "countryTypeApplicability": [
+        {
+          "type": "ingredients",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "recipes",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "nutrition",
+          "applicability": "unreviewed",
+          "role": "composition-original-reference-only"
+        },
+        {
+          "type": "retailers/providers",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "prices/baskets",
+          "applicability": "unreviewed",
+          "role": "composition-original-reference-only"
+        },
+        {
+          "type": "dietary references",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        }
+      ]
+    },
+    {
+      "country": "TV",
+      "sourceKey": "tv-cpi-2026q2-metadata",
+      "declaredIdentity": {
+        "sourceId": "stats.gov.tv:CPI",
+        "release": "2026-Q2",
+        "roles": [
+          "report",
+          "release-tables"
+        ]
+      },
+      "metadataAssets": [
+        {
+          "id": "tv-report",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/TV/4ced8fa5812f439b13f805ab/receipt.json",
+          "sha256": "a355555953e9544c5cd1c433ec764d5b740e74f1c75b28279af9bf0dcfc31de3",
+          "selectors": [
+            "/url",
+            "/version_identity",
+            "/acquisition_permission",
+            "/redistribution"
+          ]
+        },
+        {
+          "id": "tv-tables",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/TV/f2f6aa49aa507f38a0d97bef/receipt.json",
+          "sha256": "022c615f4f3166a7a4805308004295fa54cdfb6676d24f0d3aa704e5abd43f15",
+          "selectors": [
+            "/url",
+            "/version_identity",
+            "/acquisition_permission",
+            "/format_verified"
+          ]
+        }
+      ],
+      "fieldOriginDeclarations": {
+        "metadataId": "tv-tables",
+        "tableHeaderRows": null,
+        "indexBasePeriod": null,
+        "weightsPeriod": null,
+        "nativeUnit": null,
+        "basis": "CPI identity only; no base=100 assumption, price/currency or basket mapping"
+      },
+      "originalReferencesOnly": [
+        {
+          "sourceReference": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/TV/4ced8fa5812f439b13f805ab/original.pdf",
+          "recordedSHA256": "5e6b63bc587feeec39dcbb0a45f2c717d4c231f4847fc5596c4d49f908c0f310",
+          "acquiredAt": "2026-10-14T22:13:27.384111+00:00",
+          "acquisitionTimeOrigin": "tv-report:/finished_utc",
+          "bodyReadAuthorizedByBinding": false
+        },
+        {
+          "sourceReference": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-40/TV/f2f6aa49aa507f38a0d97bef/original.xlsx",
+          "recordedSHA256": "0798a8fc2adb141ffa62b0c406a3a01e5ef1331a5c420107ba6758189e59c9f2",
+          "acquiredAt": "2026-10-14T22:13:28.808701+00:00",
+          "acquisitionTimeOrigin": "tv-tables:/finished_utc",
+          "bodyReadAuthorizedByBinding": false
+        }
+      ],
+      "holds": [
+        "index-base-weights-selectors-not-held",
+        "work-use-decision-not-held",
+        "no-index-to-item-price-substitution"
+      ],
+      "unknowns": [
+        "index base/weight reference periods",
+        "population/geographic scope",
+        "quarter/year comparison measures"
+      ],
+      "countryTypeApplicability": [
+        {
+          "type": "ingredients",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "recipes",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "nutrition",
+          "applicability": "unreviewed",
+          "role": "statistical-index-reference-only"
+        },
+        {
+          "type": "retailers/providers",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "prices/baskets",
+          "applicability": "unreviewed",
+          "role": "statistical-index-reference-only"
+        },
+        {
+          "type": "dietary references",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        }
+      ]
+    },
+    {
+      "country": "ZM",
+      "sourceKey": "zm-leeds-supply-metadata",
+      "declaredIdentity": {
+        "sourceId": "doi:10.5518/1111",
+        "release": "2022 deposited; workbook last updated August14,2020; metadata modified2024-09-03",
+        "years": "1961–2013"
+      },
+      "metadataAssets": [
+        {
+          "id": "zm-mapping",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-43/ZM-leeds-mapping.json",
+          "sha256": "21af1194e786496e540f775d6e5411d21a3ff8eafab1b4ddced8130801bdd5e7",
+          "selectors": [
+            "/sourceId",
+            "/release",
+            "/map",
+            "/basis",
+            "/basisEvidence",
+            "/methodEvidence",
+            "/licence",
+            "/attribution",
+            "/intendedUse"
+          ]
+        }
+      ],
+      "fieldOriginDeclarations": {
+        "metadataId": "zm-mapping",
+        "commodityGroup": "Dataset!A",
+        "foodItem": "Dataset!B",
+        "metric": "Dataset!C",
+        "unit": "Dataset!D",
+        "values": "Dataset!E:BE (retained cells/year/literals; not opened)",
+        "basisEvidence": "Meta information!A4:A6",
+        "nativeUnits": [
+          "g/capita/day",
+          "mg/capita/day",
+          "µg/capita/day",
+          "kcal/capita/day"
+        ],
+        "basis": "Per-capita/day historical modelled supply adjusted for household waste; not measured composition/current intake",
+        "preparation": null,
+        "canonicalUnits": null
+      },
+      "originalReferencesOnly": [
+        {
+          "sourceReference": "/home/user/src/offmenu-data/country-bundles/owner-43/COUNTRY-BUNDLE-20261016-v1/ZM/leeds-1025/data_file.xlsx",
+          "recordedSHA256": "f523179936544862da43d9c129988b41d3f0785dc05596518ead1fd340c4e06d",
+          "acquiredAt": null,
+          "acquisitionTimeOrigin": "acquisition time not copied from validation or workbook dates",
+          "bodyReadAuthorizedByBinding": false
+        }
+      ],
+      "holds": [
+        "123-canonical-targets-unaccepted",
+        "waste-factor-method-dictionary-not-held",
+        "new-operation-admission-not-supplied"
+      ],
+      "unknowns": [
+        "original acquisition timestamp for cache decision",
+        "waste factor/formula",
+        "compound-unit and metric equivalence"
+      ],
+      "countryTypeApplicability": [
+        {
+          "type": "ingredients",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "recipes",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "nutrition",
+          "applicability": "unreviewed",
+          "role": "modelled-supply-context-not-composition"
+        },
+        {
+          "type": "retailers/providers",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        },
+        {
+          "type": "prices/baskets",
+          "applicability": "unreviewed",
+          "role": "modelled-supply-context-not-composition"
+        },
+        {
+          "type": "dietary references",
+          "applicability": "unreviewed",
+          "role": "none-asserted"
+        }
+      ]
+    }
+  ]
+}

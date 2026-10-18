@@ -1,0 +1,417 @@
+{
+  "schemaVersion": "offmenu-portfolio56-metadata-binding/1",
+  "bindings": [
+    {
+      "sourceId": "es-composition-catalogue",
+      "releaseId": "catalogue-claim-2025",
+      "countries": [
+        "ES"
+      ],
+      "domains": [
+        "ingredients",
+        "nutrition"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/ES/composition/owner-52/acquisition-receipt.json",
+        "sha256": "af8341d9d8723823c8e5f2b607e0d1b131fff82ca67c9754d79693519d7e6e07"
+      },
+      "acquiredAtSelector": "/receipt_utc",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "catalogue-not-dataset",
+        "composition-release-use-unqualified"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "es-regoe",
+      "releaseId": "retained-20261015",
+      "countries": [
+        "ES"
+      ],
+      "domains": [
+        "retailers/providers"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/ES/63babc2594ee0811b0cd/receipt.json",
+        "sha256": "7c349daf5660267b95b5ad1054625ac636308a16fd51d32943445664bdac0fa6"
+      },
+      "acquiredAtSelector": "/utc",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "version": "/version"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "tls-failure-no-retry",
+        "source-use-unqualified"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "es-recipe-challenge",
+      "releaseId": "digital-edition-1898-claim",
+      "countries": [
+        "ES"
+      ],
+      "domains": [
+        "recipes"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-45/ES/continuation-8172c9e27302d1e4ee07/receipt.json",
+        "sha256": "f2bbeefaa848071905f144d105702a2d3451e4e139ece8e363763820ffbaf9b4"
+      },
+      "acquiredAtSelector": "/requests/0/utc",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "version": "/version",
+        "canonicalURL": "/canonicalURL"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "403-challenge-no-retry",
+        "recipe-selector-and-use-missing"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "ni-bcn-metadata",
+      "releaseId": "metadata-prefix-20261016",
+      "countries": [
+        "NI"
+      ],
+      "domains": [
+        "prices/baskets"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/queued89-public-metadata-20261016/owner-26/NI/manifest.json",
+        "sha256": "de9744270ebf52c5483c5b06caa7c54b8fc30b105641989eefd2af29d15b0833"
+      },
+      "acquiredAtSelector": "/utc",
+      "fields": {
+        "owner": "/owner",
+        "status": "/status"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "partial-methodology-not-dataset",
+        "challenge-no-retry",
+        "release-custodian-and-use-missing"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "tk-pasifika",
+      "releaseId": "regional-web-edition-claim-2018",
+      "countries": [
+        "TK"
+      ],
+      "domains": [
+        "recipes"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/TK/b7d5fef6032e56a8d030/receipt.json",
+        "sha256": "a84cbf14931a846ab18f804fdf2c766cf2599d5fc0cf14b54ad99dd1e4ddecdf"
+      },
+      "acquiredAtSelector": "/finishedUtc",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "release": "/release",
+        "canonicalURL": "/canonicalURL"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "printed-edition-and-recipe-selector-missing",
+        "derivative-use-and-credits-unqualified"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "tk-fisheries",
+      "releaseId": "annual-report-2024-claim",
+      "countries": [
+        "TK"
+      ],
+      "domains": [
+        "retailers/providers"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/TK/c121c27318d1ba4c5ed2/receipt.json",
+        "sha256": "a21db47af807b4054572791032c3ec9cc931e4a814c009db688a8931e8b9c9ed"
+      },
+      "acquiredAtSelector": "/finishedUtc",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "release": "/release",
+        "canonicalURL": "/canonicalURL"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "fisheries-report-not-producer-registry",
+        "source-use-and-field-scope-unqualified"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "wf-annual-report",
+      "releaseId": "economic-report-2025-claim",
+      "countries": [
+        "WF"
+      ],
+      "domains": [
+        "prices/baskets"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/WF/7d4298327af01f6741bc/receipt.json",
+        "sha256": "9dcd91b9796dfe2bfcd9332c8e556def0f1bb4ffaac8d8feaa053f448e9e47fd"
+      },
+      "acquiredAtSelector": "/finishedUTC",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "version": "/version",
+        "canonicalURL": "/canonicalURL",
+        "source_scope": "/source_scope"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "caption-selector-base-units-and-use-unqualified",
+        "annual-report-not-bqp-export"
+      ],
+      "adapter": null
+    },
+    {
+      "sourceId": "wf-landing",
+      "releaseId": "landing-20261015",
+      "countries": [
+        "WF"
+      ],
+      "domains": [
+        "prices/baskets"
+      ],
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/WF/80fd148324dc2a17c885/receipt.json",
+        "sha256": "4717e3dc1e54fee0aa9cd78e872f477760da278e00cc16753c16448775ea54c8"
+      },
+      "acquiredAtSelector": "/finishedUTC",
+      "fields": {
+        "country": "/country",
+        "owner": "/owner",
+        "status": "/status",
+        "version": "/version",
+        "canonicalURL": "/canonicalURL"
+      },
+      "unknowns": [
+        "native-units-not-bound",
+        "source-basis-not-bound",
+        "actual-dataset-staging-not-selected"
+      ],
+      "holds": [
+        "landing-not-dataset",
+        "source-use-unqualified"
+      ],
+      "adapter": null
+    }
+  ],
+  "scopeEvidence": {
+    "es-composition-catalogue": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/category-coverage-and-gaps.json",
+        "sha256": "688a92745179df5bff089d9fd32d06aacc665773fb159a9d64c6624a945fa2e3"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/deliverable-validation.json",
+        "sha256": "4a35f18de84625a1a43410b2a742baf2a762a5399afefb495866061d8d68ae6a"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "es-regoe": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/category-coverage-and-gaps.json",
+        "sha256": "688a92745179df5bff089d9fd32d06aacc665773fb159a9d64c6624a945fa2e3"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/deliverable-validation.json",
+        "sha256": "4a35f18de84625a1a43410b2a742baf2a762a5399afefb495866061d8d68ae6a"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "es-recipe-challenge": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/category-coverage-and-gaps.json",
+        "sha256": "688a92745179df5bff089d9fd32d06aacc665773fb159a9d64c6624a945fa2e3"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/ES/deliverable-validation.json",
+        "sha256": "4a35f18de84625a1a43410b2a742baf2a762a5399afefb495866061d8d68ae6a"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "ni-bcn-metadata": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/NI/category-coverage-and-gaps.json",
+        "sha256": "158aafa9c71862682cb887f402d218bfdf65fe69891ae58292271773fd494d93"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/NI/deliverable-validation.json",
+        "sha256": "7fda7bdfad88b58a9f593e116ca7379a2aff04269b826d1566a29bf570cff2ed"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "tk-pasifika": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/TK/category-coverage-and-gaps.json",
+        "sha256": "65c037851f0f0d557168b09372585b861dba6f509369a28a80671ed8330c7a6a"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/TK/deliverable-validation.json",
+        "sha256": "3d22e816a7edf126dbc4bdf0167dce2dfe8849e23b4e631bc418c863bbe3ae86"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "tk-fisheries": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/TK/category-coverage-and-gaps.json",
+        "sha256": "65c037851f0f0d557168b09372585b861dba6f509369a28a80671ed8330c7a6a"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/TK/deliverable-validation.json",
+        "sha256": "3d22e816a7edf126dbc4bdf0167dce2dfe8849e23b4e631bc418c863bbe3ae86"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "wf-annual-report": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/WF/category-coverage-and-gaps.json",
+        "sha256": "891f000c63b25d17f8ebd63d1a50cfe2e5f40f44c04099f20972098ca9512911"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/WF/deliverable-validation.json",
+        "sha256": "ad1f18fe758087db3916a31b8166ccf6055059635546744b313fd90bd451c585"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    },
+    "wf-landing": {
+      "scopeEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/WF/category-coverage-and-gaps.json",
+        "sha256": "891f000c63b25d17f8ebd63d1a50cfe2e5f40f44c04099f20972098ca9512911"
+      },
+      "retainedValidationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-56/WF/deliverable-validation.json",
+        "sha256": "ad1f18fe758087db3916a31b8166ccf6055059635546744b313fd90bd451c585"
+      },
+      "nativeUnit": null,
+      "nativeBasis": null,
+      "acquisitionClockScope": "Pinned metadata/failed-response acquisition claim only; not a valid dataset acquisition or rights grant. Local validation age never resets it.",
+      "datasetFieldSelectors": null,
+      "metadataFieldSelectorsOnly": true
+    }
+  },
+  "countryTypesRequired": {
+    "ES": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "NI": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "TK": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "WF": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ]
+  },
+  "noCountryAcceptance": true,
+  "stageExecutionAuthorized": false,
+  "sourceBodiesMustNotBeRead": true,
+  "identityScope": "Local metadata descriptor identities/release claims only, not registered or accepted dataset/source releases. Original identifiers are in pinned receipt canonicalURL/source_id. No source/fixture registration or impersonation."
+}

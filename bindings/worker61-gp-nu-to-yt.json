@@ -1,0 +1,321 @@
+{
+  "schemaVersion": "offmenu-worker61-bindings/1",
+  "sources": [
+    {
+      "sourceId": "gp-insee-release",
+      "releaseId": "InseeFlashGuadeloupe238;June2026 country-specific CPI workbook and report release",
+      "country": "GP",
+      "role": "release-page-only",
+      "domains": [
+        "prices/baskets"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-13/GP/627728a956782c48205a/receipt.json",
+        "sha256": "8e1c5da0fc253135cef5a612e9e248d13eab10323c7f904b61500410ac0e4021",
+        "bytes": 2860
+      },
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null
+        },
+        "originalPath": {
+          "selector": "/requests/0/path",
+          "unit": null,
+          "basis": null
+        },
+        "originalSHA256": {
+          "selector": "/requests/0/sha256",
+          "unit": null,
+          "basis": null
+        },
+        "workbookURL": {
+          "selector": "/observedDownloadAndRightsLinks/0/url",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/licence",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/requests/0/finishedUTC",
+      "validatedAt": null,
+      "holds": [],
+      "missing": [
+        "workbook-manifest",
+        "worksheet-cell-coordinate",
+        "native-unit-period-base",
+        "private-processing-use"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "gp-insee-workbook",
+      "releaseId": "InseeFlashGuadeloupe238;June2026",
+      "country": "GP",
+      "role": "advertised-workbook-not-held",
+      "domains": [
+        "prices/baskets"
+      ],
+      "manifest": null,
+      "fields": {
+        "nativeMeasure": {
+          "selector": null,
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": null,
+      "validatedAt": null,
+      "holds": [],
+      "missing": [
+        "retained-workbook-manifest",
+        "sheet-cell-unit-period-base",
+        "private-processing-use"
+      ],
+      "rightsStatus": "unknown",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "nu-agriculture-census",
+      "releaseId": "Agriculture Census2021",
+      "country": "NU",
+      "role": "aggregate-census-not-producer-directory",
+      "domains": [
+        "ingredients",
+        "retailers/providers"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-16/NU/bb7e01cf300e3288942d/receipt.json",
+        "sha256": "0595d9f02e6ebc6ca22e0b169948c767174cb728572c41c438fb33204885265e",
+        "bytes": 2100
+      },
+      "fields": {
+        "title": {
+          "selector": "/title",
+          "unit": null,
+          "basis": null
+        },
+        "originalPath": {
+          "selector": "/responses/0/path",
+          "unit": null,
+          "basis": null
+        },
+        "originalSHA256": {
+          "selector": "/responses/0/sha256",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/licence",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/responses/0/completed_utc",
+      "validatedAt": null,
+      "holds": [
+        "no-body-processing-without-exact-use-table-privacy"
+      ],
+      "missing": [
+        "table-cell-coordinates",
+        "crop-measure-unit-year",
+        "aggregate-privacy-disposition",
+        "edition-use-scope"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "nu-cpi",
+      "releaseId": "niue-cpi-2026-q1.pdf",
+      "country": "NU",
+      "role": "aggregate-index-not-item-prices",
+      "domains": [
+        "prices/baskets"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-53/9504474060e696fd1770/receipt.json",
+        "sha256": "b762348cf147ceb55375d756a4f41ac789257e656bf30ead4ebba921d1395743",
+        "bytes": 4801
+      },
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null
+        },
+        "originalPath": {
+          "selector": "/files/1/path",
+          "unit": null,
+          "basis": null
+        },
+        "originalSHA256": {
+          "selector": "/files/1/sha256",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/licence",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/additional_requests/1/utc",
+      "validatedAt": null,
+      "holds": [],
+      "missing": [
+        "current-custodian",
+        "table-dictionary",
+        "base-period-native-unit",
+        "private-field-binding-use"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "to-historical-policy",
+      "releaseId": "ton188937;Cabinet1995",
+      "country": "TO",
+      "role": "historical-policy-not-current-numeric-guidance",
+      "domains": [
+        "dietary references"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-37/TO/d2631305eaf98c651e77/receipt.json",
+        "sha256": "c9840ac431645316ca536f3a0b20bf7b9dac0848b3e4489b811e2c9591c87cb6",
+        "bytes": 4523
+      },
+      "fields": {
+        "title": {
+          "selector": "/title",
+          "unit": null,
+          "basis": null
+        },
+        "originalPath": {
+          "selector": "/originals/0/path",
+          "unit": null,
+          "basis": null
+        },
+        "originalSHA256": {
+          "selector": "/originals/0/sha256",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/acquisitionPermission",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/UTC",
+      "validatedAt": null,
+      "holds": [
+        "source-body-operation-unselected"
+      ],
+      "missing": [
+        "exact-edition",
+        "historical-objective-page-selector",
+        "component-reference-mapping-use"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "yt-kaweni-menu",
+      "releaseId": "Lyc\u00e9e Polyvalent Kaweni Mamoudzou restaurant application Nos Menus March\u2013June2025 official booklet",
+      "country": "YT",
+      "role": "historical-education-menu-not-recipes",
+      "domains": [
+        "retailers/providers"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-62/YT/4766a059a861757676fa/receipt.json",
+        "sha256": "29dcb0b456fb276112a922480897f21f85245a438ce7cecdfd3390e2031be59a",
+        "bytes": 2264
+      },
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null
+        },
+        "originalPath": {
+          "selector": "/responses/0/path",
+          "unit": null,
+          "basis": null
+        },
+        "originalSHA256": {
+          "selector": "/responses/0/sha256",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/acquisitionRights",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/responses/0/utc",
+      "validatedAt": null,
+      "holds": [
+        "source62-custody-and-body-hold"
+      ],
+      "missing": [
+        "current-permitted-actor",
+        "printed-and-pdf-menu-page",
+        "menu-date-course-coordinates",
+        "private-transcription-credit"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    },
+    {
+      "sourceId": "yt-daaf-memento",
+      "releaseId": "DAAF Mayotte memento2024 data2023 published2025",
+      "country": "YT",
+      "role": "failed-transport-metadata-only",
+      "domains": [
+        "retailers/providers"
+      ],
+      "manifest": {
+        "path": "src/offmenu-data/originals/country-followthrough-20261015/owner-62/YT/05317228c4625955a860/receipt.json",
+        "sha256": "0268c76d04b285b7907942954ca9cd897be2565cddce62515bca41c7dcb56dcd",
+        "bytes": 1614
+      },
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null
+        },
+        "acquired": {
+          "selector": "/completeDataset",
+          "unit": null,
+          "basis": null
+        },
+        "useEvidence": {
+          "selector": "/acquisitionRights",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": null,
+      "validatedAt": null,
+      "holds": [
+        "blocked-transport-no-retry"
+      ],
+      "missing": [
+        "complete-original",
+        "table-fields",
+        "source-use"
+      ],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    }
+  ]
+}

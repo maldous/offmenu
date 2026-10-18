@@ -1,0 +1,701 @@
+{
+  "schemaVersion": "offmenu-worker33-metadata-bindings/1",
+  "owner": 33,
+  "countries": [
+    "GH",
+    "GI",
+    "GM",
+    "GN"
+  ],
+  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "bindings": [
+    {
+      "id": "gh-price-coverage",
+      "country": "GH",
+      "kind": "price-coverage",
+      "sourceId": "retained-gh-price-coverage",
+      "releaseId": "retained-metadata-sha256:2adc4e92e9fafc021070b437b2dd8d727f0ce53e56cfcb84d8684277482657b7",
+      "publisherRelease": "WFP Ghana Food Prices resourcee877350b; retained metadata revision2026-10-11T10:43:38.231980;5209649bytes",
+      "input": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/GH/retained-price-coverage.json",
+        "sha256": "2adc4e92e9fafc021070b437b2dd8d727f0ce53e56cfcb84d8684277482657b7"
+      },
+      "parentManifest": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json",
+        "sha256": "e7bd7c84efa2a89452177d299463fd97c713422edc66c7764a5a8527300428bf"
+      },
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/GH/fc74529fc6b96386c320/wfp_food_prices_gha.csv",
+        "sha256": "74921b441ccba8254a61e238ea517129c70db480744e74ca7f78e4c89f38d2b1"
+      },
+      "countrySelectors": [
+        "/country"
+      ],
+      "fields": {
+        "inherited-row-count": {
+          "selector": "/dataRows",
+          "type": "integer",
+          "meaning": "Inherited coverage metadata, not freshly parsed or accepted rows"
+        },
+        "sample-0-date": {
+          "selector": "/sourceRowsSample/0/date",
+          "type": "string",
+          "meaning": "Publisher observation date label; collection instant unknown"
+        },
+        "sample-0-market-id": {
+          "selector": "/sourceRowsSample/0/market_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-commodity-id": {
+          "selector": "/sourceRowsSample/0/commodity_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-price": {
+          "selector": "/sourceRowsSample/0/price",
+          "type": "string",
+          "meaning": "Native lexical amount only; no quantity or FX conversion"
+        },
+        "sample-0-unit": {
+          "selector": "/sourceRowsSample/0/unit",
+          "type": "string",
+          "meaning": "Native transaction-unit label; canonical quantity basis unknown"
+        },
+        "sample-0-currency": {
+          "selector": "/sourceRowsSample/0/currency",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-priceflag": {
+          "selector": "/sourceRowsSample/0/priceflag",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-pricetype": {
+          "selector": "/sourceRowsSample/0/pricetype",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-usdprice": {
+          "selector": "/sourceRowsSample/0/usdprice",
+          "type": "string",
+          "meaning": "Publisher USD field; comparison use withheld"
+        },
+        "sample-1-date": {
+          "selector": "/sourceRowsSample/1/date",
+          "type": "string",
+          "meaning": "Publisher observation date label; collection instant unknown"
+        },
+        "sample-1-market-id": {
+          "selector": "/sourceRowsSample/1/market_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-commodity-id": {
+          "selector": "/sourceRowsSample/1/commodity_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-price": {
+          "selector": "/sourceRowsSample/1/price",
+          "type": "string",
+          "meaning": "Native lexical amount only; no quantity or FX conversion"
+        },
+        "sample-1-unit": {
+          "selector": "/sourceRowsSample/1/unit",
+          "type": "string",
+          "meaning": "Native transaction-unit label; canonical quantity basis unknown"
+        },
+        "sample-1-currency": {
+          "selector": "/sourceRowsSample/1/currency",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-priceflag": {
+          "selector": "/sourceRowsSample/1/priceflag",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-pricetype": {
+          "selector": "/sourceRowsSample/1/pricetype",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-usdprice": {
+          "selector": "/sourceRowsSample/1/usdprice",
+          "type": "string",
+          "meaning": "Publisher USD field; comparison use withheld"
+        }
+      },
+      "originalAcquiredAt": "2026-10-14T22:20:43.901723+00:00",
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/GH/fc74529fc6b96386c320/receipt.json",
+        "sha256": "7cd57cc7e937b1074b2a4650797e214a1df0c7d65e52294f097d291af0fc9861"
+      },
+      "holds": [
+        "source-operation-not-admitted"
+      ],
+      "adapter": "shared-source-adapter-unavailable",
+      "unknowns": [
+        "independent-country-acceptance",
+        "canonical-mapping",
+        "redistribution-permission",
+        "transaction-quantity-basis",
+        "actual-collection-instant",
+        "current-original-custody",
+        "operation-specific-wfp-use"
+      ],
+      "retainedCounts": {
+        "inheritedSourceRows": 39038,
+        "retainedMetadataSamples": 2
+      }
+    },
+    {
+      "id": "gn-price-coverage",
+      "country": "GN",
+      "kind": "price-coverage",
+      "sourceId": "retained-gn-price-coverage",
+      "releaseId": "retained-metadata-sha256:945a462f365be4a20594cc89a56d8a770859593217b842edbc7802387fd0c385",
+      "publisherRelease": "WFP Guinea - Food Prices 2026-10-11T10:44:45.642232",
+      "input": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/GN/retained-price-coverage.json",
+        "sha256": "945a462f365be4a20594cc89a56d8a770859593217b842edbc7802387fd0c385"
+      },
+      "parentManifest": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json",
+        "sha256": "e7bd7c84efa2a89452177d299463fd97c713422edc66c7764a5a8527300428bf"
+      },
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/GN/b94e23038bd0c27e5676/response-2.original",
+        "sha256": "ba09b313e9e1fed130b655b1def7a2a0ad171ae03aa0bc8f2672a6a9e5860683"
+      },
+      "countrySelectors": [
+        "/country"
+      ],
+      "fields": {
+        "inherited-row-count": {
+          "selector": "/dataRows",
+          "type": "integer",
+          "meaning": "Inherited coverage metadata, not freshly parsed or accepted rows"
+        },
+        "sample-0-date": {
+          "selector": "/sourceRowsSample/0/date",
+          "type": "string",
+          "meaning": "Publisher observation date label; collection instant unknown"
+        },
+        "sample-0-market-id": {
+          "selector": "/sourceRowsSample/0/market_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-commodity-id": {
+          "selector": "/sourceRowsSample/0/commodity_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-price": {
+          "selector": "/sourceRowsSample/0/price",
+          "type": "string",
+          "meaning": "Native lexical amount only; no quantity or FX conversion"
+        },
+        "sample-0-unit": {
+          "selector": "/sourceRowsSample/0/unit",
+          "type": "string",
+          "meaning": "Native transaction-unit label; canonical quantity basis unknown"
+        },
+        "sample-0-currency": {
+          "selector": "/sourceRowsSample/0/currency",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-priceflag": {
+          "selector": "/sourceRowsSample/0/priceflag",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-pricetype": {
+          "selector": "/sourceRowsSample/0/pricetype",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-0-usdprice": {
+          "selector": "/sourceRowsSample/0/usdprice",
+          "type": "string",
+          "meaning": "Publisher USD field; comparison use withheld"
+        },
+        "sample-1-date": {
+          "selector": "/sourceRowsSample/1/date",
+          "type": "string",
+          "meaning": "Publisher observation date label; collection instant unknown"
+        },
+        "sample-1-market-id": {
+          "selector": "/sourceRowsSample/1/market_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-commodity-id": {
+          "selector": "/sourceRowsSample/1/commodity_id",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-price": {
+          "selector": "/sourceRowsSample/1/price",
+          "type": "string",
+          "meaning": "Native lexical amount only; no quantity or FX conversion"
+        },
+        "sample-1-unit": {
+          "selector": "/sourceRowsSample/1/unit",
+          "type": "string",
+          "meaning": "Native transaction-unit label; canonical quantity basis unknown"
+        },
+        "sample-1-currency": {
+          "selector": "/sourceRowsSample/1/currency",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-priceflag": {
+          "selector": "/sourceRowsSample/1/priceflag",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-pricetype": {
+          "selector": "/sourceRowsSample/1/pricetype",
+          "type": "string",
+          "meaning": "Retained publisher field; no canonical identity equivalence"
+        },
+        "sample-1-usdprice": {
+          "selector": "/sourceRowsSample/1/usdprice",
+          "type": "string",
+          "meaning": "Publisher USD field; comparison use withheld"
+        }
+      },
+      "originalAcquiredAt": "2026-10-14T22:03:45.952367+00:00",
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/GN/b94e23038bd0c27e5676/receipt.json",
+        "sha256": "5c720ed6d9a4defe31e950a1701fd615eef5306c6d10b07f84bdb9504d72e2e6"
+      },
+      "holds": [
+        "source-operation-not-admitted"
+      ],
+      "adapter": "shared-source-adapter-unavailable",
+      "unknowns": [
+        "independent-country-acceptance",
+        "canonical-mapping",
+        "redistribution-permission",
+        "transaction-quantity-basis",
+        "actual-collection-instant",
+        "current-original-custody",
+        "operation-specific-wfp-use"
+      ],
+      "retainedCounts": {
+        "inheritedSourceRows": 26430,
+        "retainedMetadataSamples": 2
+      }
+    },
+    {
+      "id": "gm-cpi-locator",
+      "country": "GM",
+      "kind": "cpi-locator",
+      "sourceId": "retained-gm-cpi-locator",
+      "releaseId": "retained-metadata-sha256:b84b5694b7e96b98b77fea3f2b0f6d853eea5cd1b4be1fcd1568c80f844ae82b",
+      "publisherRelease": "The 2024 Gambia Statistical Abstract; PDF creation metadata 2026-08-04 is not the observation year",
+      "input": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/GM/cpi-locator-series.json",
+        "sha256": "b84b5694b7e96b98b77fea3f2b0f6d853eea5cd1b4be1fcd1568c80f844ae82b"
+      },
+      "parentManifest": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json",
+        "sha256": "e7bd7c84efa2a89452177d299463fd97c713422edc66c7764a5a8527300428bf"
+      },
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-10/GM/f0d2ca201566b36bfe2b/The 2024 Gambia Statistical Abstract.pdf",
+        "sha256": "1a378cc442e87417f55f281c906c2bddfb68f2d1e8b7ebf300f25d7348d11b9b"
+      },
+      "countrySelectors": [
+        "/country"
+      ],
+      "fields": {
+        "index-0-period": {
+          "selector": "/observations/0/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-0-originalvalue": {
+          "selector": "/observations/0/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-1-period": {
+          "selector": "/observations/1/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-1-originalvalue": {
+          "selector": "/observations/1/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-2-period": {
+          "selector": "/observations/2/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-2-originalvalue": {
+          "selector": "/observations/2/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-3-period": {
+          "selector": "/observations/3/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-3-originalvalue": {
+          "selector": "/observations/3/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-4-period": {
+          "selector": "/observations/4/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-4-originalvalue": {
+          "selector": "/observations/4/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-5-period": {
+          "selector": "/observations/5/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-5-originalvalue": {
+          "selector": "/observations/5/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-6-period": {
+          "selector": "/observations/6/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-6-originalvalue": {
+          "selector": "/observations/6/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-7-period": {
+          "selector": "/observations/7/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-7-originalvalue": {
+          "selector": "/observations/7/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-8-period": {
+          "selector": "/observations/8/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-8-originalvalue": {
+          "selector": "/observations/8/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-9-period": {
+          "selector": "/observations/9/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-9-originalvalue": {
+          "selector": "/observations/9/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-10-period": {
+          "selector": "/observations/10/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-10-originalvalue": {
+          "selector": "/observations/10/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-11-period": {
+          "selector": "/observations/11/period",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "index-11-originalvalue": {
+          "selector": "/observations/11/originalValue",
+          "type": "string",
+          "meaning": "CPI lexical period/value; not currency amount or food price"
+        },
+        "basis-referenceperiod": {
+          "selector": "/basis/referencePeriod",
+          "type": "string",
+          "meaning": "Native CPI basis: January 2020=100, index points; currency explicitly null"
+        },
+        "basis-referenceindex": {
+          "selector": "/basis/referenceIndex",
+          "type": "string",
+          "meaning": "Native CPI basis: January 2020=100, index points; currency explicitly null"
+        },
+        "basis-unit": {
+          "selector": "/basis/unit",
+          "type": "string",
+          "meaning": "Native CPI basis: January 2020=100, index points; currency explicitly null"
+        },
+        "basis-currency": {
+          "selector": "/basis/currency",
+          "type": "null",
+          "meaning": "Native CPI basis: January 2020=100, index points; currency explicitly null"
+        }
+      },
+      "originalAcquiredAt": null,
+      "acquisitionEvidence": null,
+      "holds": [
+        "source-operation-not-admitted",
+        "private-inspection-only",
+        "redistribution-unqualified"
+      ],
+      "adapter": "shared-source-adapter-unavailable",
+      "unknowns": [
+        "independent-country-acceptance",
+        "canonical-mapping",
+        "redistribution-permission",
+        "original-acquisition-time",
+        "original-acquisition-receipt-pin"
+      ],
+      "retainedCounts": {
+        "retainedIndexObservations": 12
+      }
+    },
+    {
+      "id": "gh-recipe-locator",
+      "country": "GH",
+      "kind": "recipe-locator",
+      "sourceId": "retained-gh-recipe-locator",
+      "releaseId": "retained-metadata-sha256:3fd500beec00a113664b6e780db9b4377695d61af90462be6bd4ec1999abb66e",
+      "publisherRelease": "2020-10 thesis; repository original retained 2022-04-27",
+      "input": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/GH/recipe-locator.json",
+        "sha256": "3fd500beec00a113664b6e780db9b4377695d61af90462be6bd4ec1999abb66e"
+      },
+      "parentManifest": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json",
+        "sha256": "e7bd7c84efa2a89452177d299463fd97c713422edc66c7764a5a8527300428bf"
+      },
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/GH/01659217de6226f3e780/Ghana-food-atlas-original-recipe-appendices.pdf",
+        "sha256": "75d5b751487870c14d035fa79c7edb43f3140555b20e6bc55e7e85a5be142f38"
+      },
+      "countrySelectors": [
+        "/country"
+      ],
+      "fields": {
+        "ingredient-0-sourceingredient": {
+          "selector": "/factSample/0/sourceIngredient",
+          "type": "string",
+          "meaning": "Source lexical recipe witness; no yield, canonical equivalence or unit conversion"
+        },
+        "ingredient-0-sourcequantity": {
+          "selector": "/factSample/0/sourceQuantity",
+          "type": "string",
+          "meaning": "Source lexical recipe witness; no yield, canonical equivalence or unit conversion"
+        },
+        "ingredient-1-sourceingredient": {
+          "selector": "/factSample/1/sourceIngredient",
+          "type": "string",
+          "meaning": "Source lexical recipe witness; no yield, canonical equivalence or unit conversion"
+        },
+        "ingredient-1-sourcequantity": {
+          "selector": "/factSample/1/sourceQuantity",
+          "type": "string",
+          "meaning": "Source lexical recipe witness; no yield, canonical equivalence or unit conversion"
+        },
+        "yield": {
+          "selector": "/yield",
+          "type": "null",
+          "meaning": "Unknown in bounded metadata; does not establish absence from original"
+        },
+        "nutrition": {
+          "selector": "/nutrition",
+          "type": "null",
+          "meaning": "Unknown in bounded metadata; does not establish absence from original"
+        },
+        "page": {
+          "selector": "/locator/pdfPageOneBased",
+          "type": "integer",
+          "meaning": "Historical PDF locator; original body not revalidated"
+        }
+      },
+      "originalAcquiredAt": null,
+      "acquisitionEvidence": null,
+      "holds": [
+        "source-operation-not-admitted",
+        "private-inspection-only",
+        "republication-unqualified"
+      ],
+      "adapter": "shared-source-adapter-unavailable",
+      "unknowns": [
+        "independent-country-acceptance",
+        "canonical-mapping",
+        "redistribution-permission",
+        "method",
+        "yield",
+        "quantity-interpretation",
+        "original-acquisition-time",
+        "original-acquisition-receipt-pin"
+      ],
+      "retainedCounts": {
+        "retainedRecipeLocators": 1,
+        "retainedQuantityWitnesses": 2
+      }
+    },
+    {
+      "id": "gi-discovery",
+      "country": "GI",
+      "kind": "discovery",
+      "sourceId": "retained-gi-discovery",
+      "releaseId": "retained-metadata-sha256:7ebee0474831bc456a23ed15f02c50d84d625cb56a8cf2de56ab6f59e54ce567",
+      "publisherRelease": null,
+      "input": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/GI/discovery-references.json",
+        "sha256": "7ebee0474831bc456a23ed15f02c50d84d625cb56a8cf2de56ab6f59e54ce567"
+      },
+      "parentManifest": {
+        "path": "/home/user/src/offmenu-data/country-bundle-20261016/owner-33/20261015T221540690761Z/freeze.json",
+        "sha256": "e7bd7c84efa2a89452177d299463fd97c713422edc66c7764a5a8527300428bf"
+      },
+      "original": null,
+      "countrySelectors": [
+        "/0/country",
+        "/1/country",
+        "/2/country"
+      ],
+      "fields": {
+        "lead-0-publisher": {
+          "selector": "/0/publisher",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-0-categoryscope": {
+          "selector": "/0/categoryScope",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-0-versionqualification": {
+          "selector": "/0/versionQualification",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-0-status": {
+          "selector": "/0/status",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-1-publisher": {
+          "selector": "/1/publisher",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-1-categoryscope": {
+          "selector": "/1/categoryScope",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-1-versionqualification": {
+          "selector": "/1/versionQualification",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-1-status": {
+          "selector": "/1/status",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-2-publisher": {
+          "selector": "/2/publisher",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-2-categoryscope": {
+          "selector": "/2/categoryScope",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-2-versionqualification": {
+          "selector": "/2/versionQualification",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        },
+        "lead-2-status": {
+          "selector": "/2/status",
+          "type": "string",
+          "meaning": "Discovery metadata only; no acquired source or accepted content"
+        }
+      },
+      "originalAcquiredAt": null,
+      "acquisitionEvidence": null,
+      "holds": [
+        "source-operation-not-admitted",
+        "discovery-only-not-acquired",
+        "source-use-unknown"
+      ],
+      "adapter": "shared-source-adapter-unavailable",
+      "unknowns": [
+        "independent-country-acceptance",
+        "canonical-mapping",
+        "redistribution-permission",
+        "original-source-acquisition",
+        "source-release",
+        "original-acquisition-time"
+      ],
+      "retainedCounts": {
+        "retainedDiscoveryReferences": 3
+      }
+    }
+  ],
+  "requirements": {
+    "GH": {
+      "ingredients": "exact-source-scope-and-canonical-identity-pending",
+      "recipes": "method-yield-rights-and-independent-review-pending",
+      "nutrition": "qualified-composition-release-fields-use-and-country-applicability-pending",
+      "retailers/providers": "permitted-identity-availability-source-pending",
+      "prices/baskets": "price-basis-currentness-mapping-and-basket-qualification-pending",
+      "dietary references": "permitted-guideline-interpretation-review-pending"
+    },
+    "GI": {
+      "ingredients": "exact-source-scope-and-canonical-identity-pending",
+      "recipes": "method-yield-rights-and-independent-review-pending",
+      "nutrition": "qualified-composition-release-fields-use-and-country-applicability-pending",
+      "retailers/providers": "permitted-identity-availability-source-pending",
+      "prices/baskets": "price-basis-currentness-mapping-and-basket-qualification-pending",
+      "dietary references": "permitted-guideline-interpretation-review-pending"
+    },
+    "GM": {
+      "ingredients": "exact-source-scope-and-canonical-identity-pending",
+      "recipes": "method-yield-rights-and-independent-review-pending",
+      "nutrition": "qualified-composition-release-fields-use-and-country-applicability-pending",
+      "retailers/providers": "permitted-identity-availability-source-pending",
+      "prices/baskets": "price-basis-currentness-mapping-and-basket-qualification-pending",
+      "dietary references": "permitted-guideline-interpretation-review-pending"
+    },
+    "GN": {
+      "ingredients": "exact-source-scope-and-canonical-identity-pending",
+      "recipes": "method-yield-rights-and-independent-review-pending",
+      "nutrition": "qualified-composition-release-fields-use-and-country-applicability-pending",
+      "retailers/providers": "permitted-identity-availability-source-pending",
+      "prices/baskets": "price-basis-currentness-mapping-and-basket-qualification-pending",
+      "dietary references": "permitted-guideline-interpretation-review-pending"
+    }
+  },
+  "production": "stopped",
+  "cix": "paused"
+}

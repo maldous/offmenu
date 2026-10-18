@@ -1,0 +1,620 @@
+{
+  "schemaVersion": "offmenu-portfolio59-bindings/1",
+  "countries": [
+    "LV",
+    "LY",
+    "MA",
+    "MC"
+  ],
+  "dataTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "sources": [
+    {
+      "originalAcquiredAt": null,
+      "validatedAt": "2026-10-16T15:56:43.607733+00:00",
+      "holds": [],
+      "unknowns": [
+        "Original source acquisition time is not normalization/validation/fetchedAt time.",
+        "Metadata field origins below identify metadata, not previously unread raw cells.",
+        "Source-body processing is not authorized by this binding.",
+        "655nullunitPrice and642nullunits retained;13perKILOGRAM declarations do not establish ingredient identity.",
+        "MA3DDM/ADP2024currency/date conflicts remain unresolved; noMADreplacement.",
+        "Originalcustodianidentity unestablished is a missing input, not itself a legal prohibition."
+      ],
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "scope": "retained-normalized-public-price-proposals",
+      "sourceManifestSha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "documents": {
+        "release.json": {
+          "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+          "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+          "role": "manifest"
+        },
+        "author.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/manifest.json",
+          "sha256": "f50c4739b65e6c5a2f3c87ae99c4a4a006e4458c13bab347c3dcc88d0ec10ca0",
+          "role": "manifest"
+        },
+        "method.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/B03-W59/resolution.json",
+          "sha256": "bec1213b16ca690a5824e784d511a3a455a3c3949a37702ece9dbb339ffd405b",
+          "role": "methodology"
+        },
+        "use.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/mapping-and-use.json",
+          "sha256": "319262a7ce7e26c538166b86d2ae70ec77fd8a99a63ae8aa98ad7e43b4fae448",
+          "role": "methodology"
+        }
+      },
+      "fields": {
+        "source": {
+          "document": "release.json",
+          "selector": "/sourceId",
+          "expected": "prices"
+        },
+        "release": {
+          "document": "release.json",
+          "selector": "/releaseId",
+          "expected": "2026-10-12"
+        },
+        "archiveSha256": {
+          "document": "release.json",
+          "selector": "/archiveSha256",
+          "expected": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0"
+        },
+        "sourceUse": {
+          "document": "use.json",
+          "selector": "/existingUseEvidence/OpenPrices"
+        },
+        "basisDistinctions": {
+          "document": "method.json",
+          "selector": "/materialResolution"
+        },
+        "recordsLV": {
+          "document": "author.json",
+          "selector": "/stages/parsing/OpenPricesAlreadyNormalizedReused/LV"
+        },
+        "recordsLY": {
+          "document": "author.json",
+          "selector": "/stages/parsing/OpenPricesAlreadyNormalizedReused/LY"
+        },
+        "recordsMA": {
+          "document": "author.json",
+          "selector": "/stages/parsing/OpenPricesAlreadyNormalizedReused/MA"
+        },
+        "recordsMC": {
+          "document": "author.json",
+          "selector": "/stages/parsing/OpenPricesAlreadyNormalizedReused/MC"
+        }
+      },
+      "applicability": {
+        "LV": [
+          "prices/baskets"
+        ],
+        "LY": [
+          "prices/baskets"
+        ],
+        "MA": [
+          "prices/baskets"
+        ],
+        "MC": [
+          "prices/baskets"
+        ]
+      },
+      "requiredInputs": [
+        "original-acquisition-time-missing",
+        "raw-field-origin-and-schema-binding-unreviewed",
+        "source-scope-staging-acceptance-pending"
+      ]
+    },
+    {
+      "originalAcquiredAt": null,
+      "validatedAt": "2026-10-16T15:56:43.607733+00:00",
+      "holds": [],
+      "unknowns": [
+        "Original source acquisition time is not normalization/validation/fetchedAt time.",
+        "Metadata field origins below identify metadata, not previously unread raw cells.",
+        "Source-body processing is not authorized by this binding.",
+        "69273candidate roles only; prior201parsed coordinates excluded from semantic scope.",
+        "16nativeunit literals; no automatic conversion, density or package fill.",
+        "Recorded27label is not current nativecustody transfer; no403/private/heldsource workaround."
+      ],
+      "sourceId": "wfp-food-prices-for-libya",
+      "releaseId": "price-resource-modified-2026-10-11T15:38:40.693973",
+      "scope": "retained-literal-candidates-and-source-role-metadata",
+      "sourceManifestSha256": "dbb6809dc6a606424204507432a3eb172570582853875ebc2a4df69119f04a2f",
+      "documents": {
+        "dimensions.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/LY-source-semantic-proposal-v1/dimensions.json",
+          "sha256": "825482ec92d8d5210961515cf396e68f7cb5dea143dae8c626e3fc3050b55ad3",
+          "role": "methodology"
+        },
+        "mappings.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/LY-source-semantic-proposal-v1/commodity-mappings.json",
+          "sha256": "71a13c75f0247f056d686a4cad2ab9a8e84e97b62390c2aa8ff06a5932283f1a",
+          "role": "methodology"
+        },
+        "review.json": {
+          "path": "/home/user/src/offmenu-data/worker-38-LY-semantic-review-20261017/review.json",
+          "sha256": "8ab0672004b1ffc39c46d5f1ef04c6e657ad9ec7de5c89ea0e4014b23c469f64",
+          "role": "review"
+        },
+        "use.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/mapping-and-use.json",
+          "sha256": "319262a7ce7e26c538166b86d2ae70ec77fd8a99a63ae8aa98ad7e43b4fae448",
+          "role": "methodology"
+        },
+        "semantic-manifest.json": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-59/LY-source-semantic-proposal-v1/manifest.json",
+          "sha256": "dbb6809dc6a606424204507432a3eb172570582853875ebc2a4df69119f04a2f",
+          "role": "manifest"
+        }
+      },
+      "fields": {
+        "version": {
+          "document": "mappings.json",
+          "selector": "/mappings/0/sourceVersion",
+          "expected": "price-resource-modified-2026-10-11T15:38:40.693973"
+        },
+        "units": {
+          "document": "dimensions.json",
+          "selector": "/units"
+        },
+        "currencies": {
+          "document": "dimensions.json",
+          "selector": "/currencies"
+        },
+        "priceFlags": {
+          "document": "dimensions.json",
+          "selector": "/sourcePriceFlags"
+        },
+        "priceTypes": {
+          "document": "dimensions.json",
+          "selector": "/sourcePriceTypes"
+        },
+        "sourceUse": {
+          "document": "use.json",
+          "selector": "/existingUseEvidence/WFP"
+        },
+        "priorSemanticScope": {
+          "document": "review.json",
+          "selector": "/verdict"
+        }
+      },
+      "applicability": {
+        "LY": [
+          "prices/baskets"
+        ]
+      },
+      "requiredInputs": [
+        "original-acquisition-time-missing",
+        "release-unit-and-usdprice-method-missing",
+        "source-scope-staging-acceptance-pending"
+      ]
+    }
+  ],
+  "remainingCoverageEvidence": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/batch-result.json",
+    "sha256": "6e5637c508dfec49ca44632397139e75341a64a0258156c2f51a9b08623a30f3",
+    "selector": "/countries",
+    "meaning": "24country/category gaps retained; country-specificcompletionevidence pointers, no country completion."
+  },
+  "preservedHolds": [
+    "Finland/Frida",
+    "native-NO-FR-crash-restrictions",
+    "403-cert-private-credential-denied-actions",
+    "production-CIX-DEV7645",
+    "no-golden-promotion"
+  ],
+  "countryRequirements": [
+    {
+      "country": "LV",
+      "dataType": "ingredients",
+      "state": "missing",
+      "missingInput": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient. OpenPrices barcode and WFPcommodity label are not accepted ingredient identity.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/0"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LV",
+      "dataType": "recipes",
+      "state": "held",
+      "missingInput": "SPKC retained booklet is private reference only; exact derivative-use scope and recipe pages/yield/method selectors unresolved. No source replay.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/1"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LV",
+      "dataType": "nutrition",
+      "state": "missing",
+      "missingInput": "Exact analytical composition release unresolved with source16; booklet and guidance index are not analytical values.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/2"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LV",
+      "dataType": "retailers/providers",
+      "state": "missing",
+      "missingInput": "Existing company-register source51 and food-safety24/other source4 holds distinct; require exact dated provider-to-entity scope/use, not price merchant identity.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/3"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LV",
+      "dataType": "prices/baskets",
+      "state": "pending",
+      "missingInput": "Exact package/quantity/unit where null; reviewed intended comparable observation/basket definition, source-attribution/use and admission writer. No basket weights, affordability, current-price or national completeness inferred.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/4"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LV",
+      "dataType": "dietary references",
+      "state": "held",
+      "missingInput": "SPKC partial196608-byte metadata cap; exact issuer edition, population, complete document/pages and applicable use unresolved.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LV/category-coverage-and-gaps.json",
+        "sha256": "8c0a1f819114339a233b2941ec5aa34c7dd091d823f7ccf251a5f6a2eb852ee8",
+        "selector": "/categories/5"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        26,
+        16,
+        51,
+        62,
+        24,
+        4,
+        55,
+        53
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "ingredients",
+      "state": "missing",
+      "missingInput": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient. OpenPrices barcode and WFPcommodity label are not accepted ingredient identity.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/0"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "recipes",
+      "state": "held",
+      "missingInput": "UOB7128HTTP403 no-retry; Suwayqa362CCBY-NC4.0 commercially-directed use unqualified. No original recipe acquired by metadata.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/1"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "nutrition",
+      "state": "missing",
+      "missingInput": "Same study/source restrictions; exact analytical release and food preparation/method/basis missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/2"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "retailers/providers",
+      "state": "missing",
+      "missingInput": "39WFPsource market IDs accepted only release-scoped metadata; no legal/current provider binding.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/3"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "prices/baskets",
+      "state": "pending",
+      "missingInput": "Exact package/quantity/unit where null; reviewed intended comparable observation/basket definition, source-attribution/use and admission writer. No basket weights, affordability, current-price or national completeness inferred.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/4"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "LY",
+      "dataType": "dietary references",
+      "state": "held",
+      "missingInput": "WHOEMNUT299E retained search-only profile; edition, extent, population and use unqualified, not national numeric advice.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/LY/category-coverage-and-gaps.json",
+        "sha256": "3505c4ff1aeec6359ffc86b6937bee3a336900d1096631ca973c2c343d7f4885",
+        "selector": "/categories/5"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        27
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "ingredients",
+      "state": "missing",
+      "missingInput": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient. OpenPrices barcode and WFPcommodity label are not accepted ingredient identity.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/0"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "recipes",
+      "state": "held",
+      "missingInput": "VisitMorocco and RoyalMansour historical403 responses are failed bodies, zero acquired originals in checkpoint2. No retry/mirror. Exact usable recipe source/version/method/yield/use missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/1"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "nutrition",
+      "state": "missing",
+      "missingInput": "No accepted analytical composition artifact bound; exact source release, food preparation, units/basis/method and use missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/2"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "retailers/providers",
+      "state": "missing",
+      "missingInput": "OpenPrices retailer assertions only; exact legal provider/site/register identity/date/use missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/3"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "prices/baskets",
+      "state": "pending",
+      "missingInput": "Exact package/quantity/unit where null; reviewed intended comparable observation/basket definition, source-attribution/use and admission writer. No basket weights, affordability, current-price or national completeness inferred.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/4"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MA",
+      "dataType": "dietary references",
+      "state": "held",
+      "missingInput": "Ministry GUIDE-M-P HEAD4523200bytes is metadata only; LastModified2017-02-20 not edition. Exact publication edition/pages and derivative-use evidence missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MA/category-coverage-and-gaps.json",
+        "sha256": "a0044d22133ee6ea70b2484f489d6495e86830539d4be4d46cb0d1efec371680",
+        "selector": "/categories/5"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        28
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "ingredients",
+      "state": "missing",
+      "missingInput": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient. OpenPrices barcode and WFPcommodity label are not accepted ingredient identity.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/0"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "recipes",
+      "state": "held",
+      "missingInput": "Nursery file630 SSL certificate failure zero body; no bypass/retry. Exact dated menu/recipe method/yield and derivative use missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/1"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "nutrition",
+      "state": "missing",
+      "missingInput": "No analytical composition artifact bound; exact food/preparation/nutrient method/unit/basis and use missing.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/2"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "retailers/providers",
+      "state": "missing",
+      "missingInput": "Journal8789 6March2026 retained48page issue is public edition only, paper legally authoritative, not exhaustive RCI. Entity-specific selectors and reuse/privacy/authority scope unresolved; no journal body replay.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/3"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "prices/baskets",
+      "state": "pending",
+      "missingInput": "Exact package/quantity/unit where null; reviewed intended comparable observation/basket definition, source-attribution/use and admission writer. No basket weights, affordability, current-price or national completeness inferred.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/4"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    },
+    {
+      "country": "MC",
+      "dataType": "dietary references",
+      "state": "held",
+      "missingInput": "MonacoSante2022-09-22 older-adult article metadata; limited population, no whole-country guideline or current numeric advice; applicable derivative use unresolved.",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-59/MC/category-coverage-and-gaps.json",
+        "sha256": "f13bc1fc9d0f758ac2f6dd534024ac471fafcce60f28aedc0286d638453b7a31",
+        "selector": "/categories/5"
+      },
+      "custodianLabelsAreLeadsOnly": [
+        32
+      ],
+      "holdMeaning": "Retained scoped requirement only; no source rights or processing grant. See exact evidence; missing input itself is not legal prohibition."
+    }
+  ]
+}

@@ -1,0 +1,840 @@
+{
+  "schemaVersion": "offmenu-portfolio37-bindings/1",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "owner": 37,
+  "scope": "authored metadata bindings only; no body read or acceptance",
+  "rows": [
+    {
+      "country": "NP",
+      "sourceId": "portfolio37-np",
+      "sourceIdNamespace": "local-binding-id-not-publisher-identifier",
+      "releaseId": "nast-archival-traditional-foods-sha256-9195bac87b5ee832acaa8213160b27e020b91ca5fb09a95afc7ff9fb87af047b",
+      "releaseMeaning": "exact-content-snapshot; no current-edition equivalence",
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/NP/58bd52d6aee8960e946b/response-1.original",
+        "sha256": "9195bac87b5ee832acaa8213160b27e020b91ca5fb09a95afc7ff9fb87af047b",
+        "bytes": 7743887
+      },
+      "acquisitionReceipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/NP/58bd52d6aee8960e946b/receipt.json",
+        "sha256": "77287a013c8b668e057c5d7be4612c9c6b083f05ae52e5894ab15af4f825acb2"
+      },
+      "originalAcquiredAt": null,
+      "acquisitionRecordedAt": "2026-10-14T22:17:28.787217+00:00",
+      "acquisitionTimeMeaning": "receipt timestamp scope not proven to be transport completion; not used as originalAcquiredAt",
+      "validationReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/deliverable-validation.json",
+        "sha256": "a66e8eb68146c1009d85c624aa48dfabb940f5e1985116278e0d2dfa21efc972"
+      },
+      "retainedManifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/author-receipt.json",
+          "sha256": "a5ff30f865ed7b16d4cb0dfa912f5cee699f45e80063c9901fefe191311a6730"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/deliverable-validation.json",
+          "sha256": "a66e8eb68146c1009d85c624aa48dfabb940f5e1985116278e0d2dfa21efc972"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/category-coverage-and-gaps.json",
+          "sha256": "45da0a79b34b8a6e2f9f99d2ad2deef26efcdb319c6c7b2f26a7933c467175b5"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/appendix2-source-reference.json",
+          "sha256": "4804fac0d89e774b5e54101b1bb0f10d944caa065b75b5616edeb582253c4917",
+          "bytes": 1933
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/reference-page-91.png",
+          "sha256": "d8fde2ea66cf52f4982b3e1bc6ad7d4b2daac8e7a4d213e5efab59ad8b81c2fe",
+          "bytes": 177101
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/reference-page-99.png",
+          "sha256": "3ee38edd86628b3b58df9475266c9ddca0f6b235e396a026655b01356f131aad",
+          "bytes": 137891
+        }
+      ],
+      "review": {
+        "artifact": {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/author37-result4009-review/review-receipt.json",
+          "sha256": "14e36a1267fc2a8ef174e17301f958826d5fb941f51e3a115669e1eebf7e7fa0"
+        },
+        "selector": "/countryFindings/NP",
+        "verdict": "PASS_INTERNAL_REFERENCE_CONSISTENCY_ONLY; SOURCE_SELECTORS_NOT_INDEPENDENTLY_CONFIRMED",
+        "limit": "Receipt reports publisher public offer/redistribution unverified; no exact additional reviewer body-comparison grant bound. Original PDF and author NP images were not opened by this reviewer. Physical page contents, printed pages, INDEX100, 100g edible basis and column spellings remain author assertions, not independently authenticated. No nutrient-row or source-fidelity acceptance."
+      },
+      "declaredCounts": {
+        "nutrientRows": 0,
+        "appendixPages": 9
+      },
+      "applicability": [
+        {
+          "type": "ingredients",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "recipes",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact retained complete method/ingredient/measure/yield reference, publisher provenance and reuse entitlement before recipe derivatives.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "nutrition",
+          "status": "HISTORICAL_SOURCE_LOCATED_NUMERIC_FIDELITY_AND_USE_UNRESOLVED",
+          "sourceRequirement": "Exact analytical food/nutrient release with original units, preparation/basis/method, source rights and named semantic review; policy/index is not composition.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "retailers/providers",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact provider/site/register identity/date/jurisdiction and legal entity scope; a merchant page or quality standard does not prove national register coverage.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "prices/baskets",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact dated observation, ISO currency, quantity/package/unit, merchant/site and licence; CPI is not an item price or basket.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "dietary references",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact issuer/document edition/population/pages/rights; historical policy or research correlation is not current numeric advice.",
+          "acceptedWholeCategory": false
+        }
+      ],
+      "declarations": {
+        "format": "PDF",
+        "selectors": {
+          "appendixPhysicalPages": [
+            91,
+            99
+          ],
+          "printedPages": [
+            84,
+            92
+          ],
+          "basisPhysicalPage": 99
+        },
+        "basis": "per100g-edible-portion-author-assertion",
+        "units": {
+          "Edible part": "%",
+          "Moisture": "g",
+          "Protein": "g",
+          "Fat": "g",
+          "Ash": "g",
+          "Fiber": "g",
+          "Carb": "g",
+          "Energy": "kcal",
+          "Ca": "mg",
+          "P": "mg",
+          "Fe": "mg"
+        },
+        "evidenceStatus": "author-selector-only-independent-reference-consistency",
+        "unresolved": [
+          "numeric-cell-coordinates",
+          "food-preparation",
+          "analytical-method",
+          "current-edition"
+        ]
+      },
+      "blockers": [
+        {
+          "code": "numeric-use-scope-unresolved",
+          "type": "missing-evidence",
+          "owner": "Morgan/source12",
+          "scope": "Numeric extraction/derivatives; private references retained"
+        },
+        {
+          "code": "numeric-source-fidelity-unreviewed",
+          "type": "review",
+          "owner": "independent reviewer",
+          "scope": "Appendix numeric cells"
+        }
+      ],
+      "bodyProcessingAuthorized": false,
+      "productionAdmission": false,
+      "goldAdmitted": false,
+      "countryComplete": false,
+      "declarationEvidence": {
+        "artifact": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/deliverable-validation.json",
+          "sha256": "a66e8eb68146c1009d85c624aa48dfabb940f5e1985116278e0d2dfa21efc972"
+        },
+        "selector": "/actualSourceValidation/input",
+        "meaning": "Original pin declared by historical validation; no current original read"
+      },
+      "nativeFieldOriginDeclarations": {
+        "numericCells": null,
+        "basis": {
+          "artifact": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/appendix2-source-reference.json",
+            "sha256": "4804fac0d89e774b5e54101b1bb0f10d944caa065b75b5616edeb582253c4917",
+            "bytes": 1933
+          },
+          "selector": "/basisEvidence",
+          "evidenceStatus": "author-assertion-not-independent-numeric-fidelity"
+        },
+        "columnUnits": {
+          "artifact": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/NP/appendix2-source-reference.json",
+            "sha256": "4804fac0d89e774b5e54101b1bb0f10d944caa065b75b5616edeb582253c4917",
+            "bytes": 1933
+          },
+          "selector": "/observedColumnsAtPhysicalPage91",
+          "evidenceStatus": "author-assertion"
+        }
+      },
+      "additionalInputBindings": [],
+      "retainedFieldUseReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/author-receipt.json",
+        "sha256": "6c34ae83c8b82c7bb5504d836a377396d55f17b7393803ac19167f802871d25f",
+        "resultSequence": 4873
+      }
+    },
+    {
+      "country": "PK",
+      "sourceId": "portfolio37-pk",
+      "sourceIdNamespace": "local-binding-id-not-publisher-identifier",
+      "releaseId": "pakwan-undated-menu-sha256-80b8c7ef96fb75c57664559ebe791d127b9655c55401fc296a3b72e0d1d9f027",
+      "releaseMeaning": "exact-content-snapshot; no current-edition equivalence",
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/PK/continuation-841a89f3a2158efe79f3/Pakwan-Menu.pdf",
+        "sha256": "80b8c7ef96fb75c57664559ebe791d127b9655c55401fc296a3b72e0d1d9f027",
+        "bytes": 710763
+      },
+      "acquisitionReceipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/PK/continuation-841a89f3a2158efe79f3/receipt.json",
+        "sha256": "10713ca381feae6d47024ff1e3277501d16c83f2b185e61f7cb09241c70e0332"
+      },
+      "originalAcquiredAt": null,
+      "acquisitionRecordedAt": "2026-10-14T22:18:21.840005+00:00",
+      "acquisitionTimeMeaning": "receipt timestamp scope not proven to be transport completion; not used as originalAcquiredAt",
+      "validationReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/deliverable-validation.json",
+        "sha256": "fb93059987ed2d09a894081c2ac5d9991d75a52cf8472893b44669cb055e815b"
+      },
+      "retainedManifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/author-receipt.json",
+          "sha256": "bc64fcbb4a00bcb4e6284b29fb8d9e904fb1139fed175f0ec26708554ef007b5"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/deliverable-validation.json",
+          "sha256": "fb93059987ed2d09a894081c2ac5d9991d75a52cf8472893b44669cb055e815b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/category-coverage-and-gaps.json",
+          "sha256": "7703672e3037d40934822b20cdfef6445431e6f1501c2833eaceb10a1ce03466"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/private-reference-schedule-locators.jsonl",
+          "sha256": "9b9120a42d33f168a073bff7b6f448ab5e0c6f829b833d99ff2a93f6fc08174c",
+          "bytes": 10490
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/private-reference-schedule-validation.json",
+          "sha256": "5e66d502ababf4705b00707253f6161f005c9ff78cd8abbb159ce5c8d0a796d7",
+          "bytes": 1487
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/reference-page-2.png",
+          "sha256": "01a3344cf65df00c31b03ded21ac5df7d3d7739500fe2f494e584e4243c9d5d5",
+          "bytes": 343416
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/reference-page-3.png",
+          "sha256": "558ed35c5b05544bca274fef3aeff5f04d1d53f528eddac3621d08ac258fac10",
+          "bytes": 611436
+        }
+      ],
+      "review": {
+        "artifact": {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/author37-result4009-review/review-receipt.json",
+          "sha256": "14e36a1267fc2a8ef174e17301f958826d5fb941f51e3a115669e1eebf7e7fa0"
+        },
+        "selector": "/countryFindings/PK",
+        "verdict": "PASS_PRIVATE_LOCATOR_STRUCTURE_AND_RETAINED_IMAGE_ANCHORS",
+        "limit": "Original PDF not reopened/rehash-linked to PNG by reviewer; exact pdftotextLayoutLine numbers not independently rerun. Page/week/day selector corroborated; images are author-produced retained artifacts. No dish-content/pricing/recipe fidelity claim."
+      },
+      "declaredCounts": {
+        "locators": 28,
+        "recipeRows": 0,
+        "priceObservations": 0
+      },
+      "applicability": [
+        {
+          "type": "ingredients",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "recipes",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact retained complete method/ingredient/measure/yield reference, publisher provenance and reuse entitlement before recipe derivatives.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "nutrition",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact analytical food/nutrient release with original units, preparation/basis/method, source rights and named semantic review; policy/index is not composition.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "retailers/providers",
+          "status": "ONE_MERCHANT_REFERENCE_ONLY_NO_REGISTER_ACCEPTANCE",
+          "sourceRequirement": "Exact provider/site/register identity/date/jurisdiction and legal entity scope; a merchant page or quality standard does not prove national register coverage.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "prices/baskets",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact dated observation, ISO currency, quantity/package/unit, merchant/site and licence; CPI is not an item price or basket.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "dietary references",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact issuer/document edition/population/pages/rights; historical policy or research correlation is not current numeric advice.",
+          "acceptedWholeCategory": false
+        }
+      ],
+      "declarations": {
+        "format": "PDF",
+        "selectors": {
+          "weeks1and2PhysicalPage": 2,
+          "weeks3and4PhysicalPage": 3,
+          "weeks": 4,
+          "daysPerWeek": 7
+        },
+        "basis": null,
+        "units": null,
+        "evidenceStatus": "reviewed-private-locator-structure",
+        "unresolved": [
+          "effective-date",
+          "dish-content-fidelity",
+          "currency",
+          "quantity",
+          "recipe-methods",
+          "yields"
+        ]
+      },
+      "blockers": [
+        {
+          "code": "private-reference-only",
+          "type": "source-use-restriction",
+          "owner": "Morgan/source28",
+          "scope": "No reusable recipe/price/menu body processing in current assignment"
+        },
+        {
+          "code": "price-recipe-fields-absent",
+          "type": "missing-input",
+          "owner": "Morgan",
+          "scope": "Distinct dated/unit/currency offer and full recipe source needed"
+        }
+      ],
+      "bodyProcessingAuthorized": false,
+      "productionAdmission": false,
+      "goldAdmitted": false,
+      "countryComplete": false,
+      "declarationEvidence": {
+        "artifact": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/deliverable-validation.json",
+          "sha256": "fb93059987ed2d09a894081c2ac5d9991d75a52cf8472893b44669cb055e815b"
+        },
+        "selector": "/actualSourceValidation/input",
+        "meaning": "Original pin declared by historical validation; no current original read"
+      },
+      "nativeFieldOriginDeclarations": {
+        "menuBody": null,
+        "recipe": null,
+        "price": null,
+        "locatorScope": {
+          "artifact": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PK/deliverable-validation.json",
+            "sha256": "fb93059987ed2d09a894081c2ac5d9991d75a52cf8472893b44669cb055e815b"
+          },
+          "selector": "/actualMeasuredOutput/validatedSourceLocatorRows",
+          "meaning": "Count and page/week/day structure only; raw menu field mapping unselected"
+        }
+      },
+      "additionalInputBindings": [
+        {
+          "bindingId": "portfolio37-pk-pbs-spi-20260226",
+          "sourceIdNamespace": "local-binding-id",
+          "publisher": "Pakistan Bureau of Statistics",
+          "release": "SPI executive summary week ended2026-02-26",
+          "releasePeriod": "2026-02-26",
+          "evidence": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/PK-PBS-price-return-R1-binding.json",
+            "sha256": "d56aa5546190dc21d070a71402656373687baa3a19384a628f5d0c3a8e3752cd",
+            "resultSequence": 5215
+          },
+          "acquisitionReceipt": {
+            "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-4/e5f7484809fcf6fd89c5/receipt.json",
+            "sha256": "4bf3bf850aaaa9cac1b92474d833712ed673009b111a273d3dd3722099abf985"
+          },
+          "original": {
+            "url": "https://www.pbs.gov.pk/wp-content/uploads/2020/07/Executive-Summary-SPI-Report_26.02.2026.pdf",
+            "utc": "2026-10-14T21:10:45.141702+00:00",
+            "kind": "original_finite_release",
+            "bytes": 152440,
+            "freeDiskBytes": 218633510912,
+            "status": 200,
+            "finalURL": "https://www.pbs.gov.pk/wp-content/uploads/2020/07/Executive-Summary-SPI-Report_26.02.2026.pdf",
+            "contentType": "application/pdf",
+            "contentLength": "152440",
+            "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-4/e5f7484809fcf6fd89c5/Executive-Summary-SPI-Report_26.02.2026.pdf",
+            "sha256": "8c732ce318ffc101afa2af8b48e55fda351673789ca0931c695356678adf2de3",
+            "completeResponse": true
+          },
+          "originalAcquiredAt": null,
+          "stageCapability": "unsupported-real-input-dictionary-and-use-unbound",
+          "nativeFieldOrigins": null,
+          "units": null,
+          "basis": null,
+          "currency": null,
+          "tableSelectors": null,
+          "applicability": "prices/baskets statistical lead only; no item-price facts",
+          "currentCustodian": "unestablished-in-examined-provenance-not-a-legal-prohibition",
+          "blockers": [
+            {
+              "code": "table-dictionary-not-held",
+              "type": "missing-input",
+              "owner": "Morgan",
+              "next": "Select permitted exact table/dictionary evidence; do not route answered request back04"
+            },
+            {
+              "code": "release-policy-applicability-unconfirmed",
+              "type": "missing-evidence",
+              "owner": "Morgan",
+              "next": "Reconcile positive official policy statement with exact release/tier and linked policy adoption; no body processing under metadata assignment"
+            }
+          ],
+          "bodyProcessingAuthorized": false,
+          "goldAdmitted": false,
+          "officialDocumentation": [
+            {
+              "url": "https://www.pbs.gov.pk/data-dissemination/",
+              "observedDate": "2026-10-18",
+              "finding": "Tier1/2 open reuse with attribution stated",
+              "limit": "Exact-release applicability and linked consultation-draft adoption not established; policy.pdf timed out once, no retry"
+            },
+            {
+              "url": "https://www.pbs.gov.pk/price-statistics/",
+              "observedDate": "2026-10-18",
+              "finding": "Weekly SPI methodology describes51items/50markets/17cities",
+              "limit": "General methodology only, not the retained release table dictionary or observed rows"
+            }
+          ]
+        }
+      ],
+      "retainedFieldUseReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/author-receipt.json",
+        "sha256": "6c34ae83c8b82c7bb5504d836a377396d55f17b7393803ac19167f802871d25f",
+        "resultSequence": 4873
+      }
+    },
+    {
+      "country": "PS",
+      "sourceId": "portfolio37-ps",
+      "sourceIdNamespace": "local-binding-id-not-publisher-identifier",
+      "releaseId": "P507164-2025-sha256-b16df2cc2e9ca994006e68beee62c9f3da51bb40c376a4900dd3ffe3a6e13f9d",
+      "releaseMeaning": "exact-content-snapshot; no current-edition equivalence",
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/PS/3361195d9c9c8b6793c1/original.pdf",
+        "sha256": "b16df2cc2e9ca994006e68beee62c9f3da51bb40c376a4900dd3ffe3a6e13f9d",
+        "bytes": 13015932
+      },
+      "acquisitionReceipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-37/PS/3361195d9c9c8b6793c1/receipt.json",
+        "sha256": "aa59c39c3a9f44f9cb68ef0193022691f84a582aabf2848771713bd212b71466"
+      },
+      "originalAcquiredAt": null,
+      "acquisitionRecordedAt": "2026-10-14T22:15:17.198912+00:00",
+      "acquisitionTimeMeaning": "receipt timestamp scope not proven to be transport completion; not used as originalAcquiredAt",
+      "validationReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/deliverable-validation.json",
+        "sha256": "730ff4997700a3833db5928676f2585be97178fccccb7a8a03dd408d4c2003cd"
+      },
+      "retainedManifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/author-receipt.json",
+          "sha256": "f6906844b0ed79906b93a8b31542c89fbc5318a9c2f197d9041b037e8efe6629"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/deliverable-validation.json",
+          "sha256": "730ff4997700a3833db5928676f2585be97178fccccb7a8a03dd408d4c2003cd"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/category-coverage-and-gaps.json",
+          "sha256": "3ec1c1f5896266004af70b457e56e274b1cfb8d4f4b0344a9c81109b3a18031f"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/attributed-context-reference-candidate.json",
+          "sha256": "626ad0228bc944f4e8204991eeec7ecbd12dd447cdc97e5c9ae69d80516f5eff",
+          "bytes": 1852
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/reference-page-2.png",
+          "sha256": "ee62e90185a2a545ab3a79234dbc813006eae53e18668495882618dbfca9703a",
+          "bytes": 301085
+        }
+      ],
+      "review": {
+        "artifact": {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/author37-result4009-review/review-receipt.json",
+          "sha256": "14e36a1267fc2a8ef174e17301f958826d5fb941f51e3a115669e1eebf7e7fa0"
+        },
+        "selector": "/countryFindings/PS",
+        "verdict": "PASS_ATTRIBUTED_CONTEXT_REFERENCE_AGAINST_RETAINED_NOTICE",
+        "limit": "Original PDF not reopened or independently re-rendered;84page count/title physical selector association remain retained metadata evidence. Positive work-level evidence is not blanket third-party/table/clinical/food-data clearance."
+      },
+      "declaredCounts": {
+        "contextReferences": 1,
+        "foodObservations": 0
+      },
+      "applicability": [
+        {
+          "type": "ingredients",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "recipes",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact retained complete method/ingredient/measure/yield reference, publisher provenance and reuse entitlement before recipe derivatives.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "nutrition",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact analytical food/nutrient release with original units, preparation/basis/method, source rights and named semantic review; policy/index is not composition.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "retailers/providers",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact provider/site/register identity/date/jurisdiction and legal entity scope; a merchant page or quality standard does not prove national register coverage.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "prices/baskets",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact dated observation, ISO currency, quantity/package/unit, merchant/site and licence; CPI is not an item price or basket.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "dietary references",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact issuer/document edition/population/pages/rights; historical policy or research correlation is not current numeric advice.",
+          "acceptedWholeCategory": false
+        }
+      ],
+      "declarations": {
+        "format": "PDF",
+        "selectors": {
+          "titlePhysicalPage": 1,
+          "workLicencePhysicalPage": 2,
+          "contentsPhysicalPage": 3
+        },
+        "basis": null,
+        "units": null,
+        "evidenceStatus": "reviewed-work-level-context-reference",
+        "unresolved": [
+          "food-domain-applicability",
+          "component-ownership",
+          "exact-publication-date"
+        ]
+      },
+      "blockers": [
+        {
+          "code": "food-domain-source-missing",
+          "type": "missing-input",
+          "owner": "Morgan",
+          "scope": "Context report supplies no accepted food-domain input"
+        },
+        {
+          "code": "component-rights-unresolved",
+          "type": "source-use-restriction",
+          "owner": "Morgan/source37",
+          "scope": "No third-party table/figure/image extraction; WFP403 no retry"
+        }
+      ],
+      "bodyProcessingAuthorized": false,
+      "productionAdmission": false,
+      "goldAdmitted": false,
+      "countryComplete": false,
+      "declarationEvidence": {
+        "artifact": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/deliverable-validation.json",
+          "sha256": "730ff4997700a3833db5928676f2585be97178fccccb7a8a03dd408d4c2003cd"
+        },
+        "selector": "/actualSourceValidation/input",
+        "meaning": "Original pin declared by historical validation; no current original read"
+      },
+      "nativeFieldOriginDeclarations": {
+        "foodObservations": null,
+        "bibliography": {
+          "artifact": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/PS/attributed-context-reference-candidate.json",
+            "sha256": "626ad0228bc944f4e8204991eeec7ecbd12dd447cdc97e5c9ae69d80516f5eff",
+            "bytes": 1852
+          },
+          "selector": "/physicalSelectors",
+          "meaning": "Attributed report context only; no table/figure content"
+        }
+      },
+      "additionalInputBindings": [],
+      "retainedFieldUseReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/author-receipt.json",
+        "sha256": "6c34ae83c8b82c7bb5504d836a377396d55f17b7393803ac19167f802871d25f",
+        "resultSequence": 4873
+      }
+    },
+    {
+      "country": "SK",
+      "sourceId": "portfolio37-sk",
+      "sourceIdNamespace": "local-binding-id-not-publisher-identifier",
+      "releaseId": "PRC_HICP_MINR-SK-snapshot-sha256-b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+      "releaseMeaning": "exact-content-snapshot; no current-edition equivalence",
+      "original": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/SK/3e2ef7ba273a7283eef9/original.response",
+        "sha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+        "bytes": 9568519
+      },
+      "acquisitionReceipt": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-56/SK/3e2ef7ba273a7283eef9/receipt.json",
+        "sha256": "1e3c35747c4e4b15f9f7ba77573283ad11a29bd1fcc7c9c05347004e56ea33aa"
+      },
+      "originalAcquiredAt": "2026-10-14T22:18:53.051837+00:00",
+      "acquisitionRecordedAt": "2026-10-14T22:18:28.672442+00:00",
+      "acquisitionTimeMeaning": "finishedUTC records transport completion",
+      "validationReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/deliverable-validation.json",
+        "sha256": "bfd82ea6abd9ce2ef5eb8153a886a731aa9cad541bd2e1d1c836676f3f41a39f"
+      },
+      "retainedManifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/author-receipt.json",
+          "sha256": "beed5198aa3bf0b4e911179bdeb554061c4081a8285189699b6fed08cca02a17"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/deliverable-validation.json",
+          "sha256": "bfd82ea6abd9ce2ef5eb8153a886a731aa9cad541bd2e1d1c836676f3f41a39f"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/category-coverage-and-gaps.json",
+          "sha256": "1396e9ae1a7f1495dd76e62251be23dcba391d37ca2600c9a7482e62e7ae278b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/build-and-validate-cp01.py",
+          "sha256": "22105929e870add326b3e143b50d490844d6dc20bd0ef19e9af35c34543f7962",
+          "bytes": 7501
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/cp01-source-native-candidate.jsonl",
+          "sha256": "be83874b0ad11578c3e12a9b154a7b0d30c4c58ba9843565c8934b06e0163861",
+          "bytes": 594866
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/cp01-candidate-validation.json",
+          "sha256": "c2bd3f533bd983f3f73742f563480de80d0698a033260e40117acf5a456bd33e",
+          "bytes": 3780
+        }
+      ],
+      "review": {
+        "artifact": {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/author37-result4009-review/review-receipt.json",
+          "sha256": "14e36a1267fc2a8ef174e17301f958826d5fb941f51e3a115669e1eebf7e7fa0"
+        },
+        "selector": "/countryFindings/SK",
+        "verdict": "PASS_SOURCE_NATIVE_CP01_SELECTED_CELL_FIDELITY",
+        "limit": "Only selected1845cells and dimension metadata compared; no replay of624594full-source roundtrip suite. Numeric values match exactly; lexical JSON-number spellings not certified as verbatim. Scope is statistical-source fidelity, not independent economic interpretation/gold/category acceptance."
+      },
+      "declaredCounts": {
+        "coordinateSlots": 1845,
+        "numeric": 1749,
+        "absent": 96,
+        "trueZeroReviewed": 18
+      },
+      "applicability": [
+        {
+          "type": "ingredients",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact source-bound ingredient identity, preparation/component scope and intended-use rights; labels/menu references alone are insufficient.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "recipes",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact retained complete method/ingredient/measure/yield reference, publisher provenance and reuse entitlement before recipe derivatives.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "nutrition",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact analytical food/nutrient release with original units, preparation/basis/method, source rights and named semantic review; policy/index is not composition.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "retailers/providers",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact provider/site/register identity/date/jurisdiction and legal entity scope; a merchant page or quality standard does not prove national register coverage.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "prices/baskets",
+          "status": "PARTIAL_STATISTICAL_INDEX_SELECTED_FIDELITY_REVIEWED_ONLY",
+          "sourceRequirement": "Exact dated observation, ISO currency, quantity/package/unit, merchant/site and licence; CPI is not an item price or basket.",
+          "acceptedWholeCategory": false
+        },
+        {
+          "type": "dietary references",
+          "status": "MISSING_SOURCE_BOUND_ACCEPTED_DELIVERABLE",
+          "sourceRequirement": "Exact issuer/document edition/population/pages/rights; historical policy or research correlation is not current numeric advice.",
+          "acceptedWholeCategory": false
+        }
+      ],
+      "declarations": {
+        "format": "JSON-stat2",
+        "selectors": {
+          "dimensions": [
+            "freq",
+            "unit",
+            "coicop18",
+            "geo",
+            "time"
+          ],
+          "sizes": [
+            1,
+            5,
+            555,
+            1,
+            369
+          ],
+          "fixed": {
+            "freq": "M",
+            "coicop18": "CP01",
+            "geo": "SK"
+          },
+          "periodRange": [
+            "1996-01",
+            "2026-09"
+          ],
+          "values": "/value/{sourceFlatIndex}",
+          "statuses": "/status/{sourceFlatIndex}",
+          "dimensionLabels": "/dimension/{dimension}/category/label/{code}"
+        },
+        "basis": {
+          "I25": "2025=100",
+          "I15": "2015=100",
+          "RCH_M": "monthly-rate-of-change",
+          "RCH_A": "annual-rate-of-change",
+          "RCH_MV12MAVR": "moving12months-average-rate-of-change"
+        },
+        "units": [
+          "I25",
+          "I15",
+          "RCH_M",
+          "RCH_A",
+          "RCH_MV12MAVR"
+        ],
+        "missingPolicy": "absent-key-distinct-from-explicit-null-and-zero",
+        "evidenceStatus": "reviewed-selected1845-coordinate-fidelity-only",
+        "unresolved": [
+          "canonical-food-price-mapping",
+          "currency",
+          "basket-quantity",
+          "lexical-number-roundtrip"
+        ]
+      },
+      "blockers": [
+        {
+          "code": "source-body-processing-not-selected",
+          "type": "authorization",
+          "owner": "Morgan",
+          "scope": "Current assignment metadata/code only; prior selected fidelity retained"
+        },
+        {
+          "code": "canonical-staging-review-pending",
+          "type": "review",
+          "owner": "independent reviewer/integrator00",
+          "scope": "No index/rate to retail-price or canonical nutrient mapping"
+        }
+      ],
+      "bodyProcessingAuthorized": false,
+      "productionAdmission": false,
+      "goldAdmitted": false,
+      "countryComplete": false,
+      "declarationEvidence": {
+        "artifact": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/deliverable-validation.json",
+          "sha256": "bfd82ea6abd9ce2ef5eb8153a886a731aa9cad541bd2e1d1c836676f3f41a39f"
+        },
+        "selector": "/actualSourceValidation/input",
+        "meaning": "Original pin declared by historical validation; no current original read"
+      },
+      "nativeFieldOriginDeclarations": {
+        "value": {
+          "inputSha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+          "sourceField": "/value/{sourceFlatIndex}",
+          "presence": "Absent keys retained separately from explicit null; numeric0 remains0"
+        },
+        "status": {
+          "inputSha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+          "sourceField": "/status/{sourceFlatIndex}",
+          "presence": "Preserve statusPresent even when status is null"
+        },
+        "coordinates": {
+          "inputSha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+          "sourceFields": [
+            "/id",
+            "/size",
+            "/dimension/{dimension}/category/index"
+          ],
+          "transform": "Last declared dimension varies fastest; existing selected coordinate fidelity only"
+        },
+        "unitLabel": {
+          "inputSha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+          "sourceField": "/dimension/unit/category/label/{unit}"
+        },
+        "basis": {
+          "inputSha256": "b236d6f16afcf13c40d156ee5ae46913377f6fa9a5ab3798eb226c873c11d3e2",
+          "sourceField": "/dimension/unit/category/label/{unit}",
+          "rule": "Native index/rate basis only; no conversion to money or quantities"
+        }
+      },
+      "selectorEvidence": {
+        "artifact": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/SK/cp01-candidate-validation.json",
+          "sha256": "c2bd3f533bd983f3f73742f563480de80d0698a033260e40117acf5a456bd33e",
+          "bytes": 3780
+        },
+        "selectors": [
+          "/scope",
+          "/sourceSchemaSelectors",
+          "/flattening",
+          "/statusDefinitionsAsRecorded"
+        ],
+        "reviewArtifact": {
+          "path": "/home/user/.codex/visualizations/2026/10/14/01a138f2-0657-7d60-be9e-a0e100d68bfd/author37-result4009-review/review-receipt.json",
+          "sha256": "14e36a1267fc2a8ef174e17301f958826d5fb941f51e3a115669e1eebf7e7fa0"
+        },
+        "reviewSelector": "/countryFindings/SK"
+      },
+      "additionalInputBindings": [],
+      "retainedFieldUseReceipt": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/B02-W37/author-receipt.json",
+        "sha256": "6c34ae83c8b82c7bb5504d836a377396d55f17b7393803ac19167f802871d25f",
+        "resultSequence": 4873
+      }
+    }
+  ],
+  "authoredAt": "2026-10-18T05:00:35.599078+00:00"
+}

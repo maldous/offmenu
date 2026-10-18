@@ -1,0 +1,14 @@
+{
+  "release": "AUTHORED-RECEIPT-1",
+  "status": "authored-metadata-only",
+  "asset": {
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "bytes": 17
+  },
+  "acquiredAt": "2026-09-01T00:00:00Z",
+  "validatedAt": "2026-09-20T00:00:00Z",
+  "nativeUnit": "g",
+  "nativeBasis": "per100g-authored-example",
+  "zero": 0,
+  "unknown": null
+}

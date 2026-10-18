@@ -1,0 +1,7 @@
+[
+  {"name":"valid-metadata","country":"MX","input":"retained-declaration","now":"2026-10-18T00:00:00Z","expected":"binding-ready-pending-review"},
+  {"name":"missing-input","country":"SG","input":"absent","now":"2026-10-18T00:00:00Z","expected":"missing-input"},
+  {"name":"held-source","country":"SS","input":"retained-declaration","now":"2026-10-18T00:00:00Z","expected":"held"},
+  {"name":"malformed-input","country":"MX","input":"wrong-release","now":"2026-10-18T00:00:00Z","expected":"malformed-input"},
+  {"name":"stale-input","country":"SG","input":"retained-declaration","now":"2026-11-15T00:00:00Z","expected":"stale-input"}
+]

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "offmenu-worker61-bindings/1",
+  "sources": [
+    {
+      "sourceId": "fixture-nu-metadata",
+      "releaseId": "authored-1",
+      "country": "NU",
+      "role": "synthetic-metadata-only",
+      "domains": [
+        "prices/baskets"
+      ],
+      "manifest": {
+        "path": "receipt.json",
+        "sha256": "301dc37ae628ae446a449ae96165e7f6b6bb8a54fe7760dcd01638e655ef5f61",
+        "bytes": 121
+      },
+      "fields": {
+        "title": {
+          "selector": "/title",
+          "unit": null,
+          "basis": null
+        },
+        "unit": {
+          "selector": "/unit",
+          "unit": null,
+          "basis": null
+        },
+        "basis": {
+          "selector": "/basis",
+          "unit": null,
+          "basis": null
+        }
+      },
+      "acquiredSelector": "/acquiredAt",
+      "validatedAt": "2026-10-17T00:00:00Z",
+      "holds": [],
+      "missing": [],
+      "rightsStatus": "metadata-reference-only",
+      "adapterSourceId": null
+    }
+  ]
+}

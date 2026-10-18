@@ -1,0 +1,386 @@
+{
+  "schemaVersion": "owner49-retained-staging-catalog/1",
+  "owner": 49,
+  "acceptedBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "pending28a5ba7Accepted": false,
+  "scope": "Source-linked retained metadata declarations only; no body processing or dataset acceptance",
+  "cacheIntent": {
+    "minimumReuseSeconds": 2592000,
+    "originalClock": "Actual receipt acquisition UTC only; unknown remains null",
+    "validationClock": "Separate; cannot reset original age",
+    "expired": "stale-input; no automatic refresh/retry",
+    "genericPurePlanner": "UNSUPPORTED at accepted base; proposal5798 only",
+    "actualCacheVerification": "Shared reviewed acquisition/verify handlers under existing holds, not this package"
+  },
+  "sources": [
+    {
+      "country": "FI",
+      "admitted": false,
+      "countryComplete": false,
+      "productionHandlerRegistered": false,
+      "evidence": [
+        {
+          "path": "/home/user/src/offmenu-data/owner49-normalization/FINELI-LABEL-ATTACHMENT-20261016-A/manifest.json",
+          "sha256": "793475412e4c4a7b9574fe7c6302b060ff7658b108b05900476fbce001c0a279",
+          "selectors": [
+            "/"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/FI/selected-export-field-map.json",
+          "sha256": "bf69205ac716389e1f124d974914073412e0fea68f15eaf2fb9f76d9f506d574",
+          "selectors": [
+            "/sourceJSON",
+            "/sourceCSV",
+            "/measuredMappings",
+            "/fieldMap",
+            "/limitations"
+          ]
+        }
+      ],
+      "originalDatasetAcquisitionUTC": null,
+      "validationUTC": null,
+      "sourceId": "fineli",
+      "releaseId": "20.0",
+      "status": "held",
+      "applicableTypes": [
+        "nutrientProfile-selected-export"
+      ],
+      "excludedTypes": [
+        "recipe",
+        "price",
+        "retailer",
+        "dietary-reference",
+        "canonical-gold"
+      ],
+      "inputs": {
+        "selectedJSON": {
+          "path": "/home/user/Documents/Codex/2026-10-16/worker49-fineli-export/examples/selected-foods.json",
+          "sha256": "5574ee89388b01b8917feeda8b352ecee672ad768058a3c32a85f9b58027ba4f",
+          "bytes": 9078
+        },
+        "selectedCSV": {
+          "path": "/home/user/Documents/Codex/2026-10-16/worker49-fineli-export/examples/selected-observations.csv",
+          "sha256": "a28ae870d33c6708516708b780a486b4bbc124985e2711fa96e496d11059ede2",
+          "bytes": 6701
+        }
+      },
+      "selectors": {
+        "exportSchemaVersion": "/exportSchemaVersion",
+        "inputManifestSHA256": "/inputManifestSHA256",
+        "sourceId": "/sourceId",
+        "release": "/release",
+        "sourceFoodId": "/records/{i}/sourceFoodId",
+        "sourceComponentCode": "{nutrientPointer}/sourceComponent",
+        "publisherFoodLabelsJSON": "/records/{i}/record/data/names",
+        "publisherComponentLabelsJSON": "{nutrientPointer}/sourceTerminology/componentLabels",
+        "sourceUnitCode": "{nutrientPointer}/sourceTerminology/sourceUnitCode",
+        "publisherUnitLabelsJSON": "{nutrientPointer}/sourceTerminology/unitLabels",
+        "reportedValueJSON": "{nutrientPointer}/value",
+        "unit": "{nutrientPointer}/unit",
+        "basisJSON": "/records/{i}/record/data/basis",
+        "qualifiersJSON": "{nutrientPointer}/{qualifier,definition,method,acquisitionType,methodType,methodIndicator}",
+        "provenanceJSON": "/records/{i}/record/provenance",
+        "zeroMeaning": "{nutrientPointer}/sourceTerminology/zeroMeaning; null encoded as empty CSV field",
+        "rightsJSON": "/rights",
+        "missingSelectedComponentsJSON": "/records/{i}/missingSelectedComponents"
+      },
+      "concreteMeasuredSelectors": [
+        {
+          "foodID": "1",
+          "componentCode": "FAT",
+          "nutrientPointer": "/records/0/record/data/nutrients/fat",
+          "csvLogicalRow1Based": 2,
+          "columnsEqual": 18
+        },
+        {
+          "foodID": "1",
+          "componentCode": "SUGOH",
+          "nutrientPointer": "/records/0/record/data/nutrients/fineli:SUGOH",
+          "csvLogicalRow1Based": 3,
+          "columnsEqual": 18
+        },
+        {
+          "foodID": "343",
+          "componentCode": "FAT",
+          "nutrientPointer": "/records/1/record/data/nutrients/fat",
+          "csvLogicalRow1Based": 4,
+          "columnsEqual": 18
+        },
+        {
+          "foodID": "343",
+          "componentCode": "SUGOH",
+          "nutrientPointer": "/records/1/record/data/nutrients/fineli:SUGOH",
+          "csvLogicalRow1Based": 5,
+          "columnsEqual": 18
+        }
+      ],
+      "nativeUnits": {
+        "sourceUnitCode": "G",
+        "selectedOutputUnit": "g",
+        "mappingScope": "FAT/SUGOH selected examples only; no conversions"
+      },
+      "nativeBasis": {
+        "amount": 100,
+        "unit": "g",
+        "state": "source-described",
+        "unknowns": [
+          "edible versus as-purchased",
+          "preparation semantics",
+          "reported zero semantics"
+        ]
+      },
+      "recordProvenanceFetchedAt": "2026-10-13T09:24:50.849760+00:00",
+      "recordTimestampIsNotAcquisitionProof": true,
+      "counts": {
+        "meaning": "retained manifest, not recounted now",
+        "foods": 4238,
+        "observations": 307834,
+        "unresolvedZeroHolds": 53654,
+        "unknownValues": 15,
+        "selectedFoods": 2,
+        "selectedObservations": 4
+      },
+      "blockers": [
+        {
+          "type": "authorization",
+          "owner": "Morgan/source-use decision; independent reviewer",
+          "need": "Explicit Fineli processing hold; selected-export mapping review is not national processing approval."
+        },
+        {
+          "type": "missing-input",
+          "owner": "existing FI acquisition provenance holder via Morgan",
+          "need": "Exact primary original bytes/custody/time/use evidence for input handoff; zero/basis/method unknowns retained."
+        }
+      ]
+    },
+    {
+      "country": "JP",
+      "admitted": false,
+      "countryComplete": false,
+      "productionHandlerRegistered": false,
+      "evidence": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/JP/additives/owner-46/acquisition-receipt.json",
+          "sha256": "b8197077066b5bd5a6efee553090b2f826cc94ece8bb9c2682828746d853943a",
+          "selectors": [
+            "/"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-49/JP/compilation-crosslink-continuation/author-receipt.json",
+          "sha256": "b721c09143dcbf8e20a0580b553bc01242ed0926a5ff14935715ff3670f0de18",
+          "selectors": [
+            "/"
+          ]
+        }
+      ],
+      "originalDatasetAcquisitionUTC": null,
+      "validationUTC": null,
+      "sourceId": "caa-jsfa",
+      "releaseId": "Japan Specifications and Standards for Food Additives, 10th edition (2024), official CAA served snapshot",
+      "status": "missing-source-specific-binding",
+      "applicableTypes": [
+        "additive-standard-reference-index",
+        "erratum-reference"
+      ],
+      "excludedTypes": [
+        "nutrientProfile",
+        "legal-eligibility",
+        "monograph-acceptance",
+        "formula-acceptance"
+      ],
+      "inputs": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/JP/additives/owner-46/001208056.pdf",
+          "sha256": "0d7a6c11b3e08454770c1a06ceabe203265ddb8c3d69eeb4493e6a4032c212bf",
+          "bytes": 32115558,
+          "originalAcquisitionUTC": "2026-10-14T20:48:38.692862+00:00"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/JP/additives/owner-46/standards_cms102_251022_01.pdf",
+          "sha256": "0f7c09a34b232feb5a13dfc0266849d8a8bb9b0b18afa3f026888aed7c86a726",
+          "bytes": 180151,
+          "originalAcquisitionUTC": "2026-10-14T20:49:05.046678+00:00"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/JP/additives/owner-46/cms_standards102_240808_01.pdf",
+          "sha256": "90e70ecd5f0a414bacc52977c8664a7640743171649b6e5b15bf5de70f678895",
+          "bytes": 191659,
+          "originalAcquisitionUTC": "2026-10-14T20:49:05.873155+00:00"
+        }
+      ],
+      "selectors": {
+        "nameIndex": "main compilation physical page1638; FA058200",
+        "erratum": "2025 notice literal name correspondence only",
+        "cellMethodsOrFormula": null
+      },
+      "nativeUnits": null,
+      "nativeBasis": null,
+      "counts": {
+        "retainedMainPages": 1644,
+        "retainedErrataPages": [
+          2,
+          2
+        ],
+        "referenceCrosslinks": 1,
+        "qualifiedNutritionRecords": 0
+      },
+      "blockers": [
+        {
+          "type": "missing-input",
+          "owner": "49 portfolio and designated reviewer",
+          "need": "Exact record/field binding beyond name index; no monograph/method/formula inference."
+        },
+        {
+          "type": "source-use",
+          "owner": "Morgan/source-use reviewer",
+          "need": "Bind operation to exact CAA scope and third-party exceptions; preserve CODH TLS/MAFF-use holds."
+        }
+      ]
+    },
+    {
+      "country": "KE",
+      "admitted": false,
+      "countryComplete": false,
+      "productionHandlerRegistered": false,
+      "evidence": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/KE/84ac6d25723eec9b18db/receipt.json",
+          "sha256": "b0d3e647536dd0cbf00534c03a2d2c8a0691824dd1b35ec00f4082d272412147",
+          "selectors": [
+            "/"
+          ]
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/KE/composition/owner-46/acquisition-receipt.json",
+          "sha256": "ec9c9566e8bc3d4b19e43f7317fa1f2f7a5eb57d7ee020897a0584f33687d848",
+          "selectors": [
+            "/"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-17/owner46-custody-R1/response.json",
+          "sha256": "88d6333307f5c392924ceeed6900b56bf253a427366318a9c18ff44937444066",
+          "selectors": [
+            "/responses/2"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/M-BATCH-CUSTODY-R1-W51/response.json",
+          "sha256": "185e4fc79a63e4793915fe38ad3c84c18609a14312b16905e54cd7d45ef9f445",
+          "selectors": [
+            "/responses/3"
+          ]
+        }
+      ],
+      "originalDatasetAcquisitionUTC": null,
+      "validationUTC": null,
+      "sourceId": "kenya-fct-and-recipe-leads",
+      "releaseId": "2018 composition lead; recipe edition unknown",
+      "status": "held-no-qualified-original",
+      "applicableTypes": [
+        "composition-lead-metadata",
+        "recipe-catalogue-lead-metadata"
+      ],
+      "excludedTypes": [
+        "qualified-nutrition",
+        "parsed-recipe"
+      ],
+      "inputs": [],
+      "selectors": null,
+      "nativeUnits": null,
+      "nativeBasis": null,
+      "counts": {
+        "qualifiedOriginals": 0,
+        "parsedComposition": 0,
+        "parsedRecipes": 0
+      },
+      "blockers": [
+        {
+          "type": "source-denial",
+          "owner": "Morgan/existing46 provenance",
+          "need": "FAO403/17byte error no-retry; no error parsing/reroute."
+        },
+        {
+          "type": "technical",
+          "owner": "Morgan/existing51 provenance",
+          "need": "Ministry catalogue SSL failure; no certificate bypass/retry/inferred cookbook."
+        },
+        {
+          "type": "missing-input",
+          "owner": "Morgan reconciles returned46/51 gaps",
+          "need": "Qualified original/edition/assets/use evidence and unit/basis/method/recipe selectors; no repeat questions absent new evidence."
+        }
+      ]
+    },
+    {
+      "country": "KG",
+      "admitted": false,
+      "countryComplete": false,
+      "productionHandlerRegistered": false,
+      "evidence": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-52/KG/figshare-fct2022-v2/receipt.json",
+          "sha256": "ea027502c1f1e9bd7084ec269588ea45affa69e76f8064e96fe0a6d2858f3a16",
+          "selectors": [
+            "/"
+          ]
+        }
+      ],
+      "originalDatasetAcquisitionUTC": null,
+      "validationUTC": null,
+      "sourceId": "figshare-20237163",
+      "releaseId": "10.6084/m9.figshare.20237163.v2",
+      "status": "missing-original",
+      "applicableTypes": [
+        "dataset-discovery-metadata"
+      ],
+      "excludedTypes": [
+        "qualified-composition",
+        "parsed-recipe"
+      ],
+      "inputs": [
+        {
+          "url": "https://api.figshare.com/v2/articles/20237163/versions/2",
+          "status": 200,
+          "utc": "2026-10-14T22:47:35.904569+00:00",
+          "bytes": 4098,
+          "sha256": "5975461aa6be36e84d472cccb176f79b9cb60c6d7566f69908622a9806d2e0e1",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-52/KG/figshare-fct2022-v2/author-deposit-metadata.json",
+          "scope": "author licence/version/file metadata only"
+        }
+      ],
+      "selectors": {
+        "metadataOnly": [
+          "/files",
+          "/license",
+          "/doi"
+        ],
+        "dataSelectors": null
+      },
+      "nativeUnits": null,
+      "nativeBasis": null,
+      "originalMetadataAcquisitionUTC": "2026-10-14T22:47:35.904569+00:00",
+      "counts": {
+        "attachedFiles": 0,
+        "datasetAcquired": false,
+        "descriptionOnlyFoods": 41,
+        "descriptionOnlyRecipes": 11,
+        "descriptionCountsAreParsedRecords": false
+      },
+      "blockers": [
+        {
+          "type": "missing-input",
+          "owner": "Morgan/current52 provenance route",
+          "need": "Actual VUP/author original, exact release and operation-use rights binding; metadata licence does not bind absent data."
+        },
+        {
+          "type": "missing-input",
+          "owner": "49 after explicit source/task selection",
+          "need": "Actual field/unit/basis/method selectors unavailable; no body inspection/download selected."
+        }
+      ]
+    }
+  ]
+}
