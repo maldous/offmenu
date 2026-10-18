@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare"}
+PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -141,6 +141,7 @@ def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
         "offmenu-global-readiness/1": ("global-readiness.py", "globalReadiness"),
+        "offmenu-fixed-original-summary/1": ("acquire-fixed-zenodo.py", "fixedOriginal"),
         "offmenu-collection-preparation-summary/1": ("prepare-fixed-collection.py", "collectionPreparation"),
         "offmenu-offline-reconciliation/1": ("offline-reconciliation.py", "offlineReconciliation"),
         "offmenu-ledger-structural-audit/1": ("offmenu_ledger_audit.py", "ledgerAudit"),
@@ -302,6 +303,11 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "zenodo-private-original":
+        steps += [
+            ("zenodo-original-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_zenodo_original.py"]),
+            ("zenodo-private-original", ["readiness", "zenodo-original-tests"], [python, "-B", "scripts/acquire-fixed-zenodo.py"]),
+        ]
     if profile == "collection-prepare":
         steps += [
             ("collection-preparation-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_collection_preparation.py"]),
@@ -361,7 +367,8 @@ def profile_steps(profile, code, trusted_sha=None):
 
 def run_step(step_id, command, code):
     try:
-        result = run_child(command, code)
+        result = (run_child(command, code, timeout=930) if step_id == "zenodo-private-original"
+                  else run_child(command, code))
         if result["status"] == "failed" and result["evidence"].get("errorCode") == "unfinished-run-requires-resume" and step_id == "offline-replay":
             previous = result
             result = run_child(command + ["--resume"], code)
@@ -375,6 +382,14 @@ def run_step(step_id, command, code):
                 result.update(status='failed', exitCode=3, errorCode='native-candidate-not-established')
             elif step_id == 'ciqual-native-retry' and receipt.get('created') is not False:
                 result.update(status='failed', exitCode=3, errorCode='native-idempotency-not-established')
+        if step_id == "zenodo-private-original" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("fixedOriginal", {})
+            if report.get("status") == "verified-private-original" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "failed" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="fixed-original-report-invalid")
         if step_id == "collection-prepare" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("collectionPreparation", {})
             if report.get("status") == "prepared" and result["exitCode"] == 0:
@@ -496,6 +511,10 @@ def run_profile(request, sha, code, run_id, attempt):
         report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
                       diagnosticScope="structural-ledger-and-selected-cache-metadata",
                       corpusAcceptanceEstablished=False)
+    if request["profile"] == "zenodo-private-original":
+        report.update(maximumParallelChildren=1, diagnosticScope="one-selected-global-private-original",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, commercialReuseApproved=False)
     if request["profile"] == "collection-prepare":
         report.update(maximumParallelChildren=1, diagnosticScope="pinned-custody-metadata-preparation",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,

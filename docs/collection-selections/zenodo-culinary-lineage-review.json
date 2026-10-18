@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "offmenu-zenodo-culinary-lineage-review/1",
+  "reviewedAt": "2026-10-18T13:48:42Z",
+  "threadId": "01a130cd-91c1-73da-9978-889018a100dd",
+  "method": "cloud_threads_read recorded-history only; bounded 211 returned messages, exact-source string search",
+  "messageCount": 211,
+  "truncatedMessageCount": 77,
+  "searchTerms": [
+    "15169428",
+    "986efafad65c7969fde13a46d2defba0",
+    "110013794",
+    "Culinary Recipes",
+    "culinary-recipes-zenodo-v1",
+    "10.5281/zenodo.15169428"
+  ],
+  "matchCounts": {
+    "15169428": 0,
+    "110013794": 0,
+    "986efafad65c7969fde13a46d2defba0": 0,
+    "Culinary Recipes": 0,
+    "culinary-recipes-zenodo-v1": 0,
+    "10.5281/zenodo.15169428": 0
+  },
+  "firstMessage": {
+    "id": "01a14f0a-0cfb-73c7-b0a1-b978684e2028",
+    "turnId": "01a14f05-7eb0-7592-9c5a-e23934b2d9dc"
+  },
+  "lastMessage": {
+    "id": "msg_06247480c01f01bd016ad4b036c71881919ac75d74cad43691",
+    "turnId": "01a14ecc-8e43-764d-ae7e-2e649cdcff96"
+  },
+  "dossierIntroduction": {
+    "id": "fco_01a14edc-50b4-77b3-9db7-dda05720961b",
+    "turnId": "01a14edc-50b4-77b3-9db7-dd9f74073231",
+    "dossierCommit": "8e68a02d8cd3e494c39f76b2956369eb650a0fa3",
+    "sourceExactAcquisitionOrDenialSpecified": false
+  },
+  "finding": "No exact source selection, admission, claim, completion or acquisition prohibition found in returned text. Does not establish absence in omitted/truncated text or the live Foo claims/cache.",
+  "ownershipClearance": false
+}

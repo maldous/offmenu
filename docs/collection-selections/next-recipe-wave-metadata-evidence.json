@@ -1,0 +1,501 @@
+{
+  "method": "Public metadata only, <=1MiB per response; no raw dataset bodies requested",
+  "items": {
+    "foodmine_data": {
+      "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data",
+      "metadata": [
+        {
+          "name": "cocoa_chemical_viz_data.pkl",
+          "path": "data/cocoa_chemical_viz_data.pkl",
+          "sha": "1c77e827f84e11e4e3f2ce1539802de0a03eda1e",
+          "size": 31502,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_chemical_viz_data.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_chemical_viz_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_chemical_viz_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_data.csv",
+          "path": "data/cocoa_data.csv",
+          "sha": "4c1d4f85b01b7f2349405fa091d3c3c76692fb1f",
+          "size": 5450743,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_data.csv?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_data.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_data.csv",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_food_data.pkl",
+          "path": "data/cocoa_food_data.pkl",
+          "sha": "7524bd05da4304fb8ea8fea3994b99ca88ac4e48",
+          "size": 1161654,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_food_data.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_food_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_food_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_foodb_food.pkl",
+          "path": "data/cocoa_foodb_food.pkl",
+          "sha": "592df944c98e1a2ae1b1e714870e55d107660183",
+          "size": 834585,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_foodb_food.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_foodb_food.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_foodb_food.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_scoring.csv",
+          "path": "data/cocoa_scoring.csv",
+          "sha": "cbc604c7fd07efa52aa31fe125a8960d2ea3cfc0",
+          "size": 934664,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_scoring.csv?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_scoring.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_scoring.csv",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_usda.pkl",
+          "path": "data/cocoa_usda.pkl",
+          "sha": "6b913905faf38e8aad89bc92bc5db309dfc44645",
+          "size": 15928,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_usda.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/cocoa_usda.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/cocoa_usda.pkl",
+          "type": "file"
+        },
+        {
+          "name": "dicts.pkl",
+          "path": "data/dicts.pkl",
+          "sha": "15b16f7554e0361387b8edfdeaed9e1620fd854f",
+          "size": 1049563,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/dicts.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/dicts.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/dicts.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_chemical_viz_data.pkl",
+          "path": "data/garlic_chemical_viz_data.pkl",
+          "sha": "58ee993099f2a4fe92663944904423d6c0fc8f63",
+          "size": 32373,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_chemical_viz_data.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_chemical_viz_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_chemical_viz_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_data.csv",
+          "path": "data/garlic_data.csv",
+          "sha": "37089edd920f2a488ac3b9df2d590a6d05bc3d29",
+          "size": 782195,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_data.csv?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_data.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_data.csv",
+          "type": "file"
+        },
+        {
+          "name": "garlic_food_data.pkl",
+          "path": "data/garlic_food_data.pkl",
+          "sha": "557ee452c63d53a393cfe1a70d62a6a39f65c038",
+          "size": 298875,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_food_data.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_food_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_food_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_foodb_food.pkl",
+          "path": "data/garlic_foodb_food.pkl",
+          "sha": "7ca79dd96845cb7db27cfd58d49a7362c06c33d5",
+          "size": 1439546,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_foodb_food.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_foodb_food.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_foodb_food.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_scoring.csv",
+          "path": "data/garlic_scoring.csv",
+          "sha": "ae42bbc1a068ee4710582d6e7b78c7867a6d705d",
+          "size": 828108,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_scoring.csv?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_scoring.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_scoring.csv",
+          "type": "file"
+        },
+        {
+          "name": "garlic_usda.pkl",
+          "path": "data/garlic_usda.pkl",
+          "sha": "0d30e8341d5f18e072125ae47aa573a7a1506086",
+          "size": 21089,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_usda.pkl?ref=master",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/master/data/garlic_usda.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/master/data/garlic_usda.pkl",
+          "type": "file"
+        }
+      ]
+    },
+    "foodmine_commit": {
+      "url": "https://api.github.com/repos/fhooton/FoodMine/commits/master",
+      "metadata": {
+        "sha": "2120adc535df1df79c14c20eea8695a794cb5b52",
+        "html_url": "https://github.com/fhooton/FoodMine/commit/2120adc535df1df79c14c20eea8695a794cb5b52",
+        "date": "2021-04-30T18:46:29Z",
+        "tree_sha": "76070332345cfb48eab4aa5a4f0ebdcc9854591f"
+      }
+    },
+    "unitools_root": {
+      "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/",
+      "metadata": [
+        {
+          "name": "LICENSE",
+          "path": "LICENSE",
+          "sha": "2d58298e6eda10e7204abb52722efbc840db2390",
+          "size": 20138,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/LICENSE?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/LICENSE",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/LICENSE",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "b0c4b714c84b5f649e22722b3dd04159c38cf0ad",
+          "size": 5190,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/README.md?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/README.md",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/README.md",
+          "type": "file"
+        },
+        {
+          "name": "sample.json",
+          "path": "sample.json",
+          "sha": "2d665107ddac2eec93d649d46129a2824dec187d",
+          "size": 12375,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/sample.json?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/sample.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/sample.json",
+          "type": "file"
+        },
+        {
+          "name": "unitools-cooking-times-v1.csv",
+          "path": "unitools-cooking-times-v1.csv",
+          "sha": "28fcf7a51dc8deb0acbbf15d01638fb7c02aa5fa",
+          "size": 50641,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-cooking-times-v1.csv?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/unitools-cooking-times-v1.csv",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/unitools-cooking-times-v1.csv",
+          "type": "file"
+        },
+        {
+          "name": "unitools-cooking-times-v1.json",
+          "path": "unitools-cooking-times-v1.json",
+          "sha": "5fd1e28a6d3032fcdd656718f5d6d6dcd1a95e3a",
+          "size": 205390,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-cooking-times-v1.json?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/unitools-cooking-times-v1.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/unitools-cooking-times-v1.json",
+          "type": "file"
+        },
+        {
+          "name": "unitools-recipes-v1.csv",
+          "path": "unitools-recipes-v1.csv",
+          "sha": "8d2e69a0e90ab90b24d52a9798892bc0e9dc2a97",
+          "size": 75632,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-recipes-v1.csv?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/unitools-recipes-v1.csv",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/unitools-recipes-v1.csv",
+          "type": "file"
+        },
+        {
+          "name": "unitools-recipes-v1.json",
+          "path": "unitools-recipes-v1.json",
+          "sha": "1bde24df4bc51d49b5fe16200e7f5b2712fa940e",
+          "size": 2733812,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-recipes-v1.json?ref=main",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/main/unitools-recipes-v1.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/main/unitools-recipes-v1.json",
+          "type": "file"
+        }
+      ]
+    },
+    "unitools_commit": {
+      "url": "https://api.github.com/repos/farcrak/unitools-recipes/commits/main",
+      "metadata": {
+        "sha": "2f554073f7e730b18d707fe1164d18308f6ec16c",
+        "html_url": "https://github.com/farcrak/unitools-recipes/commit/2f554073f7e730b18d707fe1164d18308f6ec16c",
+        "date": "2026-09-25T22:22:04Z",
+        "tree_sha": "0beabdb8f738c641e08c68c6f7ace8c9b32d3188"
+      }
+    },
+    "zenodo_culinary": {
+      "url": "https://zenodo.org/api/records/15169428",
+      "metadata": {
+        "id": 15169428,
+        "doi": "10.5281/zenodo.15169428",
+        "created": "2025-04-07T18:31:18.861482+00:00",
+        "modified": "2025-04-07T18:31:19.041720+00:00",
+        "revision": 4,
+        "metadata": {
+          "title": "Culinary Recipes Dataset",
+          "doi": "10.5281/zenodo.15169428",
+          "publication_date": "2025-04-07",
+          "description": "<p>This dataset consists of 50,510 culinary recipes from around the world, categorized into different categories, such as desserts, pasta, appetizers, and more.</p>\n<p>It provides detailed information about each recipe, including the author, ingredients, preparation time, instructions, nutritional information, and other relevant information.</p>",
+          "access_right": "open",
+          "creators": [
+            {
+              "name": "Barba, Pau",
+              "affiliation": null
+            },
+            {
+              "name": "Canals, Núria",
+              "affiliation": null
+            }
+          ],
+          "resource_type": {
+            "title": "Dataset",
+            "type": "dataset"
+          },
+          "license": {
+            "id": "odc-odbl"
+          },
+          "relations": {
+            "version": [
+              {
+                "index": 0,
+                "is_last": true,
+                "parent": {
+                  "pid_type": "recid",
+                  "pid_value": "15169427"
+                }
+              }
+            ]
+          }
+        },
+        "files": [
+          {
+            "id": "46279e9c-75c5-4f8f-913a-3d2ea0524913",
+            "key": "dataset.csv",
+            "size": 110013794,
+            "checksum": "md5:986efafad65c7969fde13a46d2defba0",
+            "links": {
+              "self": "https://zenodo.org/api/records/15169428/files/dataset.csv/content"
+            }
+          }
+        ]
+      }
+    },
+    "foodmine_pinned": {
+      "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+      "metadata": [
+        {
+          "name": "cocoa_chemical_viz_data.pkl",
+          "path": "data/cocoa_chemical_viz_data.pkl",
+          "sha": "1c77e827f84e11e4e3f2ce1539802de0a03eda1e",
+          "size": 31502,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_chemical_viz_data.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_chemical_viz_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_chemical_viz_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_data.csv",
+          "path": "data/cocoa_data.csv",
+          "sha": "4c1d4f85b01b7f2349405fa091d3c3c76692fb1f",
+          "size": 5450743,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_data.csv?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_data.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_data.csv",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_food_data.pkl",
+          "path": "data/cocoa_food_data.pkl",
+          "sha": "7524bd05da4304fb8ea8fea3994b99ca88ac4e48",
+          "size": 1161654,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_food_data.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_food_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_food_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_foodb_food.pkl",
+          "path": "data/cocoa_foodb_food.pkl",
+          "sha": "592df944c98e1a2ae1b1e714870e55d107660183",
+          "size": 834585,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_foodb_food.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_foodb_food.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_foodb_food.pkl",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_scoring.csv",
+          "path": "data/cocoa_scoring.csv",
+          "sha": "cbc604c7fd07efa52aa31fe125a8960d2ea3cfc0",
+          "size": 934664,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_scoring.csv?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_scoring.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_scoring.csv",
+          "type": "file"
+        },
+        {
+          "name": "cocoa_usda.pkl",
+          "path": "data/cocoa_usda.pkl",
+          "sha": "6b913905faf38e8aad89bc92bc5db309dfc44645",
+          "size": 15928,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/cocoa_usda.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_usda.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/cocoa_usda.pkl",
+          "type": "file"
+        },
+        {
+          "name": "dicts.pkl",
+          "path": "data/dicts.pkl",
+          "sha": "15b16f7554e0361387b8edfdeaed9e1620fd854f",
+          "size": 1049563,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/dicts.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/dicts.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/dicts.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_chemical_viz_data.pkl",
+          "path": "data/garlic_chemical_viz_data.pkl",
+          "sha": "58ee993099f2a4fe92663944904423d6c0fc8f63",
+          "size": 32373,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_chemical_viz_data.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_chemical_viz_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_chemical_viz_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_data.csv",
+          "path": "data/garlic_data.csv",
+          "sha": "37089edd920f2a488ac3b9df2d590a6d05bc3d29",
+          "size": 782195,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_data.csv?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_data.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_data.csv",
+          "type": "file"
+        },
+        {
+          "name": "garlic_food_data.pkl",
+          "path": "data/garlic_food_data.pkl",
+          "sha": "557ee452c63d53a393cfe1a70d62a6a39f65c038",
+          "size": 298875,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_food_data.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_food_data.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_food_data.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_foodb_food.pkl",
+          "path": "data/garlic_foodb_food.pkl",
+          "sha": "7ca79dd96845cb7db27cfd58d49a7362c06c33d5",
+          "size": 1439546,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_foodb_food.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_foodb_food.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_foodb_food.pkl",
+          "type": "file"
+        },
+        {
+          "name": "garlic_scoring.csv",
+          "path": "data/garlic_scoring.csv",
+          "sha": "ae42bbc1a068ee4710582d6e7b78c7867a6d705d",
+          "size": 828108,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_scoring.csv?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_scoring.csv",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_scoring.csv",
+          "type": "file"
+        },
+        {
+          "name": "garlic_usda.pkl",
+          "path": "data/garlic_usda.pkl",
+          "sha": "0d30e8341d5f18e072125ae47aa573a7a1506086",
+          "size": 21089,
+          "url": "https://api.github.com/repos/fhooton/FoodMine/contents/data/garlic_usda.pkl?ref=2120adc535df1df79c14c20eea8695a794cb5b52",
+          "html_url": "https://github.com/fhooton/FoodMine/blob/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_usda.pkl",
+          "download_url": "https://raw.githubusercontent.com/fhooton/FoodMine/2120adc535df1df79c14c20eea8695a794cb5b52/data/garlic_usda.pkl",
+          "type": "file"
+        }
+      ]
+    },
+    "unitools_pinned": {
+      "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+      "metadata": [
+        {
+          "name": "LICENSE",
+          "path": "LICENSE",
+          "sha": "2d58298e6eda10e7204abb52722efbc840db2390",
+          "size": 20138,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/LICENSE?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/LICENSE",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/LICENSE",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "sha": "b0c4b714c84b5f649e22722b3dd04159c38cf0ad",
+          "size": 5190,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/README.md?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/README.md",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/README.md",
+          "type": "file"
+        },
+        {
+          "name": "sample.json",
+          "path": "sample.json",
+          "sha": "2d665107ddac2eec93d649d46129a2824dec187d",
+          "size": 12375,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/sample.json?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/sample.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/sample.json",
+          "type": "file"
+        },
+        {
+          "name": "unitools-cooking-times-v1.csv",
+          "path": "unitools-cooking-times-v1.csv",
+          "sha": "28fcf7a51dc8deb0acbbf15d01638fb7c02aa5fa",
+          "size": 50641,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-cooking-times-v1.csv?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-cooking-times-v1.csv",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-cooking-times-v1.csv",
+          "type": "file"
+        },
+        {
+          "name": "unitools-cooking-times-v1.json",
+          "path": "unitools-cooking-times-v1.json",
+          "sha": "5fd1e28a6d3032fcdd656718f5d6d6dcd1a95e3a",
+          "size": 205390,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-cooking-times-v1.json?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-cooking-times-v1.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-cooking-times-v1.json",
+          "type": "file"
+        },
+        {
+          "name": "unitools-recipes-v1.csv",
+          "path": "unitools-recipes-v1.csv",
+          "sha": "8d2e69a0e90ab90b24d52a9798892bc0e9dc2a97",
+          "size": 75632,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-recipes-v1.csv?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-recipes-v1.csv",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-recipes-v1.csv",
+          "type": "file"
+        },
+        {
+          "name": "unitools-recipes-v1.json",
+          "path": "unitools-recipes-v1.json",
+          "sha": "1bde24df4bc51d49b5fe16200e7f5b2712fa940e",
+          "size": 2733812,
+          "url": "https://api.github.com/repos/farcrak/unitools-recipes/contents/unitools-recipes-v1.json?ref=2f554073f7e730b18d707fe1164d18308f6ec16c",
+          "html_url": "https://github.com/farcrak/unitools-recipes/blob/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-recipes-v1.json",
+          "download_url": "https://raw.githubusercontent.com/farcrak/unitools-recipes/2f554073f7e730b18d707fe1164d18308f6ec16c/unitools-recipes-v1.json",
+          "type": "file"
+        }
+      ]
+    }
+  },
+  "observedDate": "2026-10-18"
+}
