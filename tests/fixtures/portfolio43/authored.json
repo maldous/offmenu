@@ -1,0 +1,64 @@
+{
+  "scope": "small authored metadata fixture; no source payload or permission",
+  "binding": {
+    "key": "authored",
+    "sourceId": "authored-worker43",
+    "releaseId": "fixture-1",
+    "manifest": {
+      "path": "authored-metadata-only",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "publisherURL": "https://fixture.invalid/metadata",
+    "countries": [
+      "SR"
+    ],
+    "types": [
+      "retailers/providers"
+    ],
+    "holds": [],
+    "originalAcquiredAt": "2026-10-01T00:00:00+00:00",
+    "fields": {
+      "label": {
+        "value": "authored example",
+        "record": "manifest:/label",
+        "selector": "/label"
+      },
+      "unit": {
+        "value": null,
+        "constant": "explicit-unknown"
+      }
+    }
+  },
+  "evidence": {
+    "schemaVersion": "worker43-evidence/1",
+    "manifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "originalAcquiredAt": "2026-10-01T00:00:00+00:00",
+    "validatedAt": "2026-10-01T00:00:00+00:00",
+    "declaration": {
+      "data": {
+        "label": "authored example",
+        "unit": null
+      },
+      "provenance": {
+        "sourceId": "authored-worker43",
+        "releaseId": "fixture-1",
+        "fieldOrigins": {
+          "/data/label": {
+            "kind": "source",
+            "sourceId": "authored-worker43",
+            "releaseId": "fixture-1",
+            "inputPath": "manifest.json",
+            "inputSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sourceRecordId": "manifest:/label",
+            "sourceField": "/label"
+          },
+          "/data/unit": {
+            "kind": "constant",
+            "policySha256": "f7abdf0b99217a7257ee514b430e3e1f5b033e844b9bad93b28f0ef2e8227aa7",
+            "symbol": "explicit-unknown"
+          }
+        }
+      }
+    }
+  }
+}

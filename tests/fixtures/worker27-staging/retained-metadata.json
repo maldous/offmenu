@@ -1,0 +1,134 @@
+{
+  "observations": [
+    {
+      "bindingId": "DK:off:2026-10-12",
+      "country": "DK",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2",
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DM:off:2026-10-12",
+      "country": "DM",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2",
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DO:off:2026-10-12",
+      "country": "DO",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2",
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DZ:off:2026-10-12",
+      "country": "DZ",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2",
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DK:prices:2026-10-12",
+      "country": "DK",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DM:prices:2026-10-12",
+      "country": "DM",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DO:prices:2026-10-12",
+      "country": "DO",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DZ:prices:2026-10-12",
+      "country": "DZ",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifestSha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5",
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DK:dietary-guidelines:fao-directory-20261013",
+      "country": "DK",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifestSha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941",
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DM:dietary-guidelines:fao-directory-20261013",
+      "country": "DM",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifestSha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941",
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DO:dietary-guidelines:fao-directory-20261013",
+      "country": "DO",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifestSha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941",
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DZ:dietary-guidelines:fao-directory-20261013",
+      "country": "DZ",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifestSha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941",
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    },
+    {
+      "bindingId": "DK:frida:5.5",
+      "country": "DK",
+      "sourceId": "frida",
+      "releaseId": "5.5",
+      "manifestSha256": "ddbcb22d6a4f5dac4574f515fe7244d8c80fed5bf063df907f4f0a65170b39e7",
+      "archiveSha256": "14101f7df7b93dd78472c3e5506bf39104dd61d33f4ec45a9ee170a3e4063f92",
+      "originalAcquiredAt": null,
+      "checkedAt": "2026-10-18T05:00:00Z"
+    }
+  ]
+}
