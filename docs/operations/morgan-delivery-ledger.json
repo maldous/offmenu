@@ -1,7 +1,7 @@
 {
   "schemaVersion": "offmenu-delivery-operations-checkpoint/1",
-  "status": "global-dataset-completion-primary-pr36-bounded-ci-correction",
-  "asOfUTC": "2026-10-18T02:32:00Z",
+  "status": "global-dataset-batch-prepared-not-executed-pr36-merged",
+  "asOfUTC": "2026-10-18T02:44:00Z",
   "coordinator": "Morgan/root",
   "purpose": "Forward reconciliation of the same operations ledger against exact repository baseline and locally approved consolidation packages; not a duplicate ledger or semantic replay of all historical obligations.",
   "instructionContext": {
@@ -90,7 +90,7 @@
       "totalConcurrentCapIncludingCoordinator": 7,
       "fooRunnerConcurrency": 1,
       "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
-      "currentBlocker": "Global harness/acquisition preparation is primary and independent. PR36 head96b5b6cac41cdb94499026af882b96f30ddb6e5d passed677webtests; deterministic catalogue correction under review, full CI pending."
+      "currentBlocker": "Global composed source batch awaiting final review/publication; actual source acquisition/admission remains unbound. PR36 merged with successful postmerge CI."
     },
     "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
     "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
@@ -101,12 +101,12 @@
       "state": "open",
       "repositoryAndIdentityVerifiedByCoordinator": true
     },
-    "publicationWriter": "integrate_verified_develop_baseline; sole authorized repository writer",
-    "selectedRepositoryBase": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+    "publicationWriter": "integrate_verified_develop_baseline; sole authorized writer",
+    "selectedRepositoryBase": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
     "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
     "currentUserPriority": {
       "top": "Global all-country dataset completion",
-      "next": "Finish bounded PR36 recovery safely; no further optional helper batches",
+      "next": "Publish one reviewed composed global harness, coverage, acquisition and readiness batch; then separately verify control pins before bounded Foo assessment",
       "preservedRefreshRequirements": [
         "Reuse cached inputs for at least30days before conditional refresh",
         "Complete scripts/adapters registry/harness using preserved existing implementations",
@@ -282,6 +282,12 @@
       "eventId": "global-datasets-primary-pr36-bounded-followthrough",
       "status": "priority-updated-no-data-completion-claim",
       "description": "Parent conveyed owner priority correction: global country dataset completion is primary after PR35. Existing PR36 is bounded secondary follow-through; current677webtests pass but i18n inventory needs exact generator regeneration. Source/runtime/rights/health/Foo custody holds unchanged; no new data execution or admission claimed."
+    },
+    {
+      "recordedAtUTC": "2026-10-18T02:44:00Z",
+      "eventId": "pr36-merged-global-composed-batch-prepared",
+      "status": "verified-merge-global-code-prepared-not-executed",
+      "description": "PR36 merged as1c1c3dd with identical accepted tree and successful postmerge CI39090830874. Global dataset completion is primary. Coverage/harness/acquisition reviewed; readiness metadata route is being bound to exact already-tracked files. No data execution, new access or acceptance claimed."
     }
   ],
   "lanes": [
@@ -647,9 +653,10 @@
     "Sonar assessment/remediation owner and current result remain unverified"
   ],
   "nextPriorities": [
-    "TOP: global all-country dataset completion through existing deterministic registry/harness and preserved implementations; retain all source/runtime holds and cached-input reuse requirements",
-    "Finish PR36 with reviewed deterministic catalogue correction, full CI and expected-head merge; bounded secondary work",
-    "Do not start optional helper recovery batches; preserve exact provenance and remaining semantic/custody dispositions"
+    "TOP: global all-country dataset completion through reviewed deterministic coverage, registry, cache/acquisition and harness implementation",
+    "Publish one composed reviewed global source batch; preserve existing failclosed develop workflow and separately review active-control promotion",
+    "Verify trusted source/control pins and run only authorized bounded Foo assessment; report missing or held data distinctly from country acceptance",
+    "Keep original acquisition timestamps and at least30-day cache reuse; no AI runtime, unreviewed source bindings or optional helper batches"
   ],
   "duplicateSuppression": [
     "Do not restart 64 historical sessions",
@@ -1088,22 +1095,21 @@
     "Current product adapter acceptance/adoption versus preserved historical scoped reviews"
   ],
   "publication": {
-    "status": "merged-develop-pr35-postmerge-application-ci-passed",
-    "verifiedPriorCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
-    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/2266e85046eb22d5baccba09149c0f3b70dadd25",
+    "status": "merged-develop-pr36-postmerge-application-ci-passed",
+    "verifiedPriorCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+    "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
     "earlierVerifiedCommits": [
       "3a103bc7c380da01c83fcda35d82c92741379804",
       "75cb5963021397a537098b192c4ac6e7d030f0ab",
       "1f9c29f81f171a35c51a351d122efed2469b31e0"
     ],
-    "writer": "Next recovery publication writer remains parent-assigned; preparation only",
-    "note": "PR35 is merged. Historical premerge publication/acceptance snapshots are preserved. This next recovery candidate is local and not yet independently approved or published."
+    "writer": "integrate_verified_develop_baseline only",
+    "note": "Actual PR36 merge and postmerge CI verified. Global batch is prepared locally pending final review/publication; no execution or dataset acceptance claimed."
   },
   "activeWork": [
-    "Global country dataset completion and independent deterministic harness/acquisition preparation are highest priority",
-    "Sole writer finishes existing PR36 without delaying independent global preparation; no optional helper batch expansion",
-    "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
-    "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
+    "Global source batch composition and independent final review; no runtime/source acceptance yet",
+    "Separate protected-control profile/pin review and exact terminal receipt verification before any Foo assessment",
+    "Preserve all historical obligations, source/health/security holds and unresolved raw-payload custody"
   ],
   "supersededOperationalCheckpoint": {
     "asOfUTC": "2026-10-18T00:18:00Z",
@@ -1449,13 +1455,13 @@
     ]
   },
   "repositoryConsolidation": {
-    "asOfUTC": "2026-10-18T02:20:26Z",
+    "asOfUTC": "2026-10-18T02:44:00Z",
     "selectedBaseCommit": "aee7d3221ba29de088cf929bcd96f3a4f2fba611",
-    "developLastVerifiedCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
-    "integrationBranch": "integration/lossless-develop-baseline-20261018",
-    "lastVerifiedIntegrationHead": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
-    "finalCandidateCommit": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
-    "finalCandidateState": "pr35-merged-postmerge-application-ci-passed-open-holds",
+    "developLastVerifiedCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+    "integrationBranch": "integration/bounded-recovery-20261018",
+    "lastVerifiedIntegrationHead": "7e456a06fbf293d0e784774daf67c368edf81602",
+    "finalCandidateCommit": "7e456a06fbf293d0e784774daf67c368edf81602",
+    "finalCandidateState": "pr36-merged-postmerge-application-ci-passed-open-holds",
     "developMergeVerified": true,
     "approvedCodeFiles": 62,
     "assembledCodeFilesVerified": null,
@@ -2556,19 +2562,29 @@
       "rule": "No remote writes by this preparer. Parent assigns sole writer after independent review; prior write-state history preserved."
     },
     "completionReceipt": {
-      "status": "verified-merged-nonproduction-baseline",
-      "candidateCommit": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
-      "mergedDevelopCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
-      "tree": "88985711aca313902cb85d8277b9f76ac8439043",
-      "pullRequest": 35,
-      "immutableReadback": "https://github.com/maldous/offmenu/pull/35#issuecomment-6244568689",
-      "postmergeCI": {
-        "runId": 39088973540,
-        "headSha": "2266e85046eb22d5baccba09149c0f3b70dadd25",
-        "conclusion": "success",
-        "url": "https://github.com/maldous/offmenu/actions/runs/39088973540"
+      "head": "7e456a06fbf293d0e784774daf67c368edf81602",
+      "merge": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "tree": "efa8ac054dd0a9050afee9918b04b8731ec48406",
+      "pullRequest": "https://github.com/maldous/offmenu/pull/36",
+      "premergeRuns": [
+        39090615301,
+        39090612864
+      ],
+      "postmergeRun": 39090830874,
+      "postmergeJob": 117567035783,
+      "applicationConclusion": "success",
+      "testCounts": {
+        "webPassed": 677,
+        "localeEdgePassed": 11,
+        "pythonRun": 637,
+        "pythonSkipped": 4,
+        "portableOcrPassed": 6
       },
-      "snapshotBoundary": "Earlier files/package approvals, scopeRevision, publicationReceipt, finalIndependentAcceptance and work roster remain historical snapshots; this receipt supersedes their pending-merge language, not their unclosed semantic/rights/security holds."
+      "gitGuardianDelta": "success; prior historical incidents remain open",
+      "sonar": "skipped/open",
+      "snyk": "skipped/open",
+      "sourceScope": "six reviewed source/test paths plus two deterministic catalogues and existing ledger; helper activation and raw body/state-fetch exclusions unchanged",
+      "terminalReceipt": "https://github.com/maldous/offmenu/pull/36#issuecomment-6244812445"
     },
     "productSupersessionFeedback": {
       "evidence": [
@@ -2824,6 +2840,91 @@
       }
     },
     "nextRecoveryCandidate": {
+      "status": "merged-pr36-postmerge-application-ci-passed",
+      "baseCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "files": [
+        {
+          "path": "public/session-fetch.js",
+          "gitBlob": "dafeb773ae47b245830553cf3390eabb0cb92f4e",
+          "sha256": "cddc55fc2666ed0d4eef67ca3315540b032c86f47628294ce0dc8f180204a8f3",
+          "bytes": 1126,
+          "mode": "100644",
+          "baselineGitBlob": "a009690a8531a241e67ef9927e56cb6436ad012e",
+          "scope": "session response-method guard"
+        },
+        {
+          "path": "tests-web/session-fetch.test.mjs",
+          "gitBlob": "a1d8bcc197d48a098df4a32a661732e0dfefc2a9",
+          "sha256": "d8e846cce50de701501f45c3047c1975a991cf9f77d0f236a0e715f7e94ff0e8",
+          "bytes": 2342,
+          "mode": "100644",
+          "baselineGitBlob": "ba775623f9b0468035cf9c9718b8d9a23234043b",
+          "scope": "session response-method guard"
+        },
+        {
+          "path": "public/dimensional-unit-engine.js",
+          "gitBlob": "cbb231eaf8e00c0a68dd25422492f4ddb0ddce34",
+          "sha256": "f39fd8d9395bc5a7259b632f3c09e9bfe2208399fa29a6bc212ca327dec443c9",
+          "bytes": 3795,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "tests-web/dimensional-unit-engine.test.mjs",
+          "gitBlob": "895ed9f74895fa95857873a3ed91a408b18524ba",
+          "sha256": "db27504dd4f7773abaa6a8f344eda75c7c8c3fde2790770a68e2e3eac3035fe6",
+          "bytes": 4738,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "public/reference-profile-model.js",
+          "gitBlob": "cf4f5b9a41cd2a50a6391b3480d5149d72c6a1fd",
+          "sha256": "576c65d02058f88d7ca1b19bd67353a2cfeae474eb776b01fb0341eb72e3fcc4",
+          "bytes": 5132,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        },
+        {
+          "path": "tests-web/reference-profile-model.test.mjs",
+          "gitBlob": "5aa5c8c62d4d7f76eb524598ea631359521a36e5",
+          "sha256": "144c7ac4e3b85cd3d674b081de2f649eb4b33601df40754a056af26785f050ef",
+          "bytes": 7062,
+          "mode": "100644",
+          "baselineGitBlob": null,
+          "scope": "standalone source preservation only"
+        }
+      ],
+      "focusedTests": {
+        "node": "v24.19.0",
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "helperTests": 13,
+        "sessionTests": 5,
+        "baselineSessionAgainstCandidateTests": {
+          "passed": 3,
+          "failed": 2
+        },
+        "scope": "Bounded harness with exact merged-baseline dependencies; not full checkout or CI"
+      },
+      "boundaries": [
+        "Session guard covers body-reading methods and clone; raw response.body streams remain unguarded",
+        "Active sessionFetch consumers cover care/community/personal-AI/admin/private-services. Existing app.js cloudRequest for /api/state still uses raw fetch and is unchanged; the /api/state URL in session tests is synthetic and does not establish state-route integration",
+        "Helpers remain standalone with no caller wiring, source admission, rights grant or nutritional/clinical qualification",
+        "No production, data job, runtime diagnostic, source hold or cleanup changes",
+        "No bulk generated discovery data; Foo custody remains unverified",
+        "PR36 publication, merge and exact-head pre/postmerge application CI are verified in pr36MergeReceipt; runtime/source admission remains unclaimed."
+      ],
+      "publishedHead": "7e456a06fbf293d0e784774daf67c368edf81602",
+      "mergedDevelopCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "acceptedTree": "efa8ac054dd0a9050afee9918b04b8731ec48406",
+      "terminalReceipt": "https://github.com/maldous/offmenu/pull/36#issuecomment-6244812445"
+    },
+    "priorPR36PreparationSnapshot": {
       "status": "prepared-local-awaiting-independent-review",
       "baseCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
       "files": [
@@ -2903,6 +3004,45 @@
         "No bulk generated discovery data; Foo custody remains unverified",
         "Future publication commit and CI are not claimed"
       ]
+    },
+    "pr36MergeReceipt": {
+      "head": "7e456a06fbf293d0e784774daf67c368edf81602",
+      "merge": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+      "tree": "efa8ac054dd0a9050afee9918b04b8731ec48406",
+      "pullRequest": "https://github.com/maldous/offmenu/pull/36",
+      "premergeRuns": [
+        39090615301,
+        39090612864
+      ],
+      "postmergeRun": 39090830874,
+      "postmergeJob": 117567035783,
+      "applicationConclusion": "success",
+      "testCounts": {
+        "webPassed": 677,
+        "localeEdgePassed": 11,
+        "pythonRun": 637,
+        "pythonSkipped": 4,
+        "portableOcrPassed": 6
+      },
+      "gitGuardianDelta": "success; prior historical incidents remain open",
+      "sonar": "skipped/open",
+      "snyk": "skipped/open",
+      "sourceScope": "six reviewed source/test paths plus two deterministic catalogues and existing ledger; helper activation and raw body/state-fetch exclusions unchanged"
+    },
+    "priorPR35CompletionReceipt": {
+      "status": "verified-merged-nonproduction-baseline",
+      "candidateCommit": "0cb7616df582ffc5e444d23776f2a4e82662bc52",
+      "mergedDevelopCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "tree": "88985711aca313902cb85d8277b9f76ac8439043",
+      "pullRequest": 35,
+      "immutableReadback": "https://github.com/maldous/offmenu/pull/35#issuecomment-6244568689",
+      "postmergeCI": {
+        "runId": 39088973540,
+        "headSha": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+        "conclusion": "success",
+        "url": "https://github.com/maldous/offmenu/actions/runs/39088973540"
+      },
+      "snapshotBoundary": "Earlier files/package approvals, scopeRevision, publicationReceipt, finalIndependentAcceptance and work roster remain historical snapshots; this receipt supersedes their pending-merge language, not their unclosed semantic/rights/security holds."
     }
   },
   "priorRecoveryPreparationCurrentState": {
@@ -2969,5 +3109,208 @@
       "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
       "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
     ]
+  },
+  "priorPR36CurrentState": {
+    "status": "global-dataset-completion-primary-pr36-bounded-ci-correction",
+    "asOfUTC": "2026-10-18T02:32:00Z",
+    "publication": {
+      "status": "merged-develop-pr35-postmerge-application-ci-passed",
+      "verifiedPriorCommit": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "verifiedPriorUrl": "https://github.com/maldous/offmenu/commit/2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "earlierVerifiedCommits": [
+        "3a103bc7c380da01c83fcda35d82c92741379804",
+        "75cb5963021397a537098b192c4ac6e7d030f0ab",
+        "1f9c29f81f171a35c51a351d122efed2469b31e0"
+      ],
+      "writer": "Next recovery publication writer remains parent-assigned; preparation only",
+      "note": "PR35 is merged. Historical premerge publication/acceptance snapshots are preserved. This next recovery candidate is local and not yet independently approved or published."
+    },
+    "activeWork": [
+      "Global country dataset completion and independent deterministic harness/acquisition preparation are highest priority",
+      "Sole writer finishes existing PR36 without delaying independent global preparation; no optional helper batch expansion",
+      "Continue exact per-ref and per-blob remaining work disposition without blanket closure",
+      "Keep source/runtime/health/security and Foo bulk-custody holds unchanged"
+    ],
+    "nextPriorities": [
+      "TOP: global all-country dataset completion through existing deterministic registry/harness and preserved implementations; retain all source/runtime holds and cached-input reuse requirements",
+      "Finish PR36 with reviewed deterministic catalogue correction, full CI and expected-head merge; bounded secondary work",
+      "Do not start optional helper recovery batches; preserve exact provenance and remaining semantic/custody dispositions"
+    ],
+    "currentExecution": {
+      "sourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "sourceStatus": "Application CI passed configured steps; France native002 terminal native crash, further data jobs held",
+      "route": "Reviewed fixed-profile Foo job -> immutable sanitized receipt -> PR31 bot synchronize wake -> coordinator verifies -> selects next eligible batch",
+      "resultsPr": "https://github.com/maldous/offmenu/pull/31",
+      "production": "paused",
+      "cix": "paused",
+      "fi": "held",
+      "cleanupProtection": [
+        "offmenu-runner-jobs",
+        "offmenu-runner-results",
+        "PR31",
+        ".github/workflows/foo-runner.yml",
+        "Continue OffMenu delivery automation",
+        "source pins",
+        "PR30"
+      ],
+      "sourceUrl": "https://github.com/maldous/offmenu/commit/72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "controlUrl": "https://github.com/maldous/offmenu/commit/0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "capacity": {
+        "totalConcurrentCapIncludingCoordinator": 7,
+        "fooRunnerConcurrency": 1,
+        "backfill": "Automatically select eligible independent bounded work when capacity frees; preserve central single-writer ownership and required review.",
+        "currentBlocker": "Global harness/acquisition preparation is primary and independent. PR36 head96b5b6cac41cdb94499026af882b96f30ddb6e5d passed677webtests; deterministic catalogue correction under review, full CI pending."
+      },
+      "coordinatorRole": "Morgan/root coordinates priorities, tasking, dependencies, monitoring, ledger completeness and user updates; substantive authoring/review delegated to six lanes.",
+      "latestExecutedSourceCommit": "72a8a74919773238e402b2a6f5a089bf8a4cefa2",
+      "latestExecutedControlCommit": "0739571852963a59e1509b5fe766f3f0fc9a7d0a",
+      "dataJobHold": "Further data jobs held after France native002 native crash; shared runtime investigation remains platform-blocked. No blind repeat or blocked diagnostics retry/bypass.",
+      "resultsPrReadback": {
+        "head": "55975255474e17d5f82906f8a5dafb319ad18934",
+        "state": "open",
+        "repositoryAndIdentityVerifiedByCoordinator": true
+      },
+      "publicationWriter": "integrate_verified_develop_baseline; sole authorized repository writer",
+      "selectedRepositoryBase": "2266e85046eb22d5baccba09149c0f3b70dadd25",
+      "sourceCommitMeaning": "The existing sourceCommit/latestExecutedSourceCommit remain the actual Foo execution pin, not the newly selected repository code baseline.",
+      "currentUserPriority": {
+        "top": "Global all-country dataset completion",
+        "next": "Finish bounded PR36 recovery safely; no further optional helper batches",
+        "preservedRefreshRequirements": [
+          "Reuse cached inputs for at least30days before conditional refresh",
+          "Complete scripts/adapters registry/harness using preserved existing implementations",
+          "Continue independent sources after failures with per-source diagnostics/provenance",
+          "No AI runtime"
+        ],
+        "sourceRightsAndDataJobHoldsRemain": true
+      }
+    }
+  },
+  "globalDatasetBatch": {
+    "priority": "primary",
+    "state": "source-packages-independently-reviewed-awaiting-publication-and-full-ci",
+    "baseCommit": "1c1c3dd341f60fffb78830977cd0b6ec5b5c7a61",
+    "discoveryScope": {
+      "countries": 249,
+      "domainsPerCountry": 13,
+      "countryDomainCells": 3237,
+      "sources": 1303
+    },
+    "normalizationAssessment": {
+      "historicalHandlerCandidates": 17,
+      "held": 4,
+      "unsupported": 1282,
+      "meaning": "Metadata source-record states, not executable source bindings or accepted country datasets."
+    },
+    "retainedCapabilities": {
+      "releases": 22,
+      "historicalReleaseHandlers": 21,
+      "familyMappings": 23,
+      "discoveryRecordsWithHandlerEvidence": 22
+    },
+    "packages": {
+      "coverage": "independently-reviewed metadata reconciliation",
+      "globalHarness": "independently-reviewed with cross-reviewed supporting-capability preservation",
+      "acquisition": "independently-reviewed 36 unit tests and seven probes; zero production source bindings",
+      "readiness": "independently-reviewed fixed-checkout metadata registration, isolated tests, source/control destination separation"
+    },
+    "metadataRoute": {
+      "status": "fixed-checkout-exact-pin-registration-independently-reviewed-not-yet-executed-on-Foo",
+      "matrix": {
+        "path": "docs/country-delivery-matrix.json",
+        "gitBlob": "12a40e7c7fbe8f42b30e865bfce5656dd27ac92b",
+        "bytes": 133210,
+        "sha256": "894e05f09744c76b790f8e5f159141bed6c308a9af3d90c3c82aa79105cf5ea8"
+      },
+      "ledger": {
+        "path": "docs/source-delivery-ledger.json",
+        "gitBlob": "f1244dfa959c845c5cff8279226cc4abbba82089",
+        "bytes": 1701843,
+        "sha256": "2f3c917a6463153824b8c807b41707870e7f763c65b5ff7957ec4988cd96bfcf"
+      },
+      "boundary": "Already tracked metadata arrives with trusted checkout. No new bulk upload, download, cache mount or access grant; not proof of raw dataset custody or acquisition freshness."
+    },
+    "nextDependency": "Accept composed source, verify full CI and immutable source SHA, then separately reviewed protected-control exact profile allowlist and both trusted pins before one bounded Foo assessment. No dispatch performed.",
+    "currentSourceAcquisitionBindings": 0,
+    "actualPayloadAcceptance": false,
+    "globalDatasetCompletion": false,
+    "fooExecutionPerformed": false,
+    "rawSourceFreshness": "unknown unless independently verified acquisition metadata",
+    "holds": "All source-use/licence, native-crash diagnostic, health, runtime, environment and raw-payload custody holds remain. No native retries, unrestricted fetch, new grants or production changes.",
+    "sourceFileCount": 15,
+    "sourceManifest": [
+      {
+        "path": "offmenu/refresh/coverage.py",
+        "gitBlob": "7fe6a8237c454476d1c2dc263591f47c54630eed",
+        "sha256": "1213f502419c00ff40179f83bcaf0bdd3679a8e451f827886d923f5314d9996f"
+      },
+      {
+        "path": "offmenu/refresh/capabilities.py",
+        "gitBlob": "be6972f3ae42eba0a8829294a488020260df501b",
+        "sha256": "c72077936890c45f97ee5691487b17744fd9bf87be7b47147fe823ab991db710"
+      },
+      {
+        "path": "tests/test_global_coverage.py",
+        "gitBlob": "8706b8e212284c8d6987357c1632e705c62b66a2",
+        "sha256": "5658ba5befdc979a85f09cc4414658b8f53a895dbbc68ccb3829109c652813ef"
+      },
+      {
+        "path": "docs/global-coverage-assessment.md",
+        "gitBlob": "e39ad2b72a913a45d5af274d81ff8c2beaca69d0",
+        "sha256": "c9cfa1c7dac114339ae8d2c199723f47e4c92bb135f5c0ef7277d5acdc78bb79"
+      },
+      {
+        "path": "offmenu/refresh/global_run.py",
+        "gitBlob": "e8d2da6c1dc82b394f51a9f37535ee047cf31b5d",
+        "sha256": "75974aadf86c8cb36e4b7ccb35d807b939030604cef8264ec76e49674f30514a"
+      },
+      {
+        "path": "tests/test_refresh_global_run.py",
+        "gitBlob": "b8bcdd99a9690015334bc865e3f6ef2aec0c6b6f",
+        "sha256": "d7ed9da6637cbc5973bc00fc056d96aec90b13e3f27809892fe2333a90d07dd7"
+      },
+      {
+        "path": "docs/corpus-refresh-global-run.md",
+        "gitBlob": "7114980736397edf55e151cdbcbe92733cf1b109",
+        "sha256": "f1bbb3dbe5e18975502ebb592fae7d3942fdd00546ea4c3cf88b4b5a351c107c"
+      },
+      {
+        "path": "offmenu/refresh/acquisition.py",
+        "gitBlob": "b9348bd09b94559280cb57d267cfcb5f0f5885cf",
+        "sha256": "fb5d74d9e751495a96a583bb6ae8028bbdd1af8a91c001964c3e33eea4c67a4e"
+      },
+      {
+        "path": "tests/test_refresh_acquisition.py",
+        "gitBlob": "ffd60df9b2cf79fd76fefb9a6be5c0c0d4359598",
+        "sha256": "079355e0eaf87a1d81a39273d00db84a8c702e2f29a4a938b7ecea589b065f88"
+      },
+      {
+        "path": "docs/refresh-acquisition-contract.md",
+        "gitBlob": "e5dbe381a480661b2fa88f5711b2e745b1d070bc",
+        "sha256": "18ad30b8890df912dd9d77fb778c054c356bf148e13a5118fc7adf040d17dbfe"
+      },
+      {
+        "path": "scripts/dispatch-foo-job.py",
+        "gitBlob": "f9fd96d325cc273202f545078266c9533c650369",
+        "sha256": "e85bde2423affa8764e23160a34eef87e92f9574d2b71616323cc27f980cb0ed"
+      },
+      {
+        "path": "scripts/global-readiness.py",
+        "gitBlob": "57cbfd0ed32b60d03915b7e02661221ea41b7123",
+        "sha256": "e808c62e7d5254f7165cb57922983f4db80c38ca302ba22a58d1df080af90a5f"
+      },
+      {
+        "path": "tests/test_global_readiness.py",
+        "gitBlob": "0045e33554667f22c8fa8339cc19920b31b465fa",
+        "sha256": "dd3c82f39dae57e2ee6870e0ea16d16a8ce4016012d6815e86556efbffdf8226"
+      },
+      {
+        "path": ".github/workflows/foo-runner.yml",
+        "gitBlob": "3b487342fc6fac3ec19266e1cbcf6c9d51e1294b",
+        "sha256": "4b7922851b365963833a262c38f4a41a7ca6bc1380de0fed58659c694bda493c"
+      }
+    ],
+    "sourceManifestBoundary": "Fourteen source/test/docs/template paths pinned; this ledger is the fifteenth path and its own final hash belongs in the external integration manifest, avoiding self-reference."
   }
 }
