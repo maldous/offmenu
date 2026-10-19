@@ -47,7 +47,8 @@ def download_headers(raw,source,a):
   single=a._headers([(key,value)]);name=next(iter(single))
   if name not in IGNORED_NON_RENDERED:filtered.append((name,value))
  headers=a._headers(filtered)
- if headers.get('vary','').strip().lower() not in ('','accept-encoding'):raise a.RefreshError('unsupported-response-vary')
+ # Private original custody is not HTTP cache reuse. Vary remains a policy fact;
+ # source-specific expectedResponse constraints below are still exact.
  if headers.get('content-encoding','identity').lower()!='identity':raise a.RefreshError('unsupported-response-encoding')
  expected=source['expectedResponse']
  if {key:headers.get(key) for key in expected}!=expected:raise a.RefreshError('source-response-contract-changed')
@@ -101,7 +102,7 @@ def validate_mode(mode,selected,a):
       or item['responseMetadata']['httpStatus']!=200):raise a.RefreshError('private-save-contract-invalid')
  return mode
 
-def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None,owner_runtime=None):
+def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None,owner_runtime=None,reuse_only=False):
  a=adapter;contract=a.source_contract(source);fingerprint=contract['fingerprint'];maximum=contract['maxBytes'];seconds=contract['seconds']
  deadline=min(deadline if deadline is not None else float('inf'),time.monotonic()+seconds)
  prior=next((p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']),None);diagnostic_sha=(mode['diagnosticReportPin'] or {}).get('sha256');meter={'requests':0,'bodyBytesRead':0}
@@ -141,6 +142,7 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     result=SimpleNamespace(path=original,sha256=saved['sha256'],bytes=saved['bytes'],provenance={'originalAcquiredAt':saved['originalAcquiredAt']})
     report['validation']=a.validate_original(result,source,deadline);report.update(status='verified-private-original',originalDisposition='retained-original-no-network',privateSaveState='saved-original',localBodyBytes=saved['bytes'])
    else:
+    if reuse_only:raise a.RefreshError('private-original-conflict')
     if any(p.exists() for p in (original,partial,provenance,reservation)):raise a.RefreshError('private-original-conflict')
     fd=os.open(a.safe_path(intent),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
     with os.fdopen(fd,'wb') as stream:stream.write(a.canonical({**base,'state':'saving'}));stream.flush();os.fsync(stream.fileno())

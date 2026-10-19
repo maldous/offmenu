@@ -149,7 +149,7 @@ class ProgressTests(unittest.TestCase):
                 return {"bodyBytesRead": 42, "Authorization": "synthetic-secret"}
         reporter.observe(network_meter=Meter())
         reporter.stop()
-        self.assertIn("bytes read=42", stream.getvalue())
+        self.assertIn("bytes network-body-read=42", stream.getvalue())
         self.assertNotIn("secret", stream.getvalue())
         self.assertNotIn("http", stream.getvalue())
 

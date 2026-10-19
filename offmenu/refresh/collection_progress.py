@@ -14,7 +14,7 @@ import threading
 import time
 
 
-STAGES = frozenset({"starting", "inventory", "downloads", "preparing", "saving",
+STAGES = frozenset({"starting", "inventory", "downloads", "verifying", "preparing", "saving",
                     "publishing", "finished", "failed", "interrupted"})
 FIELDS = frozenset({
     "download_configured", "download_effective", "download_queued", "download_total",
@@ -22,14 +22,43 @@ FIELDS = frozenset({
     "preparation_effective", "preparation_queued", "preparation_total",
     "preparation_completed", "preparation_reused", "prepared", "failed", "held",
     "network_bytes", "prepared_bytes", "inventory_classified", "inventory_total",
-    "coverage_verified", "coverage_total",
+    "coverage_verified", "coverage_total", "verified_original_records",
+    "extraction_held_records", "extraction_held_verified_records",
+    "retained_preparation_unselected_held", "retained_selected", "retained_verified",
+    "retained_verified_payload_bytes",
 })
 UNKNOWN_INITIAL = frozenset({
     "download_configured", "download_effective", "download_queued", "download_total",
     "preparation_configured", "preparation_effective", "preparation_queued",
     "preparation_total", "held", "network_bytes", "prepared_bytes", "inventory_total",
-    "coverage_verified", "coverage_total",
+    "coverage_verified", "coverage_total", "verified_original_records",
+    "extraction_held_records", "extraction_held_verified_records",
+    "retained_preparation_unselected_held", "retained_selected", "retained_verified",
+    "retained_verified_payload_bytes",
 })
+
+
+def asset_record_counts(outcomes):
+    """Count outcome records, including aliases, without implying unique files.
+
+    Verified custody is independent of extraction readiness or failure. The
+    verified extraction-held subset requires verified custody and the explicit
+    extraction-held outcome. A hold does not establish a publisher prohibition:
+    the selected preparation scope may leave extraction unselected.
+    Only these integer counts may be passed to the reporter.
+    """
+    counts = {"failed": 0, "held": 0, "verified_original_records": 0,
+              "extraction_held_records": 0, "extraction_held_verified_records": 0}
+    for row in outcomes:
+        verified = row["custody"] == "verified-original"
+        held = row["stage"] == "held"
+        counts["failed"] += row["stage"] == "error"
+        counts["held"] += held
+        counts["verified_original_records"] += verified
+        extraction_held = held and row["code"] == "extract-permission-held"
+        counts["extraction_held_records"] += extraction_held
+        counts["extraction_held_verified_records"] += verified and extraction_held
+    return counts
 
 
 class SharedActivity:
@@ -126,6 +155,7 @@ class ProgressReporter:
         self._closed = False
         self._sink_failed = False
         self._stage = "starting"
+        self._execution_stage = None
         self._download_active = 0
         self._preparation_activity = None
         self._network_meter = None
@@ -189,6 +219,17 @@ class ProgressReporter:
                     self._pending.append(self._snapshot_locked())
                     self._wake.set()
 
+    def execution_stage(self, stage):
+        """Select only the collector-validated fetch or parse display context."""
+        if stage not in {"fetch", "parse"}:
+            raise ValueError("invalid-progress-execution-stage")
+        with self._lock:
+            if not self._closed and stage != self._execution_stage:
+                self._execution_stage = stage
+                if self._started is not None:
+                    self._pending.append(self._snapshot_locked())
+                    self._wake.set()
+
     def _download_change(self, change):
         with self._lock:
             self._download_active = max(0, self._download_active + change)
@@ -210,7 +251,7 @@ class ProgressReporter:
 
     def _snapshot_locked(self):
         values = dict(self._values)
-        values.update(stage=self._stage, download_active=self._download_active,
+        values.update(stage=self._stage, execution_stage=self._execution_stage, download_active=self._download_active,
                       preparation_active=0, elapsed_seconds=max(0, int(self.clock() - self._started)) if self._started is not None else 0)
         if self._preparation_activity is not None:
             values["preparation_active"] = self._preparation_activity.count()
@@ -226,18 +267,49 @@ class ProgressReporter:
         def value(key):
             number = values[key]
             return "unknown" if number is None else str(number)
+        def difference(total, subset):
+            first, second = values[total], values[subset]
+            return "unknown" if first is None or second is None or second > first else str(first - second)
+        execution = values["execution_stage"]
+        worker_label = "verification" if execution == "fetch" else "parse" if execution == "parse" else "prep"
+        if execution == "parse":
+            acquisition = (
+                f" | acquisition jobs={value('download_total')} completed={value('download_completed')}"
+                f" queued={value('download_queued')} active={value('download_active')}"
+            )
+        else:
+            acquisition = (
+                f" | download active={value('download_active')} effective={value('download_effective')} configured={value('download_configured')}"
+                f" queued={value('download_queued')} completed={value('download_completed')}/{value('download_total')}"
+                f" downloaded={value('downloaded')} reused={value('download_reused')}"
+            )
         line = (
-            f"OffMenu pass stage={values['stage']} elapsed={value('elapsed_seconds')}s"
-            f" | download active={value('download_active')} effective={value('download_effective')} configured={value('download_configured')}"
-            f" queued={value('download_queued')} completed={value('download_completed')}/{value('download_total')}"
-            f" downloaded={value('downloaded')} reused={value('download_reused')}"
-            f" | prep active={value('preparation_active')} effective={value('preparation_effective')} configured={value('preparation_configured')}"
+            f"OffMenu {execution or 'pass'} stage={values['stage']} elapsed={value('elapsed_seconds')}s"
+            + acquisition
+            + f" | {worker_label} active={value('preparation_active')} effective={value('preparation_effective')} configured={value('preparation_configured')}"
             f" queued={value('preparation_queued')} completed={value('preparation_completed')}/{value('preparation_total')}"
-            f" prepared={value('prepared')} reused={value('preparation_reused')}"
-            f" | assets failed={value('failed')} held={value('held')}"
-            f" | bytes read={value('network_bytes')} new-prepared-known={value('prepared_bytes')}\n"
         )
-        line = line[:-1] + (
+        if execution != "fetch":
+            line += f" prepared-ready-total={value('prepared')} new={difference('prepared', 'preparation_reused')} reused={value('preparation_reused')}"
+        line += f" | asset records verified-original-records={value('verified_original_records')} (aliases included)"
+        if execution == "fetch":
+            line += f" failed-collection={value('failed')} held-collection={value('held')}"
+        else:
+            line += (
+                f" failed-stage={value('failed')} held-stage={value('held')}"
+                f" extraction-held-stage={value('extraction_held_records')} verified-extraction-held={value('extraction_held_verified_records')} other-held-stage={difference('held', 'extraction_held_records')}"
+            )
+        line += f" | bytes network-body-read={value('network_bytes')}"
+        if execution != "fetch":
+            line += f" new-preparation-storage-known={value('prepared_bytes')} (includes partial output)"
+        payload_label = "local custody payloads" if execution == "parse" else "retained payloads"
+        line += (
+            f" | {payload_label} completed-verified={value('retained_verified')}/{value('retained_selected')}"
+            f" verified-payload-bytes={value('retained_verified_payload_bytes')} (excludes other local I/O)"
+        )
+        if execution != "fetch":
+            line += f" preparation-unselected-held={value('retained_preparation_unselected_held')}"
+        line += (
             f" | inventory classified={value('inventory_classified')}/{value('inventory_total')}"
             f" | coverage verified={value('coverage_verified')}/{value('coverage_total')}\n"
         )

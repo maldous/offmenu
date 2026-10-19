@@ -36,7 +36,7 @@ class LauncherTests(unittest.TestCase):
  def test_exact_versioned_upgrade_preserves_prior_code_and_pin(self):
   root,prior=self.versioned_predecessor();pin=root/'pins'/(m.VERSIONED_PREDECESSOR['commit']+'.json');before=pin.read_bytes();_,source=self.installed_layout()
   with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):m.install('a'*40,'b'*40)
-  self.assertEqual((prior/'prior-code').read_bytes(),b'preserved');self.assertEqual(pin.read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.wrapper_bytes(source));self.assertEqual(verify.call_args_list[0].args[1],m.VERSIONED_PREDECESSOR)
+  self.assertEqual((prior/'prior-code').read_bytes(),b'preserved');self.assertEqual(pin.read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.run_alias_bytes(root));self.assertEqual(verify.call_args_list[0].args[1],m.VERSIONED_PREDECESSOR)
  def test_changed_versioned_pin_never_fetches(self):
   root,prior=self.versioned_predecessor();(root/'pins'/(m.VERSIONED_PREDECESSOR['commit']+'.json')).write_text(json.dumps({'commit':'c'*40,'tree':'d'*40}))
   with patch.object(m,'git',side_effect=AssertionError('fetch')),self.assertRaises(ValueError):m.install('a'*40,'b'*40)
@@ -44,6 +44,24 @@ class LauncherTests(unittest.TestCase):
   root,prior=self.versioned_predecessor();before=(root/'run').read_bytes();self.installed_layout()
   with patch.object(m,'verify_source'),patch.object(m.os,'replace',side_effect=OSError('synthetic')),self.assertRaises(OSError):m.install('a'*40,'b'*40)
   self.assertEqual((root/'run').read_bytes(),before);self.assertEqual((prior/'prior-code').read_bytes(),b'preserved')
+ def comprehensive_prior(self):
+  prior=m.COMPREHENSIVE_PREDECESSOR;root,source=self.installed_layout(prior['commit']);(source/'preserved').write_bytes(b'prior-c74-source');(root/'pins'/(prior['commit']+'.json')).write_text(json.dumps(prior));(root/'run').write_bytes(m.wrapper_bytes(source));return root,source
+ def test_exact_comprehensive_upgrade_preserves_prior_source_and_pin(self):
+  root,prior=self.comprehensive_prior();pin_path=root/'pins'/(m.COMPREHENSIVE_PREDECESSOR['commit']+'.json');before=pin_path.read_bytes();_,source=self.installed_layout()
+  with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):m.install('a'*40,'b'*40)
+  self.assertEqual((prior/'preserved').read_bytes(),b'prior-c74-source');self.assertEqual(pin_path.read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.run_alias_bytes(root));self.assertEqual(verify.call_args_list[0].args[1],m.COMPREHENSIVE_PREDECESSOR);self.assertEqual(verify.call_args_list[0].args[3],m.COMPREHENSIVE_PREDECESSOR_FILES)
+ def test_changed_comprehensive_pin_never_fetches(self):
+  root,prior=self.comprehensive_prior();(root/'pins'/(m.COMPREHENSIVE_PREDECESSOR['commit']+'.json')).write_text(json.dumps({'commit':m.COMPREHENSIVE_PREDECESSOR['commit'],'tree':'f'*40}));before=(root/'run').read_bytes()
+  with patch.object(m,'git',side_effect=AssertionError('fetch')),self.assertRaises(ValueError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before)
+ def test_comprehensive_failed_switch_preserves_wrapper(self):
+  root,prior=self.comprehensive_prior();before=(root/'run').read_bytes();self.installed_layout()
+  with patch.object(m,'verify_source'),patch.object(m.os,'replace',side_effect=OSError('synthetic')),self.assertRaises(OSError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before);self.assertEqual((prior/'preserved').read_bytes(),b'prior-c74-source')
+ def test_changed_comprehensive_source_stops_before_fetch(self):
+  root,prior=self.comprehensive_prior();before=(root/'run').read_bytes()
+  with patch.object(m,'verify_source',side_effect=ValueError('changed-source')),patch.object(m,'git',side_effect=AssertionError('fetch')),self.assertRaises(ValueError):m.install('a'*40,'b'*40)
+  self.assertEqual((root/'run').read_bytes(),before)
  def test_install_is_pinned_and_repeat_non_destructive(self):
   pin={'commit':'a'*40,'tree':'b'*40};root,source=self.installed_layout()
   with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):
@@ -53,7 +71,7 @@ class LauncherTests(unittest.TestCase):
  def test_exact_legacy_upgrade_preserves_old_code_and_pin(self):
   root,legacy=self.legacy();before=(root/'source-pin.json').read_bytes();_,source=self.installed_layout()
   with patch.object(m,'verify_source') as verify,redirect_stdout(io.StringIO()):m.install('a'*40,'b'*40)
-  self.assertEqual((legacy/'prior-code').read_bytes(),b'preserved');self.assertEqual((root/'source-pin.json').read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.wrapper_bytes(source));self.assertEqual(verify.call_args_list[0].args[1],m.PREDECESSOR)
+  self.assertEqual((legacy/'prior-code').read_bytes(),b'preserved');self.assertEqual((root/'source-pin.json').read_bytes(),before);self.assertEqual((root/'run').read_bytes(),m.run_alias_bytes(root));self.assertEqual(verify.call_args_list[0].args[1],m.PREDECESSOR)
  def test_failed_upgrade_leaves_previous_command_usable(self):
   root,legacy=self.legacy();before=(root/'run').read_bytes()
   with patch.object(m,'verify_source'),patch.object(m,'git',side_effect=subprocess.SubprocessError('synthetic')),self.assertRaises(subprocess.SubprocessError):m.install('a'*40,'b'*40)

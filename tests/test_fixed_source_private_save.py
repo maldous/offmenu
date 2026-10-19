@@ -68,9 +68,11 @@ class SaveTests(unittest.TestCase):
   s=self.selected['sources'][0]
   with self.assertRaises(a.RefreshError):save.download_headers(list(s['expectedResponse'].items())+[('Content-Security-Policy','bad\r\nvalue')],s,a)
   self.assertEqual(save.policy_facts([('Set-Cookie','secret')])['setCookieFields'],1)
- def test_vary_cookie_and_encoded_body_remain_blocked(self):
-  for key,value in [('Vary','Cookie'),('Content-Encoding','gzip')]:
-   with self.subTest(key=key),self.assertRaises(a.RefreshError):save.download_headers(list(self.selected['sources'][0]['expectedResponse'].items())+[(key,value)],self.selected['sources'][0],a)
+ def test_private_vary_is_descriptive_and_encoded_body_remains_blocked(self):
+  source=self.selected['sources'][0];headers=list(source['expectedResponse'].items())
+  for value in ('Cookie','Origin'):
+   with self.subTest(vary=value):self.assertEqual(save.download_headers(headers+[('Vary',value)],source,a)['vary'],value)
+  with self.assertRaises(a.RefreshError):save.download_headers(headers+[('Content-Encoding','gzip')],source,a)
  def test_denial_and_redirect_no_body_and_continue(self):
   count=0
   def transport(*args,**kwargs):

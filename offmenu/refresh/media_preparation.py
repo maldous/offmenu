@@ -481,6 +481,52 @@ def _tag(element):
     return element.tag.rsplit('}', 1)[-1]
 
 
+def _opc_target_member(source_part, target, target_mode, payloads):
+    """Resolve an internal OPC target against its owning part, never the .rels file.
+
+    RFC 3986 path merging/dot removal applies only to relationship references.
+    ZIP member-name traversal remains forbidden by _zip_members. The bounded
+    profile additionally rejects attempts to climb above the package root,
+    URI authorities/schemes, query/fragment references and ambiguous encodings.
+    Percent escapes remain literal for exact OPC part-to-ZIP-name lookup.
+    """
+    if (target_mode not in (None, 'Internal') or not isinstance(target, str)
+            or not target or len(target) > 2048 or target.startswith('//')
+            or not re.fullmatch(r"[A-Za-z0-9._~!$&'()+,;=@%/-]+", target)
+            or re.search(r'%(?![0-9A-Fa-f]{2})', target)):
+        raise PreparationError('archive-unsafe')
+    # OPC part names cannot encode separators or unreserved URI characters.
+    # Do not decode twice or use a filesystem/URL fetcher to interpret targets.
+    for encoded in re.findall(r'%([0-9A-Fa-f]{2})', target):
+        code = int(encoded, 16)
+        if (code < 32 or code == 127 or chr(code) in '/\\'
+                or chr(code) in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'):
+            raise PreparationError('archive-unsafe')
+    if (source_part not in payloads or source_part.startswith('/')
+            or any(part in ('', '.', '..') for part in source_part.split('/'))):
+        raise PreparationError('archive-unsafe')
+    parts = [] if target.startswith('/') else source_part.split('/')[:-1]
+    segments = target[1:].split('/') if target.startswith('/') else target.split('/')
+    # An ending dot segment resolves to a directory, never a package part.
+    if segments[-1] in ('', '.', '..'):
+        raise PreparationError('archive-unsafe')
+    for segment in segments:
+        if not segment:
+            raise PreparationError('archive-unsafe')
+        if segment == '.':
+            continue
+        if segment == '..':
+            if not parts:
+                raise PreparationError('archive-unsafe')
+            parts.pop()
+        else:
+            parts.append(segment)
+    member = '/'.join(parts)
+    if not member or member not in payloads:
+        raise PreparationError('archive-unsafe')
+    return member
+
+
 def _archive_payloads(data, deadline):
     archive, members = _zip_members(data)
     payloads, total = {}, 0
@@ -654,14 +700,11 @@ def _prepare(data, media, params, writer, caps):
             rels, _ = _xml(payloads.get('xl/_rels/workbook.xml.rels', b''), writer.deadline)
             targets = {}
             for item in rels:
-                target = item.get('Target', '')
-                if item.get('TargetMode') == 'External':
+                relationship_id = item.get('Id')
+                if not relationship_id or relationship_id in targets:
                     raise PreparationError('archive-unsafe')
-                normalized = target.lstrip('/') if target.startswith('/xl/') else 'xl/' + target
-                if ('..' in PurePosixPath(normalized).parts or '\\' in normalized
-                        or not normalized.startswith('xl/') or normalized not in payloads):
-                    raise PreparationError('archive-unsafe')
-                targets[item.get('Id')] = normalized
+                targets[relationship_id] = _opc_target_member(
+                    'xl/workbook.xml', item.get('Target', ''), item.get('TargetMode'), payloads)
             sheets = [e for e in workbook.iter() if _tag(e) == 'sheet']
             metrics['sheetCount'] = len(sheets)
             if not 1 <= len(sheets) <= MAX_SHEETS:

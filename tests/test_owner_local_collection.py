@@ -111,7 +111,7 @@ class OwnerTests(unittest.TestCase):
   runtime=self.runtime()
   with patch.object(g,'selection_config',return_value=self.selected),patch.object(g,'manifest_config',return_value=self.manifest),patch.object(g,'owner_config',return_value=runtime.config),patch.object(g,'OwnerRuntime',return_value=runtime),patch.object(g,'verify_manual_handover',side_effect=ValueError('revoked')),patch.object(g,'run_global',side_effect=AssertionError('acquisition')),patch.object(g,'publish_manual_result',return_value={'status':'published-and-verified'}),redirect_stdout(io.StringIO()):
    self.assertEqual(g.main(['--mode','user']),2)
-  envelope,_,_=g.saved_manual_result(runtime);self.assertEqual(envelope['globalReport']['errorCode'],'owner-handover-invalid');self.assertEqual(envelope['globalReport']['networkRequests'],0)
+  envelope,_,_=g.saved_manual_result(runtime,stage='fetch');self.assertEqual(envelope['globalReport']['executionStage'],'fetch');self.assertEqual(envelope['globalReport']['errorCode'],'owner-handover-invalid');self.assertEqual(envelope['globalReport']['networkRequests'],0)
  def test_github_tokens_absent_in_worker_child_and_restored_on_exception(self):
   with patch.dict(os.environ,{'GH_TOKEN':'synthetic-gh','GITHUB_TOKEN':'synthetic-github'}):
    with self.assertRaises(RuntimeError):

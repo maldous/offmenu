@@ -53,12 +53,14 @@ def verify_worker(contract,path,deadline,slot=None):
  with collection_progress._worker_activity.running(slot):return verification.verify_retained(contract,path,deadline)
 
 class ReadAccounting:
- def __init__(self,manifest,ext,plan):
+ def __init__(self,manifest,ext,plan,stage=None):
   indices={r['assetId']:i for i,r in enumerate(manifest['assets'])};rows={r['assetId']:r for r in ext['records']}
   self.rows={indices[k]:rows[k] for k in plan['proposedAssetIds']};self.structural={indices[k] for k in plan['proposedStructuralAssetIds']};self.maximum=plan['budget']['maximumOriginalReadBytes'];self.attempted=set();self.completed=set();self.verified=set();self.uncertain=set();self.reserved=0
+  if stage not in (None,'fetch','parse'):raise RefreshError(extension.ERROR)
+  self.stage=stage;self.execution_indices=self.structural if stage=='parse' else set(self.rows)
  def reserve(self,index):
   if index not in self.rows:return
-  if index in self.attempted:raise RefreshError('global-local-read-budget')
+  if index not in self.execution_indices or index in self.attempted:raise RefreshError('global-local-read-budget')
   row=self.rows[index];bound=row['retainedOriginal']['bytes']+int(row['preparationContract'] is not None)
   if self.reserved+bound>self.maximum:raise RefreshError('global-local-read-budget')
   self.reserved+=bound;self.attempted.add(index)
@@ -69,18 +71,21 @@ class ReadAccounting:
    else:self.completed.add(index)
   if not uncertain and detail and (detail.get('integrityVerified') or detail.get('stages',{}).get('integrity')=='passed'):self.verified.add(index)
  def summary(self,ranges):
-  return {'schemaVersion':SCHEMA,'inventoryCount':998,'selectedJobs':len(self.rows),'heldUnselected':10,'maximumOriginalReadBytes':self.maximum,'reservedOriginalReadBytes':self.reserved,'verifiedOriginalPayloadBytes':sum(self.rows[i]['retainedOriginal']['bytes'] for i in self.verified),'jobOutcomeGroups':[{'state':state,'assetIndices':sorted(indices)} for state,indices in [('completed-verified',self.verified),('completed-unverified',self.completed-self.verified),('uncertain',self.uncertain),('attempted',self.attempted-self.completed-self.uncertain)] if indices],'networkRequests':0,'completeExtentNotParse':True}
+  result={'schemaVersion':SCHEMA,'inventoryCount':998,'selectedJobs':len(self.rows),'heldUnselected':10,'maximumOriginalReadBytes':self.maximum,'reservedOriginalReadBytes':self.reserved,'verifiedOriginalPayloadBytes':sum(self.rows[i]['retainedOriginal']['bytes'] for i in self.verified),'jobOutcomeGroups':[{'state':state,'assetIndices':sorted(indices)} for state,indices in [('completed-verified',self.verified),('completed-unverified',self.completed-self.verified),('uncertain',self.uncertain),('attempted',self.attempted-self.completed-self.uncertain)] if indices],'networkRequests':0,'completeExtentNotParse':True}
+  if self.stage is not None:result.update(executionStage=self.stage,executionSelectedJobs=len(self.execution_indices),skippedForStage=len(self.rows)-len(self.execution_indices))
+  return result
 
-def sanitize_summary(value,manifest,ext,plan):
- account=ReadAccounting(manifest,ext,plan);expected=account.summary(lambda x:[])
+def sanitize_summary(value,manifest,ext,plan,stage=None):
+ account=ReadAccounting(manifest,ext,plan,stage);expected=account.summary(lambda x:[])
  if not isinstance(value,dict) or set(value)!=set(expected) or value['schemaVersion']!=SCHEMA or value['inventoryCount']!=998 or value['selectedJobs']!=988 or value['heldUnselected']!=10 or value['maximumOriginalReadBytes']!=account.maximum or value['networkRequests']!=0 or value['completeExtentNotParse'] is not True:raise ValueError('invalid-retained-accounting')
+ if stage is not None and (any(value.get(k)!=expected[k] for k in ('executionStage','executionSelectedJobs','skippedForStage')) or any(type(value[k]) is not int for k in ('executionSelectedJobs','skippedForStage'))):raise ValueError('invalid-retained-accounting')
  states={};seen=set()
  if not isinstance(value['jobOutcomeGroups'],list) or len(value['jobOutcomeGroups'])>4:raise ValueError('invalid-retained-accounting')
  for group in value['jobOutcomeGroups']:
   if not isinstance(group,dict) or set(group)!={'state','assetIndices'} or group['state'] not in {'completed-verified','completed-unverified','uncertain','attempted'} or group['state'] in states or not isinstance(group['assetIndices'],list):raise ValueError('invalid-retained-accounting')
   items=set()
   for index in group['assetIndices']:
-   if type(index) is not int or index in seen or index not in account.rows:raise ValueError('invalid-retained-accounting')
+   if type(index) is not int or index in seen or index not in account.execution_indices:raise ValueError('invalid-retained-accounting')
    seen.add(index);items.add(index)
   if group['assetIndices']!=sorted(items):raise ValueError('invalid-retained-accounting')
   states[group['state']]=items

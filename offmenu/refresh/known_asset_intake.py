@@ -88,7 +88,9 @@ def checked_headers(raw,source,*,redirect=False):
   _headers([(key,value)])
   if key.lower() not in ignored:filtered.append((key,value))
  headers=_headers(filtered)
- if headers.get('content-encoding','identity').lower()!='identity' or headers.get('vary','').lower() not in ('','accept-encoding'):fail('media-intake-header-invalid')
+ # Private original custody is not HTTP cache reuse. Preserve Vary as a
+ # descriptive policy fact; syntax, duplicate and encoding gates stay closed.
+ if headers.get('content-encoding','identity').lower()!='identity':fail('media-intake-header-invalid')
  length=headers.get('content-length');transfer=headers.get('transfer-encoding')
  if length is not None and (not re.fullmatch(r'[0-9]{1,12}',length) or int(length)<(0 if redirect else 1) or int(length)>source['hardTransferBytes']):fail('media-intake-framing-invalid')
  if transfer is not None and (length is not None or transfer.lower()!='chunked'):fail('media-intake-framing-invalid')

@@ -21,7 +21,7 @@ write_private_intent=legacy.write_private_intent
 policy_facts=legacy.policy_facts
 diagnostic_module=legacy.diagnostic_module
 
-def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None,owner_runtime=None):
+def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_meter=None,coordinator=None,owner_runtime=None,reuse_only=False):
  a=adapter;intake.validate_source(source);contract=a.source_contract(source);fingerprint=contract['fingerprint'];maximum=contract['maxBytes'];seconds=contract['seconds']
  deadline=min(deadline if deadline is not None else float('inf'),time.monotonic()+seconds)
  prior=next((p for p in mode['predecessors'] if p['sourceKey']==source['sourceKey']),None);diagnostic_sha=(mode['diagnosticReportPin'] or {}).get('sha256');meter={'requests':0,'bodyBytesRead':0}
@@ -61,6 +61,7 @@ def run_selected(source,*,adapter=None,mode,transport=None,deadline=None,batch_m
     result=SimpleNamespace(path=original,sha256=saved['sha256'],bytes=saved['bytes'],provenance={'originalAcquiredAt':saved['originalAcquiredAt']})
     report['validation']=intake.validate_original(result,source,deadline,a);report.update(status='verified-private-original',originalDisposition='retained-original-no-network',privateSaveState='saved-original',localBodyBytes=saved['bytes'])
    else:
+    if reuse_only:raise a.RefreshError('private-original-conflict')
     if any(p.exists() for p in (original,partial,provenance,reservation)):raise a.RefreshError('private-original-conflict')
     fd=os.open(a.safe_path(intent),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
     with os.fdopen(fd,'wb') as stream:stream.write(a.canonical({**base,'state':'saving'}));stream.flush();os.fsync(stream.fileno())

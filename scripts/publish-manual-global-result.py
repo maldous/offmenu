@@ -82,6 +82,7 @@ def build_payload(envelope,g):
     require(len(files)<=MAX_FILES and sum(len(b) for _,b in files)<=MAX_TOTAL,'manual-publication-size-limit')
     files=[(prefix+'/'+name,raw) for name,raw in files]
     receipt={'schemaVersion':'offmenu-owner-manual-global-receipt/1','executionContext':'owner-manual-foo','handoffId':HANDOFF,'baseReviewedSource':BASE_SOURCE,'runtimeConfigSHA256':envelope['handover']['runtimeConfigSHA256'],'dispatchHoldSHA256':HOLD_SHA256,'resultSHA256':digest,'globalReportSHA256':envelope['globalReportSHA256'],'sourceOutcome':report['status'],'expandedCounts':counts,'fileCount':len(files),'totalMetadataBytes':sum(len(b) for _,b in files),'files':[{'path':p,'bytes':len(b),'sha256':sha(b),'gitBlobSha':blob_sha(b)} for p,b in files],'rawSourceBodiesPublished':False,'checkpointBodiesPublished':False,'runnerResumeRequiresOutcomeImport':True,'isActionsReceipt':False}
+    if 'executionStage' in report:receipt['executionStage']=report['executionStage']
     raw=canonical(receipt);require(len(raw)<=64*1024,'manual-receipt-size-limit')
     return receipt,files,raw
 
