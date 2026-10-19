@@ -10,7 +10,11 @@ def module(name,path):
  spec=importlib.util.spec_from_file_location(name,ROOT/path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 gt=module('owner_global_fixtures','tests/test_global_collection.py');g=gt.g;f=gt.f
 class OwnerTests(unittest.TestCase):
- setUp=gt.GlobalTests.setUp
+ def setUp(self):
+  gt.GlobalTests.setUp(self)
+  # These are immutable001/002 regression fixtures; comprehensive amendment
+  # activation and its additional preflight are tested separately.
+  gate=patch.object(g.fetch_reconciliation,'configuration',return_value=None);gate.start();self.addCleanup(gate.stop)
  tearDown=gt.GlobalTests.tearDown
  transport=gt.GlobalTests.transport
  folder=gt.GlobalTests.folder

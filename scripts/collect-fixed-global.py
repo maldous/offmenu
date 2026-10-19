@@ -20,6 +20,10 @@ from offmenu.refresh import retained_contract_extension as retained_extension
 from offmenu.refresh import retained_collection
 from offmenu.refresh import retained_integrity_verification as retained_verification
 from offmenu.refresh import collection_stages
+from offmenu.refresh import taiwan_fetch_acceptance as twaccept
+from offmenu.refresh import fetch_reconciliation_runtime as fetch_reconciliation
+from offmenu.refresh import reviewed_fetch_intake as reviewed_fetch
+from offmenu.refresh import fetch_evidence
 spec=importlib.util.spec_from_file_location('global_taiwan_recovery',ROOT/'scripts/validate-retained-taiwan.py');twrecovery=importlib.util.module_from_spec(spec);spec.loader.exec_module(twrecovery)
 spec=importlib.util.spec_from_file_location('global_private_media_save',ROOT/'scripts/save-private-media-original.py');media_save=importlib.util.module_from_spec(spec);spec.loader.exec_module(media_save)
 from offmenu.refresh.collection_progress import ProgressReporter,SharedActivity,initialize_preparation_worker,prepare_asset_observed,prepare_function_observed,asset_record_counts
@@ -30,11 +34,12 @@ OWNER_PIN=('docs/collection-selections/owner-local-runtime.json','8dd3372dd9c2f4
 LEGACY_OWNER_PIN=OWNER_PIN
 OWNER_REUSE_PIN=('docs/collection-selections/owner001-exact-reuse-lineage.json','c3d1654ad8f3c6bdad821229afcf6aea69e2f4a975350bd9af875c4ca1f47fb4')
 OWNER_SUCCESSOR_PROFILE_PIN=('docs/collection-selections/owner-comprehensive-profile.json','0b964d31b4889f85643e248f77df1048619c85078487825d32b84b287f273e5f') # Parent adoption pins an additive user-mode profile; runner/default remains unchanged.
+FETCH_RECONCILIATION_PIN=('docs/collection-selections/fetch-reconciliation-selection.json','c1291583e0664a164917580d1b9d747bb75b8812176b8a604eb3d79f6dde371b')
 MAX_ASSETS=10000;MAX_SECONDS=1200;MAX_OUTPUT_BYTES=1024**3;MAX_SUMMARY=96*1024;MAX_OWNER_COMPREHENSIVE_SUMMARY=120*1024
 STATES=('ready-nextstage','held','unsupported','error','unverified','missing-contract','retained','eligible')
 CUSTODY=('unverified','held','no-path','inaccessible','path-absent','unsafe-path','not-regular','extent-mismatch','stat-observed','verified-original')
-GLOBAL_ERRORS={'global-worker-cancelled','global-preparation-state-uncertain','global-resource-capacity-unavailable','global-outer-failure','global-config-invalid','global-deadline-exhausted','global-output-budget','global-checkpoint-failed','global-preparation-unavailable','global-original-unavailable','global-source-conflict','global-local-read-budget'}
-ERRORS=b.ERRORS|GLOBAL_ERRORS|media.ERROR_CODES|intake.ERROR_CODES|{retained_extension.ERROR}|retained_verification.ERROR_CODES
+GLOBAL_ERRORS={'global-worker-cancelled','global-preparation-state-uncertain','global-resource-capacity-unavailable','global-outer-failure','global-config-invalid','global-deadline-exhausted','global-output-budget','global-checkpoint-failed','global-preparation-unavailable','global-original-unavailable','global-source-conflict','global-local-read-budget','retained-reference-acceptance-blocked','retained-reference-selection-invalid','fetch-evidence-unavailable'}
+ERRORS=b.ERRORS|GLOBAL_ERRORS|media.ERROR_CODES|intake.ERROR_CODES|reviewed_fetch.ERROR_CODES|{'fetch-reconciliation-config-invalid','fetch-evidence-invalid'}|{retained_extension.ERROR}|retained_verification.ERROR_CODES
 
 class SharedBudget:
  def __init__(self,requests,maximum):
@@ -370,16 +375,56 @@ def runtime_capabilities(stage=None):
    'stdlibFormats':['csv','tsv','json','xml','html','zip','xlsx','docx'],
    'optionalParsers':{key:{'available':False,'version':None} for key in ('pypdf','xlrd','poppler')}}
 
-def run_global(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,owner_runtime=None,terminal=None,stage=None):
+def fetch_reconciliation_selection(stage):
+ if stage!='fetch' or OWNER_PIN==LEGACY_OWNER_PIN:return None
+ path,digest=FETCH_RECONCILIATION_PIN;raw=(ROOT/path).read_bytes()
+ if len(raw)>16384 or a.sha(raw)!=digest:raise a.RefreshError('retained-reference-selection-invalid')
+ config=a.strict_json(raw)
+ if config['status']=='prepared-for-review-not-active':return None
+ if config['schemaVersion']!='offmenu-fetch-reconciliation-selection/1' or config['status']!='parent-reviewed-owner-manual' or config['executionStage']!='fetch' or config['existingHandoffId']!=twaccept.HANDOFF or config['existingRuntimeConfigSHA256']!=OWNER_PIN[1] or config['existingSelectionSHA256']!=SELECTION_PIN[1] or config['networkRequestsAuthorized']!=0 or config['additionalTransferBytesAuthorized']!=0 or config['newSourceSelection']!=[]:raise a.RefreshError('retained-reference-selection-invalid')
+ return config['taiwanAcceptance']
+
+def fresh_source_conflicts(selected):
+ prep=a.preparation_module()
+ return b.source_conflicts(selected,prep.imported_snapshot(ROOT),a.strict_json(prep.pinned_bytes(ROOT,prep.SUMMARY_PIN)))
+
+def validate_fetch_execution(source,extension,child,meter,coordinator,deadline,config):
+ # The component API is deliberately reusable; this runtime supplies mandatory
+ # one-invocation limits, live owner admission and same-pass metadata evidence.
+ if (type(meter)is not SharedBudget or meter.maximumRequests!=26 or meter.maximumBytes!=644874240
+  or type(child)is not SourceBudget or child.parent is not meter or child.key!=source['sourceKey']
+  or child.maximumRequests!=1 or child.maximumBytes!=source['hardTransferBytes']
+  or type(coordinator)is not ParallelCoordinator or type(coordinator.fd)is not int
+  or type(deadline)not in (int,float) or not time.monotonic()<deadline<=time.monotonic()+MAX_SECONDS
+  or type(extension)is not dict or extension.get('absoluteDeadline')!=deadline
+  or type(extension.get('authority'))is not reviewed_fetch.FetchAuthority
+  or type(extension.get('owner_runtime'))is not reviewed_fetch.OwnerExtension
+  or extension['owner_runtime'].authority is not extension['authority']
+  or extension['authority'].selectionSHA256!=config['transferSelectionSHA256']
+  or extension.get('samePassMetadataSHA256')!=a.sha(a.canonical(extension['owner_runtime'].metadata))):
+  raise a.RefreshError('fetch-reconciliation-config-invalid')
+ extension['authority'].validate(source)
+ fetch_reconciliation.metadata_validator(extension['owner_runtime'].metadata,config)
+ # fstat is a live fd check; the existing source_session verifies named lease
+ # identity again immediately before custody admission.
+ os.fstat(coordinator.fd)
+ return True
+
+def run_global(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,owner_runtime=None,terminal=None,stage=None,retained_acceptance_selection=None,current_adverse_evidence=None,reconciliation_config=None,head_observation=None,invocation_deadline=None):
  if stage not in (None,'fetch','parse'):raise a.RefreshError('unexpected-arguments')
  if selected.get('retainedVerification',{}).get('status')=='prepared-for-review-not-active':raise a.RefreshError('media-intake-successor-inactive')
  if manifest.get('retainedContractExtension',{}).get('status')=='prepared-for-review-not-active':raise a.RefreshError('media-intake-successor-inactive')
  if selected.get('knownIntakeSuccessor',{}).get('status')=='prepared-for-review-not-active':raise a.RefreshError('media-intake-successor-inactive')
  work=a.owned_directory(a.owned_directory(a.OUTPUT)/'collection')
  with a.writer_lock(work/'fixed-selection.lock') as lease:
-  return _run_global_locked(manifest,selected,transport=transport,adverse_evidence=adverse_evidence,prepare=prepare,progress=progress,lease=lease,owner_runtime=owner_runtime,terminal=terminal,stage=stage)
+  return _run_global_locked(manifest,selected,transport=transport,adverse_evidence=adverse_evidence,prepare=prepare,progress=progress,lease=lease,owner_runtime=owner_runtime,terminal=terminal,stage=stage,retained_acceptance_selection=retained_acceptance_selection,current_adverse_evidence=current_adverse_evidence,reconciliation_config=reconciliation_config,head_observation=head_observation,invocation_deadline=invocation_deadline)
 
-def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,lease=None,owner_runtime=None,terminal=None,stage=None):
+def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),prepare=run_preparation,progress=None,lease=None,owner_runtime=None,terminal=None,stage=None,retained_acceptance_selection=None,current_adverse_evidence=None,reconciliation_config=None,head_observation=None,invocation_deadline=None):
+ acceptance_keys=set();acceptance_report=None;evidence_refs=[];prelude_errors=[];fetch_extension=None;extension_error=None;fetch_sources=list(selected['sources'])
+ if retained_acceptance_selection is not None:
+  if stage!='fetch' or owner_runtime is None:raise a.RefreshError('retained-reference-selection-invalid')
+  _,acceptance_manifest=twaccept.validate_selection(retained_acceptance_selection,selected['sources'],root=ROOT)
+  acceptance_keys={r['sourceKey'] for r in acceptance_manifest['items']}
  retained_rows=retained_plan=binding_manifest=None;read_accounting=None
  if 'retainedVerification' in selected:
   if selected['retainedVerification']['status']!='parent-reviewed-owner-manual' or owner_runtime is None:raise a.RefreshError('media-intake-successor-inactive')
@@ -397,14 +442,35 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
  needed={s['sourceKey'] for s in selected['sources']}|{p['sourceKey'] for p in selected['preparation']}
  if not needed<=set(source_assets):raise a.RefreshError('global-config-invalid')
  config=selected.get('parallelism',DEFAULT_PARALLELISM);resources=effective_resources(config);capabilities=runtime_capabilities(stage)
- deadline=time.monotonic()+MAX_SECONDS-20;meter=SharedBudget(selected['maximumRequests'],selected['maximumTransferBytes'])
+ deadline=min(time.monotonic()+MAX_SECONDS-20,invocation_deadline if invocation_deadline is not None else float('inf'))
+ if reconciliation_config is not None:
+  if stage!='fetch' or owner_runtime is None or reconciliation_config!=fetch_reconciliation.configuration():raise a.RefreshError('fetch-reconciliation-config-invalid')
+  new_sources=reviewed_fetch.prepared_sources();fetch_sources+=new_sources
+  ids={asset['assetId']:i for i,asset in enumerate(manifest['assets'])}
+  for source in new_sources:source_assets[source['sourceKey']]=[ids[source['mediaIntake']['assetId']]]
+  result=None
+  try:
+   result,reference=fetch_reconciliation.begin(reconciliation_config,owner_runtime=owner_runtime,lease_fd=lease,deadline=deadline,adapter=a,private_directory=save.private_directory,current_adverse_evidence=current_adverse_evidence)
+   evidence_refs.append(reference)
+  except (a.RefreshError,OSError,ValueError,KeyError,TypeError):prelude_errors.append('fetch-evidence-unavailable')
+  if head_observation is not None:
+   try:evidence_refs.append(fetch_evidence.save('response-diagnostics',head_observation,output_root=owner_runtime.root,adapter=a,validator=fetch_reconciliation.heads.validate_report,private_directory=save.private_directory))
+   except (a.RefreshError,OSError,ValueError,KeyError,TypeError):prelude_errors.append('fetch-evidence-unavailable')
+  def current_new_holds(source):
+   fresh=[*current_adverse_evidence(),*fresh_source_conflicts({'sources':[source]})];asset=manifest['assets'][ids[source['mediaIntake']['assetId']]]
+   held=asset.get('sourceStageHolds',[])
+   if any(a.exact_source_match(row,source)for row in [*adverse_evidence,*fresh]):held=[*held,'current-source-conflict']
+   return {'sourceContractSHA256':a.sha(a.canonical(source)),'read':True,'copy':True,'currentSourceHolds':held}
+  try:fetch_extension=fetch_reconciliation.extension(reconciliation_config,result,owner_runtime=owner_runtime,adapter=a,current_holds=current_new_holds)
+  except (a.RefreshError,ValueError,KeyError,TypeError):extension_error='fetch-extension-custody-unresolved'
+ meter=SharedBudget(26 if reconciliation_config is not None else selected['maximumRequests'],644874240 if reconciliation_config is not None else selected['maximumTransferBytes'])
  if terminal is not None:
-  terminal.update(download_configured=config['ioWorkers'],download_effective=resources['ioWorkers'],preparation_configured=config['preparationWorkers'],preparation_effective=resources['preparationWorkers'],download_total=len(selected['sources']) if stage!='parse' else 0,download_queued=len(selected['sources']) if stage!='parse' else 0,inventory_total=len(manifest['assets']),coverage_total=len(manifest['countries'])*len(manifest['types']),coverage_verified=None,network_bytes=0,prepared_bytes=0)
+  terminal.update(download_configured=config['ioWorkers'],download_effective=resources['ioWorkers'],preparation_configured=config['preparationWorkers'],preparation_effective=resources['preparationWorkers'],download_total=len(fetch_sources)-len(acceptance_keys) if stage!='parse' else 0,download_queued=len(fetch_sources)-len(acceptance_keys) if stage!='parse' else 0,inventory_total=len(manifest['assets']),coverage_total=len(manifest['countries'])*len(manifest['types']),coverage_verified=None,network_bytes=0,prepared_bytes=0)
   if read_accounting is not None:terminal.update(retained_selected=len(read_accounting.structural) if stage=='parse' else len(read_accounting.rows),retained_verified=0,retained_verified_payload_bytes=0,retained_preparation_unselected_held=0)
   terminal.observe(network_meter=meter);terminal.stage('inventory')
  outcomes=[];changes=[]
- if progress is not None:progress.update(meter=meter,changes=changes)
- persisted=0;output_bytes=0;checkpoints={};errors=[];manifest_sha=a.sha(a.canonical(manifest))
+ if progress is not None:progress.update(meter=meter,changes=changes,fetchEvidence=evidence_refs,reconciliationConfig=reconciliation_config,reviewedFetchSelectionSHA256=None if reconciliation_config is None else reconciliation_config['transferSelectionSHA256'])
+ persisted=0;output_bytes=0;checkpoints={};errors=list(prelude_errors);manifest_sha=a.sha(a.canonical(manifest))
  work=a.owned_directory(a.owned_directory(a.OUTPUT)/'collection');root=save.private_directory(work/'global-collection',a);run_dir=save.private_directory(root/manifest_sha,a)
  taiwan_diagnostics=taiwan.run_diagnostics(a.OUTPUT,min(deadline,time.monotonic()+30)) if owner_runtime is not None and stage is None else None
  recovery_proposals=None
@@ -440,18 +506,39 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
   digest=a.sha(a.canonical(payload));path=run_dir/('asset-'+str(index)+'-'+digest+'.json')
   try:a.write_immutable(path,payload);checkpoints[index]=digest;persisted=len(checkpoints)
   except (a.RefreshError,OSError,ValueError,TypeError,KeyError):errors.append('global-checkpoint-failed')
+ if acceptance_keys:
+  def acceptance_evidence():
+   if not callable(current_adverse_evidence):raise a.RefreshError('retained-reference-selection-invalid')
+   fresh=current_adverse_evidence()
+   if type(fresh) not in (list,tuple):raise a.RefreshError('retained-reference-selection-invalid')
+   return [*adverse_evidence,*fresh]
+  acceptance_report=twaccept.perform(retained_acceptance_selection,selected['sources'],owner_runtime=owner_runtime,lease_fd=lease,current_adverse_evidence=acceptance_evidence,absolute_deadline=min(deadline,time.monotonic()+210),root=ROOT)
+  accepted=acceptance_report['status']!='blocked'
+  if not accepted:errors.append('retained-reference-acceptance-blocked')
+  for source in selected['sources']:
+   if source['sourceKey'] not in acceptance_keys:continue
+   indices=source_assets[source['sourceKey']];index=indices[0];before=asset_record_counts(outcomes[i] for i in indices)
+   for i in indices:
+    if accepted:outcomes[i]={'custody':'verified-original','stage':'retained','code':None}
+    else:outcomes[i].update(stage='held',code='retained-reference-acceptance-blocked')
+    checkpoint(i,{'retainedReferenceAcceptance':acceptance_report});completed.add(i)
+   changes.append({'assetIndex':index,'acquisition':None,'preparation':None})
+   terminal_asset_change(indices,before)
  def acquire(source,child,coordinator):
   detail=None;error=None
   try:
    if time.monotonic()>=deadline:raise a.RefreshError('global-deadline-exhausted')
    indices=source_assets[source['sourceKey']]
-   if any(a.exact_source_match(e,source) for e in adverse_evidence) or any(manifest['assets'][i]['disposition']!='eligible' for i in indices):raise a.RefreshError('global-source-conflict')
-   handler=media_save if intake.is_media_source(source) else save
+   new_source=reviewed_fetch.is_source(source)
+   if any(a.exact_source_match(e,source) for e in adverse_evidence) or (not new_source and any(manifest['assets'][i]['disposition']!='eligible' for i in indices)):raise a.RefreshError('global-source-conflict')
+   if new_source and fetch_extension is None:raise a.RefreshError(extension_error or 'fetch-extension-inactive')
+   if new_source:validate_fetch_execution(source,fetch_extension,child,meter,coordinator,deadline,reconciliation_config)
+   handler=reviewed_fetch if new_source else media_save if intake.is_media_source(source) else save
    chosen_transport=transport
    if terminal is not None and stage!='parse':
     if chosen_transport is None:chosen_transport=(intake.BoundedHTTPSFileTransport(source['mediaIntake']['maximumHeaderBytes']) if intake.is_media_source(source) else a.HTTPSFileTransport())
     chosen_transport=terminal.wrap_transport(chosen_transport)
-   detail=handler.run_selected(source,adapter=a,mode=selected['privateOriginalDownload'],transport=chosen_transport,deadline=deadline,batch_meter=child,coordinator=coordinator,owner_runtime=owner_runtime,**({'reuse_only':True} if stage=='parse' else {}))
+   detail=handler.run_selected(source,adapter=a,mode=fetch_extension['mode'] if new_source else selected['privateOriginalDownload'],transport=chosen_transport,deadline=deadline,batch_meter=child,coordinator=coordinator,owner_runtime=fetch_extension['owner_runtime'] if new_source else owner_runtime,**({'authority':fetch_extension['authority']} if new_source else {}),**({'reuse_only':True} if stage=='parse' or (reconciliation_config is not None and not new_source) else {}))
   except Exception as failure:error=str(failure) if isinstance(failure,a.RefreshError) and str(failure) in ERRORS else 'collector-rejected'
   return b.item_report(source,detail,error,child.snapshot())
  def acquired(source,item):
@@ -474,7 +561,7 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
    child=meter.child(source['sourceKey'],0,0)
    acquired(source,acquire(source,child,coordinator))
  else:
-  pending=list(selected['sources']);active={};pool=ThreadPoolExecutor(max_workers=resources['ioWorkers'],thread_name_prefix='fixed-original')
+  pending=[source for source in fetch_sources if source['sourceKey'] not in acceptance_keys];active={};pool=ThreadPoolExecutor(max_workers=resources['ioWorkers'],thread_name_prefix='fixed-original')
   if terminal is not None:terminal.stage('downloads')
   try:
    with nullcontext():
@@ -489,7 +576,7 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
       if any(active_hosts[host]>=config['perHostWorkers'] or now<host_started.get(host,0)+config['minimumHostStartSpacingSeconds'] for host in hosts):continue
       pending.remove(source)
       for host in hosts:host_started[host]=now;active_hosts[host]+=1
-      child=meter.child(source['sourceKey'],source['hardTransferBytes'],intake.maximum_requests(source))
+      child=meter.child(source['sourceKey'],source['hardTransferBytes'] if reconciliation_config is None or reviewed_fetch.is_source(source) else 0,intake.maximum_requests(source) if reconciliation_config is None or reviewed_fetch.is_source(source) else 0)
       future=pool.submit(acquire,source,child,coordinator);active[future]=(source,hosts,child);peak_io=max(peak_io,len(active))
      if terminal is not None:terminal.update(download_queued=len(pending))
      if active:
@@ -670,6 +757,13 @@ def _run_global_locked(manifest,selected,*,transport=None,adverse_evidence=(),pr
   'checkpointCount':persisted,'checkpointIndexSHA256':a.sha(a.canonical(sorted(checkpoints.items()))),'detailSHA256':None,'detailPersisted':False,
   'runtimeCapabilities':capabilities,'resourceObservation':resources,'globalErrors':sorted(set(errors)),'maximumParallelTransfers':resources['ioWorkers'],'maximumPerHostTransfers':config['perHostWorkers'],'maximumParallelPreparations':resources['preparationWorkers'],'observedPeakTransfers':peak_io,'observedPeakPreparations':peak_prep,'wholeOperationSeconds':MAX_SECONDS,**a.SAFETY}
  if stage is not None:report['executionStage']=stage
+ if acceptance_report is not None:report['retainedReferenceAcceptance']=acceptance_report
+ if reconciliation_config is not None:
+  report['fetchEvidence']=evidence_refs
+  report['reviewedFetchSelectionSHA256']=reconciliation_config['transferSelectionSHA256']
+  report['fetchCoverageAcceptance']=deepcopy(reconciliation_config['coverageAcceptance'])
+  attempted=0 if head_observation is None else head_observation['requestAttemptedCount'];unknown=0 if head_observation is None else head_observation['requestAttemptUnknownCount']
+  report['fetchNetworkAccounting']={'bodyGETRequests':report['networkRequests'],'diagnosticHEADRequests':attempted,'diagnosticUncertainRequests':unknown,'maximumTotalRequests':31,'totalAttemptedOrUncertainRequests':report['networkRequests']+attempted+unknown}
  if read_accounting is not None:report['retainedOriginalVerification']=read_accounting.summary(ranges)
  if recovery_proposals is not None:report['retainedTaiwanRecoveryProposals']=recovery_proposals
  if reuse_joins is not None:report['reuseOutcomeJoins']=reuse_joins
@@ -718,14 +812,19 @@ def validate_preparation(item):
 
 def projection_failure(selected,progress):
  meter=progress.get('meter',{'requests':0,'bodyBytesRead':0});meter=meter.snapshot() if hasattr(meter,'snapshot') else meter;items=[];sources={s['sourceKey']:s for s in selected['sources']}
+ cfg=progress.get('reconciliationConfig')
+ if cfg is not None:sources.update({s['sourceKey']:s for s in reviewed_fetch.prepared_sources()})
  for change in progress.get('changes',[]):
   item=change.get('acquisition')
   if item is not None and item.get('sourceKey') in sources:
    try:validate_acquisition(item,sources[item['sourceKey']]);items.append(item)
    except (ValueError,TypeError,KeyError):pass
- return {'schemaVersion':SCHEMA,'status':'summary-projection-failed','errorCode':'global-outer-failure',
+ report={'schemaVersion':SCHEMA,'status':'summary-projection-failed','errorCode':'global-outer-failure',
   'selectionSHA256':a.sha(a.canonical(selected)),'networkRequests':meter['requests'],'networkBytesRead':meter['bodyBytesRead'],
   'completedSources':items,**a.SAFETY}
+ if cfg is not None:
+  report.update(fetchEvidence=fetch_reconciliation.validate_evidence_refs(progress.get('fetchEvidence',[])),reviewedFetchSelectionSHA256=cfg['transferSelectionSHA256'])
+ return report
 
 def sanitize_report(report):
  if not isinstance(report,dict):raise ValueError('invalid-global-summary')
@@ -733,8 +832,13 @@ def sanitize_report(report):
  if 'executionStage' in report and stage not in ('fetch','parse'):raise ValueError('invalid-global-summary')
  if report.get('status')=='summary-projection-failed':
   selected=selection_config();sources={s['sourceKey']:s for s in selected['sources']}
-  if set(report)!=(set(projection_failure(selected,{}))|({'executionStage'} if stage is not None else set())) or report['errorCode']!='global-outer-failure' or report['selectionSHA256']!=a.sha(a.canonical(selected)) or any(report[k] is not v for k,v in a.SAFETY.items()):raise ValueError('invalid-global-summary')
-  if type(report['networkRequests']) is not int or not 0<=report['networkRequests']<=selected['maximumRequests'] or type(report['networkBytesRead']) is not int or not 0<=report['networkBytesRead']<=selected['maximumTransferBytes']:raise ValueError('invalid-global-summary')
+  cfg=fetch_reconciliation.configuration() if 'reviewedFetchSelectionSHA256' in report else None
+  if cfg is not None:
+   if stage!='fetch' or report['reviewedFetchSelectionSHA256']!=cfg['transferSelectionSHA256']:raise ValueError('invalid-global-summary')
+   fetch_reconciliation.validate_evidence_refs(report.get('fetchEvidence'));sources.update({s['sourceKey']:s for s in reviewed_fetch.prepared_sources()})
+  if ('fetchEvidence'in report or 'reviewedFetchSelectionSHA256'in report)and cfg is None:raise ValueError('invalid-global-summary')
+  if set(report)!=(set(projection_failure(selected,{}))|({'executionStage'} if stage is not None else set())|({'fetchEvidence','reviewedFetchSelectionSHA256'}if cfg is not None else set())) or report['errorCode']!='global-outer-failure' or report['selectionSHA256']!=a.sha(a.canonical(selected)) or any(report[k] is not v for k,v in a.SAFETY.items()):raise ValueError('invalid-global-summary')
+  if type(report['networkRequests']) is not int or not 0<=report['networkRequests']<=(26 if cfg is not None else selected['maximumRequests']) or type(report['networkBytesRead']) is not int or not 0<=report['networkBytesRead']<=(644874240 if cfg is not None else selected['maximumTransferBytes']):raise ValueError('invalid-global-summary')
   if stage=='parse' and (report['networkRequests'] or report['networkBytesRead']):raise ValueError('invalid-global-summary')
   seen=set()
   for item in report['completedSources']:
@@ -748,13 +852,27 @@ def sanitize_report(report):
   return report
  keys={'schemaVersion','status','errorCode','manifestSHA256','selectionSHA256','assetCount','countryCount','typeCount','networkRequests','networkBytesRead','preparedBytes','preparedUncertainBytes','preparationUncertainGrants','assetOutcomeGroups','cellStageCounts','changes','statPathCount','statOutcomeGroups','checkpointCount','checkpointIndexSHA256','detailSHA256','detailPersisted','runtimeCapabilities','globalErrors','maximumParallelTransfers','maximumPerHostTransfers','maximumParallelPreparations','observedPeakTransfers','observedPeakPreparations','resourceObservation','wholeOperationSeconds'}|set(a.SAFETY)
  optional=set(report)-keys
- if not keys<=set(report) or not optional<={'executionStage','retainedTaiwanDiagnostics','reuseOutcomeJoins','retainedPreparationDiagnostics','retainedOriginalVerification','retainedTaiwanRecoveryProposals'}:raise ValueError('invalid-global-summary')
+ if not keys<=set(report) or not optional<={'executionStage','retainedTaiwanDiagnostics','reuseOutcomeJoins','retainedPreparationDiagnostics','retainedOriginalVerification','retainedTaiwanRecoveryProposals','retainedReferenceAcceptance','fetchEvidence','reviewedFetchSelectionSHA256','fetchCoverageAcceptance','fetchNetworkAccounting'}:raise ValueError('invalid-global-summary')
  stage=report.get('executionStage')
  if 'executionStage' in report and stage not in ('fetch','parse'):raise ValueError('invalid-global-summary')
  if stage is not None and any(key in report for key in ('retainedTaiwanDiagnostics','retainedTaiwanRecoveryProposals','retainedPreparationDiagnostics')):raise ValueError('invalid-global-summary')
  if 'retainedTaiwanDiagnostics' in report:taiwan.sanitize_diagnostics(report['retainedTaiwanDiagnostics'])
  if 'retainedPreparationDiagnostics' in report:prepdiag.sanitize_diagnostics(report['retainedPreparationDiagnostics'])
- manifest=manifest_config();selected=selection_config();binding_manifest=None
+ manifest=manifest_config();selected=selection_config();binding_manifest=None;acceptance_keys=set();acceptance_indices=set();extra_sources=[];extra_by_id={}
+ if any(k in report for k in ('fetchEvidence','reviewedFetchSelectionSHA256','fetchCoverageAcceptance','fetchNetworkAccounting')):
+  cfg=fetch_reconciliation.configuration()
+  if stage!='fetch' or cfg is None or report.get('reviewedFetchSelectionSHA256')!=cfg['transferSelectionSHA256'] or report.get('fetchCoverageAcceptance')!=cfg['coverageAcceptance']:raise ValueError('invalid-global-summary')
+  fetch_reconciliation.validate_evidence_refs(report.get('fetchEvidence'))
+  account=report.get('fetchNetworkAccounting')
+  if type(account)is not dict or set(account)!={'bodyGETRequests','diagnosticHEADRequests','diagnosticUncertainRequests','maximumTotalRequests','totalAttemptedOrUncertainRequests'}or any(type(x)is not int or x<0 for x in account.values())or account['bodyGETRequests']!=report['networkRequests']or account['maximumTotalRequests']!=31 or account['diagnosticHEADRequests']+account['diagnosticUncertainRequests']>5 or account['totalAttemptedOrUncertainRequests']!=account['bodyGETRequests']+account['diagnosticHEADRequests']+account['diagnosticUncertainRequests']or account['totalAttemptedOrUncertainRequests']>31:raise ValueError('invalid-global-summary')
+  extra_sources=reviewed_fetch.prepared_sources();extra_by_id={x['mediaIntake']['assetId']:x['sourceKey']for x in extra_sources}
+ if 'retainedReferenceAcceptance' in report:
+  acceptance_selection=cfg['taiwanAcceptance'] if extra_sources else fetch_reconciliation_selection(stage)
+  if stage!='fetch' or acceptance_selection is None:raise ValueError('invalid-global-summary')
+  twaccept.sanitize(report['retainedReferenceAcceptance'],acceptance_selection,selected['sources'],root=ROOT)
+  _,acceptance_manifest=twaccept.validate_selection(acceptance_selection,selected['sources'],root=ROOT)
+  acceptance_keys={r['sourceKey'] for r in acceptance_manifest['items']}
+  acceptance_indices={i for i,row in enumerate(manifest['assets']) if row.get('sourceKey') in acceptance_keys}
  if 'retainedVerification' in selected:
   ext,plan,binding_manifest=retained_collection.validate_combined(selected,manifest,ROOT)
   retained_collection.sanitize_summary(report.get('retainedOriginalVerification'),manifest,ext,plan,stage)
@@ -764,6 +882,11 @@ def sanitize_report(report):
   if not isinstance(proposals,list) or len(proposals)!=3 or [r.get('sourceKey') for r in proposals]!=[s['sourceKey'] for s in selected['sources'] if s['sourceKey'] in twrecovery.PINS]:raise ValueError('invalid-global-summary')
   for row in proposals:twrecovery.sanitize_report(row)
  outcomes=expand_outcomes(report['assetOutcomeGroups'],len(manifest['assets']))
+ if acceptance_keys:
+  accepted=report['retainedReferenceAcceptance']['status']!='blocked'
+  for i in acceptance_indices:
+   if accepted and outcomes[i]!={'custody':'verified-original','stage':'retained','code':None}:raise ValueError('invalid-global-summary')
+   if not accepted and (outcomes[i]['stage']!='held' or outcomes[i]['code']!='retained-reference-acceptance-blocked'):raise ValueError('invalid-global-summary')
  if 'retainedOriginalVerification' in report:
   for index,state in retained_collection.observations(report['retainedOriginalVerification']).items():
    if state=='completed-verified' and outcomes[index]['custody']!='verified-original':raise ValueError('invalid-global-summary')
@@ -783,20 +906,21 @@ def sanitize_report(report):
     if i in observed_paths:raise ValueError('invalid-global-summary')
     observed_paths.add(i)
  if len(observed_paths)!=report['statPathCount']:raise ValueError('invalid-global-summary')
- source_map={s['sourceKey']:s for s in selected['sources']};seen=set();acquired=set();requests=body=prepared=0
+ source_map={s['sourceKey']:s for s in [*selected['sources'],*extra_sources]};seen=set();acquired=set();requests=body=prepared=0
  if not isinstance(report['changes'],list) or len(report['changes'])>MAX_ASSETS:raise ValueError('invalid-global-summary')
  for change in report['changes']:
   if set(change)!={'assetIndex','acquisition','preparation'} or type(change['assetIndex']) is not int or not 0<=change['assetIndex']<len(outcomes) or change['assetIndex'] in seen:raise ValueError('invalid-global-summary')
+  if change['assetIndex'] in acceptance_indices and (change['acquisition'] is not None or change['preparation'] is not None):raise ValueError('invalid-global-summary')
   seen.add(change['assetIndex']);asset=manifest['assets'][change['assetIndex']];item=change['acquisition']
   if item is not None:
-   key=asset.get('sourceKey')
+   key=extra_by_id.get(asset['assetId'],asset.get('sourceKey'))
    if key not in source_map or key in acquired:raise ValueError('invalid-global-summary')
    acquired.add(key);validate_acquisition(item,source_map[key]);requests+=item['networkRequests'];body+=item['networkBytesRead']
   if change['preparation'] is not None:validate_preparation(change['preparation']);prepared+=change['preparation']['preparedBytes']
  if stage=='parse' and (requests or body or report['observedPeakTransfers']):raise ValueError('invalid-global-summary')
  if stage=='fetch' and (prepared or any(r['preparation'] is not None for r in report['changes']) or report['preparedUncertainBytes'] or report['preparationUncertainGrants']):raise ValueError('invalid-global-summary')
  if stage=='fetch' and any(row['stage']=='ready-nextstage' or row['code']=='extract-permission-held' for row in outcomes):raise ValueError('invalid-global-summary')
- if acquired!=set(source_map) or report['networkRequests']!=requests or report['networkBytesRead']!=body or type(requests) is not int or requests>selected['maximumRequests'] or body>selected['maximumTransferBytes']:raise ValueError('invalid-global-summary')
+ if acquired!=set(source_map)-acceptance_keys or not acceptance_indices<=seen or report['networkRequests']!=requests or report['networkBytesRead']!=body or type(requests) is not int or requests>(26 if extra_sources else selected['maximumRequests']) or body>(644874240 if extra_sources else selected['maximumTransferBytes']):raise ValueError('invalid-global-summary')
  if type(report['preparedBytes']) is not int or report['preparedBytes']!=prepared or not 0<=prepared<=MAX_OUTPUT_BYTES:raise ValueError('invalid-global-summary')
  if not isinstance(report['preparationUncertainGrants'],list):raise ValueError('invalid-global-summary')
  uncertain_ids=set();uncertain_total=0
@@ -966,21 +1090,33 @@ def without_github_credentials():
   os.environ.update(credentials)
 
 def main(argv=None):
+ prelude=None;args=sys.argv[1:] if argv is None else argv
+ try:
+  if args in (['--mode','user'],['--mode','user','--stage','fetch']):
+   with owner_successor_profile(args):
+    cfg=fetch_reconciliation.configuration()
+    if cfg is not None:
+     started=time.monotonic();verify_manual_handover()
+     fetch_reconciliation.verify_additional_authority(cfg,sys.modules[__name__])
+     with without_github_credentials():head=fetch_reconciliation.observe_headers(cfg)
+     prelude={'config':cfg,'deadline':started+MAX_SECONDS-20,'head':head}
+ except (a.RefreshError,OSError,ValueError,TypeError,KeyError):
+  print(a.canonical(blocked_report('owner-handover-invalid')).decode(),end='');return 2
  terminal=ProgressReporter().start()
  try:
-  result=_main(argv,terminal=terminal)
+  result=_main(argv,terminal=terminal,prelude=prelude)
  except BaseException as error:
   terminal.stop('interrupted' if isinstance(error,KeyboardInterrupt) else 'failed');raise
  terminal.stop('finished' if result==0 else 'failed');return result
 
-def _main(argv=None,terminal=None):
+def _main(argv=None,terminal=None,prelude=None):
  args=sys.argv[1:] if argv is None else argv
  try:
-  with owner_successor_profile(args):return _main_in_profile(args,terminal=terminal)
+  with owner_successor_profile(args):return _main_in_profile(args,terminal=terminal,prelude=prelude)
  except (a.RefreshError,OSError,ValueError,TypeError,KeyError):
   print(a.canonical(blocked_report('owner-handover-invalid')).decode(),end='');return 2
 
-def _main_in_profile(argv=None,terminal=None):
+def _main_in_profile(argv=None,terminal=None,prelude=None):
  report=blocked_report('global-config-invalid');selected=None;progress={};runtime=None;old_output=a.OUTPUT
  args=sys.argv[1:] if argv is None else argv
  stage=collection_stages.owner_stage(args)
@@ -1001,7 +1137,9 @@ def _main_in_profile(argv=None,terminal=None):
   if normalized==['--mode','user']:
    runtime=OwnerRuntime(owner_config(selected),selected);verify_manual_handover();a.OUTPUT=runtime.root
   with without_github_credentials():
-   report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress,owner_runtime=runtime,terminal=terminal,stage=stage);report=sanitize_report(report)
+   cfg=fetch_reconciliation.configuration() if stage=='fetch' and runtime is not None else None
+   if cfg is not None and (prelude is None or prelude['config']!=cfg):raise a.RefreshError('fetch-reconciliation-config-invalid')
+   report=run_global(manifest,selected,adverse_evidence=b.source_conflicts(selected,snapshot,adopted),progress=progress,owner_runtime=runtime,terminal=terminal,stage=stage,retained_acceptance_selection=cfg['taiwanAcceptance'] if cfg is not None else fetch_reconciliation_selection(stage) if runtime is not None else None,current_adverse_evidence=lambda:fresh_source_conflicts(selected),reconciliation_config=cfg,head_observation=None if prelude is None else prelude['head'],invocation_deadline=None if prelude is None else prelude['deadline']);report=sanitize_report(report)
  except Exception:
   if selected is not None and 'meter' in progress:report=projection_failure(selected,progress)
   elif runtime is not None:report=blocked_report('owner-handover-invalid')

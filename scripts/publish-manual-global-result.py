@@ -68,10 +68,17 @@ def build_payload(envelope,g):
         assets=[];retained_observations={}
         if 'retainedOriginalVerification' in report:retained_observations=g.retained_collection.observations(report['retainedOriginalVerification'])
         for i,(asset,outcome) in enumerate(zip(manifest['assets'],outcomes)):
-            assets.append({'assetIndex':i,'assetId':asset['assetId'],'countryHints':asset.get('countryHints',[]),'sourceKey':asset.get('sourceKey'),'recordedDisposition':asset.get('disposition'),'holds':asset.get('holds',[]),'sourceStageHolds':asset.get('sourceStageHolds',[]),'outcome':outcome,'change':changes.get(i)})
+            assets.append({'assetIndex':i,'assetId':asset['assetId'],'countryHints':asset.get('countryHints',[]),'sourceKey':(changes.get(i,{}).get('acquisition') or {}).get('sourceKey',asset.get('sourceKey')),'recordedDisposition':asset.get('disposition'),'holds':asset.get('holds',[]),'sourceStageHolds':asset.get('sourceStageHolds',[]),'outcome':outcome,'change':changes.get(i)})
         for index,state in retained_observations.items():
             original=manifest['assets'][index]['retainedOriginal'];verified=state=='completed-verified'
             assets[index]['retainedVerification']={'state':state,'integrityVerified':verified,'originalSHA256':original['sha256'] if verified else None,'originalBytes':original['bytes'] if verified else None,'networkRequests':0,'sourceIdentityInferred':False,'parserReadinessInferred':False}
+        acceptance=report.get('retainedReferenceAcceptance')
+        if acceptance is not None and acceptance['status']!='blocked':
+            reference_rows={row['assetId']:row for row in acceptance['items']}
+            for row in assets:
+                reference=reference_rows.get(row['assetId'])
+                if reference is not None:
+                    row['retainedReferenceAcceptance']={**reference,'receiptSHA256':acceptance['receiptSHA256'],'acceptedAtUTC':acceptance['acceptedAtUTC'],'status':acceptance['status'],'networkRequests':0,'newOriginalCopies':0,'oldFailedRecordsModified':False}
         matrix=report['cellStageCounts'];overrides=dict(matrix['overrides']);cells=[]
         for i,cell in enumerate(manifest['cells']):
             cells.append({'cellIndex':i,'country':cell['country'],'type':cell['type'],'canonicalStatus':cell['retainedStatus'],'countryTypeComplete':False,'stageCounts':dict(zip(g.STATES,overrides.get(i,matrix['default'])))})
@@ -79,6 +86,9 @@ def build_payload(envelope,g):
         paths=[{'statIndex':i,'path':row['path'],'assetIds':row['assetIds'],'recordedIdentities':row.get('recordedIdentities',[]),'observation':states[i]} for i,row in enumerate(manifest.get('statTargets',[]))]
         files+=chunks('assets',assets)+chunks('country-types',cells)+chunks('custody-paths',paths)
         counts={'assets':len(assets),'countryTypeCells':len(cells),'statPaths':len(paths)}
+    for reference in report.get('fetchEvidence',[]):
+        value=g.fetch_reconciliation.load_evidence(reference,envelope['outputRoot'])
+        files+=g.fetch_evidence.publication_parts(reference,value,chunks)
     require(len(files)<=MAX_FILES and sum(len(b) for _,b in files)<=MAX_TOTAL,'manual-publication-size-limit')
     files=[(prefix+'/'+name,raw) for name,raw in files]
     receipt={'schemaVersion':'offmenu-owner-manual-global-receipt/1','executionContext':'owner-manual-foo','handoffId':HANDOFF,'baseReviewedSource':BASE_SOURCE,'runtimeConfigSHA256':envelope['handover']['runtimeConfigSHA256'],'dispatchHoldSHA256':HOLD_SHA256,'resultSHA256':digest,'globalReportSHA256':envelope['globalReportSHA256'],'sourceOutcome':report['status'],'expandedCounts':counts,'fileCount':len(files),'totalMetadataBytes':sum(len(b) for _,b in files),'files':[{'path':p,'bytes':len(b),'sha256':sha(b),'gitBlobSha':blob_sha(b)} for p,b in files],'rawSourceBodiesPublished':False,'checkpointBodiesPublished':False,'runnerResumeRequiresOutcomeImport':True,'isActionsReceipt':False}

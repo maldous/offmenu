@@ -1,0 +1,22 @@
+{
+  "additionalTransferBytesAuthorized": 0,
+  "executionStage": "fetch",
+  "existingHandoffId": "owner-local-comprehensive-20261018-002",
+  "existingRuntimeConfigSHA256": "28acbde120ac7d457f24af8cd2e3203927bb770137b8ce414c0d7a082e63b4ba",
+  "existingSelectionSHA256": "81c0c919644d6df86681b4ef6ee946a25a191f85a0080a66e327c0b20d311a08",
+  "maximumAcceptanceOriginalReadBytes": 12980952,
+  "maximumAcceptanceSeconds": 210,
+  "networkRequestsAuthorized": 0,
+  "newSourceSelection": [],
+  "priorIntentsModified": false,
+  "schemaVersion": "offmenu-fetch-reconciliation-selection/1",
+  "status": "prepared-for-review-not-active",
+  "taiwanAcceptance": {
+    "acceptanceManifestSHA256": "676293ceb7d7f7169ed103f7dd494c8da58f50148572ce1f941850ba476aee5e",
+    "handoffId": "owner-local-comprehensive-20261018-002",
+    "preparationSelected": false,
+    "reviewedWriterSHA256": "c8c7a6e62832dd1d56c25d5ec0e4d1b363c71cc4a7a1ec30580cc350f9bd4b86",
+    "schemaVersion": "offmenu-retained-taiwan-parent-selection/1",
+    "scope": "exact-three-unchanged-retained-reference-acceptance"
+  }
+}

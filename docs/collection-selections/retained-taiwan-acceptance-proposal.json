@@ -1,0 +1,552 @@
+{
+  "acceptanceSelected": false,
+  "dispositionApplied": false,
+  "existingOwnerContextBinding": {
+    "dispatchHoldPath": "docs/operations/global-comprehensive-manual-handoff-20261018.json",
+    "dispatchHoldSHA256": "a78f209e2d1636cadf3ad913514d98472bf3e173b3c08c008ae573cade56ad8b",
+    "existingRuntimeChanged": false,
+    "futureAcceptanceAuthority": "unselected-requires-exact-manifest-root-selection",
+    "handoffId": "owner-local-comprehensive-20261018-002",
+    "progressAndOPCRemainOnExistingHandoff": true,
+    "runnerResumeRequiresOutcomeImport": true,
+    "runtimeConfigPath": "docs/collection-selections/owner-comprehensive-runtime.json",
+    "runtimeConfigSHA256": "28acbde120ac7d457f24af8cd2e3203927bb770137b8ce414c0d7a082e63b4ba",
+    "successorHandoffCreated": false
+  },
+  "invariants": {
+    "bodyRenameCopyDeleteOrNormalizationAllowed": false,
+    "countryCoverageComplete": false,
+    "genericBOMAcceptanceAllowed": false,
+    "historicalBodyIdentityEstablished": false,
+    "networkRequests": 0,
+    "newDownloadOrRetryAllowed": false,
+    "newPermissionsGranted": false,
+    "oldFailedRecordsModified": false,
+    "publisherChecksumEstablished": false,
+    "runnerResumeAuthorized": false,
+    "semanticOrGoldAdmission": false,
+    "sourceBodyBytesUploaded": 0,
+    "strictISOConformanceEstablished": false
+  },
+  "items": [
+    {
+      "assetId": "source:tw41-eastern-afa-14101-regional-bento-original",
+      "assetIndex": 4747,
+      "existingPreparationSelection": {
+        "country": "TW",
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedMediaTypes": [
+          "application/pdf"
+        ],
+        "holds": [],
+        "parameters": {},
+        "permissions": {
+          "copy": true,
+          "extract": true,
+          "read": true
+        },
+        "retainedOriginal": null,
+        "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+        "type": "recipes"
+      },
+      "preparationEnabledByThisProposal": false,
+      "preparationSelectionCanonicalSHA256": "63243a3bb9f0232229021ebc68f782c9720dc93093014a70e46fed82df437c5a",
+      "preservedDownstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "proposedCustodyReference": {
+        "acquisitionSuccessClaim": false,
+        "bytes": 2290082,
+        "expectedOwnerUID": 1000,
+        "kind": "validated-retained-original-reference/1",
+        "oldFailedDetail": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-original-result-1abb104dea5275b1d1cdd557e7b26017fb30bf9b134be3ec656f030ccf523e9b.json",
+          "sha256": "1abb104dea5275b1d1cdd557e7b26017fb30bf9b134be3ec656f030ccf523e9b"
+        },
+        "oldFailedIntent": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-originals/7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc/successor-intent.json",
+          "sha256": "86386346048d13a891fea396ea9d271734cbdc4d54595f92e54fa8da7a62e43b",
+          "state": "failed-no-retry"
+        },
+        "originalAcquiredAt": null,
+        "originalBodyCreationOrCopyRequired": false,
+        "preserveFailedIntent": true,
+        "preserveOriginalBytes": true,
+        "referenceOnly": true,
+        "relativePath": "collection/private-originals/7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc/original.partial",
+        "runtimeRoot": "/home/user/src/offmenu-data/owner-collection-runtime",
+        "scope": "private-unchanged-original-structural-validation-only",
+        "sha256": "b49be9438831bd5446669172408c7d9aab9307f0b1cc008b73e72414501500a0",
+        "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc"
+      },
+      "sourceContract": {
+        "aliases": [
+          "便當食譜(台東縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%8F%B0%E6%9D%B1%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc",
+      "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+      "validationProposal": {
+        "dispositionApplied": false,
+        "errorCode": null,
+        "historicalBodyIdentityEstablished": false,
+        "networkRequests": 0,
+        "normalizationPerformed": false,
+        "observationCommit": "3bbb6835568dcc58ff147f8b1c459c5e37dfc3e0",
+        "observationResultSHA256": "7e844aae16ed22b088c2643fec3f9722110cdad30b9f0fcc264c2db57eba4795",
+        "oldFailedIntentSHA256": "86386346048d13a891fea396ea9d271734cbdc4d54595f92e54fa8da7a62e43b",
+        "oldFailedRecordsModified": false,
+        "parser": {
+          "allPagesTraversed": true,
+          "diagnosticBytes": 0,
+          "encrypted": false,
+          "errorCode": null,
+          "name": "poppler",
+          "pageCount": 8,
+          "pdfinfoExitCode": 0,
+          "pdfinfoVersion": "24.02.0",
+          "pdftotextExitCode": 0,
+          "pdftotextVersion": "24.02.0",
+          "status": "passed",
+          "textBytesExamined": 4597
+        },
+        "priorFailedDetailSHA256": "1abb104dea5275b1d1cdd557e7b26017fb30bf9b134be3ec656f030ccf523e9b",
+        "proposedDisposition": {
+          "bytes": 2290082,
+          "kind": "validated-retained-original-reference/1",
+          "originalAcquiredAt": null,
+          "preserveFailedIntent": true,
+          "preserveOriginalBytes": true,
+          "relativePath": "collection/private-originals/7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc/original.partial",
+          "scope": "private-unchanged-original-structural-validation-only",
+          "sha256": "b49be9438831bd5446669172408c7d9aab9307f0b1cc008b73e72414501500a0",
+          "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc"
+        },
+        "publisherChecksumEstablished": false,
+        "retainedBytes": 2290082,
+        "retainedSHA256": "b49be9438831bd5446669172408c7d9aab9307f0b1cc008b73e72414501500a0",
+        "schemaVersion": "offmenu-retained-taiwan-recovery-proposal/1",
+        "semanticOrGoldAdmission": false,
+        "sourceBodiesModified": false,
+        "sourceBytesUploaded": 0,
+        "sourceContractSHA256": "7904c23aecb10a1a87b9a166fbffcdf58fd2274dc92351976642a97d89232bfc",
+        "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+        "status": "validated-proposal",
+        "strictISOConformanceEstablished": false
+      },
+      "validationProposalCanonicalSHA256": "be9ca557429501f957f82ae712c92a9ac32318643c718f78b44646f420293422"
+    },
+    {
+      "assetId": "source:tw41-eastern-afa-14102-regional-bento-original",
+      "assetIndex": 4748,
+      "existingPreparationSelection": {
+        "country": "TW",
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedMediaTypes": [
+          "application/pdf"
+        ],
+        "holds": [],
+        "parameters": {},
+        "permissions": {
+          "copy": true,
+          "extract": true,
+          "read": true
+        },
+        "retainedOriginal": null,
+        "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+        "type": "recipes"
+      },
+      "preparationEnabledByThisProposal": false,
+      "preparationSelectionCanonicalSHA256": "d73fa2a67eed621ee82694db49b8a7e456512c447563685b3b78c99c0367085b",
+      "preservedDownstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "proposedCustodyReference": {
+        "acquisitionSuccessClaim": false,
+        "bytes": 1136770,
+        "expectedOwnerUID": 1000,
+        "kind": "validated-retained-original-reference/1",
+        "oldFailedDetail": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-original-result-7106964b9e0f792523f3c2fc952005b45b4fd506ccb94c9e44224c4a138f68d2.json",
+          "sha256": "7106964b9e0f792523f3c2fc952005b45b4fd506ccb94c9e44224c4a138f68d2"
+        },
+        "oldFailedIntent": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-originals/40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39/successor-intent.json",
+          "sha256": "d58b3dc4f6387dc810e863c5bc72cc47c228b2486dcbe2f218b39401dbb0ad22",
+          "state": "failed-no-retry"
+        },
+        "originalAcquiredAt": null,
+        "originalBodyCreationOrCopyRequired": false,
+        "preserveFailedIntent": true,
+        "preserveOriginalBytes": true,
+        "referenceOnly": true,
+        "relativePath": "collection/private-originals/40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39/original.partial",
+        "runtimeRoot": "/home/user/src/offmenu-data/owner-collection-runtime",
+        "scope": "private-unchanged-original-structural-validation-only",
+        "sha256": "188749647a3aa866fccaf4c038928b7327caf37821d1193c631fb8ff3cd7b88b",
+        "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39"
+      },
+      "sourceContract": {
+        "aliases": [
+          "便當食譜(宜蘭縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%AE%9C%E8%98%AD%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39",
+      "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+      "validationProposal": {
+        "dispositionApplied": false,
+        "errorCode": null,
+        "historicalBodyIdentityEstablished": false,
+        "networkRequests": 0,
+        "normalizationPerformed": false,
+        "observationCommit": "3bbb6835568dcc58ff147f8b1c459c5e37dfc3e0",
+        "observationResultSHA256": "7e844aae16ed22b088c2643fec3f9722110cdad30b9f0fcc264c2db57eba4795",
+        "oldFailedIntentSHA256": "d58b3dc4f6387dc810e863c5bc72cc47c228b2486dcbe2f218b39401dbb0ad22",
+        "oldFailedRecordsModified": false,
+        "parser": {
+          "allPagesTraversed": true,
+          "diagnosticBytes": 0,
+          "encrypted": false,
+          "errorCode": null,
+          "name": "poppler",
+          "pageCount": 4,
+          "pdfinfoExitCode": 0,
+          "pdfinfoVersion": "24.02.0",
+          "pdftotextExitCode": 0,
+          "pdftotextVersion": "24.02.0",
+          "status": "passed",
+          "textBytesExamined": 5090
+        },
+        "priorFailedDetailSHA256": "7106964b9e0f792523f3c2fc952005b45b4fd506ccb94c9e44224c4a138f68d2",
+        "proposedDisposition": {
+          "bytes": 1136770,
+          "kind": "validated-retained-original-reference/1",
+          "originalAcquiredAt": null,
+          "preserveFailedIntent": true,
+          "preserveOriginalBytes": true,
+          "relativePath": "collection/private-originals/40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39/original.partial",
+          "scope": "private-unchanged-original-structural-validation-only",
+          "sha256": "188749647a3aa866fccaf4c038928b7327caf37821d1193c631fb8ff3cd7b88b",
+          "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39"
+        },
+        "publisherChecksumEstablished": false,
+        "retainedBytes": 1136770,
+        "retainedSHA256": "188749647a3aa866fccaf4c038928b7327caf37821d1193c631fb8ff3cd7b88b",
+        "schemaVersion": "offmenu-retained-taiwan-recovery-proposal/1",
+        "semanticOrGoldAdmission": false,
+        "sourceBodiesModified": false,
+        "sourceBytesUploaded": 0,
+        "sourceContractSHA256": "40a144d090ad51ae2c9c2a949c844c114e455d195339b2e65d8a8bd7dcc55d39",
+        "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+        "status": "validated-proposal",
+        "strictISOConformanceEstablished": false
+      },
+      "validationProposalCanonicalSHA256": "b603fe15700c9a2fb6cf943ad917191614e982a5e852f26873cb41b2fa714f15"
+    },
+    {
+      "assetId": "source:tw41-eastern-afa-14103-regional-bento-original",
+      "assetIndex": 4749,
+      "existingPreparationSelection": {
+        "country": "TW",
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedMediaTypes": [
+          "application/pdf"
+        ],
+        "holds": [],
+        "parameters": {},
+        "permissions": {
+          "copy": true,
+          "extract": true,
+          "read": true
+        },
+        "retainedOriginal": null,
+        "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+        "type": "recipes"
+      },
+      "preparationEnabledByThisProposal": false,
+      "preparationSelectionCanonicalSHA256": "97e8a2d735412b2f6f6f7be08297ffbea9fff33e51d7be0d6f062fd58aff0c97",
+      "preservedDownstreamHolds": [
+        "redistribution-unselected",
+        "commercial-corpus-reuse-unqualified",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "proposedCustodyReference": {
+        "acquisitionSuccessClaim": false,
+        "bytes": 3063624,
+        "expectedOwnerUID": 1000,
+        "kind": "validated-retained-original-reference/1",
+        "oldFailedDetail": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-original-result-df0e955daedeef00e594d174ec9e64bda282b89469433737fe1606c6c7b71c62.json",
+          "sha256": "df0e955daedeef00e594d174ec9e64bda282b89469433737fe1606c6c7b71c62"
+        },
+        "oldFailedIntent": {
+          "preserveBytes": true,
+          "relativePath": "collection/private-originals/7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9/successor-intent.json",
+          "sha256": "d5a1614fe2f2bf585d5b1be27f13704d159d72bdc20891fa080f62e4cec7872f",
+          "state": "failed-no-retry"
+        },
+        "originalAcquiredAt": null,
+        "originalBodyCreationOrCopyRequired": false,
+        "preserveFailedIntent": true,
+        "preserveOriginalBytes": true,
+        "referenceOnly": true,
+        "relativePath": "collection/private-originals/7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9/original.partial",
+        "runtimeRoot": "/home/user/src/offmenu-data/owner-collection-runtime",
+        "scope": "private-unchanged-original-structural-validation-only",
+        "sha256": "133041c9bdd981977434165c9978d95537d7e8ae42cbcd866fcb7b17f2ce461e",
+        "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9"
+      },
+      "sourceContract": {
+        "aliases": [
+          "便當食譜(花蓮縣).pdf"
+        ],
+        "checksums": {},
+        "downstreamHolds": [
+          "redistribution-unselected",
+          "commercial-corpus-reuse-unqualified",
+          "translation-unselected",
+          "normalization-unselected",
+          "semantic-and-gold-admission-unselected",
+          "country-completeness-unestablished"
+        ],
+        "expectedBytes": null,
+        "expectedResponse": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E8%8A%B1%E8%93%AE%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        },
+        "hardTransferBytes": 16777216,
+        "historicalPreparationExceptions": [],
+        "privateCustodyApproved": true,
+        "qualificationReference": "docs/collection-selections/recipe-batch-tw-three-regional-exact-contracts.json",
+        "queryKeys": [
+          "act",
+          "ids"
+        ],
+        "release": "Exact publisher filename; edition/date unestablished",
+        "rightsReference": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "schemaVersion": "offmenu-fixed-source-contract/1",
+        "sourceAcquisitionHeld": false,
+        "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+        "validation": {
+          "kind": "pdf-original"
+        },
+        "wholeOperationSeconds": 150
+      },
+      "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9",
+      "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+      "validationProposal": {
+        "dispositionApplied": false,
+        "errorCode": null,
+        "historicalBodyIdentityEstablished": false,
+        "networkRequests": 0,
+        "normalizationPerformed": false,
+        "observationCommit": "3bbb6835568dcc58ff147f8b1c459c5e37dfc3e0",
+        "observationResultSHA256": "7e844aae16ed22b088c2643fec3f9722110cdad30b9f0fcc264c2db57eba4795",
+        "oldFailedIntentSHA256": "d5a1614fe2f2bf585d5b1be27f13704d159d72bdc20891fa080f62e4cec7872f",
+        "oldFailedRecordsModified": false,
+        "parser": {
+          "allPagesTraversed": true,
+          "diagnosticBytes": 0,
+          "encrypted": false,
+          "errorCode": null,
+          "name": "poppler",
+          "pageCount": 10,
+          "pdfinfoExitCode": 0,
+          "pdfinfoVersion": "24.02.0",
+          "pdftotextExitCode": 0,
+          "pdftotextVersion": "24.02.0",
+          "status": "passed",
+          "textBytesExamined": 8622
+        },
+        "priorFailedDetailSHA256": "df0e955daedeef00e594d174ec9e64bda282b89469433737fe1606c6c7b71c62",
+        "proposedDisposition": {
+          "bytes": 3063624,
+          "kind": "validated-retained-original-reference/1",
+          "originalAcquiredAt": null,
+          "preserveFailedIntent": true,
+          "preserveOriginalBytes": true,
+          "relativePath": "collection/private-originals/7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9/original.partial",
+          "scope": "private-unchanged-original-structural-validation-only",
+          "sha256": "133041c9bdd981977434165c9978d95537d7e8ae42cbcd866fcb7b17f2ce461e",
+          "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9"
+        },
+        "publisherChecksumEstablished": false,
+        "retainedBytes": 3063624,
+        "retainedSHA256": "133041c9bdd981977434165c9978d95537d7e8ae42cbcd866fcb7b17f2ce461e",
+        "schemaVersion": "offmenu-retained-taiwan-recovery-proposal/1",
+        "semanticOrGoldAdmission": false,
+        "sourceBodiesModified": false,
+        "sourceBytesUploaded": 0,
+        "sourceContractSHA256": "7c7242814c51532617e432ac8fce965e5997b779a9f29c07de0f102e545251a9",
+        "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+        "status": "validated-proposal",
+        "strictISOConformanceEstablished": false
+      },
+      "validationProposalCanonicalSHA256": "f9cd82661724d0030dce67b1e53dce8cb8739a6722dfee4e43b5d83a5bf598c5"
+    }
+  ],
+  "preparationEnabled": false,
+  "publishedEvidence": {
+    "globalReportSHA256": "95d44435b3d13aa2efa9a5d1410867aa8b4d048885d145a5cc5c7c4c59e7c9e6",
+    "publicationReceiptIsCustodyAcceptance": false,
+    "publicationReceiptPath": "docs/handover/2026-10-18/foo-owner-custody/manual-global/owner-local-comprehensive-20261018-002/results/c36d6a2f8a34ad71e77d11f9bed89957cdde002d0e1820da4b4d0c1215f8556d/receipt.json",
+    "publicationReceiptSHA256": "6d363a25c06d9a6ffa8044e429de003290bcd2033c41ce23a9b2e3a25bf96825",
+    "reportCommit": "d6ce260a296e73a9a9f1985f8c2db79b7ec5ddbf",
+    "repository": "maldous/offmenu",
+    "resultPath": "docs/handover/2026-10-18/foo-owner-custody/manual-global/owner-local-comprehensive-20261018-002/results/c36d6a2f8a34ad71e77d11f9bed89957cdde002d0e1820da4b4d0c1215f8556d/summary.json",
+    "resultSHA256": "c36d6a2f8a34ad71e77d11f9bed89957cdde002d0e1820da4b4d0c1215f8556d",
+    "sourceBaselineIsRuntimeAttestation": false
+  },
+  "requiredGates": [
+    {
+      "gate": "independent-review-of-exact-manifest-and-integration",
+      "status": "pending"
+    },
+    {
+      "gate": "root-selection-binding-this-manifest-digest-and-exact-three-identities",
+      "status": "pending"
+    },
+    {
+      "gate": "owner-runtime-and-existing-single-writer-lease",
+      "status": "required-at-execution"
+    },
+    {
+      "gate": "fresh-no-follow-private-owner-single-link-body-intent-detail-and-parent-identity-checks",
+      "status": "required-at-execution"
+    },
+    {
+      "gate": "fresh-bounded-exact-validator-pass-with-unchanged-body-and-failed-records",
+      "status": "required-at-execution"
+    },
+    {
+      "gate": "append-only-private-custody-acceptance-receipt-before-reference-reuse",
+      "status": "not-implemented"
+    },
+    {
+      "gate": "selected-source-preparation-permissions-holds-and-output-capacity-rechecked",
+      "status": "required-before-preparation"
+    },
+    {
+      "gate": "reviewed-source-bound-bom-hook-through-existing-preparation-worker",
+      "status": "not-integrated"
+    }
+  ],
+  "runtimeEnabled": false,
+  "schemaVersion": "offmenu-retained-taiwan-acceptance-proposal/1",
+  "serialization": {
+    "publishedEvidenceDigests": "SHA256 of exact published file bytes",
+    "sourceContractAndValidationProposalDigests": "SHA256 of sorted compact UTF-8 JSON with ensure_ascii=false, allow_nan=false, and one final LF"
+  },
+  "sourceBaseline": {
+    "assetManifestPath": "docs/collection-selections/global-comprehensive-manifest.json",
+    "assetManifestSHA256": "7ffa2f5ce688c6fde5019b9252fbb9f96b3037f76337598cc05f76c37ef8754a",
+    "commit": "c74cfaee99c6d743c8d4982de4d8d8cce651b057",
+    "selectionPath": "docs/collection-selections/global-comprehensive-selection.json",
+    "selectionSHA256": "81c0c919644d6df86681b4ef6ee946a25a191f85a0080a66e327c0b20d311a08"
+  },
+  "status": "inactive-awaiting-independent-review-and-root-selection"
+}
