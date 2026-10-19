@@ -1,0 +1,32 @@
+{
+  "counts": {
+    "acceptedRecords": 83,
+    "ingredientLines": 115,
+    "menuItems": 70,
+    "nutritionAssertions": 208,
+    "orderedSteps": 16,
+    "recipes": 13,
+    "sourceAssets": 15
+  },
+  "dictionaryVersion": "offmenu-data-dictionary/1",
+  "englishGoldAdmittedRecords": 0,
+  "heldForRightsReview": [
+    "source recipe originals are unchanged private research only; no derivative, translation, normalization, gold, or publication grant",
+    "menu source reuse licence unverified; retained local reference only"
+  ],
+  "localRunManifest": "Foo-local only; not published",
+  "mappingVersion": "offmenu-source-field-mappings/1",
+  "menuTemplateVersion": "offmenu-source-menu-item/1",
+  "networkRequests": 0,
+  "normalizationPerformed": false,
+  "parserVersion": "offmenu-source-faithful-recipe-parser/1.3.0",
+  "recipeTemplateVersion": "offmenu-source-recipe/2",
+  "schemaVersion": "offmenu-sanitized-parse-summary/1",
+  "scopeEvidence": {
+    "AU": "13 receipt-backed official HTML recipe pages; not country coverage",
+    "MF": "2 receipt-backed venue menus, 70 distinct item-card records; not country coverage"
+  },
+  "sourceCoverageComplete": false,
+  "status": "complete",
+  "translationPerformed": false
+}

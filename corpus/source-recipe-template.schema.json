@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://offmenu-corpus.netlify.app/parsed/source-recipe-template.schema.json",
+  "title": "OffMenu source-faithful recipe and menu extraction template v2",
+  "oneOf": [
+    {"$ref": "#/$defs/recipe"},
+    {"$ref": "#/$defs/menuItem"}
+  ],
+  "$defs": {
+    "location": {
+      "type": "object",
+      "required": ["page", "lineStart", "lineEnd", "utf8ByteRange", "pageTextSHA256", "sourceSpanSHA256"],"properties":{"page":{"type":"integer","minimum":1},"lineStart":{"type":"integer","minimum":1},"lineEnd":{"type":"integer","minimum":1},"utf8ByteRange":{"type":"array","prefixItems":[{"type":"integer","minimum":0},{"type":"integer","minimum":0}],"minItems":2,"maxItems":2},"pageTextSHA256":{"type":"string","pattern":"^[a-f0-9]{64}$"},"sourceSpanSHA256":{"type":"string","pattern":"^[a-f0-9]{64}$"}},
+      "additionalProperties": false
+    },
+    "quantity": {
+      "type": "object",
+      "required": ["rawExpression", "rawValueLexeme", "rawUnitLexeme", "interpretedValue", "interpretedUnit", "interpretationStatus"],
+      "properties": {
+        "rawExpression": {"type":["string","null"]},
+        "rawValueLexeme": {"type":["string","null"]},
+        "rawUnitLexeme": {"type":["string","null"]},
+        "interpretedValue": {"type":["number","null"]},
+        "interpretedUnit": {"type":["string","null"]},
+        "interpretationStatus": {"type":"string"}
+      },
+      "additionalProperties": false
+    },
+    "ingredientLine": {
+      "type":"object",
+      "required":["ingredientLineId","order","componentIndex","sourceNameText","originalExpression","preparationDescriptors","substitutionText","quantity","foodIdentity","foodMatchStatus","location"],
+      "properties": {
+        "ingredientLineId":{"type":"string"},
+        "order":{"type":"integer","minimum":1},
+        "componentIndex":{"type":"integer","minimum":1},
+        "sourceNameText":{"type":"string","minLength":1},
+        "originalExpression":{"type":"string","minLength":1},
+        "preparationDescriptors":{"type":"array","items":{"type":"string"}},
+        "substitutionText":{"type":["string","null"]},
+        "quantity":{"$ref":"#/$defs/quantity"},
+        "foodIdentity":{"type":["string","null"]},
+        "foodMatchStatus":{"type":"string"},
+        "location":{"$ref":"#/$defs/location"}
+      },
+      "additionalProperties":false
+    },
+    "step": {
+      "type":"object",
+      "required":["order","componentIndex","originalText","actionTerms","equipment","time","temperature","targetState","location"],
+      "properties": {
+        "order":{"type":"integer","minimum":1},
+        "componentIndex":{"type":"integer","minimum":1},
+        "originalText":{"type":"string","minLength":1},
+        "actionTerms":{"type":"array","items":{"type":"string"}},
+        "equipment":{"type":"array","items":{"type":"string"}},
+        "time":{"type":["object","null"]},
+        "temperature":{"type":["object","null"]},
+        "targetState":{"type":["string","null"]},
+        "location":{"$ref":"#/$defs/location"}
+      },
+      "additionalProperties":false
+    },
+    "citation": {
+      "type":"object",
+      "required":["sourceId","sourceRecordId","releaseId","countryCode","language","citationUrl","attribution","licenseStatus","originalSHA256","extractionSHA256","extractionParser","scope"],
+      "properties": {
+        "sourceId":{"type":"string"},
+        "sourceRecordId":{"type":"string"},
+        "releaseId":{"type":["string","null"]},
+        "countryCode":{"type":["string","null"]},
+        "language":{"type":"string"},
+        "citationUrl":{"type":"string","format":"uri"},
+        "attribution":{"type":"string"},
+        "licenseStatus":{"type":"string"},
+        "originalSHA256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+        "extractionSHA256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+        "extractionParser":{"type":"string"},
+        "scope":{"type":"string"}
+      },
+      "additionalProperties":false
+    },
+    "yield": {
+      "type":["object","null"],
+      "properties": {
+        "rawText":{"type":"string"},
+        "rawValueLexeme":{"type":["string","null"]},
+        "rawUnitLexeme":{"type":["string","null"]},
+        "interpretedValue":{"type":["number","null"]},
+        "interpretedUnit":{"type":["string","null"]},
+        "interpretationStatus":{"type":"string"},
+        "location":{"$ref":"#/$defs/location"}
+      },
+      "required":["rawText","rawValueLexeme","rawUnitLexeme","interpretedValue","interpretedUnit","interpretationStatus","location"],
+      "additionalProperties":false
+    },
+    "nutritionAssertion": {
+      "type":"object",
+      "required":["sourceFieldName","sourceLanguage","meaning","rawDatatype","rawValue","rawUnit","sourceBasis","interpretedValue","interpretedUnit","missingValueStatus","location"],
+      "properties":{"sourceFieldName":{"type":"string"},"sourceLanguage":{"type":"string"},"meaning":{"type":"string"},"rawDatatype":{"type":"string"},"rawValue":{"type":["string","null"]},"rawUnit":{"type":["string","null"]},"sourceBasis":{"type":["string","null"]},"interpretedValue":{"type":["number","null"]},"interpretedUnit":{"type":["string","null"]},"missingValueStatus":{"type":"string"},"location":{"$ref":"#/$defs/location"}},
+      "additionalProperties":false
+    },
+    "recipe": {
+      "type":"object",
+      "required":["recipeTemplate","dictionaryVersion","mappingVersion","source","originalTitle","originalHeadingLines","aliases","language","region","yield","ingredientLines","orderedSteps","components","sourceNotes","nutritionAssertions","equipment","time","temperature","sourceLocation","identity"],
+      "properties": {
+        "recipeTemplate":{"const":"offmenu-source-recipe/2"},
+        "dictionaryVersion":{"const":"offmenu-data-dictionary/1"},
+        "mappingVersion":{"const":"offmenu-source-field-mappings/1"},
+        "source":{"$ref":"#/$defs/citation"},
+        "nutritionAssertions":{"type":"array","items":{"$ref":"#/$defs/nutritionAssertion"}},
+        "originalTitle":{"type":"string","minLength":1},
+        "originalHeadingLines":{"type":"array","items":{"type":"string"}},
+        "aliases":{"type":"array","items":{"type":"string"}},
+        "language":{"type":"string"},
+        "region":{"type":["string","null"]},
+        "yield":{"$ref":"#/$defs/yield"},
+        "ingredientLines":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/ingredientLine"}},
+        "orderedSteps":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/step"}},
+        "components":{"type":"array","minItems":1,"items":{"type":"object"}},
+        "sourceNotes":{"type":"array","items":{"type":"object","required":["originalText","location"]}},
+        "nutritionAssertions":{"type":"array","items":{"$ref":"#/$defs/nutritionAssertion"}},
+        "equipment":{"type":"array","items":{"type":"string"}},
+        "time":{"type":["object","null"]},
+        "temperature":{"type":["object","null"]},
+        "sourceLocation":{"$ref":"#/$defs/location"},
+        "identity":{"type":"object","required":["canonicalDishId","mergePerformed","identityStatus"],"properties":{"canonicalDishId":{"type":["string","null"]},"mergePerformed":{"const":false},"identityStatus":{"type":"string"}},"additionalProperties":false}
+      },
+      "additionalProperties":false
+    },
+    "menuItem": {
+      "type":"object",
+      "required":["menuTemplate","dictionaryVersion","mappingVersion","source","originalItemName","originalDescription","venue","price","currency","language","recipeCandidates","location","sourceCategory"],
+      "properties": {
+        "menuTemplate":{"const":"offmenu-source-menu-item/1"},
+        "dictionaryVersion":{"const":"offmenu-data-dictionary/1"},
+        "mappingVersion":{"const":"offmenu-source-field-mappings/1"},
+        "source":{"$ref":"#/$defs/citation"},
+        "originalItemName":{"type":"string"},
+        "originalDescription":{"type":["string","null"]},
+        "venue":{"type":["object","null"],"properties":{"sourceName":{"type":"string"}},"additionalProperties":true},
+        "price":{"type":["object","null"],"properties":{"rawValue":{"type":"string"},"rawCurrency":{"type":"string"},"interpretedValue":{"type":["number","null"]},"interpretedCurrency":{"type":["string","null"]},"interpretationStatus":{"type":"string"}},"additionalProperties":false},
+        "currency":{"type":["string","null"]},
+        "language":{"type":"string"},
+        "recipeCandidates":{"type":"array","items":{"type":"object","required":["recipeRecordId","evidenceLocation","matchStatus"]}},
+        "location":{"$ref":"#/$defs/location"},
+        "sourceCategory":{"type":["string","null"]}
+      },
+      "additionalProperties":false
+    }
+  }
+}
