@@ -83,6 +83,28 @@ class FetchUpgradeTests(unittest.TestCase):
         with patch.object(m,'git',side_effect=[old.name,m.FETCH_PARSE_PREDECESSOR['tree'],'']),self.assertRaisesRegex(ValueError,'source-file-pin-mismatch'):m.install('a'*40,'b'*40)
         for s,b in before.items():self.assertEqual((root/s).read_bytes(),b)
 
+    def test_exact_whole_inventory_stage_predecessor_checks_immutable_git_identity(self):
+        root,old=self.installed_layout(m.WHOLE_INVENTORY_PREDECESSOR['commit'])
+        pin=root/'pins'/(old.name+'.json');pin.write_text(json.dumps(m.WHOLE_INVENTORY_PREDECESSOR))
+        for stage in ('fetch','parse'):(root/stage).write_bytes(m.stage_wrapper_bytes(old,stage))
+        _,new=self.installed_layout()
+        with patch.object(m,'verify_source_identity') as verify_identity,patch.object(m,'verify_source') as verify_source,patch.object(m,'git',side_effect=AssertionError('network forbidden')),redirect_stdout(io.StringIO()):
+            m.install('a'*40,'b'*40)
+        verify_identity.assert_called_once_with(old,m.WHOLE_INVENTORY_PREDECESSOR,m.clean_environment())
+        verify_source.assert_called_once_with(new,{'commit':'a'*40,'tree':'b'*40},m.clean_environment())
+        for stage in ('fetch','parse'):self.assertEqual((root/stage).read_bytes(),m.stage_wrapper_bytes(new,stage))
+
+    def test_changed_whole_inventory_stage_pin_stops_before_identity_check(self):
+        root,old=self.installed_layout(m.WHOLE_INVENTORY_PREDECESSOR['commit'])
+        (root/'pins'/(old.name+'.json')).write_text(json.dumps(dict(m.WHOLE_INVENTORY_PREDECESSOR,tree='f'*40)))
+        (root/'fetch').write_bytes(m.stage_wrapper_bytes(old,'fetch'))
+        _,new=self.installed_layout()
+        before=(root/'fetch').read_bytes()
+        with patch.object(m,'verify_source_identity') as verify_identity,patch.object(m,'git',side_effect=AssertionError('network forbidden')),self.assertRaisesRegex(ValueError,'unknown-install-predecessor'):
+            m.install('a'*40,'b'*40)
+        verify_identity.assert_not_called()
+        self.assertEqual((root/'fetch').read_bytes(),before)
+
     def test_unknown_old_stage_target_is_rejected(self):
         root,old=self.prior();(root/'parse').write_bytes(m.stage_wrapper_bytes(root/'sources'/('f'*40),'parse'))
         with patch.object(m,'verify_source') as verify,patch.object(m,'git',side_effect=AssertionError('network forbidden')),self.assertRaisesRegex(ValueError,'unknown-install-stage-wrapper'):m.install('a'*40,'b'*40)

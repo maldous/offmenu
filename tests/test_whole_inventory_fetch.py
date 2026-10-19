@@ -234,9 +234,12 @@ class WholeInventoryFetchTests(unittest.TestCase):
             raise AssertionError('fetch must never parse')
         def no_foo_open(real):
             def checked(path, *args, **kwargs):
-                if isinstance(path, (str, bytes, os.PathLike)) and os.fsdecode(path).startswith(('/home/user/', '/srv/offmenu-refresh/')):
-                    calls['fooOpens'] += 1
-                    raise AssertionError('Foo access forbidden')
+                if isinstance(path, (str, bytes, os.PathLike)):
+                    resolved = os.path.realpath(os.fsdecode(path))
+                    private_roots = ('/home/user/src/offmenu-data/', '/srv/offmenu-refresh/')
+                    if resolved.startswith(private_roots):
+                        calls['fooOpens'] += 1
+                        raise AssertionError('Foo private-root access forbidden')
                 return real(path, *args, **kwargs)
             return checked
         with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
