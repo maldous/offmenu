@@ -21,3 +21,7 @@ netlify-return/i18n.js
 .env.*
 .dev.vars
 .dev.vars.*
+
+# Sanitized coverage-register artifacts stay local; only their .gz companions are published.
+docs/coverage-register/*/*.json
+docs/coverage-register/*/*.jsonl

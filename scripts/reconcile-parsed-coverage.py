@@ -10,8 +10,10 @@ from __future__ import annotations
 
 import argparse
 import collections
+import contextlib
 import gzip
 import hashlib
+import itertools
 import importlib.util
 import json
 import os
@@ -40,6 +42,7 @@ CORPORA = (
     ('sweden-food-2026-07-01', 'food-composition', 'sweden-food', '2026-07-01', None),
     ('foodfiles-2024-v01', 'food-composition', 'foodfiles', '2024-v01', None),
     ('world-recipes-global-20261014', 'recipes', 'world-recipes', 'world-recipes-global-20261014', None),
+    ('prices-2026-10-12', 'price-observations', 'prices', '2026-10-12', None),
 )
 LOCAL_PATH_RE = re.compile(r'(?:(?<![A-Za-z0-9+.-])(?:/home/|/srv/|/workspace/)[^\s\"\']+)')
 VALID_ISO2 = re.compile(r'^[A-Z]{2}$')
@@ -110,7 +113,37 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
         raise ValueError(f'{dirname}: manifest source/release mismatch')
     if manifest.get('status') != 'normalized':
         raise ValueError(f'{dirname}: output is not marked normalized')
-    output_sha = sha256_file(output_path)
+    output_parts: list[dict] = []
+    if output_path.is_file():
+        output_paths = [output_path]
+        output_sha = sha256_file(output_path)
+        output_bytes = output_path.stat().st_size
+    else:
+        partitions = manifest.get('partitions')
+        if not isinstance(partitions, list) or not partitions:
+            raise FileNotFoundError(output_path)
+        output_paths = []
+        combined_sha = hashlib.sha256()
+        output_bytes = 0
+        for part in partitions:
+            key = part.get('key') if isinstance(part, dict) else None
+            if not isinstance(key, str) or Path(key).name != key or not key.endswith('.jsonl.gz'):
+                raise ValueError(f'{dirname}: invalid normalized partition key')
+            part_path = corpus_dir / key
+            part_bytes = part_path.stat().st_size
+            expected_bytes = part.get('bytes')
+            if expected_bytes is not None and part_bytes != expected_bytes:
+                raise ValueError(f'{dirname}/{key}: partition byte count mismatch')
+            actual_sha = sha256_file(part_path)
+            if actual_sha != part.get('sha256'):
+                raise ValueError(f'{dirname}/{key}: partition checksum mismatch')
+            with part_path.open('rb') as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b''):
+                    combined_sha.update(chunk)
+            output_paths.append(part_path)
+            output_bytes += part_bytes
+            output_parts.append({'key': key, 'sha256': actual_sha, 'bytes': part_bytes, 'status': 'verified'})
+        output_sha = combined_sha.hexdigest()
     records_by_origin: dict[tuple[str, str], list[dict]] = collections.defaultdict(list)
     seen_ids: set[str] = set()
     record_count = 0
@@ -137,8 +170,9 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
     elif source_files is not None:
         raise ValueError(f'{dirname}: sourceFiles must be an array when present')
 
-    with gzip.open(output_path, 'rt', encoding='utf-8') as stream:
-        for line_number, line in enumerate(stream, 1):
+    with contextlib.ExitStack() as stack:
+        streams = [stack.enter_context(gzip.open(path, 'rt', encoding='utf-8')) for path in output_paths]
+        for line_number, line in enumerate(itertools.chain.from_iterable(streams), 1):
             try:
                 rows = record_list(json.loads(line))
             except Exception as exc:
@@ -168,7 +202,7 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
                     eligible_types = ['food_composition']
                     if data.get('foodName') and data.get('identifiers'):
                         eligible_types.append('food_identity')
-                else:
+                elif family == 'recipes':
                     if record.get('kind') != 'recipe':
                         raise ValueError(f'{dirname}: unexpected recipe record kind for {rid}')
                     # Only explicit country codes that agree with the source's
@@ -178,6 +212,17 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
                         explicit_countries = []
                         bad_country_records += 1
                     eligible_types = ['recipes']
+                elif family == 'price-observations':
+                    if record.get('kind') != 'priceObservation':
+                        raise ValueError(f'{dirname}: unexpected price-observation record kind for {rid}')
+                    if (not isinstance(data.get('amount'), (int, float)) or isinstance(data.get('amount'), bool)
+                            or not isinstance(data.get('currency'), str) or not data.get('currency')
+                            or not isinstance(data.get('observedAt'), str) or not data.get('observedAt')):
+                        missing_identity_records += 1
+                        continue
+                    eligible_types = ['retailers_prices']
+                else:
+                    raise ValueError(f'{dirname}: unsupported corpus family {family!r}')
                 url = provenance.get('url')
                 if isinstance(url, str) and url.startswith(('http://', 'https://')):
                     urls.add(url)
@@ -204,7 +249,7 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
     return {
         'directory': dirname, 'family': family, 'sourceId': source_id, 'releaseId': release_id,
         'manifest': manifest, 'manifestSHA256': hashlib.sha256(manifest_bytes).hexdigest(),
-        'outputSHA256': output_sha, 'outputBytes': output_path.stat().st_size,
+        'outputSHA256': output_sha, 'outputBytes': output_bytes, 'outputParts': output_parts,
         'recordCount': record_count, 'recordIds': sorted(seen_ids),
         'countries': sorted({origin for origin, _ in records_by_origin}),
         'recordLinks': records_by_origin, 'sourceURLs': sorted(urls),
@@ -242,9 +287,12 @@ def apply(report: dict, datasets: list[dict]) -> dict:
             row['parsedRecordIds'].sort()
             row['parseStatus'] = 'parsed-usable'
             row.setdefault('evidence', {}).setdefault('parsedOutputs', []).append(asset_id)
-            row['evidence']['explicitRecordCountryEvidence'] = ('source record countries[]; recipe origin also agrees with sourceCuisineCountry'
-                                                                  if dataset['family'] == 'recipes'
-                                                                  else 'source record countries[] from the national composition reference; this is availability/reference scope, not food origin')
+            row['evidence']['explicitRecordCountryEvidence'] = (
+                'source record countries[]; recipe origin also agrees with sourceCuisineCountry'
+                if dataset['family'] == 'recipes' else
+                'source record countries[] on an observed retail price; scope is the observation location, not food origin'
+                if dataset['family'] == 'price-observations' else
+                'source record countries[] from the national composition reference; this is availability/reference scope, not food origin')
             row['sources']['parsedOutputAssetIds'] = sorted(set(row['sources'].get('parsedOutputAssetIds', [])) | {asset_id})
             row['sources']['allSourceAssetIds'] = sorted(set(row['sources'].get('allSourceAssetIds', [])) | {asset_id})
             row['status'], row['statusBasis'] = builder.cell_status(row)
@@ -286,7 +334,7 @@ def apply(report: dict, datasets: list[dict]) -> dict:
                          'recordCitationEvidence': 'Each linked record retains its own provenance URL, release ID, license and attribution in the existing private-local corpus.'},
             'sourceURLs': output_url,
             'assetIdentity': {'publisherSourceIds': [dataset['sourceId']], 'releaseKeys': [dataset['releaseId']],
-                              'requestVariants': [], 'contentHashes': sorted({dataset['outputSHA256'], *[x['sha256'] for x in dataset['sourceFiles'] if x.get('sha256')]}),
+                              'requestVariants': [], 'contentHashes': sorted({dataset['outputSHA256'], *[x['sha256'] for x in dataset['sourceFiles'] if x.get('sha256')], *[x['sha256'] for x in dataset['outputParts']]}),
                               'identityCaveat': 'Exact release and output digest are recorded; source-file hashes are included where source manifest and local bytes were verified.'},
             'release': [{'releaseId': dataset['releaseId'], 'sourceId': dataset['sourceId']}],
             'format': ['gzip-compressed JSON Lines'],
@@ -311,8 +359,11 @@ def apply(report: dict, datasets: list[dict]) -> dict:
                          'memberSourceAssetIds': member_ids, 'recordCitationCount': unique_citation_count,
                          'countryAssignmentPolicy': ('Only top-level countries[] that agrees with data.sourceCuisineCountry is linked; absent country remains unknown.'
                                                      if dataset['family'] == 'recipes' else
+                                                     'Only explicit top-level countries[] on price observations is linked; this identifies the observation market, not the origin of the food.'
+                                                     if dataset['family'] == 'price-observations' else
                                                      'Only the source record countries[] field is linked; country is reference availability, not ingredient origin.'),
-                         'sourceFileSHA256s': dataset['sourceFiles']},
+                         'sourceFileSHA256s': dataset['sourceFiles'],
+                         'normalizedOutputPartSHA256s': dataset['outputParts']},
             'gaps': ['This release is a verified parse output, not proof of all applicable sources, country-origin evidence, normalized semantics or complete product coverage.'],
             'nextAction': 'Review source applicability, permissions, other required datasets and product-specific acceptance; do not infer country scope beyond explicit record fields.',
             'parsedRecordCount': dataset['recordCount'], 'parsedOutputRecordCitations': source_citations,
@@ -350,6 +401,7 @@ def apply(report: dict, datasets: list[dict]) -> dict:
     existing_counts['sourceFilesIndependentlyVerified'] = sum(d['verifiedSourceFileCount'] for d in datasets)
     existing_counts['sourceFileChecksumMismatches'] = sum(len(d['sourceFileMismatches']) for d in datasets)
     existing_counts['sourceFilesUnavailable'] = sum(len(d['sourceFilesUnavailable']) for d in datasets)
+    existing_counts['normalizedOutputPartsIndependentlyVerified'] = sum(len(d['outputParts']) for d in datasets)
     existing_counts['uniqueSourceURLs'] = len({url for a in report['assets'] for url in a.get('sourceURLs', [])})
     counts_by_status = collections.Counter(a['sourceStatus'] for a in report['assets'])
     existing_counts['assetsByStatus'] = dict(sorted(counts_by_status.items()))
@@ -361,16 +413,16 @@ def apply(report: dict, datasets: list[dict]) -> dict:
         entry['complete'] = 0
     report['sourceParseReconciliation'] = {
         'schemaVersion': 'offmenu-source-parse-reconciliation/1',
-        'uniqueParsedOutputReleases': [{k: d[k] for k in ['directory', 'sourceId', 'releaseId', 'recordCount', 'manifestSHA256', 'outputSHA256', 'outputBytes', 'countries', 'manifestOriginalInputVerification', 'verifiedSourceFileCount', 'sourceFileCount', 'badCountryRecords', 'missingIdentityRecords']} for d in datasets],
-        'integrityPolicy': 'Each normalized gzip JSONL was fully decompressed and every record JSON/provenance/release/unique ID checked; declared original source-file hashes were rechecked where manifest entries and local inputs were available.',
-        'geographicPolicy': 'No record was assigned to GLOBAL or a country from collection name, URL host, publisher location or absent country metadata. Country links use explicit per-record ISO codes; recipe country scope must also equal sourceCuisineCountry.',
+        'uniqueParsedOutputReleases': [{k: d[k] for k in ['directory', 'sourceId', 'releaseId', 'recordCount', 'manifestSHA256', 'outputSHA256', 'outputBytes', 'outputParts', 'countries', 'manifestOriginalInputVerification', 'verifiedSourceFileCount', 'sourceFileCount', 'badCountryRecords', 'missingIdentityRecords']} for d in datasets],
+        'integrityPolicy': 'Each normalized gzip JSONL or partitioned gzip JSONL release was fully decompressed and every record JSON/provenance/release/unique ID checked; declared source-file and partition hashes were rechecked where manifest entries and local inputs were available.',
+        'geographicPolicy': 'No record was assigned to GLOBAL or a country from collection name, URL host, publisher location or absent country metadata. Country links use explicit per-record ISO codes; recipe country scope must also equal sourceCuisineCountry, and price records establish observation market rather than food origin.',
         'rawOriginalsPublished': False, 'normalizedBodiesPublished': False, 'networkRequests': 0,
     }
     report['status'] = '250x13-matrix-complete-local-parsed-evidence-reconciled-coverage-partial'
     report['limitations'] = list(report.get('limitations', [])) + [
         'This reconciliation reuses existing local normalized release outputs; it performs no network acquisition and does not prove currentness or legal reuse beyond the retained manifests.',
-        'Only explicit record country evidence is linked. National composition country codes describe reference-table scope, not the origin of each food.',
-        'Recipes without explicit source country metadata remain unassigned; no global or country fan-out is inferred.',
+        'Only explicit record country evidence is linked. National composition country codes describe reference-table scope, price-observation country codes describe market location, and neither describes the origin of each food.',
+        'Recipes without explicit source country metadata remain unassigned; no global or country fan-out is inferred. Price observations are linked only to the explicit location-country scope of each observation.',
         'Source coverage is partial; unsupported required information types and countries remain discovery gaps. No origin/type entry is claimed complete.',
         'Private original paths, normalized corpus paths and raw source bodies are omitted from this sanitized register.',
     ]
