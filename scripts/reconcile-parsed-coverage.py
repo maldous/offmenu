@@ -219,6 +219,7 @@ def inspect_corpus(entry: tuple[str, str, str, str, str | None], countries: set[
 
 
 def apply(report: dict, datasets: list[dict]) -> dict:
+    builder = load_builder()
     cells = {(row['origin'], row['type']): row for row in report['coverage']}
     assets = {row['assetId']: row for row in report['assets']}
     by_type: dict[str, set[str]] = collections.defaultdict(set)
@@ -246,6 +247,7 @@ def apply(report: dict, datasets: list[dict]) -> dict:
                                                                   else 'source record countries[] from the national composition reference; this is availability/reference scope, not food origin')
             row['sources']['parsedOutputAssetIds'] = sorted(set(row['sources'].get('parsedOutputAssetIds', [])) | {asset_id})
             row['sources']['allSourceAssetIds'] = sorted(set(row['sources'].get('allSourceAssetIds', [])) | {asset_id})
+            row['status'], row['statusBasis'] = builder.cell_status(row)
             if asset_id not in row['sources']['boundAssetIds']:
                 row['sources'].setdefault('parsedOutputAssetIds', [])
             row['gaps'] = [gap for gap in row.get('gaps', []) if 'actual parsed records' not in gap]
@@ -340,6 +342,8 @@ def apply(report: dict, datasets: list[dict]) -> dict:
     existing_counts['uniqueAssetsNewlyDownloaded'] = 0
     existing_counts['uniqueParsedRecordLinks'] = distinct_record_links
     existing_counts['entriesWithParsedRecords'] = sum(bool(row['parsedRecordIds']) for row in report['coverage'])
+    existing_counts['entriesWithKnownStatus'] = sum(row.get('status') in builder.KNOWN_CELL_STATUSES for row in report['coverage'])
+    existing_counts['entriesByStatus'] = dict(sorted(collections.Counter(row['status'] for row in report['coverage']).items()))
     existing_counts['entriesComplete'] = 0
     existing_counts['manyToManyCoverageLinks'] = sum(len(a.get('coverageLinks') or []) for a in report['assets'])
     existing_counts['parsedOutputAssets'] = len(datasets)
@@ -401,6 +405,9 @@ def main(argv=None) -> int:
     for dataset in datasets: dataset['assetHashIndex'] = hash_index
     report = apply(report, datasets)
     builder.validate(report)
+    report['counts']['entriesWithKnownStatus'] = sum(row.get('status') in builder.KNOWN_CELL_STATUSES for row in report['coverage'])
+    report['counts']['entriesByStatus'] = dict(sorted(collections.Counter(row['status'] for row in report['coverage']).items()))
+    builder.validate(report)
     verify_no_private_paths(report)
     # Stable and independently consumable sanitized outputs.
     out = args.output_dir
@@ -409,6 +416,11 @@ def main(argv=None) -> int:
     (out / 'origin-type-coverage.jsonl').write_text(''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in report['coverage']), encoding='utf-8')
     (out / 'unique-assets.jsonl').write_text(''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in report['assets']), encoding='utf-8')
     (out / 'source-blockers.jsonl').write_text(''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in report['blockers']), encoding='utf-8')
+    # The publisher transfers bounded gzip derivatives. Regenerate them from the
+    # exact sanitized outputs so the compressed bundle cannot lag the JSONL/JSON.
+    for name in ('coverage-register.json', 'origin-type-coverage.jsonl', 'unique-assets.jsonl', 'source-blockers.jsonl'):
+        raw = (out / name).read_bytes()
+        (out / (name + '.gz')).write_bytes(gzip.compress(raw, compresslevel=9, mtime=0))
     result = {'status': report['status'], 'counts': report['counts'], 'coverageByType': report['coverageByType'],
               'files': {p.name: {'bytes': p.stat().st_size, 'sha256': sha256_file(p)} for p in sorted(out.iterdir()) if p.is_file()}}
     print(json.dumps(result, ensure_ascii=False, sort_keys=True))

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import collections
 import gzip
 import hashlib
 import json
@@ -112,8 +113,16 @@ def validate_bundle(files: list[tuple[str, bytes]]) -> None:
     except (KeyError, OSError, EOFError, ValueError, json.JSONDecodeError) as exc:
         raise PublishError("artifact-bundle-invalid") from exc
     counts = report.get("counts", {})
+    coverage_statuses = {"parsed-evidence-partial", "explicit-type-binding-no-records",
+                         "registered-source-evidence-unbound", "discovery-candidates-plus-unresolved-references",
+                         "discovery-candidates-unbound", "unresolved-source-references",
+                         "no-candidate-in-reconciled-inputs"}
+    status_counts = collections.Counter(row.get("status") for row in rows["coverage"])
     if (len(report.get("origins", {})) != 250 or len(report.get("types", [])) != 13
             or len(report.get("coverage", [])) != 3250 or counts.get("originTypeEntries") != 3250
+            or counts.get("entriesWithKnownStatus") != 3250 or counts.get("entriesByStatus") != dict(sorted(status_counts.items()))
+            or sum(status_counts.values()) != 3250 or set(status_counts) - coverage_statuses
+            or any(not isinstance(row.get("statusBasis"), str) or not row["statusBasis"] for row in rows["coverage"])
             or counts.get("entriesComplete") != 0 or len(rows["assets"]) != 6068
             or counts.get("uniqueParsedRecordLinks") != 73985):
         raise PublishError("artifact-contract-invalid")

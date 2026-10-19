@@ -13,6 +13,7 @@ The offline builder and `scripts/reconcile-parsed-coverage.py` reconcile 12 alre
 - Required matrix: 250 origin scopes (GLOBAL + 249 countries) × 13 taxonomy types = 3,250 cells.
 - Unique discovery/parsed-output asset records: 6,068; parsed release outputs: 12; reused and verified local outputs: 12; new downloads: 0; fetches in this reconciliation: 0.
 - 73,985 actual record-to-cell links over 508 asset-to-cell links; 148 cells have some parsed record evidence; 0 cells are complete.
+- Every cell now has an explicit evidence-derived `status` and `statusBasis`: 3,250/3,250 known-status rows comprise 148 `parsed-evidence-partial`, 133 `explicit-type-binding-no-records`, 659 `discovery-candidates-unbound`, and 2,310 `no-candidate-in-reconciled-inputs`. The last class means only that no candidate appears in the reconciled inputs; it does not assert no source exists. The taxonomy has seven possible statuses, and the unresolved/reference variants remain available as evidence changes.
 - 63 declared original files independently verified; 0 source-file hash mismatches; 0 unavailable among declared files. Parsed output files and manifests were also hash-pinned.
 - National food-composition records are linked only to the explicit country codes in their records, as availability of a national reference—not as the origin of each food. Recipe links require the explicit country list to agree with the source cuisine-country field. No absent/global field is fanned out to any country.
 - Ingredient identity is represented separately from food composition and recipe ingredient expressions. No claim is made that recipe strings are canonical ingredient identifiers. The other ten taxonomy types remain independent requirements.
@@ -26,7 +27,7 @@ Release-level identities require source ID + exact release ID + normalized-outpu
 | `unique-assets.jsonl` | 17,673,715 | `46877de12b20bdd99badd8d97bf87be035dd8414747ef57d436817344109b3e7` |
 | `source-blockers.jsonl` | 9,636,860 | `2a3bdf729fa1b2dbeef8341c0f0092af63dca7f8ee8c14ded2bd23f180ff5bbb` |
 
-The register is structurally valid under `build-origin-type-register.py`; recursive sanitization plus explicit filesystem-path scans passed, while legitimate URLs containing `/home/` remain URLs. Raw records, local original paths and normalized corpus bodies are not included. Deterministic `.gz` companions are included; the four compressed files total about 4.0 MiB and each decompresses byte-for-byte to its corresponding sanitized artifact. The compressed set is used for publication to fit within the existing 8 MiB publisher budget (compressed artifacts plus checkpoint: about 4.16 MB).
+The register is structurally valid under `build-origin-type-register.py`; recursive sanitization plus explicit filesystem-path scans passed, while legitimate URLs containing `/home/` remain URLs. Raw records, local original paths and normalized corpus bodies are not included. Deterministic `.gz` companions are included; the four compressed files total about 4.0 MiB and each decompresses byte-for-byte to its corresponding sanitized artifact. The compressed set is used for publication to fit within the existing 8 MiB publisher budget (compressed artifacts plus checkpoint: about 4.2 MB).
 
 ## Tests and repeatability
 
@@ -35,6 +36,8 @@ At the source checkout, these passed:
 - `python3 -m unittest discover -s tests -p 'test_fetch_coverage.py' -v` — 31 tests.
 - `python3 -m unittest discover -s tests -p 'test_global_coverage.py' -v` — 7 tests.
 - `build-origin-type-register.py` validator accepted the reconciled register.
+- `python3 -m unittest discover -s tests -p 'test_origin_type_status.py' -v` — 8 tests for all status classes and their evidence basis.
+- Publisher bundle validation requires all 3,250 cells to carry an allowed status and basis and reconciles the status histogram.
 
 Before generating a fresh deterministic report, rerun `python3 scripts/reconcile-parsed-coverage.py` with `OFFMENU_DATA_ROOT` set to the private Foo data root if needed, then validate path sanitization and hashes again.
 
@@ -52,4 +55,4 @@ Dependency-ready work after that owner action: inventory successor work against 
 
 ## Publication
 
-The existing `publish-manual-global-result.py` route is pinned to the earlier 2026-10-18 owner-manual handoff and rejects arbitrary envelopes. That handoff explicitly leaves a separate reviewed publication implementation pending; it is not authorized to bypass the signed envelope with direct GitHub blob/commit mutations. The private target `maldous/offmenu` was verified private with push permission, and its existing publication branch is fast-forward from the pinned anchor, but this is not authorization for an unrelated write. The compressed sanitized artifacts plus checkpoint total about 4.16 MB. They were published with the three reconciliation scripts to the verified private handoff branch at commit `c51234373964857668661e21738c98781ea3f9c4`; all eight files were read back from GitHub and matched their expected Git blob SHA-1 and SHA-256. The raw source bodies, normalized corpora and private logs remain on Foo; only sanitized register artifacts and metadata were published.
+The existing `publish-manual-global-result.py` route is pinned to the earlier 2026-10-18 owner-manual handoff and rejects arbitrary envelopes. That handoff explicitly leaves a separate reviewed publication implementation pending; it is not authorized to bypass the signed envelope with direct GitHub blob/commit mutations. The private target `maldous/offmenu` was verified private with push permission, and its existing publication branch is fast-forward from the pinned anchor, but this is not authorization for an unrelated write. The compressed sanitized artifacts plus checkpoint total about 4.16 MB. They were published with the three reconciliation scripts to the verified private handoff branch at commit `80e699a8cfa48bf101bc8e06b73562e9b7ef90e7`; all eight files were read back from GitHub and matched their expected Git blob SHA-1 and SHA-256. This historical publication predates the explicit cell-status fields; publish the updated status-bearing bundle through the same pinned publisher after its validation passes. The raw source bodies, normalized corpora and private logs remain on Foo; only sanitized register artifacts and metadata were published.

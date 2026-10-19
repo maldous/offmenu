@@ -37,6 +37,49 @@ TYPE_TERMS = {
     "health_integrations": ("health integration", "health data", "health survey", "health and nutrition", "clinical", "micronutrient", "nutrition survey"),
     "locale_accessibility": ("locale", "accessibility", "language", "localization", "translation", "regional terminology"),
 }
+KNOWN_CELL_STATUSES = {
+    "parsed-evidence-partial",
+    "explicit-type-binding-no-records",
+    "registered-source-evidence-unbound",
+    "discovery-candidates-plus-unresolved-references",
+    "discovery-candidates-unbound",
+    "unresolved-source-references",
+    "no-candidate-in-reconciled-inputs",
+}
+
+STATUS_BASIS = {
+    "parsed-evidence-partial": "One or more validated source-faithful parsed record IDs are linked; this is partial evidence, never a completeness claim.",
+    "explicit-type-binding-no-records": "A pinned origin/type binding is present, but no usable parsed record IDs are currently linked.",
+    "registered-source-evidence-unbound": "A source reference is registered for the cell, but no parsed records establish usable coverage.",
+    "discovery-candidates-plus-unresolved-references": "Research candidates and unresolved source references both exist; neither establishes applicability or parsed coverage.",
+    "discovery-candidates-unbound": "One or more research/ledger candidates exist, but no explicit binding or usable parsed record is established.",
+    "unresolved-source-references": "The pinned matrix has source references that do not resolve in the reconciled asset register; identity and applicability remain unknown.",
+    "no-candidate-in-reconciled-inputs": "No candidate or resolvable source reference occurs in the reconciled inputs; discovery is still required and this is not proof that no source exists.",
+}
+
+
+def cell_status(row: dict) -> tuple[str, str]:
+    """Return a conservative, explicit status derived only from recorded evidence."""
+    if row.get("parsedRecordIds"):
+        status = "parsed-evidence-partial"
+    else:
+        sources = row.get("sources") or {}
+        evidence = row.get("evidence") or {}
+        if evidence.get("exactTypeBindings"):
+            status = "explicit-type-binding-no-records"
+        elif sources.get("boundAssetIds"):
+            status = "registered-source-evidence-unbound"
+        elif sources.get("candidateAssetIds") and sources.get("unresolvedAssetReferences"):
+            status = "discovery-candidates-plus-unresolved-references"
+        elif sources.get("candidateAssetIds"):
+            status = "discovery-candidates-unbound"
+        elif sources.get("unresolvedAssetReferences"):
+            status = "unresolved-source-references"
+        else:
+            status = "no-candidate-in-reconciled-inputs"
+    return status, STATUS_BASIS[status]
+
+
 CATEGORY_TERMS = {
     "food_composition": ("food composition", "nutrition", "nutrient", "composition table", "food table", "food databases"),
     "food_identity": ("product identity", "product", "barcode", "identifier", "food identity", "plu"),
@@ -260,7 +303,7 @@ def build():
             unresolved_refs = sorted(set(bound_ids) - set(asset_index))
             known_assets = {aid for aid in bound_ids if aid in asset_index}
             row_bound_ids = sorted(known_assets)
-            cell_rows.append({
+            cell_row = {
                 "origin": origin, "type": kind, "requirementId": f"{origin}/{kind}",
                 "sources": {"boundAssetIds": row_bound_ids, "unresolvedAssetReferences": unresolved_refs, "candidateAssetIds": candidates, "allSourceAssetIds": sorted(known_assets | set(candidates)), "sourceURLs": sorted({url for aid in known_assets | set(candidates) for url in asset_index.get(aid, {}).get("sourceURLs", [])}), "sharedSourceAssetIds": sorted(aid for aid in candidates if asset_index.get(aid, {}).get("scope") == "global-shared-candidate")},
                 "discoveryStatus": "identified-candidates" if candidates else ("identified-bound" if bound_ids else "discovery-required"),
@@ -269,8 +312,10 @@ def build():
                 "parsedRecordIds": [], "applicability": "unresolved" if origin == "GLOBAL" else (baseline.get("retainedStatus", "unknown") if baseline else "unknown"),
                 "evidence": {"baselineCell": baseline, "exactTypeBindings": exact, "discoveryLeads": leads[:60], "discoveryLeadCount": len(leads), "leadsTruncated": len(leads) > 60, "coverageNotInferred": True},
                 "gaps": (["No reviewed source candidate is bound to this origin/type."] if not candidates and not bound_ids else []) + (["Applicable content, release scope, rights, and actual parsed records have not been established by the inventory projection."] if not exact else []),
-                "nextActions": ["Verify the candidate's type and described countries/markets against publisher release documentation; reject URL-hosting-country inference.", "Resolve actual files, bulk exports or permitted API routes; record request parameters, release and every relevant mirror without conflating releases.", "Establish the applicable access/licence conditions and required attribution; implement the bounded acquisition contract without clearing existing holds.", "Fetch the authorized unique release (complete pagination/multipart; reuse only verified originals), hash-verify the local original, then parse source-faithful records and link their IDs/citations here."],
-            })
+                "nextActions": ["Verify the candidate's type and described countries/markets against publisher release documentation; reject URL-hosting-country inference.", "Resolve actual files, bulk exports or permitted API routes; record request parameters, release and every relevant mirror without conflating releases.", "Establish the applicable access/licence conditions and required attribution; implement the bounded fetch contract without clearing existing holds.", "Fetch the authorized unique release (complete pagination/multipart; reuse only verified originals), hash-verify the local original, then parse source-faithful records and link their IDs/citations here."],
+            }
+            cell_row["status"], cell_row["statusBasis"] = cell_status(cell_row)
+            cell_rows.append(cell_row)
     # Asset inverse links are generated from all manifest evidence-backed bindings
     # and baseline cells, with GLOBAL omitted unless a record explicitly binds it.
     for row in asset_rows:
@@ -296,7 +341,8 @@ def build():
         "sourcePins": {str(path.relative_to(ROOT)): {"sha256": digest(raw), "bytes": len(raw)} for path, raw in ((MANIFEST, manifest_raw), (COUNTRY_REGISTER, matrix_raw), (DELIVERY_LEDGER, ledger_raw), (ENRICHMENT_REGISTER, research_raw))},
         "requirements": {"origins": 250, "countryOrigins": 249, "globalScopes": 1, "globalIsSharedNotCountry": True, "types": types, "typeCount": len(types), "requiredEntries": 3250, "coverageDefinition": "A covered entry requires at least one applicable, cited source asset and actual source-faithful parsed record IDs, with scope and rights established. URL presence, landing-page access, source binding, retained metadata, or parse-ready status alone do not satisfy it."},
         "status": "complete-matrix-discovery-incomplete-coverage-not-established",
-        "counts": {"originTypeEntries": len(cell_rows), "entriesByDiscoveryStatus": dict(sorted(cell_counts.items())), "entriesWithEvidenceBoundAssets": sum(bool(r["sources"]["boundAssetIds"]) for r in cell_rows), "entriesWithDiscoveryCandidates": sum(bool(r["sources"]["candidateAssetIds"]) for r in cell_rows), "entriesWithParsedRecords": sum(bool(r["parsedRecordIds"]) for r in cell_rows), "entriesComplete": 0, "uniqueAssetsInRegister": len(asset_rows), "assetsByStatus": dict(sorted(asset_counts.items())), "uniqueAssetsFetchedAndVerified": 0, "uniqueAssetsReusedAndVerified": 0, "uniqueAssetsParsedWithUsableRecords": 0, "uniqueAssetsFailed": sum(a.get("disposition") == "held" for a in asset_rows), "uniqueAssetsExternallyBlocked": sum(a["sourceStatus"] == "externally-restricted" for a in asset_rows), "uniqueSourceURLs": len({url for a in asset_rows for url in a["sourceURLs"]}), "manyToManyCoverageLinks": sum(len(a["coverageLinks"]) for a in asset_rows), "distinctAssetIdentityPolicy": "runtime asset IDs remain separate releases; registry URL aliases are preserved, not collapsed by URL or hostname"},
+        "cellStatusVocabulary": [{"status": key, "meaning": STATUS_BASIS[key]} for key in sorted(KNOWN_CELL_STATUSES)],
+        "counts": {"originTypeEntries": len(cell_rows), "entriesWithKnownStatus": len(cell_rows), "entriesByStatus": dict(sorted(collections.Counter(r["status"] for r in cell_rows).items())), "entriesByDiscoveryStatus": dict(sorted(cell_counts.items())), "entriesWithEvidenceBoundAssets": sum(bool(r["sources"]["boundAssetIds"]) for r in cell_rows), "entriesWithDiscoveryCandidates": sum(bool(r["sources"]["candidateAssetIds"]) for r in cell_rows), "entriesWithParsedRecords": sum(bool(r["parsedRecordIds"]) for r in cell_rows), "entriesComplete": 0, "uniqueAssetsInRegister": len(asset_rows), "assetsByStatus": dict(sorted(asset_counts.items())), "uniqueAssetsFetchedAndVerified": 0, "uniqueAssetsReusedAndVerified": 0, "uniqueAssetsParsedWithUsableRecords": 0, "uniqueAssetsFailed": sum(a.get("disposition") == "held" for a in asset_rows), "uniqueAssetsExternallyBlocked": sum(a["sourceStatus"] == "externally-restricted" for a in asset_rows), "uniqueSourceURLs": len({url for a in asset_rows for url in a["sourceURLs"]}), "manyToManyCoverageLinks": sum(len(a["coverageLinks"]) for a in asset_rows), "distinctAssetIdentityPolicy": "runtime asset IDs remain separate releases; registry URL aliases are preserved, not collapsed by URL or hostname"},
         "coverageByType": {kind: {"entries": type_counts[kind], "entriesWithBoundAssets": sum(r["type"] == kind and bool(r["sources"]["boundAssetIds"]) for r in cell_rows), "entriesWithCandidates": sum(r["type"] == kind and bool(r["sources"]["candidateAssetIds"]) for r in cell_rows), "entriesWithParsedRecords": 0, "complete": 0} for kind in types},
         "origins": origins,
         "types": [{"type": kind, "discoveryTerms": list(TYPE_TERMS[kind])} for kind in types],
@@ -311,6 +357,9 @@ def build():
 
 def validate(report: dict, manifest: dict | None = None):
     origins, types, rows, assets = report["origins"], report["requirements"]["types"], report["coverage"], report["assets"]
+    expected_vocabulary = [{"status": key, "meaning": STATUS_BASIS[key]} for key in sorted(KNOWN_CELL_STATUSES)]
+    if report.get("cellStatusVocabulary") != expected_vocabulary:
+        raise ValueError("cell status vocabulary invalid")
     if len(origins) != 250 or "GLOBAL" not in origins or origins["GLOBAL"]["scope"] != "shared": raise ValueError("origin matrix invalid")
     expected = {(origin, kind) for origin in origins for kind in types}
     actual = [(row["origin"], row["type"]) for row in rows]
@@ -319,6 +368,9 @@ def validate(report: dict, manifest: dict | None = None):
     if len(aids) != len(set(aids)): raise ValueError("asset IDs not unique")
     by_id = {a["assetId"]: a for a in assets}
     for row in rows:
+        status, basis = cell_status(row)
+        if row.get("status") != status or row.get("statusBasis") != basis or status not in KNOWN_CELL_STATUSES:
+            raise ValueError("cell status/evidence mismatch")
         for aid in row["sources"]["allSourceAssetIds"]:
             if aid not in by_id: raise ValueError(f"unknown linked asset {aid}")
         if row["origin"] == "GLOBAL" and row["sources"]["sharedSourceAssetIds"]:
@@ -328,7 +380,10 @@ def validate(report: dict, manifest: dict | None = None):
     for asset in assets:
         if not set(asset["coverageLinks"]) <= {f"{o}/{t}" for o, t in expected}: raise ValueError("unknown inverse coverage link")
         if asset["scope"] == "global-shared-candidate" and asset["countryFanoutAllowed"] is not False: raise ValueError("global fanout invalid")
-    if report["counts"]["originTypeEntries"] != len(rows) or report["counts"]["uniqueAssetsInRegister"] != len(assets): raise ValueError("reported count mismatch")
+    if (report["counts"]["originTypeEntries"] != len(rows) or report["counts"]["uniqueAssetsInRegister"] != len(assets)
+            or report["counts"].get("entriesWithKnownStatus") != len(rows)
+            or report["counts"].get("entriesByStatus") != dict(sorted(collections.Counter(row["status"] for row in rows).items()))):
+        raise ValueError("reported count mismatch")
     if manifest and len(manifest["cells"]) != 3237: raise ValueError("baseline country matrix mismatch")
     return True
 
