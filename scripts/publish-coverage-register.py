@@ -152,11 +152,15 @@ def head() -> str:
 
 
 def verify_branch(current: str) -> None:
-    compared = gh("GET", f"repos/{REPOSITORY}/compare/{ANCHOR}...{current}")
-    if compared.get("status") not in {"ahead", "identical"}:
+    reviewed = gh("GET", f"repos/{REPOSITORY}/compare/{ANCHOR}...{current}")
+    if reviewed.get("status") not in {"ahead", "identical"}:
         raise PublishError("github-handoff-branch-unrelated")
-    if current != EXPECTED_BASE:
-        raise PublishError("github-handoff-branch-head-changed")
+    prior = gh("GET", f"repos/{REPOSITORY}/compare/{EXPECTED_BASE}...{current}")
+    if prior.get("status") not in {"ahead", "identical"}:
+        raise PublishError("github-handoff-branch-not-fast-forward")
+    merge_base = prior.get("merge_base_commit", {}).get("sha")
+    if merge_base != EXPECTED_BASE:
+        raise PublishError("github-handoff-branch-base-mismatch")
 
 
 def readback(path: str, expected: bytes, commit: str) -> bool:
