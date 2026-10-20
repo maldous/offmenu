@@ -38,6 +38,8 @@ DIAGNOSTICS = frozenset((
     'english-food-form-unresolved',
     'english-formulation-unresolved',
     'english-identity-unresolved',
+    'english-identity-state-inconsistent',
+    'english-relationship-unqualified',
     'english-literal-zero-inconsistent',
     'english-native-line-mismatch',
     'english-native-page-unresolved',
@@ -114,6 +116,14 @@ class ResolvedClaim:
 
 
 @dataclass(frozen=True)
+class ReviewedWitness:
+    """A reviewed resolver decision, never created from a sidecar's evidence."""
+    pin: dict
+    scope: dict
+    authority: str
+
+
+@dataclass(frozen=True)
 class EnglishPolicy:
     schema: dict
     schema_sha256: str
@@ -128,6 +138,7 @@ class EnglishPolicy:
     parser_version: str = 'offmenu-source-faithful-recipe-parser/1.3.2'
     transform_version: str = 'offmenu-assistant-intermediate-to-source-recipe/1.0.2'
     max_evidence_bytes: int = 8 * 1024 * 1024
+    review_authorities: frozenset = frozenset()
 
 
 class Resolver(Protocol):
@@ -148,6 +159,7 @@ class Resolver(Protocol):
     def subfield(self, record_id, field_pointer): ...
     def quantity(self, assertion_id): ...
     def decision(self, conflict_id): ...
+    def relationship(self, assertion_id): ...
 
 
 class _Check:
@@ -180,6 +192,28 @@ class _Check:
                 'english-source-operation-unqualified')
         require((contract.source_id, contract.release_id) == (source, release),
                 'english-source-contract-mismatch')
+
+    def reviewed(self, witness, expected, code):
+        require(isinstance(witness, ReviewedWitness)
+                and witness.authority in self.p.review_authorities, code)
+        require(strict_json(self.evidence(witness.pin)) == witness.scope
+                and witness.scope == {**expected, 'reviewAuthority': witness.authority}, code)
+
+    def claim_context(self, lexical_id, role):
+        resolved = self.r.claim(lexical_id)
+        data = self.claim(lexical_id, role, resolved)
+        return data, {'claimId': lexical_id, 'artifact': resolved.artifact,
+                      'recordPointer': resolved.record_pointer, 'line': resolved.line,
+                      'qualificationSha256': resolved.qualification['qualificationSha256'],
+                      'contractSha256': contract_fingerprint(resolved.contract),
+                      'dataSha256': fingerprint(data)}
+
+    def relationship(self, assertion, inp, kind, context):
+        self.reviewed(self.r.relationship(assertion['assertionId']),
+                      {'type': kind, 'assertionId': assertion['assertionId'],
+                       'assertionSha256': fingerprint(assertion), 'relation': assertion['relation'],
+                       'inputBinding': inp, 'decisionState': 'affirmed',
+                       'reviewStatus': 'reviewed', **context}, 'english-relationship-unqualified')
 
     def anchor(self, record, field):
         target = pointer(record, field['fieldPointer'])
@@ -331,16 +365,29 @@ class _Check:
                 require(isinstance(binding, dict) and strict_json(self.evidence(binding['pin'])) == binding['scope'], 'english-quantity-unqualified')
                 require(binding['scope'] == {'sourceRecordId': inp['sourceRecordId'], 'originalSHA256': inp['originalSHA256'], 'target': q['target'], **{k: q[k] for k in ('sourceValueState', 'normalizedValue', 'normalizedUnit', 'sourceBasis', 'normalizedBasis', 'comparison', 'boundValue', 'conversionKind', 'factorPin', 'basisPin')}}, 'english-quantity-binding-mismatch')
         for a in extension['ingredientIdentityAssertions']:
+            require((a['state'] == 'unresolved') == (a['relation'] == 'unresolved')
+                    and (a['ingredientIdentityClaimId'] is not None or a['state'] == 'unresolved'),
+                    'english-identity-state-inconsistent')
             if a['ingredientIdentityClaimId'] is not None:
-                ingredient = self.claim(a['ingredientIdentityClaimId'], 'ingredient-identity')
+                ingredient, ingredient_version = self.claim_context(a['ingredientIdentityClaimId'], 'ingredient-identity')
                 require(a['foodForm'] == ingredient['foodForm'], 'english-food-form-mismatch')
+                if a['state'] == 'reviewed':
+                    self.relationship(a, inp, 'native-ingredient-identity',
+                                      {'target': a['target'], 'ingredient': ingredient_version,
+                                       'foodForm': ingredient['foodForm']})
         for a in extension['variantAssertions']:
             for ref in a['sourceRecordRefs']:
                 if ref != inp['sourceRecordId']:
                     self.claim(ref, 'recipe-source-record', self.r.record(ref))
         for a in extension['productIngredientLinks']:
-            self.claim(a['productIdentityClaimId'], 'source-product-assignment')
-            self.claim(a['ingredientIdentityClaimId'], 'ingredient-identity')
+            product, product_version = self.claim_context(a['productIdentityClaimId'], 'source-product-assignment')
+            ingredient, ingredient_version = self.claim_context(a['ingredientIdentityClaimId'], 'ingredient-identity')
+            if a['state'] == 'reviewed':
+                self.relationship(a, inp, 'product-ingredient-relationship',
+                                  {'product': product_version, 'ingredient': ingredient_version,
+                                   'productContext': {k: product[k] for k in
+                                                      ('foodProduct', 'formulation', 'package', 'market', 'effectivePeriod')},
+                                   'foodForm': ingredient['foodForm']})
         for a in extension['usableAsAssertions']:
             if a['state'] == 'unresolved': continue  # Neither positive nor negative is inferred.
             product = self.claim(a['productIdentityClaimId'], 'source-product-assignment')
@@ -375,7 +422,18 @@ class _Check:
             require(set(c['competingAssertionIds']) <= set(ids), 'english-conflict-reference-unresolved')
             if c['decisionPin'] is not None:
                 decision = self.r.decision(c['conflictId'])
-                require(isinstance(decision, dict) and decision['pin'] == c['decisionPin'] and strict_json(self.evidence(decision['pin'])) == decision['scope'] and decision['scope'].get('competingAssertionIds') == c['competingAssertionIds'] and decision['scope'].get('sourceRecordId') == inp['sourceRecordId'] and decision['scope'].get('originalSHA256') == inp['originalSHA256'], 'english-conflict-decision-unqualified')
+                require(isinstance(decision, ReviewedWitness) and decision.pin == c['decisionPin'],
+                        'english-conflict-decision-unqualified')
+                versions = {a['assertionId']: fingerprint(a) for a in assertions}
+                self.reviewed(decision,
+                              {'type': 'conflict-resolution', 'conflictId': c['conflictId'],
+                               'conflictSha256': fingerprint({k: v for k, v in c.items() if k != 'decisionPin'}),
+                               'inputBinding': inp,
+                               'competingAssertions': [{'assertionId': key, 'sha256': versions[key]}
+                                                       for key in c['competingAssertionIds']],
+                               'decisionState': c['state'], 'reviewStatus': 'reviewed',
+                               'outcome': 'resolution-affirmed' if c['state'] == 'resolved' else 'unresolved-retained'},
+                              'english-conflict-decision-unqualified')
         return ()
 
 

@@ -7,8 +7,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from offmenu.refresh.acceptance import Asset, SourceContract, fingerprint, ids_digest, qualify
-from offmenu.refresh.english_extension import (EnglishPolicy, Grant, ResolvedClaim, EvidenceError,
+from offmenu.refresh.acceptance import Asset, SourceContract, fingerprint, contract_fingerprint, ids_digest, qualify
+from offmenu.refresh.english_extension import (EnglishPolicy, Grant, ResolvedClaim, ReviewedWitness, EvidenceError,
                                              pointer, semantic_validator, validate_extension)
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT.parent / 'synthetic-runs'
@@ -22,7 +22,7 @@ class Fixture:
     def __init__(self, root):
         self.root = root; self.blobs = {}; self.grants = {}; self.claims = {}
         self.roles = {}; self.uses = {}; self.quantities = {}; self.decisions = {}
-        self.records = {}; self.subfields = {}; self.bindings = {}
+        self.records = {}; self.subfields = {}; self.bindings = {}; self.relationships = {}
         self.text = '0 g 豆腐 é\n'
         raw = self.text.encode(); span = raw.rstrip(b'\n')
         self.loc = {'page': 1, 'lineStart': 1, 'lineEnd': 1, 'utf8ByteRange': [0, len(span)],
@@ -99,6 +99,7 @@ class Fixture:
     def subfield(self, record, path): return self.subfields.get((record, path))
     def quantity(self, identity): return self.quantities.get(identity)
     def decision(self, identity): return self.decisions.get(identity)
+    def relationship(self, identity): return self.relationships.get(identity)
     def bind_quantity(self, q):
         scope = {'sourceRecordId': 'native-recipe', 'originalSHA256': self.original.sha256, 'target': copy.deepcopy(q['target']), **{k: copy.deepcopy(q[k]) for k in ('sourceValueState','normalizedValue','normalizedUnit','sourceBasis','normalizedBasis','comparison','boundValue','conversionKind','factorPin','basisPin')}}
         self.quantities[q['assertionId']] = {'pin': self.pin('quantity-'+q['assertionId']+'.json', encode(scope)), 'scope': scope}
@@ -265,6 +266,125 @@ class EnglishExtensionTest(unittest.TestCase):
             return qualify(c,bundle,candidate,m,scratch_root=root)
         good=run();self.assertTrue(good['qualified'],good['errors']);self.assertTrue(good['fixture']);self.assertNotIn('accepted',good)
         f.ext['input']['sourceRecordId']='wrong';bad=run();self.assertFalse(bad['qualified']);self.assertIn('english-source-record-mismatch',bad['errors'])
+
+
+
+
+class ReviewedRelationshipTest(unittest.TestCase):
+    # Each new attack also traverses the existing real qualify boundary.
+    def setUp(self):
+        EnglishExtensionTest.setUp(self)
+        self.f.policy=replace(self.f.policy, review_authorities=frozenset(['synthetic-reviewer']))
+
+    def check(self, expected=()):
+        EnglishExtensionTest.check(self, expected)
+        f=self.f;root=Path(self.temp.name)
+        with tempfile.TemporaryDirectory(dir=root) as d:
+            d=Path(d);bundle=d/'inputs';bundle.mkdir()
+            for n,b in [('original.txt',f.text.encode()),('rights.json',b'{}'),('scope.json',b'{}')]: (bundle/n).write_bytes(b)
+            c=replace(f.original_contract, expected_ids_sha256=ids_digest(['r3']), semantic_validator=semantic_validator(f.policy,f))
+            row={'id':'r3','kind':'sourceAssertion','schemaVersion':'1.0','provenance':{'sourceId':'recipe-source','releaseId':'recipe-release','fetchedAt':c.acquired_at},'data':f.ext}
+            raw=encode([row])+b'\n';candidate=d/'candidate.jsonl';candidate.write_bytes(raw)
+            m={'sourceId':c.source_id,'releaseId':c.release_id,'acquiredAt':c.acquired_at,'normalizedRecords':1,'rightsEvidenceSha256':c.rights_evidence.sha256,'scopeEvidenceSha256':c.scope_evidence.sha256,'candidateBytes':len(raw),'candidateSha256':digest(raw),'inputFiles':[vars(a) for a in c.inputs]}
+            result=qualify(c,bundle,candidate,m,scratch_root=d)
+            self.assertEqual(result['qualified'], not bool(expected),result['errors'])
+            for code in expected:self.assertIn(code,result['errors'])
+            self.assertTrue(result['fixture']);self.assertNotIn('accepted',result)
+
+    def identity(self, state='reviewed', relation='exact', claim='I'):
+        f=self.f;a={'assertionId':'i','target':copy.deepcopy(f.t['target']),'ingredientIdentityClaimId':claim,'foodForm':copy.deepcopy(f.ingredient_data['foodForm']),'relation':relation,'state':state,'evidence':[f.ext['policies']['identity']]}
+        f.ext['ingredientIdentityAssertions']=[a];return a
+
+    def version(self, key):
+        c=self.f.claims[key];return {'claimId':key,'artifact':copy.deepcopy(c.artifact),'recordPointer':c.record_pointer,'line':c.line,'qualificationSha256':c.qualification['qualificationSha256'],'contractSha256':contract_fingerprint(c.contract),'dataSha256':fingerprint(self.f.product_data if key=='P' else self.f.ingredient_data)}
+
+    def witness(self, scope, name='relation'):
+        scope={**scope,'reviewAuthority':'synthetic-reviewer'}
+        return ReviewedWitness(self.f.pin(name+'.json',encode(scope)),scope,'synthetic-reviewer')
+
+    def bind_relation(self, a, native=False):
+        f=self.f;scope={'type':'native-ingredient-identity' if native else 'product-ingredient-relationship','assertionId':a['assertionId'],'assertionSha256':fingerprint(a),'relation':a['relation'],'inputBinding':copy.deepcopy(f.ext['input']),'decisionState':'affirmed','reviewStatus':'reviewed','ingredient':self.version('I'),'foodForm':copy.deepcopy(f.ingredient_data['foodForm'])}
+        if native:scope['target']=copy.deepcopy(a['target'])
+        else:scope.update(product=self.version('P'),productContext={k:copy.deepcopy(f.product_data[k]) for k in ('foodProduct','formulation','package','market','effectivePeriod')})
+        f.relationships[a['assertionId']]=self.witness(scope)
+
+    def reviewed_link(self):
+        self.f.product_link();a=self.f.ext['productIngredientLinks'][0];a['state']='reviewed';return a
+
+    def bind_conflict(self):
+        f=self.f;c={'conflictId':'c','competingAssertionIds':['t','q'],'state':'resolved','decisionPin':None,'reason':'synthetic reviewed resolution'}
+        scope={'type':'conflict-resolution','conflictId':'c','conflictSha256':fingerprint({k:v for k,v in c.items() if k!='decisionPin'}),'inputBinding':copy.deepcopy(f.ext['input']),'competingAssertions':[{'assertionId':a['assertionId'],'sha256':fingerprint(a)} for a in [f.t,f.q]],'decisionState':'resolved','reviewStatus':'reviewed','outcome':'resolution-affirmed'}
+        witness=self.witness(scope,'decision');c['decisionPin']=witness.pin;f.ext['conflicts']=[c];f.decisions['c']=witness
+
+    def mutate_witness(self, container, key, mutate):
+        old=container[key];scope=copy.deepcopy(old.scope);mutate(scope)
+        container[key]=ReviewedWitness(self.f.pin(old.pin['path'],encode(scope)),scope,old.authority)
+        if container is self.f.decisions:self.f.ext['conflicts'][0]['decisionPin']=container[key].pin
+
+    def test_reviewed_exact_null_identity_r2_f1(self):
+        self.identity(claim=None);self.check(('english-identity-state-inconsistent',))
+    def test_unresolved_null_identity_preserved(self):
+        self.identity(state='unresolved',relation='unresolved',claim=None);self.check()
+    def test_reviewed_unresolved_relation_rejected(self):
+        self.identity(relation='unresolved');self.check(('english-identity-state-inconsistent',))
+    def test_unresolved_exact_relation_rejected(self):
+        self.identity(state='unresolved');self.check(('english-identity-state-inconsistent',))
+    def test_proposed_null_exact_identity_rejected(self):
+        self.identity(state='proposed',claim=None);self.check(('english-identity-state-inconsistent',))
+    def test_reviewed_identity_endpoint_alone_r2_f1(self):
+        self.identity();self.check(('english-relationship-unqualified',))
+    def test_reviewed_native_mapping_positive(self):
+        a=self.identity();self.bind_relation(a,native=True);self.check()
+    def test_reviewed_identity_unrelated_valid_endpoint(self):
+        a=self.identity();self.bind_relation(a,native=True)
+        self.f.set_claim('I2',self.f.ingredient_data);a['ingredientIdentityClaimId']='I2'
+        self.check(('english-relationship-unqualified',))
+    def test_native_mapping_target_substitution(self):
+        a=self.identity();self.bind_relation(a,native=True)
+        self.mutate_witness(self.f.relationships,'i',lambda s:s['target'].update(fieldPointer='/other'))
+        self.check(('english-relationship-unqualified',))
+    def test_reviewed_product_endpoints_alone_r2_f2(self):
+        self.reviewed_link();self.check(('english-relationship-unqualified',))
+    def test_reviewed_exact_product_relationship_positive(self):
+        a=self.reviewed_link();self.bind_relation(a);self.check()
+    def test_relationship_wrong_type(self):
+        a=self.reviewed_link();self.bind_relation(a)
+        self.mutate_witness(self.f.relationships,'p',lambda s:s.update(type='generic-policy'))
+        self.check(('english-relationship-unqualified',))
+    def test_relationship_source_and_version_substitutions(self):
+        a=self.reviewed_link();self.bind_relation(a)
+        changes=[lambda s:s['inputBinding'].update(sourceId='other'),lambda s:s['inputBinding'].update(releaseId='other'),lambda s:s['inputBinding'].update(sourceRecordId='other'),lambda s:s['inputBinding']['parsedArtifact'].update(sha256='0'*64),lambda s:s.update(assertionId='other'),lambda s:s.update(assertionSha256='0'*64),lambda s:s.update(relation='mentions-ingredient'),lambda s:s['product'].update(claimId='other'),lambda s:s['ingredient'].update(claimId='other'),lambda s:s['product'].update(qualificationSha256='0'*64),lambda s:s['ingredient']['artifact'].update(sha256='0'*64)]
+        original=copy.deepcopy(self.f.relationships['p'])
+        for change in changes:
+            with self.subTest(change=changes.index(change)):
+                self.f.relationships['p']=original;self.mutate_witness(self.f.relationships,'p',change);self.check(('english-relationship-unqualified',))
+    def test_relationship_product_dimensions_substitutions(self):
+        a=self.reviewed_link();self.bind_relation(a);original=copy.deepcopy(self.f.relationships['p'])
+        for dimension in ('foodProduct','formulation','package','market','effectivePeriod'):
+            with self.subTest(dimension=dimension):
+                self.f.relationships['p']=original
+                self.mutate_witness(self.f.relationships,'p',lambda s:s['productContext'][dimension].update(state='unknown'))
+                self.check(('english-relationship-unqualified',))
+    def test_relationship_review_authority_must_be_selected(self):
+        a=self.reviewed_link();self.bind_relation(a);self.f.policy=replace(self.f.policy,review_authorities=frozenset());self.check(('english-relationship-unqualified',))
+    def test_generic_pin_is_not_typed_witness(self):
+        a=self.reviewed_link();self.f.relationships['p']={'pin':self.f.ext['policies']['identity'],'scope':{}};self.check(('english-relationship-unqualified',))
+    def test_relationship_rejected_or_unresolved_decision(self):
+        a=self.reviewed_link();self.bind_relation(a);old=self.f.relationships['p']
+        for k,v in [('decisionState','unresolved'),('reviewStatus','rejected')]:
+            self.f.relationships['p']=old;self.mutate_witness(self.f.relationships,'p',lambda s:s.update({k:v}));self.check(('english-relationship-unqualified',))
+    def test_resolved_conflict_typed_affirmative_positive(self):
+        self.bind_conflict();self.check()
+    def test_resolved_conflict_rejected_unresolved_r2_f3(self):
+        self.bind_conflict();self.mutate_witness(self.f.decisions,'c',lambda s:s.update(decisionState='unresolved',reviewStatus='rejected'));self.check(('english-conflict-decision-unqualified',))
+    def test_conflict_wrong_id_versions_outcome_authority(self):
+        self.bind_conflict();old=self.f.decisions['c']
+        for change in [lambda s:s.update(conflictId='other'),lambda s:s['competingAssertions'][0].update(sha256='0'*64),lambda s:s.update(outcome='rejected'),lambda s:s.update(reviewAuthority='unselected'),lambda s:s['inputBinding'].update(sourceRecordId='other')]:
+            self.f.decisions['c']=old;self.mutate_witness(self.f.decisions,'c',change);self.check(('english-conflict-decision-unqualified',))
+    def test_conflict_changed_assertion_invalidates_resolution(self):
+        self.bind_conflict();self.f.t['englishText']='different proposal';self.check(('english-conflict-decision-unqualified',))
+    def test_unresolved_conflict_without_decision_preserved(self):
+        self.f.ext['conflicts']=[{'conflictId':'c','competingAssertionIds':['t','q'],'state':'unresolved','decisionPin':None,'reason':'unknown evidence retained'}];self.check()
 
 
 if __name__ == '__main__': unittest.main()
