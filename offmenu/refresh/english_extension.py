@@ -56,6 +56,7 @@ DIAGNOSTICS = frozenset((
     'english-pointer-unresolved',
     'english-policy-binding-mismatch',
     'english-product-context-unresolved',
+    'english-product-state-inconsistent',
     'english-quantity-binding-mismatch',
     'english-quantity-unqualified',
     'english-record-line-invalid',
@@ -73,6 +74,7 @@ DIAGNOSTICS = frozenset((
     'english-use-scope-pin-mismatch',
     'english-use-scope-unresolved',
     'english-use-time-mismatch',
+    'english-variant-record-duplicate',
 ))
 
 
@@ -400,6 +402,8 @@ class _Check:
                                       {'target': a['target'], 'ingredient': ingredient_version,
                                        'foodForm': ingredient['foodForm']})
         for a in extension['variantAssertions']:
+            require(len(a['sourceRecordRefs']) == len(set(a['sourceRecordRefs'])),
+                    'english-variant-record-duplicate')
             source_records = []
             for ref in a['sourceRecordRefs']:
                 if ref == inp['sourceRecordId']:
@@ -413,6 +417,8 @@ class _Check:
                 self.relationship(a, inp, 'recipe-variant-relationship',
                                   {'region': a['region'], 'sourceRecords': source_records})
         for a in extension['productIngredientLinks']:
+            require((a['state'] == 'unresolved') == (a['relation'] == 'unresolved'),
+                    'english-product-state-inconsistent')
             product, product_version = self.claim_context(a['productIdentityClaimId'], 'source-product-assignment')
             ingredient, ingredient_version = self.claim_context(a['ingredientIdentityClaimId'], 'ingredient-identity')
             if a['state'] == 'reviewed':
