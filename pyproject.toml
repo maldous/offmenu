@@ -10,8 +10,8 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["setuptools>=61", "wheel", "Pillow>=10", "openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6"]
-collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2"]
+test = ["setuptools>=61", "wheel", "Pillow>=10", "openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6", "beautifulsoup4==4.15.0"]
+collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2", "jsonschema==4.26.0"]
 
 [project.scripts]
 offmenu = "offmenu.cli:main"
@@ -22,4 +22,4 @@ include = ["offmenu*"]
 [tool.setuptools.package-data]
 offmenu = ["web.html"]
 
-"offmenu.refresh" = ["portfolio37_bindings.json"]
+"offmenu.refresh" = ["portfolio37_bindings.json", "source_recipe_template.schema.json"]
