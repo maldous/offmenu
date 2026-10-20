@@ -124,5 +124,19 @@
     "sha256": "4723ffe02a8df5348c058ae81f2ed38a9be13e0a186f1a61f89d6ff25ded4e74",
     "owner": "Foo user; original ownership retained",
     "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/unreferenced-objects-private.tar.gz",
+    "bytes": 27991329,
+    "sha256": "06b0661d228a56b81727e1c25da42aac41d705da204f65c55f5eff6c21d35bf1",
+    "owner": "Foo user; original source/worker ownership retained",
+    "disposition": "private Git-object custody; unqualified object bodies must not be uploaded"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/unreferenced-object-custody.json",
+    "bytes": 1682486,
+    "sha256": "c9afbe3ec7d4cb4888ec6e25c908d6ac3ebd0a463e80fd1b7b0625c25199d508",
+    "owner": "Foo user; original source/worker ownership retained",
+    "disposition": "private Git-object custody; unqualified object bodies must not be uploaded"
   }
 ]
