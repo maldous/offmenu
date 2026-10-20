@@ -31,6 +31,8 @@ Reviewed application code must independently select:
   not replace missing qualification with its own whole-file hash or path stat.
 - Exact ZIP member paths for BOTH food and branded_food and every selected
   product's independently bound logical row ordinals and raw.body UTF8 hashes.
+  CSV extension recognition matches the producer's `suffix.lower() == '.csv'`;
+  the bound member path and table stem retain their exact spelling and case.
   No member path, branded row or row witness is derived from a food sourceRow,
   candidate line, barcode string or a guessed filename.
 - Selected operation/binding evidence, exact emitter/caller code pins and all
@@ -70,7 +72,9 @@ The existing emitter's food-key/branded-key queries are served by a tiny view.
 Each independently selected key maps to its explicit food and branded_food row
 pins. Actual SQL reads use `WHERE tab=? AND ordinal=? LIMIT 2`; query plans must
 positively report a SEARCH of raw with BOTH `tab=?` and `ordinal=?` in its indexed
-search constraints, and refuse SCAN/temp B-tree plans. A tab-only index SEARCH
+search constraints. SCAN/temp B-tree refusal examines the leading plan operation;
+a valid SEARCH index name may contain `scan`. Index names never establish either
+point constraint. A tab-only SEARCH
 does not satisfy this contract: LIMIT2 caps matches, not the table-prefix index
 walk before ordinal filtering. Unsupported plan representations fail closed;
 neither index names nor the word SEARCH alone prove composite point access.
