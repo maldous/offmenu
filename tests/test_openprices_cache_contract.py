@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import shutil
 import subprocess
 import unittest
 
@@ -163,7 +164,9 @@ class RetainedOpenPricesTests(unittest.TestCase):
         rows[0].provenance={...rows[0].provenance,fetchedAt:'2026-10-13T03:00:00Z',
           releaseId:'2026-10-12',archiveSha256:'a'.repeat(64),transform:'offmenu-bulk/1',sourceRow:2};
         console.log(JSON.stringify(rows));"""
-        result=subprocess.run(['/bin/node','--input-type=module','-e',code],capture_output=True,check=True)
+        node=shutil.which('node')
+        self.assertIsNotNone(node,'Node runtime must be available on PATH for the projection test')
+        result=subprocess.run([node,'--input-type=module','-e',code],capture_output=True,check=True)
         self.assertEqual(self.check.validate_line(result.stdout,partition=self.key,line=1),())
         self.assertEqual(json.loads(result.stdout)[0],record())
 
