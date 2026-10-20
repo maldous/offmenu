@@ -4,18 +4,93 @@ The caller supplies a stream under a separately qualified custody/resource
 boundary. EOF/count agreement here is not proof of retained-original derivation.
 """
 from dataclasses import dataclass, asdict
+from contextlib import contextmanager
 import hashlib
 import os
 from pathlib import Path
 import re
-import shutil
+import secrets
+import stat
 import sqlite3
-import tempfile
 import time
 
 from .core import RefreshError, canonical, strict_json
 from .product_adapters import _safe
 from .product_input_witness import _rename_noreplace
+
+
+def _inode(info):
+    return info.st_dev,info.st_ino
+
+
+class _OwnedStage:
+    """Private descriptor-anchored namespace, never pathname-recursive cleanup."""
+    def __init__(self,parent):
+        self.parent=parent;self.fd=None;self.files={}
+        self.parent_fd=os.open(parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+        self.parent_inode=_inode(os.fstat(self.parent_fd))
+        try:
+            if _inode(os.stat(_safe(parent),follow_symlinks=False))!=self.parent_inode:
+                raise RefreshError('partition-parent-custody-changed')
+            self.name='.off-partition-'+secrets.token_hex(16)
+            os.mkdir(self.name,0o700,dir_fd=self.parent_fd)
+            before=os.stat(self.name,dir_fd=self.parent_fd,follow_symlinks=False)
+            self.fd=os.open(self.name,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=self.parent_fd)
+            self.inode=_inode(os.fstat(self.fd))
+            if self.inode!=_inode(before):raise RefreshError('partition-stage-custody-changed')
+        except Exception:
+            if self.fd is not None:os.close(self.fd)
+            os.close(self.parent_fd)
+            raise
+
+    def check(self):
+        try:
+            if (_inode(os.stat(_safe(self.parent),follow_symlinks=False))!=self.parent_inode
+                    or _inode(os.stat(self.name,dir_fd=self.parent_fd,follow_symlinks=False))!=self.inode):
+                raise ValueError()
+        except (OSError,ValueError):raise RefreshError('partition-stage-custody-changed') from None
+
+    @contextmanager
+    def create(self,name):
+        self.check()
+        fd=os.open(name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,dir_fd=self.fd)
+        self.files[name]=_inode(os.fstat(fd))
+        with os.fdopen(fd,'wb') as stream:yield stream
+
+    def info(self,name):
+        info=os.stat(name,dir_fd=self.fd,follow_symlinks=False)
+        if not stat.S_ISREG(info.st_mode) or _inode(info)!=self.files[name]:
+            raise RefreshError('partition-stage-file-custody-changed')
+        return info
+
+    def remove(self,name):
+        self.info(name);os.unlink(name,dir_fd=self.fd);del self.files[name]
+
+    def publish(self,destination):
+        self.check()
+        if set(os.listdir(self.fd))!=set(self.files):raise RefreshError('partition-stage-inventory-changed')
+        for name in self.files:self.info(name)
+        _rename_noreplace(self.parent_fd,self.name,self.parent_fd,destination)
+
+    def cleanup(self):
+        incomplete=False
+        for name in list(self.files):
+            try:self.remove(name)
+            except (OSError,RefreshError):incomplete=True
+        try:
+            if (os.listdir(self.fd) or _inode(os.stat(self.name,dir_fd=self.parent_fd,
+                    follow_symlinks=False))!=self.inode):
+                incomplete=True
+            else:os.rmdir(self.name,dir_fd=self.parent_fd)
+        except OSError:incomplete=True
+        if incomplete:
+            error=RefreshError('partition-owned-stage-cleanup-incomplete')
+            error.retained_stage_identity=self.inode
+            error.retained_stage_location=os.readlink(f'/proc/self/fd/{self.fd}')
+            raise error
+
+    def close(self):
+        os.close(self.fd);os.close(self.parent_fd)
 
 
 @dataclass(frozen=True)
@@ -43,7 +118,7 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
     destination=_safe(destination)
     if destination.exists():raise RefreshError('partition-destination-exists')
     parent=_safe(destination.parent)
-    pending=Path(tempfile.mkdtemp(prefix='.off-partition-',dir=parent))
+    stage=_OwnedStage(parent)
     db=None;published=False;started=time.monotonic();expanded=0;count=0;output_bytes=0
     pins={};stream_hash=hashlib.sha256()
     def guard():
@@ -58,14 +133,16 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
     def emit(name, iterator):
         nonlocal output_bytes
         h=hashlib.sha256();size=0;rows=0
-        with (pending/name).open('xb') as target:
+        with stage.create(name) as target:
             for value in iterator:
                 guard();raw=canonical(value);size+=len(raw);output_bytes+=len(raw);rows+=1
                 if output_bytes>limits.max_output_bytes:raise RefreshError('partition-output-bound')
                 target.write(raw);h.update(raw)
         pins[name]={'sha256':h.hexdigest(),'bytes':size,'rows':rows}
     try:
-        path=pending/'index.sqlite';db=sqlite3.connect(path)
+        with stage.create('index.sqlite'):pass
+        # Linux descriptor path is internal, never a caller-controlled symlink.
+        path=Path(f'/proc/self/fd/{stage.fd}/index.sqlite');db=sqlite3.connect(path)
         db.execute('PRAGMA page_size=4096');db.execute('PRAGMA cache_size=-2048')
         db.execute('PRAGMA journal_mode=OFF');db.execute('PRAGMA temp_store=FILE')
         db.execute(f'PRAGMA max_page_count={limits.max_database_bytes//4096}')
@@ -92,8 +169,8 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
             if code is not None:
                 db.execute('INSERT INTO keys VALUES(?,1) ON CONFLICT(code) DO UPDATE SET multiplicity=multiplicity+1',(code,))
         if count!=expected_rows:raise RefreshError('partition-incomplete-stream')
-        guard();db.commit()
-        database_bytes=path.stat().st_size
+        guard();stage.check();db.commit()
+        database_bytes=stage.info('index.sqlite').st_size
         if database_bytes>limits.max_database_bytes:raise RefreshError('partition-db-bound')
         totals={'S':0,'C':0,'Q':0};groups=0
         def occurrences():
@@ -143,15 +220,15 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
                             'elapsedSeconds':time.monotonic()-started},'limits':asdict(limits)}
         raw=canonical(result)
         if output_bytes+len(raw)>limits.max_output_bytes:raise RefreshError('partition-output-bound')
-        db.close();db=None;path.unlink()
-        (pending/'result.json').write_bytes(raw)
+        db.close();db=None;stage.remove('index.sqlite')
+        with stage.create('result.json') as target:target.write(raw)
         guard()
-        fd=os.open(parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
-        try:_rename_noreplace(fd,pending.name,fd,destination.name)
-        finally:os.close(fd)
+        stage.publish(destination.name)
         published=True
         return result
     except sqlite3.Error:raise RefreshError('partition-storage-bound-or-error') from None
     finally:
         if db is not None:db.close()
-        if not published:shutil.rmtree(pending)
+        try:
+            if not published:stage.cleanup()
+        finally:stage.close()

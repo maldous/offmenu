@@ -26,9 +26,24 @@ are indexed. Only after EOF is S/C/Q assigned: multiplicity1 is singleton S;
 every occurrence of multiplicity>1 is held C, including first and identical repeats;
 invalid-code rows are Q. No winner, merge, revision or majority rule exists.
 
-Output is atomically published without replacing an existing path, using the
-existing Linux no-replace primitive. Failure removes only newly owned private
-staging. The final directory contains:
+Output uses the existing Linux no-replace primitive with the ORIGINAL parent
+descriptor retained from stage creation. A private random stage is opened and
+its inode pinned before invoking the input iterator. SQLite uses the internal
+`/proc/self/fd/<stage-fd>/index.sqlite` path; evidence files are created exclusively
+relative to the pinned stage descriptor with no symlink following. Parent-path,
+stage-entry and owned-file inode checks precede publication. The parent is never
+reopened after iteration. Path replacement refuses publication.
+
+Failure cleanup is nonrecursive and descriptor-relative: only known file entries
+still matching their created inode are removed, then the stage name is removed
+only if it still names the original empty stage. Unrelated replacement entries
+are preserved. If an owned stage was relocated and its original name no longer
+identifies it, its known files are cleaned through the retained descriptor and
+`partition-owned-stage-cleanup-incomplete` reports `retained_stage_identity` and
+`retained_stage_location`; an empty relocated directory can remain for explicit
+owner reconciliation. This is an error/hold, never claimed successful cleanup or
+publication. No recursive search/deletion or ownership inference from a reused
+pathname is performed. The final directory contains:
 
 - `occurrences.jsonl`: every original ordinal exactly once, original-hash/table
   locator, class/reason, nullable code and raw/canonical hashes.
@@ -111,3 +126,9 @@ keys/leadingzeros, no payload copying, JSON/framing/truncation, declared caps,
 deadline, immutable existing destination and publication race. No retained body,
 cache, original, restricted sample or live database is accessed. Failed25 review
 holds, incident10230, custody, runtime, production and CIX boundaries are unchanged.
+
+PR73 regressions replace parent/stage names during iteration and at EOF. They
+prove no unrelated publication/deletion, descriptor-anchored parent-failure
+cleanup, preserved replacement marker files and explicit owned-relocation
+reporting. The original ee53 source fails both provider reproductions; the
+corrected source retains all S/C/Q/ordinal/digest and resource-control tests.

@@ -117,5 +117,61 @@ class PartitionWitnessTests(unittest.TestCase):
             partition_stream(race(),self.root/'race',original_sha256='a'*64,expected_rows=1,limits=self.limits)
         self.assertEqual((self.root/'race/keep').read_text(),'keep')
 
+    def test_parent_replacement_cannot_publish_unrelated_stage(self):
+        parent=self.root/'parent';parent.mkdir();moved=self.root/'moved'
+        def stream():
+            yield canonical({'code':'0001'})
+            stage=next(parent.glob('.off-partition-*'))
+            parent.rename(moved);parent.mkdir()
+            fake=parent/stage.name;fake.mkdir();(fake/'KEEP').write_text('unrelated')
+            (fake/'index.sqlite').write_bytes(b'not the original db')
+        with self.assertRaises(RefreshError):
+            partition_stream(stream(),parent/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+        fake=next(parent.glob('.off-partition-*'))
+        self.assertEqual((fake/'KEEP').read_text(),'unrelated')
+        self.assertFalse((parent/'output').exists())
+        self.assertEqual(list(moved.iterdir()),[])
+
+    def test_replaced_stage_is_not_recursively_deleted_on_iterator_failure(self):
+        def stream():
+            stage=next(self.root.glob('.off-partition-*'))
+            stage.rename(self.root/'saved-owned')
+            stage.mkdir();(stage/'KEEP').write_text('unrelated')
+            raise RuntimeError('fixture failure')
+            yield
+        with self.assertRaisesRegex(RefreshError,'partition-owned-stage-cleanup-incomplete') as failure:
+            partition_stream(stream(),self.root/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+        replacement=list(self.root.glob('.off-partition-*'))
+        self.assertEqual(len(replacement),1)
+        self.assertEqual((replacement[0]/'KEEP').read_text(),'unrelated')
+        self.assertEqual(list((self.root/'saved-owned').iterdir()),[])
+        self.assertEqual(failure.exception.retained_stage_identity,
+                         ((self.root/'saved-owned').stat().st_dev,(self.root/'saved-owned').stat().st_ino))
+        self.assertEqual(failure.exception.retained_stage_location,str(self.root/'saved-owned'))
+
+    def test_parent_replacement_failure_cleanup_uses_original_parent_descriptor(self):
+        parent=self.root/'parent';parent.mkdir();moved=self.root/'moved'
+        def stream():
+            stage=next(parent.glob('.off-partition-*'))
+            parent.rename(moved);parent.mkdir()
+            fake=parent/stage.name;fake.mkdir();(fake/'KEEP').write_text('unrelated')
+            raise RuntimeError('fixture failure')
+            yield
+        with self.assertRaisesRegex(RuntimeError,'fixture failure'):
+            partition_stream(stream(),parent/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+        self.assertEqual(list(moved.iterdir()),[])
+        self.assertEqual((next(parent.glob('.off-partition-*'))/'KEEP').read_text(),'unrelated')
+
+    def test_stage_replacement_at_eof_refuses_publication_and_reports_owned_relocation(self):
+        def stream():
+            yield canonical({'code':'0001'})
+            stage=next(self.root.glob('.off-partition-*'));stage.rename(self.root/'saved-owned')
+            stage.mkdir();(stage/'KEEP').write_text('unrelated');(stage/'index.sqlite').write_bytes(b'fake')
+        with self.assertRaisesRegex(RefreshError,'partition-owned-stage-cleanup-incomplete'):
+            partition_stream(stream(),self.root/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+        self.assertFalse((self.root/'output').exists())
+        self.assertEqual(list((self.root/'saved-owned').iterdir()),[])
+        self.assertEqual((next(self.root.glob('.off-partition-*'))/'KEEP').read_text(),'unrelated')
+
 
 if __name__=='__main__':unittest.main()
