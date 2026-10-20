@@ -5,6 +5,7 @@ source fields, not product records or projection functions. Reuses custody/path
 primitives and the bounded ZIP-directory reader, not candidate parsing/projection.
 """
 from dataclasses import asdict, dataclass
+from contextlib import nullcontext
 from datetime import datetime
 import csv
 import gzip
@@ -72,6 +73,141 @@ class WitnessLimits:
 
 class _Stop(Exception):
     pass
+
+
+class _VerifiedOriginal:
+    """Keep the verified regular descriptor for both hashing and parsing."""
+    def __init__(self, path, asset, limits, deadline):
+        self.path, self.asset, self.limits, self.deadline = safe_path(path), asset, limits, deadline
+        self.stream = None
+        self._deadline()
+        before = self.path.lstat()
+        if not stat.S_ISREG(before.st_mode) or before.st_size != asset.bytes:
+            raise RefreshError('witness-original-custody-mismatch')
+        fd = os.open(self.path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        try:
+            opened = os.fstat(fd)
+            if not stat.S_ISREG(opened.st_mode) or self._signature(before) != self._signature(opened):
+                raise RefreshError('witness-original-custody-mismatch')
+            self.identity = self._signature(opened)
+            self.stream = os.fdopen(fd, 'rb')
+        except BaseException:
+            os.close(fd)
+            raise
+
+    @staticmethod
+    def _signature(info):
+        return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+
+    def _deadline(self):
+        if time.monotonic() >= self.deadline:
+            raise RefreshError('witness-original-duration-limit')
+
+    def check(self):
+        self._deadline()
+        current = safe_path(self.path).lstat()
+        opened = os.fstat(self.stream.fileno())
+        if (not stat.S_ISREG(current.st_mode) or self._signature(current) != self.identity
+                or self._signature(opened) != self.identity):
+            raise RefreshError('witness-original-custody-mismatch')
+
+    def read(self, size=-1):
+        self.check()
+        if size < 0:
+            size = self.asset.bytes - self.stream.tell()
+            if size > self.limits.max_archive_members * 65536:
+                raise RefreshError('witness-original-unbounded-read')
+        data = self.stream.read(size)
+        self.check()
+        return data
+
+    def seek(self, *args):
+        self.check()
+        return self.stream.seek(*args)
+
+    def tell(self):
+        return self.stream.tell()
+
+    def seekable(self):
+        return True
+
+    def stat(self):
+        self.check()
+        return os.fstat(self.stream.fileno())
+
+    def open(self, mode):
+        if mode != 'rb':
+            raise RefreshError('witness-original-readonly-required')
+        self.check()
+        return nullcontext(self)  # ZIP-directory helper borrows this descriptor.
+
+    def verify(self):
+        self.seek(0)
+        h, size = hashlib.sha256(), 0
+        while True:
+            block = self.read(min(1024**2, self.asset.bytes - size + 1))
+            if not block:
+                break
+            size += len(block)
+            if size > self.asset.bytes or size > self.limits.max_input_bytes:
+                raise RefreshError('witness-original-custody-mismatch')
+            h.update(block)
+        if size != self.asset.bytes or h.hexdigest() != self.asset.sha256:
+            raise RefreshError('witness-original-custody-mismatch')
+        self.seek(0)
+
+    def close(self):
+        self.stream.close()
+
+
+def _publish_output(pending, destination):
+    """Rollback only links and directory still belonging to this invocation."""
+    destination.mkdir(mode=0o700)
+    claimed = destination.lstat()
+    identity = (claimed.st_dev, claimed.st_ino)
+    directory = None
+    names = ('diagnostics.jsonl', 'result.json')
+    own = {}
+    try:
+        directory = os.open(destination, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        opened = os.fstat(directory)
+        if (opened.st_dev, opened.st_ino) != identity:
+            raise RefreshError('witness-publication-custody-changed')
+        for name in names:
+            info = (pending/name).lstat()
+            if not stat.S_ISREG(info.st_mode):
+                raise RefreshError('witness-publication-custody-changed')
+            own[name] = (info.st_dev, info.st_ino)
+        for name in names:
+            current = safe_path(destination).lstat()
+            if (current.st_dev, current.st_ino) != identity:
+                raise RefreshError('witness-publication-custody-changed')
+            os.link(pending/name, name, dst_dir_fd=directory, follow_symlinks=False)
+            linked = os.stat(name, dir_fd=directory, follow_symlinks=False)
+            if not stat.S_ISREG(linked.st_mode) or (linked.st_dev, linked.st_ino) != own[name]:
+                raise RefreshError('witness-publication-custody-changed')
+        current = safe_path(destination).lstat()
+        if (current.st_dev, current.st_ino) != identity:
+            raise RefreshError('witness-publication-custody-changed')
+    except BaseException:
+        if directory is not None:
+            for name in names:
+                try:
+                    info = os.stat(name, dir_fd=directory, follow_symlinks=False)
+                    if stat.S_ISREG(info.st_mode) and (info.st_dev, info.st_ino) == own.get(name):
+                        os.unlink(name, dir_fd=directory)
+                except OSError:
+                    pass  # Never broaden cleanup when custody or IO is uncertain.
+        try:
+            current = destination.lstat()
+            if stat.S_ISDIR(current.st_mode) and (current.st_dev, current.st_ino) == identity:
+                destination.rmdir()  # Refuses any foreign/unknown child.
+        except OSError:
+            pass
+        raise
+    finally:
+        if directory is not None:
+            os.close(directory)
 
 
 def _indexed(db, sql, parameters=()):
@@ -146,6 +282,10 @@ def _preflight(contract, root, limits, deadline, external_original=False):
         gib = 1024**3
         off = contract.source_id == 'off'
         if (limits.min_free_bytes < 20*gib or limits.max_id_bytes > 64
+                or limits.max_database_bytes > (8 if off else 24)*gib
+                or limits.max_diagnostic_bytes > (2 if off else 4)*gib - 2*1024**2
+                or limits.max_output_bytes > 1024**2
+                or limits.max_archive_members > 64
                 or limits.max_database_bytes + limits.max_diagnostic_bytes + limits.max_output_bytes + CONTROL_SLACK > (10 if off else 28)*gib
                 or limits.max_rows > (6_000_000 if off else 40_000_000)
                 or limits.max_seconds > (24 if off else 12)*3600
@@ -309,7 +449,7 @@ class _Run:
 
 def _off(run, source):
     run.start('products')
-    with gzip.open(source, 'rb') as stream:
+    with gzip.GzipFile(fileobj=source, mode='rb') as stream:
         for raw in run.lines(stream):
             ordinal = run.row('products')
             try:
@@ -413,15 +553,15 @@ def witness_retained_input(contract, bundle, destination, *, limits=WitnessLimit
         raise RefreshError('witness-invalid-limits')
     deadline = time.monotonic() + limits.max_seconds
     assets = _preflight(contract, root, limits, deadline, input_root is not None)
-    expected = {'bytes': contract.original.bytes, 'sha256': contract.original.sha256}
     if (shutil.disk_usage(destination.parent).free < limits.min_free_bytes + limits.max_database_bytes + limits.max_diagnostic_bytes + limits.max_output_bytes + CONTROL_SLACK
             or os.statvfs(destination.parent).f_favail < 10000):
         raise RefreshError('witness-free-space-not-admitted')
-    if digest(originals / contract.original.path, max_bytes=limits.max_input_bytes, deadline=deadline) != expected:
-        raise RefreshError('witness-original-custody-mismatch')
-    pending = Path(tempfile.mkdtemp(prefix='.input-witness-', dir=destination.parent))
+    verified_original = _VerifiedOriginal(originals / contract.original.path, contract.original, limits, deadline)
+    pending = None
     db = None
     try:
+        verified_original.verify()
+        pending = Path(tempfile.mkdtemp(prefix='.input-witness-', dir=destination.parent))
         db = sqlite3.connect(pending / 'keys.sqlite')
         db.execute('PRAGMA page_size=4096')
         db.execute('PRAGMA cache_size=-16384')
@@ -437,15 +577,14 @@ def witness_retained_input(contract, bundle, destination, *, limits=WitnessLimit
             db.set_progress_handler(lambda: int(time.monotonic() >= deadline), 10000)
             try:
                 if contract.source_id == 'off':
-                    _off(run, originals / contract.original.path)
+                    _off(run, verified_original)
                 else:
-                    _usda(run, originals / contract.original.path, contract)
+                    _usda(run, verified_original, contract)
                 db.commit()
                 run.guard()
-                for a in assets:
-                    parent = originals if a == contract.original else root
-                    if digest(parent / a.path, max_bytes=max(limits.max_input_bytes, 1024**2), deadline=deadline) != {'bytes': a.bytes, 'sha256': a.sha256}:
-                        raise _Stop('input-custody-changed')
+                verified_original.verify()
+                for a in assets[1:]:
+                    _verified_metadata_bytes(a, root, deadline)
                 complete = True
             except _Stop as exc:
                 errors.add(str(exc))
@@ -514,13 +653,12 @@ def witness_retained_input(contract, bundle, destination, *, limits=WitnessLimit
         (pending / 'result.json').write_bytes(data)
         # Exclusive directory claim also handles a destination created during the
         # run. Publish the terminal receipt last; links cannot replace a file.
-        destination.mkdir(mode=0o700)
-        os.link(pending / 'diagnostics.jsonl', destination / 'diagnostics.jsonl')
-        os.link(pending / 'result.json', destination / 'result.json')
+        _publish_output(pending, destination)
         shutil.rmtree(pending)
         pending = None
         return result
     finally:
+        verified_original.close()
         if db is not None:
             db.close()
         if pending is not None:

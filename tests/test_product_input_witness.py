@@ -313,7 +313,7 @@ class ProductInputWitnessTest(unittest.TestCase):
                     target.unlink();target.symlink_to(replacement)
             return data
         with patch.object(w.os,'read',side_effect=mutate),patch.object(w,'strict_json') as parse, \
-                patch.object(w,'digest',side_effect=AssertionError('original must not be read')) as original_read:
+                patch.object(w,'_VerifiedOriginal',side_effect=AssertionError('original must not be opened')) as original_read:
             with self.assertRaises(RefreshError):self.run_witness(c)
             parse.assert_not_called();original_read.assert_not_called()
         self.assertTrue(changed)
@@ -339,7 +339,7 @@ class ProductInputWitnessTest(unittest.TestCase):
             data=real_read(fd,size);expired=True;return data
         with patch.object(w.time,'monotonic',side_effect=lambda:4000 if expired else 0), \
                 patch.object(w.os,'read',side_effect=read),patch.object(w,'strict_json') as parse, \
-                patch.object(w,'digest',side_effect=AssertionError('no original read')) as original_read:
+                patch.object(w,'_VerifiedOriginal',side_effect=AssertionError('no original open')) as original_read:
             with self.assertRaisesRegex(RefreshError,'evidence-duration-limit'):self.run_witness(c)
             parse.assert_not_called();original_read.assert_not_called()
 
@@ -354,7 +354,7 @@ class ProductInputWitnessTest(unittest.TestCase):
                 elif mode=='fifo':os.mkfifo(target)
                 elif mode=='symlink':target.symlink_to(replacement)
                 else:target.write_bytes(b'x'*(1024**2+1))
-                with patch.object(w,'strict_json') as parse,patch.object(w,'digest') as original_read:
+                with patch.object(w,'strict_json') as parse,patch.object(w,'_VerifiedOriginal') as original_read:
                     with self.assertRaises(RefreshError):self.run_witness(c)
                     parse.assert_not_called();original_read.assert_not_called()
                 target.rmdir() if mode=='directory' else target.unlink()
@@ -364,7 +364,7 @@ class ProductInputWitnessTest(unittest.TestCase):
         from offmenu.refresh import product_input_witness as w
         c=self.off();target=self.bundle/c.clock_evidence.path;original=target.read_bytes()
         target.write_bytes(b'['+original[1:])
-        with patch.object(w,'strict_json') as parse,patch.object(w,'digest') as original_read:
+        with patch.object(w,'strict_json') as parse,patch.object(w,'_VerifiedOriginal') as original_read:
             with self.assertRaises(RefreshError):self.run_witness(c)
             parse.assert_not_called();original_read.assert_not_called()
 
@@ -382,3 +382,114 @@ class ProductInputWitnessTest(unittest.TestCase):
         self.assertEqual([len(raw) for raw in parsed],[1024**2,c.clock_evidence.bytes])
         self.assertTrue(all(0<size<=65536 for size in requests))
         self.assertEqual(hashlib.sha256(parsed[0]).hexdigest(),asset.sha256)
+
+    def test_fifo_swap_after_original_verification_never_uses_blocking_gzip_open(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_off=w._off
+        def swap(run,source):
+            target=self.bundle/c.original.path;target.unlink();os.mkfifo(target)
+            return real_off(run,source)
+        with patch.object(w,'_off',side_effect=swap), \
+                patch.object(w.gzip,'open',side_effect=AssertionError('blocking path reopen')) as unsafe_open:
+            r=self.run_witness(c)
+            unsafe_open.assert_not_called()
+        self.assertFalse(r['fullDenominatorTraversed']);self.assertIsNone(r['expectedRecords'])
+
+    def test_same_byte_original_replacement_after_verification_is_incomplete(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_off=w._off
+        replacement=self.root/'replacement.gz';replacement.write_bytes((self.bundle/c.original.path).read_bytes())
+        def swap(run,source):
+            os.replace(replacement,self.bundle/c.original.path)
+            return real_off(run,source)
+        with patch.object(w,'_off',side_effect=swap):r=self.run_witness(c)
+        self.assertFalse(r['fullDenominatorTraversed']);self.assertIsNone(r['expectedRecords'])
+
+    def test_individual_real_component_caps_rejected_before_evidence(self):
+        from offmenu.refresh import product_input_witness as w
+        from offmenu.refresh.product_witness_bindings import retained_witness_limits
+        for source in ('off','usda-files'):
+            c=replace(self.off() if source=='off' else self.usda(),fixture=False)
+            valid=retained_witness_limits(source,protected_bytes_including_floor=20*1024**3)
+            for field in ('max_database_bytes','max_diagnostic_bytes','max_output_bytes'):
+                small=replace(valid,max_database_bytes=65536,max_diagnostic_bytes=1,max_output_bytes=65536)
+                excessive=replace(small,**{field:getattr(valid,field)+1})
+                with self.subTest(source=source,field=field), \
+                        patch.object(w,'_verified_metadata_bytes',side_effect=AssertionError('must refuse before evidence')) as read:
+                    with self.assertRaisesRegex(RefreshError,'real-scope-budget'):w._preflight(c,self.bundle,excessive,time.monotonic()+10)
+                    read.assert_not_called()
+
+    def assert_failed_publication_retryable(self,fail_at):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_link=os.link;calls=0
+        def fail(*args,**kwargs):
+            nonlocal calls
+            calls+=1
+            if calls==fail_at:raise OSError('synthetic publication failure')
+            return real_link(*args,**kwargs)
+        with patch.object(w.os,'link',side_effect=fail):
+            with self.assertRaises(OSError):self.run_witness(c)
+        self.assertFalse((self.root/'output').exists())
+        self.assert_clean(self.run_witness(c),'off',['0001','0002'])
+
+    def test_first_publication_link_failure_allows_retry(self):
+        self.assert_failed_publication_retryable(1)
+
+    def test_second_publication_link_failure_allows_retry(self):
+        self.assert_failed_publication_retryable(2)
+
+    def test_fifo_swap_at_original_open_uses_nonblocking_descriptor(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();target=self.bundle/c.original.path;real_open=os.open;changed=False
+        def swap(path,flags,*args,**kwargs):
+            nonlocal changed
+            if Path(path)==target and not changed:
+                self.assertTrue(flags & os.O_NONBLOCK);self.assertTrue(flags & os.O_NOFOLLOW)
+                target.unlink();os.mkfifo(target);changed=True
+            return real_open(path,flags,*args,**kwargs)
+        with patch.object(w.os,'open',side_effect=swap):
+            with self.assertRaises(RefreshError):self.run_witness(c)
+        self.assertTrue(changed);self.assertFalse((self.root/'output').exists())
+
+    def test_publication_cleanup_preserves_foreign_child(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_link=os.link;calls=0
+        def fail(*args,**kwargs):
+            nonlocal calls
+            calls+=1
+            if calls==2:
+                (self.root/'output/foreign').write_bytes(b'preserved')
+                raise OSError('synthetic second link failure')
+            return real_link(*args,**kwargs)
+        with patch.object(w.os,'link',side_effect=fail):
+            with self.assertRaises(OSError):self.run_witness(c)
+        self.assertEqual((self.root/'output/foreign').read_bytes(),b'preserved')
+        self.assertFalse((self.root/'output/diagnostics.jsonl').exists())
+        self.assertFalse((self.root/'output/result.json').exists())
+
+    def test_publication_cleanup_preserves_replacement_directory(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_link=os.link;calls=0
+        def fail(*args,**kwargs):
+            nonlocal calls
+            calls+=1
+            if calls==2:
+                (self.root/'output').rename(self.root/'moved')
+                (self.root/'output').mkdir();(self.root/'output/foreign').write_bytes(b'preserved')
+                raise OSError('synthetic directory replacement')
+            return real_link(*args,**kwargs)
+        with patch.object(w.os,'link',side_effect=fail):
+            with self.assertRaises(OSError):self.run_witness(c)
+        self.assertEqual((self.root/'output/foreign').read_bytes(),b'preserved')
+        self.assertFalse((self.root/'moved/diagnostics.jsonl').exists())
+
+    def test_publication_directory_open_failure_allows_retry(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();real_open=os.open
+        def fail(path,flags,*args,**kwargs):
+            if Path(path)==self.root/'output':raise OSError('synthetic publication directory open failure')
+            return real_open(path,flags,*args,**kwargs)
+        with patch.object(w.os,'open',side_effect=fail):
+            with self.assertRaises(OSError):self.run_witness(c)
+        self.assertFalse((self.root/'output').exists())
+        self.assert_clean(self.run_witness(c),'off',['0001','0002'])

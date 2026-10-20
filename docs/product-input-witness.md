@@ -30,6 +30,12 @@ after hashing. Reads reject leaf symlinks/non-regular files without blocking on
 FIFOs, and check the operation deadline around every chunk and metadata parse.
 Growth, replacement, oversized data or deadline expiry fails before original
 custody reads or scratch allocation. The post-traversal checks remain mandatory.
+Original custody verification and gzip/ZIP parsing share one retained regular-file
+descriptor opened with nonblocking/no-follow flags. Identity, size and the deadline
+are checked around reads; path replacement, including a FIFO swap, fails closed
+without a blocking pathname reopen. The descriptor is hashed before scratch is
+created and rehashed after traversal. Metadata postchecks still use verified
+bounded buffers.
 
 ## Denominator and IDs
 
@@ -93,6 +99,8 @@ or external sorting subprocesses are used. Cache is16MiB; the one-record parse
 bound is8MiB. Native keys are at most64 UTF8 bytes; oversized keys stop incomplete,
 never truncate. The Python CSV field cap is reported and an exceeded cap fails
 incomplete. The real scope caps are checked even if callers supply custom limits.
+Each real DB, diagnostic and result component is also capped individually at the
+table values; reducing another component cannot increase one of those ceilings.
 
 Fresh free bytes must cover the new complete witness ceiling **plus** the current
 protected amount including its20GiB floor. Existing allocated originals/retained
@@ -117,6 +125,11 @@ and needs a new destination to retry. Unexpected IO errors that prevent even a
 terminal receipt clean only the fresh own staging directory and raise; such an
 exception is never a successful or complete witness. No existing output is
 repaired, rewritten or silently reused.
+If publication fails after claiming a new destination, rollback removes only the
+links matching this invocation's inode identities and its still-owned empty
+directory. Ordinary first/second-link failures therefore allow the same destination
+to be retried. A foreign child or replacement directory is preserved and requires
+explicit custody reconciliation. No recursive destination deletion is used.
 
 ## Selected execution shape
 
