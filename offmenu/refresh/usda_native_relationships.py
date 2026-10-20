@@ -132,6 +132,32 @@ def _input(record, policy, check):
                      'textSha256':hashlib.sha256(text.encode('utf-8')).hexdigest()}
 
 
+def _assertion_bound(assertion, policy):
+    """Flat shape/count/character guards bound serialization before any copy.
+
+    Cached duplicate pins still count as assertion items. Counting built-in
+    strings is O(1); aggregate characters bound JSON's temporary escaping/UTF8
+    expansion before its exact serialized-byte check.
+    """
+    fields = ('assertionId', 'productIdentityClaimId', 'ingredientIdentityClaimId', 'relation', 'state')
+    require(type(assertion) is dict and len(assertion) == 6
+            and set(assertion) == {*fields, 'evidence'}
+            and all(type(assertion[k]) is str for k in fields)
+            and type(assertion['evidence']) is list, 'usda-relationship-assertion-unqualified')
+    require(len(assertion['evidence']) <= policy.max_evidence_reads,
+            'usda-relationship-assertion-bound')
+    characters = sum(len(assertion[k]) for k in fields)
+    require(characters <= policy.max_evidence_bytes, 'usda-relationship-assertion-bound')
+    for pin in assertion['evidence']:
+        require(type(pin) is dict and len(pin) == 2 and set(pin) == {'path', 'sha256'}
+                and type(pin['path']) is str and type(pin['sha256']) is str,
+                'usda-relationship-assertion-unqualified')
+        characters += len(pin['path']) + len(pin['sha256'])
+        require(characters <= policy.max_evidence_bytes, 'usda-relationship-assertion-bound')
+    require(len(canonical(assertion)) <= policy.max_evidence_bytes,
+            'usda-relationship-assertion-bound')
+
+
 def native_product_relationship_errors(record, assertion, policy=None, resolver=None):
     """Fixed diagnostics only. Never emits edges, constructs grants or performs IO.
 
@@ -148,6 +174,7 @@ def native_product_relationship_errors(record, assertion, policy=None, resolver=
     try:
         require(all(type(v) is int and v > 0 for v in (policy.max_evidence_bytes,
             policy.max_total_evidence_bytes, policy.max_evidence_reads)), 'usda-relationship-evidence-bounds')
+        _assertion_bound(assertion, policy)
         record, assertion, policy = deepcopy(record), deepcopy(assertion), deepcopy(policy)
         check = _Check(policy, resolver)
         binding, source_field = _input(record, policy, check)

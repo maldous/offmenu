@@ -203,6 +203,36 @@ class NativeRelationshipTests(unittest.TestCase):
         f=self.f;self.assertTrue(f.errors(policy=replace(f.policy,max_evidence_bytes=1)))
         self.assertEqual(f.errors(policy=replace(f.policy,max_evidence_reads=1)),('english-evidence-work-bound-exceeded',))
         self.assertEqual(f.errors(policy=replace(f.policy,max_total_evidence_bytes=1)),('english-evidence-work-bound-exceeded',))
+    def test_duplicate_evidence_count_refuses_before_copy_or_resolver(self):
+        f=self.f;inventory=f.inventory()
+        f.assertion['evidence']=[f.evidence]*(f.policy.max_evidence_reads+1)
+        with patch.object(native,'deepcopy',side_effect=AssertionError('copy must not run')) as copied, \
+             patch.object(inventory,'evidence',side_effect=AssertionError('resolver must not run')) as evidence:
+            result=native.native_product_relationship_errors(f.record,f.assertion,f.policy,inventory)
+        self.assertEqual(result,('usda-relationship-assertion-bound',))
+        copied.assert_not_called();evidence.assert_not_called()
+    def test_assertion_string_and_aggregate_pin_sizes_refuse_before_copy(self):
+        for kind in ('identifier','pins'):
+            f=Fixture();inventory=f.inventory();policy=replace(f.policy,max_evidence_bytes=256)
+            if kind=='identifier':f.assertion['assertionId']='x'*257
+            else:f.assertion['evidence']=[{'path':'x'*200,'sha256':'a'*64}]*2
+            with patch.object(native,'deepcopy',side_effect=AssertionError('copy must not run')) as copied:
+                result=native.native_product_relationship_errors(f.record,f.assertion,policy,inventory)
+            self.assertEqual(result,('usda-relationship-assertion-bound',));copied.assert_not_called()
+    def test_exact_serialized_size_includes_escaping_before_copy(self):
+        f=self.f;inventory=f.inventory();f.assertion['assertionId']='\x00'*40
+        policy=replace(f.policy,max_evidence_bytes=len(canonical(f.assertion))-1)
+        with patch.object(native,'deepcopy',side_effect=AssertionError('copy must not run')) as copied:
+            result=native.native_product_relationship_errors(f.record,f.assertion,policy,inventory)
+        self.assertEqual(result,('usda-relationship-assertion-bound',));copied.assert_not_called()
+    def test_bounded_duplicate_pins_remain_valid_with_matching_review(self):
+        f=self.f;f.assertion['evidence']=[f.evidence]*3;f.refresh()
+        self.assertEqual(f.errors(),())
+    def test_nested_or_extra_pin_shapes_refuse_before_copy(self):
+        f=self.f;inventory=f.inventory();f.assertion['evidence']=[{'path':[], 'sha256':'a'*64}]
+        with patch.object(native,'deepcopy',side_effect=AssertionError('copy must not run')) as copied:
+            result=native.native_product_relationship_errors(f.record,f.assertion,f.policy,inventory)
+        self.assertEqual(result,('usda-relationship-assertion-unqualified',));copied.assert_not_called()
     def test_supported_check_is_pure_and_no_source_values_in_diagnostics(self):
         f=self.f
         with patch('builtins.open',side_effect=AssertionError('no IO')),patch('sqlite3.connect',side_effect=AssertionError('no DB')),patch('gzip.open',side_effect=AssertionError('no gzip')):

@@ -95,6 +95,19 @@ candidate or qualify runtime capacity. Private evidence stays private. All
 SAME11, source/privacy/custody/ownership/denial/mandatory auto_review and
 execution/promotion/production/CIX holds remain unchanged.
 
+PR76 assertion correction: before copying the record/assertion/policy or using
+the resolver, the caller assertion must have the existing flat closed shape.
+Its evidence-list item count is additionally capped by `max_evidence_reads`,
+including repeated pins even when evidence-byte caching would avoid another
+resolver dispatch. Aggregate built-in string lengths are capped before JSON
+serialization, and the exact serialized assertion must fit
+`max_evidence_bytes`. This bounds temporary escaping/UTF8 expansion as well as
+subsequent copy, evidence traversal and assertion fingerprint work. Oversize
+returns `usda-relationship-assertion-bound`; malformed nested shapes refuse.
+Small repeated pins remain supported with their exact matching review.
+This correction does not change upstream native-record qualification or claim
+that arbitrary trusted resolver/policy code has an OS CPU/memory boundary.
+
 ## Synthetic verification and review
 
 Tests use invented in-memory product/origin records, qualification snapshots,
