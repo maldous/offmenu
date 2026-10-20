@@ -321,10 +321,10 @@ class SelectedProductOriginsTests(unittest.TestCase):
         with self.assertRaisesRegex(sqlite3.OperationalError,'interrupted'): self.run_selected()
         self.assertEqual(len(os.listdir('/proc/self/fd')),before)
 
-    def index_fixture(self,columns):
+    def index_fixture(self,columns,index_name='fixture_index'):
         self.path.unlink(); self.make_database(indexed=False)
         with sqlite3.connect(self.path) as db:
-            db.execute('CREATE INDEX fixture_index ON raw('+columns+')')
+            db.execute('CREATE INDEX "'+index_name.replace('"','""')+'" ON raw('+columns+')')
         db.close()
         self.manifest = self.manifest_bytes()
         self.scope = replace(self.scope,database=Asset('source.sqlite',self.path.stat().st_size,
@@ -352,6 +352,45 @@ class SelectedProductOriginsTests(unittest.TestCase):
         for old,new in zip(self.records,result['records']):
             self.assertEqual(canonical(old['data']),canonical(new['data']))
             self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
+    def test_scan_in_composite_index_name_is_not_a_scan_operation(self):
+        self.index_fixture('tab,ordinal',index_name='scan_index')
+        with sqlite3.connect(self.path) as db:
+            plan = db.execute('EXPLAIN QUERY PLAN SELECT ordinal,identity,body FROM raw '
+                              'WHERE tab=? AND ordinal=? LIMIT 2',('food',7)).fetchall()
+        db.close()
+        self.assertIn('SEARCH raw USING INDEX scan_index (tab=? AND ordinal=?)',plan[0][3])
+        result = self.run_selected(); self.assertEqual(result['measurements']['pointRowsRead'],4)
+        for old,new in zip(self.records,result['records']):
+            self.assertEqual(canonical(old['data']),canonical(new['data']))
+            self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
+    def test_bound_uppercase_csv_extensions_preserve_exact_member_coordinates(self):
+        original = self.scope.members
+        for extension in ('.CSV','.CsV'):
+            with self.subTest(extension=extension):
+                members = tuple((table,path[:-4]+extension) for table,path in original)
+                self.scope = replace(self.scope,members=members); self.rebind()
+                result = self.run_selected()
+                origins = result['records'][0]['provenance']['fieldOrigins']
+                self.assertEqual(origins['/data/name']['archiveMember'],members[0][1])
+                self.assertEqual(origins['/data/ingredientsText']['inputs'][-1]['archiveMember'],members[1][1])
+                for old,new in zip(self.records,result['records']):
+                    self.assertEqual(canonical(old['data']),canonical(new['data']))
+                    self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
+    def test_uppercase_member_changes_still_require_independent_binding(self):
+        self.scope = replace(self.scope,members=tuple((t,p[:-4]+'.CSV') for t,p in self.scope.members))
+        with patch.object(s,'_open_database',side_effect=AssertionError('no DB before authority')):
+            with self.assertRaisesRegex(RefreshError,'selected-operation-binding-mismatch'): self.run_selected()
+
+    def test_member_extension_acceptance_does_not_casefold_table_or_allow_other_types(self):
+        original = self.scope.members
+        for bad in ('Exact_Release/Food.CSV','Exact_Release/food.JSON','Exact_Release/food.CSV.zip'):
+            with self.subTest(member=bad):
+                self.scope = replace(self.scope,members=(('food',bad),original[1])); self.rebind()
+                with patch.object(s,'_open_database',side_effect=AssertionError('no DB before member validation')):
+                    with self.assertRaisesRegex(RefreshError,'exact-members-required'): self.run_selected()
 
 
 if __name__ == '__main__': unittest.main()

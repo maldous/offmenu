@@ -152,7 +152,7 @@ def _validate(scope, limits, contract, qualification, manifest, binding_evidence
             raise ValueError()
         for table, member in scope.members:
             if (not valid_input_name(member) or PurePosixPath(member).stem != table
-                    or PurePosixPath(member).suffix != '.csv'):
+                    or PurePosixPath(member).suffix.lower() != '.csv'):
                 raise ValueError()
     except (TypeError, ValueError):
         _fail('exact-members-required')
@@ -244,7 +244,7 @@ class _SelectedRows:
             pin = getattr(self.products[key], table)
             sql = 'SELECT ordinal,identity,body FROM raw WHERE tab=? AND ordinal=? LIMIT 2'
             plan = self.db.execute('EXPLAIN QUERY PLAN '+sql, (table, pin.ordinal)).fetchall()
-            if not plan or any('SCAN' in str(p[3]).upper() or 'TEMP B-TREE' in str(p[3]).upper() for p in plan):
+            if not plan or any(re.match(r'^\s*(?:SCAN\b|USE\s+TEMP\s+B-TREE\b)', str(p[3]), re.I) for p in plan):
                 _fail('unbounded-source-query')
             point_search = False
             for step in plan:
