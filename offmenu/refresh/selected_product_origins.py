@@ -337,7 +337,8 @@ def emit_selected_usda_product_origins(records, *, scope, limits, contract, qual
         db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, min(2**31-1, max(limits.max_row_bytes, 4096)))
         view = _SelectedRows(db, scope, limits, deadline)
         emitter_limits = ProductLimits(max_input_bytes=limits.max_input_bytes,
-            max_expanded_bytes=limits.max_source_row_bytes, max_line_bytes=limits.max_record_bytes,
+            max_expanded_bytes=limits.max_source_row_bytes,
+            max_line_bytes=max(limits.max_row_bytes, limits.max_record_bytes),
             max_rows=limits.max_records, max_output_bytes=limits.max_output_bytes,
             max_database_bytes=limits.max_database_bytes, max_archive_members=2, max_nutrients_per_food=1)
         emitter = ProductOriginEmitter(scope.context, view,
@@ -351,6 +352,7 @@ def emit_selected_usda_product_origins(records, *, scope, limits, contract, qual
             if field_origin_errors(enriched, emitter.pins, policy_pins=[scope.emitter_policy_sha256]):
                 _fail('complete-origin-inventory-required')
             raw = canonical(enriched); output_bytes += len(raw)
+            if len(raw) > limits.max_record_bytes: _fail('enriched-record-byte-bound')
             if output_bytes > limits.max_output_bytes: _fail('output-bound')
             output.append(enriched)
         db.close(); db = None

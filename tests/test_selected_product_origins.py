@@ -434,5 +434,56 @@ class SelectedProductOriginsTests(unittest.TestCase):
         with patch.object(s,'_open_database',side_effect=AssertionError('no DB for invalid bound')):
             with self.assertRaisesRegex(RefreshError,'bound-selection-required'): self.run_selected()
 
+    def padded_selected_brand_row(self):
+        key,body = self.raw['branded_food',91]
+        row = json.loads(body); row['unused_fixture_column'] = 'x'*20000
+        body = json.dumps(row,sort_keys=True); self.raw['branded_food',91] = key,body
+        with sqlite3.connect(self.path) as db:
+            db.execute('UPDATE raw SET body=? WHERE tab=? AND ordinal=?',(body,'branded_food',91))
+        db.close(); self.manifest = self.manifest_bytes()
+        item = replace(self.scope.products[0],branded_food=s.RowPin(91,hashlib.sha256(body.encode()).hexdigest()))
+        self.scope = replace(self.scope,products=(item,self.scope.products[1]),
+            database=Asset('source.sqlite',self.path.stat().st_size,hashlib.sha256(self.path.read_bytes()).hexdigest()),
+            database_identity=s._signature(self.path.stat()),normalization_manifest=Asset('manifest.json',
+                len(self.manifest),hashlib.sha256(self.manifest).hexdigest()))
+        self.rebind(); return len(body.encode())
+
+    def test_allowed_raw_row_larger_than_record_cap_preserves_complete_small_output(self):
+        raw_bytes = self.padded_selected_brand_row()
+        self.limits = replace(self.limits,max_row_bytes=65536,max_record_bytes=16000); self.rebind()
+        self.assertTrue(16000 < raw_bytes < 65536)
+        self.assertTrue(all(len(canonical(r)) < 16000 for r in self.records))
+        result = self.run_selected(); self.assertEqual(result['measurements']['pointRowsRead'],4)
+        for old,new in zip(self.records,result['records']):
+            self.assertLess(len(canonical(new)),16000)
+            self.assertEqual(canonical(old['data']),canonical(new['data']))
+            self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+        self.assertFalse(result['qualified']); self.assertFalse(result['runtimeOrResourcesAdmitted'])
+
+    def test_raw_overcap_still_refuses_when_record_cap_is_larger(self):
+        self.assertGreater(self.padded_selected_brand_row(),16000)
+        self.limits = replace(self.limits,max_row_bytes=16000,max_record_bytes=65536); self.rebind()
+        before = len(os.listdir('/proc/self/fd'))
+        with self.assertRaises((sqlite3.DataError,RefreshError)): self.run_selected()
+        self.assertEqual(len(os.listdir('/proc/self/fd')),before)
+
+    def test_enriched_overcap_still_refuses_when_raw_cap_is_larger(self):
+        self.padded_selected_brand_row()
+        expected = self.run_selected()
+        self.assertGreater(max(len(canonical(r)) for r in expected['records']),14000)
+        self.assertTrue(all(len(canonical(r)) < 14000 for r in self.records))
+        self.limits = replace(self.limits,max_row_bytes=65536,max_record_bytes=14000); self.rebind()
+        before = len(os.listdir('/proc/self/fd'))
+        with self.assertRaisesRegex(RefreshError,'enriched-record-byte-bound'): self.run_selected()
+        self.assertEqual(len(os.listdir('/proc/self/fd')),before)
+
+    def test_record_cap_larger_than_raw_cap_allows_complete_origins(self):
+        self.limits = replace(self.limits,max_row_bytes=4096,max_record_bytes=16000); self.rebind()
+        result = self.run_selected()
+        self.assertTrue(all(4096 < len(canonical(r)) < 16000 for r in result['records']))
+        for old,new in zip(self.records,result['records']):
+            self.assertEqual(canonical(old['data']),canonical(new['data']))
+            self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
 
 if __name__ == '__main__': unittest.main()

@@ -90,7 +90,12 @@ need the selected executor's OS/resource boundary.
 
 Limits bound records/input/metadata, raw row and total row bytes, enriched-record
 and aggregate output bytes, declared DB size, cooperative time and SQLite VM
-steps during the point-query phase. The progress handler checks every VM step;
+steps independently: `max_row_bytes` limits each raw body, while
+`max_record_bytes` limits each input and complete enriched record. The unchanged
+emitter's shared line envelope uses the larger of those two caps; the caller
+checks each enriched record against its own cap before retaining it. A permitted
+unused raw column does not consume the enriched-record allowance.
+The progress handler checks every VM step during the point-query phase;
 it is not an OS walltime/IO/memory boundary. The fixed open/header setup precedes
 that counter. SQLite length limits supplement row checks. The SQLite C-int API
 argument is capped at `2**31 - 1`, retaining the existing 4096-byte floor; the
