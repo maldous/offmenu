@@ -25,22 +25,34 @@ with bind_normalized_semantics(contract, normalized, qualification_manifest, lim
 # Use the result only after this context exits successfully.
 ```
 
-Only a reviewed application `SourceContract` carrying the accepted typed
-`UnboundOffSemantics` selects the OFF binding. The caller supplies the direct
-normalizer result and its exact `normalizationManifestSha256`; metadata loaded
-from source JSON or candidate provenance cannot construct that authority. The
+Only a reviewed application `SourceContract` carrying typed `PinnedOffSemantics`
+and an exactly matching `policy_sha256` selects the OFF binding. Its immutable
+`DerivationPins` must independently pin normalization manifest, database and
+candidate hashes plus the independent derivation-review evidence reference.
+Bare `UnboundOffSemantics` now refuses binding. The caller supplies the normalizer
+result, but its recomputed hashes alone confer no authority. The
 generic bridge already verifies source/evidence before parsing; the normalizer
 rechecks its actual inputs; generic qualify/accept verifies selected assets and
 candidate bytes before and after qualification. The new context does not replace
 those checks or independently reparse the original to prove DB derivation.
 
-A caller who controls trusted application configuration and recomputes all
-normalization pins controls that trust root. This API is not a way to authenticate
-arbitrary self-supplied manifests. The ordinary bridge avoids that substitution
-by passing the direct verified normalizer result. Explicit reuse must obtain the
-same reviewed normalization artifact/pin through the existing trusted application
-route, and must run qualify/accept inside the context. A context alone grants
-neither original-input verification nor source acceptance.
+A reviewed application factory must select those literal pins from accepted
+evidence that establishes derivation from the exact pinned original, producer,
+context and operation. It must never copy them from the cache being reused or
+merely review its internal consistency. `independent_review_sha256` is a reference
+to that accepted evidence, not a signature or a claim that this module performed
+review. Computing `derivation_policy_sha256` authenticates nothing by itself.
+There is no production cache-to-authority helper or real configured derivation.
+
+The old direct-normalizer-result assumption was insufficient on reuse: the
+normalizer may return an internally rehashed cache without rebuilding it. The
+bridge now requires the external trusted snapshot for both new and reused output;
+a changed artifact cannot replace that snapshot by recomputing its own hashes.
+If no independent original-derivation evidence exists, qualification stays held.
+A separately permitted and resource-qualified rebuild/verification against the
+original may produce evidence for subsequent independent review and factory
+selection. No such rebuild, original read, or automatic fallback is added here.
+Explicit qualify/accept must still run within the binding context.
 
 ## Exact binding
 
@@ -48,6 +60,8 @@ Before opening SQLite, the context requires:
 
 - Private native OFF2026-10-12, no holds, required/permitted retain/parse/transform,
   unknown original acquisition, exact policy context and rights/scope/clock assets.
+- Application-pinned derivation and independent-review reference bound into
+  SourceContract.policy_sha256, with exact manifest/DB/candidate snapshot matching.
 - Exactly the source and three distinct evidence assets, with the declared source
   pin fixed by the accepted OFF policy. No JSON-loaded source/grant constructor.
 - Exact source-specific schemas and schema fingerprint; explicit trusted expected
@@ -109,7 +123,11 @@ sidecars, symlinks and FIFO refusal; same-byte replacement and lifetime mutation
 read-only handles, callback expiry and exception closure; oversized/corrupt DB
 values; and original mutation during generic qualification. Existing OFF input-root,
 legacy product and accepted USDA tests exercise the shared hook's compatibility,
-not a denied review or retrospective source/data admission.
+not a denied review or retrospective source/data admission. The new PR72
+regression rewrites DB rows, corresponding candidate records, all output hashes
+and the manifest while leaving original bytes and trusted configuration unchanged.
+It reproduces acceptance on4944b16 and refusal on the corrected source. Independent
+fixture pin selection is explicit test setup, never a production authority helper.
 
 ## Still unresolved for real OFF
 
@@ -125,3 +143,5 @@ Gateway routes this exact candidate to fresh existing56 independent review, then
 Worker00 alone integrates the current accepted author/review pair. Worker57's live
 witness and all source/custody/incident10230/privacy/denial/production/CIX holds
 remain unchanged. No new job, charge, controller or framework is created.
+Real independently approved original-derivation snapshot/review pins also remain
+unset. The dirty-full-scope proposal is separate and not implemented here.

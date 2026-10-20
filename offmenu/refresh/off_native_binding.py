@@ -4,7 +4,7 @@ No real contract/count/rights/resource factory. Only reviewed application
 SourceContracts carrying the accepted UnboundOffSemantics select this context.
 """
 from contextlib import contextmanager
-from dataclasses import asdict, replace
+from dataclasses import asdict, dataclass, replace
 import hashlib
 from pathlib import Path
 import re
@@ -16,6 +16,40 @@ from .core import RefreshError, strict_json
 from . import off_native_policy as policy
 from . import product_adapters as adapters
 from . import product_clock
+
+
+@dataclass(frozen=True)
+class DerivationPins:
+    """Reviewed application constants, NEVER populated from a reusable cache.
+
+    The independent evidence must establish derivation from the exact original,
+    context and producer, not merely repeat output self-consistency checks.
+    No real pin or evidence constructor is supplied by this module.
+    """
+    normalization_manifest_sha256: str
+    database_sha256: str
+    candidate_sha256: str
+    independent_review_sha256: str
+
+
+@dataclass(frozen=True)
+class PinnedOffSemantics(policy.UnboundOffSemantics):
+    derivation: DerivationPins
+
+
+def derivation_policy_sha256(semantic):
+    """Bind independently selected pins into the trusted SourceContract identity.
+
+    Computing this digest does not make supplied pins independently trustworthy.
+    A reviewed application factory must select them from accepted evidence.
+    """
+    if type(semantic) is not PinnedOffSemantics or type(semantic.derivation) is not DerivationPins:
+        _fail('off-source-derivation-required')
+    values=asdict(semantic.derivation)
+    if any(type(v) is not str or not re.fullmatch('[0-9a-f]{64}',v) for v in values.values()):
+        _fail('off-source-derivation-pin-invalid')
+    return fingerprint({'version':'off-reviewed-original-derivation/1',
+        'policy':policy.policy_descriptor(),'context':asdict(semantic.context),'derivation':values})
 
 
 def _fail(code):
@@ -50,7 +84,11 @@ def _sidecars_absent(path):
 
 def _check_contract(contract, manifest, limits):
     p=contract.semantic_validator
-    if (type(contract) is not SourceContract or type(p) is not policy.UnboundOffSemantics
+    if type(p) is not PinnedOffSemantics:
+        _fail('off-source-derivation-required')
+    if contract.policy_sha256!=derivation_policy_sha256(p):
+        _fail('off-source-derivation-policy-pin')
+    if (type(contract) is not SourceContract
             or policy._context_errors(p.context) or contract.holds
             or contract.source_id!='off' or contract.release_id!=policy.RELEASE
             or contract.output_scope!='native' or contract.output_visibility!='private'
@@ -105,6 +143,12 @@ def bind_normalized_semantics(contract, normalized, manifest, limits):
         manifest_path=adapters._safe(root/'manifest.json')
         db_path=adapters._safe(root/'source.sqlite')
         manifest_pin=manifest.get('normalizationManifestSha256')
+        trusted=contract.semantic_validator.derivation
+        if (manifest_pin!=trusted.normalization_manifest_sha256
+                or manifest.get('outputHashes',{}).get('source.sqlite')!=trusted.database_sha256
+                or manifest.get('outputHashes',{}).get('candidate.jsonl')!=trusted.candidate_sha256
+                or manifest.get('candidateSha256')!=trusted.candidate_sha256):
+            _fail('off-source-derivation-mismatch')
         manifest_identity=_snapshot(manifest_path,1024**2,manifest_pin)
         with manifest_path.open('rb') as stream:
             raw=stream.read(1024**2+1)

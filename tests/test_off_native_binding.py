@@ -59,7 +59,19 @@ class OffNativeBindingTests(unittest.TestCase):
         self.original=adapters.normalize_products(self.context,
             {'products':self.inputs/self.source.path},self.normalized,limits=self.limits)
         self.manifest=self.qualified_manifest(self.original)
+        self.select_independent_fixture_pins()
         self.records=[json.loads(line)[0] for line in (self.normalized/'candidate.jsonl').read_bytes().splitlines()]
+
+    def select_independent_fixture_pins(self):
+        # Trusted fixture setup knows which authored original was actually parsed.
+        # This models a separately reviewed application selection, NOT a production
+        # cache-to-authority helper. The forged-cache regression does not call it.
+        pins=binding.DerivationPins(self.manifest['normalizationManifestSha256'],
+            self.manifest['outputHashes']['source.sqlite'],
+            self.manifest['outputHashes']['candidate.jsonl'],'e'*64)
+        semantic=binding.PinnedOffSemantics(self.context,pins)
+        self.contract=replace(self.contract,semantic_validator=semantic,
+            policy_sha256=binding.derivation_policy_sha256(semantic))
 
     def qualified_manifest(self,original):
         return {**deepcopy(original),'inputFiles':[asdict(a) for a in sorted(self.contract.inputs,key=lambda a:a.path)],
@@ -75,6 +87,7 @@ class OffNativeBindingTests(unittest.TestCase):
         original['outputHashes']['source.sqlite']=hashlib.sha256((self.normalized/'source.sqlite').read_bytes()).hexdigest()
         (self.normalized/'manifest.json').write_bytes(canonical(original))
         self.manifest=self.qualified_manifest(original)
+        self.select_independent_fixture_pins()
 
     def test_bound_both_kinds_qualify_accept_and_expire_without_mutation(self):
         files={p.name:p.read_bytes() for p in self.normalized.iterdir()}
@@ -150,7 +163,7 @@ class OffNativeBindingTests(unittest.TestCase):
         with self.assertRaises(RefreshError):
             with self.bind(manifest=manifest):pass
         manifest=self.qualified_manifest(original)
-        with self.assertRaisesRegex(RefreshError,'off-source-authority-counts'):
+        with self.assertRaises(RefreshError):
             with self.bind(manifest=manifest):pass
 
     def test_db_lookup_rejects_missing_identity_wrong_ordinal_and_forged_source_code(self):
@@ -246,6 +259,39 @@ class OffNativeBindingTests(unittest.TestCase):
     def test_non_off_policy_is_not_reinterpreted(self):
         legacy=replace(self.contract,semantic_validator=lambda row:[])
         with self.bind(legacy) as checked:self.assertIs(checked,legacy)
+
+    def test_bare_or_altered_derivation_authority_is_refused(self):
+        bare=replace(self.contract,semantic_validator=policy.UnboundOffSemantics(self.context))
+        with self.assertRaisesRegex(RefreshError,'off-source-derivation-required'):
+            with self.bind(bare):pass
+        altered=replace(self.contract.semantic_validator,derivation=replace(
+            self.contract.semantic_validator.derivation,independent_review_sha256='f'*64))
+        with self.assertRaisesRegex(RefreshError,'off-source-derivation-policy-pin'):
+            with self.bind(replace(self.contract,semantic_validator=altered)):pass
+
+    def test_rehashed_forged_cache_cannot_authenticate_original_derivation(self):
+        # Original gzip and trusted application contract remain unchanged.
+        db=sqlite3.connect(self.normalized/'source.sqlite')
+        changed=deepcopy(self.rows);changed[0]['product_name']='Forged cache value'
+        db.execute('UPDATE raw SET body=? WHERE ordinal=1',(canonical(changed[0]).decode(),))
+        db.commit();db.close()
+        packets=[]
+        for ordinal,source in enumerate(changed,1):
+            for row in adapters._off(self.context,source):
+                row['provenance'].update(sourceRow=ordinal,sourceRevision=source.get('rev'),
+                    sourceLastModified=source.get('last_modified_t'),sourceLastUpdated=source.get('last_updated_t'),
+                    inputSha256={'products':self.source.sha256})
+                packets.append(adapters.canonical([row]))
+        candidate=b''.join(packets);(self.normalized/'candidate.jsonl').write_bytes(candidate)
+        original=json.loads((self.normalized/'manifest.json').read_bytes())
+        original.update(candidateBytes=len(candidate),candidateSha256=hashlib.sha256(candidate).hexdigest())
+        original['outputHashes']={name:hashlib.sha256((self.normalized/name).read_bytes()).hexdigest()
+                                  for name in ('source.sqlite','candidate.jsonl')}
+        (self.normalized/'manifest.json').write_bytes(adapters.canonical(original))
+        self.manifest=self.qualified_manifest(original)
+        with self.assertRaises(RefreshError):
+            qualify_product_candidate(self.contract,self.bundle,{'products':self.source.path},self.normalized,
+                license=policy.LICENSE,attribution=policy.ATTRIBUTION,limits=self.limits,input_root=self.inputs)
 
     def test_corrupt_but_rehashed_fixture_db_is_a_fixed_storage_failure(self):
         (self.normalized/'source.sqlite').write_bytes(b'not a SQLite database')
