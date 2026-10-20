@@ -5,8 +5,10 @@ import gzip
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 import zipfile
@@ -292,3 +294,91 @@ class ProductInputWitnessTest(unittest.TestCase):
     def test_diagnostic_digest_matches_exact_retained_bytes(self):
         r=self.run_witness(self.off(raw=b'bad\n'))
         self.assertEqual(r['diagnosticsSha256'],hashlib.sha256((self.root/'output/diagnostics.jsonl').read_bytes()).hexdigest())
+
+    def assert_metadata_mutation_rejected(self, field, mode):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off()
+        target=self.bundle/getattr(c,field).path
+        original=target.read_bytes();inode=target.stat().st_ino
+        replacement=self.root/'replacement.json';replacement.write_bytes(original)
+        real_read=os.read;changed=False
+        def mutate(fd,size):
+            nonlocal changed
+            data=real_read(fd,size)
+            if os.fstat(fd).st_ino==inode and not changed:
+                changed=True
+                if mode=='grow':target.write_bytes(original+b' '*(2*1024**2))
+                elif mode=='replace':os.replace(replacement,target)
+                else:
+                    target.unlink();target.symlink_to(replacement)
+            return data
+        with patch.object(w.os,'read',side_effect=mutate),patch.object(w,'strict_json') as parse, \
+                patch.object(w,'digest',side_effect=AssertionError('original must not be read')) as original_read:
+            with self.assertRaises(RefreshError):self.run_witness(c)
+            parse.assert_not_called();original_read.assert_not_called()
+        self.assertTrue(changed)
+        self.assertFalse((self.root/'output').exists())
+
+    def test_scope_growth_at_actual_read_rejected_before_original(self):
+        self.assert_metadata_mutation_rejected('scope_evidence','grow')
+
+    def test_clock_growth_at_actual_read_rejected_before_original(self):
+        self.assert_metadata_mutation_rejected('clock_evidence','grow')
+
+    def test_metadata_same_byte_inode_replacement_rejected_before_original(self):
+        self.assert_metadata_mutation_rejected('clock_evidence','replace')
+
+    def test_metadata_symlink_swap_rejected_before_original(self):
+        self.assert_metadata_mutation_rejected('scope_evidence','symlink')
+
+    def test_metadata_deadline_after_read_rejects_before_parse_or_original(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();expired=False;real_read=os.read
+        def read(fd,size):
+            nonlocal expired
+            data=real_read(fd,size);expired=True;return data
+        with patch.object(w.time,'monotonic',side_effect=lambda:4000 if expired else 0), \
+                patch.object(w.os,'read',side_effect=read),patch.object(w,'strict_json') as parse, \
+                patch.object(w,'digest',side_effect=AssertionError('no original read')) as original_read:
+            with self.assertRaisesRegex(RefreshError,'evidence-duration-limit'):self.run_witness(c)
+            parse.assert_not_called();original_read.assert_not_called()
+
+    def test_nonregular_symlink_and_oversize_metadata_never_parse(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();target=self.bundle/c.rights_evidence.path;original=target.read_bytes()
+        replacement=self.root/'replacement.json';replacement.write_bytes(original)
+        for mode in ('directory','fifo','symlink','oversize'):
+            with self.subTest(mode=mode):
+                target.unlink()
+                if mode=='directory':target.mkdir()
+                elif mode=='fifo':os.mkfifo(target)
+                elif mode=='symlink':target.symlink_to(replacement)
+                else:target.write_bytes(b'x'*(1024**2+1))
+                with patch.object(w,'strict_json') as parse,patch.object(w,'digest') as original_read:
+                    with self.assertRaises(RefreshError):self.run_witness(c)
+                    parse.assert_not_called();original_read.assert_not_called()
+                target.rmdir() if mode=='directory' else target.unlink()
+                target.write_bytes(original)
+
+    def test_same_size_wrong_hash_metadata_never_parsed(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();target=self.bundle/c.clock_evidence.path;original=target.read_bytes()
+        target.write_bytes(b'['+original[1:])
+        with patch.object(w,'strict_json') as parse,patch.object(w,'digest') as original_read:
+            with self.assertRaises(RefreshError):self.run_witness(c)
+            parse.assert_not_called();original_read.assert_not_called()
+
+    def test_maximum_scope_buffer_and_read_requests_bounded(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();scope=json.loads((self.bundle/c.scope_evidence.path).read_bytes())
+        scope['syntheticPadding']='';scope['syntheticPadding']='x'*(1024**2-len(canonical(scope)))
+        asset=self.asset(c.scope_evidence.path,canonical(scope));c=replace(c,scope_evidence=asset)
+        self.assertEqual(asset.bytes,1024**2)
+        real_read,real_json=os.read,w.strict_json;requests=[];parsed=[]
+        def read(fd,size):requests.append(size);return real_read(fd,size)
+        def parse(raw):parsed.append(raw);return real_json(raw)
+        with patch.object(w.os,'read',side_effect=read),patch.object(w,'strict_json',side_effect=parse):
+            w._preflight(c,self.bundle,self.limits,time.monotonic()+10)
+        self.assertEqual([len(raw) for raw in parsed],[1024**2,c.clock_evidence.bytes])
+        self.assertTrue(all(0<size<=65536 for size in requests))
+        self.assertEqual(hashlib.sha256(parsed[0]).hexdigest(),asset.sha256)

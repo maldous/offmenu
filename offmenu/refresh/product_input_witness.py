@@ -14,6 +14,7 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import sqlite3
+import stat
 import tempfile
 import time
 import zipfile
@@ -87,6 +88,52 @@ def _contract_value(contract):
     return value
 
 
+def _metadata_deadline(deadline):
+    if time.monotonic() >= deadline:
+        raise RefreshError('witness-evidence-duration-limit')
+
+
+def _verified_metadata_bytes(asset, root, deadline):
+    """Verify one bounded descriptor buffer; never reopen it for JSON parsing."""
+    _metadata_deadline(deadline)
+    if not _valid_asset(asset) or not 0 < asset.bytes <= 1024**2:
+        raise RefreshError('witness-evidence-custody-mismatch')
+    path = safe_path(root / asset.path)
+    signature = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+    try:
+        before = path.lstat()
+        if not stat.S_ISREG(before.st_mode) or before.st_size != asset.bytes:
+            raise RefreshError('witness-evidence-custody-mismatch')
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        try:
+            _metadata_deadline(deadline)
+            opened = os.fstat(fd)
+            if not stat.S_ISREG(opened.st_mode) or signature(before) != signature(opened):
+                raise RefreshError('witness-evidence-custody-mismatch')
+            chunks, size = [], 0
+            while size <= asset.bytes:
+                _metadata_deadline(deadline)
+                block = os.read(fd, min(65536, asset.bytes - size + 1))
+                _metadata_deadline(deadline)
+                if not block:
+                    break
+                chunks.append(block)
+                size += len(block)
+            after = os.fstat(fd)
+        finally:
+            os.close(fd)
+        current = safe_path(path).lstat()
+        raw = b''.join(chunks)
+        if (not stat.S_ISREG(current.st_mode)
+                or signature(before) != signature(after) or signature(after) != signature(current)
+                or len(raw) != asset.bytes or hashlib.sha256(raw).hexdigest() != asset.sha256):
+            raise RefreshError('witness-evidence-custody-mismatch')
+        _metadata_deadline(deadline)
+        return raw
+    except OSError:
+        raise RefreshError('witness-evidence-custody-mismatch') from None
+
+
 def _preflight(contract, root, limits, deadline, external_original=False):
     if (contract.source_id not in ('off', 'usda-files')
             or not all(isinstance(s, str) and s for s in (contract.release_id, contract.scope_id))
@@ -116,10 +163,10 @@ def _preflight(contract, root, limits, deadline, external_original=False):
     if bundle_files(root, {a.path for a in evidence_assets}) != {a.path for a in evidence_assets}:
         raise RefreshError('witness-bundle-set-mismatch')
     # Verify bounded evidence first; never use source JSON as an operation grant.
-    for a in assets[1:]:
-        if digest(root / a.path, max_bytes=1024**2, deadline=deadline) != {'bytes': a.bytes, 'sha256': a.sha256}:
-            raise RefreshError('witness-evidence-custody-mismatch')
-    scope = strict_json((root / contract.scope_evidence.path).read_bytes())
+    metadata = {a.path: _verified_metadata_bytes(a, root, deadline) for a in assets[1:]}
+    _metadata_deadline(deadline)
+    scope = strict_json(metadata[contract.scope_evidence.path])
+    _metadata_deadline(deadline)
     expected = {'operation': OPERATION, 'sourceId': contract.source_id,
                 'releaseId': contract.release_id, 'scopeId': contract.scope_id,
                 'original': asdict(contract.original),
@@ -130,7 +177,8 @@ def _preflight(contract, root, limits, deadline, external_original=False):
                 'tables': [asdict(t) for t in contract.tables], 'members': list(contract.members)}
     if not isinstance(scope, dict) or any(k not in scope or canonical(scope[k]) != canonical(v) for k, v in expected.items()):
         raise RefreshError('witness-scope-binding-mismatch')
-    clock = strict_json((root / contract.clock_evidence.path).read_bytes())
+    clock = strict_json(metadata[contract.clock_evidence.path])
+    _metadata_deadline(deadline)
     sources = clock.get('sources', []) if isinstance(clock, dict) else []
     matching = [s for s in sources if isinstance(s, dict) and s.get('sourceId') == contract.source_id
                 and s.get('originalSha256') == contract.original.sha256
@@ -174,6 +222,7 @@ def _preflight(contract, root, limits, deadline, external_original=False):
                     required.add((('nutrient_id',), nutrient))
                 if not required <= set(t.references):
                     raise RefreshError('witness-required-join-missing')
+    _metadata_deadline(deadline)
     return assets
 
 

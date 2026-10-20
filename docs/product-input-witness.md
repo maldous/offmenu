@@ -23,6 +23,13 @@ must form the exact bundle. Source/evidence/output paths reject symlinks and
 overlap. All evidence hashes and exact source/release/scope/operation bindings are
 checked before original custody reads. Capacity/floor checks precede original
 hashing/allocation. Original and evidence hashes are rechecked after traversal.
+Evidence preflight reads each metadata asset into one bounded descriptor buffer,
+checks its exact size/SHA and regular-file/path/descriptor identity before and
+after reading, and parses only those verified bytes. It does not reopen a path
+after hashing. Reads reject leaf symlinks/non-regular files without blocking on
+FIFOs, and check the operation deadline around every chunk and metadata parse.
+Growth, replacement, oversized data or deadline expiry fails before original
+custody reads or scratch allocation. The post-traversal checks remain mandatory.
 
 ## Denominator and IDs
 
