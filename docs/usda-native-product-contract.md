@@ -31,6 +31,29 @@ and units remain native source assertions. Repeated nutrient measurements retain
 their existing observation suffixes. This does not qualify source units as
 canonical dimensions, clinical facts or nutrient-definition equivalences.
 
+The primary name belongs to the first **source CSV row** for that mapped nutrient;
+later rows use the existing `:observation:<source ID>` suffix. Neither numeric
+source-ID sorting nor JSON object key order establishes source order. Fixed
+nutrient-profile qualification fails closed without authoritative row order.
+The product qualifier automatically binds the fixed semantic policy to the same
+normalization's private `source.sqlite`, checked against its normalization
+manifest/source-context/input/output pins and read-only DB hash/identity before
+and after qualification. Its query uses the stored CSV `ordinal`, with bounded
+rows/bytes, and checks exact expected observation names and source raw fields.
+Suffix-only, swapped-primary, missing-observation and coherent row/value forgery
+are rejected without changing IDs. The pinned projector itself is unchanged.
+
+The field-origin stage uses that same order authority during new and retry
+qualification. Direct `qualify`/`accept` with the unbound fixed policy remains
+held. A later explicit native acceptance must use
+`bind_normalized_semantics(contract, normalization_dir, qualification_manifest,
+reviewed_limits)` and pass its yielded contract to `accept`. This context is
+supplied only verified product-normalization artifacts, never discovery JSON.
+It neither reruns the archive parser nor changes counts/rights/publication.
+Fresh57/64 resource qualification must include the extra read-only DB handle,
+bounded row queries and pre/post DB hash IO; no existing resource admission is
+implicitly extended by this correction.
+
 `evidence_documents()` deterministically produces new product scope and clock
 metadata. Write exactly the bytes returned by `acceptance.canonical`; using the
 JSONL encoder or adding a newline changes their pins. Copy only the existing

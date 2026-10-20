@@ -86,7 +86,10 @@ def qualify_product_candidate(contract, bundle, roles, destination, *, license,
                 'normalizationManifestSha256': _hash(destination / 'manifest.json'),
                 'inputRoleMap': dict(roles)}
     # Qualification rechecks original/evidence pins after parsing to catch mutation.
-    result = qualify(contract, root, destination / 'candidate.jsonl', manifest, input_root=input_root)
+    from .usda_product_contract import bind_normalized_semantics
+    with bind_normalized_semantics(contract, destination, manifest, limits) as checked_contract:
+        result = qualify(checked_contract, root, destination / 'candidate.jsonl', manifest,
+                         input_root=input_root)
     path = _safe(destination / 'qualification-manifest.json')
     encoded = canonical(manifest)
     if path.exists():
