@@ -1,6 +1,7 @@
 from dataclasses import replace
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -23,6 +24,16 @@ class PartitionWitnessTests(unittest.TestCase):
         rows=self.rows if rows is None else rows
         return partition_stream((canonical(r) for r in rows),self.root/name,
             original_sha256='a'*64,expected_rows=len(rows),limits=self.limits if limits is None else limits)
+
+    def assert_retained(self,error):
+        state=error.partition_retained_state
+        self.assertIs(state['automaticDeletion'],False)
+        self.assertIs(state['resourceObligationActive'],True)
+        self.assertTrue(Path(state['stageLocation']).is_dir())
+        if state['databaseLocation'] is not None:
+            p=Path(state['databaseLocation']);self.assertTrue(p.is_file())
+            self.assertEqual(tuple(state['databaseIdentity']),(p.stat().st_dev,p.stat().st_ino))
+        return state
 
     def file(self,name,output='output'):
         return [json.loads(l) for l in (self.root/output/name).read_bytes().splitlines()]
@@ -71,6 +82,12 @@ class PartitionWitnessTests(unittest.TestCase):
         r=self.run_rows(rows);self.assertEqual(r['counts'],{'S':2,'C':0,'Q':7})
         for path in (self.root/'output').iterdir():self.assertNotIn(b'DO_NOT_COPY_PAYLOAD',path.read_bytes())
         self.assertFalse((self.root/'output/index.sqlite').exists())
+        retained=r['retainedScratch'];db=Path(retained['databaseLocation'])
+        self.assertTrue(db.is_file());self.assertIs(retained['automaticDeletion'],False)
+        self.assertIs(retained['resourceObligationActive'],True)
+        self.assertEqual(tuple(retained['databaseIdentity']),(db.stat().st_dev,db.stat().st_ino))
+        self.assertEqual(db.stat().st_size,r['measurements']['databaseBytes'])
+        self.assertNotIn(b'DO_NOT_COPY_PAYLOAD',db.read_bytes())
         q=self.file('occurrences.jsonl')[2];self.assertIsNone(q['code']);self.assertEqual(q['reason'],'native-code-invalid')
 
     def test_line_hash_and_canonical_hash_have_explicit_different_domains(self):
@@ -86,18 +103,20 @@ class PartitionWitnessTests(unittest.TestCase):
                ([b'{"a":1,"a":2}\n'],1),([b'{"x":NaN}\n'],1),
                ([canonical({'code':'0001'})],2),([canonical({'code':'0001'})]*2,1)]
         for lines,count in cases:
-            with self.assertRaises(RefreshError):
+            with self.assertRaises(RefreshError) as failure:
                 partition_stream(lines,self.root/'output',original_sha256='a'*64,expected_rows=count,limits=self.limits)
-            self.assertFalse((self.root/'output').exists());self.assertEqual(list(self.root.iterdir()),[])
+            self.assertFalse((self.root/'output').exists());self.assert_retained(failure.exception)
 
     def test_explicit_resource_caps_fail_closed_without_published_success(self):
         for limits in (replace(self.limits,max_rows=1),replace(self.limits,max_line_bytes=1),
                        replace(self.limits,max_expanded_bytes=1),replace(self.limits,max_output_bytes=1)):
-            with self.assertRaises(RefreshError):self.run_rows(limits=limits)
-            self.assertEqual(list(self.root.iterdir()),[])
+            with self.assertRaises(RefreshError) as failure:self.run_rows(limits=limits)
+            self.assertFalse((self.root/'output').exists())
+            if hasattr(failure.exception,'partition_retained_state'):self.assert_retained(failure.exception)
+            else:self.assertEqual(str(failure.exception),'partition-contract-invalid')
         rows=[{'code':str(100000+i)} for i in range(1000)]
-        with self.assertRaises(RefreshError):self.run_rows(rows,limits=replace(self.limits,max_database_bytes=65536))
-        self.assertEqual(list(self.root.iterdir()),[])
+        with self.assertRaises(RefreshError) as failure:self.run_rows(rows,limits=replace(self.limits,max_database_bytes=65536))
+        self.assert_retained(failure.exception);self.assertFalse((self.root/'output').exists())
 
     def test_deadline_and_bad_contracts_fail_without_source_activation(self):
         with patch('offmenu.refresh.off_partition_witness.time.monotonic',side_effect=range(0,10000,100)):
@@ -125,12 +144,12 @@ class PartitionWitnessTests(unittest.TestCase):
             parent.rename(moved);parent.mkdir()
             fake=parent/stage.name;fake.mkdir();(fake/'KEEP').write_text('unrelated')
             (fake/'index.sqlite').write_bytes(b'not the original db')
-        with self.assertRaises(RefreshError):
+        with self.assertRaises(RefreshError) as failure:
             partition_stream(stream(),parent/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
         fake=next(parent.glob('.off-partition-*'))
         self.assertEqual((fake/'KEEP').read_text(),'unrelated')
         self.assertFalse((parent/'output').exists())
-        self.assertEqual(list(moved.iterdir()),[])
+        self.assertTrue(list(moved.iterdir()));self.assert_retained(failure.exception)
 
     def test_replaced_stage_is_not_recursively_deleted_on_iterator_failure(self):
         def stream():
@@ -139,15 +158,16 @@ class PartitionWitnessTests(unittest.TestCase):
             stage.mkdir();(stage/'KEEP').write_text('unrelated')
             raise RuntimeError('fixture failure')
             yield
-        with self.assertRaisesRegex(RefreshError,'partition-owned-stage-cleanup-incomplete') as failure:
+        with self.assertRaisesRegex(RuntimeError,'fixture failure') as failure:
             partition_stream(stream(),self.root/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
         replacement=list(self.root.glob('.off-partition-*'))
         self.assertEqual(len(replacement),1)
         self.assertEqual((replacement[0]/'KEEP').read_text(),'unrelated')
-        self.assertEqual(list((self.root/'saved-owned').iterdir()),[])
-        self.assertEqual(failure.exception.retained_stage_identity,
-                         ((self.root/'saved-owned').stat().st_dev,(self.root/'saved-owned').stat().st_ino))
-        self.assertEqual(failure.exception.retained_stage_location,str(self.root/'saved-owned'))
+        state=self.assert_retained(failure.exception)
+        saved=self.root/'saved-owned'
+        self.assertTrue((saved/'index.sqlite').exists())
+        self.assertEqual(state['stageIdentity'],(saved.stat().st_dev,saved.stat().st_ino))
+        self.assertEqual(state['stageLocation'],str(saved))
 
     def test_parent_replacement_failure_cleanup_uses_original_parent_descriptor(self):
         parent=self.root/'parent';parent.mkdir();moved=self.root/'moved'
@@ -157,9 +177,9 @@ class PartitionWitnessTests(unittest.TestCase):
             fake=parent/stage.name;fake.mkdir();(fake/'KEEP').write_text('unrelated')
             raise RuntimeError('fixture failure')
             yield
-        with self.assertRaisesRegex(RuntimeError,'fixture failure'):
+        with self.assertRaisesRegex(RuntimeError,'fixture failure') as failure:
             partition_stream(stream(),parent/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
-        self.assertEqual(list(moved.iterdir()),[])
+        self.assertTrue(list(moved.iterdir()));self.assert_retained(failure.exception)
         self.assertEqual((next(parent.glob('.off-partition-*'))/'KEEP').read_text(),'unrelated')
 
     def test_stage_replacement_at_eof_refuses_publication_and_reports_owned_relocation(self):
@@ -167,11 +187,81 @@ class PartitionWitnessTests(unittest.TestCase):
             yield canonical({'code':'0001'})
             stage=next(self.root.glob('.off-partition-*'));stage.rename(self.root/'saved-owned')
             stage.mkdir();(stage/'KEEP').write_text('unrelated');(stage/'index.sqlite').write_bytes(b'fake')
-        with self.assertRaisesRegex(RefreshError,'partition-owned-stage-cleanup-incomplete'):
+        with self.assertRaisesRegex(RefreshError,'partition-stage-custody-changed') as failure:
             partition_stream(stream(),self.root/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
         self.assertFalse((self.root/'output').exists())
-        self.assertEqual(list((self.root/'saved-owned').iterdir()),[])
+        self.assertTrue((self.root/'saved-owned/index.sqlite').exists());self.assert_retained(failure.exception)
         self.assertEqual((next(self.root.glob('.off-partition-*'))/'KEEP').read_text(),'unrelated')
+
+    def test_actual_rename_swapped_source_never_returns_success(self):
+        from offmenu.refresh import off_partition_witness as m
+        real=m._rename_noreplace
+        def swap(srcfd,src,dstfd,dst):
+            os.rename(src,'saved-owned',src_dir_fd=srcfd,dst_dir_fd=srcfd)
+            os.mkdir(src,dir_fd=srcfd)
+            fd=os.open(src+'/KEEP',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600,dir_fd=srcfd)
+            os.write(fd,b'unrelated');os.close(fd)
+            return real(srcfd,src,dstfd,dst)
+        with patch.object(m,'_rename_noreplace',side_effect=swap):
+            with self.assertRaisesRegex(RefreshError,'partition-published-identity-mismatch') as failure:
+                self.run_rows()
+        # The syscall moved the replacement. Do not delete/rollback that entry
+        # or call it a valid publication; the owned evidence remains retained.
+        self.assertEqual((self.root/'output/KEEP').read_bytes(),b'unrelated')
+        self.assertFalse((self.root/'output/result.json').exists())
+        state=self.assert_retained(failure.exception)
+        evidence=Path(state['evidenceLocation'])
+        self.assertEqual(evidence.name,'saved-owned')
+        self.assertTrue((evidence/'result.json').exists())
+        self.assertEqual(tuple(state['evidenceIdentity']),(evidence.stat().st_dev,evidence.stat().st_ino))
+        self.assertEqual(failure.exception.preserved_publication_location,str(self.root/'output'))
+
+    def test_core_never_calls_pathname_deletion_on_success_or_failure(self):
+        # Exit patches before TemporaryDirectory performs fixture-owner cleanup.
+        from offmenu.refresh import off_partition_witness as m
+        with patch.object(m.os,'unlink',side_effect=AssertionError('unsafe unlink')) as unlink, \
+             patch.object(m.os,'rmdir',side_effect=AssertionError('unsafe rmdir')) as rmdir:
+            r=self.run_rows()
+            self.assertTrue(Path(r['retainedScratch']['databaseLocation']).exists())
+            def broken():
+                raise RuntimeError('generated iterator failure')
+                yield
+            with self.assertRaisesRegex(RuntimeError,'generated iterator failure') as failure:
+                partition_stream(broken(),self.root/'failed',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+            self.assert_retained(failure.exception)
+            unlink.assert_not_called();rmdir.assert_not_called()
+
+    def test_replaced_database_leaf_preserves_both_inodes(self):
+        def stream():
+            yield canonical({'code':'0001'})
+            stage=next(self.root.glob('.off-partition-*'))
+            (stage/'index.sqlite').rename(stage/'relocated-owned-db')
+            (stage/'index.sqlite').write_bytes(b'UNRELATED_REPLACEMENT')
+        with self.assertRaisesRegex(RefreshError,'partition-stage-custody-changed') as failure:
+            partition_stream(stream(),self.root/'output',original_sha256='a'*64,expected_rows=1,limits=self.limits)
+        state=self.assert_retained(failure.exception)
+        stage=Path(state['stageLocation'])
+        self.assertEqual((stage/'index.sqlite').read_bytes(),b'UNRELATED_REPLACEMENT')
+        self.assertEqual(state['databaseLocation'],str(stage/'relocated-owned-db'))
+        self.assertTrue((stage/'relocated-owned-db').exists())
+        self.assertFalse((self.root/'output').exists())
+
+    def test_stage_open_failure_reports_created_but_unverified_retained_entry(self):
+        from offmenu.refresh import off_partition_witness as m
+        real=m.os.open
+        def fail_stage_open(name,*args,**kwargs):
+            if isinstance(name,str) and name.startswith('.off-partition-'):
+                raise OSError('generated stage open failure')
+            return real(name,*args,**kwargs)
+        with patch.object(m.os,'open',side_effect=fail_stage_open):
+            with self.assertRaisesRegex(OSError,'generated stage open failure') as failure:
+                self.run_rows()
+        state=failure.exception.partition_retained_state
+        self.assertIsNone(state['stageIdentity']);self.assertIsNone(state['stageLocation'])
+        self.assertIs(state['resourceObligationActive'],True)
+        self.assertIs(state['automaticDeletion'],False)
+        self.assertEqual([p.name for p in self.root.iterdir()],[state['createdStageEntry']])
+        self.assertFalse((self.root/'output').exists())
 
 
 if __name__=='__main__':unittest.main()

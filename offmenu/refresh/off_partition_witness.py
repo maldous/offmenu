@@ -24,9 +24,9 @@ def _inode(info):
 
 
 class _OwnedStage:
-    """Private descriptor-anchored namespace, never pathname-recursive cleanup."""
+    """Pinned scratch/evidence handles; no destructive pathname cleanup."""
     def __init__(self,parent):
-        self.parent=parent;self.fd=None;self.files={}
+        self.parent=parent;self.fd=None;self.evidence_fd=None;self.index_fd=None;self.files={};self.created=False
         self.parent_fd=os.open(parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
         self.parent_inode=_inode(os.fstat(self.parent_fd))
         try:
@@ -34,62 +34,86 @@ class _OwnedStage:
                 raise RefreshError('partition-parent-custody-changed')
             self.name='.off-partition-'+secrets.token_hex(16)
             os.mkdir(self.name,0o700,dir_fd=self.parent_fd)
+            self.created=True
             before=os.stat(self.name,dir_fd=self.parent_fd,follow_symlinks=False)
             self.fd=os.open(self.name,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=self.parent_fd)
             self.inode=_inode(os.fstat(self.fd))
             if self.inode!=_inode(before):raise RefreshError('partition-stage-custody-changed')
-        except Exception:
+            os.mkdir('evidence',0o700,dir_fd=self.fd)
+            self.evidence_fd=os.open('evidence',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=self.fd)
+            self.evidence_inode=_inode(os.fstat(self.evidence_fd))
+        except BaseException as error:
+            if self.created:self.retain(error)
+            if self.evidence_fd is not None:os.close(self.evidence_fd)
             if self.fd is not None:os.close(self.fd)
             os.close(self.parent_fd)
             raise
 
-    def check(self):
+    def check(self,evidence=True):
         try:
             if (_inode(os.stat(_safe(self.parent),follow_symlinks=False))!=self.parent_inode
                     or _inode(os.stat(self.name,dir_fd=self.parent_fd,follow_symlinks=False))!=self.inode):
+                raise ValueError()
+            if evidence and _inode(os.stat('evidence',dir_fd=self.fd,follow_symlinks=False))!=self.evidence_inode:
+                raise ValueError()
+            if self.index_fd is not None and _inode(os.stat('index.sqlite',dir_fd=self.fd,follow_symlinks=False))!=_inode(os.fstat(self.index_fd)):
                 raise ValueError()
         except (OSError,ValueError):raise RefreshError('partition-stage-custody-changed') from None
 
     @contextmanager
     def create(self,name):
         self.check()
-        fd=os.open(name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,dir_fd=self.fd)
-        self.files[name]=_inode(os.fstat(fd))
+        scratch=name=='index.sqlite'
+        fd=os.open(name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,
+                   dir_fd=self.fd if scratch else self.evidence_fd)
+        if scratch:self.index_fd=os.dup(fd)
+        else:self.files[name]=_inode(os.fstat(fd))
         with os.fdopen(fd,'wb') as stream:yield stream
 
     def info(self,name):
-        info=os.stat(name,dir_fd=self.fd,follow_symlinks=False)
-        if not stat.S_ISREG(info.st_mode) or _inode(info)!=self.files[name]:
+        info=os.stat(name,dir_fd=self.fd if name=='index.sqlite' else self.evidence_fd,follow_symlinks=False)
+        expected=_inode(os.fstat(self.index_fd)) if name=='index.sqlite' else self.files[name]
+        if not stat.S_ISREG(info.st_mode) or _inode(info)!=expected:
             raise RefreshError('partition-stage-file-custody-changed')
         return info
 
-    def remove(self,name):
-        self.info(name);os.unlink(name,dir_fd=self.fd);del self.files[name]
-
     def publish(self,destination):
         self.check()
-        if set(os.listdir(self.fd))!=set(self.files):raise RefreshError('partition-stage-inventory-changed')
+        if set(os.listdir(self.evidence_fd))!=set(self.files):raise RefreshError('partition-stage-inventory-changed')
         for name in self.files:self.info(name)
-        _rename_noreplace(self.parent_fd,self.name,self.parent_fd,destination)
-
-    def cleanup(self):
-        incomplete=False
-        for name in list(self.files):
-            try:self.remove(name)
-            except (OSError,RefreshError):incomplete=True
+        _rename_noreplace(self.fd,'evidence',self.parent_fd,destination)
+        # renameat2 conditions on names, not a source inode. Attest the object
+        # actually moved AFTER the real syscall, before any successful return.
+        published=os.open(destination,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=self.parent_fd)
         try:
-            if (os.listdir(self.fd) or _inode(os.stat(self.name,dir_fd=self.parent_fd,
-                    follow_symlinks=False))!=self.inode):
-                incomplete=True
-            else:os.rmdir(self.name,dir_fd=self.parent_fd)
-        except OSError:incomplete=True
-        if incomplete:
-            error=RefreshError('partition-owned-stage-cleanup-incomplete')
-            error.retained_stage_identity=self.inode
-            error.retained_stage_location=os.readlink(f'/proc/self/fd/{self.fd}')
-            raise error
+            if _inode(os.fstat(published))!=self.evidence_inode:
+                error=RefreshError('partition-published-identity-mismatch')
+                error.preserved_publication_location=os.readlink(f'/proc/self/fd/{published}')
+                error.preserved_publication_identity=_inode(os.fstat(published))
+                raise error
+            self.check(evidence=False)
+            if set(os.listdir(published))!=set(self.files):raise RefreshError('partition-published-inventory-changed')
+            for name in self.files:
+                if _inode(os.stat(name,dir_fd=published,follow_symlinks=False))!=self.files[name]:
+                    raise RefreshError('partition-published-file-identity-changed')
+        finally:os.close(published)
+
+    def retained(self):
+        def location(fd):
+            try:return os.readlink(f'/proc/self/fd/{fd}')
+            except OSError:return None
+        return {'stageIdentity':getattr(self,'inode',None),'stageLocation':location(self.fd),
+            'createdStageEntry':getattr(self,'name',None),'parentIdentity':self.parent_inode,
+            'evidenceIdentity':getattr(self,'evidence_inode',None),'evidenceLocation':location(self.evidence_fd),
+            'databaseIdentity':_inode(os.fstat(self.index_fd)) if self.index_fd is not None else None,
+            'databaseLocation':location(self.index_fd),'automaticDeletion':False,'resourceObligationActive':True}
+
+    def retain(self,error):
+        error.partition_retained_state=self.retained()
 
     def close(self):
+        if self.index_fd is not None:os.close(self.index_fd)
+        os.close(self.evidence_fd)
         os.close(self.fd);os.close(self.parent_fd)
 
 
@@ -119,7 +143,7 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
     if destination.exists():raise RefreshError('partition-destination-exists')
     parent=_safe(destination.parent)
     stage=_OwnedStage(parent)
-    db=None;published=False;started=time.monotonic();expanded=0;count=0;output_bytes=0
+    db=None;started=time.monotonic();expanded=0;count=0;output_bytes=0
     pins={};stream_hash=hashlib.sha256()
     def guard():
         if time.monotonic()-started>limits.max_seconds:raise RefreshError('partition-time-bound')
@@ -216,19 +240,25 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
             'candidateSingletonProductProfileCount':2*totals['S'],
             'sourceCustodyVerified':False,'eligibleCleanScopeWitness':False,'accepted':False,
             'productSemanticsQualified':False,'realScopeOrResourcesAdmitted':False,
+            'retainedScratch':{k:v for k,v in stage.retained().items()
+                               if k not in ('evidenceIdentity','evidenceLocation')},
+            'publicationDirectoryIdentity':stage.evidence_inode,
             'measurements':{'databaseBytes':database_bytes,'outputPayloadBytes':output_bytes,
                             'elapsedSeconds':time.monotonic()-started},'limits':asdict(limits)}
         raw=canonical(result)
         if output_bytes+len(raw)>limits.max_output_bytes:raise RefreshError('partition-output-bound')
-        db.close();db=None;stage.remove('index.sqlite')
+        db.close();db=None
         with stage.create('result.json') as target:target.write(raw)
         guard()
         stage.publish(destination.name)
-        published=True
         return result
-    except sqlite3.Error:raise RefreshError('partition-storage-bound-or-error') from None
+    except sqlite3.Error as cause:
+        error=RefreshError('partition-storage-bound-or-error');stage.retain(error)
+        raise error from cause
+    except BaseException as error:
+        stage.retain(error)
+        raise
     finally:
-        if db is not None:db.close()
         try:
-            if not published:stage.cleanup()
+            if db is not None:db.close()
         finally:stage.close()

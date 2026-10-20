@@ -26,24 +26,43 @@ are indexed. Only after EOF is S/C/Q assigned: multiplicity1 is singleton S;
 every occurrence of multiplicity>1 is held C, including first and identical repeats;
 invalid-code rows are Q. No winner, merge, revision or majority rule exists.
 
-Output uses the existing Linux no-replace primitive with the ORIGINAL parent
-descriptor retained from stage creation. A private random stage is opened and
-its inode pinned before invoking the input iterator. SQLite uses the internal
-`/proc/self/fd/<stage-fd>/index.sqlite` path; evidence files are created exclusively
-relative to the pinned stage descriptor with no symlink following. Parent-path,
-stage-entry and owned-file inode checks precede publication. The parent is never
-reopened after iteration. Path replacement refuses publication.
+Publication uses the existing Linux no-replace rename with the ORIGINAL parent
+file descriptor retained from stage creation. A private random scratch directory
+is pinned before invoking the iterator. SQLite stays in that directory; a separate
+pinned `evidence` child contains only the output files. Files are exclusively
+created relative to these descriptors, with no symlink following. Preflight
+parent, stage, evidence and file checks refuse observed custody changes.
 
-Failure cleanup is nonrecursive and descriptor-relative: only known file entries
-still matching their created inode are removed, then the stage name is removed
-only if it still names the original empty stage. Unrelated replacement entries
-are preserved. If an owned stage was relocated and its original name no longer
-identifies it, its known files are cleaned through the retained descriptor and
-`partition-owned-stage-cleanup-incomplete` reports `retained_stage_identity` and
-`retained_stage_location`; an empty relocated directory can remain for explicit
-owner reconciliation. This is an error/hold, never claimed successful cleanup or
-publication. No recursive search/deletion or ownership inference from a reused
-pathname is performed. The final directory contains:
+These checks cannot make a pathname rename conditional on a source inode. After
+the actual rename, the core opens the destination relative to the original parent
+and verifies its directory inode against the held evidence inode, followed by
+parent/stage, inventory and file identity checks. A replacement substituted at the
+rename boundary raises `partition-published-identity-mismatch`; it never returns
+success. The syscall may already have moved the unrelated directory to the
+requested destination. That entry is preserved and explicitly reported on the
+error as `preserved_publication_location`/`preserved_publication_identity`.
+There is no unsafe rollback. This is point-in-time attestation, not a guarantee
+that another actor cannot replace a pathname after verification. A downstream
+consumer must independently revalidate its selected evidence and custody.
+
+There is NO automatic unlink, rmdir or recursive cleanup on either success or
+failure. Available pathname APIs cannot atomically condition deletion on a
+previously observed inode, and another stat does not close that race. The SQLite
+database and scratch directory remain retained on success, outside the published
+evidence directory. `retainedScratch` reports their held inode identities and
+observed locations, `automaticDeletion:false` and
+`resourceObligationActive:true`; `measurements.databaseBytes` remains charged
+storage, not released storage. Failure preserves the original exception and
+attaches `partition_retained_state` with stage/evidence/database identities and
+best-effort descriptor-derived locations, including relocated owned entries.
+No directory search or pathname-based ownership inference is performed.
+
+Retained state is a concrete outstanding resource obligation. The caller must
+record its disposition and account it once until a separately qualified owner
+reconciles it under a safe custody/quiescence protocol. This core grants no
+cleanup authority and claims no atomic inode-conditional unlink facility. On a
+mismatch, a held owned `result.json` is not successful publication or acceptance.
+The published evidence directory, when attested successfully, contains:
 
 - `occurrences.jsonl`: every original ordinal exactly once, original-hash/table
   locator, class/reason, nullable code and raw/canonical hashes.
@@ -73,8 +92,8 @@ SQLite-compatible63-bit positive values. SQLite page count bounds main DB size;
 journaling is off in disposable staging, cache is2MiB, and no raw bodies are stored.
 Ordered reads use indexes; query-plan checks refuse temporary B-tree sorts rather
 than leaving external sort scratch unaccounted. Outputs and all group members are
-streamed with aggregate byte checks, including the result file. The DB is removed
-before publication. Elapsed checks are cooperative; they do not interrupt a blocked
+streamed with aggregate byte checks, including the result file. The DB is retained
+outside the published evidence; its bytes remain an active storage commitment. Elapsed checks are cooperative; they do not interrupt a blocked
 input iterator or an SQLite operation. An eventual executor still needs its OS
 wall-clock/memory/file boundary and fresh free-space/commitment guard.
 
@@ -116,7 +135,7 @@ clean/default producer behavior or make candidate-output-before-witness gates.
 ## Verification
 
 ```sh
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_partition_witness -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -B -m unittest test_off_partition_witness -v
 ```
 
 Generated tests cover full ordinal conservation, multiple/identical versions,
@@ -127,8 +146,11 @@ deadline, immutable existing destination and publication race. No retained body,
 cache, original, restricted sample or live database is accessed. Failed25 review
 holds, incident10230, custody, runtime, production and CIX boundaries are unchanged.
 
-PR73 regressions replace parent/stage names during iteration and at EOF. They
-prove no unrelated publication/deletion, descriptor-anchored parent-failure
-cleanup, preserved replacement marker files and explicit owned-relocation
-reporting. The original ee53 source fails both provider reproductions; the
-corrected source retains all S/C/Q/ordinal/digest and resource-control tests.
+PR73 regressions replace parent/stage names during iteration and at EOF, swap
+the evidence entry at the actual rename call, and replace the database leaf.
+They verify failure rather than successful publication of a wrong inode,
+preserved replacement markers and owned resources, and explicit retained-state
+reporting. Success and iterator failure tests prohibit core unlink/rmdir calls.
+The exact Worker56 syscall schedules are replayed separately, with their original
+observations retained even where their old hardcoded paths no longer locate the
+new evidence-child layout. All S/C/Q/ordinal/digest and declared-cap tests remain.
