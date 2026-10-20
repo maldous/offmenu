@@ -61,7 +61,13 @@ function registrySnapshot(raw) {
     if (typeof key !== 'string') throw Error('registry-cell-key');
     const d = Object.getOwnPropertyDescriptor(cells, key);
     let cell;
-    try {if (!d.enumerable || !Object.hasOwn(d, 'value')) throw Error('cell-property'); cell = capture(d.value, budget);}
+    try {
+      if (!d.enumerable || !Object.hasOwn(d, 'value')) throw Error('cell-property');
+      // Failed cells are quarantined; only accepted cells spend the shared budget.
+      const trialBudget = {...budget};
+      cell = capture(d.value, trialBudget);
+      Object.assign(budget, trialBudget);
+    }
     catch {cell = {invalidCellData:true};}
     Object.defineProperty(captured.metricCells, key, {value:cell, enumerable:true, writable:true});
   }

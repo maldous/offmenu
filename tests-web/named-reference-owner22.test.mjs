@@ -84,6 +84,47 @@ test('finite positive target gate is per metric; unknown does not become zero',a
   assert.equal((await resolveNamedReference(f.request,f.dependencies)).metrics.protein_g.percentReference,0);
 });
 
+test('quarantined cells do not spend the capture budget of valid cells in either order',async()=>{
+  for (const failure of ['characters','nodes','cycle']) {
+    for (const invalidFirst of [true,false]) {
+      const f=fixture(), invalid=f.registry.metricCells.protein_g, valid=f.registry.metricCells.energy_kcal;
+      if (failure==='characters') invalid.note='x'.repeat(250001);
+      if (failure==='nodes') invalid.note=Array.from({length:21},()=>Array(1000).fill(null));
+      if (failure==='cycle') {
+        invalid.note='x'.repeat(240000);
+        invalid.self=invalid;
+        valid.note='y'.repeat(20000);
+      }
+      f.registry.metricCells=Object.fromEntries(invalidFirst
+        ? [['protein_g',invalid],['energy_kcal',valid]] : [['energy_kcal',valid],['protein_g',invalid]]);
+      let admitted;
+      f.dependencies.admitSource=b=>{admitted=b;return f.decision('admitted',b);};
+      const r=await resolveNamedReference(f.request,f.dependencies), label=`${failure}, invalidFirst=${invalidFirst}`;
+      assert.equal(r.status,'partial',label);
+      assert.equal(r.metrics.protein_g.denominator,null,label);
+      assert.equal(r.metrics.protein_g.reason,'missing-or-invalid-issuer-cell',label);
+      assert.equal(r.metrics.energy_kcal.status,'qualified',label);
+      assert.equal(r.metrics.energy_kcal.percentReference,10,label);
+      assert.deepEqual(admitted.registry.metricCells.protein_g,{invalidCellData:true},label);
+      assert.equal(admitted.registry.metricCells.energy_kcal.amount,1000,label);
+    }
+  }
+});
+
+test('successful cells still share the aggregate registry capture budget',async()=>{
+  const f=fixture();
+  f.registry.metricCells.protein_g.note='x'.repeat(130000);
+  f.registry.metricCells.energy_kcal.note='y'.repeat(130000);
+  let admitted;
+  f.dependencies.admitSource=b=>{admitted=b;return f.decision('admitted',b);};
+  const r=await resolveNamedReference(f.request,f.dependencies);
+  assert.equal(r.status,'partial');
+  assert.equal(r.metrics.protein_g.status,'qualified');
+  assert.equal(r.metrics.energy_kcal.denominator,null);
+  assert.deepEqual(admitted.registry.metricCells.energy_kcal,{invalidCellData:true});
+  assert.equal(admitted.registry.metricCells.protein_g.note.length,130000);
+});
+
 test('issuer/version/cell/reference-type/cohort/definition/unit/rights mismatches withhold affected cell',async()=>{
   for (const [key,value] of [['issuerId','other'],['documentVersion','other'],['sourceSha256','b'.repeat(64)],
     ['sourceUrl','https://example.invalid/other'],['sourceId','other'],['rightsRevision','other'],['referenceType','other'],
