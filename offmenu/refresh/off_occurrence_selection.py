@@ -145,7 +145,14 @@ def retain_success_receipt(target, receipt):
         os.fsync(target.file_fd)
         os.fsync(target.parent_fd)
         before = _check_target(target)
-        observed = os.pread(target.file_fd, len(raw)+1, 0)
+        chunks, offset = [], 0
+        while offset < len(raw)+1:
+            block = os.pread(target.file_fd, len(raw)+1-offset, offset)
+            if not block:
+                break
+            chunks.append(block)
+            offset += len(block)
+        observed = b''.join(chunks)
         after = _check_target(target)
         if (observed != raw or before.st_size != len(raw)
                 or _signature(before) != _signature(after)):
