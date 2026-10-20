@@ -2,6 +2,7 @@
 from dataclasses import replace
 import hashlib
 import json
+import os
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -184,6 +185,146 @@ class RetainedProductClockTest(unittest.TestCase):
         (self.f.f.bundle/'clock.json').write_text('{}')
         with self.assertRaises(RefreshError):
             self.f.run_stage()
+
+    def test_parser_only_receives_the_verified_bounded_buffer(self):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        real_read, real_json = Path.read_bytes, core.strict_json
+        for asset in (c.clock_evidence, c.scope_evidence):
+            target = self.f.f.bundle / asset.path
+            original = real_read(target)
+            changed = json.loads(original)
+            changed['syntheticPadding'] = 'x' * (2 * product_clock.MAX_EVIDENCE_BYTES)
+            replacement = canonical(changed)
+            parsed = []
+            def reopen(path):
+                return replacement if path == target else real_read(path)
+            def parse(raw):
+                parsed.append(raw)
+                return real_json(raw)
+            with patch.object(Path, 'read_bytes', reopen), patch.object(core, 'strict_json', side_effect=parse):
+                product_clock.validate_contract_clock(c, self.f.f.bundle)
+            self.assertTrue(parsed)
+            self.assertTrue(all(len(raw) <= product_clock.MAX_EVIDENCE_BYTES for raw in parsed))
+            self.assertIn(original, parsed)
+
+    def assert_metadata_mutation_rejected(self, mode):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        target = self.f.f.bundle / c.clock_evidence.path
+        original = target.read_bytes()
+        replacement = self.f.f.root / 'replacement.json'
+        replacement.write_bytes(original)
+        real_read = os.read
+        changed = False
+        def mutate(fd, size):
+            nonlocal changed
+            data = real_read(fd, size)
+            if not changed:
+                changed = True
+                if mode == 'grow':
+                    target.write_bytes(original + b'x' * (2 * product_clock.MAX_EVIDENCE_BYTES))
+                elif mode == 'replace':
+                    os.replace(replacement, target)
+                else:
+                    target.unlink()
+                    target.symlink_to(replacement)
+            return data
+        with patch.object(product_clock.os, 'read', side_effect=mutate), \
+                patch.object(core, 'strict_json') as parse, \
+                patch('offmenu.refresh.product_qualification.normalize_products') as payload:
+            with self.assertRaises(RefreshError):
+                self.f.run_stage()
+            parse.assert_not_called()
+            payload.assert_not_called()
+
+    def test_metadata_growth_during_read_rejected(self):
+        self.assert_metadata_mutation_rejected('grow')
+
+    def test_same_byte_metadata_inode_replacement_rejected(self):
+        self.assert_metadata_mutation_rejected('replace')
+
+    def test_metadata_symlink_replacement_rejected(self):
+        self.assert_metadata_mutation_rejected('symlink')
+
+    def test_nonregular_symlink_and_oversize_metadata_never_parse(self):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        target = self.f.f.bundle / c.clock_evidence.path
+        original = target.read_bytes()
+        replacement = self.f.f.root / 'replacement.json'
+        replacement.write_bytes(original)
+        for mode in ('directory', 'fifo', 'symlink', 'oversize'):
+            with self.subTest(mode=mode):
+                target.unlink()
+                if mode == 'directory':
+                    target.mkdir()
+                elif mode == 'fifo':
+                    os.mkfifo(target)
+                elif mode == 'symlink':
+                    target.symlink_to(replacement)
+                else:
+                    target.write_bytes(b'x' * (product_clock.MAX_EVIDENCE_BYTES + 1))
+                with patch.object(core, 'strict_json') as parse:
+                    with self.assertRaises(ValueError):
+                        product_clock.validate_contract_clock(c, self.f.f.bundle)
+                    parse.assert_not_called()
+                target.rmdir() if mode == 'directory' else target.unlink()
+                target.write_bytes(original)
+
+    def test_metadata_growth_at_open_rejected_before_read(self):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        target = self.f.f.bundle / c.clock_evidence.path
+        original = target.read_bytes()
+        real_open = os.open
+        def grow(path, flags):
+            fd = real_open(path, flags)
+            target.write_bytes(original + b'x')
+            return fd
+        with patch.object(product_clock.os, 'open', side_effect=grow), \
+                patch.object(product_clock.os, 'read') as read, patch.object(core, 'strict_json') as parse:
+            with self.assertRaises(ValueError):
+                product_clock.validate_contract_clock(c, self.f.f.bundle)
+            read.assert_not_called()
+            parse.assert_not_called()
+
+    def test_maximum_sized_verified_buffer_parses_without_reopen(self):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        clock = json.loads((self.f.f.bundle / c.clock_evidence.path).read_bytes())
+        clock['syntheticPadding'] = ''
+        empty = json.dumps(clock, sort_keys=True).encode()
+        clock['syntheticPadding'] = 'x' * (product_clock.MAX_EVIDENCE_BYTES - len(empty))
+        evidence = self.asset(c.clock_evidence.path, clock)
+        self.assertEqual(evidence.bytes, product_clock.MAX_EVIDENCE_BYTES)
+        scope = self.asset(c.scope_evidence.path, {'sourceId': c.source_id, 'releaseId': c.release_id,
+            'scopeId': c.scope_id, 'acquisitionClock': {'status': 'unknown-retained', 'evidenceSha256': evidence.sha256}})
+        contract = replace(c, clock_evidence=evidence, scope_evidence=scope,
+            inputs=tuple(evidence if a == c.clock_evidence else scope if a == c.scope_evidence else a for a in c.inputs))
+        real_json, real_read = core.strict_json, os.read
+        lengths, requests = [], []
+        def parse(raw):
+            lengths.append(len(raw))
+            return real_json(raw)
+        def read(fd, size):
+            requests.append(size)
+            return real_read(fd, size)
+        with patch.object(core, 'strict_json', side_effect=parse), patch.object(product_clock.os, 'read', side_effect=read):
+            product_clock.validate_contract_clock(contract, self.f.f.bundle)
+        self.assertEqual(lengths, [product_clock.MAX_EVIDENCE_BYTES, scope.bytes])
+        self.assertTrue(all(0 < n <= 65536 for n in requests))
+
+    def test_same_size_wrong_hash_metadata_rejected_before_parse(self):
+        from offmenu.refresh import core, product_clock
+        c = self.unknown()
+        target = self.f.f.bundle / c.clock_evidence.path
+        original = target.read_bytes()
+        target.write_bytes(b'[' + original[1:])
+        with patch.object(core, 'strict_json') as parse:
+            with self.assertRaises(ValueError):
+                product_clock.validate_contract_clock(c, self.f.f.bundle)
+            parse.assert_not_called()
 
 
 class USDAExactAliasTest(unittest.TestCase):

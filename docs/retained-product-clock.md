@@ -16,6 +16,13 @@ holds, schemas, custody and semantic requirements remain necessary.
 
 The clock evidence is bounded to 1 MiB, hashed and read before payload parsing:
 
+The reader opens a regular file without following a leaf symlink, checks the
+opened descriptor against the path identity, and reads at most the pinned size
+plus one byte under that cap. It verifies size, SHA256 and identity before/after
+reading, then parses that exact buffer. It never hashes one read and reopens the
+path for JSON. Metadata growth, inode replacement or a symlink swap is rejected
+before parsing; non-regular files cannot block the reader as FIFOs.
+
 ```json
 {
   "schemaVersion": "offmenu-retained-clock-evidence/1",

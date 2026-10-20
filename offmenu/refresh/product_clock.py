@@ -5,8 +5,11 @@ or a proposal JSON document is never a contract constructor or permission grant.
 """
 from dataclasses import asdict
 from datetime import datetime
+import hashlib
+import os
 from pathlib import PurePosixPath
 import re
+import stat
 
 DIGEST = re.compile(r'[0-9a-f]{64}')
 UNKNOWN = 'unknown-retained'
@@ -43,7 +46,7 @@ source/release/scope and rights. This does not qualify independent counts or rig
                    evidence.sha256 if evidence is not None else None)
     if contract.acquisition_clock_status == 'known':
         return
-    from .acceptance import Asset, _hash_file, _safe, _valid_asset, canonical
+    from .acceptance import Asset, _safe, _valid_asset, canonical
     if (not isinstance(evidence, Asset) or not _valid_asset(evidence)
             or evidence not in contract.inputs
             or evidence.path in (contract.rights_evidence.path, contract.scope_evidence.path)
@@ -55,10 +58,39 @@ source/release/scope and rights. This does not qualify independent counts or rig
         return
     from .core import strict_json
     def read(asset):
-        p = _safe(bundle) / asset.path
-        if not _valid_asset(asset) or _hash_file(p, MAX_EVIDENCE_BYTES) != (asset.bytes, asset.sha256):
+        if not _valid_asset(asset) or not 0 < asset.bytes <= MAX_EVIDENCE_BYTES:
             raise ValueError('retained-clock-evidence-custody')
-        return strict_json(p.read_bytes())
+        p = _safe(_safe(bundle) / asset.path)
+        signature = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns)
+        try:
+            before = p.lstat()
+            if not stat.S_ISREG(before.st_mode) or before.st_size != asset.bytes:
+                raise ValueError('retained-clock-evidence-custody')
+            fd = os.open(p, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            try:
+                opened = os.fstat(fd)
+                if not stat.S_ISREG(opened.st_mode) or signature(before) != signature(opened):
+                    raise ValueError('retained-clock-evidence-custody')
+                chunks, size = [], 0
+                while size <= asset.bytes:
+                    block = os.read(fd, min(65536, asset.bytes - size + 1))
+                    if not block:
+                        break
+                    chunks.append(block)
+                    size += len(block)
+                after = os.fstat(fd)
+            finally:
+                os.close(fd)
+            current = _safe(p).lstat()
+            raw = b''.join(chunks)
+            if (not stat.S_ISREG(current.st_mode)
+                    or signature(before) != signature(after) or signature(after) != signature(current)
+                    or len(raw) != asset.bytes or hashlib.sha256(raw).hexdigest() != asset.sha256):
+                raise ValueError('retained-clock-evidence-custody')
+        except OSError:
+            raise ValueError('retained-clock-evidence-custody') from None
+        # Parse this exact verified buffer; never reopen the path for JSON.
+        return strict_json(raw)
     clock, scope = read(evidence), read(contract.scope_evidence)
     identity = {'sourceId': contract.source_id, 'releaseId': contract.release_id,
                 'scopeId': contract.scope_id}
