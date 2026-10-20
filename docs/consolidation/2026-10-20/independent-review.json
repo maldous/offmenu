@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "offmenu-independent-checkpoint-review/1",
+  "reviewedAtUTC": "2026-10-20T07:31:01.333700+00:00",
+  "status": "CHANGES_REQUESTED",
+  "baseCommit": "801d05b5aec4a127767c78641d995cbfb74d3198",
+  "candidateCommit": "530dceb9c666ae14f4b75835b2b3addac6f112f4",
+  "scope": "Bounded independent review of reusable source-faithful parser, assistant cache/provenance tools and packaged schema. Owner-specific launcher deferred. No integration approval or consolidation-completion claim.",
+  "sourcePins": [
+    {
+      "path": "corpus/parsed-data-dictionary.json",
+      "sha256": "f437458a58f309fbf75e4e018ef29f2245c2423f5ea84ec0df802e2506a02926",
+      "matchesCandidate": true
+    },
+    {
+      "path": "corpus/source-field-mappings.json",
+      "sha256": "4f2926f31e22c4267adba32db94d354cf502b354c72b479a59d56db05cd3d324",
+      "matchesCandidate": true
+    },
+    {
+      "path": "corpus/source-recipe-template.schema.json",
+      "sha256": "6c450429cea05a719bd367116cda978b465c44ab5f0e65c6fa0dc7a80ef57814",
+      "matchesCandidate": true
+    },
+    {
+      "path": "docs/handover/2026-10-20/assistant-extraction-provenance.md",
+      "sha256": "b3e272be2ac0b2ac251bab338c5632ccc68775cfd814e1798a1ac7c85fdee6ab",
+      "matchesCandidate": true
+    },
+    {
+      "path": "docs/operations/assistant-extraction-cache.md",
+      "sha256": "fd3c98d02f1387c725f935acc33950b388cfe7d5a17711c4eb108e444db81430",
+      "matchesCandidate": true
+    },
+    {
+      "path": "docs/operations/source-faithful-parse-20261020-summary.json",
+      "sha256": "bffe5f35eba3ee5ef224783d7e5466ba060eb11fcb4f674d7967e53cb9b7adcb",
+      "matchesCandidate": true
+    },
+    {
+      "path": "docs/operations/source-faithful-parse-20261020.md",
+      "sha256": "b15153fd21137845875b974dcdba7f18b8c1aa3c5aa79ce4a8e8d13d666452f2",
+      "matchesCandidate": true
+    },
+    {
+      "path": "offmenu/refresh/assistant_intermediate.py",
+      "sha256": "020032ec33bde3ac1a4e4c5b8f09284f925d4c65a6f85c4a9ced2be301834a35",
+      "matchesCandidate": true
+    },
+    {
+      "path": "offmenu/refresh/source_faithful_parse.py",
+      "sha256": "a49b0ba22d17ea596f9df0dfb49c560b8cc94ec889555da9eb1ae214a533985f",
+      "matchesCandidate": true
+    },
+    {
+      "path": "offmenu/refresh/source_recipe_template.schema.json",
+      "sha256": "6c450429cea05a719bd367116cda978b465c44ab5f0e65c6fa0dc7a80ef57814",
+      "matchesCandidate": true
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "ab2277601fdb05eaa0d4d0936c7f2cc38cca24f3f8f494b7188f85fec198bff1",
+      "matchesCandidate": true
+    },
+    {
+      "path": "scripts/build-processing-provenance.py",
+      "sha256": "1d316915663ecf84dbced4191e2a26e38864f5e3eccbfe3b53814b9a054de286",
+      "matchesCandidate": true
+    },
+    {
+      "path": "scripts/reconcile-source-inventory-lineage.py",
+      "sha256": "376022d8c87983e2d6882693ed0cc5a781311daa09906d283657f6aaff9d524b",
+      "matchesCandidate": true
+    },
+    {
+      "path": "tests/test_assistant_intermediate.py",
+      "sha256": "9f472b6eef87d6fb5350504cfcd908a1c36cdeedac576635d68202f146d536d3",
+      "matchesCandidate": true
+    },
+    {
+      "path": "tests/test_processing_provenance.py",
+      "sha256": "c567f51c2faf85ac61585860324f1e0b17b1fb2af8b8f7fe9e9da875368ed2b5",
+      "matchesCandidate": true
+    },
+    {
+      "path": "tests/test_source_faithful_parse.py",
+      "sha256": "42725258c250aed61cb8e40c0884c72c985ed6e7e03ab135ca11238c40ff0c6b",
+      "matchesCandidate": true
+    },
+    {
+      "path": "tests/test_source_inventory_lineage.py",
+      "sha256": "3e58592cb4b72c44f869d6e750209048dcf541662633da86708e8fcf4de2f5a5",
+      "matchesCandidate": true
+    }
+  ],
+  "verification": [
+    {
+      "check": "Focused unittest suite",
+      "command": "PYTHONDONTWRITEBYTECODE=1 /home/user/src/offmenu-preservation-20261020/checkpoint-venv/bin/python -m unittest tests.test_source_faithful_parse tests.test_assistant_intermediate tests.test_processing_provenance tests.test_source_inventory_lineage -v",
+      "result": "PASS",
+      "tests": 14
+    },
+    {
+      "check": "Installed wheel functionality",
+      "result": "PASS",
+      "details": [
+        "Built exact git archive of candidate in temporary directory using checkpoint-venv Python, pip wheel --no-deps --no-build-isolation.",
+        "Installed wheel into isolated temporary --target and ran from outside source checkout.",
+        "Verified module loaded from isolated installed path, packaged schema exists, synthetic recipe parses, assistant module imports."
+      ],
+      "wheelSHA256": "91e998bde21382b3be39088074ff8866b601b64f66a656dfddc67b9c6e1afa71",
+      "limits": "Dependencies supplied by existing checkpoint venv. No fresh dependency-resolution or owner-launcher validation."
+    },
+    {
+      "check": "JSON-LD locator reproduction",
+      "result": "FAIL",
+      "fixture": "<html><head><script type=\"application/ld+json\">{\"@type\":\"Recipe\",\"recipeIngredient\":[\"1 cup flour\"],\"recipeInstructions\":[\"Mix flour.\"]}</script></head><body><h1>Fixture</h1></body></html>",
+      "observed": "Accepted ingredient originalExpression=1 cup flour; extracted page text=Fixture; locator resolves to Fixture and hashes that unrelated text. Instructions similarly fall back to byte zero."
+    },
+    {
+      "check": "Inline HTML assistant extraction reproduction",
+      "result": "FAIL",
+      "fixture": "Existing tests.test_assistant_intermediate.HTML with only 2 cups cooked beans replaced by 2 cups <b>cooked</b> beans; existing get_response() unchanged.",
+      "observed": "Deterministic parser preserves originalExpression=2 cups cooked beans. cache_assistant_intermediate rejects and quarantines response with IntermediateError source-quote-not-locatable."
+    }
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "title": "Do not emit unrelated text as JSON-LD field provenance",
+      "file": "offmenu/refresh/source_faithful_parse.py",
+      "lineStart": 178,
+      "lineEnd": 203,
+      "explanation": "BeautifulSoup get_text excludes JSON-LD script contents. For JSON-LD-only ingredients/instructions, text.find(original) returns -1 and max(0, ...) silently substitutes offset zero. Schema validation succeeds, but source locators and span hashes prove unrelated visible page text instead of the extracted field. Yield uses the same fallback.",
+      "requiredAction": "Anchor JSON-LD fields to a representation retaining the actual script field text, or explicitly reject/mark unlocatable fields; never fabricate a zero offset. Add a test verifying located bytes correspond to each asserted source field."
+    },
+    {
+      "id": "R2",
+      "priority": "P2",
+      "title": "Correct whitespace fallback for HTML ingredient locations",
+      "file": "offmenu/refresh/assistant_intermediate.py",
+      "lineStart": 295,
+      "lineEnd": 302,
+      "explanation": "The fallback joins escaped words with r\"\\\\s+\", which matches a literal backslash followed by s characters rather than whitespace. Inline tags split page-text nodes with newlines, while li.get_text(\" \", strip=True) returns space-separated ingredient text. Valid supported section HTML therefore passes coverage checks and then fails _loc_quote, quarantining a faithful response.",
+      "requiredAction": "Use a whitespace regex separator and verify byte ranges/hash against the matched actual page substring. Add a full cache/replay test with inline markup in an ingredient."
+    }
+  ],
+  "checkoutObservations": {
+    "initialStatus": "clean",
+    "finalStatus": "M extension/popup.js",
+    "concurrentEdits": "extension/popup.js became modified during review; left untouched and excluded from candidate review."
+  },
+  "writes": "Only this requested review artifact; temporary wheel/probe files automatically cleaned. No source/ref/ledger/checkouts altered.",
+  "nextAction": "Author correct R1/R2, commit fixes, run focused checks and obtain independent review bound to the new exact head before integration. Root author retains ledger/disposition and integration writes.",
+  "completionNotification": "No native cross-thread send attempted; review returned through current conversation. No Gateway notification authority inferred."
+}
