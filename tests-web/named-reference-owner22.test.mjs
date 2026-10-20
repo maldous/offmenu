@@ -125,6 +125,35 @@ test('successful cells still share the aggregate registry capture budget',async(
   assert.equal(admitted.registry.metricCells.protein_g.note.length,130000);
 });
 
+test('repeated rejected-cell traversal withholds the registry before owner admission',async()=>{
+  for (const validFirst of [true,false]) {
+    const f=fixture(), valid=f.registry.metricCells.energy_kcal;
+    const invalid={note:Array.from({length:21},()=>Array(1000).fill(null))};
+    const rejected=Array.from({length:12},(_,i)=>['rejected-'+i,invalid]);
+    f.registry.metricCells=Object.fromEntries(validFirst
+      ? [['energy_kcal',valid],...rejected] : [...rejected,['energy_kcal',valid]]);
+    let admissionCalls=0, contextCalls=0;
+    f.dependencies.admitSource=b=>{admissionCalls++;return f.decision('admitted',b);};
+    f.dependencies.qualifyContext=b=>{contextCalls++;return f.decision('compatible',b);};
+    const r=await resolveNamedReference(f.request,f.dependencies);
+    assert.equal(r.status,'withheld');
+    assert.equal(r.reason,'owner-boundary-unavailable');
+    assert.equal(r.referenceProfile,null);
+    assert.equal(r.metrics.energy_kcal.denominator,null);
+    assert.equal(admissionCalls,0);
+    assert.equal(contextCalls,0);
+  }
+});
+
+test('many cheaply rejected cells retain the allowance for a valid cell',async()=>{
+  const f=fixture(), valid=f.registry.metricCells.energy_kcal;
+  f.registry.metricCells=Object.fromEntries([
+    ...Array.from({length:999},(_,i)=>['rejected-'+i,new Date(0)]),['energy_kcal',valid]]);
+  const r=await resolveNamedReference(f.request,f.dependencies);
+  assert.equal(r.status,'partial');
+  assert.equal(r.metrics.energy_kcal.percentReference,10);
+});
+
 test('issuer/version/cell/reference-type/cohort/definition/unit/rights mismatches withhold affected cell',async()=>{
   for (const [key,value] of [['issuerId','other'],['documentVersion','other'],['sourceSha256','b'.repeat(64)],
     ['sourceUrl','https://example.invalid/other'],['sourceId','other'],['rightsRevision','other'],['referenceType','other'],
