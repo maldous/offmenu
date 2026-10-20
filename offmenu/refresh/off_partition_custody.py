@@ -200,11 +200,11 @@ def partition_retained_original(operation, evidence_root, original_root, destina
                 # No filtering/coercion/reframing; the accepted core owns JSON,
                 # LF, row/expanded caps and exact all-occurrence classification.
                 yield raw
+        full_eof = True
         source.verify()
         post_hash = True
         _metadata(operation, evidence, deadline)
         _guard(deadline)
-        full_eof = True
 
     try:
         source = original_protocol._VerifiedOriginal(originals / operation.original.path,
