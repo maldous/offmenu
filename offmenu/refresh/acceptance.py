@@ -111,6 +111,37 @@ def _hash_file(path, limit=MAX_BYTES):
     return size, h.hexdigest()
 
 
+def _input_paths(contract, bundle, input_root=None):
+    """Route pinned private product inputs without materializing a new bundle.
+
+    The evidence directory stays exact. Only explicitly pinned non-evidence
+    paths are resolved under input_root; unrelated originals are not inventoried.
+    Callers validate the contract/pins before using this routing helper.
+    """
+    root = _safe(bundle)
+    if input_root is None:
+        return ({a.path: _safe(root / a.path) for a in contract.inputs},
+                {a.path for a in contract.inputs})
+    if (contract.source_id not in ('off', 'usda-files')
+            or contract.output_scope != 'native' or contract.output_visibility != 'private'
+            or contract.holds
+            or not {'retain', 'parse', 'transform'} <= set(contract.required_operations)
+            or not set(contract.required_operations) <= set(contract.permitted_operations)):
+        raise ValueError('separate-input-root-private-product-contract-required')
+    evidence = [contract.rights_evidence, contract.scope_evidence]
+    if contract.clock_evidence is not None:
+        evidence.append(contract.clock_evidence)
+    names = {a.path for a in evidence}
+    if (len(names) != len(evidence) or any(a not in contract.inputs for a in evidence)
+            or not names < {a.path for a in contract.inputs}):
+        raise ValueError('separate-input-root-evidence-invalid')
+    originals = _safe(input_root)
+    if root == originals or root in originals.parents or originals in root.parents:
+        raise ValueError('separate-input-roots-overlap')
+    return {a.path: _safe((root if a.path in names else originals) / a.path)
+            for a in contract.inputs}, names
+
+
 def ids_digest(ids):
     """Small reviewed inventories/tests; qualification itself uses disk-backed IDs."""
     h = hashlib.sha256()
@@ -140,13 +171,15 @@ def _local_schema(schema):
     return True
 
 
-def qualify(contract, bundle, candidate, manifest, *, scratch_root=None):
+def qualify(contract, bundle, candidate, manifest, *, scratch_root=None, input_root=None):
     """Inspect all bounded rows; return deterministic diagnostics, never mutate data.
 
 The supplied contract is trusted code configuration, not a rights constructor.
 Schema validators and semantic callbacks must cover source-specific units, bases,
 qualifiers, joins and provenance required by the selected scope. Unknown semantics
 remain held. IDs/count expectations come from independently reviewed scope evidence.
+For private native OFF/USDA, input_root optionally holds the pinned originals;
+bundle then contains exactly the distinct rights/scope/optional clock evidence.
 """
     errors = set()
     def error(code):
@@ -197,16 +230,24 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                 or contract.rights_evidence not in assets or contract.scope_evidence not in assets):
             raise ValueError('input-contract-invalid')
         root = _safe(bundle)
+        paths, bundle_names = _input_paths(contract, root, input_root)
+        if input_root is not None:
+            for output in (candidate, scratch_root):
+                if output is not None:
+                    output = _safe(output)
+                    for source_root in (root, _safe(input_root)):
+                        if output == source_root or output in source_root.parents or source_root in output.parents:
+                            raise ValueError('separate-input-output-overlap')
         from .national_tabular import bundle_files
         try:
-            actual = bundle_files(root, {a.path for a in assets})
-            if actual != {a.path for a in assets}:
+            actual = bundle_files(root, bundle_names)
+            if actual != bundle_names:
                 error('input-inventory-mismatch')
         except ValueError:
             error('input-inventory-mismatch')
         for asset in assets:
             try:
-                if _hash_file(root / asset.path, contract.max_input_bytes) != (asset.bytes, asset.sha256):
+                if _hash_file(paths[asset.path], contract.max_input_bytes) != (asset.bytes, asset.sha256):
                     error('input-custody-mismatch')
             except (OSError, ValueError):
                 error('input-custody-mismatch')
@@ -308,7 +349,7 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                     error('expected-record-identities-mismatch')
         for asset in assets:
             try:
-                if _hash_file(root / asset.path, contract.max_input_bytes) != (asset.bytes, asset.sha256):
+                if _hash_file(paths[asset.path], contract.max_input_bytes) != (asset.bytes, asset.sha256):
                     error('input-custody-changed-during-qualification')
             except (OSError, ValueError):
                 error('input-custody-changed-during-qualification')
@@ -325,9 +366,10 @@ remain held. IDs/count expectations come from independently reviewed scope evide
     return result
 
 
-def accept(contract, bundle, candidate, manifest, *, scratch_root=None):
+def accept(contract, bundle, candidate, manifest, *, scratch_root=None, input_root=None):
     """Revalidate current bytes and issue a separate receipt, not a mutable pointer."""
-    qualification = qualify(contract, bundle, candidate, manifest, scratch_root=scratch_root)
+    qualification = qualify(contract, bundle, candidate, manifest, scratch_root=scratch_root,
+                            input_root=input_root)
     accepted = qualification['qualified']
     return {**qualification,
             'schemaVersion': 'offmenu-source-acceptance/1',
