@@ -321,5 +321,37 @@ class SelectedProductOriginsTests(unittest.TestCase):
         with self.assertRaisesRegex(sqlite3.OperationalError,'interrupted'): self.run_selected()
         self.assertEqual(len(os.listdir('/proc/self/fd')),before)
 
+    def index_fixture(self,columns):
+        self.path.unlink(); self.make_database(indexed=False)
+        with sqlite3.connect(self.path) as db:
+            db.execute('CREATE INDEX fixture_index ON raw('+columns+')')
+        db.close()
+        self.manifest = self.manifest_bytes()
+        self.scope = replace(self.scope,database=Asset('source.sqlite',self.path.stat().st_size,
+            hashlib.sha256(self.path.read_bytes()).hexdigest()),database_identity=s._signature(self.path.stat()),
+            normalization_manifest=Asset('manifest.json',len(self.manifest),hashlib.sha256(self.manifest).hexdigest()))
+        self.rebind()
+
+    def test_tab_only_search_index_refused_before_selected_body_fetch(self):
+        self.index_fixture('tab')
+        with sqlite3.connect(self.path) as db:
+            plan = db.execute('EXPLAIN QUERY PLAN SELECT ordinal,identity,body FROM raw '
+                              'WHERE tab=? AND ordinal=? LIMIT 2',('food',7)).fetchall()
+        db.close()
+        self.assertIn('(tab=?)',plan[0][3]); self.assertNotIn('ordinal=?',plan[0][3])
+        with self.assertRaisesRegex(RefreshError,'composite-point-index-required'): self.run_selected()
+
+    def test_composite_search_index_uses_both_equalities_and_preserves_origins(self):
+        self.index_fixture('tab,ordinal')
+        with sqlite3.connect(self.path) as db:
+            plan = db.execute('EXPLAIN QUERY PLAN SELECT ordinal,identity,body FROM raw '
+                              'WHERE tab=? AND ordinal=? LIMIT 2',('food',7)).fetchall()
+        db.close()
+        self.assertIn('(tab=? AND ordinal=?)',plan[0][3])
+        result = self.run_selected(); self.assertEqual(result['measurements']['pointRowsRead'],4)
+        for old,new in zip(self.records,result['records']):
+            self.assertEqual(canonical(old['data']),canonical(new['data']))
+            self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
 
 if __name__ == '__main__': unittest.main()

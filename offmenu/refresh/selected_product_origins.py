@@ -246,6 +246,16 @@ class _SelectedRows:
             plan = self.db.execute('EXPLAIN QUERY PLAN '+sql, (table, pin.ordinal)).fetchall()
             if not plan or any('SCAN' in str(p[3]).upper() or 'TEMP B-TREE' in str(p[3]).upper() for p in plan):
                 _fail('unbounded-source-query')
+            point_search = False
+            for step in plan:
+                detail = str(step[3])
+                terms = re.search(r'\(([^()]*)\)\s*$', detail)
+                if re.match(r'^SEARCH\s+raw\b', detail, re.I) and terms:
+                    constraints = {re.sub(r'\s+', '', term).lower()
+                                   for term in re.split(r'\s+AND\s+', terms[1], flags=re.I)}
+                    point_search |= {'tab=?', 'ordinal=?'} <= constraints
+            if not point_search:
+                _fail('composite-point-index-required')
             cursor = self.db.execute(sql, (table, pin.ordinal))
             try: found = cursor.fetchmany(2)
             finally: cursor.close()

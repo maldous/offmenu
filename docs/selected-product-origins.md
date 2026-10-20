@@ -69,7 +69,14 @@ custom VFS/hostile in-process FD manipulation.
 The existing emitter's food-key/branded-key queries are served by a tiny view.
 Each independently selected key maps to its explicit food and branded_food row
 pins. Actual SQL reads use `WHERE tab=? AND ordinal=? LIMIT 2`; query plans must
-use indexed lookup and refuse SCAN/temp B-tree plans. Missing/duplicate rows,
+positively report a SEARCH of raw with BOTH `tab=?` and `ordinal=?` in its indexed
+search constraints, and refuse SCAN/temp B-tree plans. A tab-only index SEARCH
+does not satisfy this contract: LIMIT2 caps matches, not the table-prefix index
+walk before ordinal filtering. Unsupported plan representations fail closed;
+neither index names nor the word SEARCH alone prove composite point access.
+Existing VM/time bounds still constrain work, and this correction does not claim
+that a prior partial-index case was unbounded or occurred on a real source DB.
+Missing/duplicate rows,
 wrong identity/key/ordinal/body hash or excess bytes fail. Only food and
 branded_food are supported, each once per product; cached reuse serves the
 emitter's existence/join lookup. No food_nutrient/profile/archive read, aggregate
