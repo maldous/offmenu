@@ -3,6 +3,7 @@
 Leaves the reviewed original candidate intact. No downloads, admissions, jobs or
 remote writes. All inputs are the trusted source contract's immutable bundle.
 """
+from contextlib import ExitStack
 from dataclasses import replace
 import hashlib
 import json
@@ -87,7 +88,10 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
                              clock_evidence_sha256=contract.clock_evidence.sha256 if contract.clock_evidence else None)
     db = sqlite3.connect(db_path.as_uri() + '?mode=ro&immutable=1', uri=True)
     pending = None
+    authority = ExitStack()
     try:
+        from .usda_product_contract import bind_normalized_semantics
+        checked_contract = authority.enter_context(bind_normalized_semantics(contract, normalized, source_manifest, limits))
         emitter = ProductOriginEmitter(context, db, pins, members=members, limits=limits)
         wrapper_pin = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         dependency_pins = {module.__name__.rsplit('.', 1)[-1]: hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
@@ -95,7 +99,7 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
         policy = fingerprint({'baseSemanticPolicy': contract.policy_sha256,
                               'emitter': emitter.policy, 'wrapper': wrapper_pin, 'dependencies': dependency_pins})
         def semantic(row):
-            return list(contract.semantic_validator(row)) + field_origin_errors(row, emitter.pins, policy_pins=[emitter.policy])
+            return list(checked_contract.semantic_validator(row)) + field_origin_errors(row, emitter.pins, policy_pins=[emitter.policy])
         enriched_contract = replace(contract, semantic_validator=semantic, policy_sha256=policy)
         stage_contract = {'version': VERSION, 'sourceContractSha256': contract_fingerprint(enriched_contract),
                           'sourceOutputHashes': originals, 'normalizationManifestSha256': _hash(normalized / 'manifest.json'),
@@ -160,6 +164,7 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
         manifest = _stage_manifest(source_manifest, stage_contract, hashes, count, candidate_bytes, originals)
         qualification = qualify(enriched_contract, root, pending / 'candidate.jsonl', manifest,
                                 input_root=input_root)
+        authority.close()  # Recheck the order authority before publishing new output.
         (pending / 'manifest.json').write_bytes(canonical(manifest))
         if destination.exists():
             raise RefreshError('product-origin-stage-destination-race')
@@ -167,7 +172,10 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
         return {'candidate': destination / 'candidate.jsonl', 'sidecar': destination / 'field-origins.jsonl',
                 'manifest': manifest, 'qualification': qualification}
     finally:
-        if db is not None:
-            db.close()
-        if pending is not None and pending.exists():
-            shutil.rmtree(pending)
+        try:
+            authority.close()
+        finally:
+            if db is not None:
+                db.close()
+            if pending is not None and pending.exists():
+                shutil.rmtree(pending)

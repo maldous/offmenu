@@ -3,6 +3,7 @@ from copy import deepcopy
 from dataclasses import asdict, replace
 import hashlib
 import json
+import sqlite3
 import unittest
 from unittest.mock import patch
 
@@ -36,10 +37,18 @@ class UsdaProductContractTest(unittest.TestCase):
         # archive pin is checked by the bridge, never claimed for this tiny ZIP.
         for row in self.records:
             row['provenance']['inputSha256'] = {'archive': binding.SOURCE.sha256}
+        db = sqlite3.connect(self.f.root/'output/source.sqlite')
+        try:
+            self.source_rows = [(ordinal, json.loads(body)) for ordinal, body in db.execute(
+                'SELECT ordinal,body FROM raw WHERE tab="food_nutrient" ORDER BY ordinal')]
+        finally:
+            db.close()
 
-    def errors(self, row):
+    def errors(self, row, source_rows=None):
         return (list(Draft202012Validator(self.contract.schemas[row['kind']]).iter_errors(row)),
-                self.contract.semantic_validator(row))
+                binding.native_semantic_errors(row, scope_sha256=self.contract.scope_evidence.sha256,
+                    clock_sha256=self.contract.clock_evidence.sha256,
+                    source_rows=self.source_rows if source_rows is None else source_rows))
 
     def test_all_generated_projector_records_pass_complete_schema_and_semantics(self):
         for row in self.records:
@@ -148,7 +157,8 @@ class UsdaProductContractTest(unittest.TestCase):
         for amount, expected in [('',None), ('0',0.0), ('-0.25',-0.25)]:
             row = deepcopy(self.records[1]);n = row['data']['nutrients']['protein']
             n['sourceAmount'] = n['rawFields']['amount'] = amount;n['value'] = expected
-            self.assertEqual(self.errors(row)[1], [])
+            source = deepcopy(self.source_rows);source[0][1]['amount'] = amount
+            self.assertEqual(self.errors(row, source)[1], [])
         for amount in ['NaN','Infinity','not numeric']:
             row = deepcopy(self.records[1]);n = row['data']['nutrients']['protein']
             n['sourceAmount'] = n['rawFields']['amount'] = amount;n['value'] = None
@@ -166,7 +176,10 @@ class UsdaProductContractTest(unittest.TestCase):
         n['sourceNutrientId'] = n['rawFields']['nutrient_id'] = '999999'
         n['sourceUnit'] = 'SOURCE_UNRESOLVED';n['unit'] = 'source_unresolved'
         row['data']['nutrients']['usda:999999'] = n
-        self.assertEqual(self.errors(row), ([], []))
+        later = row['data']['nutrients'].pop('protein:observation:12')
+        row['data']['nutrients']['protein'] = later
+        source = deepcopy(self.source_rows);source[0][1]['nutrient_id'] = '999999'
+        self.assertEqual(self.errors(row, source), ([], []))
 
     def test_changed_basis_or_added_clinical_interpretation_is_rejected(self):
         row = deepcopy(self.records[1]);row['data']['basis']['amount'] = 1
