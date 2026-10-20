@@ -1,0 +1,32 @@
+{
+  "sourceDevelop": "a0ba9a08cd557e08442deec067c2c1919114b96e",
+  "candidate": "70d2426baff500e8b35406a9f52b53a65fb5f81c",
+  "sourcePR": "https://github.com/maldous/offmenu/pull/55",
+  "pushAndPRCandidateRuns": [
+    "https://github.com/maldous/offmenu/actions/runs/39387220052",
+    "https://github.com/maldous/offmenu/actions/runs/39387918909"
+  ],
+  "checks": [
+    {
+      "name": "Optional Sonar scan",
+      "head": "a0ba9a08cd557e08442deec067c2c1919114b96e",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/maldous/offmenu/actions/runs/39388340041/job/118513584258"
+    },
+    {
+      "name": "Optional Snyk scan",
+      "head": "a0ba9a08cd557e08442deec067c2c1919114b96e",
+      "status": "completed",
+      "conclusion": "skipped",
+      "url": "https://github.com/maldous/offmenu/actions/runs/39388340041/job/118513544272"
+    },
+    {
+      "name": "Configuration and application checks",
+      "head": "a0ba9a08cd557e08442deec067c2c1919114b96e",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/maldous/offmenu/actions/runs/39388340041/job/118513543364"
+    }
+  ]
+}
