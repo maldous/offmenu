@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3000,
+  "messages": 3005,
   "arabicTranslated": 376,
-  "arabicMissing": 2624,
+  "arabicMissing": 2629,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -5738,6 +5738,12 @@
     "Exact observation timestamp required": {
       "sources": [
         "cloud/waste-observation-owner24.mjs"
+      ],
+      "arabic": false
+    },
+    "Exact releaseId and manifestSha256 are required.": {
+      "sources": [
+        "cloud/provider-data.mjs"
       ],
       "arabic": false
     },
@@ -13520,6 +13526,30 @@
     "Selected context": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Selected curated manifest does not match.": {
+      "sources": [
+        "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "Selected curated release does not match.": {
+      "sources": [
+        "cloud/corpus.mjs"
+      ],
+      "arabic": false
+    },
+    "Selected curated release is unavailable.": {
+      "sources": [
+        "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "Selected curated release/source is unavailable.": {
+      "sources": [
+        "cloud/corpus.mjs"
       ],
       "arabic": false
     },

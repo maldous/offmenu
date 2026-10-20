@@ -9,6 +9,10 @@ const norm=value=>value.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase();
 function lineKey(line){const match=/^\s*\[\s*("(?:\\.|[^"\\])*")\s*,/.exec(line);if(!match)throw Error('Invalid curation partition line');return JSON.parse(match[1]);}
 import {assertCurated} from './assert-curated.mjs';
 export {assertCurated} from './assert-curated.mjs';
+// Client query failures are distinct from unavailable/corrupt serving data.
+export class CuratedQueryValidationError extends Error {
+ constructor(message){super(message);this.status=400;}
+}
 export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntries=100}={}){
  const bytes=await readBlob('manifest.json');if(!bytes)throw Error('Curated release is not published');
  const manifest=JSON.parse(decoder.decode(bytes));
@@ -28,13 +32,14 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntrie
   let reads=0;
   const read=async key=>{if(reads>=maxBlobReads)throw Error('Search needs too many index reads; use fewer search terms.');reads++;return load(key);};
   const definition=manifest.sources[source];if(!definition)throw Error('Source absent from curated release');
-  if(typeof query!=='string'||query.length>100||barcode&&!/^\d{4,32}$/.test(barcode)||country&&!/^[A-Z]{2}$/.test(country)||kind&&!/^[A-Za-z]+$/.test(kind)||cursor.length>600)throw Error('Invalid collection filter');
+  if(typeof query!=='string'||query.length>100||barcode&&!/^\d{4,32}$/.test(barcode)||country&&!/^[A-Z]{2}$/.test(country)||kind&&!/^[A-Za-z]+$/.test(kind)||cursor.length>600)throw new CuratedQueryValidationError('Invalid collection filter');
   const size=Math.max(1,Math.min(100,maxPageEntries,Number(limit)||20));
   const filters=await hash(JSON.stringify([source,query,barcode,kind,country]));
   let offset=0;
-  if(cursor){let decoded;try{decoded=JSON.parse(atob(cursor.replaceAll('-','+').replaceAll('_','/')));}catch{throw Error('Invalid cursor');}
-   if(decoded.release!==manifest.manifestSha256||decoded.filters!==filters)throw Error('Cursor belongs to a different release or search');
-   if(!Number.isSafeInteger(decoded.offset)||decoded.offset<0)throw Error('Invalid cursor');offset=decoded.offset;
+  if(cursor){let decoded;try{decoded=JSON.parse(atob(cursor.replaceAll('-','+').replaceAll('_','/')));}catch{throw new CuratedQueryValidationError('Invalid cursor');}
+   if(!decoded||typeof decoded!=='object'||Array.isArray(decoded))throw new CuratedQueryValidationError('Invalid cursor');
+   if(decoded.release!==manifest.manifestSha256||decoded.filters!==filters)throw new CuratedQueryValidationError('Cursor belongs to a different release or search');
+   if(!Number.isSafeInteger(decoded.offset)||decoded.offset<0)throw new CuratedQueryValidationError('Invalid cursor');offset=decoded.offset;
   }
   let candidates=null;
   if(barcode)candidates=await posting('barcodes',barcode,source,read);
@@ -47,7 +52,7 @@ export async function createEngine(readBlob,{maxBlobReads=Infinity,maxPageEntrie
    else{const intersection=[];let i=0,j=0;while(i<candidates.length&&j<found.length){if(candidates[i]===found[j]){intersection.push(candidates[i]);i++;j++;}else if(candidates[i]<found[j])i++;else j++;}candidates=intersection;}
   }
   const [start,end]=definition.entryRange,total=candidates?.length??end-start;
-  if(offset>total)throw Error('Cursor outside collection');
+  if(offset>total)throw new CuratedQueryValidationError('Cursor outside collection');
   const pages=new Map(),selected=[],recordShards=new Set();let examined=0;
   while(offset<total&&selected.length<size&&examined<10000){
    const id=candidates?candidates[offset]:start+offset;
