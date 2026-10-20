@@ -99,6 +99,39 @@ class EvidenceWorkTests(unittest.TestCase):
             check.evidence(self.f.pin('three', b'e'))
         self.assertEqual(len(self.calls), 2)
 
+    def test_empty_pin_at_exact_byte_budget_uses_spare_read(self):
+        check = english._Check(replace(self.f.policy, max_total_evidence_bytes=4, max_evidence_reads=3), self.f)
+        full = self.f.pin('full', b'abcd'); empty = self.f.pin('empty', b'')
+        self.assertEqual(check.evidence(full), b'abcd')
+        self.assertEqual(check.evidence(empty), b'')
+        self.assertEqual(check.evidence(dict(empty)), b'')
+        self.assertEqual(check.evidence_bytes, 4)
+        self.assertEqual(check.evidence_reads, 2)
+        self.assertEqual(len(self.calls), 2)
+
+    def test_nonempty_pin_at_byte_budget_is_read_but_not_hashed_or_cached(self):
+        check = english._Check(replace(self.f.policy, max_total_evidence_bytes=4, max_evidence_reads=3), self.f)
+        full = self.f.pin('full', b'abcd'); excess = self.f.pin('excess', b'e')
+        check.evidence(full)
+        with patch.object(english.hashlib, 'sha256', wraps=hashlib.sha256) as hashed:
+            with self.assertRaisesRegex(english.EvidenceError, '^english-evidence-work-bound-exceeded$'):
+                check.evidence(excess)
+            hashed.assert_not_called()
+        self.assertEqual(check.evidence_bytes, 4)
+        self.assertEqual(check.evidence_reads, 2)
+        self.assertEqual(len(self.calls), 2)
+        self.assertNotIn((excess['path'], excess['sha256']), check.verified_evidence)
+
+    def test_new_empty_pin_at_byte_budget_cannot_exceed_read_limit(self):
+        check = english._Check(replace(self.f.policy, max_total_evidence_bytes=4, max_evidence_reads=2), self.f)
+        full = self.f.pin('full', b'abcd'); empty = self.f.pin('empty', b'')
+        check.evidence(full); check.evidence(empty)
+        with self.assertRaisesRegex(english.EvidenceError, '^english-evidence-work-bound-exceeded$'):
+            check.evidence(self.f.pin('another-empty', b''))
+        self.assertEqual(check.evidence_bytes, 4)
+        self.assertEqual(check.evidence_reads, 2)
+        self.assertEqual(len(self.calls), 2)
+
     def test_invalid_budget_configuration_fails_closed(self):
         for name, value in [('max_evidence_reads', True), ('max_evidence_reads', 0),
                             ('max_total_evidence_bytes', -1), ('max_total_evidence_bytes', 1.5)]:

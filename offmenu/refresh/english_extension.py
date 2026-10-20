@@ -181,8 +181,7 @@ class _Check:
             return self.verified_evidence[key]
         # Bound dispatches before invoking trusted resolver code, and hash each
         # selected immutable byte snapshot only once during this validation.
-        require(self.evidence_reads < self.p.max_evidence_reads
-                and self.evidence_bytes < self.p.max_total_evidence_bytes,
+        require(self.evidence_reads < self.p.max_evidence_reads,
                 'english-evidence-work-bound-exceeded')
         self.evidence_reads += 1
         raw = self.r.evidence(pin)
