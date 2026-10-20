@@ -76,6 +76,10 @@ two potential IDs each (`nutrientProfile`, `product`), sorted with SQLite BINARY
 canonical JSON ID string plus LF feeds SHA256. This agrees with the documented
 acceptance digest format without using candidate contents as an oracle. It does
 not prove nutrient semantics, field origins, English output or source acceptance.
+`policySha256` retains a snapshot of this module file taken at operation entry,
+before source traversal. Replacing or removing that file during a long traversal
+cannot relabel the receipt with a later revision. It is a pre-traversal source-file
+pin; the surrounding reviewed runtime/contract evidence remains separate.
 Zero source rows yield zero expected rows, not a valid nonempty source acceptance.
 
 ## Narrow private scratch budget

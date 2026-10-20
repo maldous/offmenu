@@ -584,6 +584,7 @@ def witness_retained_input(contract, bundle, destination, *, limits=WitnessLimit
     destinations are never changed/reused. Caller supplies a reconciled free-space
     floor including other outstanding commitments, and serial source admission.
     """
+    policy_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     root, destination = safe_path(bundle), safe_path(destination)
     originals = safe_path(input_root) if input_root is not None else root
     if (any(a == destination or a in destination.parents or destination in a.parents for a in (root, originals))
@@ -671,7 +672,7 @@ def witness_retained_input(contract, bundle, destination, *, limits=WitnessLimit
                   'original': asdict(contract.original),
                   'rightsEvidenceSha256': contract.rights_evidence.sha256,
                   'scopeEvidenceSha256': contract.scope_evidence.sha256,
-                  'policySha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  'policySha256': policy_sha256,
                   'limits': asdict(limits), 'fixture': contract.fixture,
                   'fullDenominatorTraversed': complete, 'eligibleCleanScopeWitness': eligible,
                   'unparsedTailPossible': not complete,

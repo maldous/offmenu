@@ -558,3 +558,39 @@ class ProductInputWitnessTest(unittest.TestCase):
             with self.assertRaisesRegex(RefreshError,'atomic-publication-unavailable'):self.run_witness(c)
             unsafe.assert_not_called()
         self.assertFalse((self.root/'output').exists())
+
+    def test_policy_digest_retains_pretraversal_bytes_after_midtraversal_replacement(self):
+        from offmenu.refresh import product_input_witness as w
+        for source in ('off','usda-files'):
+            with self.subTest(source=source):
+                c=self.off() if source=='off' else self.usda()
+                policy=self.root/'synthetic-policy.py';initial=b'initial policy revision\n';policy.write_bytes(initial)
+                real_put=w._Run.put;real_read=Path.read_bytes;mutated=False;reads=[]
+                def put(*args,**kwargs):
+                    nonlocal mutated
+                    result=real_put(*args,**kwargs)
+                    if not mutated:
+                        policy.write_bytes(b'replacement policy revision\n');mutated=True
+                    return result
+                def read(path):
+                    if path==policy:reads.append(mutated)
+                    return real_read(path)
+                with patch.object(w,'__file__',str(policy)),patch.object(w._Run,'put',put),patch.object(Path,'read_bytes',read):
+                    r=self.run_witness(c,name='policy-'+source)
+                self.assertTrue(mutated);self.assertEqual(reads,[False])
+                self.assertEqual(r['policySha256'],hashlib.sha256(initial).hexdigest())
+                self.assertNotEqual(r['policySha256'],hashlib.sha256(policy.read_bytes()).hexdigest())
+                self.assertTrue(r['eligibleCleanScopeWitness']);self.assertFalse(r['accepted'])
+
+    def test_policy_file_removed_midtraversal_does_not_reopen_or_relabel_receipt(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();policy=self.root/'synthetic-policy.py';initial=b'pretraversal policy\n';policy.write_bytes(initial)
+        real_put=w._Run.put;removed=False
+        def put(*args,**kwargs):
+            nonlocal removed
+            result=real_put(*args,**kwargs)
+            if not removed:policy.unlink();removed=True
+            return result
+        with patch.object(w,'__file__',str(policy)),patch.object(w._Run,'put',put):r=self.run_witness(c)
+        self.assertTrue(removed);self.assertEqual(r['policySha256'],hashlib.sha256(initial).hexdigest())
+        self.assertTrue(r['eligibleCleanScopeWitness']);self.assertFalse(r['accepted'])
