@@ -260,9 +260,9 @@ def _recipe_sections(soup: BeautifulSoup, page_text: str | None = None) -> dict:
     variations = []
     for header in body.find_all(['h2', 'h3', 'h4']):
         label = _header_label(header)
-        is_wiki_variation = label in {'variation', 'variations'}
         if label not in {'variation', 'variations', 'hint', 'notes', 'serving suggestion'}:
             continue
+        display_label = _norm(header.get_text(' ', strip=True))
         level = int(header.name[1])
         node = header
         while True:
@@ -271,7 +271,7 @@ def _recipe_sections(soup: BeautifulSoup, page_text: str | None = None) -> dict:
                 break
             if (not wiki_markup and node.name == 'p' and
                     node.get_text(' ', strip=True)):
-                variations.append({'section': label, 'text': node.get_text(' ', strip=True)})
+                variations.append({'section': display_label, 'text': node.get_text(' ', strip=True)})
     return {'ingredientLines': ingredients, 'directionParagraphs': directions,
             'yields': yields, 'variations': variations}
 
