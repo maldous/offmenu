@@ -384,5 +384,125 @@ class GlobalDeliveryTests(unittest.TestCase):
                                 and not v['successfulDatasetNoop'] for v in receipt['outputs'].values()))
 
 
+class CurrentProviderRegressionTests(unittest.TestCase):
+    def build(self, config, reader):
+        with patch.object(d.coverage, 'assess', return_value={'sources': []}), \
+                patch.object(d.global_run, 'run', return_value={}), \
+                patch.object(d.global_run, 'compact', return_value={}):
+            return d.build(config, reader=reader)[0]
+
+    def test_worker_assignments_match_owner_map_before_packets_are_read(self):
+        for mutation in ('missing', 'wrong', 'duplicate'):
+            with self.subTest(mutation=mutation):
+                config, controls, read = authored_build_fixture()
+                worker = controls['partition']['workers'][0]
+                if mutation == 'missing':
+                    worker['countries'].pop()
+                elif mutation == 'duplicate':
+                    worker['countries'].append(worker['countries'][0])
+                else:
+                    worker['countries'].append(controls['partition']['workers'][1]['countries'][0])
+                calls = []
+                def observed(pin):
+                    calls.append(pin['path'])
+                    return read(pin)
+                with self.assertRaisesRegex(RefreshError, 'owner-packet-registry-mismatch'):
+                    self.build(config, observed)
+                self.assertFalse(any(p.startswith('packet-') for p in calls))
+
+    def test_rejected_packet_cannot_leave_labels_in_any_country_cell(self):
+        for reverse in (False, True):
+            with self.subTest(reverse=reverse):
+                config, controls, read = authored_build_fixture()
+                country = controls['partition']['workers'][0]['countries'][0]
+                other = controls['partition']['workers'][1]['countries'][0]
+                entries = [{'country': country, 'sourceCustodianLabelsRetained': ['REJECTED-LABEL']},
+                           {'country': other}]
+                if reverse:
+                    entries.reverse()
+                def packet(pin):
+                    value = read(pin)
+                    if pin['path'] == 'packet-1':
+                        value['countries'] = entries
+                    return value
+                manifest = self.build(config, packet)
+                self.assertTrue(any(x.get('owner') == 1 for x in manifest['diagnostics']))
+                for group in ('canonicalCells', 'projectionCells'):
+                    self.assertTrue(all(not r['sourceCustodianLabels'] for r in manifest[group]))
+
+    def test_recursion_failure_isolated_in_peer_and_packet_metadata(self):
+        config, controls, read = authored_build_fixture()
+        rows = sorted(controls['seed']['cells'], key=lambda r: (r['country'], r['requiredType']))
+        rows[0]['categoryEvidence'] = {'path': 'deep-peer', 'sha256': H}
+        valid = {'categories': {t: {'status': 'synthetic-only'} for t in d.TYPES}}
+        def peer(pin):
+            if pin['path'] == 'deep-peer' or pin['path'] == 'packet-1':
+                raise RecursionError('synthetic JSON decoder depth failure')
+            if pin['path'] == PIN['path']:
+                return valid
+            return read(pin)
+        manifest = self.build(config, peer)
+        self.assertEqual((len(manifest['canonicalCells']), len(manifest['projectionCells'])), (3237, 1494))
+        self.assertEqual(sum(r['retainedCategory'] is not None for r in manifest['projectionCells']), 1493)
+        self.assertEqual(len(manifest['diagnostics']), 2)
+
+    def test_actual_deep_json_peer_keeps_all_other_cells(self):
+        config, controls, read = authored_build_fixture()
+        raw = b'[' * 2000 + b'0' + b']' * 2000
+        rows = sorted(controls['seed']['cells'], key=lambda r: (r['country'], r['requiredType']))
+        rows[0]['categoryEvidence'] = {'path': 'deep-json-peer', 'sha256': d.sha(raw), 'bytes': len(raw)}
+        valid = {'categories': {t: {'status': 'synthetic-only'} for t in d.TYPES}}
+        def peer(pin):
+            if pin['path'] == 'deep-json-peer':
+                return d.read_metadata(pin, reader=lambda *args: raw)
+            if pin['path'] == PIN['path']:
+                return valid
+            return read(pin)
+        manifest = self.build(config, peer)
+        self.assertEqual(len(manifest['diagnostics']), 1)
+        self.assertEqual(sum(r['retainedCategory'] is not None for r in manifest['projectionCells']), 1493)
+
+    def test_fully_valid_packet_keeps_labels_for_its_country(self):
+        config, controls, read = authored_build_fixture()
+        country = controls['partition']['workers'][0]['countries'][0]
+        def packet(pin):
+            value = read(pin)
+            if pin['path'] == 'packet-1':
+                value['countries'] = [{'country': country, 'sourceCustodianLabelsRetained': ['VALID']}]
+            return value
+        manifest = self.build(config, packet)
+        for group in ('canonicalCells', 'projectionCells'):
+            self.assertTrue(all(r['sourceCustodianLabels'] == ['VALID']
+                                for r in manifest[group] if r['country'] == country))
+
+    def test_output_bound_applies_to_initial_publication_and_replay(self):
+        report = {'synthetic': 'padding'}
+        size = d.global_run.stream_report(report)[1]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'bounded.json'
+            with patch.object(d, 'MAX_OUTPUT', size - 1, create=True):
+                with self.assertRaisesRegex(RefreshError, 'delivery-output-bound'):
+                    d.publish(report, path)
+            self.assertFalse(path.exists())
+            with patch.object(d, 'MAX_OUTPUT', size, create=True):
+                first = d.publish(report, path)
+                replay = d.publish(report, path)
+            self.assertEqual(first['bytes'], size)
+            self.assertTrue(replay['artifactReplay'])
+
+    def test_cli_oversize_second_report_leaves_both_destinations_absent(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            config = root / 'config.json'
+            config.write_text('{}')
+            reports = (GlobalDeliveryTests.cli_reports()[0], {'padding': 'x' * 2048})
+            with patch.object(d, 'MAX_OUTPUT', 1024, create=True), \
+                    patch.object(d, 'build', return_value=reports), patch('builtins.print'):
+                with self.assertRaisesRegex(RefreshError, 'delivery-output-bound'):
+                    d.main(['--config', str(config), '--output-root', str(root)])
+            self.assertFalse((root / 'manifest.json').exists())
+            self.assertFalse((root / 'global-run.json').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -69,3 +69,10 @@ The CLI loads no trusted bindings. Existing `execution.reviewed_bindings` covers
 only acquire/verify/parse/normalize/validate and cannot imply final admission.
 
 Focused authored validation: `python -m unittest discover -s tests -p test_global_delivery.py`.
+
+The worker registry must assign each owner exactly the countries in the canonical
+country-to-owner map, without duplicates, before packet metadata is read. Packet
+labels are staged locally and retained only if the entire packet validates.
+Peer JSON recursion failures become packet/cell diagnostics and cannot discard
+unrelated cells. Both initial publication and replay enforce the same 64 MiB
+per-artifact bound, including before either destination is published by the CLI.

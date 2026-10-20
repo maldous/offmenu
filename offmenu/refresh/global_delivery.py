@@ -17,6 +17,7 @@ TYPES = ('ingredients', 'recipes', 'nutrition', 'retailers/providers',
          'prices/baskets', 'dietary references')
 SCHEMA = 'offmenu-global-delivery-plan/1'
 MAX_METADATA = 16 * 1024 * 1024
+MAX_OUTPUT = 64 * 1024 * 1024
 
 
 def read_metadata(pin, *, reader=_read_bounded_regular):
@@ -215,15 +216,23 @@ def batch_plan(batch, *, now, policy_pin, selection, metadata_pin, custody_evide
 def build(config, *, reader=read_metadata):
     partition, seed, crosswalk = (reader(config[key]) for key in ('partition', 'seed', 'crosswalk'))
     owners = validate_registry(partition, seed, crosswalk)
+    workers = partition['workers']
+    if (not isinstance(workers, list) or len(workers) != 64
+            or any(not isinstance(w, dict) or type(w.get('owner')) is not int for w in workers)
+            or {w['owner'] for w in workers} != set(range(1, 65))):
+        raise RefreshError('owner-packet-registry-mismatch')
+    for worker in workers:
+        assigned = worker.get('countries')
+        expected = {country for country, owner in owners.items() if owner == worker['owner']}
+        if (not isinstance(assigned, list) or any(not isinstance(c, str) for c in assigned)
+                or len(assigned) != len(expected) or set(assigned) != expected):
+            raise RefreshError('owner-packet-registry-mismatch')
     retained = adapt59(reader(config['owner59']), owners)
     selected_plan = reader(config['selectedExecutionPlan'])
     custody = reader(config['custodyUseEvidence'])
     join_selected_scope(config, selected_plan, retained['batches'], custody)
     evidence = reader(config['ledgerEvidence'])
     diagnostics, packet_refs, labels = [], {}, {}
-    workers = partition['workers']
-    if len(workers) != 64 or {w['owner'] for w in workers} != set(range(1, 65)):
-        raise RefreshError('owner-packet-registry-mismatch')
     for worker in workers:
         owner, pin = worker['owner'], worker['packet']
         packet_refs[owner] = pin
@@ -231,11 +240,13 @@ def build(config, *, reader=read_metadata):
             packet = reader(pin)
             if packet['owner'] != owner or set(packet['countryCodes']) != set(worker['countries']):
                 raise RefreshError('owner-packet-country-mismatch')
+            packet_labels = {}
             for country in packet['countries']:
                 if owners[country['country']] != owner:
                     raise RefreshError('owner-packet-owner-mismatch')
-                labels[country['country']] = country.get('sourceCustodianLabelsRetained', [])
-        except (OSError, ValueError, KeyError, TypeError) as error:
+                packet_labels[country['country']] = country.get('sourceCustodianLabelsRetained', [])
+            labels.update(packet_labels)
+        except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
             diagnostics.append({'owner': owner, 'kind': 'OWNER_PACKET_METADATA_INVALID',
                                 'errorType': type(error).__name__, 'pin': pin})
     projection, documents, fixes = [], {}, Counter()
@@ -251,7 +262,7 @@ def build(config, *, reader=read_metadata):
                     if not isinstance(document, dict):
                         raise RefreshError('projection-document-object-required')
                     documents[key] = (document, None)
-                except (OSError, ValueError, KeyError, TypeError) as error:
+                except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
                     documents[key] = (None, 'projection-document-object-required'
                                       if isinstance(error, RefreshError)
                                       and str(error) == 'projection-document-object-required'
@@ -262,7 +273,7 @@ def build(config, *, reader=read_metadata):
                 if row.get('retainedCategory') is None:
                     fixes['seedGapResolved'] += 1
                     fixes['fieldAlias' if parsed['fieldAlias'] else 'alternateContainer'] += 1
-        except (ValueError, KeyError, TypeError) as error:
+        except (ValueError, KeyError, TypeError, RecursionError) as error:
             issue = str(error) if isinstance(error, RefreshError) and str(error) in (
                 'projection-document-object-required', 'projection-row-object-required',
                 'projection-row-missing-or-ambiguous') else type(error).__name__
@@ -353,8 +364,10 @@ def preflight_publication(report, path):
     """Check existing output conflicts without publishing any artifact."""
     path = Path(path)
     expected = global_run.stream_report(report)
+    if expected[1] > MAX_OUTPUT:
+        raise RefreshError('delivery-output-bound')
     if path.exists() or path.is_symlink():
-        raw = _read_bounded_regular(path, 64 * 1024 * 1024, 'delivery-output')
+        raw = _read_bounded_regular(path, MAX_OUTPUT, 'delivery-output')
         if (sha(raw), len(raw)) != expected:
             raise RefreshError('delivery-existing-output-identity-mismatch')
         return expected, True
