@@ -180,3 +180,20 @@ No Git metadata, node_modules or external corpus is needed for the default suite
 
 Final declared-files export:10 passed/0 failed,66.478391ms. Output SHA-256
 35796c2188f213d9d8c97a2a229879df61bb87914d1de8c304f67862c94f48cf.
+
+## Registry capture limits — current correction
+
+Quarantined cells do not consume the accepted-data allowance of later valid
+cells. Successful captures still share the existing 20,000-node and
+250,000-character registry budget. A separate 200,000-node traversal allowance
+includes the header and every attempted cell, including rejected cells and
+repeated aliases. It is never rolled back. Exceeding it withholds the entire
+registry before admission or context callbacks; no partial authority decision is
+released from an exhausted snapshot. One oversized cell can remain isolated,
+while repeated expensive failures cannot multiply work across all 1,000 entries.
+This is a capture limit, not a wall-clock guarantee for caller-supplied hooks.
+
+Synthetic regressions cover rejected character/node/cyclic cells in both orders,
+the shared accepted-data cap, repeated expensive rejection in both orders, and
+999 cheap invalid cells followed by a valid metric. These checks do not admit
+real issuer data, source rights, runtime adoption or production use.

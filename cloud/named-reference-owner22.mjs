@@ -3,6 +3,7 @@ export const NAMED_REFERENCE_VERSION = 'named-reference/1';
 const named = x => typeof x === 'string' && x.length > 0 && x.trim() === x && x.length <= 500;
 const positive = x => typeof x === 'number' && Number.isFinite(x) && x > 0;
 const hash = x => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
+const MAX_REGISTRY_CAPTURE_NODES = 200000;
 const url = x => {
   if (!named(x)) return false;
   try {const u = new URL(x); return u.protocol === 'https:' && !!u.hostname && !u.username && !u.password;}
@@ -11,7 +12,8 @@ const url = x => {
 
 // Capture data before crossing async owner boundaries. Never execute accessors,
 // inherit approval fields, serialize NaN as null, or retain mutable input aliases.
-function capture(value, budget = {nodes:0, chars:0}, seen = new Set(), depth = 0) {
+function capture(value, budget = {nodes:0, chars:0}, seen = new Set(), depth = 0, work = null) {
+  if (work && ++work.nodes > MAX_REGISTRY_CAPTURE_NODES) throw Error('registry-work-limit');
   if (++budget.nodes > 20000 || depth > 32) throw Error('bounded-data');
   if (value === null || typeof value === 'boolean') return value;
   if (typeof value === 'number' && Number.isFinite(value)) return value;
@@ -27,7 +29,7 @@ function capture(value, budget = {nodes:0, chars:0}, seen = new Set(), depth = 0
   for (const key of keys) {
     const descriptor = Object.getOwnPropertyDescriptor(value, key);
     if (!descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) throw Error('data-property');
-    Object.defineProperty(result, key, {value:capture(descriptor.value, budget, seen, depth + 1),
+    Object.defineProperty(result, key, {value:capture(descriptor.value, budget, seen, depth + 1, work),
       enumerable:true, configurable:true, writable:true});
   }
   seen.delete(value);
@@ -54,15 +56,26 @@ function registrySnapshot(raw) {
     if (typeof key !== 'string' || !d.enumerable || !Object.hasOwn(d, 'value')) throw Error('registry-property');
     if (key !== 'metricCells') Object.defineProperty(header, key, {value:d.value, enumerable:true});
   }
-  const budget = {nodes:0, chars:0}, captured = capture(header, budget), cells = descriptors.metricCells?.value;
+  const budget = {nodes:0, chars:0}, work = {nodes:0};
+  const captured = capture(header, budget, new Set(), 0, work), cells = descriptors.metricCells?.value;
   if (!cells || ![Object.prototype, null].includes(Object.getPrototypeOf(cells)) || Reflect.ownKeys(cells).length > 1000) throw Error('registry-cells');
   captured.metricCells = {};
   for (const key of Reflect.ownKeys(cells)) {
     if (typeof key !== 'string') throw Error('registry-cell-key');
     const d = Object.getOwnPropertyDescriptor(cells, key);
     let cell;
-    try {if (!d.enumerable || !Object.hasOwn(d, 'value')) throw Error('cell-property'); cell = capture(d.value, budget);}
-    catch {cell = {invalidCellData:true};}
+    try {
+      if (!d.enumerable || !Object.hasOwn(d, 'value')) throw Error('cell-property');
+      // Failed cells are quarantined; only accepted cells spend the shared budget.
+      const trialBudget = {...budget};
+      cell = capture(d.value, trialBudget, new Set(), 0, work);
+      Object.assign(budget, trialBudget);
+    }
+    catch (error) {
+      // Traversal work is never rolled back. Exhaustion rejects the whole registry.
+      if (work.nodes > MAX_REGISTRY_CAPTURE_NODES) throw error;
+      cell = {invalidCellData:true};
+    }
     Object.defineProperty(captured.metricCells, key, {value:cell, enumerable:true, writable:true});
   }
   return captured;

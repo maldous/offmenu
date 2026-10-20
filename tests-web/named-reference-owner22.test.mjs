@@ -84,6 +84,76 @@ test('finite positive target gate is per metric; unknown does not become zero',a
   assert.equal((await resolveNamedReference(f.request,f.dependencies)).metrics.protein_g.percentReference,0);
 });
 
+test('quarantined cells do not spend the capture budget of valid cells in either order',async()=>{
+  for (const failure of ['characters','nodes','cycle']) {
+    for (const invalidFirst of [true,false]) {
+      const f=fixture(), invalid=f.registry.metricCells.protein_g, valid=f.registry.metricCells.energy_kcal;
+      if (failure==='characters') invalid.note='x'.repeat(250001);
+      if (failure==='nodes') invalid.note=Array.from({length:21},()=>Array(1000).fill(null));
+      if (failure==='cycle') {
+        invalid.note='x'.repeat(240000);
+        invalid.self=invalid;
+        valid.note='y'.repeat(20000);
+      }
+      f.registry.metricCells=Object.fromEntries(invalidFirst
+        ? [['protein_g',invalid],['energy_kcal',valid]] : [['energy_kcal',valid],['protein_g',invalid]]);
+      let admitted;
+      f.dependencies.admitSource=b=>{admitted=b;return f.decision('admitted',b);};
+      const r=await resolveNamedReference(f.request,f.dependencies), label=`${failure}, invalidFirst=${invalidFirst}`;
+      assert.equal(r.status,'partial',label);
+      assert.equal(r.metrics.protein_g.denominator,null,label);
+      assert.equal(r.metrics.protein_g.reason,'missing-or-invalid-issuer-cell',label);
+      assert.equal(r.metrics.energy_kcal.status,'qualified',label);
+      assert.equal(r.metrics.energy_kcal.percentReference,10,label);
+      assert.deepEqual(admitted.registry.metricCells.protein_g,{invalidCellData:true},label);
+      assert.equal(admitted.registry.metricCells.energy_kcal.amount,1000,label);
+    }
+  }
+});
+
+test('successful cells still share the aggregate registry capture budget',async()=>{
+  const f=fixture();
+  f.registry.metricCells.protein_g.note='x'.repeat(130000);
+  f.registry.metricCells.energy_kcal.note='y'.repeat(130000);
+  let admitted;
+  f.dependencies.admitSource=b=>{admitted=b;return f.decision('admitted',b);};
+  const r=await resolveNamedReference(f.request,f.dependencies);
+  assert.equal(r.status,'partial');
+  assert.equal(r.metrics.protein_g.status,'qualified');
+  assert.equal(r.metrics.energy_kcal.denominator,null);
+  assert.deepEqual(admitted.registry.metricCells.energy_kcal,{invalidCellData:true});
+  assert.equal(admitted.registry.metricCells.protein_g.note.length,130000);
+});
+
+test('repeated rejected-cell traversal withholds the registry before owner admission',async()=>{
+  for (const validFirst of [true,false]) {
+    const f=fixture(), valid=f.registry.metricCells.energy_kcal;
+    const invalid={note:Array.from({length:21},()=>Array(1000).fill(null))};
+    const rejected=Array.from({length:12},(_,i)=>['rejected-'+i,invalid]);
+    f.registry.metricCells=Object.fromEntries(validFirst
+      ? [['energy_kcal',valid],...rejected] : [...rejected,['energy_kcal',valid]]);
+    let admissionCalls=0, contextCalls=0;
+    f.dependencies.admitSource=b=>{admissionCalls++;return f.decision('admitted',b);};
+    f.dependencies.qualifyContext=b=>{contextCalls++;return f.decision('compatible',b);};
+    const r=await resolveNamedReference(f.request,f.dependencies);
+    assert.equal(r.status,'withheld');
+    assert.equal(r.reason,'owner-boundary-unavailable');
+    assert.equal(r.referenceProfile,null);
+    assert.equal(r.metrics.energy_kcal.denominator,null);
+    assert.equal(admissionCalls,0);
+    assert.equal(contextCalls,0);
+  }
+});
+
+test('many cheaply rejected cells retain the allowance for a valid cell',async()=>{
+  const f=fixture(), valid=f.registry.metricCells.energy_kcal;
+  f.registry.metricCells=Object.fromEntries([
+    ...Array.from({length:999},(_,i)=>['rejected-'+i,new Date(0)]),['energy_kcal',valid]]);
+  const r=await resolveNamedReference(f.request,f.dependencies);
+  assert.equal(r.status,'partial');
+  assert.equal(r.metrics.energy_kcal.percentReference,10);
+});
+
 test('issuer/version/cell/reference-type/cohort/definition/unit/rights mismatches withhold affected cell',async()=>{
   for (const [key,value] of [['issuerId','other'],['documentVersion','other'],['sourceSha256','b'.repeat(64)],
     ['sourceUrl','https://example.invalid/other'],['sourceId','other'],['rightsRevision','other'],['referenceType','other'],
