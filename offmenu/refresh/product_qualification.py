@@ -30,6 +30,11 @@ def qualify_product_candidate(contract, bundle, roles, destination, *, license,
         raise RefreshError('product-operation-rights-missing')
     if contract.output_scope != 'native' or contract.output_visibility != 'private':
         raise RefreshError('product-native-contract-required')
+    from .product_clock import validate_contract_clock
+    try:
+        validate_contract_clock(contract, bundle)
+    except (ValueError, TypeError, AttributeError, OSError):
+        raise RefreshError('product-clock-contract-invalid') from None
     root = _safe(bundle)
     assets = {}
     for asset in contract.inputs:
@@ -49,15 +54,20 @@ def qualify_product_candidate(contract, bundle, roles, destination, *, license,
         source = _safe(root / path)
         if source.stat().st_size != asset.bytes or _hash(source) != asset.sha256:
             raise RefreshError('product-input-pin-mismatch')
+    evidence_paths = {contract.rights_evidence.path, contract.scope_evidence.path}
+    if contract.clock_evidence is not None:
+        evidence_paths.add(contract.clock_evidence.path)
     if (len(set(roles.values())) != len(roles) or not set(roles.values()) <= set(assets)
-            or {contract.rights_evidence.path, contract.scope_evidence.path} & set(roles.values())):
+            or evidence_paths & set(roles.values())):
         raise RefreshError('product-invalid-role-map')
     # Every non-evidence asset must have an explicit parser role, no scope drift.
-    if set(roles.values()) != set(assets) - {contract.rights_evidence.path, contract.scope_evidence.path}:
+    if set(roles.values()) != set(assets) - evidence_paths:
         raise RefreshError('product-unassigned-input')
     context = ProductContext(contract.source_id, contract.release_id, contract.acquired_at,
                              license, attribution, contract.rights_evidence.sha256,
-                             contract.scope_evidence.sha256)
+                             contract.scope_evidence.sha256,
+                             acquisition_clock_status=contract.acquisition_clock_status,
+                             clock_evidence_sha256=contract.clock_evidence.sha256 if contract.clock_evidence else None)
     destination = _safe(destination)
     if destination == root or root in destination.parents or destination in root.parents:
         raise RefreshError('product-output-overlaps-bundle')

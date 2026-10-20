@@ -6,7 +6,6 @@ Native, curated and common outputs require separate contracts; a native pass is
 not a claim that a public projection, graph or country is complete.
 """
 from dataclasses import dataclass
-from datetime import datetime
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
@@ -41,7 +40,7 @@ class SourceContract:
     source_id: str
     release_id: str
     scope_id: str
-    acquired_at: str
+    acquired_at: str | None
     inputs: tuple
     expected_records: int
     expected_ids_sha256: str  # SHA256 of sorted unique IDs, each JSON encoded + LF
@@ -60,6 +59,8 @@ class SourceContract:
     max_input_bytes: int = MAX_BYTES
     max_output_bytes: int = MAX_BYTES
     max_records: int = MAX_ROWS
+    acquisition_clock_status: str = 'known'
+    clock_evidence: Asset | None = None
 
 
 def contract_fingerprint(contract):
@@ -179,9 +180,8 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                 or not _local_schema(contract.schemas)):
             raise ValueError('contract-invalid')
         result['contractSha256'] = contract_fingerprint(contract)
-        acquired = datetime.fromisoformat(contract.acquired_at.replace('Z', '+00:00'))
-        if acquired.tzinfo is None:
-            raise ValueError('contract-time-invalid')
+        from .product_clock import clock_marker, validate_contract_clock
+        validate_contract_clock(contract)
         if not contract.required_operations or not contract.required_operations <= contract.permitted_operations:
             error('operation-rights-missing')
         if not frozenset(('retain', 'parse', 'transform')) <= contract.required_operations:
@@ -210,6 +210,7 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                     error('input-custody-mismatch')
             except (OSError, ValueError):
                 error('input-custody-mismatch')
+        validate_contract_clock(contract, root)
         from jsonschema import Draft202012Validator
         validators = {}
         for kind, schema in contract.schemas.items():
@@ -223,8 +224,13 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                              'rightsEvidenceSha256': contract.rights_evidence.sha256,
                              'scopeEvidenceSha256': contract.scope_evidence.sha256,
                              'normalizedRecords': contract.expected_records}
-        if any(manifest.get(key) != value for key, value in expected_manifest.items()):
+        if any(key not in manifest or manifest[key] != value for key, value in expected_manifest.items()):
             error('manifest-contract-mismatch')
+        marker = clock_marker(contract.acquisition_clock_status,
+                              contract.clock_evidence.sha256 if contract.clock_evidence else None)
+        if ((marker is None and 'acquisitionClock' in manifest)
+                or (marker is not None and manifest.get('acquisitionClock') != marker)):
+            error('manifest-clock-mismatch')
         expected_inputs = [{'path': a.path, 'bytes': a.bytes, 'sha256': a.sha256} for a in assets]
         supplied_inputs = manifest.get('inputFiles')
         if (not isinstance(supplied_inputs, list)
@@ -277,6 +283,10 @@ remain held. IDs/count expectations come from independently reviewed scope evide
                             if not isinstance(provenance, dict) or any(provenance.get(key) != value for key, value in
                                     (('sourceId', contract.source_id), ('releaseId', contract.release_id), ('fetchedAt', contract.acquired_at))):
                                 error('record-provenance-mismatch')
+                            if (not isinstance(provenance, dict) or 'fetchedAt' not in provenance
+                                    or (marker is None and 'acquisitionClock' in provenance)
+                                    or (marker is not None and provenance.get('acquisitionClock') != marker)):
+                                error('record-clock-mismatch')
                             validator = validators.get(row.get('kind'))
                             if validator is None or not validator.is_valid(row):
                                 error('record-schema-invalid')
