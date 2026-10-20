@@ -125,11 +125,22 @@ and needs a new destination to retry. Unexpected IO errors that prevent even a
 terminal receipt clean only the fresh own staging directory and raise; such an
 exception is never a successful or complete witness. No existing output is
 repaired, rewritten or silently reused.
-If publication fails after claiming a new destination, rollback removes only the
-links matching this invocation's inode identities and its still-owned empty
-directory. Ordinary first/second-link failures therefore allow the same destination
-to be retried. A foreign child or replacement directory is preserved and requires
-explicit custody reconciliation. No recursive destination deletion is used.
+Publication prepares both hard links in a0700 child of the caller's existing
+private staging directory, using directory descriptors. Linux `renameat2` with
+`RENAME_NOREPLACE` atomically transfers the complete private directory to the final
+name. There is no final-path mkdir, adoption of its later inode, partial-file
+publication, or final-path rollback deletion. An existing file, symlink or even
+empty foreign directory makes the kernel refuse publication without overwrite.
+The output inherits the prepared directory's0700 mode. The private staging
+container must already be caller-owned0700 and contain exactly the two produced
+files; arbitrary foreign/nonprivate containers are refused.
+
+Ordinary first/second-link, private-directory-open or atomic-rename failures clean
+only private staging and allow retry. If atomic transfer may already have
+committed, missing source entry means cleanup must preserve the published output;
+the caller reports uncertainty and reconciles that output before any retry.
+Unsupported atomic no-overwrite publication fails closed, without an overwrite
+rename fallback. No final destination is ever removed as publication cleanup.
 
 ## Selected execution shape
 

@@ -458,6 +458,7 @@ class ProductInputWitnessTest(unittest.TestCase):
             nonlocal calls
             calls+=1
             if calls==2:
+                (self.root/'output').mkdir(mode=0o755)
                 (self.root/'output/foreign').write_bytes(b'preserved')
                 raise OSError('synthetic second link failure')
             return real_link(*args,**kwargs)
@@ -474,6 +475,7 @@ class ProductInputWitnessTest(unittest.TestCase):
             nonlocal calls
             calls+=1
             if calls==2:
+                (self.root/'output').mkdir(mode=0o755)
                 (self.root/'output').rename(self.root/'moved')
                 (self.root/'output').mkdir();(self.root/'output/foreign').write_bytes(b'preserved')
                 raise OSError('synthetic directory replacement')
@@ -487,9 +489,72 @@ class ProductInputWitnessTest(unittest.TestCase):
         from offmenu.refresh import product_input_witness as w
         c=self.off();real_open=os.open
         def fail(path,flags,*args,**kwargs):
-            if Path(path)==self.root/'output':raise OSError('synthetic publication directory open failure')
+            if Path(path).name.startswith('.publish-'):raise OSError('synthetic private publication directory open failure')
             return real_open(path,flags,*args,**kwargs)
         with patch.object(w.os,'open',side_effect=fail):
             with self.assertRaises(OSError):self.run_witness(c)
         self.assertFalse((self.root/'output').exists())
         self.assert_clean(self.run_witness(c),'off',['0001','0002'])
+
+    def test_publication_never_creates_or_removes_final_path(self):
+        c=self.off();mkdir=Path.mkdir;rmdir=Path.rmdir;dest=self.root/'output'
+        def create(path,*args,**kwargs):
+            if path==dest:raise AssertionError('no final mkdir')
+            return mkdir(path,*args,**kwargs)
+        def remove(path,*args,**kwargs):
+            if path==dest:raise AssertionError('no final rmdir')
+            return rmdir(path,*args,**kwargs)
+        with patch.object(Path,'mkdir',create),patch.object(Path,'rmdir',remove):r=self.run_witness(c)
+        self.assert_clean(r,'off',['0001','0002'])
+        self.assertEqual(dest.stat().st_mode & 0o777,0o700)
+
+    def test_foreign_directory_at_atomic_boundary_never_receives_private_files(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();rename=w._rename_noreplace;dest=self.root/'output';foreign=[]
+        def race(*args):
+            dest.mkdir(mode=0o755);(dest/'foreign').write_bytes(b'preserved');foreign.append(dest.stat().st_ino)
+            return rename(*args)
+        with patch.object(w,'_rename_noreplace',side_effect=race):
+            with self.assertRaises(FileExistsError):self.run_witness(c)
+        self.assertEqual(dest.stat().st_ino,foreign[0]);self.assertEqual(set(p.name for p in dest.iterdir()),{'foreign'})
+        self.assertEqual((dest/'foreign').read_bytes(),b'preserved')
+
+    def test_empty_foreign_directory_at_atomic_boundary_is_never_deleted(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();rename=w._rename_noreplace;dest=self.root/'output';foreign=[]
+        def race(*args):
+            dest.mkdir(mode=0o755);foreign.append(dest.stat().st_ino)
+            return rename(*args)
+        with patch.object(w,'_rename_noreplace',side_effect=race):
+            with self.assertRaises(FileExistsError):self.run_witness(c)
+        self.assertTrue(dest.is_dir());self.assertEqual(dest.stat().st_ino,foreign[0]);self.assertEqual(list(dest.iterdir()),[])
+
+    def test_atomic_publication_failure_allows_retry(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off()
+        with patch.object(w,'_rename_noreplace',side_effect=OSError('synthetic atomic publication failure')):
+            with self.assertRaises(OSError):self.run_witness(c)
+        self.assertFalse((self.root/'output').exists())
+        self.assert_clean(self.run_witness(c),'off',['0001','0002'])
+
+    def test_successful_rename_then_uncertain_exception_preserves_committed_output(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off();rename=w._rename_noreplace
+        def uncertain(*args):
+            rename(*args)
+            raise OSError('synthetic uncertain return after atomic commit')
+        with patch.object(w,'_rename_noreplace',side_effect=uncertain):
+            with self.assertRaises(OSError):self.run_witness(c)
+        dest=self.root/'output'
+        self.assertEqual(set(p.name for p in dest.iterdir()),{'diagnostics.jsonl','result.json'})
+        self.assertTrue(json.loads((dest/'result.json').read_text())['eligibleCleanScopeWitness'])
+        with self.assertRaises(RefreshError):self.run_witness(c)
+
+    def test_unavailable_atomic_publication_has_no_overwrite_fallback(self):
+        from offmenu.refresh import product_input_witness as w
+        c=self.off()
+        with patch.object(w.ctypes,'CDLL',return_value=object()), \
+                patch.object(w.os,'rename',side_effect=AssertionError('no overwrite fallback')) as unsafe:
+            with self.assertRaisesRegex(RefreshError,'atomic-publication-unavailable'):self.run_witness(c)
+            unsafe.assert_not_called()
+        self.assertFalse((self.root/'output').exists())

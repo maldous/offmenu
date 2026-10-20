@@ -6,6 +6,7 @@ primitives and the bounded ZIP-directory reader, not candidate parsing/projectio
 """
 from dataclasses import asdict, dataclass
 from contextlib import nullcontext
+import ctypes
 from datetime import datetime
 import csv
 import gzip
@@ -13,6 +14,7 @@ import hashlib
 import os
 from pathlib import Path, PurePosixPath
 import re
+import secrets
 import shutil
 import sqlite3
 import stat
@@ -160,54 +162,92 @@ class _VerifiedOriginal:
         self.stream.close()
 
 
-def _publish_output(pending, destination):
-    """Rollback only links and directory still belonging to this invocation."""
-    destination.mkdir(mode=0o700)
-    claimed = destination.lstat()
-    identity = (claimed.st_dev, claimed.st_ino)
-    directory = None
-    names = ('diagnostics.jsonl', 'result.json')
-    own = {}
+def _rename_noreplace(source_fd, source_name, destination_fd, destination_name):
+    """Linux atomic no-overwrite directory transfer. No destructive fallback."""
+    library = ctypes.CDLL(None, use_errno=True)
     try:
-        directory = os.open(destination, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        opened = os.fstat(directory)
-        if (opened.st_dev, opened.st_ino) != identity:
-            raise RefreshError('witness-publication-custody-changed')
+        rename = library.renameat2
+    except AttributeError:
+        raise RefreshError('witness-atomic-publication-unavailable') from None
+    rename.argtypes = (ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint)
+    rename.restype = ctypes.c_int
+    if rename(source_fd, os.fsencode(source_name), destination_fd, os.fsencode(destination_name), 1):
+        code = ctypes.get_errno()
+        raise OSError(code, os.strerror(code))
+
+
+def _publish_output(pending, destination):
+    """Prepare under private staging; atomically publish without adopting a path.
+
+    No mkdir, linking into, or cleanup removal of the final destination occurs.
+    Failure cleanup is confined to the caller's private staging namespace.
+    """
+    pending = safe_path(pending)
+    parent = safe_path(destination.parent)
+    container = os.open(pending, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    directory = target_parent = None
+    stage = None
+    published = False
+    names = ('diagnostics.jsonl', 'result.json')
+    try:
+        info = os.fstat(container)
+        if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700 or set(os.listdir(container)) != set(names):
+            raise RefreshError('witness-private-publication-stage-required')
+        own = {}
         for name in names:
-            info = (pending/name).lstat()
-            if not stat.S_ISREG(info.st_mode):
+            item = os.stat(name, dir_fd=container, follow_symlinks=False)
+            if not stat.S_ISREG(item.st_mode):
                 raise RefreshError('witness-publication-custody-changed')
-            own[name] = (info.st_dev, info.st_ino)
+            own[name] = (item.st_dev, item.st_ino)
+        for attempt in range(3):
+            candidate = '.publish-' + secrets.token_hex(16)
+            try:
+                os.mkdir(candidate, mode=0o700, dir_fd=container)
+                stage = candidate
+                break
+            except FileExistsError:
+                pass
+        if stage is None:
+            raise RefreshError('witness-private-publication-stage-unavailable')
+        directory = os.open(stage, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=container)
+        staged = os.fstat(directory)
+        if staged.st_uid != os.getuid() or stat.S_IMODE(staged.st_mode) != 0o700:
+            raise RefreshError('witness-private-publication-stage-required')
         for name in names:
-            current = safe_path(destination).lstat()
-            if (current.st_dev, current.st_ino) != identity:
-                raise RefreshError('witness-publication-custody-changed')
-            os.link(pending/name, name, dst_dir_fd=directory, follow_symlinks=False)
+            os.link(name, name, src_dir_fd=container, dst_dir_fd=directory, follow_symlinks=False)
             linked = os.stat(name, dir_fd=directory, follow_symlinks=False)
             if not stat.S_ISREG(linked.st_mode) or (linked.st_dev, linked.st_ino) != own[name]:
                 raise RefreshError('witness-publication-custody-changed')
-        current = safe_path(destination).lstat()
-        if (current.st_dev, current.st_ino) != identity:
-            raise RefreshError('witness-publication-custody-changed')
-    except BaseException:
-        if directory is not None:
-            for name in names:
-                try:
-                    info = os.stat(name, dir_fd=directory, follow_symlinks=False)
-                    if stat.S_ISREG(info.st_mode) and (info.st_dev, info.st_ino) == own.get(name):
-                        os.unlink(name, dir_fd=directory)
-                except OSError:
-                    pass  # Never broaden cleanup when custody or IO is uncertain.
-        try:
-            current = destination.lstat()
-            if stat.S_ISDIR(current.st_mode) and (current.st_dev, current.st_ino) == identity:
-                destination.rmdir()  # Refuses any foreign/unknown child.
-        except OSError:
-            pass
-        raise
+        target_parent = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        # Kernel NOREPLACE preserves even an empty foreign directory or symlink.
+        # The source entry is inside the caller's private descriptor-held staging.
+        _rename_noreplace(container, stage, target_parent, destination.name)
+        published = True
     finally:
+        still_private = False
+        if not published and stage is not None:
+            try:
+                source = os.stat(stage, dir_fd=container, follow_symlinks=False)
+                held = os.fstat(directory) if directory is not None else source
+                still_private = stat.S_ISDIR(source.st_mode) and (source.st_dev, source.st_ino) == (held.st_dev, held.st_ino)
+            except OSError:
+                pass  # Rename may already have committed; preserve that output.
+        if still_private:
+            if directory is not None:
+                for name in names:
+                    try:
+                        os.unlink(name, dir_fd=directory)
+                    except FileNotFoundError:
+                        pass
+            try:
+                os.rmdir(stage, dir_fd=container)
+            except OSError:
+                pass  # Preserve uncertain private staging; never remove destination.
+        if target_parent is not None:
+            os.close(target_parent)
         if directory is not None:
             os.close(directory)
+        os.close(container)
 
 
 def _indexed(db, sql, parameters=()):
