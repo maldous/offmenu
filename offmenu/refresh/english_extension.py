@@ -30,6 +30,7 @@ DIAGNOSTICS = frozenset((
     'english-effective-period-invalid',
     'english-effective-period-unresolved',
     'english-evidence-bound-exceeded',
+    'english-evidence-work-bound-exceeded',
     'english-evidence-invalid',
     'english-evidence-pin-invalid',
     'english-evidence-pin-mismatch',
@@ -139,6 +140,8 @@ class EnglishPolicy:
     transform_version: str = 'offmenu-assistant-intermediate-to-source-recipe/1.0.2'
     max_evidence_bytes: int = 8 * 1024 * 1024
     review_authorities: frozenset = frozenset()
+    max_total_evidence_bytes: int = 32 * 1024 * 1024
+    max_evidence_reads: int = 1024
 
 
 class Resolver(Protocol):
@@ -165,12 +168,31 @@ class Resolver(Protocol):
 class _Check:
     def __init__(self, policy, resolver):
         self.p, self.r = policy, resolver
+        self.verified_evidence = {}
+        self.evidence_bytes = 0
+        self.evidence_reads = 0
 
     def evidence(self, pin):
-        require(isinstance(pin, dict) and set(pin) == {'path', 'sha256'}, 'english-evidence-pin-invalid')
+        require(isinstance(pin, dict) and set(pin) == {'path', 'sha256'}
+                and isinstance(pin['path'], str) and isinstance(pin['sha256'], str),
+                'english-evidence-pin-invalid')
+        key = (pin['path'], pin['sha256'])
+        if key in self.verified_evidence:
+            return self.verified_evidence[key]
+        # Bound dispatches before invoking trusted resolver code, and hash each
+        # selected immutable byte snapshot only once during this validation.
+        require(self.evidence_reads < self.p.max_evidence_reads
+                and self.evidence_bytes < self.p.max_total_evidence_bytes,
+                'english-evidence-work-bound-exceeded')
+        self.evidence_reads += 1
         raw = self.r.evidence(pin)
-        require(isinstance(raw, bytes) and len(raw) <= self.p.max_evidence_bytes
-                and hashlib.sha256(raw).hexdigest() == pin['sha256'], 'english-evidence-pin-mismatch')
+        require(isinstance(raw, bytes) and len(raw) <= self.p.max_evidence_bytes,
+                'english-evidence-pin-mismatch')
+        require(len(raw) <= self.p.max_total_evidence_bytes - self.evidence_bytes,
+                'english-evidence-work-bound-exceeded')
+        self.evidence_bytes += len(raw)
+        require(hashlib.sha256(raw).hexdigest() == pin['sha256'], 'english-evidence-pin-mismatch')
+        self.verified_evidence[key] = raw
         return raw
 
     def record(self, pin, line, path):
@@ -296,6 +318,9 @@ class _Check:
         return data
 
     def check(self, extension):
+        require(all(type(value) is int and value > 0 for value in
+                    (self.p.max_total_evidence_bytes, self.p.max_evidence_reads)),
+                'english-evidence-work-bound-exceeded')
         require(len(canonical(extension)) <= self.p.max_evidence_bytes, 'english-evidence-bound-exceeded')
         require(_local_schema(self.p.schema) and fingerprint(self.p.schema) == self.p.schema_sha256,
                 'english-schema-pin-mismatch')

@@ -22,4 +22,4 @@ include = ["offmenu*"]
 [tool.setuptools.package-data]
 offmenu = ["web.html"]
 
-"offmenu.refresh" = ["portfolio37_bindings.json", "source_recipe_template.schema.json"]
+"offmenu.refresh" = ["portfolio37_bindings.json", "source_recipe_template.schema.json", "english_extension.schema.json"]

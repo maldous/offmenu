@@ -75,3 +75,34 @@ A real caller still needs exact permitted input/purpose grants, independently qu
 The caller must independently qualify the exact native artifact under the accepted parser1.3.2/transform1.0.2/cache2 contracts **before** installing this callback, and bind that qualification to the exact bytes, source/release/record and original. The sidecar version check is not proof of native extraction provenance. This module deliberately does not install a native qualifier or fabricate its acceptance receipt. Worker56's stale-native-parser probe still demonstrates that violating this caller precondition can pass this sidecar-only check; it remains an integration dependency, not a successful native qualification. No real caller, data acceptance or activation is delivered here.
 
 R3 verification reproduces the three independent r2 failures before changes, rejects them after changes, exercises positive typed native/relationship/conflict witnesses and explicit authority selection, and checks version/source/context/decision substitutions through both direct validation and the existing actual SourceContract.qualify boundary. Fixture scope and no-accept semantics remain explicit. Fresh independent56 review is required; authored green tests do not clear that gate.
+
+### PR63: bounded evidence work and packaged canonical schema
+
+Each validation creates a fresh evidence snapshot cache keyed by exact
+`(path, sha256)`. Only bytes that pass the pin, per-blob size and hash checks enter
+that cache. Repeated references return those immutable verified bytes without
+another resolver call or hash. Different hashes at the same path remain distinct;
+a new validation always resolves/verifies again. No cache survives the call or
+changes source rights, provenance or reviewed-relationship semantics.
+
+Trusted EnglishPolicy additionally limits cumulative unique evidence to32MiB
+(`max_total_evidence_bytes`) and resolver dispatches to1024
+(`max_evidence_reads`) by default. Both must be positive integers. The call limit
+is checked before dispatch. Returned byte size is checked against the remaining
+cumulative budget before hashing/caching, failing with the fixed
+`english-evidence-work-bound-exceeded` diagnostic. A rejected final return can
+retrieve at most one additional per-blob-sized value; it is not hashed or cached.
+As before, the trusted resolver must itself honor its selected-byte/per-call
+resource contract: this pure callback cannot prevent allocations or hidden work
+inside arbitrary resolver code and is not an OS execution boundary. Cached
+references still incur bounded extension traversal; this is no claim that every
+upstream parser or semantic operation has a global CPU budget.
+
+The package-data list now includes exactly the unchanged canonical
+`english_extension.schema.json`. The regression builds a wheel offline using
+existing setuptools/wheel, unpacks it into a disposable private directory and
+imports from that directory in an isolated Python process outside the checkout.
+It verifies the resource's SHA-256 against the canonical source schema and checks
+its schema identity/validity. No dependency installation, native-caller
+installation, real-input acceptance or activation follows from packaging proof.
+The native parser/transform/cache qualification precondition above remains.
