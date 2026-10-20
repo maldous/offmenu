@@ -183,5 +183,26 @@ class OccurrenceSelectionTests(unittest.TestCase):
              patch.object(os,'rmdir',side_effect=AssertionError('no delete')):
             self.assertTrue(s.retain_success_receipt(self.target,receipt)['readbackVerified'])
 
+    @unittest.skipUnless(hasattr(os,'O_PATH'),'Linux O_PATH descriptor required')
+    def test_initial_opath_parent_rejected_before_source_access(self):
+        fd = os.open(self.root,os.O_PATH|os.O_DIRECTORY); self.addCleanup(os.close,fd)
+        target = replace(self.target,parent_fd=fd); source_access = []
+        with self.assertRaises(OSError):
+            s.check_receipt_target(target)
+            source_access.append('SIMULATED_SOURCE_ACCESS_MUST_NOT_START')
+        self.assertEqual(source_access,[])
+        self.assertEqual(os.fstat(target.file_fd).st_size,0)
+
+    def test_initial_valid_parent_is_fsynced_before_source_access(self):
+        real = os.fsync; events = []
+        def fsync(fd):
+            events.append(('fsync',fd)); return real(fd)
+        with patch.object(os,'fsync',side_effect=fsync):
+            observation = s.check_receipt_target(self.target)
+            events.append(('source-access','SIMULATED_ONLY'))
+        self.assertEqual(events,[('fsync',self.target.parent_fd),('source-access','SIMULATED_ONLY')])
+        self.assertTrue(observation['parentFsyncCompleted'])
+        self.assertTrue(observation['emptyTargetVerified'])
+
 
 if __name__ == '__main__': unittest.main()

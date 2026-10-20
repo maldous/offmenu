@@ -103,10 +103,15 @@ def check_receipt_target(target):
 
     This observes descriptor/name custody; O_EXCL creation and private operation
     directory ownership are executor obligations, not inferred from descriptor
-    flags. Supplied descriptors remain owned/opened by the caller throughout.
+    flags. Prove parent fsync capability here, before the source pass; O_PATH
+    directory handles support stat but cannot satisfy this durability operation.
+    Supplied descriptors remain owned/opened by the caller throughout.
     """
+    _check_target(target, empty=True)
+    os.fsync(target.parent_fd)
     info = _check_target(target, empty=True)
-    return {'identity': _inode(info), 'bytes': info.st_size, 'emptyTargetVerified': True}
+    return {'identity': _inode(info), 'bytes': info.st_size, 'emptyTargetVerified': True,
+            'parentFsyncCompleted': True}
 
 
 def retain_success_receipt(target, receipt):

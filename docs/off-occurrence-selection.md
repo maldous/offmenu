@@ -98,6 +98,13 @@ directory, BEFORE source IO. It retains file+parent FDs, name and observed
 device/inode pairs in `ReceiptTarget`. `check_receipt_target(target)` verifies
 empty regular file, descriptor/name identity, ownership/mode/link/access/offset
 conditions. O_EXCL creation is an executor action, not inferred from FD flags.
+The initial check also performs a harmless parent-directory fsync and repeats
+the empty-target custody check before returning `parentFsyncCompleted:true`.
+An O_PATH directory FD can pass stat checks but fails fsync; it is therefore
+refused BEFORE source access. Filesystems/descriptors that cannot perform the
+required directory sync also fail at this initial boundary, without starting the
+source pass. This observes current capability, not indefinite namespace custody
+or permission to omit the later file+directory sync and readback checks.
 
 After the DIRECT successful return from `partition_retained_original`, call
 `retain_success_receipt(target, adapter_receipt)`. It writes one bounded canonical
