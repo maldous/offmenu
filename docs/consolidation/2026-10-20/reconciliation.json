@@ -12,10 +12,9 @@
     "sha256": "c35b0d3657b94c5ff86fbcd27148a060aff4cc52abfeabcd0f693362c70735da"
   },
   "branchDispositionCounts": {
-    "preserved-unmerged": 1125,
+    "preserved-unmerged": 1126,
     "integrated": 226,
-    "equivalent": 134,
-    "unresolved-local-custody": 1
+    "equivalent": 134
   },
   "branches": [
     {
@@ -58246,9 +58245,9 @@
       "ref": "refs/heads/integration/foo-owner-custody-snapshot-20261018",
       "sha": "434c7b3ae76aa4116a2c8b70abd2668e0a748ba5",
       "mergeBase": "5cfb4f7d4346b06d58b82ec7d3e2c8dd5d5fedb3",
-      "disposition": "unresolved-local-custody",
-      "reason": "Contains private custody/coverage snapshot material; original commit intentionally local-only.",
-      "nextAction": "Retain private bundle and original object store on Foo; review/redact individual source paths before any publication.",
+      "disposition": "preserved-unmerged",
+      "reason": "Original snapshot is historically reachable through advertised remote descendant7522b07c, despite lacking an exact remote tip. Local private bundle is additional backup, not exclusive custody; content/privacy qualification remains separate.",
+      "nextAction": "Retain original remote history and verified local bundle. Review/redact eligible source paths before any new publication; do not merge snapshot/handover as application code.",
       "equivalentPaths": [],
       "differingPaths": [
         ".gitignore",
@@ -58735,7 +58734,12 @@
         "tests/test_offline_reconciliation.py",
         "tests/test_origin_type_status.py"
       ],
-      "verifiedRemoteCustody": []
+      "verifiedRemoteCustody": [
+        {
+          "ref": "refs/heads/integration/foo-owner-custody-snapshot-20261018",
+          "sha": "7522b07c97445f99be08e5900dc1607640af890d"
+        }
+      ]
     },
     {
       "repository": "/home/user/offmenu-global-collection/sources/b370090a4395aef00525913ea2e5ff3456d6d497",
@@ -115226,10 +115230,15 @@
       "ignoredFiles": 7,
       "stashes": [],
       "custodyManifest": "/home/user/src/offmenu-preservation-20261020/recovered-custody-private.json",
-      "commitDisposition": "unresolved-local-custody",
-      "remoteCustody": [],
+      "commitDisposition": "preserved-unmerged",
+      "remoteCustody": [
+        {
+          "ref": "refs/heads/integration/foo-owner-custody-snapshot-20261018",
+          "sha": "7522b07c97445f99be08e5900dc1607640af890d"
+        }
+      ],
       "disposition": "retained-dependencies-or-evidence",
-      "reason": "Ignored files were read/hashed: dependencies, generated builds, browser/runtime evidence or caches; no disposability assumption.",
+      "reason": "Snapshot is historically remotely recoverable via7522b07c and separately backed up in a verified private local bundle; no exclusive-Foo claim. Content/privacy/owner qualification remains separate.",
       "nextAction": "Qualify each dependency/evidence owner and runtime reference before migration/removal."
     },
     {
@@ -115308,5 +115317,13 @@
       "reason": "Ignored files were read/hashed: dependencies, generated builds, browser/runtime evidence or caches; no disposability assumption.",
       "nextAction": "Qualify each dependency/evidence owner and runtime reference before migration/removal."
     }
-  ]
+  ],
+  "remoteAncestryCorrection": {
+    "utc": "2026-10-20T07:56:37.340886+00:00",
+    "sha": "434c7b3ae76aa4116a2c8b70abd2668e0a748ba5",
+    "advertisedDescendant": "7522b07c97445f99be08e5900dc1607640af890d",
+    "ref": "refs/heads/integration/foo-owner-custody-snapshot-20261018",
+    "ancestryVerified": true,
+    "note": "Use current advertised origin ancestry, not only exact tip equality or stale clone tracking refs."
+  }
 }
