@@ -49,18 +49,27 @@ def _stage_manifest(source_manifest, stage_contract, hashes, count, candidate_by
 
 
 def qualify_product_origins(contract, bundle, roles, normalized_destination, destination,
-                            *, license, attribution, limits=ProductLimits()):
+                            *, license, attribution, limits=ProductLimits(), input_root=None):
     """Normalize verified bundle, emit candidate/sidecar, qualify both origin and
     original semantic contracts. Existing complete stages are hash-checked and
     requalified. Original normalization is retained separately and never patched.
+    input_root is passed through normalization, archive-member lookup, input
+    rechecks and qualification; relative provenance paths remain contract paths.
     """
     limits.validate()
     root, normalized, destination = map(_safe, (bundle, normalized_destination, destination))
     for a, b in ((root, normalized), (root, destination), (normalized, destination)):
         if a == b or a in b.parents or b in a.parents:
             raise RefreshError('product-origin-stage-path-overlap')
+    if input_root is not None:
+        originals_root = _safe(input_root)
+        for output in (normalized, destination):
+            if output == originals_root or output in originals_root.parents or originals_root in output.parents:
+                raise RefreshError('product-origin-stage-path-overlap')
     original = qualify_product_candidate(contract, root, roles, normalized,
-                                         license=license, attribution=attribution, limits=limits)
+                                         license=license, attribution=attribution, limits=limits,
+                                         input_root=input_root)
+    paths, _ = acceptance._input_paths(contract, root, input_root)
     # The bridge above verifies original candidate + DB hashes even on retries.
     source_manifest = original['manifest']
     db_path = _safe(normalized / 'source.sqlite')
@@ -71,7 +80,7 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
         raise RefreshError('product-origin-source-hash-mismatch')
     assets = {a.path: a for a in contract.inputs}
     pins = {role: {'path': path, 'sha256': assets[path].sha256} for role, path in roles.items()}
-    members = _members(root / roles['archive'], limits) if contract.source_id == 'usda-files' else {}
+    members = _members(paths[roles['archive']], limits) if contract.source_id == 'usda-files' else {}
     context = ProductContext(contract.source_id, contract.release_id, contract.acquired_at,
                              license, attribution, contract.rights_evidence.sha256, contract.scope_evidence.sha256,
                              acquisition_clock_status=contract.acquisition_clock_status,
@@ -109,7 +118,8 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
             expected = _stage_manifest(source_manifest, stage_contract, manifest['outputHashes'], count, candidate_bytes, originals)
             if canonical(manifest) != canonical(expected):
                 raise RefreshError('product-origin-stage-manifest-mismatch')
-            qualification = qualify(enriched_contract, root, destination / 'candidate.jsonl', manifest)
+            qualification = qualify(enriched_contract, root, destination / 'candidate.jsonl', manifest,
+                                    input_root=input_root)
             return {'candidate': destination / 'candidate.jsonl', 'sidecar': destination / 'field-origins.jsonl',
                     'manifest': manifest, 'qualification': qualification}
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -144,11 +154,12 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
             if _hash(_safe(normalized / name), limits.max_database_bytes if name == 'source.sqlite' else limits.max_output_bytes) != digest:
                 raise RefreshError('product-origin-source-changed')
         for path, asset in assets.items():
-            if (root / path).stat().st_size != asset.bytes or _hash(_safe(root / path)) != asset.sha256:
+            if acceptance._hash_file(paths[path], limits.max_input_bytes) != (asset.bytes, asset.sha256):
                 raise RefreshError('product-origin-input-changed')
         hashes = {name: _hash(pending / name) for name in ('candidate.jsonl', 'field-origins.jsonl')}
         manifest = _stage_manifest(source_manifest, stage_contract, hashes, count, candidate_bytes, originals)
-        qualification = qualify(enriched_contract, root, pending / 'candidate.jsonl', manifest)
+        qualification = qualify(enriched_contract, root, pending / 'candidate.jsonl', manifest,
+                                input_root=input_root)
         (pending / 'manifest.json').write_bytes(canonical(manifest))
         if destination.exists():
             raise RefreshError('product-origin-stage-destination-race')

@@ -25,6 +25,28 @@ of qualification. The bounded shared `national_tabular.bundle_files` inventory
 rejects unlisted files/directories, symlinks, special files and excessive depth or
 entry counts. It is used by all adapter families, despite its module name.
 
+Private native OFF/USDA callers may pass `input_root` explicitly to
+`qualify_product_candidate`, `qualify_product_origins`, `qualify` and `accept`.
+In this mode `bundle` contains exactly the distinct rights, scope and optional
+clock evidence assets. All other contract assets resolve only under `input_root`,
+with no fallback to `bundle`. Every original retains its contract-relative path,
+size and hash. Unrelated originals are neither inventoried nor parsed. No copy,
+symlink or mount is needed to construct an evidence-inclusive directory.
+
+The two roots must be separate without ancestor overlap; outputs and explicit
+qualification scratch must stay outside both roots. Selected paths reject
+symlinks and non-files. Every selected input is still hash-checked before parsing
+and during qualification; field-origin archive lookup, post-emission checks and
+retry qualification use the same routing. Original normalization manifests and
+relative provenance pins retain their existing format. Omitting `input_root`
+keeps the existing exact single-bundle behavior. This opt-in routing is restricted
+to reviewed private native OFF/USDA contracts, with existing operations/holds,
+clock evidence, independent counts/IDs, schemas and semantic policy still required.
+It does not install a real-source factory or make witness counts from raw table
+totals; product selection still needs the independent terminal witness and its
+own resource/operation qualification. English, field-origin semantic acceptance,
+gold/country coverage and public operations remain separate decisions.
+
 ## Trusted SourceContract
 
 `offmenu.refresh.acceptance.SourceContract` is supplied by reviewed application
