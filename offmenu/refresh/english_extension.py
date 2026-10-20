@@ -69,6 +69,7 @@ DIAGNOSTICS = frozenset((
     'english-subfield-locator-unqualified',
     'english-subfield-text-mismatch',
     'english-translation-permission-missing',
+    'english-translation-review-unqualified',
     'english-usability-predicate-unregistered',
     'english-use-context-mismatch',
     'english-use-scope-pin-mismatch',
@@ -165,6 +166,7 @@ class Resolver(Protocol):
     def quantity(self, assertion_id): ...
     def decision(self, conflict_id): ...
     def relationship(self, assertion_id): ...
+    def translation(self, assertion_id): ...
 
 
 class _Check:
@@ -377,6 +379,13 @@ class _Check:
             if 'target' in a: self.anchor(record, a['target'])
         for t in extension['translations']:
             require(set(t['ambiguityIds']) <= set(conflict_ids), 'english-ambiguity-reference-unresolved')
+            if t['state'] == 'reviewed':
+                self.reviewed(self.r.translation(t['assertionId']),
+                              {'type': 'translation-review', 'assertionId': t['assertionId'],
+                               'assertionSha256': fingerprint(t), 'inputBinding': inp,
+                               **{key: t[key] for key in ('englishText', 'origin', 'methodVersion', 'target')},
+                               'decisionState': 'affirmed', 'reviewStatus': 'reviewed'},
+                              'english-translation-review-unqualified')
         for q in extension['quantityNormalizations']:
             node = self.anchor(record, q['target'])
             if q['sourceValueState'] == 'literal-zero':

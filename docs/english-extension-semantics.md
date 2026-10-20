@@ -139,3 +139,17 @@ and openpyxl unavailable in the probe. No pip, network, dependency installation,
 venv, native caller installation or runtime activation occurs. This is an offline
 import/dependency-contract test with the recorded local provider versions, not a
 claim that an online clean installation or every allowed dependency version ran.
+
+### PR63: reviewed translation evidence
+
+A reviewed translation additionally calls trusted `Resolver.translation(assertionId)`
+and requires a selected-authority typed ReviewedWitness with type
+`translation-review`, affirmed decision and reviewed status. Its exact pinned
+scope binds assertion ID and canonical hash, complete current input, English
+text, origin, methodVersion and native target. Generic or empty assertion
+evidence is not independent review. A review does not grant translation-purpose
+permission; the existing source/purpose and native-location checks still apply.
+Proposed, unresolved and rejected translations preserve their prior behavior
+without calling this review resolver. No translator, model, production resolver,
+caller or admission is installed. All witnesses remain subject to the existing
+per-validation cache/read/byte bounds and eventual pinned factory inventory.
