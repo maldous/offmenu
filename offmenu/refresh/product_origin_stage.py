@@ -12,7 +12,7 @@ import sqlite3
 import tempfile
 import zipfile
 
-from . import acceptance, field_provenance, product_qualification
+from . import acceptance, field_provenance, product_qualification, product_clock
 from .acceptance import contract_fingerprint, fingerprint, qualify
 from .core import RefreshError, canonical, strict_json
 from .field_provenance import field_origin_errors
@@ -20,7 +20,7 @@ from .product_adapters import ProductContext, ProductLimits, _candidate_stats, _
 from .product_field_origins import ProductOriginEmitter
 from .product_qualification import qualify_product_candidate
 
-VERSION = 'offmenu-product-origin-stage/1'
+VERSION = 'offmenu-product-origin-stage/2'
 
 
 def _members(archive, limits):
@@ -73,14 +73,16 @@ def qualify_product_origins(contract, bundle, roles, normalized_destination, des
     pins = {role: {'path': path, 'sha256': assets[path].sha256} for role, path in roles.items()}
     members = _members(root / roles['archive'], limits) if contract.source_id == 'usda-files' else {}
     context = ProductContext(contract.source_id, contract.release_id, contract.acquired_at,
-                             license, attribution, contract.rights_evidence.sha256, contract.scope_evidence.sha256)
+                             license, attribution, contract.rights_evidence.sha256, contract.scope_evidence.sha256,
+                             acquisition_clock_status=contract.acquisition_clock_status,
+                             clock_evidence_sha256=contract.clock_evidence.sha256 if contract.clock_evidence else None)
     db = sqlite3.connect(db_path.as_uri() + '?mode=ro&immutable=1', uri=True)
     pending = None
     try:
         emitter = ProductOriginEmitter(context, db, pins, members=members, limits=limits)
         wrapper_pin = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         dependency_pins = {module.__name__.rsplit('.', 1)[-1]: hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
-                           for module in (acceptance, field_provenance, product_qualification)}
+                           for module in (acceptance, field_provenance, product_qualification, product_clock)}
         policy = fingerprint({'baseSemanticPolicy': contract.policy_sha256,
                               'emitter': emitter.policy, 'wrapper': wrapper_pin, 'dependencies': dependency_pins})
         def semantic(row):
