@@ -99,13 +99,13 @@ class AssistantIntermediateTests(unittest.TestCase):
         self.assertEqual(first['cacheKey'], hit['cacheKey'])
         self.assertEqual(first['rawResponseSHA256'], hit['rawResponseSHA256'])
         found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source,
+            input_path=self.original, source=self.source, parsed_record=self.record,
             model_identity='unknown', model_version='unknown',
             inference_settings={'temperature': None, 'seed': None, 'max_tokens': None,
                                 'runtime_parameters': 'not-exposed'})
         self.assertEqual(found, Path(first['cachePath']))
         replay = AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
-            parsed_record=self.record, output_root=self.root / 'replay')
+            parsed_record=self.record, source=self.source, output_root=self.root / 'replay')
         replayed = json.loads(Path(replay['recordPath']).read_text())
         self.assertEqual(replayed, record)
 
@@ -125,7 +125,7 @@ class AssistantIntermediateTests(unittest.TestCase):
         self.assertEqual(' '.join(actual.decode().split()), '2 cups cooked beans')
         self.assertEqual(hashlib.sha256(actual).hexdigest(), location['sourceSpanSHA256'])
         replay = AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
-            input_path=self.original, parsed_record=self.record, output_root=self.root / 'replay')
+            input_path=self.original, parsed_record=self.record, source=self.source, output_root=self.root / 'replay')
         self.assertEqual(json.loads(Path(replay['recordPath']).read_text()), record)
 
     def test_no_tooling_is_not_fabricated_in_cache_or_output(self):
@@ -137,10 +137,10 @@ class AssistantIntermediateTests(unittest.TestCase):
         self.assertNotIn('tooling', record['assistantInterpretation'])
         self.assertFalse((self.root / 'cache' / 'tooling').exists())
         found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source)
+            input_path=self.original, source=self.source, parsed_record=self.record)
         self.assertEqual(found, Path(result['cachePath']))
         AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
-            parsed_record=self.record, output_root=self.root / 'replay')
+            parsed_record=self.record, source=self.source, output_root=self.root / 'replay')
 
     def test_used_tooling_is_archived_hashed_and_required_for_reuse(self):
         tool = self.root / 'translator.py'
@@ -155,25 +155,25 @@ class AssistantIntermediateTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(archived.read_bytes()).hexdigest(),
                          cache['tooling']['artifacts'][0]['sha256'])
         found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source)
+            input_path=self.original, source=self.source, parsed_record=self.record)
         self.assertEqual(found, Path(result['cachePath']))
         replay = AI.replay_cached_intermediate(cache_path=found,
-            input_path=self.original, parsed_record=self.record,
+            input_path=self.original, parsed_record=self.record, source=self.source,
             output_root=self.root / 'tool-replay')
         self.assertTrue(Path(replay['recordPath']).is_file())
         with self.assertRaisesRegex(AI.IntermediateError, 'tooling-incompatible'):
             AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
-                parsed_record=self.record, output_root=self.root / 'bad-tool-replay',
+                parsed_record=self.record, source=self.source, output_root=self.root / 'bad-tool-replay',
                 tooling_artifacts=[{'name': 'recipe-translator', 'version': '2.0', 'path': tool}])
         tool.write_text('# changed tool v2\\n')
         self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source, tooling_artifacts=artifacts))
+            input_path=self.original, source=self.source, parsed_record=self.record, tooling_artifacts=artifacts))
         archived.write_text('tampered')
         self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source))
+            input_path=self.original, source=self.source, parsed_record=self.record))
         with self.assertRaisesRegex(AI.IntermediateError, 'tooling-incompatible'):
             AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
-                parsed_record=self.record, output_root=self.root / 'tampered-tool-replay')
+                parsed_record=self.record, source=self.source, output_root=self.root / 'tampered-tool-replay')
 
     def test_unsupported_quantity_is_quarantined_not_accepted(self):
         response = get_response()
@@ -200,15 +200,129 @@ class AssistantIntermediateTests(unittest.TestCase):
         first = AI.cache_assistant_intermediate(**self.args())
         self.original.write_bytes(HTML + b'<!-- changed -->')
         found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
-            input_path=self.original, source=self.source,
+            input_path=self.original, source=self.source, parsed_record=self.record,
             model_identity='unknown', model_version='unknown',
             inference_settings={'temperature': None, 'seed': None, 'max_tokens': None,
                                 'runtime_parameters': 'not-exposed'})
         self.assertIsNone(found)
         with self.assertRaises(AI.IntermediateError):
             AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
-                input_path=self.original, parsed_record=self.record,
+                input_path=self.original, parsed_record=self.record, source=self.source,
                 output_root=self.root / 'replay')
+
+
+    def test_distinct_source_bindings_never_collide_on_identical_bytes(self):
+        variants = [
+            ('source-id', {}, 'OTHER', 'fixture-bake', 'ZZ', 'en'),
+            ('record-id', {}, 'TEST', 'other-record', 'ZZ', 'en'),
+            ('release', {'release': 'fixture-v2'}, 'TEST', 'fixture-bake', 'ZZ', 'en'),
+            ('citation', {'citationUrl': 'different-fixture-citation'}, 'TEST', 'fixture-bake', 'ZZ', 'en'),
+            ('country', {}, 'TEST', 'fixture-bake', 'XY', 'en'),
+            ('language', {}, 'TEST', 'fixture-bake', 'ZZ', 'fr'),
+            ('permission', {'assistantExtractionPermissionEvidence': 'another synthetic grant'}, 'TEST', 'fixture-bake', 'ZZ', 'en'),
+            ('rights', {'licenseStatus': 'other synthetic scope'}, 'TEST', 'fixture-bake', 'ZZ', 'en'),
+        ]
+        for label, changes, sid, rid, country, language in variants:
+            with self.subTest(label=label):
+                first = AI.cache_assistant_intermediate(**self.args(cache=label, output=label+'-a'))
+                other_source = dict(self.source, **changes)
+                other = PARSER.parse_html_recipe(HTML, source=other_source,
+                    source_id=sid, source_record_id=rid, country=country, language=language)
+                args = self.args(cache=label, output=label+'-b')
+                args.update(source=other_source, parsed_record=other, source_id=sid,
+                    source_record_id=rid, country=country, language=language)
+                second = AI.cache_assistant_intermediate(**args)
+                self.assertNotEqual(first['cacheKey'], second['cacheKey'])
+                saved = json.loads(Path(second['recordPath']).read_text())
+                self.assertEqual(saved['source']['sourceId'], sid)
+                self.assertEqual(saved['source']['sourceRecordId'], rid)
+                self.assertEqual(saved['source']['releaseId'], other_source['release'])
+
+    def test_lookup_without_current_record_cannot_select_foreign_envelope(self):
+        AI.cache_assistant_intermediate(**self.args())
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root/'cache',
+            input_path=self.original, source=dict(self.source, release='another-release')))
+
+    def test_replay_without_current_source_and_record_is_denied_before_output(self):
+        first = AI.cache_assistant_intermediate(**self.args())
+        with self.assertRaisesRegex(AI.IntermediateError, 'current-source-and-record-required'):
+            AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
+                input_path=self.original, output_root=self.root/'unsafe-replay')
+        self.assertFalse((self.root/'unsafe-replay').exists())
+
+    def test_non_utf8_source_replays_using_its_pinned_encoding(self):
+        raw = HTML.decode('utf-8').encode('cp1252')
+        self.original.write_bytes(raw)
+        self.source = dict(self.source, encoding='cp1252',
+            originalSHA256=hashlib.sha256(raw).hexdigest())
+        self.record = PARSER.parse_html_recipe(raw, source=self.source,
+            source_id='TEST', source_record_id='fixture-bake', country='ZZ', language='en')
+        first = AI.cache_assistant_intermediate(**self.args())
+        replay = AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
+            input_path=self.original, parsed_record=self.record, source=self.source, output_root=self.root/'cp1252-replay')
+        saved = json.loads(Path(replay['recordPath']).read_text())
+        self.assertEqual(saved, json.loads(Path(first['recordPath']).read_text()))
+        self.assertEqual(saved['orderedSteps'][0]['temperature']['rawText'], '180°C')
+
+
+    def test_foreign_cache_rejected_with_current_record_without_writing_output(self):
+        first = AI.cache_assistant_intermediate(**self.args())
+        original_cache = Path(first['cachePath']).read_bytes()
+        other_source = dict(self.source, release='fixture-v2')
+        other = PARSER.parse_html_recipe(HTML, source=other_source,
+            source_id='OTHER', source_record_id='different', country='XY', language='fr')
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root/'cache',
+            input_path=self.original, source=other_source, parsed_record=other))
+        with self.assertRaisesRegex(AI.IntermediateError, 'current-source-binding-mismatch'):
+            AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
+                input_path=self.original, parsed_record=other, source=other_source,
+                output_root=self.root/'foreign-output')
+        self.assertFalse((self.root/'foreign-output').exists())
+        self.assertEqual(Path(first['cachePath']).read_bytes(), original_cache)
+
+    def test_revoked_permission_blocks_replay_before_source_read(self):
+        first = AI.cache_assistant_intermediate(**self.args())
+        with self.assertRaisesRegex(AI.IntermediateError, 'permission-required'):
+            AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
+                input_path=self.root/'must-not-read.html', parsed_record=self.record,
+                source=dict(self.source, assistantExtractionAllowed=False),
+                output_root=self.root/'revoked-output')
+        self.assertFalse((self.root/'revoked-output').exists())
+
+    def test_legacy_envelope_is_preserved_but_not_replayed(self):
+        first = AI.cache_assistant_intermediate(**self.args())
+        cache_path = Path(first['cachePath'])
+        envelope = json.loads(cache_path.read_text())
+        envelope['cacheSchemaVersion'] = 'offmenu-assistant-extraction-cache/1'
+        cache_path.write_text(json.dumps(envelope))
+        legacy_bytes = cache_path.read_bytes()
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root/'cache',
+            input_path=self.original, source=self.source, parsed_record=self.record))
+        with self.assertRaisesRegex(AI.IntermediateError, 'contract-incompatible'):
+            AI.replay_cached_intermediate(cache_path=cache_path, input_path=self.original,
+                parsed_record=self.record, source=self.source, output_root=self.root/'old-output')
+        self.assertEqual(cache_path.read_bytes(),legacy_bytes)
+        self.assertFalse((self.root/'old-output').exists())
+
+    def test_tampered_envelope_source_cannot_choose_output_identity(self):
+        first = AI.cache_assistant_intermediate(**self.args())
+        path = Path(first['cachePath'])
+        envelope = json.loads(path.read_text())
+        envelope['source']['sourceId'] = 'FOREIGN'
+        path.write_text(json.dumps(envelope))
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root/'cache',
+            input_path=self.original, source=self.source, parsed_record=self.record))
+        with self.assertRaisesRegex(AI.IntermediateError,'current-source-binding-mismatch'):
+            AI.replay_cached_intermediate(cache_path=path,input_path=self.original,
+                parsed_record=self.record,source=self.source,output_root=self.root/'tampered-output')
+        self.assertFalse((self.root/'tampered-output').exists())
+
+    def test_explicit_creation_identity_must_match_current_record(self):
+        args = self.args()
+        args['source_record_id'] = 'unrelated-record'
+        with self.assertRaisesRegex(AI.IntermediateError,'provenance-mismatch'):
+            AI.cache_assistant_intermediate(**args)
+        self.assertFalse((self.root/'cache').exists())
 
 
 if __name__ == '__main__':
