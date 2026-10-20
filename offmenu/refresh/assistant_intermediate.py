@@ -29,8 +29,8 @@ except ImportError:  # direct-file loading used by focused scripts/tests
 
 SCHEMA_VERSION = 'offmenu-assistant-recipe-intermediate/1'
 PROMPT_VERSION = 'offmenu-assistant-source-faithful-extraction/1.0.0'
-TRANSFORM_VERSION = 'offmenu-assistant-intermediate-to-source-recipe/1.0.1'
-CACHE_VERSION = 'offmenu-assistant-extraction-cache/1'
+TRANSFORM_VERSION = 'offmenu-assistant-intermediate-to-source-recipe/1.0.2'
+CACHE_VERSION = 'offmenu-assistant-extraction-cache/2'
 MAX_RESPONSE_BYTES = 1_000_000
 
 
@@ -508,8 +508,27 @@ def _tooling_manifest(tooling_artifacts: list[dict] | None) -> dict | None:
             'artifacts': entries}
 
 
+def _source_binding(source: dict, parsed_record: dict, raw_sha: str,
+                    input_path: Path) -> dict:
+    provenance = parsed_record.get('source')
+    if (not isinstance(provenance, dict) or
+            not all(isinstance(provenance.get(k), str) and provenance[k]
+                    for k in ('sourceId', 'sourceRecordId')) or
+            provenance.get('originalSHA256') != raw_sha or
+            provenance.get('releaseId') != source.get('release') or
+            provenance.get('citationUrl') != (source.get('citationUrl') or source.get('sourceURL') or '')):
+        raise IntermediateError('current-source-record-provenance-mismatch')
+    return {'provenance': copy.deepcopy(provenance),
+            'sourcePolicySHA256': _sha(_canonical(source)),
+            'permissionEvidence': source.get('assistantExtractionPermissionEvidence'),
+            'encoding': source.get('encoding', 'utf-8'),
+            'representation': input_path.suffix.casefold(),
+            'baseParsedRecordSHA256': _sha(_canonical(parsed_record))}
+
+
 def _key_inputs(raw_sha: str, segments: dict, model_identity: str,
                 model_version: str, settings: dict,
+                source_binding: dict,
                 tooling: dict | None = None) -> dict:
     result = {'originalSHA256': raw_sha,
         'sourceSegmentSHA256': _sha(_canonical(segments)),
@@ -517,7 +536,8 @@ def _key_inputs(raw_sha: str, segments: dict, model_identity: str,
         'modelIdentity': model_identity, 'modelVersion': model_version,
         'inferenceSettings': settings, 'transformVersion': TRANSFORM_VERSION,
         'recipeSchemaVersion': parser.RECIPE_TEMPLATE_VERSION,
-        'parserVersion': parser.PARSER_VERSION}
+        'parserVersion': parser.PARSER_VERSION,
+        'sourceBinding': source_binding}
     if tooling is not None:
         result['tooling'] = tooling
     return result
@@ -601,9 +621,17 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
     if source.get('originalSHA256') and source['originalSHA256'] != raw_sha:
         raise IntermediateError('original-hash-mismatch')
     segments = source_segments(soup, page_text)
+    binding = _source_binding(source, parsed_record, raw_sha, input_path)
+    if any(parsed_record['source'].get(k) != v for k, v in
+           (('sourceId', source_id), ('sourceRecordId', source_record_id),
+            ('countryCode', country), ('language', language))):
+        raise IntermediateError('current-source-record-provenance-mismatch')
+    current_source = {**binding['provenance'],
+                      'permissionEvidence': binding['permissionEvidence'],
+                      'encoding': binding['encoding'], 'representation': binding['representation']}
     tooling = _tooling_manifest(tooling_artifacts)
     key_inputs = _key_inputs(raw_sha, segments, model_identity, model_version,
-                             settings, tooling)
+                             settings, binding, tooling)
     cache_key = _sha(_canonical(key_inputs))
     response_sha = _sha(response_text.encode('utf-8'))
     try:
@@ -618,11 +646,7 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
         cache = {'cacheSchemaVersion': CACHE_VERSION, 'cacheKey': cache_key,
             'baseParsedRecord': parsed_record,
             'cacheKeyInputs': key_inputs,
-            'source': {'sourceId': source_id, 'sourceRecordId': source_record_id,
-                'releaseId': source.get('release'), 'language': language,
-                'countryCode': country, 'originalSHA256': raw_sha,
-                'sourceURL': source.get('citationUrl') or source.get('sourceURL'),
-                'permissionEvidence': source.get('assistantExtractionPermissionEvidence')},
+            'source': current_source,
             'model': {'identity': model_identity, 'version': model_version,
                       'settings': settings,
                       'execution': 'assistant-authored intermediate; no external API call'},
@@ -638,6 +662,9 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
         if hit:
             prior = json.loads(cache_path.read_text(encoding='utf-8'))
             if (prior.get('cacheKey') != cache_key or prior.get('cacheKeyInputs') != key_inputs or
+                    prior.get('cacheSchemaVersion') != CACHE_VERSION or
+                    prior.get('source') != current_source or
+                    prior.get('baseParsedRecord') != parsed_record or
                     prior.get('validation', {}).get('status') != 'valid' or
                     prior.get('tooling') != tooling or
                     not _validate_tooling_files(cache_root, tooling, tooling_artifacts) or
@@ -681,23 +708,30 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
 
 
 def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
-        source: dict, model_identity: str = 'unknown',
+        source: dict, parsed_record: dict | None = None, model_identity: str = 'unknown',
         model_version: str = 'unknown',
         inference_settings: dict | None = None,
         tooling_artifacts: list[dict] | None = None) -> Path | None:
     """Look up an exact compatible validated response before invoking AI."""
+    if not isinstance(parsed_record, dict) or not _assistant_permission_allowed(source):
+        return None
     raw, soup, page_text = _load_source(input_path, source.get('encoding', 'utf-8'))
     raw_sha = _sha(raw)
     if source.get('originalSHA256') and source['originalSHA256'] != raw_sha:
         return None
     segments = source_segments(soup, page_text)
-    if not _assistant_permission_allowed(source):
+    try:
+        binding = _source_binding(source, parsed_record, raw_sha, input_path)
+    except IntermediateError:
         return None
+    current_source = {**binding['provenance'],
+                      'permissionEvidence': binding['permissionEvidence'],
+                      'encoding': binding['encoding'], 'representation': binding['representation']}
     settings = inference_settings or {'temperature': None, 'seed': None,
         'max_tokens': None, 'runtime_parameters': 'not-exposed'}
     tooling = _tooling_manifest(tooling_artifacts)
     expected = _key_inputs(raw_sha, segments, model_identity, model_version,
-                           settings, tooling)
+                           settings, binding, tooling)
     base_expected = {key: value for key, value in expected.items() if key != 'tooling'}
     exact_path = cache_root / (_sha(_canonical(expected)) + '.json')
     candidates = ([exact_path] if exact_path.is_file() else [])
@@ -713,6 +747,9 @@ def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
             base_actual = {key: value for key, value in key_inputs.items() if key != 'tooling'}
             recorded_tooling = cache.get('tooling')
             if (cache.get('cacheKey') != _sha(_canonical(key_inputs)) or
+                    cache.get('cacheSchemaVersion') != CACHE_VERSION or
+                    cache.get('source') != current_source or
+                    cache.get('baseParsedRecord') != parsed_record or
                     base_actual != base_expected or
                     cache.get('validation', {}).get('status') != 'valid' or
                     cache.get('source', {}).get('permissionEvidence') != source.get('assistantExtractionPermissionEvidence') or
@@ -728,24 +765,38 @@ def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
 
 def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
         parsed_record: dict | None = None, output_root: Path,
+        source: dict | None = None,
         tooling_artifacts: list[dict] | None = None) -> dict:
     """Deterministically replay a compatible valid cache; never re-infer."""
+    if not isinstance(source, dict) or not isinstance(parsed_record, dict):
+        raise IntermediateError('cache-current-source-and-record-required')
+    if not _assistant_permission_allowed(source):
+        raise IntermediateError('source-specific-assistant-extraction-permission-required')
     cache = json.loads(cache_path.read_text(encoding='utf-8'))
     if cache.get('validation', {}).get('status') != 'valid':
         raise IntermediateError('cache-not-validated')
     ki = cache.get('cacheKeyInputs', {})
-    if (ki.get('extractionSchemaVersion') != SCHEMA_VERSION or
+    if (cache.get('cacheSchemaVersion') != CACHE_VERSION or
+            cache.get('cacheKey') != _sha(_canonical(ki)) or
+            ki.get('extractionSchemaVersion') != SCHEMA_VERSION or
             ki.get('promptVersion') != PROMPT_VERSION or
             ki.get('transformVersion') != TRANSFORM_VERSION or
-            ki.get('recipeSchemaVersion') != parser.RECIPE_TEMPLATE_VERSION):
+            ki.get('recipeSchemaVersion') != parser.RECIPE_TEMPLATE_VERSION or
+            ki.get('parserVersion') != parser.PARSER_VERSION):
         raise IntermediateError('cache-contract-incompatible')
     if _sha(cache.get('rawResponse', '').encode('utf-8')) != cache.get('rawResponseSHA256'):
         raise IntermediateError('cached-response-checksum-invalid')
     if not _validate_tooling_files(cache_path.parent, cache.get('tooling'), tooling_artifacts):
         raise IntermediateError('cache-tooling-incompatible')
-    raw, soup, page_text = _load_source(input_path)
+    raw, soup, page_text = _load_source(input_path, source.get('encoding', 'utf-8'))
     if _sha(raw) != ki.get('originalSHA256'):
         raise IntermediateError('cache-source-incompatible')
+    binding = _source_binding(source, parsed_record, _sha(raw), input_path)
+    current_source = {**binding['provenance'],
+                      'permissionEvidence': binding['permissionEvidence'],
+                      'encoding': binding['encoding'], 'representation': binding['representation']}
+    if ki.get('sourceBinding') != binding or cache.get('source') != current_source:
+        raise IntermediateError('cache-current-source-binding-mismatch')
 
     segments = source_segments(soup, page_text)
     if _sha(_canonical(segments)) != ki.get('sourceSegmentSHA256'):
@@ -762,7 +813,7 @@ def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
     record = _record(response, base_record, page_text, cache.get('tooling'))
     if _canonical(record) != _canonical(cache.get('parsedRecord')):
         raise IntermediateError('cache-replay-nondeterministic')
-    path = output_root / 'assistant-assisted' / 'recipes' / cache['source']['sourceId'] / (cache['source']['sourceRecordId'] + '.json')
+    path = output_root / 'assistant-assisted' / 'recipes' / current_source['sourceId'] / (current_source['sourceRecordId'] + '.json')
     _atomic(path, _canonical(record))
     return {'status': 'replayed', 'cacheKey': cache['cacheKey'],
             'rawResponseSHA256': cache['rawResponseSHA256'], 'recordPath': str(path),
