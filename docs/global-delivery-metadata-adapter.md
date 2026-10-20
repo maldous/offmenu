@@ -76,3 +76,6 @@ labels are staged locally and retained only if the entire packet validates.
 Peer JSON recursion failures become packet/cell diagnostics and cannot discard
 unrelated cells. Both initial publication and replay enforce the same 64 MiB
 per-artifact bound, including before either destination is published by the CLI.
+Verified metadata must also survive strict JSON serialization before it reaches
+packet or cell processing. Numeric exponent overflow is rejected at that boundary,
+so a rejected packet or peer cannot abort publication of unrelated cells later.

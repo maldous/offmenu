@@ -27,7 +27,15 @@ def read_metadata(pin, *, reader=_read_bounded_regular):
     raw = reader(pin['path'], MAX_METADATA, 'delivery-metadata')
     if sha(raw) != pin.get('sha256') or ('bytes' in pin and pin['bytes'] != len(raw)):
         raise RefreshError('delivery-metadata-pin-mismatch')
-    return strict_json(raw)
+    document = strict_json(raw)
+    try:
+        # Numeric exponents can decode to infinity without parse_constant.
+        # Reject values that cannot survive strict report serialization while
+        # still inside the packet/cell metadata error boundary.
+        canonical(document)
+    except (ValueError, OverflowError, RecursionError):
+        raise RefreshError('delivery-metadata-decoded-invalid') from None
+    return document
 
 
 def projection_row(document, required_type):

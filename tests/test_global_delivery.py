@@ -391,6 +391,46 @@ class CurrentProviderRegressionTests(unittest.TestCase):
                 patch.object(d.global_run, 'compact', return_value={}):
             return d.build(config, reader=reader)[0]
 
+    def test_pinned_numeric_overflow_rejected_but_finite_extremes_preserved(self):
+        for raw in (b'{"n":1e1000000}', b'{"n":-1e1000000}'):
+            with self.subTest(raw=raw):
+                pin = {'path': '/synthetic/numeric.json', 'sha256': d.sha(raw), 'bytes': len(raw)}
+                with self.assertRaisesRegex(RefreshError, 'delivery-metadata-decoded-invalid'):
+                    d.read_metadata(pin, reader=lambda *args: raw)
+        for value in (1e308, -1e308, 0.0):
+            raw = d.canonical({'n': value})
+            pin = {'path': '/synthetic/finite.json', 'sha256': d.sha(raw), 'bytes': len(raw)}
+            self.assertEqual(d.read_metadata(pin, reader=lambda *args: raw), {'n': value})
+
+    def test_overflow_packet_and_peer_are_diagnosed_before_report_serialization(self):
+        config, controls, read = authored_build_fixture()
+        worker = controls['partition']['workers'][0]
+        packet = read(worker['packet'])
+        packet['countries'] = [{'country': worker['countries'][0],
+                                'sourceCustodianLabelsRetained': [{'score': 'OVERFLOW'}]}]
+        raw_packet = d.canonical(packet).replace(b'"OVERFLOW"', b'1e1000000')
+        worker['packet'] = {'path': 'overflow-packet', 'sha256': d.sha(raw_packet), 'bytes': len(raw_packet)}
+        valid = {'categories': {t: {'status': 'synthetic-only'} for t in d.TYPES}}
+        raw_peer = d.canonical({'categories': {t: {'rank': 'OVERFLOW'} for t in d.TYPES}})
+        raw_peer = raw_peer.replace(b'"OVERFLOW"', b'1e1000000')
+        rows = sorted(controls['seed']['cells'], key=lambda r: (r['country'], r['requiredType']))
+        rows[0]['categoryEvidence'] = {'path': 'overflow-peer', 'sha256': d.sha(raw_peer), 'bytes': len(raw_peer)}
+        def selected(pin):
+            if pin['path'] in ('overflow-peer', 'overflow-packet'):
+                raw = raw_peer if pin['path'] == 'overflow-peer' else raw_packet
+                return d.read_metadata(pin, reader=lambda *args: raw)
+            if pin['path'] == PIN['path']:
+                return valid
+            return read(pin)
+        manifest = self.build(config, selected)
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'manifest.json'
+            d.preflight_publication(manifest, path)
+            self.assertFalse(path.exists())
+        self.assertEqual(len(manifest['diagnostics']), 2)
+        self.assertEqual(sum(r['retainedCategory'] is not None for r in manifest['projectionCells']), 1493)
+        self.assertTrue(all(not r['sourceCustodianLabels'] for r in manifest['canonicalCells']))
+
     def test_worker_assignments_match_owner_map_before_packets_are_read(self):
         for mutation in ('missing', 'wrong', 'duplicate'):
             with self.subTest(mutation=mutation):
