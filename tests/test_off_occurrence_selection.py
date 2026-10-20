@@ -205,4 +205,87 @@ class OccurrenceSelectionTests(unittest.TestCase):
         self.assertTrue(observation['emptyTargetVerified'])
 
 
+class ReceiptReadbackTests(unittest.TestCase):
+    # Descriptor fixture only; no adapter/core operation is invoked.
+    setUp = OccurrenceSelectionTests.setUp
+    target_named = OccurrenceSelectionTests.target_named
+
+    def receipt(self):
+        return dict(schemaVersion=c.VERSION, fixture=True,
+            originalFileCustodyVerified=True, compressedPrePostSha256Verified=True,
+            fullGzipCRCAndEOF=True, accepted=False, runtimeQualified=False,
+            realResourcesAdmitted=False, countryComplete=False,
+            eligibleCleanScopeWitness=False, durableCustodyReceiptPublished=False)
+
+    def raw(self):
+        return s.canonical({'schemaVersion':'offmenu-partition-custody-retention/1',
+                            'accepted':False,'adapterReceipt':self.receipt()})
+
+    def short_read_success(self,cap):
+        raw = self.raw(); real = os.pread; reads = []
+        def short(fd,size,offset):
+            self.assertEqual(size,len(raw)+1-offset)
+            data = real(fd,min(size,cap),offset); reads.append((offset,len(data)))
+            return data
+        with patch.object(os,'pread',side_effect=short):
+            result = s.retain_success_receipt(self.target,self.receipt())
+        self.assertTrue(result['readbackVerified']); self.assertEqual(result['bytes'],len(raw))
+        self.assertEqual(result['sha256'],hashlib.sha256(raw).hexdigest())
+        self.assertEqual((self.root/self.target.name).read_bytes(),raw)
+        self.assertGreater(len(reads),1); self.assertEqual(reads[-1],(len(raw),0))
+        self.assertEqual([offset for offset,_ in reads],
+                         [sum(size for _,size in reads[:i]) for i in range(len(reads))])
+        self.assertLessEqual(len(reads),len(raw)+1)
+        os.fstat(self.target.file_fd); os.fstat(self.target.parent_fd)
+
+    def test_short_positive_read_continues_to_complete_receipt(self):
+        self.short_read_success(len(self.raw())-1)
+
+    def test_many_short_reads_accumulate_at_explicit_offsets(self):
+        self.short_read_success(7)
+
+    def test_eof_truncation_preserves_partial_receipt_and_refuses_reuse(self):
+        raw = self.raw(); real = os.pread; reads = []
+        def truncated(fd,size,offset):
+            if not reads: os.ftruncate(fd,len(raw)-3)
+            data = real(fd,min(size,7),offset); reads.append((offset,len(data))); return data
+        with patch.object(os,'pread',side_effect=truncated):
+            with self.assertRaisesRegex(RefreshError,'readback-mismatch') as failure:
+                s.retain_success_receipt(self.target,self.receipt())
+        self.assertEqual(reads[-1],(len(raw)-3,0))
+        self.assertEqual((self.root/self.target.name).read_bytes(),raw[:-3])
+        self.assertFalse(failure.exception.partition_receipt_retained_state['retentionCompleted'])
+        self.assertFalse(failure.exception.partition_receipt_retained_state['automaticDeletion'])
+        with self.assertRaises(RefreshError): s.check_receipt_target(self.target)
+
+    def test_extra_byte_is_observed_at_bounded_probe_and_refused(self):
+        raw = self.raw(); real = os.pread; reads = []
+        def extra(fd,size,offset):
+            if not reads: os.pwrite(fd,b'!',len(raw))
+            data = real(fd,min(size,7),offset); reads.append((offset,len(data))); return data
+        with patch.object(os,'pread',side_effect=extra):
+            with self.assertRaisesRegex(RefreshError,'readback-mismatch') as failure:
+                s.retain_success_receipt(self.target,self.receipt())
+        self.assertEqual(sum(size for _,size in reads),len(raw)+1)
+        self.assertEqual((self.root/self.target.name).read_bytes(),raw+b'!')
+        self.assertFalse(failure.exception.partition_receipt_retained_state['retentionCompleted'])
+        with self.assertRaises(RefreshError): s.check_receipt_target(self.target)
+
+    def test_read_error_after_short_prefix_preserves_receipt_without_retry(self):
+        raw = self.raw(); real = os.pread; reads = []
+        def fail(fd,size,offset):
+            reads.append(offset)
+            if len(reads)>1: raise OSError('generated readback failure')
+            return real(fd,min(size,7),offset)
+        with patch.object(os,'pread',side_effect=fail):
+            with self.assertRaisesRegex(OSError,'generated readback failure') as failure:
+                s.retain_success_receipt(self.target,self.receipt())
+        self.assertEqual(reads,[0,7])
+        self.assertEqual((self.root/self.target.name).read_bytes(),raw)
+        state = failure.exception.partition_receipt_retained_state
+        self.assertFalse(state['retentionCompleted']); self.assertFalse(state['automaticDeletion'])
+        with self.assertRaises(RefreshError): s.retain_success_receipt(self.target,self.receipt())
+        self.assertEqual((self.root/self.target.name).read_bytes(),raw)
+
+
 if __name__ == '__main__': unittest.main()

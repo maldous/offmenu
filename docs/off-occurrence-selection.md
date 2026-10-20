@@ -109,8 +109,13 @@ or permission to omit the later file+directory sync and readback checks.
 After the DIRECT successful return from `partition_retained_original`, call
 `retain_success_receipt(target, adapter_receipt)`. It writes one bounded canonical
 envelope to the SAME held FD, handles short writes, fsyncs file and parent,
-rechecks descriptor/name identity, reads back exact bytes and checks stable file
-signature. It returns a separate observed identity/size/SHA/fsync receipt. Caller
+rechecks descriptor/name identity, accumulates short reads at explicit offsets
+until the expected length plus one byte or EOF, then compares exact bytes and
+checks stable file signature. The extra-byte probe detects excess data; early
+EOF/truncation, read errors and custody changes still fail without retention
+success. Completing short reads is part of this one readback, not a retry of the
+source operation or a failed retention attempt. It returns a separate observed
+identity/size/SHA/fsync receipt. Caller
 descriptors remain caller-owned/open. No name is opened, created, replaced,
 renamed or deleted by retention. The adapter's original unqualified flags remain
 unchanged inside the envelope; persistence is not runtime/data acceptance.
