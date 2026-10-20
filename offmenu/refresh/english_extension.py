@@ -221,8 +221,8 @@ class _Check:
         require(strict_json(self.evidence(witness.pin)) == witness.scope
                 and witness.scope == {**expected, 'reviewAuthority': witness.authority}, code)
 
-    def claim_context(self, lexical_id, role):
-        resolved = self.r.claim(lexical_id)
+    def claim_context(self, lexical_id, role, resolved=None):
+        resolved = self.r.claim(lexical_id) if resolved is None else resolved
         data = self.claim(lexical_id, role, resolved)
         return data, {'claimId': lexical_id, 'artifact': resolved.artifact,
                       'recordPointer': resolved.record_pointer, 'line': resolved.line,
@@ -401,9 +401,18 @@ class _Check:
                                       {'target': a['target'], 'ingredient': ingredient_version,
                                        'foodForm': ingredient['foodForm']})
         for a in extension['variantAssertions']:
+            source_records = []
             for ref in a['sourceRecordRefs']:
-                if ref != inp['sourceRecordId']:
-                    self.claim(ref, 'recipe-source-record', self.r.record(ref))
+                if ref == inp['sourceRecordId']:
+                    source_records.append({'sourceRecordId': ref, 'inputBinding': inp})
+                else:
+                    resolved = self.r.record(ref)
+                    require(isinstance(resolved, ResolvedClaim), 'english-identity-unresolved')
+                    _, version = self.claim_context(ref, 'recipe-source-record', resolved)
+                    source_records.append(version)
+            if a['state'] == 'reviewed':
+                self.relationship(a, inp, 'recipe-variant-relationship',
+                                  {'region': a['region'], 'sourceRecords': source_records})
         for a in extension['productIngredientLinks']:
             product, product_version = self.claim_context(a['productIdentityClaimId'], 'source-product-assignment')
             ingredient, ingredient_version = self.claim_context(a['ingredientIdentityClaimId'], 'ingredient-identity')

@@ -106,3 +106,36 @@ It verifies the resource's SHA-256 against the canonical source schema and check
 its schema identity/validity. No dependency installation, native-caller
 installation, real-input acceptance or activation follows from packaging proof.
 The native parser/transform/cache qualification precondition above remains.
+
+### PR63: reviewed variants and base wheel runtime
+
+Every reviewed variant relation already supported by the schema—regional-variant,
+ingredient-substitution, preparation-variant and competing-identity-claim—now
+requires the same selected-authority ReviewedWitness boundary as other reviewed
+relationships. A `recipe-variant-relationship` witness binds the exact assertion
+ID/SHA, relation, explicit region (including null), complete current input and
+ordered source-record bindings. A current-record binding uses that pinned input;
+external records retain their own qualified claim/artifact/record locator,
+qualification/contract fingerprints and data hash. Endpoint existence or generic
+policy pins cannot establish a reviewed variant. Proposed, unresolved and
+rejected assertions remain unpromoted; no variant is merged by this callback.
+This adds a bounded resolver decision type, not a new graph class or predicate.
+
+`jsonschema>=4.10.3,<5` is now an explicit base runtime dependency, matching the
+module's unconditional import and the Draft202012Validator API. Test/collection
+extras retain their narrower existing jsonschema pins. The test extra explicitly
+declares packaging>=24 for the wheel metadata/marker verifier; that build-side
+helper is deliberately absent from the clean base-runtime probe. The canonical packaged schema and
+prior32MiB/1024-dispatch evidence limits/cache are unchanged. Existing exact native
+parser/transform/cache qualification remains mandatory before real use.
+
+The wheel regression uses `-I -S -B` outside the checkout, with no inherited site
+packages. It first confirms that wheel code alone cannot import jsonschema, then
+checks the wheel's base Requires-Dist metadata and supplies only its active base
+dependency closure from already available local distributions in a disposable
+import fixture. It imports and checks the canonical resource with that closure,
+and proves build/test extras such as setuptools, wheel, packaging, pytest, PIL
+and openpyxl unavailable in the probe. No pip, network, dependency installation,
+venv, native caller installation or runtime activation occurs. This is an offline
+import/dependency-contract test with the recorded local provider versions, not a
+claim that an online clean installation or every allowed dependency version ran.

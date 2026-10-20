@@ -1,6 +1,9 @@
 """Synthetic work bounds and an offline wheel-resource regression only."""
 from dataclasses import replace
 import hashlib
+import json
+import email.parser
+from importlib import metadata, util
 from pathlib import Path
 import shutil
 import subprocess
@@ -9,6 +12,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import zipfile
+
+from packaging.requirements import Requirement
 
 import offmenu.refresh.english_extension as english
 from offmenu.refresh.acceptance import ids_digest, qualify
@@ -152,25 +157,95 @@ class EnglishWheelResourceTests(unittest.TestCase):
                     self.assertFalse(Path(name).is_absolute())
                     self.assertNotIn('..', Path(name).parts)
                 archive.extractall(installed)
-            probe = guard + '''import sys,json,hashlib
+            # The first probe has only wheel code and stdlib: no build/test sites.
+            missing = subprocess.run([sys.executable, '-I', '-S', '-B', '-c',
+                guard + "import sys\nsys.path.insert(0,sys.argv[1])\nfrom offmenu.refresh import english_extension\n",
+                str(installed)], cwd=root, capture_output=True, text=True, timeout=10)
+            self.assertNotEqual(missing.returncode, 0)
+            self.assertIn("No module named 'jsonschema'", missing.stderr)
+            with zipfile.ZipFile(wheel) as archive:
+                meta_name, = [n for n in archive.namelist() if n.endswith('.dist-info/METADATA')]
+                wheel_meta = email.parser.BytesParser().parsebytes(archive.read(meta_name))
+            requirements = [Requirement(r) for r in wheel_meta.get_all('Requires-Dist', [])]
+            base = [r for r in requirements if r.marker is None or r.marker.evaluate({'extra': ''})]
+            self.assertTrue(any(r.name == 'jsonschema' and not r.extras for r in base),
+                            'jsonschema must be declared for base runtime, not only test extras')
+            # Build a disposable import fixture from already present distributions
+            # selected ONLY by wheel base requirements and their active closure.
+            # No pip, downloads, venv or environment installation is performed.
+            pending = list(base); selected = {}
+            while pending:
+                requirement = pending.pop()
+                self.assertFalse(requirement.extras)
+                distribution = metadata.distribution(requirement.name)
+                self.assertIn(distribution.version, requirement.specifier)
+                name = distribution.metadata['Name'].lower().replace('_', '-')
+                if name in selected:
+                    continue
+                selected[name] = distribution
+                for value in distribution.requires or []:
+                    child = Requirement(value)
+                    if child.marker is None or child.marker.evaluate({'extra': ''}):
+                        pending.append(child)
+            self.assertNotIn('setuptools', selected); self.assertNotIn('wheel', selected)
+            self.assertNotIn('packaging', selected); self.assertNotIn('pytest', selected)
+            for name, distribution in selected.items():
+                paths = distribution.files
+                if paths:
+                    for member in paths:
+                        path = Path(str(member))
+                        if path.is_absolute() or '..' in path.parts or path.suffix == '.pyc':
+                            continue
+                        original = Path(distribution.locate_file(member))
+                        if original.is_file():
+                            target = installed / path; target.parent.mkdir(parents=True, exist_ok=True)
+                            shutil.copyfile(original, target)
+                else:
+                    # Distro-provided modules have no RECORD. Use their own
+                    # top-level declaration, with narrow known distro fallbacks.
+                    tops = distribution.read_text('top_level.txt')
+                    modules = tops.splitlines() if tops else {'jsonschema': ['jsonschema'], 'attrs': ['attr', 'attrs']}[name]
+                    for module_name in modules:
+                        self.assertTrue(module_name.isidentifier())
+                        spec = util.find_spec(module_name)
+                        self.assertIsNotNone(spec)
+                        if spec.submodule_search_locations:
+                            location, = spec.submodule_search_locations
+                            shutil.copytree(location, installed / module_name,
+                                            ignore=shutil.ignore_patterns('__pycache__', 'tests'))
+                        else:
+                            shutil.copyfile(spec.origin, installed / Path(spec.origin).name)
+                    dist_root = Path(distribution._path)
+                    shutil.copytree(dist_root, installed / dist_root.name)
+            probe = guard + '''import sys,json,hashlib,importlib.util
 from pathlib import Path
 from importlib.resources import files
+assert all('site-packages' not in p and 'dist-packages' not in p for p in sys.path)
 sys.path.insert(0,sys.argv[1])
+for name in ('setuptools','wheel','packaging','pytest','PIL','openpyxl'):
+    assert importlib.util.find_spec(name) is None, name
 from offmenu.refresh import english_extension as module
 from jsonschema import Draft202012Validator
+import jsonschema
 assert Path(module.__file__).is_relative_to(Path(sys.argv[1]))
+assert Path(jsonschema.__file__).is_relative_to(Path(sys.argv[1]))
 raw=files('offmenu.refresh').joinpath('english_extension.schema.json').read_bytes()
 assert hashlib.sha256(raw).hexdigest()==sys.argv[2]
 schema=json.loads(raw)
 Draft202012Validator.check_schema(schema)
 assert schema['properties']['schemaVersion']['const']=='offmenu-english-gold-extension/proposal-2'
 assert callable(module.EnglishPolicy) and callable(module.validate_extension)
-print('isolated-wheel-canonical-english-schema-pass; source/model/network operations=0')
+print('isolated-wheel-canonical-english-schema-pass; no-site; base-runtime-only; no installs')
 '''
-            checked = subprocess.run([sys.executable, '-I', '-B', '-c', probe, str(installed), expected],
+            checked = subprocess.run([sys.executable, '-I', '-S', '-B', '-c', probe, str(installed), expected],
                                      cwd=root, capture_output=True, text=True, timeout=10)
             self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
-            self.assertIn('isolated-wheel-canonical-english-schema-pass', checked.stdout)
+            self.assertIn('isolated-wheel-canonical-english-schema-pass; no-site; base-runtime-only', checked.stdout)
+            print('wheel-proof ' + json.dumps({'baseRequirements': [str(r) for r in base],
+                  'runtimeFixture': {name: d.version for name, d in selected.items()},
+                  'wheelOnlyImport': 'expected missing jsonschema', 'pythonIsolation': '-I -S -B',
+                  'buildAndTestExtrasAvailableInProbe': False, 'installOperations': 0}, sort_keys=True))
+
 
 
 if __name__ == '__main__':

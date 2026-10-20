@@ -7,10 +7,10 @@ name = "offmenu"
 version = "0.1.0"
 description = "Offline barcode inventory, recipe matching and retailer observations"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["jsonschema>=4.10.3,<5"]
 
 [project.optional-dependencies]
-test = ["setuptools>=61", "wheel", "Pillow>=10", "openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6", "beautifulsoup4==4.15.0"]
+test = ["setuptools>=61", "wheel", "packaging>=24", "Pillow>=10", "openpyxl==3.1.5", "mwparserfromhell==0.7.2", "jsonschema==4.26.0", "jsonschema-rs==0.58.6", "beautifulsoup4==4.15.0"]
 collection = ["duckdb==1.5.6", "pyarrow==26.0.0", "requests==2.34.2", "beautifulsoup4==4.15.0", "mwparserfromhell==0.7.2", "jsonschema==4.26.0"]
 
 [project.scripts]
