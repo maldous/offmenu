@@ -4,8 +4,8 @@
   "sourceDevelop": "a0ba9a08cd557e08442deec067c2c1919114b96e",
   "sourceCandidate": "70d2426baff500e8b35406a9f52b53a65fb5f81c",
   "originalSharedWorktreeCount": 92,
-  "allInspectedCheckouts": 103,
-  "objectStores": 10,
+  "allInspectedCheckouts": 104,
+  "objectStores": 11,
   "scope": "Original local branches across all inspected independent object stores plus every currently advertised origin head. Observed initial custody pins are immutable point-in-time evidence, not a new operational ledger.",
   "privateCustodyManifest": {
     "path": "/home/user/src/offmenu-preservation-20261020/recovered-custody-private.json",
@@ -14,7 +14,7 @@
   "branchDispositionCounts": {
     "preserved-unmerged": 1126,
     "integrated": 226,
-    "equivalent": 134
+    "equivalent": 137
   },
   "branches": [
     {
@@ -112848,6 +112848,72 @@
           "sha": "65805762cf398202a765d1dc9d8ec26cfe035348"
         }
       ]
+    },
+    {
+      "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c",
+      "mergeBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "disposition": "equivalent",
+      "reason": "Standalone original worker37 metadata binding source. Original four-file commit newly preserved without source mutation; compare exact equal/differing paths against current develop.",
+      "nextAction": "Do not replay equal paths. Review remaining source and current packaging/resource dependency before any separate integration; source/rights holds retained.",
+      "equivalentPaths": [
+        "docs/operations/portfolio37-staging-bindings.md",
+        "offmenu/refresh/portfolio37.py",
+        "offmenu/refresh/portfolio37_bindings.json",
+        "tests/test_portfolio37_bindings.py"
+      ],
+      "differingPaths": [],
+      "verifiedRemoteCustody": [
+        {
+          "ref": "refs/heads/archive/foo-worker37-source-20261020",
+          "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c"
+        }
+      ],
+      "repository": "/home/user/src/offmenu-workers/worker-37-staging-bind-20261018",
+      "ref": "refs/heads/codex/worker37-staging-bind-20261018"
+    },
+    {
+      "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c",
+      "mergeBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "disposition": "equivalent",
+      "reason": "Standalone original worker37 metadata binding source. Original four-file commit newly preserved without source mutation; compare exact equal/differing paths against current develop.",
+      "nextAction": "Do not replay equal paths. Review remaining source and current packaging/resource dependency before any separate integration; source/rights holds retained.",
+      "equivalentPaths": [
+        "docs/operations/portfolio37-staging-bindings.md",
+        "offmenu/refresh/portfolio37.py",
+        "offmenu/refresh/portfolio37_bindings.json",
+        "tests/test_portfolio37_bindings.py"
+      ],
+      "differingPaths": [],
+      "verifiedRemoteCustody": [
+        {
+          "ref": "refs/heads/archive/foo-worker37-source-20261020",
+          "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c"
+        }
+      ],
+      "repository": "/home/user/src/offmenu",
+      "ref": "refs/heads/archive/foo-worker37-source-20261020"
+    },
+    {
+      "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c",
+      "mergeBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+      "disposition": "equivalent",
+      "reason": "Standalone original worker37 metadata binding source. Original four-file commit newly preserved without source mutation; compare exact equal/differing paths against current develop.",
+      "nextAction": "Do not replay equal paths. Review remaining source and current packaging/resource dependency before any separate integration; source/rights holds retained.",
+      "equivalentPaths": [
+        "docs/operations/portfolio37-staging-bindings.md",
+        "offmenu/refresh/portfolio37.py",
+        "offmenu/refresh/portfolio37_bindings.json",
+        "tests/test_portfolio37_bindings.py"
+      ],
+      "differingPaths": [],
+      "verifiedRemoteCustody": [
+        {
+          "ref": "refs/heads/archive/foo-worker37-source-20261020",
+          "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c"
+        }
+      ],
+      "repository": "/home/user/src/offmenu",
+      "ref": "origin/archive/foo-worker37-source-20261020"
     }
   ],
   "worktrees": [
@@ -115316,6 +115382,25 @@
       "disposition": "retained-dependencies-or-evidence",
       "reason": "Ignored files were read/hashed: dependencies, generated builds, browser/runtime evidence or caches; no disposability assumption.",
       "nextAction": "Qualify each dependency/evidence owner and runtime reference before migration/removal."
+    },
+    {
+      "path": "/home/user/src/offmenu-workers/worker-37-staging-bind-20261018",
+      "originalBranch": "refs/heads/codex/worker37-staging-bind-20261018",
+      "originalCommit": "66c366b744995ecfe0b6fce89b9fdf4099233c4c",
+      "localChanges": 0,
+      "ignoredFiles": 11,
+      "stashes": [],
+      "commitDisposition": "equivalent",
+      "remoteCustody": [
+        {
+          "ref": "refs/heads/archive/foo-worker37-source-20261020",
+          "sha": "66c366b744995ecfe0b6fce89b9fdf4099233c4c"
+        }
+      ],
+      "custodyManifest": "/home/user/src/offmenu-preservation-20261020/worker37-extra-clone-custody.json",
+      "disposition": "retained-dependencies-or-evidence",
+      "reason": "Standalone clone discovered at depth4; source clean, ignored Python bytecode caches individually hashed.",
+      "nextAction": "Use source equality/review disposition; qualify cache/runtime ownership before removal."
     }
   ],
   "remoteAncestryCorrection": {
@@ -115325,5 +115410,12 @@
     "ref": "refs/heads/integration/foo-owner-custody-snapshot-20261018",
     "ancestryVerified": true,
     "note": "Use current advertised origin ancestry, not only exact tip equality or stale clone tracking refs."
+  },
+  "extendedDiscovery": {
+    "artifact": "/home/user/src/offmenu-preservation-20261020/extended-clone-discovery.json",
+    "extraClone": "/home/user/src/offmenu-workers/worker-37-staging-bind-20261018",
+    "originalCommit": "66c366b744995ecfe0b6fce89b9fdf4099233c4c",
+    "fsckExit": 0,
+    "note": "Bounded discovery checked depth3 /tmp and depth4 src/collection roots."
   }
 }
