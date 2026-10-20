@@ -40,6 +40,23 @@ time, validation status/uncertainty, source provenance, transformation versions,
 and the base deterministic record. Cache files and response bodies belong on
 Foo and must not be committed or published.
 
+Cache schema 2 also binds the current deterministic record digest and its full
+source provenance, source-policy digest, permission evidence, declared encoding
+and input representation. Identical document bytes do not authorize reuse under
+another source, record, release, country, language, citation or rights context.
+`find_compatible_intermediate()` requires the caller's current `parsed_record`;
+without it lookup returns no match. `replay_cached_intermediate()` requires both
+the current `source` and `parsed_record`, checks the current permission gate and
+exact binding, and decodes using the same declared encoding as lookup. Callers
+must establish that context independently, not copy it from the cached envelope.
+Output identity comes from the verified current binding. A changed binding is
+not an instruction to regenerate or call a model.
+
+Parser 1.3.2 and transform 1.0.2 distinguish these corrections. Older envelopes
+remain untouched but are incompatible; no migration, regeneration or processing
+of retained originals is automatic. Requalification needs its own permitted
+source operation and input/output selection.
+
 Tooling is conditional, not a required cache field. When a derivation actually
 uses a reusable local tool (for example, a translator/validator script or an
 adapter created for that pass), pass its artifact as `tooling_artifacts` with a
@@ -88,6 +105,16 @@ The adapter is currently for recipe HTML with explicit Ingredients/Method
 sections. Other document types need matching deterministic page/row/section
 segmentation and adapters before processing. It does not OCR PDFs or invent
 section boundaries.
+
+The deterministic HTML parser traverses supported JSON-LD `HowToSection`
+`itemListElement` children in source order. Section names/descriptions remain
+separate source notes with pointers relative to the selected Recipe JSON-LD
+object; they are not actionable steps. A note absent from visible page text has
+null visible location, never an invented byte range. Leaf-step locations must
+still resolve to actual visible spans. Malformed sections and traversal-limit
+violations fail explicitly rather than yielding a silently truncated recipe.
+Both menu adapters use the same strict whitespace-aware field locator; failed
+inline-name lookup cannot fabricate a span starting at zero.
 
 ## Foo execution
 

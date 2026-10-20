@@ -15,7 +15,7 @@ import tempfile
 
 from bs4 import BeautifulSoup
 
-PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.1'
+PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.2'
 DICTIONARY_VERSION = 'offmenu-data-dictionary/1'
 RECIPE_TEMPLATE_VERSION = 'offmenu-source-recipe/2'
 MENU_TEMPLATE_VERSION = 'offmenu-source-menu-item/1'
@@ -152,6 +152,49 @@ def _ingredient_details(text: str) -> dict:
     return {'name':name,'preparation':preparation,'substitution':substitution}
 
 
+def _jsonld_instructions(value: object, text: str) -> tuple[list[str], list[dict]]:
+    """Retain section labels separately and visit every supported leaf in order."""
+    instructions, notes = [], []
+    visited = 0
+
+    def walk(node: object, pointer: str, depth: int) -> None:
+        nonlocal visited
+        visited += 1
+        if depth > 32 or visited > MAX_RECORDS:
+            raise ParseError('recipe-instruction-section-limit')
+        if isinstance(node, list):
+            for index, child in enumerate(node):
+                walk(child, f'{pointer}/{index}', depth + 1)
+            return
+        if isinstance(node, dict):
+            types = node.get('@type', [])
+            types = [types] if isinstance(types, str) else types
+            if (isinstance(types, list) and 'HowToSection' in types) or 'itemListElement' in node:
+                children = node.get('itemListElement')
+                if not isinstance(children, list) or not children:
+                    raise ParseError('recipe-instruction-section-invalid')
+                for field in ('name', 'text'):
+                    label = node.get(field)
+                    if isinstance(label, str) and label.strip():
+                        label = label.strip()
+                        try:
+                            location = _field_location(text, label)
+                        except ParseError:
+                            location = None
+                        notes.append({'originalText': label, 'sourceSection': 'JSON-LD HowToSection',
+                            'sourceJSONPointer': pointer + '/' + field,
+                            'location': location})
+                walk(children, pointer + '/itemListElement', depth + 1)
+                return
+            node = node.get('text') or node.get('name')
+        if not isinstance(node, str) or not node.strip():
+            raise ParseError('recipe-instruction-text-unsupported')
+        instructions.append(node.strip())
+
+    walk(value, '/recipeInstructions', 0)
+    return instructions, notes
+
+
 def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                       source_record_id: str, country: str | None,
                       language: str, attribution: str | None = None) -> dict:
@@ -182,11 +225,10 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
     extraction_sha = sha256(text.encode('utf-8'))
     ingredients: list[dict] = []
     steps: list[dict] = []
+    instruction_notes: list[dict] = []
     if ld:
         raw_ingredients = ld.get('recipeIngredient') or []
-        instructions = ld.get('recipeInstructions') or []
-        if isinstance(instructions, str):
-            instructions = [instructions]
+        instructions, instruction_notes = _jsonld_instructions(ld.get('recipeInstructions') or [], text)
         for i, expression in enumerate(raw_ingredients, 1):
             if not isinstance(expression, str) or not expression.strip():
                 continue
@@ -201,13 +243,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                 'foodIdentity': None, 'foodMatchStatus': 'unmatched-source-text',
                 'location': _field_location(text, original)})
         for i, instruction in enumerate(instructions, 1):
-            if isinstance(instruction, dict):
-                original = instruction.get('text') or instruction.get('name')
-            else:
-                original = instruction
-            if not isinstance(original, str) or not original.strip():
-                continue
-            original = original.strip()
+            original = instruction
             start = text.find(original)
             steps.append({'order': i, 'componentIndex': 1, 'originalText': original,
                 'actionTerms': [], 'equipment': [], 'time': None, 'temperature': None,
@@ -311,7 +347,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
         'language': language, 'region': source.get('region'), 'yield': yield_record,
         'ingredientLines': ingredients, 'orderedSteps': steps,
         'components': _components(ingredients, steps),
-        'sourceNotes': _source_notes(soup, text), 'nutritionAssertions': nutrition,
+        'sourceNotes': _source_notes(soup, text) + instruction_notes, 'nutritionAssertions': nutrition,
         'equipment': [], 'time': _time_observations(text), 'temperature': None,
         'sourceLocation': _field_location(text, title),
         'identity': {'canonicalDishId': None, 'mergePerformed': False,
@@ -423,8 +459,7 @@ def parse_html_menu(raw: bytes, *, source: dict, source_id: str,
             category = section.find(['h2', 'h3']) if section else None
             category_name = category.get_text(' ', strip=True) if category else None
             original = card.get_text(' ', strip=True)
-            start = text.find(name)
-            location = _location(text, max(0, start), max(0, start) + len(name))
+            location = _field_location(text, name)
             entry_id = str(card.get('id') or f'{source_id}:menu:{index}')
             price, currency = _menu_price(original)
             entries.append((entry_id, name, description, category_name, price, currency, location))
@@ -440,8 +475,7 @@ def parse_html_menu(raw: bytes, *, source: dict, source_id: str,
             category_node = group.select_one('.food-section-title, h2') if group else None
             category = category_node.get_text(' ', strip=True) if category_node else None
             original = card.get_text(' ', strip=True)
-            start = text.find(name)
-            location = _location(text, max(0, start), max(0, start) + len(name))
+            location = _field_location(text, name)
             entry_id = str(card.get('data-food') or card.get('id') or f'{source_id}:menu:{index}')
             price, currency = _menu_price(original)
             entries.append((entry_id, name, description, category, price, currency, location))

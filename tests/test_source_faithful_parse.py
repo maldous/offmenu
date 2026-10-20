@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -107,6 +108,81 @@ class SourceFaithfulParseTests(unittest.TestCase):
             self.assertEqual(first['inputSHA256'], hashlib.sha256(RECIPE_HTML).hexdigest())
             self.assertEqual(first['artifacts'], second['artifacts'])
             self.assertEqual(first['acceptedRecords'], 1)
+
+
+    def test_both_menu_adapters_locate_inline_names_without_zero_fallback(self):
+        cards = [
+            ('calmos-menu-v1', '<div class="menuItemBox"><span class="menuItemName">Fish <b>Cakes</b></span><span>12€</span></div>'),
+            ('ocean82-menu-v1', '<li class="food-element"><span class="food-item-title">Fish <b>Cakes</b></span><span>12€</span></li>'),
+        ]
+        for adapter, card in cards:
+            with self.subTest(adapter=adapter):
+                raw = ('<html><body><h1>Unrelated prefix</h1>'+card+'</body></html>').encode()
+                record = PARSER.parse_html_menu(raw, source=source(raw, adapter=adapter),
+                    source_id='MENU', country='ZZ', language='en')[0]
+                text = PARSER.BeautifulSoup(raw, 'html.parser').get_text('\n', strip=False).encode()
+                start, end = record['location']['utf8ByteRange']
+                self.assertGreater(start, 0)
+                self.assertEqual(' '.join(text[start:end].decode().split()), 'Fish Cakes')
+                self.assertEqual(hashlib.sha256(text[start:end]).hexdigest(), record['location']['sourceSpanSHA256'])
+
+    def jsonld_recipe(self, instructions):
+        ld = {'@type': 'Recipe', 'recipeIngredient': ['1 cup flour'],
+              'recipeInstructions': instructions}
+        return ('<html><head><script type="application/ld+json">'+json.dumps(ld)+
+            '</script></head><body><h1>Fixture</h1><p>1 cup flour</p>'+
+            '<h2>Base</h2><h3>Finish</h3><p>Mix flour.</p><p>Bake gently.</p><p>Serve warm.</p></body></html>').encode()
+
+    def test_jsonld_sections_preserve_all_nested_steps_in_source_order(self):
+        raw = self.jsonld_recipe([{'@type': 'HowToSection', 'name': 'Base', 'itemListElement': [
+            {'@type': 'HowToStep', 'text': 'Mix flour.'},
+            {'@type': 'HowToSection', 'name': 'Finish', 'itemListElement': [
+                {'@type': 'HowToStep', 'text': 'Bake gently.'}]}]}, 'Serve warm.'])
+        record = PARSER.parse_html_recipe(raw, source=source(raw), source_id='TEST',
+            source_record_id='sections', country='ZZ', language='en')
+        self.assertEqual([s['originalText'] for s in record['orderedSteps']],
+            ['Mix flour.', 'Bake gently.', 'Serve warm.'])
+        self.assertEqual([s['order'] for s in record['orderedSteps']], [1, 2, 3])
+        self.assertTrue({'Base','Finish'} <= {n['originalText'] for n in record['sourceNotes']})
+        text = PARSER.BeautifulSoup(raw,'html.parser').get_text('\n',strip=False).encode()
+        for step in record['orderedSteps']:
+            a,b = step['location']['utf8ByteRange']
+            self.assertEqual(text[a:b].decode(),step['originalText'])
+            self.assertEqual(hashlib.sha256(text[a:b]).hexdigest(),step['location']['sourceSpanSHA256'])
+
+    def test_jsonld_section_without_heading_keeps_children_not_silent_drop(self):
+        raw = self.jsonld_recipe([{'@type':'HowToSection','itemListElement':[
+            {'@type':'HowToStep','text':'Mix flour.'}]}])
+        record = PARSER.parse_html_recipe(raw, source=source(raw),source_id='TEST',
+            source_record_id='nameless',country='ZZ',language='en')
+        self.assertEqual([s['originalText'] for s in record['orderedSteps']],['Mix flour.'])
+
+    def test_malformed_jsonld_section_is_rejected_instead_of_partial_success(self):
+        raw = self.jsonld_recipe(['Mix flour.', {'@type':'HowToSection','name':'Base',
+            'itemListElement':{'text':'Bake gently.'}}])
+        with self.assertRaisesRegex(PARSER.ParseError,'instruction-section'):
+            PARSER.parse_html_recipe(raw,source=source(raw),source_id='TEST',
+                source_record_id='bad-section',country='ZZ',language='en')
+
+
+    def test_jsonld_invisible_section_label_has_no_fabricated_visible_location(self):
+        raw = self.jsonld_recipe([{'@type':'HowToSection','name':'Invisible label',
+            'itemListElement':[{'@type':'HowToStep','text':'Mix flour.'}]}])
+        record = PARSER.parse_html_recipe(raw,source=source(raw),source_id='TEST',
+            source_record_id='section-label',country='ZZ',language='en')
+        note = next(n for n in record['sourceNotes'] if n['originalText']=='Invisible label')
+        self.assertIsNone(note['location'])
+        self.assertEqual(note['sourceJSONPointer'],'/recipeInstructions/0/name')
+        self.assertEqual([s['originalText'] for s in record['orderedSteps']],['Mix flour.'])
+
+    def test_jsonld_excessive_section_depth_is_an_explicit_hold(self):
+        section = {'@type':'HowToStep','text':'Mix flour.'}
+        for _ in range(40):
+            section = {'@type':'HowToSection','itemListElement':[section]}
+        raw = self.jsonld_recipe([section])
+        with self.assertRaisesRegex(PARSER.ParseError,'instruction-section-limit'):
+            PARSER.parse_html_recipe(raw,source=source(raw),source_id='TEST',
+                source_record_id='deep-section',country='ZZ',language='en')
 
 
 if __name__ == '__main__':
