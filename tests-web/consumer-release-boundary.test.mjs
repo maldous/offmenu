@@ -115,3 +115,32 @@ test('country prefilter cannot bypass selected release qualification',async t=>{
  const ordinary=await providerDataRoutes(request('ciqual',null,'&country=US'),{},options);
  assert.equal(ordinary.status,200);assert.deepEqual((await ordinary.json()).records,[]);
 });
+
+// PR60 P2: invalid client input keeps its category after release verification.
+const encodedCursor=value=>Buffer.from(JSON.stringify(value)).toString('base64url');
+const matchingCursor={release:'a'.repeat(64),filters:sha(JSON.stringify(['off','','001234','',''])),offset:0};
+const invalidClientInputs=[
+ ['barcode',params=>params.set('barcode','not-digits')],
+ ['kind',params=>params.set('kind','bad-kind')],
+ ['malformed cursor',params=>params.set('cursor','not-valid-json')],
+ ['null cursor payload',params=>params.set('cursor',encodedCursor(null))],
+ ['negative cursor offset',params=>params.set('cursor',encodedCursor({...matchingCursor,offset:-1}))],
+ ['out-of-range cursor',params=>params.set('cursor',encodedCursor({...matchingCursor,offset:2}))],
+ ['foreign search cursor',params=>params.set('cursor',encodedCursor({...matchingCursor,filters:sha('another search')}))],
+ ['foreign release cursor',params=>params.set('cursor',encodedCursor({...matchingCursor,release:'other'}))],
+];
+for(const [name,change] of invalidClientInputs){
+ test('selected '+name+' is a client400 with zero upstream requests',async t=>{
+  const f=fixture(),calls=fetchFixture(t,f),url=new URL(request('off',f.selection).url);change(url.searchParams);
+  const response=await providerDataRoutes(new Request(url),{CURATED_CORPUS_ORIGIN:origin},options);
+  assert.deepEqual(calls.upstream,[]);assert.equal(response.status,400);
+ });
+}
+test('ordinary client validation remains400 for same invalid inputs',async t=>{
+ const f=fixture(),calls=fetchFixture(t,f);
+ for(const [,change] of invalidClientInputs){
+  const url=new URL(request().url);change(url.searchParams);
+  assert.equal((await providerDataRoutes(new Request(url),{CURATED_CORPUS_ORIGIN:origin},options)).status,400);
+ }
+ assert.deepEqual(calls.upstream,[]);
+});

@@ -20,7 +20,9 @@ no alternate index or adapter is installed. Successful selected responses retain
 the existing result and add `manifestSha256` with the exact file digest. Their
 query-cache entries are separated from ordinary requests by this file pin.
 
-Malformed/incomplete/duplicate binding parameters return 400. A release ID or
+Malformed/incomplete/duplicate binding parameters return 400. Existing engine
+filter/cursor validation also returns typed client 400 errors after a selected
+release is verified; it does not turn invalid input into a service outage. A release ID or
 manifest-byte mismatch returns 409. Missing/unreadable/unaccepted curation,
 missing source or missing/invalid shards return 503 in selected mode. These paths
 never fall through to live OFF/Prices or another source route. A valid empty
