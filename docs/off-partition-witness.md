@@ -33,6 +33,32 @@ pinned `evidence` child contains only the output files. Files are exclusively
 created relative to these descriptors, with no symlink following. Preflight
 parent, stage, evidence and file checks refuse observed custody changes.
 
+SQLite connection setup has a separate descriptor binding. The internal
+`/proc/self/fd/<stage-fd>/index.sqlite` path pins the directory, not its mutable
+leaf. Before any caller iterator or schema writes, the core requires serialized
+setup in a process with one observed Python/OS thread. It snapshots process file
+descriptors, opens SQLite and forces its main database open. Exactly one new
+regular descriptor must be attributable to that open. The core duplicates this
+OPEN descriptor and compares its device/inode against the separately held created
+file. Substitution followed by restoration of the leaf cannot satisfy that inode
+comparison. Mismatch raises `partition-sqlite-inode-mismatch`; an ambiguous
+open-descriptor delta or observed concurrency also refuses success.
+
+This is a Linux/default SQLite main-file setup contract, with no in-process
+concurrent descriptor mutation during attribution. It does not claim arbitrary
+VFS, threaded host or hostile in-process callback support. Observed unsupported
+setup fails closed; a future executor must qualify this restriction. It changes
+no platform security/runtime settings. Following successful binding, database
+byte measurement and retained identity/location use the SAME duplicated SQLite
+file descriptor, rather than another basename stat. Ordinary custody checks on
+the created leaf remain additional refusal guards. On mismatch,
+`partition_retained_state` reports the actual attributable database inode/path/
+bytes plus the separately created database inode/path;
+`databaseConnectionVerified:false` prevents acceptance. Ambiguous candidates are
+listed explicitly without choosing one as a verified connection. Matching
+created/connected identities describe one file and must be charged only once.
+All observed/held mismatched entries remain preserved, with no deletion.
+
 These checks cannot make a pathname rename conditional on a source inode. After
 the actual rename, the core opens the destination relative to the original parent
 and verifies its directory inode against the held evidence inode, followed by
@@ -154,3 +180,12 @@ reporting. Success and iterator failure tests prohibit core unlink/rmdir calls.
 The exact Worker56 syscall schedules are replayed separately, with their original
 observations retained even where their old hardcoded paths no longer locate the
 new evidence-child layout. All S/C/Q/ordinal/digest and declared-cap tests remain.
+
+The SQLite-open regression swaps the database leaf while connecting, forces the
+alternate database open, then restores the original before subsequent checks.
+The baseline succeeds with the empty original inode/zero bytes despite SQLite
+using a different database. The successor refuses before schema writes and
+reports both actual and created objects. Additional controls reject extra open
+regular descriptors and observed concurrent setup, verify success byte accounting
+against the bound descriptor, and check descriptor closure on failure. None of
+these tests opens retained data or a live database.

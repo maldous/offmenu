@@ -263,5 +263,65 @@ class PartitionWitnessTests(unittest.TestCase):
         self.assertEqual([p.name for p in self.root.iterdir()],[state['createdStageEntry']])
         self.assertFalse((self.root/'output').exists())
 
+    def test_sqlite_open_substitution_and_restoration_reports_actual_open_inode(self):
+        from offmenu.refresh import off_partition_witness as m
+        real=m.sqlite3.connect;actual=None;original=None
+        def swap_open(path,*args,**kwargs):
+            nonlocal actual,original
+            path=Path(path);stage=path.parent.resolve()
+            path.rename(stage/'held-original');path.write_bytes(b'')
+            db=real(path,*args,**kwargs);db.execute('PRAGMA user_version').fetchone()
+            path.rename(stage/'actual-sqlite-db');(stage/'held-original').rename(path)
+            actual=stage/'actual-sqlite-db';original=stage/'index.sqlite'
+            return db
+        before=len(os.listdir('/proc/self/fd'))
+        with patch.object(m.sqlite3,'connect',side_effect=swap_open):
+            with self.assertRaisesRegex(RefreshError,'partition-sqlite-inode-mismatch') as failure:
+                self.run_rows()
+        state=self.assert_retained(failure.exception)
+        self.assertFalse(state['databaseConnectionVerified'])
+        self.assertEqual(state['databaseLocation'],str(actual))
+        self.assertEqual(state['createdDatabaseLocation'],str(original))
+        self.assertNotEqual(state['databaseIdentity'],state['createdDatabaseIdentity'])
+        self.assertEqual(state['databaseBytes'],actual.stat().st_size)
+        self.assertTrue(original.is_file());self.assertTrue(actual.is_file())
+        self.assertFalse((self.root/'output').exists())
+        self.assertEqual(len(os.listdir('/proc/self/fd')),before)
+
+    def test_ambiguous_connect_descriptors_fail_closed_and_preserve_files(self):
+        from offmenu.refresh import off_partition_witness as m
+        real=m.sqlite3.connect;extra=None
+        def extra_open(path,*args,**kwargs):
+            nonlocal extra
+            db=real(path,*args,**kwargs);db.execute('PRAGMA user_version').fetchone()
+            extra=os.open(self.root/'unrelated',os.O_RDWR|os.O_CREAT|os.O_EXCL,0o600)
+            os.write(extra,b'KEEP');return db
+        before=len(os.listdir('/proc/self/fd'))
+        try:
+            with patch.object(m.sqlite3,'connect',side_effect=extra_open):
+                with self.assertRaisesRegex(RefreshError,'partition-sqlite-descriptor-ambiguous') as failure:
+                    self.run_rows()
+            state=self.assert_retained(failure.exception)
+            self.assertFalse(state['databaseConnectionVerified'])
+            self.assertEqual(len(state['ambiguousConnectionFiles']),2)
+            self.assertEqual((self.root/'unrelated').read_bytes(),b'KEEP')
+            self.assertFalse((self.root/'output').exists())
+        finally:
+            if extra is not None:os.close(extra)
+        self.assertEqual(len(os.listdir('/proc/self/fd')),before)
+
+    def test_concurrent_setup_refused_and_success_bytes_use_bound_descriptor(self):
+        from offmenu.refresh import off_partition_witness as m
+        with patch.object(m.threading,'active_count',return_value=2):
+            with self.assertRaisesRegex(RefreshError,'partition-sqlite-serialized-setup-required') as failure:
+                self.run_rows()
+        self.assert_retained(failure.exception)
+        self.assertFalse(failure.exception.partition_retained_state['databaseConnectionVerified'])
+        result=self.run_rows();state=result['retainedScratch']
+        self.assertTrue(state['databaseConnectionVerified'])
+        self.assertEqual(state['databaseIdentity'],state['createdDatabaseIdentity'])
+        self.assertGreater(state['databaseBytes'],0)
+        self.assertEqual(result['measurements']['databaseBytes'],state['databaseBytes'])
+
 
 if __name__=='__main__':unittest.main()

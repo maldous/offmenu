@@ -6,12 +6,14 @@ boundary. EOF/count agreement here is not proof of retained-original derivation.
 from dataclasses import dataclass, asdict
 from contextlib import contextmanager
 import hashlib
+import errno
 import os
 from pathlib import Path
 import re
 import secrets
 import stat
 import sqlite3
+import threading
 import time
 
 from .core import RefreshError, canonical, strict_json
@@ -23,10 +25,22 @@ def _inode(info):
     return info.st_dev,info.st_ino
 
 
+def _descriptor_snapshot():
+    """Observe this process, closing listdir's own temporary descriptor first."""
+    result={}
+    for name in os.listdir('/proc/self/fd'):
+        try:result[int(name)]=os.fstat(int(name))
+        except FileNotFoundError:continue
+        except OSError as error:
+            if error.errno!=errno.EBADF:raise
+    return result
+
+
 class _OwnedStage:
     """Pinned scratch/evidence handles; no destructive pathname cleanup."""
     def __init__(self,parent):
         self.parent=parent;self.fd=None;self.evidence_fd=None;self.index_fd=None;self.files={};self.created=False
+        self.database_fds=[];self.database_verified=False
         self.parent_fd=os.open(parent,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
         self.parent_inode=_inode(os.fstat(self.parent_fd))
         try:
@@ -77,6 +91,22 @@ class _OwnedStage:
             raise RefreshError('partition-stage-file-custody-changed')
         return info
 
+    def bind_database(self,before):
+        # Before invoking caller code, a single-threaded SQLite main open must
+        # account for exactly one new regular descriptor. Pin that OPEN object,
+        # not a pathname reopened after connect. Any ambiguity fails closed.
+        after=_descriptor_snapshot()
+        opened=[fd for fd,info in after.items()
+                if fd not in before or _inode(info)!=_inode(before[fd])]
+        for fd in opened:
+            if stat.S_ISREG(after[fd].st_mode):self.database_fds.append(os.dup(fd))
+        if (threading.active_count()!=1 or len(os.listdir('/proc/self/task'))!=1
+                or len(opened)!=1 or len(self.database_fds)!=1):
+            raise RefreshError('partition-sqlite-descriptor-ambiguous')
+        if _inode(os.fstat(self.database_fds[0]))!=_inode(os.fstat(self.index_fd)):
+            raise RefreshError('partition-sqlite-inode-mismatch')
+        self.database_verified=True
+
     def publish(self,destination):
         self.check()
         if set(os.listdir(self.evidence_fd))!=set(self.files):raise RefreshError('partition-stage-inventory-changed')
@@ -102,16 +132,26 @@ class _OwnedStage:
         def location(fd):
             try:return os.readlink(f'/proc/self/fd/{fd}')
             except OSError:return None
+        database_fd=self.database_fds[0] if len(self.database_fds)==1 else self.index_fd
         return {'stageIdentity':getattr(self,'inode',None),'stageLocation':location(self.fd),
             'createdStageEntry':getattr(self,'name',None),'parentIdentity':self.parent_inode,
             'evidenceIdentity':getattr(self,'evidence_inode',None),'evidenceLocation':location(self.evidence_fd),
-            'databaseIdentity':_inode(os.fstat(self.index_fd)) if self.index_fd is not None else None,
-            'databaseLocation':location(self.index_fd),'automaticDeletion':False,'resourceObligationActive':True}
+            'databaseIdentity':_inode(os.fstat(database_fd)) if database_fd is not None else None,
+            'databaseLocation':location(database_fd),
+            'databaseBytes':os.fstat(database_fd).st_size if database_fd is not None else None,
+            'databaseConnectionVerified':self.database_verified,
+            'createdDatabaseIdentity':_inode(os.fstat(self.index_fd)) if self.index_fd is not None else None,
+            'createdDatabaseLocation':location(self.index_fd),
+            'ambiguousConnectionFiles':[{'identity':_inode(os.fstat(fd)),
+                'location':location(fd),'bytes':os.fstat(fd).st_size} for fd in self.database_fds]
+                if len(self.database_fds)>1 else [],
+            'automaticDeletion':False,'resourceObligationActive':True}
 
     def retain(self,error):
         error.partition_retained_state=self.retained()
 
     def close(self):
+        for fd in self.database_fds:os.close(fd)
         if self.index_fd is not None:os.close(self.index_fd)
         os.close(self.evidence_fd)
         os.close(self.fd);os.close(self.parent_fd)
@@ -165,8 +205,14 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
         pins[name]={'sha256':h.hexdigest(),'bytes':size,'rows':rows}
     try:
         with stage.create('index.sqlite'):pass
-        # Linux descriptor path is internal, never a caller-controlled symlink.
+        if threading.active_count()!=1 or len(os.listdir('/proc/self/task'))!=1:
+            raise RefreshError('partition-sqlite-serialized-setup-required')
+        before=_descriptor_snapshot()
+        # The directory is pinned, but the SQLite open still resolves a mutable
+        # leaf. Force main open, then bind its actual descriptor before writes.
         path=Path(f'/proc/self/fd/{stage.fd}/index.sqlite');db=sqlite3.connect(path)
+        db.execute('PRAGMA user_version').fetchone()
+        stage.bind_database(before)
         db.execute('PRAGMA page_size=4096');db.execute('PRAGMA cache_size=-2048')
         db.execute('PRAGMA journal_mode=OFF');db.execute('PRAGMA temp_store=FILE')
         db.execute(f'PRAGMA max_page_count={limits.max_database_bytes//4096}')
@@ -194,7 +240,8 @@ def partition_stream(lines, destination, *, original_sha256, expected_rows, limi
                 db.execute('INSERT INTO keys VALUES(?,1) ON CONFLICT(code) DO UPDATE SET multiplicity=multiplicity+1',(code,))
         if count!=expected_rows:raise RefreshError('partition-incomplete-stream')
         guard();stage.check();db.commit()
-        database_bytes=stage.info('index.sqlite').st_size
+        stage.info('index.sqlite')
+        database_bytes=os.fstat(stage.database_fds[0]).st_size
         if database_bytes>limits.max_database_bytes:raise RefreshError('partition-db-bound')
         totals={'S':0,'C':0,'Q':0};groups=0
         def occurrences():
