@@ -59,63 +59,226 @@ def _assistant_permission_allowed(source: dict) -> bool:
 def _load_source(input_path: Path, encoding: str = 'utf-8') -> tuple[bytes, BeautifulSoup, str]:
     raw = parser._read_original(input_path)
     try:
-        soup = BeautifulSoup(raw.decode(encoding, errors='strict'), 'html.parser')
+        decoded = raw.decode(encoding, errors='strict')
+        if input_path.suffix.casefold() in {'.wikitext', '.wiki'}:
+            return raw, BeautifulSoup('', 'html.parser'), decoded
+        soup = BeautifulSoup(decoded, 'html.parser')
     except (LookupError, UnicodeDecodeError) as exc:
         raise IntermediateError('source-decode-failed') from exc
     return raw, soup, soup.get_text('\n', strip=False)
 
 
+def _header_label(header) -> str:
+    return _norm(header.get_text(' ', strip=True)).casefold()
+
+
 def _section_nodes(soup: BeautifulSoup, label: str) -> list:
     body = soup.select_one('.field--name-body') or soup.body or soup
-    header = next((h for h in body.find_all(['h2', 'h3', 'h4'])
-                   if _norm(h.get_text(' ', strip=True)).casefold() == label.casefold()), None)
+    aliases = {'method': {'method', 'directions', 'instructions', 'preparation',
+                          'procedure', 'procedure (brief)', 'procedure (detailed)'},
+               'ingredients': {'ingredients', 'ingredienti'}}
+    accepted = aliases.get(label.casefold(), {label.casefold()})
+    headers = body.find_all(['h2', 'h3', 'h4'])
+    header = next((h for h in headers if _header_label(h) in accepted), None)
     if header is None:
         raise IntermediateError('source-section-missing:' + label.casefold())
+    level = int(header.name[1])
     nodes, node = [], header
     while True:
         node = node.find_next_sibling()
-        if node is None or node.name in {'h2', 'h3', 'h4'}:
+        if node is None:
+            break
+        if node.name in {'h2', 'h3', 'h4'} and (
+                int(node.name[1]) <= level or
+                (label.casefold() == 'method' and _header_label(node) in {
+                    'variation', 'variations', 'hint', 'notes', 'serving suggestion'})):
             break
         nodes.append(node)
     return nodes
 
 
-def source_segments(soup: BeautifulSoup) -> dict:
-    ingredients = []
-    for node in _section_nodes(soup, 'Ingredients'):
+def _wiki_nodes(soup: BeautifulSoup, label: str) -> list:
+    """Read retained MediaWiki section nodes for the explicit bounded adapter."""
+    body = soup.select_one('.field--name-body') or soup.body or soup
+    headers = body.find_all(['h2', 'h3', 'h4'])
+    wanted = {'ingredients': {'ingredients', 'ingredienti'},
+              'method': {'method', 'procedure', 'procedure (brief)',
+                         'procedure (detailed)', 'directions', 'instructions',
+                         'preparation'}}[label]
+    header = next((h for h in headers if _header_label(h) in wanted), None)
+    if header is None:
+        return []
+    level = int(header.name[1])
+    nodes, node = [], header
+    while True:
+        node = node.find_next_sibling()
+        if node is None or (node.name in {'h2', 'h3', 'h4'} and int(node.name[1]) <= level):
+            break
+        nodes.append(node)
+    return nodes
+
+
+def _ingredients_from_nodes(nodes: list) -> list[str]:
+    lines = []
+    for node in nodes:
         if node.name in {'ul', 'ol'}:
-            ingredients.extend(li.get_text(' ', strip=True) for li in node.find_all('li', recursive=False)
-                               if li.get_text(' ', strip=True))
+            lines.extend(li.get_text(' ', strip=True) for li in node.find_all('li', recursive=False)
+                         if li.get_text(' ', strip=True))
         elif node.name == 'p' and node.get_text(' ', strip=True):
-            ingredients.append(node.get_text(' ', strip=True))
+            lines.append(node.get_text(' ', strip=True))
+    return lines
+
+
+def _source_lines(soup: BeautifulSoup, raw_lines: list[str],
+                  page_text: str) -> list[str]:
+    """Map displayed wiki text back to unique, exact source-page line text."""
+    if not raw_lines:
+        return []
+    mapped = []
+    for raw in raw_lines:
+        candidates = [line.strip() for line in page_text.splitlines()
+                      if line.strip() and _wiki_plain_text(line) == _wiki_plain_text(raw)]
+        if len(candidates) != 1:
+            raise IntermediateError('wiki-source-line-not-unique')
+        mapped.append(candidates[0])
+    return mapped
+
+
+def _wiki_plain_text(text: str) -> str:
+    """Expose link display text and remove markup without rewriting source lexemes."""
+    text = re.sub(r'^\s*[#*;:]+\s*', '', text)
+    text = re.sub(r'<ref\b[^>]*>.*?</ref>|<ref[^>]*/>', '', text,
+                  flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r'\[\[([^]|]+)\|([^]]+)\]\]', r'\2', text)
+    text = re.sub(r'\[\[([^]]+)\]\]', r'\1', text)
+    text = re.sub(r"'{2,5}", '', text)
+    text = re.sub(r'<[^>]+>', ' ', text)
+    return _norm(text)
+
+
+def _wiki_method_text(soup: BeautifulSoup) -> list[str]:
+    body = soup.select_one('.field--name-body') or soup.body or soup
+    headers = body.find_all(['h2', 'h3', 'h4'])
+    instructions = []
+    for header in headers:
+        if _header_label(header) not in {'procedure (brief)', 'method', 'directions',
+                                          'instructions', 'preparation'}:
+            continue
+        level = int(header.name[1])
+        node = header
+        while True:
+            node = node.find_next_sibling()
+            if node is None or (node.name in {'h2', 'h3', 'h4'} and int(node.name[1]) <= level):
+                break
+            if node.name in {'ol', 'ul'}:
+                instructions.extend(_wiki_plain_text(li.get_text(' ', strip=True))
+                                    for li in node.find_all('li', recursive=False)
+                                    if li.get_text(' ', strip=True))
+            elif node.name == 'p' and node.get_text(' ', strip=True):
+                instructions.append(_wiki_plain_text(node.get_text(' ', strip=True)))
+    return [text for text in instructions if text]
+
+
+def _yield_lines(soup: BeautifulSoup) -> list[str]:
+    body = soup.select_one('.field--name-body') or soup.body or soup
+    summary = next((node for node in body.find_all()
+                    if node.name in {'div', 'table'} and
+                    ('recipesummary' in ' '.join(node.get('class', [])).casefold() or
+                     'servings' in node.get_text(' ', strip=True).casefold())), None)
+    candidates = []
+    if summary is not None:
+        candidates.extend(node.get_text(' ', strip=True) for node in summary.find_all(['td', 'th', 'li']))
+        candidates.append(summary.get_text(' ', strip=True))
+    for text in candidates:
+        match = re.search(r'(?i)(?:servings?|serves?)\s*[=:|]?\s*(\d+\s*[-–]\s*\d+|\d+)', text)
+        if match:
+            return [match.group(1).replace(' ', '')]
+    return []
+
+
+def _wikitext_recipe_segments(text: str) -> dict | None:
+    """Segment only explicit ingredient and brief-procedure sections in wiki text."""
+    lines = text.splitlines()
+    if not any(re.fullmatch(r'\s*=+\s*Ingredients\s*=+\s*', line, re.I) for line in lines):
+        return None
+    ingredients, directions = [], []
+    section = None
+    for line in lines:
+        heading = re.fullmatch(r'\s*(=+)\s*(.*?)\s*\1\s*', line)
+        if heading:
+            label = _norm(heading.group(2)).casefold()
+            section = (('ingredients' if label == 'ingredients' else
+                        'brief' if label == 'procedure (brief)' else None), len(heading.group(1)))
+            continue
+        if section is None or not line.strip():
+            continue
+        mode, level = section
+        if mode == 'ingredients' and len(line) - len(line.lstrip('*')) >= 1:
+            ingredients.append(re.sub(r'^\s*\*+\s*', '', line).strip())
+        elif mode == 'brief' and len(line) - len(line.lstrip('#')) >= 1:
+            directions.append(re.sub(r'^\s*#+\s*', '', line).strip())
+    summary = re.search(r'(?im)^\s*\{\{recipesummary\b([^}]*(?:\}[^}]*)?)', text)
+    yield_lines = []
+    if summary:
+        serving = re.search(r'(?i)servings\s*=\s*(\d+\s*[-–]\s*\d+|\d+)', summary.group(1))
+        if serving:
+            yield_lines.append(re.sub(r'\s+', '', serving.group(1)))
+    return {'ingredientLines': ingredients, 'directionParagraphs': directions,
+            'yields': yield_lines, 'variations': []}
+
+
+def _recipe_sections(soup: BeautifulSoup, page_text: str | None = None) -> dict:
+    text = page_text if page_text is not None else soup.get_text('\n', strip=False)
+    wiki = _wikitext_recipe_segments(text)
+    if wiki is not None:
+        wiki['ingredientLines'] = _source_lines(soup, wiki['ingredientLines'], text)
+        wiki['directionParagraphs'] = _source_lines(soup, wiki['directionParagraphs'], text)
+        return wiki
+    body = soup.select_one('.field--name-body') or soup.body or soup
+    wiki_markup = any(re.fullmatch(r'\s*=+\s*[^=]+\s*=+\s*', line) for line in text.splitlines())
+    ingredients = _ingredients_from_nodes(_section_nodes(soup, 'Ingredients'))
     directions, yields = [], []
     for node in _section_nodes(soup, 'Method'):
-        if node.name != 'p' or not node.get_text(' ', strip=True):
+        if node.name not in {'p', 'ol', 'ul'} or not node.get_text(' ', strip=True):
             continue
-        text = node.get_text(' ', strip=True)
-        full_yield = re.fullmatch(r'(?i)((?:serves?|makes?)\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+[^.]+)?)[.]?', text)
-        if full_yield:
-            yields.append(full_yield.group(1))
-            continue
-        trailing_yield = re.search(r'(?i)\s+((?:serves?|makes?)\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+[^.]+)?)[.]?$', text)
-        if trailing_yield:
-            yields.append(trailing_yield.group(1))
-            text = text[:trailing_yield.start()].rstrip()
-        if text:
-            directions.append(text)
+        texts = ([li.get_text(' ', strip=True) for li in node.find_all('li', recursive=False)]
+                 if node.name in {'ol', 'ul'} else [node.get_text(' ', strip=True)])
+        for value in texts:
+            value = value.strip()
+            if not value:
+                continue
+            full_yield = re.fullmatch(r'(?i)((?:serves?|makes?)\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+[^.]+)?)[.]?', value)
+            if full_yield:
+                yields.append(full_yield.group(1))
+                continue
+            trailing_yield = re.search(r'(?i)\s+((?:serves?|makes?)\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+[^.]+)?)[.]?$', value)
+            if trailing_yield:
+                yields.append(trailing_yield.group(1))
+                value = value[:trailing_yield.start()].rstrip()
+            if value:
+                directions.append(value)
     variations = []
-    body = soup.select_one('.field--name-body') or soup.body or soup
-    for h in body.find_all(['h2', 'h3', 'h4']):
-        label = _norm(h.get_text(' ', strip=True))
-        if label.casefold() not in {'variation', 'variations', 'hint', 'notes', 'serving suggestion'}:
+    for header in body.find_all(['h2', 'h3', 'h4']):
+        label = _header_label(header)
+        is_wiki_variation = label in {'variation', 'variations'}
+        if label not in {'variation', 'variations', 'hint', 'notes', 'serving suggestion'}:
             continue
-        node = h.find_next_sibling()
-        while node is not None and node.name not in {'h2', 'h3', 'h4'}:
-            if node.name == 'p' and node.get_text(' ', strip=True):
-                variations.append({'section': label, 'text': node.get_text(' ', strip=True)})
+        level = int(header.name[1])
+        node = header
+        while True:
             node = node.find_next_sibling()
+            if node is None or (node.name in {'h2', 'h3', 'h4'} and int(node.name[1]) <= level):
+                break
+            if (not wiki_markup and node.name == 'p' and
+                    node.get_text(' ', strip=True)):
+                variations.append({'section': label, 'text': node.get_text(' ', strip=True)})
     return {'ingredientLines': ingredients, 'directionParagraphs': directions,
             'yields': yields, 'variations': variations}
+
+
+
+def source_segments(soup: BeautifulSoup, page_text: str | None = None) -> dict:
+    return _recipe_sections(soup, page_text)
 
 
 def _loc(text: str, quote: str, start: int) -> dict:
@@ -142,7 +305,7 @@ def _loc_quote(text: str, quote: str) -> dict:
 
 
 def _validate(response: dict, *, soup: BeautifulSoup, page_text: str,
-              parsed_record: dict) -> None:
+              parsed_record: dict, source_segments_value: dict | None = None) -> None:
     if not isinstance(response, dict) or response.get('schemaVersion') != SCHEMA_VERSION:
         raise IntermediateError('intermediate-schema-version-invalid')
     if not isinstance(response.get('uncertainty'), list) or not isinstance(response.get('ambiguities'), list):
@@ -157,7 +320,7 @@ def _validate(response: dict, *, soup: BeautifulSoup, page_text: str,
         if not all(isinstance(item.get(k), str) and item[k].strip() for k in ('field', 'interpretation', 'reason')):
             raise IntermediateError('ambiguity-explanation-incomplete')
         _loc_quote(page_text, item['sourceText'])
-    segments = source_segments(soup)
+    segments = source_segments(soup, page_text) if source_segments_value is None else source_segments_value
     if response.get('ingredientCoverage') != segments['ingredientLines']:
         raise IntermediateError('ingredient-coverage-does-not-match-source')
     if response.get('directionCoverage') != segments['directionParagraphs']:
@@ -177,16 +340,17 @@ def _validate(response: dict, *, soup: BeautifulSoup, page_text: str,
         quote = item.get('sourceText')
         if quote != parsed.get('originalExpression') or quote != segments['ingredientLines'][index - 1]:
             raise IntermediateError('ingredient-source-span-mismatch')
+        semantic_quote = _wiki_plain_text(quote)
         name = item.get('nameText')
-        if not isinstance(name, str) or not name.strip() or _norm(name).casefold() not in _norm(quote).casefold():
+        if not isinstance(name, str) or not name.strip() or _norm(name).casefold() not in _norm(semantic_quote).casefold():
             raise IntermediateError('ingredient-name-unsupported')
         for field in ('quantityText', 'unitText', 'preparationText', 'optionalText'):
             value = item.get(field)
-            if value is not None and (not isinstance(value, str) or _norm(value).casefold() not in _norm(quote).casefold()):
+            if value is not None and (not isinstance(value, str) or _norm(value).casefold() not in _norm(semantic_quote).casefold()):
                 raise IntermediateError('ingredient-' + field.casefold() + '-unsupported')
         alternatives = item.get('alternatives', [])
         if (not isinstance(alternatives, list) or
-                any(not isinstance(value, str) or not value.strip() or _norm(value).casefold() not in _norm(quote).casefold() for value in alternatives)):
+                any(not isinstance(value, str) or not value.strip() or _norm(value).casefold() not in _norm(semantic_quote).casefold() for value in alternatives)):
             raise IntermediateError('ingredient-alternative-unsupported')
         if alternatives and len(alternatives) < 2:
             raise IntermediateError('ingredient-alternative-incomplete')
@@ -210,13 +374,14 @@ def _validate(response: dict, *, soup: BeautifulSoup, page_text: str,
                 offset[1] <= offset[0] or source_paragraph[offset[0]:offset[1]] != quote):
             raise IntermediateError('direction-source-span-mismatch')
         by_paragraph[pi].append((offset[0], offset[1]))
+        semantic_quote = _wiki_plain_text(quote)
         for name in ('actionTerms', 'equipment'):
             values = step.get(name, [])
-            if not isinstance(values, list) or any(not isinstance(v, str) or not v.strip() or _norm(v).casefold() not in _norm(quote).casefold() for v in values):
+            if not isinstance(values, list) or any(not isinstance(v, str) or not v.strip() or _norm(v).casefold() not in _norm(semantic_quote).casefold() for v in values):
                 raise IntermediateError('unsupported-' + name.casefold())
         for name in ('timeText', 'temperatureText', 'targetState'):
             value = step.get(name)
-            if value is not None and (not isinstance(value, str) or _norm(value).casefold() not in _norm(quote).casefold()):
+            if value is not None and (not isinstance(value, str) or _norm(value).casefold() not in _norm(semantic_quote).casefold()):
                 raise IntermediateError('unsupported-' + name.casefold())
     for pi, paragraph in enumerate(segments['directionParagraphs'], 1):
         spans = sorted(by_paragraph[pi])
@@ -270,6 +435,7 @@ def _record(response: dict, parsed_record: dict, page_text: str,
                 'location': _loc(page_text, quote, absolute)}
         steps.append(step)
     for item, parsed in zip(response['ingredients'], result['ingredientLines']):
+        parsed['location'] = _loc_quote(page_text, item['sourceText'])
         parsed['sourceNameText'] = item['nameText']
         parsed['preparationDescriptors'] = [item['preparationText']] if item.get('preparationText') else []
         parsed['alternatives'] = item.get('alternatives', [])
@@ -434,7 +600,7 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
     raw_sha = _sha(raw)
     if source.get('originalSHA256') and source['originalSHA256'] != raw_sha:
         raise IntermediateError('original-hash-mismatch')
-    segments = source_segments(soup)
+    segments = source_segments(soup, page_text)
     tooling = _tooling_manifest(tooling_artifacts)
     key_inputs = _key_inputs(raw_sha, segments, model_identity, model_version,
                              settings, tooling)
@@ -444,7 +610,8 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
         response = json.loads(response_text)
         if not isinstance(response, dict):
             raise IntermediateError('response-root-invalid')
-        _validate(response, soup=soup, page_text=page_text, parsed_record=parsed_record)
+        _validate(response, soup=soup, page_text=page_text, parsed_record=parsed_record,
+                  source_segments_value=segments)
         response = copy.deepcopy(response)
         response['_rawResponseSHA256'] = response_sha
         record = _record(response, parsed_record, page_text, tooling)
@@ -477,7 +644,8 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
                     _sha(prior.get('rawResponse', '').encode('utf-8')) != prior.get('rawResponseSHA256')):
                 raise IntermediateError('existing-cache-incompatible')
             prior_response = json.loads(prior['rawResponse'])
-            _validate(prior_response, soup=soup, page_text=page_text, parsed_record=parsed_record)
+            _validate(prior_response, soup=soup, page_text=page_text,
+                      parsed_record=parsed_record, source_segments_value=segments)
             prior_response = copy.deepcopy(prior_response)
             prior_response['_rawResponseSHA256'] = prior['rawResponseSHA256']
             record = _record(prior_response, parsed_record, page_text, tooling)
@@ -518,11 +686,11 @@ def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
         inference_settings: dict | None = None,
         tooling_artifacts: list[dict] | None = None) -> Path | None:
     """Look up an exact compatible validated response before invoking AI."""
-    raw, soup, _ = _load_source(input_path, source.get('encoding', 'utf-8'))
+    raw, soup, page_text = _load_source(input_path, source.get('encoding', 'utf-8'))
     raw_sha = _sha(raw)
     if source.get('originalSHA256') and source['originalSHA256'] != raw_sha:
         return None
-    segments = source_segments(soup)
+    segments = source_segments(soup, page_text)
     if not _assistant_permission_allowed(source):
         return None
     settings = inference_settings or {'temperature': None, 'seed': None,
@@ -579,7 +747,7 @@ def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
     if _sha(raw) != ki.get('originalSHA256'):
         raise IntermediateError('cache-source-incompatible')
 
-    segments = source_segments(soup)
+    segments = source_segments(soup, page_text)
     if _sha(_canonical(segments)) != ki.get('sourceSegmentSHA256'):
         raise IntermediateError('cache-segment-incompatible')
     response = json.loads(cache['rawResponse'])
@@ -589,7 +757,8 @@ def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
         raise IntermediateError('cache-base-record-mismatch')
     if not isinstance(base_record, dict):
         raise IntermediateError('cache-base-record-missing')
-    _validate(response, soup=soup, page_text=page_text, parsed_record=base_record)
+    _validate(response, soup=soup, page_text=page_text, parsed_record=base_record,
+              source_segments_value=segments)
     record = _record(response, base_record, page_text, cache.get('tooling'))
     if _canonical(record) != _canonical(cache.get('parsedRecord')):
         raise IntermediateError('cache-replay-nondeterministic')
