@@ -40,6 +40,31 @@ time, validation status/uncertainty, source provenance, transformation versions,
 and the base deterministic record. Cache files and response bodies belong on
 Foo and must not be committed or published.
 
+Tooling is conditional, not a required cache field. When a derivation actually
+uses a reusable local tool (for example, a translator/validator script or an
+adapter created for that pass), pass its artifact as `tooling_artifacts` with a
+logical name, local path, and optional version. The cache archives those exact
+bytes under a content-addressed `tooling/` path, records SHA-256/size/version,
+includes that identity in the cache key, and verifies the archived bytes during
+lookup and replay. A changed tool therefore cannot silently reuse output made
+with the old tool. Reuse the compatible cached output/tool archive before
+re-running the derivation where possible. Do not pass tools that were not
+actually involved in producing the result.
+
+When no reusable tooling was created or used—for example, an AI-only English
+recipe pass/translation—the cache stores the derived AI response and its normal
+source/model/prompt/validation provenance only. It emits no empty tooling
+manifest and creates no tooling artifact. Translation provenance should still
+identify the model/method and input/output hashes; that does not imply a tool
+exists. Tool artifacts are local cache material and must not be committed or
+published without a separate review.
+
+The current API accepts tooling artifacts as caller-provided evidence; it does
+not discover which programs an external model runtime used. Callers must only
+supply artifacts known to have participated in the derivation. Model/provider
+execution details remain separately represented by model identity/version and
+inference settings.
+
 Atomic exclusive file creation plus a per-directory writer lock prevents
 partial or conflicting writes. Rejected attempts are saved under `rejected/`
 with the response hash and failure reason; they are never usable records. On a
@@ -110,10 +135,13 @@ separate `parse`, `normalize`, and `englishTranslation` stages, each recording:
 
 For agent-derived results, preserve extraction instruction/prompt version,
 model identity/version when known, exact response checksum, and supporting
-source spans/pages. Do not guess missing engine or processing-date values. A
-stage proven not to have run is `not-run`; a failed prerequisite is `blocked`.
-Successful parse does not imply normalization, translation, completeness, or
-publication permission.
+source spans/pages. When reusable tooling actually participated, preserve its
+content hash/version and local cache reference alongside the derived result;
+when no such tooling was used, omit the tooling artifact rather than inventing
+one. Do not guess missing engine or processing-date values. A stage proven not
+to have run is `not-run`; a failed prerequisite is `blocked`. Successful parse
+does not imply normalization, translation, completeness, or publication
+permission.
 
 The builder is offline and does not read originals, invoke a parser or model,
 fetch, normalize, or translate. It verifies cached-output bytes against the

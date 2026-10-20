@@ -109,6 +109,53 @@ class AssistantIntermediateTests(unittest.TestCase):
         replayed = json.loads(Path(replay['recordPath']).read_text())
         self.assertEqual(replayed, record)
 
+    def test_no_tooling_is_not_fabricated_in_cache_or_output(self):
+        result = AI.cache_assistant_intermediate(**self.args())
+        cache = json.loads(Path(result['cachePath']).read_text())
+        record = json.loads(Path(result['recordPath']).read_text())
+        self.assertNotIn('tooling', cache)
+        self.assertNotIn('tooling', cache['cacheKeyInputs'])
+        self.assertNotIn('tooling', record['assistantInterpretation'])
+        self.assertFalse((self.root / 'cache' / 'tooling').exists())
+        found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
+            input_path=self.original, source=self.source)
+        self.assertEqual(found, Path(result['cachePath']))
+        AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
+            parsed_record=self.record, output_root=self.root / 'replay')
+
+    def test_used_tooling_is_archived_hashed_and_required_for_reuse(self):
+        tool = self.root / 'translator.py'
+        tool.write_text('# deterministic test tool v1\\n')
+        artifacts = [{'name': 'recipe-translator', 'version': '1.0', 'path': tool}]
+        args = self.args()
+        args['tooling_artifacts'] = artifacts
+        result = AI.cache_assistant_intermediate(**args)
+        cache = json.loads(Path(result['cachePath']).read_text())
+        self.assertEqual(cache['tooling']['artifacts'][0]['name'], 'recipe-translator')
+        archived = self.root / 'cache' / cache['tooling']['artifacts'][0]['cachePath']
+        self.assertEqual(hashlib.sha256(archived.read_bytes()).hexdigest(),
+                         cache['tooling']['artifacts'][0]['sha256'])
+        found = AI.find_compatible_intermediate(cache_root=self.root / 'cache',
+            input_path=self.original, source=self.source)
+        self.assertEqual(found, Path(result['cachePath']))
+        replay = AI.replay_cached_intermediate(cache_path=found,
+            input_path=self.original, parsed_record=self.record,
+            output_root=self.root / 'tool-replay')
+        self.assertTrue(Path(replay['recordPath']).is_file())
+        with self.assertRaisesRegex(AI.IntermediateError, 'tooling-incompatible'):
+            AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
+                parsed_record=self.record, output_root=self.root / 'bad-tool-replay',
+                tooling_artifacts=[{'name': 'recipe-translator', 'version': '2.0', 'path': tool}])
+        tool.write_text('# changed tool v2\\n')
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root / 'cache',
+            input_path=self.original, source=self.source, tooling_artifacts=artifacts))
+        archived.write_text('tampered')
+        self.assertIsNone(AI.find_compatible_intermediate(cache_root=self.root / 'cache',
+            input_path=self.original, source=self.source))
+        with self.assertRaisesRegex(AI.IntermediateError, 'tooling-incompatible'):
+            AI.replay_cached_intermediate(cache_path=found, input_path=self.original,
+                parsed_record=self.record, output_root=self.root / 'tampered-tool-replay')
+
     def test_unsupported_quantity_is_quarantined_not_accepted(self):
         response = get_response()
         response['ingredients'][0]['quantityText'] = '7'

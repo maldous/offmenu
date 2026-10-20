@@ -239,7 +239,8 @@ def _validate(response: dict, *, soup: BeautifulSoup, page_text: str,
             raise IntermediateError('variation-source-reference-invalid')
 
 
-def _record(response: dict, parsed_record: dict, page_text: str) -> dict:
+def _record(response: dict, parsed_record: dict, page_text: str,
+            tooling: dict | None = None) -> dict:
     result = copy.deepcopy(parsed_record)
     steps = []
     paragraph_text = response['directionCoverage']
@@ -302,20 +303,91 @@ def _record(response: dict, parsed_record: dict, page_text: str) -> dict:
         'ambiguities': [{**item, 'location': _loc_quote(page_text, item['sourceText'])}
                         for item in response['ambiguities']],
         'notes': response.get('notes', [])}
+    if tooling is not None:
+        result['assistantInterpretation']['tooling'] = tooling
     result['source']['extractionParser'] = parser.PARSER_VERSION + '+' + TRANSFORM_VERSION
     parser._validate_record(result)
     return result
 
 
+def _tooling_manifest(tooling_artifacts: list[dict] | None) -> dict | None:
+    """Describe only tooling that actually participated in this derivation.
+
+    Each artifact is an explicit caller-supplied local file with a stable logical
+    name. No placeholder/tooling record is emitted when the derivation used none.
+    """
+    if not tooling_artifacts:
+        return None
+    entries = []
+    names = set()
+    for artifact in tooling_artifacts:
+        if not isinstance(artifact, dict):
+            raise IntermediateError('tooling-artifact-invalid')
+        name, location = artifact.get('name'), artifact.get('path')
+        if (not isinstance(name, str) or not name.strip() or name in names or
+                not isinstance(location, (str, Path)) or
+                (artifact.get('version') is not None and not isinstance(artifact.get('version'), str))):
+            raise IntermediateError('tooling-artifact-invalid')
+        names.add(name)
+        path = Path(location)
+        if path.is_symlink() or not path.is_file():
+            raise IntermediateError('tooling-artifact-not-regular-file')
+        blob = path.read_bytes()
+        digest = _sha(blob)
+        stored_path = f'tooling/{digest}.bin'
+        entries.append({'name': name, 'sha256': digest, 'bytes': len(blob),
+                        'version': artifact.get('version'), 'cachePath': stored_path})
+    entries.sort(key=lambda item: (item['name'], item['sha256']))
+    return {'schemaVersion': 'offmenu-ai-derivation-tooling/1',
+            'artifacts': entries}
+
+
 def _key_inputs(raw_sha: str, segments: dict, model_identity: str,
-                model_version: str, settings: dict) -> dict:
-    return {'originalSHA256': raw_sha,
+                model_version: str, settings: dict,
+                tooling: dict | None = None) -> dict:
+    result = {'originalSHA256': raw_sha,
         'sourceSegmentSHA256': _sha(_canonical(segments)),
         'extractionSchemaVersion': SCHEMA_VERSION, 'promptVersion': PROMPT_VERSION,
         'modelIdentity': model_identity, 'modelVersion': model_version,
         'inferenceSettings': settings, 'transformVersion': TRANSFORM_VERSION,
         'recipeSchemaVersion': parser.RECIPE_TEMPLATE_VERSION,
         'parserVersion': parser.PARSER_VERSION}
+    if tooling is not None:
+        result['tooling'] = tooling
+    return result
+
+
+def _capture_tooling(cache_root: Path, tooling_artifacts: list[dict] | None,
+                     tooling: dict | None) -> None:
+    if tooling is None:
+        return
+    by_name = {item['name']: item for item in tooling['artifacts']}
+    for artifact in tooling_artifacts or []:
+        item = by_name[artifact['name']]
+        destination = cache_root / item['cachePath']
+        _atomic(destination, Path(artifact['path']).read_bytes())
+
+
+def _validate_tooling_files(cache_root: Path, tooling: dict | None,
+                            tooling_artifacts: list[dict] | None) -> bool:
+    """Verify archived tool bytes, and any caller-supplied tool identity."""
+    if tooling is None:
+        return not tooling_artifacts
+    if not isinstance(tooling, dict) or tooling.get('schemaVersion') != 'offmenu-ai-derivation-tooling/1':
+        return False
+    for item in tooling.get('artifacts', []):
+        relative = Path(item.get('cachePath', ''))
+        if relative.is_absolute() or '..' in relative.parts:
+            return False
+        path = cache_root / relative
+        if path.is_symlink() or not path.is_file():
+            return False
+        blob = path.read_bytes()
+        if len(blob) != item.get('bytes') or _sha(blob) != item.get('sha256'):
+            return False
+    if tooling_artifacts is not None:
+        return _tooling_manifest(tooling_artifacts) == tooling
+    return True
 
 
 def _atomic(path: Path, content: bytes) -> None:
@@ -348,7 +420,8 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
         source: dict, source_id: str, source_record_id: str,
         country: str | None, language: str, attribution: str | None = None,
         model_identity: str = 'unknown', model_version: str = 'unknown',
-        inference_settings: dict | None = None) -> dict:
+        inference_settings: dict | None = None,
+        tooling_artifacts: list[dict] | None = None) -> dict:
     """Validate an assistant JSON response, persist it and schema-replay output."""
     if not _assistant_permission_allowed(source):
         raise IntermediateError('source-specific-assistant-extraction-permission-required')
@@ -362,7 +435,9 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
     if source.get('originalSHA256') and source['originalSHA256'] != raw_sha:
         raise IntermediateError('original-hash-mismatch')
     segments = source_segments(soup)
-    key_inputs = _key_inputs(raw_sha, segments, model_identity, model_version, settings)
+    tooling = _tooling_manifest(tooling_artifacts)
+    key_inputs = _key_inputs(raw_sha, segments, model_identity, model_version,
+                             settings, tooling)
     cache_key = _sha(_canonical(key_inputs))
     response_sha = _sha(response_text.encode('utf-8'))
     try:
@@ -372,7 +447,7 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
         _validate(response, soup=soup, page_text=page_text, parsed_record=parsed_record)
         response = copy.deepcopy(response)
         response['_rawResponseSHA256'] = response_sha
-        record = _record(response, parsed_record, page_text)
+        record = _record(response, parsed_record, page_text, tooling)
         cache = {'cacheSchemaVersion': CACHE_VERSION, 'cacheKey': cache_key,
             'baseParsedRecord': parsed_record,
             'cacheKeyInputs': key_inputs,
@@ -389,23 +464,30 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
             'validation': {'status': 'valid', 'outcome': 'schema-replay-accepted', 'uncertainty': response.get('uncertainty', [])},
             'transformVersion': TRANSFORM_VERSION, 'parsedRecord': record,
             'normalization': {'status': 'not-run', 'englishGoldAdmission': 'held'}}
+        if tooling is not None:
+            cache['tooling'] = tooling
         cache_path = cache_root / (cache_key + '.json')
         hit = cache_path.exists()
         if hit:
             prior = json.loads(cache_path.read_text(encoding='utf-8'))
             if (prior.get('cacheKey') != cache_key or prior.get('cacheKeyInputs') != key_inputs or
                     prior.get('validation', {}).get('status') != 'valid' or
+                    prior.get('tooling') != tooling or
+                    not _validate_tooling_files(cache_root, tooling, tooling_artifacts) or
                     _sha(prior.get('rawResponse', '').encode('utf-8')) != prior.get('rawResponseSHA256')):
                 raise IntermediateError('existing-cache-incompatible')
             prior_response = json.loads(prior['rawResponse'])
             _validate(prior_response, soup=soup, page_text=page_text, parsed_record=parsed_record)
             prior_response = copy.deepcopy(prior_response)
             prior_response['_rawResponseSHA256'] = prior['rawResponseSHA256']
-            record = _record(prior_response, parsed_record, page_text)
+            record = _record(prior_response, parsed_record, page_text, tooling)
             if _canonical(record) != _canonical(prior.get('parsedRecord')):
                 raise IntermediateError('existing-cache-replay-mismatch')
             response_sha = prior['rawResponseSHA256']
         else:
+            _capture_tooling(cache_root, tooling_artifacts, tooling)
+            if not _validate_tooling_files(cache_root, tooling, tooling_artifacts):
+                raise IntermediateError('tooling-capture-verification-failed')
             _atomic(cache_path, _canonical(cache))
         record_path = output_root / 'assistant-assisted' / 'recipes' / source_id / (source_record_id + '.json')
         _atomic(record_path, _canonical(record))
@@ -433,7 +515,8 @@ def cache_assistant_intermediate(*, input_path: Path, parsed_record: dict,
 def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
         source: dict, model_identity: str = 'unknown',
         model_version: str = 'unknown',
-        inference_settings: dict | None = None) -> Path | None:
+        inference_settings: dict | None = None,
+        tooling_artifacts: list[dict] | None = None) -> Path | None:
     """Look up an exact compatible validated response before invoking AI."""
     raw, soup, _ = _load_source(input_path, source.get('encoding', 'utf-8'))
     raw_sha = _sha(raw)
@@ -444,22 +527,40 @@ def find_compatible_intermediate(*, cache_root: Path, input_path: Path,
         return None
     settings = inference_settings or {'temperature': None, 'seed': None,
         'max_tokens': None, 'runtime_parameters': 'not-exposed'}
-    key = _sha(_canonical(_key_inputs(raw_sha, segments, model_identity, model_version, settings)))
-    path = cache_root / (key + '.json')
-    if not path.is_file() or path.is_symlink():
-        return None
-    cache = json.loads(path.read_text(encoding='utf-8'))
-    if not _assistant_permission_allowed(source):
-        return None
-    if (cache.get('cacheKey') != key or cache.get('validation', {}).get('status') != 'valid' or
-            cache.get('source', {}).get('permissionEvidence') != source.get('assistantExtractionPermissionEvidence') or
-            _sha(cache.get('rawResponse', '').encode('utf-8')) != cache.get('rawResponseSHA256')):
-        return None
-    return path
+    tooling = _tooling_manifest(tooling_artifacts)
+    expected = _key_inputs(raw_sha, segments, model_identity, model_version,
+                           settings, tooling)
+    base_expected = {key: value for key, value in expected.items() if key != 'tooling'}
+    exact_path = cache_root / (_sha(_canonical(expected)) + '.json')
+    candidates = ([exact_path] if exact_path.is_file() else [])
+    if tooling_artifacts is None and cache_root.is_dir():
+        candidates.extend(path for path in sorted(cache_root.glob('*.json'))
+                          if path != exact_path)
+    for path in candidates:
+        if path.is_symlink() or not path.is_file():
+            continue
+        try:
+            cache = json.loads(path.read_text(encoding='utf-8'))
+            key_inputs = cache.get('cacheKeyInputs', {})
+            base_actual = {key: value for key, value in key_inputs.items() if key != 'tooling'}
+            recorded_tooling = cache.get('tooling')
+            if (cache.get('cacheKey') != _sha(_canonical(key_inputs)) or
+                    base_actual != base_expected or
+                    cache.get('validation', {}).get('status') != 'valid' or
+                    cache.get('source', {}).get('permissionEvidence') != source.get('assistantExtractionPermissionEvidence') or
+                    cache.get('tooling') != key_inputs.get('tooling') or
+                    not _validate_tooling_files(cache_root, recorded_tooling, tooling_artifacts) or
+                    _sha(cache.get('rawResponse', '').encode('utf-8')) != cache.get('rawResponseSHA256')):
+                continue
+            return path
+        except (OSError, ValueError, TypeError, IntermediateError):
+            continue
+    return None
 
 
 def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
-        parsed_record: dict | None = None, output_root: Path) -> dict:
+        parsed_record: dict | None = None, output_root: Path,
+        tooling_artifacts: list[dict] | None = None) -> dict:
     """Deterministically replay a compatible valid cache; never re-infer."""
     cache = json.loads(cache_path.read_text(encoding='utf-8'))
     if cache.get('validation', {}).get('status') != 'valid':
@@ -472,6 +573,8 @@ def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
         raise IntermediateError('cache-contract-incompatible')
     if _sha(cache.get('rawResponse', '').encode('utf-8')) != cache.get('rawResponseSHA256'):
         raise IntermediateError('cached-response-checksum-invalid')
+    if not _validate_tooling_files(cache_path.parent, cache.get('tooling'), tooling_artifacts):
+        raise IntermediateError('cache-tooling-incompatible')
     raw, soup, page_text = _load_source(input_path)
     if _sha(raw) != ki.get('originalSHA256'):
         raise IntermediateError('cache-source-incompatible')
@@ -487,7 +590,7 @@ def replay_cached_intermediate(*, cache_path: Path, input_path: Path,
     if not isinstance(base_record, dict):
         raise IntermediateError('cache-base-record-missing')
     _validate(response, soup=soup, page_text=page_text, parsed_record=base_record)
-    record = _record(response, base_record, page_text)
+    record = _record(response, base_record, page_text, cache.get('tooling'))
     if _canonical(record) != _canonical(cache.get('parsedRecord')):
         raise IntermediateError('cache-replay-nondeterministic')
     path = output_root / 'assistant-assisted' / 'recipes' / cache['source']['sourceId'] / (cache['source']['sourceRecordId'] + '.json')
