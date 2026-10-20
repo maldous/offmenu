@@ -92,7 +92,11 @@ Limits bound records/input/metadata, raw row and total row bytes, enriched-recor
 and aggregate output bytes, declared DB size, cooperative time and SQLite VM
 steps during the point-query phase. The progress handler checks every VM step;
 it is not an OS walltime/IO/memory boundary. The fixed open/header setup precedes
-that counter. SQLite length limits supplement row checks.
+that counter. SQLite length limits supplement row checks. The SQLite C-int API
+argument is capped at `2**31 - 1`, retaining the existing 4096-byte floor; the
+declared row-byte bound remains unchanged in the binding and Python row checks.
+SQLite may enforce a lower compiled hard limit. A large declared bound therefore
+does not promise support for equally large rows or establish resource admission.
 All results remain in a bounded private buffer until the post-read DB identity,
 sidecar, implementation and deadline checks pass. The owned read connection and
 duplicate FD close on success/failure. Source DB is never written or copied.
