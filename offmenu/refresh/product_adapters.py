@@ -10,7 +10,6 @@ staging directory. A completed identical contract is checksum-verified and reuse
 """
 from contextlib import closing
 from dataclasses import asdict, dataclass
-from datetime import datetime
 import csv
 import gzip
 import hashlib
@@ -26,9 +25,11 @@ import zipfile
 import zlib
 
 from .core import RefreshError, canonical, strict_json
+from . import product_clock
+from .product_clock import clock_marker, validate_clock
 
 MIN_CACHE_SECONDS = 30 * 86400
-VERSION = 'offmenu-products-offline/1'
+VERSION = 'offmenu-products-offline/2'
 
 
 @dataclass(frozen=True)
@@ -51,12 +52,14 @@ class ProductLimits:
 class ProductContext:
     source_id: str
     release_id: str
-    acquired_at: str
+    acquired_at: str | None
     license: str
     attribution: str
     rights_evidence_sha256: str
     scope_evidence_sha256: str
     cache_seconds: int = MIN_CACHE_SECONDS
+    acquisition_clock_status: str = 'known'
+    clock_evidence_sha256: str | None = None
 
     def validate(self):
         if self.source_id not in ('off', 'prices', 'usda-files'):
@@ -64,10 +67,9 @@ class ProductContext:
         if not all(isinstance(v, str) and v for v in (self.release_id, self.license, self.attribution)):
             raise RefreshError('product-context-required')
         try:
-            date = datetime.fromisoformat(self.acquired_at.replace('Z', '+00:00'))
-            if date.tzinfo is None:
-                raise ValueError()
-        except (ValueError, AttributeError):
+            validate_clock(self.source_id, self.acquired_at, self.acquisition_clock_status,
+                           self.clock_evidence_sha256)
+        except (ValueError, TypeError, AttributeError):
             raise RefreshError('product-acquisition-time-required') from None
         if any(not isinstance(v, str) or not re.fullmatch('[0-9a-f]{64}', v)
                for v in (self.rights_evidence_sha256, self.scope_evidence_sha256)):
@@ -266,6 +268,8 @@ def _record(context, kind, key, data, countries=(), source_date=None):
             'data': data, 'provenance': {'sourceId': context.source_id,
             'releaseId': context.release_id, 'recordId': str(key),
             'fetchedAt': context.acquired_at, 'sourceDate': source_date,
+            **({'acquisitionClock': clock_marker(context.acquisition_clock_status, context.clock_evidence_sha256)}
+               if context.acquisition_clock_status == 'unknown-retained' else {}),
             'license': context.license, 'attribution': context.attribution,
             'rightsEvidenceSha256': context.rights_evidence_sha256,
             'scopeEvidenceSha256': context.scope_evidence_sha256,
@@ -388,9 +392,11 @@ def _candidate_stats(path, limits):
 
 
 def _candidate_manifest(context, files, contract, hashes, raw_rows, count, kinds, output_bytes):
-    return {'schemaVersion': 'offmenu-product-candidate/1', 'status': 'normalized-candidate',
+    return {'schemaVersion': 'offmenu-product-candidate/2', 'status': 'normalized-candidate',
         'sourceId': context.source_id, 'releaseId': context.release_id,
         'acquiredAt': context.acquired_at, 'cacheSeconds': context.cache_seconds,
+        **({'acquisitionClock': clock_marker(context.acquisition_clock_status, context.clock_evidence_sha256)}
+           if context.acquisition_clock_status == 'unknown-retained' else {}),
         'rightsEvidenceSha256': context.rights_evidence_sha256,
         'scopeEvidenceSha256': context.scope_evidence_sha256,
         'inputFiles': files, 'rawRows': raw_rows, 'normalizedRecords': count, 'kinds': kinds,
@@ -422,7 +428,8 @@ def normalize_products(context, inputs, destination, *, limits=ProductLimits()):
         raise RefreshError('product-input-limit')
     files = [{'role': role, 'path': path.name, 'bytes': path.stat().st_size, 'sha256': _hash(path)}
              for role, path in sorted(paths.items())]
-    contract = {'context': asdict(context), 'limits': asdict(limits), 'inputFiles': files, 'adapterVersion': VERSION}
+    contract = {'context': asdict(context), 'limits': asdict(limits), 'inputFiles': files, 'adapterVersion': VERSION,
+                'clockPolicySha256': hashlib.sha256(Path(product_clock.__file__).read_bytes()).hexdigest()}
     destination = _safe(destination)
     if destination.exists():
         manifest_path = _safe(destination / 'manifest.json')
