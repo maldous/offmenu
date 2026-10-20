@@ -392,5 +392,47 @@ class SelectedProductOriginsTests(unittest.TestCase):
                 with patch.object(s,'_open_database',side_effect=AssertionError('no DB before member validation')):
                     with self.assertRaisesRegex(RefreshError,'exact-members-required'): self.run_selected()
 
+    def run_observing_sqlite_length_limit(self):
+        observed = self.sqlite_length_limits = []; real = sqlite3.connect
+        class ObservedConnection(sqlite3.Connection):
+            def setlimit(db,category,value):
+                previous = super().setlimit(category,value)
+                if category == sqlite3.SQLITE_LIMIT_LENGTH:
+                    observed.append((value,db.getlimit(category)))
+                return previous
+        def connect(*args,**kwargs): return real(*args,factory=ObservedConnection,**kwargs)
+        with patch.object(s.sqlite3,'connect',side_effect=connect): return self.run_selected()
+
+    def test_large_declared_row_bounds_use_c_int_safe_sqlite_argument(self):
+        for cap in (2**31-1,2**31,2**31+1,2**63-1):
+            with self.subTest(max_row_bytes=cap):
+                self.limits = replace(self.limits,max_row_bytes=cap); self.rebind()
+                before = len(os.listdir('/proc/self/fd'))
+                result = self.run_observing_sqlite_length_limit()
+                self.assertEqual(self.sqlite_length_limits[0][0],2**31-1)
+                self.assertLessEqual(self.sqlite_length_limits[0][1],2**31-1)
+                self.assertEqual(result['limits']['max_row_bytes'],cap)
+                self.assertEqual(result['measurements']['pointRowsRead'],4)
+                self.assertEqual(len(os.listdir('/proc/self/fd')),before)
+                for old,new in zip(self.records,result['records']):
+                    self.assertEqual(canonical(old['data']),canonical(new['data']))
+                    self.assertEqual(set(new['provenance']['fieldOrigins']),set(datum_pointers(new['data'])))
+
+    def test_normal_row_caps_preserve_sqlite_floor_and_python_row_refusal(self):
+        for cap in (1,4095,4096,65536):
+            with self.subTest(max_row_bytes=cap):
+                self.limits = replace(self.limits,max_row_bytes=cap); self.rebind()
+                if cap == 1:
+                    with self.assertRaisesRegex(RefreshError,'source-row-byte-bound'):
+                        self.run_observing_sqlite_length_limit()
+                else:
+                    self.assertEqual(self.run_observing_sqlite_length_limit()['limits']['max_row_bytes'],cap)
+                self.assertEqual(self.sqlite_length_limits,[(max(cap,4096),max(cap,4096))])
+
+    def test_excluded_row_bound_at_two_to_63_refuses_before_database(self):
+        self.limits = replace(self.limits,max_row_bytes=2**63); self.rebind()
+        with patch.object(s,'_open_database',side_effect=AssertionError('no DB for invalid bound')):
+            with self.assertRaisesRegex(RefreshError,'bound-selection-required'): self.run_selected()
+
 
 if __name__ == '__main__': unittest.main()

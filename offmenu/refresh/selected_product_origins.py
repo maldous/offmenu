@@ -334,7 +334,7 @@ def emit_selected_usda_product_origins(records, *, scope, limits, contract, qual
             steps[0] += 1
             return int(steps[0] > limits.max_sqlite_steps or time.monotonic() >= deadline)
         db.set_progress_handler(progress, 1)
-        db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, max(limits.max_row_bytes, 4096))
+        db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, min(2**31-1, max(limits.max_row_bytes, 4096)))
         view = _SelectedRows(db, scope, limits, deadline)
         emitter_limits = ProductLimits(max_input_bytes=limits.max_input_bytes,
             max_expanded_bytes=limits.max_source_row_bytes, max_line_bytes=limits.max_record_bytes,
