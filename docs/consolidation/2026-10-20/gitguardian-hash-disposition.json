@@ -1,0 +1,26 @@
+{
+  "failedPR": 56,
+  "failedHead": "62bcf3bb33cb57563a731e552c32cde58ab75ab9",
+  "check": "https://github.com/maldous/offmenu/runs/118517088834",
+  "incidentIds": [
+    38442346,
+    38442347
+  ],
+  "findings": [
+    {
+      "path": "scripts/authenticated-browser-qa-admission.mjs",
+      "branch": "archive/foo-worker58-qa-source-20261020",
+      "commit": "ce1f227c358bbc6adafe1b1ad603a0a1771cfa9c",
+      "classification": "SHA-256 of source file bytes, not authentication material",
+      "verifiedSourceHashMatch": true
+    },
+    {
+      "path": "scripts/authenticated-browser-qa-driver.mjs",
+      "branch": "archive/foo-worker58-qa-source-20261020",
+      "commit": "ce1f227c358bbc6adafe1b1ad603a0a1771cfa9c",
+      "classification": "SHA-256 of source file bytes, not authentication material",
+      "verifiedSourceHashMatch": true
+    }
+  ],
+  "nextAction": "Preserve failed original commits; use explicit path/sha256 records on a normal successor handover branch from delivered develop. Run unchanged scanners; no dismissal, suppression or force-push."
+}

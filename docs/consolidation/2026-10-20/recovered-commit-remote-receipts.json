@@ -1,0 +1,46 @@
+[
+  {
+    "branch": "archive/foo-recovered-4e962f28-20261020",
+    "sha": "4e962f28b342ed08cb85dc42c6a93dbc1764a380",
+    "actualRemoteSHA": "4e962f28b342ed08cb85dc42c6a93dbc1764a380",
+    "files": [
+      "docs/semantic-lane-reconnection-20261015.txt",
+      "scripts/semantic-candidate-inventory.py",
+      "tests-semantic-candidate/test_inventory.py"
+    ],
+    "disposition": "original commit recovered, unmerged; source/review/fixture remains distinct pending current-develop qualification"
+  },
+  {
+    "branch": "archive/foo-recovered-179db32b-20261020",
+    "sha": "179db32b29e404f831c7ec6f5a7f7b931004a3a3",
+    "actualRemoteSHA": "179db32b29e404f831c7ec6f5a7f7b931004a3a3",
+    "files": [
+      "config/source-bindings/portfolio16.json",
+      "docs/operations/portfolio16-staging-binding.md",
+      "offmenu/refresh/portfolio16_binding.py",
+      "tests/fixtures/portfolio16_binding/malformed.txt",
+      "tests/fixtures/portfolio16_binding/missing-field.json",
+      "tests/fixtures/portfolio16_binding/valid.json",
+      "tests/test_portfolio16_binding.py"
+    ],
+    "disposition": "original commit recovered, unmerged; source/review/fixture remains distinct pending current-develop qualification"
+  },
+  {
+    "branch": "archive/foo-recovered-cc2ea05e-20261020",
+    "sha": "cc2ea05e2d6bd50e80b858f8673ff5ea3af20ec8",
+    "actualRemoteSHA": "cc2ea05e2d6bd50e80b858f8673ff5ea3af20ec8",
+    "files": [
+      "contract.json"
+    ],
+    "disposition": "original commit recovered, unmerged; source/review/fixture remains distinct pending current-develop qualification"
+  },
+  {
+    "branch": "archive/foo-recovered-b73d79bb-20261020",
+    "sha": "b73d79bbccb4911b89044aa42fc13dd3b37891ab",
+    "actualRemoteSHA": "b73d79bbccb4911b89044aa42fc13dd3b37891ab",
+    "files": [
+      "docs/reviews/w05-semantic-correction-rereview-32ad083c-20261015.json"
+    ],
+    "disposition": "original commit recovered, unmerged; source/review/fixture remains distinct pending current-develop qualification"
+  }
+]

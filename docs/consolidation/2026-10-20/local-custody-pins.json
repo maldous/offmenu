@@ -1,0 +1,156 @@
+[
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/manifest.json",
+    "bytes": 16338,
+    "sha256": "3a1b71947ae34f4e4c5cd45ffb2e840b487b5709b4e0318a3e4713f4b92deedd",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/recovered-custody-private.json",
+    "bytes": 32181200,
+    "sha256": "c35b0d3657b94c5ff86fbcd27148a060aff4cc52abfeabcd0f693362c70735da",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/unreachable-custody.json",
+    "bytes": 776,
+    "sha256": "59080656c80ad3bac3c3f374c4b96d8a9d5df6e5a09acdb59a3020879a78d295",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/fsck-offmenu.log",
+    "bytes": 52157,
+    "sha256": "9c4cb32526a24cdee38b26fad12fc0fdb1b8d36791b391fd99c2adc501e96f5a",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/worker59-clone-custody.json",
+    "bytes": 670,
+    "sha256": "f8c0669a1280b9b4efde2f4efa180a7fbf5d5123764fb47ff574826a4a51412f",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/python-suite.log",
+    "bytes": 280453,
+    "sha256": "5f5f6476dfa99c12b50ea3792ce234787cfc04608b37f4801248683f622fb40d",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/baseline-owner-batch.log",
+    "bytes": 4425,
+    "sha256": "b13278c2f5380888f364ab7e9ef8861d48118529df1c6fc394536408a6427ac4",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/npm-ci.log",
+    "bytes": 350,
+    "sha256": "e1d290238a2f90aa01ced58221993c98b818d2a6fde89d3b465cdfa5c6c6a967",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/npm-test.log",
+    "bytes": 63939,
+    "sha256": "2bfb2fc280374a07fc2a9e1f789228602298e2aa17695c273bfda0239dded6aa",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/build.log",
+    "bytes": 143,
+    "sha256": "104555f8a68e12f6ec167b1febf0f334170ff6252b24e41c2ca619b92db86536",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/i18n-check.log",
+    "bytes": 137,
+    "sha256": "5cea3ef9cb2939810d5235f5cfc76a0c42cae5cb6704c4bdb538cadcd5e24236",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/locale-edge.log",
+    "bytes": 2633,
+    "sha256": "59084432dc8bdb389a1340f404e4b78b5771a0b44a225e6a171cd599cf279af3",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/remote-checkpoint.tsv",
+    "bytes": 77421,
+    "sha256": "8574da3336ca3aaee19dbcb9db98e45644c0fde59ade56e7e0a8dead5308fa0e",
+    "owner": "Foo user; retained original worker/source ownership",
+    "disposition": "local-only custody; do not publish raw logs/data/control bodies"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/uncommitted-custody-private.tar.gz",
+    "bytes": 56768643,
+    "sha256": "20b70954ad211b1baccdc6ca7ae757b83975df299dc9210a4a98744c69319678",
+    "owner": "Foo user; original ownership retained",
+    "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/uncommitted-archive-receipt.json",
+    "bytes": 429,
+    "sha256": "d9c30427150198e73d1dfc425bd88ff4ec4483b37512d86b9dc02cbbbf19bfae",
+    "owner": "Foo user; original ownership retained",
+    "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/owner-custody-local-only.bundle",
+    "bytes": 12988078,
+    "sha256": "a0872889f0515eaa7c3b78a6e5f78c7dfd7571836240bd1442aee098f6ac098b",
+    "owner": "Foo user; original ownership retained",
+    "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/protected-operations-refs.tsv",
+    "bytes": 147,
+    "sha256": "d1dc43c8005f06366e6a3c2dcc1375008d3451cd8618436736aa7aa857324956",
+    "owner": "Foo user; original ownership retained",
+    "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/all-store-object-audit.json",
+    "bytes": 25207,
+    "sha256": "4723ffe02a8df5348c058ae81f2ed38a9be13e0a186f1a61f89d6ff25ded4e74",
+    "owner": "Foo user; original ownership retained",
+    "disposition": "local-only custody; do not upload raw data/control/log archives"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/unreferenced-objects-private.tar.gz",
+    "bytes": 27991329,
+    "sha256": "06b0661d228a56b81727e1c25da42aac41d705da204f65c55f5eff6c21d35bf1",
+    "owner": "Foo user; original source/worker ownership retained",
+    "disposition": "private Git-object custody; unqualified object bodies must not be uploaded"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/unreferenced-object-custody.json",
+    "bytes": 1682486,
+    "sha256": "c9afbe3ec7d4cb4888ec6e25c908d6ac3ebd0a463e80fd1b7b0625c25199d508",
+    "owner": "Foo user; original source/worker ownership retained",
+    "disposition": "private Git-object custody; unqualified object bodies must not be uploaded"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/worker37-extra-clone-custody.json",
+    "bytes": 2359,
+    "sha256": "9a4f0dc254b77ec690c215c804b4bb6b4743f01ed73d34504cf7046bcb94284f",
+    "owner": "Foo user / original worker37",
+    "disposition": "local clone/cache custody evidence"
+  },
+  {
+    "path": "/home/user/src/offmenu-preservation-20261020/extended-clone-discovery.json",
+    "bytes": 13240,
+    "sha256": "32da049d1e2e30e18382d3ebd16219b35062c6507de613f44d9bc67f152b9075",
+    "owner": "Foo user / original worker37",
+    "disposition": "local clone/cache custody evidence"
+  }
+]

@@ -1,0 +1,353 @@
+[
+  {
+    "branch": "archive/foo-preview-extension-20261020",
+    "sha": "951007f2ecafa348f2fe9593e6974945f7e86e63",
+    "parent": "3eb230d27c6db16fe6369a54b9b908dded274772",
+    "verifiedRemoteSHA": "951007f2ecafa348f2fe9593e6974945f7e86e63",
+    "files": [
+      {
+        "path": "extension/popup.js",
+        "sha256": "30377c496663e947e5af254bab66d5841afc056629f698b49376de16cf017aeb",
+        "algorithm": "SHA-256"
+      }
+    ],
+    "disposition": "preserved-unmerged; independent current-develop qualification pending; UI/browser/access holds unchanged"
+  },
+  {
+    "branch": "archive/foo-preview-source-20261020",
+    "sha": "323e3ba1be55c8f5e4a7a16453745686d7415e1c",
+    "parent": "ac2df940d0c485078d4d56d8338a7ec3f4611f17",
+    "verifiedRemoteSHA": "323e3ba1be55c8f5e4a7a16453745686d7415e1c",
+    "files": [
+      {
+        "path": "art/masters/README.md",
+        "sha256": "10264378807fc0736a4618ed31043b5121ccda04d420af3db9b9e5304984396e",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "art/masters/build_animatic.py",
+        "sha256": "cea26dd50905aa64eea564de4b6e1f16875f6ca1625d246cfbeace19ec192587",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "art/masters/line_materials.py",
+        "sha256": "7c0e70549b910f2bba430955a6ea52470ade5bcf1fa47a3e1a096d282972f0a7",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "cloud/handler.mjs",
+        "sha256": "5310fb658922e42ab190190c95ca61487095e51577a38c4022fbbd9332e6dc08",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "cloud/perf-query-engine.mjs",
+        "sha256": "7ae4f935782b9208877c8405d1d2a2d04e41244bec7457cdb312bf92a9890d84",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "cloud/perf-query-route.mjs",
+        "sha256": "d33551972fa73282518354a51c5f6430c246e0e6332442fdf2840904515e369e",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "cloud/perf-timing-adapter.mjs",
+        "sha256": "2c36db4603e263f1fb83ad3329ca9382a45004a226eeb38892a71f2f72fb039e",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/README.md",
+        "sha256": "ffea2d4d0ae2eb7b264084a3de85fa5e23f3c5f4ddd9655badb4585fcabf16b8",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/art/CREATION-BRIEF.md",
+        "sha256": "f3a8750353f0c6c0a9f26969b6b093ccc74a564132b7eadbf9cdd8a71a2ec7d6",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/art/STORYBOARD.md",
+        "sha256": "36d72db2f9e8da08c7f92589536d6608d89e54a933a47a13c17c4274ea3a1774",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/art/STYLE-GUIDE.md",
+        "sha256": "9be684439a795e4cf3ba40252bdadb6c2f764ac8c73c39461fb2533e8d4e9963",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/design-system/EMIL-LICENSE.txt",
+        "sha256": "7dbf2c892e67d2d79730f642b82238db27126017b0d3b97296533ac93f3f6a26",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "docs/ui/design-system/README.md",
+        "sha256": "97659c895df2fb5b13caf75e49a004a7ac9cea985bbe9fef784e670c566e33b1",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/app.js",
+        "sha256": "d929de5ce2ac58a2bb3a9b9cf9b9af4d1f471291a702e9d91dbd560294c448db",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/asset-family/capability-probe.html",
+        "sha256": "91db86c621064139ea388cf458f010e7c7f5535c9afd22af92e2998f5891078b",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/asset-family/capability-probe.js",
+        "sha256": "93dc7a72b19d3a913802be20972aa4a558a5b531e81720dbe766597643472a45",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/asset-family/geometry.js",
+        "sha256": "b8a05112c2dcbeca6b3e1b13dc690426db54e123a4ce6449e0001173a38cff5a",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/asset-family/renderer.js",
+        "sha256": "c06e5d6d84ef14ef074e6b3cb385da0212410531f2738043f24bde43a84b78ef",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/country-directory.html",
+        "sha256": "b68b213227aaf3bc8ccdc4736017bbdf9eef0320b5100f14d486872f670371df",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/country-progress.css",
+        "sha256": "4ee9ea92a10a4e7c7f4ab626bccadd10a02d1147be4e55833718f4f79769317c",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/country-progress.html",
+        "sha256": "349813d7bc59238dace0218d07000a9b8d145b59138a668a6671253def30cf5c",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/country-progress.js",
+        "sha256": "4741c765922a3e30c0be12451f26f4aee0ff604ce77b319e12cb8a9d227a8f89",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/data-browser.css",
+        "sha256": "e98239f80e2b6f72f9e850e8020f271a2bb7858a3d2274717ac1ae36ccf8139c",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/data-browser.js",
+        "sha256": "d1d216f20910236972a76390e9818e59e28307af024cf4220fb1879758296c17",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/experience.css",
+        "sha256": "2e4c48c189d2db5dd7a135857726bed176e204223eebb34ba6ed0abbcac862e3",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/experience.js",
+        "sha256": "b25a6151abcda1832e3cc7132d10c2914aca7fd77d0ddbb20b695ac4691e042d",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/household-model.js",
+        "sha256": "58c083f49201545295471ef21ff6b077fcc64e1a8df39d96832fe290feeae851",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/index.html",
+        "sha256": "a631629e4c18fb4b7badcb77d52a278819006f9bb08068623dd80396c9a6e293",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/landing.html",
+        "sha256": "41a7e3a78512cc3e3e21aa86391ead8a0e05eb2bce5e40e7bb7d3bbcfca88c0f",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/landing.js",
+        "sha256": "a775b4dc71ee535430b9b08ecbf51def0d1ec0fbc5a41c067615cce7497c46f6",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/lifecycle-fixture.js",
+        "sha256": "ae75bc08ce8818278b6a330b1872943868ad19991cf536bb4d9863a6fadb40d1",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/login.html",
+        "sha256": "05d0c56dbf524f4046a917359a6870ef5ac2a2cda7778d8913591d5aea8804d1",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/model.js",
+        "sha256": "3fe42cf8f37c3d54099697be10bde21ad6a2de4302977e3569954fda7a40faaf",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/offmenu-system.css",
+        "sha256": "223df367294c0c9391e99cfbfdce43e28d5b5df5b1f5b6c4a9d73d762d55b264",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/offmenu-system.js",
+        "sha256": "6af2dd9b06633597e568ac088d6325b62e9f957a7128562539e7eba2e005d363",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/onboarding.html",
+        "sha256": "255bc6721b7e1e7ed2a0dd19e9fe0a7d43f9a65df96f9ef733168a94844695f2",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/perf-query-engine.js",
+        "sha256": "7ae4f935782b9208877c8405d1d2a2d04e41244bec7457cdb312bf92a9890d84",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/performance.css",
+        "sha256": "b7295e81dd8a2bbf847571aac03e498c11a7ce0d99796612121bfbc50b504aff",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/performance.html",
+        "sha256": "94087037390ec1b5bdea96f70c7273141a985dd5e09a9f659e048dfc0a12a72e",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/performance.js",
+        "sha256": "2d7043552aaa3e26962769abba6b7fb1c5ddb04374d6211c1506200daff6d350",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/playground.html",
+        "sha256": "99bfc47ffb0e9f03ecbe08c3e96adf4e2ffa38c679087c29340516f8ca245f32",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/playground.js",
+        "sha256": "f757e3a037deedf91c58695a404ed1040797003ac27a134f8b9461a8e175bc38",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/rpc-workspace.js",
+        "sha256": "074a6e157e39db83d48c231d96f4706665a8bb74139a62a16b4dc6b2043e59eb",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/scanner-ui.js",
+        "sha256": "2cd98b0746a95c6eef45addbb7dccaf049727d7bb77ee7677ce132ff2287926b",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/style.css",
+        "sha256": "58a9a580e1058fca5f2dc9879c016d08cb3ffa65cf9a6c0943e1fdeea43d2d70",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "public/workspace.html",
+        "sha256": "19a259799acb34b4de930e40f90165d82dae8f2939bcfea8d57bad96fe862da4",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/build-art.mjs",
+        "sha256": "181e6a9f75403d5afb8742deefdda072001c8728f30e6fb4153d4bcea69b8584",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/build.mjs",
+        "sha256": "394465c272b77aef60f3df8d68eecaed4d7acc4d8f25ae091769c08d55ff510b",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/export-data-browser.py",
+        "sha256": "005dde6d1bdb32ececda9ab89ec0c0614b012531381b9e6f34be63cd7ee7c8fc",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/nutrition_projection.py",
+        "sha256": "1548aa2898b13e311d9bd8f04840f54c630161e467e2d363747080563059457b",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/refresh-country-overview.py",
+        "sha256": "003d376fddbacf17de5d262bd48b9021e90ccb31acaf602dbd02d1d5d3e35fe8",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/refresh-country-progress.py",
+        "sha256": "66435b39b58a4b75e67832a4bd368f0a08769b491a6d8b7e9028932ee2c82fcd",
+        "algorithm": "SHA-256"
+      }
+    ],
+    "disposition": "preserved-unmerged; independent current-develop qualification pending; UI/browser/access holds unchanged"
+  },
+  {
+    "branch": "archive/foo-worker58-qa-source-20261020",
+    "sha": "ce1f227c358bbc6adafe1b1ad603a0a1771cfa9c",
+    "parent": "f6cb92aef52a5cc8193717d7e794556bd84f8b3b",
+    "verifiedRemoteSHA": "ce1f227c358bbc6adafe1b1ad603a0a1771cfa9c",
+    "files": [
+      {
+        "path": "scripts/authenticated-browser-qa-admission.mjs",
+        "sha256": "9a94cccd6d8be7121e86d8ba15fe2af70fdf0cc308eb8694203f72cf548532da",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/authenticated-browser-qa-driver.mjs",
+        "sha256": "dcabd650f784e47367dd07a98a6225d3618c67eb1bdbd63f872907f23db9a63c",
+        "algorithm": "SHA-256"
+      }
+    ],
+    "disposition": "preserved-unmerged; independent current-develop qualification pending; UI/browser/access holds unchanged"
+  },
+  {
+    "branch": "archive/foo-coverage-tooling-20261020",
+    "sha": "533b559a5289e5ac386d5494363c7b22c8c7d37c",
+    "parent": "97baf00945215d8c1c5e0043e708e9db5c780869",
+    "verifiedRemoteSHA": "533b559a5289e5ac386d5494363c7b22c8c7d37c",
+    "files": [
+      {
+        "path": "scripts/align-prices-common.py",
+        "sha256": "f3418f32be1580a8e9df30e513e096877f705a8721b550f8f0ed6e875e331ce4",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/build-origin-type-register.py",
+        "sha256": "d5df37a1e5a15ade529550988d306a04dcba85e5beabc2d5437db972e7bb5738",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/gzip-coverage-artifacts.py",
+        "sha256": "8ccf26bd7a1789afa646500aa4d3580cef77ad021d461d348335e2a694eca004",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/publish-coverage-register.py",
+        "sha256": "33a642060a4302951df566c11dbbd290cf57da9fa012c41dbb9ec209885e6033",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/reconcile-parsed-coverage.py",
+        "sha256": "4bcd874feff624c29a2d41f7fb3d2eda2563e204c8a5444b50def20627bce7b4",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/verify-bulk-prices-slice.py",
+        "sha256": "8a91c88e202c4a6f9bf842b5644f5e37f68b1af5424bc58612c7e4fec013fa79",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "scripts/verify-common-packets.py",
+        "sha256": "65116288394161ff0aab9b2c493bca4e2354db53a13ec8acc32dcecf2a28f9a1",
+        "algorithm": "SHA-256"
+      },
+      {
+        "path": "tests/test_origin_type_status.py",
+        "sha256": "becd38bf1b580668719edf76f830c04907835e49baebc5d37868f532d6ee0468",
+        "algorithm": "SHA-256"
+      }
+    ],
+    "disposition": "preserved-unmerged; independent current-develop qualification pending; UI/browser/access holds unchanged"
+  }
+]
