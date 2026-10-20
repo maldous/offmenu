@@ -140,7 +140,7 @@ class Fixture:
         a={'assertionId':'u','productIdentityClaimId':'P','ingredientIdentityClaimId':'I','recipeRecordRef':'native-recipe',
            'requiredFoodForm':'raw','useConditions':'synthetic exact use','state':'supported','evidence':[pin]}
         self.ext['usableAsAssertions']=[a]
-        scope={'inputBinding': {k: copy.deepcopy(self.ext['input'][k]) for k in ('sourceId','releaseId','sourceRecordId','originalSHA256','parsedArtifact')}, 'productClaim':'P','ingredientClaim':'I','formulationSnapshot':'source-item-r1',
+        scope={'decisionState': 'supported', 'inputBinding': {k: copy.deepcopy(self.ext['input'][k]) for k in ('sourceId','releaseId','sourceRecordId','originalSHA256','parsedArtifact')}, 'productClaim':'P','ingredientClaim':'I','formulationSnapshot':'source-item-r1',
                'package':self.product_data['package']['iri'],'market':self.product_data['market']['iri'],
                'foodForm':self.ingredient_data['foodForm'],'requiredFoodForm':'raw','conditions':a['useConditions'],
                'effectiveAt':'2026-05-01','recipeRecordRef':'native-recipe','alternativeScope':None,
@@ -247,6 +247,11 @@ class EnglishExtensionTest(unittest.TestCase):
         f=self.f;f.product_link();contract=replace(f.original_contract,fixture=False);f.policy=replace(f.policy,input_contract=contract)
         for key in list(f.grants):f.grants[key]=Grant(contract,f.grants[key].purposes)
         self.check(('english-claim-fixture-scope-mismatch',))
+    def test_negative_usability_requires_scope_too(self):
+        f=self.f;f.supported_use(registered=True);f.ext['usableAsAssertions'][0]['state']='unsupported';f.uses.clear();self.check(('english-use-scope-unresolved',))
+    def test_explicit_negative_uses_its_own_decision(self):
+        f=self.f;f.supported_use(registered=True);f.ext['usableAsAssertions'][0]['state']='unsupported';self.check(('english-use-context-mismatch',))
+        f.uses['u']['scope']['decisionState']='unsupported';f.rebind_use();self.check()
     def test_existing_qualification_boundary_uses_callback(self):
         f=self.f;self.f.product_link();root=Path(self.temp.name);bundle=root/'whole';bundle.mkdir()
         for name,raw in [('original.txt',f.text.encode()),('rights.json',b'{}'),('scope.json',b'{}')]: (bundle/name).write_bytes(raw)

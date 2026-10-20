@@ -342,7 +342,7 @@ class _Check:
             self.claim(a['productIdentityClaimId'], 'source-product-assignment')
             self.claim(a['ingredientIdentityClaimId'], 'ingredient-identity')
         for a in extension['usableAsAssertions']:
-            if a['state'] != 'supported': continue  # Explicit unresolved stays unpromoted.
+            if a['state'] == 'unresolved': continue  # Neither positive nor negative is inferred.
             product = self.claim(a['productIdentityClaimId'], 'source-product-assignment')
             ingredient = self.claim(a['ingredientIdentityClaimId'], 'ingredient-identity')
             binding = self.r.use(a['assertionId'])
@@ -353,7 +353,8 @@ class _Check:
             require(use.get('inputBinding') == {k: inp[k] for k in ('sourceId', 'releaseId', 'sourceRecordId', 'originalSHA256', 'parsedArtifact')}, 'english-use-context-mismatch')
             require(registered is not None and use.get('predicate') == registered,
                     'english-usability-predicate-unregistered')
-            require(use.get('productClaim') == a['productIdentityClaimId']
+            require(use.get('decisionState') == a['state']
+                    and use.get('productClaim') == a['productIdentityClaimId']
                     and use.get('ingredientClaim') == a['ingredientIdentityClaimId']
                     and use.get('formulationSnapshot') == product['formulation']['snapshotId']
                     and use.get('package') == product['package']['iri']
