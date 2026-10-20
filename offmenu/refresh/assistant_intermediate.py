@@ -29,7 +29,7 @@ except ImportError:  # direct-file loading used by focused scripts/tests
 
 SCHEMA_VERSION = 'offmenu-assistant-recipe-intermediate/1'
 PROMPT_VERSION = 'offmenu-assistant-source-faithful-extraction/1.0.0'
-TRANSFORM_VERSION = 'offmenu-assistant-intermediate-to-source-recipe/1.0.0'
+TRANSFORM_VERSION = 'offmenu-assistant-intermediate-to-source-recipe/1.0.1'
 CACHE_VERSION = 'offmenu-assistant-extraction-cache/1'
 MAX_RESPONSE_BYTES = 1_000_000
 
@@ -296,7 +296,7 @@ def _loc_quote(text: str, quote: str) -> dict:
     start = text.find(quote)
     actual = quote
     if start < 0:
-        pattern = re.compile(r'\\s+'.join(re.escape(part) for part in quote.split()))
+        pattern = re.compile(r'\s+'.join(re.escape(part) for part in quote.split()))
         match = pattern.search(text)
         if not match:
             raise IntermediateError('source-quote-not-locatable')

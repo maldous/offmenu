@@ -15,7 +15,7 @@ import tempfile
 
 from bs4 import BeautifulSoup
 
-PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.0'
+PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.1'
 DICTIONARY_VERSION = 'offmenu-data-dictionary/1'
 RECIPE_TEMPLATE_VERSION = 'offmenu-source-recipe/2'
 MENU_TEMPLATE_VERSION = 'offmenu-source-menu-item/1'
@@ -89,6 +89,18 @@ def _citation(source: dict, source_id: str, record_id: str, language: str,
 
 def _schema_path() -> Path:
     return Path(__file__).with_name('source_recipe_template.schema.json')
+
+
+def _field_location(text: str, quote: str) -> dict:
+    """Locate actual extracted page bytes; never invent a missing source span."""
+    start = text.find(quote)
+    if start >= 0:
+        return _location(text, start, start + len(quote))
+    parts = quote.split()
+    match = re.search(r'\s+'.join(re.escape(part) for part in parts), text) if parts else None
+    if match is None:
+        raise ParseError('source-field-not-locatable')
+    return _location(text, match.start(), match.end())
 
 
 def _validate_record(record: dict) -> None:
@@ -187,7 +199,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                 'substitutionText': details['substitution'],
                 'originalExpression': original, 'quantity': quantity,
                 'foodIdentity': None, 'foodMatchStatus': 'unmatched-source-text',
-                'location': _location(text, max(0, text.find(original)), max(0, text.find(original)) + len(original))})
+                'location': _field_location(text, original)})
         for i, instruction in enumerate(instructions, 1):
             if isinstance(instruction, dict):
                 original = instruction.get('text') or instruction.get('name')
@@ -200,7 +212,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
             steps.append({'order': i, 'componentIndex': 1, 'originalText': original,
                 'actionTerms': [], 'equipment': [], 'time': None, 'temperature': None,
                 'targetState': None,
-                'location': _location(text, max(0, start), max(0, start) + len(original))})
+                'location': _field_location(text, original)})
         yield_value = ld.get('recipeYield')
         yield_text = str(yield_value).strip() if yield_value is not None else None
         yield_match = re.match(r'^\s*(\d+(?:[.,]\d+)?)\s*(.*)$', yield_text or '')
@@ -209,7 +221,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
             'rawUnitLexeme': yield_match.group(2) if yield_match and yield_match.group(2) else None,
             'interpretedValue': None, 'interpretedUnit': None,
             'interpretationStatus': 'not-interpreted',
-            'location': _location(text, max(0, text.find(yield_text)), max(0, text.find(yield_text)) + len(yield_text))}
+            'location': _field_location(text, yield_text)}
             if yield_text else None)
     else:
         # Extract explicit source sections only; subgroup headings and notes
@@ -251,7 +263,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                             'substitutionText': details['substitution'],
                             'originalExpression': original, 'quantity': quantity,
                             'foodIdentity': None, 'foodMatchStatus': 'unmatched-source-text',
-                            'location': _location(text, max(0, start_at), max(0, start_at) + len(original))})
+                            'location': _field_location(text, original)})
             siblings = list(method_header.parent.children)
             active = False
             for node in siblings:
@@ -279,14 +291,14 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                             'rawUnitLexeme': parsed_yield.group(2) if parsed_yield and parsed_yield.group(2) else None,
                             'interpretedValue': None, 'interpretedUnit': None,
                             'interpretationStatus': 'not-interpreted',
-                            'location': _location(text, max(0, ys), max(0, ys) + len(raw_yield))}
+                            'location': _field_location(text, raw_yield)}
                         original = original[:ym.start()].strip()
                     if original:
                         start_at = text.find(original)
                         steps.append({'order': len(steps) + 1, 'componentIndex': 1,
                             'originalText': original, 'actionTerms': [], 'equipment': [],
                             'time': None, 'temperature': None, 'targetState': None,
-                            'location': _location(text, max(0, start_at), max(0, start_at) + len(original))})
+                            'location': _field_location(text, original)})
     if not ingredients or not steps:
         raise ParseError('recipe-ingredients-or-steps-not-supported')
     title_start = text.find(title)
@@ -301,7 +313,7 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
         'components': _components(ingredients, steps),
         'sourceNotes': _source_notes(soup, text), 'nutritionAssertions': nutrition,
         'equipment': [], 'time': _time_observations(text), 'temperature': None,
-        'sourceLocation': _location(text, max(0, title_start), max(0, title_start) + len(title)),
+        'sourceLocation': _field_location(text, title),
         'identity': {'canonicalDishId': None, 'mergePerformed': False,
                      'identityStatus': 'source-scoped-distinct-record'}}
     _validate_record(record)

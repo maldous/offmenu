@@ -109,6 +109,25 @@ class AssistantIntermediateTests(unittest.TestCase):
         replayed = json.loads(Path(replay['recordPath']).read_text())
         self.assertEqual(replayed, record)
 
+    def test_inline_markup_preserves_actual_span_through_cache_and_replay(self):
+        raw = HTML.replace(b'2 cups cooked beans', b'2 cups <b>cooked</b> beans')
+        self.original.write_bytes(raw)
+        self.source['originalSHA256'] = hashlib.sha256(raw).hexdigest()
+        self.record = PARSER.parse_html_recipe(raw, source=self.source,
+            source_id='TEST', source_record_id='fixture-bake', country='ZZ', language='en')
+        first = AI.cache_assistant_intermediate(**self.args())
+        self.assertEqual(first['status'], 'accepted')
+        record = json.loads(Path(first['recordPath']).read_text())
+        text = AI.BeautifulSoup(raw, 'html.parser').get_text('\n', strip=False).encode()
+        location = record['ingredientLines'][1]['location']
+        start, end = location['utf8ByteRange']
+        actual = text[start:end]
+        self.assertEqual(' '.join(actual.decode().split()), '2 cups cooked beans')
+        self.assertEqual(hashlib.sha256(actual).hexdigest(), location['sourceSpanSHA256'])
+        replay = AI.replay_cached_intermediate(cache_path=Path(first['cachePath']),
+            input_path=self.original, parsed_record=self.record, output_root=self.root / 'replay')
+        self.assertEqual(json.loads(Path(replay['recordPath']).read_text()), record)
+
     def test_no_tooling_is_not_fabricated_in_cache_or_output(self):
         result = AI.cache_assistant_intermediate(**self.args())
         cache = json.loads(Path(result['cachePath']).read_text())

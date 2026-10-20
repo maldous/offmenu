@@ -34,6 +34,25 @@ def source(raw, **extra):
 
 
 class SourceFaithfulParseTests(unittest.TestCase):
+    def test_jsonld_only_fields_never_claim_unrelated_visible_text(self):
+        raw = b'''<html><head><script type="application/ld+json">{"@type":"Recipe",
+        "recipeIngredient":["1 cup flour"],"recipeInstructions":["Mix flour."],
+        "recipeYield":"4 servings"}</script></head><body><h1>Fixture</h1></body></html>'''
+        args = dict(source=source(raw), source_id='TEST', source_record_id='ld', country='ZZ', language='en')
+        with self.assertRaisesRegex(PARSER.ParseError, 'source-field-not-locatable'):
+            PARSER.parse_html_recipe(raw, **args)
+        raw = raw.replace(b'</body>', b'<p>1 cup flour</p><p>Mix flour.</p><p>4 servings</p></body>')
+        args['source'] = source(raw)
+        record = PARSER.parse_html_recipe(raw, **args)
+        text = PARSER.BeautifulSoup(raw, 'html.parser').get_text('\n', strip=False).encode()
+        for field, quote in [(record['ingredientLines'][0], '1 cup flour'),
+                             (record['orderedSteps'][0], 'Mix flour.'),
+                             (record['yield'], '4 servings')]:
+            location = field['location']
+            start, end = location['utf8ByteRange']
+            self.assertEqual(text[start:end].decode(), quote)
+            self.assertEqual(hashlib.sha256(text[start:end]).hexdigest(), location['sourceSpanSHA256'])
+
     def test_recipe_preserves_sections_quantity_steps_yield_and_nutrition(self):
         record = PARSER.parse_html_recipe(RECIPE_HTML, source=source(RECIPE_HTML),
             source_id='TEST-RECIPE', source_record_id='fixture-1', country='ZZ', language='en')
