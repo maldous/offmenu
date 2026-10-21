@@ -1,5 +1,6 @@
 """Generated source packets and in-memory/new temporary DBs only."""
 import copy
+import gzip
 from dataclasses import replace
 import hashlib
 import json
@@ -18,6 +19,57 @@ from offmenu.refresh.usda_product_contract import native_schemas
 
 
 class ProductDetailStoreTests(unittest.TestCase):
+    def assert_source_pointers_resolve(self, db, assets):
+        by_id = {a['assetId']: a for a in assets}
+        for asset_id, pointer, payload, digest in db.execute('SELECT asset_id,source_pointer,source_payload_json,parsed_record_sha256 FROM retained_reference_record ORDER BY asset_id,source_ordinal'):
+            asset = by_id[asset_id]; path = store.Path(asset['inputPath'])
+            raw = gzip.decompress(path.read_bytes()) if asset['representation'] == 'off-legacy-paired-gzip' else path.read_bytes()
+            if pointer.startswith('jsonl:'):
+                location, _, tail = pointer.partition('/')
+                line = int(location.rsplit(':', 1)[1]); document = json.loads(raw.splitlines()[line - 1])
+                bits = tail.split('/')
+            else:
+                document = json.loads(raw); bits = pointer.lstrip('/').split('/')
+            try:
+                for bit in bits: document = document[int(bit)] if isinstance(document, list) else document[bit]
+            except (IndexError, KeyError, TypeError):
+                self.fail('stored source pointer does not resolve: ' + pointer)
+            self.assertEqual(document, json.loads(payload), pointer)
+            self.assertEqual(store._hash(document), digest, pointer)
+        for pointer, encoded in db.execute('SELECT r.source_pointer,p.source_binding_json FROM retained_reference_record r JOIN product_detail_projection p USING(reference_record_id)'):
+            binding = json.loads(encoded)
+            self.assertEqual(binding['recordPointer'], pointer)
+            self.assertIn(pointer, binding['recordPointers'])
+
+    def test_full_off_and_singleton_usda_persist_resolving_record_coordinates(self):
+        with closing(sqlite3.connect(':memory:')) as db:
+            self.load(db); self.assert_source_pointers_resolve(db, self.assets)
+
+    def test_both_cached_representations_persist_resolving_record_coordinates(self):
+        _, _, native_asset, _, native_scan = self.cached_native_fixture()
+        _, off_asset, off_scan = self.cached_off_fixture()
+        for asset, scanner in ((native_asset, native_scan), (off_asset, off_scan)):
+            with self.subTest(representation=asset['representation']), closing(sqlite3.connect(':memory:')) as db:
+                self.load(db, scanner, [asset]); self.assert_source_pointers_resolve(db, [asset])
+
+    def test_bad_record_coordinate_or_profile_provenance_retains_completed_prefix(self):
+        for mode in ('wrong-pointer', 'wrong-profile-line', 'wrong-profile-release'):
+            with self.subTest(mode=mode), closing(sqlite3.connect(':memory:')) as db:
+                def scan(asset, consume):
+                    if asset['sourceId'] == 'off': return self.scan(asset, consume)
+                    def changed(packet, product, profile, identifier, pointer):
+                        packet = copy.deepcopy(packet)
+                        if mode == 'wrong-pointer': pointer = 'jsonl:line:999'
+                        if mode == 'wrong-profile-line': profile += 1
+                        if mode == 'wrong-profile-release': packet[1]['provenance']['releaseId'] = 'wrong'
+                        consume(packet, product, profile, identifier, pointer)
+                    return self.scan(asset, changed)
+                with self.assertRaises(RefreshError) as error: self.load(db, scan)
+                self.assertEqual(db.execute('SELECT state,processed_asset_count,product_records,profile_records FROM product_detail_generation').fetchone(), ('incomplete', 1, 2, 2))
+                self.assertEqual(db.execute('SELECT count(*) FROM retained_reference_record').fetchone()[0], 4)
+                self.assertEqual(error.exception.product_detail_retained_state['productsRetained'], 2)
+                self.assert_source_pointers_resolve(db, [self.assets[0]])
+
     def test_capabilities_match_closed_usda_schema_and_actual_legacy_off_projector(self):
         usda = native_schemas()['product']['properties']['data']
         self.assertIs(usda['additionalProperties'], False)
@@ -455,7 +507,7 @@ class ProductDetailStoreTests(unittest.TestCase):
             self.assertEqual(output['sourceProducts'][0]['records'], [product])
             self.assertEqual(output['sourceProducts'][0]['fields']['nutrientProfile']['state'], 'not-loaded')
 
-    def test_cached_off_pair_reuses_verified_saved_document_without_shard_scan(self):
+    def cached_off_fixture(self):
         saved = readers.lookup_retained_off_products(self.off.path, selection=self.off.selection,
             observations=[self.off.observation(7, 11)], limits=self.off.limits)['sourceProducts'][0]
         raw = canonical({'sourceBinding': saved['sourceBinding'], 'records': saved['records']})
@@ -465,6 +517,10 @@ class ProductDetailStoreTests(unittest.TestCase):
             products=1, profiles=1, cacheReviewSHA256='f'*64, upstreamAssetSHA256=self.off.selection.sha256)
         def cached(a, consume):
             return store.scan_cached_product_detail_asset(a, identity=readers._identity(path.stat()), consume=consume)
+        return path, asset, cached
+
+    def test_cached_off_pair_reuses_verified_saved_document_without_shard_scan(self):
+        path, asset, cached = self.cached_off_fixture()
         with closing(sqlite3.connect(':memory:')) as db, patch.object(readers, 'scan_retained_off_product_shard', side_effect=AssertionError('no shard scan')):
             self.load(db, cached, [asset])
             selection = replace(self.selection, input_manifest_sha256=store._hash(store.prepare_product_detail_manifest([asset])))

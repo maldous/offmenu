@@ -191,6 +191,19 @@ paired-document original binding. A product-only cache supplies no
 invented profile. None of these reads an original archive, source.sqlite or the
 identifier DB. No real source/operation factory, job or new server is installed.
 
+The five callback arguments are unchanged. Source coordinates now resolve by
+representation rather than by the shape of the in-memory pair. Full OFF uses
+`jsonl:packet:N/0` and `/1`; full USDA uses `jsonl:line:P/0` and
+`jsonl:line:Q/0` for its two separate singleton lines. Cached OFF uses
+`/records/0` and `/records/1`; cached USDA uses its exact
+`[/lookup]/matches/I/record` object pointer without appending an array element.
+Full-source ordinals/locations must agree with the streaming sequence; cached
+locations must agree with the selected document representation. Mismatches fail
+the current asset before commit. Each row's binding `recordPointer` identifies
+that row; `recordPointers` lists the product and optional profile coordinates.
+The shared schema and record IDs are unchanged. This corrects persisted pointer
+semantics; existing stores are not repaired or accepted automatically.
+
 An asset commits only after exact hash/extent/EOF/schema/custody, source identity,
 qualification and actual counts agree. A failure rolls back that asset, retains
 the completed prefix and marks the generation incomplete with actual SQL counts.
@@ -278,6 +291,9 @@ adjacent claim markers and batch codes retain their own spans and classification
 Unpunctuated marketing/company text prefixes share a class excluding both CR and
 LF, consistent with section endings. A CR-only separator cannot pull a preceding
 Ingredients line into the later claim or join address text to a later postcode.
+Opening ingredient fallback stops at the first CR/LF boundary or detected section,
+whichever comes first. Unrecognized later batch/directions lines remain raw gaps;
+their text, offsets and hashes survive without an ingredient classification.
 `extract_ingredient_components` consumes only a selected ingredient span and
 retains comma/bracket parent-child syntax and explicit source quantity lexemes.
 Unlabelled opening text stays a candidate; bare numeric/additive fragments are not

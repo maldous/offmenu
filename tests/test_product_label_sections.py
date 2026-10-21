@@ -6,6 +6,23 @@ from offmenu.refresh.core import RefreshError
 
 
 class ProductLabelSectionTests(unittest.TestCase):
+    def test_opening_ingredient_fallback_stops_before_unclassified_later_lines(self):
+        for newline in ('\n', '\r\n', '\r'):
+            for first, tail in (('Ingredients: Water, Salt', ['BATCH 1234', 'Use within 3 days']),
+                                ('Water, Salt', ['BATCH 1234', 'CONTAINS MILK.'])):
+                with self.subTest(newline=repr(newline), first=first):
+                    text = newline.join([first] + tail); result = extract_label_sections(text); spans = result['sections']
+                    self.assertEqual([s['text'] for s in spans if s['category'] == 'ingredient_list'], [first])
+                    self.assertTrue(any('BATCH 1234' in s['text'] for s in spans if s['category'] == 'unclassified'))
+                    self.assertEqual(''.join(s['text'] for s in spans), text)
+                    self.assertEqual(result['rawTextSHA256'], hashlib.sha256(text.encode()).hexdigest())
+                    cursor = 0
+                    for span in spans:
+                        self.assertEqual(span['start'], cursor); cursor = span['end']
+                        self.assertEqual(text[span['start']:span['end']], span['text'])
+                        self.assertEqual(text.encode()[span['utf8Start']:span['utf8End']].decode(), span['text'])
+                        self.assertEqual(span['textSHA256'], hashlib.sha256(span['text'].encode()).hexdigest())
+
     def test_line_prefixes_cannot_absorb_preceding_ingredient_line(self):
         for newline in ('\n', '\r\n', '\r'):
             for statement, category in (('Our quality specifications guarantee freshness', 'marketing'),
