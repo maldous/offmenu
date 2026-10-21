@@ -2,8 +2,10 @@
 
 This is the selected query-only extraction from reviewed source
 `63dd92023c498b55a01711f0e1158c79fdd82a77`, on accepted base
-`6431ddd417a746c9fe661230a9cb636b0375adce`. All six definition ASTs and five global
-ASTs match that source. The new module contains no writer, DDL, manifest preparer,
+`6431ddd417a746c9fe661230a9cb636b0375adce`. The initial six definition ASTs and five
+global ASTs matched that source. The PR86 correction tightens only generation
+asset-count validation in `read_product_details`; the other five definitions and
+all five globals retain their exact ASTs. The new module contains no writer, DDL, manifest preparer,
 scanner, cache decoder, original display lookup, label/component parser, source
 factory or runtime activation.
 
@@ -43,6 +45,14 @@ Missing, fabricated, changed or ineligible assertions return `not-loaded` withou
 a bridge. Detail candidates then use the BINARY namespace/lexical index and exact
 source/release/input/hash/ordinal/native-ID/source-ID coordinates. There is no
 barcode winner, canonical product inference or fuzzy fallback.
+
+A selected completed generation must have nonnegative integer
+`expected_asset_count` and `processed_asset_count` values before their equality
+can establish completed asset accounting. Nulls, non-integers, negative values or
+unequal counts produce the existing typed `query-unselected-generation` failure,
+before assertion/detail lookups or a coverage response. Valid integer counts,
+including an empty zero/zero generation, retain their existing behavior. Both
+progress handlers are removed on this failure path as on other exits.
 
 ## Two canonical byte contracts
 
