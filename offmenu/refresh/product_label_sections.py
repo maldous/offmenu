@@ -45,10 +45,12 @@ def extract_label_sections(text, *, max_text_bytes=262144, max_sections=1000):
         for match in re.finditer(pattern, text, flags=re.IGNORECASE):
             add(match.start(), match.end(), category, 'explicit-source-marker; assertion unverified')
     allergens = sorted(a for a, _, category, _ in selected if category == 'allergen_statement')
-    if allergens and allergens[0] > 0 and ',' in text[:allergens[0]]:
-        add(0, allergens[0], 'ingredient_list', 'candidate opening span before explicit allergen marker; no ingredient identity inference')
+    line_end = re.search(r'[\r\n]', text)
+    opening_end = min(line_end.start() if line_end else len(text), min((a for a, *_ in selected), default=len(text)))
+    if allergens and opening_end > 0 and ',' in text[:opening_end]:
+        add(0, opening_end, 'ingredient_list', 'candidate opening span before explicit allergen marker; no ingredient identity inference')
     elif re.match(r'^\s*ingredients\s*:', text, flags=re.IGNORECASE):
-        add(0, min((a for a, *_ in selected), default=len(text)), 'ingredient_list', 'explicit source Ingredients header')
+        add(0, opening_end, 'ingredient_list', 'explicit source Ingredients header')
     spans = []; cursor = 0
     def emit(start, end, category, evidence):
         if len(spans) >= max_sections: raise RefreshError('label-sections-count-bound')

@@ -182,13 +182,35 @@ def _fields(packet, representation):
     return result
 
 
+def _record_source_pointers(representation, pair_index, product_ordinal, profile_ordinal, pointer):
+    """Resolve the selected source representation, not the in-memory pair shape."""
+    if representation in ('off-legacy-paired-gzip', 'usda-native-jsonl'):
+        if (product_ordinal != 2 * pair_index - 1 or profile_ordinal != 2 * pair_index
+                or pointer != ('jsonl:packet:' + str(pair_index) if representation.startswith('off-')
+                               else 'jsonl:line:' + str(product_ordinal))): _fail('pair-source-coordinate')
+        if representation == 'usda-native-jsonl':
+            return (pointer + '/0', 'jsonl:line:' + str(profile_ordinal) + '/0')
+        return (pointer + '/0', pointer + '/1')
+    if representation == 'off-cached-qualified-pair':
+        if (pair_index, product_ordinal, profile_ordinal, pointer) != (1, 1, 2, '/records'): _fail('pair-source-coordinate')
+        return ('/records/0', '/records/1')
+    if representation == 'usda-reviewed-lookup-products-json':
+        if (product_ordinal != pair_index or profile_ordinal is not None
+                or pointer not in ('/matches/' + str(pair_index - 1) + '/record',
+                                   '/lookup/matches/' + str(pair_index - 1) + '/record')): _fail('pair-source-coordinate')
+        return (pointer,)
+    _fail('pair-source-coordinate')
+
+
 def ingest_product_details(db, assets, *, scan_asset_once, limits, generation_id, input_manifest_sha256,
                            operation_selection_sha256, identifier_database_sha256, coverage_scope):
     """Import provisional pairs; commit each asset only after its EOF/hash receipt.
 
     scan_asset_once(asset, consume) calls consume(packet, productOrdinal,
-    profileOrdinalOrNone, identifierRecordOrdinal, pointer), then returns the
-    existing reader's scannedBytes/Records/Products/Profiles/assetSha256,
+    profileOrdinalOrNone, identifierRecordOrdinal, pointer) provisionally. The
+    representation-specific base pointer (line/packet/pair) or cached record
+    pointer is validated and resolved separately for each source record. The
+    scanner returns the reader's scannedBytes/Records/Products/Profiles/assetSha256,
     EOFFullyVerified=True/bodyPasses=1 receipt. No arbitrary JSON reader factory.
     """
     manifest = prepare_product_detail_manifest(assets)
@@ -253,13 +275,16 @@ def ingest_product_details(db, assets, *, scan_asset_once, limits, generation_id
                             or profile.get('id') != asset['sourceId'] + ':nutrientProfile:' + p['recordId']): _fail('profile-binding')
                     if asset['sourceId'] == 'off' and (q.get('archiveSha256') != asset['originalSHA256'] or q.get('sourceRow') != identifier_ordinal): _fail('profile-coordinate-binding')
                 ordinals = [product_ordinal] + ([profile_ordinal] if profile is not None else [])
+                record_pointers = _record_source_pointers(asset['representation'], counts[0] + 1,
+                    product_ordinal, profile_ordinal, pointer)
+                if len(record_pointers) != len(packet): _fail('pair-source-coordinate')
                 ids = [_id(asset['sourceId'], asset['releaseId'], asset['inputSHA256'], ordinal, row.get('id')) for ordinal, row in zip(ordinals, packet)]
                 pair_sha = hashlib.sha256(readers.canonical(packet)).hexdigest()
                 binding = {'sourceId': asset['sourceId'], 'releaseId': asset['releaseId'], 'originalSha256': asset['originalSHA256'],
                     'inputAssetSha256': asset['inputSHA256'], 'identifierAssetSha256': asset['identifierAssetSHA256'],
                     'identifierInputId': asset['identifierInputId'], 'identifierRecordOrdinal': identifier_ordinal,
                     'identifierNativeRecordId': native, 'identifierSourceRecordId': source_record_id,
-                    'recordPointer': pointer, 'recordSha256': pair_sha, 'projectionVersion': asset['projectionVersion'],
+                    'recordPointers': list(record_pointers), 'recordSha256': pair_sha, 'projectionVersion': asset['projectionVersion'],
                     'rightsReceiptSha256': asset['rightsReceiptSHA256'], 'custodyReceiptSha256': asset['custodyReceiptSHA256'],
                     'operationReceiptSha256': operation_selection_sha256, 'citationId': asset.get('citationId'), 'representation': asset['representation']}
                 for index, (row, ordinal, ref) in enumerate(zip(packet, ordinals, ids)):
@@ -267,12 +292,12 @@ def ingest_product_details(db, assets, *, scan_asset_once, limits, generation_id
                     if len(encoded) > limits.max_record_bytes: _fail('record-byte-bound')
                     db.execute('INSERT INTO retained_reference_record VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                         (ref, asset['sourceId'], asset['releaseId'], asset['assetId'], asset['inputSHA256'], ordinal, row.get('id'),
-                         pointer + '/' + str(index), row.get('language') if type(row.get('language')) is str else 'und', encoded.decode(), _hash(row),
+                         record_pointers[index], row.get('language') if type(row.get('language')) is str else 'und', encoded.decode(), _hash(row),
                          asset.get('citationId'), asset['citationStatus'], 'offmenu-product-detail-stream', VERSION, 'processed'))
                 for index in reversed(range(len(packet))):
                     db.execute('INSERT INTO product_detail_projection VALUES(?,?,?,?,?,?,?,?,?,?)',
                         (ids[index], generation_id, packet[index]['kind'], ids[1] if index == 0 and profile is not None else None,
-                         canonical(binding).decode(), None,
+                         canonical(dict(binding, recordPointer=record_pointers[index])).decode(), None,
                          canonical(asset.get('projectionLimitations', [])).decode(), None, 'pending', 'source-assertion'))
                 for index, identifier in enumerate(data['identifiers'], 1):
                     valid = type(identifier) is dict and type(identifier.get('system')) is str and type(identifier.get('value')) is str
