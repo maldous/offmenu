@@ -1,5 +1,6 @@
 """Generated fixtures only. No retained corpus, profile or source DB is opened."""
 from dataclasses import replace
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -94,7 +95,7 @@ class IdentifierDatabaseTests(unittest.TestCase):
                             type(json.loads(r['raw_json']).get('value')) is int and
                             json.loads(r['raw_json'])['value']==123 for r in invalid))
         self.assertTrue(result['summary']['pendingSources']);self.assertEqual(result['summary']['physicalProducts'],'unknown')
-        with sqlite3.connect(self.target) as db:
+        with closing(sqlite3.connect(self.target)) as db:
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
             self.assertEqual(db.execute('SELECT count(*) FROM identifier_source_record').fetchone()[0],6)
             self.assertEqual(db.execute('SELECT count(*) FROM load_checkpoint').fetchone()[0],1)
@@ -137,7 +138,7 @@ class IdentifierDatabaseTests(unittest.TestCase):
         self.assertEqual(native.contract.expected_records,3);self.assertEqual(result['summary']['sourceOccurrences'],2)
         rows=s.query_identifiers(result,namespace='barcode',lexical_value='00123')['rows']
         self.assertEqual(len(rows),2);self.assertTrue(rows[0]['source_pointer'].startswith('/lookup/matches/0/record/'))
-        with sqlite3.connect(self.target) as db:
+        with closing(sqlite3.connect(self.target)) as db:
             self.assertEqual(db.execute('SELECT native_candidate_ordinal FROM identifier_source_record ORDER BY record_ordinal').fetchall(),[(1,),(2,)])
             self.assertEqual(db.execute('SELECT raw_line_sha256 FROM identifier_source_record').fetchall(),[(None,),(None,)])
 
@@ -187,7 +188,7 @@ class IdentifierDatabaseTests(unittest.TestCase):
         result=self.build(self.fixture())
         expected={'fetch_citation','fetch_asset','parse_job','identifier_load','identifier_input',
                   'identifier_source_record','identifier_assertion','identifier_exception','load_checkpoint'}
-        with sqlite3.connect(self.target) as db:
+        with closing(sqlite3.connect(self.target)) as db:
             tables={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
             self.assertTrue(expected<=tables)
             self.assertEqual(len(db.execute('PRAGMA table_info(v_barcode_inspection)').fetchall()),14)
@@ -227,10 +228,36 @@ class IdentifierDatabaseTests(unittest.TestCase):
         result=self.build(spec)
         self.assertEqual(len(s.query_identifiers(result,namespace='barcode',limit=25)['rows']),22)
         self.assertEqual(result['summary']['physicalProducts'],'unknown')
-        with sqlite3.connect(self.target) as db:
+        with closing(sqlite3.connect(self.target)) as db:
             self.assertEqual(db.execute("SELECT count(*) FROM identifier WHERE namespace='barcode'").fetchone()[0],1)
             self.assertEqual(db.execute('SELECT count(*) FROM identifier_source_record').fetchone()[0],22)
             self.assertEqual(db.execute('SELECT source_row,native_candidate_ordinal,record_ordinal FROM identifier_source_record ORDER BY record_ordinal LIMIT 1').fetchone(),(100,1,1))
+
+    def test_asset_unknown_reasons_preserve_reviewer_objects_and_legacy_callers(self):
+        # W64-IDB-001: both reason objects from the reviewer's reproduction.
+        reasons=[
+            {'download_url':'No direct asset download URL recorded; landing URL is not substituted.',
+             'fetch_owned_asset_id':'No pre-existing fetch asset ID recorded; LOCAL deterministic backfill key remains unresolved.',
+             'retrieved_at':'Unknown-retained acquisition clock; no local lifecycle/completion date substituted.'},
+            {'download_url':'No direct asset download URL recorded; landing URL is not substituted.',
+             'retrieved_at':'Unknown-retained acquisition clock; no local lifecycle/completion date substituted.'},
+            ['legacy unknowns caller'],
+            {'derived':'not a direct FETCH asset'}]
+        spec=self.fixture();assets=[dict(a) for a in spec.assets]
+        for i,asset in enumerate(assets):
+            asset['unknown_fields_json']=json.dumps(reasons[i])
+        assets[2]['unknowns']=reasons[2]
+        # Existing unknowns-style callers retain precedence, as with citations.
+        assets[2]['unknown_fields_json']='["unused fallback"]'
+        spec=self.bind_lineage(replace(spec,assets=tuple(assets)))
+        self.build(spec)
+        with closing(sqlite3.connect(self.target)) as db:
+            for asset,expected in zip(assets,reasons):
+                with self.subTest(asset=asset['id']):
+                    row=db.execute('SELECT unknown_fields_json,metadata_json FROM fetch_asset WHERE asset_id=?',
+                                   (asset['id'],)).fetchone()
+                    self.assertEqual(json.loads(row[0]),expected)
+                    self.assertEqual(json.loads(row[1]),asset)
 
     def test_fixed_selected22_descriptor_uses_only_control_metadata(self):
         q={'schemaVersion':'offmenu-source-qualification/1','sourceId':'usda-files','releaseId':'2026-04-30',

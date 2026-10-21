@@ -309,6 +309,8 @@ def _prepare(spec):
         citations.append(c)
     for original in data['assets']:
         a=dict(original);a['fetch_metadata']=original;a['id']=a.get('id',a.get('asset_id'))
+        a.setdefault('unknowns',a.get('unknown_fields_json',[]))
+        if type(a['unknowns']) is str:a['unknowns']=strict_json(a['unknowns'])
         a.update(bindings.get(a['id'],{}));assets.append(a)
     data['citations']=citations;data['assets']=assets
     if not 1<=len(citations)<=64 or not 1<=len(assets)<=64: _fail('lineage-inventory')
