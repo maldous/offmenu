@@ -176,7 +176,15 @@ packets using the existing1446 reader's schema/hash/gzip/FD checks;
 `scan_qualified_native_product_pairs` reuses native qualification and streams the
 USDA candidate in product/profile order, retaining raw nutrient observations.
 `scan_cached_product_detail_asset` reuses either a reviewed saved OFF pair or the
-existing bounded USDA cached-lookup decoder. A product-only cache supplies no
+existing bounded USDA cached-lookup decoder. The USDA cache caller must additionally pass the independently
+selected `native_lookup_contract=IdentifierInput.contract` alongside its existing
+`native_lookup_metadata`. Before opening the cache, the adapter checks the exact
+contract fingerprint and original-input list against that metadata, then permits
+`originalSHA256` only from contract source inputs, excluding rights/scope/clock
+evidence. Archive, native candidate and lookup hashes in `assetBindings` do not
+establish original-source identity. This reuses the selected contract without
+requalification or opening any parent asset. The OFF cache retains its verified
+paired-document original binding. A product-only cache supplies no
 invented profile. None of these reads an original archive, source.sqlite or the
 identifier DB. No real source/operation factory, job or new server is installed.
 
@@ -196,11 +204,18 @@ Field wrappers are constructed from the selected bounded documents on read;
 Existing legacy fallback/null-collapse/quantity conversion/country mapping/basis
 and derived-value limitations survive. No original JSON number-token format,
 language, canonical identity, certification or missing publisher field is guessed.
-For a loaded product, an absent mapped key is `missing/projection-field-absent`
+For a loaded product, an absent supported key is `missing/projection-field-absent`
 and retains the projection evidence hash. Explicit null and present empty values
 stay distinct. Original publisher presence stays `unknown`; missing a projection
 key does not prove publisher absence. An unsupplied paired profile and unsupported
-image representation remain `not-loaded/representation-not-provided`.
+image representation remain `not-loaded/representation-not-provided`. Capability
+maps are specific to the selected representation: both USDA variants follow the
+closed `usda_product_contract.native_schemas` product shape; both legacy OFF
+variants follow the actual `normalizeOFF` used by `collect-jsonl.mjs`. USDA lacks
+OFF pack/names/categories/raw-nutriment fields; legacy OFF lacks USDA serving and
+data type. Unsupported wrappers stay `not-loaded`, even if an unknown extension
+key appears in raw data; complete records retain that data unchanged. Tests bind
+the maps to both actual schema/producer outputs rather than inventing support.
 
 `read_product_details(connection, observations, selection=ProductDetailQuerySelection(...),
 identifier_evidence=CurrentIdentifierEvidence(identifier_connection, selected_run_id, selected_database_sha256))`

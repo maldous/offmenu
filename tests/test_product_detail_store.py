@@ -4,6 +4,7 @@ from dataclasses import replace
 import hashlib
 import json
 import sqlite3
+import subprocess
 import unittest
 from contextlib import closing
 from unittest.mock import patch
@@ -12,10 +13,85 @@ from tests import test_native_barcode_lookup as fixtures
 from offmenu.refresh import native_barcode_lookup as readers, product_detail_store as store
 from offmenu.refresh.core import canonical, RefreshError
 from offmenu.refresh import identifier_database
-from offmenu.refresh.acceptance import Asset, qualify
+from offmenu.refresh.acceptance import Asset, qualify, contract_fingerprint
+from offmenu.refresh.usda_product_contract import native_schemas
 
 
 class ProductDetailStoreTests(unittest.TestCase):
+    def test_capabilities_match_closed_usda_schema_and_actual_legacy_off_projector(self):
+        usda = native_schemas()['product']['properties']['data']
+        self.assertIs(usda['additionalProperties'], False)
+        self.assertEqual(store.USDA_NATIVE_PRODUCT_KEYS, frozenset(usda['properties']))
+        # collect-jsonl.mjs imports this exact normalizer, not off_native_policy.
+        code = "import {normalizeOFF} from './public/unified-data.js'; console.log(JSON.stringify(Object.keys(normalizeOFF({code:'00123'},{id:'off',url:'https://example.invalid',license:'fixture',name:'fixture'})[0].data)));"
+        keys = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', code],
+            cwd=store.Path(__file__).resolve().parents[1], text=True))
+        self.assertEqual(store.OFF_LEGACY_PRODUCT_KEYS, frozenset(keys))
+        for name in ('off-legacy-paired-gzip', 'off-cached-qualified-pair'):
+            self.assertEqual(store.PRODUCT_KEYS_BY_REPRESENTATION[name], frozenset(keys))
+        for name in ('usda-native-jsonl', 'usda-reviewed-lookup-products-json'):
+            self.assertEqual(store.PRODUCT_KEYS_BY_REPRESENTATION[name], frozenset(usda['properties']))
+
+    def test_representation_specific_unsupported_fields_stay_not_loaded(self):
+        cases = [('usda-native-jsonl', self.native.rows[0],
+                  ('packageQuantity', 'names', 'categories', 'rawNutriments', 'sourceAllergenClaims')),
+                 ('usda-reviewed-lookup-products-json', self.native.rows[0],
+                  ('packageQuantity', 'names', 'categories', 'rawNutriments', 'sourceAllergenClaims')),
+                 ('off-legacy-paired-gzip', self.off.packet[0], ('servingQuantity', 'dataType')),
+                 ('off-cached-qualified-pair', self.off.packet[0], ('servingQuantity', 'dataType'))]
+        for representation, product, unsupported in cases:
+            with self.subTest(representation=representation):
+                fields = store._fields([product], representation)
+                for name in unsupported:
+                    field = fields[name]
+                    self.assertEqual(field['state'], 'not-loaded', name)
+                    self.assertEqual(field['reasonCode'], 'representation-not-provided')
+                    self.assertIsNone(field['value']); self.assertIsNone(field['evidenceSha256'])
+                key, name = ('pack', 'packageQuantity') if representation.startswith('off-') else ('serving', 'servingQuantity')
+                packet = [copy.deepcopy(product)]; packet[0]['data'].pop(key, None)
+                field = store._fields(packet, representation)[name]
+                self.assertEqual(field['state'], 'missing'); self.assertIsNotNone(field['evidenceSha256'])
+                self.assertEqual(field['sourceFieldState'], 'unknown')
+                for value, state in ((None, 'null'), ({}, 'present')):
+                    packet[0]['data'][key] = value
+                    field = store._fields(packet, representation)[name]
+                    self.assertEqual(field['state'], state); self.assertEqual(field['value'], value)
+                # Unknown extension values stay in raw data without expanding a
+                # closed representation's supported wrapper capabilities.
+                extra, wrapper = ('serving', 'servingQuantity') if representation.startswith('off-') else ('pack', 'packageQuantity')
+                packet[0]['data'][extra] = {'unknown': 'retained'}; before = copy.deepcopy(packet)
+                self.assertEqual(store._fields(packet, representation)[wrapper]['state'], 'not-loaded')
+                self.assertEqual(packet, before)
+
+    def test_cached_original_rejects_upstream_lookup_and_evidence_hashes(self):
+        for name in ('rights.txt', 'scope.txt'):
+            (self.native.bundle / name).write_bytes(('distinct ' + name).encode())
+        self.native.prepare('usda-files')
+        _, path, asset, metadata, cached = self.cached_native_fixture()
+        forbidden = [self.native.q['candidateSha256'], asset['inputSHA256'],
+            self.native.contract.rights_evidence.sha256, self.native.contract.scope_evidence.sha256]
+        self.assertTrue(all(value != asset['originalSHA256'] for value in forbidden))
+        for value in forbidden:
+            with self.subTest(sha=value):
+                consumed = []
+                with self.assertRaisesRegex(RefreshError, 'cached-native'):
+                    cached(dict(asset, originalSHA256=value), lambda *args: consumed.append(args))
+                self.assertEqual(consumed, [])
+
+    def test_cached_source_contract_is_independent_and_exact(self):
+        _, path, asset, metadata, cached = self.cached_native_fixture()
+        def call(context, details):
+            return store.scan_cached_product_detail_asset(asset, identity=readers._identity(path.stat()),
+                consume=lambda *args: self.fail('must fail before consuming'),
+                native_lookup_metadata=details, native_lookup_contract=context)
+        with patch.object(store.os, 'open', side_effect=AssertionError('no body before contract selection')), self.assertRaisesRegex(RefreshError, 'cached-native-contract'):
+            call(None, metadata)
+        for context, details in ((replace(self.native.contract, scope_id='wrong'), metadata),
+                (self.native.contract, dict(metadata, originalContractInputs=[])),
+                (self.native.contract, dict(metadata, contractSha256='9'*64))):
+            with self.subTest(context=context.scope_id, metadata=list(details)), patch.object(store.os, 'open', side_effect=AssertionError('no body before contract selection')), self.assertRaisesRegex(RefreshError, 'cached-native'):
+                call(context, details)
+
     def test_loaded_mapped_fields_distinguish_missing_null_empty_and_unavailable(self):
         for representation in ('usda-native-jsonl', 'usda-reviewed-lookup-products-json',
                                'off-legacy-paired-gzip', 'off-cached-qualified-pair'):
@@ -151,7 +227,7 @@ class ProductDetailStoreTests(unittest.TestCase):
             self.assertEqual(native['fields']['ingredientDeclaration']['value'], '  Native milk\n豆  ')
             self.assertEqual(native['fields']['nutrientProfile']['value']['nutrients']['sodium']['rawFields']['amount'], '0.10')
             self.assertEqual(native['fields']['brand']['state'], 'null')
-            self.assertEqual(native['fields']['packageQuantity']['state'], 'missing')
+            self.assertEqual(native['fields']['packageQuantity']['state'], 'not-loaded')
             self.assertEqual(native['fields']['servingQuantity']['value']['label'], '1,50 source serving')
             self.assertIsNone(native['canonicalIngredient']['conceptId'])
             self.assertTrue(output['coverage']['identifierIndexCoverageSeparate'])
@@ -252,6 +328,10 @@ class ProductDetailStoreTests(unittest.TestCase):
         with closing(sqlite3.connect(':memory:')) as db:
             with self.assertRaisesRegex(RefreshError, 'asset-source-receipt'):
                 self.load(db, assets=[self.assets[0], dict(self.assets[1], originalSHA256=clock.sha256)])
+        _, path, asset, metadata, cached = self.cached_native_fixture()
+        self.assertEqual(cached(asset, lambda *args: None)['originalSha256'], original.sha256)
+        with self.assertRaisesRegex(RefreshError, 'cached-native-metadata'):
+            cached(dict(asset, originalSHA256=clock.sha256), lambda *args: self.fail('clock evidence is not a source'))
 
     def test_late_actual_native_hash_failure_rolls_back_only_current_asset(self):
         raw = self.native.candidate.read_bytes(); self.native.candidate.write_bytes(raw.replace(b'unknownClockNote', b'UNKNOWNClockNote'))
@@ -344,7 +424,7 @@ class ProductDetailStoreTests(unittest.TestCase):
             with self.assertRaisesRegex(RefreshError, 'query-candidate-bound'):
                 self.read_details(db, [self.observations()[1]], selection=selection, max_candidates=1)
 
-    def test_cached_native_wrapper_reuses_existing_bounded_decoder_without_parent_scan(self):
+    def cached_native_fixture(self):
         product = self.native.rows[0]
         document = {'status': 'PRIVATE_NATIVE_LOOKUP_VERIFIED', 'lookup': {
             'sourceId': 'usda-files', 'releaseId': self.native.contract.release_id, 'scopeId': self.native.contract.scope_id,
@@ -352,14 +432,22 @@ class ProductDetailStoreTests(unittest.TestCase):
             'visibility': 'private', 'fixture': True, 'status': 'matched', 'barcode': self.off.code,
             'matches': [{'record': product, 'nativeProductId': product['id'], 'sourceRecordId': product['provenance']['recordId'], 'candidateLine': 1}]}}
         raw = canonical(document); path = self.native.root / 'cached.json'; path.write_bytes(raw)
-        asset = dict(self.assets[1], assetId='fixture-cache', representation='usda-reviewed-lookup-products-json',
+        asset = dict(self.asset('usda-files'), assetId='fixture-cache', representation='usda-reviewed-lookup-products-json',
             inputPath=str(path), inputSHA256=hashlib.sha256(raw).hexdigest(), inputBytes=len(raw), profiles=0, cacheReviewSHA256='f'*64)
         metadata = {'sourceId': 'usda-files', 'releaseId': self.native.contract.release_id, 'scopeId': self.native.contract.scope_id,
             'candidateSha256': asset['inputSHA256'], 'upstreamCandidateSha256': self.native.q['candidateSha256'],
             'qualificationSha256': self.native.pin, 'expectedRecords': 1, 'upstreamExpectedRecords': 2, 'fixture': True,
-            'assetBindings': [{'sha256': asset['originalSHA256']}]}
+            'contractSha256': contract_fingerprint(self.native.contract),
+            'originalContractInputs': [vars(a) for a in self.native.contract.inputs],
+            'assetBindings': [{'sha256': a.sha256} for a in self.native.contract.inputs] +
+                [{'sha256': self.native.q['candidateSha256']}, {'sha256': asset['inputSHA256']}]}
         def cached(a, consume):
-            return store.scan_cached_product_detail_asset(a, identity=readers._identity(path.stat()), consume=consume, native_lookup_metadata=metadata)
+            return store.scan_cached_product_detail_asset(a, identity=readers._identity(path.stat()), consume=consume,
+                native_lookup_metadata=metadata, native_lookup_contract=self.native.contract)
+        return product, path, asset, metadata, cached
+
+    def test_cached_native_wrapper_reuses_existing_bounded_decoder_without_parent_scan(self):
+        product, path, asset, metadata, cached = self.cached_native_fixture()
         with closing(sqlite3.connect(':memory:')) as db, patch.object(readers, 'scan_qualified_native_product_pairs', side_effect=AssertionError('no parent scan')):
             self.load(db, cached, [asset])
             selection = replace(self.selection, input_manifest_sha256=store._hash(store.prepare_product_detail_manifest([asset])))

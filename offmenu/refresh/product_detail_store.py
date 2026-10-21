@@ -16,6 +16,7 @@ import time
 from types import SimpleNamespace
 
 from .core import canonical, strict_json, RefreshError
+from .acceptance import SourceContract, contract_fingerprint
 from . import native_barcode_lookup as readers
 
 VERSION = 'offmenu-retained-product-detail-store/1'
@@ -38,7 +39,8 @@ def _hash(value): return hashlib.sha256(canonical(value)).hexdigest()
 def _id(*values): return 'urn:offmenu:product-detail:' + _hash(list(values))
 
 
-def scan_cached_product_detail_asset(asset, *, identity, consume, native_lookup_metadata=None):
+def scan_cached_product_detail_asset(asset, *, identity, consume, native_lookup_metadata=None,
+                                    native_lookup_contract=None):
     """Reuse exactly one already reviewed <=1MiB saved pair/product-only wrapper.
 
     Trusted caller binds current rights/custody/operation and the existing review;
@@ -50,6 +52,27 @@ def scan_cached_product_detail_asset(asset, *, identity, consume, native_lookup_
             or any(type(n) is not int or n < 0 for n in identity)
             or type(asset.get('inputBytes')) is not int or not 0 < asset['inputBytes'] <= 1048576
             or identity[2] != asset['inputBytes']): _fail('cached-selection')
+    if asset['representation'] == 'usda-reviewed-lookup-products-json':
+        from .identifier_database import _lookup_records
+        m = native_lookup_metadata
+        contract = native_lookup_contract
+        if (not isinstance(contract, SourceContract) or contract.source_id != 'usda-files'
+                or contract.output_scope != 'native' or contract.output_visibility != 'private'
+                or contract.holds or not {'retain', 'parse', 'transform'} <= contract.required_operations
+                or not contract.required_operations <= contract.permitted_operations): _fail('cached-native-contract')
+        evidence_paths = {contract.rights_evidence.path, contract.scope_evidence.path}
+        if contract.clock_evidence is not None: evidence_paths.add(contract.clock_evidence.path)
+        source_inputs = [a for a in contract.inputs if a.path not in evidence_paths]
+        if (type(m) is not dict or len(canonical(m)) > 1048576 or m.get('sourceId') != asset['sourceId']
+                or m.get('releaseId') != asset['releaseId'] or m.get('candidateSha256') != asset['inputSHA256']
+                or (m.get('sourceId'), m.get('releaseId'), m.get('scopeId'))
+                    != (contract.source_id, contract.release_id, contract.scope_id)
+                or m.get('contractSha256') != contract_fingerprint(contract)
+                or m.get('originalContractInputs') != [vars(a) for a in contract.inputs]
+                or m.get('upstreamCandidateSha256') != asset['identifierAssetSHA256']
+                or m.get('qualificationSha256') != asset.get('qualificationSHA256')
+                or m.get('expectedRecords') != asset['products']
+                or asset['originalSHA256'] not in [a.sha256 for a in source_inputs]): _fail('cached-native-metadata')
     path = readers._safe(Path(asset['inputPath'])); before = path.stat()
     if not stat.S_ISREG(before.st_mode) or readers._identity(before) != identity: _fail('cached-custody')
     fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
@@ -74,14 +97,6 @@ def scan_cached_product_detail_asset(asset, *, identity, consume, native_lookup_
                 or hashlib.sha256(readers.canonical(packet)).hexdigest() != binding.get('recordSha256')): _fail('cached-record-binding')
         consume(packet, 1, 2, ordinal, '/records'); products = 1; profiles = 1
     else:
-        from .identifier_database import _lookup_records
-        m = native_lookup_metadata
-        if (type(m) is not dict or len(canonical(m)) > 1048576 or m.get('sourceId') != asset['sourceId']
-                or m.get('releaseId') != asset['releaseId'] or m.get('candidateSha256') != asset['inputSHA256']
-                or m.get('upstreamCandidateSha256') != asset['identifierAssetSHA256']
-                or m.get('qualificationSha256') != asset.get('qualificationSHA256')
-                or m.get('expectedRecords') != asset['products']
-                or asset['originalSHA256'] not in [a.get('sha256') for a in m.get('assetBindings', []) if type(a) is dict]): _fail('cached-native-metadata')
         for index, (encoded, location) in enumerate(_lookup_records(raw, m), 1):
             packet = strict_json(encoded)
             consume(packet, index, None, location['nativeCandidateOrdinal'], location['pointer']); products += 1
@@ -118,6 +133,23 @@ def prepare_product_detail_manifest(assets):
     return result
 
 
+# Exact retained projector capabilities, not the unrelated Python OFF-native
+# policy: collect-jsonl.mjs uses public/unified-data.js normalizeOFF. USDA uses
+# usda_product_contract.native_schemas()['product'].data (closed properties).
+OFF_LEGACY_PRODUCT_KEYS = frozenset(('name', 'names', 'identifiers', 'brand', 'pack',
+    'ingredientsText', 'allergens', 'traces', 'labels', 'categories', 'origins',
+    'manufacturingPlaces', 'nutritionSourceBasis', 'rawNutriments',
+    'qualificationStatus', 'nutritionId'))
+USDA_NATIVE_PRODUCT_KEYS = frozenset(('name', 'identifiers', 'brand', 'dataType',
+    'ingredientsText', 'marketCountry', 'serving', 'nutritionId'))
+PRODUCT_KEYS_BY_REPRESENTATION = {
+    'off-legacy-paired-gzip': OFF_LEGACY_PRODUCT_KEYS,
+    'off-cached-qualified-pair': OFF_LEGACY_PRODUCT_KEYS,
+    'usda-native-jsonl': USDA_NATIVE_PRODUCT_KEYS,
+    'usda-reviewed-lookup-products-json': USDA_NATIVE_PRODUCT_KEYS,
+}
+
+
 def _fields(packet, representation):
     """Keep selected representation values; never upgrade publisher field states."""
     product = packet[0]; profile = packet[1] if len(packet) == 2 else None
@@ -134,11 +166,15 @@ def _fields(packet, representation):
             'fieldPointer': pointer if present else None, 'evidenceSha256': evidence if available else None,
             'valueOrigin': 'upstream-projection' if available else 'unknown', 'sourceFieldState': 'unknown', 'language': None}
     data = product['data']
+    if representation not in PRODUCT_KEYS_BY_REPRESENTATION: _fail('field-representation')
+    supported = PRODUCT_KEYS_BY_REPRESENTATION[representation]
     for name, path in mappings.items():
-        # The product projection is loaded; key absence is evidenced here even
-        # though the original publisher field's presence remains unknown.
-        key = path[0]; result[name] = field(data.get(key), key in data, '/0/data/' + key)
-    market_key = 'marketCountry' if product['provenance']['sourceId'] == 'usda-files' else None
+        # Only a supported key's absence is evidenced by a loaded projection.
+        # Unknown extension values remain in the complete raw record.
+        key = path[0]; available = key in supported
+        result[name] = field(data.get(key) if available else None, available and key in data,
+            '/0/data/' + key, available)
+    market_key = 'marketCountry' if 'marketCountry' in supported else None
     result['markets'] = field(data.get(market_key), market_key in data, '/0/data/' + str(market_key)) if market_key else field(product.get('countries'), 'countries' in product, '/0/countries')
     result['nutrientProfile'] = field(profile['data'] if profile else None, profile is not None, '/1/data', profile is not None)
     result['sourceProvenance'] = field(product['provenance'], True, '/0/provenance')
