@@ -151,6 +151,17 @@ independently select the exact closed checkpoint and a genuinely new operation;
 never derive authority from fields supplied by the checkpoint or an HTTP request.
 `checkpoint_sha256` is SHA-256 of core `canonical(checkpoint_receipt)` (including
 its final LF). The selected operation must bind that receipt and all limits.
+
+For both initial ingestion and continuation, `coverage_scope` contains caller
+metadata only. Its top-level keys must exclude `identifierDatabaseSha256`,
+`assets`, `sourceFirst`, `identifierOccurrences` and `resumeAttempts`. A collision
+raises `product-detail-coverage-reserved-key` before any SQL or scanner call,
+even if the supplied value matches a writer default. The writer alone owns
+these five fields. Continuation compares the remaining stored caller metadata
+exactly with `coverage_scope`; it does not silently filter caller collisions.
+Unknown caller fields and nested annotations are preserved. This validation
+does not repair or relabel any previously created checkpoint.
+
 The receipt has these fields:
 
 | Field | Required value/evidence |
