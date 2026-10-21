@@ -498,19 +498,25 @@ def _record_off(db,m,job,ordinal,raw,counts,limits,projection):
             or row['reason']!=(None if status=='S' else 'repeated-native-key')):_fail('off-occurrence-code')
     counts['off_'+status]=counts.get('off_'+status,0)+1
     if counts['off_'+status]>q['counts'][status]:_fail('off-partition-count')
-    counts['source_new']+=1;counts['non_product']+=1;counts['identifier_occurrences']+=1
+    counts['source_new']+=1;counts['non_product']+=1
     # This is a source occurrence, never a manufactured product or profile.
     native='off:sourceOccurrence:'+q['originalSha256']+':'+str(ordinal)
     db.execute('INSERT INTO identifier_source_record(run_id,input_id,record_ordinal,source_record_id,native_record_id,source_pointer,parse_job_id,source_row,source_record_sha256,identity_state,raw_line_sha256,kind,source_disposition,identifier_state,native_candidate_ordinal) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-      (m['runId'],m['inputId'],ordinal,str(ordinal),native,'/code',job,ordinal,row['canonicalBodySha256'],
+      (m['runId'],m['inputId'],ordinal,str(ordinal),native,'' if status=='Q' else '/code',job,ordinal,row['canonicalBodySha256'],
        'source-asserted' if status=='S' else 'unresolved',row['rawLineSha256'],'sourceOccurrence','new',status,ordinal))
-    primary='source-asserted' if status=='S' else 'unresolved' if status=='C' else 'invalid'
-    identifier=None;encoded=None
-    if status!='Q':
-        counts['identifiers_eligible']+=1;identifier=_entity(db,'barcode',code,counts)
-        # The actual metadata code field, not an invented native identifier object.
-        encoded=canonical(code)
-    else:counts['identifiers_other-invalid']+=1
+    if status=='Q':
+        projection.update(canonical(['off-occurrence',ordinal,status,row['rawLineSha256'],row['canonicalBodySha256']]))
+        _exception(db,counts,m,ordinal,None,row['reason'],
+            {'sourcePointer':'','originalOrdinal':ordinal,'originalSha256':q['originalSha256'],
+             'rawLineSha256':row['rawLineSha256'],'canonicalBodySha256':row['canonicalBodySha256'],
+             'rawIdentifierPresence':'unknown','rawIdentifierType':'unknown','rawIdentifierEvidence':'unavailable'},
+            limits,disposition='invalid')
+        return True
+    counts['identifier_occurrences']+=1;counts['identifiers_eligible']+=1
+    primary='source-asserted' if status=='S' else 'unresolved'
+    identifier=_entity(db,'barcode',code,counts)
+    # The actual metadata code field, not an invented native identifier object.
+    encoded=canonical(code)
     reasons=[] if status=='S' else [row['reason']]
     raw_hash=_assertion(db,m,ordinal,0,'barcode',code,'/code',primary,row['reason'],identifier,encoded,reasons,
                        'off-'+status,limits,projection)
@@ -518,7 +524,7 @@ def _record_off(db,m,job,ordinal,raw,counts,limits,projection):
     if status!='S':_exception(db,counts,m,ordinal,0,row['reason'],
         {'sourcePointer':'/code','originalOrdinal':ordinal,'rawLineSha256':row['rawLineSha256'],
          'canonicalBodySha256':row['canonicalBodySha256'],'rawSha256':raw_hash,
-         'bytes':len(encoded) if encoded is not None else None,'rawIdentifierEvidence':'unavailable' if status=='Q' else 'metadata-code-field',
+         'bytes':len(encoded),'rawIdentifierEvidence':'metadata-code-field',
          'selectedPrimary':None,'reasons':reasons},limits,disposition=primary)
     return True
 
@@ -693,7 +699,7 @@ def _load_asset(db,m,limits,check):
                 ('off-S','off-C','off-C','unresolved',run,input_id)).fetchone()
             if (actual!=q['counts'] or distinct!=q['distinctValidKeys'] or measured!=(distinct,q['groups'],0,0)
                     or counts['identifiers_eligible']!=actual['S']+actual['C']
-                    or counts['identifiers_other-invalid']!=actual['Q']):_fail('off-audit-conservation')
+                    or counts['identifier_occurrences']!=actual['S']+actual['C']):_fail('off-audit-conservation')
             counts.update(valid_code_associations=actual['S']+actual['C'],ambiguous_key_groups=measured[1],
                           invalid_code_audits=actual['Q'],selected_primary_count=measured[3])
         if (sum(counts['source_'+k] for k in ('new','identical','conflicting','malformed'))!=counts['read']

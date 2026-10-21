@@ -116,11 +116,33 @@ class IdentifierDatabaseTests(unittest.TestCase):
             members=db.execute("SELECT a.lexical_value,a.disposition,a.reason_code,r.source_row,r.kind,r.identity_state FROM identifier_assertion a JOIN identifier_source_record r USING(run_id,input_id,record_ordinal) WHERE policy_disposition='off-C' ORDER BY r.source_row").fetchall()
             self.assertEqual(members,[('0002','unresolved','repeated-native-key',i,'sourceOccurrence','unresolved') for i in (3,4)])
             q=db.execute("SELECT lexical_value,raw_json,raw_sha256,raw_bytes,disposition FROM identifier_assertion WHERE policy_disposition='off-Q'").fetchone()
-            self.assertEqual(q,(None,None,None,None,'invalid'))
+            self.assertIsNone(q)
             evidence=db.execute("SELECT raw_line_sha256,source_record_sha256,source_row FROM identifier_source_record WHERE kind='sourceOccurrence' AND source_row=5").fetchone()
             self.assertEqual(evidence,(self.off_rows()[4]['rawLineSha256'],self.off_rows()[4]['canonicalBodySha256'],5))
             self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
         self.assertEqual(result['summary']['physicalProducts'],'unknown')
+
+    def test_off_q_is_record_audit_without_observed_identifier(self):
+        off=self.off_fixture();result=self.build(off)
+        counts=result['summary']['inputs'][0]['counts']
+        self.assertEqual((counts['read'],counts['off_Q'],counts['invalid_code_audits']),(5,1,1))
+        self.assertEqual((counts['identifier_occurrences'],counts['identifiers_eligible']),(4,4))
+        self.assertEqual(counts['identifiers_other-invalid'],0)
+        with closing(sqlite3.connect(self.target)) as db:
+            self.assertEqual(db.execute('SELECT count(*) FROM identifier_source_record').fetchone()[0],5)
+            self.assertEqual(db.execute('SELECT count(*) FROM identifier_assertion').fetchone()[0],4)
+            self.assertEqual(db.execute('SELECT count(*) FROM identifier_assertion WHERE record_ordinal=5').fetchone()[0],0)
+            row=db.execute('SELECT native_record_id,source_row,raw_line_sha256,source_record_sha256,identifier_state FROM identifier_source_record WHERE record_ordinal=5').fetchone()
+            self.assertEqual(row,('off:sourceOccurrence:'+'a'*64+':5',5,self.off_rows()[4]['rawLineSha256'],self.off_rows()[4]['canonicalBodySha256'],'Q'))
+            audit=db.execute("SELECT identifier_ordinal,disposition,reason_code,details_json FROM identifier_exception WHERE record_ordinal=5").fetchone()
+            self.assertEqual(audit[:3],(None,'invalid','native-code-invalid'))
+            details=json.loads(audit[3])
+            self.assertEqual(details['originalSha256'],'a'*64)
+            self.assertEqual(details['rawLineSha256'],self.off_rows()[4]['rawLineSha256'])
+            self.assertEqual(details['canonicalBodySha256'],self.off_rows()[4]['canonicalBodySha256'])
+            self.assertEqual(details['rawIdentifierPresence'],'unknown')
+            self.assertEqual(details['rawIdentifierType'],'unknown')
+            self.assertEqual(details['rawIdentifierEvidence'],'unavailable')
 
     def test_off_audit_refuses_partition_ordinal_code_and_digest_mismatches(self):
         for mode in ('duplicate-S','split-C','Q-code','ordinal','original-digest','extra-field'):

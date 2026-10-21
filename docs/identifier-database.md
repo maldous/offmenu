@@ -132,9 +132,10 @@ status and `/code` locator survive in the crosswalk and exception audit.
 
 All 4,807,156 S rows and 122 C members retain their lexical code associations.
 C assertions remain unresolved, with no selected primary or physical-product
-merge. All 385 Q rows retain invalid-code audits with barcode NULL; the original
-invalid value and its identifier hash/extent are unavailable, not invented.
-The original line/body digests remain available. Per-asset reconciliation measures
+merge. All 385 Q rows retain source audits and record-level invalid exceptions,
+with no identifier assertion or identifier-occurrence count. Original identifier
+presence, type, value and hash/extent are unavailable, not invented. The original
+ordinal and line/body digests remain available. Per-asset reconciliation measures
 4,807,278 valid-code associations, 4,807,217 distinct valid lexical keys and 61
 ambiguous groups, rejects S/C overlap or wrong multiplicity, and keeps Q outside
 valid keys. These are source identifier counts, never accepted product counts.
