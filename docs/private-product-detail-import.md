@@ -3,9 +3,11 @@
 This is the selected import-only extraction of corrected source commit
 `63dd92023c498b55a01711f0e1158c79fdd82a77`, based on accepted
 `6431ddd417a746c9fe661230a9cb636b0375adce`. The eight writer definitions and
-twelve reader definitions preserve their exact reviewed ASTs. The only production
-binding change is the writer's import of `product_detail_import_readers` as
-`readers`. The source schema and version are unchanged:
+twelve reader definitions initially preserved their exact reviewed ASTs. The
+production namespace binding imports `product_detail_import_readers` as `readers`.
+The PR85 integrity correction changes only the writer's transaction/FK preflight;
+the other nineteen definitions retain their exact ASTs. The source schema and
+version are unchanged:
 
 - `VERSION`: `offmenu-retained-product-detail-store/1`.
 - DDL SHA-256: `f85e1696fa46d3c1b268d4969fa0569534ccaa8ade209c1c523c09bbd0046632`.
@@ -79,6 +81,18 @@ selected representation and streaming sequence. Record IDs, raw payloads,
 canonical pair hashes, manifest meanings and source provenance are unchanged.
 
 ## Integrity, failure and publication
+
+The caller must supply a connection with no active transaction. The writer rejects
+`db.in_transaction` before issuing any SQL, changing connection setup or invoking
+a reader. It does not commit or roll back caller work: pending writes and
+savepoints remain caller-owned. Worker57 must pass the selected fresh idle
+connection rather than silently committing existing work to satisfy this condition.
+
+Before schema creation, the writer enables foreign keys and reads the effective
+setting back. If enforcement is unavailable or a caller policy prevents enabling
+it, the writer fails explicitly before creating tables or scanning an asset. A
+successful import therefore starts with effective FK enforcement; orphan identifier
+references, missing paired profiles and missing generations are rejected by SQLite.
 
 Callbacks remain provisional until the selected reader returns its full receipt.
 The writer verifies source/release, bytes/hash, EOF, one body pass, qualification,

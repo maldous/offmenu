@@ -1,6 +1,7 @@
 """Pinned corrected product-detail import closure; no display/query/cache/label API.
 
-Source definitions and schema are preserved verbatim from reviewed63dd92023.
+Initial definitions/schema came verbatim from reviewed63dd92023; the writer now
+adds explicit caller-transaction rejection and foreign-key enforcement preflight.
 This module provides no real-source factory, admission, job or activation.
 """
 
@@ -101,6 +102,7 @@ def ingest_product_details(db, assets, *, scan_asset_once, limits, generation_id
     scanner returns the reader's scannedBytes/Records/Products/Profiles/assetSha256,
     EOFFullyVerified=True/bodyPasses=1 receipt. No arbitrary JSON reader factory.
     """
+    if db.in_transaction: _fail('caller-transaction-active')
     manifest = prepare_product_detail_manifest(assets)
     if (type(limits) is not ProductDetailStoreLimits or any(type(v) is not int or v <= 0 for v in asdict(limits).values())
             or len(assets) > limits.max_assets or sum(a['inputBytes'] for a in assets) > limits.max_input_bytes
@@ -118,7 +120,10 @@ def ingest_product_details(db, assets, *, scan_asset_once, limits, generation_id
     def check():
         if time.monotonic() - start >= limits.max_seconds: _fail('time-bound')
     coverage = dict(coverage_scope, identifierDatabaseSha256=identifier_database_sha256, assets=[], sourceFirst=True)
-    db.execute('PRAGMA foreign_keys=ON'); db.execute('PRAGMA journal_mode=DELETE'); db.execute('PRAGMA synchronous=FULL')
+    db.execute('PRAGMA foreign_keys=ON')
+    foreign_keys = db.execute('PRAGMA foreign_keys').fetchone()
+    if foreign_keys is None or foreign_keys[0] != 1: _fail('foreign-keys-required')
+    db.execute('PRAGMA journal_mode=DELETE'); db.execute('PRAGMA synchronous=FULL')
     db.execute('PRAGMA temp_store=MEMORY'); db.execute('PRAGMA cache_size=-8192'); db.execute('PRAGMA mmap_size=0')
     page = db.execute('PRAGMA page_size').fetchone()[0]; db.execute('PRAGMA max_page_count=' + str(max(1, limits.max_database_bytes // page)))
     db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, limits.max_record_bytes)
