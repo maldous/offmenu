@@ -1,4 +1,4 @@
-"""Exact private product-detail query closure; no writer/scanner/label/cache API.
+"""Private product-detail query closure; no writer/scanner/label/cache API.
 
 The caller independently selects both held RO contexts and generation evidence.
 Packet canonical bytes come from acceptance; response bytes retain core canonical.
@@ -128,6 +128,7 @@ def read_product_details(db, observations, *, selection, identifier_evidence=Non
         identifier_evidence.db.set_progress_handler(progress, 100)
         generation = db.execute('SELECT input_manifest_sha256,operation_selection_sha256,state,coverage_scope_json,expected_asset_count,processed_asset_count,product_records,profile_records FROM product_detail_generation WHERE generation_id=?', (selection.generation_id,)).fetchone()
         if (generation is None or generation[:3] != (selection.input_manifest_sha256, selection.operation_selection_sha256, 'completed')
+                or any(type(n) is not int or n < 0 for n in generation[4:6])
                 or generation[4] != generation[5]
                 or strict_json(generation[3]).get('identifierDatabaseSha256') != selection.identifier_database_sha256): _fail('query-unselected-generation')
         for observation in observations:

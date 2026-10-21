@@ -114,6 +114,59 @@ JOIN identifier_load l ON l.run_id=a.run_id JOIN fetch_asset fa ON fa.asset_id=i
 
 
 class ProductDetailQueryTests(unittest.TestCase):
+    def test_malformed_completed_asset_counts_fail_typed_before_data_queries_and_clear_handlers(self):
+        cases = ((None, None), (None, 1), (1, None), ('bad', 'bad'), (1.5, 1.5),
+                 (b'bad', b'bad'), (-1, -1), (-1, 1), (1, -1), (2, 1))
+        for expected, processed in cases:
+            with self.subTest(expected=repr(expected), processed=repr(processed)):
+                f = self.fixture()
+                negative = any(type(n) is int and n < 0 for n in (expected, processed))
+                # Simulate corrupted/legacy values only in the generated store;
+                # the actual thirteen-owner schema and its CHECKs are unchanged.
+                if negative: self.edit(f.db, 'PRAGMA ignore_check_constraints=ON')
+                self.edit(f.db, 'UPDATE product_detail_generation SET expected_asset_count=?,processed_asset_count=?', (expected, processed))
+                if negative: self.edit(f.db, 'PRAGMA ignore_check_constraints=OFF')
+                detail_sql = []; index_sql = []
+                f.db.set_trace_callback(detail_sql.append); f.index.set_trace_callback(index_sql.append)
+                with patch.object(query.time, 'monotonic', return_value=100.0) as clock:
+                    with self.assertRaisesRegex(RefreshError, 'query-unselected-generation'):
+                        self.call(f)
+                    self.assertEqual(index_sql, [])
+                    self.assertFalse(any('retained_reference_record' in sql or 'product_detail_identifier' in sql for sql in detail_sql))
+                    f.db.set_trace_callback(None); f.index.set_trace_callback(None)
+                    clock.return_value = 1000.0
+                    self.assert_handlers_cleared(f)
+
+    def test_boolean_generation_counts_are_not_integer_accounting(self):
+        f = self.fixture()
+        def boolean_counts(cursor, row):
+            names = [c[0] for c in cursor.description]
+            if names[4:6] == ['expected_asset_count', 'processed_asset_count']:
+                values = list(row); values[4:6] = [True, True]; return tuple(values)
+            return row
+        # A caller row adapter must not turn bools into valid count evidence.
+        f.db.row_factory = boolean_counts
+        with patch.object(query.time, 'monotonic', return_value=100.0) as clock:
+            with self.assertRaisesRegex(RefreshError, 'query-unselected-generation'): self.call(f)
+            clock.return_value = 1000.0; self.assert_handlers_cleared(f)
+
+    def test_valid_completed_integer_counts_including_empty_generation(self):
+        for count in (0, 1, 2):
+            with self.subTest(count=count):
+                f = self.fixture()
+                if count == 0:
+                    for statement in ('DELETE FROM product_detail_identifier', 'DELETE FROM product_detail_projection',
+                                      'DELETE FROM retained_reference_record',
+                                      'UPDATE product_detail_generation SET expected_asset_count=0,processed_asset_count=0,product_records=0,profile_records=0'):
+                        self.edit(f.db, statement)
+                if count == 2: self.add_projection(f, 'usda-reviewed-lookup-products-json', False, 'two')
+                result = self.call(f)
+                self.assertEqual(result['coverage']['expectedAssets'], count)
+                self.assertEqual(result['coverage']['processedAssets'], count)
+                self.assertIs(type(result['coverage']['expectedAssets']), int)
+                self.assertIs(type(result['coverage']['processedAssets']), int)
+                self.assertEqual(len(result['sourceProducts']), count)
+
     def setUp(self):
         self.assertEqual(hashlib.sha256(DETAIL_SCHEMA.encode()).hexdigest(),
             'f85e1696fa46d3c1b268d4969fa0569534ccaa8ade209c1c523c09bbd0046632')
