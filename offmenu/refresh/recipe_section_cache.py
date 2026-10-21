@@ -248,6 +248,18 @@ def load_cached_recipe_sections(db, raw_records, contract_raw, *, selection, sou
             or db.execute("SELECT 1 FROM sqlite_master WHERE type IN ('table','view') LIMIT 1").fetchone()
             or db.execute('SELECT 1 FROM sqlite_temp_master LIMIT 1').fetchone()):
         _fail('new-empty-store-required')
+    # DROP can leave allocated free pages despite an empty schema. SQLite will
+    # not lower max_page_count below those pages, so inspect both constraints.
+    page_size = db.execute('PRAGMA page_size').fetchone()[0]
+    page_count = db.execute('PRAGMA page_count').fetchone()[0]
+    max_pages = limits.max_database_bytes // page_size
+    if max_pages < 1 or page_count > max_pages:
+        _fail('database-size-bound')
+    existing_cap = db.execute('PRAGMA max_page_count').fetchone()[0]
+    requested_pages = min(max_pages, existing_cap)
+    effective_pages = db.execute('PRAGMA max_page_count='+str(requested_pages)).fetchone()[0]
+    if not max(1, page_count) <= effective_pages <= requested_pages:
+        _fail('database-page-limit')
     started = time.monotonic()
     def check():
         if time.monotonic()-started >= limits.max_seconds:
@@ -259,8 +271,6 @@ def load_cached_recipe_sections(db, raw_records, contract_raw, *, selection, sou
     db.execute('PRAGMA temp_store=MEMORY')
     db.execute('PRAGMA cache_size=-8192')
     db.execute('PRAGMA mmap_size=0')
-    page_size = db.execute('PRAGMA page_size').fetchone()[0]
-    db.execute('PRAGMA max_page_count='+str(max(1, limits.max_database_bytes//page_size)))
     old_length = db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, limits.max_records_bytes+limits.max_page_bytes)
     steps = [0]
     def progress():
