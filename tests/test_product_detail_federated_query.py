@@ -153,6 +153,38 @@ class FederatedQueryTests(unittest.TestCase):
         m['roles']['usda-products']['qualificationState']='producer-only'
         with self.assertRaises(RefreshError):self.call(manifest=m)
 
+    def test_OFF_projection_limitations_preserved_in_order_with_subset_caveat(self):
+        obs=self.observations[2];db=self.db['off-subset']
+        ref=db.execute(q.OFF_KEY_SQL,(obs['namespace'],obs['lexical_value'],'fixture-gen','product',100)).fetchone()[0]
+        caveats=['generated only','61 additional duplicate bodies omitted','385 invalid rows omitted',
+            'source name/null/quantity/country/basis conversion remains uncertain','名は不明','', 'generated only']
+        stored=canonical(caveats).decode();self.edit('off-subset','UPDATE product_detail_projection SET projection_limitations_json=? WHERE reference_record_id=?',(stored,ref))
+        before=db.total_changes;out=self.call([obs]);returned=out['sourceProducts'][0]['projectionLimitations']
+        self.assertEqual(returned[:-1],caveats)
+        self.assertEqual(returned[-1],'Independently qualified OFF subset only; original257 generation remains incomplete.')
+        self.assertEqual(db.execute('SELECT projection_limitations_json FROM product_detail_projection WHERE reference_record_id=?',(ref,)).fetchone(),(stored,))
+        self.assertEqual(db.total_changes,before)
+        size=len(canonical(out));self.assertEqual(self.call([obs],max_result_bytes=size),out)
+        with self.assertRaisesRegex(RefreshError,'result-bound'):self.call([obs],max_result_bytes=size-1)
+        self.cleanup_ok()
+
+    def test_OFF_projection_limitations_malformed_or_excess_are_typed_and_bounded(self):
+        obs=self.observations[2];db=self.db['off-subset']
+        ref=db.execute(q.OFF_KEY_SQL,(obs['namespace'],obs['lexical_value'],'fixture-gen','product',100)).fetchone()[0]
+        limits={role:conn.getlimit(sqlite3.SQLITE_LIMIT_LENGTH) for role,conn in self.db.items()}
+        for raw,code in (('{','invalid-json'),('null','projection-limitations'),('{}','projection-limitations'),
+                         ('["ok",1]','projection-limitations'),(canonical(['x'*262144]).decode(),'metadata-bound')):
+            with self.subTest(code=code):
+                self.edit('off-subset','UPDATE product_detail_projection SET projection_limitations_json=? WHERE reference_record_id=?',(raw,ref))
+                with self.assertRaisesRegex(RefreshError,code):self.call([obs])
+                self.cleanup_ok(limits)
+        self.edit('off-subset','UPDATE product_detail_projection SET projection_limitations_json=? WHERE reference_record_id=?',(canonical(['x'*120000]).decode(),ref))
+        trace=[];db.set_trace_callback(trace.append)
+        with self.assertRaisesRegex(RefreshError,'result-bound'):self.call([obs],max_result_bytes=16384)
+        db.set_trace_callback(None)
+        self.assertFalse(any(sql.startswith('SELECT projection_limitations_json FROM') for sql in trace))
+        self.cleanup_ok(limits)
+
     def test_exact_current_assertion_before_any_payload_and_known_identifier_preserved(self):
         for key,value in {'assertion_id':99,'run_id':'foreign','input_id':'foreign','record_ordinal':99,'namespace':'other','lexical_value':'bad',
             'source_id':'other','release_id':'other','artifact_sha256':'0'*64,'native_record_id':'bad','source_record_id':'bad','disposition':'unresolved'}.items():

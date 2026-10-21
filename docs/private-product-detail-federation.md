@@ -118,6 +118,11 @@ Raw extension/null/text/number values retain the accepted strict parser semantic
 OFF resolves every eligible indexed variant, verifies certified asset membership,
 original coordinates, row/pair hashes and operation lineage. Virtual references
 are deterministically namespaced with federation/backing identity and coordinates.
+Each selected OFF projection's stored limitations are fetched by reference PK
+after a byte-length check, charged to the aggregate byte budget before fetching,
+and validated as a JSON string array. All entries, order and duplicates remain;
+the subset-only caveat is appended. Malformed or oversized caveats fail typed;
+they are never discarded or truncated. The complete response cap includes them.
 Missing/mismatched pairs are unavailable; corrupt eligible digests and technical
 failures are fixed typed `product-detail-federation-*` errors, never identifier misses.
 

@@ -304,8 +304,13 @@ def _off(obs,m,context,remaining,charge,candidate_charge):
             or type(profile['data'].get('basis')) is not dict or type(profile['data'].get('nutrients')) is not dict):continue
         binding=dict(b,backingRole=['off-subset'],productReference=ref,profileReference=paired,
             subsetCertificateSha256=r['subsetCertificateSha256'],backingStoreSha256={'off-subset':context.database_sha256})
+        size=db.execute('SELECT length(CAST(projection_limitations_json AS BLOB)) FROM product_detail_projection WHERE reference_record_id=?',(ref,)).fetchone()
+        _require(size is not None and type(size[0]) is int and 0 <= size[0] <= 262144,'metadata-bound')
+        charge(size[0])
+        limitations=_json(db.execute('SELECT projection_limitations_json FROM product_detail_projection WHERE reference_record_id=?',(ref,)).fetchone()[0])
+        _require(type(limitations) is list and all(type(item) is str for item in limitations),'projection-limitations')
         virtual='urn:offmenu:federated-product:'+_hash([m['generationId'],context.database_sha256,ref])
-        result.append((virtual,packet,binding,['Independently qualified OFF subset only; original257 generation remains incomplete.']))
+        result.append((virtual,packet,binding,limitations+['Independently qualified OFF subset only; original257 generation remains incomplete.']))
     return result
 
 
