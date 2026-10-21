@@ -1,0 +1,1 @@
+{"name":"offmenu-web","version":"0.1.0","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","test":"node --test tests-web/*.test.mjs"},"dependencies":{"@netlify/identity":"^2.0.0","zxing-wasm":"3.1.0"},"devDependencies":{"@cloudflare/workers-types":"latest","esbuild":"0.25.12"}}

@@ -1,0 +1,13 @@
+// Same-origin DEV-only route; never dispatch to an unregistered native callback.
+export const SELECTED_DB='5dfa3ebe8e3aeda6a15219fb0683a9974a465a4d52683cf1e5748ad7dc5216b7';
+const metadata={databaseLoaded:true,queryAvailable:false,pointInTimeOnly:true,databaseSha256:SELECTED_DB,receiptSha256:'96358d612775821f8590e8405fd1707694db66d7ea24158e07361d2fe6592d86',runId:'worker57-selected22-identifier-first-load-v1',scope:'partial selected22 source observations only',loadComplete:true,summary:{sourceOccurrences:22,identifierAssertions:44,distinctIdentifiers:23,distinctKeysByNamespace:{barcode:1,'USDA-FDC':22},physicalProducts:'unknown',qualifiedIngredientLinks:0},queryMatchTotal:null};
+export async function identifierRoutes(request,env){const u=new URL(request.url);if(!['/__dev/identifiers','/__dev/identifiers/status'].includes(u.pathname))return null;
+ const reply=(body,status)=>Response.json(body,{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
+ if(!env.DEV_INTERACTIVE)return reply({error:'NOT_FOUND'},404);
+ const origin=request.headers.get('Origin');if(origin&&origin!==u.origin||request.headers.get('Sec-Fetch-Site')==='cross-site')return reply({error:'SAME_ORIGIN_REQUIRED'},403);
+ if(u.search)return reply({error:'NO_QUERY_PARAMETERS'},400);
+ if(request.method!==(u.pathname.endsWith('/status')?'GET':'POST'))return reply({error:'METHOD_NOT_ALLOWED'},405);
+ if(!env.DEV_IDENTIFIER_QUERY_BOUND)return reply({...metadata,error:'HOST_CALLBACK_NOT_REGISTERED',requiredAction:'Existing native server owner must register createIdentifierAdapter in outboundService; current loaded callback has no identifier dispatch. No restart performed.'},503);
+ let body;if(request.method==='POST'){const reader=request.body?.getReader();if(!reader)return reply({error:'JSON_REQUIRED'},400);const chunks=[];let size=0;for(;;){const p=await reader.read();if(p.done)break;size+=p.value.length;if(size>8192){await reader.cancel();return reply({error:'REQUEST_BOUND'},413);}chunks.push(p.value);}body=new Uint8Array(size);let offset=0;for(const c of chunks){body.set(c,offset);offset+=c.length;}}
+ const target=new URL('https://offmenu-identifiers.invalid'+u.pathname);const response=await fetch(new Request(target,{method:request.method,headers:{'Content-Type':'application/json'},body,redirect:'manual'}));const data=await response.arrayBuffer();if(data.byteLength>262144)return reply({error:'RESPONSE_BOUND'},502);return new Response(data,{status:response.status,headers:{'Content-Type':'application/json','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
+}
