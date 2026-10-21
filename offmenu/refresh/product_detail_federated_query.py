@@ -99,7 +99,7 @@ def _manifest(selection, manifest, evidence, stores):
                 == (r['databaseSha256'],r['loadReceiptSha256'],r['qualificationSha256'])
             and type(r.get('fiveTuple')) is list and len(r['fiveTuple']) == 5
             and all(type(n) is int and 0 <= n < 2**63 for n in r['fiveTuple']) and r['fiveTuple'][2] > 0
-            and r.get('countBasis') == 'independently-qualified', 'store-evidence')
+            and r.get('countBasis') in ('independently-qualified','producer-reported'), 'store-evidence')
     _require(set(contexts) == enabled and (('usda-products' in enabled) == ('usda-profiles' in enabled)), 'role-pair')
     connections=[evidence.db]+[s.db for s in stores]
     _require(all(isinstance(db,sqlite3.Connection) for db in connections)
@@ -318,7 +318,8 @@ def _coverage(m):
             'retainedProducts':(u['products'] if source=='usda-files' else r['retainedProducts']) if enabled else None,
             'retainedProfiles':(u['profiles'] if source=='usda-files' else r['retainedProfiles']) if enabled else None,
             'countsEvidenceSha256':[m['roles'][role]['countsEvidenceSha256'] for role in roles] if enabled else [],
-            'countBasis':'independently-qualified' if enabled else 'not-qualified',
+            'countBasis':('producer-reported' if any(m['roles'][role]['countBasis']=='producer-reported' for role in roles) else 'independently-qualified') if enabled else 'not-qualified',
+            'populationCountIndependentlyVerified':enabled and all(m['roles'][role]['countBasis']=='independently-qualified' for role in roles),
             'pairValidationScope':'selected-pairs-validated-on-query' if enabled else 'not-enabled',
             'reasonCode':None if enabled else r['reasonCode'],
             **({'originalTargetAssets':257,'subsetOnly':True} if source=='off' else {})})

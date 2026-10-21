@@ -144,6 +144,15 @@ class FederatedQueryTests(unittest.TestCase):
         self.assertEqual(self.db['off-subset'].execute('SELECT state,expected_asset_count,processed_asset_count FROM product_detail_generation').fetchone(),('incomplete',257,1))
         self.assertEqual(changes,{k:db.total_changes for k,db in self.db.items()});self.cleanup_ok()
 
+    def test_scoped_store_PASS_keeps_producer_population_counts_explicit(self):
+        m=copy.deepcopy(self.m);m['roles']['usda-products']['countBasis']='producer-reported'
+        out=self.call(manifest=m);coverage=out['coverage']['backends'][1]
+        self.assertTrue(coverage['enabled']);self.assertEqual(coverage['countBasis'],'producer-reported')
+        self.assertFalse(coverage['populationCountIndependentlyVerified'])
+        self.assertIsNone(out['coverage']['products']);self.assertFalse(out['coverage']['complete'])
+        m['roles']['usda-products']['qualificationState']='producer-only'
+        with self.assertRaises(RefreshError):self.call(manifest=m)
+
     def test_exact_current_assertion_before_any_payload_and_known_identifier_preserved(self):
         for key,value in {'assertion_id':99,'run_id':'foreign','input_id':'foreign','record_ordinal':99,'namespace':'other','lexical_value':'bad',
             'source_id':'other','release_id':'other','artifact_sha256':'0'*64,'native_record_id':'bad','source_record_id':'bad','disposition':'unresolved'}.items():

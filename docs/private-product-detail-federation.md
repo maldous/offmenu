@@ -59,7 +59,7 @@ OFF qualification therefore disables OFF while permitting qualified USDA. Each
 enabled role declares `qualificationState:qualified`, `databaseSha256`,
 `loadReceiptSha256`, `qualificationSha256`, `fiveTuple`, `countsEvidenceSha256`,
 `rightsReceiptSha256`, `operationEvidenceSha256`, and
-`countBasis:independently-qualified`. The three context pins must match its evidence
+`countBasis` (`independently-qualified` or `producer-reported`). The three context pins must match its evidence
 object. The native caller must bind the declared fiveTuple and external receipt
 meaning to that held context; the query cannot independently establish these facts.
 
@@ -131,7 +131,12 @@ separate offlive rendering delta and later selected activation.
 
 Coverage always has null expectedAssets/processedAssets/products/profiles,
 coverageMode `federated-source-retention`, complete:false and accepted:false.
-Per-backend qualified counts stay separate from target257/6908496/6908496. Disabled
+Per-backend qualified counts stay separate from target257/6908496/6908496. Their countBasis is
+producer-reported if either backing count remains producer-attributed, even when
+the store has a scoped independent point-access PASS; populationCountIndependentlyVerified
+then remains false. Producer counts alone never enable a role: current independent
+store qualification and custody are still required. This does not certify a whole
+population from point evidence. Disabled
 roles have no enabled counts. USDA pair validation is selected-pairs-on-query;
 Dietary observation counts never become products. OFF is explicitly subset-only.
 No aggregate materialized generation, country, canonical, English or gold
