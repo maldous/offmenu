@@ -419,7 +419,9 @@ def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                       source_record_id: str, country: str | None,
                       language: str, attribution: str | None = None) -> dict:
     """Extract a single recipe from a receipt-pinned HTML source snapshot."""
-    if source.get('adapter') in RECIPE_ADAPTERS:
+    if source.get('adapter') is not None:
+        if type(source['adapter']) is not str or source['adapter'] not in RECIPE_ADAPTERS:
+            raise ParseError('recipe-adapter-unselected')
         records = parse_html_recipes(raw, source=source, source_id=source_id,
             source_record_id=source_record_id, country=country, language=language,
             attribution=attribution)

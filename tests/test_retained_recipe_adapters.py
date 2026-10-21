@@ -125,6 +125,16 @@ class RetainedRecipeAdaptersTests(unittest.TestCase):
         with self.assertRaisesRegex(parser.ParseError, 'recipe-adapter-unselected'):
             parser.parse_html_recipes(raw, **arguments(raw, 'unknown'))
 
+    def test_singular_rejects_explicit_unknown_and_preserves_generic_selection(self):
+        raw = b'<h1>Fixture</h1><div><h2>Ingredients</h2><ul><li>1 cup rice</li></ul><h2>Method</h2><p>Cook rice.</p></div>'
+        for adapter in ('unknown', '', 17, {}, []):
+            with self.subTest(adapter=adapter), self.assertRaisesRegex(parser.ParseError, 'recipe-adapter-unselected'):
+                parser.parse_html_recipe(raw, **arguments(raw, adapter))
+        args = arguments(raw, None)
+        self.assertEqual(parser.parse_html_recipe(raw, **args)['originalTitle'], 'Fixture')
+        args['source'].pop('adapter')
+        self.assertEqual(parser.parse_html_recipe(raw, **args)['originalTitle'], 'Fixture')
+
     def test_atomic_plural_asset_emits_both_and_keeps_coverage_false(self):
         raw = MQ.encode()
         with tempfile.TemporaryDirectory() as directory:
