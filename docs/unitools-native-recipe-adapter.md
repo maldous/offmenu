@@ -50,6 +50,15 @@ read; 501 is the declared count and the historical 499 lead is unproven.
    remain with the execution owner; any `publicationHoldReasons` must hold
    publication. An import summary is not canonical, release or country acceptance.
 
+The native profile requires an idle `sqlite3.Connection` using legacy transaction
+control. On Python 3.12+, explicitly select
+`autocommit=sqlite3.LEGACY_TRANSACTION_CONTROL` (the existing default); earlier
+Python versions use their legacy connection behavior. `autocommit=True`,
+`autocommit=False`, and an active caller transaction are rejected with
+`recipe-store-unitools-connection-mode` before any database statements. The
+caller transaction is left untouched. This preflight is native-only; the
+default HTML writer path is unchanged.
+
 The source read has an 8 MiB hard cap, 1,024 occurrence cap and 5,000 ingredient
 and step caps per occurrence. Projection has a 16 MiB cap. Worker13's proposed
 first load additionally selects 2 CPUs/2 GiB, 120-second worker/180-second outer

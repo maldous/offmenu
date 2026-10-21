@@ -59,11 +59,12 @@ class UnitoolsAdapterTests(unittest.TestCase):
             os.close(fd)
         return verified
 
-    def load(self, verified):
+    def load(self, verified, *, db=None):
         assets = [adapter.asset_from_verified(verified)]
         manifest = store.prepare_recipe_menu(assets, accepted_source_adapter=verified)
-        db = sqlite3.connect(':memory:')
-        self.addCleanup(db.close)
+        if db is None:
+            db = sqlite3.connect(':memory:')
+            self.addCleanup(db.close)
         limits = store.StoreLimits(8 * 1024**2, 1, 1024, 16 * 1024**2, 5000, 5000,
                                    64 * 1024**2, 128 * 1024**2, 120)
         result = store.ingest_recipe_menu(db, assets, limits=limits, run_id='generated-unitools',
@@ -255,6 +256,57 @@ class UnitoolsAdapterTests(unittest.TestCase):
             self.assertFalse(caught.exception.receipt['custodyVerified'])
         finally:
             os.close(fd)
+
+    def test_native_completion_is_idle_and_committed(self):
+        verified = self.selected()
+        db, result = self.load(verified)
+        self.assertTrue(result['sourceImportComplete'])
+        self.assertFalse(db.in_transaction)
+        self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0], 1)
+        db.execute('BEGIN')
+        db.execute('ROLLBACK')
+        self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0], 1)
+        self.assertEqual(db.execute('SELECT state,observed_records FROM recipe_store_release').fetchone(), ('completed', 1))
+
+    def test_native_rejects_autocommit_modes_and_active_transaction_before_sql(self):
+        verified = self.selected()
+        modes = [('legacy-active', {})]
+        if hasattr(sqlite3, 'LEGACY_TRANSACTION_CONTROL'):
+            modes += [('autocommit-true', {'autocommit': True}), ('autocommit-false', {'autocommit': False})]
+        for mode, options in modes:
+            with self.subTest(mode=mode):
+                db = sqlite3.connect(':memory:', **options)
+                try:
+                    if mode == 'legacy-active':
+                        db.execute('BEGIN')
+                    before = db.in_transaction
+                    statements = []
+                    db.set_trace_callback(statements.append)
+                    with self.assertRaisesRegex(RefreshError, 'recipe-store-unitools-connection-mode'):
+                        self.load(verified, db=db)
+                    self.assertEqual(statements, [])
+                    self.assertEqual(db.in_transaction, before)
+                    self.assertEqual(db.execute('SELECT count(*) FROM sqlite_master').fetchone()[0], 0)
+                finally:
+                    db.close()
+
+    def test_native_failure_commits_incomplete_state_and_is_idle(self):
+        data = document()
+        data['recipes'][0]['steps'][0]['text'].pop('en')
+        verified = self.selected(data)
+        db = sqlite3.connect(':memory:')
+        try:
+            with self.assertRaisesRegex(adapter.UnitoolsError, 'step-language-held'):
+                self.load(verified, db=db)
+            self.assertFalse(db.in_transaction)
+            self.assertEqual(db.execute('SELECT state,observed_records,exception_count FROM recipe_store_release').fetchone(), ('incomplete', 0, 1))
+            db.execute('BEGIN')
+            db.execute('ROLLBACK')
+            self.assertEqual(db.execute('SELECT count(*) FROM recipe_store_exception').fetchone()[0], 1)
+            self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0], 0)
+        finally:
+            db.close()
+
 
 
 if __name__ == '__main__':

@@ -172,6 +172,8 @@ def ingest_recipe_menu(db,assets,*,parser_module=None,parse_asset_once=None,limi
             or any(type(v)is not int or not 0<v<2**63 for v in asdict(limits).values())
             or not _sha(selection_receipt_sha256)or input_manifest_sha256!=_hash(manifest)
             or type(run_id)is not str or not 0<len(run_id)<=256 or not callable(parse_asset_once)):_fail('selection-or-limits')
+    if native is not None and(db.in_transaction or getattr(db,'autocommit',-1)!=-1):
+        _fail('unitools-connection-mode')
     if len(assets)>limits.max_assets or sum(a['inputBytes']for a in assets)>limits.max_input_bytes:_fail('input-manifest-bound')
     if native is None and(getattr(parser_module,'PARSER_VERSION',None)!=PARSER_VERSION or hashlib.sha256(Path(parser_module.__file__).read_bytes()).hexdigest()!=PARSER_SHA256):_fail('parser-code-pin')
     if db.execute("SELECT name FROM sqlite_master WHERE type IN ('table','view') LIMIT 1").fetchone():_fail('new-empty-store-required')
