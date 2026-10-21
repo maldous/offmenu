@@ -395,7 +395,7 @@ def _identifier(value,rules,max_bytes):
         return ({'missing-or-null-value':'missing-null','nonstring-value':'invalid-nonstring',
                  'empty-value':'empty','unknown-namespace':'unknown-namespace'}.get(first,'other-invalid'),
                 rules.get(system) if type(system) is str else None,
-                lexical if type(lexical) is str else None,raw,reasons)
+                lexical if type(lexical) is str and len(raw)<=max_bytes else None,raw,reasons)
     return 'eligible',rules[system],lexical,raw,[]
 
 
@@ -420,13 +420,13 @@ def _insert_metadata(db,table,key,value):
            value.get('custody_receipt_sha256'),canonical(value.get('unknowns',[])).decode(),encoded))
 
 
-def _exception(db,counts,m,ordinal,field,code,details,limits):
+def _exception(db,counts,m,ordinal,field,code,details,limits,*,disposition='unresolved'):
     counts['exceptions']+=1
     last=db.execute('SELECT coalesce(max(exception_ordinal),0) FROM identifier_exception WHERE run_id=?',(m['runId'],)).fetchone()[0]
     if last>=limits.max_exceptions: _fail('exception-bound')
     db.execute('INSERT INTO identifier_exception(run_id,exception_ordinal,input_id,record_ordinal,identifier_ordinal,source_pointer,reason_code,disposition,details_json) VALUES(?,?,?,?,?,?,?,?,?)',
        (m['runId'],last+1,m['inputId'],ordinal,field+1 if field is not None else None,
-        details.get('sourcePointer'),code,'fatal' if code=='malformed-or-wrong-scope' else 'unresolved',canonical(details).decode()))
+        details.get('sourcePointer'),code,'fatal' if code=='malformed-or-wrong-scope' else disposition,canonical(details).decode()))
 
 
 def _record(db,m,job,ordinal,raw,counts,limits,projection,locator=None):
@@ -492,7 +492,8 @@ def _record(db,m,job,ordinal,raw,counts,limits,projection,locator=None):
                None if status=='eligible' else status,identifier,encoded.decode() if len(encoded)<=limits.max_identifier_bytes else None,
                raw_hash,len(encoded),canonical(reasons).decode(),status))
         projection.update(canonical(['identifier',ordinal,index+1,status,raw_hash]))
-        if status!='eligible':_exception(db,counts,m,ordinal,index,status,{'rawSha256':raw_hash,'bytes':len(encoded),'reasons':reasons},limits)
+        if status!='eligible':_exception(db,counts,m,ordinal,index,status,{'rawSha256':raw_hash,'bytes':len(encoded),'reasons':reasons,
+            'sourcePointer':pointer+'/data/identifiers/'+str(index)},limits,disposition=primary)
     counts['products_with_eligible' if eligible else 'products_only_unresolved']+=1
     counts['products_missing_barcode_entry']+=int(not barcode_seen)
     return True

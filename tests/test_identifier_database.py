@@ -233,6 +233,37 @@ class IdentifierDatabaseTests(unittest.TestCase):
             self.assertEqual(db.execute('SELECT count(*) FROM identifier_source_record').fetchone()[0],22)
             self.assertEqual(db.execute('SELECT source_row,native_candidate_ordinal,record_ordinal FROM identifier_source_record ORDER BY record_ordinal LIMIT 1').fetchone(),(100,1,1))
 
+    def test_oversized_identifier_retains_only_hash_extent_and_locator(self):
+        value='Z'*(60*1024);entry={'system':'barcode','value':value}
+        encoded=canonical(entry);result=self.build(self.fixture([self.row('large',[entry])]))
+        with closing(sqlite3.connect(self.target)) as db:
+            row=db.execute('SELECT lexical_value,raw_json,raw_sha256,raw_bytes,source_pointer FROM identifier_assertion').fetchone()
+            self.assertEqual(row,(None,None,hashlib.sha256(encoded).hexdigest(),len(encoded),'/0/data/identifiers/0'))
+            self.assertEqual(db.execute('SELECT count(*) FROM identifier').fetchone()[0],0)
+        query=s.query_identifiers(result,disposition='invalid')['rows']
+        self.assertEqual(len(query),1);self.assertIsNone(query[0]['lexical_value'])
+        self.assertIsNone(query[0]['raw_json']);self.assertNotIn(value.encode(),self.target.read_bytes())
+
+    def test_identifier_exception_disposition_and_locator_match_assertion(self):
+        entries=[{'system':'barcode','value':''},{'system':'barcode','value':123},
+                 {'system':'barcode','value':'bad\x00value'},'not-object',
+                 {'system':'barcode','value':False},{'system':'barcode','value':None},
+                 {'system':'barcode'},{'system':'unknown','value':'00123'}]
+        self.build(self.fixture([self.row('invalids',entries)]))
+        with closing(sqlite3.connect(self.target)) as db:
+            rows=db.execute('SELECT a.identifier_ordinal,a.disposition,e.disposition,a.source_pointer,e.source_pointer,e.details_json '
+                'FROM identifier_assertion a JOIN identifier_exception e USING(run_id,input_id,record_ordinal,identifier_ordinal) '
+                'ORDER BY a.identifier_ordinal').fetchall()
+        self.assertEqual(len(rows),len(entries))
+        for i,(ordinal,assertion,exception,pointer,exception_pointer,details) in enumerate(rows):
+            with self.subTest(ordinal=ordinal):
+                self.assertEqual(assertion,'invalid' if i<5 else 'unresolved')
+                self.assertEqual(exception,assertion)
+                self.assertEqual(exception_pointer,pointer)
+                self.assertEqual(pointer,'/0/data/identifiers/'+str(i))
+                self.assertEqual(json.loads(details)['rawSha256'],hashlib.sha256(canonical(entries[i])).hexdigest())
+                self.assertEqual(json.loads(details)['bytes'],len(canonical(entries[i])))
+
     def test_asset_unknown_reasons_preserve_reviewer_objects_and_legacy_callers(self):
         # W64-IDB-001: both reason objects from the reviewer's reproduction.
         reasons=[
