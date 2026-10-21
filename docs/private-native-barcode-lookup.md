@@ -197,18 +197,31 @@ Existing legacy fallback/null-collapse/quantity conversion/country mapping/basis
 and derived-value limitations survive. No original JSON number-token format,
 language, canonical identity, certification or missing publisher field is guessed.
 
-`read_product_details(connection, observations, selection=ProductDetailQuerySelection(...))`
+`read_product_details(connection, observations, selection=ProductDetailQuerySelection(...),
+identifier_evidence=CurrentIdentifierEvidence(identifier_connection, selected_run_id, selected_database_sha256))`
 uses the namespaced lexical B-tree for bounded candidates, then verifies source,
 release, parent input/hash, original/native ordinal and native/source record IDs
-against each complete current identifier observation. It returns all exact linked
+against each complete current identifier observation. Before any detail lookup,
+it checks the assertion primary key in the persisted identifier inspection view,
+including the independently selected run, actual disposition and completed load
+state. Missing, changed, invalid or fabricated assertions return `not-loaded`
+without a bridge. A missing or mismatched evidence context fails explicitly.
+It returns all exact linked
 projections; multiple eligible projections are explicit ambiguity, never a first
 winner. Exact bridges are returned as evidence in memory. The optional physical
 bridge table starts empty rather than requiring a replay of millions of identifier
 rows. No query writes, gzip scans, full DB hashes or global count scans occur.
-The existing05 caller supplies a generation-selected RO held DB and verifies its
-external receipt/custody. The helper checks trusted generation/manifest/operation/
+The existing05 caller supplies both generation-selected RO held connections and
+verifies their external receipts/custody. Construct the identifier evidence context
+from that trusted selected receipt, never request observations. The module opens
+neither DB itself and does not hash the full identifier DB. The helper checks trusted generation/manifest/operation/
 identifier-DB pins, at most25 observations, candidate/VM/time/256KiB result bounds,
-and clears its progress hook on all exits. Oversize/errors stay explicit; do not
+and clears both progress hooks on exits. Identifier verification performs at most
+one indexed assertion point lookup per observation; no assertion replay is needed.
+USDA scanner `originalAssetSHA256s` contains only source inputs: the contract's
+rights, scope and optional clock evidence paths are excluded, as in the identifier
+loader's original-lineage rule. Such evidence hashes cannot substitute for an
+original-source manifest binding. Oversize/errors stay explicit; do not
 convert them to an empty match or truncate ingredient/nutrient data.
 
 The result's `sourceProducts`/observation keys/field states compose through the

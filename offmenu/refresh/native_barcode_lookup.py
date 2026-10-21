@@ -430,11 +430,15 @@ def scan_qualified_native_product_pairs(candidate, *, contract, qualification, q
                      and digest.hexdigest() == q['candidateSha256'], 'native-pair-hash-or-count')
             _require(_identity(os.fstat(raw.fileno())) == identity, 'native-pair-custody')
         _require(_identity(_safe(path).stat()) == identity, 'native-pair-custody'); guard()
+        evidence_paths = {contract.rights_evidence.path, contract.scope_evidence.path}
+        if contract.clock_evidence is not None:
+            evidence_paths.add(contract.clock_evidence.path)
         return {'assetSha256': q['candidateSha256'], 'scannedBytes': total, 'scannedRecords': count,
                 'scannedProducts': pairs, 'scannedProfiles': pairs, 'EOFFullyVerified': True,
                 'bodyPasses': 1, 'qualificationSha256': qualification_sha256, 'fixture': q['fixture'],
                 'sourceId': contract.source_id, 'releaseId': contract.release_id,
-                'originalAssetSHA256s': [a.sha256 for a in contract.inputs], 'identifierAssetSha256': q['candidateSha256']}
+                'originalAssetSHA256s': [a.sha256 for a in contract.inputs if a.path not in evidence_paths],
+                'identifierAssetSha256': q['candidateSha256']}
     except NativeLookupError:
         raise
     except Exception:

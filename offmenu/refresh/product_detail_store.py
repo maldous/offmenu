@@ -295,13 +295,34 @@ class ProductDetailQuerySelection:
     identifier_database_sha256: str
 
 
-def read_product_details(db, observations, *, selection, max_candidates=100,
+@dataclass(frozen=True)
+class CurrentIdentifierEvidence:
+    """Trusted caller's independently selected, held RO identifier generation.
+
+    Connection custody and database digest selection belong to caller05/57, just
+    like the detail-store connection. Never construct this from request rows.
+    The selected run is independent of the requested observation's run_id.
+    """
+    db: sqlite3.Connection
+    run_id: str
+    database_sha256: str
+
+
+CURRENT_OBSERVATION_COLUMNS = ('run_id', 'assertion_id', 'disposition', 'input_id',
+    'record_ordinal', 'namespace', 'lexical_value', 'source_id', 'release_id',
+    'artifact_sha256', 'native_record_id', 'source_record_id')
+CURRENT_OBSERVATION_SQL = ('SELECT ' + ','.join(CURRENT_OBSERVATION_COLUMNS) +
+    ',load_state FROM barcode_identifier_inspection WHERE assertion_id=? AND run_id=?')
+
+
+def read_product_details(db, observations, *, selection, identifier_evidence=None, max_candidates=100,
                          max_result_bytes=262144, max_steps=100000, max_seconds=5):
     """Private caller-selected RO store; exact indexed source bridges, no scan.
 
     Caller05 validates the external detail receipt/held DB custody once per
     selected generation. This reads no files and computes no full DB hash.
-    Returned bridges bind the actual current observation; no HTTP-side DB writes.
+    Each requested assertion is checked by PK against independently selected
+    persisted identifier evidence. No assertion replay or HTTP-side DB writes.
     """
     if (type(selection) is not ProductDetailQuerySelection
             or any(not _sha(v) for k, v in asdict(selection).items() if k != 'generation_id')
@@ -309,12 +330,18 @@ def read_product_details(db, observations, *, selection, max_candidates=100,
             or any(type(v) is not int or v <= 0 for v in (max_candidates, max_result_bytes, max_steps, max_seconds))
             or max_candidates > 1000 or max_result_bytes > 262144
             or len(canonical(observations)) > max_result_bytes): _fail('query-selection-or-bound')
+    if (type(identifier_evidence) is not CurrentIdentifierEvidence
+            or not isinstance(identifier_evidence.db, sqlite3.Connection)
+            or identifier_evidence.db is db
+            or type(identifier_evidence.run_id) is not str or not identifier_evidence.run_id
+            or identifier_evidence.database_sha256 != selection.identifier_database_sha256): _fail('query-identifier-evidence')
     start = time.monotonic(); steps = [0]; result = []; availability = []
     def progress():
         steps[0] += 100
         return int(steps[0] > max_steps or time.monotonic() - start >= max_seconds)
     db.set_progress_handler(progress, 100)
     try:
+        identifier_evidence.db.set_progress_handler(progress, 100)
         generation = db.execute('SELECT input_manifest_sha256,operation_selection_sha256,state,coverage_scope_json,expected_asset_count,processed_asset_count,product_records,profile_records FROM product_detail_generation WHERE generation_id=?', (selection.generation_id,)).fetchone()
         if (generation is None or generation[:3] != (selection.input_manifest_sha256, selection.operation_selection_sha256, 'completed')
                 or generation[4] != generation[5]
@@ -326,6 +353,14 @@ def read_product_details(db, observations, *, selection, max_candidates=100,
                     or not _sha(observation.get('artifact_sha256'))): _fail('query-observation')
             key = {name: observation[name] for name in ('run_id', 'input_id', 'assertion_id', 'record_ordinal')}
             key['databaseSha256'] = selection.identifier_database_sha256
+            current = identifier_evidence.db.execute(CURRENT_OBSERVATION_SQL,
+                (observation['assertion_id'], identifier_evidence.run_id)).fetchone()
+            if (current is None or current[-1] not in ('completed', 'completed-with-exceptions')
+                    or current[2] != 'source-asserted'
+                    or any(observation.get(name) != value for name, value in zip(CURRENT_OBSERVATION_COLUMNS, current))):
+                availability.append({'observationKey': key, 'state': 'not-loaded', 'eligibleProjections': 0,
+                    'reasonCode': 'no-current-identifier-assertion'})
+                continue
             rows = db.execute('SELECT i.reference_record_id,p.source_binding_json,coalesce(length(CAST(p.fields_json AS BLOB)),0),p.paired_profile_reference '
                 'FROM product_detail_identifier i INDEXED BY product_detail_key_lookup CROSS JOIN product_detail_projection p ON p.reference_record_id=i.reference_record_id '
                 'WHERE i.namespace=? AND i.lexical_value=? AND p.generation_id=? AND p.record_kind=? ORDER BY i.reference_record_id LIMIT ?',
@@ -352,7 +387,10 @@ def read_product_details(db, observations, *, selection, max_candidates=100,
                 matched.add(ref)
                 result.append({'observationKey': key, 'sourceObservation': observation, 'sourceBinding': binding,
                     'referenceRecordId': ref, 'records': records, 'fields': fields, 'projectionLimitations': limitations,
-                    'exactObservationBridge': {'state': 'matched', 'key': key, 'evidence': binding, 'persisted': False},
+                    'exactObservationBridge': {'state': 'matched', 'key': key, 'evidence': binding, 'persisted': False,
+                        'assertionEvidence': {'kind': 'persisted-identifier-observation',
+                            'databaseSha256': identifier_evidence.database_sha256,
+                            **dict(zip(CURRENT_OBSERVATION_COLUMNS, current))}},
                     'canonicalIngredient': {'conceptId': None, 'status': 'unmapped'},
                     'assurance': 'source-native retained projection only; no canonical/English/gold/dietary certification'})
                 if len(canonical(result)) > max_result_bytes: _fail('query-result-bound')
@@ -371,3 +409,4 @@ def read_product_details(db, observations, *, selection, max_candidates=100,
         return output
     finally:
         db.set_progress_handler(None, 0)
+        identifier_evidence.db.set_progress_handler(None, 0)
