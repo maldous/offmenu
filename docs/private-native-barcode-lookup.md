@@ -90,3 +90,65 @@ runtime/read selection. Existing incident10230, source-operation/privacy/custody
 failed25/P1/review/platform and caller/runtime/public/production/CIX holds remain.
 Gateway selects independent review and existing00 alone integrates source. Real
 lookup rows remain0 until eligible input and execution are actually selected.
+
+## Retained paired OFF projection adapter
+
+`lookup_retained_off_products(path, selection=RetainedProductShard(...),
+observations=selected_identifier_rows, limits=RetainedProductLimits(...))` is an
+additional preparation/load-time callable in the same module. It does not change
+the qualified-native consumer above. It reads exactly one independently selected
+legacy OFF gzip shard, never the original dump, identifier DB or sibling shards.
+There is no real-data factory, CLI, server, image fetch or automatic retry.
+
+Trusted application code selects the manifest-derived shard key, exact extent and
+SHA, original/occurrence/database hashes, current five-part file identity, current
+rights/custody/operation receipt pins, retain/parse/transform operations and holds.
+These typed values are evidence bindings, not permission or review grants. Caller57
+owns real source/FD/runtime/resource selection; fixture success grants none.
+Gateway selected the private local scanner consumer scope only. Public/cloud/
+production distribution, training, image use and denied routes remain unselected.
+
+The bounded input is at most25 current identifier observations from trusted code,
+not client-provided paths, ordinals or SQL. Every observation binds its run, input,
+assertion, source/release, exact lexical code, original occurrence ID and occurrence
+asset. Each projected packet must contain the linked product and nutrient profile
+with the same original sourceRow/archiveSHA/release/code. A same-barcode packet at
+another ordinal never supplies details. All requested observations survive;
+missing duplicate/quarantine bodies stay `not-loaded`, with no selected primary.
+
+The implementation uses one read-only, no-follow/nonblocking held FD and one
+hashing gzip parse/CRC/EOF pass. It validates every packet's schema, shard key,
+unique legacy native key and profile provenance. Exact compressed extent/hash,
+packet count and named/held identity are checked before any result returns.
+Byte/packet/expanded/result/deadline failures are fixed errors, never partial
+success or a false source absence. Caller-owned OS limits remain necessary.
+
+Returned sourceProducts carry exact observation keys, the original observation,
+LOCAL citation ID if supplied, complete paired projected records and field states.
+Fields include name/names/brand, package quantity, markets/categories, ingredient
+declaration, raw nutriments and source basis, the complete nutrient profile,
+allergen/trace/dietary-label source claims, origins, manufacturing places and
+provenance. Unknown data stays in the complete records. `canonicalIngredient`
+remains null/unmapped and never suppresses source text. Empty string, explicit
+null and absent projected field are distinct; original publisher presence and
+per-field language remain unknown. The packet evidence SHA uses this module's
+canonical sorted JSON bytes, not original JSON lexemes or the original body SHA.
+The packet coordinate plus `/0/...` or `/1/...` field pointer locates the value.
+
+This historical projection may have used name fallback, collapsed source
+missing/null/empty values, converted package numbers, mapped countries, defaulted
+nutrient bases or derived nutrient values. Returned text/quantities are exactly
+the retained projection, with these limits stated; they are not upgraded to raw
+source lexemes, English, canonical facts, allergen safety or dietary certification.
+Image references are `not-loaded/representation-not-provided`; original image
+availability is unknown. No barcode-derived image URL is invented.
+
+Use this callable once in the selected preparation/population operation, retaining
+its qualified output in the existing product-detail read model for the sole05/UI
+consumer. Do not invoke a shard scan on every HTTP request or rebuild the full
+identifier DB. The deterministic shard rule applies to every exact barcode;
+there is no hardcoded product. Full identifier-index coverage and populated
+product-detail coverage remain separate. Additional shards/full-scope population
+need their own exact eligible input/runtime selection, rather than a hidden scan.
+The host may render typed `not-loaded` failures without hiding identifier matches;
+`restricted` requires a concrete current source-use hold, not a missing receipt.
