@@ -95,6 +95,61 @@ class ProductDetailResumeTests(unittest.TestCase):
         self.assertFalse(db.in_transaction)
         self.assertEqual(db.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<2000) SELECT sum(x) FROM n').fetchone(), (2001000,))
 
+    def test_initial_coverage_rejects_all_writer_owned_keys_before_SQL(self):
+        forged={'operationSelectionSha256':'1'*64,'checkpointSha256':'2'*64,
+            'previousCoverageSha256':'3'*64,'startedAfterAssetCount':1,
+            'startedAt':'2026-10-22T00:00:00+11:00','previousExceptions':[]}
+        values={'resumeAttempts':[forged],'identifierOccurrences':999,
+            'identifierDatabaseSha256':'c'*64,'assets':[],'sourceFirst':True}
+        for key,value in values.items():
+            with self.subTest(key=key),closing(sqlite3.connect(':memory:')) as db:
+                statements=[];db.set_trace_callback(statements.append)
+                args=self.args(scan=lambda *a:self.fail('reserved coverage reached scanner'))
+                args['coverage_scope']={'scope':'caller metadata',key:value}
+                with self.assertRaisesRegex(RefreshError,'coverage-reserved-key'):
+                    store.ingest_product_details(db,self.assets,**args)
+                self.assertEqual(statements,[]);db.set_trace_callback(None)
+                self.assertEqual(db.execute('SELECT count(*) FROM sqlite_master').fetchone(),(0,))
+                self.assertFalse(db.in_transaction)
+
+    def test_resume_coverage_rejects_all_writer_owned_keys_without_prefix_mutation(self):
+        checkpoint=self.prefix();before=self.path.read_bytes()
+        for key,value in {'resumeAttempts':[],'identifierOccurrences':0,
+            'identifierDatabaseSha256':'c'*64,'assets':[],'sourceFirst':True}.items():
+            with self.subTest(key=key),closing(sqlite3.connect(self.path)) as db:
+                statements=[];db.set_trace_callback(statements.append)
+                args=self.args();args['coverage_scope'][key]=value
+                with self.assertRaisesRegex(RefreshError,'coverage-reserved-key'):
+                    store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                        checkpoint_sha256=store._hash(checkpoint),**args)
+                self.assertEqual(statements,[]);db.set_trace_callback(None)
+                self.assertEqual(self.scans,[]);self.usable(db)
+            self.assertEqual(self.path.read_bytes(),before)
+
+    def test_normal_coverage_preserves_nested_metadata_and_starts_empty_writer_lineage(self):
+        scope={'scope':'generated normal scope','unknownExtension':{'resumeAttempts':['caller note'],
+            'identifierOccurrences':'nested non-control annotation'},'note':None}
+        def fail_A(asset,consume):raise RuntimeError('generated before any asset commit')
+        with closing(sqlite3.connect(self.path)) as db:
+            args=self.args(scan=fail_A,operation='e'*64);args['coverage_scope']=scope
+            with self.assertRaisesRegex(RuntimeError,'before any asset commit'):
+                store.ingest_product_details(db,self.assets,**args)
+            coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+            self.assertEqual({k:coverage[k] for k in scope},scope)
+            self.assertEqual(coverage.get('resumeAttempts',[]),[])
+            self.assertEqual(coverage.get('identifierOccurrences',0),0)
+        checkpoint=self.select()
+        with closing(sqlite3.connect(self.path)) as db:
+            args=self.args();args['coverage_scope']=scope
+            result=store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                checkpoint_sha256=store._hash(checkpoint),**args)
+            coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+            self.assertEqual({k:coverage[k] for k in scope},scope)
+            self.assertEqual(len(result['resumeAttempts']),1)
+            self.assertEqual(result['resumeAttempts'][0]['startedAfterAssetCount'],0)
+            self.assertEqual(coverage['identifierOccurrences'],4)
+            self.assertEqual((result['products'],result['profiles'],len(result['completedAssets'])),(4,4,3))
+
     def test_resume_skips_A_including_all_source_file_access_and_preserves_query_lineage(self):
         checkpoint = self.prefix()
         with closing(sqlite3.connect(self.path)) as db:
