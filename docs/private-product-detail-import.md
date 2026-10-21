@@ -257,6 +257,25 @@ silently raised above that selection. OS limits, owned-envelope/journal/free-spa
 guards, custody and a new once are separate Worker57/Gateway responsibilities.
 No source success implies adequate physical capacity, publication or acceptance.
 
+The new-record limit is enforced explicitly on each canonical source record,
+including its LF, before inserting that record. It is independent of writer
+metadata and the serialized SQLite row. Checkpoint-receipt and coverage/lineage
+JSON each have a 2 MiB budget; exception JSON and each preserved attempt's prior
+exception JSON have a 16 KiB budget. Stored coverage/exception byte lengths are
+checked in SQL before fetching/decoding those values. Coverage is bounded again
+at every initial, attempt and asset update; no metadata is truncated to fit.
+The existing 1024-attempt bound also remains. Metadata overflow refuses admission
+or rolls back the current asset, retaining the preceding committed prefix.
+
+During either writer API, SQLite's string/blob/serialized-row ceiling is at most
+32 MiB, or the caller's existing stricter ceiling. This finite SQL ceiling permits
+retained metadata and small new records even when `max_record_bytes` is lower
+than the metadata. The explicit new-record cap is unchanged. A deliberately
+stricter caller SQL policy can still refuse larger values; the writer does not
+raise it. The original caller ceiling is restored in the same final cleanup as
+the progress handler, on success and failure. These are source-level metadata
+and SQL budgets, separate from actual runtime storage/OS/resource selections.
+
 Current-asset failures retain all prior commits. If recording `incomplete` itself
 fails (for example a full store), the error escapes and the state may remain
 `loading`: no complete receipt or automatic retry/repair is produced. A fully

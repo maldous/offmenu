@@ -150,6 +150,118 @@ class ProductDetailResumeTests(unittest.TestCase):
             self.assertEqual(coverage['identifierOccurrences'],4)
             self.assertEqual((result['products'],result['profiles'],len(result['completedAssets'])),(4,4,3))
 
+    def metadata_prefix(self):
+        scope={'scope':'generated fixture, not actual population','retainedMetadata':'x'*12000}
+        def fail_B(asset,consume):
+            receipt=self.scan(asset,consume)
+            return dict(receipt,EOFFullyVerified=False) if asset['assetId']=='fixture-usda' else receipt
+        with closing(sqlite3.connect(self.path)) as db:
+            args=self.args(scan=fail_B,operation='e'*64);args['coverage_scope']=scope
+            with self.assertRaisesRegex(RefreshError,'asset-receipt'):
+                store.ingest_product_details(db,self.assets,**args)
+            # Generated closed checkpoint with lossless diagnostics larger than
+            # the NEW record cap; still within the existing 16 KiB contract.
+            diagnostics=[{'assetId':'fixture-usda','reason':'generated diagnostic '+'d'*7000}]
+            db.execute('UPDATE product_detail_generation SET exceptions_json=?',(store.canonical(diagnostics).decode(),));db.commit()
+        self.scans.clear()
+        return self.select(),scope,diagnostics
+
+    def test_retained_metadata_above_new_record_cap_resumes_small_records_losslessly(self):
+        checkpoint,scope,diagnostics=self.metadata_prefix()
+        limits=replace(self.f.limits,max_record_bytes=4096)
+        with closing(sqlite3.connect(self.path)) as db:
+            old=self.rows(db);old_limit=db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+            args=self.args(limits=limits);args['coverage_scope']=scope
+            result=store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                checkpoint_sha256=store._hash(checkpoint),**args)
+            self.assertEqual(self.rows(db),old);self.assertEqual(self.scans,['fixture-usda','fixture-C'])
+            self.assertEqual(result['resumeAttempts'][0]['previousExceptions'],diagnostics)
+            coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+            self.assertEqual(coverage['retainedMetadata'],scope['retainedMetadata'])
+            self.assertEqual((result['products'],result['profiles'],len(result['completedAssets'])),(4,4,3))
+            self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_limit)
+            self.check_query(db);self.usable(db)
+
+    def test_retained_metadata_does_not_relax_new_record_cap_on_failure(self):
+        checkpoint,scope,diagnostics=self.metadata_prefix()
+        with closing(sqlite3.connect(self.path)) as db:
+            old=self.rows(db);old_limit=db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+            def large(asset,consume):
+                def inflated(packet,*coordinates):
+                    packet=copy.deepcopy(packet);packet[0]['data']['generatedLarge']='x'*6000
+                    consume(packet,*coordinates)
+                return self.scan(asset,inflated)
+            args=self.args(scan=large,limits=replace(self.f.limits,max_record_bytes=4096));args['coverage_scope']=scope
+            with self.assertRaisesRegex(RefreshError,'record-byte-bound'):
+                store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                    checkpoint_sha256=store._hash(checkpoint),**args)
+            self.assertEqual(self.rows(db),old)
+            self.assertEqual(db.execute('SELECT processed_asset_count,state FROM product_detail_generation').fetchone(),(1,'incomplete'))
+            coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+            self.assertEqual(coverage['retainedMetadata'],scope['retainedMetadata'])
+            self.assertEqual(coverage['resumeAttempts'][0]['previousExceptions'],diagnostics)
+            self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_limit);self.usable(db)
+
+    def test_checkpoint_metadata_bounds_refuse_without_reading_sources_or_changing_prefix(self):
+        self.prefix()
+        pristine=self.path.read_bytes()
+        with closing(sqlite3.connect(self.path)) as db:
+            coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+        for field,value in (('coverage_scope_json',store.canonical(dict(coverage,tooLarge='x'*(2*1024**2))).decode()),
+                            ('exceptions_json',store.canonical([{'reason':'x'*16384}]).decode())):
+            with self.subTest(field=field):
+                self.path.write_bytes(pristine)
+                with closing(sqlite3.connect(self.path)) as db:
+                    db.execute('UPDATE product_detail_generation SET '+field+'=?',(value,));db.commit()
+                checkpoint=self.select();before=self.path.read_bytes()
+                with closing(sqlite3.connect(self.path)) as db:
+                    old_limit=db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+                    with self.assertRaisesRegex(RefreshError,'checkpoint-metadata-bound'):self.resume(db,checkpoint)
+                    self.assertEqual(self.scans,[])
+                    self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_limit);self.usable(db)
+                self.assertEqual(self.path.read_bytes(),before)
+
+    def test_metadata_growth_budget_refuses_losslessly_and_respects_stricter_SQL_policy(self):
+        checkpoint,scope,diagnostics=self.metadata_prefix();before=self.path.read_bytes()
+        with closing(sqlite3.connect(self.path)) as db,patch.object(store,'_MAX_CONTROL_JSON_BYTES',16384):
+            old_limit=db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH);args=self.args();args['coverage_scope']=scope
+            with self.assertRaisesRegex(RefreshError,'metadata-byte-bound'):
+                store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                    checkpoint_sha256=store._hash(checkpoint),**args)
+            self.assertEqual(self.scans,[]);self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_limit);self.usable(db)
+        self.assertEqual(self.path.read_bytes(),before)
+        # A deliberately stricter caller SQL policy is neither raised nor lost.
+        with closing(sqlite3.connect(self.path)) as db:
+            db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH,65536)
+            def guarded(asset,consume):
+                self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),65536)
+                return self.scan(asset,consume)
+            args=self.args(scan=guarded,limits=replace(self.f.limits,max_record_bytes=4096));args['coverage_scope']=scope
+            result=store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                checkpoint_sha256=store._hash(checkpoint),**args)
+            self.assertEqual(len(result['completedAssets']),3)
+            self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),65536);self.usable(db)
+
+    def test_metadata_above_new_record_cap_zero_remaining_finalizes_without_scanner(self):
+        scope={'scope':'generated fixture, not actual population','retainedMetadata':'x'*12000}
+        with closing(sqlite3.connect(self.path)) as db,patch.object(store.time,'monotonic',return_value=100.0) as clock:
+            final=[False]
+            def trace(sql):
+                if sql.startswith("UPDATE product_detail_generation SET state='completed'"):final[0]=True
+                if final[0] and sql=='COMMIT':clock.return_value=1000.0
+            args=self.args(operation='e'*64);args['coverage_scope']=scope;db.set_trace_callback(trace)
+            with self.assertRaisesRegex(RefreshError,'time-bound'):store.ingest_product_details(db,self.assets,**args)
+            db.set_trace_callback(None)
+        checkpoint=self.select();self.scans.clear()
+        with closing(sqlite3.connect(self.path)) as db:
+            old=[self.rows(db,a['assetId']) for a in self.assets];old_limit=db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+            args=self.args(scan=lambda *a:self.fail('completed source reread'),limits=replace(self.f.limits,max_record_bytes=4096));args['coverage_scope']=scope
+            result=store.resume_existing_product_details(db,self.assets,checkpoint_receipt=checkpoint,
+                checkpoint_sha256=store._hash(checkpoint),**args)
+            self.assertEqual(result['previouslyCompletedAssets'],3);self.assertEqual(self.scans,[])
+            self.assertEqual([self.rows(db,a['assetId']) for a in self.assets],old)
+            self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_limit);self.usable(db)
+
     def test_resume_skips_A_including_all_source_file_access_and_preserves_query_lineage(self):
         checkpoint = self.prefix()
         with closing(sqlite3.connect(self.path)) as db:
