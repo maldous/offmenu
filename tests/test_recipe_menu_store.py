@@ -63,6 +63,55 @@ class RecipeMenuStoreTests(unittest.TestCase):
    self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0],1)
    self.assertEqual(db.execute('SELECT state,exception_count FROM recipe_store_release').fetchone(),('incomplete',1))
    self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
+ def test_post_loop_deadline_marks_actual_committed_prefix_incomplete(self):
+  assets=[self.asset('deadline-after-commit')]
+  with closing(sqlite3.connect(':memory:'))as db,patch.object(s.time,'monotonic',return_value=100.0)as clock:
+   inserted=[False]
+   def trace(sql):
+    if sql.startswith('INSERT INTO recipe_source_record'):inserted[0]=True
+    if inserted[0]and sql=='COMMIT':clock.return_value=1000.0
+   db.set_trace_callback(trace)
+   with self.assertRaisesRegex(RefreshError,'time-bound')as error:self.load(db,assets)
+   db.set_trace_callback(None)
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count FROM recipe_store_release').fetchone(),('incomplete',1,1))
+   self.assertEqual(error.exception.recipe_store_retained_state['sourceRowsRetained'],1)
+   self.assertEqual(error.exception.recipe_store_retained_state['committedAssetCounts'],[dict(sourceId=assets[0]['sourceId'],releaseId=assets[0]['release'],inputSHA256=assets[0]['inputSHA256'],records=1)])
+   self.assertIsNone(error.exception.recipe_store_retained_state['assetSHA256'])
+   self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
+   self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+ def test_final_reconciliation_failure_marks_actual_committed_rows_incomplete(self):
+  assets=[self.asset('final-reconciliation')];project=s._project_recipe
+  def corrupt_projection(db,*args):
+   variant=project(db,*args)
+   for table in ('recipe_ingredient_line','recipe_ordered_step','recipe_region_assertion','source_recipe_variant'):
+    db.execute('DELETE FROM '+table+' WHERE recipe_variant_id=?',(variant,))
+   return variant
+  with closing(sqlite3.connect(':memory:'))as db,patch.object(s,'_project_recipe',side_effect=corrupt_projection):
+   with self.assertRaisesRegex(RefreshError,'final-reconciliation')as error:self.load(db,assets)
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count FROM recipe_store_release').fetchone(),('incomplete',1,1))
+   self.assertEqual(error.exception.recipe_store_retained_state['sourceRowsRetained'],1)
+   self.assertEqual(error.exception.recipe_store_retained_state['committedAssetCounts'][0]['records'],1)
+   self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
+ def test_record_template_must_match_selected_kind_in_both_directions(self):
+  recipe=self.asset('hybrid-recipe');menu=self.asset('hybrid-menu','menuItem')
+  raw=self.raws[recipe['inputSHA256']]+self.raws[menu['inputSHA256']];sha=hashlib.sha256(raw).hexdigest();self.raws[sha]=raw
+  for kind in ('recipe','menuItem'):
+   with self.subTest(kind=kind),closing(sqlite3.connect(':memory:'))as db:
+    a=dict(recipe,recordKind=kind,inputSHA256=sha,inputBytes=len(raw))
+    def wrong(a,module):return self.parse(dict(a,recordKind='menuItem'if kind=='recipe'else'recipe'),module)
+    with self.assertRaisesRegex(RefreshError,'parsed-record-kind'):self.load(db,[a],wrong)
+    self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0],0)
+    self.assertEqual(db.execute('SELECT state FROM recipe_store_release').fetchone()[0],'incomplete')
+ def test_duplicate_persisted_asset_grain_is_rejected_before_execution(self):
+  a=self.asset('one-blob')
+  for kind in ('recipe','menuItem'):
+   alias=dict(a,sourceRecordId='different-id',inputPath='/fixture-not-opened/alias.html',recordKind=kind)
+   with self.subTest(kind=kind),closing(sqlite3.connect(':memory:'))as db:
+    with self.assertRaisesRegex(RefreshError,'duplicate-selected-asset'):self.load(db,[a,alias])
+    self.assertEqual(db.execute('SELECT count(*) FROM sqlite_master').fetchone()[0],0)
+  self.assertEqual(self.calls,[])
+  self.assertEqual(len(s.prepare_recipe_menu([a,dict(a,sourceId='other-source')])['assets']),2)
+  self.assertEqual(len(s.prepare_recipe_menu([a,dict(a,release='other-release')])['assets']),2)
  def _assert_caller_usable_after_import_deadline(self,fail):
   assets=[self.asset('deadline')]
   def callback(a,module):
