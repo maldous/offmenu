@@ -191,9 +191,20 @@ def _loads(m,contexts):
             and _hash(coverage) == r['coverageSha256'] and coverage.get('assets') == r['assets']
             and coverage.get('identifierDatabaseSha256') == m['identifierDatabaseSha256'], 'off-subset-state')
         attempts=coverage.get('resumeAttempts',[])
-        _require(type(attempts) is list and len(attempts) <= 1024
-            and all(type(a) is dict and native._sha(a.get('operationSelectionSha256')) for a in attempts), 'off-lineage')
-        r['_selectedOperations']=[r['sourceOperationSha256']]+[a['operationSelectionSha256'] for a in attempts]
+        _require(type(attempts) is list and len(attempts) <= 1024, 'off-lineage')
+        operations={r['sourceOperationSha256']};prior=0
+        for attempt in attempts:
+            _require(type(attempt) is dict and native._sha(attempt.get('operationSelectionSha256'))
+                and attempt['operationSelectionSha256'] not in operations
+                and type(attempt.get('startedAfterAssetCount')) is int
+                and prior <= attempt['startedAfterAssetCount'] <= len(r['assets']), 'off-lineage')
+            prior=attempt['startedAfterAssetCount'];operations.add(attempt['operationSelectionSha256'])
+        r['_operationsByAsset']={}
+        for index,asset in enumerate(r['assets']):
+            operation=r['sourceOperationSha256']
+            for attempt in attempts:
+                if index >= attempt['startedAfterAssetCount']:operation=attempt['operationSelectionSha256']
+            r['_operationsByAsset'][asset['assetId']]=operation
 
 
 def _packet(raw,kind):
@@ -284,7 +295,7 @@ def _off(obs,m,context,remaining,charge,candidate_charge):
         if any(x is None for x in metas):continue
         if any((x[0],x[1]) not in allowed for x in metas):continue
         if (b.get('inputAssetSha256') != metas[0][1] or not native._sha(b.get('originalSha256'))
-            or b.get('operationReceiptSha256') not in r['_selectedOperations']):continue
+            or b.get('operationReceiptSha256') != r['_operationsByAsset'].get(metas[0][0])):continue
         charge(sum(x[4] for x in metas));packet=[]
         for key,meta in zip((ref,paired),metas):
             record=_json(db.execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(key,)).fetchone()[0])
@@ -323,11 +334,19 @@ def _off(obs,m,context,remaining,charge,candidate_charge):
     return result
 
 
+def _disabled_roles(m,roles):
+    reasons=[{'role':role,'qualificationState':m['roles'][role]['qualificationState'],
+        'reasonCode':m['roles'][role]['reasonCode']} for role in roles]
+    primary=next((reason for reason in reasons if reason['qualificationState']=='restricted'),reasons[0])
+    return primary,reasons
+
+
 def _coverage(m):
     backends=[]
     for roles,source in ((['off-subset'],'off'),(['usda-products','usda-profiles'],'usda-files')):
         r=m['roles'][roles[0]];enabled=r['enabled'];u=m.get('usda',{}) if source=='usda-files' else r
-        backends.append({'roles':roles,'enabled':enabled,'qualificationState':r['qualificationState'],
+        primary,reasons=({'qualificationState':'qualified','reasonCode':None},[]) if enabled else _disabled_roles(m,roles)
+        backends.append({'roles':roles,'enabled':enabled,'qualificationState':primary['qualificationState'],
             'sourceId':source,'releaseId':u.get('releaseId'),'sourceAssetCount':(1 if source=='usda-files' else r['sourceAssetCount']) if enabled else None,
             'retainedProducts':(u['products'] if source=='usda-files' else r['retainedProducts']) if enabled else None,
             'retainedProfiles':(u['profiles'] if source=='usda-files' else r['retainedProfiles']) if enabled else None,
@@ -335,7 +354,7 @@ def _coverage(m):
             'countBasis':('producer-reported' if any(m['roles'][role]['countBasis']=='producer-reported' for role in roles) else 'independently-qualified') if enabled else 'not-qualified',
             'populationCountIndependentlyVerified':enabled and all(m['roles'][role]['countBasis']=='independently-qualified' for role in roles),
             'pairValidationScope':'selected-pairs-validated-on-query' if enabled else 'not-enabled',
-            'reasonCode':None if enabled else r['reasonCode'],
+            'reasonCode':primary['reasonCode'],'roleReasons':reasons,
             **({'originalTargetAssets':257,'subsetOnly':True} if source=='off' else {})})
     return {'expectedAssets':None,'processedAssets':None,'products':None,'profiles':None,
         'coverageMode':'federated-source-retention','complete':False,'identifierIndexCoverageSeparate':True,
@@ -383,8 +402,9 @@ def read_federated_product_details(current_identifier_rows, *, selection, identi
                 availability.append(dict(observationKey=key,state='not-loaded',eligibleProjections=0,reasonCode='no-current-identifier-assertion'));continue
             role='off-subset' if obs['source_id']=='off' else 'usda-products' if obs['source_id']=='usda-files' else None
             if role is None or role not in contexts:
-                r=m['roles'].get(role,{})
-                availability.append(dict(observationKey=key,state='restricted' if r.get('qualificationState')=='restricted' else 'not-loaded',eligibleProjections=0,reasonCode=r.get('reasonCode','source-not-selected')));continue
+                if role is None:primary,reasons={'qualificationState':'not-qualified','reasonCode':'source-not-selected'},[]
+                else:primary,reasons=_disabled_roles(m,('usda-products','usda-profiles') if role=='usda-products' else (role,))
+                availability.append(dict(observationKey=key,state='restricted' if primary['qualificationState']=='restricted' else 'not-loaded',eligibleProjections=0,reasonCode=primary['reasonCode'],roleReasons=reasons));continue
             found=_usda(obs,m,contexts,charge,candidate_charge) if role=='usda-products' else _off(obs,m,contexts[role],max_candidates-candidates[0],charge,candidate_charge)
             for ref,records,binding,limitations in found:
                 _require(any(type(i) is dict and i.get('system') == obs['namespace'] and i.get('value') == obs['lexical_value'] for i in records[0]['data']['identifiers']),'identifier-binding')
