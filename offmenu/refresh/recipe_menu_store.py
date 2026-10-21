@@ -12,6 +12,7 @@ VERSION='offmenu-recipe-menu-source-store/1'
 PARSER_VERSION='offmenu-source-faithful-recipe-parser/1.3.2'
 PARSER_SHA256='5f4c8d9d1153f3e97b726bbaa5e9db39ea4385cc1d3045a2679b559f54089ac8'
 SCHEMA_SHA256='9a863b44edc8a829c988304c284fe017cb916513f20249f5c5b08423e738198c'
+UNITOOLS_ADAPTER_SHA256='33760466a0273afd46d0b4b4adf0821eadcbd0c3961891da9af253543fb33652'
 DDL="-- Import key clarification11502: same13tables, asset-scoped ordinal uniqueness; NEW STORE ONLY.\n-- SOURCE-ONLY contract for NEW separate private recipe/menu store; NOT executed.\n-- No changes to existing identifier/ingredient/account DBs. No meal-plan mutation.\nCREATE TABLE recipe_store_release(\n store_release_id TEXT PRIMARY KEY NOT NULL,\n input_manifest_sha256 TEXT NOT NULL,\n parser_id TEXT NOT NULL, parser_version TEXT NOT NULL, parser_code_sha256 TEXT NOT NULL,\n state TEXT NOT NULL CHECK(state IN ('prepared','loading','incomplete','completed','failed')),\n expected_records INTEGER CHECK(expected_records>=0),\n observed_records INTEGER CHECK(observed_records>=0),\n exception_count INTEGER CHECK(exception_count>=0),\n created_at TEXT NOT NULL, completed_at TEXT\n);\nCREATE TABLE recipe_citation_ref(\n citation_id TEXT PRIMARY KEY NOT NULL, asset_id TEXT,\n identity_state TEXT NOT NULL, owner19_receipt_pointer TEXT,\n owner19_receipt_sha256 TEXT, unknown_reason TEXT\n);\nCREATE TABLE recipe_source_record(\n source_record_key TEXT PRIMARY KEY NOT NULL,\n store_release_id TEXT NOT NULL REFERENCES recipe_store_release(store_release_id),\n source_id TEXT NOT NULL, release_id TEXT NOT NULL, native_record_id TEXT,\n source_ordinal INTEGER NOT NULL CHECK(source_ordinal>=1),\n source_asset_sha256 TEXT NOT NULL, parsed_record_sha256 TEXT NOT NULL,\n record_pointer TEXT NOT NULL, citation_id TEXT REFERENCES recipe_citation_ref(citation_id),\n source_payload_json TEXT NOT NULL,\n operation_state TEXT NOT NULL,\n UNIQUE(store_release_id,source_id,release_id,source_asset_sha256,source_ordinal)\n);\nCREATE TABLE dish_concept_ref(\n dish_concept_id TEXT PRIMARY KEY NOT NULL, identity_state TEXT NOT NULL,\n evidence_pointer TEXT NOT NULL, evidence_sha256 TEXT NOT NULL\n);\nCREATE TABLE source_recipe_variant(\n recipe_variant_id TEXT PRIMARY KEY NOT NULL,\n source_record_key TEXT NOT NULL REFERENCES recipe_source_record(source_record_key),\n dish_concept_id TEXT REFERENCES dish_concept_ref(dish_concept_id),\n original_title TEXT, language TEXT NOT NULL, language_state TEXT NOT NULL,\n yield_raw_text TEXT, yield_value_lexeme TEXT, yield_unit_lexeme TEXT,\n yield_interpreted_value REAL, yield_interpreted_unit TEXT, yield_interpretation_status TEXT NOT NULL,\n dictionary_version TEXT, mapping_version TEXT,\n ingredient_extraction_state TEXT NOT NULL,\n step_extraction_state TEXT NOT NULL, source_location_json TEXT NOT NULL\n);\nCREATE TABLE recipe_region_assertion(\n assertion_id TEXT PRIMARY KEY NOT NULL,\n recipe_variant_id TEXT NOT NULL REFERENCES source_recipe_variant(recipe_variant_id),\n region_identifier TEXT, original_region_text TEXT, assertion_state TEXT NOT NULL,\n source_pointer TEXT NOT NULL, evidence_sha256 TEXT NOT NULL\n);\nCREATE TABLE recipe_ingredient_line(\n ingredient_line_id TEXT PRIMARY KEY NOT NULL,\n recipe_variant_id TEXT NOT NULL REFERENCES source_recipe_variant(recipe_variant_id),\n line_order INTEGER NOT NULL CHECK(line_order>=0), component_index INTEGER,\n source_name_text TEXT, original_expression TEXT NOT NULL,\n raw_value_lexeme TEXT, raw_unit_lexeme TEXT,\n interpreted_value REAL, interpreted_unit TEXT, interpretation_status TEXT NOT NULL,\n preparation_descriptors_json TEXT NOT NULL, substitution_text TEXT,\n alternatives_json TEXT NOT NULL, optional_text TEXT,\n ingredient_concept_id TEXT, ingredient_registry_sha256 TEXT,\n food_match_status TEXT NOT NULL, mapping_decision_id TEXT, mapping_decision_version TEXT,\n source_location_json TEXT NOT NULL,\n UNIQUE(recipe_variant_id,line_order)\n);\nCREATE TABLE recipe_ordered_step(\n step_id TEXT PRIMARY KEY NOT NULL,\n recipe_variant_id TEXT NOT NULL REFERENCES source_recipe_variant(recipe_variant_id),\n step_order INTEGER NOT NULL CHECK(step_order>=0), component_index INTEGER,\n original_text TEXT NOT NULL,\n action_terms_json TEXT NOT NULL, equipment_json TEXT NOT NULL,\n time_json TEXT NOT NULL, temperature_json TEXT NOT NULL, target_state_json TEXT NOT NULL,\n source_location_json TEXT NOT NULL,\n UNIQUE(recipe_variant_id,step_order)\n);\nCREATE TABLE source_menu(\n menu_id TEXT PRIMARY KEY NOT NULL,\n source_record_key TEXT NOT NULL REFERENCES recipe_source_record(source_record_key),\n original_title TEXT, language TEXT NOT NULL,\n venue_source_reference TEXT, observed_at TEXT,\n observation_state TEXT NOT NULL, source_location_json TEXT NOT NULL\n);\nCREATE TABLE source_menu_item(\n menu_item_id TEXT PRIMARY KEY NOT NULL,\n source_record_key TEXT NOT NULL REFERENCES recipe_source_record(source_record_key),\n original_item_name TEXT NOT NULL, original_description TEXT,\n language TEXT NOT NULL, venue_source_reference TEXT,\n price_lexeme TEXT, price_value REAL, currency TEXT, price_state TEXT NOT NULL,\n source_category_text TEXT, source_location_json TEXT NOT NULL\n);\nCREATE TABLE menu_entry(\n menu_id TEXT NOT NULL REFERENCES source_menu(menu_id),\n menu_item_id TEXT NOT NULL REFERENCES source_menu_item(menu_item_id),\n entry_order INTEGER NOT NULL CHECK(entry_order>=0),\n PRIMARY KEY(menu_id,entry_order)\n);\nCREATE TABLE menu_recipe_candidate(\n menu_item_id TEXT NOT NULL REFERENCES source_menu_item(menu_item_id),\n recipe_variant_id TEXT NOT NULL REFERENCES source_recipe_variant(recipe_variant_id),\n relationship_status TEXT NOT NULL,\n decision_id TEXT NOT NULL, decision_version TEXT NOT NULL,\n evidence_pointer TEXT NOT NULL, evidence_sha256 TEXT NOT NULL,\n PRIMARY KEY(menu_item_id,recipe_variant_id,decision_id,decision_version)\n);\nCREATE TABLE recipe_store_exception(\n store_release_id TEXT NOT NULL REFERENCES recipe_store_release(store_release_id),\n exception_ordinal INTEGER NOT NULL CHECK(exception_ordinal>=1),\n source_record_key TEXT REFERENCES recipe_source_record(source_record_key),\n source_pointer TEXT, reason_code TEXT NOT NULL, disposition TEXT NOT NULL,\n PRIMARY KEY(store_release_id,exception_ordinal)\n);\nCREATE INDEX recipe_source_lookup ON recipe_source_record(source_id,release_id,native_record_id);\nCREATE INDEX recipe_title_page ON source_recipe_variant(original_title COLLATE BINARY,recipe_variant_id);\nCREATE INDEX recipe_line_order ON recipe_ingredient_line(recipe_variant_id,line_order);\nCREATE INDEX recipe_step_order ON recipe_ordered_step(recipe_variant_id,step_order);\nCREATE INDEX recipe_concept_usage ON recipe_ingredient_line(ingredient_concept_id,recipe_variant_id);\nCREATE INDEX menu_item_name ON source_menu_item(original_item_name COLLATE BINARY,menu_item_id);\nCREATE VIEW v_recipe_inspection AS\nSELECT r.recipe_variant_id,r.original_title,r.language,r.language_state,\n r.dish_concept_id,r.yield_raw_text,r.yield_value_lexeme,r.yield_unit_lexeme,\n r.yield_interpreted_value,r.yield_interpreted_unit,r.yield_interpretation_status,\n r.ingredient_extraction_state,r.step_extraction_state,\n s.source_id,s.release_id,s.native_record_id,s.source_ordinal,s.citation_id,\n s.source_asset_sha256,s.parsed_record_sha256,s.record_pointer,s.operation_state\nFROM source_recipe_variant r JOIN recipe_source_record s USING(source_record_key);\nCREATE VIEW v_menu_item_inspection AS\nSELECT m.menu_item_id,m.original_item_name,m.original_description,m.language,\n m.venue_source_reference,m.price_lexeme,m.price_value,m.currency,m.price_state,\n m.source_category_text,s.source_id,s.release_id,s.citation_id,s.record_pointer\nFROM source_menu_item m JOIN recipe_source_record s USING(source_record_key);\n"
 
 @dataclass(frozen=True)
@@ -42,7 +43,16 @@ def _put(db,table,row):
     db.execute('INSERT INTO '+table+'('+','.join(row)+') VALUES('+','.join('?'*len(row))+')',tuple(row.values()))
 
 
-def prepare_recipe_menu(assets):
+def _unitools_profile(verified):
+    from . import unitools_recipe_adapter as module
+    if hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()!=UNITOOLS_ADAPTER_SHA256:_fail('unitools-code-pin')
+    module.validate_verified(verified)
+    return module
+
+
+def prepare_recipe_menu(assets,*,accepted_source_adapter=None):
+    native=_unitools_profile(accepted_source_adapter)if accepted_source_adapter is not None else None
+    if native is not None and len(assets)!=1:_fail('unitools-single-asset')
     if type(assets)not in(tuple,list) or not 1<=len(assets)<=256:_fail('asset-inventory')
     rows=[];seen=set()
     for asset in assets:
@@ -50,14 +60,21 @@ def prepare_recipe_menu(assets):
         if (type(a)is not dict or any(type(a.get(k))is not str or not a[k] for k in
                 ('sourceId','sourceRecordId','inputPath','release')) or a.get('recordKind')not in('recipe','menuItem')
                 or not Path(a['inputPath']).is_absolute() or not _sha(a.get('inputSHA256'))
-                or type(a.get('inputBytes'))is not int or not 0<a['inputBytes']<=2097152):_fail('asset-binding')
+                or type(a.get('inputBytes'))is not int or not 0<a['inputBytes']<=(native.MAX_RAW_BYTES if native else 2097152)):_fail('asset-binding')
+        if native is not None:
+            expected=native.asset_from_verified(accepted_source_adapter)
+            if any(a.get(k)!=v for k,v in expected.items()):_fail('unitools-asset-binding')
         # Match13's persisted asset/ordinal uniqueness; aliases or kinds cannot
         # select the same source/release/blob twice in one store generation.
         key=_id('asset',a['sourceId'],a['release'],a['inputSHA256'])
         if key in seen:_fail('duplicate-selected-asset')
         seen.add(key);rows.append(a)
-    result={'version':VERSION,'schemaSha256':SCHEMA_SHA256,'parserVersion':PARSER_VERSION,
-            'parserCodeSha256':PARSER_SHA256,'assets':rows,'scope':'exact selected LOCAL assets; source-faithful only'}
+    result={'version':VERSION,'schemaSha256':SCHEMA_SHA256,'parserVersion':native.VERSION if native else PARSER_VERSION,
+            'parserCodeSha256':UNITOOLS_ADAPTER_SHA256 if native else PARSER_SHA256,'assets':rows,'scope':'exact selected LOCAL assets; source-faithful only'}
+    if native is not None:
+        result['sourceAdapter']={'id':native.VERSION,'revision':native.REVISION,'gitBlobSHA1':native.BLOB_SHA1,
+            'projectionSchemaSha256':_hash(native.native_recipe_schema()),
+            'qualificationReceiptSha256':_hash(accepted_source_adapter.receipt)}
     if len(canonical(result))>1024**2:_fail('manifest-bound')
     return result
 
@@ -141,15 +158,22 @@ def _citation(db,asset):
     return key
 
 
-def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,input_manifest_sha256,selection_receipt_sha256):
+def ingest_recipe_menu(db,assets,*,parser_module=None,parse_asset_once=None,limits,run_id,input_manifest_sha256,selection_receipt_sha256,accepted_source_adapter=None):
     """Runnable source import;57's actual held-FD callback alone opens originals."""
-    manifest=prepare_recipe_menu(assets)
+    native=_unitools_profile(accepted_source_adapter)if accepted_source_adapter is not None else None
+    if native is not None:
+        if parser_module is not None or parse_asset_once is not None:_fail('unitools-callback-unselected')
+        parser_module=native
+        parse_asset_once=lambda asset,module:module.project_unitools_source(accepted_source_adapter)
+    manifest=prepare_recipe_menu(assets,accepted_source_adapter=accepted_source_adapter)
+    parser_version=native.VERSION if native else PARSER_VERSION
+    parser_sha=UNITOOLS_ADAPTER_SHA256 if native else PARSER_SHA256
     if (type(db)is not sqlite3.Connection or type(limits)is not StoreLimits
             or any(type(v)is not int or not 0<v<2**63 for v in asdict(limits).values())
             or not _sha(selection_receipt_sha256)or input_manifest_sha256!=_hash(manifest)
             or type(run_id)is not str or not 0<len(run_id)<=256 or not callable(parse_asset_once)):_fail('selection-or-limits')
     if len(assets)>limits.max_assets or sum(a['inputBytes']for a in assets)>limits.max_input_bytes:_fail('input-manifest-bound')
-    if getattr(parser_module,'PARSER_VERSION',None)!=PARSER_VERSION or hashlib.sha256(Path(parser_module.__file__).read_bytes()).hexdigest()!=PARSER_SHA256:_fail('parser-code-pin')
+    if native is None and(getattr(parser_module,'PARSER_VERSION',None)!=PARSER_VERSION or hashlib.sha256(Path(parser_module.__file__).read_bytes()).hexdigest()!=PARSER_SHA256):_fail('parser-code-pin')
     if db.execute("SELECT name FROM sqlite_master WHERE type IN ('table','view') LIMIT 1").fetchone():_fail('new-empty-store-required')
     started=time.monotonic()
     def check():
@@ -160,8 +184,8 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
     results=[];total_bytes=0;initialized=False
     try:
         db.executescript(DDL);now=datetime.now(timezone.utc).isoformat()
-        _put(db,'recipe_store_release',dict(store_release_id=run_id,input_manifest_sha256=input_manifest_sha256,parser_id=PARSER_VERSION,
-            parser_version=PARSER_VERSION,parser_code_sha256=PARSER_SHA256,state='loading',expected_records=None,observed_records=0,exception_count=0,created_at=now,completed_at=None));db.commit()
+        _put(db,'recipe_store_release',dict(store_release_id=run_id,input_manifest_sha256=input_manifest_sha256,parser_id=parser_version,
+            parser_version=parser_version,parser_code_sha256=parser_sha,state='loading',expected_records=None,observed_records=0,exception_count=0,created_at=now,completed_at=None));db.commit()
         initialized=True
         for asset in manifest['assets']:
             verified=False
@@ -169,7 +193,7 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                 check();records,receipt=parse_asset_once(asset,parser_module);check()
                 if (type(records)is not list or not 1<=len(records)<=limits.max_records_per_asset or type(receipt)is not dict
                         or receipt.get('inputSHA256')!=asset['inputSHA256']or receipt.get('inputBytes')!=asset['inputBytes']
-                        or receipt.get('parserVersion')!=PARSER_VERSION or receipt.get('EOFFullyVerified')is not True
+                        or receipt.get('parserVersion')!=parser_version or receipt.get('EOFFullyVerified')is not True
                         or type(receipt.get('bodyPasses'))is not int or receipt['bodyPasses']!=1
                         or type(receipt.get('records'))is not int or receipt['records']!=len(records)):_fail('parser-receipt')
                 verified=True;encoded=canonical(records);total_bytes+=len(encoded)
@@ -180,13 +204,17 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                     template,version,other=('recipeTemplate',parser_module.RECIPE_TEMPLATE_VERSION,'menuTemplate')if asset['recordKind']=='recipe'else('menuTemplate',parser_module.MENU_TEMPLATE_VERSION,'recipeTemplate')
                     if type(record)is not dict or record.get(template)!=version or other in record:_fail('parsed-record-kind')
                     if (source.get('sourceId')!=asset['sourceId']or source.get('releaseId')!=asset['release']
-                            or(asset['recordKind']=='recipe'and source.get('sourceRecordId')!=asset['sourceRecordId'])
-                            or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=PARSER_VERSION):_fail('parsed-source-binding')
-                    native=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native,index)
-                    _put(db,'recipe_source_record',dict(source_record_key=key,store_release_id=run_id,source_id=asset['sourceId'],release_id=asset['release'],native_record_id=native,
-                        source_ordinal=index,source_asset_sha256=asset['inputSHA256'],parsed_record_sha256=_hash(record),record_pointer='',citation_id=citation,
+                            or(native is None and asset['recordKind']=='recipe'and source.get('sourceRecordId')!=asset['sourceRecordId'])
+                            or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=parser_version):_fail('parsed-source-binding')
+                    if native is not None:native.validate_projected_binding(accepted_source_adapter,record,index)
+                    native_id=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native_id,index)
+                    _put(db,'recipe_source_record',dict(source_record_key=key,store_release_id=run_id,source_id=asset['sourceId'],release_id=asset['release'],native_record_id=native_id,
+                        source_ordinal=index,source_asset_sha256=asset['inputSHA256'],parsed_record_sha256=_hash(record),record_pointer=record['sourceLocation']['jsonPointer']if native else'',citation_id=citation,
                         source_payload_json=canonical(record).decode(),operation_state='local-private-source-faithful; semantic-links-pending'))
-                    if asset['recordKind']=='recipe':_project_recipe(db,key,record,limits,run_id)
+                    if asset['recordKind']=='recipe':
+                        _project_recipe(db,key,record,limits,run_id)
+                        if native is not None and any(d['ordinal']==index for d in receipt['duplicateSlugOccurrences']):
+                            _exception(db,run_id,key,record['sourceLocation']['jsonPointer'],'duplicate-native-slug','held')
                     else:
                         item=_project_menu_item(db,key,record)
                         if menu is None:
@@ -221,6 +249,7 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
             ('completed',counts['recipe_source_record'],counts['recipe_store_exception'],datetime.now(timezone.utc).isoformat(),run_id));db.commit()
         check()
         return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
+                **({'publicationHoldReasons':accepted_source_adapter.receipt['publicationHoldReasons']}if native is not None else{}),
                 'expectedAssets':len(assets),'verifiedAssets':len(results),'unreadAssets':0,'parsedBytes':total_bytes,
                 'sourceImportComplete':True,'canonicalIngredientLinks':'NULL/pending','accepted':False,'runtimeOrResourcesAdmitted':False,
                 'publication':'caller57 must close/fsync/hash/check custody and select output receipt; source load is not a release/country completion'}
