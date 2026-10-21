@@ -134,6 +134,9 @@ null and absent projected field are distinct; original publisher presence and
 per-field language remain unknown. The packet evidence SHA uses this module's
 canonical sorted JSON bytes, not original JSON lexemes or the original body SHA.
 The packet coordinate plus `/0/...` or `/1/...` field pointer locates the value.
+Pointers are returned only for fields present in the retained document, including
+explicit null or empty values. A supported missing field retains its projection
+evidence hash with a null pointer, consistently in direct and indexed OFF paths.
 
 This historical projection may have used name fallback, collapsed source
 missing/null/empty values, converted package numbers, mapped countries, defaulted
@@ -268,6 +271,10 @@ hashes, code-point/UTF8 offsets, section evidence and uncertain spans.
 Explicit allergen, storage and marketing statements terminate at LF, CRLF or CR
 line boundaries as well as their existing punctuation/end boundaries. The exact
 line separators survive in unclassified gaps rather than ingredient fallback.
+Marketing claims share the punctuation boundary used by the other statements:
+sentence-ending punctuation followed by whitespace/end terminates a claim while
+decimal points remain within its text. Following sentences/explicit sections,
+adjacent claim markers and batch codes retain their own spans and classifications.
 `extract_ingredient_components` consumes only a selected ingredient span and
 retains comma/bracket parent-child syntax and explicit source quantity lexemes.
 Unlabelled opening text stays a candidate; bare numeric/additive fragments are not

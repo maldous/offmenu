@@ -149,6 +149,26 @@ class NativeBarcodeLookupTests(unittest.TestCase):
 
 
 class RetainedProductShardTests(unittest.TestCase):
+    def test_missing_null_and_present_field_pointers_agree_with_indexed_wrappers(self):
+        from offmenu.refresh import product_detail_store as store
+        for key, name in (('brand', 'brand'), ('ingredientsText', 'ingredientDeclaration')):
+            for state, value in (('missing', None), ('null', None), ('present', ''), ('present', '  豆 source  ')):
+                with self.subTest(key=key, state=state, value=value):
+                    packet = copy.deepcopy(self.packet)
+                    if state == 'missing': packet[0]['data'].pop(key, None)
+                    else: packet[0]['data'][key] = value
+                    self.prepare([packet]); direct = self.load()['sourceProducts'][0]
+                    wrappers = [direct['fields'], store._fields(packet, 'off-legacy-paired-gzip'),
+                                store._fields(packet, 'off-cached-qualified-pair')]
+                    for fields in wrappers:
+                        field = fields[name]
+                        self.assertEqual(field['state'], state)
+                        self.assertEqual(field['fieldPointer'], None if state == 'missing' else '/0/data/' + key)
+                        self.assertEqual(field['value'], value)
+                        self.assertIsNotNone(field['evidenceSha256'])
+                        self.assertEqual(field['sourceFieldState'], 'unknown')
+                    self.assertEqual(direct['records'], packet)
+
     """Generated paired projection packets only, never an OFF source shard."""
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
