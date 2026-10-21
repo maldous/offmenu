@@ -5,6 +5,7 @@ import re
 from .core import RefreshError
 
 VERSION = 'offmenu-source-label-sections/1'
+COMPONENT_VERSION = 'offmenu-source-ingredient-components/1'
 _END = r'.*?(?:[.!?](?=\s|$)|$)'
 _BATCH = r'(?-i:[0-9][A-Z0-9]{7,})'
 _RULES = (
@@ -62,3 +63,97 @@ def extract_label_sections(text, *, max_text_bytes=262144, max_sections=1000):
             'offsetUnit': 'Unicode code point; end exclusive; UTF8 byte offsets also supplied',
             'sections': spans, 'canonicalMapping': None, 'certification': None,
             'assurance': 'source label-section extraction only; not source factual truth, allergen safety or dietary suitability'}
+
+
+def extract_ingredient_components(text, *, start, end, max_nodes=1000, max_depth=20):
+    """Source-only comma/bracket tree with explicit quantity lexemes, no concepts.
+
+    Caller selects an evidenced/candidate ingredient span. Delimiters establish
+    syntactic grouping only. Bare additive numbers are not quantities; unknown
+    percentage bases, qualifiers and malformed groups remain explicit.
+    """
+    if (type(text) is not str or len(text.encode()) > 262144 or type(start) is not int or type(end) is not int
+            or not 0 <= start <= end <= len(text) or type(max_nodes) is not int or not 0 < max_nodes <= 10000
+            or type(max_depth) is not int or not 0 < max_depth <= 50): raise RefreshError('ingredient-components-input-bound')
+    digest = hashlib.sha256(text.encode()).hexdigest(); count = [0]
+    quantity = re.compile(r'(?<![\w/])(?P<value>\d+(?:[.,]\d+)?(?:\s*[-–—]\s*\d+(?:[.,]\d+)?)?|[¼½¾⅓⅔⅛⅜⅝⅞])\s*(?P<unit>%|kg|mg|g|ml|l|oz|lb|tsp|tbsp|cups?|teaspoons?|tablespoons?)(?!\w)', re.IGNORECASE)
+    def span(a, b):
+        return {'text': text[a:b], 'start': a, 'end': b,
+                'utf8Start': len(text[:a].encode()), 'utf8End': len(text[:b].encode()),
+                'textSHA256': hashlib.sha256(text[a:b].encode()).hexdigest()}
+    def tick():
+        count[0] += 1
+        if count[0] > max_nodes: raise RefreshError('ingredient-components-node-bound')
+    def trim(a, b):
+        while a < b and text[a].isspace(): a += 1
+        while b > a and text[b - 1].isspace(): b -= 1
+        return a, b
+    def delimiters(a, b, depth):
+        stack = []; groups = []; cuts = []; uncertainty = []
+        for position in range(a, b):
+            character = text[position]
+            if character in '([':
+                if depth + len(stack) >= max_depth: raise RefreshError('ingredient-components-depth-bound')
+                stack.append((character, position))
+            elif character in ')]':
+                if not stack or {'(': ')', '[': ']'}[stack[-1][0]] != character:
+                    uncertainty.append({'reason': 'unmatched-close-delimiter', 'offset': position})
+                else:
+                    _, opening = stack.pop()
+                    if not stack: groups.append((opening, position + 1))
+            elif character in ',;' and not stack: cuts.append(position)
+        uncertainty += [{'reason': 'unclosed-delimiter', 'offset': position} for _, position in stack]
+        return groups, cuts, uncertainty
+    def quantities(a, b, attachment):
+        result = []
+        for match in quantity.finditer(text, a, b):
+            result.append({**span(match.start(), match.end()),
+                'valueLexeme': match.group('value'), 'unitLexeme': match.group('unit'),
+                'attachment': attachment, 'basis': None, 'interpretedValue': None,
+                'meaning': 'explicit source quantity/percentage lexeme; basis and factual truth unverified'})
+        return result
+    def forest(a, b, parent, depth):
+        groups, cuts, uncertainty = delimiters(a, b, depth)
+        bounds = [a] + [p + 1 for p in cuts]; ends = cuts + [b]
+        nodes = []
+        for left, right in zip(bounds, ends):
+            left, right = trim(left, right)
+            if left == right: continue
+            tick(); node_id = 'source-component:' + digest + ':' + str(left) + ':' + str(right)
+            node_groups, _, local_uncertainty = delimiters(left, right, depth)
+            node = {**span(left, right), 'componentId': node_id, 'parentComponentId': parent,
+                    'nameSpans': [], 'groups': [], 'children': [], 'quantities': [],
+                    'uncertainty': local_uncertainty, 'canonicalConceptId': None,
+                    'meaning': 'syntactic source ingredient fragment; no canonical identity or composition truth'}
+            cursor = left
+            for opening, closing in node_groups:
+                name_start, name_end = trim(cursor, opening)
+                if name_start < name_end:
+                    node['nameSpans'].append(span(name_start, name_end))
+                    node['quantities'] += quantities(name_start, name_end, 'explicit in source fragment')
+                tick(); inner_start, inner_end = trim(opening + 1, closing - 1)
+                qs = quantities(inner_start, inner_end, 'source-parenthetical attached to preceding fragment')
+                only_quantity = len(qs) == 1 and qs[0]['start'] == inner_start and qs[0]['end'] == inner_end
+                group = {**span(opening, closing), 'openDelimiter': text[opening], 'closeDelimiter': text[closing - 1],
+                         'kind': 'quantity-statement' if only_quantity else 'source-component-group'}
+                if only_quantity:
+                    node['quantities'] += qs
+                else:
+                    nested = forest(inner_start, inner_end, node_id, depth + 1)
+                    node['children'] += nested['components']; group['separators'] = nested['separators']
+                    group['uncertainty'] = nested['uncertainty']
+                node['groups'].append(group); cursor = closing
+            name_start, name_end = trim(cursor, right)
+            if name_start < name_end:
+                node['nameSpans'].append(span(name_start, name_end))
+                node['quantities'] += quantities(name_start, name_end, 'explicit in source fragment')
+            if re.fullmatch(r'\d+[A-Za-z]?', text[left:right]):
+                node['uncertainty'].append({'reason': 'bare numeric/code fragment; no quantity unit or canonical additive identity inferred', 'offset': left})
+            nodes.append(node)
+        separators = []
+        for one, two in zip(nodes, nodes[1:]): separators.append(span(one['end'], two['start']))
+        return {'components': nodes, 'separators': separators, 'uncertainty': uncertainty}
+    result = forest(start, end, None, 0)
+    return {'componentExtractionVersion': COMPONENT_VERSION, 'rawTextSHA256': digest,
+            'ingredientSpan': span(start, end), **result, 'quantityInterpretation': 'source lexemes only; never percentages inferred from order or sums',
+            'canonicalMapping': None, 'certification': None}
