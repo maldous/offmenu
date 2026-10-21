@@ -24,7 +24,7 @@ class RecipeMenuStoreTests(unittest.TestCase):
  def parse(self,a,module):
   self.calls.append(a['inputSHA256']);raw=self.raws[a['inputSHA256']]
   src={'originalSHA256':a['inputSHA256'],'sourceURL':'https://example.invalid/fixture','release':a['release'],
-       'licenseStatus':'fixture-only','region':None,'encoding':'utf-8','adapter':'calmos-menu-v1'}
+       'licenseStatus':'fixture-only','region':None,'encoding':'utf-8','adapter':'calmos-menu-v1'if a['recordKind']=='menuItem'else None}
   if a['recordKind']=='recipe':records=[module.parse_html_recipe(raw,source=src,source_id=a['sourceId'],source_record_id=a['sourceRecordId'],country='AU',language='fr',attribution='fixture')]
   else:records=module.parse_html_menu(raw,source=src,source_id=a['sourceId'],country='MF',language='fr',attribution='fixture')
   return records,{'inputSHA256':a['inputSHA256'],'inputBytes':len(raw),'parserVersion':module.PARSER_VERSION,'EOFFullyVerified':True,'bodyPasses':1,'records':len(records)}

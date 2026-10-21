@@ -15,7 +15,7 @@ import tempfile
 
 from bs4 import BeautifulSoup
 
-PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.2'
+PARSER_VERSION = 'offmenu-source-faithful-recipe-parser/1.3.3'
 DICTIONARY_VERSION = 'offmenu-data-dictionary/1'
 RECIPE_TEMPLATE_VERSION = 'offmenu-source-recipe/2'
 MENU_TEMPLATE_VERSION = 'offmenu-source-menu-item/1'
@@ -195,10 +195,239 @@ def _jsonld_instructions(value: object, text: str) -> tuple[list[str], list[dict
     return instructions, notes
 
 
+RECIPE_ADAPTERS = frozenset({'montserrat-paragraph-recipe-v1',
+    'martinique-paragraph-recipes-v1', 'wprm-visible-recipe-v1'})
+
+
+class _DOMSpans:
+    """Index the very same strings/separators as the extracted page text.
+
+    DOM positions, rather than a first global text match, distinguish repeated
+    instructions and recipe titles. Script-only strings have no visible span.
+    """
+    def __init__(self, soup):
+        self.text = soup.get_text('\n', strip=False)
+        self.offsets = {}
+        cursor = 0
+        for index, string in enumerate(soup.strings):
+            cursor += bool(index)
+            self.offsets[id(string)] = (cursor, cursor + len(string))
+            cursor += len(string)
+
+    def field(self, nodes):
+        positions = [self.offsets[id(x)] for x in nodes if id(x) in self.offsets]
+        if not positions:
+            raise ParseError('source-field-not-locatable')
+        start, end = positions[0][0], positions[-1][1]
+        while start < end and self.text[start].isspace():
+            start += 1
+        while end > start and self.text[end - 1].isspace():
+            end -= 1
+        if start == end:
+            raise ParseError('source-field-not-locatable')
+        return self.text[start:end], _location(self.text, start, end)
+
+    def node(self, node):
+        return self.field(list(node.strings))
+
+    def lines(self, node):
+        groups, active = [], []
+        for item in node.descendants:
+            if getattr(item, 'name', None) == 'br':
+                groups.append(active)
+                active = []
+            elif id(item) in self.offsets:
+                active.append(item)
+        groups.append(active)
+        return [(self.field(group), all(x.find_parent('u') is not None for x in group if str(x).strip()))
+                for group in groups if any(str(x).strip() for x in group)]
+
+
+def _span_recipe(raw, source, source_id, record_id, country, language,
+                 attribution, spans, title, ingredients, steps, notes, ordinal,
+                 yield_field=None):
+    if not ingredients or not steps:
+        raise ParseError('recipe-ingredients-or-steps-not-supported')
+    ingredient_records = []
+    for index, (original, location) in enumerate(ingredients, 1):
+        quantity = _quantity(original)
+        details = _ingredient_details(_ingredient_name(original, quantity))
+        ingredient_records.append({'ingredientLineId': f'{source_id}:{record_id}:r{ordinal}:i{index}',
+            'order': index, 'componentIndex': 1, 'sourceNameText': details['name'],
+            'preparationDescriptors': details['preparation'], 'substitutionText': details['substitution'],
+            'originalExpression': original, 'quantity': quantity, 'foodIdentity': None,
+            'foodMatchStatus': 'unmatched-source-text', 'location': location})
+    step_records = [{'order': index, 'componentIndex': 1, 'originalText': original,
+        'actionTerms': [], 'equipment': [], 'time': None, 'temperature': None,
+        'targetState': None, 'location': location}
+        for index, (original, location) in enumerate(steps, 1)]
+    yield_record = None
+    if yield_field:
+        original, location = yield_field
+        match = re.match(r'^(\d+(?:[.,]\d+)?)\s*(.*)$', original, re.S)
+        yield_record = {'rawText': original, 'rawValueLexeme': match.group(1) if match else None,
+            'rawUnitLexeme': match.group(2) if match and match.group(2) else None,
+            'interpretedValue': None, 'interpretedUnit': None,
+            'interpretationStatus': 'not-interpreted', 'location': location}
+    record = {'recipeTemplate': RECIPE_TEMPLATE_VERSION, 'dictionaryVersion': DICTIONARY_VERSION,
+        'mappingVersion': MAPPING_VERSION,
+        'source': _citation(source, source_id, record_id, language, country,
+            source.get('originalSHA256') or sha256(raw), sha256(spans.text.encode()), attribution),
+        'originalTitle': title[0], 'originalHeadingLines': [title[0]], 'aliases': [],
+        'language': language, 'region': source.get('region'), 'yield': yield_record,
+        'ingredientLines': ingredient_records, 'orderedSteps': step_records,
+        'components': _components(ingredient_records, step_records),
+        'sourceNotes': [{'originalText': field[0], 'location': field[1], 'sourceSection': label}
+                        for field, label in notes],
+        'nutritionAssertions': [], 'equipment': [], 'time': None, 'temperature': None,
+        'sourceLocation': title[1], 'identity': {'canonicalDishId': None,
+            'mergePerformed': False, 'identityStatus': 'source-scoped-distinct-record'}}
+    _validate_record(record)
+    return record
+
+
+def _paragraph_recipe_blocks(soup, spans, adapter):
+    if adapter == 'montserrat-paragraph-recipe-v1':
+        matches = []
+        for wrapper in soup.select('div.wpb_wrapper'):
+            paragraphs = wrapper.find_all('p', recursive=False)
+            for index, paragraph in enumerate(paragraphs):
+                lines = spans.lines(paragraph)
+                if lines and lines[0][0][0].startswith('Recipe for '):
+                    if len(lines) < 3 or lines[1][0][0] != 'Ingredients' or index + 2 != len(paragraphs):
+                        raise ParseError('recipe-adapter-structure')
+                    for sibling in paragraph.next_siblings:
+                        if getattr(sibling, 'name', None) not in {None, 'p'} or (
+                                getattr(sibling, 'name', None) is None and str(sibling).strip()):
+                            raise ParseError('recipe-adapter-structure')
+                    method = spans.lines(paragraphs[index + 1])
+                    if not method or method[0][0][0] != 'Method':
+                        raise ParseError('recipe-adapter-structure')
+                    matches.append((lines[0][0], [x[0] for x in lines[2:]],
+                                    [x[0] for x in method[1:]], []))
+        if len(matches) != 1:
+            raise ParseError('recipe-adapter-structure')
+        return matches
+    containers = [node for node in soup.select('.ParagraphTitleText')
+        if any(h.get_text(' ', strip=True) == 'Les recettes de Noël' for h in node.find_all('h2'))]
+    if len(containers) != 1:
+        raise ParseError('recipe-adapter-structure')
+    bodies = containers[0].select('.text-content')
+    if len(bodies) != 1:
+        raise ParseError('recipe-adapter-structure')
+    body = bodies[0]
+    if any(getattr(x, 'name', None) not in {None, 'p'} or
+           (getattr(x, 'name', None) is None and str(x).strip()) for x in body.children):
+        raise ParseError('recipe-adapter-structure')
+    blocks, current, phase = [], None, None
+    for paragraph in body.find_all('p', recursive=False):
+        titles = paragraph.select('span.orange > strong')
+        if titles:
+            if len(titles) != 1 or paragraph.get_text(strip=True) != titles[0].get_text(strip=True):
+                raise ParseError('recipe-adapter-structure')
+            if current is not None:
+                if phase != 'steps':
+                    raise ParseError('recipe-adapter-structure')
+                blocks.append(current)
+            current, phase = (spans.node(titles[0]), [], [], []), 'preamble'
+            continue
+        lines = spans.lines(paragraph)
+        if current is None:
+            if lines:
+                raise ParseError('recipe-adapter-structure')
+            continue
+        for field, underlined in lines:
+            label = field[0].strip().rstrip(':').strip().casefold()
+            if label == 'ingrédients' and phase == 'preamble':
+                phase = 'ingredients'
+            elif label == 'déroulé' and phase == 'ingredients':
+                phase = 'steps'
+            elif label in {'ingrédients', 'déroulé'}:
+                raise ParseError('recipe-adapter-structure')
+            elif underlined or label.startswith('recette par ') or label.startswith('durée'):
+                current[3].append((field, 'source-labelled-context'))
+            elif phase == 'ingredients':
+                current[1].append(field)
+            elif phase == 'steps':
+                current[2].append(field)
+            else:
+                raise ParseError('recipe-adapter-structure')
+    if current is None or phase != 'steps':
+        raise ParseError('recipe-adapter-structure')
+    blocks.append(current)
+    return blocks
+
+
+def parse_html_recipes(raw: bytes, *, source: dict, source_id: str,
+                       source_record_id: str, country: str | None, language: str,
+                       attribution: str | None = None) -> list[dict]:
+    """Explicit retained-format adapters; no acquisition or automatic fallback.
+
+    SourceRecordId remains the asset binding. Collection records have distinct
+    DOM locations, ingredient IDs and the writer's existing source ordinals.
+    Unmarked lines stay intact in their explicit source section; no inferred
+    components, sentence segmentation, translation or canonical mapping occurs.
+    """
+    adapter = source.get('adapter')
+    if adapter is None:
+        return [parse_html_recipe(raw, source=source, source_id=source_id,
+            source_record_id=source_record_id, country=country, language=language,
+            attribution=attribution)]
+    if adapter not in RECIPE_ADAPTERS:
+        raise ParseError('recipe-adapter-unselected')
+    try:
+        soup = BeautifulSoup(raw.decode(source.get('encoding', 'utf-8'), errors='strict'), 'html.parser')
+    except (LookupError, UnicodeDecodeError) as error:
+        raise ParseError('html-encoding-invalid') from error
+    spans = _DOMSpans(soup)
+    if adapter == 'wprm-visible-recipe-v1':
+        cards = soup.select('.wprm-recipe-container')
+        if len(cards) != 1:
+            raise ParseError('recipe-adapter-structure')
+        card = cards[0]
+        titles = card.select('.wprm-recipe-name')
+        ingredients = card.select('li.wprm-recipe-ingredient')
+        instructions = card.select('li.wprm-recipe-instruction')
+        ingredient_lists = card.select('ul.wprm-recipe-ingredients')
+        instruction_lists = card.select('ul.wprm-recipe-instructions')
+        yields = card.select('.wprm-recipe-servings-with-unit')
+        if (len(titles) != 1 or len(yields) > 1 or not ingredient_lists or not instruction_lists
+                or {id(x) for group in ingredient_lists for x in group.find_all('li')} != {id(x) for x in ingredients}
+                or {id(x) for group in instruction_lists for x in group.find_all('li')} != {id(x) for x in instructions}
+                or card.select('.wprm-nutrition-label')):
+            raise ParseError('recipe-adapter-structure')
+        steps = []
+        for instruction in instructions:
+            fields = instruction.select('.wprm-recipe-instruction-text')
+            if len(fields) != 1 or instruction.get_text(strip=True) != fields[0].get_text(strip=True):
+                raise ParseError('recipe-adapter-structure')
+            steps.append(spans.node(fields[0]))
+        notes = [(spans.node(node), 'source-labelled-context') for node in
+            card.select('.wprm-recipe-group-name, .wprm-recipe-notes, .wprm-recipe-summary, '
+                '.wprm-recipe-time-container, .wprm-recipe-course-container, '
+                '.wprm-recipe-cuisine-container, .wprm-recipe-author-container') if node.get_text(strip=True)]
+        return [_span_recipe(raw, source, source_id, source_record_id, country, language,
+            attribution, spans, spans.node(titles[0]), [spans.node(x) for x in ingredients],
+            steps, notes, 1, spans.node(yields[0]) if yields else None)]
+    blocks = _paragraph_recipe_blocks(soup, spans, adapter)
+    return [_span_recipe(raw, source, source_id, source_record_id, country, language,
+        attribution, spans, title, ingredients, steps, notes, ordinal)
+        for ordinal, (title, ingredients, steps, notes) in enumerate(blocks, 1)]
+
+
 def parse_html_recipe(raw: bytes, *, source: dict, source_id: str,
                       source_record_id: str, country: str | None,
                       language: str, attribution: str | None = None) -> dict:
     """Extract a single recipe from a receipt-pinned HTML source snapshot."""
+    if source.get('adapter') is not None:
+        if type(source['adapter']) is not str or source['adapter'] not in RECIPE_ADAPTERS:
+            raise ParseError('recipe-adapter-unselected')
+        records = parse_html_recipes(raw, source=source, source_id=source_id,
+            source_record_id=source_record_id, country=country, language=language,
+            attribution=attribution)
+        if len(records) != 1:
+            raise ParseError('multiple-recipes-use-plural-api')
+        return records[0]
     try:
         html = raw.decode(source.get('encoding', 'utf-8'), errors='strict')
     except (LookupError, UnicodeDecodeError) as error:
@@ -530,10 +759,9 @@ def run_html_asset(*, input_path: Path, output_root: Path, source: dict,
         raise ParseError('original-hash-mismatch')
     source = dict(source, originalSHA256=original_sha)
     if kind == 'recipe':
-        record = parse_html_recipe(raw, source=source, source_id=source_id,
+        records = parse_html_recipes(raw, source=source, source_id=source_id,
             source_record_id=source_record_id or input_path.stem,
             country=country, language=language, attribution=attribution)
-        records = [record]
         data_type = 'recipes'
     elif kind == 'menu':
         records = parse_html_menu(raw, source=source, source_id=source_id,
@@ -542,6 +770,7 @@ def run_html_asset(*, input_path: Path, output_root: Path, source: dict,
     else:
         raise ParseError('unsupported-html-kind')
     identity = {'sourceId': source_id, 'sourceRecordId': source_record_id or input_path.stem,
+        'adapter': source.get('adapter'),
         'originalSHA256': original_sha, 'parserVersion': PARSER_VERSION,
         'dictionaryVersion': DICTIONARY_VERSION, 'templateVersion':
             RECIPE_TEMPLATE_VERSION if kind == 'recipe' else MENU_TEMPLATE_VERSION,
