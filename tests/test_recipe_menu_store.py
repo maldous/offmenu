@@ -63,6 +63,21 @@ class RecipeMenuStoreTests(unittest.TestCase):
    self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0],1)
    self.assertEqual(db.execute('SELECT state,exception_count FROM recipe_store_release').fetchone(),('incomplete',1))
    self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
+ def _assert_caller_usable_after_import_deadline(self,fail):
+  assets=[self.asset('deadline')]
+  def callback(a,module):
+   records,receipt=self.parse(a,module)
+   if fail:receipt['EOFFullyVerified']=False
+   return records,receipt
+  with closing(sqlite3.connect(':memory:'))as db,patch.object(s.time,'monotonic',return_value=100.0)as clock:
+   if fail:
+    with self.assertRaisesRegex(RefreshError,'parser-receipt'):self.load(db,assets,callback)
+    self.assertEqual(db.execute('SELECT state FROM recipe_store_release').fetchone()[0],'incomplete')
+   else:self.load(db,assets,callback)
+   clock.return_value=1000.0
+   self.assertEqual(db.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<2000) SELECT sum(x) FROM n').fetchone()[0],2001000)
+ def test_deadline_handler_cleared_after_success(self):self._assert_caller_usable_after_import_deadline(False)
+ def test_deadline_handler_cleared_after_invalid_receipt(self):self._assert_caller_usable_after_import_deadline(True)
  def test_prepare_is_pure_and_missing_steps_or_yield_are_not_fabricated(self):
   assets=[self.asset('one')]
   with patch.object(Path,'open',side_effect=AssertionError('no body open')),patch.object(Path,'stat',side_effect=AssertionError('no body stat')):s.prepare_recipe_menu(assets)

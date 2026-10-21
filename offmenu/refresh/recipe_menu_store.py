@@ -155,62 +155,65 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
     db.execute('PRAGMA foreign_keys=ON');db.execute('PRAGMA journal_mode=DELETE');db.execute('PRAGMA temp_store=MEMORY');db.execute('PRAGMA cache_size=-8192');db.execute('PRAGMA mmap_size=0');db.execute('PRAGMA synchronous=FULL')
     page=db.execute('PRAGMA page_size').fetchone()[0];db.execute('PRAGMA max_page_count='+str(max(1,limits.max_database_bytes//page)))
     db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH,min(2**31-1,limits.max_parsed_bytes));db.set_progress_handler(lambda:int(time.monotonic()-started>=limits.max_seconds),1000)
-    db.executescript(DDL);now=datetime.now(timezone.utc).isoformat()
-    _put(db,'recipe_store_release',dict(store_release_id=run_id,input_manifest_sha256=input_manifest_sha256,parser_id=PARSER_VERSION,
-        parser_version=PARSER_VERSION,parser_code_sha256=PARSER_SHA256,state='loading',expected_records=None,observed_records=0,exception_count=0,created_at=now,completed_at=None));db.commit()
-    results=[];total_bytes=0
-    for asset in manifest['assets']:
-        verified=False
-        try:
-            check();records,receipt=parse_asset_once(asset,parser_module);check()
-            if (type(records)is not list or not 1<=len(records)<=limits.max_records_per_asset or type(receipt)is not dict
-                    or receipt.get('inputSHA256')!=asset['inputSHA256']or receipt.get('inputBytes')!=asset['inputBytes']
-                    or receipt.get('parserVersion')!=PARSER_VERSION or receipt.get('EOFFullyVerified')is not True
-                    or type(receipt.get('bodyPasses'))is not int or receipt['bodyPasses']!=1
-                    or type(receipt.get('records'))is not int or receipt['records']!=len(records)):_fail('parser-receipt')
-            verified=True;encoded=canonical(records);total_bytes+=len(encoded)
-            if total_bytes>limits.max_parsed_bytes:_fail('parsed-byte-bound')
-            db.execute('BEGIN IMMEDIATE');citation=_citation(db,asset);menu=None
-            for index,record in enumerate(records,1):
-                check();source=record.get('source',{})if type(record)is dict else{}
-                if (source.get('sourceId')!=asset['sourceId']or source.get('releaseId')!=asset['release']
-                        or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=PARSER_VERSION):_fail('parsed-source-binding')
-                native=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native,index)
-                _put(db,'recipe_source_record',dict(source_record_key=key,store_release_id=run_id,source_id=asset['sourceId'],release_id=asset['release'],native_record_id=native,
-                    source_ordinal=index,source_asset_sha256=asset['inputSHA256'],parsed_record_sha256=_hash(record),record_pointer='',citation_id=citation,
-                    source_payload_json=canonical(record).decode(),operation_state='local-private-source-faithful; semantic-links-pending'))
-                if asset['recordKind']=='recipe':_project_recipe(db,key,record,limits,run_id)
-                else:
-                    item=_project_menu_item(db,key,record)
-                    if menu is None:
-                        menu=_id('source-menu',asset['sourceId'],asset['release'],asset['inputSHA256'])
-                        _put(db,'source_menu',dict(menu_id=menu,source_record_key=key,original_title=None,language=_text(record.get('language'))or'und',
-                            venue_source_reference=canonical(record.get('venue')).decode()if record.get('venue')is not None else None,
-                            observed_at=None,observation_state='source-asset parser-item collection; observation-date unknown',
-                            source_location_json=canonical({'assetSHA256':asset['inputSHA256'],'scope':'selected source parser menu-item collection'}).decode()))
-                    _put(db,'menu_entry',dict(menu_id=menu,menu_item_id=item,entry_order=index))
-            if db.execute('PRAGMA foreign_key_check').fetchone():_fail('foreign-key')
-            db.commit()
-            asset_exceptions=db.execute('SELECT count(*) FROM recipe_store_exception e JOIN recipe_source_record s USING(source_record_key) WHERE s.source_id=? AND s.release_id=? AND s.source_asset_sha256=?',
-                (asset['sourceId'],asset['release'],asset['inputSHA256'])).fetchone()[0]
-            results.append({'sourceId':asset['sourceId'],'sourceRecordId':asset['sourceRecordId'],'inputSHA256':asset['inputSHA256'],
-                'inputBytes':asset['inputBytes'],'recordKind':asset['recordKind'],'parsedRecords':len(records),'loadedRecords':len(records),'exceptions':asset_exceptions,'receipt':receipt})
-        except BaseException as error:
-            db.rollback();code=str(error)if type(error)is RefreshError and re.fullmatch('[a-z0-9-]+',str(error))else'parser-or-projection-failure'
-            _exception(db,run_id,None,'asset:'+asset['inputSHA256'],code,'held')
-            observed=db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0];exceptions=db.execute('SELECT count(*) FROM recipe_store_exception').fetchone()[0]
-            db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=? WHERE store_release_id=?',('incomplete',observed,exceptions,run_id));db.commit()
-            error.recipe_store_retained_state={'completeReceiptReturned':False,'assetSHA256':asset['inputSHA256'],'assetEOFVerified':verified,
-                'completedAssets':results,'sourceRowsRetained':observed,'automaticRetry':False,'automaticDeletion':False}
-            raise
-    check()
-    tables=('recipe_source_record','source_recipe_variant','recipe_ingredient_line','recipe_ordered_step','source_menu','source_menu_item','menu_entry','recipe_region_assertion','recipe_store_exception','dish_concept_ref','menu_recipe_candidate')
-    counts={table:db.execute('SELECT count(*) FROM '+table).fetchone()[0]for table in tables}
-    if (counts['recipe_source_record']!=sum(r['loadedRecords']for r in results)or counts['recipe_source_record']!=counts['source_recipe_variant']+counts['source_menu_item']
-            or db.execute('PRAGMA quick_check').fetchone()!=('ok',)or db.execute('PRAGMA foreign_key_check').fetchone()):_fail('final-reconciliation')
-    db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=?,completed_at=? WHERE store_release_id=?',
-        ('completed',counts['recipe_source_record'],counts['recipe_store_exception'],datetime.now(timezone.utc).isoformat(),run_id));db.commit()
-    return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
-            'expectedAssets':len(assets),'verifiedAssets':len(results),'unreadAssets':0,'parsedBytes':total_bytes,
-            'sourceImportComplete':True,'canonicalIngredientLinks':'NULL/pending','accepted':False,'runtimeOrResourcesAdmitted':False,
-            'publication':'caller57 must close/fsync/hash/check custody and select output receipt; source load is not a release/country completion'}
+    try:
+        db.executescript(DDL);now=datetime.now(timezone.utc).isoformat()
+        _put(db,'recipe_store_release',dict(store_release_id=run_id,input_manifest_sha256=input_manifest_sha256,parser_id=PARSER_VERSION,
+            parser_version=PARSER_VERSION,parser_code_sha256=PARSER_SHA256,state='loading',expected_records=None,observed_records=0,exception_count=0,created_at=now,completed_at=None));db.commit()
+        results=[];total_bytes=0
+        for asset in manifest['assets']:
+            verified=False
+            try:
+                check();records,receipt=parse_asset_once(asset,parser_module);check()
+                if (type(records)is not list or not 1<=len(records)<=limits.max_records_per_asset or type(receipt)is not dict
+                        or receipt.get('inputSHA256')!=asset['inputSHA256']or receipt.get('inputBytes')!=asset['inputBytes']
+                        or receipt.get('parserVersion')!=PARSER_VERSION or receipt.get('EOFFullyVerified')is not True
+                        or type(receipt.get('bodyPasses'))is not int or receipt['bodyPasses']!=1
+                        or type(receipt.get('records'))is not int or receipt['records']!=len(records)):_fail('parser-receipt')
+                verified=True;encoded=canonical(records);total_bytes+=len(encoded)
+                if total_bytes>limits.max_parsed_bytes:_fail('parsed-byte-bound')
+                db.execute('BEGIN IMMEDIATE');citation=_citation(db,asset);menu=None
+                for index,record in enumerate(records,1):
+                    check();source=record.get('source',{})if type(record)is dict else{}
+                    if (source.get('sourceId')!=asset['sourceId']or source.get('releaseId')!=asset['release']
+                            or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=PARSER_VERSION):_fail('parsed-source-binding')
+                    native=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native,index)
+                    _put(db,'recipe_source_record',dict(source_record_key=key,store_release_id=run_id,source_id=asset['sourceId'],release_id=asset['release'],native_record_id=native,
+                        source_ordinal=index,source_asset_sha256=asset['inputSHA256'],parsed_record_sha256=_hash(record),record_pointer='',citation_id=citation,
+                        source_payload_json=canonical(record).decode(),operation_state='local-private-source-faithful; semantic-links-pending'))
+                    if asset['recordKind']=='recipe':_project_recipe(db,key,record,limits,run_id)
+                    else:
+                        item=_project_menu_item(db,key,record)
+                        if menu is None:
+                            menu=_id('source-menu',asset['sourceId'],asset['release'],asset['inputSHA256'])
+                            _put(db,'source_menu',dict(menu_id=menu,source_record_key=key,original_title=None,language=_text(record.get('language'))or'und',
+                                venue_source_reference=canonical(record.get('venue')).decode()if record.get('venue')is not None else None,
+                                observed_at=None,observation_state='source-asset parser-item collection; observation-date unknown',
+                                source_location_json=canonical({'assetSHA256':asset['inputSHA256'],'scope':'selected source parser menu-item collection'}).decode()))
+                        _put(db,'menu_entry',dict(menu_id=menu,menu_item_id=item,entry_order=index))
+                if db.execute('PRAGMA foreign_key_check').fetchone():_fail('foreign-key')
+                db.commit()
+                asset_exceptions=db.execute('SELECT count(*) FROM recipe_store_exception e JOIN recipe_source_record s USING(source_record_key) WHERE s.source_id=? AND s.release_id=? AND s.source_asset_sha256=?',
+                    (asset['sourceId'],asset['release'],asset['inputSHA256'])).fetchone()[0]
+                results.append({'sourceId':asset['sourceId'],'sourceRecordId':asset['sourceRecordId'],'inputSHA256':asset['inputSHA256'],
+                    'inputBytes':asset['inputBytes'],'recordKind':asset['recordKind'],'parsedRecords':len(records),'loadedRecords':len(records),'exceptions':asset_exceptions,'receipt':receipt})
+            except BaseException as error:
+                db.rollback();code=str(error)if type(error)is RefreshError and re.fullmatch('[a-z0-9-]+',str(error))else'parser-or-projection-failure'
+                _exception(db,run_id,None,'asset:'+asset['inputSHA256'],code,'held')
+                observed=db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0];exceptions=db.execute('SELECT count(*) FROM recipe_store_exception').fetchone()[0]
+                db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=? WHERE store_release_id=?',('incomplete',observed,exceptions,run_id));db.commit()
+                error.recipe_store_retained_state={'completeReceiptReturned':False,'assetSHA256':asset['inputSHA256'],'assetEOFVerified':verified,
+                    'completedAssets':results,'sourceRowsRetained':observed,'automaticRetry':False,'automaticDeletion':False}
+                raise
+        check()
+        tables=('recipe_source_record','source_recipe_variant','recipe_ingredient_line','recipe_ordered_step','source_menu','source_menu_item','menu_entry','recipe_region_assertion','recipe_store_exception','dish_concept_ref','menu_recipe_candidate')
+        counts={table:db.execute('SELECT count(*) FROM '+table).fetchone()[0]for table in tables}
+        if (counts['recipe_source_record']!=sum(r['loadedRecords']for r in results)or counts['recipe_source_record']!=counts['source_recipe_variant']+counts['source_menu_item']
+                or db.execute('PRAGMA quick_check').fetchone()!=('ok',)or db.execute('PRAGMA foreign_key_check').fetchone()):_fail('final-reconciliation')
+        db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=?,completed_at=? WHERE store_release_id=?',
+            ('completed',counts['recipe_source_record'],counts['recipe_store_exception'],datetime.now(timezone.utc).isoformat(),run_id));db.commit()
+        return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
+                'expectedAssets':len(assets),'verifiedAssets':len(results),'unreadAssets':0,'parsedBytes':total_bytes,
+                'sourceImportComplete':True,'canonicalIngredientLinks':'NULL/pending','accepted':False,'runtimeOrResourcesAdmitted':False,
+                'publication':'caller57 must close/fsync/hash/check custody and select output receipt; source load is not a release/country completion'}
+    finally:
+        db.set_progress_handler(None,0)
