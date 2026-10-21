@@ -8,16 +8,17 @@ VERSION = 'offmenu-source-label-sections/1'
 COMPONENT_VERSION = 'offmenu-source-ingredient-components/1'
 _END_BOUNDARY = r'[.!?](?=\s|$)|(?=[\r\n]|$)'
 _END = r'.*?(?:' + _END_BOUNDARY + r')'
+_LINE_PREFIX = r'[^.!?\r\n]*'
 _BATCH = r'(?-i:[0-9][A-Z0-9]{7,})'
 _RULES = (
     ('allergen_statement', r'\b(?:MAY CONTAIN|CONTAINS)\b' + _END),
     ('storage', r'\b(?:Keep refrigerated|Keep frozen|Store\s+(?:below|at|in|away from))\b' + _END),
     ('origin_claim', r'\bMade in\s+.+?\s+from\s+at least\s+\d+(?:[.,]\d+)?%\s+.+?\s+ingredients\b'),
-    ('company_address', r'\b[^.!?\n]*\bregistered trademark\b' + _END),
-    ('company_address', r"\b[A-Z][A-Z &'\-]{2,40},\s*\d{1,5}\s+[^.!?\n]*?\b\d{4,6}\b(?:\s+www\.[A-Za-z0-9.\-]+\.[A-Za-z]{2,})?"),
+    ('company_address', r'\b' + _LINE_PREFIX + r'\bregistered trademark\b' + _END),
+    ('company_address', r"\b[A-Z][A-Z &'\-]{2,40},\s*\d{1,5}\s+" + _LINE_PREFIX + r'?\b\d{4,6}\b(?:\s+www\.[A-Za-z0-9.\-]+\.[A-Za-z]{2,})?'),
     ('recycling', r'\b(?:Tub|Lid|Insert|Bottle|Jar|Sleeve|Box|Cap)(?:\s+(?:Tub|Lid|Insert|Bottle|Jar|Sleeve|Box|Cap))*(?:\s+\d{4,32})?\s+[a-z0-9.\-]+\.(?:org|com)(?:\.[a-z]{2})?\b'),
     ('marketing', r'\bContributes to\b' + _END),
-    ('marketing', r'\b[^.!?\n]*\b(?:guarantees|quality specifications|full refund|replacement)\b' + _END),
+    ('marketing', r'\b' + _LINE_PREFIX + r'\b(?:guarantees|quality specifications|full refund|replacement)\b' + _END),
     ('marketing', r'\b(?:No Artificial|Source of|Suitable for)\b.*?(?:' + _END_BOUNDARY + r'|(?=\s+(?:No Artificial|Source of|Suitable for)\b|\s+' + _BATCH + r'\b))'),
 )
 
