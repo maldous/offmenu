@@ -167,6 +167,14 @@ class RetainedProductShardTests(unittest.TestCase):
                         self.assertEqual(field['value'], value)
                         self.assertIsNotNone(field['evidenceSha256'])
                         self.assertEqual(field['sourceFieldState'], 'unknown')
+                        self.assertEqual(fields['imageUrlReferences']['state'], 'not-loaded')
+                        self.assertIsNone(fields['imageUrlReferences']['fieldPointer'])
+                        for entry in fields.values():
+                            if entry['fieldPointer'] is None: continue
+                            resolved = packet
+                            for component in entry['fieldPointer'].lstrip('/').split('/'):
+                                resolved = resolved[int(component)] if isinstance(resolved, list) else resolved[component]
+                            self.assertEqual(resolved, entry['value'])
                     self.assertEqual(direct['records'], packet)
 
     """Generated paired projection packets only, never an OFF source shard."""
