@@ -225,7 +225,7 @@ def _checkpoint_prefix(db, manifest, checkpoint, coverage_scope, new_operation):
             if index >= attempt['startedAfterAssetCount']: operation = attempt['operationSelectionSha256']
         # SQL counts, not reader events, establish the committed prefix. Only
         # binding metadata is examined; source_payload_json is never selected.
-        measured = db.execute("SELECT p.record_kind,count(*),sum(CASE WHEN json_extract(p.source_binding_json,'$.operationReceiptSha256')=? THEN 0 ELSE 1 END) FROM retained_reference_record r JOIN product_detail_projection p USING(reference_record_id) WHERE r.asset_id=? AND r.asset_sha256=? AND p.generation_id=? GROUP BY p.record_kind", (operation, asset['assetId'], asset['inputSHA256'], checkpoint['generationId'])).fetchall()
+        measured = db.execute("SELECT p.record_kind,count(*),sum(CASE WHEN json_extract(p.source_binding_json,'$.operationReceiptSha256')=? THEN 0 ELSE 1 END) FROM retained_reference_record r CROSS JOIN product_detail_projection p USING(reference_record_id) WHERE r.asset_id=? AND r.asset_sha256=? AND p.generation_id=? GROUP BY p.record_kind", (operation, asset['assetId'], asset['inputSHA256'], checkpoint['generationId'])).fetchall()
         if {kind:(count,wrong) for kind,count,wrong in measured} != dict([('product', (asset['products'], 0))] + ([('nutrientProfile', (asset['profiles'], 0))] if asset['profiles'] else [])):
             _fail('checkpoint-sql-prefix')
         count = db.execute('SELECT count(*) FROM retained_reference_record r JOIN product_detail_identifier i USING(reference_record_id) WHERE r.asset_id=? AND r.asset_sha256=?', (asset['assetId'], asset['inputSHA256'])).fetchone()[0]
