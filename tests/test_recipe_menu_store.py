@@ -145,6 +145,30 @@ class RecipeMenuStoreTests(unittest.TestCase):
    self.assertEqual(error.exception.recipe_store_retained_state['sourceRowsRetained'],1)
    self.assertEqual(error.exception.recipe_store_retained_state['committedAssetCounts'][0]['records'],1)
    self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
+ def test_recipe_record_id_must_match_selected_asset_and_preserve_prefix(self):
+  assets=[self.asset('prefix',variant=1),self.asset('selected-recipe-id',variant=2)]
+  def wrong_id(a,module):
+   return self.parse(dict(a,sourceRecordId='substituted-recipe-id')if a['sourceRecordId']=='selected-recipe-id'else a,module)
+  with closing(sqlite3.connect(':memory:'))as db:
+   with self.assertRaisesRegex(RefreshError,'parsed-source-binding')as error:self.load(db,assets,wrong_id)
+   self.assertEqual(db.execute('SELECT native_record_id FROM recipe_source_record').fetchall(),[('prefix',)])
+   self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count,completed_at FROM recipe_store_release').fetchone(),('incomplete',1,1,None))
+   retained=error.exception.recipe_store_retained_state
+   self.assertEqual(retained['sourceRowsRetained'],1)
+   self.assertEqual([a['sourceRecordId']for a in retained['completedAssets']],['prefix'])
+   self.assertTrue(retained['assetEOFVerified'])
+   self.assertFalse(retained['completeReceiptReturned'])
+ def test_matching_recipe_id_and_parser_derived_menu_ids_are_preserved(self):
+  assets=[self.asset('selected-recipe-id'),self.asset('selected-menu-asset-id','menuItem')]
+  with closing(sqlite3.connect(':memory:'))as db:
+   result=self.load(db,assets)
+   self.assertTrue(result['sourceImportComplete'])
+   self.assertEqual([a['sourceRecordId']for a in result['assets']],[a['sourceRecordId']for a in assets])
+   self.assertEqual(db.execute('SELECT native_record_id FROM recipe_source_record WHERE source_id=?',('fixture-recipe',)).fetchall(),[('selected-recipe-id',)])
+   self.assertEqual(db.execute('SELECT native_record_id FROM recipe_source_record WHERE source_id=? ORDER BY source_ordinal',('fixture-menu',)).fetchall(),[('repeat',),('repeat',)])
+   self.assertEqual(db.execute('SELECT count(*) FROM source_menu_item').fetchone()[0],2)
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count FROM recipe_store_release').fetchone(),('completed',3,0))
  def test_record_template_must_match_selected_kind_in_both_directions(self):
   recipe=self.asset('hybrid-recipe');menu=self.asset('hybrid-menu','menuItem')
   raw=self.raws[recipe['inputSHA256']]+self.raws[menu['inputSHA256']];sha=hashlib.sha256(raw).hexdigest();self.raws[sha]=raw
