@@ -196,9 +196,9 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                                 source_location_json=canonical({'assetSHA256':asset['inputSHA256'],'scope':'selected source parser menu-item collection'}).decode()))
                         _put(db,'menu_entry',dict(menu_id=menu,menu_item_id=item,entry_order=index))
                 if db.execute('PRAGMA foreign_key_check').fetchone():_fail('foreign-key')
-                db.commit()
                 asset_exceptions=db.execute('SELECT count(*) FROM recipe_store_exception e JOIN recipe_source_record s USING(source_record_key) WHERE s.source_id=? AND s.release_id=? AND s.source_asset_sha256=?',
                     (asset['sourceId'],asset['release'],asset['inputSHA256'])).fetchone()[0]
+                db.commit()
                 results.append({'sourceId':asset['sourceId'],'sourceRecordId':asset['sourceRecordId'],'inputSHA256':asset['inputSHA256'],
                     'inputBytes':asset['inputBytes'],'recordKind':asset['recordKind'],'parsedRecords':len(records),'loadedRecords':len(records),'exceptions':asset_exceptions,'receipt':receipt})
             except BaseException as error:

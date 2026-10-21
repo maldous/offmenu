@@ -79,6 +79,37 @@ class RecipeMenuStoreTests(unittest.TestCase):
    self.assertIsNone(error.exception.recipe_store_retained_state['assetSHA256'])
    self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
    self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+ def test_exception_count_deadline_rolls_back_current_asset_and_reports_committed_prefix(self):
+  assets=[self.asset('prefix',variant=1),self.asset('many-exceptions',variant=2)]
+  def many(a,module):
+   records,receipt=self.parse(a,module)
+   if a['sourceRecordId']=='many-exceptions':
+    records=copy.deepcopy(records)*1000
+    for record in records:record['yield']=None;record['orderedSteps']=[]
+    receipt['records']=len(records)
+   return records,receipt
+  with closing(sqlite3.connect(':memory:'))as db,patch.object(s.time,'monotonic',return_value=100.0)as clock:
+   counts=[0];commits=[0];commits_at_expiry=[]
+   def trace(sql):
+    if sql=='COMMIT':commits[0]+=1
+    if sql.startswith('SELECT count(*) FROM recipe_store_exception e JOIN recipe_source_record'):
+     counts[0]+=1
+     if counts[0]==2:commits_at_expiry.append(commits[0]);clock.return_value=1000.0
+   db.set_trace_callback(trace)
+   with self.assertRaisesRegex(sqlite3.OperationalError,'interrupted')as error:self.load(db,assets,many)
+   db.set_trace_callback(None)
+   retained=error.exception.recipe_store_retained_state
+   self.assertEqual(counts[0],2)
+   self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0],1)
+   self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count,completed_at FROM recipe_store_release').fetchone(),('incomplete',1,1,None))
+   self.assertEqual(retained['sourceRowsRetained'],1)
+   self.assertEqual([(a['sourceRecordId'],a['loadedRecords'],a['exceptions'])for a in retained['completedAssets']],[('prefix',1,0)])
+   self.assertEqual(retained['assetSHA256'],assets[1]['inputSHA256'])
+   self.assertTrue(retained['assetEOFVerified'])
+   self.assertFalse(retained['completeReceiptReturned'])
+   self.assertEqual(commits_at_expiry,[2])
+   self.assertEqual(db.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<2000) SELECT sum(x) FROM n').fetchone()[0],2001000)
  def test_final_completion_commit_deadline_preserves_committed_prefix_as_incomplete(self):
   assets=[self.asset('slow-completion-commit')]
   with closing(sqlite3.connect(':memory:'))as db,patch.object(s.time,'monotonic',return_value=100.0)as clock:
