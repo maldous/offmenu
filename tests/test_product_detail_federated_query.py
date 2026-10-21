@@ -185,6 +185,54 @@ class FederatedQueryTests(unittest.TestCase):
         self.assertFalse(any(sql.startswith('SELECT projection_limitations_json FROM') for sql in trace))
         self.cleanup_ok(limits)
 
+    def rewrite_native_clock(self,value,omit=False):
+        for ref in self.references:
+            raw=self.db['usda-products'].execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(ref,)).fetchone()[0]
+            product=json.loads(raw)[0]
+            if omit:product['provenance'].pop('fetchedAt',None)
+            else:product['provenance']['fetchedAt']=value
+            digest=q._hash(product)
+            self.edit('usda-products','UPDATE retained_reference_record SET source_payload_json=?,parsed_record_sha256=? WHERE reference_record_id=?',(canonical([product]).decode(),digest,ref))
+            self.edit('usda-products','UPDATE product_processing_audit SET source_record_sha256=? WHERE processing_id=?',(digest,ref))
+        for pid in self.profile_ids:
+            raw=self.db['usda-profiles'].execute('SELECT native_packet_json FROM native_nutrient_profile WHERE profile_id=?',(pid,)).fetchone()[0]
+            profile=json.loads(raw)[0]
+            if omit:profile['provenance'].pop('fetchedAt',None)
+            else:profile['provenance']['fetchedAt']=value
+            raw=canonical([profile]).decode();digest=hashlib.sha256(raw.encode()).hexdigest()
+            self.edit('usda-profiles','UPDATE native_nutrient_profile SET native_packet_json=?,document_sha256=?,provenance_json=? WHERE profile_id=?',(raw,digest,json.dumps(profile['provenance'],sort_keys=True,separators=(',',':')),pid))
+            self.edit('usda-profiles','UPDATE dietary_packet_audit SET packet_sha256=? WHERE packet_id=?',(digest,pid[:-8]))
+
+    def test_selected_null_clock_loads_exact_null_provenance_without_inventing_time(self):
+        self.rewrite_native_clock(None);m=copy.deepcopy(self.m);m['usda']['candidateFetchedAt']=None
+        changes={role:db.total_changes for role,db in self.db.items()};out=self.call(manifest=m)
+        self.assertEqual(len(out['sourceProducts']),3)
+        for product in out['sourceProducts'][:2]:
+            self.assertIsNone(product['sourceBinding']['candidateFetchedAt'])
+            self.assertIsNone(product['sourceBinding']['originalAcquiredAt'])
+            self.assertEqual(product['sourceBinding']['acquisitionClockState'],'unknown-retained')
+            self.assertTrue(all('fetchedAt' in record['provenance'] and record['provenance']['fetchedAt'] is None for record in product['records']))
+        self.assertEqual({role:db.total_changes for role,db in self.db.items()},changes)
+        self.cleanup_ok()
+
+    def test_clock_missing_invalid_and_mismatched_values_fail_closed(self):
+        m=copy.deepcopy(self.m);m['usda']['candidateFetchedAt']=None
+        out=self.call([self.observations[0]],manifest=m)
+        self.assertEqual(out['sourceProducts'],[]);self.assertEqual(out['productDetailAvailability'][0]['state'],'not-loaded')
+        self.rewrite_native_clock(None)
+        out=self.call([self.observations[0]])  # selected text differs from raw null
+        self.assertEqual(out['sourceProducts'],[])
+        for value in (False,0,[],{},'', 'not-a-clock','2026-10-21','2026-10-21T00:00:00+11:00'):
+            with self.subTest(value=value):
+                bad=copy.deepcopy(self.m);bad['usda']['candidateFetchedAt']=value
+                with self.assertRaisesRegex(RefreshError,'usda-selection'):self.call([self.observations[0]],manifest=bad)
+        missing=copy.deepcopy(m);missing['usda'].pop('candidateFetchedAt')
+        with self.assertRaisesRegex(RefreshError,'usda-selection'):self.call([self.observations[0]],manifest=missing)
+        self.rewrite_native_clock(None,omit=True)
+        out=self.call([self.observations[0]],manifest=m)
+        self.assertEqual(out['sourceProducts'],[])  # missing raw field is not null
+        self.cleanup_ok()
+
     def test_exact_current_assertion_before_any_payload_and_known_identifier_preserved(self):
         for key,value in {'assertion_id':99,'run_id':'foreign','input_id':'foreign','record_ordinal':99,'namespace':'other','lexical_value':'bad',
             'source_id':'other','release_id':'other','artifact_sha256':'0'*64,'native_record_id':'bad','source_record_id':'bad','disposition':'unresolved'}.items():

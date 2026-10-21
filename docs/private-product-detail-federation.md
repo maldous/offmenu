@@ -69,8 +69,12 @@ positive equal `products`/`profiles`, `identifierInputId`, `projectionVersion`,
 `representation:usda-native-jsonl`, `candidateFetchedAt`, `originalSha256`,
 `qualificationSha256`, `sourceContractSha256` and `rightsReceiptSha256`.
 The current backend explicitly supports that selected candidate/release, without
-opening it. `candidateFetchedAt` is the accepted record-provenance timestamp;
-it is **not** an inferred original acquisition time.
+opening it. `candidateFetchedAt` is required explicitly: JSON null preserves a
+known-null retained provenance clock; otherwise it must be a valid nonempty UTC
+timestamp. Both raw records must contain `provenance.fetchedAt` and match the
+selected value exactly, without normalization. Missing is distinct from null.
+This is **not** an inferred original acquisition time: no mtime, completion,
+qualification or query clock may replace an unknown value.
 
 Both USDA role entries bind the same source/release/asset/candidate plus their
 own `manifestSha256`, `sourceAssetCount:1`, and complementary retention counts:
