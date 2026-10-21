@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import sqlite3
+import stat
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -262,6 +263,42 @@ class DietaryNativeStoreTests(unittest.TestCase):
                 self.build(spec,limits=replace(self.limits,max_seconds=1))
         self.assertFalse(self.target.exists())
         self.assertFalse(caught.exception.dietary_retained_state['completeReceiptReturned'])
+
+    def test_post_hash_append_and_rewrite_never_return_stale_receipt(self):
+        original_rename=s._rename_noreplace; original_fsync=s.os.fsync
+        for phase in ('after-rename','parent-fsync'):
+            for mutation in ('append','same-extent-rewrite'):
+                with self.subTest(phase=phase,mutation=mutation):
+                    self.target=self.root/(phase+'-'+mutation+'.sqlite')
+                    spec=self.spec(); flags={'published':False,'mutated':False}
+                    def mutate():
+                        before=self.target.stat()
+                        with self.target.open('r+b') as output:
+                            if mutation=='append':
+                                output.seek(0,2); output.write(b'X')
+                            else:
+                                first=output.read(1); output.seek(0)
+                                output.write(bytes([first[0] ^ 1]))
+                            output.flush(); original_fsync(output.fileno())
+                        os.utime(self.target,ns=(before.st_atime_ns,before.st_mtime_ns+1000000))
+                        flags['mutated']=True
+                    def rename(*args):
+                        original_rename(*args); flags['published']=True
+                        if phase=='after-rename': mutate()
+                    def fsync(fd):
+                        original_fsync(fd)
+                        if (phase=='parent-fsync' and flags['published'] and not flags['mutated']
+                                and stat.S_ISDIR(os.fstat(fd).st_mode)):
+                            mutate()
+                    with patch.object(s,'_rename_noreplace',side_effect=rename), patch.object(s.os,'fsync',side_effect=fsync):
+                        with self.assertRaisesRegex(RefreshError,'published-.*custody') as caught:
+                            self.build(spec)
+                    self.assertTrue(flags['mutated'])
+                    retained=caught.exception.dietary_retained_state
+                    self.assertTrue(retained['published'])
+                    self.assertFalse(retained['completeReceiptReturned'])
+                    self.assertTrue(self.target.exists())
+                    self.assertTrue(Path(retained['stage']).is_dir())
 
     def test_progress_checkpoints_do_not_scan_growing_tables_per_packet(self):
         spec=self.spec([self.row(str(i)) for i in range(40)])

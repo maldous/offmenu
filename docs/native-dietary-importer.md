@@ -109,6 +109,12 @@ DB, avoiding self-hash cycles. `accepted`, `goldAdmitted`, `countryComplete` and
 DB bytes vary with timestamps/load metadata, so byte-identical DB replay is not
 claimed.
 
+Publication retains the hashed device/inode/size/mtime and byte extent across
+rename, allowing its expected ctime change. After file/directory fsync and final
+custody checks, the named file and held FD must still match the publication
+signature. Post-hash append/rewrite refuses a successful receipt and retains the
+published/staged state; no additional database hash pass is added.
+
 ## First real operation proposal (not executed)
 
 The worker artifact packet freezes the full numerical proposal against11519:
@@ -122,7 +128,8 @@ privacy/denial/SAME11/mandatory auto_review/execution/promotion/production/CIX
 holds persist. NO MORE FETCHING applies. No profile/inventory data is invented.
 
 Validation: `python3 -B -m unittest tests.test_dietary_native_store -q`:
-24 tests pass. The related36-test native-lookup/identifier suite has an existing
+25 tests pass, including post-hash append/rewrite at rename and directory fsync.
+The related36-test native-lookup/identifier suite has an existing
 FD-count assertion failure (observed descriptor count decreases6 versus10),
 reproduced in the untouched shared baseline. An earlier59-test combined run
 passed; later60-test and separate36-test runs expose that baseline instability.

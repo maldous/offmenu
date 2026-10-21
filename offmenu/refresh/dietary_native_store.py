@@ -428,14 +428,22 @@ def build_dietary_database(spec, destination, *, limits, load_id, input_manifest
             check(True); block = os.pread(file_fd, 1024**2, offset)
             if not block: break
             output_digest.update(block); offset += len(block)
-        signature = _identity(os.fstat(file_fd))
-        if signature != before_hash or offset != signature[2]: _fail('database-hash-custody')
+        hashed_signature = _identity(os.fstat(file_fd))
+        if hashed_signature != before_hash or offset != hashed_signature[2]: _fail('database-hash-custody')
         check(True)
+        if _identity(os.fstat(file_fd)) != hashed_signature: _fail('database-hash-custody')
         _rename_noreplace(stage_fd, 'data.sqlite', parent_fd, target.name); published = True
-        signature = _identity(os.fstat(file_fd)); os.fsync(parent_fd)
-        if _identity(os.stat(target.name, dir_fd=parent_fd, follow_symlinks=False)) != signature:
-            _fail('published-custody')
+        # Rename can change ctime, but must preserve the hashed inode, extent and
+        # mtime. Never replace this hash binding with a newly observed signature.
+        signature = _identity(os.fstat(file_fd))
+        if signature[:4] != hashed_signature[:4] or signature[2] != offset:
+            _fail('published-hash-custody')
+        os.fsync(file_fd); os.fsync(parent_fd)
         check(True)
+        named = os.stat(target.name, dir_fd=parent_fd, follow_symlinks=False)
+        if (not stat.S_ISREG(named.st_mode) or _identity(named) != signature
+                or _identity(os.fstat(file_fd)) != signature):
+            _fail('published-final-custody')
         return {'schemaVersion': VERSION, 'database': str(parent/target.name),
                 'databaseSha256': output_digest.hexdigest(), 'databaseBytes': offset,
                 'databaseIdentity': signature, 'loadId': load_id, 'loadComplete': True,
