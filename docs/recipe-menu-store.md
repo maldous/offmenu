@@ -14,6 +14,7 @@ The parser is unchanged accepted1.3.2, SHA
 57's already prepared `parse_asset_once(asset,module)` supplies held-FD onepass
 input bytes/hash/EOF/custody and returned records. The writer checks that receipt
 and source/release/originalSHA/parser bindings before each asset transaction.
+It also validates the selected recipe/menu template before inserting source rows.
 Arbitrary JSON cannot create eligibility or runtime authority; the actual
 caller/source/control/code/resource selection remains external and reviewed.
 
@@ -25,6 +26,8 @@ source ordinals are unique, including gaps. Component-local repeated ordinals
 use stable array order in the flat SQL projection; original order/component and
 native ingredientLineId remain in source-location JSON and the complete payload.
 No source line/step is silently dropped.
+Preparation rejects repeated source/release/blob selections, even under different
+source record IDs or kinds, matching the persisted asset/ordinal uniqueness.
 
 Original language, evidenced region, raw yield and quantity/unit lexemes,
 preparations, alternatives, source notes, nutrition/time/equipment and locations
@@ -46,6 +49,9 @@ Each successful asset commits independently. Parser/receipt/projection failure
 rolls back that asset, preserves completed assets and a held exception, marks the
 release incomplete and raises without a completion receipt. No automatic retry,
 cleanup or overwrite occurs.57 must preserve failures and report actual custody.
+Post-loop deadline/reconciliation failures also mark the release incomplete with
+actual committed row/asset counts. Failure bookkeeping clears an expired handler;
+the installed progress handler is always cleared before returning caller control.
 `StoreLimits` bounds input extent, assets, records, parsed bytes, lines, steps,
 DB pages and cooperative time; OS/FD/file/journal/aggregate limits are57's caller
 responsibility. The API does not itself publish a database or grant source use.

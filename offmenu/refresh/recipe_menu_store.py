@@ -51,7 +51,9 @@ def prepare_recipe_menu(assets):
                 ('sourceId','sourceRecordId','inputPath','release')) or a.get('recordKind')not in('recipe','menuItem')
                 or not Path(a['inputPath']).is_absolute() or not _sha(a.get('inputSHA256'))
                 or type(a.get('inputBytes'))is not int or not 0<a['inputBytes']<=2097152):_fail('asset-binding')
-        key=_id('asset',a['sourceId'],a['release'],a['inputSHA256'],a['sourceRecordId'],a['recordKind'])
+        # Match13's persisted asset/ordinal uniqueness; aliases or kinds cannot
+        # select the same source/release/blob twice in one store generation.
+        key=_id('asset',a['sourceId'],a['release'],a['inputSHA256'])
         if key in seen:_fail('duplicate-selected-asset')
         seen.add(key);rows.append(a)
     result={'version':VERSION,'schemaSha256':SCHEMA_SHA256,'parserVersion':PARSER_VERSION,
@@ -155,11 +157,12 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
     db.execute('PRAGMA foreign_keys=ON');db.execute('PRAGMA journal_mode=DELETE');db.execute('PRAGMA temp_store=MEMORY');db.execute('PRAGMA cache_size=-8192');db.execute('PRAGMA mmap_size=0');db.execute('PRAGMA synchronous=FULL')
     page=db.execute('PRAGMA page_size').fetchone()[0];db.execute('PRAGMA max_page_count='+str(max(1,limits.max_database_bytes//page)))
     db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH,min(2**31-1,limits.max_parsed_bytes));db.set_progress_handler(lambda:int(time.monotonic()-started>=limits.max_seconds),1000)
+    results=[];total_bytes=0;initialized=False
     try:
         db.executescript(DDL);now=datetime.now(timezone.utc).isoformat()
         _put(db,'recipe_store_release',dict(store_release_id=run_id,input_manifest_sha256=input_manifest_sha256,parser_id=PARSER_VERSION,
             parser_version=PARSER_VERSION,parser_code_sha256=PARSER_SHA256,state='loading',expected_records=None,observed_records=0,exception_count=0,created_at=now,completed_at=None));db.commit()
-        results=[];total_bytes=0
+        initialized=True
         for asset in manifest['assets']:
             verified=False
             try:
@@ -174,6 +177,8 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                 db.execute('BEGIN IMMEDIATE');citation=_citation(db,asset);menu=None
                 for index,record in enumerate(records,1):
                     check();source=record.get('source',{})if type(record)is dict else{}
+                    template,version,other=('recipeTemplate',parser_module.RECIPE_TEMPLATE_VERSION,'menuTemplate')if asset['recordKind']=='recipe'else('menuTemplate',parser_module.MENU_TEMPLATE_VERSION,'recipeTemplate')
+                    if type(record)is not dict or record.get(template)!=version or other in record:_fail('parsed-record-kind')
                     if (source.get('sourceId')!=asset['sourceId']or source.get('releaseId')!=asset['release']
                             or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=PARSER_VERSION):_fail('parsed-source-binding')
                     native=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native,index)
@@ -197,6 +202,8 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                 results.append({'sourceId':asset['sourceId'],'sourceRecordId':asset['sourceRecordId'],'inputSHA256':asset['inputSHA256'],
                     'inputBytes':asset['inputBytes'],'recordKind':asset['recordKind'],'parsedRecords':len(records),'loadedRecords':len(records),'exceptions':asset_exceptions,'receipt':receipt})
             except BaseException as error:
+                # Failure bookkeeping must work even when this deadline expired.
+                db.set_progress_handler(None,0)
                 db.rollback();code=str(error)if type(error)is RefreshError and re.fullmatch('[a-z0-9-]+',str(error))else'parser-or-projection-failure'
                 _exception(db,run_id,None,'asset:'+asset['inputSHA256'],code,'held')
                 observed=db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0];exceptions=db.execute('SELECT count(*) FROM recipe_store_exception').fetchone()[0]
@@ -215,5 +222,22 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                 'expectedAssets':len(assets),'verifiedAssets':len(results),'unreadAssets':0,'parsedBytes':total_bytes,
                 'sourceImportComplete':True,'canonicalIngredientLinks':'NULL/pending','accepted':False,'runtimeOrResourcesAdmitted':False,
                 'publication':'caller57 must close/fsync/hash/check custody and select output receipt; source load is not a release/country completion'}
+    except BaseException as error:
+        db.set_progress_handler(None,0)
+        if not hasattr(error,'recipe_store_retained_state'):
+            db.rollback();observed=0;committed=[]
+            if initialized:
+                code=str(error)if type(error)is RefreshError and re.fullmatch('[a-z0-9-]+',str(error))else'finalization-failure'
+                _exception(db,run_id,None,'store:'+run_id,code,'held')
+                observed=db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0]
+                exceptions=db.execute('SELECT count(*) FROM recipe_store_exception').fetchone()[0]
+                committed=[dict(sourceId=r[0],releaseId=r[1],inputSHA256=r[2],records=r[3])for r in db.execute(
+                    'SELECT source_id,release_id,source_asset_sha256,count(*) FROM recipe_source_record GROUP BY source_id,release_id,source_asset_sha256')]
+                db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=?,completed_at=NULL WHERE store_release_id=?',
+                    ('incomplete',observed,exceptions,run_id));db.commit()
+            error.recipe_store_retained_state={'completeReceiptReturned':False,'failurePhase':'finalization'if initialized else'initialization',
+                'assetSHA256':None,'assetEOFVerified':None,
+                'completedAssets':results,'committedAssetCounts':committed,'sourceRowsRetained':observed,'automaticRetry':False,'automaticDeletion':False}
+        raise
     finally:
         db.set_progress_handler(None,0)
