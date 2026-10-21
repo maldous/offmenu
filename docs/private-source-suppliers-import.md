@@ -4,7 +4,8 @@ This new callable uses Worker13's exact reference-domain-extension schema (SHA25
 1a0bb6cbec8e1477d8d51cac30bb8cd1c8e100125f56bdb0b82339cb59ba293d).
 It installs no caller, UI route, server, acquisition or canonical normalization.
 All real runtime selection remains separate after64review/00integration. Source
-artifacts are four new paths; source base4e20fe26c7df8c9047f6aaf85f793b7bccda1abb.
+artifacts are four new paths. Source origin4e20fe26c7df8c9047f6aaf85f793b7bccda1abb;
+SAMEPR83 correction base3564df94d3252315fb0396db515e984cc9ae27e0.
 
 `offmenu.refresh.local_source_suppliers.import_local_source_actors` accepts a
 trusted exact source path, independently selected FD/path identity, expected
@@ -32,8 +33,11 @@ retained_reference_record.source_payload_json. Its parsed_record_sha256 hashes
 that exact decompressed line INCLUDING LF. It checks whole gzipCRC/EOF, extent,
 namespace/release/licence/visibility and pre/post sameFD/path metadata. Per-record
 ordinal keys preserve duplicate source IDs. Names and JSON-serialized native
-role arrays are copied; language is und when the primary name has no explicit
-language. Source countries/websites remain payload facts; no site, legal name,
+role arrays are copied after rejecting empty or unknown roles against the source
+generator's food-manufacturer, supermarket-chain and grocery-store-chain contract.
+A unique exact data.names match supplies the primary-name language tag verbatim;
+missing, nonmatching or ambiguous matches remain und. Source countries/websites
+remain payload facts; no site, legal name,
 supplier relationship, ownership, stock, product identity or live offer follows.
 Supplier canonical IDs and external citation IDs remainNULL/pending. No offers
 are fabricated; source offer-field presence is counted for separate handling.
@@ -54,10 +58,12 @@ termination or metadata storage failure can leave an incomplete checkpoint and
 unknown commit state; reconcile, never retry, overwrite or delete automatically.
 No raw source values, exception messages or tracebacks enter progress receipts.
 
-Twelve generated tests cover verbatim unknowns, repeated IDs, a1505-record fixture
+Twenty-two generated tests cover verbatim unknowns, repeated IDs, a1505-record fixture
 whose SQLite exceeds3MiB, storage refusal with durable hash/counters, lateCRC,
 wrong hash, privacy, count mismatch, existing output preservation, explicit
-observed-snapshot policy, line bound and duplicate JSON keys. Real data access
+observed-snapshot policy, line bound and duplicate JSON keys; empty/unknown roles,
+late invalid-role rollback, all three allowed roles and exact/unknown/ambiguous
+primary-name language evidence. Real data access
 was blocked by an audit guard throughout. Fixtures are not supplier delivery.
 
 Future caller shape (NOT executed): import this accepted callable, load exact13

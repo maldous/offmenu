@@ -16,6 +16,7 @@ import tempfile
 SCHEMA_SHA256 = '1a0bb6cbec8e1477d8d51cac30bb8cd1c8e100125f56bdb0b82339cb59ba293d'
 SOURCE_ID = 'wikidata-food-businesses'
 RELEASE_ID = '2026-10-13-direct-types'
+SOURCE_ROLES = frozenset(('food-manufacturer', 'supermarket-chain', 'grocery-store-chain'))
 
 
 class SupplierImportError(Exception):
@@ -44,6 +45,16 @@ def _strict(raw):
     def nonfinite(value):
         raise ValueError('nonfinite')
     return json.loads(raw, object_pairs_hook=pairs, parse_constant=nonfinite)
+
+
+def _primary_name_language(data):
+    names = data.get('names')
+    if not isinstance(names, dict):
+        return 'und'
+    matches = [language for language, value in names.items()
+               if isinstance(language, str) and language
+               and isinstance(value, str) and value == data['name']]
+    return matches[0] if len(matches) == 1 else 'und'
 
 
 def import_local_source_actors(source, output_dir, *, schema_sql, expected_identity,
@@ -180,7 +191,8 @@ def import_local_source_actors(source, output_dir, *, schema_sql, expected_ident
                         != (SOURCE_ID, RELEASE_ID, 'CC0 1.0', 'public')
                         or not isinstance(data.get('name'), str)
                         or not isinstance(data.get('roles'), list)
-                        or not all(isinstance(x, str) for x in data['roles'])
+                        or not data['roles']
+                        or not all(isinstance(x, str) and x in SOURCE_ROLES for x in data['roles'])
                         or not isinstance(data.get('identifiers'), list)
                         or {'system': 'Wikidata', 'value': native} not in data['identifiers']):
                     reject('supplier-record-scope')
@@ -191,7 +203,7 @@ def import_local_source_actors(source, output_dir, *, schema_sql, expected_ident
                 progress['parsed_records'] += 1
                 connection.execute('INSERT INTO retained_reference_record VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                     (reference, SOURCE_ID, RELEASE_ID, asset, progress['observed_input_sha256'], ordinal,
-                     row['id'], pointer, 'und', raw.decode('utf-8'), hashlib.sha256(raw).hexdigest(),
+                     row['id'], pointer, _primary_name_language(data), raw.decode('utf-8'), hashlib.sha256(raw).hexdigest(),
                      None, 'external-binding-pending', 'offmenu-local-organization-source-import',
                      '2', 'source-faithful-imported'))
                 progress['pending_reference_rows'] += 1

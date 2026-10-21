@@ -140,6 +140,56 @@ class SourceSuppliersTest(unittest.TestCase):
     def test_json_duplicate_keys_are_rejected(self):
         path, raw = self.source(raw=b'[{"kind":"organization","kind":"other"}]\n')
         self.failure(path, 'supplier-invalid-or-incomplete-input')
+    def test_empty_roles_are_rejected(self):
+        row = fixture(); row['data']['roles'] = []
+        path, raw = self.source([row])
+        self.failure(path, 'supplier-record-scope')
+        self.assertEqual((0, 0), self.stored_counts())
+    def test_unknown_roles_are_rejected(self):
+        row = fixture(); row['data']['roles'] = ['restaurant']
+        path, raw = self.source([row])
+        receipt = self.failure(path, 'supplier-record-scope')
+        self.assertNotIn('restaurant', json.dumps(receipt))
+        self.assertEqual((0, 0), self.stored_counts())
+    def test_late_unknown_role_rolls_back_prior_record(self):
+        row = fixture(2); row['data']['roles'] = ['food-manufacturer', 'restaurant']
+        path, raw = self.source([fixture(), row])
+        receipt = self.failure(path, 'supplier-record-scope', count=2)
+        self.assertEqual(2, receipt['read_records'])
+        self.assertEqual(1, receipt['parsed_records'])
+        self.assertEqual((0, 0), self.stored_counts())
+    def test_all_exact_generator_roles_remain_source_faithful(self):
+        row = fixture(); row['data']['roles'] = [
+            'food-manufacturer', 'grocery-store-chain', 'supermarket-chain']
+        path, raw = self.source([row])
+        self.call(path)
+        with sqlite3.connect(self.root / 'output/suppliers.sqlite') as db:
+            roles = db.execute('SELECT source_role_lexeme FROM supplier_source_actor').fetchone()[0]
+        self.assertEqual(row['data']['roles'], json.loads(roles))
+    def language_after_import(self, name, names):
+        row = fixture(); row['data']['name'] = name
+        if names is None:
+            row['data'].pop('names')
+        else:
+            row['data']['names'] = names
+        path, raw = self.source([row]); self.call(path)
+        with sqlite3.connect(self.root / 'output/suppliers.sqlite') as db:
+            language, payload = db.execute(
+                'SELECT original_language,source_payload_json FROM retained_reference_record').fetchone()
+        self.assertEqual(raw.decode(), payload)
+        return language
+    def test_explicit_matching_primary_name_language_is_preserved(self):
+        self.assertEqual('fr', self.language_after_import('Nom', {'fr': 'Nom'}))
+    def test_exact_source_language_tag_and_name_are_preserved(self):
+        self.assertEqual('fr-CA', self.language_after_import('  Nom Ω  ', {'fr-CA': '  Nom Ω  '}))
+    def test_explicit_multilingual_source_tag_is_preserved(self):
+        self.assertEqual('mul', self.language_after_import('Name', {'mul': 'Name'}))
+    def test_missing_language_evidence_stays_und(self):
+        self.assertEqual('und', self.language_after_import('Nom', None))
+    def test_nonmatching_language_name_is_not_normalized_into_a_match(self):
+        self.assertEqual('und', self.language_after_import('Nom', {'fr': 'nom'}))
+    def test_ambiguous_matching_language_names_stay_und(self):
+        self.assertEqual('und', self.language_after_import('Nom', {'fr': 'Nom', 'en': 'Nom'}))
 
 
 if __name__ == '__main__':
