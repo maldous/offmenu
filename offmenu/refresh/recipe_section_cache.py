@@ -269,6 +269,9 @@ def load_cached_recipe_sections(db, raw_records, contract_raw, *, selection, sou
     db.set_progress_handler(progress, 100)
     try:
         db.executescript(store.DDL)
+        # Python commit()/rollback() are no-ops with autocommit=True. Own the
+        # native SQL transaction explicitly for every accepted idle connection.
+        db.execute('BEGIN IMMEDIATE')
         now = datetime.now(timezone.utc).isoformat()
         store._put(db, 'recipe_store_release', dict(store_release_id=selection.run_id,
             input_manifest_sha256=store._hash({'recordsPath': selection.records_path,
@@ -288,7 +291,7 @@ def load_cached_recipe_sections(db, raw_records, contract_raw, *, selection, sou
         check()
         db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,completed_at=? WHERE store_release_id=?',
                    ('completed', len(rows), datetime.now(timezone.utc).isoformat(), selection.run_id))
-        db.commit()
+        db.execute('COMMIT')
         return {'adapterVersion': VERSION, 'cacheGrainComplete': True, 'fullTemplateComplete': False,
                 'sourceRows': len(rows), 'partialVariantRows': len(rows), 'anchoredSections': anchors,
                 'ingredientRows': 0, 'stepRows': 0, 'logicalIngredientLineCount': None,
@@ -298,7 +301,8 @@ def load_cached_recipe_sections(db, raw_records, contract_raw, *, selection, sou
                 'PDFReads': 0, 'modelCalls': 0, 'publication': 'caller closes/fsyncs/qualifies new output separately'}
     except BaseException:
         db.set_progress_handler(None, 0)
-        db.rollback()
+        if db.in_transaction:
+            db.execute('ROLLBACK')
         raise
     finally:
         db.set_progress_handler(None, 0)

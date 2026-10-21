@@ -40,7 +40,13 @@ TEMP databases. The caller owns private/exclusive output creation, process and
 storage limits, final close/fsync/output digest/custody/publication, terminal
 receipt and any later adoption. Never pass the existing83-record database or a
 live selected scanner store. The function validates every supplied cache record
-and anchor before creating DDL, then inserts all rows in one transaction. A
+and anchor before creating DDL, then explicitly owns a native SQL
+`BEGIN IMMEDIATE`/`COMMIT`/`ROLLBACK` row transaction. This covers accepted idle
+legacy connections including `isolation_level=None` and Python
+`autocommit=True`; it does not rely on Python commit/rollback methods, which can
+be no-ops. Python `autocommit=False` normally starts a caller-owned transaction
+and is rejected before DDL; an explicitly native-idle connection still uses the
+same owned SQL transaction. A
 write failure rolls back that row transaction; already-created empty DDL may
 remain in the caller's new staged database. Retain the failed stage and report
 the exact error; do not silently retry/delete or infer publication.

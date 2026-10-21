@@ -159,6 +159,43 @@ class RecipeSectionCacheTests(unittest.TestCase):
             with patch.object(c.time,'monotonic',side_effect=[0,100]),self.assertRaisesRegex(RefreshError,'time-bound'):
                 self.load(db,f)
 
+    def test_explicit_row_transaction_for_isolation_none_and_python_autocommit_modes(self):
+        modes = [('legacy-default', {}), ('legacy-none', {'isolation_level':None})]
+        if hasattr(sqlite3.Connection,'autocommit'):
+            modes.extend([('python-true', {'autocommit':True}),
+                          ('python-false', {'autocommit':False}),
+                          ('python-false-native-idle', {'autocommit':False})])
+        original = c.store._put
+        def fail_first_variant(db,table,row):
+            if table=='source_recipe_variant':raise RuntimeError('generated-variant-failure')
+            return original(db,table,row)
+        for name, kwargs in modes:
+            for failure in (True, False):
+                with self.subTest(mode=name,failure=failure), closing(sqlite3.connect(':memory:',**kwargs)) as db:
+                    if name=='python-false-native-idle':
+                        db.execute('COMMIT')
+                        self.assertFalse(db.in_transaction)
+                    if db.in_transaction:
+                        # PEP249 mode normally starts a caller-owned transaction.
+                        # Reject it before DDL without committing/rolling it back.
+                        with self.assertRaisesRegex(RefreshError,'selection'):
+                            self.load(db,self.fixture())
+                        self.assertEqual(db.execute('SELECT name FROM sqlite_master').fetchall(),[])
+                        self.assertTrue(db.in_transaction)
+                        continue
+                    old_length = db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+                    if failure:
+                        with patch.object(c.store,'_put',side_effect=fail_first_variant), self.assertRaisesRegex(RuntimeError,'generated-variant-failure'):
+                            self.load(db,self.fixture())
+                    else:
+                        self.load(db,self.fixture())
+                    counts = [db.execute('SELECT count(*) FROM '+table).fetchone()[0]
+                              for table in ('recipe_store_release','recipe_source_record','source_recipe_variant')]
+                    self.assertEqual(counts, [0,0,0] if failure else [1,3,3])
+                    self.assertFalse(db.in_transaction)
+                    self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_length)
+                    self.assertEqual(db.execute('SELECT 1').fetchone(),(1,))
+
 
 if __name__=='__main__':
     unittest.main()
