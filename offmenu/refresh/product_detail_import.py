@@ -23,6 +23,9 @@ VERSION = 'offmenu-retained-product-detail-store/1'
 
 _COVERAGE_WRITER_KEYS = frozenset(('identifierDatabaseSha256', 'assets', 'sourceFirst',
                                    'identifierOccurrences', 'resumeAttempts'))
+_MAX_CONTROL_JSON_BYTES = 2 * 1024**2
+_MAX_EXCEPTION_JSON_BYTES = 16384
+_SQL_LENGTH_BUDGET = 32 * 1024**2
 
 
 DDL = "-- SOURCE CONTRACT ONLY, not executed.5tables/1view;26owns implementation.\nCREATE TABLE retained_reference_record(\n reference_record_id TEXT PRIMARY KEY NOT NULL,\n source_id TEXT NOT NULL, release_id TEXT NOT NULL,\n asset_id TEXT NOT NULL, asset_sha256 TEXT NOT NULL,\n source_ordinal INTEGER NOT NULL CHECK(source_ordinal>=1),\n native_record_id TEXT, source_pointer TEXT NOT NULL,\n original_language TEXT NOT NULL, source_payload_json TEXT NOT NULL,\n parsed_record_sha256 TEXT NOT NULL,\n citation_id TEXT, citation_binding_status TEXT NOT NULL,\n parse_engine_id TEXT NOT NULL, parse_engine_version TEXT NOT NULL,\n processing_status TEXT NOT NULL,\n UNIQUE(asset_id,asset_sha256,source_ordinal)\n);\n-- NEW separate private product-detail generation only. Reference-record table reused exactly.\n-- No validated identifier DB mutation, scanner11986 change or source body access by13.\nCREATE TABLE product_detail_generation(\n generation_id TEXT PRIMARY KEY NOT NULL,\n input_manifest_sha256 TEXT NOT NULL,\n schema_version TEXT NOT NULL,\n projection_version TEXT NOT NULL,\n operation_selection_sha256 TEXT NOT NULL,\n state TEXT NOT NULL CHECK(state IN ('loading','incomplete','completed','failed')),\n coverage_scope_json TEXT NOT NULL,\n expected_asset_count INTEGER CHECK(expected_asset_count>=0),\n processed_asset_count INTEGER CHECK(processed_asset_count>=0),\n product_records INTEGER CHECK(product_records>=0),\n profile_records INTEGER CHECK(profile_records>=0),\n exceptions_json TEXT NOT NULL,\n created_at TEXT NOT NULL, modified_at TEXT, removed_at TEXT, created_by TEXT,\n owner_actor_reference TEXT, access_policy_reference TEXT\n);\nCREATE TABLE product_detail_projection(\n reference_record_id TEXT PRIMARY KEY NOT NULL REFERENCES retained_reference_record(reference_record_id),\n generation_id TEXT NOT NULL REFERENCES product_detail_generation(generation_id),\n record_kind TEXT NOT NULL CHECK(record_kind IN ('product','nutrientProfile')),\n paired_profile_reference TEXT REFERENCES retained_reference_record(reference_record_id),\n source_binding_json TEXT NOT NULL,\n fields_json TEXT,\n projection_limitations_json TEXT NOT NULL,\n canonical_ingredient_id TEXT,\n semantic_mapping_status TEXT NOT NULL,\n record_disposition TEXT NOT NULL\n);\nCREATE TABLE product_detail_identifier(\n reference_record_id TEXT NOT NULL REFERENCES retained_reference_record(reference_record_id),\n identifier_ordinal INTEGER NOT NULL CHECK(identifier_ordinal>=1),\n namespace TEXT COLLATE BINARY,\n lexical_value TEXT COLLATE BINARY,\n disposition TEXT NOT NULL,\n source_pointer TEXT NOT NULL,\n PRIMARY KEY(reference_record_id,identifier_ordinal)\n);\nCREATE TABLE product_detail_observation_bridge(\n bridge_id TEXT PRIMARY KEY NOT NULL,\n identifier_database_sha256 TEXT NOT NULL,\n identifier_run_id TEXT NOT NULL,\n identifier_input_id TEXT NOT NULL,\n identifier_record_ordinal INTEGER NOT NULL CHECK(identifier_record_ordinal>=1),\n identifier_assertion_id INTEGER NOT NULL CHECK(identifier_assertion_id>=1),\n reference_record_id TEXT REFERENCES retained_reference_record(reference_record_id),\n bridge_state TEXT NOT NULL CHECK(bridge_state IN ('matched','not-loaded','ambiguous','restricted')),\n exact_link_evidence_json TEXT NOT NULL,\n CHECK(bridge_state<>'matched' OR reference_record_id IS NOT NULL)\n);\nCREATE INDEX product_detail_key_lookup ON product_detail_identifier(namespace,lexical_value,reference_record_id);\nCREATE INDEX product_detail_generation_records ON product_detail_projection(generation_id,record_kind,reference_record_id);\nCREATE INDEX product_detail_exact_observation ON product_detail_observation_bridge(identifier_database_sha256,identifier_run_id,identifier_input_id,identifier_record_ordinal,identifier_assertion_id,bridge_id);\nCREATE INDEX product_detail_source ON retained_reference_record(source_id,release_id,native_record_id,source_ordinal);\nCREATE VIEW v_source_product_details AS\nSELECT p.generation_id,r.reference_record_id,r.source_id,r.release_id,r.native_record_id,\n r.asset_id,r.asset_sha256,r.source_ordinal,r.source_pointer,r.parsed_record_sha256,\n r.original_language,r.citation_id,r.citation_binding_status,\n p.record_kind,p.paired_profile_reference,p.source_binding_json,p.fields_json,\n p.projection_limitations_json,p.canonical_ingredient_id,p.semantic_mapping_status,p.record_disposition\nFROM retained_reference_record r JOIN product_detail_projection p USING(reference_record_id);\n"
@@ -45,6 +48,12 @@ def _sha(value): return type(value) is str and re.fullmatch('[a-f0-9]{64}', valu
 
 
 def _hash(value): return hashlib.sha256(canonical(value)).hexdigest()
+
+
+def _metadata_json(value, maximum):
+    encoded = canonical(value)
+    if len(encoded) > maximum: _fail('metadata-byte-bound')
+    return encoded.decode()
 
 
 def _id(*values): return 'urn:offmenu:product-detail:' + _hash(list(values))
@@ -119,7 +128,7 @@ def resume_existing_product_details(db, assets, *, checkpoint_receipt, checkpoin
     """
     if db.in_transaction: _fail('caller-transaction-active')
     if (type(checkpoint_receipt) is not dict or not _sha(checkpoint_sha256)
-            or len(canonical(checkpoint_receipt)) > 2 * 1024**2
+            or len(canonical(checkpoint_receipt)) > _MAX_CONTROL_JSON_BYTES
             or _hash(checkpoint_receipt) != checkpoint_sha256): _fail('checkpoint-selection')
     checkpoint = strict_json(canonical(checkpoint_receipt))
     if (checkpoint.get('version') != 'offmenu-product-detail-checkpoint/1'
@@ -169,13 +178,17 @@ def _checkpoint_prefix(db, manifest, checkpoint, coverage_scope, new_operation):
     actual = db.execute("SELECT type,name,tbl_name,sql FROM sqlite_master ORDER BY type,name").fetchall()
     if actual != expected: _fail('checkpoint-schema')
     if db.execute('SELECT count(*) FROM product_detail_generation').fetchone() != (1,): _fail('checkpoint-generation')
+    sizes = db.execute('SELECT length(CAST(coverage_scope_json AS BLOB)),length(CAST(exceptions_json AS BLOB)) FROM product_detail_generation WHERE generation_id=?', (checkpoint['generationId'],)).fetchone()
+    if sizes is None: _fail('checkpoint-generation')
+    if any(type(n) is not int or not 0 <= n <= cap for n, cap in zip(sizes, (_MAX_CONTROL_JSON_BYTES, _MAX_EXCEPTION_JSON_BYTES))):
+        _fail('checkpoint-metadata-bound')
     row = db.execute('SELECT input_manifest_sha256,schema_version,projection_version,operation_selection_sha256,state,coverage_scope_json,expected_asset_count,processed_asset_count,product_records,profile_records,removed_at,exceptions_json FROM product_detail_generation WHERE generation_id=?', (checkpoint['generationId'],)).fetchone()
     if (row is None or row[:5] != (checkpoint['inputManifestSha256'], VERSION, 'source-native-full-payload/1',
             checkpoint['originalOperationSelectionSha256'], 'incomplete') or row[10] is not None
             or any(type(n) is not int or n < 0 for n in row[6:10])
             or row[6] != len(manifest['assets']) or row[7] > row[6]): _fail('checkpoint-generation')
     coverage = strict_json(row[5]); previous_exceptions = strict_json(row[11])
-    if type(previous_exceptions) is not list or len(canonical(previous_exceptions)) > 16384: _fail('checkpoint-lineage')
+    if type(previous_exceptions) is not list or len(canonical(previous_exceptions)) > _MAX_EXCEPTION_JSON_BYTES: _fail('checkpoint-lineage')
     if (type(coverage) is not dict or _hash(coverage) != checkpoint['coverageSha256']
             or coverage.get('identifierDatabaseSha256') != checkpoint['identifierDatabaseSha256']
             or coverage.get('sourceFirst') is not True or type(coverage.get('assets')) is not list
@@ -195,7 +208,7 @@ def _checkpoint_prefix(db, manifest, checkpoint, coverage_scope, new_operation):
                 or not prior <= attempt['startedAfterAssetCount'] <= row[7]
                 or type(attempt.get('startedAt')) is not str or not attempt['startedAt']
                 or type(attempt.get('previousExceptions')) is not list
-                or len(canonical(attempt['previousExceptions'])) > 16384): _fail('checkpoint-lineage')
+                or len(canonical(attempt['previousExceptions'])) > _MAX_EXCEPTION_JSON_BYTES): _fail('checkpoint-lineage')
         prior = attempt['startedAfterAssetCount']; operations.add(attempt['operationSelectionSha256'])
     if new_operation in operations: _fail('checkpoint-operation-reuse')
     receipts = checkpoint['committedReceipts']; completed = coverage['assets']
@@ -285,7 +298,8 @@ def _import_product_details(db, assets, *, scan_asset_once, limits, generation_i
     db.execute('PRAGMA temp_store=MEMORY'); db.execute('PRAGMA cache_size=-8192'); db.execute('PRAGMA mmap_size=0')
     page = db.execute('PRAGMA page_size').fetchone()[0]
     if _checkpoint is None: db.execute('PRAGMA max_page_count=' + str(max(1, limits.max_database_bytes // page)))
-    db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, limits.max_record_bytes)
+    previous_sql_length = db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH)
+    db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, min(previous_sql_length, _SQL_LENGTH_BUDGET))
     db.set_progress_handler(lambda: int(time.monotonic() - start >= limits.max_seconds), 1000)
     current = None
     try:
@@ -293,7 +307,7 @@ def _import_product_details(db, assets, *, scan_asset_once, limits, generation_i
         if _checkpoint is None:
             db.executescript(DDL)
             db.execute('INSERT INTO product_detail_generation VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                (generation_id, input_manifest_sha256, VERSION, 'source-native-full-payload/1', operation_selection_sha256, 'loading', canonical(coverage).decode(),
+                (generation_id, input_manifest_sha256, VERSION, 'source-native-full-payload/1', operation_selection_sha256, 'loading', _metadata_json(coverage, _MAX_CONTROL_JSON_BYTES),
                  len(assets), 0, 0, 0, '[]', now, now, None, 'worker26-source-via-selected57', None, 'private-local-scanner-7645'))
         else:
             db.execute('BEGIN IMMEDIATE')
@@ -307,7 +321,7 @@ def _import_product_details(db, assets, *, scan_asset_once, limits, generation_i
                 'previousCoverageSha256': _checkpoint['coverageSha256'],
                 'startedAfterAssetCount': len(completed), 'startedAt': now, 'previousExceptions': previous_exceptions}]
             db.execute('UPDATE product_detail_generation SET state=?,coverage_scope_json=?,exceptions_json=?,modified_at=? WHERE generation_id=?',
-                ('loading', canonical(coverage).decode(), '[]', now, generation_id))
+                ('loading', _metadata_json(coverage, _MAX_CONTROL_JSON_BYTES), '[]', now, generation_id))
         db.commit(); initialized = True
         previous_count = len(completed)
         for asset in manifest['assets'][previous_count:]:
@@ -381,7 +395,7 @@ def _import_product_details(db, assets, *, scan_asset_once, limits, generation_i
             coverage['assets'] = next_assets
             coverage['identifierOccurrences'] = identifiers + counts[2]
             db.execute('UPDATE product_detail_generation SET coverage_scope_json=?,processed_asset_count=?,product_records=?,profile_records=?,modified_at=? WHERE generation_id=?',
-                (canonical(coverage).decode(), len(next_assets), products + counts[0], profiles + counts[1], datetime.now(timezone.utc).isoformat(), generation_id))
+                (_metadata_json(coverage, _MAX_CONTROL_JSON_BYTES), len(next_assets), products + counts[0], profiles + counts[1], datetime.now(timezone.utc).isoformat(), generation_id))
             db.commit(); completed = next_assets; products += counts[0]; profiles += counts[1]; identifiers += counts[2]
         current = None; check()
         measured = dict(db.execute('SELECT record_kind,count(*) FROM product_detail_projection WHERE generation_id=? GROUP BY record_kind', (generation_id,)))
@@ -403,9 +417,10 @@ def _import_product_details(db, assets, *, scan_asset_once, limits, generation_i
             measured = dict(db.execute('SELECT record_kind,count(*) FROM product_detail_projection WHERE generation_id=? GROUP BY record_kind', (generation_id,)))
             code = str(error) if isinstance(error, RefreshError) and re.fullmatch('[a-z0-9-]{1,128}', str(error)) else 'source-or-store-failure'
             db.execute('UPDATE product_detail_generation SET state=?,product_records=?,profile_records=?,exceptions_json=?,modified_at=? WHERE generation_id=?',
-                ('incomplete', measured.get('product', 0), measured.get('nutrientProfile', 0), canonical([{'assetId': current['assetId'] if current else None, 'reason': code}]).decode(), datetime.now(timezone.utc).isoformat(), generation_id)); db.commit()
+                ('incomplete', measured.get('product', 0), measured.get('nutrientProfile', 0), _metadata_json([{'assetId': current['assetId'] if current else None, 'reason': code}], _MAX_EXCEPTION_JSON_BYTES), datetime.now(timezone.utc).isoformat(), generation_id)); db.commit()
         error.product_detail_retained_state = {'completedAssets': completed, 'productsRetained': measured.get('product', 0) if initialized else 0,
             'profilesRetained': measured.get('nutrientProfile', 0) if initialized else 0, 'completeReceiptReturned': False, 'automaticRetry': False, 'automaticDeletion': False}
         raise
     finally:
         db.set_progress_handler(None, 0)
+        db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH, previous_sql_length)
