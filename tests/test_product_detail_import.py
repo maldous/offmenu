@@ -21,6 +21,61 @@ from offmenu.refresh.core import RefreshError
 
 
 class ProductDetailImportTests(unittest.TestCase):
+    def test_active_caller_transaction_is_rejected_without_sql_or_commit(self):
+        for ignore_storage_settings in (False, True):
+            with self.subTest(ignore_storage_settings=ignore_storage_settings), closing(sqlite3.connect(':memory:')) as db:
+                db.execute('CREATE TEMP TABLE caller_work(value TEXT)'); db.commit()
+                db.execute("INSERT INTO caller_work VALUES('pending')")
+                db.execute('SAVEPOINT caller_savepoint')
+                db.execute("INSERT INTO caller_work VALUES('after-savepoint')")
+                if ignore_storage_settings:
+                    def authorizer(action, name, value, database, trigger):
+                        return sqlite3.SQLITE_IGNORE if action == sqlite3.SQLITE_PRAGMA and name in ('journal_mode', 'synchronous', 'temp_store') and value is not None else sqlite3.SQLITE_OK
+                    db.set_authorizer(authorizer)
+                self.assertTrue(db.in_transaction); statements = []; scans = []
+                db.set_trace_callback(statements.append)
+                def scan(asset, consume):
+                    scans.append(asset['assetId']); return self.scan(asset, consume)
+                with self.assertRaisesRegex(RefreshError, 'caller-transaction-active'):
+                    self.load(db, scan)
+                self.assertEqual(statements, []); self.assertEqual(scans, [])
+                db.set_trace_callback(None)
+                self.assertTrue(db.in_transaction)
+                self.assertEqual(db.execute('PRAGMA foreign_keys').fetchone()[0], 0)
+                self.assertEqual(db.execute('SELECT value FROM caller_work').fetchall(), [('pending',), ('after-savepoint',)])
+                self.assertEqual(db.execute('SELECT count(*) FROM sqlite_master').fetchone()[0], 0)
+                db.execute('ROLLBACK TO caller_savepoint')
+                self.assertEqual(db.execute('SELECT value FROM caller_work').fetchall(), [('pending',)])
+                db.execute('RELEASE caller_savepoint'); db.rollback()
+                self.assertEqual(db.execute('SELECT value FROM caller_work').fetchall(), [])
+
+    def test_fk_enable_ignored_by_caller_policy_fails_before_schema_or_scan(self):
+        with closing(sqlite3.connect(':memory:')) as db:
+            def authorizer(action, name, value, database, trigger):
+                return sqlite3.SQLITE_IGNORE if action == sqlite3.SQLITE_PRAGMA and name == 'foreign_keys' and value is not None else sqlite3.SQLITE_OK
+            db.set_authorizer(authorizer); scans = []
+            def scan(asset, consume):
+                scans.append(asset['assetId']); return self.scan(asset, consume)
+            with self.assertRaisesRegex(RefreshError, 'foreign-keys-required'):
+                self.load(db, scan)
+            self.assertEqual(scans, [])
+            self.assertFalse(db.in_transaction)
+            self.assertEqual(db.execute('PRAGMA foreign_keys').fetchone()[0], 0)
+            self.assertEqual(db.execute('SELECT count(*) FROM sqlite_master').fetchone()[0], 0)
+
+    def test_fresh_store_enforces_identifier_profile_and_generation_relations(self):
+        with closing(sqlite3.connect(':memory:')) as db:
+            self.load(db); self.assertEqual(db.execute('PRAGMA foreign_keys').fetchone()[0], 1)
+            for statement, parameters in (
+                ('INSERT INTO product_detail_identifier VALUES(?,?,?,?,?,?)', ('missing', 1, 'barcode', '00123', 'source-asserted', '/fixture')),
+                ('UPDATE product_detail_projection SET paired_profile_reference=? WHERE record_kind=?', ('missing', 'product')),
+                ('UPDATE product_detail_projection SET generation_id=?', ('missing',))):
+                with self.subTest(statement=statement), self.assertRaisesRegex(sqlite3.IntegrityError, 'FOREIGN KEY'):
+                    db.execute(statement, parameters)
+                db.rollback()
+            self.assertEqual(db.execute('SELECT count(*) FROM retained_reference_record').fetchone()[0], 6)
+            self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(), [])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name); self.bundle = self.root / 'inputs'; self.bundle.mkdir()
