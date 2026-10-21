@@ -32,6 +32,20 @@ class SourceIngredientImportTests(unittest.TestCase):
    counts=result['assets'][0]['counts'];self.assertEqual((counts['products'],counts['non_product'],counts['quarantined'],counts['declaration_missing']),(6,1,2,1))
    self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
    with self.assertRaisesRegex(RefreshError,'new-empty-store'):self.run_import(a,db)
+ def _assert_caller_usable_after_import_deadline(self,fail):
+  raw=canonical({'id':'fixture:source','name':'source-native'});p=self.root/'deadline.jsonl';p.write_bytes(raw)
+  a=s.SourceAsset('fixture-deadline',str(p),len(raw),hashlib.sha256(raw).hexdigest(),1,'fixture','1','registry')
+  if fail:a=replace(a,sha256='0'*64)
+  with closing(sqlite3.connect(':memory:')) as db,patch.object(s.time,'monotonic',return_value=100.0) as clock:
+   if fail:
+    with self.assertRaisesRegex(RefreshError,'input-eof-hash-count-custody'):self.run_import(a,db)
+   else:self.run_import(a,db)
+   # Advance beyond the import's old deadline without sleeping. This caller SQL
+   # executes far more than1000 VM steps and must not inherit the import handler.
+   clock.return_value=1000.0
+   self.assertEqual(db.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<2000) SELECT sum(x) FROM n').fetchone()[0],2001000)
+ def test_deadline_handler_cleared_after_success(self):self._assert_caller_usable_after_import_deadline(False)
+ def test_deadline_handler_cleared_after_failure(self):self._assert_caller_usable_after_import_deadline(True)
  def test_gzipped_native_registry_is_raw_cache_not_canonical_concepts(self):
   rows=[{'id':'source:0001','language':'de','name':'Öl','unit':'1,5 L'},{'id':'source:0001','language':'ja','name':'油'}]
   raw=b''.join(canonical(r) for r in rows);packed=gzip.compress(raw,mtime=0);p=self.root/'registry.jsonl.gz';p.write_bytes(packed)

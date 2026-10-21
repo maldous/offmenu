@@ -205,21 +205,24 @@ def ingest_source_assets(db,assets,*,limits,input_manifest_sha256,selection_rece
         if time.monotonic()-start>=limits.max_seconds:_fail('time-bound')
         if db.execute('PRAGMA page_count').fetchone()[0]*page>limits.max_database_bytes:_fail('database-bound')
     db.set_progress_handler(lambda:int(time.monotonic()-start>=limits.max_seconds),1000)
-    db.executescript(DDL)
-    db.execute('INSERT INTO sidecar_schema VALUES(?,?,?)',(VERSION,datetime.now(timezone.utc).isoformat(),
-        canonical({'manifest':manifest,'inputManifestSha256':input_manifest_sha256,
-                   'selectionReceiptSha256':selection_receipt_sha256,'semanticRelationships':'pending'}).decode()));db.commit()
-    from dataclasses import replace
-    results=[];expanded=0
-    for a in manifest['assets']:
-        if expanded>=limits.max_expanded_bytes:_fail('expanded-bound')
-        counts=_load_asset(db,a,input_manifest_sha256,replace(limits,max_expanded_bytes=limits.max_expanded_bytes-expanded),check)
-        expanded+=counts['expanded_bytes'];results.append({'assetId':a['asset_id'],'counts':counts})
-    if db.execute('PRAGMA quick_check').fetchone()!=('ok',) or db.execute('PRAGMA foreign_key_check').fetchone():_fail('database-reconciliation')
-    tables=('retained_reference_record','product_processing_audit','ingredient_declaration_ref','ingredient_concept','product_ingredient_assertion')
-    counts={t:db.execute('SELECT count(*) FROM '+t).fetchone()[0] for t in tables}
-    if counts['retained_reference_record']!=sum(r['counts']['stored_source_records'] for r in results):_fail('source-row-conservation')
-    if counts['product_processing_audit']!=sum(r['counts']['products'] for r in results):_fail('product-audit-conservation')
-    return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
-            'sourceImportComplete':True,'semanticRelationships':'pending','normalizedConceptFK':'NULL',
-            'schemaOnly':False,'runtimeOrResourcesAdmitted':False,'publication':'caller57 must retain/fsync/hash/check custody and publish once; no automatic retry'}
+    try:
+        db.executescript(DDL)
+        db.execute('INSERT INTO sidecar_schema VALUES(?,?,?)',(VERSION,datetime.now(timezone.utc).isoformat(),
+            canonical({'manifest':manifest,'inputManifestSha256':input_manifest_sha256,
+                       'selectionReceiptSha256':selection_receipt_sha256,'semanticRelationships':'pending'}).decode()));db.commit()
+        from dataclasses import replace
+        results=[];expanded=0
+        for a in manifest['assets']:
+            if expanded>=limits.max_expanded_bytes:_fail('expanded-bound')
+            counts=_load_asset(db,a,input_manifest_sha256,replace(limits,max_expanded_bytes=limits.max_expanded_bytes-expanded),check)
+            expanded+=counts['expanded_bytes'];results.append({'assetId':a['asset_id'],'counts':counts})
+        if db.execute('PRAGMA quick_check').fetchone()!=('ok',) or db.execute('PRAGMA foreign_key_check').fetchone():_fail('database-reconciliation')
+        tables=('retained_reference_record','product_processing_audit','ingredient_declaration_ref','ingredient_concept','product_ingredient_assertion')
+        counts={t:db.execute('SELECT count(*) FROM '+t).fetchone()[0] for t in tables}
+        if counts['retained_reference_record']!=sum(r['counts']['stored_source_records'] for r in results):_fail('source-row-conservation')
+        if counts['product_processing_audit']!=sum(r['counts']['products'] for r in results):_fail('product-audit-conservation')
+        return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
+                'sourceImportComplete':True,'semanticRelationships':'pending','normalizedConceptFK':'NULL',
+                'schemaOnly':False,'runtimeOrResourcesAdmitted':False,'publication':'caller57 must retain/fsync/hash/check custody and publish once; no automatic retry'}
+    finally:
+        db.set_progress_handler(None,0)
