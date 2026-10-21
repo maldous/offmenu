@@ -135,9 +135,11 @@ def _fields(packet, representation):
             'valueOrigin': 'upstream-projection' if available else 'unknown', 'sourceFieldState': 'unknown', 'language': None}
     data = product['data']
     for name, path in mappings.items():
-        key = path[0]; result[name] = field(data.get(key), key in data, '/0/data/' + key, key in data)
+        # The product projection is loaded; key absence is evidenced here even
+        # though the original publisher field's presence remains unknown.
+        key = path[0]; result[name] = field(data.get(key), key in data, '/0/data/' + key)
     market_key = 'marketCountry' if product['provenance']['sourceId'] == 'usda-files' else None
-    result['markets'] = field(data.get(market_key), market_key in data, '/0/data/' + str(market_key), market_key in data) if market_key else field(product.get('countries'), 'countries' in product, '/0/countries')
+    result['markets'] = field(data.get(market_key), market_key in data, '/0/data/' + str(market_key)) if market_key else field(product.get('countries'), 'countries' in product, '/0/countries')
     result['nutrientProfile'] = field(profile['data'] if profile else None, profile is not None, '/1/data', profile is not None)
     result['sourceProvenance'] = field(product['provenance'], True, '/0/provenance')
     result['imageUrlReferences'] = field(None, False, None, False)

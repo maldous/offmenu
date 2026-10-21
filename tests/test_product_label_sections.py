@@ -6,6 +6,21 @@ from offmenu.refresh.core import RefreshError
 
 
 class ProductLabelSectionTests(unittest.TestCase):
+    def test_unpunctuated_explicit_sections_end_at_line_breaks(self):
+        for newline in ('\n', '\r\n', '\r'):
+            with self.subTest(newline=repr(newline)):
+                lines = ['Ingredients: 豆 Oil, Water', 'CONTAINS MILK', 'Keep refrigerated',
+                         'Contributes to daily intake', 'No Artificial Colours', 'Unexplained code 123']
+                text = newline.join(lines); result = extract_label_sections(text)
+                spans = result['sections']
+                explicit = [(s['category'], s['text']) for s in spans if s['category'] != 'unclassified']
+                self.assertEqual(explicit, [('ingredient_list', lines[0]), ('allergen_statement', lines[1]),
+                    ('storage', lines[2]), ('marketing', lines[3]), ('marketing', lines[4])])
+                self.assertEqual(''.join(s['text'] for s in spans), text)
+                for span in spans:
+                    self.assertEqual(text[span['start']:span['end']], span['text'])
+                    self.assertEqual(text.encode()[span['utf8Start']:span['utf8End']].decode(), span['text'])
+
     def test_sections_keep_every_character_and_unicode_byte_offsets(self):
         text = '豆 Oil, Water, Flavour. CONTAINS SESAME. Keep refrigerated. Store below 4.5 °C. Made in France from at least 70% French ingredients No Artificial Colours 12BATCHCODE9'
         result = extract_label_sections(text); spans = result['sections']
