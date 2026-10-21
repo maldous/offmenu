@@ -1,0 +1,62 @@
+{
+  "schema": "offmenu-source-handoff/1",
+  "status": "OWNER_PAUSED_EXECUTABLE_CONTINUATION_INCOMPLETE",
+  "asOf": "2026-10-22T08:38:27.144058+11:00",
+  "integrationOwner": "Existing Worker00 retains sole ownership until explicit cloud acceptance",
+  "acceptedDevelop": "d48d657b1c0d1816c143cc23c446a0b87be9085c",
+  "sourceFreezeBase": "f1faa0d63b6fd46e145122b1843ad3bb9fa60c0f",
+  "noAutomaticContinuation": true,
+  "portableRunner": null,
+  "runtimeExecutor": null,
+  "lanes": {
+    "html": {
+      "PR": 90,
+      "integrationHead": "f1faa0d63b6fd46e145122b1843ad3bb9fa60c0f",
+      "source": "c5aaf05e33fc26208fa5593dc62091bc30b3e9c7",
+      "sourceReview": 13547,
+      "parserSha256": "843d7808881d39cfb65ad8db1bbc4604ea9706d54bc504854b88664e0c9887f2",
+      "writerSha256": "5ca9e00e412462d6a16a155444c305eddda856f79fe051ce448955e30daf2a07",
+      "currentLocalFocusedChecks": "3 PASS before pause",
+      "currentHeadProviderAndCI": "UNOBSERVED after updated head; old90b two findings retained/open",
+      "next": "Fresh current-head BODY/inline/CI/security reconciliation; normal review for changed head only if absent, qualified thread resolution, expected-head merge/postmerge. No poll/merge by paused local owner."
+    },
+    "pdf": {
+      "PR": 91,
+      "integrationHead": "5600e2e7d43e1ff7d200555406421457bf3ae16b",
+      "reviewedSuccessor": "ff423621445eb6bf97d48765a89ef4c805237eeb",
+      "sourceReview": 13581,
+      "sourceSha256": "59ae2e8f6824a0f59a18a5e86bcf0f2fd75830a961b553d73d19ea1d86f57204",
+      "API": "8cf111c32f524323eb53d16687912e9849c3c5d9701aca872ade121d3d2e2516",
+      "successorApplied": false,
+      "providerFinding": 4342025376,
+      "next": "Apply only qualified successor to same PR; current focused page guards plus ordinary current-head gates; preserve transaction proof and rejected predecessors."
+    },
+    "unitools": {
+      "source": "7a7c69063e15f83067b1a13f23a4f352db996ee4",
+      "sourceReview": 13566,
+      "nativeAdapterSha256": "33760466a0273afd46d0b4b4adf0821eadcbd0c3961891da9af253543fb33652",
+      "API": "51048d157f72c68e2834b2082dbc35eb4242e333c777653c22a983140a571308",
+      "applied": false,
+      "next": "Compose with latest HTML parser843d and accepted PDF successor, preserve native pin/connection guard, recompute and independently qualify merged writer; normal integration gates. No stale parser rollback."
+    },
+    "supplier": {
+      "status": "Pending portable caller review only; no source/runtime acceptance inferred",
+      "coreFix": "Already accepted in develop/PR83",
+      "next": "Obtain exact sanitized source/fixture closure from existing owner; current custody/operation and any actual load remain runtime-owned. Preserve failed supplier hold."
+    }
+  },
+  "runtimePreflight": {
+    "html": "STOP: source/integration and separately reviewed full-original caller/operation remain incomplete",
+    "pdf": "STOP: corrected source not integrated and distinct bounded cache-only operation/caller/current permissions required",
+    "unitools": "STOP: merged source/integration/caller/actual input qualification incomplete",
+    "supplier": "STOP: runtime caller review/current custody/operation not qualified here"
+  },
+  "sourceOnlyInputs": "Generated fixtures only. No raw data, host dataset imports, private operational contexts, credentials or controls in this handoff.",
+  "runnerBoundary": "Parent audit: fixed live proxy executes on self-hosted Foo; hosted receipt publication is not off-Foo execution. Dedicated portable runner and pending data-load route NOT implemented/qualified.",
+  "parentPortableProof": {
+    "branch": "integration/offfoo-synthetic-handoff-20261022",
+    "commit": "e319a931ed7b0795d69a87d0a56d6a36cf9c0ed6",
+    "meaning": "Separate historical synthetic package, not overwritten or current source acceptance; Parent reports historical PDF8 and UniTools15 PASS, HTML not run due missing bs4."
+  },
+  "holds": "Preserve all source/privacy/rights/provenance/custody/ownership/no-acquisition/denied-action/seal/live-scanner/data/main/production/CIX/mandatory-review holds."
+}
