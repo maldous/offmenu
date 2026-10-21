@@ -197,15 +197,24 @@ def scan_retained_off_product_shard(candidate, *, selection, limits, on_packet):
     A callback is not a qualified result. Commit/publish only after this returns
     the full hash/CRC/EOF/custody receipt; roll back on ANY failure. No real factory.
     """
+    callback_error = None
+    def forward_packet(*args):
+        nonlocal callback_error
+        try:
+            return on_packet(*args)
+        except Exception as error:
+            callback_error = error
+            raise
     try:
         _retained_scope(selection, limits); _require(callable(on_packet), 'retained-sink')
-        result = _scan_retained_off_shard(candidate, selection, limits, on_packet, time.monotonic())
+        result = _scan_retained_off_shard(candidate, selection, limits, forward_packet, time.monotonic())
         return {**result, 'scannedProducts': result['scannedPackets'], 'scannedProfiles': result['scannedPackets'],
                 'EOFFullyVerified': True, 'bodyPasses': 1, 'sourceId': 'off', 'releaseId': selection.release_id,
                 'originalSha256': selection.original_sha256, 'identifierAssetSha256': selection.occurrence_sha256}
     except NativeLookupError:
         raise
-    except Exception:
+    except Exception as error:
+        if error is callback_error: raise
         raise NativeLookupError('native-lookup-retained-invalid-input') from None
 
 
@@ -224,6 +233,7 @@ def scan_qualified_native_product_pairs(candidate, *, contract, qualification, q
     Reuses the existing native qualification binding. Does not re-open source
     archives/staging, re-run qualification, publish, or collect all rows in RAM.
     """
+    callback_error = None
     try:
         q = _binding(contract, qualification, qualification_sha256)
         _require(contract.source_id == 'usda-files' and type(limits) is NativeProductScanLimits
@@ -267,7 +277,12 @@ def scan_qualified_native_product_pairs(candidate, *, contract, qualification, q
                              and pending['data']['identifiers'] == data['identifiers']
                              and type(data.get('basis')) is dict and type(data.get('nutrients')) is dict,
                              'native-pair-profile-binding')
-                    on_pair([pending, row], count - 1, count); pending = None; pairs += 1
+                    try:
+                        on_pair([pending, row], count - 1, count)
+                    except Exception as error:
+                        callback_error = error
+                        raise
+                    pending = None; pairs += 1
             _require(total == before.st_size and count == contract.expected_records and pending is None
                      and digest.hexdigest() == q['candidateSha256'], 'native-pair-hash-or-count')
             _require(_identity(os.fstat(raw.fileno())) == identity, 'native-pair-custody')
@@ -283,5 +298,6 @@ def scan_qualified_native_product_pairs(candidate, *, contract, qualification, q
                 'identifierAssetSha256': q['candidateSha256']}
     except NativeLookupError:
         raise
-    except Exception:
+    except Exception as error:
+        if error is callback_error: raise
         raise NativeLookupError('native-lookup-native-pair-invalid-input') from None

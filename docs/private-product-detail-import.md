@@ -5,8 +5,10 @@ This is the selected import-only extraction of corrected source commit
 `6431ddd417a746c9fe661230a9cb636b0375adce`. The eight writer definitions and
 twelve reader definitions initially preserved their exact reviewed ASTs. The
 production namespace binding imports `product_detail_import_readers` as `readers`.
-The PR85 integrity correction changes only the writer's transaction/FK preflight;
-the other nineteen definitions retain their exact ASTs. The source schema and
+The PR85 integrity correction added transaction/FK preflight. The continuation
+change shares the asset writer between two explicit public APIs and preserves
+the reviewed source-coordinate/row-writing rules. It also preserves callback
+exceptions in the OFF/USDA reader boundaries. The source schema and
 version are unchanged:
 
 - `VERSION`: `offmenu-retained-product-detail-store/1`.
@@ -132,3 +134,133 @@ Existing Worker64 independently qualifies the exact extracted source/import
 binding. Worker00 then creates the honest import-only PR and applies normal
 current provider/CI/security/expected-head/postmerge gates. This boundary grants
 no approval bypass, runtime activation, production deployment or CIX execution.
+
+
+## Explicit closed-checkpoint continuation
+
+`resume_existing_product_details(db, assets, *, checkpoint_receipt,
+checkpoint_sha256, scan_asset_once, limits, generation_id,
+input_manifest_sha256, operation_selection_sha256,
+identifier_database_sha256, coverage_scope)` is separate from
+`ingest_product_details`. The original API continues to require a new empty
+store. Neither API provides a launcher, actual once admission or source factory.
+
+The trusted reviewed caller supplies the **entire original ordered manifest**,
+its original digest, generation and identifier database selection. It must
+independently select the exact closed checkpoint and a genuinely new operation;
+never derive authority from fields supplied by the checkpoint or an HTTP request.
+`checkpoint_sha256` is SHA-256 of core `canonical(checkpoint_receipt)` (including
+its final LF). The selected operation must bind that receipt and all limits.
+The receipt has these fields:
+
+| Field | Required value/evidence |
+| --- | --- |
+| `version` | `offmenu-product-detail-checkpoint/1` |
+| `generationId`, `inputManifestSha256`, `identifierDatabaseSha256` | Original selections, exactly matching the API and SQL generation |
+| `originalOperationSelectionSha256` | Original generation operation, retained unchanged |
+| `resumeOperationSelectionSha256` | New independently selected operation passed to this call |
+| `databasePath` | Exact absolute SQLite main path, without symlink ancestors |
+| `databaseIdentity` | Closed file `[device, inode, size, mtime_ns, ctime_ns]` |
+| `databaseSha256` | Independently selected closed database digest; not rehashed here |
+| `coverageSha256` | SHA-256 of core canonical decoded `coverage_scope_json` |
+| `state` | Exactly `incomplete` |
+| `committedReceipts` | Complete original reader receipt objects in committed asset order, exactly matching SQL coverage receipt hashes |
+| `producerTerminal`, `producerReaped`, `writableHandlesClosed` | All true, backed by actual postterminal caller evidence |
+| `cleanJournalVerified`, `integrityAndForeignKeysVerified` | All true, backed by independent closed-checkpoint qualification |
+
+These receipt facts are **trusted caller obligations**, not proof that this
+library observed a producer exit, consumed an actual once, or hashed/qualified a
+real store. In particular, inspect and preserve journal state **before opening**
+the fresh RW connection: SQLite can recover a hot journal while opening or first
+reading a database. This API cannot reverse an earlier caller recovery. It checks
+the selected stable identity, rejects any journal/WAL/SHM sidecar (even cold or
+stale), requires DELETE mode, and rejects `loading`, `completed`, `failed` and
+unknown states. There is no loading/hot-journal repair mode. A failed prior
+incomplete-state update therefore needs a separate reviewed recovery decision;
+never change its state to make this API accept it.
+
+Use a fresh idle connection with normal tuple rows and no attachments or caller
+TEMP work. A caller transaction is rejected before **any SQL**, commit or rollback.
+FK enablement must read back as one. Under its own `BEGIN IMMEDIATE` writer lock,
+the API verifies the exact existing schema/index/view definitions, single
+original generation, typed counts, coverage/identifier context, original manifest
+order, contiguous committed assets, reader EOF/hash/count/source/qualification
+receipts and per-asset SQL product/profile/identifier counts. It checks per-row
+operation binding metadata, global row totals and foreign keys, then rechecks
+file identity before mutation. These bounded SQL metadata checks do not select
+old payload JSON, rehash full payloads/databases or open/stat/hash any completed
+source body. Independent checkpoint qualification still owns full integrity and
+provenance review. SQLite JSON functions are required for binding metadata checks.
+
+Only after those checks does the writer append an attempt and enter `loading`.
+It calls the existing scanner/callback only for the first uncommitted asset and
+its successors. A reader-complete but rolled-back asset is uncommitted and must
+be scanned again; a committed asset is never scanned again. Existing row IDs,
+payload bytes, identifiers, coordinates and bindings are unchanged. Per-asset
+receipt validation, atomic row+coverage commit, rollback and handler cleanup use
+the shared writer engine. No DDL is executed against the existing database.
+
+## Operation lineage and query selection
+
+The generation's `operation_selection_sha256` remains the original operation
+O0. Each old row retains its original `operationReceiptSha256`; each row written
+by this call uses the new operation O1. Existing `coverage_scope_json.assets`
+remains an ordered append-only committed prefix. The existing coverage JSON also
+appends `resumeAttempts`, with one entry per admitted API attempt:
+
+- `operationSelectionSha256`: O1, unique across O0 and all recorded attempts.
+- `checkpointSha256` and `previousCoverageSha256`: immutable selected predecessor pins.
+- `startedAfterAssetCount`: committed prefix length before this attempt.
+- `startedAt`: UTC timestamp.
+- `previousExceptions`: preserved previous generation diagnostics.
+
+Prior attempt entries are retained exactly, including attempts that committed no
+new asset. Their starts are nondecreasing and within the committed prefix; an
+asset belongs to the last attempt whose start is no greater than its zero-based
+manifest index, or O0 before any such attempt. SQL row operation bindings must
+agree. The new attempt clears current exceptions only after copying them into
+lineage; a new failure records current diagnostics normally. Reusing a recorded
+operation, a stale checkpoint identity/coverage selection, or an unsupported
+state fails closed without a source replay. An API receipt is not runtime once
+proof; the supervisor still owns actual once consumption.
+
+On full completion, the caller selects the held RO detail store with the original
+`ProductDetailQuerySelection` generation/manifest/O0 and identifier digest, plus
+the externally reviewed complete attempt chain and final publication evidence.
+The unchanged query returns O0 at generation level and each row's actual O0/O1
+binding in `sourceBinding`; coverage includes attempt lineage. Selecting O1 as
+the generation operation is rejected. The complete query response remains capped
+at 262144 canonical bytes, including lineage; excessive lineage fails the existing
+typed bound, without truncation or a cap increase. An incomplete prefix cannot be
+selected as a completed query generation.
+
+## Bounds, failure and runtime follow-through
+
+Asset/input-byte/record limits apply to the **full original target**, including
+the retained prefix; database bytes cap the whole retained-plus-new main store.
+Elapsed time starts anew for this invocation and includes SQL prefix validation;
+per-record and reader limits still apply to newly scanned assets. A database
+budget below its retained page footprint is refused before scanning. The page
+cap is explicitly set from newly selected finite limits and read back, never
+silently raised above that selection. OS limits, owned-envelope/journal/free-space
+guards, custody and a new once are separate Worker57/Gateway responsibilities.
+No source success implies adequate physical capacity, publication or acceptance.
+
+Current-asset failures retain all prior commits. If recording `incomplete` itself
+fails (for example a full store), the error escapes and the state may remain
+`loading`: no complete receipt or automatic retry/repair is produced. A fully
+committed but incomplete checkpoint (such as a late completion deadline) may be
+finalized with zero scanner calls after the same validation. Partial target
+success is never returned as full success. Publication still requires all original
+assets/counts, close/fsync/selected hash/custody/review and caller publication.
+
+The accepted source has no externally requested graceful asset-checkpoint API.
+This change installs no signal handler or live-job control. A future continuation
+requires observed producer terminal/reap and independently verified closed SQL
+prefix; a latest reader receipt is insufficient.
+
+OFF and USDA callbacks now propagate the **original callback exception object**,
+including store bounds and SQLite failures, instead of relabeling it as invalid
+source input. Input decoding/selection/hash/EOF errors retain their existing
+reader error behavior. This fixes future diagnostics and does not establish the
+cause of any previously masked producer error.
