@@ -95,6 +95,11 @@ at most256 OFF assets from the original257-target incomplete generation. The
 exact asset allowlist/counts/coverage digest and identifier context must match its
 original SQL generation. Qualified operation lineage comes from that pinned
 coverage. This does not mark the old generation completed or publish a snapshot.
+An asset's expected operation is the original operation until the last resume
+whose `startedAfterAssetCount` is no greater than its zero-based allowlist
+position. This is the writer's attribution rule, not membership in all lineage
+operations. Starts must be nondecreasing nonnegative integers within the prefix;
+operation IDs are unique, and trailing empty attempts claim no earlier assets.
 Actual256-subset qualification/publication remains64/57 work, not an author claim.
 
 The artifact API and synthetic manifest example accompany each source freeze.
@@ -129,6 +134,12 @@ the subset-only caveat is appended. Malformed or oversized caveats fail typed;
 they are never discarded or truncated. The complete response cap includes them.
 Missing/mismatched pairs are unavailable; corrupt eligible digests and technical
 failures are fixed typed `product-detail-federation-*` errors, never identifier misses.
+For disabled USDA pairs, both required roles contribute disposition and reasons.
+Any restriction takes precedence over not-qualified. The primary `reasonCode`
+comes from the first restricted role (otherwise the first required role), while
+`roleReasons` retains both roles' qualification states and reasons in product,
+profile order. Availability and backend coverage use the same aggregation. All
+added reason metadata is included in the unchanged complete response byte cap.
 
 The result follows13's envelope, adds backend, selectionManifestSha256 and separate
 backing store pins, and never supplies a synthetic single detail database digest.

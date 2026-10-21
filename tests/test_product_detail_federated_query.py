@@ -233,6 +233,72 @@ class FederatedQueryTests(unittest.TestCase):
         self.assertEqual(out['sourceProducts'],[])  # missing raw field is not null
         self.cleanup_ok()
 
+    def off_lineage(self,attempts,operation=None):
+        db=self.db['off-subset'];coverage=json.loads(db.execute('SELECT coverage_scope_json FROM product_detail_generation').fetchone()[0])
+        coverage['resumeAttempts']=copy.deepcopy(attempts)
+        self.edit('off-subset','UPDATE product_detail_generation SET coverage_scope_json=?',(canonical(coverage).decode(),))
+        if operation is not None:
+            rows=db.execute('SELECT reference_record_id,source_binding_json FROM product_detail_projection').fetchall()
+            for ref,encoded in rows:
+                binding=json.loads(encoded);binding['operationReceiptSha256']=operation
+                self.edit('off-subset','UPDATE product_detail_projection SET source_binding_json=? WHERE reference_record_id=?',(canonical(binding).decode(),ref))
+        m=copy.deepcopy(self.m);m['roles']['off-subset']['coverageSha256']=q._hash(coverage)
+        return m
+
+    def test_OFF_operation_is_asset_position_specific_not_lineage_membership(self):
+        obs=self.observations[2]
+        later=[{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':1}]
+        m=self.off_lineage(later);self.assertEqual(len(self.call([obs],manifest=m)['sourceProducts']),1)
+        m=self.off_lineage(later,'f'*64)
+        self.assertEqual(self.call([obs],manifest=m)['sourceProducts'],[])  # asset0 predates resume
+        boundary=[{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':0},
+                  {'operationSelectionSha256':'a'*64,'startedAfterAssetCount':1}]
+        m=self.off_lineage(boundary,'f'*64)
+        self.assertEqual(self.call([obs],manifest=m)['sourceProducts'][0]['sourceBinding']['operationReceiptSha256'],'f'*64)
+        m=self.off_lineage(boundary,'a'*64)
+        self.assertEqual(self.call([obs],manifest=m)['sourceProducts'],[])  # trailing empty attempt owns no rows
+        same_start=[{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':0},
+                    {'operationSelectionSha256':'a'*64,'startedAfterAssetCount':0}]
+        m=self.off_lineage(same_start,'a'*64);self.assertEqual(len(self.call([obs],manifest=m)['sourceProducts']),1)
+        m=self.off_lineage(same_start,'f'*64);self.assertEqual(self.call([obs],manifest=m)['sourceProducts'],[])
+        self.cleanup_ok()
+
+    def test_OFF_invalid_resume_boundaries_fail_closed(self):
+        for boundary in (None,False,-1,2,0.0):
+            with self.subTest(boundary=boundary):
+                m=self.off_lineage([{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':boundary}])
+                with self.assertRaisesRegex(RefreshError,'off-lineage'):self.call([self.observations[2]],manifest=m)
+        for attempts in ([{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':1},{'operationSelectionSha256':'a'*64,'startedAfterAssetCount':0}],
+                         [{'operationSelectionSha256':'e'*64,'startedAfterAssetCount':0}],
+                         [{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':0},{'operationSelectionSha256':'f'*64,'startedAfterAssetCount':0}]):
+            with self.subTest(attempts=attempts):
+                m=self.off_lineage(attempts)
+                with self.assertRaisesRegex(RefreshError,'off-lineage'):self.call([self.observations[2]],manifest=m)
+        self.cleanup_ok()
+
+    def test_disabled_USDA_pair_preserves_both_role_restrictions_and_reasons(self):
+        for product_state,profile_state in (('not-qualified','restricted'),('restricted','not-qualified'),
+                                            ('restricted','restricted'),('not-qualified','not-qualified')):
+            with self.subTest(product=product_state,profile=profile_state):
+                m=copy.deepcopy(self.m)
+                m['roles']['usda-products']={'enabled':False,'qualificationState':product_state,'reasonCode':'product-proof-or-operation-held'}
+                m['roles']['usda-profiles']={'enabled':False,'qualificationState':profile_state,'reasonCode':'profile-proof-or-operation-held'}
+                stores=tuple(s for s in self.stores if s.role=='off-subset')
+                out=self.call([self.observations[0]],manifest=m,stores=stores);availability=out['productDetailAvailability'][0]
+                restricted='restricted' in (product_state,profile_state)
+                self.assertEqual(availability['state'],'restricted' if restricted else 'not-loaded')
+                expected=[{'role':role,'qualificationState':m['roles'][role]['qualificationState'],'reasonCode':m['roles'][role]['reasonCode']}
+                          for role in ('usda-products','usda-profiles')]
+                self.assertEqual(availability['roleReasons'],expected)
+                primary=expected[0] if product_state=='restricted' or not restricted else expected[1]
+                self.assertEqual(availability['reasonCode'],primary['reasonCode'])
+                coverage=out['coverage']['backends'][1]
+                self.assertEqual(coverage['qualificationState'],'restricted' if restricted else 'not-qualified')
+                self.assertEqual(coverage['reasonCode'],primary['reasonCode']);self.assertEqual(coverage['roleReasons'],expected)
+                cap=len(canonical(out));self.assertEqual(self.call([self.observations[0]],manifest=m,stores=stores,max_result_bytes=cap),out)
+                with self.assertRaisesRegex(RefreshError,'result-bound'):self.call([self.observations[0]],manifest=m,stores=stores,max_result_bytes=cap-1)
+        self.cleanup_ok()
+
     def test_exact_current_assertion_before_any_payload_and_known_identifier_preserved(self):
         for key,value in {'assertion_id':99,'run_id':'foreign','input_id':'foreign','record_ordinal':99,'namespace':'other','lexical_value':'bad',
             'source_id':'other','release_id':'other','artifact_sha256':'0'*64,'native_record_id':'bad','source_record_id':'bad','disposition':'unresolved'}.items():
