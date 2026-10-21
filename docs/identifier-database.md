@@ -104,3 +104,44 @@ bounds. Cursors apply only to that exact immutable database receipt. Invalid and
 unresolved assertions remain separately queryable. A result cap refuses rather
 than returning a misleading complete answer. Names and identifiers are source
 observations; no recipe, nutrition, supplier or user-state join is required.
+
+## Full retained USDA and OFF source audit
+
+`prepare-full` and `load-full` use the same control-file pin, manifest pin,
+`build_identifier_database`, private output schema, finite limits and publication
+guards. `full_retained_inputs(operation)` selects only `usda-files` and/or `off`;
+the operation schema is `offmenu-full-retained-identifier-operation/1`. Each
+source supplies its input path, optional identity, FETCH19 citation/asset metadata
+and producer-job evidence. USDA also supplies its existing qualification. Limits
+are all nine `IdentifierLimits` fields and must be finite positive integers.
+Preparing does no input body open/stat/hash. An actual load still requires its
+real once-operation receipt and external runtime/resource selection.
+
+USDA uses its unchanged full SourceContract and one streaming hash/parse/EOF
+pass over 18,424,445,399 bytes and 4,202,558 packets. The 2,101,279 product
+records supply identifier assertions; the 2,101,279 nutrient profiles retain
+source crosswalks and counts without hydrating profile contents into this DB.
+
+OFF loads only the complete, independently verified `occurrences.jsonl` audit:
+1,656,721,116 bytes, 4,807,663 rows. Its exact hash binds the earlier full
+four-file membership verification; the loader does not reopen the original,
+retained index, or redundant singleton/member/group sidecars. This metadata
+binding has no product SourceContract. Source occurrence IDs use original
+artifact SHA plus original ordinal. Original line/body digests, source row,
+status and `/code` locator survive in the crosswalk and exception audit.
+
+All 4,807,156 S rows and 122 C members retain their lexical code associations.
+C assertions remain unresolved, with no selected primary or physical-product
+merge. All 385 Q rows retain invalid-code audits with barcode NULL; the original
+invalid value and its identifier hash/extent are unavailable, not invented.
+The original line/body digests remain available. Per-asset reconciliation measures
+4,807,278 valid-code associations, 4,807,217 distinct valid lexical keys and 61
+ambiguous groups, rejects S/C overlap or wrong multiplicity, and keeps Q outside
+valid keys. These are source identifier counts, never accepted product counts.
+
+The combined input is 20,081,166,515 bytes and 9,010,221 source records. Exact
+completed asset references reuse their checkpoint without rereading or adding
+rows; held assets never auto-resume. Full loading uses a new destination and
+preserves the earlier selected22 database. Shared exact lexical keys reuse the
+identifier entity while every source assertion survives. No ingredient, exhaustive
+citation enrichment, UI, English/gold or country-completion claim follows.

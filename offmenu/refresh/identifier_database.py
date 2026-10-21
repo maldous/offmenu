@@ -34,7 +34,7 @@ class IdentifierInput:
     assets: tuple
     producer_job: dict
     lineage_sha256: str
-    contract: SourceContract
+    contract: SourceContract | None
     qualification: dict
     qualification_sha256: str
     identity: tuple | None
@@ -288,9 +288,36 @@ def _sha(value):
     return type(value) is str and bool(re.fullmatch('[0-9a-f]{64}',value))
 
 
+def _off_binding(spec):
+    """Metadata-audit binding, deliberately not a product SourceContract."""
+    q=strict_json(canonical(spec.qualification))
+    if (spec.contract is not None or hashlib.sha256(canonical(q)).hexdigest()!=spec.qualification_sha256
+            or q.get('schemaVersion')!='offmenu-off-occurrence-metadata-binding/1'
+            or (q.get('sourceId'),q.get('releaseId'))!=('off','2026-10-12')
+            or type(q.get('fixture')) is not bool or not _sha(q.get('candidateSha256'))
+            or not _sha(q.get('originalSha256')) or not _sha(q.get('metadataReviewSha256'))
+            or type(q.get('scopeId')) is not str or not q['scopeId']):_fail('off-metadata-binding')
+    counts=q.get('counts',{})
+    if (set(counts)!={'S','C','Q'} or any(type(v) is not int or v<0 for v in counts.values())
+            or type(q.get('normalizedRecords')) is not int or q['normalizedRecords']<=0
+            or sum(counts.values())!=q['normalizedRecords'] or type(q.get('groups')) is not int
+            or not 0<=q['groups']<=counts['C']//2
+            or q.get('distinctValidKeys')!=counts['S']+q['groups']):_fail('off-metadata-counts')
+    originals=q.get('originalInputs')
+    if (type(originals) is not list or len(originals)!=1 or originals[0].get('sha256')!=q['originalSha256']
+            or type(originals[0].get('bytes')) is not int or originals[0]['bytes']<=0
+            or type(originals[0].get('path')) is not str):_fail('off-original-binding')
+    if not q['fixture'] and (q['normalizedRecords']!=4807663 or counts!={'S':4807156,'C':122,'Q':385}
+            or q['groups']!=61 or q['candidateSha256']!=OFF_OCCURRENCES_SHA256
+            or q['originalSha256']!=OFF_ORIGINAL_SHA256 or q['metadataReviewSha256']!=OFF_METADATA_REVIEW_SHA256
+            or originals!=[{'path':'off-2026-10-12.jsonl.gz','bytes':13132516914,'sha256':OFF_ORIGINAL_SHA256}]):_fail('off-known-release-binding')
+    return q
+
+
 def _prepare(spec):
     if type(spec) is not IdentifierInput: _fail('input-descriptor')
-    q = _binding(spec.contract,spec.qualification,spec.qualification_sha256)
+    off=spec.representation=='verified-off-occurrences-jsonl'
+    q = _off_binding(spec) if off else _binding(spec.contract,spec.qualification,spec.qualification_sha256)
     lineage = {'citations':spec.citations,'assets':spec.assets,'producerJob':spec.producer_job,
                'namespaceRules':spec.namespace_rules,'namespaceRuleVersion':spec.namespace_rule_version,
                'representation':spec.representation,'selectedCount':spec.selected_count,
@@ -340,13 +367,23 @@ def _prepare(spec):
         if (q['sourceId']!='usda-files' or type(spec.selected_count) is not int or not 1<=spec.selected_count<=1000
                 or not _sha(spec.selected_review_sha256) or candidate['bytes']>1024**2): _fail('selected-lookup-binding')
         expected=spec.selected_count
+    elif off:
+        if (candidate['sha256']!=q['candidateSha256'] or spec.selected_count is not None
+                or spec.expected_products!=0 or spec.namespace_rules!=(('barcode','barcode'),)
+                or (not q['fixture'] and candidate['bytes']!=1656721116)):_fail('off-candidate-binding')
+        expected=q['normalizedRecords']
     else: _fail('input-representation')
     original = ancestors(spec.asset_id,set())
-    evidence={spec.contract.rights_evidence.path,spec.contract.scope_evidence.path}
-    if spec.contract.clock_evidence:evidence.add(spec.contract.clock_evidence.path)
-    for asset in (a for a in spec.contract.inputs if a.path not in evidence):
-        if not any(byid[p]['logical_path']==asset.path and byid[p]['bytes']==asset.bytes
-                   and byid[p]['sha256']==asset.sha256 for p in original): _fail('original-lineage-required')
+    if off:
+        original_inputs=q['originalInputs'];required_originals=original_inputs
+    else:
+        original_inputs=[vars(a) for a in spec.contract.inputs]
+        evidence={spec.contract.rights_evidence.path,spec.contract.scope_evidence.path}
+        if spec.contract.clock_evidence:evidence.add(spec.contract.clock_evidence.path)
+        required_originals=[a for a in original_inputs if a['path'] not in evidence]
+    for asset in required_originals:
+        if not any(byid[p]['logical_path']==asset['path'] and byid[p]['bytes']==asset['bytes']
+                   and byid[p]['sha256']==asset['sha256'] for p in original): _fail('original-lineage-required')
     producer = data['producerJob']
     if (not all(type(producer.get(k)) is str and producer[k] for k in ('id','receipt'))
             or any(not (type(producer.get(k)) is str and producer[k]) and k not in producer.get('unknowns',[]) for k in ('engine','version'))
@@ -355,19 +392,19 @@ def _prepare(spec):
     if (not 1<=len(rules)<=64 or any(type(p) is not list or len(p)!=2
             or any(type(s) is not str or not 0<len(s)<=256 for s in p) for p in rules)
             or len(dict(rules))!=len(rules) or not data['namespaceRuleVersion']): _fail('namespace-rules')
-    if ((spec.identity is None and spec.representation!='reviewed-native-lookup-json')
-            or (spec.identity is not None and (type(spec.identity) is not tuple or len(spec.identity)!=5
+    if ((spec.identity is not None and (type(spec.identity) is not tuple or len(spec.identity)!=5
                  or any(type(v) is not int or v<0 for v in spec.identity) or spec.identity[2]!=candidate['bytes']))
             or (spec.expected_products is not None and (type(spec.expected_products) is not int
                   or not 0<=spec.expected_products<=expected))): _fail('input-identity-or-count')
     data.update(candidate=spec.candidate,assetId=spec.asset_id,identity=spec.identity,
                 sourceId=q['sourceId'],releaseId=q['releaseId'],scopeId=q['scopeId'],
-                qualificationSha256=spec.qualification_sha256,contractSha256=contract_fingerprint(spec.contract),
+                qualificationSha256=spec.qualification_sha256,contractSha256=None if off else contract_fingerprint(spec.contract),
                 expectedRecords=expected,expectedProducts=spec.expected_products,
                 upstreamExpectedRecords=q['normalizedRecords'],upstreamCandidateSha256=q['candidateSha256'],
-                originalContractInputs=[vars(a) for a in spec.contract.inputs],
-                acquiredAt=spec.contract.acquired_at,acquisitionClockStatus=spec.contract.acquisition_clock_status,
+                originalContractInputs=original_inputs,
+                acquiredAt=None if off else spec.contract.acquired_at,acquisitionClockStatus='unknown-retained' if off else spec.contract.acquisition_clock_status,
                 candidateBytes=candidate['bytes'],candidateSha256=candidate['sha256'],fixture=q['fixture'])
+    if off:data['occurrenceAudit']=q
     data['specSha256'] = hashlib.sha256(canonical(data)).hexdigest()
     return data
 
@@ -429,6 +466,63 @@ def _exception(db,counts,m,ordinal,field,code,details,limits,*,disposition='unre
         details.get('sourcePointer'),code,'fatal' if code=='malformed-or-wrong-scope' else disposition,canonical(details).decode()))
 
 
+def _entity(db,namespace,lexical,counts):
+    syntax,checksum=_assessment(namespace,lexical)
+    inserted=db.execute('INSERT OR IGNORE INTO identifier(namespace,lexical_value,syntax_assessment,checksum_assessment) VALUES(?,?,?,?)',(namespace,lexical,syntax,checksum))
+    counts['new_identifiers']+=inserted.rowcount
+    return db.execute('SELECT identifier_id FROM identifier WHERE namespace=? AND lexical_value=?',(namespace,lexical)).fetchone()[0]
+
+
+def _assertion(db,m,ordinal,index,namespace,lexical,pointer,primary,reason,identifier,encoded,reasons,status,limits,projection):
+    raw_hash=hashlib.sha256(encoded).hexdigest() if encoded is not None else None
+    raw_bytes=len(encoded) if encoded is not None else None
+    db.execute('INSERT INTO identifier_assertion(run_id,input_id,record_ordinal,identifier_ordinal,namespace,lexical_value,source_pointer,disposition,reason_code,identifier_id,raw_json,raw_sha256,raw_bytes,reasons_json,policy_disposition) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+      (m['runId'],m['inputId'],ordinal,index+1,namespace,lexical,pointer,primary,reason,identifier,
+       encoded.decode() if encoded is not None and len(encoded)<=limits.max_identifier_bytes else None,
+       raw_hash,raw_bytes,canonical(reasons).decode(),status))
+    projection.update(canonical(['identifier',ordinal,index+1,status,raw_hash]))
+    return raw_hash
+
+
+def _record_off(db,m,job,ordinal,raw,counts,limits,projection):
+    row=strict_json(raw);q=m['occurrenceAudit']
+    if (type(row) is not dict or set(row)!={'ordinal','originalSha256','table','code','status','rawLineSha256','canonicalBodySha256','reason'}
+            or canonical(row)!=raw or type(row['ordinal']) is not int or row['ordinal']!=ordinal
+            or row['originalSha256']!=q['originalSha256'] or row['table']!='products'
+            or not _sha(row['rawLineSha256']) or not _sha(row['canonicalBodySha256'])):_fail('off-occurrence-identity')
+    status=row['status'];code=row['code']
+    if status not in ('S','C','Q'):_fail('off-occurrence-status')
+    if status=='Q':
+        if code is not None or row['reason']!='native-code-invalid':_fail('off-quarantine')
+    elif (type(code) is not str or re.fullmatch('[0-9]{4,32}',code) is None
+            or row['reason']!=(None if status=='S' else 'repeated-native-key')):_fail('off-occurrence-code')
+    counts['off_'+status]=counts.get('off_'+status,0)+1
+    if counts['off_'+status]>q['counts'][status]:_fail('off-partition-count')
+    counts['source_new']+=1;counts['non_product']+=1;counts['identifier_occurrences']+=1
+    # This is a source occurrence, never a manufactured product or profile.
+    native='off:sourceOccurrence:'+q['originalSha256']+':'+str(ordinal)
+    db.execute('INSERT INTO identifier_source_record(run_id,input_id,record_ordinal,source_record_id,native_record_id,source_pointer,parse_job_id,source_row,source_record_sha256,identity_state,raw_line_sha256,kind,source_disposition,identifier_state,native_candidate_ordinal) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+      (m['runId'],m['inputId'],ordinal,str(ordinal),native,'/code',job,ordinal,row['canonicalBodySha256'],
+       'source-asserted' if status=='S' else 'unresolved',row['rawLineSha256'],'sourceOccurrence','new',status,ordinal))
+    primary='source-asserted' if status=='S' else 'unresolved' if status=='C' else 'invalid'
+    identifier=None;encoded=None
+    if status!='Q':
+        counts['identifiers_eligible']+=1;identifier=_entity(db,'barcode',code,counts)
+        # The actual metadata code field, not an invented native identifier object.
+        encoded=canonical(code)
+    else:counts['identifiers_other-invalid']+=1
+    reasons=[] if status=='S' else [row['reason']]
+    raw_hash=_assertion(db,m,ordinal,0,'barcode',code,'/code',primary,row['reason'],identifier,encoded,reasons,
+                       'off-'+status,limits,projection)
+    projection.update(canonical(['off-occurrence',ordinal,status,row['rawLineSha256'],row['canonicalBodySha256']]))
+    if status!='S':_exception(db,counts,m,ordinal,0,row['reason'],
+        {'sourcePointer':'/code','originalOrdinal':ordinal,'rawLineSha256':row['rawLineSha256'],
+         'canonicalBodySha256':row['canonicalBodySha256'],'rawSha256':raw_hash,
+         'bytes':len(encoded) if encoded is not None else None,'rawIdentifierEvidence':'unavailable' if status=='Q' else 'metadata-code-field',
+         'selectedPrimary':None,'reasons':reasons},limits,disposition=primary)
+    return True
+
+
 def _record(db,m,job,ordinal,raw,counts,limits,projection,locator=None):
     raw_sha=hashlib.sha256(raw).hexdigest() if locator is None else None
     pointer='/0' if locator is None else locator['pointer']
@@ -481,17 +575,10 @@ def _record(db,m,job,ordinal,raw,counts,limits,projection,locator=None):
         if type(value) is dict and value.get('system')=='barcode':barcode_seen=True
         identifier=None
         if status=='eligible':
-            eligible+=1;syntax,checksum=_assessment(namespace,lexical)
-            inserted=db.execute('INSERT OR IGNORE INTO identifier(namespace,lexical_value,syntax_assessment,checksum_assessment) VALUES(?,?,?,?)',(namespace,lexical,syntax,checksum))
-            counts['new_identifiers']+=inserted.rowcount
-            identifier=db.execute('SELECT identifier_id FROM identifier WHERE namespace=? AND lexical_value=?',(namespace,lexical)).fetchone()[0]
-        raw_hash=hashlib.sha256(encoded).hexdigest()
+            eligible+=1;identifier=_entity(db,namespace,lexical,counts)
         primary='source-asserted' if status=='eligible' else 'unresolved' if status in ('missing-null','unknown-namespace') else 'invalid'
-        db.execute('INSERT INTO identifier_assertion(run_id,input_id,record_ordinal,identifier_ordinal,namespace,lexical_value,source_pointer,disposition,reason_code,identifier_id,raw_json,raw_sha256,raw_bytes,reasons_json,policy_disposition) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-          key+(index+1,namespace,lexical,pointer+'/data/identifiers/'+str(index),primary,
-               None if status=='eligible' else status,identifier,encoded.decode() if len(encoded)<=limits.max_identifier_bytes else None,
-               raw_hash,len(encoded),canonical(reasons).decode(),status))
-        projection.update(canonical(['identifier',ordinal,index+1,status,raw_hash]))
+        raw_hash=_assertion(db,m,ordinal,index,namespace,lexical,pointer+'/data/identifiers/'+str(index),primary,
+            None if status=='eligible' else status,identifier,encoded,reasons,status,limits,projection)
         if status!='eligible':_exception(db,counts,m,ordinal,index,status,{'rawSha256':raw_hash,'bytes':len(encoded),'reasons':reasons,
             'sourcePointer':pointer+'/data/identifiers/'+str(index)},limits,disposition=primary)
     counts['products_with_eligible' if eligible else 'products_only_unresolved']+=1
@@ -583,7 +670,8 @@ def _load_asset(db,m,limits,check):
                     counts['read']+=1; counts['bytes']+=len(raw); digest.update(raw)
                     if (len(raw)>limits.max_line_bytes or not raw.endswith(b'\n')
                             or counts['read']>m['expectedRecords'] or counts['bytes']>m['candidateBytes']): _fail('input-framing-or-bound')
-                    fatal=not _record(db,m,job,counts['read'],raw,counts,limits,projection) or fatal
+                    record=_record_off if m['representation']=='verified-off-occurrences-jsonl' else _record
+                    fatal=not record(db,m,job,counts['read'],raw,counts,limits,projection) or fatal
         if (_identity(os.fstat(fd))!=expected_identity or _identity(_safe(path).stat())!=expected_identity): _fail('input-custody')
         if counts['bytes']!=m['candidateBytes'] or counts['read']!=m['expectedRecords'] or digest.hexdigest()!=m['candidateSha256']: _fail('input-eof-hash-count')
         if m['expectedProducts'] is not None and counts['products']!=m['expectedProducts']: _fail('product-count')
@@ -596,6 +684,18 @@ def _load_asset(db,m,limits,check):
         counts.update(distinct_input_keys=distinct,existing_exact_keys=existing,
                       repeated_key_occurrences=counts['identifiers_eligible']-distinct)
         if distinct!=counts['new_identifiers']+existing:_fail('identifier-key-conservation')
+        if m['representation']=='verified-off-occurrences-jsonl':
+            q=m['occurrenceAudit']
+            actual={k:counts.get('off_'+k,0) for k in ('S','C','Q')}
+            measured=db.execute('SELECT count(*),coalesce(sum(c>0),0),coalesce(sum(NOT((s=1 AND c=0) OR (s=0 AND c>=2))),0),coalesce(sum(p),0) FROM '
+                '(SELECT sum(policy_disposition=?) s,sum(policy_disposition=?) c,sum(policy_disposition=? AND disposition<>?) p FROM identifier_assertion '
+                'WHERE run_id=? AND input_id=? AND identifier_id IS NOT NULL GROUP BY identifier_id)',
+                ('off-S','off-C','off-C','unresolved',run,input_id)).fetchone()
+            if (actual!=q['counts'] or distinct!=q['distinctValidKeys'] or measured!=(distinct,q['groups'],0,0)
+                    or counts['identifiers_eligible']!=actual['S']+actual['C']
+                    or counts['identifiers_other-invalid']!=actual['Q']):_fail('off-audit-conservation')
+            counts.update(valid_code_associations=actual['S']+actual['C'],ambiguous_key_groups=measured[1],
+                          invalid_code_audits=actual['Q'],selected_primary_count=measured[3])
         if (sum(counts['source_'+k] for k in ('new','identical','conflicting','malformed'))!=counts['read']
                 or sum(counts['identifiers_'+k] for k in ('eligible','invalid-nonstring','empty','missing-null','unknown-namespace','other-invalid'))!=counts['identifier_occurrences']): _fail('conservation')
         counts.update(expected=m['expectedRecords'],unread=0,rejected=counts['source_malformed'],dependency=0)
@@ -814,6 +914,10 @@ SELECTED22_SHA256 = 'd69ea04ee0e973305be25ad560f2a1e89debadf18b9e0f373a3f788fd7b
 SELECTED22_REVIEW_SHA256 = 'ad4017a9453f3dfa5ee7e97d31086eea0f75140dc20896a76cae5a9509572b9f'
 NATIVE_QUALIFICATION_SHA256 = '5f45979fcdde581a62093c1c32fe047ef1e355416ff33c0128bace305c053553'
 PARENT_NATIVE_ASSET_ID = 'local-backfill:v1:asset:usda-files:99573c6ecbf7fe11d2f1064c7babeeee9fc017af66981247fb193eae48df90e2'
+OFF_OCCURRENCES_SHA256 = 'ae30ad627dd4f5febb2b230dee1ce0b9d41937cc19f5e73dd829aaf6ca442e41'
+OFF_ORIGINAL_SHA256 = '11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e'
+OFF_METADATA_REVIEW_SHA256 = 'af6c1ae92dfa1872a47caa6c59191b54888574fb9aa21ea669fe43bd07491f46'
+OFF_ORIGINAL_ASSET_ID = 'local-backfill:v1:asset:off:d1239890836e077b6e5acbb2a774dcb5dd654b5c4c5307ffa964f012c13d8fad'
 
 
 def selected22_input(operation):
@@ -860,6 +964,74 @@ def selected22_input(operation):
     return replace(spec,lineage_sha256=hashlib.sha256(canonical(lineage)).hexdigest())
 
 
+def _bind_lineage(spec):
+    from dataclasses import replace
+    lineage={'citations':spec.citations,'assets':spec.assets,'producerJob':spec.producer_job,
+             'namespaceRules':spec.namespace_rules,'namespaceRuleVersion':spec.namespace_rule_version,
+             'representation':spec.representation,'selectedCount':spec.selected_count,
+             'selectedReviewSha256':spec.selected_review_sha256,'assetBindings':spec.asset_bindings}
+    return replace(spec,lineage_sha256=hashlib.sha256(canonical(lineage)).hexdigest())
+
+
+def usda_full_input(operation):
+    """Use the accepted native contract and full candidate, without opening it."""
+    from dataclasses import replace
+    template=selected22_input(dict(operation,schemaVersion='offmenu-selected22-identifier-operation/1',
+                                  cached_lookup_job=operation['native_candidate_job']))
+    return _bind_lineage(replace(template,asset_id=PARENT_NATIVE_ASSET_ID,assets=tuple(operation['fetch_assets']),
+        producer_job=dict(operation['native_candidate_job'],output_sha256=operation['qualification']['candidateSha256']),
+        expected_products=2101279,representation='native-jsonl',selected_count=None,selected_review_sha256=None,
+        asset_bindings=template.asset_bindings[:2]))
+
+
+def off_occurrence_input(operation):
+    """Exact reviewed OFF metadata audit; no product qualification is fabricated."""
+    originals=tuple(operation['fetch_assets']);byid={a.get('asset_id',a.get('id')):a for a in originals}
+    if OFF_ORIGINAL_ASSET_ID not in byid:_fail('off-fetch-original-required')
+    citation_id=byid[OFF_ORIGINAL_ASSET_ID]['citation_id'];derived='parse-derived:off-occurrences:'+OFF_OCCURRENCES_SHA256
+    q={'schemaVersion':'offmenu-off-occurrence-metadata-binding/1','sourceId':'off','releaseId':'2026-10-12',
+       'scopeId':'off-20261012-verified-source-occurrence-audit-v1','fixture':False,
+       'normalizedRecords':4807663,'candidateSha256':OFF_OCCURRENCES_SHA256,'originalSha256':OFF_ORIGINAL_SHA256,
+       'counts':{'S':4807156,'C':122,'Q':385},'groups':61,'distinctValidKeys':4807217,
+       'metadataReviewSha256':OFF_METADATA_REVIEW_SHA256,
+       'metadataVerificationResultSha256':'5c37b1e4afb803371016a9b6b76b78f2062a96a245d6edfd3a2da43868c728bd',
+       'verificationManifestSha256':'4a95665d8940aff3176cd1ae0abc762e45e914674c7e57ad135010d4e81fd12b',
+       'originalInputs':[{'path':'off-2026-10-12.jsonl.gz','bytes':13132516914,'sha256':OFF_ORIGINAL_SHA256}]}
+    asset={'asset_id':derived,'citation_id':citation_id,'fetch_owned_asset_id':None,
+           'identity_state':'unresolved-backfill','retrieval_clock_state':'unknown-retained',
+           'metadata_origin_pointer':'PARSE-derived occurrence metadata; terminal11122/review11201, not direct FETCH',
+           'unknown_fields_json':'["not a direct FETCH asset; verified private occurrence audit"]'}
+    bindings=({'id':OFF_ORIGINAL_ASSET_ID,'logical_path':'off-2026-10-12.jsonl.gz','bytes':13132516914,
+               'sha256':OFF_ORIGINAL_SHA256,'parent_asset_ids':[],'custody_ref':'retained original metadata only; no original replay'},
+              {'id':derived,'logical_path':'occurrences.jsonl','bytes':1656721116,'sha256':OFF_OCCURRENCES_SHA256,
+               'parent_asset_ids':[OFF_ORIGINAL_ASSET_ID],'custody_ref':'full emitted metadata review11201/11204'})
+    spec=IdentifierInput(operation['input_path'],derived,tuple(operation['fetch_citations']),originals+(asset,),
+        dict(operation['occurrence_job'],output_sha256=OFF_OCCURRENCES_SHA256),'0'*64,None,q,
+        hashlib.sha256(canonical(q)).hexdigest(),tuple(operation['input_identity']) if operation.get('input_identity') is not None else None,
+        (('barcode','barcode'),),'native-systems-exact/1',0,'verified-off-occurrences-jsonl',asset_bindings=bindings)
+    return _bind_lineage(spec)
+
+
+def full_retained_inputs(operation):
+    if (type(operation) is not dict or operation.get('schemaVersion')!='offmenu-full-retained-identifier-operation/1'
+            or type(operation.get('sources')) is not list or not 1<=len(operation['sources'])<=2
+            or len(set(operation['sources']))!=len(operation['sources'])
+            or any(s not in ('usda-files','off') for s in operation['sources'])):_fail('full-operation')
+    factories={'usda-files':usda_full_input,'off':off_occurrence_input}
+    return tuple(factories[source](operation[source]) for source in operation['sources'])
+
+
+def _full_limits(operation,inputs):
+    values=operation.get('limits')
+    if (type(values) is not dict or set(values)!=set(IdentifierLimits.__dataclass_fields__)
+            or any(type(v) is not int or not 0<v<2**63 for v in values.values())):_fail('full-finite-limits')
+    limits=IdentifierLimits(**values);manifest=prepare_identifier_manifest(inputs)
+    if (limits.max_line_bytes>64*1024**2 or limits.max_identifier_bytes>limits.max_line_bytes
+            or sum(m['candidateBytes'] for m in manifest['inputs'])>limits.max_scan_bytes
+            or sum(m['expectedRecords'] for m in manifest['inputs'])>limits.max_records):_fail('full-input-limits')
+    return limits
+
+
 def _read_control(path,expected):
     if not _sha(expected):_fail('control-pin-required')
     path=_safe(Path(path));fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
@@ -876,7 +1048,7 @@ def _read_control(path,expected):
 def main():
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command',choices=('prepare-selected22','load-selected22','query'))
+    parser.add_argument('command',choices=('prepare-selected22','load-selected22','prepare-full','load-full','query'))
     parser.add_argument('--operation',required=True)
     parser.add_argument('--operation-sha256',required=True)
     parser.add_argument('--manifest-sha256')
@@ -886,6 +1058,18 @@ def main():
     args=parser.parse_args();operation=_read_control(args.operation,args.operation_sha256)
     if args.command=='query':
         result=query_identifiers(operation,namespace=args.namespace,after_assertion_id=args.after,limit=args.limit)
+    elif args.command in ('prepare-full','load-full'):
+        inputs=full_retained_inputs(operation);limits=_full_limits(operation,inputs)
+        pending=tuple(operation.get('pending_sources',[]))
+        manifest=prepare_identifier_manifest(inputs,pending_sources=pending)
+        manifest_sha=hashlib.sha256(canonical(manifest)).hexdigest()
+        if args.command=='prepare-full':
+            result={'inputManifest':manifest,'inputManifestSha256':manifest_sha,'sourceBodyRead':False,
+                    'limits':vars(limits),'callable':'offmenu.refresh.identifier_database.build_identifier_database'}
+        else:
+            result=build_identifier_database(inputs,operation['destination'],limits=limits,
+                run_id=operation['run_id'],input_manifest_pointer=args.operation,input_manifest_sha256=args.manifest_sha256,
+                selection_receipt_sha256=operation['selection_receipt_sha256'],pending_sources=pending)
     else:
         spec=selected22_input(operation)
         pending=({'sourceId':'usda-files','scope':'complete-native-candidate','status':'not-loaded-by-selected22-operation',

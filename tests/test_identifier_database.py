@@ -70,6 +70,73 @@ class IdentifierDatabaseTests(unittest.TestCase):
                   pending_sources=pending);args.update(changes)
         return s.build_identifier_database(inputs,self.target,**args)
 
+    def off_rows(self):
+        return [{'ordinal':i,'originalSha256':'a'*64,'table':'products','code':code,'status':status,
+                 'rawLineSha256':hashlib.sha256(('line'+str(i)).encode()).hexdigest(),
+                 'canonicalBodySha256':hashlib.sha256(('body'+str(i)).encode()).hexdigest(),
+                 'reason':None if status=='S' else 'repeated-native-key' if status=='C' else 'native-code-invalid'}
+                for i,(code,status) in enumerate((('00123','S'),('0001','S'),('0002','C'),('0002','C'),(None,'Q')),1)]
+
+    def off_fixture(self,rows=None):
+        rows=self.off_rows() if rows is None else rows
+        native=self.fixture(raw=b''.join(canonical(r) for r in rows),name='off-occurrences.jsonl')
+        q={'schemaVersion':'offmenu-off-occurrence-metadata-binding/1','sourceId':'off','releaseId':'2026-10-12',
+           'scopeId':'fixture-off-audit','fixture':True,'normalizedRecords':5,
+           'candidateSha256':native.qualification['candidateSha256'],'originalSha256':'a'*64,
+           'metadataReviewSha256':'b'*64,'counts':{'S':2,'C':2,'Q':1},'groups':1,'distinctValidKeys':3,
+           'originalInputs':[{'path':'original.zip','bytes':5,'sha256':'a'*64}]}
+        citation=dict(native.citations[0],id='off-fixture-citation',release_id='2026-10-12',source_id='off')
+        assets=tuple(dict(a,id='off-'+a['id'],citation_id=citation['id'],
+                          parent_asset_ids=['off-'+p for p in a['parent_asset_ids']]) for a in native.assets)
+        return self.bind_lineage(replace(native,contract=None,qualification=q,
+            qualification_sha256=hashlib.sha256(canonical(q)).hexdigest(),citations=(citation,),
+            assets=assets,asset_id='off-'+native.asset_id,
+            namespace_rules=(('barcode','barcode'),),expected_products=0,
+            representation='verified-off-occurrences-jsonl',identity=None))
+
+    def test_full_native_and_off_audit_share_lexical_keys_preserve_all_occurrences(self):
+        usda=self.fixture([self.row('a',[{'system':'barcode','value':'00123'}]),
+                           self.row('b',[{'system':'USDA-FDC','value':'7'}]),
+                           self.row('a',kind='nutrientProfile'),self.row('b',kind='nutrientProfile')],name='usda-full.jsonl')
+        usda=replace(usda,expected_products=2,identity=None);off=self.off_fixture()
+        opened=[];original_open=os.open
+        def observe(path,*args,**kwargs):
+            if str(path) in (usda.candidate,off.candidate):opened.append(str(path))
+            return original_open(path,*args,**kwargs)
+        with patch.object(os,'open',side_effect=observe):result=self.build(usda,inputs=(usda,off,off),pending_sources=())
+        self.assertEqual(opened,[usda.candidate,off.candidate])
+        uc,oc=result['summary']['inputs'][0]['counts'],result['summary']['inputs'][1]['counts']
+        self.assertEqual((uc['read'],uc['products'],uc['non_product']),(4,2,2))
+        self.assertEqual((oc['read'],oc['products'],oc['non_product']),(5,0,5))
+        self.assertEqual((oc['valid_code_associations'],oc['distinct_input_keys'],oc['ambiguous_key_groups'],oc['invalid_code_audits']),(4,3,1,1))
+        self.assertEqual((oc['new_identifiers'],oc['existing_exact_keys'],oc['selected_primary_count']),(2,1,0))
+        self.assertTrue(result['summary']['inputs'][2]['reusedCompletedAsset'])
+        with closing(sqlite3.connect(self.target)) as db:
+            self.assertEqual(db.execute('SELECT count(*) FROM identifier_source_record').fetchone()[0],9)
+            members=db.execute("SELECT a.lexical_value,a.disposition,a.reason_code,r.source_row,r.kind,r.identity_state FROM identifier_assertion a JOIN identifier_source_record r USING(run_id,input_id,record_ordinal) WHERE policy_disposition='off-C' ORDER BY r.source_row").fetchall()
+            self.assertEqual(members,[('0002','unresolved','repeated-native-key',i,'sourceOccurrence','unresolved') for i in (3,4)])
+            q=db.execute("SELECT lexical_value,raw_json,raw_sha256,raw_bytes,disposition FROM identifier_assertion WHERE policy_disposition='off-Q'").fetchone()
+            self.assertEqual(q,(None,None,None,None,'invalid'))
+            evidence=db.execute("SELECT raw_line_sha256,source_record_sha256,source_row FROM identifier_source_record WHERE kind='sourceOccurrence' AND source_row=5").fetchone()
+            self.assertEqual(evidence,(self.off_rows()[4]['rawLineSha256'],self.off_rows()[4]['canonicalBodySha256'],5))
+            self.assertEqual(db.execute('PRAGMA foreign_key_check').fetchall(),[])
+        self.assertEqual(result['summary']['physicalProducts'],'unknown')
+
+    def test_off_audit_refuses_partition_ordinal_code_and_digest_mismatches(self):
+        for mode in ('duplicate-S','split-C','Q-code','ordinal','original-digest','extra-field'):
+            with self.subTest(mode=mode):
+                rows=self.off_rows()
+                if mode=='duplicate-S':rows[1]['code']=rows[0]['code']
+                elif mode=='split-C':rows[3]['code']='0003'
+                elif mode=='Q-code':rows[4]['code']='0004'
+                elif mode=='ordinal':rows[1]['ordinal']=True
+                elif mode=='original-digest':rows[0]['originalSha256']='c'*64
+                else:rows[0]['unexpected']='field'
+                self.target=self.root/('held-'+mode+'.sqlite')
+                with self.assertRaises(RefreshError) as error:self.build(self.off_fixture(rows))
+                self.assertFalse(self.target.exists())
+                self.assertFalse(error.exception.identifier_database_retained_state['completeReceiptReturned'])
+
     def test_full_stream_lexical_collisions_invalids_and_nonproducts_accounted(self):
         a=self.row('a',[{'system':'barcode','value':'00123'},{'system':'USDA-FDC','value':'a'}],name='First')
         b=self.row('b',[{'system':'barcode','value':'00123'},{'system':'USDA-FDC','value':'b'}],name='Competing')
@@ -315,6 +382,26 @@ class IdentifierDatabaseTests(unittest.TestCase):
         self.assertEqual(spec.contract.expected_records,4202558)
         self.assertEqual(manifest['inputs'][0]['expectedRecords'],22)
         self.assertEqual(manifest['inputs'][0]['candidateSha256'],s.SELECTED22_SHA256)
+
+        full_usda=dict(operation,input_identity=None,native_candidate_job=operation['cached_lookup_job'])
+        off_citation=dict(citation,citation_id='off-fixture-citation',release_id='2026-10-12',source_id='off')
+        full={'schemaVersion':'offmenu-full-retained-identifier-operation/1','sources':['usda-files','off'],
+              'usda-files':full_usda,'off':{'input_path':'/not-opened/occurrences.jsonl','input_identity':None,
+                  'fetch_citations':[off_citation],
+                  'fetch_assets':[{'asset_id':s.OFF_ORIGINAL_ASSET_ID,'citation_id':'off-fixture-citation',
+                                   'identity_state':'unresolved-backfill','unknown_fields_json':'["fixture metadata"]'}],
+                  'occurrence_job':operation['cached_lookup_job']},
+              'limits':dict(max_scan_bytes=20081166515,max_records=9010221,max_line_bytes=8388608,
+                  max_identifier_bytes=4096,max_identifiers_per_record=2,max_exceptions=1000,
+                  max_database_bytes=64*1024**3,max_storage_bytes=128*1024**3,max_seconds=86400)}
+        with patch.object(os,'open',side_effect=AssertionError('no body open')),patch.object(Path,'stat',side_effect=AssertionError('no body stat')):
+            inputs=s.full_retained_inputs(full);s._full_limits(full,inputs)
+            manifest=s.prepare_identifier_manifest(inputs)
+        self.assertEqual([m['expectedRecords'] for m in manifest['inputs']],[4202558,4807663])
+        self.assertEqual([m['expectedProducts'] for m in manifest['inputs']],[2101279,0])
+        self.assertIsNone(manifest['inputs'][1]['contractSha256'])
+        self.assertEqual(manifest['inputs'][1]['occurrenceAudit']['distinctValidKeys'],4807217)
+        with self.assertRaises(RefreshError):s._full_limits(dict(full,limits=dict(full['limits'],max_seconds=0)),inputs)
 
 
 if __name__=='__main__':unittest.main()
