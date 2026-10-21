@@ -218,6 +218,7 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                 or db.execute('PRAGMA quick_check').fetchone()!=('ok',)or db.execute('PRAGMA foreign_key_check').fetchone()):_fail('final-reconciliation')
         db.execute('UPDATE recipe_store_release SET state=?,observed_records=?,exception_count=?,completed_at=? WHERE store_release_id=?',
             ('completed',counts['recipe_source_record'],counts['recipe_store_exception'],datetime.now(timezone.utc).isoformat(),run_id));db.commit()
+        check()
         return {'version':VERSION,'inputManifestSha256':input_manifest_sha256,'assets':results,'tableCounts':counts,
                 'expectedAssets':len(assets),'verifiedAssets':len(results),'unreadAssets':0,'parsedBytes':total_bytes,
                 'sourceImportComplete':True,'canonicalIngredientLinks':'NULL/pending','accepted':False,'runtimeOrResourcesAdmitted':False,

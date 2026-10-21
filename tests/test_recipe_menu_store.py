@@ -79,6 +79,28 @@ class RecipeMenuStoreTests(unittest.TestCase):
    self.assertIsNone(error.exception.recipe_store_retained_state['assetSHA256'])
    self.assertFalse(error.exception.recipe_store_retained_state['completeReceiptReturned'])
    self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+ def test_final_completion_commit_deadline_preserves_committed_prefix_as_incomplete(self):
+  assets=[self.asset('slow-completion-commit')]
+  with closing(sqlite3.connect(':memory:'))as db,patch.object(s.time,'monotonic',return_value=100.0)as clock:
+   completing=[False]
+   def trace(sql):
+    if sql.startswith("UPDATE recipe_store_release SET state='completed'"):completing[0]=True
+    if completing[0]and sql=='COMMIT':clock.return_value=1000.0
+   db.set_trace_callback(trace)
+   with self.assertRaisesRegex(RefreshError,'time-bound')as error:self.load(db,assets)
+   db.set_trace_callback(None)
+   self.assertTrue(completing[0])
+   self.assertEqual(db.execute('SELECT state,observed_records,exception_count,completed_at FROM recipe_store_release').fetchone(),('incomplete',1,1,None))
+   self.assertEqual(db.execute('SELECT count(*) FROM recipe_source_record').fetchone()[0],1)
+   self.assertEqual(db.execute('SELECT count(*) FROM source_recipe_variant').fetchone()[0],1)
+   self.assertIn('Pâte & Öl',json.loads(db.execute('SELECT source_payload_json FROM recipe_source_record').fetchone()[0])['originalTitle'])
+   retained=error.exception.recipe_store_retained_state
+   self.assertEqual(retained['failurePhase'],'finalization')
+   self.assertEqual(retained['sourceRowsRetained'],1)
+   self.assertEqual(retained['committedAssetCounts'],[dict(sourceId=assets[0]['sourceId'],releaseId=assets[0]['release'],inputSHA256=assets[0]['inputSHA256'],records=1)])
+   self.assertEqual(len(retained['completedAssets']),1)
+   self.assertFalse(retained['completeReceiptReturned'])
+   self.assertEqual(db.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL SELECT x+1 FROM n WHERE x<2000) SELECT sum(x) FROM n').fetchone()[0],2001000)
  def test_final_reconciliation_failure_marks_actual_committed_rows_incomplete(self):
   assets=[self.asset('final-reconciliation')];project=s._project_recipe
   def corrupt_projection(db,*args):
