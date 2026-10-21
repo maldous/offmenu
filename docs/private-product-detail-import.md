@@ -203,6 +203,15 @@ old payload JSON, rehash full payloads/databases or open/stat/hash any completed
 source body. Independent checkpoint qualification still owns full integrity and
 provenance review. SQLite JSON functions are required for binding metadata checks.
 
+Per-asset product/profile counts and operation-binding checks use an explicit
+asset-first `CROSS JOIN`: select reference rows by asset ID and SHA, then look up
+their projections by reference ID while retaining the generation predicate.
+This avoids repeating a generation-wide projection traversal for every asset.
+The same-schema generated plan/VM regression checks result equality, asset-index
+selection and bounded work when doubling assets and rows. The adjacent identifier
+count already uses the asset index and is unchanged. These generated measurements
+do not establish an active operation's current SQL statement, progress or ETA.
+
 Only after those checks does the writer append an attempt and enter `loading`.
 It calls the existing scanner/callback only for the first uncommitted asset and
 its successors. A reader-complete but rolled-back asset is uncommitted and must
