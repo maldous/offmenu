@@ -196,6 +196,11 @@ Field wrappers are constructed from the selected bounded documents on read;
 Existing legacy fallback/null-collapse/quantity conversion/country mapping/basis
 and derived-value limitations survive. No original JSON number-token format,
 language, canonical identity, certification or missing publisher field is guessed.
+For a loaded product, an absent mapped key is `missing/projection-field-absent`
+and retains the projection evidence hash. Explicit null and present empty values
+stay distinct. Original publisher presence stays `unknown`; missing a projection
+key does not prove publisher absence. An unsupplied paired profile and unsupported
+image representation remain `not-loaded/representation-not-provided`.
 
 `read_product_details(connection, observations, selection=ProductDetailQuerySelection(...),
 identifier_evidence=CurrentIdentifierEvidence(identifier_connection, selected_run_id, selected_database_sha256))`
@@ -245,6 +250,9 @@ not allocation, measured fit or full-corpus acceptance.
 
 `product_label_sections.extract_label_sections` preserves the complete label,
 hashes, code-point/UTF8 offsets, section evidence and uncertain spans.
+Explicit allergen, storage and marketing statements terminate at LF, CRLF or CR
+line boundaries as well as their existing punctuation/end boundaries. The exact
+line separators survive in unclassified gaps rather than ingredient fallback.
 `extract_ingredient_components` consumes only a selected ingredient span and
 retains comma/bracket parent-child syntax and explicit source quantity lexemes.
 Unlabelled opening text stays a candidate; bare numeric/additive fragments are not

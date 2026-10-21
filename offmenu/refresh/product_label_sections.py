@@ -6,7 +6,7 @@ from .core import RefreshError
 
 VERSION = 'offmenu-source-label-sections/1'
 COMPONENT_VERSION = 'offmenu-source-ingredient-components/1'
-_END = r'.*?(?:[.!?](?=\s|$)|$)'
+_END = r'.*?(?:[.!?](?=\s|$)|(?=[\r\n]|$))'
 _BATCH = r'(?-i:[0-9][A-Z0-9]{7,})'
 _RULES = (
     ('allergen_statement', r'\b(?:MAY CONTAIN|CONTAINS)\b' + _END),
@@ -17,7 +17,7 @@ _RULES = (
     ('recycling', r'\b(?:Tub|Lid|Insert|Bottle|Jar|Sleeve|Box|Cap)(?:\s+(?:Tub|Lid|Insert|Bottle|Jar|Sleeve|Box|Cap))*(?:\s+\d{4,32})?\s+[a-z0-9.\-]+\.(?:org|com)(?:\.[a-z]{2})?\b'),
     ('marketing', r'\bContributes to\b' + _END),
     ('marketing', r'\b[^.!?\n]*\b(?:guarantees|quality specifications|full refund|replacement)\b' + _END),
-    ('marketing', r'\b(?:No Artificial|Source of|Suitable for)\b.*?(?=\s+(?:No Artificial|Source of|Suitable for)\b|\s+' + _BATCH + r'\b|$)'),
+    ('marketing', r'\b(?:No Artificial|Source of|Suitable for)\b.*?(?=[\r\n]|\s+(?:No Artificial|Source of|Suitable for)\b|\s+' + _BATCH + r'\b|$)'),
 )
 
 

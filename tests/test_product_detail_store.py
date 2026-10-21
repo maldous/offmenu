@@ -16,6 +16,29 @@ from offmenu.refresh.acceptance import Asset, qualify
 
 
 class ProductDetailStoreTests(unittest.TestCase):
+    def test_loaded_mapped_fields_distinguish_missing_null_empty_and_unavailable(self):
+        for representation in ('usda-native-jsonl', 'usda-reviewed-lookup-products-json',
+                               'off-legacy-paired-gzip', 'off-cached-qualified-pair'):
+            with self.subTest(representation=representation):
+                product = copy.deepcopy(self.native.rows[0])
+                product['provenance']['sourceId'] = 'off' if representation.startswith('off-') else 'usda-files'
+                product['data'].pop('ingredientsText'); product['data'].pop('marketCountry', None)
+                fields = store._fields([product], representation)
+                missing = fields['ingredientDeclaration']
+                self.assertEqual(missing['state'], 'missing')
+                self.assertEqual(missing['reasonCode'], 'projection-field-absent')
+                self.assertIsNone(missing['value']); self.assertIsNone(missing['fieldPointer'])
+                self.assertIsNotNone(missing['evidenceSha256'])
+                self.assertEqual(missing['sourceFieldState'], 'unknown')
+                self.assertEqual(fields['nutrientProfile']['state'], 'not-loaded')
+                self.assertEqual(fields['imageUrlReferences']['state'], 'not-loaded')
+                if product['provenance']['sourceId'] == 'usda-files':
+                    self.assertEqual(fields['markets']['state'], 'missing')
+                for value, expected in ((None, 'null'), ('', 'present'), ('  source text  ', 'present')):
+                    product['data']['ingredientsText'] = value
+                    field = store._fields([product], representation)['ingredientDeclaration']
+                    self.assertEqual(field['state'], expected); self.assertEqual(field['value'], value)
+
     def setUp(self):
         self.off = fixtures.RetainedProductShardTests(); self.off.setUp(); self.addCleanup(self.off.doCleanups)
         other = next(str(n) for n in range(1000, 10000) if hashlib.sha256(str(n).encode()).hexdigest()[:2] == self.off.key)
@@ -128,7 +151,7 @@ class ProductDetailStoreTests(unittest.TestCase):
             self.assertEqual(native['fields']['ingredientDeclaration']['value'], '  Native milk\n豆  ')
             self.assertEqual(native['fields']['nutrientProfile']['value']['nutrients']['sodium']['rawFields']['amount'], '0.10')
             self.assertEqual(native['fields']['brand']['state'], 'null')
-            self.assertEqual(native['fields']['packageQuantity']['state'], 'not-loaded')
+            self.assertEqual(native['fields']['packageQuantity']['state'], 'missing')
             self.assertEqual(native['fields']['servingQuantity']['value']['label'], '1,50 source serving')
             self.assertIsNone(native['canonicalIngredient']['conceptId'])
             self.assertTrue(output['coverage']['identifierIndexCoverageSeparate'])
