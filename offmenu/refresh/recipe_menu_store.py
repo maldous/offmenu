@@ -180,6 +180,7 @@ def ingest_recipe_menu(db,assets,*,parser_module,parse_asset_once,limits,run_id,
                     template,version,other=('recipeTemplate',parser_module.RECIPE_TEMPLATE_VERSION,'menuTemplate')if asset['recordKind']=='recipe'else('menuTemplate',parser_module.MENU_TEMPLATE_VERSION,'recipeTemplate')
                     if type(record)is not dict or record.get(template)!=version or other in record:_fail('parsed-record-kind')
                     if (source.get('sourceId')!=asset['sourceId']or source.get('releaseId')!=asset['release']
+                            or(asset['recordKind']=='recipe'and source.get('sourceRecordId')!=asset['sourceRecordId'])
                             or source.get('originalSHA256')!=asset['inputSHA256']or source.get('extractionParser')!=PARSER_VERSION):_fail('parsed-source-binding')
                     native=_text(source.get('sourceRecordId'));key=_id('recipe-source',asset['sourceId'],asset['release'],asset['inputSHA256'],asset['recordKind'],native,index)
                     _put(db,'recipe_source_record',dict(source_record_key=key,store_release_id=run_id,source_id=asset['sourceId'],release_id=asset['release'],native_record_id=native,
