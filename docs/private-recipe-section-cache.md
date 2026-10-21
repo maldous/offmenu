@@ -51,6 +51,15 @@ write failure rolls back that row transaction; already-created empty DDL may
 remain in the caller's new staged database. Retain the failed stage and report
 the exact error; do not silently retry/delete or infer publication.
 
+Before DDL or any write/configuration that can alter database contents, the
+loader checks allocated `page_count * page_size` against the byte budget. An
+empty schema left after dropped tables can still exceed the budget and is
+rejected without repair, shrinking or VACUUM. The requested page cap is the
+floor of bytes/page_size (never rounded up); a sub-page budget is rejected.
+The requested limit also preserves a stricter existing page cap. The returned
+effective `max_page_count` must fit that limit and cover existing allocated
+pages before the database is admitted. No cap increase is authorized.
+
 Hard maximums match the default byte/record/section/database/VM ceilings;
 `max_seconds` may be selected up to900. Smaller limits are accepted. A shared
 wall-time guard covers cache validation and SQL; SQL progress is bounded, handlers

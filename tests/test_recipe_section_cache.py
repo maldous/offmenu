@@ -5,7 +5,9 @@ import copy
 import hashlib
 import json
 import sqlite3
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from offmenu.refresh import recipe_section_cache as c
@@ -195,6 +197,49 @@ class RecipeSectionCacheTests(unittest.TestCase):
                     self.assertFalse(db.in_transaction)
                     self.assertEqual(db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH),old_length)
                     self.assertEqual(db.execute('SELECT 1').fetchone(),(1,))
+
+
+    def test_previously_cleared_allocated_database_rejected_before_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'generated-cleared.sqlite'
+            with closing(sqlite3.connect(path)) as db:
+                db.execute('CREATE TABLE former(payload)')
+                db.execute('INSERT INTO former VALUES(zeroblob(2097152))')
+                db.commit()
+                db.execute('DROP TABLE former')
+                db.commit()
+                self.assertEqual(db.execute('SELECT name FROM sqlite_master').fetchall(),[])
+                page_count = db.execute('PRAGMA page_count').fetchone()[0]
+                page_size = db.execute('PRAGMA page_size').fetchone()[0]
+                old_max = db.execute('PRAGMA max_page_count').fetchone()[0]
+                old_changes = db.total_changes
+                self.assertGreater(page_count*page_size,1048576)
+                with self.assertRaisesRegex(RefreshError,'database-size-bound'):
+                    self.load(db,self.fixture(),limits=replace(c.CacheLimits(),max_database_bytes=1048576))
+                self.assertEqual(db.execute('SELECT name FROM sqlite_master').fetchall(),[])
+                self.assertEqual(db.execute('PRAGMA page_count').fetchone()[0],page_count)
+                self.assertEqual(db.execute('PRAGMA max_page_count').fetchone()[0],old_max)
+                self.assertEqual(db.total_changes,old_changes)
+                self.assertFalse(db.in_transaction)
+
+    def test_effective_page_cap_is_bounded_and_budget_not_rounded_up(self):
+        with closing(sqlite3.connect(':memory:')) as db:
+            page_size = db.execute('PRAGMA page_size').fetchone()[0]
+            budget = 524288+17
+            self.load(db,self.fixture(),limits=replace(c.CacheLimits(),max_database_bytes=budget))
+            self.assertEqual(db.execute('PRAGMA max_page_count').fetchone()[0],budget//page_size)
+            self.assertLessEqual(db.execute('PRAGMA page_count').fetchone()[0]*page_size,budget)
+        with closing(sqlite3.connect(':memory:')) as db:
+            page_size = db.execute('PRAGMA page_size').fetchone()[0]
+            old_max = db.execute('PRAGMA max_page_count').fetchone()[0]
+            with self.assertRaisesRegex(RefreshError,'database-size-bound'):
+                self.load(db,self.fixture(),limits=replace(c.CacheLimits(),max_database_bytes=page_size-1))
+            self.assertEqual(db.execute('SELECT name FROM sqlite_master').fetchall(),[])
+            self.assertEqual(db.execute('PRAGMA max_page_count').fetchone()[0],old_max)
+        with closing(sqlite3.connect(':memory:')) as db:
+            db.execute('PRAGMA max_page_count=128')
+            self.load(db,self.fixture())
+            self.assertEqual(db.execute('PRAGMA max_page_count').fetchone()[0],128)
 
 
 if __name__=='__main__':
