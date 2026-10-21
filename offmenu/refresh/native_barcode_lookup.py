@@ -298,7 +298,7 @@ def _retained_details(row, packet, line, selection):
         state = ('present' if value is not None else 'null') if present else ('missing' if packet else 'not-loaded')
         fields[name] = {'state': state, 'value': value, 'reasonCode': None if state == 'present' else
                         ('explicit-projected-null' if state == 'null' else 'projection-field-absent' if state == 'missing' else 'exact-occurrence-not-in-selected-representation'),
-                        'fieldPointer': '/' + ('0' if path[0] == 'product' else '1') + '/' + '/'.join(path[1:]) if packet else None,
+                        'fieldPointer': '/' + ('0' if path[0] == 'product' else '1') + '/' + '/'.join(path[1:]) if present else None,
                         'evidenceSha256': binding['recordSha256'], 'valueOrigin': 'upstream-projection' if packet else 'unknown',
                         'sourceFieldState': 'unknown', 'language': None}
     fields['imageUrlReferences'] = {'state': 'not-loaded', 'value': None,

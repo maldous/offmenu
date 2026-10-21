@@ -6,6 +6,32 @@ from offmenu.refresh.core import RefreshError
 
 
 class ProductLabelSectionTests(unittest.TestCase):
+    def test_marketing_punctuation_preserves_decimals_and_adjacent_sections(self):
+        cases = [('No Artificial Colours.', 'Keep refrigerated.', 'storage'),
+                 ('Source of 1.5 g fibre!', 'Unrelated trailing sentence.', 'unclassified'),
+                 ('Suitable for 豆 lovers?', 'Keep frozen.', 'storage'),
+                 ('No Artificial Colours.', 'CONTAINS MILK.', 'allergen_statement')]
+        for claim, following, category in cases:
+            with self.subTest(claim=claim):
+                text = claim + ' ' + following; result = extract_label_sections(text)
+                spans = result['sections']
+                self.assertEqual([s['text'] for s in spans if s['category'] == 'marketing'], [claim])
+                self.assertTrue(any(s['category'] == category and following in s['text'] for s in spans))
+                self.assertEqual(''.join(s['text'] for s in spans), text)
+                self.assertEqual(result['rawTextSHA256'], hashlib.sha256(text.encode()).hexdigest())
+                self.assertEqual([(s['end'], t['start']) for s, t in zip(spans, spans[1:])],
+                    [(s['end'], s['end']) for s in spans[:-1]])
+                for span in spans:
+                    self.assertEqual(text[span['start']:span['end']], span['text'])
+                    self.assertEqual(text.encode()[span['utf8Start']:span['utf8End']].decode(), span['text'])
+                    self.assertEqual(span['textSHA256'], hashlib.sha256(span['text'].encode()).hexdigest())
+        text = 'No Artificial Colours Source of 1.5 g fibre Suitable for 豆 lovers 12BATCHCODE9'
+        spans = extract_label_sections(text)['sections']
+        self.assertEqual([s['text'] for s in spans if s['category'] == 'marketing'],
+            ['No Artificial Colours', 'Source of 1.5 g fibre', 'Suitable for 豆 lovers'])
+        self.assertTrue(any('12BATCHCODE9' in s['text'] for s in spans if s['category'] == 'unclassified'))
+        self.assertEqual(''.join(s['text'] for s in spans), text)
+
     def test_unpunctuated_explicit_sections_end_at_line_breaks(self):
         for newline in ('\n', '\r\n', '\r'):
             with self.subTest(newline=repr(newline)):
