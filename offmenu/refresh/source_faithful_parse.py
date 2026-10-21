@@ -133,7 +133,8 @@ def _quantity(line: str) -> dict:
 def _ingredient_name(line: str, quantity: dict) -> str:
     expression = quantity.get('rawExpression')
     if expression:
-        remainder = re.sub(r'^\s*' + re.escape(expression) + r'(?=\s|$)\s*', '', line, count=1)
+        prefix = r'\s+'.join(re.escape(part) for part in expression.split())
+        remainder = re.sub(r'^\s*' + prefix + r'(?=\s|$)\s*', '', line, count=1)
         remainder = remainder.strip(' ,:;') or line.strip()
     else:
         remainder = line.strip()
@@ -373,7 +374,7 @@ def parse_html_recipes(raw: bytes, *, source: dict, source_id: str,
         return [parse_html_recipe(raw, source=source, source_id=source_id,
             source_record_id=source_record_id, country=country, language=language,
             attribution=attribution)]
-    if adapter not in RECIPE_ADAPTERS:
+    if type(adapter) is not str or adapter not in RECIPE_ADAPTERS:
         raise ParseError('recipe-adapter-unselected')
     try:
         soup = BeautifulSoup(raw.decode(source.get('encoding', 'utf-8'), errors='strict'), 'html.parser')

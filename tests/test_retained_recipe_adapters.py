@@ -99,6 +99,29 @@ class RetainedRecipeAdaptersTests(unittest.TestCase):
         with self.assertRaisesRegex(parser.ParseError, 'source-field-not-locatable'):
             parser.parse_html_recipe(raw, **args)
 
+    def test_wprm_quantity_removed_from_name_with_raw_span_and_lexemes_intact(self):
+        record, = self.parse(MR, 'wprm-visible-recipe-v1')
+        ingredient = record['ingredientLines'][0]
+        self.assertTrue(ingredient['sourceNameText'].startswith('vegetables'))
+        self.assertEqual(ingredient['quantity']['rawValueLexeme'], '2')
+        self.assertEqual(ingredient['quantity']['rawUnitLexeme'], 'kg')
+        self.assertEqual(ingredient['quantity']['rawExpression'], '2 kg')
+        self.assertTrue(ingredient['originalExpression'].startswith('2\n'))
+        self.assertIsNone(ingredient['quantity']['interpretedValue'])
+        self.assertIsNone(ingredient['quantity']['interpretedUnit'])
+        for original in ('2\u00a0kg vegetables', '1 \n½\tcups vegetables', '1–2\nkg vegetables'):
+            with self.subTest(original=original):
+                quantity = parser._quantity(original)
+                before = dict(quantity)
+                self.assertEqual(parser._ingredient_name(original, quantity), 'vegetables')
+                self.assertEqual(quantity, before)
+
+    def test_plural_unhashable_or_nonstring_selector_has_fixed_parse_error(self):
+        raw = MS.encode()
+        for adapter in ({}, [], ['montserrat-paragraph-recipe-v1'], 7, False):
+            with self.subTest(adapter=adapter), self.assertRaisesRegex(parser.ParseError, '^recipe-adapter-unselected$'):
+                parser.parse_html_recipes(raw, **arguments(raw, adapter))
+
     def test_singular_api_refuses_multi_recipe_truncation(self):
         raw = MQ.encode()
         with self.assertRaisesRegex(parser.ParseError, 'multiple-recipes-use-plural-api'):
