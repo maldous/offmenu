@@ -275,6 +275,9 @@ Marketing claims share the punctuation boundary used by the other statements:
 sentence-ending punctuation followed by whitespace/end terminates a claim while
 decimal points remain within its text. Following sentences/explicit sections,
 adjacent claim markers and batch codes retain their own spans and classifications.
+Unpunctuated marketing/company text prefixes share a class excluding both CR and
+LF, consistent with section endings. A CR-only separator cannot pull a preceding
+Ingredients line into the later claim or join address text to a later postcode.
 `extract_ingredient_components` consumes only a selected ingredient span and
 retains comma/bracket parent-child syntax and explicit source quantity lexemes.
 Unlabelled opening text stays a candidate; bare numeric/additive fragments are not

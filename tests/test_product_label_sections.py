@@ -6,6 +6,32 @@ from offmenu.refresh.core import RefreshError
 
 
 class ProductLabelSectionTests(unittest.TestCase):
+    def test_line_prefixes_cannot_absorb_preceding_ingredient_line(self):
+        for newline in ('\n', '\r\n', '\r'):
+            for statement, category in (('Our quality specifications guarantee freshness', 'marketing'),
+                                        ('Brand is a registered trademark', 'company_address')):
+                with self.subTest(newline=repr(newline), statement=statement):
+                    lines = ['Ingredients: Water, Salt', statement, 'No Artificial Colours.', 'Keep refrigerated.']
+                    text = newline.join(lines); result = extract_label_sections(text); spans = result['sections']
+                    self.assertEqual([(s['category'], s['text']) for s in spans if s['category'] != 'unclassified'],
+                        [('ingredient_list', lines[0]), (category, lines[1]), ('marketing', lines[2]), ('storage', lines[3])])
+                    self.assertEqual(''.join(s['text'] for s in spans), text)
+                    self.assertEqual(result['rawTextSHA256'], hashlib.sha256(text.encode()).hexdigest())
+                    cursor = 0
+                    for span in spans:
+                        self.assertEqual(span['start'], cursor); cursor = span['end']
+                        self.assertEqual(text[span['start']:span['end']], span['text'])
+                        self.assertEqual(text.encode()[span['utf8Start']:span['utf8End']].decode(), span['text'])
+                        self.assertEqual(span['textSHA256'], hashlib.sha256(span['text'].encode()).hexdigest())
+
+    def test_address_text_prefix_cannot_cross_a_line_to_postcode(self):
+        for newline in ('\n', '\r\n', '\r'):
+            with self.subTest(newline=repr(newline)):
+                text = 'ACME FOODS, 42 Road' + newline + '1234'
+                spans = extract_label_sections(text)['sections']
+                self.assertFalse(any(s['category'] == 'company_address' for s in spans))
+                self.assertEqual(''.join(s['text'] for s in spans), text)
+
     def test_marketing_punctuation_preserves_decimals_and_adjacent_sections(self):
         cases = [('No Artificial Colours.', 'Keep refrigerated.', 'storage'),
                  ('Source of 1.5 g fibre!', 'Unrelated trailing sentence.', 'unclassified'),
