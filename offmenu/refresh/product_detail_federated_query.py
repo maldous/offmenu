@@ -8,7 +8,7 @@ import hashlib
 import re
 import sqlite3
 import time
-from .core import canonical, strict_json, RefreshError
+from .core import canonical, strict_json, timestamp, RefreshError
 from . import product_detail_query as native
 
 
@@ -59,6 +59,13 @@ def _require(value, code):
 def _hash(value): return hashlib.sha256(canonical(value)).hexdigest()
 def _text(value): return type(value) is str and 0 < len(value) <= 4096
 
+def _clock(value):
+    if value is None: return True
+    if not _text(value): return False
+    try: timestamp(value)
+    except (RefreshError, ValueError, OverflowError): return False
+    return True
+
 def _json(value):
     try: return strict_json(value)
     except (ValueError, TypeError, RefreshError, UnicodeError, RecursionError): _fail('invalid-json')
@@ -107,7 +114,8 @@ def _manifest(selection, manifest, evidence, stores):
     _require(not any(db.in_transaction for db in connections), 'caller-transaction-active')
     if 'usda-products' in enabled:
         u=m.get('usda'); _require(type(u) is dict and u.get('sourceId') == 'usda-files'
-            and all(_text(u.get(k)) for k in ('releaseId','assetId','identifierInputId','projectionVersion','candidateFetchedAt'))
+            and all(_text(u.get(k)) for k in ('releaseId','assetId','identifierInputId','projectionVersion'))
+            and 'candidateFetchedAt' in u and _clock(u['candidateFetchedAt'])
             and all(native._sha(u.get(k)) for k in ('candidateSha256','originalSha256','qualificationSha256',
                 'sourceContractSha256','rightsReceiptSha256'))
             and all(type(u.get(k)) is int and 0 < u[k] < 2**63 for k in ('candidateBytes','products','profiles'))
@@ -199,7 +207,8 @@ def _native_pair(packet,u,obs):
     for row,kind in zip(packet,('product','nutrientProfile')):
         p=row.get('provenance');data=row.get('data')
         if not (row.get('schemaVersion') == '1.0' and row.get('kind') == kind
-            and type(p) is dict and (p.get('sourceId'),p.get('releaseId'),p.get('fetchedAt'),p.get('visibility'))
+            and type(p) is dict and 'fetchedAt' in p
+            and (p.get('sourceId'),p.get('releaseId'),p.get('fetchedAt'),p.get('visibility'))
                 == ('usda-files',u['releaseId'],u['candidateFetchedAt'],'private-candidate')
             and p.get('recordId') == obs.get('source_record_id') and _text(p.get('recordId'))
             and row.get('id') == 'usda-files:'+kind+':'+p['recordId']
