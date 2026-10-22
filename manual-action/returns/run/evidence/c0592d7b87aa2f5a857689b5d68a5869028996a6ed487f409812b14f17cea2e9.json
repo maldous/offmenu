@@ -1,0 +1,167 @@
+{
+  "household_schema_preparation": {
+    "application_wiring_verified": false,
+    "deployment_performed": false,
+    "domain_table_count": 31,
+    "foreign_key_check": "passed",
+    "integrity_check": "passed",
+    "operation": "in_memory_schema_validation_only",
+    "private_rows": 0,
+    "reason": "verified_in_memory",
+    "schema": "offmenu-household-schema-preparation/1",
+    "security_activation": "not_performed",
+    "source_baseline": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+    "source_sha256": {
+      "helper": "e2c65fb19cc70dae40b0140bf4ef0f8a93f393ff66ce9d441cafcca72d7e7dc3",
+      "plan": "69ec6e81cb664f3fd9b5df2c705d429f20281d9333a4e8c7bcebfea9fe03d419",
+      "sql": [
+        "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380",
+        "5d4f11d7e2a475744f25f2403d238353be058d1086e04df4278cfc248817c2b1",
+        "0a8ac60ebe1d5d6edf4e60335ffb1b76febe278c43e4ab08979ed9c221e419de"
+      ]
+    },
+    "status": "schema_prepared_app_wiring_pending"
+  },
+  "schema": "offmenu-ingest-supplement/1",
+  "storage_sizes": {
+    "cache": {
+      "allocated_bytes": null,
+      "logical_bytes": null,
+      "scope": "not_measured"
+    },
+    "domains": {
+      "barcodes": [
+        [
+          78562590720,
+          78562942976
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "citations": [
+        [
+          75107147776,
+          75107545088
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "dietary": [
+        [
+          158565163008,
+          158565847040
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "ingredients": [
+        [
+          139206062080,
+          139206684672
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "inventory": [
+        [
+          65536,
+          65536
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "recipes": [
+        [
+          39949942784,
+          39950086144
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "suppliers": [
+        [
+          91898204160,
+          91898654720
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ],
+      "user_profiles": [
+        [
+          65536,
+          65536
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          32768,
+          32768
+        ]
+      ]
+    },
+    "files": [
+      "database",
+      "wal",
+      "shm"
+    ],
+    "method": "lstat_only_no_content_reads",
+    "metrics": [
+      "logical_bytes",
+      "allocated_bytes"
+    ],
+    "schema": "offmenu-storage-sizes/1",
+    "scope": "fixed_runner_staging_database_paths_only",
+    "snapshot_scope": "independent_file_metadata_not_atomic",
+    "totals": {
+      "allocated_bytes": 583292153856,
+      "allocated_files_known": 24,
+      "files_total": 24,
+      "logical_bytes": 583289503744,
+      "logical_files_known": 24
+    }
+  }
+}
