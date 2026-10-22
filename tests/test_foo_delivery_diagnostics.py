@@ -116,7 +116,8 @@ class DeliveryDiagnosticsTests(unittest.TestCase):
         self.assertEqual(results['third']['status'], 'skipped')
 
     def test_incomplete_receipt_reuses_identity_without_execution(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)):
+        # Admission itself is exercised with the real frozen layout in ownership tests.
+        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)), patch.object(jobs, 'ownership_guard', return_value=contextlib.nullcontext(None)):
             with patch.object(jobs, 'run_profile', return_value={'status': 'incomplete', 'steps': []}) as run:
                 jobs.execute(self.request(), 'a' * 40, ROOT, '123', '1')
                 report = jobs.execute(self.request(), 'a' * 40, ROOT, '124', '1')
@@ -186,7 +187,7 @@ class DeliveryDiagnosticsTests(unittest.TestCase):
         self.assertEqual(evidence['diagnosticEvidenceError'], 'invalid-diagnostic-schema')
 
     def test_dispatcher_kernel_lock_refuses_concurrent_coordinator(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)), patch.object(jobs, 'ownership_guard', return_value=contextlib.nullcontext(None)):
             lock_dir = Path(tmp) / 'locks'
             lock_dir.mkdir()
             with (lock_dir / 'dispatcher.lock').open('w') as lock:
