@@ -339,7 +339,7 @@ def discover_sources(options=None):
         excluded.extend((layout.runtime, layout.public_staging, layout.normalization, layout.household))
         # All operational control/review runtime is outside source acquisition,
         # including siblings of the selected runner state and config elsewhere.
-        excluded.extend((_absolute(DEFAULT_ROOT) / 'runtime', layout.config_path))
+        excluded.extend((_absolute(DEFAULT_ROOT) / 'runtime', layout.config_path, layout.lock))
     exclusion_binding = sorted({str(x) for x in excluded})
     def is_excluded(path):
         return any(_inside(path, root) for root in excluded)

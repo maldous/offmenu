@@ -1,4 +1,5 @@
 """Synthetic split migration/admission only; never opens retained state."""
+from contextlib import closing
 import json
 import os
 from pathlib import Path
@@ -20,7 +21,6 @@ from ingest_storage_sizes import capture_storage_sizes
 from ingest_catalog import discover_sources
 from runner_paths import resolve_layout
 
-ARTIFACT_ROOT = Path('/home/user/src/offmenu-data/runtime/layout-migration/worker26')
 PINS = ('OFFMENU_RUN_LAYOUT', 'OFFMENU_RUN_LEGACY_FIXTURE', 'OFFMENU_RUN_FD',
         'OFFMENU_RUN_LAYOUT_SHA256', 'OFFMENU_RUN_LAYOUT_BINDING_SHA256')
 
@@ -46,7 +46,7 @@ class InlineRules:
 
 class RunnerLayoutIntegrationTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(dir=ARTIFACT_ROOT)
+        self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.base = Path(self.temp.name)
         self.environment = patch.dict(os.environ, {k: v for k, v in os.environ.items() if k not in PINS}, clear=True)
@@ -250,21 +250,24 @@ class RunnerLayoutIntegrationTests(unittest.TestCase):
         self.assertEqual(store_path(new_state, 'inventory'), household / 'staging/inventory.sqlite3')
         self.assertFalse((new_state / 'staging').exists())
         # A real tiny fixture WAL/content change starts a truthful new epoch.
-        with sqlite3.connect(public / source.name) as db:
+        with closing(sqlite3.connect(public / source.name)) as db:
             db.execute('PRAGMA journal_mode=WAL')
             changed = {'name': 'Changed fixture'}
             db.execute('UPDATE records SET payload_json=?,content_sha256=? WHERE record_id=?',
                        (canonical_json(changed), digest(changed), '0'))
             db.commit()
-            changed_prepared = engine.prepare_default(new_state, options)
-            self.assertNotEqual(changed_prepared['input_sha256'], prepared['input_sha256'])
-            with patch('normalization_parallel.RulesExecutor', InlineRules):
-                changed_report = engine.run_prepared(changed_prepared)
-            self.assertEqual(changed_report['domains']['ingredients']['scanned'], 2)
-            self.assertEqual(changed_report['domains']['ingredients']['rules_reused'], 1)
-            self.assertEqual(changed_report['domains']['ingredients']['rules_new'], 1)
-            self.assertEqual(changed_report['domains']['ingredients']['accepted'], 0)
-            self.assertEqual(changed_report['gold_status'], 'blocked')
+            # Restore the fixture's quiescent journal mode after the WAL write;
+            # admission must not race creation of read-only WAL sidecars.
+            db.execute('PRAGMA journal_mode=DELETE').fetchone()
+        changed_prepared = engine.prepare_default(new_state, options)
+        self.assertNotEqual(changed_prepared['input_sha256'], prepared['input_sha256'])
+        with patch('normalization_parallel.RulesExecutor', InlineRules):
+            changed_report = engine.run_prepared(changed_prepared)
+        self.assertEqual(changed_report['domains']['ingredients']['scanned'], 2)
+        self.assertEqual(changed_report['domains']['ingredients']['rules_reused'], 1)
+        self.assertEqual(changed_report['domains']['ingredients']['rules_new'], 1)
+        self.assertEqual(changed_report['domains']['ingredients']['accepted'], 0)
+        self.assertEqual(changed_report['gold_status'], 'blocked')
 
 
 if __name__ == '__main__': unittest.main()

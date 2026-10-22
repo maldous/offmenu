@@ -20,4 +20,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Standard-library generated fixtures only
+        env:
+          OFFMENU_RUN_LEGACY_FIXTURE: '1'
         run: python3 -B -m unittest discover -s manual-action/tests -v

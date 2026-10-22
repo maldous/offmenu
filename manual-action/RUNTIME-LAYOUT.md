@@ -60,7 +60,7 @@ physical groups before restoring old code. This source change performs no move,
 rollback, restart, source acquisition or normalization admission.
 
 Focused checks are `test_runner_paths.py` and `test_runner_layout_integration.py`.
-They use generated state under the Worker26 artifact directory. They cover
+They use generated temporary state, honoring the caller's `TMPDIR`. They cover
 missing selection without state creation, explicit fixture mode, private config,
 shared lease contention, re-exec binding, consumer routing, and cache/cursor
 continuity after directory rename with a new epoch for changed fixture WAL/data.

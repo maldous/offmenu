@@ -185,6 +185,7 @@ class HouseholdPreparationTests(unittest.TestCase):
         instance = runner.Runner.__new__(runner.Runner)
         instance.root = self.root
         instance.state = self.root / 'state'
+        instance.layout = runner.resolve_layout(instance.state / 'ingest')
         instance.receipt_transport = 'isolated-branch-v1'
         instance.preconditions = mock.Mock()
         instance.recovery_receipt = lambda: None
@@ -194,6 +195,7 @@ class HouseholdPreparationTests(unittest.TestCase):
         instance.git = mock.Mock(side_effect=AssertionError('Git is not authorized in this fixture'))
         self.write('run', b'# Generated run binding\n')
         self.write('manual-action/plan_runner.py', b'# Generated runner binding\n')
+        self.write('manual-action/runner_paths.py', b'# Generated fixture layout binding\n')
         self.write('manual-action/ingest_household_preparation.py', b'# Generated helper binding\n')
         report = {'status': 'complete', 'domains': {}, 'pending_work': runner.unknown_pending_work()}
         for domain in runner.DOMAINS:

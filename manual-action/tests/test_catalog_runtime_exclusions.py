@@ -16,7 +16,7 @@ from runner_paths import resolve_layout
 
 class CatalogRuntimeExclusionTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(dir='/home/user/src/offmenu-data/runtime/layout-migration/worker26')
+        self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.base = Path(self.temp.name)
         self.data = self.base / 'data'
@@ -114,6 +114,42 @@ class CatalogRuntimeExclusionTests(unittest.TestCase):
                 with patch.object(catalog, '_read_prefix', side_effect=AssertionError('stale cursor read')):
                     with self.assertRaisesRegex(ValueError, '^catalog_cursor_exclusions_changed$'):
                         self.discover(resume_cursor=stale)
+
+    def test_selected_lock_outside_reserved_runtime_is_excluded_and_cursor_bound(self):
+        lock = self.data / 'operational-locks/singleton.lock'
+        lock.parent.mkdir(mode=0o700)
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
+        self.addCleanup(os.close, fd)
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        self.value['lock'] = str(lock)
+        self.config.write_text(json.dumps(self.value))
+        for name in ('OFFMENU_RUN_FD', 'OFFMENU_RUN_LAYOUT_SHA256', 'OFFMENU_RUN_LAYOUT_BINDING_SHA256'):
+            os.environ.pop(name, None)
+        resolve_layout(Path(self.value['runtime']) / 'ingest', require_lease=False).activate(fd)
+        manifest = self.retained.parent / 'manifest.json'
+        manifest.write_text(json.dumps({'files': [{'path': str(lock)}, {'path': str(self.retained)}]}))
+        original_read, original_stat, original_allow = catalog._read_prefix, catalog._stat, catalog._allow_report_ref
+        def read(path, *args, **kwargs):
+            self.assertNotEqual(Path(path), lock, 'catalog sampled selected singleton')
+            return original_read(path, *args, **kwargs)
+        def stat_path(path):
+            self.assertNotEqual(Path(path), lock, 'catalog statted selected singleton')
+            return original_stat(path)
+        def allow(path, *args):
+            self.assertNotEqual(Path(path), lock, 'selected singleton reached reference admission')
+            return original_allow(path, *args)
+        with patch.object(catalog, '_read_prefix', side_effect=read), patch.object(catalog, '_stat', side_effect=stat_path), patch.object(catalog, '_allow_report_ref', side_effect=allow):
+            result = self.discover(project_reports=[str(lock), str(manifest)])
+        self.assertTrue(any(source['path'] == str(self.retained) for source in result['sources']))
+        self.assertTrue(all(source['disposition'] == 'excluded' and not source['domains']
+                            for source in result['sources'] if source['path'] == str(lock)))
+        cursor = self.discover(max_files=1)['resume_cursor']
+        self.assertIn(str(lock), cursor['excluded'])
+        stale = copy.deepcopy(cursor)
+        stale['excluded'].remove(str(lock))
+        with patch.object(catalog, '_read_prefix', side_effect=AssertionError('stale lock cursor read')):
+            with self.assertRaisesRegex(ValueError, '^catalog_cursor_exclusions_changed$'):
+                self.discover(resume_cursor=stale)
 
 
 if __name__ == '__main__': unittest.main()

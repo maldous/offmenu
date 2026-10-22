@@ -14,7 +14,6 @@ from unittest.mock import patch
 
 
 PACKAGE = Path(__file__).resolve().parents[1]
-ARTIFACT_ROOT = Path('/home/user/src/offmenu-data/runtime/layout-migration/worker26')
 
 
 def load_module():
@@ -27,7 +26,7 @@ def load_module():
 
 class RunnerPathsTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(dir=ARTIFACT_ROOT)
+        self.temp = tempfile.TemporaryDirectory()
         self.base = Path(self.temp.name)
         self.legacy = self.base / 'legacy-state'
         self.module = load_module()
