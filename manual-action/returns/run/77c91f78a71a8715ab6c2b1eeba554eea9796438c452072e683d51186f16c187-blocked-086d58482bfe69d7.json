@@ -1,0 +1,20 @@
+{
+  "data_loads": "not_implemented",
+  "implementation_sha256": "ebc04863d60d6f890a1e4ef4dc88add080f4fe54ad0453f10cbb09b6b976b518",
+  "input_sha256": "e2508555680a42f16f11bc22edf4cce72e1057a6772f685a5184a371849a124d",
+  "job_id": "supplier-source-inspection",
+  "job_key": "77c91f78a71a8715ab6c2b1eeba554eea9796438c452072e683d51186f16c187",
+  "job_version": 1,
+  "observed_at": "2026-10-22T01:59:28Z",
+  "operation": "supplier_inspect",
+  "outcome": "blocked",
+  "schema": "offmenu-run-receipt/1",
+  "source_review": "manual_review_required",
+  "source_upload": "NOT_UPLOADED",
+  "supplier": {
+    "member_count": 0,
+    "reason": "non_source_member_extension",
+    "status": "blocked",
+    "transfer": "NOT_UPLOADED"
+  }
+}
