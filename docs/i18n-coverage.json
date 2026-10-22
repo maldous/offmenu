@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3005,
+  "messages": 3007,
   "arabicTranslated": 376,
-  "arabicMissing": 2629,
+  "arabicMissing": 2631,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -11370,6 +11370,12 @@
       ],
       "arabic": false
     },
+    "Protected data unavailable.": {
+      "sources": [
+        "cloud/byoc-envelope-v1.mjs"
+      ],
+      "arabic": false
+    },
     "Protein": {
       "sources": [
         "public/checkout-model.js",
@@ -16666,6 +16672,12 @@
         "cloud/integrations.mjs",
         "cloud/personal-ai.mjs",
         "public/access-ui.js"
+      ],
+      "arabic": false
+    },
+    "algorithm,ciphertext,custody,keyRef,keyVersion,nonce,version": {
+      "sources": [
+        "cloud/byoc-envelope-v1.mjs"
       ],
       "arabic": false
     },
