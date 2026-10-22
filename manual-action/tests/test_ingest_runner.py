@@ -1,5 +1,8 @@
 """Finite all-domain protocol against generated local Git remotes only."""
 import importlib.util
+import copy
+import contextlib
+import io
 import json
 from pathlib import Path
 import types
@@ -23,11 +26,27 @@ class IngestRunnerTests(unittest.TestCase):
         (root/'manual-action/plan.json').write_bytes(m.canonical({'schema':'offmenu-run-plan/2','max_parallel':8,'jobs':[{'id':'retained-eight-domain-ingest','version':1,'operation':'retained_ingest_all','depends_on':[]}]}))
         self.case.git_at(root,'add','manual-action/plan.json');self.case.git_at(root,'commit','-m','Reviewed generated ingest plan')
         self.case.git_at(root,'push','origin',m.BRANCH)
+    def pending(self,status):
+        summary=m.unknown_pending_work()
+        summary.update(status='available',catalog_complete=True,catalog_sources=6,
+                       awaiting_input_domains=['user_profiles','inventory'])
+        for domain,row in summary['domains'].items():
+            if domain not in ('user_profiles','inventory'):
+                row['assignments_total']=1
+                row['not_yet_read' if status=='running' else 'completed']=1
+                row['files_remaining']=int(status=='running')
+                row['records_remaining_known']=2 if status=='running' else 0
+            row['records_remaining']=row['records_remaining_known']
+            row['records_to_write']=None if row['files_remaining'] else 0
+        summary['totals']={key:sum(row[key] for row in summary['domains'].values()) for key in m.PENDING_COUNTS}
+        summary['totals'].update(records_remaining=12 if status=='running' else 0,
+                                 records_to_write=None if status=='running' else 0,processed_bytes=None)
+        return summary
     def report(self,status):
         domains={d:{'status':'complete' if status!='running' else 'running','read':2,'written':2,'unchanged':0,'errors':0,'skipped':0,'sources_total':1,'reused_rows':0,'reused_stores':0,'error_codes':[]} for d in m.DOMAINS}
         for d in ('user_profiles','inventory'):domains[d].update(status='awaiting_user_input',read=0,written=0,sources_total=0)
         if self.fail_domain:domains['suppliers'].update(status='failed',errors=1,error_codes=['ValueError'])
-        return {'status':status,'domains':domains}
+        return {'status':status,'domains':domains,'pending_work':self.pending(status)}
     def runner(self):
         runner=self.case.new_runner()
         def prepare(state,options):return {'catalog_sha256':self.catalog,'config':options}
@@ -35,7 +54,7 @@ class IngestRunnerTests(unittest.TestCase):
             self.calls+=1;report_callback(self.report('running'))
             (self.case.root/'.git/generated-ingest-completed').write_text('durable local data')
             final=self.report(self.final_status);report_callback(final);return final
-        runner.ingest_engine=lambda:types.SimpleNamespace(prepare_default=prepare,run_prepared=run,completed_outputs_available=lambda prepared:True)
+        runner.ingest_engine=lambda:types.SimpleNamespace(prepare_default=prepare,run_prepared=run,completed_outputs_available=lambda prepared:True,pending_snapshot=lambda prepared:self.pending('running'))
         return runner
     def test_ingest_runs_all_domain_and_completed_plan_is_idempotent(self):
         r=self.runner();self.assertEqual(r.run_plan(),0);self.assertEqual(self.calls,1)
@@ -124,6 +143,125 @@ class IngestRunnerTests(unittest.TestCase):
         serialized=json.dumps(receipts)
         self.assertNotIn(str(source_root),serialized);self.assertNotIn('Generated fixture',serialized)
         self.assertNotIn('000123',serialized)
+
+        # Real startup callback is delivered before any worker is started, not
+        # merely generated after the final result. Pending counts then decrease.
+        self.assertLess(proc.stdout.index('[pending] Before ingest'),proc.stdout.index('Final domain summary'))
+        before=next(v['ingest']['pending_work'] for v in receipts if v['outcome']=='running')
+        after=next(v['ingest']['pending_work'] for v in receipts if v['outcome']=='partial')
+        self.assertEqual(before['status'],'available');self.assertEqual(after['status'],'available')
+        self.assertGreater(before['totals']['files_remaining'],after['totals']['files_remaining'])
+        self.assertGreater(after['totals']['completed']+after['totals']['reused'],0)
+        self.assertGreaterEqual(after['domains']['recipes']['partial'],1)
+        self.assertEqual(after['awaiting_input_domains'],['user_profiles','inventory'])
+        self.assertTrue((state/'pending-work.private.json').is_file())
+        self.assertTrue((state/'pending-work.json').is_file())
+
+        def durable_rows():
+            result={}
+            for domain in m.DOMAINS:
+                path=state/('private-household' if domain in ('user_profiles','inventory') else '.')/'staging'/(domain+'.sqlite3')
+                with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True) as db:
+                    result[domain]=db.execute('SELECT source_key,source_version,record_id,content_sha256,updated_at FROM records ORDER BY source_key,source_version,record_id').fetchall()
+            return result
+        stored=durable_rows();prior_jobs={v['job_key'] for v in receipts}
+        # Reporting-only implementation changes do not bump plan/adapter source
+        # versions or replay completed source records, including error-complete
+        # source prefixes. Only generated local Git state is touched here.
+        runner.write_text(runner.read_text()+'\n# Generated reporting-only revision fixture.\n')
+        self.case.git_at(self.case.root,'add','manual-action/plan_runner.py')
+        self.case.git_at(self.case.root,'commit','-m','Generated reporting-only revision')
+        self.case.git_at(self.case.root,'push','origin',m.BRANCH)
+        again=subprocess.run(['./run'],cwd=self.case.root,capture_output=True,text=True,timeout=90)
+        self.assertEqual(again.returncode,2,again.stdout+again.stderr)
+        self.assertEqual(stored,durable_rows())
+        newer=[json.loads(p.read_text()) for p in self.case.receipts() if json.loads(p.read_text())['job_key'] not in prior_jobs]
+        self.assertTrue(newer)
+        final=next(v for v in newer if v['outcome']=='partial')
+        self.assertTrue(all(row['written']==0 for row in final['ingest']['domains'].values()))
+        self.assertEqual(self.case.head(),self.case.head(self.case.remote))
+
+        # Optional reporting must remain optional even when the module itself
+        # is absent, not just when an already imported helper raises an error.
+        self.case.git_at(self.case.root,'rm','manual-action/ingest_pending.py')
+        self.case.git_at(self.case.root,'commit','-m','Generated unavailable reporter fixture')
+        self.case.git_at(self.case.root,'push','origin',m.BRANCH)
+        without_helper=subprocess.run(['./run'],cwd=self.case.root,capture_output=True,text=True,timeout=90)
+        self.assertEqual(without_helper.returncode,2,without_helper.stdout+without_helper.stderr)
+        self.assertIn('Final domain summary',without_helper.stdout)
+        self.assertIn('Remaining assignments, files and records are unknown (not zero)',without_helper.stdout)
+        self.assertEqual(stored,durable_rows())
+        no_helper_report=json.loads((state/'last-report.json').read_text())
+        self.assertEqual(no_helper_report['pending_work']['status'],'unknown')
+        self.assertTrue(all(row['written']==0 for row in no_helper_report['domains'].values()))
+        self.assertEqual(self.case.head(),self.case.head(self.case.remote))
+
+    def test_pending_work_is_strict_and_binds_progress_digest(self):
+        r=self.runner();self.assertEqual(r.run_plan(),0)
+        values=[json.loads(p.read_text()) for p in self.case.receipts()]
+        running=next(value for value in values if value['outcome']=='running')
+        completed=next(value for value in values if value['outcome']=='completed')
+        self.assertEqual(running['ingest']['pending_work']['totals']['files_remaining'],6)
+        self.assertEqual(completed['ingest']['pending_work']['totals']['files_remaining'],0)
+        for field,bad in (('provider','private provider name'),('files_remaining',True),
+                          ('records_remaining',-1),('processed_bytes',12)):
+            with self.subTest(field=field):
+                value=copy.deepcopy(running)
+                value['ingest']['pending_work']['domains']['recipes'][field]=bad
+                value['ingest']['progress_sha256']=m.ingest_progress_digest(value['ingest'])
+                with self.assertRaises(m.Stop):m.validate_receipt(value)
+        value=copy.deepcopy(running)
+        value['ingest']['pending_work']['awaiting_input_domains']=['/private/path']
+        value['ingest']['progress_sha256']=m.ingest_progress_digest(value['ingest'])
+        with self.assertRaises(m.Stop):m.validate_receipt(value)
+        changed=copy.deepcopy(running['ingest'])
+        changed['pending_work']['domains']['recipes']['records_remaining_known']+=1
+        self.assertNotEqual(m.ingest_progress_digest(changed),running['ingest']['progress_sha256'])
+
+    def test_legacy_v2_receipt_spool_and_push_recovery_remain_valid(self):
+        r=self.runner();original_summary=r.ingest_summary;original_git=r.git
+        def legacy_summary(report):
+            summary=original_summary(report)
+            del summary['pending_work']
+            summary['progress_sha256']=m.digest(m.canonical(summary['domains']))
+            return summary
+        r.ingest_summary=legacy_summary
+        # Keep the final console summary independent from optional old fields.
+        def fail_push(*args,**kwargs):
+            if args[0]=='push':raise m.Stop('git_push_failed_local_work_preserved')
+            return original_git(*args,**kwargs)
+        r.git=fail_push
+        # Delivery errors preserve both v2 spools; the final console still runs.
+        self.assertEqual(r.run_plan(),2)
+        spools=list((r.state/'ingest-pending').glob('*.json'))
+        self.assertEqual(len(spools),2)
+        for spool in spools:
+            value=json.loads(spool.read_text())['receipt']
+            self.assertNotIn('pending_work',value['ingest']);m.validate_receipt(value)
+        self.case.close(r)
+        retry=self.runner();self.assertEqual(retry.run_plan(),0);self.assertEqual(self.calls,1)
+        self.assertEqual(self.case.head(),self.case.head(self.case.remote))
+        self.assertFalse(list((retry.state/'ingest-pending').glob('*.json')))
+
+    def test_pending_helper_failure_and_untrusted_fields_do_not_gate_ingest(self):
+        r=self.runner();engine=r.ingest_engine()
+        def fail_snapshot(prepared):raise RuntimeError('/private/provider/secret')
+        engine.pending_snapshot=fail_snapshot;r.ingest_engine=lambda:engine
+        original_report=self.report
+        def invalid_report(status):
+            report=original_report(status)
+            report['pending_work']['provider']='/private/provider/secret'
+            return report
+        self.report=invalid_report
+        output=io.StringIO()
+        with contextlib.redirect_stdout(output):self.assertEqual(r.run_plan(),0)
+        self.assertEqual(self.calls,1);self.assertNotIn('/private/provider/secret',output.getvalue())
+        self.assertIn('Remaining assignments, files and records are unknown (not zero)',output.getvalue())
+        self.assertLess(output.getvalue().index('Before ingest'),output.getvalue().index('Final domain summary'))
+        for path in self.case.receipts():
+            value=json.loads(path.read_text())
+            self.assertEqual(value['ingest']['pending_work']['status'],'unknown')
+            self.assertNotIn('/private/provider/secret',path.read_text())
 
     def test_no_arbitrary_commands_or_extra_plan_fields(self):
         plan=json.loads((self.case.root/'manual-action/plan.json').read_text());plan['jobs'][0]['shell']='ls'

@@ -29,6 +29,11 @@ RECEIPT_SCHEMA = 'offmenu-run-receipt/1'
 COMMIT_MESSAGE = 'Return sanitized supplier check [skip ci]'
 INGEST_COMMIT_MESSAGE = 'Return sanitized retained ingest checkpoint [skip ci]'
 DOMAINS = ('barcodes','ingredients','recipes','dietary','user_profiles','inventory','suppliers','citations')
+PENDING_SCHEMA = 'offmenu-pending-work/1'
+PENDING_ASSIGNMENTS = ('completed','reused','not_yet_read','partial','failed','unsupported','held','unqualified','awaiting_input','unknown')
+PENDING_COUNTS = ('assignments_total', *PENDING_ASSIGNMENTS, 'files_remaining',
+    'source_bytes_known','source_bytes_unknown','records_remaining_known','records_remaining_unknown')
+PENDING_NULLABLE = ('records_remaining','records_to_write')
 DOMAIN_STATUSES = frozenset('pending running complete completed imported reused schema_only unavailable missing existing_loaded not_applicable awaiting_user_input skipped partial failed blocked no_inputs'.split())
 ERROR_CODES = frozenset('BudgetExceeded SourceChanged OSError IOError EOFError ValueError TypeError KeyError RuntimeError DatabaseError OperationalError IntegrityError JSONDecodeError UnicodeDecodeError PermissionError FileNotFoundError Error UnsupportedSource MalformedRecord MalformedSupplierRow resource_cap catalog_skip partial_source missing unreadable already_loaded incomplete_source unsupported_supplier_format unsupported_text_compression parquet_dependency_unavailable resource_budget UnsupportedSupplierSource DuplicateField existing_binding_reused source_error restricted_input awaiting_user_input no_recognized_sources schema_uncertain unsupported_format unavailable adapter_unavailable resource_limit'.split())
 HEX = re.compile(r'[0-9a-f]{64}\Z')
@@ -108,6 +113,61 @@ def validate_plan(plan):
     return job
 
 
+def unknown_pending_work():
+    # Zero counters are not an assertion of zero remaining work: status is
+    # explicitly unknown and totals are null whenever no evidence is available.
+    row = {**dict.fromkeys(PENDING_COUNTS, 0),
+           **dict.fromkeys(PENDING_NULLABLE, None), 'processed_bytes': None}
+    return {'schema': PENDING_SCHEMA, 'status': 'unknown',
+        'binding': 'additive_staging_not_app_bound', 'catalog_complete': False,
+        'catalog_sources': 0, 'unassigned_sources': 0, 'awaiting_input_domains': [],
+        'domains': {domain: dict(row) for domain in DOMAINS}, 'totals': dict(row)}
+
+
+def validate_pending_work(value):
+    # Deliberately independent of the optional reporter: old receipt recovery
+    # must work even when a local pending-work helper cannot be imported.
+    exact_keys(value, {'schema','status','binding','catalog_complete',
+        'catalog_sources','unassigned_sources','awaiting_input_domains','domains','totals'})
+    if (value['schema'] != PENDING_SCHEMA or value['status'] not in ('available','unknown')
+        or value['binding'] != 'additive_staging_not_app_bound'
+        or type(value['catalog_complete']) is not bool):
+        raise Stop('invalid_pending_work_schema')
+    for field in ('catalog_sources','unassigned_sources'):
+        if type(value[field]) is not int or not 0 <= value[field] <= 10**15:
+            raise Stop('invalid_pending_work_count')
+    awaiting=value['awaiting_input_domains']
+    if (not isinstance(awaiting,list) or any(d not in ('user_profiles','inventory') for d in awaiting)
+        or awaiting != [d for d in ('user_profiles','inventory') if d in awaiting]):
+        raise Stop('invalid_pending_work_status')
+    exact_keys(value['domains'], set(DOMAINS))
+    for row in [*value['domains'].values(), value['totals']]:
+        exact_keys(row, {*PENDING_COUNTS, *PENDING_NULLABLE, 'processed_bytes'})
+        for field in PENDING_COUNTS:
+            if type(row[field]) is not int or not 0 <= row[field] <= 10**15:
+                raise Stop('invalid_pending_work_count')
+        for field in PENDING_NULLABLE:
+            if row[field] is not None and (type(row[field]) is not int or not 0 <= row[field] <= 10**15):
+                raise Stop('invalid_pending_work_count')
+        # Physical processed bytes cannot be inferred from row cursors or
+        # compressed-file size. This version does not make that claim.
+        if row['processed_bytes'] is not None:
+            raise Stop('invalid_pending_work_count')
+        if row['assignments_total'] != sum(row[key] for key in PENDING_ASSIGNMENTS):
+            raise Stop('invalid_pending_work_count')
+    if any(value['totals'][key] != sum(row[key] for row in value['domains'].values()) for key in PENDING_COUNTS):
+        raise Stop('invalid_pending_work_count')
+    return value
+
+
+def ingest_progress_digest(summary):
+    # v2 receipts published before pending-work reporting hashed domains alone.
+    # Keep those exact bytes recoverable; bind new optional counters when present.
+    evidence = ({'domains': summary['domains'], 'pending_work': summary['pending_work']}
+                if 'pending_work' in summary else summary['domains'])
+    return digest(canonical(evidence))
+
+
 def validate_ingest_receipt(value):
     exact_keys(value, {'schema','job_id','job_version','operation','job_key',
         'implementation_sha256','input_sha256','observed_at','outcome','ingest'})
@@ -120,7 +180,7 @@ def validate_ingest_receipt(value):
         if not isinstance(value[key],str) or not HEX.fullmatch(value[key]):
             raise Stop('invalid_sanitized_digest')
     summary=value['ingest']
-    exact_keys(summary,{'binding','domains','progress_sha256'})
+    exact_keys(summary,{'binding','domains','progress_sha256'},{'pending_work'})
     if summary['binding'] != 'additive_staging_not_app_bound':
         raise Stop('invalid_sanitized_schema')
     exact_keys(summary['domains'],set(DOMAINS))
@@ -133,7 +193,9 @@ def validate_ingest_receipt(value):
                 raise Stop('invalid_sanitized_count')
         if not isinstance(row['error_codes'],list) or row['error_codes'] != sorted(set(row['error_codes'])) or any(code not in ERROR_CODES for code in row['error_codes']):
             raise Stop('invalid_sanitized_reason')
-    if summary['progress_sha256'] != digest(canonical(summary['domains'])):
+    if 'pending_work' in summary:
+        validate_pending_work(summary['pending_work'])
+    if summary['progress_sha256'] != ingest_progress_digest(summary):
         raise Stop('invalid_progress_digest')
     return value
 
@@ -530,8 +592,38 @@ class Runner:
                 codes=[]
             codes=sorted(set(code if isinstance(code,str) and code in ERROR_CODES else 'source_error' for code in codes))
             domains[domain]={'status':status,**counts,'source_count':row.get('sources_total',0),'error_codes':codes}
-        return {'binding':'additive_staging_not_app_bound','domains':domains,
-                'progress_sha256':digest(canonical(domains))}
+        try:
+            remaining=validate_pending_work(report.get('pending_work'))
+        except (Stop, TypeError, ValueError):
+            remaining=unknown_pending_work()
+        summary={'binding':'additive_staging_not_app_bound','domains':domains,
+                 'pending_work':remaining}
+        summary['progress_sha256']=ingest_progress_digest(summary)
+        return summary
+
+    def pending_snapshot(self, engine, prepared):
+        try:
+            return validate_pending_work(engine.pending_snapshot(prepared))
+        except Exception:
+            # This is visibility, not permission to load. Missing/broken reports
+            # never gate otherwise authorized independent source ingestion.
+            announce('[pending] Remaining work is unknown; ingestion continues independently.')
+            return unknown_pending_work()
+
+    def announce_remaining(self, pending, label):
+        pending=validate_pending_work(pending)
+        announce('[pending] '+label+': '+pending['status']+
+                 '; catalog_complete='+str(pending['catalog_complete']).lower())
+        if pending['status']=='unknown':
+            announce('  Remaining assignments, files and records are unknown (not zero).')
+            return
+        if pending['awaiting_input_domains']:
+            announce('  Awaiting explicitly supplied household input: '+', '.join(pending['awaiting_input_domains']))
+        for domain,row in pending['domains'].items():
+            assignments=' '.join(key+'='+str(row[key]) for key in PENDING_ASSIGNMENTS)
+            announce('  '+domain+': '+assignments+' files_remaining='+str(row['files_remaining'])+
+                ' records_remaining_known='+str(row['records_remaining_known'])+
+                ' unknown_record_assignments='+str(row['records_remaining_unknown']))
 
     def run_ingest_plan(self, plan, job):
         self.preconditions()
@@ -578,6 +670,8 @@ class Runner:
         options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True}
         announce('[2/4] Discovering retained inputs, then ingesting all eight domains in parallel.')
         prepared=engine.prepare_default(self.state/'ingest',options)
+        initial_pending=self.pending_snapshot(engine,prepared)
+        self.announce_remaining(initial_pending, 'Before ingest')
         input_sha=prepared['catalog_sha256']
         if not isinstance(input_sha,str) or not HEX.fullmatch(input_sha):
             raise Stop('invalid_catalog_identity')
@@ -625,8 +719,10 @@ class Runner:
         # callback encountered a local reporting error. No failed source hides it.
         checkpoint_report(report)
         announce('[3/4] Final domain summary (counts are source rows, not unique entities):')
-        for domain,row in self.ingest_summary(report)['domains'].items():
+        final_summary=self.ingest_summary(report)
+        for domain,row in final_summary['domains'].items():
             announce('  '+domain+': '+row['status']+'; written='+str(row['written'])+' reused_stores='+str(row['reused_stores'])+' reused_table_rows='+str(row['reused_rows'])+' errors='+str(row['errors']))
+        self.announce_remaining(final_summary.get('pending_work',unknown_pending_work()), 'Final remaining work')
         if transport_failed:
             announce('[4/4] Git sync remains pending; ingestion data and sanitized checkpoints are preserved locally.')
         return 0 if report.get('status')=='complete' and not transport_failed else 2

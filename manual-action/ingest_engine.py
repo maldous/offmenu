@@ -16,6 +16,36 @@ import time
 import uuid
 from ingest_api import DOMAINS, COUNTERS, BudgetExceeded, source_key
 from ingest_store import DomainStore
+try:
+    from ingest_pending import collect_pending_work, sanitize_pending_work, dashboard, output_identity, store_path
+except Exception:
+    # Reporting is optional visibility, never a prerequisite for loading data.
+    # Keep the fallback fixed-schema and independent of the failed helper module.
+    def sanitize_pending_work(value):
+        fields = ('assignments_total', 'completed', 'reused', 'not_yet_read', 'partial',
+            'failed', 'unsupported', 'held', 'unqualified', 'awaiting_input', 'unknown',
+            'files_remaining', 'source_bytes_known', 'source_bytes_unknown',
+            'records_remaining_known', 'records_remaining_unknown')
+        def row():
+            return {**dict.fromkeys(fields, 0), 'records_remaining': None,
+                    'records_to_write': None, 'processed_bytes': None}
+        return {'schema': 'offmenu-pending-work/1', 'status': 'unknown',
+            'binding': 'additive_staging_not_app_bound', 'catalog_complete': False,
+            'catalog_sources': 0, 'unassigned_sources': 0, 'awaiting_input_domains': [],
+            'domains': {d: row() for d in DOMAINS}, 'totals': row()}
+
+    def collect_pending_work(*args, **kwargs):
+        raise ValueError('report_metadata_unavailable')
+
+    def output_identity(path):
+        raise ValueError('report_metadata_unavailable')
+
+    def store_path(state_dir, domain):
+        return Path(state_dir) / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging' / (domain + '.sqlite3')
+
+    def dashboard(summary):
+        return '[pending] reporting metadata unavailable; remaining reads/writes unknown'
+
 
 ADAPTERS = {'barcodes':'ingest_existing','ingredients':'ingest_recipes',
     'recipes':'ingest_recipes','dietary':'ingest_misc','user_profiles':'ingest_existing',
@@ -101,7 +131,48 @@ def sanitize_report(report):
             safe[key]=value
     safe['catalog_truncated'] = report.get('catalog_truncated') is True
     safe['report_delivery_errors'] = _nonnegative(report.get('report_delivery_errors',0))
+    if 'pending_work' in report:
+        safe['pending_work'] = sanitize_pending_work(report['pending_work'])
     return safe
+
+
+def _adapter_versions(adapters=None):
+    versions = {}
+    for domain in DOMAINS:
+        if adapters and domain in adapters:
+            versions[domain] = 1
+        else:
+            module = importlib.import_module(ADAPTERS[domain])
+            versions[domain] = getattr(module, 'ADAPTER_VERSION', getattr(module, 'VERSION', 1))
+    return versions
+
+
+def _pending_snapshot(sources, config, results=None, adapters=None, persist=True):
+    """Report metadata failures as unknown; never turn reporting into an ingest gate."""
+    try:
+        state = Path(config['state_dir'])
+        previous = []
+        path = state / 'pending-work.private.json'
+        if path.is_file() and not path.is_symlink():
+            try:
+                with path.open(encoding='utf-8') as stream:
+                    previous = json.load(stream).get('sources', [])
+            except (OSError, ValueError, AttributeError):
+                pass
+        snapshot = collect_pending_work(sources, state, results=results,
+            catalog_complete=not config.get('catalog_truncated', False),
+            adapter_versions=_adapter_versions(adapters), previous=previous)
+        if persist:
+            atomic_json(path, snapshot)
+            atomic_json(state / 'pending-work.json', snapshot['summary'])
+        return snapshot['summary']
+    except Exception:
+        return sanitize_pending_work({'status': 'unknown'})
+
+
+def pending_snapshot(prepared, persist=True):
+    """Read-only pre-load/unchanged-plan dashboard API; never starts a worker."""
+    return _pending_snapshot(prepared.get('sources', []), prepared['config'], persist=persist)
 
 
 class IngestContext:
@@ -219,6 +290,7 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     ``adapters`` is dependency injection for fixture tests, not an arbitrary config
     plugin path. Runtime adapters are the fixed modules in ADAPTERS.
     """
+    sources=list(sources)
     config=dict(config or {})
     config.setdefault('state_dir',str(Path(__file__).parent / '.local-results' / 'ingest'))
     state_dir=Path(config['state_dir']).absolute()
@@ -258,7 +330,11 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
                 last_private_write[0]=now
 
     def publish():
+        # Reader snapshots use separate read-only SQLite connections; workers
+        # continue committing independently. No callback ever runs on a worker.
+        pending_work = _pending_snapshot(sources, config, private_results, adapters)
         with lock:
+            report['pending_work'] = pending_work
             report['updated_at']=_utc()
             report['elapsed_seconds']=int(time.monotonic()-started)
             clean=sanitize_report(report)
@@ -275,7 +351,10 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
         if config.get('terminal_progress',True):
             counts=' '.join(d+':'+clean['domains'][d]['status']+'/'+str(clean['domains'][d]['written']) for d in DOMAINS)
             print('[ingest] '+counts,flush=True)
+            print(dashboard(clean['pending_work']),flush=True)
 
+    for domain in DOMAINS:
+        report['domains'][domain]['sources_total'] = sum(_matches(source, domain) for source in sources)
     interval=max(1.0,float(config.get('report_interval',60)))
     publish()
     next_report=time.monotonic()+interval
@@ -310,8 +389,14 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     report['status']='complete' if all(s in ('complete','imported','reused','existing_loaded','not_applicable','awaiting_user_input','schema_only') for s in statuses) and not report['catalog_truncated'] else 'partial'
     if all(s=='failed' for s in statuses):
         report['status']='failed'
-    atomic_json(state_dir/'last-run.private.json',{'report':sanitize_report(report),'domains':private_results})
     publish()
+    outputs = {}
+    for domain in DOMAINS:
+        try:
+            outputs[domain] = output_identity(store_path(state_dir, domain))
+        except (OSError, ValueError):
+            pass
+    atomic_json(state_dir/'last-run.private.json',{'report':sanitize_report(report),'domains':private_results,'output_identities':outputs})
     final=sanitize_report(report)
     atomic_json(state_dir/'last-report.json',final)
     return final
@@ -387,9 +472,19 @@ def completed_outputs_available(prepared):
             if path.is_symlink() or not path.is_file():
                 return False
             expected=private.get('domains',{}).get(domain,{})
+            # Metadata identity catches deletion/replacement or modification even
+            # when a copied database retains the same ID and stale row counter.
+            if output_identity(path) != private.get('output_identities', {}).get(domain):
+                return False
             with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True,timeout=2) as db:
                 meta=dict(db.execute('SELECT key,value FROM ingest_meta'))
             if meta.get('domain')!=domain or meta.get('binding')!='additive_staging_not_app_bound' or meta.get('database_id')!=expected.get('database_id') or int(meta.get('record_count',-1))!=expected.get('stored_records'):
+                return False
+        if prepared.get('sources') is not None:
+            snapshot = pending_snapshot(prepared, persist=False)
+            if snapshot['status'] != 'available' or not snapshot['catalog_complete']:
+                return False
+            if any(snapshot['totals'][k] for k in ('not_yet_read', 'partial', 'failed', 'unsupported', 'unknown')):
                 return False
         return True
     except (OSError,ValueError,KeyError,TypeError,sqlite3.Error):

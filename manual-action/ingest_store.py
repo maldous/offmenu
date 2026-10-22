@@ -328,9 +328,11 @@ class DomainStore:
                     self._commit_batch(source, fp, version, batch, seen, summary)
                 except Exception:
                     pass
-            self._error(key, version, seen + 1, exc)
+            inserted = self._error(key, version, seen + 1, exc)
             summary['errors'] += 1
             summary.update(status='partial' if summary['written'] or cursor else 'failed', error_class=type(exc).__name__)
+            self.db.execute('UPDATE sources SET errors=errors+?,status=?,updated_at=? WHERE source_key=? AND version=?',
+                            (inserted, summary['status'], time.time(), key, version))
         finally:
             with contextlib.suppress(Exception):
                 close = getattr(locals().get('iterator'), 'close', None)
