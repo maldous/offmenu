@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "offmenu-exact-fixed-contract-subset/1",
+  "runtimeDispatchPerformed": false,
+  "scope": "Root selected two source contracts for inclusion in existing global manifest; not an independent profile or dispatch.",
+  "maximumRequests": 2,
+  "maximumTransferBytes": 33554432,
+  "wholeOperationSeconds": 360,
+  "sources": [
+    {
+      "schemaVersion": "offmenu-fixed-source-contract/1",
+      "sourceKey": "be-brussels-adult-recipes",
+      "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_07_RecettesAdultes_FR.PDF",
+      "aliases": [
+        "IF_AD_07_RecettesAdultes_FR",
+        "RecettesAdultes"
+      ],
+      "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+      "rightsReference": "https://environnement.brussels/citoyen/mentions-legales",
+      "privateCustodyApproved": true,
+      "sourceAcquisitionHeld": false,
+      "downstreamHolds": [
+        "commercial-reuse-unqualified",
+        "redistribution-unselected",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "expectedBytes": null,
+      "checksums": {},
+      "hardTransferBytes": 16777216,
+      "wholeOperationSeconds": 180,
+      "validation": {
+        "kind": "pdf-original"
+      },
+      "qualificationReference": "docs/collection-selections/belgium-permission-evidence.json",
+      "queryKeys": [],
+      "expectedResponse": {
+        "content-type": "application/pdf",
+        "content-disposition": "inline; filename=\"IF_AD_07_RecettesAdultes_FR.pdf\""
+      },
+      "historicalPreparationExceptions": []
+    },
+    {
+      "schemaVersion": "offmenu-fixed-source-contract/1",
+      "sourceKey": "be-brussels-child-recipes",
+      "url": "https://document.environnement.brussels/opac_css/elecfile/IF_AD_08_RecettesEnfants_FR.PDF",
+      "aliases": [
+        "IF_AD_08_RecettesEnfants_FR",
+        "RecettesEnfants"
+      ],
+      "release": "Undated publisher original, listed on tools page dated 2022-03-03; retain actual response validators",
+      "rightsReference": "https://environnement.brussels/citoyen/mentions-legales",
+      "privateCustodyApproved": true,
+      "sourceAcquisitionHeld": false,
+      "downstreamHolds": [
+        "commercial-reuse-unqualified",
+        "redistribution-unselected",
+        "translation-unselected",
+        "normalization-unselected",
+        "semantic-and-gold-admission-unselected",
+        "country-completeness-unestablished"
+      ],
+      "expectedBytes": null,
+      "checksums": {},
+      "hardTransferBytes": 16777216,
+      "wholeOperationSeconds": 180,
+      "validation": {
+        "kind": "pdf-original"
+      },
+      "qualificationReference": "docs/collection-selections/belgium-permission-evidence.json",
+      "queryKeys": [],
+      "expectedResponse": {
+        "content-type": "application/pdf",
+        "content-disposition": "inline; filename=\"IF_AD_08_RecettesEnfants_FR.pdf\""
+      },
+      "historicalPreparationExceptions": []
+    }
+  ]
+}

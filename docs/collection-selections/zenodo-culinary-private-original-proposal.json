@@ -1,0 +1,255 @@
+{
+  "schemaVersion": "offmenu-private-original-proposal/1",
+  "preparedAt": "2026-10-18T13:49:37Z",
+  "purpose": "Exact substantive source qualification for root-owned selection into the existing Foo runner; metadata proposal, not executable registry or authority to acquire",
+  "sourceKey": "global.zenodo15169428.datasetcsv.v1",
+  "candidateId": "culinary-recipes-zenodo-v1",
+  "selected": false,
+  "executionAuthorizedByThisFile": false,
+  "source": {
+    "title": "Culinary Recipes Dataset",
+    "creators": [
+      "Pau Barba",
+      "Núria Canals"
+    ],
+    "publisher": "Zenodo author deposit",
+    "recordId": "15169428",
+    "doi": "10.5281/zenodo.15169428",
+    "version": "v1",
+    "publicationDate": "2025-04-07",
+    "landingUrl": "https://zenodo.org/records/15169428",
+    "metadataUrl": "https://zenodo.org/api/records/15169428",
+    "format": "semicolon-delimited CSV",
+    "encodingEvidence": "Header decodes as UTF-8; entire-file encoding not verified",
+    "languages": [],
+    "languageStatus": "Unverified; English column names are not a corpus-language claim",
+    "publisherStatedRecipeCount": 50510,
+    "verifiedRecipeCount": null,
+    "headerFields": [
+      "Name",
+      "Author",
+      "Date",
+      "Rating Value",
+      "Rating Count",
+      "Preparation Time",
+      "Cooking Time",
+      "Category",
+      "Cuisine",
+      "Ingredients",
+      "Ingredients_Raw",
+      "Instructions",
+      "Cooking Methods",
+      "Implements",
+      "Number of steps",
+      "Servings",
+      "Nutrition",
+      "URL"
+    ],
+    "substantiveQualification": "Verified recipe-name, ingredient and instruction columns; original data body completeness not yet assessed",
+    "sourceCountryScope": "Publisher states worldwide; no accepted country mappings"
+  },
+  "original": {
+    "exactUrl": "https://zenodo.org/api/records/15169428/files/dataset.csv/content",
+    "sameRecordAliasForDedupOnly": "https://zenodo.org/records/15169428/files/dataset.csv?download=1",
+    "fileName": "dataset.csv",
+    "zenodoFileId": "46279e9c-75c5-4f8f-913a-3d2ea0524913",
+    "exactExpectedBytes": 110013794,
+    "publisherChecksum": {
+      "algorithm": "md5",
+      "value": "986efafad65c7969fde13a46d2defba0"
+    },
+    "fullBodySHA256": null,
+    "fullBodyAcquiredByThisWorker": false
+  },
+  "rights": {
+    "publisherAccess": "open",
+    "publisherLicenseId": "odc-odbl",
+    "licenseName": "Open Data Commons Open Database License 1.0",
+    "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "metadataEvidence": "next-recipe-wave-metadata-evidence.json#/items/zenodo_culinary/metadata/metadata",
+    "privateCustodyQualification": "Publisher offers the exact original publicly under ODbL. No explicit source-specific acquisition ban, denied request, gated assent or no-read hold found in reviewed evidence. Qualified for proposed private original custody, subject to root selection and real source/ownership holds.",
+    "privateOperation": "Retain exact source original privately with provenance and checksums; initial transport/header format checks only",
+    "downstreamHolds": [
+      "Upstream recipe-prose ownership and provenance remain unresolved",
+      "No commercial product/database incorporation, redistribution, normalized recipe ingestion or country/type acceptance authorized by this proposal",
+      "ODbL attribution and share-alike obligations require operation-specific review before downstream use"
+    ],
+    "licenseScopeCaveat": "ODbL covers database rights and permits reproductions, including commercial use at database level; it does not itself license every individual item of content. Commercial uncertainty is not treated as a private-download prohibition.",
+    "historicalDossierHold": {
+      "pointer": "/candidates/31/rights/commercial_use",
+      "text": "Held until licence and upstream ownership clarified",
+      "appliesTo": "commercial_use",
+      "privateAcquisitionBan": false
+    },
+    "explicitAcceptancePerformed": false,
+    "accessBypassPerformed": false,
+    "runtimeRightsApproved": false
+  },
+  "recordedCustodyReview": {
+    "dossier": {
+      "commit": "8e68a02d8cd3e494c39f76b2956369eb650a0fa3",
+      "path": "docs/global-recipe-ingredient-candidates-20261018.json",
+      "pointer": "/candidates/31",
+      "acquired": false
+    },
+    "correctedSnapshot": {
+      "commit": "4aa0976b9dc509b91f76874717f9de5e5e5529df",
+      "blobSHA": "f4506a58914e0be199527eb6f918b00803ca661e",
+      "sha256": "408b58302fc3a4fd498497e8b769d374261b9002b04f368249bb6d088e8b294c",
+      "observedAt": "2026-10-18T13:36:22Z",
+      "exactSourceMatches": 0,
+      "scope": "explicit-references-from-four-hash-matched-receipts-only",
+      "ownershipClearance": false
+    },
+    "adoptedIndex": {
+      "commit": "b15de9593d242d36a63d2b00dd6078d57b4d82a3",
+      "exactSourceMatches": 0
+    },
+    "gatewayHistory": {
+      "schemaVersion": "offmenu-zenodo-culinary-lineage-review/1",
+      "reviewedAt": "2026-10-18T13:48:42Z",
+      "threadId": "01a130cd-91c1-73da-9978-889018a100dd",
+      "method": "cloud_threads_read recorded-history only; bounded 211 returned messages, exact-source string search",
+      "messageCount": 211,
+      "truncatedMessageCount": 77,
+      "searchTerms": [
+        "15169428",
+        "986efafad65c7969fde13a46d2defba0",
+        "110013794",
+        "Culinary Recipes",
+        "culinary-recipes-zenodo-v1",
+        "10.5281/zenodo.15169428"
+      ],
+      "matchCounts": {
+        "15169428": 0,
+        "110013794": 0,
+        "986efafad65c7969fde13a46d2defba0": 0,
+        "Culinary Recipes": 0,
+        "culinary-recipes-zenodo-v1": 0,
+        "10.5281/zenodo.15169428": 0
+      },
+      "firstMessage": {
+        "id": "01a14f0a-0cfb-73c7-b0a1-b978684e2028",
+        "turnId": "01a14f05-7eb0-7592-9c5a-e23934b2d9dc"
+      },
+      "lastMessage": {
+        "id": "msg_06247480c01f01bd016ad4b036c71881919ac75d74cad43691",
+        "turnId": "01a14ecc-8e43-764d-ae7e-2e649cdcff96"
+      },
+      "dossierIntroduction": {
+        "id": "fco_01a14edc-50b4-77b3-9db7-dda05720961b",
+        "turnId": "01a14edc-50b4-77b3-9db7-dd9f74073231",
+        "dossierCommit": "8e68a02d8cd3e494c39f76b2956369eb650a0fa3",
+        "sourceExactAcquisitionOrDenialSpecified": false
+      },
+      "finding": "No exact source selection, admission, claim, completion or acquisition prohibition found in returned text. Does not establish absence in omitted/truncated text or the live Foo claims/cache.",
+      "ownershipClearance": false
+    },
+    "knownNativePublishedGlobalResults": "This source is not among known published RecipeQA, CulinaryDB, NYT, Spanish, Portuguese, Indian, GNOME, TASTEset, RecipePairs, FAO subset or FoodMine results. It is distinct from the acquired CulinaryDB, despite similar names.",
+    "existingExactClaimKnown": false,
+    "existingExactClaimAbsenceEstablished": false,
+    "inaccessibleNativeClaims": "Full live native claims/cache are inaccessible in this cloud-only lane; no empty-claim assertion or owner takeover is inferred."
+  },
+  "finalAdmissionChecks": [
+    "Root has selected this exact source/request for fixed-profile preparation only. Root review of the exact profile is required before execution; this file is not an execution command.",
+    "Check existing runner-owned exact source claim/cache and pinned corrected snapshot for record ID, DOI, both publisher aliases, sourceKey and checksum; preserve any real claim or completed retained original.",
+    "Use one coordinator-owned repository intent for this exact source; do not launch competing agents/jobs. Disclose inaccessible native claims; do not invent an empty catalogue or require unrelated global completion.",
+    "Confirm current reviewed fixed collection profile and explicit Foo host/storage/resource budget. Inspect source-specific stop/no-read/denial evidence; any real restriction wins.",
+    "If exact cache is complete and verified, reuse it and preserve original acquisition clock. Otherwise only the selected bounded original GET is permitted."
+  ],
+  "requestProposal": {
+    "method": "GET",
+    "url": "https://zenodo.org/api/records/15169428/files/dataset.csv/content",
+    "queryKeys": [],
+    "body": "",
+    "headers": {
+      "Accept-Encoding": "identity"
+    },
+    "futureBodyGETsMaximum": 1,
+    "HEADsMaximum": 0,
+    "retriesMaximum": 0,
+    "redirectsMaximum": 0,
+    "rangeRequestsPermitted": false,
+    "cookiesPermitted": false,
+    "credentialsPermitted": false,
+    "URLExpansionPermitted": false,
+    "paginationPermitted": false,
+    "accessDenialPolicy": "Stop without retry or alternate source",
+    "conditionalRefreshPolicy": "After explicit admission, honor minimum 30-day source cache window; this first-request proposal does not authorize recurring execution"
+  },
+  "resourceProposal": {
+    "exactExpectedBodyBytes": 110013794,
+    "maximumBodyBytes": 134217728,
+    "maximumCumulativeBodyBytesForFutureJob": 134217728,
+    "maximumSecondsIncludingTransferAndHashing": 900,
+    "socketStallSeconds": 30,
+    "reserveForOriginalBytes": 134217728,
+    "reserveIsProposalNotActualAllocation": true,
+    "host": "Foo existing runner only",
+    "storageRoot": "Existing reviewed runner cache only; exact path and allocation evidence belong to fixed collection profile",
+    "physicalAllocationBeforeGETRequired": true,
+    "existingReservationsMustBePreserved": true,
+    "batchSize": 1,
+    "compressionOrExtraction": false,
+    "semanticParsing": false
+  },
+  "cacheProposal": {
+    "minimumAgeSeconds": 2592000,
+    "days": 30,
+    "cacheScope": "single shared source original across eventual countries",
+    "countryExcludedFromIdentity": true,
+    "identityFields": [
+      "sourceKey",
+      "recordId",
+      "version",
+      "exactUrl",
+      "representation",
+      "method",
+      "queryKeys",
+      "requestBody"
+    ],
+    "duplicateAliasPolicy": "The landing download alias and API content route identify the same Zenodo file, not two originals",
+    "completeObjectIdentity": "Stream SHA-256 plus exact expected size and publisher MD5 check",
+    "originalAcquiredAt": "Set from successful original acquisition receipt once; preserve on later checks/reuse",
+    "checkedAt": "Separate validation clock",
+    "freshnessIsNotClaimedForUnknownOriginalClock": true
+  },
+  "countryMapping": {
+    "acceptedBindings": [],
+    "countryCompletenessClaims": 0,
+    "policy": "Global original custody needs no invented national binding. Later country/type mapping requires record-level evidence; Cuisine column alone does not establish national applicability."
+  },
+  "alreadyPerformedQualification": {
+    "fullOriginalGETs": 0,
+    "boundedSchemaGETs": 1,
+    "schemaRequestRange": "bytes=0-8191",
+    "schemaResponseStatus": 206,
+    "schemaResponseBytesRead": 8192,
+    "rawSamplePersisted": false,
+    "rowsPersisted": false,
+    "headerOnlyPersisted": true,
+    "schemaEvidence": {
+      "path": "zenodo-culinary-schema-qualification.json",
+      "bytes": 1411,
+      "sha256": "e0cd3e703559fc170b9dcc7d55de14236723d240a867202a43eda70f50c9ca66"
+    },
+    "scopeNote": "This schema probe is disclosed separately from the still-unselected full original acquisition; it is not a zero-network-request claim."
+  },
+  "evidenceFiles": [
+    {
+      "path": "next-recipe-wave-metadata-evidence.json",
+      "bytes": 27151,
+      "sha256": "025be3fd4aa09d82c886f75a01a9c3eb0a4749fe0ef4cdbd9e6cf461ca28f37b"
+    },
+    {
+      "path": "zenodo-culinary-lineage-review.json",
+      "bytes": 1485,
+      "sha256": "637454833b76add9ad89b889fecb3b59ff5695c82c94be8f95a45d2856376b3e"
+    }
+  ],
+  "remainingFact": "Final exact-source runner-owned claim/cache and single-coordinator intent check at selection time; no known source-specific acquisition ban in reviewed records.",
+  "selectionState": "Root selected this exact source for fixed-profile preparation on 2026-10-18; profile review and execution decision remain with root.",
+  "selectedForProfilePreparation": true,
+  "canonicalSourceKeyConfirmedByRoot": "global.zenodo15169428.datasetcsv.v1",
+  "formerDraftSourceKeyAliasForDedupOnly": "next.culinary-recipes-zenodo-v1.1"
+}

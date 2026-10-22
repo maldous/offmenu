@@ -1,0 +1,55 @@
+[
+  {
+    "offeredURL": "https://drive.usercontent.google.com/uc?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+    "checkedAtUTC": "2026-10-18T19:58:58.773643+00:00",
+    "method": "HEAD",
+    "originalPayloadBytesRead": 0,
+    "chain": [
+      {
+        "url": "https://drive.usercontent.google.com/uc?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+        "status": 303,
+        "headers": {
+          "content-type": "application/binary",
+          "location": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+          "content-length": "0"
+        }
+      }
+    ],
+    "stop": "HTTP_ERROR_NO_RETRY"
+  },
+  {
+    "offeredURL": "https://drive.usercontent.google.com/uc?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+    "checkedAtUTC": "2026-10-18T19:58:58.774114+00:00",
+    "method": "HEAD",
+    "originalPayloadBytesRead": 0,
+    "chain": [
+      {
+        "url": "https://drive.usercontent.google.com/uc?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+        "status": 303,
+        "headers": {
+          "content-type": "application/binary",
+          "location": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+          "content-length": "0"
+        }
+      }
+    ],
+    "stop": "HTTP_ERROR_NO_RETRY"
+  },
+  {
+    "offeredURL": "https://www.mdpi.com/2673-9976/8/1/1/pdf",
+    "checkedAtUTC": "2026-10-18T19:58:58.774776+00:00",
+    "method": "HEAD",
+    "originalPayloadBytesRead": 0,
+    "chain": [
+      {
+        "url": "https://www.mdpi.com/2673-9976/8/1/1/pdf",
+        "status": 404,
+        "headers": {
+          "content-type": "text/html;charset=utf-8",
+          "content-length": "0"
+        }
+      }
+    ],
+    "stop": "HTTP_ERROR_NO_RETRY"
+  }
+]

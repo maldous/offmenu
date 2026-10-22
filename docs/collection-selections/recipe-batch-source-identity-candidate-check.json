@@ -1,0 +1,20 @@
+{
+  "source": "/workspace/shared/composition-metadata/all-assets.json",
+  "sourceSHA256": "4ba5100758453c870ead6bd90ce0a456b115e7fe85f685a9f11925f1c23dbde7",
+  "descriptorCount": 2129,
+  "exactTokenMatches": {
+    "Helti-Kaikai-Cookbook-24nov2025.pdf": [],
+    "Cooking%20Booklet%20prepress.compressed.pdf": [],
+    "Cooking Booklet prepress.compressed.pdf": [],
+    "act=download&ids=14103": [],
+    "act=download&ids=14102": [],
+    "act=download&ids=14101": [],
+    "1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP": [],
+    "1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o": [],
+    "13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp": [],
+    "1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE": [],
+    "158UT3Kjp04JH_q8yxX60KrSAVGevzhbE": [],
+    "10.3390/blsf2021008001": []
+  },
+  "meaning": "Bounded retained metadata only. No matches means no positive identity match found, not global absence or live claim clearance."
+}

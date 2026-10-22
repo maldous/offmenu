@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "offmenu-source-original-batch-proposal/1",
+  "preparedAtUTC": "2026-10-18T20:02:35.931602+00:00",
+  "status": "LARGER_NEXT_WAVE_SOURCE_QUALIFIED_NOT_SELECTED",
+  "runtimeEnabled": false,
+  "batchKey": "py05-inan-three-larger-recipe-originals-20261018",
+  "sources": [
+    {
+      "sourceKey": "PY-DRIVE-SCHOOL1",
+      "country": "PY",
+      "title": "RECETARIO_MERIENDA_ESCOLAR_1.pdf",
+      "publisher": "Instituto Nacional de Alimentacion y Nutricion (INAN), Paraguay",
+      "sourceRole": "genuine_recipe_collection_original",
+      "publisherPage": "https://www.inan.gov.py/site/?page_id=60",
+      "offeredViewURL": "https://drive.google.com/file/d/13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp/view?usp=sharing",
+      "exactURL": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+      "locatorProvenance": "Current publisher catalogue links file ID; public Drive view embeds exact uc URL; HTTP303 explicitly advertises this download URL. No guessed endpoint, confirmation token, auth or agreement.",
+      "release": null,
+      "language": "Spanish publisher title; original body uninspected.",
+      "coverage": "School recipe collection part1; publisher catalogue says lunch/dinner but attachment says school snack. Preserve mismatch.",
+      "expectedBytes": 30653686,
+      "expectedMIME": "application/octet-stream",
+      "format": "pdf",
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "checkedAtUTC": "2026-10-18T20:01:12.557804+00:00",
+        "url": "https://drive.usercontent.google.com/download?id=13DmVLbT1up-BZnjYmKLzV0EjED8TjMbp&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_1.pdf\"",
+          "content-length": "30653686",
+          "last-modified": "Wed, 17 Oct 2018 17:47:23 GMT"
+        },
+        "originalPayloadBytesRead": 0
+      },
+      "maxBodyBytes": 30736384,
+      "physicalPreallocationBytes": 30736384,
+      "maxWholeGETs": 1,
+      "privateCustodyRights": {
+        "assessment": "INAN publicly offers educational recipe PDF through its current catalogue. Anonymous offered download HEAD200 and filename/extent match. Qualified for unchanged private original reference copy; no open reuse/redistribution/translation/commercial grant inferred.",
+        "allowedScope": "Private unchanged Foo retention plus initial integrity/format checks.",
+        "documentSpecificNotices": "Uninspected; any contrary restriction found at permitted initial checks preserves a hold."
+      },
+      "releaseQualification": "No body-verified edition or publication date; Drive Last-Modified is not an edition claim."
+    },
+    {
+      "sourceKey": "PY-DRIVE-SCHOOL2",
+      "country": "PY",
+      "title": "RECETARIO_MERIENDA_ESCOLAR_2.pdf",
+      "publisher": "Instituto Nacional de Alimentacion y Nutricion (INAN), Paraguay",
+      "sourceRole": "genuine_recipe_collection_original",
+      "publisherPage": "https://www.inan.gov.py/site/?page_id=60",
+      "offeredViewURL": "https://drive.google.com/file/d/1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE/view?usp=sharing",
+      "exactURL": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+      "locatorProvenance": "Current publisher catalogue links file ID; public Drive view embeds exact uc URL; HTTP303 explicitly advertises this download URL. No guessed endpoint, confirmation token, auth or agreement.",
+      "release": null,
+      "language": "Spanish publisher title; original body uninspected.",
+      "coverage": "School recipe collection part2; publisher catalogue says lunch/dinner but attachment says school snack. Preserve mismatch.",
+      "expectedBytes": 73938718,
+      "expectedMIME": "application/octet-stream",
+      "format": "pdf",
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "checkedAtUTC": "2026-10-18T20:01:12.558688+00:00",
+        "url": "https://drive.usercontent.google.com/download?id=1IH1Rxuk-iPGGJSvBKKJL9F08Jl2fpWRE&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"RECETARIO_MERIENDA_ESCOLAR_2.pdf\"",
+          "content-length": "73938718",
+          "last-modified": "Fri, 14 Sep 2018 19:52:39 GMT"
+        },
+        "originalPayloadBytesRead": 0
+      },
+      "maxBodyBytes": 74055680,
+      "physicalPreallocationBytes": 74055680,
+      "maxWholeGETs": 1,
+      "privateCustodyRights": {
+        "assessment": "INAN publicly offers educational recipe PDF through its current catalogue. Anonymous offered download HEAD200 and filename/extent match. Qualified for unchanged private original reference copy; no open reuse/redistribution/translation/commercial grant inferred.",
+        "allowedScope": "Private unchanged Foo retention plus initial integrity/format checks.",
+        "documentSpecificNotices": "Uninspected; any contrary restriction found at permitted initial checks preserves a hold."
+      },
+      "releaseQualification": "No body-verified edition or publication date; Drive Last-Modified is not an edition claim."
+    },
+    {
+      "sourceKey": "PY-DRIVE-VEG",
+      "country": "PY",
+      "title": "Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf",
+      "publisher": "Instituto Nacional de Alimentacion y Nutricion (INAN), Paraguay",
+      "sourceRole": "genuine_recipe_collection_original",
+      "publisherPage": "https://www.inan.gov.py/site/?page_id=60",
+      "offeredViewURL": "https://drive.google.com/file/d/158UT3Kjp04JH_q8yxX60KrSAVGevzhbE/view?usp=sharing",
+      "exactURL": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+      "locatorProvenance": "Current publisher catalogue links file ID; public Drive view embeds exact uc URL; HTTP303 explicitly advertises this download URL. No guessed endpoint, confirmation token, auth or agreement.",
+      "release": null,
+      "language": "Spanish publisher title; original body uninspected.",
+      "coverage": "Publisher-labelled vegetable recipe booklet; original filename retained, ingredient and recipe counts unknown.",
+      "expectedBytes": 17928840,
+      "expectedMIME": "application/octet-stream",
+      "format": "pdf",
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "checkedAtUTC": "2026-10-18T20:01:12.559216+00:00",
+        "url": "https://drive.usercontent.google.com/download?id=158UT3Kjp04JH_q8yxX60KrSAVGevzhbE&export=download",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"Cartilla_Recetas_con Verduras_cosechadas_en_el_hoiga.pdf\"",
+          "content-length": "17928840",
+          "last-modified": "Thu, 15 Oct 2020 15:38:47 GMT"
+        },
+        "originalPayloadBytesRead": 0
+      },
+      "maxBodyBytes": 18022400,
+      "physicalPreallocationBytes": 18022400,
+      "maxWholeGETs": 1,
+      "privateCustodyRights": {
+        "assessment": "INAN publicly offers educational recipe PDF through its current catalogue. Anonymous offered download HEAD200 and filename/extent match. Qualified for unchanged private original reference copy; no open reuse/redistribution/translation/commercial grant inferred.",
+        "allowedScope": "Private unchanged Foo retention plus initial integrity/format checks.",
+        "documentSpecificNotices": "Uninspected; any contrary restriction found at permitted initial checks preserves a hold."
+      },
+      "releaseQualification": "No body-verified edition or publication date; Drive Last-Modified is not an edition claim."
+    }
+  ],
+  "expectedBytes": 122521244,
+  "batchCapBytes": 122814464,
+  "maxWholeGETs": 3,
+  "maxRedirects": 0,
+  "maxRetries": 0,
+  "rangeOrResume": false,
+  "maxSeconds": 1800,
+  "maxStallSeconds": 60,
+  "sourceEvidencePin": {
+    "path": "/home/user/Documents/Codex/2026-10-18/worker05-source-prep-after8942/ready-source-portfolio.json",
+    "sha256": "95bf44e1747ae146a3044cf1a2e002807e6b7cd9d28995b6584745491b7672c2",
+    "snapshotVerification": "actual-v2-exact whole metadata hash match"
+  },
+  "claimStatus": {
+    "historicalOwner": 5,
+    "producerThread": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+    "preparationEvent": 9214,
+    "gatewayMessage": "01a14eff-c867-731e-9b19-6ad9197ff422",
+    "historicalState": "Preparation only; no body GET, claims or physical original allocations.",
+    "laterReconciliation": "No matching later acquisition/pickup found in available Gateway reports and native event projection through9395. Projection is bounded, not current complete claims.",
+    "heldIdentityCheck": "Neither exact file ID positively matched in2,129 retained descriptors.",
+    "runtimeRule": "Reuse/block actual same-source held original, partial or competing active claim. Historical preparation alone is not an active competing claim."
+  },
+  "freshEvidencePins": [
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-offered-file-links.json",
+      "sha256": "2049c193e02ad9ea194213c151d10318cb69edd780011a96c04648616d54e953"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+      "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-original-head-evidence.json",
+      "sha256": "e45074f39adf07a5da1ba9fabf9a22a8af30c3e54b80d345ca5723214d61c3d0"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-drive303-target-heads.json",
+      "sha256": "784f1495b3dd116f71c8d4c99f57f77188588620b7ae675f875fa77b548c0301"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/later-event-reconciliation.json",
+      "sha256": "f576571783777d0d4c67fd5e792723ddd4c838f0ea4a886de2a2c0cb8262954f"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/source-identity-candidate-check.json",
+      "sha256": "8c3d601a9782787b5617b4d577b6889c0ee521ff6265780dea8fa34c520b1502"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-larger-three-metadata-evidence.json",
+      "sha256": "c5ee54bbc021fb333b44a1f35af6d2f261f430b03712d5061869eec36a4947da"
+    }
+  ],
+  "excludedFromBatch": [
+    {
+      "source": "PY-SICANA DOI10.3390/blsf2021008001",
+      "reason": "Current publisher-advertised exact PDFHEAD404, no retry/alternate."
+    },
+    {
+      "source": "PY-ANISOCAPPARIS DOI10.46932/sfjdv2n5-022",
+      "reason": "Current DOI metadata route403; no retry/alternate."
+    },
+    {
+      "source": "PY-DRIVE-HEALTH1/HEALTH2",
+      "reason": "Separate earlier two-source contract; no duplicate in larger wave."
+    }
+  ],
+  "scope": "No body acquisition by preparer, normalization, translation, gold, activation or country-complete claim."
+}
