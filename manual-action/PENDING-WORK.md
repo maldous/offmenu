@@ -3,7 +3,9 @@
 The normal `./run` continues best-effort ingestion. Before work, at report
 checkpoints, and at the end, its dashboard reports current **source/domain
 assignments**: completed, verified native-store reuse, not yet read, partial,
-failed, unsupported, held, unqualified, and awaiting genuine private input.
+failed, unsupported, held, and unqualified external-ingest assignments.
+`user_profiles` and `inventory` are app-managed at application runtime, not
+external-data requirements; no household-input request or fetch is appropriate.
 A file assigned to several domains contributes several assignments; totals are
 not unique physical files, distinct entities, or eight application-bound stores.
 The binding remains `additive_staging_not_app_bound`.
@@ -17,8 +19,10 @@ For normal `./run`, the private ingest state directory is
 - `pending-work.private.json`: per-assignment source path, provider, disposition,
   current metadata version, durable cursor/writes/errors, status, fixed next
   reason, and known size/remaining-count evidence. Unassigned catalog entries and
-  empty private-domain requirements appear explicitly; the latter are **not**
-  invented source assignments. Keep this file local; do not commit it.
+  app-managed catalog assignments remain explicitly retained. App-managed rows
+  have `scope: app_managed`, `status: schema_only`, and
+  `excluded_from_pending: true`; they are not missing external work. Keep this
+  file local; do not commit it.
 - `pending-work.json`: allowlisted public counters only, also attached as
   `pending_work` in ordinary callback/progress/final reports and eligible returns.
 
@@ -30,7 +34,7 @@ import json
 from pathlib import Path
 p = Path('.git/offmenu-runner/ingest/pending-work.private.json')
 for row in json.loads(p.read_text())['sources']:
-    if row['status'] not in ('completed', 'reused'):
+    if not row.get('excluded_from_pending') and row['status'] not in ('completed', 'reused'):
         print(row.get('domain'), row['status'], row.get('path'), row['next_reason'])
 PY
 ```
@@ -63,8 +67,10 @@ surrounding progress report, not a claim of a live filesystem watch.
   source sizes and are not processed or remaining bytes.
 - `catalog_complete: false` means discovery has an **unknown unscanned remainder**;
   global remaining-read/write totals stay unknown even if discovered work is
-  complete. Empty private domains list `awaiting_input_domains`; no fictitious
-  household data is created.
+  complete. New snapshots keep `awaiting_input_domains` empty. The optional
+  `scope` extension records policy `external_ingest_only` and exact retained
+  `app_managed_assignments` counts for profiles/inventory, outside pending totals.
+  Historical snapshots/receipts remain valid and are not rewritten.
 
 ## Evidence and limitations
 
@@ -90,3 +96,12 @@ snapshot without starting ingestion; `collect_pending_work(...)` in
 `ingest_pending` returns the safe `summary` and private `sources` detail. Normal
 `run_ingest` callbacks already refresh the snapshot, so wrappers need not repeat
 SQLite reads at the same checkpoint.
+
+## App-managed scope is not an application-schema deployment
+
+The existing `schema_only` status describes this ingestion path: it creates no
+private source rows and preserves existing staging schemas and rows. It does not
+assert that typed application migrations have been deployed or that a populated
+private store is empty. Actual `stored_records_before`/`stored_records` remain
+reported for all eight domains, including nonzero historical private stores and
+observed zero counts. App schema/encryption work is a separate deliverable.

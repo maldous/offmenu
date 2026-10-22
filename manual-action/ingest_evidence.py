@@ -17,7 +17,7 @@ import stat
 import time
 import uuid
 
-from ingest_api import (DOMAINS, source_key, GLOBAL_BUDGET_DEFAULTS,
+from ingest_api import (DOMAINS, APP_MANAGED_DOMAINS, source_key, GLOBAL_BUDGET_DEFAULTS,
                         budget_seconds, sanitize_budget_stop)
 
 SCHEMA = 'offmenu-ingest-evidence/1'
@@ -237,6 +237,8 @@ def sanitize_evidence(value):
         stops = _mapping(_mapping(value.get('budget_stops')).get('domains'))
         safe['budget_stops'] = {'scope': 'first_global_stop_per_domain_current_invocation',
             'domains': {d: sanitize_budget_stop(stops.get(d)) for d in DOMAINS}}
+    if 'domain_scope' in value:
+        safe['domain_scope'] = {d: 'app_managed' for d in APP_MANAGED_DOMAINS}
     return safe
 
 
@@ -262,6 +264,50 @@ def validate_evidence(value):
     return value
 
 
+def summarize_diagnostics(results, max_items, deadline):
+    rows = {d: _mapping(_mapping(results).get(d)).get('sources', []) for d in DOMAINS}
+    rows = {d: value if type(value) is list else [] for d, value in rows.items()}
+    total = sum(len(value) for value in rows.values())
+    result = {'source_summaries_total': total, 'source_summaries_inspected': 0,
+        'remaining': total, 'domains': {d: {'reason_counts': {}, 'schema_need_counts': {},
+            'parser_counts': [None] * len(ADAPTER_COUNT_COLUMNS)} for d in DOMAINS}}
+    # Cached summaries are fixed-size snapshots from completed adapter groups.
+    # A terminal worker result contains sources instead, so it replaces caches.
+    for domain in DOMAINS:
+        cached = _mapping(_mapping(results).get(domain)).get('completed_group_diagnostics', ())
+        for snapshot in cached:
+            snapshot = _mapping(snapshot)
+            for key in ('source_summaries_total', 'source_summaries_inspected', 'remaining'):
+                result[key] += _count(snapshot.get(key), 0)
+            source = _mapping(_mapping(snapshot.get('domains')).get(domain))
+            target = result['domains'][domain]
+            for field in ('reason_counts', 'schema_need_counts'):
+                for code, count in _hist(source.get(field), ACQUIRED_REASONS).items():
+                    target[field][code] = target[field].get(code, 0) + count
+            for i, count in enumerate(_vector(source.get('parser_counts'), len(ADAPTER_COUNT_COLUMNS))):
+                if count is not None:
+                    target['parser_counts'][i] = (target['parser_counts'][i] or 0) + count
+    inspected = 0
+    for domain, sources in rows.items():
+        for row in sources:
+            if inspected >= max_items or time.monotonic() >= deadline:
+                return result
+            inspected += 1
+            result['source_summaries_inspected'] += 1
+            result['remaining'] -= 1
+            diagnostics = _mapping(_mapping(row).get('diagnostics'))
+            stats = {**_mapping(_mapping(row).get('record_kinds')), **diagnostics}
+            for i, key in enumerate(ADAPTER_COUNT_COLUMNS):
+                if _count(stats.get(key)) is not None:
+                    vector = result['domains'][domain]['parser_counts']
+                    vector[i] = (vector[i] or 0) + stats[key]
+            for name, source_name in (('reason_counts', 'reason_counts'), ('schema_need_counts', 'schema_needs')):
+                counts = _hist(diagnostics.get(source_name), ACQUIRED_REASONS)
+                for code, count in counts.items():
+                    target = result['domains'][domain][name]
+                    target[code] = target.get(code, 0) + count
+    return result
+
 def _domains(source):
     raw = source.get('domains', source.get('domain', []))
     if type(raw) is str:
@@ -270,9 +316,10 @@ def _domains(source):
 
 
 def _eligibility(source, domain=None):
-    meta = _mapping(source.get('metadata'))
-    if domain in ('user_profiles', 'inventory') and not (meta.get('user_supplied') is True and meta.get('household_scope') is True):
-        return 'awaiting_input'
+    # Use the existing vector column for protocol compatibility; domain_scope
+    # explicitly says these retained assignments are app-managed, not blockers.
+    if domain in APP_MANAGED_DOMAINS or (domain is None and _domains(source) and set(_domains(source)) <= set(APP_MANAGED_DOMAINS)):
+        return 'unqualified'
     disposition = source.get('disposition')
     if source.get('restricted') or source.get('incomplete') or disposition in ('restricted', 'restricted-held', 'blocked', 'incomplete-hold', 'skip'):
         return 'held'
@@ -399,6 +446,8 @@ class EvidenceCollector:
                     or previous.get('schema') != PRIVATE_SCHEMA or previous.get('catalog_sha256') != self.catalog_id):
                 return
             summary = validate_evidence(previous['summary'])
+            if summary.get('domain_scope') != {d: 'app_managed' for d in APP_MANAGED_DOMAINS}:
+                return  # Recount descriptors under this policy, never source rows.
             if summary['catalog']['total'] == len(self.sources):
                 self.catalog = summary['catalog']
                 self.catalog['discovery_complete'] = not self.config.get('catalog_truncated', False)
@@ -438,7 +487,8 @@ class EvidenceCollector:
             _increment(self.catalog['shape_bases'], basis)
             _increment(self.catalog['eligibility'], eligibility)
             reason = source.get('reason')
-            reason = ('read_permission_denied' if reason in ('read_permission_denied', 'PermissionError') else
+            reason = ('catalog_descriptor' if _domains(source) and set(_domains(source)) <= set(APP_MANAGED_DOMAINS) else
+                'read_permission_denied' if reason in ('read_permission_denied', 'PermissionError') else
                 'source_missing' if reason in ('selected_path_not_present', 'source_missing', 'FileNotFoundError') else
                 'schema_shape_unrecognized' if shape in ('tabular_unknown', 'structured_unknown', 'not_sampled') else
                 'reviewed_adapter_contract' if explicit_shape else 'catalog_descriptor')
@@ -513,7 +563,7 @@ class EvidenceCollector:
                 result['status'] = 'partial'
                 break
             result['detail_rows_inspected'] += 1
-            if type(row) is not dict or row.get('domain') not in DOMAINS or row.get('synthetic_requirement'):
+            if type(row) is not dict or row.get('domain') not in DOMAINS or row.get('synthetic_requirement') or row.get('excluded_from_pending'):
                 continue
             values = result['domains'][row['domain']]
             values[0] += 1
@@ -549,30 +599,7 @@ class EvidenceCollector:
         return result
 
     def _diagnostics(self, results, deadline):
-        rows = {d: _mapping(_mapping(results).get(d)).get('sources', []) for d in DOMAINS}
-        rows = {d: value if type(value) is list else [] for d, value in rows.items()}
-        total = sum(len(value) for value in rows.values())
-        result = {'source_summaries_total': total, 'source_summaries_inspected': 0,
-            'remaining': total, 'domains': {d: {'reason_counts': {}, 'schema_need_counts': {},
-                'parser_counts': [None] * len(ADAPTER_COUNT_COLUMNS)} for d in DOMAINS}}
-        for domain, sources in rows.items():
-            for row in sources:
-                if result['source_summaries_inspected'] >= self.max_items or time.monotonic() >= deadline:
-                    return result
-                result['source_summaries_inspected'] += 1
-                result['remaining'] -= 1
-                diagnostics = _mapping(_mapping(row).get('diagnostics'))
-                stats = {**_mapping(_mapping(row).get('record_kinds')), **diagnostics}
-                for i, key in enumerate(ADAPTER_COUNT_COLUMNS):
-                    if _count(stats.get(key)) is not None:
-                        vector = result['domains'][domain]['parser_counts']
-                        vector[i] = (vector[i] or 0) + stats[key]
-                for name, source_name in (('reason_counts', 'reason_counts'), ('schema_need_counts', 'schema_needs')):
-                    counts = _hist(diagnostics.get(source_name), ACQUIRED_REASONS)
-                    for code, count in counts.items():
-                        target = result['domains'][domain][name]
-                        target[code] = target.get(code, 0) + count
-        return result
+        return summarize_diagnostics(results, self.max_items, deadline)
 
     def _actions(self, report):
         actions = {'verify_application_binding'}
@@ -592,13 +619,13 @@ class EvidenceCollector:
             actions.add('review_unsupported_shapes')
         if _count(totals.get('held'), 0):
             actions.add('review_held_sources')
-        if pending.get('awaiting_input_domains'):
-            actions.add('provide_private_input')
         if _count(report.get('report_delivery_errors'), 0):
             actions.add('repair_report_delivery')
         if self.catalog['reason_codes'].get('read_permission_denied'):
             actions.add('restore_source_read_access')
-        for row in _mapping(report.get('domains')).values():
+        for domain, row in _mapping(report.get('domains')).items():
+            if domain in APP_MANAGED_DOMAINS:
+                continue
             row = _mapping(row)
             if _count(row.get('errors'), 0) or _mapping(row.get('error_telemetry')).get('class_counts'):
                 actions.add('review_source_errors')
@@ -622,7 +649,16 @@ class EvidenceCollector:
             self._scan(started + self.max_seconds)
             current = self._metrics(report, results)
             if self.before is None:
-                self.before = current
+                self.before = {d: list(values) for d, values in current.items()}
+            # Pre-publication precedes worker startup. Fill only this baseline
+            # from the writer's pre-write observation, not first current total.
+            stored_index = METRICS.index('stored_records')
+            for domain in DOMAINS:
+                row = _mapping(_mapping(report.get('domains')).get(domain))
+                owned = _mapping(_mapping(results).get(domain))
+                baseline = _count(owned.get('stored_records_before', row.get('stored_records_before')))
+                if self.before[domain][stored_index] is None and baseline is not None:
+                    self.before[domain][stored_index] = baseline
             cursors = self._cursors(pending_private, time.monotonic() + self.max_seconds)
             diagnostics = self._diagnostics(results, time.monotonic() + self.max_seconds)
             quality = set(self.quality)
@@ -632,6 +668,7 @@ class EvidenceCollector:
                 quality.add('checkpoint_sample_incomplete')
             summary = sanitize_evidence({'status': 'partial' if self.catalog['remaining'] or quality else 'available',
                 'phase': phase, 'observed_at': _utc(), 'catalog': self.catalog,
+                'domain_scope': {d: 'app_managed' for d in APP_MANAGED_DOMAINS},
                 'observations': {d: {'before': self.before[d], 'current': current[d],
                     'delta': [b - a if a is not None and b is not None else None for a, b in zip(self.before[d], current[d])]} for d in DOMAINS},
                 'cursors': cursors, 'resources': self._resources(report),

@@ -1,0 +1,2288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:household-private-payloads:1",
+  "title": "Typed decrypted household payload contracts; never store these plaintext in SQL/public cache",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/profile"
+    },
+    {
+      "$ref": "#/$defs/preference"
+    },
+    {
+      "$ref": "#/$defs/observation"
+    },
+    {
+      "$ref": "#/$defs/context"
+    },
+    {
+      "$ref": "#/$defs/location"
+    },
+    {
+      "$ref": "#/$defs/item"
+    },
+    {
+      "$ref": "#/$defs/mapping"
+    },
+    {
+      "$ref": "#/$defs/receipt"
+    },
+    {
+      "$ref": "#/$defs/receipt_line"
+    },
+    {
+      "$ref": "#/$defs/plan"
+    },
+    {
+      "$ref": "#/$defs/meal"
+    },
+    {
+      "$ref": "#/$defs/attendance"
+    },
+    {
+      "$ref": "#/$defs/cook_batch"
+    },
+    {
+      "$ref": "#/$defs/lot"
+    },
+    {
+      "$ref": "#/$defs/waste"
+    },
+    {
+      "$ref": "#/$defs/intake"
+    },
+    {
+      "$ref": "#/$defs/shopping_list"
+    },
+    {
+      "$ref": "#/$defs/shopping_line"
+    },
+    {
+      "$ref": "#/$defs/handoff"
+    },
+    {
+      "$ref": "#/$defs/conversion"
+    },
+    {
+      "$ref": "#/$defs/lot_event"
+    },
+    {
+      "$ref": "#/$defs/lot_check"
+    },
+    {
+      "$ref": "#/$defs/saved_recipe"
+    },
+    {
+      "$ref": "#/$defs/collection"
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "release_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "record_id": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locator": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_id",
+        "release_id",
+        "record_id",
+        "revision_id",
+        "locator",
+        "recorded_at",
+        "method"
+      ],
+      "additionalProperties": false
+    },
+    "quantity": {
+      "type": "object",
+      "properties": {
+        "value_decimal": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 50,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "original_text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "basis": {
+          "enum": [
+            "original",
+            "edible",
+            "drained",
+            "prepared",
+            "serving",
+            "pack",
+            "unknown"
+          ]
+        },
+        "status": {
+          "enum": [
+            "measured",
+            "declared",
+            "estimated",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "value_decimal",
+        "unit",
+        "original_text",
+        "basis",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "money": {
+      "type": "object",
+      "properties": {
+        "amount_decimal": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$",
+          "maxLength": 50
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "basis": {
+          "enum": [
+            "pack",
+            "unit",
+            "consumed",
+            "fee",
+            "tax",
+            "discount"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "amount_decimal",
+        "currency",
+        "observed_at",
+        "basis",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "identifier": {
+      "type": "object",
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "maxLength": 80,
+          "minLength": 1
+        },
+        "namespace": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "validation_status": {
+          "enum": [
+            "valid",
+            "invalid",
+            "unverified",
+            "unsupported"
+          ]
+        }
+      },
+      "required": [
+        "scheme",
+        "namespace",
+        "value",
+        "validation_status"
+      ],
+      "additionalProperties": false
+    },
+    "nutrient": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "basis_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "known": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9000000000000000
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9000000000000000
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "metric",
+        "definition",
+        "quantity",
+        "basis_quantity",
+        "known",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "recipe": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "servings": {
+          "type": "number",
+          "minimum": 1e-06,
+          "maximum": 9000000000
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "raw": {
+                "type": "string",
+                "maxLength": 2000,
+                "minLength": 1
+              },
+              "ingredient": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 300,
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "quantity": {
+                "$ref": "#/$defs/quantity"
+              },
+              "optional": {
+                "type": "boolean"
+              },
+              "mapping_status": {
+                "enum": [
+                  "unresolved",
+                  "candidate",
+                  "verified",
+                  "conflict"
+                ]
+              }
+            },
+            "required": [
+              "raw",
+              "ingredient",
+              "quantity",
+              "optional",
+              "mapping_status"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1000
+        },
+        "instructions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "title",
+        "servings",
+        "source",
+        "license",
+        "ingredients",
+        "instructions"
+      ],
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-profile/1"
+        },
+        "display_name": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "age_years": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "age_recorded_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "portion": {
+          "type": "number",
+          "minimum": 1e-06,
+          "maximum": 9000000000
+        },
+        "country": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ui_language": {
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 1
+        },
+        "data_language": {
+          "type": "string",
+          "maxLength": 50,
+          "minLength": 1
+        },
+        "units": {
+          "enum": [
+            "metric",
+            "imperial"
+          ]
+        },
+        "accessibility": {
+          "type": "object",
+          "properties": {
+            "large": {
+              "type": "boolean"
+            },
+            "quiet": {
+              "type": "boolean"
+            },
+            "reduced_motion": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "large",
+            "quiet",
+            "reduced_motion"
+          ],
+          "additionalProperties": false
+        },
+        "guardian_basis": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "display_name",
+        "age_years",
+        "age_recorded_on",
+        "portion",
+        "country",
+        "ui_language",
+        "data_language",
+        "units",
+        "accessibility",
+        "guardian_basis"
+      ],
+      "additionalProperties": false
+    },
+    "preference": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-preference/1"
+        },
+        "kind": {
+          "enum": [
+            "allergy",
+            "intolerance",
+            "religious",
+            "avoid",
+            "advisor",
+            "like",
+            "texture",
+            "spice",
+            "nutrient-goal"
+          ]
+        },
+        "term": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "declared",
+            "unknown",
+            "withdrawn"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "effective_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_until": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "goal": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "target",
+                    "ceiling"
+                  ]
+                },
+                "quantity": {
+                  "$ref": "#/$defs/quantity"
+                },
+                "reference_period": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "mode",
+                "quantity",
+                "reference_period"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "term",
+        "status",
+        "source",
+        "effective_from",
+        "effective_until",
+        "goal"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-observation/1"
+        },
+        "kind": {
+          "enum": [
+            "height",
+            "weight",
+            "body-metric",
+            "exercise",
+            "vendor-health"
+          ]
+        },
+        "metric": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "measured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "overlap_group": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "metric",
+        "quantity",
+        "measured_at",
+        "source",
+        "overlap_group"
+      ],
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-context/1"
+        },
+        "kind": {
+          "enum": [
+            "home",
+            "carer",
+            "taste",
+            "culture",
+            "fasting",
+            "exercise_schedule"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "declared",
+            "unknown",
+            "withdrawn"
+          ]
+        },
+        "home_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "maxItems": 64
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "qualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1
+          },
+          "maxItems": 32
+        },
+        "window": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "end": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "time_zone": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "start",
+                "end",
+                "time_zone"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recurrence": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "frequency": {
+                  "enum": [
+                    "once",
+                    "daily",
+                    "weekly"
+                  ]
+                },
+                "interval": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 52
+                },
+                "weekdays": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "MO",
+                      "TU",
+                      "WE",
+                      "TH",
+                      "FR",
+                      "SA",
+                      "SU"
+                    ]
+                  },
+                  "maxItems": 7,
+                  "uniqueItems": true
+                },
+                "until_date": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "frequency",
+                "interval",
+                "weekdays",
+                "until_date"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "kind",
+        "label",
+        "status",
+        "home_ids",
+        "source",
+        "qualifiers",
+        "window"
+      ],
+      "additionalProperties": false
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-location/1"
+        },
+        "area": {
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 1
+        },
+        "shelf": {
+          "type": "string",
+          "maxLength": 60,
+          "minLength": 1
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "area",
+        "shelf",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-item/1"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "maxItems": 50
+        },
+        "source_records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "maxItems": 100
+        },
+        "product_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "package_identity": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "market_country": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ingredient": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "private_label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "name",
+        "brand",
+        "identifiers",
+        "source_records",
+        "product_version",
+        "package_identity",
+        "market_country",
+        "ingredient",
+        "private_label"
+      ],
+      "additionalProperties": false
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-mapping/1"
+        },
+        "food_identity": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "original_label": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schema_version",
+        "food_identity",
+        "source",
+        "confidence",
+        "original_label"
+      ],
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-receipt/1"
+        },
+        "source_label": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "retailer": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "location_label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "rights_private_use": {
+          "type": "boolean"
+        },
+        "rights_expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "image_consent": {
+          "type": "boolean"
+        },
+        "totals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/money"
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "schema_version",
+        "source_label",
+        "retailer",
+        "location_label",
+        "source",
+        "rights_private_use",
+        "rights_expires_at",
+        "image_consent",
+        "totals"
+      ],
+      "additionalProperties": false
+    },
+    "receipt_line": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-receipt_line/1"
+        },
+        "original_text": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "extracted_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "original_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "reviewed_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "prices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/money"
+          },
+          "maxItems": 20
+        },
+        "correction_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "original_text",
+        "extracted_name",
+        "reviewed_name",
+        "original_quantity",
+        "reviewed_quantity",
+        "prices",
+        "correction_note"
+      ],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-plan/1"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "start_date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "template_source_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "name",
+        "start_date",
+        "end_date",
+        "template_source_id",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "meal": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-meal/1"
+        },
+        "recipe": {
+          "$ref": "#/$defs/source"
+        },
+        "recipe_title": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "adjustments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1
+          },
+          "maxItems": 100
+        },
+        "purpose": {
+          "enum": [
+            "meal",
+            "lunchbox",
+            "batch",
+            "leftover"
+          ]
+        },
+        "portion_basis": {
+          "$ref": "#/$defs/quantity"
+        },
+        "recipe_snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/recipe"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "recipe",
+        "recipe_title",
+        "adjustments",
+        "purpose",
+        "portion_basis",
+        "recipe_snapshot"
+      ],
+      "additionalProperties": false
+    },
+    "attendance": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-attendance/1"
+        },
+        "status": {
+          "enum": [
+            "attending",
+            "absent",
+            "unknown"
+          ]
+        },
+        "portion": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/quantity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "schema_version",
+        "status",
+        "portion",
+        "adjustments"
+      ],
+      "additionalProperties": false
+    },
+    "cook_batch": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-cook_batch/1"
+        },
+        "recipe": {
+          "$ref": "#/$defs/source"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "nutrition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nutrient"
+          },
+          "maxItems": 100
+        },
+        "unresolved_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9000000000000000
+        },
+        "homogeneity_assumption": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "recipe",
+        "title",
+        "nutrition",
+        "unresolved_count",
+        "homogeneity_assumption"
+      ],
+      "additionalProperties": false
+    },
+    "lot": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-lot/1"
+        },
+        "lot_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "market_country": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "package": {
+          "$ref": "#/$defs/quantity"
+        },
+        "original_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "date_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "produced_on",
+                  "use_by",
+                  "best_before",
+                  "review_on"
+                ]
+              },
+              "date": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "original_text": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 300,
+                    "minLength": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "method": {
+                "enum": [
+                  "package",
+                  "user",
+                  "estimate",
+                  "unknown"
+                ]
+              },
+              "source": {
+                "$ref": "#/$defs/source"
+              }
+            },
+            "required": [
+              "kind",
+              "date",
+              "original_text",
+              "method",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "private_label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "lot_code",
+        "batch_code",
+        "market_country",
+        "label_version",
+        "package",
+        "original_quantity",
+        "source",
+        "date_evidence",
+        "private_label",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "waste": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-waste/1"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seasonal_context": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 500,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "reason",
+        "source",
+        "value",
+        "seasonal_context"
+      ],
+      "additionalProperties": false
+    },
+    "intake": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-intake/1"
+        },
+        "food": {
+          "$ref": "#/$defs/source"
+        },
+        "planned_food": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/source"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "nutrition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nutrient"
+          },
+          "maxItems": 100
+        },
+        "served_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eaten_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completion_percent": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "remainder": {
+          "enum": [
+            "saved",
+            "discarded",
+            "shared",
+            "unspecified"
+          ]
+        },
+        "saved_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "discarded_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shared_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unknown_portions": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kitchen_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cook_batch_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "schema_version",
+        "food",
+        "planned_food",
+        "title",
+        "quantity",
+        "nutrition",
+        "served_portions",
+        "eaten_portions",
+        "completion_percent",
+        "remainder",
+        "saved_portions",
+        "discarded_portions",
+        "shared_portions",
+        "unknown_portions",
+        "kitchen_id",
+        "cook_batch_id",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "shopping_list": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-shopping_list/1"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "budget": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "preferred_stores": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "maxItems": 50
+        },
+        "maximum_stops": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "name",
+        "budget",
+        "preferred_stores",
+        "maximum_stops",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "shopping_line": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-shopping_line/1"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "amount_text": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "usable_inventory_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "pack_quantity": {
+          "$ref": "#/$defs/quantity"
+        },
+        "pack_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9000000000000000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/money"
+          },
+          "maxItems": 20
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "substitution_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "name",
+        "amount_text",
+        "required_quantity",
+        "usable_inventory_quantity",
+        "pack_quantity",
+        "pack_count",
+        "prices",
+        "source",
+        "substitution_reason"
+      ],
+      "additionalProperties": false
+    },
+    "handoff": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-handoff/1"
+        },
+        "destination": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "provider_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "export_format": {
+          "enum": [
+            "print",
+            "calendar",
+            "json",
+            "csv",
+            "provider-link"
+          ]
+        },
+        "reviewed_lines": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "maxItems": 1000
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "purchase_authorized": {
+          "const": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "destination",
+        "provider_id",
+        "export_format",
+        "reviewed_lines",
+        "expires_at",
+        "purchase_authorized"
+      ],
+      "additionalProperties": false
+    },
+    "conversion": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-conversion/1"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "conversion_kind": {
+          "enum": [
+            "density",
+            "count-weight",
+            "pack",
+            "edible",
+            "drained",
+            "yield",
+            "retention",
+            "same-dimension"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "original_expression": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "source",
+        "conversion_kind",
+        "scope",
+        "original_expression",
+        "valid_from",
+        "valid_until"
+      ],
+      "additionalProperties": false
+    },
+    "lot_event": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-lot_event/1"
+        },
+        "from_location_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_location_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "related_lot_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "maxItems": 100
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "from_location_id",
+        "to_location_id",
+        "related_lot_ids",
+        "source",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "lot_check": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-lot_check/1"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1
+          },
+          "maxItems": 100
+        },
+        "market_country": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lot_code": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "product_version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "automatic_safety_guarantee": {
+          "const": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "source",
+        "evidence_ids",
+        "market_country",
+        "lot_code",
+        "product_version",
+        "rule_id",
+        "reason",
+        "automatic_safety_guarantee"
+      ],
+      "additionalProperties": false
+    },
+    "saved_recipe": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-saved_recipe/1"
+        },
+        "recipe": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/recipe"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "rights_private_use": {
+          "type": "boolean"
+        },
+        "rights_shared_use": {
+          "type": "boolean"
+        },
+        "rights_expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "recipe",
+        "source",
+        "rights_private_use",
+        "rights_shared_use",
+        "rights_expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "collection": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "offmenu-household-collection/1"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "name",
+        "description"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

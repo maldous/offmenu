@@ -136,7 +136,8 @@ class IngestRunnerTests(unittest.TestCase):
         for domain in ('ingredients','recipes','dietary','suppliers','citations'):
             self.assertGreater(report['domains'][domain]['written'],0,report)
         self.assertGreaterEqual(report['domains']['barcodes']['reused_stores'],1)
-        self.assertEqual(report['domains']['user_profiles']['status'],'awaiting_user_input')
+        self.assertEqual(report['domains']['user_profiles']['status'],'schema_only')
+        self.assertEqual(report['domains']['user_profiles']['scope'],'app_managed')
         self.assertEqual(self.case.head(),self.case.head(self.case.remote))
         receipts=[json.loads(p.read_text()) for p in self.case.receipts()]
         self.assertEqual({v['outcome'] for v in receipts},{'running','partial'})
@@ -153,7 +154,8 @@ class IngestRunnerTests(unittest.TestCase):
         self.assertGreater(before['totals']['files_remaining'],after['totals']['files_remaining'])
         self.assertGreater(after['totals']['completed']+after['totals']['reused'],0)
         self.assertGreaterEqual(after['domains']['recipes']['partial'],1)
-        self.assertEqual(after['awaiting_input_domains'],['user_profiles','inventory'])
+        self.assertEqual(after['awaiting_input_domains'],[])
+        self.assertEqual(after['scope']['policy'],'external_ingest_only')
         self.assertTrue((state/'pending-work.private.json').is_file())
         self.assertTrue((state/'pending-work.json').is_file())
 

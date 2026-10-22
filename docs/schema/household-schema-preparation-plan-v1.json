@@ -1,0 +1,19 @@
+{
+  "schema": "offmenu-household-schema-preparation-plan/1",
+  "source_baseline": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "purpose": "Offline empty schema preparation only; no migration of an existing database",
+  "ordered_sql": [
+    {
+      "path": "cloud/schema.sql",
+      "sha256": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380"
+    },
+    {
+      "path": "cloud/migrations/20261022-byoc-security-v1.sql",
+      "sha256": "5d4f11d7e2a475744f25f2403d238353be058d1086e04df4278cfc248817c2b1"
+    },
+    {
+      "path": "cloud/migrations/20261022-household-domain-v1.sql",
+      "sha256": "0a8ac60ebe1d5d6edf4e60335ffb1b76febe278c43e4ab08979ed9c221e419de"
+    }
+  ]
+}

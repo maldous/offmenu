@@ -15,16 +15,17 @@ import shutil
 import threading
 import time
 import uuid
-from ingest_api import (DOMAINS, COUNTERS, BudgetExceeded, source_key,
+from ingest_api import (DOMAINS, APP_MANAGED_DOMAINS, COUNTERS, BudgetExceeded, source_key,
                         GLOBAL_BUDGET_DEFAULTS, sanitize_budget_stop)
 from ingest_store import DomainStore
 from ingest_errors import (ERROR_CLASSES, classify_error, collect_error_snapshot,
                            sanitize_error_telemetry)
 try:
-    from ingest_evidence import EvidenceCollector, sanitize_evidence
+    from ingest_evidence import EvidenceCollector, sanitize_evidence, summarize_diagnostics
 except Exception:
     EvidenceCollector = None
     sanitize_evidence = None
+    summarize_diagnostics = None
 try:
     from ingest_pending import collect_pending_work, sanitize_pending_work, dashboard, output_identity, store_path
 except Exception:
@@ -143,6 +144,12 @@ def sanitize_report(report):
         safe['domains'][domain] = {'status': row.get('status') if row.get('status') in DOMAIN_STATUSES else 'pending',
             **{key:_nonnegative(row.get(key,0)) for key in PUBLIC_COUNTERS},
             'error_codes': sorted(set(row.get('error_codes',[])) & ERROR_CODES) if isinstance(row.get('error_codes',[]),list) and all(isinstance(x,str) for x in row.get('error_codes',[])) else []}
+        if domain in APP_MANAGED_DOMAINS:
+            safe['domains'][domain]['scope'] = 'app_managed'
+        # Unknown is not zero before the owning writer has opened the store.
+        for key in ('stored_records_before', 'stored_records'):
+            value = row.get(key)
+            safe['domains'][domain][key] = value if type(value) is int and 0 <= value <= 10**15 else None
         if isinstance(row.get('timing'), dict):
             safe['domains'][domain]['timing'] = {key: (value if type(value) is int and 0 <= value <= 10**15 else None)
                 for key in ('elapsed_ms','active_source_elapsed_ms','since_last_progress_ms','active_source_bytes','sources_timed','completed_source_elapsed_ms')
@@ -151,6 +158,14 @@ def sanitize_report(report):
             safe['domains'][domain]['error_telemetry'] = sanitize_error_telemetry(row['error_telemetry'])
         if 'budget_stop' in row:
             safe['domains'][domain]['budget_stop'] = sanitize_budget_stop(row['budget_stop'])
+    known = [row for row in safe['domains'].values() if row['stored_records'] is not None]
+    before = [row for row in safe['domains'].values() if row['stored_records_before'] is not None]
+    safe['stored_totals'] = {
+        'scope': 'committed_staging_source_version_rows_excludes_external_reuse',
+        'snapshot_scope': 'independent_domain_checkpoints_not_atomic',
+        'domains_known': len(known), 'domains_total': len(DOMAINS),
+        'stored_records': sum(row['stored_records'] for row in known) if len(known) == len(DOMAINS) else None,
+        'stored_records_before': sum(row['stored_records_before'] for row in before) if len(before) == len(DOMAINS) else None}
     for key in ('catalog_sha256',):
         value = report.get(key)
         if isinstance(value,str) and re.fullmatch('[a-f0-9]{64}',value):
@@ -159,6 +174,12 @@ def sanitize_report(report):
     safe['report_delivery_errors'] = _nonnegative(report.get('report_delivery_errors',0))
     if 'pending_work' in report:
         safe['pending_work'] = sanitize_pending_work(report['pending_work'])
+    if 'storage_sizes' in report:
+        try:
+            from ingest_storage_sizes import validate_storage_sizes
+            safe['storage_sizes'] = validate_storage_sizes(report['storage_sizes'])
+        except Exception:
+            pass
     if 'relational_targets' in report:
         try:
             from ingest_relational_targets import sanitize_relational_summary
@@ -268,6 +289,15 @@ class IngestContext:
             counts['source_bytes'] = size if type(size) is int and size >= 0 else None
         self._progress_callback(self.domain, counts)
 
+    def report_skip(self, source):
+        """Expected adapter skip: preserve legacy callback slots, not errors.
+
+        Adapter-owned skipped/reason counters are attached to the source summary.
+        Do not emit one coordinator event or perform SQLite I/O per lead record.
+        """
+        if self.store is not None:
+            self.store.reserve_adapter_error_slot(source)
+
     def report_error(self, source, exc):
         self.adapter_errors += 1
         error_class, reason = classify_error(exc)
@@ -288,6 +318,10 @@ class IngestContext:
         return error
 
     def ingest(self, source, records):
+        # A latched global stop must not fingerprint/open/register the next
+        # source, including custom handlers without their own boundary check.
+        # Store-owned per-source row caps do not latch this global budget.
+        self.check_budget()
         source_started = time.monotonic()
         self.active_source = source
         try:
@@ -315,20 +349,34 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
     try:
         with DomainStore(domain, context.state_dir, config, context.check_budget, context.progress) as store:
             context.store=store
-            if not sources:
-                result = {'status':'awaiting_user_input' if domain in ('user_profiles','inventory') else 'missing', 'sources':[]}
+            if domain in APP_MANAGED_DOMAINS:
+                # Keep existing staging schemas/rows/counts; no external or
+                # historically scoped household source is an ingest requirement.
+                result = {'status': 'schema_only', 'scope': 'app_managed', 'sources': []}
+            elif not sources:
+                result = {'status': 'missing', 'sources': []}
             else:
                 handler = (adapters or {}).get(domain)
                 if handler is not None:
-                    result = handler(domain, sources, context)
+                    try:
+                        context.check_budget()
+                        result = handler(domain, sources, context)
+                    except BudgetExceeded:
+                        result = {'status': 'partial', 'sources': context.source_summaries,
+                                  'error_codes': ['BudgetExceeded']}
                 else:
                     # Each fixed adapter group is isolated. A broken acquired
                     # format cannot suppress a successful retained domain.
+                    context.check_budget()
                     groups = {}
                     source_results = []
+                    budget_interrupted = False
                     for source in sources:
                         acquired = source.get('acquired_source') or source.get('acquired_adapter') or isinstance(source.get('metadata'), dict) and 'acquisition' in source['metadata']
                         if acquired and source.get('disposition') in ('missing', 'unreadable'):
+                            # Do not manufacture source-error bookkeeping after
+                            # a global stop, even during metadata grouping.
+                            context.check_budget()
                             reason = source.get('reason')
                             exc = PermissionError('acquired_cache_read_permission_denied') if reason in ('read_permission_denied', 'PermissionError') else FileNotFoundError('acquired_cache_file_missing') if source.get('disposition') == 'missing' else OSError('acquired_cache_unreadable')
                             context.report_error(source, exc)
@@ -350,12 +398,32 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
                         selected = groups[module_name]
                         before = len(context.source_summaries)
                         try:
+                            context.check_budget()
                             handler = importlib.import_module(module_name).run_domain
                             group = handler(domain, selected, context)
                             if not isinstance(group, dict):
                                 raise TypeError('adapter_result_not_mapping')
                             group_results.append(group)
                             source_results.extend(group.get('sources', []))
+                            # Finished acquired groups become visible while the
+                            # retained tail runs. Only bounded fixed-code counts
+                            # cross this callback, never rows or source paths.
+                            if summarize_diagnostics is not None:
+                                try:
+                                    snapshot = summarize_diagnostics({domain: group},
+                                        min(10000, max(1, int(config.get('evidence_max_items', 2000)))),
+                                        time.monotonic() + min(.25, max(.001, float(config.get('evidence_max_seconds', .05)))))
+                                    context.progress(event='adapter_group_finished',
+                                        group=module_name, diagnostics=snapshot)
+                                except Exception:
+                                    pass
+                        except BudgetExceeded:
+                            # A global resource stop is not a source failure.
+                            # Keep committed/partial summaries and leave every
+                            # untouched descriptor and later group untouched.
+                            source_results.extend(context.source_summaries[before:])
+                            budget_interrupted = True
+                            break
                         except Exception as exc:
                             # Durable completed sources from a failed adapter
                             # stay visible and are not counted again as failed.
@@ -369,6 +437,7 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
                                         'status': 'failed', 'errors': 1,
                                         'error_class': type(exc).__name__})
                     result = {'sources': source_results,
+                        **({'status': 'partial', 'error_codes': ['BudgetExceeded']} if budget_interrupted else {}),
                         **{key: sum(_nonnegative(g.get(key)) for g in group_results)
                            for key in (*COUNTERS, 'reused_rows', 'reused_stores')}}
                 if not isinstance(result, dict):
@@ -401,7 +470,7 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
             result['binding']='additive_staging_not_app_bound'
             result['binding_status']='unresolved_current_application_binding'
             result['target']=str(store.path)
-            result['stored_records']=int(store.db.execute("SELECT value FROM ingest_meta WHERE key='record_count'").fetchone()[0])
+            result.update(store.stored_totals())
             result['database_id']=store.db.execute("SELECT value FROM ingest_meta WHERE key='database_id'").fetchone()[0]
             result['adapter_errors']=context.private_errors
             return result
@@ -412,7 +481,8 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
                 **({'budget_stop': context.budget_stop} if context.budget_stop is not None else {}),
                 'sources_total':len(sources),'error_class':type(exc).__name__,
                 'error_codes':[type(exc).__name__] if type(exc).__name__ in ERROR_CODES else ['source_error'],
-                'binding':'additive_staging_not_app_bound','sources':context.source_summaries}
+                'binding':'additive_staging_not_app_bound','sources':context.source_summaries,
+                **(context.store.stored_totals() if context.store is not None else {})}
 
 
 def run_ingest(sources, config=None, report_callback=None, adapters=None, catalog=None):
@@ -445,6 +515,7 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
             'catalog_sha256':config.get('catalog_sha256'),
             'catalog_truncated':bool(config.get('catalog_truncated',False)), 'report_delivery_errors':0}
     private_results={}
+    live_diagnostics={d: {} for d in DOMAINS}
     last_private_write=[0.0]
     evidence = None
     if EvidenceCollector is not None:
@@ -473,6 +544,11 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
             current=report['domains'][domain]
             current['status']='running'
             current['timing']=timing_snapshot(domain,now)
+            for count in ('stored_records_before', 'stored_records'):
+                if type(event.get(count)) is int and 0 <= event[count] <= 10**15:
+                    current[count] = event[count]
+            if kind == 'adapter_group_finished':
+                live_diagnostics[domain][event['group']] = event['diagnostics']
             key=event.get('source_key')
             if event.get('event') == 'adapter_error':
                 identity = (key, event['error_class'], event['reason_code'])
@@ -509,7 +585,16 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
         except Exception:
             # Optional diagnostics must never stop authorized ingestion.
             errors = {'summary': {domain: sanitize_error_telemetry({}) for domain in DOMAINS}}
+        storage_sizes = None
+        try:
+            from ingest_storage_sizes import capture_storage_sizes, unknown_storage_sizes
+            storage_sizes = unknown_storage_sizes()
+            storage_sizes = capture_storage_sizes(state_dir)
+        except Exception:
+            pass  # Optional metadata visibility never gates source ingestion.
         with lock:
+            if storage_sizes is not None:
+                report['storage_sizes'] = storage_sizes
             report['pending_work'] = pending_work
             for domain, telemetry in errors['summary'].items():
                 # Callbacks may have arrived during the read-only SQLite query.
@@ -525,11 +610,14 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
             report['updated_at']=_utc()
             report['elapsed_seconds']=int(now-started)
             observed_report = sanitize_report(report)
+            # Replace live group summaries with terminal results, never add both.
+            observed_results = {**{d: {'completed_group_diagnostics': tuple(groups.values())}
+                for d, groups in live_diagnostics.items() if groups}, **private_results}
         if evidence is not None:
             try:
                 phase = 'pre' if not published_once else 'checkpoint' if report['status'] == 'running' else 'post'
                 captured = evidence.capture(phase, observed_report,
-                    results=private_results, pending_private=pending_private)
+                    results=observed_results, pending_private=pending_private)
                 with lock:
                     report['ingest_evidence'] = captured
             except Exception:

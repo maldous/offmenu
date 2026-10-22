@@ -1,0 +1,280 @@
+{
+  "schemaVersion": "offmenu-byoc-requirements/1",
+  "baselineCommit": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "scope": "Prepared schema/helper contracts only; not activated or production-qualified",
+  "requirements": [
+    {
+      "id": "BYOC-01",
+      "requirement": "Keep original verified identity; no household-derived credential authority",
+      "sources": [
+        {
+          "path": "cloud/schema.sql",
+          "printedPage": null
+        },
+        {
+          "path": "docs/better-auth-foundation.md",
+          "printedPage": null
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 7
+        }
+      ],
+      "preparedContract": [
+        "sec_provider_connections",
+        "sec_envelopes"
+      ],
+      "focusedEvidence": [
+        "SQL owner/provider constraints",
+        "AAD negative tests"
+      ],
+      "runtimeGap": "Fresh route and transaction authorization not mounted"
+    },
+    {
+      "id": "BYOC-02",
+      "requirement": "Separate key material and ciphertext; explicit server-envelope/client custody",
+      "sources": [
+        {
+          "path": "cloud/provider-data.mjs",
+          "printedPage": null
+        },
+        {
+          "path": "README.md",
+          "printedPage": null
+        }
+      ],
+      "preparedContract": [
+        "sec_key_references",
+        "sec_envelopes",
+        "createEnvelopeCryptor"
+      ],
+      "focusedEvidence": [
+        "missing-key/raw-key/custody tests"
+      ],
+      "runtimeGap": "External custody/KMS/KEK adapter not provisioned; legacy migration not executed"
+    },
+    {
+      "id": "BYOC-03",
+      "requirement": "Bind provider, owner, optional kitchen, object, purpose, version into authenticated encryption",
+      "sources": [
+        {
+          "path": "cloud/provider-data.mjs",
+          "printedPage": null
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 4
+        }
+      ],
+      "preparedContract": [
+        "sec_envelopes",
+        "sec_provider_connections"
+      ],
+      "focusedEvidence": [
+        "AAD swap and SQL provider binding tests"
+      ],
+      "runtimeGap": "Runtime mapper and native D1 acceptance not mounted"
+    },
+    {
+      "id": "BYOC-04",
+      "requirement": "Scopes, expiry, entitlement/session epochs and immediate revoke",
+      "sources": [
+        {
+          "path": "docs/session-state-d1-owner04.md",
+          "printedPage": null
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 7
+        }
+      ],
+      "preparedContract": [
+        "sec_sessions",
+        "sec_connection_scopes",
+        "credentialUseAllowed"
+      ],
+      "focusedEvidence": [
+        "fresh snapshot predicate mutations"
+      ],
+      "runtimeGap": "Atomic start/commit/serve and provider-side revoke remain runtime prerequisites"
+    },
+    {
+      "id": "BYOC-05",
+      "requirement": "Private use, facts, aggregates and away refresh are separate choices",
+      "sources": [
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 7
+        }
+      ],
+      "preparedContract": [
+        "sec_consents",
+        "sec_consent_events"
+      ],
+      "focusedEvidence": [
+        "append-only/scope tests"
+      ],
+      "runtimeGap": "UI, guardian authority and consent-event transaction adoption pending"
+    },
+    {
+      "id": "BYOC-06",
+      "requirement": "No retailer cookies/passwords/payment access inferred from browser session",
+      "sources": [
+        {
+          "path": "extension/README.md",
+          "printedPage": null
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 8
+        }
+      ],
+      "preparedContract": [
+        "sec_provider_connections"
+      ],
+      "focusedEvidence": [
+        "browser-local cannot hold envelope test"
+      ],
+      "runtimeGap": "No new retailer connector or extension permissions"
+    },
+    {
+      "id": "BYOC-07",
+      "requirement": "No credential or body in DB plaintext, logs, exports, Git or queues",
+      "sources": [
+        {
+          "path": "README.md",
+          "printedPage": null
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 4
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 8
+        }
+      ],
+      "preparedContract": [
+        "sec_envelopes",
+        "sec_audit_events"
+      ],
+      "focusedEvidence": [
+        "cipher envelope payload absence",
+        "no generic secret/body columns"
+      ],
+      "runtimeGap": "Existing library-owned auth token text fields require separate adoption qualification; no blanket legacy encryption claim"
+    },
+    {
+      "id": "BYOC-08",
+      "requirement": "Personal/health/household profiles private; explicit per-member access",
+      "sources": [
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 6
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 7
+        }
+      ],
+      "preparedContract": [
+        "sec_envelopes",
+        "sec_consents",
+        "companion household_profile_grants"
+      ],
+      "focusedEvidence": [
+        "owner/kitchen/purpose AAD tests"
+      ],
+      "runtimeGap": "Profile service authorization and guardian approval not implemented here"
+    },
+    {
+      "id": "BYOC-09",
+      "requirement": "Field-level rights and independent aggregate privacy gates, never automatic anonymous publication",
+      "sources": [
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 3
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 6
+        },
+        {
+          "path": "docs/private-aggregate-admission-owner59.md",
+          "printedPage": null
+        }
+      ],
+      "preparedContract": [
+        "separate contribution consent purposes",
+        "no automatic promotion schema"
+      ],
+      "focusedEvidence": [
+        "private_use predicate rejects background purpose"
+      ],
+      "runtimeGap": "Public promotion and aggregate publication remain denied pending actual qualified rights/privacy evidence"
+    },
+    {
+      "id": "BYOC-10",
+      "requirement": "Rotation, revocation and preserved legacy key continuity",
+      "sources": [
+        {
+          "path": "README.md",
+          "printedPage": null
+        },
+        {
+          "path": "docs/better-auth-foundation.md",
+          "printedPage": null
+        }
+      ],
+      "preparedContract": [
+        "sec_key_references",
+        "immutable sec_envelopes"
+      ],
+      "focusedEvidence": [
+        "missing/wrong key denial",
+        "legacy ciphertext preserved"
+      ],
+      "runtimeGap": "External key rotation/re-encryption and restore proof not run"
+    },
+    {
+      "id": "BYOC-11",
+      "requirement": "Deletion across caches, raw bodies, assertions, indexes, embeddings, derivatives and backups",
+      "sources": [
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 9
+        }
+      ],
+      "preparedContract": [
+        "sec_deletion_requests",
+        "sec_deletion_targets"
+      ],
+      "focusedEvidence": [
+        "incomplete target and restore replay denial"
+      ],
+      "runtimeGap": "Actual store deletion and backup tombstone executor not implemented"
+    },
+    {
+      "id": "BYOC-12",
+      "requirement": "No quota pooling; scheduled refresh needs explicit bounded authority",
+      "sources": [
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 5
+        },
+        {
+          "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+          "printedPage": 7
+        }
+      ],
+      "preparedContract": [
+        "sec_connection_scopes",
+        "background_refresh consent"
+      ],
+      "focusedEvidence": [
+        "private-use predicate denies background refresh"
+      ],
+      "runtimeGap": "Scheduler, budgets and source-specific scheduled-use policy adapter pending"
+    }
+  ]
+}

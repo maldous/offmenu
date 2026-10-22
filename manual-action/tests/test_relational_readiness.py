@@ -120,7 +120,9 @@ class ReadinessTests(unittest.TestCase):
         self.assertEqual(report['evidence_status'], 'complete_for_supported_staging_contracts')
         self.assertEqual(report['counts']['resolved'], 4)
         self.assertEqual(report['counts']['reciprocal_mismatches'], 0)
-        self.assertEqual(report['domains']['user_profiles']['status'], 'schema_only_awaiting_user_input')
+        self.assertEqual(report['domains']['user_profiles']['status'], 'schema_only_app_managed')
+        legacy = {'domains': {'user_profiles': {'status': 'schema_only_awaiting_user_input'}}}
+        self.assertEqual(rr.sanitized_summary(legacy)['domains']['user_profiles']['status'], 'schema_only_awaiting_user_input')
         self.assertEqual(report['domains']['inventory']['scope'], 'not_exercised_no_input')
         self.assertEqual(report['status'], 'blocked')
         self.assertEqual(report['fetch_status'], 'disabled')

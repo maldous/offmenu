@@ -57,7 +57,7 @@ class ReceiptBranchTests(unittest.TestCase):
         self.assertNotEqual(self.case.case.head(self.case.case.remote),initial)
         self.assertEqual(self.git(self.root,'diff','--cached','--name-only'),'')
         self.assertEqual(unrelated.read_text(),'Keep unrelated local changes')
-        self.assertEqual({v['outcome'] for v in self.receipts()},{'running','completed'})
+        self.assertEqual({v['outcome'] for v in self.receipts() if v['schema']=='offmenu-run-receipt/2'},{'running','completed'})
         self.assertFalse(list((self.root/m.RETURN_DIR).glob('*.json')))
         self.case.case.close(runner)
         retry=self.case.runner();self.assertEqual(retry.run_plan(),0)

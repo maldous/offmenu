@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "offmenu-byoc-source-provenance/1",
+  "repository": "maldous/offmenu",
+  "commit": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "sources": [
+    {
+      "path": "README.md",
+      "gitBlobSha": "f6ce95ed4f448ee2b10f8a30da1f703b2693bb39"
+    },
+    {
+      "path": "cloud/provider-data.mjs",
+      "gitBlobSha": "c399b78e0dcd0c1b580549c948ba55af83277fa9"
+    },
+    {
+      "path": "cloud/auth-schema.sql",
+      "gitBlobSha": "b7f43ce9245f0645b22c2f1f88dab7de12cdb758"
+    },
+    {
+      "path": "docs/better-auth-foundation.md",
+      "gitBlobSha": "f38e226a68adbee5137a854a16ec0c1dc95acda5"
+    },
+    {
+      "path": "docs/better-auth-runtime-seam.md",
+      "gitBlobSha": "8561397be7e010df4bde46a12aa83aebb4910594"
+    },
+    {
+      "path": "docs/session-state-d1-owner04.md",
+      "gitBlobSha": "a28c9c0dcaf99a5b5d3f31431f8f7e361142c426"
+    },
+    {
+      "path": "docs/private-aggregate-admission-owner59.md",
+      "gitBlobSha": "941469ab740d7e33653b396cfddbed3538cff45e"
+    },
+    {
+      "path": "extension/README.md",
+      "gitBlobSha": "6661d7174c67edc2a249cc9aa1eeb98d11972c10"
+    },
+    {
+      "path": "cloud/schema.sql",
+      "gitBlobSha": "e5ccc109e270a4ed195ebdd629baebb0b4be86d2"
+    },
+    {
+      "path": "research/reports/04-OffMenu_User_Driven_Cache_and_Enrichment_Design-1-.pdf",
+      "gitBlobSha": "e44fa722b776de9fda9034a1e0fb5cb34ea2a3ba",
+      "sha256": "2e049a433c329421249a27ccbf92f15c64b9da2cc3adb065d8c6ddb13dff2ccd"
+    }
+  ],
+  "excludedFromDelivery": [
+    "baseline source copies",
+    "PDF/base64 extraction",
+    "cloud/schema.sql unchanged local test context",
+    "test logs and caches"
+  ],
+  "actionsNotTaken": [
+    "provider calls",
+    "real credential access",
+    "key provisioning",
+    "live schema application",
+    "deployment",
+    "security settings changes",
+    "Foo access"
+  ]
+}

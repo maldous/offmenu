@@ -87,19 +87,19 @@ class ErrorTelemetryTests(unittest.TestCase):
 
     def test_completed_with_errors_has_classes_at_initial_checkpoint_without_reader_replay(self):
         self.path.write_text('\n'.join(json.dumps(row) for row in [
-            {'lead': 'generated'}, {'lead': 'generated'}, {'lead': 'generated'},
+            None, False, 17,
             {'id': 'valid', 'name': 'Generated soup', 'ingredients': ['salt'], 'instructions': ['Mix']}]) + '\n')
         first = run_ingest([self.source], self.config)
         row = first['domains']['recipes']
         self.assertEqual((row['written'], row['errors'], row['status']), (1, 3, 'partial'))
-        self.assertEqual(row['error_telemetry']['class_counts'], {'UnsupportedSource': 3})
-        self.assertEqual(row['error_telemetry']['reason_counts'], {'unrecognized_recipe_or_lead_only': 3})
+        self.assertEqual(row['error_telemetry']['class_counts'], {'MalformedRecord': 3})
+        self.assertEqual(row['error_telemetry']['reason_counts'], {'record_not_object': 3})
         checkpoints = []
         with mock.patch('ingest_recipes._read_rows', side_effect=AssertionError('completed source replayed')):
             second = run_ingest([self.source], self.config, checkpoints.append)
         self.assertEqual(second['domains']['recipes']['written'], 0)
         self.assertEqual(second['domains']['recipes']['errors'], 3)
-        self.assertEqual(checkpoints[0]['domains']['recipes']['error_telemetry']['class_counts'], {'UnsupportedSource': 3})
+        self.assertEqual(checkpoints[0]['domains']['recipes']['error_telemetry']['class_counts'], {'MalformedRecord': 3})
         self.assertEqual(second['domains']['recipes']['error_telemetry']['reason_counts'], {})
         self.assertEqual(second['pending_work']['domains']['recipes']['partial'], 1)
         self.assertEqual(second['pending_work']['domains']['recipes']['failed'], 0)

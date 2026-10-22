@@ -1,0 +1,206 @@
+{
+  "base_commit": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "excluded": [
+    "Foo host state and execution",
+    "remote mutation",
+    "private data and logs",
+    "external private-source fetch/import/solicitation",
+    "application schema/encryption deployment claims",
+    "adapter version changes cursor resets or deletion"
+  ],
+  "files": [
+    {
+      "after_sha256": "21af56717348325c067c2e162ca5b9747924ac73c7b7ef97a3b15c2cf9e9849c",
+      "before_sha256": null,
+      "bytes": 4587,
+      "git_blob_sha1": "57c267271b0bb31b36aecb2778a140ad6f815f31",
+      "path": "manual-action/APP-MANAGED-SCOPE-PREPARATION.md"
+    },
+    {
+      "after_sha256": "efaa01de50459f8622552f1b77b61bede67fc1f0ea31bd3cc90f5fabe6e268a5",
+      "before_sha256": "c182a33a9b7921a232c8ce4018fa7d07e7757572005a0599745ff2aca534cc71",
+      "bytes": 6306,
+      "git_blob_sha1": "80fea937f2f3be070b1a4da618efa9da30e67390",
+      "path": "manual-action/PENDING-WORK.md"
+    },
+    {
+      "after_sha256": "49feee39e218806a1099b88dbc2dbdb40cca5e2ba4eb96f275d527fe7a567781",
+      "before_sha256": "a4eeda39fcf251ba0940677dc4022bfe6c0e2a31ae3b9501f0e023ac5c8829a9",
+      "bytes": 19257,
+      "git_blob_sha1": "d75c4e34a60d9090af21d2023fd7f43568a6bac3",
+      "path": "manual-action/RELATIONAL-READINESS.md"
+    },
+    {
+      "after_sha256": "b26a90375b9dc410dad2f6d00687ad810d60a653721d3a886cf4a4c998ffb26b",
+      "before_sha256": "5178609b4a59a91fee9f34b329796e596a8e161b43df5cf91dc3819d52548481",
+      "bytes": 3958,
+      "git_blob_sha1": "5a07479525062841945619980bfa52086c1a1a82",
+      "path": "manual-action/ingest_api.py"
+    },
+    {
+      "after_sha256": "b4260bcb32c9a5d72e52ab8f16286bc8baf5be5b6557620ee10e206e3812a1fe",
+      "before_sha256": "88f9f0638d2b05837cb187cc5da688ab29a4bceb5aa7c0aa08f5b3cc23be910f",
+      "bytes": 46399,
+      "git_blob_sha1": "42f09decdfdd48492a16a4360c5a6626952d5782",
+      "path": "manual-action/ingest_engine.py"
+    },
+    {
+      "after_sha256": "912495307a83af6eeeb588d46b1697a8419c43a7e79a461ecde7a301407bfc47",
+      "before_sha256": "922ad9c0bb1969949554b1320db05a68a5fd28467252af8ac172fc1a89252357",
+      "bytes": 43699,
+      "git_blob_sha1": "e9016a0f114fe6c5a99e7f810c52f0856bda49d7",
+      "path": "manual-action/ingest_evidence.py"
+    },
+    {
+      "after_sha256": "3a1fd6e4231e4d838e30dfbdbf0ceefd8816a9479d7d0fe4767abe443497531d",
+      "before_sha256": "a9dbd169c429bbfa937103c63bc5199ebffcb4bc09c86f52fc038fdcfe1bbdc1",
+      "bytes": 12583,
+      "git_blob_sha1": "9aa4e9c6baf6365aa201d29a08cd89fdccb6018d",
+      "path": "manual-action/ingest_existing.py"
+    },
+    {
+      "after_sha256": "be5d2bca421eecc3a3c62c217f7f7658670ece2b01c55a8acb50150f3b49731a",
+      "before_sha256": "09a8bd650dde7c64245cf4415a5d62156c2d21486991d65931527f639f5bd183",
+      "bytes": 23264,
+      "git_blob_sha1": "07a2c58582296bcd8ebdffc0a7cf26f68bf569e5",
+      "path": "manual-action/ingest_pending.py"
+    },
+    {
+      "after_sha256": "0332edc9cfbeffe92901ac72a316f2c6fe12cbba219c9bb3010df0ad34df1e7e",
+      "before_sha256": "dd28a393271407218f911b1a7495905f2fc831e2f5fa4787f70747fd7d873519",
+      "bytes": 61256,
+      "git_blob_sha1": "0e79a16540b1714c4b308b5c42280f3126f6bfda",
+      "path": "manual-action/plan_runner.py"
+    },
+    {
+      "after_sha256": "9993ddb1883b01065f2150fed61cadecdbc9cb4d77bdcfc0fed1756af7502ce4",
+      "before_sha256": "7546ff36038477ac141f1b823935bad8d29f14cf7c5dfe27684a5a2011087610",
+      "bytes": 52464,
+      "git_blob_sha1": "14c488c27b4604bfd66fc06b07b2de8957bc7c1c",
+      "path": "manual-action/relational_readiness.py"
+    },
+    {
+      "after_sha256": "82b1b5bafd6fb15349da6b6cacb409f8e3ed1b2f417b497bca5f6fb52699492e",
+      "before_sha256": null,
+      "bytes": 11722,
+      "git_blob_sha1": "8020440befcac6df2c1101c9f905649aadafd80e",
+      "path": "manual-action/tests/test_app_managed_scope.py"
+    },
+    {
+      "after_sha256": "ec7cb13ae23adc0385bd5d726158f79f40bd155cfd15dbab70c5cc5935b4b1c0",
+      "before_sha256": "074517c08775fed5d829a7019fc0f643eedbd143057426d2431622341a7caa7b",
+      "bytes": 16888,
+      "git_blob_sha1": "0aef610967827c0f035decd6eeae8266f636f891",
+      "path": "manual-action/tests/test_ingest_engine.py"
+    },
+    {
+      "after_sha256": "98467b0602c0a2d904d090c843659f6085aa84d811dfc2c334b1caec97aba189",
+      "before_sha256": "5d0b8b529315e9bca449fb7dfcd8ed49a9f841e4c5b014847b6fa8cb8c3b804b",
+      "bytes": 6075,
+      "git_blob_sha1": "ccfa7d378d52383cfe209fe88499ee31f9a51d98",
+      "path": "manual-action/tests/test_ingest_existing.py"
+    },
+    {
+      "after_sha256": "5bb8e607ca4d39797e441f267a11b79f5adf669bf8f9362b42ebcb0f30653ce0",
+      "before_sha256": "127aab44ef6502f7698e0d1e11affad698a99286f0214e7089f3618f05cd031b",
+      "bytes": 14885,
+      "git_blob_sha1": "108a43dad25b66a9f2ebe88fd313c5d1b979d0d3",
+      "path": "manual-action/tests/test_ingest_pending.py"
+    },
+    {
+      "after_sha256": "b7079478f7d269f39f4e63a8bf8d8a94f1d0a68630bcd7439b8ae5d59f922203",
+      "before_sha256": "33cef2bdd1041bdb983a2f3ee7b36d0a868f91f97bf72ea96a2db88cb89ad790",
+      "bytes": 20207,
+      "git_blob_sha1": "f4a788858e6b8c2390d2c2fd20ffa9f2dcc0ea5e",
+      "path": "manual-action/tests/test_ingest_runner.py"
+    },
+    {
+      "after_sha256": "54255d3abb503172cb851dd7808c1a4ec68883a23284b74d1cbd9fe021d09ee0",
+      "before_sha256": "2cf41927cdcbda7b3fe070e4ec7ee234adff1a1874f7cc5ac55346fb08e95331",
+      "bytes": 26123,
+      "git_blob_sha1": "81cc1a4a4f3f3f543623e7cb34dcf026cf615838",
+      "path": "manual-action/tests/test_relational_readiness.py"
+    }
+  ],
+  "prepared_base_files": [
+    {
+      "path": "manual-action/ERROR-ISOLATION-PREPARATION.md",
+      "sha256": "9511ed9b4417d633be12e78cb734ad8ea80d26edc1ac6c4ddfac6494cc18fad8"
+    },
+    {
+      "path": "manual-action/LIVE-STORED-TOTALS-PREPARATION.md",
+      "sha256": "48a7de8d2b9ab8234cba4c5574f5384f191b17447ea3d02fbaad7ac500b7e117"
+    },
+    {
+      "path": "manual-action/NEXT-BATCH-PREPARATION.md",
+      "sha256": "9d1a49ad5bcd07d88c58e80cd5f35ccb51d701a98c67513a27e613edcf946043"
+    },
+    {
+      "path": "manual-action/ingest_engine.py",
+      "sha256": "88f9f0638d2b05837cb187cc5da688ab29a4bceb5aa7c0aa08f5b3cc23be910f"
+    },
+    {
+      "path": "manual-action/ingest_errors.py",
+      "sha256": "9893a9ead86f75b4959eab1f822355fe1b65c1dc8ceb6907ff26bb88e9060d1a"
+    },
+    {
+      "path": "manual-action/ingest_evidence.py",
+      "sha256": "922ad9c0bb1969949554b1320db05a68a5fd28467252af8ac172fc1a89252357"
+    },
+    {
+      "path": "manual-action/ingest_recipes.py",
+      "sha256": "0893492be98eb4bcc6999b43ff3c87d954a7efaca2ee5e6b4125bf04d9891a84"
+    },
+    {
+      "path": "manual-action/ingest_store.py",
+      "sha256": "be3c5dc80e5dda63cb5e3b42031f1026d76898598d8cbd154914ed721aeceabb"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_error_isolation.py",
+      "sha256": "1d94bd685a6033d0de8dd0d292774585e0be8a3b8e7b6b4b4270f0d1e5070394"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_errors.py",
+      "sha256": "99eb4064fc1ec1827b2dda92c17aa601848a36cd23329b982db724581338193a"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_stored_totals.py",
+      "sha256": "2dddd845c9b69498dd924591bd39168e1f379978cc6c61f28e5bdb069b0fbc63"
+    },
+    {
+      "path": "manual-action/NEXT-BATCH-SOURCE-MANIFEST.json",
+      "sha256": "bd7e16c1e50308bb56067d69cfe8eb912ee22cccf1b5daca08eda612dc3677f9"
+    }
+  ],
+  "prepared_base_manifest_sha256": "bd7e16c1e50308bb56067d69cfe8eb912ee22cccf1b5daca08eda612dc3677f9",
+  "preserved": [
+    "all catalog assignments and source identities",
+    "existing private schemas records source versions cursors and actual stored totals",
+    "all eight reported domains",
+    "historical receipt and evidence canonical bytes",
+    "existing status/action enums and evidence vector shapes",
+    "base totals and error-isolation corrections"
+  ],
+  "promotion": "held; preparation only while current run remains active",
+  "schema": "offmenu-app-managed-scope-preparation/1",
+  "scope": "external-ingestion reporting and eligibility only; application migrations/encryption are separate",
+  "verification": {
+    "broad_suite_run": false,
+    "errors": 0,
+    "failures": 0,
+    "focused_tests": 18,
+    "generated_local_fixtures_only": true,
+    "runs": [
+      {
+        "log_sha256": "af8e786e6da49899a855f7714d09fe6d49c68eecf8624e8eb7c1065674409a22",
+        "seconds": 1.135,
+        "tests": 16
+      },
+      {
+        "log_sha256": "3033cca8ac3b606bdcabb23f7d6daceb79f472a84e7d795d320d5703fbf59f64",
+        "seconds": 6.396,
+        "tests": 2
+      }
+    ]
+  }
+}

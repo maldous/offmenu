@@ -1,0 +1,1633 @@
+{
+  "schema": "offmenu-household-requirements-matrix/1",
+  "baseline": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "register_count": 105,
+  "scope": "Known requirements reconciled, no promise of all future behaviors",
+  "requirements": [
+    {
+      "id": "P0-01",
+      "title": "Independently reviewed quantified meal pack and useful ingredient mappings",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "external-acceptance-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Independently cook/review the quantified starter meals and nutrition before calling the meal pack independently validated.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-02",
+      "title": "Produce, no-barcode and missing-product capture",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "verified-prototype",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_receipts",
+        "stock_receipt_lines",
+        "stock_lots"
+      ],
+      "encrypted_payload_contract": "item/identifier + receipt/receipt_line",
+      "constraint_or_behavior": "Barcode TEXT schemes/namespace; produce/private identities; reviewed capture not external fetching",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-03",
+      "title": "Ingredient identity and dimensional unit engine",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_units",
+        "stock_item_mappings",
+        "stock_quantity_conversions",
+        "stock_movements"
+      ],
+      "encrypted_payload_contract": "quantity/conversion/mapping",
+      "constraint_or_behavior": "Dimension-specific unit FKs; exact integer ledger; conversion evidence must be verified by adapter",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-04",
+      "title": "Independent household membership and roles",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "kitchens",
+        "kitchen_members",
+        "household_profiles",
+        "household_profile_grants"
+      ],
+      "encrypted_payload_contract": "profile",
+      "constraint_or_behavior": "Reuse existing owner/editor/viewer; profile private by default; explicit per-person consent grant",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-05",
+      "title": "Durable autosync, retry-safe operations and two-device proof",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_commands",
+        "stock_movements",
+        "household_profiles"
+      ],
+      "encrypted_payload_contract": "all revision-bearing rows",
+      "constraint_or_behavior": "Scoped idempotency and atomic ledger; runtime CAS/session checks pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-06",
+      "title": "Cooking, serving, leftovers and waste reconciliation",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "verified-prototype",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_cook_batches",
+        "stock_movements",
+        "stock_lots",
+        "household_intake_events",
+        "stock_waste_observations"
+      ],
+      "encrypted_payload_contract": "cook_batch/intake/waste",
+      "constraint_or_behavior": "Allocate/cook/serve/leftover/undo relationships, bounded discard; unknown actual intake not zero",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-07",
+      "title": "Restriction certainty and actual-package evidence",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_item_mappings",
+        "stock_lot_checks",
+        "household_profile_preferences"
+      ],
+      "encrypted_payload_contract": "preference/lot_check/lot",
+      "constraint_or_behavior": "Actual package/lot scope, source evidence, pass/fail/unknown/conflict; no automatic safety guarantee",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P0-08",
+      "title": "Keyboard/screen-reader/device usability, trust and recovery",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Core flows have automated coverage; complete independent cooking, package-level food matching, accessibility and physical two-device acceptance.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P1-01",
+      "title": "Reviewed receipt/label OCR with duplicates and minimal retention",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "not-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_receipts",
+        "stock_receipt_lines",
+        "sec_envelopes"
+      ],
+      "encrypted_payload_contract": "receipt/receipt_line",
+      "constraint_or_behavior": "Explicit complete review, finalization, per-owner source-digest dedup, image retention bounds",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P1-02",
+      "title": "Reusable planning, lunchboxes, attendance, batch cooking and date-aware reservations",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_meal_plans",
+        "household_plan_meals",
+        "household_meal_attendance",
+        "stock_reservations",
+        "stock_cook_batches"
+      ],
+      "encrypted_payload_contract": "plan/meal/attendance",
+      "constraint_or_behavior": "Templates/lunchboxes/attendance/dated reservations; no over-reserve; planner runtime pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P1-03",
+      "title": "Household likes, texture/spice preferences and reset",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_preferences"
+      ],
+      "encrypted_payload_contract": "preference",
+      "constraint_or_behavior": "Explicit likes/texture/spice/avoid/advisor restrictions separate; reset via declared/withdrawn lifecycle",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P1-04",
+      "title": "Shared shopping, substitutes, printable views, calendar and retailer handoff",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Priority feature portfolio, page 5",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_shopping_lists",
+        "household_shopping_lines",
+        "household_shopping_handoffs"
+      ],
+      "encrypted_payload_contract": "shopping_list/shopping_line/handoff",
+      "constraint_or_behavior": "Shared claims/substitution/reviewed export; no purchase authority",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-01",
+      "title": "Taste/culture, fasting windows, multiple homes and carers",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_contexts",
+        "household_profile_grants",
+        "kitchens"
+      ],
+      "encrypted_payload_contract": "context",
+      "constraint_or_behavior": "Explicit multiple homes/carer/taste/culture/fasting declarations, scoped consent; label is not authorization",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-02",
+      "title": "Opened/frozen/thawed/decanted/partial stock and private labels",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lots",
+        "stock_lot_events",
+        "stock_lot_balances"
+      ],
+      "encrypted_payload_contract": "lot/lot_event",
+      "constraint_or_behavior": "Opened/frozen/thawed/decanted states, partial quantity ledger and private labels",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-03",
+      "title": "Private recipes, bookmarks, family collections and creator packs",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_saved_recipes",
+        "household_recipe_collections",
+        "household_recipe_collection_members"
+      ],
+      "encrypted_payload_contract": "saved_recipe/recipe/collection",
+      "constraint_or_behavior": "Private recipes/bookmarks/licensed packs; no implicit public publishing",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-04",
+      "title": "Pack/unit-price/budget alternatives, fees and limited store stops",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "not-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_shopping_lists",
+        "household_shopping_lines"
+      ],
+      "encrypted_payload_contract": "money/shopping_list/shopping_line",
+      "constraint_or_behavior": "Dated prices, pack/unit/basis/currency/fees/budget/stops fields; optimization algorithm not implemented",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-05",
+      "title": "Measured waste reasons/quantity/value and seasonal smaller-pack suggestions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_waste_observations",
+        "stock_movements"
+      ],
+      "encrypted_payload_contract": "waste/money",
+      "constraint_or_behavior": "Measured/estimated/unknown quantity, reason/value/season context; suggestion algorithm pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-06",
+      "title": "Nutrition/hydration/snacks/restaurant entries/substitutions and private trends",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_intake_events",
+        "household_profile_preferences"
+      ],
+      "encrypted_payload_contract": "intake/nutrient/preference",
+      "constraint_or_behavior": "Meal/snack/hydration/restaurant/substitution, unknown coverage and dated basis",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-07",
+      "title": "Exercise schedules and consented dated body metrics",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_observations",
+        "household_contexts"
+      ],
+      "encrypted_payload_contract": "observation/context",
+      "constraint_or_behavior": "Sealed dated body/exercise values and explicit bounded exercise recurrence, source metric/profile HMAC dedup and consent; no clinical inference",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-08",
+      "title": "Native wearables/scales/vendor imports with overlap handling",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "external-access-and-mobile-build-required",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_observations",
+        "sec_provider_connections",
+        "sec_consents"
+      ],
+      "encrypted_payload_contract": "observation/source",
+      "constraint_or_behavior": "Source event identity and overlap_group retain vendor overlaps; native/device permissions remain external",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-09",
+      "title": "Country recall evidence and lot/date warnings",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lots",
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "lot/lot_check",
+      "constraint_or_behavior": "Separate lot code/version/market/production/use-by/best-before; source-qualified recall result",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-10",
+      "title": "Approved assistants, home displays and scoped future write proposals",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Owner-scoped personal AI and fresh-role administrator MCP read/write/management tools are implemented and locally tested at 65805762. Main integration, production acceptance and a sustained qualified administrator automation identity remain pending. Calendar, shortcuts, voice, Home Assistant and household-display integrations are not implemented by these primitives.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-11",
+      "title": "Governed professional sharing and clinical/IDDSI boundary",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "external-governance-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Define professional consent/clinical/IDDSI scope and obtain specialist validation before enabling care-provider prescriptions.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "P2-12",
+      "title": "Moderated creator/community/partnership features with rights and sponsorship",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion opportunities, page 6",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Native reviewed recipe sharing, comments, votes/ranks, opt-in community profiles/trophies and community moderation are implemented and locally tested on third-party-services at 65805762. Main-branch integration, production schema/feature deployment and live acceptance remain pending. Sponsorship disclosure, richer creator packs/challenges and external partnership workflows are not implemented. Licensed source acquisition is separate from these native community features.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-01",
+      "title": "Full eligible Open Food Facts product release and taxonomies",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-02",
+      "title": "Complete AFCD and eligible AUSNUT releases and supporting tables",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-03",
+      "title": "Complete eligible USDA food data types and supporting tables",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "verified-named-local-release",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Complete April 2026 USDA scope reconciles all 34 source tables and 4,202,558 normalized records; hosted curation deliberately withholds unusable rows.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-04",
+      "title": "Full permitted Wikibooks and rights-cleared creator recipe collections",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "verified-acquired-routes-review-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Live recipes: 23,661 full source records plus 256 incomplete OCR candidates. Personal measurement and culinary/dietary review remain distinct from ingestion.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-05",
+      "title": "Approved GS1 supplier/product identity feeds",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-provider-access-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Use approved GS1 contracts and user entitlements; no licensed GS1 feed access has been exercised.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-06",
+      "title": "Full permitted Open Prices related exports",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "verified-named-release",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Open Prices named release reconciles price, location and proof metadata; 317,898 price observations published, with no local-stock guarantee.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-07",
+      "title": "Full eligible CoFID/Ciqual/BLS and other national composition sources",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-08",
+      "title": "Credentialed nutrition/recipe providers under actual plan permissions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-issued-credentials-required",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-09",
+      "title": "Official recalls and source-backed storage guidance",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Reconcile the full named eligible source release and related tables, document access/rights gaps, and prove use in the product.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-10",
+      "title": "Private user/manufacturer input with separate contribution rights",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "household_saved_recipes",
+        "sec_consents"
+      ],
+      "encrypted_payload_contract": "item/saved_recipe",
+      "constraint_or_behavior": "Private user inputs never automatically become shared contributions",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-11",
+      "title": "Approved regional retailer and WhichGrocer product/offer coverage",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-provider-access-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Exercise approved retailer/WhichGrocer credentials, rights, barcode/pack matching and refresh before advertising live quote/stock coverage.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-12",
+      "title": "Approved merchant/delivery/Instacart/Kroger capabilities",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-provider-access-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Obtain approved Instacart/Kroger/delivery/merchant grants and test the specified region and capabilities.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-13",
+      "title": "Authorized POS/catalogue/menu/venue feeds",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-merchant-access-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Obtain authorized merchant/POS exports or API grants; Overture venue references do not establish restaurant menu data.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-14",
+      "title": "Consented vendor health and native bridges",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "external-access-and-mobile-build-required",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_observations",
+        "sec_provider_connections",
+        "sec_consents"
+      ],
+      "encrypted_payload_contract": "observation",
+      "constraint_or_behavior": "Vendor/private consent; no real health data or credentials seeded",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-15",
+      "title": "Portable import/export/calendar/hardware input",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_shopping_handoffs",
+        "stock_receipts"
+      ],
+      "encrypted_payload_contract": "handoff/receipt",
+      "constraint_or_behavior": "Reviewable portable export and input identities; adapter/device implementation pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DATA-16",
+      "title": "Real REST/MCP clients, scopes and freshness",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Datasets and integrations, pages 7\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-01",
+      "title": "Health/allergen/preference uncertainty and intended-purpose boundaries",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_preferences",
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "preference/lot_check",
+      "constraint_or_behavior": "Unknown/conflict retained, no medical guarantee",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-02",
+      "title": "Private health/religious/child information with narrow consent and deletion",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profiles",
+        "household_profile_grants",
+        "household_profile_observations",
+        "sec_envelopes",
+        "sec_consents"
+      ],
+      "encrypted_payload_contract": "profile/preference/observation",
+      "constraint_or_behavior": "Per-person encrypted payloads, exact sharing consent scope; deletion requires FK-ordered removal, not tombstone alone",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-03",
+      "title": "Use-by versus best-before versus review reminder distinctions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lots",
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "lot",
+      "constraint_or_behavior": "Separate nullable use_by/best_before/review_on with evidence; no inferred safety",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-04",
+      "title": "Account/household/organization lifecycle and shared-device revocation",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "kitchens",
+        "kitchen_members",
+        "household_profile_grants",
+        "sec_sessions",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "profile",
+      "constraint_or_behavior": "Existing membership roles plus explicit private consent; shared-device revoke/runtime organization policy pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-05",
+      "title": "WCAG keyboard/focus/screen-reader/reflow/contrast/large-target acceptance",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-06",
+      "title": "Camera alternatives, quiet/reduced-motion and cognitive/motor recovery",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-07",
+      "title": "Localized strings/plurals/RTL/names and language metadata",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profiles",
+        "stock_items"
+      ],
+      "encrypted_payload_contract": "profile/item/source",
+      "constraint_or_behavior": "Language preferences and original labels preserved; full RTL/UI acceptance external",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-08",
+      "title": "Real metric/imperial/cup/spoon/currency/date/timezone behavior",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_units",
+        "stock_quantity_conversions",
+        "household_plan_meals"
+      ],
+      "encrypted_payload_contract": "quantity/conversion/money",
+      "constraint_or_behavior": "Explicit dimensions/currency/date/timezone; ingress validation and display conversions pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-09",
+      "title": "Regional aliases/rules/guidance/data/retailer locale packs",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-10",
+      "title": "Offline/poor-network/older-phone/tablet continuity",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_commands",
+        "stock_movements"
+      ],
+      "encrypted_payload_contract": "all revision-bearing rows",
+      "constraint_or_behavior": "Idempotency/CAS-ready revisions; real offline/two-device behavior pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "TRUST-11",
+      "title": "Support, terms/licences, issue reporting, status/recovery and truthful availability",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Safety/privacy and accessible international experience, pages 10\u201312",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Complete the specified real-world/localized lifecycle and independent acceptance; synthetic tests alone do not establish this property.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-01",
+      "title": "Five-food-to-dinner first outcome and measured activation",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_lots",
+        "household_plan_meals"
+      ],
+      "encrypted_payload_contract": "item/meal",
+      "constraint_or_behavior": "Schema supports first scan-to-meal outcome; measured activation not proven",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-02",
+      "title": "Private household invitation and second-user contribution",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "kitchen_members",
+        "household_profile_grants"
+      ],
+      "encrypted_payload_contract": "profile",
+      "constraint_or_behavior": "Reuse invite roles; kitchen access never grants health/profile access",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-03",
+      "title": "Licensed creator meal packs and factual search content",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-04",
+      "title": "Measured waste/budget household pilots and technical MCP demonstration",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_waste_observations",
+        "household_shopping_lines"
+      ],
+      "encrypted_payload_contract": "waste/money",
+      "constraint_or_behavior": "Can retain measured waste/budget evidence privately; pilot acceptance not proven",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-05",
+      "title": "Retention/effort/reliability/support/cost scorecard",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "PROMO-06",
+      "title": "Explicit revenue/referral/sponsorship decisions without health-data targeting",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Promotion and staged pilots, pages 13\u201314",
+      "source_baseline_status": "deferred-to-feedback-and-pilots",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Presentation and promotion are deferred by the requested later UI/UX feedback run; claims require measured household evidence.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-01",
+      "title": "Original and edible quantities, population and person-day basis",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_quantity_conversions",
+        "household_intake_events"
+      ],
+      "encrypted_payload_contract": "quantity",
+      "constraint_or_behavior": "Original/edible/prepared/serving quantity basis retained; source reference population belongs public corpus",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-02",
+      "title": "All 45 nutrient metrics with compatible units/analytical definitions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-03",
+      "title": "Vitamin/mineral equivalent and missing/trace/rounded-zero distinctions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-04",
+      "title": "All 17 evidenced food groups with non-overlap and unallocated mass",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-05",
+      "title": "Density/count/edible/drained/yield/retention conversion chains",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_quantity_conversions"
+      ],
+      "encrypted_payload_contract": "conversion/quantity",
+      "constraint_or_behavior": "Density/count/edible/drained/yield/retention explicit evidence and scope; no automatic universal conversion",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-06",
+      "title": "Prepared recipe/menu/portion and substituted-ingredient calculations",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_cook_batches",
+        "household_intake_events",
+        "household_plan_meals"
+      ],
+      "encrypted_payload_contract": "cook_batch/intake/meal",
+      "constraint_or_behavior": "Source-qualified recipe/menu/portion/substitution references and nutrient snapshots",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-07",
+      "title": "Metric-specific completeness, uncertainty, lineage and ranking gates",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lot_checks",
+        "household_intake_events"
+      ],
+      "encrypted_payload_contract": "nutrient/source",
+      "constraint_or_behavior": "Known/total/unknown/basis/source snapshot; arithmetic/ranking gating belongs validated runtime",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-08",
+      "title": "Cohort/track/purpose/state/reference-period compatible comparison",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-09",
+      "title": "Dated cost/FX/PPP/affordability and pack-versus-consumed cost",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_shopping_lines",
+        "stock_waste_observations"
+      ],
+      "encrypted_payload_contract": "money",
+      "constraint_or_behavior": "Dated price/currency/basis distinguishes pack from consumed; FX/PPP public facts not invented",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-10",
+      "title": "Versioned basket/product/recipe/menu/supplier/source entity joins",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_item_mappings",
+        "household_plan_meals"
+      ],
+      "encrypted_payload_contract": "source/item/meal",
+      "constraint_or_behavior": "Explicit source_id/release_id/record_id/revision avoids conflating releases; cross-store lookup is app-mediated",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-11",
+      "title": "GTIN/Digital Link/lot/date and product-version matching",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_lots",
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "identifier/item/lot",
+      "constraint_or_behavior": "Leading-zero barcode strings, lot/market/product versions; no false GTIN for private produce",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-12",
+      "title": "Dietary/supplier pass/fail/unknown/conflict and weighted coverage",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lot_checks",
+        "household_profile_preferences"
+      ],
+      "encrypted_payload_contract": "lot_check/preference",
+      "constraint_or_behavior": "Pass/fail/unknown/conflict separate from personal declarations",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-13",
+      "title": "Seven comparison views and named reference-profile contracts",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Arithmetic contracts have tests; complete real quantity/composition matching and all specified denominators/definitions before country ranking.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "NORM-14",
+      "title": "Reproduce synthetic totals/coverage and hold incomplete ranks",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Measurement, metrics, state, evidence and comparisons, A1\u2013A13",
+      "source_baseline_status": "verified-arithmetic-contract",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Synthetic totals, missingness and incompatible-definition comparisons pass; synthetic arithmetic does not establish real national basket adequacy.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-01",
+      "title": "Dated product-brand-business-control joins",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-02",
+      "title": "Manufacturing/ingredient/packing/headquarters origin kept distinct",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-03",
+      "title": "Current versus pending/historical control and minority/licensing relations",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-04",
+      "title": "Scheme/certifier/site/product/lot scoped non-GMO/halal/kosher/organic evidence",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "lot_check",
+      "constraint_or_behavior": "Scheme/rule and source lot/product/version/market evidence refs; certification cannot be inferred",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-05",
+      "title": "Jurisdiction/category/limit/transition additive and regulatory rules",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-06",
+      "title": "Current recall action versus historical enforcement with precise lot scope",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_lots",
+        "stock_lot_checks"
+      ],
+      "encrypted_payload_contract": "lot/lot_check",
+      "constraint_or_behavior": "Precise lot/date/market scope and dated result; external recall coverage separate",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-07",
+      "title": "Independent/local/small producer and fiscal-year size evidence",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "Retain scoped candidate assertions; acquire and validate the required identity/date/market/certificate/control evidence before deriving a qualification.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-08",
+      "title": "Grower/cooperative/market seller routes without fictional GTINs",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items"
+      ],
+      "encrypted_payload_contract": "item/identifier",
+      "constraint_or_behavior": "No-barcode/local seller identities supported, not forced into GTIN",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-09",
+      "title": "Minimal prompting and ambiguous identity candidates",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_item_mappings"
+      ],
+      "encrypted_payload_contract": "item/mapping",
+      "constraint_or_behavior": "Unresolved/candidate/verified/conflict identity explicit",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-10",
+      "title": "Permitted public evidence and BYOC/partner entitlement separation",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "partially-implemented",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "ENRICH-11",
+      "title": "All 938 source-catalogue entries and country gaps retained/processed",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Decision brief and all regional source entries",
+      "source_baseline_status": "verified-discovery-access-pass",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "All 1,303 original entries, including the 938 enrichment URLs, have recorded landing access checks. Dataset ingestion, rights and source-role decisions remain separate.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-01",
+      "title": "Transient/private/shared/derived/aggregate partitions with executable field policies",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-02",
+      "title": "Audience/action/territory/retention/entitlement/attribution permissions",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-03",
+      "title": "Scoped cache keys and no credential/personal-data key leakage",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-04",
+      "title": "Versioned source assertions, dependencies and independent evidence",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-05",
+      "title": "Freshness/validity/retention clocks and event/delta invalidation",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-06",
+      "title": "Conditional/coalesced requests, retry/negative cache/backoff and spend budgets",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-07",
+      "title": "Consent/contribution/refresh/disconnect choices and queued-job rechecks",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-08",
+      "title": "Separate aggregate privacy assessment and anti-reidentification rules",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "external-privacy-review-required",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-09",
+      "title": "Identity/quality review before any field promotion",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-10",
+      "title": "Search/export/index/derived-use isolation and withdrawal/deletion",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "CACHE-11",
+      "title": "Live warm cache, two-account revocation and mixed-response acceptance",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Architecture, rights, privacy and acceptance, pages 1\u20139",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "companion-security-contract",
+      "tables": [
+        "sec_envelopes",
+        "sec_consents",
+        "sec_provider_connections",
+        "sec_connection_scopes",
+        "sec_deletion_requests"
+      ],
+      "encrypted_payload_contract": "companion security contract",
+      "constraint_or_behavior": "BYOC entitlement/custody/revocation and privacy gates are separate, never inferred from household membership.",
+      "runtime_gap": "See docs/byoc-encryption-contract-v1.md and companion security requirements; runtime KMS/provider/auth/delete/restore gates remain open.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-01",
+      "title": "All 249 ISO entries and special provisioning contexts",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "verified-register",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "All 249 ISO entries and special provisioning contexts are retained; seven entries receive no invented household defaults.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-02",
+      "title": "Editorial/statistical/basic-needs/acquisition/consumption/supply tracks separated",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "verified-evidence-track-separation",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "2,523 editorial lines remain separate from 707 partial published examples; acquisition and consumption are separate tracks.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-03",
+      "title": "Local starter structure and reviewed alternatives without inferred dietary identity",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_profile_preferences",
+        "household_plan_meals"
+      ],
+      "encrypted_payload_contract": "preference/meal",
+      "constraint_or_behavior": "Explicit preference only; starter alternatives do not infer dietary/cultural identity",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-04",
+      "title": "Primary-source complete quantities/population/period extraction where available",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "source-data-required",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "No comparison-ready national baskets are established. Extract actual primary quantities/population/period where published; preserve explicit gaps elsewhere.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-05",
+      "title": "Recipe-derived shopping quantities, usable inventory and pack rounding",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_plan_meals",
+        "stock_reservations",
+        "stock_lot_balances",
+        "household_shopping_lines"
+      ],
+      "encrypted_payload_contract": "shopping_line/quantity",
+      "constraint_or_behavior": "Required minus usable inventory, verified units and pack rounding fields; selection/ranking runtime pending",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-06",
+      "title": "Food-concept/product/menu/offer/supplier matching",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "stock_items",
+        "stock_item_mappings",
+        "household_plan_meals",
+        "household_shopping_lines"
+      ],
+      "encrypted_payload_contract": "source/item/meal",
+      "constraint_or_behavior": "Source-qualified concept/product/menu/offer relationships",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-07",
+      "title": "Dated price/currency/geography/specification and compatible comparisons",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "partially-verified",
+      "schema_disposition": "prepared-domain-contract",
+      "tables": [
+        "household_shopping_lines"
+      ],
+      "encrypted_payload_contract": "money/source",
+      "constraint_or_behavior": "Price/currency/geography/specification evidence belongs dated typed payloads",
+      "runtime_gap": "Runtime adoption and acceptance remain open; see prioritized gates in household-domain-contract-v1.md.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "BASKET-08",
+      "title": "Country evidence/access/gap/localization review for every entry",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Basket definition, matching and all country cards",
+      "source_baseline_status": "verified-country-discovery-pass",
+      "schema_disposition": "separate-existing-workstream",
+      "tables": [],
+      "encrypted_payload_contract": "source references where relevant",
+      "constraint_or_behavior": "Not a private household-table requirement: public reference-data, UI/device, external/governance or product acceptance remains with its existing owner.",
+      "runtime_gap": "All 249 queues have source/field/access gaps; accepted country-tagged curation exists in 243, with EH, GS, HM, PN, TK and UM explicit gaps.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DEFER-01",
+      "title": "Automatic grocery purchasing",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion boundaries, page 6",
+      "source_baseline_status": "excluded-from-current-scope",
+      "schema_disposition": "excluded-by-existing-design",
+      "tables": [],
+      "encrypted_payload_contract": null,
+      "constraint_or_behavior": "Explicit current-scope exclusion preserved.",
+      "runtime_gap": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DEFER-02",
+      "title": "Disease treatment and glucose/medication dosing",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion boundaries, page 6",
+      "source_baseline_status": "excluded-from-current-scope",
+      "schema_disposition": "excluded-by-existing-design",
+      "tables": [],
+      "encrypted_payload_contract": null,
+      "constraint_or_behavior": "Explicit current-scope exclusion preserved.",
+      "runtime_gap": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DEFER-03",
+      "title": "Smart-fridge hardware dependence",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion boundaries, page 6",
+      "source_baseline_status": "excluded-from-current-scope",
+      "schema_disposition": "excluded-by-existing-design",
+      "tables": [],
+      "encrypted_payload_contract": null,
+      "constraint_or_behavior": "Explicit current-scope exclusion preserved.",
+      "runtime_gap": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "production_implemented_by_this_batch": false
+    },
+    {
+      "id": "DEFER-04",
+      "title": "Full social network",
+      "source_register": "docs/delivery-reconciliation.json",
+      "source_section": "Expansion boundaries, page 6",
+      "source_baseline_status": "excluded-from-current-scope",
+      "schema_disposition": "excluded-by-existing-design",
+      "tables": [],
+      "encrypted_payload_contract": null,
+      "constraint_or_behavior": "Explicit current-scope exclusion preserved.",
+      "runtime_gap": "Explicitly deferred in the specialist review; no automatic purchases, medical dosing, hardware dependency or full social network is promised.",
+      "production_implemented_by_this_batch": false
+    }
+  ]
+}

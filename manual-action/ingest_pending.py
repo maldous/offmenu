@@ -12,7 +12,7 @@ from pathlib import Path
 import re
 import sqlite3
 
-from ingest_api import DOMAINS, source_key
+from ingest_api import DOMAINS, APP_MANAGED_DOMAINS, source_key
 from ingest_store import SCHEMA_VERSION, _fingerprint, _json
 
 SCHEMA = 'offmenu-pending-work/1'
@@ -65,6 +65,12 @@ def sanitize_pending_work(value):
             result[key] = clean
         else:
             result['domains'][key] = clean
+    # Optional extension: historical pending-work/1 values retain exact bytes.
+    if 'scope' in value:
+        counts = value['scope'].get('app_managed_assignments', {}) if isinstance(value['scope'], dict) else {}
+        counts = counts if isinstance(counts, dict) else {}
+        result['scope'] = {'policy': 'external_ingest_only',
+            'app_managed_assignments': {d: _integer(counts.get(d)) for d in APP_MANAGED_DOMAINS}}
     return result
 
 
@@ -166,7 +172,8 @@ def collect_pending_work(sources, state_dir, *, results=None, catalog_complete=T
     adapter_versions = adapter_versions or {}
     summary = {'schema': SCHEMA, 'status': 'available', 'binding': BINDING,
         'catalog_complete': bool(catalog_complete), 'catalog_sources': len(sources),
-        'unassigned_sources': 0, 'awaiting_input_domains': [], 'domains': {d: _blank() for d in DOMAINS}, 'totals': _blank()}
+        'unassigned_sources': 0, 'awaiting_input_domains': [], 'domains': {d: _blank() for d in DOMAINS}, 'totals': _blank(),
+        'scope': {'policy': 'external_ingest_only', 'app_managed_assignments': dict.fromkeys(APP_MANAGED_DOMAINS, 0)}}
     details = []
     prior_details = {(r.get('domain'), r.get('source_key'), r.get('source_version')): r for r in (previous or []) if isinstance(r, dict) and r.get('source_version')}
     assigned = set()
@@ -180,6 +187,19 @@ def collect_pending_work(sources, state_dir, *, results=None, catalog_complete=T
             if isinstance(domains, (list, tuple)) and domain in domains:
                 selected.append(source)
                 assigned.add(index)
+        if domain in APP_MANAGED_DOMAINS:
+            # Retain every catalog assignment as private custody metadata, but
+            # never stat/read its source or count it as missing external work.
+            summary['scope']['app_managed_assignments'][domain] = len(selected)
+            for source in selected:
+                details.append({'source_key': source_key(source), 'domain': domain,
+                    'path': source.get('path'), 'provider': source.get('provider'),
+                    'disposition': source.get('disposition'), 'status': 'schema_only',
+                    'scope': 'app_managed', 'next_reason': 'app_managed',
+                    'excluded_from_pending': True, 'source_version': None})
+            aggregate['records_remaining'] = 0
+            aggregate['records_to_write'] = 0
+            continue
         try:
             checkpoints, references, exists = _read_store(store_path(state_dir, domain), domain, selected)
             metadata_error = False
@@ -316,12 +336,6 @@ def collect_pending_work(sources, state_dir, *, results=None, catalog_complete=T
             else:
                 aggregate['records_remaining_known'] += detail['records_remaining']
             details.append(detail)
-        if domain in ('user_profiles', 'inventory') and (not selected or all(r.get('status') == 'awaiting_input' for r in details if r.get('domain') == domain)):
-            summary['awaiting_input_domains'].append(domain)
-            # An empty private domain is awaiting genuine input, not a fabricated
-            # pending source assignment. Keep assignments_total and counts exact.
-            details.append({'source_key': None, 'domain': domain, 'path': None, 'provider': None,
-                            'status': 'awaiting_input', 'next_reason': 'awaiting_user_input', 'synthetic_requirement': True})
         aggregate['records_remaining'] = aggregate['records_remaining_known'] if aggregate['records_remaining_unknown'] == 0 else None
         aggregate['records_to_write'] = 0 if aggregate['assignments_total'] == aggregate['completed'] + aggregate['reused'] else None
     summary['unassigned_sources'] = len(sources) - len(assigned)
@@ -352,4 +366,4 @@ def dashboard(summary):
     return ('[pending] assignments={assignments_total} complete={completed} reused={reused} '
             'not-read={not_yet_read} partial={partial} failed={failed} unsupported={unsupported} '
             'held={held} unqualified={unqualified} awaiting-input={awaiting_input} unknown={unknown} '
-            'files-to-read={files_remaining}').format(**total) + ' adapter-records-to-read=' + remaining + ' records-to-write=' + writes + ' awaiting-private-domains=' + ','.join(summary['awaiting_input_domains'])
+            'files-to-read={files_remaining}').format(**total) + ' adapter-records-to-read=' + remaining + ' records-to-write=' + writes + ' app-managed-domains=' + ','.join(APP_MANAGED_DOMAINS)

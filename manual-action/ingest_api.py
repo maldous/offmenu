@@ -33,6 +33,8 @@ from __future__ import annotations
 
 DOMAINS = ('barcodes', 'ingredients', 'recipes', 'dietary', 'user_profiles',
            'inventory', 'suppliers', 'citations')
+# Application-runtime domains are not external-ingestion input requirements.
+APP_MANAGED_DOMAINS = ('user_profiles', 'inventory')
 COUNTERS = ('read', 'written', 'unchanged', 'errors', 'skipped')
 GLOBAL_BUDGET_DEFAULTS = {'reserve_bytes': 2 * 1024**3, 'max_seconds': 0,
                          'max_rows_per_source': 0}

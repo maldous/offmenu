@@ -409,7 +409,7 @@ def scan_domain(domain, db, receipt, catalog, budget, result, records, edges):
     result['coverage'] = 'complete' if (result['source_selection'] == 'exact' and result['integrity'] == 'ok'
                                       and result['foreign_keys'] == 'ok' and not result['payload_hash_mismatches']) else 'incomplete'
     if domain in PRIVATE and not selected and not result['table_counts']['records'] and expected.get('status') in ('schema_only', 'awaiting_user_input'):
-        result['status'] = 'schema_only_awaiting_user_input'
+        result['status'] = 'schema_only_app_managed'  # Staging observation, not app migration readiness.
         result['scope'] = 'not_exercised_no_input'
     result['adapter_gap'] = GAPS[domain]
 
@@ -860,7 +860,7 @@ def sanitized_summary(report):
         result['contract_counts'][contract] = {k: count(report.get('contract_counts', {}).get(contract, {}).get(k)) for k in ('edges', *DISPOSITIONS)}
     for domain in DOMAINS:
         src = report.get('domains', {}).get(domain, {})
-        dest = {'status': status(src.get('status'), ('observed', 'schema_only_awaiting_user_input')),
+        dest = {'status': status(src.get('status'), ('observed', 'schema_only_awaiting_user_input', 'schema_only_app_managed')),
                 'coverage_status': status(src.get('coverage'), ('complete', 'incomplete')),
                 'integrity_status': status(src.get('integrity'), ('ok', 'failed')),
                 'foreign_key_status': status(src.get('foreign_keys'), ('ok', 'failed')),

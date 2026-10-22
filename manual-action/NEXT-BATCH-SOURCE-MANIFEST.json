@@ -1,0 +1,101 @@
+{
+  "base_commit": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "component_patches": {
+    "error_isolation": "37245bafef71b58b1b4e33ffb8ea3d332c0dfc516f72995595e8b7551a1150a4",
+    "live_totals": "05e66b6306604e4359674424566662a3a35caae7bf043a8180f55623e139644b"
+  },
+  "composition_tests": {
+    "errors": 0,
+    "failures": 0,
+    "run": 18,
+    "skips": 0
+  },
+  "excluded": [
+    "optional process-parallel parser candidate",
+    "raw logs",
+    "Foo data/state",
+    "receipt branches",
+    "workflow/profile changes"
+  ],
+  "files": [
+    {
+      "after_sha256": "9511ed9b4417d633be12e78cb734ad8ea80d26edc1ac6c4ddfac6494cc18fad8",
+      "before_sha256": null,
+      "bytes": 5626,
+      "git_blob_sha1": "1782e266a68ce4b70ed06b33d0d34d10f89ab37e",
+      "path": "manual-action/ERROR-ISOLATION-PREPARATION.md"
+    },
+    {
+      "after_sha256": "48a7de8d2b9ab8234cba4c5574f5384f191b17447ea3d02fbaad7ac500b7e117",
+      "before_sha256": null,
+      "bytes": 5227,
+      "git_blob_sha1": "02787522537cd4b3f8ce6ebcf4ee3afd4e661924",
+      "path": "manual-action/LIVE-STORED-TOTALS-PREPARATION.md"
+    },
+    {
+      "after_sha256": "9d1a49ad5bcd07d88c58e80cd5f35ccb51d701a98c67513a27e613edcf946043",
+      "before_sha256": null,
+      "bytes": 1888,
+      "git_blob_sha1": "77a0bbbc6a195788c0bb10deb1ea1dbe79171abc",
+      "path": "manual-action/NEXT-BATCH-PREPARATION.md"
+    },
+    {
+      "after_sha256": "88f9f0638d2b05837cb187cc5da688ab29a4bceb5aa7c0aa08f5b3cc23be910f",
+      "before_sha256": "314138cedbc152e2d1a77553b05a58e74a77bdc478756ac09febbb8ab879f1da",
+      "bytes": 46048,
+      "git_blob_sha1": "a5e06b9fb259cb6a731513c525b5ac30d80cf804",
+      "path": "manual-action/ingest_engine.py"
+    },
+    {
+      "after_sha256": "9893a9ead86f75b4959eab1f822355fe1b65c1dc8ceb6907ff26bb88e9060d1a",
+      "before_sha256": "31d8737a5a90c4cc541decda656ae8eb38beeabe4fce211e2eb9f9d9ecf2a1ed",
+      "bytes": 12173,
+      "git_blob_sha1": "2f0ca6b8bc001782a43be678e65bd9650fee3316",
+      "path": "manual-action/ingest_errors.py"
+    },
+    {
+      "after_sha256": "922ad9c0bb1969949554b1320db05a68a5fd28467252af8ac172fc1a89252357",
+      "before_sha256": "141432d965ff63bfac53a5920bc34f2691c237dd6b7a7e914fa8506c1e8ea000",
+      "bytes": 43065,
+      "git_blob_sha1": "0ae1c058943dd664ef04bff0e6752b007c19a822",
+      "path": "manual-action/ingest_evidence.py"
+    },
+    {
+      "after_sha256": "0893492be98eb4bcc6999b43ff3c87d954a7efaca2ee5e6b4125bf04d9891a84",
+      "before_sha256": "32c8329125bee94ecf3c957306b5c2b3198548e94e53ca04dab8c3c066a79bd1",
+      "bytes": 46116,
+      "git_blob_sha1": "8ab3df06b2e556ec18a79663ab9bd50c956a0575",
+      "path": "manual-action/ingest_recipes.py"
+    },
+    {
+      "after_sha256": "be3c5dc80e5dda63cb5e3b42031f1026d76898598d8cbd154914ed721aeceabb",
+      "before_sha256": "72f691279e9b8ac33ee1215a0ba987efc34ba4895513fe02ff9474ef51991b66",
+      "bytes": 20923,
+      "git_blob_sha1": "9e2ed80294d77ecab1c72aeaf0628260f59af8f4",
+      "path": "manual-action/ingest_store.py"
+    },
+    {
+      "after_sha256": "1d94bd685a6033d0de8dd0d292774585e0be8a3b8e7b6b4b4270f0d1e5070394",
+      "before_sha256": null,
+      "bytes": 10851,
+      "git_blob_sha1": "5d03b6c61e4ed6893c2c7c6e48dff1e9e41d514e",
+      "path": "manual-action/tests/test_ingest_error_isolation.py"
+    },
+    {
+      "after_sha256": "99eb4064fc1ec1827b2dda92c17aa601848a36cd23329b982db724581338193a",
+      "before_sha256": "512a7685f06919d377d7d7231eda9718983ebf5faea971af3757b3a1a8d67988",
+      "bytes": 14792,
+      "git_blob_sha1": "3a4c1dc869a79a9fdbd4eb940c89cd278eef9c4e",
+      "path": "manual-action/tests/test_ingest_errors.py"
+    },
+    {
+      "after_sha256": "2dddd845c9b69498dd924591bd39168e1f379978cc6c61f28e5bdb069b0fbc63",
+      "before_sha256": null,
+      "bytes": 10757,
+      "git_blob_sha1": "b627904f42ba3d5f41ecaf77376e3ac2010aba32",
+      "path": "manual-action/tests/test_ingest_stored_totals.py"
+    }
+  ],
+  "promotion": "held while current Foo run remains active",
+  "schema": "offmenu-next-batch-preparation/1"
+}

@@ -58,7 +58,7 @@ class PendingTests(unittest.TestCase):
             self.assertEqual(recipes[state], 1, state)
         self.assertEqual(recipes['files_remaining'], 4)
         self.assertEqual(recipes['assignments_total'], sum(recipes[k] for k in STATES))
-        self.assertEqual(summary['awaiting_input_domains'], ['user_profiles', 'inventory'])
+        self.assertEqual(summary['awaiting_input_domains'], [])
         self.assertEqual(summary['domains']['inventory']['assignments_total'], 0)
         self.assertIsNone(summary['totals']['records_remaining'])
         self.assertIsNone(summary['totals']['records_to_write'])
@@ -138,15 +138,16 @@ class PendingTests(unittest.TestCase):
         self.assertEqual(report['summary']['domains']['barcodes']['reused'], 0)
         self.assertEqual(report['summary']['domains']['barcodes']['unqualified'], 1)
 
-    def test_private_requires_real_scoped_input_no_synthetic_source_count(self):
+    def test_private_is_app_managed_not_external_input(self):
         fake = self.source('private', 'user_profiles')
         summary = self.snapshot([fake])['summary']
-        self.assertEqual(summary['domains']['user_profiles']['awaiting_input'], 1)
-        self.assertEqual(summary['domains']['user_profiles']['assignments_total'], 1)
+        self.assertEqual(summary['domains']['user_profiles']['awaiting_input'], 0)
+        self.assertEqual(summary['domains']['user_profiles']['assignments_total'], 0)
+        self.assertEqual(summary['scope']['app_managed_assignments']['user_profiles'], 1)
         self.assertEqual(summary['domains']['inventory']['assignments_total'], 0)
-        self.assertEqual(summary['awaiting_input_domains'], ['user_profiles', 'inventory'])
+        self.assertEqual(summary['awaiting_input_domains'], [])
         real = dict(fake, metadata={'user_supplied': True, 'household_scope': True})
-        self.assertEqual(self.snapshot([real])['summary']['domains']['user_profiles']['not_yet_read'], 1)
+        self.assertEqual(self.snapshot([real])['summary']['domains']['user_profiles']['not_yet_read'], 0)
 
     def test_truncated_catalog_and_unassigned_entries_not_claimed_complete(self):
         source = self.source('excluded', domains=[], disposition='excluded')

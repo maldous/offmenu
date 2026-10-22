@@ -1,0 +1,104 @@
+{
+  "exclusions": [
+    "raw/private datasets",
+    "Foo or live database access",
+    "cleanup/deletion/compaction",
+    "run/restart/deployment",
+    "Git/remote changes by this patch builder",
+    "schema migrations",
+    "recursive directory or cache scans",
+    "content reads or COUNT scans for storage telemetry"
+  ],
+  "files": [
+    {
+      "after_sha256": "cd25e6cadbe8d686730b2dc7d806e7c7fec3333d30884aaf8a39caef9df98196",
+      "before_sha256": null,
+      "bytes": 5551,
+      "git_blob_sha1": "12b53bc757953cfbfa50206b27b38730b262dfbe",
+      "path": "manual-action/BUDGET-STORAGE-CORRECTION.md"
+    },
+    {
+      "after_sha256": "e6d178f66b668eef02517caa25f35e953a961458265b08cd5b96ac6c185ab84f",
+      "before_sha256": "b4260bcb32c9a5d72e52ab8f16286bc8baf5be5b6557620ee10e206e3812a1fe",
+      "bytes": 48545,
+      "git_blob_sha1": "98e2dd2328a5659b290d25e0a6829b8dc0b31bfa",
+      "path": "manual-action/ingest_engine.py"
+    },
+    {
+      "after_sha256": "986e3979c936f1b43037b5b08126b3e38ba9d374493bfd2ddde716aac30a4e1c",
+      "before_sha256": null,
+      "bytes": 5521,
+      "git_blob_sha1": "21aad5e6c318cfb80c1f088c28ce70056198723d",
+      "path": "manual-action/ingest_storage_sizes.py"
+    },
+    {
+      "after_sha256": "e0cb6e3f363bf838e9e82e55acf9e5e1162534bf0a918c51b247685d7f3e354f",
+      "before_sha256": "546b699ab22f21dabe54b8a7edd091d4a7cb3051c186f4867a5652296973181e",
+      "bytes": 63159,
+      "git_blob_sha1": "60ae048e465aaa4a26eb3c0c1331bbd244364b61",
+      "path": "manual-action/plan_runner.py"
+    },
+    {
+      "after_sha256": "8cea9c6c7c385d60b04017b9b8e07dc9424c85ccaf5c127fa538fa6718f44588",
+      "before_sha256": null,
+      "bytes": 10571,
+      "git_blob_sha1": "464537800297e8f828ea1da70af039a2f007103f",
+      "path": "manual-action/tests/test_ingest_budget_fanout.py"
+    },
+    {
+      "after_sha256": "addb918d8e0aeb1a47b7af2002744f5302fceac1c4d222ce6f12d60204071f42",
+      "before_sha256": null,
+      "bytes": 9544,
+      "git_blob_sha1": "6383786bf2a614e414121c1047d9a9b2fbd585ab",
+      "path": "manual-action/tests/test_ingest_storage_sizes.py"
+    }
+  ],
+  "historical_data_policy": "No source/catalog disposition, cursor, retained error, canonical receipt or database schema is deleted or retrospectively repaired. Unread tails receive no newly invented BudgetExceeded source failures.",
+  "manifest_self_exclusion": "Manifest omitted from its own records; outer patch hash binds manifest bytes.",
+  "prepared_base": "offmenu-next-batch-complete-20261022",
+  "prepared_base_changed_files_sha256": "0597abf937182bf0e7630e2e3bfe9445a32e621a77779636d5227603f940fd6e",
+  "prepared_base_patch_sha256": "0a57fd93b31f321f214b585b74f503e1e3cf81aac010678510d05d414335ede1",
+  "prepared_base_paths_verified": 48,
+  "schema": "offmenu-budget-storage-correction-source-manifest/1",
+  "source_baseline": "af99cdfb4bac3bce9f4badae34333921a0074a76",
+  "status": "prepared_for_source_only_publication_no_restart",
+  "storage_semantics": {
+    "allocated_bytes": "OS st_blocks multiplied by512; not deduplicated/exclusive physical usage or ingest-growth attribution",
+    "cache_bytes": "unknown; not measured",
+    "files_per_snapshot": 24,
+    "measurement": "lstat metadata only plus cached fixed ancestor checks",
+    "non_atomic": true,
+    "scope": "fixed_runner_staging_database_paths_only"
+  },
+  "terminal_compatibility": {
+    "receipt": {
+      "bytes": 14453,
+      "canonical_unchanged": true,
+      "sha256": "e6a07e4d0a9132519b54c90c46f78367a3613e31ead7c682697eb5a3e8f5d0e6"
+    },
+    "supplement": {
+      "bytes": 38162,
+      "canonical_unchanged": true,
+      "sha256": "392288a21208a2df41022e2d482e35e58327670a222f767666d0048e541b3712"
+    }
+  },
+  "validation": {
+    "errors": 0,
+    "failures": 0,
+    "focused_tests": 18,
+    "log_sha256": [
+      "b60b5a9f6d6e2cdbad4e3b9fcf1f2ce84b3e9e936129520e67f5ba1ec2b38627",
+      "46344206085e1aa076e5d52ce53e91b63a6e1337192be6b8b1a1dd657c6575e9",
+      "4f545d74c7235a7ff9e2640d739a8c533ac2cc5df7ad28e41e24c52b002a9493"
+    ],
+    "new_budget_tests": 7,
+    "new_storage_tests": 6,
+    "scope": "Generated temporary sources/stores only; no broad suite, Foo or remote actions",
+    "selected_existing_tests": 5,
+    "test_commands": [
+      "python -m unittest discover -s manual-action/tests -p test_ingest_budget_fanout.py -v",
+      "python -m unittest discover -s manual-action/tests -p test_ingest_storage_sizes.py -v",
+      "PYTHONPATH=manual-action:manual-action/tests python -m unittest -v test_ingest_budget_stop.BudgetStopTests.test_midbatch_global_stops_keep_committed_prefix_then_resume_exact_version test_ingest_budget_stop.BudgetStopTests.test_source_local_cap_continues_later_sources_without_global_stop test_ingest_budget_stop.BudgetStopTests.test_engine_report_and_evidence_keep_stop_separate_from_row_errors test_ingest_engine.IngestTests.test_new_acquired_groups_precede_unfinished_large_retained_tail test_ingest_engine.IngestTests.test_acquired_permission_failure_and_unknown_binding_never_block_retained"
+    ]
+  }
+}

@@ -161,9 +161,18 @@ class DomainStore:
             self.db.execute("INSERT OR IGNORE INTO ingest_meta VALUES('binding','additive_staging_not_app_bound')")
             self.db.execute("INSERT OR IGNORE INTO ingest_meta VALUES('database_id',?)", (uuid.uuid4().hex,))
             self.db.execute("INSERT OR IGNORE INTO ingest_meta VALUES('record_count','0')")
+            # One indexed metadata read under this store's exclusive writer lock.
+            # Retained source versions remain included; external reuse is separate.
+            self.stored_records_before = self.stored_records = int(self.db.execute(
+                "SELECT value FROM ingest_meta WHERE key='record_count'").fetchone()[0])
+            self.progress(event='store_opened', **self.stored_totals())
         except BaseException:
             self.close()
             raise
+
+    def stored_totals(self):
+        return {'stored_records_before': self.stored_records_before,
+                'stored_records': self.stored_records}
 
     def close(self):
         if getattr(self, 'db', None) is not None:
@@ -183,6 +192,19 @@ class DomainStore:
     def _error(self, key, version, row, exc):
         return self.db.execute('INSERT OR IGNORE INTO source_errors VALUES(?,?,?,?,?)',
                         (key, version, row, type(exc).__name__, time.time())).rowcount
+
+    def reserve_adapter_error_slot(self, source):
+        """Keep legacy callback ordinals for expected skips, without DB I/O.
+
+        A single writer owns this store and consumes one source iterator at a
+        time. The active identity is set from the already-checked fingerprint;
+        never inspect a source path just to count an expected non-recipe leaf.
+        """
+        identity = getattr(self, '_active_error_identity', None)
+        if identity is None or identity[0] != source_key(source):
+            return False
+        self._error_occurrences[identity] = self._error_occurrences.get(identity, 0) + 1
+        return True
 
     def record_error(self, source, exc):
         """Persist adapter parse failures without storing exception text or payload."""
@@ -252,11 +274,13 @@ class DomainStore:
             with contextlib.suppress(sqlite3.Error):
                 self.db.execute('ROLLBACK')
             raise
+        # Advance only after COMMIT succeeds, never for updates/replays/rollbacks.
+        self.stored_records += created
         totals['written'] += written
         totals['unchanged'] += unchanged
         totals['errors'] += errors
         totals['read'] += len(batch)
-        self.progress(source_key=key, event='batch', **{k: (0 if source.get('reference_only') and k in ('read','written','unchanged') else totals[k]) for k in ('read','written','unchanged','errors','skipped')})
+        self.progress(source_key=key, event='batch', **self.stored_totals(), **{k: (0 if source.get('reference_only') and k in ('read','written','unchanged') else totals[k]) for k in ('read','written','unchanged','errors','skipped')})
 
     def ingest(self, source, records):
         key = source_key(source)
@@ -270,6 +294,7 @@ class DomainStore:
         version = hashlib.sha256(_json(fp).encode()).hexdigest()
         summary['source_version'] = version
         self._error_occurrences[(key,version)]=0
+        self._active_error_identity = (key, version)
         prior = self.db.execute('SELECT cursor,status,written,errors FROM sources WHERE source_key=? AND version=?', (key, version)).fetchone()
         if prior and prior[1] in ('complete', 'complete_with_errors'):
             summary.update(status='partial' if prior[3] else 'complete', unchanged=prior[2], errors=prior[3], resumed_from=prior[0], completed=True, already_complete=True)

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:household-schema-readiness:1",
+  "description": "Default ./run helper must additionally require artifact_written=false. Preparation is not runtime readiness.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "offmenu-household-schema-readiness/1"
+        },
+        "source_baseline": {
+          "const": "af99cdfb4bac3bce9f4badae34333921a0074a76"
+        },
+        "schema_status": {
+          "const": "schema_prepared_app_wiring_pending"
+        },
+        "prepared_schema_version": {
+          "const": "offmenu-household-domain/1"
+        },
+        "security_schema_version": {
+          "const": "offmenu-byoc-security/1"
+        },
+        "domain_table_count": {
+          "const": 31
+        },
+        "private_rows": {
+          "const": 0
+        },
+        "external_sources_required": {
+          "const": false
+        },
+        "private_data_copied": {
+          "const": false
+        },
+        "credentials_loaded": {
+          "const": false
+        },
+        "existing_database_opened": {
+          "const": false
+        },
+        "deployment_performed": {
+          "const": false
+        },
+        "application_wiring_verified": {
+          "const": false
+        },
+        "foreign_key_check": {
+          "const": "passed"
+        },
+        "integrity_check": {
+          "const": "passed"
+        },
+        "artifact_written": {
+          "type": "boolean"
+        },
+        "sql_sha256": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "48bad7a6e855478f3364f7e43292ccc34aa54802571c943ed9226a3a7270e380"
+            },
+            {
+              "const": "5d4f11d7e2a475744f25f2403d238353be058d1086e04df4278cfc248817c2b1"
+            },
+            {
+              "const": "0a8ac60ebe1d5d6edf4e60335ffb1b76febe278c43e4ab08979ed9c221e419de"
+            }
+          ],
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "schema",
+        "source_baseline",
+        "schema_status",
+        "prepared_schema_version",
+        "security_schema_version",
+        "domain_table_count",
+        "private_rows",
+        "external_sources_required",
+        "private_data_copied",
+        "credentials_loaded",
+        "existing_database_opened",
+        "deployment_performed",
+        "application_wiring_verified",
+        "foreign_key_check",
+        "integrity_check",
+        "artifact_written",
+        "sql_sha256"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "offmenu-household-schema-readiness/1"
+        },
+        "schema_status": {
+          "const": "preparation_failed"
+        },
+        "deployment_performed": {
+          "const": false
+        },
+        "existing_database_opened": {
+          "const": false
+        },
+        "action": {
+          "const": "Inspect reviewed local sources/output-directory availability; no live database was opened"
+        }
+      },
+      "required": [
+        "schema",
+        "schema_status",
+        "deployment_performed",
+        "existing_database_opened",
+        "action"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

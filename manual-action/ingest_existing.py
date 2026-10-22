@@ -1,8 +1,9 @@
-"""Read-only barcode source bridges and explicitly scoped private household inputs.
+"""Read-only barcode bridges; private household domains are application-managed.
 
 Existing source stores are never modified or copied wholesale. References and
 observed schema/count/index metadata live in private local additive staging.
-Household sources are not inferred from filenames or mined from personal files.
+Household sources are never fetched or imported by this external-ingestion path.
+Existing private staging rows remain untouched; application schemas are separate.
 """
 from __future__ import annotations
 import csv
@@ -15,7 +16,7 @@ from pathlib import Path
 import sqlite3
 import stat
 from urllib.parse import quote
-from ingest_api import BudgetExceeded, SourceChanged, source_key
+from ingest_api import APP_MANAGED_DOMAINS, BudgetExceeded, SourceChanged, source_key
 
 CODE_COLUMNS = frozenset(('code','barcode','barcode_key','code_key','gtin','ean','upc','normalized_code','normalized_barcode','gtinupc','gtin_upc','ean13','upc12'))
 CODE_NAMES = frozenset(re.sub(r'[^a-z0-9]','',name) for name in CODE_COLUMNS)
@@ -156,6 +157,12 @@ def run_domain(domain, sources, context):
     if domain not in ('barcodes','user_profiles','inventory'):
         raise ValueError('unsupported_domain')
     totals=dict(read=0,written=0,unchanged=0,errors=0,skipped=0)
+    if domain in APP_MANAGED_DOMAINS:
+        # Defense in depth for direct callers: application data is runtime-owned,
+        # not a source to fetch/import, even with legacy household scope flags.
+        return {'domain': domain, 'status': 'schema_only', 'scope': 'app_managed',
+                'disposition': 'schema_only', 'reason': None, **totals,
+                'reused_rows': 0, 'reused_stores': 0, 'sources': []}
     results=[]
     reused_rows=0
     imported=reused=0

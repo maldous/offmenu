@@ -73,6 +73,26 @@ def _error(context, source, exc, stats):
     context.report_error(source, exc)
 
 
+EXPECTED_UNSUPPORTED_RECORDS = frozenset((
+    'unrecognized_recipe_or_lead_only', 'not_a_supported_recipe_record'))
+
+
+def _unsupported_record(context, source, exc, stats):
+    """Expected non-recipe leaves are visible skips, not malformed source rows."""
+    stats['skipped'] += 1
+    reason = exc.args[0] if len(exc.args) == 1 else None
+    if type(reason) is str and reason in EXPECTED_UNSUPPORTED_RECORDS:
+        counts = stats.setdefault('unsupported_reason_counts', {})
+        counts[reason] = counts.get(reason, 0) + 1
+        # Reserve the legacy callback ordinal during replay without a SQLite
+        # error write. This keeps later genuine-error slots stable on resumes.
+        report_skip = getattr(context, 'report_skip', None)
+        if report_skip is not None:
+            report_skip(source)
+    else:
+        context.report_error(source, exc)
+
+
 def _open(source):
     """Held read-only regular file, no symlink components; gzip stays streaming."""
     path = Path(os.path.abspath(source['path']))
@@ -104,14 +124,18 @@ def _identity(s):
     return s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns, s.st_ctime_ns
 
 
+_InvalidRecipeJSONRecord = object()
+
+
 class _JSONStream:
     """Incremental JSON framing; memory bounded by one object, not the collection.
 
     Array members are yielded before their siblings. Wrapper objects are visited
     a field at a time. Malformed JSON framing cannot be guessed/repaired.
     """
-    def __init__(self, stream, check, limit):
+    def __init__(self, stream, check, limit, on_record_error=None):
         self.stream, self.check, self.limit = stream, check, limit
+        self.on_record_error = on_record_error
         self.buffer, self.eof = '', False
         self.decoder = json.JSONDecoder()
 
@@ -137,7 +161,7 @@ class _JSONStream:
             raise MalformedRecord('json_framing')
         self.buffer = self.buffer[1:]
 
-    def value(self):
+    def value(self, isolate_record=False):
         self.space()
         while True:
             if len(self.buffer) > self.limit:
@@ -155,8 +179,14 @@ class _JSONStream:
                     self.fill()
                     continue
                 raw = self.buffer[:end]
-                obj = _strict(raw)
                 self.buffer = self.buffer[end:]
+                try:
+                    obj = _strict(raw)
+                except MalformedRecord as exc:
+                    if not isolate_record or self.on_record_error is None:
+                        raise
+                    self.on_record_error(exc)
+                    return _InvalidRecipeJSONRecord, None
                 return obj, raw
             except json.JSONDecodeError:
                 if self.eof:
@@ -168,8 +198,9 @@ class _JSONStream:
         ordinal = 0
         if self.peek() != ']':
             while True:
-                obj, raw = self.value()
-                yield obj, _pointer(pointer, ordinal), raw
+                obj, raw = self.value(isolate_record=True) if self.on_record_error is not None else self.value()
+                if obj is not _InvalidRecipeJSONRecord:
+                    yield obj, _pointer(pointer, ordinal), raw
                 ordinal += 1
                 if self.peek() == ']':
                     break
@@ -235,7 +266,7 @@ def _csv_value(value):
 def _read_rows(source, context, stats):
     fmt = str(source.get('format', Path(source['path']).suffix.lstrip('.'))).lower()
     if fmt in ('sqlite', 'sqlite3', 'db'):
-        yield from _sqlite_rows(source, context)
+        yield from _sqlite_rows(source, context, stats)
         return
     raw, stream, before = _open(source)
     try:
@@ -262,7 +293,8 @@ def _read_rows(source, context, stats):
                     except (ValueError, UnicodeError) as exc:
                         _error(context, source, exc, stats)
             elif fmt in ('json', 'jsonld', 'json-ld'):
-                for item in _JSONStream(text, context.check_budget, MAX_RECORD).rows():
+                for item in _JSONStream(text, context.check_budget, MAX_RECORD,
+                        lambda exc: _error(context, source, exc, stats)).rows():
                     obj, pointer, native = item[:3]
                     yield obj, pointer, native, item[3] if len(item) == 4 else {}
             elif fmt in ('csv', 'tsv'):
@@ -302,7 +334,7 @@ def _read_rows(source, context, stats):
         raw.close()
 
 
-def _sqlite_rows(source, context):
+def _sqlite_rows(source, context, stats):
     # Probe with held nofollow FD, then read SQLite URI; never migrate/repair it.
     raw, stream, before = _open(source)
     try:
@@ -335,12 +367,18 @@ def _sqlite_rows(source, context):
                 for number, row in enumerate(db.execute('SELECT * FROM ' + ident), 1):
                     context.check_budget()
                     obj = dict(row)
-                    for key in ('source_payload_json', 'payload_json', 'recipe_json', 'data_json', 'record_json', 'raw_json', 'source_json', 'payload', 'data', 'json'):
-                        if isinstance(obj.get(key), str):
-                            parsed = _strict(obj[key])
-                            if isinstance(parsed, dict):
-                                obj = parsed
-                                break
+                    try:
+                        for key in ('source_payload_json', 'payload_json', 'recipe_json', 'data_json', 'record_json', 'raw_json', 'source_json', 'payload', 'data', 'json'):
+                            if isinstance(obj.get(key), str):
+                                parsed = _strict(obj[key])
+                                if isinstance(parsed, dict):
+                                    obj = parsed
+                                    break
+                    except (ValueError, UnicodeError) as exc:
+                        # A SQLite row is already framed. Reject this payload,
+                        # not the rest of the table; never repair or guess JSON.
+                        _error(context, source, exc, stats)
+                        continue
                     yield obj, '/table/' + table + '/' + str(number), None, {}
             db.execute('COMMIT')
         finally:
@@ -817,8 +855,7 @@ def iter_records(domain, source, context, stats=None):
                             stats['ingredient_entities'] += 1
                         yield result
                 except UnsupportedSource as exc:
-                    stats['skipped'] += 1
-                    context.report_error(source, exc)
+                    _unsupported_record(context, source, exc, stats)
                 except (ValueError, TypeError, KeyError, UnicodeError) as exc:
                     _error(context, source, exc, stats)
         except (ValueError, TypeError, KeyError) as exc:
@@ -854,7 +891,8 @@ def run_domain(domain, sources, context):
                 summary = dict(source_key=source_key(source), status='failed', read=0, written=0, unchanged=0, errors=1, skipped=0, error_class=type(exc).__name__)
         summary['errors'] = max(summary.get('errors', 0), stats['errors'])
         summary['skipped'] = summary.get('skipped', 0) + stats['skipped']
-        summary['record_kinds'] = {key: value for key, value in stats.items() if key not in ('errors', 'skipped')}
+        summary['record_kinds'] = {key: value for key, value in stats.items() if key not in ('errors', 'skipped', 'unsupported_reason_counts')}
+        summary['unsupported_reason_counts'] = dict(stats.get('unsupported_reason_counts', {}))
         if summary.get('errors') and summary.get('status') in ('complete', 'completed'):
             summary['status'] = 'partial'
         summaries.append(summary)

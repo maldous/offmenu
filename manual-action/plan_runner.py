@@ -131,7 +131,7 @@ def validate_pending_work(value):
     # Deliberately independent of the optional reporter: old receipt recovery
     # must work even when a local pending-work helper cannot be imported.
     exact_keys(value, {'schema','status','binding','catalog_complete',
-        'catalog_sources','unassigned_sources','awaiting_input_domains','domains','totals'})
+        'catalog_sources','unassigned_sources','awaiting_input_domains','domains','totals'}, {'scope'})
     if (value['schema'] != PENDING_SCHEMA or value['status'] not in ('available','unknown')
         or value['binding'] != 'additive_staging_not_app_bound'
         or type(value['catalog_complete']) is not bool):
@@ -160,6 +160,19 @@ def validate_pending_work(value):
             raise Stop('invalid_pending_work_count')
     if any(value['totals'][key] != sum(row[key] for row in value['domains'].values()) for key in PENDING_COUNTS):
         raise Stop('invalid_pending_work_count')
+    if 'scope' in value:
+        scope = value['scope']
+        exact_keys(scope, {'policy', 'app_managed_assignments'})
+        if scope['policy'] != 'external_ingest_only':
+            raise Stop('invalid_pending_work_scope')
+        exact_keys(scope['app_managed_assignments'], {'user_profiles', 'inventory'})
+        if any(type(count) is not int or not 0 <= count <= 10**15 for count in scope['app_managed_assignments'].values()):
+            raise Stop('invalid_pending_work_scope')
+        if value['awaiting_input_domains']:
+            raise Stop('invalid_pending_work_scope')
+        for domain in ('user_profiles', 'inventory'):
+            if any(value['domains'].get(domain, {}).get(key) != 0 for key in PENDING_COUNTS):
+                raise Stop('invalid_pending_work_scope')
     return value
 
 
@@ -178,10 +191,16 @@ def supplement_relpath(reference):
 
 
 def validate_supplement(value):
-    exact_keys(value, {'schema'}, {'ingest_evidence', 'relational_targets'})
+    exact_keys(value, {'schema'}, {'ingest_evidence', 'relational_targets', 'household_schema_preparation', 'storage_sizes'})
     if value['schema'] != 'offmenu-ingest-supplement/1' or len(value) < 2:
         raise Stop('invalid_ingest_supplement')
     try:
+        if 'storage_sizes' in value:
+            from ingest_storage_sizes import validate_storage_sizes
+            validate_storage_sizes(value['storage_sizes'])
+        if 'household_schema_preparation' in value:
+            from ingest_household_preparation import validate_preparation
+            validate_preparation(value['household_schema_preparation'])
         if 'ingest_evidence' in value:
             from ingest_evidence import validate_evidence
             validate_evidence(value['ingest_evidence'])
@@ -198,6 +217,12 @@ def validate_supplement(value):
 
 def build_supplement(report):
     value = {'schema': 'offmenu-ingest-supplement/1'}
+    if 'storage_sizes' in report:
+        from ingest_storage_sizes import validate_storage_sizes
+        value['storage_sizes'] = validate_storage_sizes(report['storage_sizes'])
+    if 'household_schema_preparation' in report:
+        from ingest_household_preparation import validate_preparation
+        value['household_schema_preparation'] = validate_preparation(report['household_schema_preparation'])
     if 'ingest_evidence' in report:
         try:
             from ingest_evidence import sanitize_evidence
@@ -776,13 +801,27 @@ class Runner:
         if pending['status']=='unknown':
             announce('  Remaining assignments, files and records are unknown (not zero).')
             return
-        if pending['awaiting_input_domains']:
-            announce('  Awaiting explicitly supplied household input: '+', '.join(pending['awaiting_input_domains']))
+        announce('  App-managed at application runtime (not external ingest): user_profiles, inventory.')
         for domain,row in pending['domains'].items():
+            if domain in ('user_profiles', 'inventory'):
+                retained = pending.get('scope', {}).get('app_managed_assignments', {}).get(domain)
+                announce('  '+domain+': app_managed; external-ingest requirement=none'+
+                    ('; retained catalog assignments='+str(retained) if retained is not None else ''))
+                continue
             assignments=' '.join(key+'='+str(row[key]) for key in PENDING_ASSIGNMENTS)
             announce('  '+domain+': '+assignments+' files_remaining='+str(row['files_remaining'])+
                 ' records_remaining_known='+str(row['records_remaining_known'])+
                 ' unknown_record_assignments='+str(row['records_remaining_unknown']))
+
+    def prepare_household_schema(self):
+        # Preparation only: no output-directory argument, deployment or runtime wiring.
+        from ingest_household_preparation import run_preparation, unavailable, validate_preparation
+        try:
+            return validate_preparation(run_preparation(self.root))
+        except Exception:
+            result = unavailable('invocation_failed')
+            result['status'] = 'preparation_failed'
+            return result
 
     def run_ingest_plan(self, plan, job):
         self.preconditions()
@@ -861,6 +900,9 @@ class Runner:
                 batch=[];batch_bytes=0
             batch.append((value,spool));batch_bytes+=size
         deliver_startup_batch(batch)
+        household_preparation = self.prepare_household_schema()
+        announce('[2/4] Household app schema: '+household_preparation['status']+
+                 ' ('+household_preparation['reason']+'); preparation only, application wiring/security activation pending.')
         # Receipt transport does not authorize a second physical database copy.
         # Derived relational snapshots remain a separate explicit API opt-in.
         options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True,
@@ -876,8 +918,10 @@ class Runner:
         for helper in ('manual-action/acquired_recipe_js.py', 'manual-action/relational-targets.schema.sql', 'manual-action/relational-target-mapping.json'):
             if (self.root / helper).is_file():
                 files.append(helper)
-        implementation=digest(b''.join((self.root/path).read_bytes() for path in files))
-        job_key=digest(canonical({'job':job,'implementation':implementation,'input':input_sha}))
+        implementation=digest(b''.join((self.root/path).read_bytes() for path in files)+
+            canonical({'household_preparation_sources': household_preparation['source_sha256']}))
+        job_key=digest(canonical({'job':job,'implementation':implementation,'input':input_sha,
+            'household_preparation':digest(canonical(household_preparation))}))
         completed=f'{RETURN_DIR}/{job_key}-completed.json'
         completed_path = (self.state / 'receipt-cache' / Path(completed).name if self.receipt_transport == 'isolated-branch-v1' else self.root / completed)
         if completed_path.exists() and engine.completed_outputs_available(prepared):
@@ -891,6 +935,7 @@ class Runner:
 
         def checkpoint_report(report):
             nonlocal last_signature
+            report = {**report, 'household_schema_preparation': household_preparation}
             summary=self.ingest_summary(report)
             supplement = build_supplement(report)
             if supplement is not None:
@@ -930,6 +975,7 @@ class Runner:
             deliver(receipt,spool)
 
         report=engine.run_prepared(prepared,report_callback=checkpoint_report)
+        report = {**report, 'household_schema_preparation': household_preparation}
         # Independent final handling also persists a result if an earlier engine
         # callback encountered a local reporting error. No failed source hides it.
         checkpoint_report(report)

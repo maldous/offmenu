@@ -254,7 +254,8 @@ class IngestTests(unittest.TestCase):
         self.assertEqual(first['status'],'complete',first)
         self.assertEqual(first['domains']['barcodes']['reused_stores'],1)
         self.assertEqual(first['domains']['barcodes']['written'],0)
-        self.assertEqual(first['domains']['user_profiles']['status'],'awaiting_user_input')
+        self.assertEqual(first['domains']['user_profiles']['status'],'schema_only')
+        self.assertEqual(first['domains']['user_profiles']['scope'],'app_managed')
         self.assertGreater(first['domains']['recipes']['written'],0)
         prepared={'config':config,'catalog_sha256':'a'*64}
         self.assertTrue(completed_outputs_available(prepared))

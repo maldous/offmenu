@@ -65,14 +65,14 @@ class ExistingTests(unittest.TestCase):
         for domain in ('inventory','user_profiles'):
             context=self.context(domain)
             report=run_domain(domain,[{'id':'unapproved','path':'/not/a/personal/file','format':'json'}],context)
-            self.assertEqual(report['status'],'schema_only');self.assertEqual(report['reason'],'awaiting_user_input')
+            self.assertEqual(report['status'],'schema_only');self.assertIsNone(report['reason']);self.assertEqual(report['scope'],'app_managed')
             self.assertEqual(context.errors,[]);self.assertEqual(context.store.db.execute('SELECT COUNT(*) FROM records').fetchone()[0],0)
-    def test_explicit_private_scope_preserves_real_supplied_rows(self):
+    def test_legacy_private_scope_is_not_external_input(self):
         path=self.root/'supplied.jsonl';path.write_text('{"id":"fixture-household","quantity":2}\n')
         context=self.context('inventory')
         source={'id':'supplied','path':str(path),'format':'jsonl','restricted':True,'metadata':{'user_supplied':True,'household_scope':True}}
         report=run_domain('inventory',[source],context)
-        self.assertEqual(report['status'],'imported');self.assertEqual(report['written'],1)
+        self.assertEqual(report['status'],'schema_only');self.assertEqual(report['written'],0)
     def test_historical_demo_and_incomplete_sources_are_not_opened(self):
         context=self.context('barcodes')
         sources=[{'id':kind,'path':'/not/a/real/file','format':'sqlite','disposition':kind} for kind in ('historical-demo','incomplete-hold','metadata-only')]

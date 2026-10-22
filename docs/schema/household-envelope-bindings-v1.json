@@ -1,0 +1,170 @@
+{
+  "household_profiles": {
+    "payload_type": "profile",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_profiles",
+    "purpose": "household-profile/1"
+  },
+  "household_profile_preferences": {
+    "payload_type": "preference",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_profile_preferences",
+    "purpose": "household-preference/1"
+  },
+  "household_profile_observations": {
+    "payload_type": "observation",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_profile_observations",
+    "purpose": "household-observation/1"
+  },
+  "household_contexts": {
+    "payload_type": "context",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_contexts",
+    "purpose": "household-context/1"
+  },
+  "stock_locations": {
+    "payload_type": "location",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_locations",
+    "purpose": "household-location/1"
+  },
+  "stock_items": {
+    "payload_type": "item",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_items",
+    "purpose": "household-item/1"
+  },
+  "stock_item_mappings": {
+    "payload_type": "mapping",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_item_mappings",
+    "purpose": "household-mapping/1"
+  },
+  "stock_receipts": {
+    "payload_type": "receipt",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_receipts",
+    "purpose": "household-receipt/1"
+  },
+  "stock_receipt_lines": {
+    "payload_type": "receipt_line",
+    "scope": "kitchen",
+    "object_id_sql": "json_array(NEW.receipt_id,NEW.id)",
+    "object_type": "stock_receipt_lines",
+    "purpose": "household-receipt_line/1"
+  },
+  "household_meal_plans": {
+    "payload_type": "plan",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_meal_plans",
+    "purpose": "household-plan/1"
+  },
+  "household_plan_meals": {
+    "payload_type": "meal",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_plan_meals",
+    "purpose": "household-meal/1"
+  },
+  "household_meal_attendance": {
+    "payload_type": "attendance",
+    "scope": "private",
+    "object_id_sql": "json_array(NEW.kitchen_id,NEW.meal_id,NEW.profile_id)",
+    "object_type": "household_meal_attendance",
+    "purpose": "household-attendance/1"
+  },
+  "stock_cook_batches": {
+    "payload_type": "cook_batch",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_cook_batches",
+    "purpose": "household-cook_batch/1"
+  },
+  "stock_lots": {
+    "payload_type": "lot",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_lots",
+    "purpose": "household-lot/1"
+  },
+  "stock_waste_observations": {
+    "payload_type": "waste",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_waste_observations",
+    "purpose": "household-waste/1"
+  },
+  "household_intake_events": {
+    "payload_type": "intake",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_intake_events",
+    "purpose": "household-intake/1"
+  },
+  "household_shopping_lists": {
+    "payload_type": "shopping_list",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_shopping_lists",
+    "purpose": "household-shopping_list/1"
+  },
+  "household_shopping_lines": {
+    "payload_type": "shopping_line",
+    "scope": "kitchen",
+    "object_id_sql": "json_array(NEW.list_id,NEW.id)",
+    "object_type": "household_shopping_lines",
+    "purpose": "household-shopping_line/1"
+  },
+  "household_shopping_handoffs": {
+    "payload_type": "handoff",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_shopping_handoffs",
+    "purpose": "household-handoff/1"
+  },
+  "stock_quantity_conversions": {
+    "payload_type": "conversion",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_quantity_conversions",
+    "purpose": "household-conversion/1"
+  },
+  "stock_lot_events": {
+    "payload_type": "lot_event",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_lot_events",
+    "purpose": "household-lot_event/1"
+  },
+  "stock_lot_checks": {
+    "payload_type": "lot_check",
+    "scope": "kitchen",
+    "object_id_sql": "NEW.id",
+    "object_type": "stock_lot_checks",
+    "purpose": "household-lot_check/1"
+  },
+  "household_saved_recipes": {
+    "payload_type": "saved_recipe",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_saved_recipes",
+    "purpose": "household-saved_recipe/1"
+  },
+  "household_recipe_collections": {
+    "payload_type": "collection",
+    "scope": "private",
+    "object_id_sql": "NEW.id",
+    "object_type": "household_recipe_collections",
+    "purpose": "household-collection/1"
+  }
+}
