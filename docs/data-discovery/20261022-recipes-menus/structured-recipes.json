@@ -1,0 +1,1575 @@
+{
+  "schema_version": "offmenu.source-discovery.structured-recipes.v1",
+  "researched_at": "2026-10-22",
+  "purpose": "Source discovery and disabled fetch preparation; not acquisition authority",
+  "production_fetch_enabled": false,
+  "execution_location": "Foo",
+  "activation_policy": {
+    "hard_disabled": true,
+    "network_execution_present": false,
+    "requires_explicit_activation_after_readiness": true,
+    "database_readiness_requirement": "All eight databases provisioned on Foo and verified relationally fit for existing data, using evidence-backed checks; file existence or booleans alone insufficient.",
+    "required_database_count": 8,
+    "readiness_evidence": null,
+    "credentials_included": false,
+    "production_fetch_performed": false
+  },
+  "counting_policy": [
+    "Do not sum alternate representations or upstream/derived sources",
+    "Do not count reviews, QA pairs, images, ingredients, RDF triples or translations as additional recipes",
+    "Require ingredients and actionable steps",
+    "Novelty is relative to retained accepted scope, not only loaded rows",
+    "All new unique accepted counts remain unmeasured"
+  ],
+  "baseline": {
+    "repository": "maldous/offmenu",
+    "revision": "52b6a50a59b458bdb49fe7ea090b72c63a4b1a30",
+    "path": "docs/world-recipe-research-20261014.json",
+    "retained_total": 25135,
+    "full_records": 24879,
+    "ocr_candidates": 256,
+    "accepted_families": {
+      "wikibooks": 17379,
+      "historical_archive": 6192,
+      "unitools": 501,
+      "based_cooking": 426,
+      "howtocook": 362,
+      "smithsonian_ocr_candidates": 256,
+      "taco_fancy": 18,
+      "openrecipe_spec_example": 1
+    }
+  },
+  "tier_definitions": {
+    "A": "Credible content-level open/PD candidate; not cleared/activated by this label",
+    "B": "Conditional per-record rights, provenance, access or contract; retain as useful lead",
+    "C": "Explicit incompatible restriction or essential unresolved access/permission; separate permitted research only"
+  },
+  "sources": [
+    {
+      "id": "foodista_common_pile",
+      "title": "Foodista / Common Pile",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.foodista.com/",
+        "https://www.foodista.com/terms",
+        "https://huggingface.co/datasets/common-pile/foodista",
+        "https://huggingface.co/datasets/common-pile/foodista/blob/main/README.md",
+        "https://github.com/r-three/common-pile/blob/main/sources/food/preprocess.py"
+      ],
+      "counts": [
+        {
+          "value": 42291,
+          "unit": "site_recipes",
+          "basis": "publisher_claim",
+          "qualifier": "Not independently enumerated"
+        },
+        {
+          "value": 72090,
+          "unit": "mixed_documents",
+          "basis": "publisher_claim",
+          "qualifier": "Includes blogs; not additive to website count"
+        },
+        {
+          "value": null,
+          "unit": "eligible_unique_new_recipes",
+          "basis": "not_measured",
+          "qualifier": "Pending filtering and retained-corpus matching"
+        }
+      ],
+      "formats": [
+        "jsonl.gz",
+        "extracted_text",
+        "html"
+      ],
+      "content_fields": [
+        "id",
+        "text",
+        "source",
+        "added",
+        "created",
+        "metadata.license",
+        "metadata.url",
+        "metadata.authors"
+      ],
+      "content_rights": {
+        "claim": "CC-BY-3.0 snapshot; CC-BY-4.0 current site",
+        "basis": "Snapshot metadata and current content terms",
+        "obligations": [
+          "retain original author, URL, license/version",
+          "mark changes",
+          "omit images/comments/third-party exceptions by default"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future pinned HF v0/documents/*.jsonl.gz",
+        "size": "0.09 GB UTF-8 text claimed; repository about 951 MB including other representations",
+        "last_observed": "2026-10-22",
+        "sample_only": true,
+        "exact_shards_verified": false
+      },
+      "overlap": "Site, Common Pile filtered/original, Kasabi RDF and mirrors share lineage; not named in accepted baseline; row overlap unknown",
+      "handler_proposal": "dolma_jsonl_recipe_sections",
+      "blockers": [
+        "Exact shard inventory/hash and immutable revision",
+        "Recipe-only full-content count",
+        "Section parsing and rights exceptions",
+        "All-eight database readiness and explicit activation on Foo"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ],
+      "sample_urls": [
+        "https://www.foodista.com/recipe/7SVL8NL4/no-bake-banana-oatmeal-cookies",
+        "https://github.com/r-three/common-pile/blob/main/sources/food/examples/0.json"
+      ],
+      "sample_evidence": "Website sample full recipe; published JSON example is a blog, demonstrating mixed corpus",
+      "derivatives": [
+        "https://huggingface.co/datasets/common-pile/foodista_filtered",
+        "https://old.datahub.io/dataset/foodista"
+      ]
+    },
+    {
+      "id": "forkrecipe",
+      "title": "ForkRecipe",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/futurechef/forkrecipe-recipes",
+        "https://github.com/futurechef/forkrecipe-recipes/blob/main/LICENSE",
+        "https://github.com/futurechef/forkrecipe-recipes/blob/main/recipes/_template.js"
+      ],
+      "counts": [
+        {
+          "value": 916,
+          "unit": "recipes",
+          "basis": "publisher_claim",
+          "qualifier": "README"
+        },
+        {
+          "value": 964,
+          "unit": "non_template_js_files",
+          "basis": "directory_metadata_count",
+          "qualifier": "965 files minus _template.js; not deduplicated accepted recipes"
+        }
+      ],
+      "formats": [
+        "javascript_static_object"
+      ],
+      "content_fields": [
+        "repoId",
+        "parentRepoId",
+        "title",
+        "author",
+        "ingredients[].name",
+        "ingredients[].ratioValue",
+        "ingredients[].defaultUnit",
+        "processNodes[].instructions",
+        "license",
+        "cuisine",
+        "culture",
+        "activeTime",
+        "totalTime"
+      ],
+      "content_rights": {
+        "claim": "CC-BY-SA-4.0 recipe content",
+        "basis": "Maintainer states original/PD-adapted content and explicit content license",
+        "obligations": [
+          "attribution and notices",
+          "share-alike for covered adaptations",
+          "record changes",
+          "verify source exceptions"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future pinned Git tree and allowlisted recipe files",
+        "revision": "934319313379201f91ddccdd29abd054039a3ad6",
+        "revision_date": "2026-10-03",
+        "metadata_bytes_including_template": 9484218
+      },
+      "overlap": "Not named accepted baseline; fork and cross-corpus dedupe pending",
+      "handler_proposal": "static_js_ast_recipe",
+      "blockers": [
+        "Implement non-executing AST allowlist",
+        "Contributor/provenance review",
+        "Ratio quantities must not become invented weights",
+        "Culinary QA"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ],
+      "sample_urls": [
+        "https://github.com/futurechef/forkrecipe-recipes/blob/main/recipes/ackee-saltfish.js"
+      ],
+      "sample_evidence": "Nine ingredients and four process nodes; ratios/parts rather than gram weights"
+    },
+    {
+      "id": "medlineplus_healthy_recipes",
+      "title": "MedlinePlus Healthy Recipes",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://medlineplus.gov/recipes/",
+        "https://medlineplus.gov/spanish/recetas/",
+        "https://medlineplus.gov/about/using/usingcontent/"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "recipes",
+          "basis": "not_measured",
+          "qualifier": "Category duplicates and language counterparts must be resolved"
+        }
+      ],
+      "formats": [
+        "html_text"
+      ],
+      "content_fields": [
+        "title",
+        "ingredient_groups",
+        "directions",
+        "prep_time",
+        "cook_time",
+        "servings",
+        "nutrition",
+        "credited_source",
+        "language"
+      ],
+      "content_rights": {
+        "claim": "Public domain under U.S. law for Healthy Recipes section",
+        "basis": "NLM explicitly identifies English and Spanish Healthy Recipes as public-domain content",
+        "obligations": [
+          "requested NLM source acknowledgement",
+          "preserve credited source",
+          "separate image rights",
+          "review jurisdiction"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future bounded index discovery + semantic HTML; no recipe-specific bulk XML verified"
+      },
+      "overlap": "May overlap USDA/NHLBI/FoodHero republishes; language versions linked not additive dishes",
+      "handler_proposal": "semantic_html_recipe",
+      "blockers": [
+        "Enumerate canonical recipe URLs",
+        "Verify per-page exceptions",
+        "Do not assume general MedlinePlus XML is recipe export"
+      ],
+      "languages": [
+        "en",
+        "es"
+      ],
+      "countries": [
+        "US",
+        "global"
+      ],
+      "sample_urls": [
+        "https://medlineplus.gov/recipes/oatmeal-pecan-waffles-or-pancakes/"
+      ],
+      "sample_evidence": "Grouped quantified ingredients, seven directions, times, servings and nutrition"
+    },
+    {
+      "id": "kerala_recipes",
+      "title": "Kerala traditional recipes",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://huggingface.co/datasets/Fathi7ma/kerala-recipes"
+      ],
+      "counts": [
+        {
+          "value": 89,
+          "unit": "viewer_rows",
+          "basis": "viewer_count",
+          "qualifier": "Not independently downloaded or deduplicated"
+        }
+      ],
+      "formats": [
+        "json",
+        "csv",
+        "parquet"
+      ],
+      "content_fields": [
+        "name",
+        "Malayalam_name",
+        "ingredients",
+        "quantities",
+        "steps",
+        "scaling",
+        "context"
+      ],
+      "content_rights": {
+        "claim": "CC-BY-4.0",
+        "basis": "Contributor dataset card; traditional home-cook provenance claimed",
+        "obligations": [
+          "attribute contributor",
+          "retain cultural names",
+          "verify contributor/source provenance"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future pinned dataset files",
+        "size": "about 323 kB repository"
+      },
+      "overlap": "Meal-pairing links/feast templates are not extra recipes; not named baseline",
+      "handler_proposal": "json_recipe_fields",
+      "blockers": [
+        "Verify exact per-file schema and provenance",
+        "No assumption Malayalam instructions exist"
+      ],
+      "languages": [
+        "en",
+        "ml_names"
+      ],
+      "countries": [
+        "IN-KL"
+      ],
+      "sample_evidence": "Viewer shows quantities and procedural text"
+    },
+    {
+      "id": "public_domain_recipes",
+      "title": "Public Domain Recipes / based.cooking fork",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://publicdomainrecipes.com/",
+        "https://github.com/ronaldl29/public-domain-recipes"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "new_unique_recipes",
+          "basis": "not_measured",
+          "qualifier": "426 based.cooking records already retained"
+        }
+      ],
+      "formats": [
+        "markdown",
+        "html_text"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients",
+        "directions",
+        "time",
+        "yield",
+        "contributor"
+      ],
+      "content_rights": {
+        "claim": "Public domain / Unlicense recipe content",
+        "basis": "Website content statement",
+        "obligations": [
+          "retain provenance",
+          "check copied-content exceptions",
+          "separate images"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future pinned Git delta only"
+      },
+      "overlap": "Fork of already-retained based.cooking; count only demonstrated delta",
+      "handler_proposal": "markdown_recipe",
+      "blockers": [
+        "Compare retained source IDs and content hashes"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ],
+      "sample_urls": [
+        "https://publicdomainrecipes.com/desert-roses/"
+      ]
+    },
+    {
+      "id": "hochipants_original_archive",
+      "title": "HoChiPants original recipe archive",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/HoChiPants/open-recipe-archive"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "published_original_recipes",
+          "basis": "not_measured",
+          "qualifier": "No substantial count verified"
+        }
+      ],
+      "formats": [
+        "json"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients",
+        "instructions",
+        "source",
+        "rights_status"
+      ],
+      "content_rights": {
+        "claim": "CC0 original published recipe data; MIT software",
+        "basis": "Maintainer policy distinguishes original data and staging",
+        "obligations": [
+          "only rights-verified published originals",
+          "exclude recipes-staging"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future final recipes directory only"
+      },
+      "overlap": "Different project from AdamBouhmad historical archive",
+      "handler_proposal": "json_recipe_fields",
+      "blockers": [
+        "Verify final-record rights state",
+        "Exclude scraped/reworded rights-pending staging"
+      ]
+    },
+    {
+      "id": "unitools",
+      "title": "UniTools",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/farcrak/unitools-recipes",
+        "https://github.com/farcrak/unitools-recipes/blob/main/LICENSE",
+        "https://github.com/farcrak/unitools-recipes/blob/main/sample.json"
+      ],
+      "counts": [
+        {
+          "value": 501,
+          "unit": "recipes",
+          "basis": "publisher_claim_and_existing_baseline",
+          "qualifier": "Already retained accepted family"
+        },
+        {
+          "value": 0,
+          "unit": "demonstrated_new_recipes",
+          "basis": "baseline_crosswalk",
+          "qualifier": "No delta established"
+        }
+      ],
+      "formats": [
+        "json",
+        "csv"
+      ],
+      "content_fields": [
+        "slug",
+        "country",
+        "name.en",
+        "name.ru",
+        "baseServings",
+        "ingredients[].quantity",
+        "ingredients[].unit",
+        "ingredients[].scaling",
+        "steps[].text",
+        "nutritionPerServing"
+      ],
+      "content_rights": {
+        "claim": "CC-BY-SA-4.0 content",
+        "basis": "Explicit data content license",
+        "obligations": [
+          "attribution",
+          "share-alike for covered adaptations",
+          "separate Commons photo licenses"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Retained-source reuse preferred; documented canonical JSON/CSV",
+        "documented_json": "https://theunitools.com/data/unitools-recipes-v1.json",
+        "size": "about 2.6 MB",
+        "retained_revision": "2f554073f7e730b18d707fe1164d18308f6ec16c",
+        "version": "2.0.0",
+        "generated": "2026-09-02"
+      },
+      "overlap": "501 already retained; 127 country tags not independent country-origin certification",
+      "handler_proposal": "unitools_json",
+      "blockers": [
+        "Source version/delta comparison",
+        "Preserve unknown scaling enums"
+      ],
+      "languages": [
+        "en",
+        "ru"
+      ],
+      "countries": [
+        "127 publisher country tags"
+      ]
+    },
+    {
+      "id": "adambouhmad_historical_archive",
+      "title": "Historical open-recipe-archive",
+      "tier": "A",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/AdamBouhmad/open-recipe-archive",
+        "https://github.com/AdamBouhmad/open-recipe-archive/commits/main/"
+      ],
+      "counts": [
+        {
+          "value": 54843,
+          "unit": "recipes",
+          "basis": "publisher_claim",
+          "qualifier": "Whole catalogue; not all rights-cleared"
+        },
+        {
+          "value": 31,
+          "unit": "collections",
+          "basis": "publisher_claim",
+          "qualifier": "Not a recipe count"
+        },
+        {
+          "value": 6192,
+          "unit": "retained_accepted_recipes",
+          "basis": "existing_baseline",
+          "qualifier": "Per-work rights-cleared subset"
+        },
+        {
+          "value": 0,
+          "unit": "demonstrated_new_revision_recipes",
+          "basis": "exact_revision_match",
+          "qualifier": "Current HEAD equals retained revision"
+        }
+      ],
+      "formats": [
+        "jsonl",
+        "markdown"
+      ],
+      "content_fields": [
+        "source_title",
+        "source_url",
+        "year",
+        "author",
+        "license",
+        "body"
+      ],
+      "content_rights": {
+        "claim": "Repository Unlicense plus original-work rights",
+        "basis": "Only per-work cleared historical subset approved in retained audit",
+        "obligations": [
+          "author/translator/death/publication checks by jurisdiction",
+          "preserve book/page provenance",
+          "do not clear all records from wrapper"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Retained corpus and rights partitions; no repeat bulk fetch",
+        "revision": "ae3bd2c009a8899dfe63b9166fa98ae3fa8041a8",
+        "revision_date": "2026-07-06"
+      },
+      "overlap": "Exactly same revision already retained; not new source",
+      "handler_proposal": "historical_jsonl_work_rights",
+      "blockers": [
+        "Retained import reconciliation",
+        "Rights review for held works; never blanket-clear"
+      ]
+    },
+    {
+      "id": "recipeqa",
+      "title": "RecipeQA",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://hucvl.github.io/recipeqa/",
+        "https://hucvl.github.io/recipeqa/recipeqa-datasheet.pdf"
+      ],
+      "counts": [
+        {
+          "value": 19779,
+          "unit": "source_recipes",
+          "basis": "publisher_datasheet",
+          "qualifier": "Per-recipe commercial eligibility unknown"
+        },
+        {
+          "value": 36786,
+          "unit": "question_answer_pairs",
+          "basis": "publisher_datasheet",
+          "qualifier": "Not recipes"
+        }
+      ],
+      "formats": [
+        "json"
+      ],
+      "content_fields": [
+        "recipe_id",
+        "step.title",
+        "step.description",
+        "images",
+        "per_recipe_license"
+      ],
+      "content_rights": {
+        "claim": "Mixed individual Creative Commons licenses in recipes.json",
+        "basis": "Primary dataset page/datasheet",
+        "obligations": [
+          "allowlist compatible per-record licenses",
+          "exclude NC/ND/unknown where incompatible",
+          "author/source attribution",
+          "retain license/version"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Documented JSON recipe archive about 400 MB, QA sets separate",
+        "size": "150/18/18 MB question sets; 400 MB recipe archive advertised",
+        "snapshot": "April 2018"
+      },
+      "overlap": "Instructables lineage; QA variants not unique recipes",
+      "handler_proposal": "recipeqa_per_record_license",
+      "blockers": [
+        "Current download availability and exact manifest",
+        "Ingredient completeness; QA preprocessing removes initial step",
+        "Separate non-food projects",
+        "Per-record license counts"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ]
+    },
+    {
+      "id": "foodcom_irkaal",
+      "title": "Food.com recipes/reviews (irkaal)",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.kaggle.com/irkaal/foodcom-recipes-and-reviews/metadata"
+      ],
+      "counts": [
+        {
+          "value": 522517,
+          "unit": "recipes",
+          "basis": "uploader_claim",
+          "qualifier": "Not independently recounted"
+        },
+        {
+          "value": 1401982,
+          "unit": "reviews",
+          "basis": "uploader_claim",
+          "qualifier": "Separate entities, exclude by default"
+        }
+      ],
+      "formats": [
+        "parquet",
+        "csv"
+      ],
+      "content_fields": [
+        "RecipeId",
+        "Name",
+        "RecipeIngredientQuantities",
+        "RecipeIngredientParts",
+        "RecipeInstructions",
+        "CookTime",
+        "PrepTime",
+        "RecipeCategory"
+      ],
+      "content_rights": {
+        "claim": "Uploader CC0; underlying Food.com/author rights not established",
+        "basis": "Dataset metadata",
+        "obligations": [
+          "obtain content-rights basis",
+          "preserve source attribution",
+          "omit images and review/user tables"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future approved recipe-only Parquet preferred; CSV contains R-like lists",
+        "size": "recipes.csv about 704.21 MB; total repository about 1.55 GB"
+      },
+      "overlap": "Food.com lineage; overlaps personalization subset and other scrapes",
+      "handler_proposal": "foodcom_parquet",
+      "blockers": [
+        "Underlying content permission",
+        "No eval/exec of CSV c(...) lists",
+        "Deduplicate retained/other Food.com variants"
+      ]
+    },
+    {
+      "id": "foodcom_personalization",
+      "title": "Food.com personalization subset",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/majumderb/recipe-personalization",
+        "https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions"
+      ],
+      "counts": [
+        {
+          "value": 231637,
+          "unit": "recipes",
+          "basis": "advertised_unrecounted",
+          "qualifier": "Do not sum with larger Food.com dataset"
+        }
+      ],
+      "formats": [
+        "csv"
+      ],
+      "content_fields": [
+        "name",
+        "id",
+        "minutes",
+        "nutrition",
+        "steps",
+        "ingredients",
+        "description"
+      ],
+      "content_rights": {
+        "claim": "Underlying content rights unresolved",
+        "basis": "Creator points to Food.com-derived dataset",
+        "obligations": [
+          "permission/provenance review",
+          "exclude user interaction table unless separately justified"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future recipe table only if approved"
+      },
+      "overlap": "Food.com subset overlaps irkaal/RecipeNLG-derived scrapes",
+      "handler_proposal": "safe_list_csv",
+      "blockers": [
+        "Verify exact dataset license and rights",
+        "Quantities may be stripped",
+        "No unsafe evaluation"
+      ]
+    },
+    {
+      "id": "recipenlg",
+      "title": "RecipeNLG",
+      "tier": "C",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/Glorf/recipenlg",
+        "https://recipenlg.cs.put.poznan.pl/dataset",
+        "https://huggingface.co/datasets/mbien/recipe_nlg"
+      ],
+      "counts": [
+        {
+          "value": 2231142,
+          "unit": "recipes",
+          "basis": "publisher_claim",
+          "qualifier": "Gathered + Recipe1M lineage"
+        }
+      ],
+      "formats": [
+        "csv",
+        "parquet"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients",
+        "directions",
+        "link",
+        "source",
+        "NER"
+      ],
+      "content_rights": {
+        "claim": "Primary indexed terms: noncommercial research/education",
+        "basis": "Original download terms; live page sparse so revalidate exact current terms",
+        "obligations": [
+          "restricted-purpose separation",
+          "do not treat mirrors as new permission"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Terms-gated source; no terms accepted or download"
+      },
+      "overlap": "Contains Recipe1M plus gathered recipes; ReciFine/3A2M reuse same base",
+      "handler_proposal": "restricted_research_recipe_csv",
+      "blockers": [
+        "Commercial-purpose incompatibility",
+        "Current exact terms and original source rights"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ]
+    },
+    {
+      "id": "recifine_3a2m",
+      "title": "ReciFine / 3A2M derivatives",
+      "tier": "C",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://huggingface.co/datasets/nuhuibrahim/recifine",
+        "https://arxiv.org/abs/2303.16778"
+      ],
+      "counts": [
+        {
+          "value": 2231142,
+          "unit": "recifine_base_records",
+          "basis": "publisher_claim",
+          "qualifier": "RecipeNLG base, not additional recipes"
+        }
+      ],
+      "formats": [
+        "json",
+        "parquet"
+      ],
+      "content_fields": [
+        "base_recipe",
+        "ingredient_entities",
+        "annotations"
+      ],
+      "content_rights": {
+        "claim": "Derivative annotation license plus upstream RecipeNLG constraints require separate review",
+        "basis": "Creator lineage disclosures",
+        "obligations": [
+          "retain upstream lineage and conditions"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Documented derived datasets, not fetched"
+      },
+      "overlap": "RecipeNLG lineage, no additive base recipe count",
+      "handler_proposal": "annotation_join_only",
+      "blockers": [
+        "Upstream restrictions",
+        "Verify annotation rights separately"
+      ]
+    },
+    {
+      "id": "recipe1m",
+      "title": "Recipe1M / Recipe1M+",
+      "tier": "C",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://im2recipe.csail.mit.edu/"
+      ],
+      "counts": [
+        {
+          "value": 1000000,
+          "unit": "approximate_recipes",
+          "basis": "publisher_approximation",
+          "qualifier": "1M+ is principally image expansion"
+        }
+      ],
+      "formats": [
+        "json"
+      ],
+      "content_fields": [
+        "id",
+        "title",
+        "ingredients",
+        "instructions",
+        "url",
+        "partition",
+        "image_associations"
+      ],
+      "content_rights": {
+        "claim": "Current exact dataset terms unresolved; prior retained audit classified research-restricted",
+        "basis": "Primary project + existing audit; download endpoint unavailable",
+        "obligations": [
+          "obtain exact dataset terms",
+          "separate code/paper licenses from content",
+          "preserve original sources"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Primary download/login unavailable in this research environment"
+      },
+      "overlap": "RecipeNLG and FoodKG derivatives; no additive 1M+ recipe total",
+      "handler_proposal": "restricted_research_layered_json",
+      "blockers": [
+        "Exact current terms/access",
+        "Scraped-content permission"
+      ]
+    },
+    {
+      "id": "foodkg",
+      "title": "FoodKG",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://foodkg.github.io/foodkg.html"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "independently_new_recipe_texts",
+          "basis": "not_established",
+          "qualifier": "Semantic enrichment of Recipe1M-related content"
+        }
+      ],
+      "formats": [
+        "rdf",
+        "sparql"
+      ],
+      "content_fields": [
+        "recipe",
+        "ingredient",
+        "nutrition_links",
+        "provenance"
+      ],
+      "content_rights": {
+        "claim": "Toolkit openness does not settle underlying recipe-text rights",
+        "basis": "Construction documentation",
+        "obligations": [
+          "preserve upstream rights/provenance"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Construction scripts/public endpoint documented"
+      },
+      "overlap": "Recipe1M lineage; enrichment only until independently established",
+      "handler_proposal": "rdf_provenance_join",
+      "blockers": [
+        "Full instruction availability",
+        "Data license separate from toolkit",
+        "No additive recipe count"
+      ]
+    },
+    {
+      "id": "epicurious_images",
+      "title": "Epicurious recipe/image dataset",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.kaggle.com/pes12017000148/food-ingredients-and-recipe-dataset-with-images/activity"
+      ],
+      "counts": [
+        {
+          "value": 13582,
+          "unit": "rows",
+          "basis": "uploader_claim",
+          "qualifier": "Not independently recounted"
+        }
+      ],
+      "formats": [
+        "csv"
+      ],
+      "content_fields": [
+        "Title",
+        "Ingredients",
+        "Instructions",
+        "Image_Name",
+        "Cleaned_Ingredients"
+      ],
+      "content_rights": {
+        "claim": "Uploader CC-BY-SA-3.0; underlying Epicurious/author grant unverified",
+        "basis": "Dataset metadata",
+        "obligations": [
+          "underlying content-rights review",
+          "omit images absent separate permission"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Future recipe CSV only if approved",
+        "size": "about 26.6 MB CSV; 238.62 MB including images"
+      },
+      "overlap": "SQLite and other mirrors same lineage; may overlap scraped mega-corpora",
+      "handler_proposal": "safe_list_csv",
+      "blockers": [
+        "Original-source permission",
+        "No mirror-based license laundering"
+      ]
+    },
+    {
+      "id": "zenodo_culinary_50510",
+      "title": "Zenodo Culinary Recipes",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://zenodo.org/records/15169428"
+      ],
+      "counts": [
+        {
+          "value": 50510,
+          "unit": "recipes",
+          "basis": "publisher_claim",
+          "qualifier": "Actual row/schema sample not verified"
+        }
+      ],
+      "formats": [
+        "csv"
+      ],
+      "content_fields": [
+        "author_claimed_ingredients",
+        "author_claimed_instructions",
+        "author_claimed_nutrition",
+        "author_claimed_times"
+      ],
+      "content_rights": {
+        "claim": "Not established from rendered record",
+        "basis": "License field not resolved; absence not proven",
+        "obligations": [
+          "resolve license and source provenance before acquisition"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "CSV deposited on Zenodo",
+        "size": "110 MB",
+        "version": "1",
+        "published": "2025-04-07",
+        "published_md5": "986efafad65c7969fde13a46d2defba0"
+      },
+      "overlap": "Underlying source lineage unresolved",
+      "handler_proposal": "csv_pending_schema",
+      "blockers": [
+        "License metadata",
+        "Bounded schema/sample",
+        "Original sources and overlap"
+      ]
+    },
+    {
+      "id": "mendeley_indian_6000",
+      "title": "Mendeley Indian recipes",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://data.mendeley.com/datasets/xsphgmmh7b/1"
+      ],
+      "counts": [
+        {
+          "value": 6000,
+          "unit": "minimum_advertised_recipes",
+          "basis": "publisher_claim",
+          "qualifier": "6000+; unrecounted"
+        }
+      ],
+      "formats": [
+        "csv",
+        "xls"
+      ],
+      "content_fields": [
+        "RecipeName",
+        "TranslatedRecipeName",
+        "Ingredients",
+        "TranslatedIngredients",
+        "Instructions",
+        "TranslatedInstructions",
+        "Servings",
+        "Cuisine",
+        "Course",
+        "Diet",
+        "times"
+      ],
+      "content_rights": {
+        "claim": "Uploader CC-BY-4.0; Archana's Kitchen underlying content unresolved",
+        "basis": "Creator source/translation disclosure",
+        "obligations": [
+          "verify original rights",
+          "record translation provenance and changes"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Version 1 deposited 2020"
+      },
+      "overlap": "Translations of same recipes not independent dishes",
+      "handler_proposal": "bilingual_csv_recipe",
+      "blockers": [
+        "Underlying source permission",
+        "Translation accuracy and quantity preservation"
+      ],
+      "languages": [
+        "hi",
+        "en_machine_translation"
+      ],
+      "countries": [
+        "IN"
+      ]
+    },
+    {
+      "id": "recipedb",
+      "title": "RecipeDB",
+      "tier": "C",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://cosylab.iiitd.edu.in/recipedb/",
+        "https://cosylab.iiitd.edu.in/recipedb/FAQ"
+      ],
+      "counts": [
+        {
+          "value": 118000,
+          "unit": "approximate_recipes",
+          "basis": "publisher_claim",
+          "qualifier": "Over 118k; not independent full-step export count"
+        }
+      ],
+      "formats": [
+        "web_database"
+      ],
+      "content_fields": [
+        "ingredients",
+        "nutrition",
+        "source_links",
+        "procedural_export_unverified"
+      ],
+      "content_rights": {
+        "claim": "CC-BY-NC-SA-3.0",
+        "basis": "Primary site footer",
+        "obligations": [
+          "noncommercial scope",
+          "attribution/share-alike",
+          "original-source rights"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Web search/database; bulk full-procedure export not verified"
+      },
+      "overlap": "Source scrapes; predecessor of RecipeDB2",
+      "handler_proposal": "research_database_export_pending",
+      "blockers": [
+        "Commercial-purpose incompatibility",
+        "Full procedural export availability"
+      ]
+    },
+    {
+      "id": "recipedb2",
+      "title": "RecipeDB 2.0",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://cosylab.iiitd.edu.in/recipedb2/",
+        "https://arxiv.org/abs/2609.22099"
+      ],
+      "counts": [
+        {
+          "value": 128942,
+          "unit": "recipes",
+          "basis": "publisher_paper",
+          "qualifier": "Not independently exported"
+        }
+      ],
+      "formats": [
+        "web_database"
+      ],
+      "content_fields": [
+        "ingredients",
+        "nutrition",
+        "procedure_export_unverified"
+      ],
+      "content_rights": {
+        "claim": "Exact 2.0 content terms unverified",
+        "basis": "JS-only site and primary paper",
+        "obligations": [
+          "do not automatically inherit predecessor license",
+          "verify export terms"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "JS site; source paper describes database"
+      },
+      "overlap": "Successor, not additive to RecipeDB",
+      "handler_proposal": "database_export_pending",
+      "blockers": [
+        "Exact license",
+        "Bulk availability",
+        "Complete steps schema"
+      ]
+    },
+    {
+      "id": "cooklang_federation",
+      "title": "Cooklang federation",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://cooklang.org/guides/recipe-discovery/",
+        "https://github.com/cooklang/federation"
+      ],
+      "counts": [
+        {
+          "value": 5000,
+          "unit": "approximate_recipes",
+          "basis": "guide_claim",
+          "qualifier": "Across about 80 collections/10 languages; rights vary"
+        }
+      ],
+      "formats": [
+        "cooklang_text",
+        "json_search"
+      ],
+      "content_fields": [
+        "ingredient_annotations",
+        "steps",
+        "timers",
+        "author_metadata",
+        "source_metadata"
+      ],
+      "content_rights": {
+        "claim": "Per-source license; federation software license is not recipe grant",
+        "basis": "Federated collection architecture",
+        "obligations": [
+          "approve each contributing repository",
+          "retain attribution/license",
+          "check imported recipes"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Discovery API and linked source Git repositories"
+      },
+      "overlap": "Potential overlap with already retained community recipes",
+      "handler_proposal": "cooklang_source_feed",
+      "blockers": [
+        "Per-feed content rights",
+        "Pin source commits",
+        "Do not assume all indexed recipes reusable"
+      ]
+    },
+    {
+      "id": "recipesource",
+      "title": "RecipeSource / MealMaster archives",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.recipesource.com/admin/faq.html",
+        "https://www.recipesource.com/admin/submit.html",
+        "https://www.recipesource.com/main-dishes/meat/pork/06/rec0612.html"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "recipes",
+          "basis": "not_measured",
+          "qualifier": "Legacy archive count unresolved"
+        }
+      ],
+      "formats": [
+        "mealmaster_text",
+        "mastercook_text",
+        "html_text"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients",
+        "directions",
+        "yield",
+        "source_credit"
+      ],
+      "content_rights": {
+        "claim": "Mixed per-record rights; no blanket whole-archive grant",
+        "basis": "FAQ/submission policy and copyrighted-source sample",
+        "obligations": [
+          "per-record permission/provenance",
+          "exclude incompatible notices"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Legacy HTML/text; home page availability inconsistent"
+      },
+      "overlap": "Likely Usenet/legacy archive duplication",
+      "handler_proposal": "mealmaster_parser",
+      "blockers": [
+        "Content rights partition",
+        "Canonical archival manifest"
+      ]
+    },
+    {
+      "id": "myplate_food",
+      "title": "MyPlate.food preservation API",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://myplate.food/api",
+        "https://myplate.food/partners"
+      ],
+      "counts": [
+        {
+          "value": 1072,
+          "unit": "recipes",
+          "basis": "provider_claim",
+          "qualifier": "Five translations are versions, not 5360 dishes"
+        }
+      ],
+      "formats": [
+        "json_api",
+        "licensed_json_csv_export"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients",
+        "instructions",
+        "nutrition",
+        "translations"
+      ],
+      "content_rights": {
+        "claim": "Runtime API terms; separate paid commercial bulk enrichment license",
+        "basis": "Provider API and partner terms",
+        "obligations": [
+          "do not bypass bulk licensing by API enumeration",
+          "separate original USDA and provider-added content"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Documented no-key API; 20 requests/min/IP, 100 full recipe calls/day",
+        "account_created": false,
+        "agreement_accepted": false
+      },
+      "overlap": "Original USDA/FoodHero/etc content may overlap other government collections",
+      "handler_proposal": "contract_api_recipe",
+      "blockers": [
+        "Commercial bulk agreement if selected",
+        "Per-original provenance",
+        "No API scraping to replace agreement"
+      ],
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ko"
+      ],
+      "countries": [
+        "US",
+        "global"
+      ]
+    },
+    {
+      "id": "themealdb",
+      "title": "TheMealDB",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.themealdb.com/",
+        "https://www.themealdb.com/api.php",
+        "https://www.themealdb.com/terms_of_use.php"
+      ],
+      "counts": [
+        {
+          "value": 793,
+          "unit": "meals",
+          "basis": "homepage_claim",
+          "qualifier": "Not independently enumerated"
+        },
+        {
+          "value": 992,
+          "unit": "ingredients",
+          "basis": "homepage_claim",
+          "qualifier": "Not recipes"
+        }
+      ],
+      "formats": [
+        "json_api"
+      ],
+      "content_fields": [
+        "idMeal",
+        "strMeal",
+        "strInstructions",
+        "strIngredient1..20",
+        "strMeasure1..20",
+        "strArea",
+        "strCountry",
+        "strSource",
+        "strCreativeCommonsConfirmed"
+      ],
+      "content_rights": {
+        "claim": "Provider terms, not blanket CC0",
+        "basis": "Terms updated 2025-07-01 and bounded API response",
+        "obligations": [
+          "official API only, no website scrape",
+          "retain notices",
+          "third-party rights",
+          "paid app-store/supporter conditions",
+          "do not resell API"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Official API sample verified; bulk/supporter conditions apply",
+        "sample_url": "https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata"
+      },
+      "overlap": "Used by many mirrors; source/sample CC confirmation null",
+      "handler_proposal": "themealdb_slots",
+      "blockers": [
+        "Review planned commercial/bulk use under exact terms",
+        "Underlying third-party rights"
+      ],
+      "languages": [
+        "en"
+      ],
+      "countries": [
+        "global"
+      ],
+      "sample_evidence": "Eight nonempty ingredient/measure pairs and full instructions; remaining slots blank/null"
+    },
+    {
+      "id": "tinyplates",
+      "title": "Tiny Plates",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://www.tinyplates.dev/faq"
+      ],
+      "counts": [
+        {
+          "value": null,
+          "unit": "recipes",
+          "basis": "provider_says_thousands",
+          "qualifier": "No exact verified count"
+        }
+      ],
+      "formats": [
+        "json_api",
+        "mcp"
+      ],
+      "content_fields": [
+        "ingredients.quantity",
+        "ingredients.unit",
+        "ingredients.name",
+        "steps",
+        "servings",
+        "nutrition",
+        "source"
+      ],
+      "content_rights": {
+        "claim": "Commercial runtime allowed with credit/link; bulk/train agreement required",
+        "basis": "Provider FAQ",
+        "obligations": [
+          "no copy of index",
+          "expiring request cache only",
+          "contact for bulk/train authorization"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "Key required; OpenAPI at api.tinyplates.dev/openapi.json",
+        "account_created": false,
+        "agreement_accepted": false
+      },
+      "overlap": "Structured data from third-party public recipe websites; not original open-content corpus",
+      "handler_proposal": "contract_api_recipe",
+      "blockers": [
+        "Bulk license if selected",
+        "Original publisher content rights"
+      ],
+      "languages": [
+        "en",
+        "es",
+        "sv"
+      ]
+    },
+    {
+      "id": "global_recipe_db_aggregator",
+      "title": "Global Recipe Database aggregator",
+      "tier": "B",
+      "enabled": false,
+      "production_fetch_enabled": false,
+      "execution_location": "Foo",
+      "source_urls": [
+        "https://github.com/drwjkirkpatrick-web/global-recipe-db/blob/main/README.md",
+        "https://github.com/dpapathanasiou/recipes"
+      ],
+      "counts": [
+        {
+          "value": 75321,
+          "unit": "aggregated_recipes",
+          "basis": "maintainer_claim",
+          "qualifier": "Database is not published in Git; most from dpapathanasiou"
+        }
+      ],
+      "formats": [
+        "sqlite_claimed",
+        "json_upstream"
+      ],
+      "content_fields": [
+        "title",
+        "ingredients_raw",
+        "instructions",
+        "source_url",
+        "license",
+        "cuisine_tag"
+      ],
+      "content_rights": {
+        "claim": "MIT scripts; each source retains its rights",
+        "basis": "Maintainer license paragraph; shorthand table is not source grant",
+        "obligations": [
+          "re-audit original sources",
+          "do not infer rights from MIT/fair-use table"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access": {
+        "method": "276 MB database not in Git; rebuild/request described"
+      },
+      "overlap": "Repeats dpapathanasiou, TheMealDB, Wikibooks, Food.com; not an independent new corpus",
+      "handler_proposal": "provenance_only_aggregator",
+      "blockers": [
+        "No published database sample",
+        "Underlying source rights",
+        "Exclude unsupported blood-type-diet scores and inferred country claims"
+      ]
+    }
+  ],
+  "content_fields_note": "Exact source keys where verified; HTML and some documentary-only entries use conceptual field names. Source-specific schema validation is still required before any acquisition/import."
+}
