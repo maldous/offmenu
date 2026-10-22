@@ -1,0 +1,23 @@
+{
+  "data_loads": "not_implemented",
+  "implementation_sha256": "8bf7dc00057363b724036b69d880a7f70f33b4e5f42cfd77e28be31248a2b099",
+  "input_sha256": "e2508555680a42f16f11bc22edf4cce72e1057a6772f685a5184a371849a124d",
+  "job_id": "supplier-source-inspection",
+  "job_key": "0db92dc731fa692f3fcb4fa43e040f78eae13a5badfd70ef58b461feb6af449e",
+  "job_version": 2,
+  "observed_at": "2026-10-22T02:15:18Z",
+  "operation": "supplier_inspect",
+  "outcome": "blocked",
+  "schema": "offmenu-run-receipt/1",
+  "source_review": "manual_review_required",
+  "source_upload": "NOT_UPLOADED",
+  "supplier": {
+    "compressed_bytes": 40107,
+    "expected_sha256_prefix": "e2508555",
+    "member_count": 0,
+    "observed_sha256": "e2508555680a42f16f11bc22edf4cce72e1057a6772f685a5184a371849a124d",
+    "reason": "sql_not_schema_ddl",
+    "status": "blocked",
+    "transfer": "NOT_UPLOADED"
+  }
+}
