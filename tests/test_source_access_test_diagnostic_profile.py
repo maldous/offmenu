@@ -75,7 +75,7 @@ class AccessTestDiagnosticProfileTests(unittest.TestCase):
         value = {'schemaVersion': 'offmenu-source-access-tests/1', 'status': 'passed',
                  'reporter_mode': 'original_cli', 'child_exit_code': 0, 'unattributed_skips': 0,
                  'capture_status': 'completed', 'failure_events': 0, 'error_events': 0,
-                 'expected_test_suite_sha256': '3f418e0e27be6c21c63d3d33f4750e18aed85fe572ec91b6ca58c0e7d50a5520',
+                 'expected_test_suite_sha256': '2ee455945ad453409c2ac40c67db0be46eaf310c64caa075aba3f93ca450d748',
                  'suite_identity_verified': True,
                  'tests_expected': 38, 'tests_run': 38, 'failures': 0, 'errors': 0, 'skipped': 0,
                  'failed_test_ids': [], 'error_test_ids': [], 'skipped_test_ids': [], 'error_code': 'none'}

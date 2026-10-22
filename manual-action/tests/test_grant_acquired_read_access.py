@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
+import time
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -310,7 +311,26 @@ class NarrowACLTests(unittest.TestCase):
                 self.assertTrue(handoff.unchanged_data(entry))
                 path.write_bytes(b'secret!')
                 os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
-                self.assertFalse(handoff.unchanged_data(entry))
+                after = os.fstat(fd)
+                self.assertEqual(handoff.data_identity(after), entry['identity'])
+                # Native filesystems may report both writes in one ctime tick.
+                # Explicit observations test the guard without assuming a clock
+                # transition, skipping coverage, or weakening production checks.
+                fields = ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns',
+                          'st_ctime_ns', 'st_uid', 'st_gid', 'st_nlink')
+                for ctime, expected in ((before.st_ctime_ns, True),
+                                        (before.st_ctime_ns + 1, False)):
+                    observed = SimpleNamespace(**{name: getattr(before, name) for name in fields})
+                    observed.st_ctime_ns = ctime
+                    self.assertEqual(handoff.data_identity(observed), entry['identity'])
+                    with patch.object(handoff.os, 'fstat', return_value=observed), \
+                            patch.object(handoff, 'path_stat', return_value=observed):
+                        self.assertIs(handoff.unchanged_data(entry), expected)
+                # Real held-file bytes must still reject a same-size/mtime edit,
+                # even when coarse metadata alone cannot distinguish that edit.
+                with self.assertRaisesRegex(handoff.Refusal, 'checksum_mismatch'):
+                    handoff.verify_bytes(fd, {'bytes': 7,
+                        'sha256': hashlib.sha256(b'public!').hexdigest()}, time.monotonic() + 5)
             finally:
                 os.close(fd)
 

@@ -17,7 +17,7 @@ SCHEMA = 'offmenu-source-access-tests/1'
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DIRECTORY = ROOT / 'manual-action' / 'tests'
 TEST_PATTERN = 'test_grant_acquired_read_access.py'
-TEST_SUITE_SHA = '3f418e0e27be6c21c63d3d33f4750e18aed85fe572ec91b6ca58c0e7d50a5520'
+TEST_SUITE_SHA = '2ee455945ad453409c2ac40c67db0be46eaf310c64caa075aba3f93ca450d748'
 EXPECTED_TEST_IDS = frozenset((
     'test_grant_acquired_read_access.NarrowACLTests.test_actor_must_existing_nonroot_dedicated_account',
     'test_grant_acquired_read_access.NarrowACLTests.test_actual_system_libacl_read_is_valid_on_synthetic_temp_only',
