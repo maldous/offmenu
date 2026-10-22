@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
+PROFILES = {"additional-source-capacity", "additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -140,6 +140,7 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-additional-source-capacity/1": ("../manual-action/fetch_capacity.py", "additionalSourceCapacity"),
         "offmenu-source-fetch-failure/1": ("../manual-action/fetch_sources.py", "additionalPublicSources"),
         "offmenu-source-fetch-summary/1": ("../manual-action/fetch_sources.py", "additionalPublicSources"),
         "offmenu-global-collection-result/1": ("collect-fixed-global.py", "globalCollection"),
@@ -310,6 +311,11 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "additional-source-capacity":
+        return steps + [
+            ("additional-source-capacity-tests", ["readiness"], [python, "-I", "-B", "-m", "unittest", "discover", "-s", "manual-action/tests", "-p", "test_fetch_capacity.py"]),
+            ("additional-source-capacity", ["readiness", "additional-source-capacity-tests"], [python, "-I", "-B", "manual-action/fetch_capacity.py"]),
+        ]
     if profile == "additional-public-sources":
         return steps + [
             ("additional-public-source-tests", ["readiness"], [python, "-I", "-B", "-m", "unittest", "discover", "-s", "manual-action/tests", "-p", "test_fetch_sources.py"]),
@@ -406,11 +412,20 @@ def profile_steps(profile, code, trusted_sha=None):
 def run_step(step_id, command, code):
     try:
         result = (run_child(command, code, timeout=210) if step_id == "batch-recovery-diagnostic"
+                  else run_child(command, code, timeout=30) if step_id == "additional-source-capacity"
                   else run_child(command, code, timeout=1230) if step_id in {"selected-original-batch", "global-collection", "additional-public-sources"}
                   else run_child(command, code, timeout=150) if step_id == "swiss-private-original"
                   else run_child(command, code, timeout=930) if step_id == "zenodo-private-original"
                   else run_child(command, code, timeout=60) if step_id == "zenodo-response-metadata"
                   else run_child(command, code))
+        if step_id == "additional-source-capacity" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("additionalSourceCapacity", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            else:
+                result.update(status="failed", exitCode=3, errorCode="additional-source-capacity-report-invalid")
         if step_id == "additional-public-sources" and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("additionalPublicSources", {})
             if report.get("status") == "complete" and result["exitCode"] == 0:
@@ -597,6 +612,11 @@ def run_profile(request, sha, code, run_id, attempt):
               "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
               "githubRunAttempt": attempt, "status": state, "steps": results,
               "sourceContentsUploaded": False, "externalPublication": False}
+    if request["profile"] == "additional-source-capacity":
+        report.update(maximumParallelChildren=1, diagnosticScope="fixed-runner-output-capacity-only",
+                      corpusAcceptanceEstablished=False, databaseWritesEnabled=False,
+                      existingIngestAccessEnabled=False, networkAcquisitionEnabled=False,
+                      homeFilesystemObserved=False)
     if request["profile"] == "additional-public-sources":
         report.update(maximumParallelChildren=1, diagnosticScope="selected-public-source-acquisition-only",
                       corpusAcceptanceEstablished=False, databaseWritesEnabled=False,
