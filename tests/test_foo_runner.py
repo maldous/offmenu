@@ -137,6 +137,13 @@ class SetupTests(unittest.TestCase):
 
 
 class QueueTests(unittest.TestCase):
+    def setUp(self):
+        # These pre-existing cases exercise dispatcher receipts/profile behavior.
+        # Real layout/ownership admission has separate generated integration tests.
+        guard = patch.object(jobs, 'ownership_guard', return_value=contextlib.nullcontext(None))
+        guard.start()
+        self.addCleanup(guard.stop)
+
     def request(self, profile="smoke", job_id="foo-test-001"):
         return {"schemaVersion": 1, "jobId": job_id, "profile": profile}
 
@@ -236,13 +243,15 @@ class QueueTests(unittest.TestCase):
             with self.assertRaises(jobs.JobError):
                 jobs.execute(self.request(profile="inventory"), "a" * 40, ROOT, "124", "1")
 
-    def test_kernel_lock_released_after_exception(self):
+    def test_kernel_lock_released_but_uncertain_receipt_not_reexecuted(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, "OUTPUT", Path(tmp)):
             with patch.object(jobs, "run_profile", side_effect=RuntimeError("synthetic crash")), self.assertRaises(RuntimeError):
                 jobs.execute(self.request(), "a" * 40, ROOT, "123", "1")
-            with patch.object(jobs, "run_profile", return_value={"schemaVersion": 1, "status": "passed", "steps": []}):
-                report = jobs.execute(self.request(), "a" * 40, ROOT, "124", "1")
-            self.assertEqual(report["status"], "passed")
+            receipt = next((Path(tmp) / 'job-receipts').glob('*.json')).read_bytes()
+            with patch.object(jobs, "run_profile") as run, self.assertRaisesRegex(jobs.JobError, 'unfinished-job-requires-reconciliation'):
+                jobs.execute(self.request(), "a" * 40, ROOT, "124", "1")
+            run.assert_not_called()
+            self.assertEqual(next((Path(tmp) / 'job-receipts').glob('*.json')).read_bytes(), receipt)
 
     def test_timeout_and_exit_codes(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, "OUTPUT", Path(tmp)):

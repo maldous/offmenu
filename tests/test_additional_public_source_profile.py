@@ -1,8 +1,11 @@
+import contextlib
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import tempfile
+import time
 import textwrap
 import types
 import unittest
@@ -33,6 +36,49 @@ class AdditionalSourceProfileTests(unittest.TestCase):
 
     def request(self):
         return {'schemaVersion': 1, 'jobId': 'additional-public-sources-test-001', 'profile': 'additional-public-sources'}
+
+    @contextlib.contextmanager
+    def ownership_fixture(self, root):
+        """Real admission, confined to generated private test files/lease only."""
+        directory = root / 'layout'
+        directory.mkdir(mode=0o700)
+        config = {'schema': 'offmenu-runner-layout/1'}
+        identities = {}
+        for key in ('runtime', 'public_staging', 'normalization', 'household'):
+            path = directory / key
+            path.mkdir(mode=0o700)
+            config[key] = str(path)
+            info = path.stat()
+            identities[key] = [info.st_dev, info.st_ino]
+        locks = directory / 'locks'
+        locks.mkdir(mode=0o700)
+        lock = locks / 'manual-runner.lock'
+        lock.touch(mode=0o600)
+        config['lock'] = str(lock)
+        def write(path, value):
+            path.write_text(json.dumps(value))
+            path.chmod(0o600)
+        selected = directory / 'config.json'
+        write(selected, config)
+        config_sha = hashlib.sha256(selected.read_bytes()).hexdigest()
+        info = lock.stat()
+        binding = {'schema': config['schema'], 'config_sha256': config_sha,
+                   'roots': {key: config[key] for key in identities},
+                   'root_identities': identities,
+                   'singleton': {'path': str(lock), 'device': info.st_dev, 'inode': info.st_ino}}
+        runtime = Path(config['runtime'])
+        write(runtime / 'layout-admission.json', binding)
+        def admit(sha, run_id):
+            write(runtime / 'foo-fallback-admission.json', {
+                'schema': 'offmenu-foo-fallback/1', 'owner': 'actions-fallback', 'boundary': 'safe',
+                'native_thread_id': 'generated-native-owner', 'handoff_id': 'generated-' + run_id,
+                'handoff_evidence': 'generated-unit-fixture-only',
+                'request_identity': hashlib.sha256(jobs.canonical({'request': self.request(), 'trustedCodeSha': sha})).hexdigest(),
+                'github_run_id': run_id, 'github_run_attempt': '1', 'config_sha256': config_sha,
+                'binding_sha256': hashlib.sha256(json.dumps(binding, sort_keys=True).encode()).hexdigest(),
+                'expires_unix': int(time.time()) + 60})
+        with patch.dict(os.environ, {'OFFMENU_RUN_LAYOUT': str(selected)}, clear=True):
+            yield admit
 
     def child(self, status='passed', exit_code=0, report_status='complete'):
         evidence = {} if report_status is None else {'additionalPublicSources': {'status': report_status}}
@@ -110,17 +156,22 @@ class AdditionalSourceProfileTests(unittest.TestCase):
         self.assertFalse(report['corpusAcceptanceEstablished'])
 
     def test_receipt_reuse_no_second_execution_and_conflicting_pin_refused(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)), patch.object(jobs, 'run_profile', return_value={'status': 'passed', 'steps': []}) as run:
+        with tempfile.TemporaryDirectory() as tmp, self.ownership_fixture(Path(tmp)) as admit, patch.object(jobs, 'OUTPUT', Path(tmp) / 'outputs'), patch.object(jobs, 'run_profile', return_value={'status': 'passed', 'steps': []}) as run:
+            admit('a' * 40, '123')
             jobs.execute(self.request(), 'a' * 40, ROOT, '123', '1')
+            admit('a' * 40, '124')
             result = jobs.execute(self.request(), 'a' * 40, ROOT, '124', '1')
             self.assertEqual(run.call_count, 1)
             self.assertEqual(result['delivery'], 'existing-receipt-no-execution')
-            with self.assertRaises(jobs.JobError):
+            admit('b' * 40, '125')
+            with self.assertRaisesRegex(jobs.JobError, 'job-id-reused-for-different-request'):
                 jobs.execute(self.request(), 'b' * 40, ROOT, '125', '1')
 
     def test_existing_kernel_lock_prevents_overlap(self):
-        with tempfile.TemporaryDirectory() as tmp, patch.object(jobs, 'OUTPUT', Path(tmp)):
-            lock_dir = Path(tmp) / 'locks'
+        with tempfile.TemporaryDirectory() as tmp, self.ownership_fixture(Path(tmp)) as admit, patch.object(jobs, 'OUTPUT', Path(tmp) / 'outputs'):
+            admit('a' * 40, '123')
+            (Path(tmp) / 'outputs').mkdir(mode=0o700)
+            lock_dir = Path(tmp) / 'outputs' / 'locks'
             lock_dir.mkdir()
             with (lock_dir / 'dispatcher.lock').open('w') as lock:
                 jobs.fcntl.flock(lock, jobs.fcntl.LOCK_EX | jobs.fcntl.LOCK_NB)

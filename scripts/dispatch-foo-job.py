@@ -31,6 +31,7 @@ MAX_REPORT = 32768
 MAX_SURVEY_EVIDENCE = 96 * 1024
 MAX_SURVEY_REPORT = 128 * 1024
 ACTIVE_LOCK_FD = None
+ACTIVE_OWNERSHIP = None
 CANCEL_EVENT = threading.Event()
 MAX_DIAGNOSTIC_EVIDENCE = 12 * 1024
 LEDGER_SOURCE_SHA = "8c25c6d76088c958d17f7adc4a3c0af7aab5c298"
@@ -244,6 +245,8 @@ def run_child(command, code, timeout=240):
         return {"status": "cancelled", "exitCode": 130, "durationSeconds": 0, "evidence": {}}
     env = {"PATH": "/usr/bin:/bin", "HOME": "/srv/offmenu-runner", "LANG": "C.UTF-8",
            "PYTHONDONTWRITEBYTECODE": "1", "TMPDIR": str(OUTPUT / "tmp")}
+    if ACTIVE_OWNERSHIP is not None:
+        env.update(ACTIVE_OWNERSHIP.child_env())
     # GitHub uses this non-secret marker to identify orphan processes at job end.
     if os.environ.get("RUNNER_TRACKING_ID"):
         env["RUNNER_TRACKING_ID"] = os.environ["RUNNER_TRACKING_ID"]
@@ -251,7 +254,8 @@ def run_child(command, code, timeout=240):
     # has a separate 256 MiB dataset-output limit that must remain compatible.
     process = subprocess.Popen(command, cwd=code, env=env, stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE, start_new_session=True,
-                               pass_fds=(() if ACTIVE_LOCK_FD is None else (ACTIVE_LOCK_FD,)))
+                               pass_fds=tuple(fd for fd in (ACTIVE_LOCK_FD,
+                                   ACTIVE_OWNERSHIP.fd if ACTIVE_OWNERSHIP is not None else None) if fd is not None))
     raw = bytearray()
     stderr_bytes = 0
     status = None
@@ -261,7 +265,11 @@ def run_child(command, code, timeout=240):
         selector.register(process.stdout, selectors.EVENT_READ, "stdout")
         selector.register(process.stderr, selectors.EVENT_READ, "stderr")
         try:
-            while selector.get_map() and status is None:
+            # Pipe EOF is not process completion. Keep ownership/cancellation/
+            # deadline checks active even if a live child closed both outputs.
+            while status is None and (selector.get_map() or process.poll() is None):
+                if ACTIVE_OWNERSHIP is not None:
+                    ACTIVE_OWNERSHIP.verify()
                 if CANCEL_EVENT.is_set():
                     status, exit_code = "cancelled", 130
                     break
@@ -274,7 +282,12 @@ def run_child(command, code, timeout=240):
                 if remaining <= 0:
                     status, exit_code = "timeout", 124
                     break
-                for key, _ in selector.select(min(remaining, 0.2)):
+                if selector.get_map():
+                    ready = selector.select(min(remaining, 0.2))
+                else:
+                    CANCEL_EVENT.wait(min(remaining, 0.2))
+                    ready = []
+                for key, _ in ready:
                     chunk = os.read(key.fileobj.fileno(), 65536)
                     if not chunk:
                         selector.unregister(key.fileobj)
@@ -290,8 +303,17 @@ def run_child(command, code, timeout=240):
                         status, exit_code = "output-limit", 125
                         break
             if status is None:
-                exit_code = process.wait(timeout=max(0.01, deadline - time.monotonic()))
-                status = "passed" if exit_code == 0 else "failed"
+                if ACTIVE_OWNERSHIP is not None:
+                    ACTIVE_OWNERSHIP.verify()
+                if CANCEL_EVENT.is_set():
+                    raise Cancelled()
+                # The lifetime loop established poll()!=None; this cannot turn
+                # into an unchecked wait on a child that merely closed its pipes.
+                if time.monotonic() >= deadline:
+                    status, exit_code = "timeout", 124
+                else:
+                    exit_code = process.wait(timeout=0)
+                    status = "passed" if exit_code == 0 else "failed"
         except subprocess.TimeoutExpired:
             status, exit_code = "timeout", 124
         except Cancelled:
@@ -724,7 +746,32 @@ def safe_dir(path):
         raise JobError("output-directory-owner-invalid")
 
 
+def ownership_guard(code, identity, run_id, attempt):
+    # Import only this trusted checkout's companion, not a selected module path.
+    path = Path(__file__).with_name('foo_ownership.py')
+    spec = importlib.util.spec_from_file_location('_offmenu_foo_ownership', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.acquire(code, identity, run_id, attempt)
+
+
 def execute(request, sha, code, run_id, attempt):
+    global ACTIVE_OWNERSHIP
+    identity = hashlib.sha256(canonical({"request": request, "trustedCodeSha": sha})).hexdigest()
+    # Admission precedes any output-directory/receipt creation. A free lease or
+    # an empty Actions queue alone cannot authorize taking native ownership.
+    try:
+        with ownership_guard(code, identity, run_id, attempt) as admission:
+            ACTIVE_OWNERSHIP = admission
+            try:
+                return execute_admitted(request, sha, code, run_id, attempt, identity)
+            finally:
+                ACTIVE_OWNERSHIP = None
+    except (OSError, ValueError) as error:
+        raise JobError('ownership-admission-refused') from error
+
+
+def execute_admitted(request, sha, code, run_id, attempt, identity):
     global ACTIVE_LOCK_FD
     # A kernel lock has no stale-file problem and is released on process death.
     safe_dir(OUTPUT)
@@ -737,7 +784,6 @@ def execute(request, sha, code, run_id, attempt):
         except BlockingIOError:
             raise JobError("another-job-is-running-retry-later") from None
         receipt = OUTPUT / "job-receipts" / (request["jobId"] + ".json")
-        identity = hashlib.sha256(canonical({"request": request, "trustedCodeSha": sha})).hexdigest()
         if receipt.is_symlink():
             raise JobError("receipt-symlink-forbidden")
         if receipt.exists():
@@ -748,7 +794,9 @@ def execute(request, sha, code, run_id, attempt):
                 raise JobError("job-id-reused-for-different-request")
             if previous.get("status") in {"passed", "failed", "cancelled", "incomplete"}:
                 return previous | {"delivery": "existing-receipt-no-execution"}
-            # An interrupted coordinator may retry. The downstream replay handles resumable checkpoints.
+            # A free lock does not establish the outcome of an admitted job.
+            # Preserve uncertain receipt bytes for explicit native reconciliation.
+            raise JobError('unfinished-job-requires-reconciliation')
         atomic_json(receipt, {"status": "running", "requestIdentity": identity})
         # The active direct child inherits custody of this flock. If the
         # coordinator dies abruptly, a second coordinator remains blocked until
@@ -759,6 +807,8 @@ def execute(request, sha, code, run_id, attempt):
         finally:
             ACTIVE_LOCK_FD = None
         report["requestIdentity"] = identity
+        if ACTIVE_OWNERSHIP is not None:
+            ACTIVE_OWNERSHIP.verify()
         atomic_json(receipt, report)
         return report
 
