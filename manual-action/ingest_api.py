@@ -34,6 +34,27 @@ from __future__ import annotations
 DOMAINS = ('barcodes', 'ingredients', 'recipes', 'dietary', 'user_profiles',
            'inventory', 'suppliers', 'citations')
 COUNTERS = ('read', 'written', 'unchanged', 'errors', 'skipped')
+GLOBAL_BUDGET_DEFAULTS = {'reserve_bytes': 2 * 1024**3, 'max_seconds': 0,
+                         'max_rows_per_source': 0}
+GLOBAL_BUDGET_REASONS = frozenset(('cancelled', 'wall_time_cap', 'disk_reserve'))
+
+
+def budget_seconds(value):
+    """Bounded finite seconds; fractional configured limits remain exact."""
+    import math
+    return value if type(value) in (int, float) and 0 <= value <= 10**15 and math.isfinite(value) else None
+
+
+def sanitize_budget_stop(value):
+    """First global stop observation, separate from source/row error counts."""
+    if (not isinstance(value, dict) or type(value.get('reason')) is not str
+            or value['reason'] not in GLOBAL_BUDGET_REASONS):
+        return None
+    fields = ('elapsed_ms', 'disk_free_bytes', 'reserve_bytes', 'max_rows_per_source')
+    return {'reason': value['reason'],
+        **{key: raw if type(raw) is int and 0 <= raw <= 10**15 else None
+           for key in fields for raw in [value.get(key)]},
+        'max_seconds': budget_seconds(value.get('max_seconds'))}
 
 class BudgetExceeded(RuntimeError):
     """A resource cap stopped work cleanly; durable batches remain resumable."""

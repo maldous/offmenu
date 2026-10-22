@@ -6,6 +6,7 @@ Git or transmit anything. Public counts describe source rows, not distinct entit
 from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import hashlib
+from contextlib import closing
 import importlib
 import json
 import os
@@ -14,10 +15,16 @@ import shutil
 import threading
 import time
 import uuid
-from ingest_api import DOMAINS, COUNTERS, BudgetExceeded, source_key
+from ingest_api import (DOMAINS, COUNTERS, BudgetExceeded, source_key,
+                        GLOBAL_BUDGET_DEFAULTS, sanitize_budget_stop)
 from ingest_store import DomainStore
 from ingest_errors import (ERROR_CLASSES, classify_error, collect_error_snapshot,
                            sanitize_error_telemetry)
+try:
+    from ingest_evidence import EvidenceCollector, sanitize_evidence
+except Exception:
+    EvidenceCollector = None
+    sanitize_evidence = None
 try:
     from ingest_pending import collect_pending_work, sanitize_pending_work, dashboard, output_identity, store_path
 except Exception:
@@ -52,6 +59,14 @@ except Exception:
 ADAPTERS = {'barcodes':'ingest_existing','ingredients':'ingest_recipes',
     'recipes':'ingest_recipes','dietary':'ingest_misc','user_profiles':'ingest_existing',
     'inventory':'ingest_existing','suppliers':'ingest_suppliers','citations':'ingest_misc'}
+ACQUIRED_ADAPTERS = {
+    'foodista_common_pile': 'ingest_acquired_recipes',
+    'forkrecipe': 'ingest_acquired_recipes',
+    'medlineplus_healthy_recipes': 'ingest_acquired_recipes',
+    'fr_cnous_menus': 'ingest_acquired_menus',
+    'fr_begles_menus': 'ingest_acquired_menus',
+    'fr_toulouse_menus': 'ingest_acquired_menus',
+}
 REPORT_SCHEMA = 'offmenu-ingest-report/1'
 DOMAIN_STATUSES = frozenset(('pending','running','complete','partial','failed','missing',
     'not_applicable','existing_loaded','schema_only','reused','imported','unavailable','awaiting_user_input'))
@@ -128,8 +143,14 @@ def sanitize_report(report):
         safe['domains'][domain] = {'status': row.get('status') if row.get('status') in DOMAIN_STATUSES else 'pending',
             **{key:_nonnegative(row.get(key,0)) for key in PUBLIC_COUNTERS},
             'error_codes': sorted(set(row.get('error_codes',[])) & ERROR_CODES) if isinstance(row.get('error_codes',[]),list) and all(isinstance(x,str) for x in row.get('error_codes',[])) else []}
+        if isinstance(row.get('timing'), dict):
+            safe['domains'][domain]['timing'] = {key: (value if type(value) is int and 0 <= value <= 10**15 else None)
+                for key in ('elapsed_ms','active_source_elapsed_ms','since_last_progress_ms','active_source_bytes','sources_timed','completed_source_elapsed_ms')
+                for value in [row['timing'].get(key)]}
         if 'error_telemetry' in row:
             safe['domains'][domain]['error_telemetry'] = sanitize_error_telemetry(row['error_telemetry'])
+        if 'budget_stop' in row:
+            safe['domains'][domain]['budget_stop'] = sanitize_budget_stop(row['budget_stop'])
     for key in ('catalog_sha256',):
         value = report.get(key)
         if isinstance(value,str) and re.fullmatch('[a-f0-9]{64}',value):
@@ -138,6 +159,17 @@ def sanitize_report(report):
     safe['report_delivery_errors'] = _nonnegative(report.get('report_delivery_errors',0))
     if 'pending_work' in report:
         safe['pending_work'] = sanitize_pending_work(report['pending_work'])
+    if 'relational_targets' in report:
+        try:
+            from ingest_relational_targets import sanitize_relational_summary
+            safe['relational_targets'] = sanitize_relational_summary(report['relational_targets'])
+        except Exception:
+            pass
+    if 'ingest_evidence' in report and sanitize_evidence is not None:
+        try:
+            safe['ingest_evidence'] = sanitize_evidence(report['ingest_evidence'])
+        except Exception:
+            pass
     return safe
 
 
@@ -152,7 +184,7 @@ def _adapter_versions(adapters=None):
     return versions
 
 
-def _pending_snapshot(sources, config, results=None, adapters=None, persist=True):
+def _pending_snapshot(sources, config, results=None, adapters=None, persist=True, private_sink=None):
     """Report metadata failures as unknown; never turn reporting into an ingest gate."""
     try:
         state = Path(config['state_dir'])
@@ -167,6 +199,8 @@ def _pending_snapshot(sources, config, results=None, adapters=None, persist=True
         snapshot = collect_pending_work(sources, state, results=results,
             catalog_complete=not config.get('catalog_truncated', False),
             adapter_versions=_adapter_versions(adapters), previous=previous)
+        if private_sink is not None:
+            private_sink.update(snapshot)
         if persist:
             atomic_json(path, snapshot)
             atomic_json(state / 'pending-work.json', snapshot['summary'])
@@ -193,6 +227,8 @@ class IngestContext:
         self.error_classes = set()
         self.source_summaries = []
         self.store = None
+        self.active_source = None
+        self.budget_stop = None
 
     def __getitem__(self, key):
         return getattr(self,key)
@@ -201,16 +237,35 @@ class IngestContext:
         return getattr(self,key,default)
 
     def check_budget(self):
-        if self.cancelled.is_set():
-            raise BudgetExceeded('cancelled')
-        seconds = float(self.config.get('max_seconds',0))
-        if seconds > 0 and time.monotonic() - self.started >= seconds:
-            raise BudgetExceeded('wall_time_cap')
-        reserve = int(self.config.get('reserve_bytes', 2 * 1024**3))
-        if shutil.disk_usage(self.state_dir).free < reserve:
-            raise BudgetExceeded('disk_reserve')
+        if self.budget_stop is not None:
+            raise BudgetExceeded(self.budget_stop['reason'])
+        seconds = float(self.config.get('max_seconds', GLOBAL_BUDGET_DEFAULTS['max_seconds']))
+        reserve = int(self.config.get('reserve_bytes', GLOBAL_BUDGET_DEFAULTS['reserve_bytes']))
+        elapsed = max(0, time.monotonic() - self.started)
+        reason = 'cancelled' if self.cancelled.is_set() else 'wall_time_cap' if seconds > 0 and elapsed >= seconds else None
+        free = None
+        if reason is None:
+            free = shutil.disk_usage(self.state_dir).free
+            if free < reserve:
+                reason = 'disk_reserve'
+        if reason is not None:
+            if free is None:
+                try:
+                    free = shutil.disk_usage(self.state_dir).free
+                except OSError:
+                    pass
+            # Latch the first observation: a transient recovery must not let a
+            # stopped domain open thousands of later sources in this invocation.
+            self.budget_stop = sanitize_budget_stop({'reason': reason,
+                'elapsed_ms': int(elapsed * 1000), 'disk_free_bytes': free,
+                'reserve_bytes': reserve, 'max_seconds': seconds,
+                'max_rows_per_source': max(0, int(self.config.get('max_rows_per_source', 0)))})
+            raise BudgetExceeded(reason)
 
     def progress(self, **counts):
+        if counts.get('event') == 'source_started' and self.active_source is not None:
+            size = self.active_source.get('bytes')
+            counts['source_bytes'] = size if type(size) is int and size >= 0 else None
         self._progress_callback(self.domain, counts)
 
     def report_error(self, source, exc):
@@ -233,9 +288,18 @@ class IngestContext:
         return error
 
     def ingest(self, source, records):
-        result=self.store.ingest(source,records)
-        self.source_summaries.append(result)
-        return result
+        source_started = time.monotonic()
+        self.active_source = source
+        try:
+            result=self.store.ingest(source,records)
+            result['elapsed_ms'] = max(0, int((time.monotonic()-source_started)*1000))
+            size = source.get('bytes')
+            result['source_bytes'] = size if type(size) is int and size >= 0 else None
+            self.source_summaries.append(result)
+            self.progress(event='source_timed', elapsed_ms=result['elapsed_ms'])
+            return result
+        finally:
+            self.active_source = None
 
 
 def _matches(source, domain):
@@ -247,6 +311,7 @@ def _matches(source, domain):
 
 def _run_domain(domain, sources, config, cancelled, progress, started, adapters=None):
     context = IngestContext(domain,config['state_dir'],config,cancelled,progress,started)
+    progress(domain, {'event': 'domain_started'})
     try:
         with DomainStore(domain, context.state_dir, config, context.check_budget, context.progress) as store:
             context.store=store
@@ -254,10 +319,59 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
                 result = {'status':'awaiting_user_input' if domain in ('user_profiles','inventory') else 'missing', 'sources':[]}
             else:
                 handler = (adapters or {}).get(domain)
-                if handler is None:
-                    handler = importlib.import_module(ADAPTERS[domain]).run_domain
-                result = handler(domain,sources,context)
-                if not isinstance(result,dict):
+                if handler is not None:
+                    result = handler(domain, sources, context)
+                else:
+                    # Each fixed adapter group is isolated. A broken acquired
+                    # format cannot suppress a successful retained domain.
+                    groups = {}
+                    source_results = []
+                    for source in sources:
+                        acquired = source.get('acquired_source') or source.get('acquired_adapter') or isinstance(source.get('metadata'), dict) and 'acquisition' in source['metadata']
+                        if acquired and source.get('disposition') in ('missing', 'unreadable'):
+                            reason = source.get('reason')
+                            exc = PermissionError('acquired_cache_read_permission_denied') if reason in ('read_permission_denied', 'PermissionError') else FileNotFoundError('acquired_cache_file_missing') if source.get('disposition') == 'missing' else OSError('acquired_cache_unreadable')
+                            context.report_error(source, exc)
+                            source_results.append({'source_key': source_key(source), 'status': 'failed',
+                                'errors': 1, 'error_class': type(exc).__name__})
+                            continue
+                        if acquired and source.get('acquired_adapter') not in ACQUIRED_ADAPTERS:
+                            source_results.append({'source_key': source_key(source), 'status': 'unsupported',
+                                'skipped': 1, 'reason': 'unsupported_format'})
+                            continue
+                        module = ACQUIRED_ADAPTERS.get(source.get('acquired_adapter'), ADAPTERS[domain])
+                        groups.setdefault(module, []).append(source)
+                    group_results = []
+                    # The bounded newly acquired cohort must not wait behind
+                    # a retained catalog containing hundreds of thousands of
+                    # assignments. Keep one writer; preserve source identities.
+                    priorities = {'ingest_acquired_menus': 0, 'ingest_acquired_recipes': 1}
+                    for module_name in sorted(groups, key=lambda name: priorities.get(name, 2)):
+                        selected = groups[module_name]
+                        before = len(context.source_summaries)
+                        try:
+                            handler = importlib.import_module(module_name).run_domain
+                            group = handler(domain, selected, context)
+                            if not isinstance(group, dict):
+                                raise TypeError('adapter_result_not_mapping')
+                            group_results.append(group)
+                            source_results.extend(group.get('sources', []))
+                        except Exception as exc:
+                            # Durable completed sources from a failed adapter
+                            # stay visible and are not counted again as failed.
+                            accepted = context.source_summaries[before:]
+                            source_results.extend(accepted)
+                            done = {row.get('source_key') for row in accepted}
+                            for source in selected:
+                                if source_key(source) not in done:
+                                    context.report_error(source, exc)
+                                    source_results.append({'source_key': source_key(source),
+                                        'status': 'failed', 'errors': 1,
+                                        'error_class': type(exc).__name__})
+                    result = {'sources': source_results,
+                        **{key: sum(_nonnegative(g.get(key)) for g in group_results)
+                           for key in (*COUNTERS, 'reused_rows', 'reused_stores')}}
+                if not isinstance(result, dict):
                     raise TypeError('adapter_result_not_mapping')
             result.setdefault('sources',[])
             # Allow domain-specific counters but never expose them blindly.
@@ -278,6 +392,10 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
                 result['status']='partial'
             result['error_codes']=sorted({code for source_result in [result,*source_results,*context.private_errors] if isinstance(source_result,dict) for code in [source_result.get('error_class'),source_result.get('reason'),*source_result.get('error_codes',[])] if isinstance(code,str) and code in ERROR_CODES})
             result['error_codes']=sorted(set(result['error_codes']) | context.error_classes)
+            if context.budget_stop is not None:
+                result['budget_stop'] = context.budget_stop
+                result['status'] = 'partial'
+                result['error_codes'] = sorted(set(result['error_codes']) | {'BudgetExceeded'})
             for key in ('reused_rows','reused_stores'):
                 result[key]=max(_nonnegative(result.get(key,0)),sum(_nonnegative(s.get(key,0)) for s in source_results if isinstance(s,dict)))
             result['binding']='additive_staging_not_app_bound'
@@ -290,12 +408,14 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
     except Exception as exc:
         return {'status':'partial' if isinstance(exc,BudgetExceeded) else 'failed',
                 **{k:sum(_nonnegative(s.get(k,0)) for s in context.source_summaries) for k in COUNTERS},
-                'errors':max(1,context.adapter_errors),'sources_total':len(sources),'error_class':type(exc).__name__,
+                'errors':max(0 if isinstance(exc, BudgetExceeded) else 1, context.adapter_errors),
+                **({'budget_stop': context.budget_stop} if context.budget_stop is not None else {}),
+                'sources_total':len(sources),'error_class':type(exc).__name__,
                 'error_codes':[type(exc).__name__] if type(exc).__name__ in ERROR_CODES else ['source_error'],
                 'binding':'additive_staging_not_app_bound','sources':context.source_summaries}
 
 
-def run_ingest(sources, config=None, report_callback=None, adapters=None):
+def run_ingest(sources, config=None, report_callback=None, adapters=None, catalog=None):
     """Ingest descriptors concurrently; callback is ALWAYS on the caller's thread.
 
     ``adapters`` is dependency injection for fixture tests, not an arbitrary config
@@ -303,6 +423,8 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     """
     sources=list(sources)
     config=dict(config or {})
+    for key, value in GLOBAL_BUDGET_DEFAULTS.items():
+        config.setdefault(key, value)
     config.setdefault('state_dir',str(Path(__file__).parent / '.local-results' / 'ingest'))
     state_dir=Path(config['state_dir']).absolute()
     if any(p.is_symlink() for p in (state_dir,*state_dir.parents)):
@@ -316,6 +438,7 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     cancelled=threading.Event()
     source_progress={domain:{} for domain in DOMAINS}
     observed_errors={domain:{} for domain in DOMAINS}
+    timings={d: {'started':None, 'finished':None, 'last_progress':None, 'active':None, 'active_bytes':None, 'sources_timed':0, 'completed_ms':0} for d in DOMAINS}
     report={'schema':REPORT_SCHEMA,'run_id':uuid.uuid4().hex,'status':'running',
             'started_at':_utc(),'updated_at':_utc(),'workers':workers,'elapsed_seconds':0,
             'domains':{d:{'status':'pending', **{k:0 for k in PUBLIC_COUNTERS}} for d in DOMAINS},
@@ -323,11 +446,33 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
             'catalog_truncated':bool(config.get('catalog_truncated',False)), 'report_delivery_errors':0}
     private_results={}
     last_private_write=[0.0]
+    evidence = None
+    if EvidenceCollector is not None:
+        try:
+            evidence = EvidenceCollector(sources, config, catalog=catalog)
+        except Exception:
+            pass
+    published_once = False
+
+    def timing_snapshot(domain, now):
+        t=timings[domain]
+        elapsed=lambda value: max(0,int(((t['finished'] or now)-value)*1000)) if value is not None else None
+        return {'elapsed_ms':elapsed(t['started']), 'active_source_elapsed_ms':elapsed(t['active']),
+            'since_last_progress_ms':elapsed(t['last_progress']), 'active_source_bytes':t['active_bytes'],
+            'sources_timed':t['sources_timed'], 'completed_source_elapsed_ms':t['completed_ms']}
 
     def progress(domain,event):
         with lock:
+            now=time.monotonic();t=timings[domain];kind=event.get('event')
+            t['last_progress']=now
+            if kind == 'domain_started': t['started']=now
+            elif kind == 'source_started': t['active']=now;t['active_bytes']=event.get('source_bytes')
+            elif kind == 'source_finished': t['active']=None;t['active_bytes']=None
+            elif kind == 'source_timed':
+                t['sources_timed']+=1;t['completed_ms']+=_nonnegative(event.get('elapsed_ms'))
             current=report['domains'][domain]
             current['status']='running'
+            current['timing']=timing_snapshot(domain,now)
             key=event.get('source_key')
             if event.get('event') == 'adapter_error':
                 identity = (key, event['error_class'], event['reason_code'])
@@ -350,9 +495,12 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
                 last_private_write[0]=now
 
     def publish():
+        nonlocal published_once
         # Reader snapshots use separate read-only SQLite connections; workers
         # continue committing independently. No callback ever runs on a worker.
-        pending_work = _pending_snapshot(sources, config, private_results, adapters)
+        pending_private = {}
+        pending_work = _pending_snapshot(sources, config, private_results, adapters,
+                                         private_sink=pending_private)
         with lock:
             observed = {domain: dict(rows) for domain, rows in observed_errors.items()}
         try:
@@ -371,9 +519,24 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
                 report['domains'][domain]['error_telemetry'] = telemetry
                 report['domains'][domain]['error_codes'] = sorted(
                     set(report['domains'][domain].get('error_codes', [])) | set(telemetry['class_counts']))
+            now=time.monotonic()
+            for domain in DOMAINS:
+                report['domains'][domain]['timing']=timing_snapshot(domain,now)
             report['updated_at']=_utc()
-            report['elapsed_seconds']=int(time.monotonic()-started)
+            report['elapsed_seconds']=int(now-started)
+            observed_report = sanitize_report(report)
+        if evidence is not None:
+            try:
+                phase = 'pre' if not published_once else 'checkpoint' if report['status'] == 'running' else 'post'
+                captured = evidence.capture(phase, observed_report,
+                    results=private_results, pending_private=pending_private)
+                with lock:
+                    report['ingest_evidence'] = captured
+            except Exception:
+                pass
+        with lock:
             clean=sanitize_report(report)
+        published_once = True
         atomic_json(state_dir/'progress.json',clean)
         report_path=config.get('report_path')
         if report_path:
@@ -409,6 +572,9 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
                     result=future.result()
                     private_results[domain]=result
                     with lock:
+                        timings[domain]['finished']=time.monotonic()
+                        timings[domain]['active']=None;timings[domain]['active_bytes']=None
+                        result['timing']=timing_snapshot(domain,timings[domain]['finished'])
                         report['domains'][domain]=result
                     atomic_json(state_dir/(domain+'.private.json'),result)
                 if time.monotonic()>=next_report:
@@ -425,6 +591,47 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     report['status']='complete' if all(s in ('complete','imported','reused','existing_loaded','not_applicable','awaiting_user_input','schema_only') for s in statuses) and not report['catalog_truncated'] else 'partial'
     if all(s=='failed' for s in statuses):
         report['status']='failed'
+    if config.get('materialize_relational_targets', False):
+        # All staging writer contexts have closed before exact cross-domain
+        # projection. This is productive derived loading, not an app acceptance
+        # claim and never a reason to withhold successful source writes.
+        source_phase_status = report['status']
+        report['status'] = 'running'
+        if config.get('terminal_progress', True):
+            print('[relational] Source writers closed; materializing exact derived targets (not application-bound).', flush=True)
+        publish()
+        def relational_progress(summary):
+            report['relational_targets'] = summary
+            publish()
+        try:
+            from ingest_relational_targets import materialize_relational_targets
+            terminal_pending = {}
+            _pending_snapshot(sources, config, private_results, adapters, private_sink=terminal_pending)
+            selections = [row for row in terminal_pending.get('sources', [])
+                if row.get('status') in ('completed', 'reused', 'partial')
+                and row.get('stored_source_key') and row.get('stored_source_version')]
+            derived = materialize_relational_targets(state_dir, selections,
+                catalog_complete=not report['catalog_truncated'],
+                max_records=config.get('relational_max_records', 100000000),
+                max_seconds=config.get('relational_max_seconds', 3600),
+                reserve_bytes=config.get('reserve_bytes', 2 * 1024**3),
+                progress_callback=relational_progress,
+                progress_interval=config.get('report_interval', 60))
+            report['status'] = source_phase_status
+            report['relational_targets'] = derived['summary']
+            atomic_json(state_dir / 'relational-targets.private.json', derived['manifest'])
+            if derived['summary'].get('status') not in ('complete', 'reused') and report['status'] == 'complete':
+                report['status'] = 'partial'
+        except Exception as exc:
+            report['status'] = source_phase_status
+            try:
+                from ingest_relational_targets import sanitize_relational_summary
+                report['relational_targets'] = sanitize_relational_summary({'status': 'blocked', 'blockers': ['derived_target_invalid']})
+            except Exception:
+                pass
+            atomic_json(state_dir / 'relational-targets.private.json', {'status': 'blocked', 'error_class': type(exc).__name__})
+            if report['status'] == 'complete':
+                report['status'] = 'partial'
     publish()
     outputs = {}
     for domain in DOMAINS:
@@ -460,12 +667,42 @@ def prepare_default(state_dir, options=None):
         merged.update({s['id']:s for s in sources if isinstance(s,dict) and 'id' in s})
         sources=list(merged.values())
         catalog['sources']=sources
+    if options.get('include_acquired', True):
+        try:
+            from ingest_acquired_catalog import discover_acquired_sources, merge_acquired_sources
+            acquired_options = dict(options)
+            if prior.get('acquired_resume_cursor') and 'acquired_resume_cursor' not in acquired_options:
+                acquired_options['acquired_resume_cursor'] = prior['acquired_resume_cursor']
+            acquired = discover_acquired_sources(acquired_options,
+                                                existing_sources=[*sources, *prior.get('sources', [])])
+            if acquired_options.get('acquired_resume_cursor'):
+                prior_acquired = [row for row in prior.get('sources', []) if row.get('acquired_source') or row.get('acquired_adapter')]
+                sources = merge_acquired_sources(sources, {'sources': prior_acquired})
+            sources = merge_acquired_sources(sources, acquired)
+            catalog['acquired'] = {key: value for key, value in acquired.items() if key != 'sources'}
+            catalog['acquired_resume_cursor'] = acquired.get('resume_cursor')
+            catalog['errors'].extend(acquired.get('errors', []))
+            catalog['restriction_updates'].extend(acquired.get('restriction_updates', []))
+            catalog['complete'] = catalog.get('complete', False) and acquired.get('complete', False)
+            catalog['truncated'] = catalog.get('truncated', False) or acquired.get('truncated', False)
+        except Exception as exc:
+            # Newly acquired input is not a gate for readable retained sources.
+            catalog.setdefault('errors', []).append({'operation': 'acquired_catalog', 'code': type(exc).__name__})
+            catalog['complete'] = False
+            catalog['acquired'] = {'status': 'unavailable', 'error_class': type(exc).__name__}
+    catalog['sources'] = sources
     restrictions={u['id']:u for u in catalog.get('restriction_updates',[]) if isinstance(u,dict) and 'id' in u}
     for source in sources:
         if source.get('id') in restrictions:
             source.update(restricted=True,disposition='restricted',reason=restrictions[source['id']].get('reason','restricted_alias'))
+        if source.get('acquired_adapter') in ACQUIRED_ADAPTERS:
+            try:
+                module = importlib.import_module(ACQUIRED_ADAPTERS[source['acquired_adapter']])
+                source['adapter_version'] = getattr(module, 'ADAPTER_VERSION', getattr(module, 'VERSION', 1))
+            except Exception:
+                pass
         ds=source.get('domains',[])
-        if isinstance(ds,list) and 'recipes' in ds and 'ingredients' not in ds:
+        if not source.get('acquired_adapter') and isinstance(ds,list) and 'recipes' in ds and 'ingredients' not in ds:
             source['domains']=[*ds,'ingredients']
     # Metadata-only identity: no raw dataset scan/hash needed for a job key.
     identity=json.dumps(sources,sort_keys=True,ensure_ascii=True,separators=(',',':')).encode()
@@ -477,7 +714,7 @@ def prepare_default(state_dir, options=None):
 
 
 def run_prepared(prepared, report_callback=None):
-    return run_ingest(prepared['sources'],prepared['config'],report_callback)
+    return run_ingest(prepared['sources'],prepared['config'],report_callback, catalog=prepared.get('catalog'))
 
 
 def run_default(state_dir, workers=8, report_callback=None, options=None):
@@ -512,9 +749,13 @@ def completed_outputs_available(prepared):
             # when a copied database retains the same ID and stale row counter.
             if output_identity(path) != private.get('output_identities', {}).get(domain):
                 return False
-            with sqlite3.connect(path.as_uri()+'?mode=ro',uri=True,timeout=2) as db:
+            with closing(sqlite3.connect(path.as_uri()+'?mode=ro',uri=True,timeout=2)) as db:
                 meta=dict(db.execute('SELECT key,value FROM ingest_meta'))
             if meta.get('domain')!=domain or meta.get('binding')!='additive_staging_not_app_bound' or meta.get('database_id')!=expected.get('database_id') or int(meta.get('record_count',-1))!=expected.get('stored_records'):
+                return False
+        if prepared.get('config', {}).get('materialize_relational_targets'):
+            from ingest_relational_targets import relational_outputs_available
+            if not relational_outputs_available(state):
                 return False
         if prepared.get('sources') is not None:
             snapshot = pending_snapshot(prepared, persist=False)
@@ -523,5 +764,5 @@ def completed_outputs_available(prepared):
             if any(snapshot['totals'][k] for k in ('not_yet_read', 'partial', 'failed', 'unsupported', 'unknown')):
                 return False
         return True
-    except (OSError,ValueError,KeyError,TypeError,sqlite3.Error):
+    except (ImportError,OSError,ValueError,KeyError,TypeError,sqlite3.Error):
         return False

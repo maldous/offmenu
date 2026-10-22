@@ -12,6 +12,8 @@ def main(argv=None):
     parser.add_argument('--state-dir',default=str(Path(__file__).parent/'.local-results'/'ingest'))
     parser.add_argument('--root',action='append',dest='roots')
     parser.add_argument('--catalog',help='Explicit private JSON catalog with sources list')
+    parser.add_argument('--acquired-cache-root',help='Exact reviewed acquired cache root; read-only, no fetching')
+    parser.add_argument('--acquired-manifest',help='Reviewed acquired source manifest')
     parser.add_argument('--workers',type=int,default=8)
     parser.add_argument('--batch-size',type=int,default=500)
     parser.add_argument('--max-batch-bytes',type=int,default=16*1024*1024)
@@ -26,6 +28,9 @@ def main(argv=None):
     parser.add_argument('--max-depth',type=int,default=40)
     parser.add_argument('--max-scan-seconds',type=float,default=120)
     args=vars(parser.parse_args(argv))
+    for name in ('acquired_cache_root', 'acquired_manifest'):
+        if args.get(name) is None:
+            args.pop(name, None)
     catalog=args.pop('catalog')
     state=args.pop('state_dir')
     if args.get('roots') is None:

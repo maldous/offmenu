@@ -585,7 +585,7 @@ def _skip_reason(source):
             or source.get('disposition') in ('incomplete-hold', 'incomplete', 'partial')
             or name.endswith(('.part', '.partial', '.incomplete', '.download'))):
         return 'incomplete_source'
-    if source.get('disposition') == 'skip':
+    if source.get('disposition') in ('skip', 'duplicate'):
         return 'catalog_skip'
     if _format(source) not in ('json', 'jsonl', 'csv', 'tsv', 'sqlite', 'parquet'):
         return 'unsupported_supplier_format'
@@ -604,6 +604,7 @@ def run_domain(domain, sources, context):
     if domain != 'suppliers':
         raise ValueError('supplier_adapter_domain_mismatch')
     summaries = []
+    budget_stopped = False
     config = context.config
     maximum = min(MAX_ROW_BYTES, max(1024, int(config.get('max_record_bytes', MAX_ROW_BYTES))))
     for original in sources:
@@ -612,6 +613,15 @@ def run_domain(domain, sources, context):
         if skip:
             summaries.append(_summary(source, reason=skip))
             continue
+        # A global stop must not create zero-cursor checkpoints for the unread
+        # tail. Source-local caps and malformed inputs still allow later files.
+        try:
+            context.check_budget()
+            if context.cancelled.is_set():
+                raise BudgetExceeded('cancelled')
+        except BudgetExceeded:
+            budget_stopped = True
+            break
         extra = {'errors': 0, 'skipped': 0}
 
         def error(exc):
@@ -650,8 +660,18 @@ def run_domain(domain, sources, context):
             summary = _summary(source, status='failed', reason='source_error')
             summary['errors'] = extra['errors']
         summaries.append(summary)
+        if summary.get('reason') in ('resource_cap', 'resource_budget'):
+            # DomainStore intentionally returns partial after BudgetExceeded.
+            # Recheck only global limits: a per-source row cap is not a stop.
+            try:
+                context.check_budget()
+                if context.cancelled.is_set():
+                    raise BudgetExceeded('cancelled')
+            except BudgetExceeded:
+                budget_stopped = True
+                break
     totals = {key: sum(item.get(key, 0) for item in summaries) for key in COUNTERS}
-    status = ('no_inputs' if not summaries else
+    status = ('partial' if budget_stopped else 'no_inputs' if not summaries else
               'partial' if any(x['status'] in ('failed', 'partial')
                                or (x['status'] == 'skipped' and x.get('reason') != 'already_loaded')
                                for x in summaries)

@@ -1,3 +1,8 @@
+> Historical planning contract: the runnable retained + acquired plan is now
+> documented in [FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md) and [README.md](README.md).
+> Statements below about future/unimplemented loaders describe the earlier
+> planning state, not an instruction to skip the current reviewed ingest.
+
 > **Historical planning record, superseded for routine operation:** root `./run` now executes the reviewed finite `retained_ingest_all` plan (schema 2, job version 1), with actual parallel adapters for all eight domains, local resumable staging, and automatic strict sanitized checkpoint/final receipt commits and pushes. The supplier-only plan and future-tense statements below describe the earlier package, not the current implementation. See `README.md`, `plan.json`, and the `ingest_*.py` adapter closure. One-time bootstrap: `git pull --ff-only && ./run`. No source archive or raw/private data is uploaded.
 
 

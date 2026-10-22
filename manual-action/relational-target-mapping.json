@@ -1,0 +1,33 @@
+{
+  "schema": "offmenu-relational-target-mapping/1",
+  "target_schema": "offmenu-relational-targets/1",
+  "binding": "versioned_derived_not_app_bound",
+  "source_policy": "Explicit current stored source_key/source_version selections; no latest-version heuristic",
+  "identity_policy": "Full domain/source/version/record/content identity; no global entity merge",
+  "app_contract_inspection": {
+    "repository": "maldous/offmenu",
+    "commit": "8652b312ce7989c5e4f2d49ae765d5d8daf5841d",
+    "cloud_schema": {"path": "cloud/schema.sql", "blob_sha": "21c057cd45a8b5b5288b423a42cb908284a2c79b", "status": "source_schema_verified_runtime_binding_deferred"},
+    "local_schema": {"path": "offmenu/core.py", "blob_sha": "18b359507170708a0560693980feb7daa4b9c4ce", "status": "source_schema_verified_runtime_binding_deferred"},
+    "reason": "Cloud D1 products/recipes/unified_records/user_state/kitchens and local products/requirements/inventory are different contracts. No reviewed eight-domain production migration, runtime binding, app query or release approval is inferred."
+  },
+  "domains": {
+    "barcodes": {"adapters": ["ingest_existing"], "staging": "staging/barcodes.sqlite3", "derived": ["barcode_products", "identifier_claims", "external_store_references"], "verified": ["OFF lexical code claims on materialized records"], "deferred": ["Native retained-store product lookup; wrapper IDs are not products", "GTIN issuer/product verification", "Cloud products or local products binding"]},
+    "ingredients": {"adapters": ["ingest_recipes", "ingest_acquired_recipes", "ingest_acquired_menus"], "staging": "staging/ingredients.sqlite3", "derived": ["ingredient_mentions", "ingredient_entities", "recipe_ingredient_links"], "verified": ["Same-source recipe occurrence IDs", "Provider-native product/food IDs under same physical source asset", "Explicit municipal family/native-ID links"], "deferred": ["Canonical ingredient ontology, preparation and food equivalence", "Cross-provider product mappings"]},
+    "recipes": {"adapters": ["ingest_recipes", "ingest_acquired_recipes", "ingest_acquired_menus"], "staging": "staging/recipes.sqlite3", "derived": ["recipe_headers", "menu_entries", "menu_member_links"], "verified": ["Exact menu parent/member and recipe/mention edges", "Explicit selected-family municipal links"], "deferred": ["Cooking-recipe inference from menus", "App recipe/requirements promotion", "Atomic upstream publication snapshot"]},
+    "dietary": {"adapters": ["ingest_misc"], "staging": "staging/dietary.sqlite3", "derived": ["dietary_assertions"], "verified": ["Source nutrient/assertion payloads and numeric lexemes retained without conversion", "FDC food identifier edge when same provider and source asset prove namespace"], "deferred": ["Other provider food ID contracts", "Diet/allergen suitability", "Cross-basis nutrient equivalence"]},
+    "user_profiles": {"adapters": ["ingest_existing"], "staging": "private-household/staging/user_profiles.sqlite3", "derived": ["household_profiles"], "verified": ["Explicit namespace + household_id + user_id only"], "deferred": ["Private rows with missing scopes", "App account/kitchen binding"], "zero_input": "schema_only; no invented users or profiles"},
+    "inventory": {"adapters": ["ingest_existing"], "staging": "private-household/staging/inventory.sqlite3", "derived": ["inventory_lots"], "verified": ["Inventory/profile edge requires equal explicit namespace, household and user"], "deferred": ["Unqualified product/ingredient IDs", "App inventory binding"], "zero_input": "schema_only; no invented pantry items"},
+    "suppliers": {"adapters": ["ingest_suppliers"], "staging": "staging/suppliers.sqlite3", "derived": ["supplier_entities", "supplier_assertions", "supplier_ownership_links"], "verified": ["Exact provider/native entity_id in selected source/version; zero/one/many target occurrences retained"], "deferred": ["Cross-source organization entity merging", "Venue names to suppliers", "Brand prefixes to ownership"]},
+    "citations": {"adapters": ["ingest_misc", "ingest_acquired_recipes", "ingest_acquired_menus"], "staging": "staging/citations.sqlite3", "derived": ["evidence_citations", "citation_links"], "verified": ["Explicit cites/cites_record edges by full selected record identity"], "deferred": ["Legacy metadata without exact record attachments", "Rights or digest inheritance", "Public release clearance"]}
+  },
+  "contracts": {
+    "scoped-record-id/1": "Declared supported edge kinds only; target source_key and source_version must match owner",
+    "acquired-scoped-id/1": "Selected source family + exact sub-scope + exact JSON native ID type/value + emitted record ID. Toulouse family is its namespace; Begles requires both publisher SIRETs. Different artifacts/releases are retained separately; multiple target occurrences remain ambiguous.",
+    "supplier-native-scoped/1": "Provider + source_key + source_version + typed native entity_id, not hashed record_id",
+    "same-asset-native-id/1": "Exact provider, verified native field namespace, lexical ID type/value, identical physical source fingerprint excluding adapter version",
+    "private-profile-scope/1": "Exact explicit namespace/household/user tuple; no global or cross-household fallback"
+  },
+  "review_translation_or_gold": "Not performed or implied",
+  "publication": "Code/schema/tests/documentation only; generated targets/manifests/source values remain private"
+}

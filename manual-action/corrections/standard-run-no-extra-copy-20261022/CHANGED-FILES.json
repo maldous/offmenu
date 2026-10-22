@@ -1,0 +1,110 @@
+{
+  "schema": "offmenu-standard-run-no-extra-copy-correction/1",
+  "date": "2026-10-22",
+  "repository": "maldous/offmenu",
+  "original_published_commit": "f9eb4628f05e62828205aa308a57b408c904dc61",
+  "preceding_budget_correction_manifest_sha256": "f10de892febc206d1c6aba74d02090f9ba18dbd6f33545df20de4e21acaba5ae",
+  "scope": "disable-automatic-derived-copy-and-honor-known-supplier-catalog-duplicates",
+  "independent_review": "separate-attestation-required",
+  "adapter_versions_unchanged": true,
+  "store_schema_and_fingerprint_unchanged": true,
+  "explicit_materializer_implementation_unchanged": true,
+  "live_state_changes": false,
+  "files": [
+    {
+      "path": "manual-action/plan_runner.py",
+      "status": "changed",
+      "before_sha256": "705124b0496ceb8a72d8d8621a7bab890c54011acd04da6457b629ef20a89ad1",
+      "sha256": "ba32c40e4f3350cfd68de564f587b130fd28ca516e614337df7f04a9eff6cb50",
+      "bytes": 57281,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_suppliers.py",
+      "status": "changed",
+      "before_sha256": "7a9819fcfb01bd3abc4971576ed7100387395a1b76c83e508f92c9a0fc19a525",
+      "sha256": "8b7c094b2dfbe816d6d877fec0ea06f56e28d7efeb9b329b52f9b11a5e2422fb",
+      "bytes": 31562,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_suppliers.py",
+      "status": "changed",
+      "before_sha256": "9140b5a7365416e17175a408f212df368bf8cf037a55c2bd2dc0ff53c67e309a",
+      "sha256": "1b7fa0b7d6734cf0844696ba580166d888a4f3423d5143e43a24a0046c9ffbef",
+      "bytes": 19384,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_final_ingest_integration.py",
+      "status": "changed",
+      "before_sha256": "be979a36551c1f8a64fd1bec7f431d48268e310dbb6dafb00889fb06ea36156e",
+      "sha256": "55f9912f73db544c73efc56447084fc59e711554544629178fe6e95c766e22d4",
+      "bytes": 13689,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-RUN.md",
+      "status": "changed",
+      "before_sha256": "8bdc9593cd46e69eb28493f9d8386f717de60e2c7e9f7b35bdd23c4d3d2848fa",
+      "sha256": "fd2e4edb3bf32b4b6bab82915ed4beb0408339f091677ce6849c5e714150adc4",
+      "bytes": 7213,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/README.md",
+      "status": "changed",
+      "before_sha256": "c59f4f1513817597351dd87cae8264b11491655aadaf6bc53c8c681744bd3f46",
+      "sha256": "c59c060f004b171b746ca65ac8cc1f5c8e52a52b967c2ed02ad3179c357c6173",
+      "bytes": 19860,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/RELATIONAL-TARGETS.md",
+      "status": "changed",
+      "before_sha256": "5ff7fce1c98da51b6b3f35c7bf4741809c880724783a6708e96a5246f8f4c16a",
+      "sha256": "273c7803e03be3975577b0bd95c1688e62963ba997d7ab277eed175c133dfe08",
+      "bytes": 11617,
+      "mode": "100644"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "standard-run-no-extra-copy.patch",
+      "sha256": "bc14c895382afe8a34d0f087b7e3187ff6bf7362b9d510c96f44543eb4ed9487",
+      "bytes": 20104
+    },
+    {
+      "path": "CORRECTION-REVIEW.md",
+      "sha256": "58e3ce7386591db0e359b39c798d29e1e5646c6d210b3f3978bc1131bd17ee04",
+      "bytes": 3486
+    },
+    {
+      "path": "generated-regression-results.json",
+      "sha256": "fdc4326d39d58594f669513c04c6efdcaeabcddf851b78ed2d436b5019247994",
+      "bytes": 811
+    }
+  ],
+  "local_only_not_for_publication": [
+    "generated-regression-tests.log",
+    "changed-files.preliminary.json"
+  ],
+  "tests": {
+    "scope": "generated fixtures; no live Foo execution, retained data changes, or project remote publication",
+    "command": "python3 -B unittest.defaultTestLoader.discover(\"manual-action/tests\")",
+    "tests_run": 595,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      {
+        "test": "test_actual_system_libacl_read_is_valid_on_synthetic_temp_only (test_grant_acquired_read_access.NarrowACLTests.test_actual_system_libacl_read_is_valid_on_synthetic_temp_only)",
+        "reason": "fixture filesystem does not support POSIX ACLs"
+      },
+      {
+        "test": "test_installed_parquet_can_preserve_wkb_and_place_kind (test_ingest_suppliers.SupplierTests.test_installed_parquet_can_preserve_wkb_and_place_kind)",
+        "reason": "optional installed-only pyarrow unavailable"
+      }
+    ],
+    "elapsed_seconds": 62.721
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "scope": "generated fixtures; no live Foo execution or retained source data",
+  "command": "python3 -B unittest.defaultTestLoader.discover(\"manual-action/tests\")",
+  "tests_run": 593,
+  "failures": 0,
+  "errors": 0,
+  "skipped": [
+    {
+      "test": "test_actual_system_libacl_read_is_valid_on_synthetic_temp_only (test_grant_acquired_read_access.NarrowACLTests.test_actual_system_libacl_read_is_valid_on_synthetic_temp_only)",
+      "reason": "fixture filesystem does not support POSIX ACLs"
+    },
+    {
+      "test": "test_installed_parquet_can_preserve_wkb_and_place_kind (test_ingest_suppliers.SupplierTests.test_installed_parquet_can_preserve_wkb_and_place_kind)",
+      "reason": "optional installed-only pyarrow unavailable"
+    }
+  ],
+  "elapsed_seconds": 72.453
+}

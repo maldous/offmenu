@@ -1,0 +1,280 @@
+diff --git a/manual-action/plan_runner.py b/manual-action/plan_runner.py
+--- a/manual-action/plan_runner.py
++++ b/manual-action/plan_runner.py
+@@ -799,8 +799,10 @@
+             if envelope['sha256']!=digest(canonical(value)) or spool.name!=Path(receipt_relpath(value)).name:
+                 raise Stop('pending_receipt_changed_preserved')
+             deliver(value,spool)
++        # Receipt transport does not authorize a second physical database copy.
++        # Derived relational snapshots remain a separate explicit API opt-in.
+         options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True,
+-                 'materialize_relational_targets': self.receipt_transport == 'isolated-branch-v1'}
++                 'materialize_relational_targets': False}
+         announce('[2/4] Discovering retained and newly acquired inputs, then ingesting all eight domains in parallel; no downloads. Bounded acquired groups first, then retained cursor resume.')
+         prepared=engine.prepare_default(self.state/'ingest',options)
+         initial_pending=self.pending_snapshot(engine,prepared)
+diff --git a/manual-action/ingest_suppliers.py b/manual-action/ingest_suppliers.py
+--- a/manual-action/ingest_suppliers.py
++++ b/manual-action/ingest_suppliers.py
+@@ -585,7 +585,7 @@
+             or source.get('disposition') in ('incomplete-hold', 'incomplete', 'partial')
+             or name.endswith(('.part', '.partial', '.incomplete', '.download'))):
+         return 'incomplete_source'
+-    if source.get('disposition') == 'skip':
++    if source.get('disposition') in ('skip', 'duplicate'):
+         return 'catalog_skip'
+     if _format(source) not in ('json', 'jsonl', 'csv', 'tsv', 'sqlite', 'parquet'):
+         return 'unsupported_supplier_format'
+diff --git a/manual-action/tests/test_ingest_suppliers.py b/manual-action/tests/test_ingest_suppliers.py
+--- a/manual-action/tests/test_ingest_suppliers.py
++++ b/manual-action/tests/test_ingest_suppliers.py
+@@ -175,6 +175,40 @@
+                                    'format': 'parquet', 'loaded': True}])
+         self.assertEqual(report['status'], 'complete')
+ 
++    def test_catalog_known_hardlink_and_byte_duplicates_are_not_ingested_twice(self):
++        from ingest_catalog import discover_sources
++        retained = self.root / 'wikidata-businesses-20261013-native'
++        retained.mkdir()
++        source = retained / 'organizations.jsonl'
++        source.write_text('{"id":"Q1","name":"Generated"}\n')
++        source.with_name('organizations-hardlink.jsonl').hardlink_to(source)
++        source.with_name('organizations-copy.jsonl').write_bytes(source.read_bytes())
++        catalog = discover_sources({'roots': [str(retained)], 'project_reports': []})
++        sources = [s for s in catalog['sources'] if 'suppliers' in s['domains']]
++        self.assertEqual(len(sources), 3)
++        duplicates = [s for s in sources if s['disposition'] == 'duplicate']
++        self.assertEqual({s['reason'] for s in duplicates},
++                         {'same_file_identity', 'byte_identical_small_file'})
++        with mock.patch.object(suppliers, '_rows', wraps=suppliers._rows) as reader:
++            report = self.run_sources(sources)
++        self.assertEqual(reader.call_count, 1)
++        self.assertEqual((report['written'], report['skipped']), (1, 2))
++        self.assertEqual(self.context.store.db.execute('SELECT count(*) FROM sources').fetchone()[0], 1)
++        self.assertEqual(len(self.records()), 1)
++        repeat = self.run_sources(sources)
++        self.assertEqual((repeat['written'], repeat['unchanged'], repeat['skipped']), (0, 1, 2))
++
++    def test_duplicate_disposition_does_not_purge_historical_rows(self):
++        source = self.source('historical.jsonl', '{"id":"Q1","name":"Generated"}\n')
++        self.assertEqual(self.run_sources([source])['written'], 1)
++        before = self.context.store.db.execute('SELECT * FROM records').fetchall()
++        checkpoints = self.context.store.db.execute('SELECT * FROM sources').fetchall()
++        with mock.patch.object(suppliers, '_rows', side_effect=AssertionError('must not reopen')):
++            report = self.run_sources([{**source, 'disposition': 'duplicate'}])
++        self.assertEqual((report['written'], report['skipped']), (0, 1))
++        self.assertEqual(self.context.store.db.execute('SELECT * FROM records').fetchall(), before)
++        self.assertEqual(self.context.store.db.execute('SELECT * FROM sources').fetchall(), checkpoints)
++
+     def test_sqlite_reads_original_packet_not_duplicate_actor_and_never_writes(self):
+         path = self.root / 'native.sqlite'
+         db = sqlite3.connect(path)
+diff --git a/manual-action/tests/test_final_ingest_integration.py b/manual-action/tests/test_final_ingest_integration.py
+--- a/manual-action/tests/test_final_ingest_integration.py
++++ b/manual-action/tests/test_final_ingest_integration.py
+@@ -89,7 +89,7 @@
+             with closing(sqlite3.connect(path.as_uri()+'?mode=ro',uri=True)) as db:
+                 result[domain]=db.execute('SELECT source_key,source_version,record_id,content_sha256,updated_at FROM records ORDER BY 1,2,3').fetchall()
+         return result
+-    def test_upgrade_reuses_existing_state_ingests_all_six_families_and_returns_evidence(self):
++    def test_standard_run_resumes_all_families_and_receipts_without_extra_derived_copy(self):
+         def recipe(name):return {'id':name,'name':name,'ingredients':['1 g generated ingredient'],'instructions':['Generated instruction']}
+         completed=self.write('world-recipes-common-input-20261014/completed.jsonl',[recipe('completed')])
+         partial=self.write('world-recipes-common-input-20261014/partial.jsonl',[recipe(str(i)) for i in range(3)])
+@@ -125,13 +125,17 @@
+         self.git(self.root,'add','manual-action/ingest_recipes.py');self.git(self.root,'commit','-m','Generated no-replay assertion')
+         self.git(self.root,'push','origin',legacy.m.BRANCH)
+         code_head=self.case.head()
+-        self.run_command()
++        first_command = self.run_command()
+         report=json.loads((state/'last-report.json').read_text())
+         self.assertEqual(report['domains']['recipes']['error_codes'],['JSONDecodeError'])
+         self.assertGreater(report['domains']['recipes']['written'],40)
+         for domain in ('barcodes','ingredients','dietary','suppliers','citations'):
+             self.assertGreater(report['domains'][domain]['written'],0,(domain,report['domains'][domain]))
+-        first_derived=json.loads((state/'relational-targets.private.json').read_text())
++        derived_dir=state/'private-household/relational-targets'
++        self.assertFalse(derived_dir.exists())
++        self.assertFalse((state/'relational-targets.private.json').exists())
++        self.assertNotIn('relational_targets',report)
++        self.assertNotIn('[relational]',first_command.stdout)
+         final_rows=self.db_rows(state)
+         self.assertTrue(set(old_rows)<=set(final_rows['recipes']))
+         catalog=json.loads((state/'catalog.private.json').read_text())
+@@ -140,8 +144,6 @@
+         self.assertEqual(len({s['acquired_adapter'] for s in acquired}),6)
+         self.assertEqual(report['ingest_evidence']['phase'],'post')
+         self.assertIsNotNone(report['ingest_evidence']['performance']['domains']['recipes'][0])
+-        self.assertEqual(report['relational_targets']['binding'],'versioned_derived_not_app_bound')
+-        self.assertGreater(report['relational_targets']['relations']['resolved'],0,(report['relational_targets'],[(p.name,p.stat().st_size) for p in state.rglob('*-wal')]))
+         self.assertEqual(self.case.head(),code_head)
+         self.assertFalse(spool.exists())
+         branch='refs/heads/'+RECEIPT_BRANCH
+@@ -157,7 +159,18 @@
+                 extra=self.git(self.case.remote,'show',branch+':'+extra_path).encode()+b'\n'
+                 self.assertEqual(hashlib.sha256(extra).hexdigest(),ref['sha256'])
+                 self.assertEqual(len(extra),ref['bytes'])
++            if value['schema']=='offmenu-ingest-supplement/1':
++                self.assertIn('ingest_evidence',value)
++                self.assertNotIn('relational_targets',value)
+         self.assertIn('offmenu-ingest-supplement/1',{v['schema'] for v in public})
++        # Existing derived files are retained verbatim, not cleaned up, reused,
++        # repaired or presented as if the new standard run materialized them.
++        old_target=derived_dir/'v1/previous-generated.sqlite3'
++        old_target.parent.mkdir(parents=True)
++        old_target.write_bytes(b'Generated historical target sentinel; do not open')
++        old_manifest=state/'relational-targets.private.json'
++        old_manifest.write_text('{"generated_historical_evidence":"preserve"}\n')
++        preserved={p:(p.read_bytes(),p.stat().st_mtime_ns) for p in (old_target,old_manifest)}
+         # A code-only correction can create a new job receipt but never reread
+         # any successful acquired source or rewrite any source provenance row.
+         for name in ('ingest_acquired_recipes.py','ingest_acquired_menus.py'):
+@@ -166,12 +179,14 @@
+             path.write_text(text.replace(marker,marker+"\n    raise AssertionError('completed_acquired_reader_reentered')",1))
+         self.git(self.root,'add','manual-action');self.git(self.root,'commit','-m','Generated completed-reader guards')
+         self.git(self.root,'push','origin',legacy.m.BRANCH)
+-        self.run_command()
++        second_command = self.run_command()
+         repeat=json.loads((state/'last-report.json').read_text())
+         self.assertTrue(all(r['written']==0 and r['read']==0 for r in repeat['domains'].values()))
+         self.assertEqual(final_rows,self.db_rows(state))
+-        second_derived=json.loads((state/'relational-targets.private.json').read_text())
+-        self.assertEqual(repeat['relational_targets']['status'],'reused',{key:(first_derived.get(key),second_derived.get(key)) for key in ('code_sha256','input_identities','selected_sources','snapshot') if first_derived.get(key)!=second_derived.get(key)})
++        self.assertNotIn('relational_targets',repeat)
++        self.assertNotIn('[relational]',second_command.stdout)
++        self.assertEqual(preserved,{p:(p.read_bytes(),p.stat().st_mtime_ns) for p in preserved})
++        self.assertEqual(list(derived_dir.rglob('*.sqlite3')),[old_target])
+         self.assertTrue(all(s['metadata']['acquisition']['verification_basis']=='cached_byte_hash_and_current_metadata' for s in json.loads((state/'catalog.private.json').read_text())['sources'] if s.get('acquired_adapter')))
+ 
+ if __name__=='__main__':unittest.main()
+diff --git a/manual-action/FINAL-INGEST-RUN.md b/manual-action/FINAL-INGEST-RUN.md
+--- a/manual-action/FINAL-INGEST-RUN.md
++++ b/manual-action/FINAL-INGEST-RUN.md
+@@ -35,14 +35,17 @@
+   committed cursors. Specialized acquired adapter versions affect acquired
+   bindings only. Unchanged, previously verified acquired files use exact
+   stat/receipt/manifest identity rather than gratuitous full-file rehashing.
+-* After staging writers close, materializes a separate versioned derived SQLite
+-  target and exact cross-domain links from explicitly selected stored versions.
+-  This phase is bounded to 100 million records / 3,600 seconds and preserves the
+-  configured disk reserve. Partial phases resume exact keys; no automatic
+-  cleanup or deletion is performed.
++* Uses the existing staging databases and cached source assets. The standard
++  `./run` does **not** automatically materialize another derived SQLite snapshot
++  or copy stored payloads into that extra target. Receipt-branch selection does
++  not enable derived writes. Existing snapshots, if any, are left untouched.
++* Honors supplier catalog entries already marked `duplicate` from known inode
++  identity or bounded small-file byte equality. It does not ingest those aliases
++  again, purge historical rows, hash large files, or claim universal deduplication.
+ * Returns sanitized pre/checkpoint/post evidence, domain totals, bounded scoped
+   error reasons, pending counts, schema availability, access blockers, and
+-  relational readiness automatically with the normal receipts.
++  current-run resource-stop evidence automatically with the normal receipts.
++  It does not report an optional derived phase as having run.
+ 
+ No new downloading or endless fetching is enabled. A reported resource limit or
+ source failure is not completion; the next ordinary run resumes owned work.
+@@ -50,12 +53,15 @@
+ ## Output and readiness are deliberately distinct
+ 
+ The eight source-faithful staging databases remain under the existing private
+-runner state. Derived typed records, exact links, and unresolved/ambiguous
+-candidates are materialized under
+-`ingest/private-household/relational-targets/v1`.
++runner state, with binding `additive_staging_not_app_bound`. One retained cached
++source asset plus its database representation is expected; this correction does
++not merge domains, move databases, or remove existing assets or versions.
+ 
+-These outputs are **versioned derived targets, not bound application databases**.
+-They do not claim universal ingredient canonicalization, verified dietary
++The explicit optional materializer remains available separately; if deliberately
++invoked, it writes versioned targets under
++`ingest/private-household/relational-targets/v1`, with binding
++`versioned_derived_not_app_bound`. Neither staging nor optional derived targets
++are bound application databases. They do not claim universal ingredient canonicalization, verified dietary
+ claims, populated household profiles/inventory, or an application-ready gold
+ schema. `app_binding: deferred`, exact blocker enums, and schema-only private
+ household domains remain visible. See `RELATIONAL-TARGETS.md` and
+@@ -108,3 +114,6 @@
+ missing/tampered supplement recovery, push failure, legacy spool migration, and
+ concurrent code-branch advancement. They are not evidence that the real CLI can
+ currently read the cache or that real application binding is complete.
++The standard-run regression also verifies no new derived target is created,
++existing historical target files remain byte-identical, and normal ingestion,
++resume and sanitized receipt/evidence delivery continue without the extra copy.
+diff --git a/manual-action/README.md b/manual-action/README.md
+--- a/manual-action/README.md
++++ b/manual-action/README.md
+@@ -16,7 +16,7 @@
+ spool before promoting this prepared release to the normal manual-action branch.
+ Do not switch, reset, stash, or replace a live checkout. See
+ [FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md) for the exact after-exit installation,
+-permission boundary, productive derived targets, and recovery contract.
++permission boundary, no-extra-derived-copy default, and recovery contract.
+ 
+ The next run includes the reviewed six acquired families / 50 manifest artifacts
+ in addition to retained sources; it performs no new downloading. Missing narrow
+@@ -39,7 +39,7 @@
+ 
+ The default bounded catalog scans the known retained OffMenu data root and narrow documented report references. Catalogs, paths, raw records, error details, and SQLite state stay local. Historical OFF **4,807,217**, USDA **2,101,279**, and identifier **5,242,597** counts are documentary hints, not claims about this invocation. Actual source existence, recognized table counts, schema and index information are checked read-only at runtime. Native table rows are not necessarily unique products. Leading-zero barcode strings are retained.
+ 
+-**Targets are additive local staging, reusable source references, and a separately versioned derived relational target; current application/UI bindings do not change.** Reports explicitly say `additive_staging_not_app_bound`. Application wiring and acceptance remain separate work; existing source databases are never opened for writes.
++**Standard-run targets are additive local staging and reusable source references; current application/UI bindings do not change.** Reports explicitly say `additive_staging_not_app_bound`. The normal `./run` does not create an additional derived relational snapshot; that implementation remains a separate explicit opt-in. Existing snapshots are preserved, not deleted or claimed as newly produced. Application wiring and acceptance remain separate work; existing source databases are never opened for writes. Supplier aliases already marked `duplicate` by the catalog are skipped without rewriting historical rows; unrecognized large-file copies remain unknown.
+ 
+ ## Progress, repeatability, and recovery
+ 
+diff --git a/manual-action/RELATIONAL-TARGETS.md b/manual-action/RELATIONAL-TARGETS.md
+--- a/manual-action/RELATIONAL-TARGETS.md
++++ b/manual-action/RELATIONAL-TARGETS.md
+@@ -1,13 +1,18 @@
+-# Additive relational targets for the next terminal ingest
++# Optional additive relational targets — explicit invocation only
+ 
+ `ingest_relational_targets.py` now **materializes useful typed tables and exact
+-joins**, rather than only reporting generic staging rows. It runs offline after
+-all domain workers close. This package was developed against synthetic fixtures;
++joins**, rather than only reporting generic staging rows. It is **not enabled by
++the standard `./run`**, including isolated receipt transport: that run uses the
++existing staging databases without an additional derived snapshot/payload copy.
++The implementation remains available for a separate explicit invocation, offline
++after all domain workers close. Existing outputs are preserved, never cleaned up
++or represented as newly materialized by a standard run.
++This package was developed against synthetic fixtures;
+ no actual Foo databases or current `./run` were opened or changed here.
+ 
+ ## Output and binding
+ 
+-All eight domains are represented in a single versioned join database:
++When explicitly invoked, all eight domains are represented in a single versioned join database:
+ 
+ ```
+ <state>/private-household/relational-targets/v1/<snapshot>.sqlite3
+@@ -89,7 +94,9 @@
+ 
+ ## Execution, bounds and reuse
+ 
+-The coordinator calls:
++Only a separately explicit caller (or an explicitly configured engine API call
++with `materialize_relational_targets=True`) runs this phase. The standard runner
++sets that option to `False`. An example explicit API invocation is:
+ 
+ ```python
+ result = materialize_relational_targets(
+@@ -105,7 +112,7 @@
+ reference/ingredient-derivation key differs from its catalog key. Never infer the
+ latest source version or include a not-yet-read version as if it were present.
+ API defaults are deliberately smaller (2 million records / 120 seconds); the
+-comprehensive runner may supply the generous finite bounds above. Caps produce
++explicit caller may supply the generous finite bounds above. Caps produce
+ `partial` plus `resource_budget`, not a success or a reason to fetch more.
+ The shared filesystem's free bytes are checked before creating a target and
+ throughout copying/resolution, preserving the configured disk reserve plus
+@@ -161,7 +168,7 @@
+ | Add reviewed provider ID contracts | Other dietary/product namespaces | Generic `code` or equal numeric IDs do not prove shared identity | Deferred, countable |
+ | Supply explicit record attachments | Legacy citation metadata | Source key/URL equality is insufficient | Deferred, countable |
+ | Supply explicit private input and scopes if desired | Profiles/inventory | Private data may legitimately be absent | Schema-only accepted; missing scopes deferred |
+-| Inspect new run's exact missing/ambiguous links | Selected retained snapshot | No live Foo counts were measured during development | Await next generated evidence |
++| Inspect an explicitly requested derived run's exact missing/ambiguous links | Selected retained snapshot | No live Foo counts were measured during development; standard run creates no derived snapshot | Deferred until explicitly invoked |
+ 
+ Synthetic tests cover exact joins, ambiguous suppliers, same-ID different source,
+ lexical zero/type preservation, no native-wrapper conflation, menu family scopes,

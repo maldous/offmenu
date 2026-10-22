@@ -175,6 +175,40 @@ class SupplierTests(unittest.TestCase):
                                    'format': 'parquet', 'loaded': True}])
         self.assertEqual(report['status'], 'complete')
 
+    def test_catalog_known_hardlink_and_byte_duplicates_are_not_ingested_twice(self):
+        from ingest_catalog import discover_sources
+        retained = self.root / 'wikidata-businesses-20261013-native'
+        retained.mkdir()
+        source = retained / 'organizations.jsonl'
+        source.write_text('{"id":"Q1","name":"Generated"}\n')
+        source.with_name('organizations-hardlink.jsonl').hardlink_to(source)
+        source.with_name('organizations-copy.jsonl').write_bytes(source.read_bytes())
+        catalog = discover_sources({'roots': [str(retained)], 'project_reports': []})
+        sources = [s for s in catalog['sources'] if 'suppliers' in s['domains']]
+        self.assertEqual(len(sources), 3)
+        duplicates = [s for s in sources if s['disposition'] == 'duplicate']
+        self.assertEqual({s['reason'] for s in duplicates},
+                         {'same_file_identity', 'byte_identical_small_file'})
+        with mock.patch.object(suppliers, '_rows', wraps=suppliers._rows) as reader:
+            report = self.run_sources(sources)
+        self.assertEqual(reader.call_count, 1)
+        self.assertEqual((report['written'], report['skipped']), (1, 2))
+        self.assertEqual(self.context.store.db.execute('SELECT count(*) FROM sources').fetchone()[0], 1)
+        self.assertEqual(len(self.records()), 1)
+        repeat = self.run_sources(sources)
+        self.assertEqual((repeat['written'], repeat['unchanged'], repeat['skipped']), (0, 1, 2))
+
+    def test_duplicate_disposition_does_not_purge_historical_rows(self):
+        source = self.source('historical.jsonl', '{"id":"Q1","name":"Generated"}\n')
+        self.assertEqual(self.run_sources([source])['written'], 1)
+        before = self.context.store.db.execute('SELECT * FROM records').fetchall()
+        checkpoints = self.context.store.db.execute('SELECT * FROM sources').fetchall()
+        with mock.patch.object(suppliers, '_rows', side_effect=AssertionError('must not reopen')):
+            report = self.run_sources([{**source, 'disposition': 'duplicate'}])
+        self.assertEqual((report['written'], report['skipped']), (0, 1))
+        self.assertEqual(self.context.store.db.execute('SELECT * FROM records').fetchall(), before)
+        self.assertEqual(self.context.store.db.execute('SELECT * FROM sources').fetchall(), checkpoints)
+
     def test_sqlite_reads_original_packet_not_duplicate_actor_and_never_writes(self):
         path = self.root / 'native.sqlite'
         db = sqlite3.connect(path)

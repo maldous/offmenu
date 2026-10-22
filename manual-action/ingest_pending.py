@@ -6,6 +6,7 @@ No historical hints, row COUNT(*), payload scans, or whole-file hashes are used.
 """
 from __future__ import annotations
 import hashlib
+from contextlib import closing
 import json
 from pathlib import Path
 import re
@@ -96,7 +97,7 @@ def _read_store(path, domain, sources):
         raise ValueError('unsafe_output_path')
     if not path.exists():
         return [], {}, False
-    with sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=.25) as db:
+    with closing(sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=.25)) as db:
         db.execute('PRAGMA query_only=ON')
         db.execute('PRAGMA trusted_schema=OFF')
         meta = dict(db.execute('SELECT key,value FROM ingest_meta'))
@@ -219,7 +220,7 @@ def collect_pending_work(sources, state_dir, *, results=None, catalog_complete=T
                 detail['status'], detail['next_reason'] = policy
             row = None
             try:
-                descriptor = dict(source, adapter_version=adapter_versions.get(domain, source.get('adapter_version', 1)))
+                descriptor = dict(source, adapter_version=(source.get('adapter_version', 1) if source.get('acquired_adapter') else adapter_versions.get(domain, source.get('adapter_version', 1))))
                 fp = _fingerprint(descriptor)
                 version = hashlib.sha256(_json(fp).encode()).hexdigest()
                 detail.update(source_version=version, source_bytes=fp['size'])
@@ -231,7 +232,8 @@ def collect_pending_work(sources, state_dir, *, results=None, catalog_complete=T
                 current = [r for r in candidates if r['version'] == version]
                 row = next((r for r in current if r['source_key'] == source_key(source)), current[-1] if current else None)
                 if row:
-                    detail.update(cursor=_integer(row['cursor']), written=_integer(row['written']), errors=_integer(row['errors']),
+                    detail.update(stored_source_key=row['source_key'], stored_source_version=row['version'],
+                                  cursor=_integer(row['cursor']), written=_integer(row['written']), errors=_integer(row['errors']),
                                   read_complete=row['status'] in ('complete', 'complete_with_errors'))
                 if not policy:
                     if metadata_error:

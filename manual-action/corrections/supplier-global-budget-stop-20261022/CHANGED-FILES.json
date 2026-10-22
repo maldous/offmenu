@@ -1,0 +1,90 @@
+{
+  "schema": "offmenu-supplier-global-budget-stop-correction/1",
+  "date": "2026-10-22",
+  "repository": "maldous/offmenu",
+  "baseline_manifest_sha256": "9cd97cd7ce74f560a4f965ed506a1cccc557ba94a051a37ebbb900f9241bea5b",
+  "scope": "supplier-global-stop-and-fixed-schema-budget-evidence",
+  "independent_review": "separate-attestation-required",
+  "adapter_versions_unchanged": true,
+  "store_schema_and_fingerprint_unchanged": true,
+  "live_state_changes": false,
+  "files": [
+    {
+      "path": "manual-action/ingest_api.py",
+      "status": "changed",
+      "before_sha256": "f9bd34403893b1acd1717df6c4a8d88493124750db2c5e9e6f66688abc34c9dc",
+      "sha256": "5178609b4a59a91fee9f34b329796e596a8e161b43df5cf91dc3819d52548481",
+      "bytes": 3828,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_engine.py",
+      "status": "changed",
+      "before_sha256": "306a74ee5a3d8e9c97b13ea8e4a31e14e044cdb308239c2736e51ff3f88c0b86",
+      "sha256": "314138cedbc152e2d1a77553b05a58e74a77bdc478756ac09febbb8ab879f1da",
+      "bytes": 43082,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_evidence.py",
+      "status": "changed",
+      "before_sha256": "56df4f8adb3ed2a2f50ddb6df0eb69bba76c7e460596b882a216e8a00835fb21",
+      "sha256": "141432d965ff63bfac53a5920bc34f2691c237dd6b7a7e914fa8506c1e8ea000",
+      "bytes": 41228,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_suppliers.py",
+      "status": "changed",
+      "before_sha256": "f5e0cbdf23f34690041fedd1fa279df339263bde8a00dc2ec82f073ca9c9f006",
+      "sha256": "7a9819fcfb01bd3abc4971576ed7100387395a1b76c83e508f92c9a0fc19a525",
+      "bytes": 31547,
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_budget_stop.py",
+      "status": "new",
+      "before_sha256": null,
+      "sha256": "65d45fe1fe6ada2fe741b6cd780db06a6d1f673edd6e28838ae1e87df697b47c",
+      "bytes": 13982,
+      "mode": "100644"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "supplier-global-budget-stop.patch",
+      "sha256": "a772014f8a66bd7a14c22b982ac8f2d8d34ab8624976312667ca832d53303dde",
+      "bytes": 27074
+    },
+    {
+      "path": "CORRECTION-REVIEW.md",
+      "sha256": "6b5b900e4ccccfcb33533fe97b8f2ad93f23fe548e6eb79b0291dd45de35bf88",
+      "bytes": 3782
+    },
+    {
+      "path": "generated-regression-results.json",
+      "sha256": "aca3f7c011acfebfcfa4882d2e1496b87a6031e14f03655a3cf871b0fb981102",
+      "bytes": 781
+    }
+  ],
+  "tests": {
+    "scope": "generated fixtures; no live Foo execution or retained source data",
+    "command": "python3 -B unittest.defaultTestLoader.discover(\"manual-action/tests\")",
+    "tests_run": 593,
+    "failures": 0,
+    "errors": 0,
+    "skipped": [
+      {
+        "test": "test_actual_system_libacl_read_is_valid_on_synthetic_temp_only (test_grant_acquired_read_access.NarrowACLTests.test_actual_system_libacl_read_is_valid_on_synthetic_temp_only)",
+        "reason": "fixture filesystem does not support POSIX ACLs"
+      },
+      {
+        "test": "test_installed_parquet_can_preserve_wkb_and_place_kind (test_ingest_suppliers.SupplierTests.test_installed_parquet_can_preserve_wkb_and_place_kind)",
+        "reason": "optional installed-only pyarrow unavailable"
+      }
+    ],
+    "elapsed_seconds": 72.453
+  },
+  "published_base_commit": "f9eb4628f05e62828205aa308a57b408c904dc61",
+  "published_base_tree": "a7a9ec17d3878acc1351036cd6914bd04e9dbd4f"
+}

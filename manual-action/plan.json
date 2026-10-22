@@ -4,9 +4,10 @@
   "jobs": [
     {
       "id": "retained-eight-domain-ingest",
-      "version": 1,
+      "version": 2,
       "operation": "retained_ingest_all",
       "depends_on": []
     }
-  ]
+  ],
+  "receipt_transport": "isolated-branch-v1"
 }

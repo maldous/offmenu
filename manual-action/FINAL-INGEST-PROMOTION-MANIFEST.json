@@ -1,0 +1,501 @@
+{
+  "schema": "offmenu-final-ingest-promotion-manifest/1",
+  "repository": "maldous/offmenu",
+  "installation_branch": "integration/manual-actions-20261022",
+  "recovered_parent": "db0bbdee86e1afb4919cc75072b401b94fe9151a",
+  "recovered_tree": "a8b91759a07e57efe7e020d9a2e44809c260024b",
+  "prepared_source_parent": "f9eb4628f05e62828205aa308a57b408c904dc61",
+  "prepared_source_tree": "a7a9ec17d3878acc1351036cd6914bd04e9dbd4f",
+  "original_manifest_sha256": "9cd97cd7ce74f560a4f965ed506a1cccc557ba94a051a37ebbb900f9241bea5b",
+  "budget_correction_manifest_sha256": "f10de892febc206d1c6aba74d02090f9ba18dbd6f33545df20de4e21acaba5ae",
+  "storage_correction_manifest_sha256": "6439cc1a130ec4abcc721e4aef1726172aa9b5bda8aea3336bd4ed1e081600b3",
+  "receipt_files_modified_or_removed": false,
+  "standard_run_materializes_derived_targets": false,
+  "tests": {
+    "run": 530,
+    "skipped": 1,
+    "result": "OK",
+    "fixture_only": true,
+    "elapsed_seconds": 74.661
+  },
+  "self_hash_excluded": true,
+  "files": [
+    {
+      "path": "manual-action/ACQUIRED-MENU-ADAPTERS.md",
+      "mode": "100644",
+      "sha": "97fa1a55bb5d3c6705a21510b84c54a5b659c2ef",
+      "sha256": "105eff21891f8bab61b6d12adff5e12375235ed4846e2b6dd0fadecc9077ad8a",
+      "size": 9442,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ACQUIRED-RECIPE-ADAPTERS.md",
+      "mode": "100644",
+      "sha": "bdc5261a1e8185cab5ed076ef578cd2d786e58cc",
+      "sha256": "31baa4a120b973cfd1f7d4ca244ae0008ac75873424c5325e8a5e4779a974a73",
+      "size": 11227,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ACQUIRED-SOURCE-CATALOG.md",
+      "mode": "100644",
+      "sha": "039245df9a871aba57b402adfb15340ca989049e",
+      "sha256": "54b9d9cbe8730ca2c123c23062a92e024368d6516a6f05bb9c7afcb056aa02ca",
+      "size": 7274,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/COMMAND-PLAN.md",
+      "mode": "100644",
+      "sha": "3f1ba60630a666c4300a34396531835fb56d7560",
+      "sha256": "5f9f4cdbc9838fe38bc42aceefacaee48a74e2c5d501b53420bb128c9c3f7bad",
+      "size": 6239,
+      "base_sha": "197131786657db58aaafd3ec2da96e5f5c744073",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-PREPARATION-RELEASE.md",
+      "mode": "100644",
+      "sha": "861a33762d1e84437bb1d3f3abf454f986e216f5",
+      "sha256": "953d4fd3efea87d3857c1d116063258263f57079700f9eb6eb1a721df7dafed1",
+      "size": 4961,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-PROMOTION.md",
+      "mode": "100644",
+      "sha": "991c4c00c9f8c917d8cc3560c07bed94523e946c",
+      "sha256": "07d7e0e263790c46b2b5844248f671d12af7e21704533845322304cbb72d62b4",
+      "size": 5877,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-RUN.md",
+      "mode": "100644",
+      "sha": "0e42ba370b1197306eea96ce5294a6c19a05cfd3",
+      "sha256": "fd2e4edb3bf32b4b6bab82915ed4beb0408339f091677ce6849c5e714150adc4",
+      "size": 7213,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-SOURCE-MANIFEST.json",
+      "mode": "100644",
+      "sha": "423bf26858bb115240dceaeb62a0df33219a8224",
+      "sha256": "9cd97cd7ce74f560a4f965ed506a1cccc557ba94a051a37ebbb900f9241bea5b",
+      "size": 12067,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/INGEST-EVIDENCE-LOOP.md",
+      "mode": "100644",
+      "sha": "ca48162d441d34841c5cf509a06a93465b858e8f",
+      "sha256": "d452dedf458aeabab387acd6fcf1b4c4ad522246b9fdc24eaa63e4371ab43c6b",
+      "size": 9983,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/README.md",
+      "mode": "100644",
+      "sha": "8d94201e567bf63fbfbd3022ad4218f83113e921",
+      "sha256": "c59c060f004b171b746ca65ac8cc1f5c8e52a52b967c2ed02ad3179c357c6173",
+      "size": 19860,
+      "base_sha": "14a7f7a31a509ece2cdfaa5217d5457591147691",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/RELATIONAL-TARGETS.md",
+      "mode": "100644",
+      "sha": "beb136f15594890e9886ab6709b31ab19728adf5",
+      "sha256": "273c7803e03be3975577b0bd95c1688e62963ba997d7ab277eed175c133dfe08",
+      "size": 11617,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/acquired_recipe_js.py",
+      "mode": "100644",
+      "sha": "b0326beb1f53a428fbba4b81e516757c3a68dc48",
+      "sha256": "8f1e31427583e894a2dad56319be3a87ebf3771047a1e90e34542ad699fe08a3",
+      "size": 11844,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/standard-run-no-extra-copy-20261022/CHANGED-FILES.json",
+      "mode": "100644",
+      "sha": "fc293f2bdf077e85b0f8c3f50ef970d1a81694d4",
+      "sha256": "6439cc1a130ec4abcc721e4aef1726172aa9b5bda8aea3336bd4ed1e081600b3",
+      "size": 4336,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/standard-run-no-extra-copy-20261022/CORRECTION-REVIEW.md",
+      "mode": "100644",
+      "sha": "684788df3b1e736c473670073df67162ae76626b",
+      "sha256": "58e3ce7386591db0e359b39c798d29e1e5646c6d210b3f3978bc1131bd17ee04",
+      "size": 3486,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/standard-run-no-extra-copy-20261022/INDEPENDENT-REVIEW.md",
+      "mode": "100644",
+      "sha": "4968572606c3fb32bc0eea9caf710336a7621fca",
+      "sha256": "edabf067dfe3ffbd7ae2654547e236c9d50a784b417ef2c836a827bf247045e3",
+      "size": 1774,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/standard-run-no-extra-copy-20261022/generated-regression-results.json",
+      "mode": "100644",
+      "sha": "cb16e4d054c9d9ca4ce15556d29293b4720ba9bc",
+      "sha256": "fdc4326d39d58594f669513c04c6efdcaeabcddf851b78ed2d436b5019247994",
+      "size": 811,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/standard-run-no-extra-copy-20261022/standard-run-no-extra-copy.patch",
+      "mode": "100644",
+      "sha": "ea48776eb2bb2d7ee9294b29986c78a552138cc4",
+      "sha256": "bc14c895382afe8a34d0f087b7e3187ff6bf7362b9d510c96f44543eb4ed9487",
+      "size": 20104,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/supplier-global-budget-stop-20261022/CHANGED-FILES.json",
+      "mode": "100644",
+      "sha": "fcd607aab501dc2b19ca430b38713268665b6fbf",
+      "sha256": "f10de892febc206d1c6aba74d02090f9ba18dbd6f33545df20de4e21acaba5ae",
+      "size": 3455,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/supplier-global-budget-stop-20261022/CORRECTION-REVIEW.md",
+      "mode": "100644",
+      "sha": "d6c39035ce4ef6047c77f91866338d1456baee08",
+      "sha256": "6b5b900e4ccccfcb33533fe97b8f2ad93f23fe548e6eb79b0291dd45de35bf88",
+      "size": 3782,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/supplier-global-budget-stop-20261022/INDEPENDENT-REVIEW.md",
+      "mode": "100644",
+      "sha": "b8587984523766bbbe956ef87166c6d0cde5fddd",
+      "sha256": "83888be012f8bb62b9ccba14e17c334f00b99001846b1c7771dda43b1ca2ab2b",
+      "size": 1990,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/supplier-global-budget-stop-20261022/generated-regression-results.json",
+      "mode": "100644",
+      "sha": "59077551ca3d3d4c4ba32c9d0082e619715470f5",
+      "sha256": "aca3f7c011acfebfcfa4882d2e1496b87a6031e14f03655a3cf871b0fb981102",
+      "size": 781,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/corrections/supplier-global-budget-stop-20261022/supplier-global-budget-stop.patch",
+      "mode": "100644",
+      "sha": "9bada0ba8fdef3621264245c78656c50daa96bea",
+      "sha256": "a772014f8a66bd7a14c22b982ac8f2d8d34ab8624976312667ca832d53303dde",
+      "size": 27074,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/fetch-sources.json",
+      "mode": "100644",
+      "sha": "a244f7fffad939d9b1e1706be1354cb7572b6056",
+      "sha256": "9eaf87b70fbf65806c00168ebf03a57560521d3d265195d65303dade5b2cc938",
+      "size": 75755,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/fetch_sources.py",
+      "mode": "100644",
+      "sha": "e1b1a003749f655677ed16d02bc1415af2874675",
+      "sha256": "31b4cafc8995e3b8229c3fee21c84a80613d25d514c6f108b1b7c1a0ff5141f7",
+      "size": 44606,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_acquired_catalog.py",
+      "mode": "100644",
+      "sha": "b1f63cf82b57ab7268121bdadcda0d70c0d97a76",
+      "sha256": "d4796c4bd81a897848fb14ad63ce5fe0dfc8ef9461f431788addc17619b485a1",
+      "size": 31125,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_acquired_menus.py",
+      "mode": "100644",
+      "sha": "33bc45826c60c4ca3e95cc77eabd12a06655213d",
+      "sha256": "cf9636b5b78e6388e0a4f33a7eea7fd5ed6887a8151c5b4ebbd60f8a87bc7f3e",
+      "size": 37662,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_acquired_recipes.py",
+      "mode": "100644",
+      "sha": "91f1a6815009ed05bca429b5cbcd87b9effbc24f",
+      "sha256": "82800b187e4e55033ade52776ff637a4004cc701c839cb8ecfe68a3e7f84bd34",
+      "size": 36409,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_all.py",
+      "mode": "100644",
+      "sha": "b36988e1b01950f11f3737e6d984c995f719df48",
+      "sha256": "a48137262838c70279e8d1b695e379f4ebae52b85ba1a7995f8b95c9aefb82f5",
+      "size": 2395,
+      "base_sha": "abc1e912e2a4539869b4a447a5e3466016e2eea2",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_api.py",
+      "mode": "100644",
+      "sha": "d1e55ff8ce57b1f0e13f432743958aa11314632f",
+      "sha256": "5178609b4a59a91fee9f34b329796e596a8e161b43df5cf91dc3819d52548481",
+      "size": 3828,
+      "base_sha": "d4046ac5ac0ae0092c311a778db9539799ee779d",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_engine.py",
+      "mode": "100644",
+      "sha": "9c8da500e561d691e21d60ad05f55a7796b4145e",
+      "sha256": "314138cedbc152e2d1a77553b05a58e74a77bdc478756ac09febbb8ab879f1da",
+      "size": 43082,
+      "base_sha": "5593fdbef159331e328538381827e760a0da82c9",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_errors.py",
+      "mode": "100644",
+      "sha": "2ae120b9bc6fdfa0289a42f440122a708d34c3db",
+      "sha256": "31d8737a5a90c4cc541decda656ae8eb38beeabe4fce211e2eb9f9d9ecf2a1ed",
+      "size": 7676,
+      "base_sha": "62508e12041d6180fa229cf49da9438f3c269002",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_evidence.py",
+      "mode": "100644",
+      "sha": "fa90b57f7e8364c171939d7da76836c03f6d4408",
+      "sha256": "141432d965ff63bfac53a5920bc34f2691c237dd6b7a7e914fa8506c1e8ea000",
+      "size": 41228,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_pending.py",
+      "mode": "100644",
+      "sha": "d0a4f131cb8eaca547166eb0474b5ad568c3e9fb",
+      "sha256": "09a8bd650dde7c64245cf4415a5d62156c2d21486991d65931527f639f5bd183",
+      "size": 22485,
+      "base_sha": "5e0d46850b3bd41445dff6303e22dcafae06d1d8",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_recipes.py",
+      "mode": "100644",
+      "sha": "e7514400389faaf2ffd606d03c289bb7dc127d38",
+      "sha256": "32c8329125bee94ecf3c957306b5c2b3198548e94e53ca04dab8c3c066a79bd1",
+      "size": 44158,
+      "base_sha": "1da4c7a741272e00e534c9f0da0ecf24d378bc8d",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/ingest_relational_targets.py",
+      "mode": "100644",
+      "sha": "b55734cf2bf2fb2f38700178f5640a7534a59782",
+      "sha256": "7ff54d2c93815cc4ce028d8d1223d82b11416638511387c43cd495c5e2376bdb",
+      "size": 42474,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/ingest_suppliers.py",
+      "mode": "100644",
+      "sha": "9ff4643a7e0cebcf3117d4c920c80ac98f696595",
+      "sha256": "8b7c094b2dfbe816d6d877fec0ea06f56e28d7efeb9b329b52f9b11a5e2422fb",
+      "size": 31562,
+      "base_sha": "8a4d9dcf785b67f80d69b9dc75349c2c570fe9f0",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/plan.json",
+      "mode": "100644",
+      "sha": "9d97cfc44654ecd11803bf1cb4ebf48c75e5fbb7",
+      "sha256": "4b8379de78dd98a91b6811802feae6a394fd92b9b8298d22fd8e5b84bb4c0b42",
+      "size": 261,
+      "base_sha": "6540da3f6d17891e0e6285e14f21671372829677",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/plan_runner.py",
+      "mode": "100644",
+      "sha": "a1013127c4204da93f494f830513d4ede37b6ddc",
+      "sha256": "ba32c40e4f3350cfd68de564f587b130fd28ca516e614337df7f04a9eff6cb50",
+      "size": 57281,
+      "base_sha": "af3d60a12da11f70cb187efe9c092edf3b3d1d57",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/receipt_branch.py",
+      "mode": "100644",
+      "sha": "f7312001ede486f14d98d7f2025a63db94badb75",
+      "sha256": "cf01735045aff1be5afe28e9f341bcb8d6d6204c408acadae55e33ec4cc6af4a",
+      "size": 11621,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/relational-target-mapping.json",
+      "mode": "100644",
+      "sha": "e465e5ab03c5cc35cb42986da532e3410cf4e9d5",
+      "sha256": "778a70a67a927bce4ac213f7956b515dd9482283b6f8ffbd820307da4cc5a596",
+      "size": 5445,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/relational-targets.schema.sql",
+      "mode": "100644",
+      "sha": "a1d99623538e4fa9f858c7c478825dd00bba4a74",
+      "sha256": "11af7f81a8a5141089f7d5aaa6b797a3df7abafd6cc47043af0b48d39b0a46b3",
+      "size": 6721,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_acquired_recipe_js.py",
+      "mode": "100644",
+      "sha": "4c81a231b1a71c4a1b883486447b8e3670f4d2bc",
+      "sha256": "96b053a2bb8dc9436790e9dcd9181f272d6ed3535a827e56e63b6485dc56036d",
+      "size": 8211,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_fetch_sources.py",
+      "mode": "100644",
+      "sha": "cdc66d0ef01e9764318255a7fc06f9df36142b27",
+      "sha256": "e6d39747c029ed901f293a2f55ba6dc7221742bd197d68a596a05e95022968ab",
+      "size": 15293,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_final_ingest_integration.py",
+      "mode": "100644",
+      "sha": "951e9c9acdc6a86f1de2e52c0ea2bb917d595cb0",
+      "sha256": "55f9912f73db544c73efc56447084fc59e711554544629178fe6e95c766e22d4",
+      "size": 13689,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_catalog.py",
+      "mode": "100644",
+      "sha": "650ed42d4c35482268ad7e6aaca603013db98711",
+      "sha256": "f6db074cb938f2cd97cd76d80a0faa5890dec3142fc7ed538a0757990d27ee8f",
+      "size": 20093,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_menus.py",
+      "mode": "100644",
+      "sha": "342469b0e82d9880a52610eba3b219fbf6dd2c48",
+      "sha256": "91533e000482b12facbb489d47e8d369f088f01d83758ee3c57450cc4ec4a87f",
+      "size": 19818,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_recipes.py",
+      "mode": "100644",
+      "sha": "6add5dc4de479f031ea43791ff4a26d137cf948f",
+      "sha256": "46458a9cb0fc53ce90aef1ecb71a50f342095d86f91498362c1405f6dace4249",
+      "size": 23790,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_budget_stop.py",
+      "mode": "100644",
+      "sha": "386f72be002d7a867019067f0f06a74378130256",
+      "sha256": "65d45fe1fe6ada2fe741b6cd780db06a6d1f673edd6e28838ae1e87df697b47c",
+      "size": 13982,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_engine.py",
+      "mode": "100644",
+      "sha": "813f22928d8513b3d05c1f71fa537505d8571089",
+      "sha256": "074517c08775fed5d829a7019fc0f643eedbd143057426d2431622341a7caa7b",
+      "size": 16813,
+      "base_sha": "6f8ded736cfb92d530dfd74ef7f8b8f249a52d08",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_evidence.py",
+      "mode": "100644",
+      "sha": "327e40cbd63a3595c9848620bd1a9f784611ec56",
+      "sha256": "d7aa75cfb0a3f74dbd93fdee441f4d925ffab7e7040cdfd2b4f28048c6f420f2",
+      "size": 16945,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_relational_targets.py",
+      "mode": "100644",
+      "sha": "821e8f234bae3c25f44f94d5659393a8b2e0605e",
+      "sha256": "807420e0c8d80ed3d3245a8edfe4c692cc5fb51dbe39e4ab65e8ce34b4721b6b",
+      "size": 24181,
+      "base_sha": null,
+      "status": "new"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_suppliers.py",
+      "mode": "100644",
+      "sha": "2ed38640bedccf2994efd4480345ba9ca6fdf592",
+      "sha256": "1b7fa0b7d6734cf0844696ba580166d888a4f3423d5143e43a24a0046c9ffbef",
+      "size": 19384,
+      "base_sha": "23a34f9af368b087c681413ccec376fba9d466f4",
+      "status": "changed"
+    },
+    {
+      "path": "manual-action/tests/test_receipt_branch.py",
+      "mode": "100644",
+      "sha": "ab2d37f75b5a674ae5979d44cd067544286a445b",
+      "sha256": "bcf84a20bd22db3a6d630382d4098ff1d3baea841ef26ee416294d513d2e4771",
+      "size": 12543,
+      "base_sha": null,
+      "status": "new"
+    }
+  ]
+}
