@@ -1,0 +1,227 @@
+{
+  "files": [
+    {
+      "before_git_blob_sha1": "60ae048e465aaa4a26eb3c0c1331bbd244364b61",
+      "before_sha256": "e0cb6e3f363bf838e9e82e55acf9e5e1162534bf0a918c51b247685d7f3e354f",
+      "bytes": 73820,
+      "git_blob_sha1": "a397994409e3af9a86b5932c8dee43daa08be5de",
+      "mode": "100644",
+      "path": "manual-action/plan_runner.py",
+      "sha256": "970aceff7e98cfbc1bd10971f1ac2db81eaaf2ed38db8797efc5dc4825c3f707"
+    },
+    {
+      "before_git_blob_sha1": "bb88ab4a98d19205f871faf3abc6aded8602b89e",
+      "before_sha256": "0708f9c08fa6dc1c698a99ec1881d672bfec9d00b2247c6394898758e537e3e8",
+      "bytes": 13143,
+      "git_blob_sha1": "9353800d74c791425f5873b70be44dbf1779f551",
+      "mode": "100644",
+      "path": "manual-action/receipt_branch.py",
+      "sha256": "1d9a5ad1b9804680043577642ecd5871b562643df31202110bc45267202b8b75"
+    },
+    {
+      "before_git_blob_sha1": "9d97cfc44654ecd11803bf1cb4ebf48c75e5fbb7",
+      "before_sha256": "4b8379de78dd98a91b6811802feae6a394fd92b9b8298d22fd8e5b84bb4c0b42",
+      "bytes": 274,
+      "git_blob_sha1": "aa0a7d14dc562284432dafc310878800e2ee3cea",
+      "mode": "100644",
+      "path": "manual-action/plan.json",
+      "sha256": "d4603d35e4444f86dbd1b3ff8b3e1fc450cabddb4e9e064181b9ee8d089e9094"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 7415,
+      "git_blob_sha1": "d80bd42ff7e609ed32ee1614b7c3b5f6b9e26e1c",
+      "mode": "100644",
+      "path": "manual-action/normalization_receipts.py",
+      "sha256": "ba1d6aaf62a659dfd05c42a675e17f2da39d4042779d491e919e78bfd96bf5d3"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 13655,
+      "git_blob_sha1": "8e74d7c0813028b36cdc6b1203933035f7a64afc",
+      "mode": "100644",
+      "path": "manual-action/tests/test_normalization_runner.py",
+      "sha256": "6949fb4c3034ab3f4ef4bb1d80a0d1a90cc72b5bb90f55113aa78f444eaed0ad"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 6825,
+      "git_blob_sha1": "264fb9a1ddfab98dbd4088fb3610fa70171149a1",
+      "mode": "100644",
+      "path": "manual-action/DB-NORMALIZATION-RUN.md",
+      "sha256": "9beac801ed460a38e8fef3c21f2e7b1b8b1ac67c8f0812fff18eea8de7caca33"
+    },
+    {
+      "before_git_blob_sha1": "8d94201e567bf63fbfbd3022ad4218f83113e921",
+      "before_sha256": "c59c060f004b171b746ca65ac8cc1f5c8e52a52b967c2ed02ad3179c357c6173",
+      "bytes": 12105,
+      "git_blob_sha1": "e85f36bd26cd1556d3ab2e24adb1f84b4091c91c",
+      "mode": "100644",
+      "path": "manual-action/README.md",
+      "sha256": "e8806303687eee0b0e2d1276e485554b7cf1c88ccf18e674a1b49e666914df8e"
+    },
+    {
+      "before_git_blob_sha1": "332dafdc5fadfc4fe77c3209c3ff2b40ebe1b5bb",
+      "before_sha256": "fe236ac68a76fb449a10d0ce89e22efb18222d6c99b7f33539423898c92d1860",
+      "bytes": 8654,
+      "git_blob_sha1": "7877fa3f76c23fc4f38ff7098a9736fa9133f992",
+      "mode": "100644",
+      "path": "manual-action/FINAL-INGEST-RUN.md",
+      "sha256": "5901665f9d08d949b91cf8ff2ba03ef263747dad4a26262e498558b04b66d03b"
+    },
+    {
+      "before_git_blob_sha1": "217971e4b3d01b0c46988bfe988c09f2942ce96e",
+      "before_sha256": "de4f03f0e030aa66c0b9f4909915e64cb28815cbeb9bffe84dfeed9547319093",
+      "bytes": 15287,
+      "git_blob_sha1": "f618b5003c59f64b9e32a3d986dc3e2cfd7e07a5",
+      "mode": "100644",
+      "path": "manual-action/NORMALIZED-CORPUS.md",
+      "sha256": "5f4d9cacfe3a20e8c0954ad6ee9d76bc0bc7c8f4346ee10a26c2856d2005d052"
+    },
+    {
+      "before_git_blob_sha1": "50b0e2cf8f3fb9875457b60dfef26549ad20f24d",
+      "before_sha256": "b11236cc87e03e7edf34d7ca5da74b873ecd333a402b1925d645ef8c1f95c512",
+      "bytes": 11748,
+      "git_blob_sha1": "097afaec384c41f61e25e99bd120d624758c20dc",
+      "mode": "100644",
+      "path": "manual-action/RECIPE-SEMANTIC-REVIEW.md",
+      "sha256": "4456c17679570505ab6a73ffe08e27ff6eddeb60c82fcd8a239ee58a8ddfe0cb"
+    },
+    {
+      "before_git_blob_sha1": "25213f6ae5be87203c2c253ff755d058c0220ddb",
+      "before_sha256": "143965ed809ee65e0ecf8b599149f53be263f74b3987a698525fc8b0ddc1f873",
+      "bytes": 54761,
+      "git_blob_sha1": "54153c277686026b0d6f97cd43e0e37cdbe598d3",
+      "mode": "100644",
+      "path": "manual-action/normalization_core.py",
+      "sha256": "c33e71595eabcef689f475b1866acc23cc69a9eb9bc758eefa0f5edb3828ac13"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 22950,
+      "git_blob_sha1": "4388fb596ce5e7ae2e4804bca56961dccda9f6f5",
+      "mode": "100644",
+      "path": "manual-action/normalization_engine.py",
+      "sha256": "38cc9251ff65b48b894c60a61726cbc3c13441a9f75e12e1cce179aecc731674"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 17778,
+      "git_blob_sha1": "0a0a7cb76136f8f0268d359b7166f5a4377ef4af",
+      "mode": "100644",
+      "path": "manual-action/tests/test_normalization_engine.py",
+      "sha256": "37aefcf0e0c4c44c7d89a96dbf449975833db78e967e039d1657d17962e706ab"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 15338,
+      "git_blob_sha1": "37553ae487d05214a706e25168f047e0145f4e0f",
+      "mode": "100644",
+      "path": "manual-action/normalization_parallel.py",
+      "sha256": "0f3a819c0e6413d691eea62d178f3bb24b93847e697bceb690aa84c23eaf5300"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 12688,
+      "git_blob_sha1": "cf13c403aacfeda6dbf28804ad8b289d7bf6305a",
+      "mode": "100644",
+      "path": "manual-action/tests/test_normalization_parallel.py",
+      "sha256": "5989d7e49ca4fa577bbbb6e34e489b5d908d7cac7bd203c54596f6e87224c7c9"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 4727,
+      "git_blob_sha1": "2ff7600e3198279dcfe3b2fc2f32dd3e2d0d28f8",
+      "mode": "100644",
+      "path": "manual-action/benchmark_normalization_parallel.py",
+      "sha256": "5b9c833ffd9680e8fe69440184e6b94c74870c247d6116e7b4db78d7548b1a9b"
+    },
+    {
+      "before_git_blob_sha1": "951e9c9acdc6a86f1de2e52c0ea2bb917d595cb0",
+      "before_sha256": "55f9912f73db544c73efc56447084fc59e711554544629178fe6e95c766e22d4",
+      "bytes": 14101,
+      "git_blob_sha1": "da7d2cc2f725765ac09c0b2d6ab42afac4375ed1",
+      "mode": "100644",
+      "path": "manual-action/tests/test_final_ingest_integration.py",
+      "sha256": "87d907690deb3d9dcbef8e37f88ffd421bf8a116243b4356457f7e1223cc12f2"
+    }
+  ],
+  "focused_generated_tests": {
+    "composed_runner": {
+      "count": 9,
+      "log_sha256": "9b3293c7b84a19dcecc3e659b8091f07decb18802f6c1903fe43f3ee5d4ccada",
+      "status": "passed"
+    },
+    "existing_touched_core": {
+      "count": 25,
+      "log_sha256": "fb226e3304c7dd1a73ca36f81413011c8e9a1a3ccdfcaa4e02ab5df063ee544d",
+      "status": "passed"
+    },
+    "historical_explicit_ingest_e2e": {
+      "count": 1,
+      "log_sha256": "d87636a6c5f7c7c6e47506ea2ad2806d14c49467d43dcfeed48aa212e2d92328",
+      "status": "passed"
+    },
+    "new_engine_store": {
+      "count": 20,
+      "log_sha256": "92c71ac3757246fe324ec588bb60100ae54f3a701ab227a7cafe4e466c91b0d2",
+      "status": "passed"
+    },
+    "parallel_helper": {
+      "count": 13,
+      "helper_sha256": "0f3a819c0e6413d691eea62d178f3bb24b93847e697bceb690aa84c23eaf5300",
+      "status": "passed"
+    },
+    "receipt_compatibility": {
+      "count": 8,
+      "log_sha256": "71a6c98f6f41dc352e7a6f14cdd0b6e24b9d8cc343598fa450bb9248dd5cdf21",
+      "status": "passed"
+    },
+    "startup_compatibility": {
+      "count": 6,
+      "log_sha256": "3f04552ea8dffa4db3632e47c984ea251daefa6459e37f5398e6f5b2e34fd737",
+      "status": "passed"
+    }
+  },
+  "manifest_self_hash": "recorded externally to avoid recursion",
+  "publication_scope": "source_tests_docs_and_this_manifest_only; no raw datasets, returns, private caches, credentials, logs, workflow or profile changes",
+  "schema": "offmenu-db-normalization-source-release/1",
+  "semantics": {
+    "actual_ai_review": "mandatory_pending_approved_route",
+    "app_managed_domains": [
+      "user_profiles",
+      "inventory"
+    ],
+    "cache": "compact_versioned_normalized_projection_without_source_original",
+    "database_writer": "single_coordinator",
+    "fetch_or_extraction": "not_invoked",
+    "gold_or_app_binding": "blocked",
+    "operation": "normalize_staged_databases",
+    "public_domains": [
+      "barcodes",
+      "ingredients",
+      "recipes",
+      "dietary",
+      "suppliers",
+      "citations"
+    ],
+    "real_foo_execution": "not_performed_for_this_release",
+    "review_queue": "private_references_only",
+    "rule_workers_default": 16,
+    "rule_workers_max": 22,
+    "selection": "all_retained_source_versions",
+    "source_database_access": "read_only",
+    "source_files": "not_read_or_required",
+    "source_originals": "database_payload_only"
+  },
+  "source_base_commit": "9b770bae9e94ae89833d54f0652d15467f8670a7",
+  "source_base_tree": "1bbce74495aeb0845991eb61e9c1ebd58d553b3d"
+}

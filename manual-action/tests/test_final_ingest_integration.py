@@ -66,7 +66,13 @@ class FinalIngestIntegrationTests(unittest.TestCase):
                 self.cache.put(source,artifact,raw)
         for pattern in ('*.py','*.json','*.sql'):
             for source in PACKAGE.glob(pattern):shutil.copy(source,self.root/'manual-action'/source.name)
-        plan=json.loads((self.root/'manual-action/plan.json').read_text())
+        # This historical acquired-ingest contract remains explicitly runnable;
+        # the repository's default ./run has moved to DB-only normalization.
+        plan={'schema':'offmenu-run-plan/2','max_parallel':8,
+            'jobs':[{'id':'retained-eight-domain-ingest','version':2,
+                     'operation':'retained_ingest_all','depends_on':[]}],
+            'receipt_transport':'isolated-branch-v1'}
+        (self.root/'manual-action/plan.json').write_text(json.dumps(plan))
         self.assertEqual(plan['receipt_transport'],'isolated-branch-v1')
         catalog=self.root/'manual-action/ingest_catalog.py'
         catalog.write_text(catalog.read_text().replace("DEFAULT_ROOT = '/home/user/src/offmenu-data'",'DEFAULT_ROOT = '+repr(str(self.retained))).replace("'/home/user/Documents/Codex/2026-10-22/worker56-recipe-retention-audit/TERMINAL-HANDOFF.json'",repr(str(self.case.base/'missing-generated-report.json'))))
@@ -89,7 +95,7 @@ class FinalIngestIntegrationTests(unittest.TestCase):
             with closing(sqlite3.connect(path.as_uri()+'?mode=ro',uri=True)) as db:
                 result[domain]=db.execute('SELECT source_key,source_version,record_id,content_sha256,updated_at FROM records ORDER BY 1,2,3').fetchall()
         return result
-    def test_standard_run_resumes_all_families_and_receipts_without_extra_derived_copy(self):
+    def test_explicit_ingest_plan_resumes_all_families_without_extra_derived_copy(self):
         def recipe(name):return {'id':name,'name':name,'ingredients':['1 g generated ingredient'],'instructions':['Generated instruction']}
         completed=self.write('world-recipes-common-input-20261014/completed.jsonl',[recipe('completed')])
         partial=self.write('world-recipes-common-input-20261014/partial.jsonl',[recipe(str(i)) for i in range(3)])

@@ -127,8 +127,8 @@ def _record_type(record):
     return kind
 
 
-def run_rules(record, versions=None, store=None):
-    """Rule-only projection. Source originals remain unchanged; no review claim."""
+def _rule_context(record, versions=None):
+    """Shared verified rule identity; does not project or persist the payload."""
     identity, provenance = _source(record)
     versions = (versions or Versions()).as_dict()
     kind = _record_type(record)
@@ -136,6 +136,16 @@ def run_rules(record, versions=None, store=None):
     versions['domain_rule_version'] = getattr(module, 'RULE_VERSION', getattr(module, 'VERSION', 'unversioned'))
     cache_key = digest({'pass': 'rules', 'source': identity, 'record_type': kind,
                         'versions': versions, 'provenance': provenance})
+    return identity, provenance, versions, kind, module, cache_key
+
+
+def rule_cache_key(record, versions=None):
+    return _rule_context(record, versions)[-1]
+
+
+def run_rules(record, versions=None, store=None):
+    """Rule-only projection. Source originals remain unchanged; no review claim."""
+    identity, provenance, versions, kind, module, cache_key = _rule_context(record, versions)
     if store is not None:
         cached = store.get(cache_key)
         if cached is not None:
@@ -733,3 +743,204 @@ def build_gold_manifest(artifacts, target_language, store=None, expected_counts=
             'citation_coverage_complete': not missing_citations, 'missing_or_ambiguous_citation_ids': missing_citations,
             'entries': entries, 'production_fetch_enabled': False,
             'status': 'candidate_only_not_promoted'}
+
+
+class CompactNormalizationStore:
+    """Bounded DB-only runner cache, separate from legacy full review artifacts.
+
+    A rules projection is compressed once without source_original. The queue
+    holds only its immutable cache/hash reference. Originals are resolved from
+    the staging DB by the caller and verified again when a packet is needed.
+    Batches atomically publish cache entries, unresolved references and cursor;
+    legacy NormalizationStore/review validation are deliberately unchanged.
+    """
+    BINDING = 'compact_db_normalization_only/1'
+
+    def __init__(self, state_dir, domain):
+        if domain not in DOMAINS or domain in ('user_profiles', 'inventory'):
+            raise NormalizationError('public_domain_required')
+        directory = _secure_directory(Path(state_dir) / 'normalization-private')
+        self.path = directory / ('compact-' + domain + '.sqlite3')
+        for path in (self.path, Path(str(self.path) + '-wal'), Path(str(self.path) + '-shm'), Path(str(self.path) + '-journal')):
+            if path.is_symlink():
+                raise NormalizationError('symlink_store_refused')
+            if path.exists() and (not path.is_file() or path.stat().st_mode & 0o077):
+                raise NormalizationError('private_regular_store_required')
+        if self.path.exists() and self.path.stat().st_size:
+            check = sqlite3.connect(self.path.as_uri() + '?mode=ro', uri=True, timeout=2)
+            try:
+                if check.execute("SELECT value FROM compact_meta WHERE key='binding'").fetchone() != (self.BINDING,):
+                    raise NormalizationError('non_owned_store_refused')
+            finally:
+                check.close()
+        fd = os.open(self.path, os.O_CREAT | os.O_RDWR | getattr(os, 'O_NOFOLLOW', 0), 0o600)
+        os.close(fd)
+        self.db = sqlite3.connect(self.path, timeout=2)
+        self.db.execute('PRAGMA synchronous=FULL')
+        self.db.execute('PRAGMA foreign_keys=ON')
+        self.db.execute('PRAGMA cache_size=-4096')
+        self.db.executescript('''
+        CREATE TABLE IF NOT EXISTS compact_meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+        INSERT OR IGNORE INTO compact_meta VALUES('binding','compact_db_normalization_only/1');
+        CREATE TABLE IF NOT EXISTS rules_cache(cache_key TEXT PRIMARY KEY,
+            artifact_sha256 TEXT NOT NULL,compact_sha256 TEXT NOT NULL,body_zlib BLOB NOT NULL);
+        CREATE TABLE IF NOT EXISTS review_refs(cache_key TEXT PRIMARY KEY REFERENCES rules_cache(cache_key),
+            artifact_sha256 TEXT NOT NULL,status TEXT NOT NULL CHECK(status='pendingreview'));
+        CREATE TABLE IF NOT EXISTS progress(snapshot_key TEXT PRIMARY KEY,cursor_json TEXT NOT NULL,
+            counters_json TEXT NOT NULL,complete INTEGER NOT NULL);
+        CREATE TABLE IF NOT EXISTS unresolved_refs(snapshot_key TEXT NOT NULL,source_key TEXT NOT NULL,
+            source_version TEXT NOT NULL,record_id TEXT NOT NULL,content_sha256 TEXT,
+            reason TEXT NOT NULL,PRIMARY KEY(snapshot_key,source_key,source_version,record_id));
+        ''')
+        self.db.commit()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+
+    def close(self):
+        self.db.close()
+
+    def checkpoint(self, snapshot_key):
+        row = self.db.execute('SELECT CASE WHEN length(CAST(cursor_json AS BLOB))<=? THEN cursor_json ELSE NULL END,counters_json,complete FROM progress WHERE snapshot_key=?', (MAX_JSON_BYTES, snapshot_key)).fetchone()
+        if row is None:
+            return None
+        if row[0] is None:
+            raise NormalizationError('invalid_compact_checkpoint')
+        cursor, counters = json.loads(row[0]), json.loads(row[1])
+        names = ('scanned', 'rules_new', 'rules_reused', 'pendingreview', 'accepted',
+                 'rejected', 'needs_changes', 'unresolved', 'failed')
+        self._cursor_json(cursor)
+        _exact(counters, names)
+        if (any(type(value) is not int or not 0 <= value <= 10**15 for value in counters.values())
+                or row[2] not in (0, 1)
+                or counters['scanned'] != counters['rules_new'] + counters['rules_reused'] + counters['failed']
+                or counters['pendingreview'] != counters['rules_new'] + counters['rules_reused']
+                or counters['unresolved'] > counters['scanned']
+                or any(counters[key] for key in ('accepted', 'rejected', 'needs_changes'))):
+            raise NormalizationError('invalid_compact_checkpoint')
+        return cursor, counters, bool(row[2])
+
+    @staticmethod
+    def _cursor_json(cursor):
+        # This is the private database PK, not an admitted normalization identity.
+        # A long invalid identity must still be checkpointed and resumed past.
+        if (cursor is not None and (not isinstance(cursor, list) or len(cursor) != 3
+                or any(not isinstance(value, str) for value in cursor))):
+            raise NormalizationError('invalid_compact_checkpoint')
+        return canonical_json(cursor)  # Bounded by MAX_JSON_BYTES, including UTF-8.
+
+    @classmethod
+    def peek_checkpoint(cls, state_dir, domain, snapshot_key):
+        """Read the bounded durable progress even when disk reserve blocks writes."""
+        if domain not in DOMAINS or domain in ('user_profiles', 'inventory'):
+            raise NormalizationError('public_domain_required')
+        path = Path(os.path.abspath(state_dir)) / 'normalization-private' / ('compact-' + domain + '.sqlite3')
+        if any(parent.is_symlink() for parent in (path, *path.parents)):
+            raise NormalizationError('symlink_store_refused')
+        if not path.exists():
+            return None
+        if (not path.is_file() or path.stat().st_mode & 0o077
+                or path.parent.stat().st_mode & 0o077):
+            raise NormalizationError('private_regular_store_required')
+        for suffix in ('-wal', '-shm', '-journal'):
+            if Path(str(path) + suffix).is_symlink():
+                raise NormalizationError('symlink_store_refused')
+        reader = object.__new__(cls)
+        reader.db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=2)
+        try:
+            if reader.db.execute("SELECT value FROM compact_meta WHERE key='binding'").fetchone() != (cls.BINDING,):
+                raise NormalizationError('non_owned_store_refused')
+            return reader.checkpoint(snapshot_key)
+        finally:
+            reader.db.close()
+
+    @staticmethod
+    def encode(artifact):
+        import zlib
+        # run_rules already verifies the projection; do not run it a second time.
+        validate_artifact(artifact, verify_projection=False)
+        compact = {key: value for key, value in artifact.items() if key != 'source_original'}
+        raw = canonical_json(compact).encode('utf-8')
+        return (artifact['cache_key'], artifact_digest(artifact), hashlib.sha256(raw).hexdigest(), zlib.compress(raw, 1))
+
+    @staticmethod
+    def encode_compact(compact, artifact_sha256):
+        import zlib
+        _bounded(compact)
+        _exact(compact, ('artifact_id', 'cache_key', 'pass', 'domain', 'record_type', 'source',
+            'versions', 'normalized', 'issues', 'uncertainty', 'provenance', 'review_item_ids',
+            'review', 'translation', 'lineage', 'normalization_status', 'gold_status'))
+        if (not isinstance(artifact_sha256, str) or not re.fullmatch(r'[0-9a-f]{64}', artifact_sha256)
+                or compact['pass'] != 'rules' or compact['gold_status'] != 'blocked'
+                or compact['normalization_status'] != 'rules_only'
+                or compact['review'] != {'status': 'pendingreview', 'required': True, 'receipt': None}):
+            raise NormalizationError('invalid_compact_rule_state')
+        validate_normalized(compact['normalized'])
+        _issues(compact['issues'])
+        raw = canonical_json(compact).encode('utf-8')
+        return (compact['cache_key'], artifact_sha256, hashlib.sha256(raw).hexdigest(), zlib.compress(raw, 1))
+
+    def get_compact(self, cache_key):
+        import zlib
+        row = self.db.execute('SELECT artifact_sha256,compact_sha256,body_zlib FROM rules_cache WHERE cache_key=?', (cache_key,)).fetchone()
+        if row is None:
+            return None
+        if len(row[2]) > MAX_JSON_BYTES:
+            raise NormalizationError('compact_cache_size_cap')
+        decoder = zlib.decompressobj()
+        try:
+            raw = decoder.decompress(row[2], MAX_JSON_BYTES + 1)
+        except zlib.error as exc:
+            raise NormalizationError('compact_cache_corrupt') from exc
+        if len(raw) > MAX_JSON_BYTES or not decoder.eof or decoder.unused_data or hashlib.sha256(raw).hexdigest() != row[1]:
+            raise NormalizationError('compact_cache_corrupt')
+        body = json.loads(raw)
+        if not isinstance(body, dict):
+            raise NormalizationError('compact_cache_corrupt')
+        _bounded(body)
+        if (body.get('cache_key') != cache_key or 'source_original' in body or body.get('pass') != 'rules'
+                or body.get('normalization_status') != 'rules_only' or body.get('gold_status') != 'blocked'
+                or body.get('review') != {'status': 'pendingreview', 'required': True, 'receipt': None}):
+            raise NormalizationError('compact_cache_corrupt')
+        return body, row[0]
+
+    def resolve(self, cache_key, record):
+        """Materialize ONE original-bound artifact; no file lookup or AI call."""
+        found = self.get_compact(cache_key)
+        if found is None:
+            raise NormalizationError('compact_cache_missing')
+        body, expected = found
+        versions = Versions(**{key: value for key, value in body['versions'].items() if key != 'domain_rule_version'})
+        if rule_cache_key(record, versions) != cache_key:
+            raise NormalizationError('stale_database_source_reference')
+        artifact = {**body, 'source_original': copy.deepcopy(record['payload'])}
+        validate_artifact(artifact, verify_projection=False)
+        if artifact_digest(artifact) != expected:
+            raise NormalizationError('compact_artifact_hash_mismatch')
+        return artifact
+
+    def commit_batch(self, snapshot_key, entries, failures, cursor, counters, *, complete=False):
+        """One transaction, including the durable cursor; no per-record commits."""
+        if len(entries) + len(failures) > 1000:
+            raise NormalizationError('compact_batch_row_cap')
+        cursor_json = self._cursor_json(cursor)
+        try:
+            self.db.execute('BEGIN IMMEDIATE')
+            for entry in entries:
+                prior = self.db.execute('SELECT artifact_sha256,compact_sha256,body_zlib FROM rules_cache WHERE cache_key=?', (entry[0],)).fetchone()
+                if prior is not None and prior != tuple(entry[1:]):
+                    raise NormalizationError('immutable_cache_conflict_change_version_to_retry')
+                self.db.execute('INSERT OR IGNORE INTO rules_cache VALUES(?,?,?,?)', entry)
+                self.db.execute("INSERT OR IGNORE INTO review_refs VALUES(?,?,'pendingreview')", entry[:2])
+            for reference, reason in failures:
+                self.db.execute('INSERT OR REPLACE INTO unresolved_refs VALUES(?,?,?,?,?,?)',
+                    (snapshot_key, *reference, reason))
+            self.db.execute('INSERT INTO progress VALUES(?,?,?,?) ON CONFLICT(snapshot_key) DO UPDATE SET cursor_json=excluded.cursor_json,counters_json=excluded.counters_json,complete=excluded.complete',
+                (snapshot_key, cursor_json, canonical_json(counters), int(complete)))
+            self.db.commit()
+        except BaseException:
+            self.db.rollback()
+            raise

@@ -1,9 +1,11 @@
 # Two-pass normalized corpus and gold readiness (version 1)
 
-This is an **offline foundation**, not a completed corpus, review, translation,
-production migration or FETCH authorization. It runs alongside source-faithful
-staging, never in place of it. The active ingest plan and Foo are unchanged.
-No real item has been reviewed by running this code or its synthetic fixtures.
+This is a source-preserving normalization contract, not a completed corpus,
+actual review, translation, production migration or FETCH authorization. The
+current `./run` activates the bounded database-only rules orchestrator described
+in [DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md), not the naïve API loop below.
+The actual AI interpretation route remains unactivated. No real item has been
+AI-reviewed by source publication or synthetic fixtures.
 
 ## Eight domains, one envelope
 
@@ -34,7 +36,10 @@ exact where supported; uncertainties stay explicit, never converted to facts.
 in SQLite `mode=ro`. Input identities are the existing `ingest_store.py` composite
 `(domain, source_key, source_version, record_id)` plus verified `content_sha256`.
 The canonical JSON payload hash must match the staged value. `source_original`
-is preserved unchanged in the sidecar; exact byte originals remain in retained
+is preserved unchanged by the low-volume legacy sidecar API. The production
+DB-first compact runner instead retains a verified reference to that unchanged
+payload in its existing staging DB, avoiding a full raw JSON duplicate. Exact
+byte originals remain in retained
 source custody, not recreated by JSON serialization. Read-only imported metadata
 does **not** imply rights clearance, complete provenance, or language assessment.
 
@@ -52,7 +57,7 @@ cache deletion or silent receipt overwrite is performed. A corrected/retried
 review with different content requires an intentional prompt/model/rules version
 change and a fresh rules artifact; a cache conflict is not silently accepted.
 
-## Minimal local API
+## Low-volume local API (not the production runner loop)
 
 ```python
 from normalization_api import Versions, run_rules, queue_review
@@ -71,6 +76,9 @@ with NormalizationStore('/private/local/state') as cache:
         # STOP here until an actual reviewer inspects every required item.
         # reviewed = validate_and_cache_actual_review(artifact, actual_receipt, cache)
 ```
+
+The example above commits full artifacts/packets and is not a scalable loop for
+the retained corpus. Use the bounded compact orchestrator for the standard run.
 
 Default model/prompt identifiers are `unconfigured` and cannot accept reviews.
 The first pass always produces `rules_only`, `pendingreview`, `gold_status=blocked`.

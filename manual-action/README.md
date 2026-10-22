@@ -1,70 +1,48 @@
-# OffMenu — one-command retained + acquired ingestion
+# OffMenu — one-command database-only normalization
 
-**Operating rhythm: `./run`.** In the existing isolated `integration/manual-actions-20261022` checkout, run:
+The current reviewed operation is **normalization of retained database records**,
+not further fetching, extraction or the ingestion backlog. In the existing normal
+user checkout on `integration/manual-actions-20261022`, after the previous run
+has exited and the reviewed source has been published:
 
 ```sh
-./run
+git pull --ff-only && ./run
 ```
 
-It pulls the reviewed update itself before starting. No separate pull, approval, or rehearsal command is needed for each run.
+The launcher also performs its own fast-forward-only refresh under the existing
+exclusive lock. It preserves `.git/offmenu-runner`, source databases, original
+assets, source-version history and exact pending receipts. Do not reset, force,
+stash, delete state, switch a running checkout or start a second concurrent run.
 
-The launcher locks this checkout, performs one **fast-forward-only pull**, reloads the reviewed implementation, runs the finite `retained_ingest_all` plan, and commits/pushes only strict sanitized progress/final receipts. It does not pull or replace running code mid-ingest. No Actions rehearsal, package install, arbitrary shell commands, raw-data upload, or recurring CI loop is involved.
+See **[DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md)** for the current plan,
+source-only installation boundary, counters, limits and recovery semantics.
 
-## Current-run / upgrade boundary
+- Six public staging DBs are read-only inputs. No raw-source existence/read gate,
+  catalog discovery, fetch, extraction or ingest adapter runs.
+- Cached rules use bounded CPU worker processes with one coordinated DB writer;
+  compact normalized projections and queue references avoid full raw copies.
+- Missing stored fields/provenance remain per-record unresolved. Existing
+  versions are distinct occurrences, not automatically deduplicated entities.
+- Actual recipe/menu AI review remains mandatory and pending an approved route;
+  no credentials, external calls, packet export or invented review is enabled.
+  Rules completion is not gold or application acceptance.
+- Profiles/inventory remain app-managed. The in-memory household-schema check
+  prepares and validates empty schemas only; it does not deploy or open private DBs.
+- Version3 sanitized progress/final receipts share the isolated receipt branch
+  with unchanged historical ingestion receipts. Both old/new spools recover in
+  bounded batches. Source/control/results branches remain separate.
+- Disk/time/cancel limits preserve committed cache/cursors. Git delivery failure
+  leaves exact sanitized local retry evidence and does not discard data.
 
-Let the active old run exit and preserve/reconcile its local receipt commits and
-spool before promoting this prepared release to the normal manual-action branch.
-Do not switch, reset, stash, or replace a live checkout. See
-[FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md) for the exact after-exit installation,
-permission boundary, no-extra-derived-copy default, and recovery contract.
-
-The next run includes the reviewed six acquired families / 50 manifest artifacts
-in addition to retained sources; it performs no new downloading. Missing narrow
-read access is reported per source, not repaired by broad privilege changes.
-New receipts and hash-bound readable evidence supplements are atomically committed
-to `integration/ingest-receipts-20261022`, independent of the source branch.
-The same `.git/offmenu-runner/ingest` state and completed-source cursors remain.
-
-## What the new plan actually does
-
-Plan schema **2**, ingest job version **2**, dispatches all eight domains concurrently, with up to eight workers bounded by CPU/memory availability. One worker owns each staging database. Individual source errors are recorded without preventing the other sources/domains from finishing:
-
-| Domain | Treatment |
-| --- | --- |
-| Barcodes | Reuse retained OFF/USDA and full identifier stores through read-only schema/count/index inspection and local reusable references. Never copy millions of already-loaded rows merely to show activity. Identified table-row counts and reused-store counts are distinct from imported rows. Unknown aliases remain `schema_uncertain`, not invented counts. |
-| Ingredients and recipes | Stream recognized retained source records using fixed adapters, preserve source content/provenance, and create queryable local staging rows/relations. |
-| Dietary and citations | Import supported retained source facts/metadata with provenance; report unsupported/restricted evidence separately. |
-| Suppliers | Ingest supported retained supplier/venue sources independently of the old supplier source-capsule diagnostic. A historical blocked diagnostic does not block this ingest. |
-| User profiles and inventory | Create separate private schemas. Import only explicitly supplied household records scoped by `metadata.user_supplied: true` and `metadata.household_scope: true`; never mine arbitrary personal files or fabricate examples. `awaiting_user_input`/`schema_only` with zero rows is legitimate. |
-
-The default bounded catalog scans the known retained OffMenu data root and narrow documented report references. Catalogs, paths, raw records, error details, and SQLite state stay local. Historical OFF **4,807,217**, USDA **2,101,279**, and identifier **5,242,597** counts are documentary hints, not claims about this invocation. Actual source existence, recognized table counts, schema and index information are checked read-only at runtime. Native table rows are not necessarily unique products. Leading-zero barcode strings are retained.
-
-**Standard-run targets are additive local staging and reusable source references; current application/UI bindings do not change.** Reports explicitly say `additive_staging_not_app_bound`. The normal `./run` does not create an additional derived relational snapshot; that implementation remains a separate explicit opt-in. Existing snapshots are preserved, not deleted or claimed as newly produced. Application wiring and acceptance remain separate work; existing source databases are never opened for writes. Supplier aliases already marked `duplicate` by the catalog are skipped without rewriting historical rows; unrecognized large-file copies remain unknown.
-
-## Progress, repeatability, and recovery
-
-- Before any source loading, the runner reports remaining work for all eight domains. Checkpoints and the final summary refresh it while ingestion continues: completed/reused, not-yet-read, partial/failed, held/unsupported, unqualified/unknown and awaiting-input **source/domain assignments**, plus files left to read. Empty user-profile/inventory schemas explicitly await scoped household input; they are not invented source assignments. One file can be assigned to several domains, so totals are not counts of unique files or entities.
-- Known records left to read are reported only when an explicit expected count describes adapter-output ordinals for the exact current source version; otherwise the record total remains unknown. Known subtotals and the number of assignments with unknown counts are separate. Historical corpus counts, input bytes and native table rows are not treated as unread staging records. A known read count does not promise that many new records will be written. Incomplete catalog discovery is explicit, not a claim that the whole retained corpus was enumerated. Reporter errors produce **unknown**, not an ingestion gate or a false zero.
-- Live terminal progress reports all domains; durable local batch checkpoints allow partial work to resume. Roughly each minute, and at the final phase, changed sanitized summaries become immutable receipt files and are committed/pushed serially with `[skip ci]`. No raw dataset, path, personal field, archive, exception text or private log can enter these schemas.
-- Receipt schema 2 remains backward compatible: old receipts without pending-work fields retain their original digest and exact recovery rules. New receipts bind the optional fixed-key `pending_work` counters/enums into the progress digest; paths, provider names, payloads and arbitrary diagnostic text remain forbidden. The next comprehensive plan advances the job to version 2 without changing retained source adapter versions or moving existing state.
-- SQLite batches are transactional and idempotent by source metadata/version and record identity. A completed unchanged plan is not replayed; catalog/input changes or an explicit reviewed job-version change produce a new identity. Reporting-only source updates can create a new receipt identity, but unchanged completed source versions are still reused without fresh record writes. Partial/failed work remains resumable. Input identity is metadata-based, not a claim of full dataset checksum authentication.
-- A final summary is produced even when individual sources fail. Exit **0** means all domain outcomes reached the engine's accepted terminal states and receipts synchronized; it does **not** mean every worldwide dataset is present or application acceptance passed. Exit **2** means partial/unavailable/failed work or pending receipt synchronization. Empty private household domains are not treated as missing public corpora.
-- Git delivery failure is independent of data ingestion: committed data batches continue, while exact sanitized pending receipts remain durable under `.git/offmenu-runner/ingest-pending/`. The next run first recovers the exact owned receipt/spool, then evaluates the reviewed plan. An earlier supplier failure is not an ingest dependency. No repeated push hammering occurs after a transport failure in the same invocation.
-- Only newly created strict receipt files under `manual-action/returns/run/` can be staged. An interrupted staged receipt is recovered only after its exact path/schema/hash/index bytes/mode and exclusive staging are verified. Additional staged user work, dirty runner/plan paths, wrong branch/repository, in-progress Git operations, symlinks, or unrelated outgoing commits cause a STOP without altering them. Unrelated unstaged work is preserved.
-- The runner uses a nonblocking exclusive lock; do not run another Git process in this isolated checkout concurrently. Git operations are serialized on the coordinator thread. No reset, stash, clean, rebase, force push, or mid-run code update occurs. Remote divergence requires reconciliation, not an automatic destructive repair.
-- Missing Git author/committer fields use the approved per-command `OffMenu Runner <offmenu-runner@localhost>` fallback only for missing fields. Existing identity remains intact; no Git configuration or credentials change. Hooks/mirror pushes are disabled; receipt clean filters are refused.
-
-### Local state and privacy
-
-The one-command runner keeps its state in `.git/offmenu-runner/ingest/` with private directory/file permissions. Public-corpus staging is under `staging/`; user profiles/inventory are under the separate `private-household/staging/`. Private source catalogs, source errors and local checkpoint details are never staged. `pending-work.private.json` contains local source-level queue/provenance details; `pending-work.json` contains only the fixed-schema summary. Whole-source byte counts are metadata, not processed/remaining byte estimates; `processed_bytes` stays unknown. Both reporting files remain in the private state directory; only the independently validated receipt summary may be returned through Git. Do not upload the state directory. Sanitized public counters refer to source-provenance rows, **not distinct entities**; barcode reference rows are not counted as newly imported products.
-
-For explicitly scoped local analysis, `python3 -B manual-action/ingest_all.py --help` documents the lower-level CLI (private catalogs, roots, disk reserve, batch size, time/row caps). Root `./run` accepts no arbitrary arguments or commands; changes to its finite reviewed plan require source review. There are no downloads or executable commands sourced from a catalog.
-
-The older diagnostics below remain optional history/source-review tools, **not the current `./run` ingest workflow**.
+The lower-level retained-ingestion APIs remain available for a future reviewed
+phase; they are **not** automatically dispatched now. Historical ingestion and
+source-access details are retained in [FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md).
+Raw data, source paths, full errors, review packets, credentials and private state
+must never be uploaded through the sanitized receipt protocol.
 
 ## Historical reference — legacy explicit diagnostics / source handoff
 
-> **Everything below is scoped to the older `foo_manual.py` diagnostic commands only.** Statements that no import occurs or an operation remains STOP do not describe the current root `./run` retained-ingest plan above. These historical commands are optional and are not prerequisites for ingestion.
+> **Everything below is scoped to the older `foo_manual.py` diagnostic commands only.** Statements that no import occurs or an operation remains STOP do not describe the current root `./run` database-normalization plan above. These historical commands are optional and are not prerequisites for ingestion.
 
 
 **Runnable diagnostics and supplier source-review preparation, not a data importer.** Python 3.10+ on Linux/POSIX, standard library only. No Codex worker, package installation, Actions rehearsal or per-run CI gate. The current Foo data/capsule have not been inspected by this cloud publication.

@@ -1,4 +1,10 @@
-# Retained + acquired final-ingest pass (2026-10-22)
+# Historical retained + acquired ingest pass (2026-10-22)
+
+**Not the current `./run` operation.** The owner switched the next phase to
+database-only normalization of already retained records. See
+[DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md). The implementation and source
+custody below are preserved for a future explicit reviewed ingest phase; no
+backlog, original-file access or acquired-cache completion gates normalization.
 
 ## Installation boundary
 

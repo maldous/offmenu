@@ -81,7 +81,7 @@ class ReceiptBranchPublisher:
                     value = self.validate(value)
                     if self.relpath(value) != path:
                         raise ValueError('invalid_receipt_path')
-                    reference = value['ingest'].get('evidence_ref')
+                    reference = value.get('normalization', value.get('ingest', {})).get('evidence_ref')
                     if reference:
                         references[self.supplement_relpath(reference)] = reference
                 if self.canonical(value) != raw:
@@ -180,7 +180,7 @@ class ReceiptBranchPublisher:
             raw = self.canonical(value)
             add(relative, raw)
             receipts.add(relative)
-            reference = value['ingest'].get('evidence_ref')
+            reference = value.get('normalization', value.get('ingest', {})).get('evidence_ref')
             if reference:
                 if supplement is None:
                     raise self.fail('required_supplement_missing_spool_preserved')
@@ -206,7 +206,7 @@ class ReceiptBranchPublisher:
                     # Preserve canonical timestamp of a prior identical-progress receipt.
                     old = self.validate(json.loads(previous))
                     supplied = json.loads(content)
-                    if self.relpath(old) != path or self.canonical(old) != previous or old['ingest'] != supplied['ingest']:
+                    if self.relpath(old) != path or self.canonical(old) != previous or old.get('normalization', old.get('ingest')) != supplied.get('normalization', supplied.get('ingest')):
                         raise self.fail('receipt_branch_existing_receipt_invalid_preserved')
             else:
                 missing[path] = content

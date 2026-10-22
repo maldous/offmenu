@@ -1,11 +1,11 @@
 {
-  "schema": "offmenu-run-plan/2",
-  "max_parallel": 8,
+  "schema": "offmenu-run-plan/3",
+  "max_parallel": 16,
   "jobs": [
     {
-      "id": "retained-eight-domain-ingest",
-      "version": 2,
-      "operation": "retained_ingest_all",
+      "id": "retained-six-domain-normalization",
+      "version": 1,
+      "operation": "normalize_staged_databases",
       "depends_on": []
     }
   ],

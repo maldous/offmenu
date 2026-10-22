@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Finite reviewed checkout/pull/ingest/return loop; standard library only.
+"""Finite reviewed checkout/pull/database-stage/return loop; standard library only.
 
 No shell from plans, downloads, archive execution, or raw source uploads.
 Git output and private supplier details are never echoed or persisted.
@@ -38,7 +38,7 @@ DOMAIN_STATUSES = frozenset('pending running complete completed imported reused 
 ERROR_CODES = frozenset('BudgetExceeded SourceChanged OSError IOError EOFError ValueError TypeError KeyError RuntimeError DatabaseError OperationalError IntegrityError JSONDecodeError UnicodeDecodeError PermissionError FileNotFoundError Error UnsupportedSource MalformedRecord MalformedSupplierRow resource_cap catalog_skip partial_source missing unreadable already_loaded incomplete_source unsupported_supplier_format unsupported_text_compression parquet_dependency_unavailable resource_budget UnsupportedSupplierSource DuplicateField existing_binding_reused source_error restricted_input awaiting_user_input no_recognized_sources schema_uncertain unsupported_format unavailable adapter_unavailable resource_limit'.split())
 ERROR_CODES = ERROR_CODES | frozenset(('UnicodeError', 'DocumentTooLarge', 'OverflowError'))
 HEX = re.compile(r'[0-9a-f]{64}\Z')
-RECEIPT_NAME = re.compile(r'[0-9a-f]{64}-(?:completed|blocked-[0-9a-f]{16}|(?:running|partial|blocked)-[0-9a-f]{64})\.json\Z')
+RECEIPT_NAME = re.compile(r'[0-9a-f]{64}-(?:completed|blocked-[0-9a-f]{16}|(?:running|partial|blocked|completed)-[0-9a-f]{64})\.json\Z')
 STAMP = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z')
 REASONS = frozenset('missing unreadable refused_or_unreadable sha256_prefix_mismatch '
     'compressed_archive_limit compressed_archive_changed_or_limit archive_changed '
@@ -111,7 +111,11 @@ def validate_plan(plan):
     ingest = (plan['schema'] == 'offmenu-run-plan/2' and type(plan['max_parallel']) is int
               and 1 <= plan['max_parallel'] <= 8 and job['id'] == 'retained-eight-domain-ingest'
               and job['operation'] == 'retained_ingest_all')
-    if not common or not (legacy or ingest):
+    normalization = (plan['schema'] == 'offmenu-run-plan/3' and type(plan['max_parallel']) is int
+              and 1 <= plan['max_parallel'] <= 22 and job['id'] == 'retained-six-domain-normalization'
+              and job['operation'] == 'normalize_staged_databases'
+              and plan.get('receipt_transport') == 'isolated-branch-v1')
+    if not common or not (legacy or ingest or normalization):
         raise Stop('unsupported_job')
     return job
 
@@ -318,6 +322,15 @@ def validate_ingest_receipt(value):
 
 
 def validate_receipt(value):
+    if isinstance(value, dict) and value.get('schema') == 'offmenu-run-receipt/3':
+        directory = str(Path(__file__).resolve().parent)
+        if directory not in sys.path:
+            sys.path.insert(0, directory)
+        from normalization_receipts import validate_receipt as validate_normalization_receipt
+        try:
+            return validate_normalization_receipt(value)
+        except (ValueError, TypeError):
+            raise Stop('invalid_sanitized_normalization_receipt') from None
     if isinstance(value,dict) and value.get('schema') == 'offmenu-run-receipt/2':
         return validate_ingest_receipt(value)
     exact_keys(value, {'schema', 'job_id', 'job_version', 'operation', 'job_key',
@@ -357,10 +370,26 @@ def validate_receipt(value):
     return value
 
 
+def runtime_summary(value):
+    if value.get('schema') == 'offmenu-run-receipt/2':
+        return value['ingest']
+    if value.get('schema') == 'offmenu-run-receipt/3':
+        return value['normalization']
+    raise Stop('unsupported_runtime_receipt')
+
+
+def validate_runtime_receipt(value):
+    validate_receipt(value)
+    runtime_summary(value)
+    return value
+
+
 def receipt_relpath(value):
     validate_receipt(value)
-    if value['schema']=='offmenu-run-receipt/2':
-        suffix='completed' if value['outcome']=='completed' else value['outcome']+'-'+value['ingest']['progress_sha256']
+    if value['schema'] == 'offmenu-run-receipt/3':
+        suffix = value['outcome']+'-'+runtime_summary(value)['progress_sha256']
+    elif value['schema'] == 'offmenu-run-receipt/2':
+        suffix='completed' if value['outcome']=='completed' else value['outcome']+'-'+runtime_summary(value)['progress_sha256']
     else:
         suffix = 'completed' if value['outcome'] == 'completed' else 'blocked-' + digest(canonical(value['supplier']))[:16]
     return f"{RETURN_DIR}/{value['job_key']}-{suffix}.json"
@@ -698,20 +727,20 @@ class Runner:
         from receipt_branch import ReceiptBranchPublisher
         if self.receipt_publisher is None:
             self.receipt_publisher = ReceiptBranchPublisher(self,
-                validate=validate_ingest_receipt, relpath=receipt_relpath,
+                validate=validate_runtime_receipt, relpath=receipt_relpath,
                 canonical=canonical, fail=Stop, validate_supplement=validate_supplement,
                 supplement_relpath=supplement_relpath)
         cache = safe_path(self.state / 'receipt-cache' / Path(receipt_relpath(value)).name)
         if cache.exists():
-            old = validate_ingest_receipt(read_json(cache))
+            old = validate_runtime_receipt(read_json(cache))
             if receipt_relpath(old) != receipt_relpath(value) or cache.read_bytes() != canonical(old):
                 raise Stop('isolated_receipt_cache_changed_preserved')
             value = old
         else:
             self.durable_local_json(cache, value)
         supplemental = None
-        if 'evidence_ref' in value['ingest']:
-            reference = evidence_ref(value['ingest']['evidence_ref'])
+        if 'evidence_ref' in runtime_summary(value):
+            reference = evidence_ref(runtime_summary(value)['evidence_ref'])
             path = safe_path(self.state / 'ingest-evidence' / (reference['sha256'] + '.json'))
             if not path.is_file():
                 recovered = self.receipt_publisher.recover_supplement(reference)
@@ -989,9 +1018,164 @@ class Runner:
         return 0 if report.get('status')=='complete' and not transport_failed else 2
 
 
+    def normalization_engine(self):
+        directory = str(self.root / 'manual-action')
+        if directory not in sys.path:
+            sys.path.insert(0, directory)
+        import importlib
+        return importlib.import_module('normalization_engine')
+
+    def run_normalization_plan(self, plan, job):
+        """Read only owned staging databases; never dispatch ingest/discovery."""
+        self.preconditions()
+        self.receipt_transport = 'isolated-branch-v1'
+        engine = self.normalization_engine()
+        from normalization_receipts import build_summary, validate_report, DOMAINS as PUBLIC_DOMAINS
+        from ingest_storage_sizes import capture_storage_sizes, unknown_storage_sizes
+        self.state = safe_path(self.state)
+        self.state.mkdir(mode=0o700, exist_ok=True)
+        pending = safe_path(self.state / 'normalization-pending')
+        pending.mkdir(mode=0o700, exist_ok=True)
+        transport_failed = False
+
+        def failure(exc):
+            nonlocal transport_failed
+            transport_failed = True
+            announce('Receipt sync paused: '+(str(exc) if isinstance(exc, Stop) else 'receipt_delivery_error')+
+                     '. DB normalization continues; local checkpoints retained.')
+
+        def deliver_batch(batch):
+            if transport_failed or not batch:
+                return
+            announce('[2/4] Returning '+str(len(batch))+' preserved checkpoints in one batch; no database normalization yet.')
+            try:
+                self.materialize_ingest_receipts([value for value, _ in batch])
+                for _, spool in batch:
+                    spool.unlink()
+            except KeyboardInterrupt:
+                raise
+            except Exception as exc:
+                failure(exc)
+
+        recovery = self.recovery_receipt()
+        if recovery:
+            relative, raw, value = recovery
+            if not self.tracked(relative) or self.check_outgoing():
+                try:
+                    self.publish(relative, raw)
+                except KeyboardInterrupt:
+                    raise
+                except Exception as exc:
+                    failure(exc)
+        # Recover both old ingest and new normalization spools, retaining every
+        # canonical byte and prior timestamp. Transport never restarts ingestion.
+        batch, batch_bytes = [], 0
+        for directory in (safe_path(self.state/'ingest-pending'), pending):
+            for spool in sorted(directory.glob('*.json')):
+                envelope = read_json(spool)
+                exact_keys(envelope, {'sha256', 'receipt'})
+                value = validate_runtime_receipt(envelope['receipt'])
+                raw = canonical(value)
+                if envelope['sha256'] != digest(raw) or spool.name != Path(receipt_relpath(value)).name:
+                    raise Stop('pending_receipt_changed_preserved')
+                size = len(raw)+(runtime_summary(value).get('evidence_ref') or {}).get('bytes', 0)
+                if batch and (len(batch) >= 512 or batch_bytes+size > 8*1024*1024):
+                    deliver_batch(batch)
+                    batch, batch_bytes = [], 0
+                batch.append((value, spool)); batch_bytes += size
+        deliver_batch(batch)
+        household = self.prepare_household_schema()
+        announce('[2/4] Household schema: '+household['status']+'; preparation only, not runtime deployment.')
+        announce('[2/4] Normalizing retained database records only; no downloads, extraction, source-file reads or ingestion backlog.')
+        announce('  All retained source versions remain distinct. Profiles and inventory are app-managed, not external-input blockers.')
+        announce('  Cached rules first; actual recipe/menu AI review remains mandatory and pending an approved route. No AI calls or data export.')
+        options = {'workers': plan['max_parallel'], 'report_interval': 60,
+                   'disk_reserve_bytes': 2*1024*1024*1024, 'max_seconds': 6*60*60}
+        prepared = engine.prepare_default(self.state/'ingest', options)
+        input_sha = prepared['input_sha256']
+        if not isinstance(input_sha, str) or not HEX.fullmatch(input_sha):
+            raise Stop('invalid_normalization_input_identity')
+        names = ['run', 'manual-action/plan_runner.py', 'manual-action/plan.json',
+                 'manual-action/normalize_recipes.py']
+        for pattern in ('normalization_*.py', 'receipt_*.py'):
+            names += [str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob(pattern))]
+        implementation = digest(b''.join((self.root/path).read_bytes() for path in names)+
+            canonical({'household_preparation_sources': household['source_sha256']}))
+        job_key = digest(canonical({'job': job, 'implementation': implementation,
+                                  'input': input_sha, 'household_preparation': digest(canonical(household))}))
+        last_signature = None
+
+        def checkpoint(report):
+            nonlocal last_signature
+            report = validate_report(report)
+            if report['input_sha256'] != input_sha:
+                raise Stop('normalization_input_binding_changed')
+            try:
+                sizes = capture_storage_sizes(self.state/'ingest')
+            except Exception:
+                sizes = unknown_storage_sizes()
+            supplement = build_supplement({'household_schema_preparation': household, 'storage_sizes': sizes})
+            reference = reference_for_supplement(supplement)
+            evidence_path = safe_path(self.state/'ingest-evidence'/(reference['sha256']+'.json'))
+            if evidence_path.exists():
+                if evidence_path.read_bytes() != canonical(supplement):
+                    raise Stop('evidence_content_address_conflict_preserved')
+            else:
+                self.durable_local_json(evidence_path, supplement)
+            summary = build_summary(report, reference)
+            outcome = {'running': 'running', 'rules_complete': 'completed', 'partial': 'partial', 'failed': 'blocked'}[report['status']]
+            signature = (outcome, summary['progress_sha256'])
+            if signature == last_signature:
+                return
+            receipt = {'schema': 'offmenu-run-receipt/3', 'job_id': job['id'], 'job_version': job['version'],
+                'operation': job['operation'], 'job_key': job_key, 'implementation_sha256': implementation,
+                'input_sha256': input_sha, 'observed_at': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                'outcome': outcome, 'normalization': summary}
+            validate_runtime_receipt(receipt)
+            spool = pending/Path(receipt_relpath(receipt)).name
+            if spool.exists():
+                envelope = read_json(spool)
+                exact_keys(envelope, {'sha256', 'receipt'})
+                old = validate_runtime_receipt(envelope['receipt'])
+                if envelope['sha256'] != digest(canonical(old)) or receipt_relpath(old) != receipt_relpath(receipt):
+                    raise Stop('pending_receipt_changed_preserved')
+                receipt = old
+            else:
+                self.durable_local_json(spool, {'sha256': digest(canonical(receipt)), 'receipt': receipt})
+            last_signature = signature
+            counts = {key: sum(row[key] for row in report['domains'].values())
+                      for key in ('scanned', 'rules_new', 'rules_reused', 'pendingreview', 'unresolved', 'failed')}
+            announce('[normalize] '+report['status']+': '+' '.join(key+'='+str(value) for key, value in counts.items())+
+                     ' free_disk_bytes='+str(report['resources']['free_disk_bytes'])+
+                     ' workers='+str(report['resources']['workers']))
+            if not transport_failed:
+                try:
+                    self.materialize_ingest_receipt(receipt)
+                    spool.unlink()
+                except KeyboardInterrupt:
+                    raise
+                except Exception as exc:
+                    failure(exc)
+
+        report = engine.run_prepared(prepared, report_callback=checkpoint)
+        checkpoint(report)
+        announce('[3/4] Database normalization summary (source-version occurrences, not unique gold entities):')
+        for domain in PUBLIC_DOMAINS:
+            row = report['domains'][domain]
+            announce('  '+domain+': '+row['status']+' selected='+str(row['selected_rows'])+
+                ' scanned='+str(row['scanned'])+' rules_new='+str(row['rules_new'])+
+                ' rules_reused='+str(row['rules_reused'])+' pendingreview='+str(row['pendingreview'])+
+                ' unresolved='+str(row['unresolved'])+' failed='+str(row['failed']))
+        announce('  Actual AI review: pending approved route; gold/application binding: blocked. Originals preserved for future extraction.')
+        if transport_failed:
+            announce('[4/4] Git sync remains pending; normalization cache and sanitized checkpoints are preserved locally.')
+        return 0 if report['status'] == 'rules_complete' and not transport_failed else 2
+
     def run_plan(self):
         plan=read_json(self.root / 'manual-action/plan.json')
         job=validate_plan(plan)
+        if job['operation']=='normalize_staged_databases':
+            return self.run_normalization_plan(plan,job)
         if job['operation']=='retained_ingest_all':
             return self.run_ingest_plan(plan,job)
         self.preconditions()
@@ -1097,7 +1281,7 @@ def main():
         runner.remote_head = inherited_remote
         runner.check_outgoing()
         code = runner.run_plan()
-        announce('Done. Sanitized results returned; local staging is not application acceptance.' if code == 0 else 'Partial or blocked result retained; see domain summary. Local data and receipts preserved.')
+        announce('Done. Sanitized results returned; this is not AI review, gold or application acceptance.' if code == 0 else 'Partial or blocked result retained; see domain summary. Local data and receipts preserved.')
         return code
     except KeyboardInterrupt:
         announce('STOP: interrupted; local work preserved.')

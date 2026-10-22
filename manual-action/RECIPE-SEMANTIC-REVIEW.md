@@ -1,8 +1,10 @@
 # Recipe/menu semantics — local two-pass contract
 
-**Implemented, not activated. No retained recipe/menu has been AI-reviewed by this
+**Actual AI review is implemented but not activated. No retained recipe/menu has been AI-reviewed by this
 change.** The tests use generated recipes and explicitly synthetic receipts.
-`plan.json`, `./run`, ingestion adapters and raw records are unchanged. No AI API,
+The current `plan.json`/`./run` activates DB-only cached rules and compact pending
+review references, not an actual AI invocation. Ingestion adapters and raw
+records are unchanged; see [DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md). No AI API,
 API credential, export destination, network lookup or data upload is needed by
 these modules. Actual review/export remains separate: until the approved review
 destination/workflow is established, keep all packets and results local, private
