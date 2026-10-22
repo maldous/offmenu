@@ -1,5 +1,1 @@
-{
-  "schemaVersion": 1,
-  "jobId": "additional-public-sources-20261022-0443-002",
-  "profile": "additional-public-sources"
-}
+{"schemaVersion":1,"jobId":"public-source-read-handoff-20261022-0644-001","profile":"public-source-read-handoff"}
