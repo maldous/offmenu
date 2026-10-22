@@ -117,3 +117,20 @@ currently read the cache or that real application binding is complete.
 The standard-run regression also verifies no new derived target is created,
 existing historical target files remain byte-identical, and normal ingestion,
 resume and sanitized receipt/evidence delivery continue without the extra copy.
+
+## Startup receipt batching and cancellation
+
+Preserved startup checkpoints are returned in bounded batches (up to 512
+receipts or 8 MiB of canonical receipt/evidence bytes), using one commit and
+non-force push per batch instead of a push per checkpoint. Startup prints each
+batch count before delivery and confirms it afterward. Canonical receipt and
+supplement bytes are retained; spool entries are removed only after a successful
+push. A transport failure retains local commits and the pending spool for retry.
+Missing Git identity fields use one announced, per-invocation cached fallback;
+configured identity is not replaced and no Git configuration is changed.
+
+Ctrl-C during Git is cancellation, not a timeout or permission to continue into
+ingestion. Startup cancellation exits without starting source ingestion. During
+an active ingest, cancellation remains cooperative at durable batch boundaries.
+Wait for the original process to exit before another pull/run; never delete the
+lock, pending spool, caches, or database files to resolve a sync delay.

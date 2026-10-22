@@ -1,0 +1,71 @@
+{
+  "base_commit": "2676f361033a532d33e625695e7ce30105974d14",
+  "files": [
+    {
+      "bytes": 60140,
+      "git_blob_sha1": "aa207e23f41023a5a497eb2cf034cdaf2a8693d6",
+      "path": "manual-action/plan_runner.py",
+      "previous_sha256": "ba32c40e4f3350cfd68de564f587b130fd28ca516e614337df7f04a9eff6cb50",
+      "sha256": "dd28a393271407218f911b1a7495905f2fc831e2f5fa4787f70747fd7d873519"
+    },
+    {
+      "bytes": 13006,
+      "git_blob_sha1": "bb88ab4a98d19205f871faf3abc6aded8602b89e",
+      "path": "manual-action/receipt_branch.py",
+      "previous_sha256": "cf01735045aff1be5afe28e9f341bcb8d6d6204c408acadae55e33ec4cc6af4a",
+      "sha256": "0708f9c08fa6dc1c698a99ec1881d672bfec9d00b2247c6394898758e537e3e8"
+    },
+    {
+      "bytes": 8778,
+      "git_blob_sha1": "bc1e399e794af2d8b8fadd3aca15448b1ca82a4b",
+      "path": "manual-action/tests/test_receipt_batch.py",
+      "previous_sha256": null,
+      "sha256": "3e686d384dff8c5ed1a98b35d07c3a9b146edcd19ea88b39ba3531a60ef34b8c"
+    },
+    {
+      "bytes": 4598,
+      "git_blob_sha1": "15a8008b8e69cc50335a2bd4976d87e155fd9699",
+      "path": "manual-action/tests/test_startup_receipt_batch.py",
+      "previous_sha256": null,
+      "sha256": "3a39caca37f876513b84a312700196b059e047b4cb53694acc649926911c60b1"
+    },
+    {
+      "bytes": 8273,
+      "git_blob_sha1": "332dafdc5fadfc4fe77c3209c3ff2b40ebe1b5bb",
+      "path": "manual-action/FINAL-INGEST-RUN.md",
+      "previous_sha256": "fd2e4edb3bf32b4b6bab82915ed4beb0408339f091677ce6849c5e714150adc4",
+      "sha256": "fe236ac68a76fb449a10d0ce89e22efb18222d6c99b7f33539423898c92d1860"
+    }
+  ],
+  "restrictions": [
+    "No Foo execution",
+    "No raw datasets or private logs",
+    "No receipt/control/results branch changes",
+    "No workflow/profile changes",
+    "No source cache/database deletion or duplication"
+  ],
+  "schema": "offmenu-source-correction-manifest/1",
+  "scope": "Bounded startup receipt batching, cancellation propagation, once-per-invocation identity notice; no data/compute topology changes.",
+  "tests": {
+    "existing_publisher": {
+      "errors": 0,
+      "failures": 0,
+      "run": 8
+    },
+    "independent_publisher": {
+      "errors": 0,
+      "failures": 0,
+      "run": 8
+    },
+    "new_publisher": {
+      "errors": 0,
+      "failures": 0,
+      "run": 8
+    },
+    "startup_cancellation": {
+      "errors": 0,
+      "failures": 0,
+      "run": 6
+    }
+  }
+}

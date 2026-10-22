@@ -355,6 +355,7 @@ class Runner:
         self.remote_head = None
         self.receipt_transport = 'legacy-same-branch'
         self.receipt_publisher = None
+        self._commit_identity_cache = None
 
     def git(self, *args, check=True, input_data=None, env_overrides=None):
         env = dict(os.environ, GIT_TERMINAL_PROMPT='0', GIT_OPTIONAL_LOCKS='0')
@@ -373,10 +374,22 @@ class Runner:
                                 env=env, start_new_session=True)
         try:
             out, stderr = proc.communicate(input=input_data, timeout=120)
-        except (subprocess.TimeoutExpired, KeyboardInterrupt):
-            os.killpg(proc.pid, signal.SIGKILL)
+        except subprocess.TimeoutExpired:
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
             proc.communicate()
             raise Stop('git_timeout_local_work_preserved') from None
+        except KeyboardInterrupt:
+            # User cancellation is not a transport failure: do not start or
+            # continue ingestion after an interrupted startup Git operation.
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            proc.communicate()
+            raise
         if check and proc.returncode:
             operation = args[0].replace('-', '_')
             detail = stderr.decode('utf-8', errors='replace').lower()
@@ -398,6 +411,8 @@ class Runner:
     def commit_identity_env(self):
         # Explicitly approved fallback, only for this commit and missing fields.
         # Never persist Git configuration or replace an already usable identity.
+        if self._commit_identity_cache is not None:
+            return dict(self._commit_identity_cache)
         result = {}
         for role in ('AUTHOR', 'COMMITTER'):
             code, identity = self.git('var', 'GIT_' + role + '_IDENT', check=False)
@@ -420,6 +435,7 @@ class Runner:
                     result[variable] = fallback
         if result:
             announce('Using per-command OffMenu Runner fallback for missing Git identity fields; no configuration changed.')
+        self._commit_identity_cache = dict(result)
         return result
 
     def textgit(self, *args):
@@ -653,32 +669,44 @@ class Runner:
             if os.path.exists(temporary):
                 os.unlink(temporary)
 
+    def prepare_isolated_ingest_receipt(self, value):
+        from receipt_branch import ReceiptBranchPublisher
+        if self.receipt_publisher is None:
+            self.receipt_publisher = ReceiptBranchPublisher(self,
+                validate=validate_ingest_receipt, relpath=receipt_relpath,
+                canonical=canonical, fail=Stop, validate_supplement=validate_supplement,
+                supplement_relpath=supplement_relpath)
+        cache = safe_path(self.state / 'receipt-cache' / Path(receipt_relpath(value)).name)
+        if cache.exists():
+            old = validate_ingest_receipt(read_json(cache))
+            if receipt_relpath(old) != receipt_relpath(value) or cache.read_bytes() != canonical(old):
+                raise Stop('isolated_receipt_cache_changed_preserved')
+            value = old
+        else:
+            self.durable_local_json(cache, value)
+        supplemental = None
+        if 'evidence_ref' in value['ingest']:
+            reference = evidence_ref(value['ingest']['evidence_ref'])
+            path = safe_path(self.state / 'ingest-evidence' / (reference['sha256'] + '.json'))
+            if not path.is_file():
+                recovered = self.receipt_publisher.recover_supplement(reference)
+                self.durable_local_json(path, recovered)
+            supplemental = validate_supplement(read_json(path))
+            if reference_for_supplement(supplemental) != reference or path.read_bytes() != canonical(supplemental):
+                raise Stop('required_supplement_changed_spool_preserved')
+        return value, supplemental
+
+    def materialize_ingest_receipts(self, values):
+        # Startup caller supplies a bounded batch; prepare every canonical
+        # receipt and bound supplement before creating/pushing its one tree.
+        if not values or len(values) > 512:
+            raise Stop('startup_receipt_batch_limit_preserved')
+        entries = [self.prepare_isolated_ingest_receipt(value) for value in values]
+        self.receipt_publisher.publish_batch(entries)
+
     def materialize_ingest_receipt(self, value):
         if self.receipt_transport == 'isolated-branch-v1':
-            from receipt_branch import ReceiptBranchPublisher
-            if self.receipt_publisher is None:
-                self.receipt_publisher = ReceiptBranchPublisher(self,
-                    validate=validate_ingest_receipt, relpath=receipt_relpath,
-                    canonical=canonical, fail=Stop, validate_supplement=validate_supplement,
-                    supplement_relpath=supplement_relpath)
-            cache = safe_path(self.state / 'receipt-cache' / Path(receipt_relpath(value)).name)
-            if cache.exists():
-                old = validate_ingest_receipt(read_json(cache))
-                if receipt_relpath(old) != receipt_relpath(value) or cache.read_bytes() != canonical(old):
-                    raise Stop('isolated_receipt_cache_changed_preserved')
-                value = old
-            else:
-                self.durable_local_json(cache, value)
-            supplemental = None
-            if 'evidence_ref' in value['ingest']:
-                reference = evidence_ref(value['ingest']['evidence_ref'])
-                path = safe_path(self.state / 'ingest-evidence' / (reference['sha256'] + '.json'))
-                if not path.is_file():
-                    recovered = self.receipt_publisher.recover_supplement(reference)
-                    self.durable_local_json(path, recovered)
-                supplemental = validate_supplement(read_json(path))
-                if reference_for_supplement(supplemental) != reference or path.read_bytes() != canonical(supplemental):
-                    raise Stop('required_supplement_changed_spool_preserved')
+            value, supplemental = self.prepare_isolated_ingest_receipt(value)
             self.receipt_publisher.publish(value, supplemental)
             return
         relative=receipt_relpath(value)
@@ -774,6 +802,9 @@ class Runner:
                 self.materialize_ingest_receipt(value)
                 if spool is not None:
                     spool.unlink()
+            except KeyboardInterrupt:
+                transport_failed=True
+                raise
             except Exception as exc:
                 # No reset/rebase/pull mid-run. Keep data workers independent of
                 # transport; exact staged receipt and private spool remain durable.
@@ -792,13 +823,44 @@ class Runner:
                     announce('Receipt sync paused: '+str(exc)+'. New ingest is independent of the prior supplier outcome.')
         # Spool files live only in .git, contain strict sanitized payloads and
         # bind canonical bytes to a digest. Never stage arbitrary working files.
+        def deliver_startup_batch(batch):
+            nonlocal transport_failed
+            if transport_failed or not batch:
+                return
+            announce('[2/4] Returning '+str(len(batch))+' preserved checkpoints in one batch; no source ingest yet.')
+            try:
+                self.materialize_ingest_receipts([value for value, _ in batch])
+                # Only a confirmed non-force push permits removal of these
+                # owned spool files. Interruption/failure leaves retry evidence.
+                for _, spool in batch:
+                    spool.unlink()
+                announce('[2/4] Returned '+str(len(batch))+' preserved checkpoints; continuing startup.')
+            except KeyboardInterrupt:
+                transport_failed=True
+                raise
+            except Exception as exc:
+                transport_failed=True
+                announce('Receipt sync paused: '+(str(exc) if isinstance(exc, Stop) else 'receipt_delivery_error')+'. Ingestion continues; local checkpoints retained.')
+
+        batch=[]
+        batch_bytes=0
         for spool in sorted(pending.glob('*.json')):
             envelope=read_json(spool)
             exact_keys(envelope,{'sha256','receipt'})
             value=validate_ingest_receipt(envelope['receipt'])
-            if envelope['sha256']!=digest(canonical(value)) or spool.name!=Path(receipt_relpath(value)).name:
+            raw=canonical(value)
+            if envelope['sha256']!=digest(raw) or spool.name!=Path(receipt_relpath(value)).name:
                 raise Stop('pending_receipt_changed_preserved')
-            deliver(value,spool)
+            if self.receipt_transport != 'isolated-branch-v1':
+                deliver(value,spool)
+                continue
+            # Bound memory and one-commit size, including any readable evidence.
+            size=len(raw)+(value['ingest'].get('evidence_ref') or {}).get('bytes',0)
+            if batch and (len(batch)>=512 or batch_bytes+size>8*1024*1024):
+                deliver_startup_batch(batch)
+                batch=[];batch_bytes=0
+            batch.append((value,spool));batch_bytes+=size
+        deliver_startup_batch(batch)
         # Receipt transport does not authorize a second physical database copy.
         # Derived relational snapshots remain a separate explicit API opt-in.
         options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True,

@@ -142,23 +142,57 @@ class ReceiptBranchPublisher:
         return value
 
     def publish(self, value, supplement=None):
-        self.validate(value)
-        relative = self.relpath(value)
-        raw = self.canonical(value)
-        if len(raw) > MAX_RECEIPT_BYTES:
-            raise self.fail('receipt_branch_receipt_size_limit_preserved')
-        additions = {relative: raw}
-        reference = value['ingest'].get('evidence_ref')
-        if reference:
-            import hashlib
-            if supplement is None:
-                raise self.fail('required_supplement_missing_spool_preserved')
-            extra = self.canonical(self.validate_supplement(supplement))
-            if hashlib.sha256(extra).hexdigest() != reference['sha256'] or len(extra) != reference['bytes']:
-                raise self.fail('required_supplement_changed_spool_preserved')
-            additions[self.supplement_relpath(reference)] = extra
-        elif supplement is not None:
-            raise self.fail('unbound_supplement_refused')
+        return self.publish_batch(((value, supplement),))
+
+    def publish_batch(self, items):
+        """Validate a bounded batch before touching refs; publish it atomically.
+
+        Canonical bytes are captured as supplied, never rebuilt with new
+        timestamps. A failed/interrupted push leaves the additive local commit
+        available for the caller's retained spool to retry.
+        """
+        import hashlib
+        import json
+
+        additions, receipts = {}, set()
+        total_bytes = 0
+
+        def add(path, raw):
+            nonlocal total_bytes
+            if len(raw) > MAX_RECEIPT_BYTES:
+                raise self.fail('receipt_branch_receipt_size_limit_preserved')
+            if path in additions:
+                if additions[path] != raw:
+                    raise self.fail('receipt_branch_batch_path_conflict_preserved')
+                return
+            if len(additions) >= MAX_RECEIPTS:
+                raise self.fail('receipt_branch_count_limit_preserved')
+            total_bytes += len(raw)
+            if total_bytes > MAX_TREE_BYTES:
+                raise self.fail('receipt_branch_size_limit_preserved')
+            additions[path] = raw
+
+        for count, (value, supplement) in enumerate(items, 1):
+            if count > MAX_RECEIPTS:
+                raise self.fail('receipt_branch_count_limit_preserved')
+            self.validate(value)
+            relative = self.relpath(value)
+            raw = self.canonical(value)
+            add(relative, raw)
+            receipts.add(relative)
+            reference = value['ingest'].get('evidence_ref')
+            if reference:
+                if supplement is None:
+                    raise self.fail('required_supplement_missing_spool_preserved')
+                self.validate_supplement(supplement)
+                extra = self.canonical(supplement)
+                if hashlib.sha256(extra).hexdigest() != reference['sha256'] or len(extra) != reference['bytes']:
+                    raise self.fail('required_supplement_changed_spool_preserved')
+                add(self.supplement_relpath(reference), extra)
+            elif supplement is not None:
+                raise self.fail('unbound_supplement_refused')
+        if not additions:
+            return
         self.initialize()
         parent = self._oid('rev-parse', '--verify', LOCAL_REF)
         missing = {}
@@ -167,12 +201,12 @@ class ReceiptBranchPublisher:
             if exists:
                 previous = self.runner.git('show', parent + ':' + path)[1]
                 if previous != content:
-                    if path != relative:
+                    if path not in receipts:
                         raise self.fail('receipt_branch_existing_supplement_changed_preserved')
                     # Preserve canonical timestamp of a prior identical-progress receipt.
-                    import json
                     old = self.validate(json.loads(previous))
-                    if self.relpath(old) != relative or self.canonical(old) != previous or old['ingest'] != value['ingest']:
+                    supplied = json.loads(content)
+                    if self.relpath(old) != path or self.canonical(old) != previous or old['ingest'] != supplied['ingest']:
                         raise self.fail('receipt_branch_existing_receipt_invalid_preserved')
             else:
                 missing[path] = content
@@ -192,7 +226,7 @@ class ReceiptBranchPublisher:
                     blob = self.runner.git('hash-object', '-w', '--stdin', input_data=content)[1].decode('ascii').strip()
                     self.runner.git('update-index', '--add', '--cacheinfo', '100644,' + blob + ',' + path, **options)
                 tree = self.runner.git('write-tree', **options)[1].decode('ascii').strip()
-                # A single tree/commit binds the receipt and its readable evidence.
+                # A single tree/commit binds every receipt and its readable evidence.
                 if len([x for x in self.runner.git('ls-tree','-r','-z',tree)[1].split(b'\0') if x]) > MAX_RECEIPTS:
                     raise self.fail('receipt_branch_count_limit_preserved')
                 command = ['commit-tree', tree]
