@@ -1,0 +1,351 @@
+{
+  "schema": "offmenu-final-ingest-source-manifest/1",
+  "repository": "maldous/offmenu",
+  "publication_branch": "integration/final-ingest-20261022",
+  "base_commit": "c792d3b71bc7907e96b6688242e090ede100b6ab",
+  "base_tree": "4de653f4ad20805243f11702cef55e06d2aaea2f",
+  "installation_target": "integration/manual-actions-20261022",
+  "direct_execution_enabled": false,
+  "files_exclude_manifest_self": true,
+  "tests": {
+    "run": 518,
+    "skipped": 1,
+    "result": "OK",
+    "fixture_only": true
+  },
+  "files": [
+    {
+      "path": "manual-action/ACQUIRED-MENU-ADAPTERS.md",
+      "sha": "97fa1a55bb5d3c6705a21510b84c54a5b659c2ef",
+      "sha256": "105eff21891f8bab61b6d12adff5e12375235ed4846e2b6dd0fadecc9077ad8a",
+      "size": 9442,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ACQUIRED-RECIPE-ADAPTERS.md",
+      "sha": "bdc5261a1e8185cab5ed076ef578cd2d786e58cc",
+      "sha256": "31baa4a120b973cfd1f7d4ca244ae0008ac75873424c5325e8a5e4779a974a73",
+      "size": 11227,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ACQUIRED-SOURCE-CATALOG.md",
+      "sha": "039245df9a871aba57b402adfb15340ca989049e",
+      "sha256": "54b9d9cbe8730ca2c123c23062a92e024368d6516a6f05bb9c7afcb056aa02ca",
+      "size": 7274,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/COMMAND-PLAN.md",
+      "sha": "3f1ba60630a666c4300a34396531835fb56d7560",
+      "sha256": "5f9f4cdbc9838fe38bc42aceefacaee48a74e2c5d501b53420bb128c9c3f7bad",
+      "size": 6239,
+      "base_sha": "197131786657db58aaafd3ec2da96e5f5c744073",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-PREPARATION-RELEASE.md",
+      "sha": "861a33762d1e84437bb1d3f3abf454f986e216f5",
+      "sha256": "953d4fd3efea87d3857c1d116063258263f57079700f9eb6eb1a721df7dafed1",
+      "size": 4961,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/FINAL-INGEST-RUN.md",
+      "sha": "9f5fe77626c29351bc91c47bbd7307e9da37c3f4",
+      "sha256": "8bdc9593cd46e69eb28493f9d8386f717de60e2c7e9f7b35bdd23c4d3d2848fa",
+      "size": 6402,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/INGEST-EVIDENCE-LOOP.md",
+      "sha": "ca48162d441d34841c5cf509a06a93465b858e8f",
+      "sha256": "d452dedf458aeabab387acd6fcf1b4c4ad522246b9fdc24eaa63e4371ab43c6b",
+      "size": 9983,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/README.md",
+      "sha": "377e4ad28926167bd46607f37a9b676db5e67b45",
+      "sha256": "c59f4f1513817597351dd87cae8264b11491655aadaf6bc53c8c681744bd3f46",
+      "size": 19532,
+      "base_sha": "14a7f7a31a509ece2cdfaa5217d5457591147691",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/RELATIONAL-TARGETS.md",
+      "sha": "4e8d60e6ab56fcbfc4822b15f666a82da6015de3",
+      "sha256": "5ff7fce1c98da51b6b3f35c7bf4741809c880724783a6708e96a5246f8f4c16a",
+      "size": 10956,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/acquired_recipe_js.py",
+      "sha": "b0326beb1f53a428fbba4b81e516757c3a68dc48",
+      "sha256": "8f1e31427583e894a2dad56319be3a87ebf3771047a1e90e34542ad699fe08a3",
+      "size": 11844,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/fetch-sources.json",
+      "sha": "a244f7fffad939d9b1e1706be1354cb7572b6056",
+      "sha256": "9eaf87b70fbf65806c00168ebf03a57560521d3d265195d65303dade5b2cc938",
+      "size": 75755,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/fetch_sources.py",
+      "sha": "e1b1a003749f655677ed16d02bc1415af2874675",
+      "sha256": "31b4cafc8995e3b8229c3fee21c84a80613d25d514c6f108b1b7c1a0ff5141f7",
+      "size": 44606,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_acquired_catalog.py",
+      "sha": "b1f63cf82b57ab7268121bdadcda0d70c0d97a76",
+      "sha256": "d4796c4bd81a897848fb14ad63ce5fe0dfc8ef9461f431788addc17619b485a1",
+      "size": 31125,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_acquired_menus.py",
+      "sha": "33bc45826c60c4ca3e95cc77eabd12a06655213d",
+      "sha256": "cf9636b5b78e6388e0a4f33a7eea7fd5ed6887a8151c5b4ebbd60f8a87bc7f3e",
+      "size": 37662,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_acquired_recipes.py",
+      "sha": "91f1a6815009ed05bca429b5cbcd87b9effbc24f",
+      "sha256": "82800b187e4e55033ade52776ff637a4004cc701c839cb8ecfe68a3e7f84bd34",
+      "size": 36409,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_all.py",
+      "sha": "b36988e1b01950f11f3737e6d984c995f719df48",
+      "sha256": "a48137262838c70279e8d1b695e379f4ebae52b85ba1a7995f8b95c9aefb82f5",
+      "size": 2395,
+      "base_sha": "abc1e912e2a4539869b4a447a5e3466016e2eea2",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_engine.py",
+      "sha": "4af6db77ade5af0a139266a918781b08151985ec",
+      "sha256": "306a74ee5a3d8e9c97b13ea8e4a31e14e044cdb308239c2736e51ff3f88c0b86",
+      "size": 41422,
+      "base_sha": "5593fdbef159331e328538381827e760a0da82c9",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_errors.py",
+      "sha": "2ae120b9bc6fdfa0289a42f440122a708d34c3db",
+      "sha256": "31d8737a5a90c4cc541decda656ae8eb38beeabe4fce211e2eb9f9d9ecf2a1ed",
+      "size": 7676,
+      "base_sha": "62508e12041d6180fa229cf49da9438f3c269002",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_evidence.py",
+      "sha": "5d20290bbce852780649255125c19cd8a779fc3e",
+      "sha256": "56df4f8adb3ed2a2f50ddb6df0eb69bba76c7e460596b882a216e8a00835fb21",
+      "size": 40315,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_pending.py",
+      "sha": "d0a4f131cb8eaca547166eb0474b5ad568c3e9fb",
+      "sha256": "09a8bd650dde7c64245cf4415a5d62156c2d21486991d65931527f639f5bd183",
+      "size": 22485,
+      "base_sha": "5e0d46850b3bd41445dff6303e22dcafae06d1d8",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_recipes.py",
+      "sha": "e7514400389faaf2ffd606d03c289bb7dc127d38",
+      "sha256": "32c8329125bee94ecf3c957306b5c2b3198548e94e53ca04dab8c3c066a79bd1",
+      "size": 44158,
+      "base_sha": "1da4c7a741272e00e534c9f0da0ecf24d378bc8d",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/ingest_relational_targets.py",
+      "sha": "b55734cf2bf2fb2f38700178f5640a7534a59782",
+      "sha256": "7ff54d2c93815cc4ce028d8d1223d82b11416638511387c43cd495c5e2376bdb",
+      "size": 42474,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/plan.json",
+      "sha": "9d97cfc44654ecd11803bf1cb4ebf48c75e5fbb7",
+      "sha256": "4b8379de78dd98a91b6811802feae6a394fd92b9b8298d22fd8e5b84bb4c0b42",
+      "size": 261,
+      "base_sha": "6540da3f6d17891e0e6285e14f21671372829677",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/plan_runner.py",
+      "sha": "2265498277c15d517d4d4c19f2070f4a29269972",
+      "sha256": "705124b0496ceb8a72d8d8621a7bab890c54011acd04da6457b629ef20a89ad1",
+      "size": 57164,
+      "base_sha": "af3d60a12da11f70cb187efe9c092edf3b3d1d57",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/receipt_branch.py",
+      "sha": "f7312001ede486f14d98d7f2025a63db94badb75",
+      "sha256": "cf01735045aff1be5afe28e9f341bcb8d6d6204c408acadae55e33ec4cc6af4a",
+      "size": 11621,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/relational-target-mapping.json",
+      "sha": "e465e5ab03c5cc35cb42986da532e3410cf4e9d5",
+      "sha256": "778a70a67a927bce4ac213f7956b515dd9482283b6f8ffbd820307da4cc5a596",
+      "size": 5445,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/relational-targets.schema.sql",
+      "sha": "a1d99623538e4fa9f858c7c478825dd00bba4a74",
+      "sha256": "11af7f81a8a5141089f7d5aaa6b797a3df7abafd6cc47043af0b48d39b0a46b3",
+      "size": 6721,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_acquired_recipe_js.py",
+      "sha": "4c81a231b1a71c4a1b883486447b8e3670f4d2bc",
+      "sha256": "96b053a2bb8dc9436790e9dcd9181f272d6ed3535a827e56e63b6485dc56036d",
+      "size": 8211,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_fetch_sources.py",
+      "sha": "cdc66d0ef01e9764318255a7fc06f9df36142b27",
+      "sha256": "e6d39747c029ed901f293a2f55ba6dc7221742bd197d68a596a05e95022968ab",
+      "size": 15293,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_final_ingest_integration.py",
+      "sha": "5edcf488fd36c61c35b95bcbb141d38a4f638ced",
+      "sha256": "be979a36551c1f8a64fd1bec7f431d48268e310dbb6dafb00889fb06ea36156e",
+      "size": 13000,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_catalog.py",
+      "sha": "650ed42d4c35482268ad7e6aaca603013db98711",
+      "sha256": "f6db074cb938f2cd97cd76d80a0faa5890dec3142fc7ed538a0757990d27ee8f",
+      "size": 20093,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_menus.py",
+      "sha": "342469b0e82d9880a52610eba3b219fbf6dd2c48",
+      "sha256": "91533e000482b12facbb489d47e8d369f088f01d83758ee3c57450cc4ec4a87f",
+      "size": 19818,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_acquired_recipes.py",
+      "sha": "6add5dc4de479f031ea43791ff4a26d137cf948f",
+      "sha256": "46458a9cb0fc53ce90aef1ecb71a50f342095d86f91498362c1405f6dace4249",
+      "size": 23790,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_engine.py",
+      "sha": "813f22928d8513b3d05c1f71fa537505d8571089",
+      "sha256": "074517c08775fed5d829a7019fc0f643eedbd143057426d2431622341a7caa7b",
+      "size": 16813,
+      "base_sha": "6f8ded736cfb92d530dfd74ef7f8b8f249a52d08",
+      "status": "changed",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_evidence.py",
+      "sha": "327e40cbd63a3595c9848620bd1a9f784611ec56",
+      "sha256": "d7aa75cfb0a3f74dbd93fdee441f4d925ffab7e7040cdfd2b4f28048c6f420f2",
+      "size": 16945,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_ingest_relational_targets.py",
+      "sha": "821e8f234bae3c25f44f94d5659393a8b2e0605e",
+      "sha256": "807420e0c8d80ed3d3245a8edfe4c692cc5fb51dbe39e4ab65e8ce34b4721b6b",
+      "size": 24181,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    },
+    {
+      "path": "manual-action/tests/test_receipt_branch.py",
+      "sha": "ab2d37f75b5a674ae5979d44cd067544286a445b",
+      "sha256": "bcf84a20bd22db3a6d630382d4098ff1d3baea841ef26ee416294d513d2e4771",
+      "size": 12543,
+      "base_sha": null,
+      "status": "new",
+      "mode": "100644"
+    }
+  ]
+}

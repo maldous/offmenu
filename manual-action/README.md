@@ -1,4 +1,4 @@
-# OffMenu — one-command retained-data ingestion
+# OffMenu — one-command retained + acquired ingestion
 
 **Operating rhythm: `./run`.** In the existing isolated `integration/manual-actions-20261022` checkout, run:
 
@@ -10,9 +10,24 @@ It pulls the reviewed update itself before starting. No separate pull, approval,
 
 The launcher locks this checkout, performs one **fast-forward-only pull**, reloads the reviewed implementation, runs the finite `retained_ingest_all` plan, and commits/pushes only strict sanitized progress/final receipts. It does not pull or replace running code mid-ingest. No Actions rehearsal, package install, arbitrary shell commands, raw-data upload, or recurring CI loop is involved.
 
+## Current-run / upgrade boundary
+
+Let the active old run exit and preserve/reconcile its local receipt commits and
+spool before promoting this prepared release to the normal manual-action branch.
+Do not switch, reset, stash, or replace a live checkout. See
+[FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md) for the exact after-exit installation,
+permission boundary, productive derived targets, and recovery contract.
+
+The next run includes the reviewed six acquired families / 50 manifest artifacts
+in addition to retained sources; it performs no new downloading. Missing narrow
+read access is reported per source, not repaired by broad privilege changes.
+New receipts and hash-bound readable evidence supplements are atomically committed
+to `integration/ingest-receipts-20261022`, independent of the source branch.
+The same `.git/offmenu-runner/ingest` state and completed-source cursors remain.
+
 ## What the new plan actually does
 
-Plan schema **2**, ingest job version **1**, dispatches all eight domains concurrently, with up to eight workers bounded by CPU/memory availability. One worker owns each staging database. Individual source errors are recorded without preventing the other sources/domains from finishing:
+Plan schema **2**, ingest job version **2**, dispatches all eight domains concurrently, with up to eight workers bounded by CPU/memory availability. One worker owns each staging database. Individual source errors are recorded without preventing the other sources/domains from finishing:
 
 | Domain | Treatment |
 | --- | --- |
@@ -24,14 +39,14 @@ Plan schema **2**, ingest job version **1**, dispatches all eight domains concur
 
 The default bounded catalog scans the known retained OffMenu data root and narrow documented report references. Catalogs, paths, raw records, error details, and SQLite state stay local. Historical OFF **4,807,217**, USDA **2,101,279**, and identifier **5,242,597** counts are documentary hints, not claims about this invocation. Actual source existence, recognized table counts, schema and index information are checked read-only at runtime. Native table rows are not necessarily unique products. Leading-zero barcode strings are retained.
 
-**Targets are additive local staging and reusable source references, not a claim that current application/UI bindings changed.** Reports explicitly say `additive_staging_not_app_bound`. Application wiring and acceptance remain separate work; existing source databases are never opened for writes.
+**Targets are additive local staging, reusable source references, and a separately versioned derived relational target; current application/UI bindings do not change.** Reports explicitly say `additive_staging_not_app_bound`. Application wiring and acceptance remain separate work; existing source databases are never opened for writes.
 
 ## Progress, repeatability, and recovery
 
 - Before any source loading, the runner reports remaining work for all eight domains. Checkpoints and the final summary refresh it while ingestion continues: completed/reused, not-yet-read, partial/failed, held/unsupported, unqualified/unknown and awaiting-input **source/domain assignments**, plus files left to read. Empty user-profile/inventory schemas explicitly await scoped household input; they are not invented source assignments. One file can be assigned to several domains, so totals are not counts of unique files or entities.
 - Known records left to read are reported only when an explicit expected count describes adapter-output ordinals for the exact current source version; otherwise the record total remains unknown. Known subtotals and the number of assignments with unknown counts are separate. Historical corpus counts, input bytes and native table rows are not treated as unread staging records. A known read count does not promise that many new records will be written. Incomplete catalog discovery is explicit, not a claim that the whole retained corpus was enumerated. Reporter errors produce **unknown**, not an ingestion gate or a false zero.
 - Live terminal progress reports all domains; durable local batch checkpoints allow partial work to resume. Roughly each minute, and at the final phase, changed sanitized summaries become immutable receipt files and are committed/pushed serially with `[skip ci]`. No raw dataset, path, personal field, archive, exception text or private log can enter these schemas.
-- Receipt schema 2 remains backward compatible: old receipts without pending-work fields retain their original digest and exact recovery rules. New receipts bind the optional fixed-key `pending_work` counters/enums into the progress digest; paths, provider names, payloads and arbitrary diagnostic text remain forbidden. The reviewed plan stays at ingest job version 1 for this reporting change.
+- Receipt schema 2 remains backward compatible: old receipts without pending-work fields retain their original digest and exact recovery rules. New receipts bind the optional fixed-key `pending_work` counters/enums into the progress digest; paths, provider names, payloads and arbitrary diagnostic text remain forbidden. The next comprehensive plan advances the job to version 2 without changing retained source adapter versions or moving existing state.
 - SQLite batches are transactional and idempotent by source metadata/version and record identity. A completed unchanged plan is not replayed; catalog/input changes or an explicit reviewed job-version change produce a new identity. Reporting-only source updates can create a new receipt identity, but unchanged completed source versions are still reused without fresh record writes. Partial/failed work remains resumable. Input identity is metadata-based, not a claim of full dataset checksum authentication.
 - A final summary is produced even when individual sources fail. Exit **0** means all domain outcomes reached the engine's accepted terminal states and receipts synchronized; it does **not** mean every worldwide dataset is present or application acceptance passed. Exit **2** means partial/unavailable/failed work or pending receipt synchronization. Empty private household domains are not treated as missing public corpora.
 - Git delivery failure is independent of data ingestion: committed data batches continue, while exact sanitized pending receipts remain durable under `.git/offmenu-runner/ingest-pending/`. The next run first recovers the exact owned receipt/spool, then evaluates the reviewed plan. An earlier supplier failure is not an ingest dependency. No repeated push hammering occurs after a transport failure in the same invocation.

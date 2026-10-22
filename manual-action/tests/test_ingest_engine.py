@@ -32,6 +32,62 @@ class IngestTests(unittest.TestCase):
         return [{'id':str(i),'title':'meal '+str(i),'nutrition':{'protein':i},'ingredients':['salt','water'],
                  'relations':[{'kind':'uses','target_domain':'ingredients','target_id':'salt'}]} for i in range(count)]
 
+    def test_new_acquired_groups_precede_unfinished_large_retained_tail(self):
+        order=[]
+        def handler(label,partial=False):
+            def run(domain,sources,context):
+                order.append(label)
+                return {'sources':[{'source_key':label,'status':'partial' if partial else 'complete'}]}
+            return run
+        retained=[{**self.source,'id':'retained-'+str(i)} for i in range(1000)]
+        acquired=[{**self.source,'id':'new-'+family,'acquired_source':True,
+            'acquired_adapter':family,'metadata':{'acquisition':{'verified':True}},'disposition':'candidate'}
+            for family in ('foodista_common_pile','fr_cnous_menus')]
+        with mock.patch('ingest_acquired_menus.run_domain',side_effect=handler('menus')), \
+             mock.patch('ingest_acquired_recipes.run_domain',side_effect=handler('acquired_recipes')), \
+             mock.patch('ingest_recipes.run_domain',side_effect=handler('retained',True)):
+            report=run_ingest([*retained,*acquired],{**self.config,'state_dir':str(self.state)})
+        self.assertEqual(order,['menus','acquired_recipes','retained'])
+        self.assertEqual(report['domains']['recipes']['status'],'partial')
+        self.assertEqual(report['ingest_evidence']['source_order'],
+            'acquired_adapter_groups_then_retained_one_writer_per_domain')
+
+    def test_acquired_permission_failure_and_unknown_binding_never_block_retained(self):
+        self.path.write_text(json.dumps({'id':'retained','name':'Generated retained recipe',
+            'ingredients':['1 g salt'],'instructions':['Mix']})+'\n')
+        blocked={'id':'generated-blocked','path':str(self.root/'not-readable'),
+            'format':'jsonl','domains':['recipes'],'acquired_source':True,
+            'acquired_adapter':'foodista_common_pile','disposition':'unreadable',
+            'reason':'read_permission_denied','metadata':{'acquisition':{'verified':False}}}
+        unknown={**self.source,'id':'generated-unknown','acquired_source':True,
+            'metadata':{'acquisition':{'verified':False}}}
+        report=run_ingest([blocked,unknown,self.source],{**self.config,'state_dir':str(self.state)})
+        row=report['domains']['recipes']
+        self.assertEqual(row['written'],1)
+        self.assertGreaterEqual(row['sources_skipped'],1)
+        self.assertIn('PermissionError',row['error_codes'])
+        self.assertEqual(row['error_telemetry']['reason_counts']['acquired_cache_read_permission_denied'],1)
+        self.assertEqual(row['status'],'partial')
+
+    def test_performance_counters_use_existing_events_without_byte_inference(self):
+        source={**self.source,'bytes':3}
+        def adapter(domain,sources,context):
+            def rows():
+                time.sleep(.025)
+                yield {'id':'timed','name':'generated'}
+            return {'sources':[context.ingest(sources[0],rows())]}
+        report=run_ingest([source],{**self.config,'state_dir':str(self.state)},adapters={'recipes':adapter})
+        timing=report['domains']['recipes']['timing']
+        self.assertGreaterEqual(timing['elapsed_ms'],20)
+        self.assertGreaterEqual(timing['completed_source_elapsed_ms'],20)
+        self.assertEqual(timing['sources_timed'],1)
+        self.assertIsNone(timing['active_source_elapsed_ms'])
+        self.assertIsNone(timing['active_source_bytes'])
+        private=json.loads((self.state/'recipes.private.json').read_text())
+        self.assertGreaterEqual(private['sources'][0]['elapsed_ms'],20)
+        self.assertEqual(private['sources'][0]['source_bytes'],3)
+        self.assertNotIn('processed_bytes',timing)
+
     def test_records_fields_relations_and_idempotence(self):
         with DomainStore('recipes',self.state,self.config) as store:
             first=store.ingest(self.source,iter(self.rows()))
@@ -202,6 +258,11 @@ class IngestTests(unittest.TestCase):
         self.assertGreater(first['domains']['recipes']['written'],0)
         prepared={'config':config,'catalog_sha256':'a'*64}
         self.assertTrue(completed_outputs_available(prepared))
+        derived_prepared={**prepared,'config':{**config,'materialize_relational_targets':True}}
+        with mock.patch('ingest_relational_targets.relational_outputs_available',return_value=False) as guard:
+            self.assertFalse(completed_outputs_available(derived_prepared));guard.assert_called_once()
+        with mock.patch('ingest_relational_targets.relational_outputs_available',return_value=True):
+            self.assertTrue(completed_outputs_available(derived_prepared))
         second=run_ingest(sources,config)
         self.assertEqual(sum(row['written'] for row in second['domains'].values()),0)
         self.assertTrue(completed_outputs_available(prepared))

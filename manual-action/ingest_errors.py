@@ -41,7 +41,8 @@ ERROR_REASONS = frozenset('other_or_unavailable unrecognized_recipe_or_lead_only
     'unsupported_text_compression parquet_dependency_unavailable '
     'no_supported_supplier_table source_changed_before_read '
     'source_changed_during_read source_changed_during_ingestion '
-    'cancelled wall_time_cap disk_reserve'.split())
+    'cancelled wall_time_cap disk_reserve acquired_cache_read_permission_denied '
+    'acquired_cache_file_missing acquired_cache_unreadable'.split())
 
 ORIGINS = ('adapter_callback', 'record_or_stream')
 

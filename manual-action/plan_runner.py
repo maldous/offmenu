@@ -98,7 +98,9 @@ def read_json(path):
 
 
 def validate_plan(plan):
-    exact_keys(plan, {'schema', 'max_parallel', 'jobs'})
+    exact_keys(plan, {'schema', 'max_parallel', 'jobs'}, {'receipt_transport'})
+    if plan.get('receipt_transport', 'legacy-same-branch') not in ('legacy-same-branch', 'isolated-branch-v1'):
+        raise Stop('unsupported_receipt_transport')
     if not isinstance(plan['jobs'], list) or len(plan['jobs']) != 1:
         raise Stop('unsupported_jobs')
     job = plan['jobs'][0]
@@ -161,11 +163,66 @@ def validate_pending_work(value):
     return value
 
 
+def evidence_ref(value):
+    exact_keys(value, {'schema', 'sha256', 'bytes'})
+    if (value['schema'] != 'offmenu-ingest-evidence-ref/1'
+            or not isinstance(value['sha256'], str) or not HEX.fullmatch(value['sha256'])
+            or type(value['bytes']) is not int or not 1 <= value['bytes'] <= 65536):
+        raise Stop('invalid_evidence_reference')
+    return value
+
+
+def supplement_relpath(reference):
+    reference = evidence_ref(reference)
+    return RETURN_DIR + '/evidence/' + reference['sha256'] + '.json'
+
+
+def validate_supplement(value):
+    exact_keys(value, {'schema'}, {'ingest_evidence', 'relational_targets'})
+    if value['schema'] != 'offmenu-ingest-supplement/1' or len(value) < 2:
+        raise Stop('invalid_ingest_supplement')
+    try:
+        if 'ingest_evidence' in value:
+            from ingest_evidence import validate_evidence
+            validate_evidence(value['ingest_evidence'])
+        if 'relational_targets' in value:
+            from ingest_relational_targets import sanitize_relational_summary
+            if sanitize_relational_summary(value['relational_targets']) != value['relational_targets']:
+                raise ValueError('invalid_relational_summary')
+    except (ImportError, ValueError, TypeError):
+        raise Stop('invalid_ingest_supplement') from None
+    if len(canonical(value)) > 65536:
+        raise Stop('sanitized_supplement_size_limit')
+    return value
+
+
+def build_supplement(report):
+    value = {'schema': 'offmenu-ingest-supplement/1'}
+    if 'ingest_evidence' in report:
+        try:
+            from ingest_evidence import sanitize_evidence
+            value['ingest_evidence'] = sanitize_evidence(report['ingest_evidence'])
+        except Exception:
+            pass
+    if 'relational_targets' in report:
+        try:
+            from ingest_relational_targets import sanitize_relational_summary
+            value['relational_targets'] = sanitize_relational_summary(report['relational_targets'])
+        except Exception:
+            pass
+    return validate_supplement(value) if len(value) > 1 else None
+
+
+def reference_for_supplement(value):
+    raw = canonical(validate_supplement(value))
+    return {'schema': 'offmenu-ingest-evidence-ref/1', 'sha256': digest(raw), 'bytes': len(raw)}
+
+
 def ingest_progress_digest(summary):
     # v2 receipts published before pending-work reporting hashed domains alone.
     # Keep those exact bytes recoverable; bind new optional counters when present.
-    evidence = ({'domains': summary['domains'], 'pending_work': summary['pending_work']}
-                if 'pending_work' in summary else summary['domains'])
+    extras = {key: summary[key] for key in ('pending_work', 'ingest_evidence', 'relational_targets', 'evidence_ref') if key in summary}
+    evidence = {'domains': summary['domains'], **extras} if extras else summary['domains']
     return digest(canonical(evidence))
 
 
@@ -196,7 +253,7 @@ def validate_ingest_receipt(value):
         if not isinstance(value[key],str) or not HEX.fullmatch(value[key]):
             raise Stop('invalid_sanitized_digest')
     summary=value['ingest']
-    exact_keys(summary,{'binding','domains','progress_sha256'},{'pending_work'})
+    exact_keys(summary,{'binding','domains','progress_sha256'},{'pending_work','ingest_evidence','relational_targets','evidence_ref'})
     if summary['binding'] != 'additive_staging_not_app_bound':
         raise Stop('invalid_sanitized_schema')
     exact_keys(summary['domains'],set(DOMAINS))
@@ -213,8 +270,25 @@ def validate_ingest_receipt(value):
             error_telemetry(row['error_telemetry'], strict=True)
     if 'pending_work' in summary:
         validate_pending_work(summary['pending_work'])
+    if 'evidence_ref' in summary:
+        evidence_ref(summary['evidence_ref'])
+    if 'ingest_evidence' in summary:
+        try:
+            from ingest_evidence import validate_evidence
+            validate_evidence(summary['ingest_evidence'])
+        except (ImportError, ValueError, TypeError):
+            raise Stop('invalid_ingest_evidence') from None
+    if 'relational_targets' in summary:
+        try:
+            from ingest_relational_targets import sanitize_relational_summary
+            if sanitize_relational_summary(summary['relational_targets']) != summary['relational_targets']:
+                raise ValueError('invalid_relational_summary')
+        except (ImportError, ValueError, TypeError):
+            raise Stop('invalid_relational_summary') from None
     if summary['progress_sha256'] != ingest_progress_digest(summary):
         raise Stop('invalid_progress_digest')
+    if len(canonical({'sha256': '0' * 64, 'receipt': value})) > 65536:
+        raise Stop('sanitized_receipt_size_limit')
     return value
 
 
@@ -279,19 +353,26 @@ class Runner:
         self.state = self.gitdir / 'offmenu-runner'
         self.lock = None
         self.remote_head = None
+        self.receipt_transport = 'legacy-same-branch'
+        self.receipt_publisher = None
 
-    def git(self, *args, check=True):
+    def git(self, *args, check=True, input_data=None, env_overrides=None):
         env = dict(os.environ, GIT_TERMINAL_PROMPT='0', GIT_OPTIONAL_LOCKS='0')
-        if args[0] == 'commit':
+        if args[0] in ('commit', 'commit-tree'):
             env.update(self.commit_identity_env())
+        if env_overrides:
+            if set(env_overrides) != {'GIT_INDEX_FILE'} or Path(env_overrides['GIT_INDEX_FILE']).parent != self.state:
+                raise Stop('private_receipt_index_override_refused')
+            env.update(env_overrides)
         command = ['git', '-C', str(self.root), '-c', 'core.hooksPath=/dev/null',
             '-c', 'core.fsmonitor=false', '-c', 'submodule.recurse=false',
             '-c', 'commit.gpgsign=false', '-c', 'push.followTags=false',
             '-c', 'push.recurseSubmodules=no', '-c', 'remote.origin.mirror=false', *args]
         proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                stdin=subprocess.PIPE if input_data is not None else None,
                                 env=env, start_new_session=True)
         try:
-            out, stderr = proc.communicate(timeout=120)
+            out, stderr = proc.communicate(input=input_data, timeout=120)
         except (subprocess.TimeoutExpired, KeyboardInterrupt):
             os.killpg(proc.pid, signal.SIGKILL)
             proc.communicate()
@@ -300,7 +381,7 @@ class Runner:
             operation = args[0].replace('-', '_')
             detail = stderr.decode('utf-8', errors='replace').lower()
             category = 'failed'
-            if args[0] == 'commit':
+            if args[0] in ('commit', 'commit-tree'):
                 if any(text in detail for text in ('unable to auto-detect email address', 'author identity unknown', 'committer identity unknown', 'empty ident name', 'auto-detection is disabled')):
                     category = 'identity_not_configured'
                 elif 'index.lock' in detail:
@@ -573,6 +654,33 @@ class Runner:
                 os.unlink(temporary)
 
     def materialize_ingest_receipt(self, value):
+        if self.receipt_transport == 'isolated-branch-v1':
+            from receipt_branch import ReceiptBranchPublisher
+            if self.receipt_publisher is None:
+                self.receipt_publisher = ReceiptBranchPublisher(self,
+                    validate=validate_ingest_receipt, relpath=receipt_relpath,
+                    canonical=canonical, fail=Stop, validate_supplement=validate_supplement,
+                    supplement_relpath=supplement_relpath)
+            cache = safe_path(self.state / 'receipt-cache' / Path(receipt_relpath(value)).name)
+            if cache.exists():
+                old = validate_ingest_receipt(read_json(cache))
+                if receipt_relpath(old) != receipt_relpath(value) or cache.read_bytes() != canonical(old):
+                    raise Stop('isolated_receipt_cache_changed_preserved')
+                value = old
+            else:
+                self.durable_local_json(cache, value)
+            supplemental = None
+            if 'evidence_ref' in value['ingest']:
+                reference = evidence_ref(value['ingest']['evidence_ref'])
+                path = safe_path(self.state / 'ingest-evidence' / (reference['sha256'] + '.json'))
+                if not path.is_file():
+                    recovered = self.receipt_publisher.recover_supplement(reference)
+                    self.durable_local_json(path, recovered)
+                supplemental = validate_supplement(read_json(path))
+                if reference_for_supplement(supplemental) != reference or path.read_bytes() != canonical(supplemental):
+                    raise Stop('required_supplement_changed_spool_preserved')
+            self.receipt_publisher.publish(value, supplemental)
+            return
         relative=receipt_relpath(value)
         raw=canonical(value)
         destination=safe_path(self.root / relative)
@@ -618,6 +726,9 @@ class Runner:
             remaining=unknown_pending_work()
         summary={'binding':'additive_staging_not_app_bound','domains':domains,
                  'pending_work':remaining}
+        supplement = build_supplement(report)
+        if supplement is not None:
+            summary['evidence_ref'] = reference_for_supplement(supplement)
         summary['progress_sha256']=ingest_progress_digest(summary)
         return summary
 
@@ -647,6 +758,7 @@ class Runner:
 
     def run_ingest_plan(self, plan, job):
         self.preconditions()
+        self.receipt_transport = plan.get('receipt_transport', 'legacy-same-branch')
         engine=self.ingest_engine()
         self.state=safe_path(self.state)
         self.state.mkdir(mode=0o700,exist_ok=True)
@@ -662,11 +774,11 @@ class Runner:
                 self.materialize_ingest_receipt(value)
                 if spool is not None:
                     spool.unlink()
-            except Stop as exc:
+            except Exception as exc:
                 # No reset/rebase/pull mid-run. Keep data workers independent of
                 # transport; exact staged receipt and private spool remain durable.
                 transport_failed=True
-                announce('Receipt sync paused: '+str(exc)+'. Ingestion continues; local checkpoints retained.')
+                announce('Receipt sync paused: '+(str(exc) if isinstance(exc, Stop) else 'receipt_delivery_error')+'. Ingestion continues; local checkpoints retained.')
 
         recovery=self.recovery_receipt()
         if recovery:
@@ -687,20 +799,25 @@ class Runner:
             if envelope['sha256']!=digest(canonical(value)) or spool.name!=Path(receipt_relpath(value)).name:
                 raise Stop('pending_receipt_changed_preserved')
             deliver(value,spool)
-        options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True}
-        announce('[2/4] Discovering retained inputs, then ingesting all eight domains in parallel.')
+        options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True,
+                 'materialize_relational_targets': self.receipt_transport == 'isolated-branch-v1'}
+        announce('[2/4] Discovering retained and newly acquired inputs, then ingesting all eight domains in parallel; no downloads. Bounded acquired groups first, then retained cursor resume.')
         prepared=engine.prepare_default(self.state/'ingest',options)
         initial_pending=self.pending_snapshot(engine,prepared)
         self.announce_remaining(initial_pending, 'Before ingest')
         input_sha=prepared['catalog_sha256']
         if not isinstance(input_sha,str) or not HEX.fullmatch(input_sha):
             raise Stop('invalid_catalog_identity')
-        files=['run','manual-action/plan_runner.py']+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('ingest_*.py'))]
+        files=['run','manual-action/plan_runner.py']+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('receipt_*.py'))]+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('ingest_*.py'))]
+        for helper in ('manual-action/acquired_recipe_js.py', 'manual-action/relational-targets.schema.sql', 'manual-action/relational-target-mapping.json'):
+            if (self.root / helper).is_file():
+                files.append(helper)
         implementation=digest(b''.join((self.root/path).read_bytes() for path in files))
         job_key=digest(canonical({'job':job,'implementation':implementation,'input':input_sha}))
         completed=f'{RETURN_DIR}/{job_key}-completed.json'
-        if (self.root/completed).exists() and engine.completed_outputs_available(prepared):
-            value=validate_ingest_receipt(read_json(self.root/completed))
+        completed_path = (self.state / 'receipt-cache' / Path(completed).name if self.receipt_transport == 'isolated-branch-v1' else self.root / completed)
+        if completed_path.exists() and engine.completed_outputs_available(prepared):
+            value=validate_ingest_receipt(read_json(completed_path))
             if value['job_key']!=job_key or value['outcome']!='completed':
                 raise Stop('existing_receipt_identity_mismatch')
             deliver(value)
@@ -711,6 +828,20 @@ class Runner:
         def checkpoint_report(report):
             nonlocal last_signature
             summary=self.ingest_summary(report)
+            supplement = build_supplement(report)
+            if supplement is not None:
+                reference = reference_for_supplement(supplement)
+                evidence_path = safe_path(self.state / 'ingest-evidence' / (reference['sha256'] + '.json'))
+                if evidence_path.exists():
+                    if evidence_path.read_bytes() != canonical(supplement):
+                        raise Stop('evidence_content_address_conflict_preserved')
+                else:
+                    self.durable_local_json(evidence_path, supplement)
+                if self.receipt_transport != 'isolated-branch-v1':
+                    # Legacy plans predate this companion protocol. Their exact
+                    # old receipts remain recoverable; new release enables it.
+                    summary.pop('evidence_ref', None)
+                    summary['progress_sha256'] = ingest_progress_digest(summary)
             status=report.get('status')
             outcome='completed' if status=='complete' else 'running' if status=='running' else 'partial' if status=='partial' else 'blocked'
             signature=(outcome,summary['progress_sha256'])

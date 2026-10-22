@@ -76,11 +76,14 @@ def _error(context, source, exc, stats):
 def _open(source):
     """Held read-only regular file, no symlink components; gzip stays streaming."""
     path = Path(os.path.abspath(source['path']))
-    parent_fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
+    # Traverse exact known paths without requesting directory listing access.
+    # O_PATH retains descriptor anchoring and O_NOFOLLOW on Linux; no ACL change.
+    parent_flags = getattr(os, 'O_PATH', os.O_RDONLY) | os.O_DIRECTORY
+    parent_fd = os.open('/', parent_flags)
     fd = None
     try:
         for part in path.parts[1:-1]:
-            child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+            child = os.open(part, parent_flags | os.O_NOFOLLOW, dir_fd=parent_fd)
             os.close(parent_fd)
             parent_fd = child
         fd = os.open(path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent_fd)
