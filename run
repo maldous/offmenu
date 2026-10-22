@@ -1,0 +1,5 @@
+#!/bin/sh
+# One-time bootstrap: git pull --ff-only && ./run
+set -eu
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec python3 -B "$HERE/manual-action/plan_runner.py" "$@"

@@ -1,0 +1,12 @@
+{
+  "schema": "offmenu-run-plan/1",
+  "max_parallel": 1,
+  "jobs": [
+    {
+      "id": "supplier-source-inspection",
+      "version": 1,
+      "operation": "supplier_inspect",
+      "depends_on": []
+    }
+  ]
+}

@@ -1,4 +1,32 @@
-# Foo manual action — checkout / run / return
+# Foo manual action — one command
+
+**Operating rhythm: `./run`.** From the existing isolated `integration/manual-actions-20261022` checkout, bootstrap the new launcher once:
+
+```sh
+git pull --ff-only && ./run
+```
+
+After that, just:
+
+```sh
+./run
+```
+
+The launcher locks this checkout, pulls the expected private OffMenu branch **fast-forward only**, reloads the freshly pulled runner, executes the pending reviewed plan, then commits and pushes **only its strict sanitized JSON receipt**. Terminal phases show pull → supplier check → receipt → push. No GitHub Actions rehearsal, per-run approval or CI wait. Initial plan: **supplier source inspection only**; it does **not** rerun inventory, import data, execute archived source or upload the source archive.
+
+### Safe repeat and failure behavior
+
+- A completed check is identified by explicit job/version, runner implementation and the fixed source archive's digest. The same successful unchanged job is not inspected again. Reading at most 16 MiB to confirm archive identity is not a new inventory or import. A reviewed version increase explicitly requests a rerun; source/input changes also create a new identity.
+- A blocked check returns exit **2**, publishes its sanitized blocked receipt and stays pending. Running again retries it; an identical blocked outcome does not create another receipt/commit. Exit **0** means the inspection check completed, **not** human source acceptance or import readiness.
+- Preexisting staged changes, dirty/untracked runner/plan paths, wrong repository/branch, in-progress Git operations, symlinks or non-receipt outgoing commits cause a clear STOP. Unrelated uncommitted work is preserved. Use the dedicated checkout, not a shared active working tree; do not run other Git commands there concurrently.
+- A nonblocking exclusive local lock prevents concurrent `./run` calls. This finite v1 plan has one read-only job and `max_parallel: 1`; no writers, parallel database operations or arbitrary plan commands exist. Dependencies/new operation types require a reviewed implementation change.
+- The small atomic checkpoint is inside `.git/offmenu-runner/`, never staged; it records the last durable recovery state, not live progress. The terminal phase lines are current. The supplier operation is short and emits a terminal receipt; there are no invented import-progress checkpoints. Only meaningful new terminal receipts are committed.
+- If commit/push fails or the remote advances, the receipt/local commit remains available. No reset, stash, clean, rebase or force-push occurs. Retry `./run` after connectivity is restored; it can publish its existing pending receipt commit without rerunning a completed check. Genuine branch divergence needs manual reconciliation; do not force it. If a failed commit left a staged result, inspect that exact staged receipt and resolve the Git error before retrying.
+- Only `manual-action/returns/run/<job-key>-<outcome>.json` files newly created by this runner (or its recorded interrupted run) can be staged. Exact keys, enums, counts and digest values are validated, including the staged blob and all outgoing commits. Hooks and mirror pushes are disabled; receipt clean filters are refused. No host paths, process names, source member names/content, raw datasets, private logs, credentials or archives enter automatic returns.
+
+The existing lower-level commands below remain optional diagnostics/manual source handoff instructions, **not the routine `./run` workflow**. Never use `collect` simply to repeat the supplier check.
+
+## Legacy explicit diagnostics / source handoff
 
 **Runnable diagnostics and supplier source-review preparation, not a data importer.** Python 3.10+ on Linux/POSIX, standard library only. No Codex worker, package installation, Actions rehearsal or per-run CI gate. The current Foo data/capsule have not been inspected by this cloud publication.
 
@@ -27,7 +55,7 @@ sh manual-action/run.sh collect \
   --return-output "manual-action/returns/$RUN_ID.json"
 ```
 
-Exit **0**: selected checks completed (supplier still requires human source review). Exit **2**: a check was blocked or an output could not be created. Read the private JSON after either outcome. Missing files/wrong capsule identity are recorded, never repaired by deleting, downloading or restarting. Outputs are exclusive/new, mode 0600; repeat with a new run ID. No automatic retry/resume of existing jobs.
+Exit **0**: selected checks completed (supplier still requires human source review). Exit **2**: a check was blocked or an output could not be created. Read the private JSON after either outcome. Missing files/wrong capsule identity are recorded, never repaired by deleting, downloading or restarting. Outputs are exclusive/new, mode 0600; repeat with a new run ID. These lower-level commands do not retry/resume existing jobs; root `./run` provides the idempotent pending-job rhythm described above.
 
 `collect` performs:
 
@@ -94,7 +122,7 @@ No bulk extraction/staging. If anything is ambiguous, return the sanitized block
 
 ## What remains STOP
 
-No HTML, PDF/cache, UniTools or supplier load subcommands exist. Exact accepted caller/source pins, current input/custody/rights, resource limits, exclusive output and terminal load receipt have not been supplied together. Success here means no retained import occurred. Datasets, working scanner, healthy jobs, main and production stay unchanged. No CLI network, download, external AI, arbitrary shell execution or database writes.
+No HTML, PDF/cache, UniTools or supplier load subcommands exist. Exact accepted caller/source pins, current input/custody/rights, resource limits, exclusive output and terminal load receipt have not been supplied together. Success here means no retained import occurred. Datasets, working scanner, healthy jobs, main and production stay unchanged. The observation CLI has no network, download, external AI, arbitrary shell execution or database writes. The root `./run` orchestrator uses Git network access only to pull reviewed code and push sanitized receipts.
 
 ## Developer verification (not required on each user run)
 
@@ -102,4 +130,4 @@ No HTML, PDF/cache, UniTools or supplier load subcommands exist. Exact accepted 
 python3 -B -m unittest discover -s manual-action/tests -v
 ```
 
-Generated temporary fixtures only: bounds, traversal/links/secrets/data rejection, checksum/manifest, malformed gzip, timeout propagation, missing files, sanitized return and exclusive writes. Optional hosted workflow runs only those tests, never Foo paths. See `PROVENANCE.md`.
+Generated temporary fixtures only: bounds, traversal/links/secrets/data rejection, checksum/manifest, malformed gzip, timeout propagation, missing files, sanitized return and exclusive writes; plus local bare-Git pull/self-update/commit/push, repeat idempotency, staged/dirty preservation, locks, blocked results and remote conflict recovery. No real Foo paths or GitHub writes are used by the fixtures. Optional hosted workflow runs only those tests, never Foo paths. See `PROVENANCE.md`.
