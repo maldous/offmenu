@@ -2,7 +2,8 @@
 
 **Not the current `./run` operation.** The owner switched the next phase to
 database-only normalization of already retained records. See
-[DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md). The implementation and source
+[DB-RECONCILIATION-RUN.md](DB-RECONCILIATION-RUN.md) for the bounded follow-on
+to the retained rules stage. The implementation and source
 custody below are preserved for a future explicit reviewed ingest phase; no
 backlog, original-file access or acquired-cache completion gates normalization.
 

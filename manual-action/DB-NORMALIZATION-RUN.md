@@ -1,9 +1,14 @@
-# Database-only normalization — current `./run` phase
+# Database-only rules normalization — retained preceding phase
 
-The reviewed plan is now `offmenu-run-plan/3`, job
+**Historical phase contract, not the selected default plan.** The next selected
+phase is [bounded cache reconciliation](DB-RECONCILIATION-RUN.md). This rules stage
+remains available for a future reviewed plan selection; the reconciliation stage
+does not automatically invoke it or create new normalization cache rows.
+
+The reviewed rules plan is `offmenu-run-plan/3`, job
 `retained-six-domain-normalization`, operation `normalize_staged_databases`.
-After publication and after any old run has exited, use the existing normal-user
-checkout and the usual command:
+Only when that rules plan is explicitly selected, after publication and after any
+old run has exited, use the existing normal-user checkout and usual command:
 
 ```sh
 git pull --ff-only && ./run

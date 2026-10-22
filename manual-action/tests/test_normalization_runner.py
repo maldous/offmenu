@@ -21,6 +21,13 @@ from normalization_receipts import DOMAINS, COUNTS, build_summary, validate_repo
 from receipt_branch import BRANCH as RECEIPT_BRANCH
 
 
+def normalization_plan():
+    return {'schema': 'offmenu-run-plan/3', 'max_parallel': 16,
+        'jobs': [{'id': 'retained-six-domain-normalization', 'version': 1,
+                  'operation': 'normalize_staged_databases', 'depends_on': []}],
+        'receipt_transport': 'isolated-branch-v1'}
+
+
 def report(status='rules_complete', identity='a'*64):
     active = status != 'running'
     row = {'status': 'rules_complete' if active else 'running', 'selected_rows': 1,
@@ -69,7 +76,7 @@ class NormalizationReceiptTests(unittest.TestCase):
             value = self.receipt(); mutate(value)
             with self.assertRaises(m.Stop): m.validate_runtime_receipt(value)
     def test_plan_must_be_normalization_and_isolated(self):
-        value = json.loads((PACKAGE/'plan.json').read_text())
+        value = normalization_plan()
         self.assertEqual(m.validate_plan(value)['operation'], 'normalize_staged_databases')
         value['receipt_transport'] = 'legacy-same-branch'
         with self.assertRaises(m.Stop): m.validate_plan(value)
@@ -87,6 +94,7 @@ class NormalizationRunnerTests(unittest.TestCase):
             for path in PACKAGE.glob(pattern): shutil.copy(path, self.root/'manual-action'/path.name)
         for name in ('normalize_recipes.py', 'ingest_storage_sizes.py', 'ingest_household_preparation.py', 'plan.json'):
             shutil.copy(PACKAGE/name, self.root/'manual-action'/name)
+        (self.root/'manual-action/plan.json').write_bytes(m.canonical(normalization_plan()))
         self.git(self.root, 'add', 'manual-action'); self.git(self.root, 'commit', '-m', 'Reviewed generated DB normalization plan')
         self.git(self.root, 'push', 'origin', m.BRANCH)
     def runner(self, fail_run=False):

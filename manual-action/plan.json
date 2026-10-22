@@ -1,11 +1,11 @@
 {
-  "schema": "offmenu-run-plan/3",
-  "max_parallel": 16,
+  "schema": "offmenu-run-plan/4",
+  "max_parallel": 1,
   "jobs": [
     {
-      "id": "retained-six-domain-normalization",
+      "id": "retained-six-domain-reconciliation",
       "version": 1,
-      "operation": "normalize_staged_databases",
+      "operation": "reconcile_normalized_cache",
       "depends_on": []
     }
   ],

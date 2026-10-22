@@ -26,6 +26,7 @@ class ReceiptBranchPublisher:
         self.initialized = False
         self.validated = set()
         self.tree_sizes = {}
+        self.remote_tip = None
 
     def _oid(self, *args):
         code, raw = self.runner.git(*args, check=False)
@@ -81,7 +82,7 @@ class ReceiptBranchPublisher:
                     value = self.validate(value)
                     if self.relpath(value) != path:
                         raise ValueError('invalid_receipt_path')
-                    reference = value.get('normalization', value.get('ingest', {})).get('evidence_ref')
+                    reference = value.get('reconciliation', value.get('normalization', value.get('ingest', {}))).get('evidence_ref')
                     if reference:
                         references[self.supplement_relpath(reference)] = reference
                 if self.canonical(value) != raw:
@@ -125,7 +126,14 @@ class ReceiptBranchPublisher:
                 raise self.fail('receipt_branch_diverged_local_commits_and_spool_preserved')
         elif remote and not local:
             self.runner.git('update-ref', LOCAL_REF, remote, '0' * len(remote))
+        self.remote_tip = remote
         self.initialized = True
+
+    def refresh(self):
+        """Re-read and validate remote evidence; never reuse a cached observation."""
+        self.initialized = False
+        self.remote_tip = None
+        self.initialize()
 
     def recover_supplement(self, reference):
         """Recover missing local evidence only from an already validated commit."""
@@ -144,7 +152,7 @@ class ReceiptBranchPublisher:
     def publish(self, value, supplement=None):
         return self.publish_batch(((value, supplement),))
 
-    def publish_batch(self, items):
+    def publish_batch(self, items, *, refresh=False, exact=False):
         """Validate a bounded batch before touching refs; publish it atomically.
 
         Canonical bytes are captured as supplied, never rebuilt with new
@@ -180,7 +188,7 @@ class ReceiptBranchPublisher:
             raw = self.canonical(value)
             add(relative, raw)
             receipts.add(relative)
-            reference = value.get('normalization', value.get('ingest', {})).get('evidence_ref')
+            reference = value.get('reconciliation', value.get('normalization', value.get('ingest', {}))).get('evidence_ref')
             if reference:
                 if supplement is None:
                     raise self.fail('required_supplement_missing_spool_preserved')
@@ -193,7 +201,7 @@ class ReceiptBranchPublisher:
                 raise self.fail('unbound_supplement_refused')
         if not additions:
             return
-        self.initialize()
+        self.refresh() if refresh else self.initialize()
         parent = self._oid('rev-parse', '--verify', LOCAL_REF)
         missing = {}
         for path, content in additions.items():
@@ -201,12 +209,14 @@ class ReceiptBranchPublisher:
             if exists:
                 previous = self.runner.git('show', parent + ':' + path)[1]
                 if previous != content:
+                    if exact:
+                        raise self.fail('receipt_branch_exact_bytes_conflict_preserved')
                     if path not in receipts:
                         raise self.fail('receipt_branch_existing_supplement_changed_preserved')
                     # Preserve canonical timestamp of a prior identical-progress receipt.
                     old = self.validate(json.loads(previous))
                     supplied = json.loads(content)
-                    if self.relpath(old) != path or self.canonical(old) != previous or old.get('normalization', old.get('ingest')) != supplied.get('normalization', supplied.get('ingest')):
+                    if self.relpath(old) != path or self.canonical(old) != previous or old.get('reconciliation', old.get('normalization', old.get('ingest'))) != supplied.get('reconciliation', supplied.get('normalization', supplied.get('ingest'))):
                         raise self.fail('receipt_branch_existing_receipt_invalid_preserved')
             else:
                 missing[path] = content
@@ -244,4 +254,8 @@ class ReceiptBranchPublisher:
                     os.unlink(temporary)
                 if os.path.exists(temporary + '.lock'):
                     os.unlink(temporary + '.lock')
+        # Fresh immutable remote evidence already contains every exact blob.
+        # In particular, a lost successful push response must not cause a write.
+        if refresh and not missing and parent == self.remote_tip:
+            return
         self.runner.git('push', 'origin', LOCAL_REF + ':' + LOCAL_REF)

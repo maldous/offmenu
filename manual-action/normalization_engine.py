@@ -89,7 +89,11 @@ def _identity(path):
         sibling = Path(str(path) + suffix)
         if sibling.is_symlink():
             raise NormalizationError('symlink_staging_refused')
-    return {'database': _file_identity(path), 'wal': _file_identity(Path(str(path) + '-wal'))}
+    wal = _file_identity(Path(str(path) + '-wal'))
+    # Opening a closed WAL-mode DB read-only may create an empty WAL. Its
+    # absence and zero-byte presence both mean no WAL content; neither is a
+    # source mutation. Nonempty WALs retain the complete stat identity.
+    return {'database': _file_identity(path), 'wal': wal if wal and wal[2] else None}
 
 
 def _metadata(db, domain):

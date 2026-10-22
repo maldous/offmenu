@@ -42,6 +42,7 @@ class DatabaseNormalizationTests(unittest.TestCase):
                 key,version,rid,payload=row if isinstance(row,tuple) else ('source','v1','r'+str(i),row)
                 if source:db.execute('INSERT OR IGNORE INTO sources VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',(key,version,'/ABSENT-ORIGINAL-DO-NOT-OPEN','json','fixture','unverified','{}','{}','complete',0,0,0,1))
                 db.execute('INSERT INTO records VALUES(?,?,?,?,?,?,?)',(key,version,rid,1,digest(payload),canonical_json(payload),1))
+        db.close()
         return path
     def empties(self):
         for domain in engine.PUBLIC_DOMAINS:
@@ -157,6 +158,31 @@ class DatabaseNormalizationTests(unittest.TestCase):
         report=engine.run_prepared(prepared)
         self.assertEqual(report['status'],'rules_complete');self.assertEqual(before,{p:p.read_bytes() for p in before})
         self.assertEqual(engine.prepare_default(self.root,self.options)['input_sha256'],prepared['input_sha256'])
+    def test_closed_wal_first_and_repeat_prepare_run_preserve_source(self):
+        import hashlib
+        path=self.db('barcodes',[{'barcode':'bad'}]);self.empties()
+        writer=sqlite3.connect(path)
+        self.assertEqual(writer.execute('PRAGMA journal_mode=WAL').fetchone()[0],'wal')
+        writer.execute('UPDATE records SET updated_at=3');writer.commit();writer.close()
+        self.assertFalse(Path(str(path)+'-wal').exists());self.assertFalse(Path(str(path)+'-shm').exists())
+        before=hashlib.sha256(path.read_bytes()).hexdigest()
+        first=engine.prepare_default(self.root,self.options);second=engine.prepare_default(self.root,self.options)
+        self.assertEqual(first['domains']['barcodes']['status'],'pending')
+        self.assertIsNone(first['domains']['barcodes']['snapshot']['files']['wal'])
+        self.assertEqual(first['input_sha256'],second['input_sha256'])
+        report=engine.run_prepared(first);self.assertEqual(report['status'],'rules_complete')
+        with patch.object(InlineRules,'run_batch',side_effect=AssertionError('historical replay')):repeat=self.run_engine()
+        self.assertEqual(report['domains'],repeat['domains']);self.assertEqual(repeat['resources']['workers'],0)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),before)
+    def test_nonempty_wal_mutation_still_invalidates_prepared_snapshot(self):
+        path=self.db('barcodes',[{'barcode':'bad'}]);self.empties()
+        writer=sqlite3.connect(path);self.addCleanup(writer.close)
+        writer.execute('PRAGMA journal_mode=WAL');writer.execute('UPDATE records SET updated_at=3');writer.commit()
+        prepared=engine.prepare_default(self.root,self.options)
+        self.assertIsNotNone(prepared['domains']['barcodes']['snapshot']['files']['wal'])
+        writer.execute('UPDATE records SET updated_at=4');writer.commit()
+        report=engine.run_prepared(prepared)
+        self.assertEqual(report['stop_reason'],'snapshot_changed');self.assertEqual(sum(row['scanned'] for row in report['domains'].values()),0)
     def test_empty_identity_is_accounted_not_skipped_by_initial_cursor(self):
         self.db('ingredients',[('','','',{'name':'invalid identity'})]);self.empties()
         row=self.run_engine()['domains']['ingredients'];self.assertEqual((row['scanned'],row['failed']),(1,1))

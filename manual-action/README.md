@@ -1,48 +1,50 @@
-# OffMenu — one-command database-only normalization
+# OffMenu — one-command bounded database reconciliation
 
-The current reviewed operation is **normalization of retained database records**,
-not further fetching, extraction or the ingestion backlog. In the existing normal
-user checkout on `integration/manual-actions-20261022`, after the previous run
-has exited and the reviewed source has been published:
+The selected next operation is **bounded exact reconciliation of already committed
+normalization cache keys**, not more fetching, extraction, ingestion or a second
+rules-cache generation. Publication and the previous run's exit are prerequisites;
+never switch or update a running checkout. After that safe boundary, the normal
+user's existing checkout still uses:
 
 ```sh
 git pull --ff-only && ./run
 ```
 
-The launcher also performs its own fast-forward-only refresh under the existing
-exclusive lock. It preserves `.git/offmenu-runner`, source databases, original
-assets, source-version history and exact pending receipts. Do not reset, force,
-stash, delete state, switch a running checkout or start a second concurrent run.
+See **[DB-RECONCILIATION-RUN.md](DB-RECONCILIATION-RUN.md)** for the selected plan,
+actual-sample capacity admission, strict limits, resume semantics and truthful
+stage boundaries. [DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md) describes the
+retained earlier rules stage; it is not automatically repeated by this plan.
 
-See **[DB-NORMALIZATION-RUN.md](DB-NORMALIZATION-RUN.md)** for the current plan,
-source-only installation boundary, counters, limits and recovery semantics.
+- Work is selected only from six public compact caches. Corresponding fixed
+  staging-DB rows and deterministic projections are integrity-checked, read-only.
+  No raw files, source existence gate, fetch, ingestion adapter or AI call runs.
+- One coordinated SQLite writer stores compact candidate facts and reference
+  hashes, not full source/normalized JSON copies or another staging snapshot.
+- A bounded actual sample admits only a bounded invocation: at most 50000 keys,
+  128 MiB logical output growth and 30 minutes, with a 2 GiB free-space reserve.
+  These are ceilings, not a promise of capacity or complete corpus reconciliation.
+- GTIN lexical aliases are syntax-only candidates. Unknown namespaces stay scoped;
+  no name-based namespace inference, fuzzy merge, ontology invention or verified
+  entity merge is permitted. Conflicts and missing evidence remain explicit.
+- Facts, private retry evidence, cursor and counters commit together. Existing
+  exact receipts skip previously successful artifacts; new/changed snapshots
+  restart only bounded key discovery and preserve all historical versions.
+- Version4 sanitized receipts share the isolated receipt branch with unchanged
+  ingestion and rules-normalization history. All pending spools recover in
+  bounded batches. Git failure retains local data and exact canonical receipts.
+- Actual recipe/menu AI review remains mandatory and route-blocked. Translation
+  and English gold have not run. Cache exhaustion is not semantic/gold acceptance.
+- Profiles/inventory stay app-managed. The in-memory empty-schema readiness check
+  does not deploy or read private application databases.
 
-- Six public staging DBs are read-only inputs. No raw-source existence/read gate,
-  catalog discovery, fetch, extraction or ingest adapter runs.
-- Cached rules use bounded CPU worker processes with one coordinated DB writer;
-  compact normalized projections and queue references avoid full raw copies.
-- Missing stored fields/provenance remain per-record unresolved. Existing
-  versions are distinct occurrences, not automatically deduplicated entities.
-- Actual recipe/menu AI review remains mandatory and pending an approved route;
-  no credentials, external calls, packet export or invented review is enabled.
-  Rules completion is not gold or application acceptance.
-- Profiles/inventory remain app-managed. The in-memory household-schema check
-  prepares and validates empty schemas only; it does not deploy or open private DBs.
-- Version3 sanitized progress/final receipts share the isolated receipt branch
-  with unchanged historical ingestion receipts. Both old/new spools recover in
-  bounded batches. Source/control/results branches remain separate.
-- Disk/time/cancel limits preserve committed cache/cursors. Git delivery failure
-  leaves exact sanitized local retry evidence and does not discard data.
-
-The lower-level retained-ingestion APIs remain available for a future reviewed
-phase; they are **not** automatically dispatched now. Historical ingestion and
-source-access details are retained in [FINAL-INGEST-RUN.md](FINAL-INGEST-RUN.md).
-Raw data, source paths, full errors, review packets, credentials and private state
-must never be uploaded through the sanitized receipt protocol.
+Preserve `.git/offmenu-runner`, staging DBs, compact caches, original assets and
+all receipt history. No reset, force, stash, state deletion or concurrent run.
+The original sources remain available for later authorized incremental extraction;
+the selected stage does not wait for that future corpus to become complete.
 
 ## Historical reference — legacy explicit diagnostics / source handoff
 
-> **Everything below is scoped to the older `foo_manual.py` diagnostic commands only.** Statements that no import occurs or an operation remains STOP do not describe the current root `./run` database-normalization plan above. These historical commands are optional and are not prerequisites for ingestion.
+> **Everything below is scoped to the older `foo_manual.py` diagnostic commands only.** Statements that no import occurs or an operation remains STOP do not describe the current root `./run` bounded-reconciliation plan above. These historical commands are optional and are not prerequisites for ingestion.
 
 
 **Runnable diagnostics and supplier source-review preparation, not a data importer.** Python 3.10+ on Linux/POSIX, standard library only. No Codex worker, package installation, Actions rehearsal or per-run CI gate. The current Foo data/capsule have not been inspected by this cloud publication.

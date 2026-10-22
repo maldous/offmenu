@@ -115,7 +115,11 @@ def validate_plan(plan):
               and 1 <= plan['max_parallel'] <= 22 and job['id'] == 'retained-six-domain-normalization'
               and job['operation'] == 'normalize_staged_databases'
               and plan.get('receipt_transport') == 'isolated-branch-v1')
-    if not common or not (legacy or ingest or normalization):
+    reconciliation = (plan['schema'] == 'offmenu-run-plan/4' and type(plan['max_parallel']) is int
+              and plan['max_parallel'] == 1 and job['id'] == 'retained-six-domain-reconciliation'
+              and job['operation'] == 'reconcile_normalized_cache'
+              and plan.get('receipt_transport') == 'isolated-branch-v1')
+    if not common or not (legacy or ingest or normalization or reconciliation):
         raise Stop('unsupported_job')
     return job
 
@@ -322,6 +326,15 @@ def validate_ingest_receipt(value):
 
 
 def validate_receipt(value):
+    if isinstance(value, dict) and value.get('schema') == 'offmenu-run-receipt/4':
+        directory = str(Path(__file__).resolve().parent)
+        if directory not in sys.path:
+            sys.path.insert(0, directory)
+        from normalization_reconciliation_receipts import validate_receipt as validate_reconciliation_receipt
+        try:
+            return validate_reconciliation_receipt(value)
+        except (ValueError, TypeError):
+            raise Stop('invalid_sanitized_reconciliation_receipt') from None
     if isinstance(value, dict) and value.get('schema') == 'offmenu-run-receipt/3':
         directory = str(Path(__file__).resolve().parent)
         if directory not in sys.path:
@@ -371,6 +384,8 @@ def validate_receipt(value):
 
 
 def runtime_summary(value):
+    if value.get('schema') == 'offmenu-run-receipt/4':
+        return value['reconciliation']
     if value.get('schema') == 'offmenu-run-receipt/2':
         return value['ingest']
     if value.get('schema') == 'offmenu-run-receipt/3':
@@ -386,7 +401,7 @@ def validate_runtime_receipt(value):
 
 def receipt_relpath(value):
     validate_receipt(value)
-    if value['schema'] == 'offmenu-run-receipt/3':
+    if value['schema'] in ('offmenu-run-receipt/3', 'offmenu-run-receipt/4'):
         suffix = value['outcome']+'-'+runtime_summary(value)['progress_sha256']
     elif value['schema'] == 'offmenu-run-receipt/2':
         suffix='completed' if value['outcome']=='completed' else value['outcome']+'-'+runtime_summary(value)['progress_sha256']
@@ -723,7 +738,7 @@ class Runner:
             if os.path.exists(temporary):
                 os.unlink(temporary)
 
-    def prepare_isolated_ingest_receipt(self, value):
+    def prepare_isolated_ingest_receipt(self, value, *, exact=False):
         from receipt_branch import ReceiptBranchPublisher
         if self.receipt_publisher is None:
             self.receipt_publisher = ReceiptBranchPublisher(self,
@@ -735,6 +750,8 @@ class Runner:
             old = validate_runtime_receipt(read_json(cache))
             if receipt_relpath(old) != receipt_relpath(value) or cache.read_bytes() != canonical(old):
                 raise Stop('isolated_receipt_cache_changed_preserved')
+            if exact and canonical(old) != canonical(value):
+                raise Stop('isolated_receipt_exact_bytes_conflict_preserved')
             value = old
         else:
             self.durable_local_json(cache, value)
@@ -755,8 +772,52 @@ class Runner:
         # receipt and bound supplement before creating/pushing its one tree.
         if not values or len(values) > 512:
             raise Stop('startup_receipt_batch_limit_preserved')
-        entries = [self.prepare_isolated_ingest_receipt(value) for value in values]
-        self.receipt_publisher.publish_batch(entries)
+        entries = [self.prepare_isolated_ingest_receipt(value, exact=True) for value in values]
+        self.receipt_publisher.publish_batch(entries, refresh=True, exact=True)
+
+    def reuse_receipt_timestamp(self, value):
+        """Use old canonical bytes only before creating a new isolated spool.
+
+        Existing spools are never rewritten. Only observed_at may differ;
+        changed progress, metadata, or companion bindings remain conflicts.
+        """
+        if self.receipt_transport != 'isolated-branch-v1':
+            return value
+        path = safe_path(self.state/'receipt-cache'/Path(receipt_relpath(value)).name)
+        if not path.exists():
+            return value
+        old = validate_runtime_receipt(read_json(path))
+        if path.read_bytes() != canonical(old) or receipt_relpath(old) != receipt_relpath(value):
+            raise Stop('isolated_receipt_cache_changed_preserved')
+        if {k:v for k,v in old.items() if k != 'observed_at'} != {k:v for k,v in value.items() if k != 'observed_at'}:
+            raise Stop('isolated_receipt_exact_bytes_conflict_preserved')
+        return old
+
+    def receipt_retry_policy(self):
+        from receipt_retry import ReceiptRetry
+        return ReceiptRetry(announce=announce)
+
+    def flush_receipt_spools(self, policy, directories):
+        from receipt_retry import bounded_batch
+        def load(spool):
+            envelope = read_json(spool)
+            exact_keys(envelope, {'sha256', 'receipt'})
+            value = validate_runtime_receipt(envelope['receipt'])
+            raw = canonical(value)
+            if envelope['sha256'] != digest(raw) or spool.name != Path(receipt_relpath(value)).name:
+                raise Stop('pending_receipt_changed_preserved')
+            return value, len(raw)+(runtime_summary(value).get('evidence_ref') or {}).get('bytes', 0)
+        def send():
+            batch, more = bounded_batch(directories, load, Stop)
+            if batch:
+                announce('[sync] Returning '+str(len(batch))+' preserved checkpoints in one batch.')
+                # Fresh remote proof + strict canonical comparison are mandatory,
+                # even for the first attempt after restarting an uncertain push.
+                self.materialize_ingest_receipts([value for value, _ in batch])
+                for _, spool in batch:
+                    spool.unlink()
+            return more
+        return policy.attempt(send)
 
     def materialize_ingest_receipt(self, value):
         if self.receipt_transport == 'isolated-branch-v1':
@@ -861,9 +922,17 @@ class Runner:
         pending=safe_path(self.state / 'ingest-pending')
         pending.mkdir(mode=0o700,exist_ok=True)
         transport_failed=False
+        sync = self.receipt_retry_policy() if self.receipt_transport == 'isolated-branch-v1' else None
 
         def deliver(value, spool=None):
             nonlocal transport_failed
+            if sync is not None:
+                if spool is None:
+                    spool = pending/Path(receipt_relpath(value)).name
+                    if not spool.exists():
+                        self.durable_local_json(spool, {'sha256':digest(canonical(value)), 'receipt':value})
+                self.flush_receipt_spools(sync, (pending,))
+                return
             if transport_failed:
                 return
             try:
@@ -889,46 +958,18 @@ class Runner:
                 except Stop as exc:
                     transport_failed=True
                     announce('Receipt sync paused: '+str(exc)+'. New ingest is independent of the prior supplier outcome.')
-        # Spool files live only in .git, contain strict sanitized payloads and
-        # bind canonical bytes to a digest. Never stage arbitrary working files.
-        def deliver_startup_batch(batch):
-            nonlocal transport_failed
-            if transport_failed or not batch:
-                return
-            announce('[2/4] Returning '+str(len(batch))+' preserved checkpoints in one batch; no source ingest yet.')
-            try:
-                self.materialize_ingest_receipts([value for value, _ in batch])
-                # Only a confirmed non-force push permits removal of these
-                # owned spool files. Interruption/failure leaves retry evidence.
-                for _, spool in batch:
-                    spool.unlink()
-                announce('[2/4] Returned '+str(len(batch))+' preserved checkpoints; continuing startup.')
-            except KeyboardInterrupt:
-                transport_failed=True
-                raise
-            except Exception as exc:
-                transport_failed=True
-                announce('Receipt sync paused: '+(str(exc) if isinstance(exc, Stop) else 'receipt_delivery_error')+'. Ingestion continues; local checkpoints retained.')
-
-        batch=[]
-        batch_bytes=0
-        for spool in sorted(pending.glob('*.json')):
-            envelope=read_json(spool)
-            exact_keys(envelope,{'sha256','receipt'})
-            value=validate_ingest_receipt(envelope['receipt'])
-            raw=canonical(value)
-            if envelope['sha256']!=digest(raw) or spool.name!=Path(receipt_relpath(value)).name:
-                raise Stop('pending_receipt_changed_preserved')
-            if self.receipt_transport != 'isolated-branch-v1':
+        # Strict isolated recovery is bounded per checkpoint, not a permanent
+        # failure latch. Remaining canonical spools stay on disk between ticks.
+        if sync is not None:
+            self.flush_receipt_spools(sync, (pending,))
+        else:
+            for spool in sorted(pending.glob('*.json')):
+                envelope=read_json(spool)
+                exact_keys(envelope,{'sha256','receipt'})
+                value=validate_ingest_receipt(envelope['receipt'])
+                if envelope['sha256']!=digest(canonical(value)) or spool.name!=Path(receipt_relpath(value)).name:
+                    raise Stop('pending_receipt_changed_preserved')
                 deliver(value,spool)
-                continue
-            # Bound memory and one-commit size, including any readable evidence.
-            size=len(raw)+(value['ingest'].get('evidence_ref') or {}).get('bytes',0)
-            if batch and (len(batch)>=512 or batch_bytes+size>8*1024*1024):
-                deliver_startup_batch(batch)
-                batch=[];batch_bytes=0
-            batch.append((value,spool));batch_bytes+=size
-        deliver_startup_batch(batch)
         household_preparation = self.prepare_household_schema()
         announce('[2/4] Household app schema: '+household_preparation['status']+
                  ' ('+household_preparation['reason']+'); preparation only, application wiring/security activation pending.')
@@ -959,7 +1000,7 @@ class Runner:
                 raise Stop('existing_receipt_identity_mismatch')
             deliver(value)
             announce('[3/4] This unchanged completed ingest plan is already durable; no source rows replayed.')
-            return 2 if transport_failed else 0
+            return 2 if transport_failed or (sync is not None and sync.pending) else 0
         last_signature=None
 
         def checkpoint_report(report):
@@ -984,6 +1025,8 @@ class Runner:
             outcome='completed' if status=='complete' else 'running' if status=='running' else 'partial' if status=='partial' else 'blocked'
             signature=(outcome,summary['progress_sha256'])
             if signature==last_signature:
+                if sync is not None:
+                    self.flush_receipt_spools(sync, (pending,))
                 return
             receipt={'schema':'offmenu-run-receipt/2','job_id':job['id'],'job_version':job['version'],
                 'operation':job['operation'],'job_key':job_key,'implementation_sha256':implementation,
@@ -992,6 +1035,7 @@ class Runner:
             validate_ingest_receipt(receipt)
             spool=pending/Path(receipt_relpath(receipt)).name
             if not spool.exists():
+                receipt = self.reuse_receipt_timestamp(receipt)
                 self.durable_local_json(spool,{'sha256':digest(canonical(receipt)),'receipt':receipt})
             else:
                 envelope=read_json(spool)
@@ -1013,6 +1057,7 @@ class Runner:
         for domain,row in final_summary['domains'].items():
             announce('  '+domain+': '+row['status']+'; written='+str(row['written'])+' reused_stores='+str(row['reused_stores'])+' reused_table_rows='+str(row['reused_rows'])+' errors='+str(row['errors']))
         self.announce_remaining(final_summary.get('pending_work',unknown_pending_work()), 'Final remaining work')
+        transport_failed = transport_failed or (sync is not None and sync.pending)
         if transport_failed:
             announce('[4/4] Git sync remains pending; ingestion data and sanitized checkpoints are preserved locally.')
         return 0 if report.get('status')=='complete' and not transport_failed else 2
@@ -1025,37 +1070,41 @@ class Runner:
         import importlib
         return importlib.import_module('normalization_engine')
 
+    def reconciliation_engine(self):
+        directory = str(self.root / 'manual-action')
+        if directory not in sys.path:
+            sys.path.insert(0, directory)
+        import importlib
+        return importlib.import_module('normalization_reconciliation_engine')
+
     def run_normalization_plan(self, plan, job):
-        """Read only owned staging databases; never dispatch ingest/discovery."""
+        """Run the selected DB-only stage; never dispatch ingest/discovery."""
         self.preconditions()
         self.receipt_transport = 'isolated-branch-v1'
-        engine = self.normalization_engine()
-        from normalization_receipts import build_summary, validate_report, DOMAINS as PUBLIC_DOMAINS
+        reconciling = job['operation'] == 'reconcile_normalized_cache'
+        stage = 'reconciliation' if reconciling else 'normalization'
+        engine = self.reconciliation_engine() if reconciling else self.normalization_engine()
+        if reconciling:
+            from normalization_reconciliation_receipts import build_summary, validate_report, DOMAINS as PUBLIC_DOMAINS
+        else:
+            from normalization_receipts import build_summary, validate_report, DOMAINS as PUBLIC_DOMAINS
+        outcomes = {'running': 'running', 'rules_complete': 'completed', 'cache_complete': 'completed',
+                    'partial': 'partial', 'failed': 'blocked'}
+        complete_status = 'cache_complete' if reconciling else 'rules_complete'
         from ingest_storage_sizes import capture_storage_sizes, unknown_storage_sizes
         self.state = safe_path(self.state)
         self.state.mkdir(mode=0o700, exist_ok=True)
-        pending = safe_path(self.state / 'normalization-pending')
+        pending = safe_path(self.state / (stage+'-pending'))
         pending.mkdir(mode=0o700, exist_ok=True)
-        transport_failed = False
+        transport_failed = False  # Legacy source-branch recovery only; never auto-retried.
+        sync = self.receipt_retry_policy()
+        spool_directories = tuple(safe_path(self.state/name) for name in
+            ('ingest-pending', 'normalization-pending', 'reconciliation-pending'))
 
         def failure(exc):
             nonlocal transport_failed
             transport_failed = True
-            announce('Receipt sync paused: '+(str(exc) if isinstance(exc, Stop) else 'receipt_delivery_error')+
-                     '. DB normalization continues; local checkpoints retained.')
-
-        def deliver_batch(batch):
-            if transport_failed or not batch:
-                return
-            announce('[2/4] Returning '+str(len(batch))+' preserved checkpoints in one batch; no database normalization yet.')
-            try:
-                self.materialize_ingest_receipts([value for value, _ in batch])
-                for _, spool in batch:
-                    spool.unlink()
-            except KeyboardInterrupt:
-                raise
-            except Exception as exc:
-                failure(exc)
+            announce('Legacy receipt sync paused; local work retained. DB '+stage+' continues independently.')
 
         recovery = self.recovery_receipt()
         if recovery:
@@ -1067,30 +1116,22 @@ class Runner:
                     raise
                 except Exception as exc:
                     failure(exc)
-        # Recover both old ingest and new normalization spools, retaining every
-        # canonical byte and prior timestamp. Transport never restarts ingestion.
-        batch, batch_bytes = [], 0
-        for directory in (safe_path(self.state/'ingest-pending'), pending):
-            for spool in sorted(directory.glob('*.json')):
-                envelope = read_json(spool)
-                exact_keys(envelope, {'sha256', 'receipt'})
-                value = validate_runtime_receipt(envelope['receipt'])
-                raw = canonical(value)
-                if envelope['sha256'] != digest(raw) or spool.name != Path(receipt_relpath(value)).name:
-                    raise Stop('pending_receipt_changed_preserved')
-                size = len(raw)+(runtime_summary(value).get('evidence_ref') or {}).get('bytes', 0)
-                if batch and (len(batch) >= 512 or batch_bytes+size > 8*1024*1024):
-                    deliver_batch(batch)
-                    batch, batch_bytes = [], 0
-                batch.append((value, spool)); batch_bytes += size
-        deliver_batch(batch)
+        self.flush_receipt_spools(sync, spool_directories)
         household = self.prepare_household_schema()
         announce('[2/4] Household schema: '+household['status']+'; preparation only, not runtime deployment.')
-        announce('[2/4] Normalizing retained database records only; no downloads, extraction, source-file reads or ingestion backlog.')
+        if reconciling:
+            announce('[2/4] Reconciling committed normalization cache only; bounded candidate index, not a full-corpus speculative graph.')
+            announce('  Exact cache keys select work; fixed staging-DB rows and rules projections are integrity-checked. No raw files, new rules cache, downloads or extraction.')
+            announce('  One coordinated SQLite writer; sample 32, at most 50000 keys / 128 MiB growth / 30 min, with 2 GiB free-space reserve.')
+            announce('  Only the reviewed GTIN namespace is global by default. Other namespaces stay scoped; candidates are not verified entity merges.')
+            options = {'sample_rows': 32, 'max_rows': 50000, 'max_output_bytes': 128*1024*1024,
+                       'max_seconds': 30*60, 'disk_reserve_bytes': 2*1024*1024*1024, 'report_interval': 60}
+        else:
+            announce('[2/4] Normalizing retained database records only; no downloads, extraction, source-file reads or ingestion backlog.')
+            announce('  Cached rules first; actual recipe/menu AI review remains mandatory and pending an approved route. No AI calls or data export.')
+            options = {'workers': plan['max_parallel'], 'report_interval': 60,
+                       'disk_reserve_bytes': 2*1024*1024*1024, 'max_seconds': 6*60*60}
         announce('  All retained source versions remain distinct. Profiles and inventory are app-managed, not external-input blockers.')
-        announce('  Cached rules first; actual recipe/menu AI review remains mandatory and pending an approved route. No AI calls or data export.')
-        options = {'workers': plan['max_parallel'], 'report_interval': 60,
-                   'disk_reserve_bytes': 2*1024*1024*1024, 'max_seconds': 6*60*60}
         prepared = engine.prepare_default(self.state/'ingest', options)
         input_sha = prepared['input_sha256']
         if not isinstance(input_sha, str) or not HEX.fullmatch(input_sha):
@@ -1123,14 +1164,15 @@ class Runner:
             else:
                 self.durable_local_json(evidence_path, supplement)
             summary = build_summary(report, reference)
-            outcome = {'running': 'running', 'rules_complete': 'completed', 'partial': 'partial', 'failed': 'blocked'}[report['status']]
+            outcome = outcomes[report['status']]
             signature = (outcome, summary['progress_sha256'])
             if signature == last_signature:
+                self.flush_receipt_spools(sync, spool_directories)
                 return
-            receipt = {'schema': 'offmenu-run-receipt/3', 'job_id': job['id'], 'job_version': job['version'],
+            receipt = {'schema': 'offmenu-run-receipt/4' if reconciling else 'offmenu-run-receipt/3', 'job_id': job['id'], 'job_version': job['version'],
                 'operation': job['operation'], 'job_key': job_key, 'implementation_sha256': implementation,
                 'input_sha256': input_sha, 'observed_at': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-                'outcome': outcome, 'normalization': summary}
+                'outcome': outcome, stage: summary}
             validate_runtime_receipt(receipt)
             spool = pending/Path(receipt_relpath(receipt)).name
             if spool.exists():
@@ -1141,40 +1183,51 @@ class Runner:
                     raise Stop('pending_receipt_changed_preserved')
                 receipt = old
             else:
+                receipt = self.reuse_receipt_timestamp(receipt)
                 self.durable_local_json(spool, {'sha256': digest(canonical(receipt)), 'receipt': receipt})
             last_signature = signature
-            counts = {key: sum(row[key] for row in report['domains'].values())
-                      for key in ('scanned', 'rules_new', 'rules_reused', 'pendingreview', 'unresolved', 'failed')}
-            announce('[normalize] '+report['status']+': '+' '.join(key+'='+str(value) for key, value in counts.items())+
+            count_keys = (('scanned', 'indexed_new', 'indexed_reused', 'quarantined', 'quarantine_retries') if reconciling
+                          else ('scanned', 'rules_new', 'rules_reused', 'pendingreview', 'unresolved', 'failed'))
+            counts = {key: sum(row[key] for row in report['domains'].values()) for key in count_keys}
+            announce(('['+('reconcile' if reconciling else 'normalize')+'] ')+report['status']+': '+' '.join(key+'='+str(value) for key, value in counts.items())+
                      ' free_disk_bytes='+str(report['resources']['free_disk_bytes'])+
                      ' workers='+str(report['resources']['workers']))
-            if not transport_failed:
-                try:
-                    self.materialize_ingest_receipt(receipt)
-                    spool.unlink()
-                except KeyboardInterrupt:
-                    raise
-                except Exception as exc:
-                    failure(exc)
+            if reconciling:
+                announce('  capacity='+report['capacity']['status']+
+                    ' sample_rows='+str(report['capacity']['sample_rows'])+
+                    ' sample_output_bytes='+str(report['capacity']['sample_output_bytes'])+
+                    ' admitted_rows='+str(report['capacity']['admitted_rows'])+
+                    ' output_logical_bytes='+str(report['resources']['output_logical_bytes']))
+            self.flush_receipt_spools(sync, spool_directories)
 
         report = engine.run_prepared(prepared, report_callback=checkpoint)
         checkpoint(report)
-        announce('[3/4] Database normalization summary (source-version occurrences, not unique gold entities):')
+        announce('[3/4] Database '+stage+' summary (source-version occurrences, not unique gold entities):')
         for domain in PUBLIC_DOMAINS:
             row = report['domains'][domain]
-            announce('  '+domain+': '+row['status']+' selected='+str(row['selected_rows'])+
-                ' scanned='+str(row['scanned'])+' rules_new='+str(row['rules_new'])+
-                ' rules_reused='+str(row['rules_reused'])+' pendingreview='+str(row['pendingreview'])+
-                ' unresolved='+str(row['unresolved'])+' failed='+str(row['failed']))
+            if reconciling:
+                announce('  '+domain+': '+row['status']+' selected_keys=unknown'+
+                    ' scanned='+str(row['scanned'])+' indexed_new='+str(row['indexed_new'])+
+                    ' indexed_reused='+str(row['indexed_reused'])+' quarantined='+str(row['quarantined'])+
+                    ' exhausted='+str(row['exhausted']))
+            else:
+                announce('  '+domain+': '+row['status']+' selected='+str(row['selected_rows'])+
+                    ' scanned='+str(row['scanned'])+' rules_new='+str(row['rules_new'])+
+                    ' rules_reused='+str(row['rules_reused'])+' pendingreview='+str(row['pendingreview'])+
+                    ' unresolved='+str(row['unresolved'])+' failed='+str(row['failed']))
+        if reconciling:
+            announce('  Cache exhaustion is only the selected snapshot. Unknown or future rules work is not claimed complete; quarantined keys are not all semantic gaps.')
+            announce('  Verified entity merges=0; actual AI review and English translation have not run. Source rows and current cached artifacts are unchanged.')
         announce('  Actual AI review: pending approved route; gold/application binding: blocked. Originals preserved for future extraction.')
+        transport_failed = transport_failed or sync.pending
         if transport_failed:
-            announce('[4/4] Git sync remains pending; normalization cache and sanitized checkpoints are preserved locally.')
-        return 0 if report['status'] == 'rules_complete' and not transport_failed else 2
+            announce('[4/4] Git sync remains pending; '+stage+' data and sanitized checkpoints are preserved locally.')
+        return 0 if report['status'] == complete_status and not transport_failed else 2
 
     def run_plan(self):
         plan=read_json(self.root / 'manual-action/plan.json')
         job=validate_plan(plan)
-        if job['operation']=='normalize_staged_databases':
+        if job['operation'] in ('normalize_staged_databases', 'reconcile_normalized_cache'):
             return self.run_normalization_plan(plan,job)
         if job['operation']=='retained_ingest_all':
             return self.run_ingest_plan(plan,job)
