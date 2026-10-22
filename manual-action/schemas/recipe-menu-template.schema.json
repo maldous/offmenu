@@ -1,0 +1,674 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:recipe-menu-template:1",
+  "title": "Recipe/menu source scaffold and reviewed semantic additions",
+  "description": "Schema validates structure only. normalize_recipes.validate_reviewed_template also binds source spans, versions, full coverage, ordering, dependencies and actual assistant review receipt. Rules never mean reviewed.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "offmenu-recipe-menu-template/1"
+    },
+    "rule_version": {
+      "const": "offmenu-recipe-menu-normalization/1"
+    },
+    "item_id": {
+      "type": "string"
+    },
+    "source_kind": {
+      "enum": [
+        "recipe",
+        "menu",
+        "menu_item"
+      ]
+    },
+    "input_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_version": {
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "pending_actual_ai_review",
+        "reviewed"
+      ]
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "section_id": {
+            "type": "string"
+          },
+          "source_order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_label": {},
+          "step_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "section_id",
+          "source_order",
+          "source_label",
+          "step_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_id": {
+            "type": "string"
+          },
+          "source_order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_ordinal": {},
+          "section_id": {
+            "type": "string"
+          },
+          "source_span": {
+            "$ref": "#/$defs/span"
+          },
+          "status": {
+            "const": "pending_actual_ai_review"
+          },
+          "grouping": {
+            "enum": [
+              "ambiguous_or_opaque_group",
+              "source_step_preserved"
+            ]
+          },
+          "candidate_interpretations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string"
+                },
+                "phase": {
+                  "enum": [
+                    "preparation",
+                    "cooking",
+                    "presentation",
+                    "unknown"
+                  ]
+                },
+                "template_family": {
+                  "type": "string"
+                },
+                "status": {
+                  "const": "candidate"
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/span"
+                  }
+                }
+              },
+              "required": [
+                "action",
+                "phase",
+                "template_family",
+                "status",
+                "evidence"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "typed_slots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "slot_id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "ingredient_reference",
+                    "material_reference",
+                    "quantity",
+                    "unit",
+                    "equipment",
+                    "temperature",
+                    "duration",
+                    "condition",
+                    "lexical_text"
+                  ]
+                },
+                "status": {
+                  "const": "candidate"
+                },
+                "source_value": {
+                  "type": "string"
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/span"
+                  }
+                },
+                "quantity": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "slot_id",
+                "type",
+                "status",
+                "source_value",
+                "evidence"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ingredient_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredient_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "const": "candidate"
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/span"
+                  }
+                }
+              },
+              "required": [
+                "ingredient_id",
+                "status",
+                "evidence"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "material_refs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dependency_status": {
+            "const": "not_inferred"
+          },
+          "unknown_parameters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "coverage_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "source_order",
+          "source_ordinal",
+          "section_id",
+          "source_span",
+          "status",
+          "grouping",
+          "candidate_interpretations",
+          "typed_slots",
+          "ingredient_refs",
+          "material_refs",
+          "depends_on",
+          "dependency_status",
+          "unknown_parameters",
+          "coverage_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ingredient_id": {
+            "type": "string"
+          },
+          "source_order": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "source_ordinal": {},
+          "source_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_quantity": {},
+          "source_unit": {},
+          "quantity": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "normalized_ingredient_id": {
+            "type": "null"
+          },
+          "identity_status": {
+            "const": "source_mention_unresolved"
+          },
+          "coverage_id": {
+            "type": "string"
+          },
+          "evidence_pointer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ingredient_id",
+          "source_order",
+          "source_ordinal",
+          "source_text",
+          "source_name",
+          "source_quantity",
+          "source_unit",
+          "quantity",
+          "normalized_ingredient_id",
+          "identity_status",
+          "coverage_id",
+          "evidence_pointer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "menu_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_domain": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "source_asserted",
+              "source_asserted_unresolved"
+            ]
+          },
+          "evidence_pointer": {
+            "type": "string"
+          },
+          "coverage_id": {
+            "type": "string"
+          },
+          "source_assertion": {}
+        },
+        "required": [
+          "kind",
+          "target_id",
+          "target_domain",
+          "status",
+          "evidence_pointer",
+          "coverage_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required_coverage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "coverage_id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "pointer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "coverage_id",
+          "role",
+          "pointer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "learned_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "definition": {
+            "$ref": "#/$defs/definition"
+          }
+        },
+        "required": [
+          "template_id",
+          "definition"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "template_instances": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/instance"
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "unknown_parameters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lexical_units": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lexical"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "rule_version",
+    "item_id",
+    "source_kind",
+    "input_digest",
+    "source_version",
+    "status",
+    "sections",
+    "steps",
+    "ingredients",
+    "menu_links",
+    "required_coverage",
+    "learned_templates",
+    "template_instances",
+    "unresolved",
+    "unknown_parameters",
+    "lexical_units"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "span": {
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        },
+        "offset_unit": {
+          "const": "unicode_codepoint"
+        }
+      },
+      "required": [
+        "pointer",
+        "start",
+        "end",
+        "text",
+        "offset_unit"
+      ],
+      "additionalProperties": false
+    },
+    "definition": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "pattern": "^[a-z][a-z_]{0,63}$"
+        },
+        "phase": {
+          "enum": [
+            "preparation",
+            "cooking",
+            "presentation",
+            "unknown"
+          ]
+        },
+        "pattern": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "slot_types": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "ingredient_reference",
+              "material_reference",
+              "quantity",
+              "unit",
+              "equipment",
+              "temperature",
+              "duration",
+              "condition",
+              "lexical_text"
+            ]
+          }
+        },
+        "source_locale": {
+          "type": "string"
+        },
+        "grammar_context": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "action",
+        "phase",
+        "pattern",
+        "slot_types",
+        "source_locale",
+        "grammar_context"
+      ],
+      "additionalProperties": false
+    },
+    "instance": {
+      "type": "object",
+      "properties": {
+        "instance_id": {
+          "type": "string"
+        },
+        "template_id": {
+          "type": "string"
+        },
+        "step_id": {
+          "type": "string"
+        },
+        "source_order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          }
+        },
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "ingredient_reference",
+                  "material_reference",
+                  "quantity",
+                  "unit",
+                  "equipment",
+                  "temperature",
+                  "duration",
+                  "condition",
+                  "lexical_text"
+                ]
+              },
+              "value": {},
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/span"
+                }
+              },
+              "lexical_unit": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "value",
+              "evidence",
+              "lexical_unit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unknown_parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "instance_id",
+        "template_id",
+        "step_id",
+        "source_order",
+        "evidence",
+        "slots",
+        "depends_on",
+        "unknown_parameters"
+      ],
+      "additionalProperties": false
+    },
+    "lexical": {
+      "type": "object",
+      "properties": {
+        "lexical_unit_id": {
+          "type": "string"
+        },
+        "version": {
+          "const": "offmenu-contextual-lexical-unit/1"
+        },
+        "text": {
+          "type": "string"
+        },
+        "source_locale": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object"
+        },
+        "translatable": {
+          "const": true
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          }
+        }
+      },
+      "required": [
+        "lexical_unit_id",
+        "version",
+        "text",
+        "source_locale",
+        "context",
+        "translatable",
+        "evidence"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,2804 @@
+{
+  "schema_version": "1.0",
+  "title": "Inactive global menu-source discovery registry",
+  "review_date": "2026-10-22",
+  "research_scope": "Real menus, dated institutional meal plans, menu-item observations and historical menu records. Separate recipe, food-product, venue and image-benchmark classes.",
+  "execution_policy": {
+    "enabled": false,
+    "production_fetch_allowed": false,
+    "target": "Foo",
+    "required_user_gate": "All eight databases must be provisioned and relationally fit for existing data before any production fetch on Foo.",
+    "actions_taken": "Read-only catalog/documentation research and minimal web sample attempts only. No production fetch, bulk archive download, active fetch configuration, database mutation, or Git publication.",
+    "preparation_only": true
+  },
+  "tier_definitions": {
+    "A": "Explicit content/data reuse permission evidenced by official catalog or research repository; still disabled and subject to source-specific verification gates. A does not mean every resource schema or upstream chain is resolved.",
+    "B": "Useful lead but license scope, original availability, authenticated access, or item-level rights unresolved. Not ready for production.",
+    "C": "Restricted/noncommercial/commercial-contract/synthetic/image-only lead; not a ready reusable real-menu corpus."
+  },
+  "counts_policy": "Counts preserve publisher date, unit and subset. Never add overlapping sources, physical/digitized/transcribed counts, documents/pages/items, rolling snapshots, or unique labels as if equivalent menus.",
+  "shared_mapping": {
+    "menu": [
+      "source_namespace",
+      "source_record_id",
+      "source_url",
+      "license_evidence_url",
+      "retrieved_at",
+      "source_snapshot_date",
+      "source_modified_at",
+      "language",
+      "venue_ref",
+      "menu_date",
+      "daypart",
+      "audience",
+      "variant",
+      "sections",
+      "original_document_ref"
+    ],
+    "section": [
+      "source_section_id",
+      "label_original",
+      "course_type_if_explicit",
+      "source_order",
+      "items"
+    ],
+    "item": [
+      "source_item_id",
+      "label_original",
+      "description_original",
+      "source_dish_ref",
+      "quantity_if_explicit_else_null",
+      "price_observations",
+      "ingredient_assertions",
+      "allergen_assertions",
+      "nutrition_assertions",
+      "recipe_ref"
+    ],
+    "price_observation": [
+      "amount",
+      "currency_original",
+      "currency_normalized_only_if_unambiguous",
+      "price_kind",
+      "audience",
+      "channel",
+      "observed_or_menu_date",
+      "source"
+    ],
+    "price_kinds": [
+      "retail_observation",
+      "audience_tariff",
+      "production_cost",
+      "unknown"
+    ],
+    "recipe_ref_default": null,
+    "requirements": [
+      "Preserve original Unicode text and language; translation is a separate derived layer.",
+      "Menu item/dish name or ingredient composition alone is not a recipe.",
+      "Preserve dates, timezone, calendar system, original currency and source publication dates.",
+      "Distinguish scheduled offer from verified service and historical observation from current availability.",
+      "Never map out_of_stock to live stock claims in this discovery stream.",
+      "Keep nutrition basis and scope (meal, item, serving, 100 g) rather than attaching meal totals to every dish.",
+      "Allergen/diet claims are source assertions, not safety guarantees; keep trace ambiguity.",
+      "Missing versus zero price/quantity remains distinct.",
+      "Same dish offered on multiple dates is multiple observations; derived mirrors do not add independent coverage.",
+      "Generic institutional diets are permitted scope; identifiable patient/resident medical data is excluded."
+    ]
+  },
+  "parser_patterns": [
+    {
+      "id": "scdl_collective_menu",
+      "source": "https://schema.data.gouv.fr/scdl/menus-collectifs/1.2.1/documentation.html",
+      "version_caution": "Requested version 1.2.1 URL displays 1.2.2; pin actual schema hash/version after activation gates.",
+      "row_unit": "one dish per row",
+      "map": {
+        "menuCollNom": "operator name",
+        "menuRestaurantId": "venue source ID with menuRestaurantIdType",
+        "menuDate": "menu date",
+        "menuRepasType": "daypart",
+        "menuRestaurantConvive": "audience",
+        "menuPlatType": "section/course",
+        "menuPlatNom": "item label",
+        "menuPlatCode": "dish-composition join key",
+        "menuPublicationDate": "source publication time",
+        "menuModificationDate": "source modification time",
+        "menuPlatPrix": "production_cost observation in EUR, NOT selling price"
+      },
+      "cautions": [
+        "Allergen field combines ingredients and traces; preserve ambiguity.",
+        "Dish composition join is not automatically a recipe method."
+      ]
+    },
+    {
+      "id": "openmensa_v2",
+      "source": "https://docs.openmensa.org/api/v2/meals/",
+      "map": {
+        "route_canteen_id": "venue",
+        "route_date": "menu date",
+        "category": "section",
+        "id": "source item ID",
+        "name": "item label",
+        "notes": "raw notes/assertions",
+        "prices": "audience-specific tariffs"
+      },
+      "cautions": [
+        "Source currency and daypart may be missing.",
+        "Filter closure/nonmeal labels without treating them as recipes."
+      ]
+    },
+    {
+      "id": "ics_meal_plan",
+      "source": "https://sambruk.github.io/Open-Meal/docs/API/icalendar/",
+      "map": {
+        "UID": "source event ID",
+        "DTSTART": "service date/time",
+        "DTEND": "event end, not automatically another meal",
+        "DESCRIPTION": "full source meal description",
+        "SUMMARY": "possibly truncated first courses only",
+        "LOCATION": "venue hint",
+        "SEQUENCE": "revision",
+        "LAST_MODIFIED": "source modification"
+      },
+      "cautions": [
+        "Unfold lines, decode escapes, respect timezone/date-only fields, preserve revisions."
+      ]
+    },
+    {
+      "id": "historical_menu_relational",
+      "source": "https://nypl.github.io/menus-api/",
+      "map": {
+        "Menu": "menu document/occasion/date/currency",
+        "MenuPage": "page and image reference",
+        "MenuItem": "dish occurrence/price/page position",
+        "Dish": "shared historical dish identity/text"
+      },
+      "cautions": [
+        "Page placement is not a verified course.",
+        "Original image rights are separate from metadata/transcription rights."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "tw_school_lunch_v2",
+      "title": "Taiwan national school lunch and ingredient registry 2.0",
+      "tier": "A",
+      "kind": "dated_school_meal_plan_and_related_dishes",
+      "geography": "Taiwan",
+      "languages": [
+        "zh-Hant"
+      ],
+      "evidence": [
+        {
+          "url": "https://data.gov.tw/dataset/98339",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://data.gov.tw/en/datasets/78344",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13567730/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Government Open Data License v1",
+        "scope": "Official catalog data; retain attribution, release and upstream source.",
+        "evidence_status": "Explicit official dataset license"
+      },
+      "counts": [
+        {
+          "value": 12966481,
+          "unit": "raw dish records",
+          "scope": "Study extraction of 1,056 official files, May 2024–April 2026; not an independent fetch audit."
+        },
+        {
+          "value": 12688008,
+          "unit": "deduplicated dish records",
+          "scope": "Same study; school/date/dish deduplication."
+        },
+        {
+          "value": 3894,
+          "unit": "schools",
+          "scope": "Same study; not menu count."
+        }
+      ],
+      "access": {
+        "formats": [
+          "JSON documentation",
+          "regional/monthly CSV series"
+        ],
+        "documentation": "https://fatraceschool.k12ea.gov.tw/cateringservice/web/openapi_doc/v1/openapi.json",
+        "updates": "Monthly series; national catalog marks irregular update. Catalog metadata 2026-08-20.",
+        "auth": "Unverified"
+      },
+      "inspection": {
+        "level": "Catalog and original study inspected; no dish payload",
+        "sample_status": "JSON documentation returned HTTP 403. No retry, bypass, or archive fetch."
+      },
+      "mapping": {
+        "parser": "taiwan_school_monthly_csv_pending_schema",
+        "menu_key": [
+          "school_source_id",
+          "service_date",
+          "meal_type_if_present"
+        ],
+        "section": "Source dish role if supplied; otherwise unknown",
+        "item": "Original Traditional Chinese dish name",
+        "relationships": [
+          "school",
+          "caterer",
+          "ingredient_supplier",
+          "seasoning_supplier"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Separate dish, ingredient, seasoning and supplier tables; do not flatten suppliers into ingredients.",
+        "Study records lack portion/serving weights: frequency is not consumption or nutrient intake.",
+        "Taiwan year 107 means 2018. Preserve original ROC dates and calendar-conversion provenance.",
+        "Older Taipei 2018 catalog is an archive expansion path, not additional current coverage."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 1,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "kr_neis_meals",
+      "title": "Korea NEIS school meal service diet information",
+      "tier": "A",
+      "kind": "dated_school_meal_plan",
+      "geography": "South Korea",
+      "languages": [
+        "ko"
+      ],
+      "evidence": [
+        {
+          "url": "https://open.neis.go.kr/portal/data/service/selectServicePage.do?infId=OPEN17320190722180924242823&infSeq=1",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.data.go.kr/data/15002118/fileData.do",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Official catalog: unrestricted permitted use (이용허락범위 제한 없음)",
+        "scope": "Dataset-specific public-data declaration; preserve provider attribution and API conditions.",
+        "evidence_status": "Explicit official unrestricted-use declaration"
+      },
+      "counts": [
+        {
+          "value": 5,
+          "unit": "CSV sample rows",
+          "scope": "Catalog sample only; not national corpus size."
+        }
+      ],
+      "access": {
+        "formats": [
+          "JSON",
+          "XML",
+          "CSV",
+          "XLS",
+          "TXT"
+        ],
+        "endpoint_template": "https://open.neis.go.kr/hub/mealServiceDietInfo",
+        "updates": "Daily loading; service documents current-year menus.",
+        "auth": "Authentication-key application documented; do not bypass."
+      },
+      "inspection": {
+        "level": "Official service documentation and catalog inspected",
+        "sample_status": "One-row API request inaccessible to web tool; no live record verified."
+      },
+      "mapping": {
+        "parser": "neis_meal_service_pending_payload",
+        "menu_key": [
+          "education_office_id",
+          "school_id",
+          "service_date",
+          "meal_type"
+        ],
+        "item": "Split documented dish-list representation only after actual separator validation; retain raw dish/allergen text",
+        "nutrition": "Attach at source meal scope, not automatically to each dish",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Official pages differ: national catalog says 17 regions; service description says Ministry plus 16 education offices. Resolve before exact coverage claim.",
+        "Allergen numbers 1–19 are source annotations, not independent safety certification.",
+        "Portal modification/import timestamps are not necessarily menu modification dates.",
+        "Current-year service is not proof of an indefinitely queryable historical archive."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 1,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_cnous_menus",
+      "title": "CNOUS menus for restaurants, brasseries and cafeterias",
+      "tier": "A",
+      "kind": "dated_institutional_menu_hierarchy",
+      "geography": "France and overseas CROUS regions",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/menus-des-restaurants-brasseries-et-cafeterias",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.data.gouv.fr/organizations/centre-national-des-oeuvres-universitaires-et-scolaires/datasets",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte / Open Licence",
+        "scope": "Official menu dataset; version not specified on inspected catalog.",
+        "evidence_status": "Explicit catalog license"
+      },
+      "counts": [
+        {
+          "value": 26,
+          "unit": "main XML feed resources",
+          "scope": "Not 26 menus, restaurants, or universities."
+        }
+      ],
+      "access": {
+        "formats": [
+          "XML"
+        ],
+        "discovery": "Resolve catalog resource URLs from official dataset after gates.",
+        "updates": "Catalog updated 2026-10-19; feeds intended for daily menus.",
+        "auth": "Public resources advertised"
+      },
+      "inspection": {
+        "level": "Official metadata and described fields inspected",
+        "sample_status": "Attempt to open one 16.4 KB resource returned internal error; no XML payload inspected."
+      },
+      "mapping": {
+        "parser": "cnous_xml_pending_sample",
+        "menu_key": [
+          "source_unique_id",
+          "venue_id",
+          "date",
+          "daypart"
+        ],
+        "section": "Starter/main/dessert source grouping",
+        "item": "Composition text; retain hierarchy and original labels",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "26 resources is a resource count; publisher describes 28 CROUS organizations separately.",
+        "Join venues from companion restaurant dataset; venue records themselves are not menus.",
+        "Rolling retention and future-date revisions require snapshot/date modeling.",
+        "Prefer official origin; CROUStillant is an alternative derived source, not independent additive coverage."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 1,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_croustillant",
+      "title": "CROUStillant cleaned CROUS menu CSV/API",
+      "tier": "A",
+      "kind": "derived_institutional_menu_feed",
+      "geography": "France and overseas",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/menus-du-crous",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.data.gouv.fr/fr/dataservices/api-croustillant/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte v2",
+        "scope": "Community-published cleaned menu dataset; preserve original CNOUS provenance.",
+        "evidence_status": "Explicit dataset license"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV",
+          "API"
+        ],
+        "updates": "Publisher says daily at 01:00; catalog checked 2026-10-21.",
+        "auth": "API access conditions to verify"
+      },
+      "inspection": {
+        "level": "Community dataset metadata inspected",
+        "sample_status": "No payload; reported resource byte size changes and is not row count."
+      },
+      "mapping": {
+        "parser": "croustillant_csv_pending_sample",
+        "menu_key": [
+          "source_venue_id",
+          "date",
+          "daypart"
+        ],
+        "item": "Source item label and category after field verification",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Publisher is Paul Bayfield/community, not CNOUS.",
+        "Deduplicate against official CNOUS by origin, venue, date, meal and item; preserve cleaning provenance.",
+        "No count established; download count and megabytes are not record counts."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 3,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_begles_menus",
+      "title": "Bègles canteen menus via Bordeaux Métropole",
+      "tier": "A",
+      "kind": "dated_collective_menu_rows",
+      "geography": "Bègles, France",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://datahub.bordeaux-metropole.fr/explore/dataset/met_menu_cantine/",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte",
+        "scope": "Dataset-specific official catalog declaration.",
+        "evidence_status": "Explicit indexed official catalog license"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV",
+          "JSON",
+          "OpenDataSoft API"
+        ],
+        "endpoint_template": "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_menu_cantine/records",
+        "updates": "Daily; indexed modified 2026-10-15.",
+        "auth": "Public catalog"
+      },
+      "inspection": {
+        "level": "Indexed official description and initial schema field inspected",
+        "sample_status": "Single-record API request inaccessible; payload schema not verified."
+      },
+      "mapping": {
+        "parser": "scdl_collective_menu_pending_sample",
+        "observed_fields": [
+          "menucollnom"
+        ],
+        "menu_key": [
+          "restaurant_id",
+          "service_date",
+          "meal_type",
+          "audience"
+        ],
+        "section": "Dish/course type if SCDL-compliant",
+        "item": "Dish name",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Coverage currently Bègles only, not all Bordeaux Métropole.",
+        "Related dish-composition dataset is an enrichment join, not a full cooking recipe.",
+        "Validate actual column names against SCDL; do not infer complete schema from one observed field."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_toulouse_menus",
+      "title": "Toulouse school menus and Datameal dish composition",
+      "tier": "A",
+      "kind": "dated_school_menu_rows_and_dish_composition",
+      "geography": "Toulouse, France",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://toulouse-metropole.opendatasoft.com/explore/dataset/menus/export/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://data.toulouse-metropole.fr/explore/dataset/plats-extrait-de-datameal/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte v2.0 / Etalab",
+        "scope": "Official linked dish-composition dataset explicitly licensed; confirm each menu/ingredient/technical-sheet resource declaration before activation.",
+        "evidence_status": "Explicit linked dataset license; per-resource terms check remains"
+      },
+      "counts": [
+        {
+          "value": 596,
+          "unit": "menu dataset rows",
+          "scope": "Indexed 2026 tenant export at review; date/course/population rows, not unique menus."
+        },
+        {
+          "value": 280,
+          "unit": "dish-composition dataset records",
+          "scope": "Indexed official Datameal dataset; not 280 complete recipes."
+        }
+      ],
+      "access": {
+        "formats": [
+          "CSV",
+          "JSON",
+          "XLSX",
+          "Parquet"
+        ],
+        "updates": "Dish dataset modified 2026-10-15; menu rows indexed for 2026.",
+        "auth": "Export interface has terms acknowledgment; no click-through performed."
+      },
+      "inspection": {
+        "level": "Indexed official export fields and linked dataset metadata",
+        "sample_status": "No downloaded payload"
+      },
+      "mapping": {
+        "parser": "toulouse_datameal_pending_sample",
+        "observed_fields": [
+          "DateMenu",
+          "Libelle_Repas",
+          "Libelle_Ordre_Plat",
+          "Libelle_Population_Cible"
+        ],
+        "menu_key": [
+          "DateMenu",
+          "Libelle_Repas",
+          "Libelle_Population_Cible",
+          "venue_if_present"
+        ],
+        "section": "Libelle_Ordre_Plat with original course ordering",
+        "relationships": [
+          "dish_code to dish composition",
+          "ingredient/technical-sheet references if explicit"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Rows repeat by cohort/course/date; group without collapsing distinct adult/primary/preschool audiences.",
+        "Related technical sheets may support recipes only where actual quantities and method exist.",
+        "Detect CSV delimiter/encoding; do not rely on contradictory export UI wording."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_larochelle_archive",
+      "title": "La Rochelle collective menu archives",
+      "tier": "A",
+      "kind": "historical_dated_collective_menu_rows",
+      "geography": "La Rochelle, France",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/restauration-archives-des-menus-collectifs",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://d4c.agglo-larochelle.fr/lv/dataset/archives_des_menus_des_restaurants_scolaires",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte / Open Licence",
+        "scope": "Current city archive dataset; exact version unspecified.",
+        "evidence_status": "Explicit official catalog license"
+      },
+      "counts": [
+        {
+          "value": 17016,
+          "unit": "legacy school-menu rows",
+          "scope": "Deprecated predecessor only; NOT current archive count, and must not be added twice."
+        }
+      ],
+      "access": {
+        "formats": [
+          "CSV"
+        ],
+        "resource_name": "menus_collectifs.csv",
+        "updates": "Current catalog updated 2026-10-10.",
+        "auth": "Public catalog; some files flagged unavailable"
+      },
+      "inspection": {
+        "level": "Current archive metadata plus deprecated predecessor metadata",
+        "sample_status": "No CSV payload"
+      },
+      "mapping": {
+        "parser": "scdl_collective_menu_pending_sample",
+        "menu_key": [
+          "restaurant_id",
+          "menuDate",
+          "menuRepasType",
+          "menuRestaurantConvive"
+        ],
+        "section": "menuPlatType",
+        "item": "menuPlatNom",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Includes schools and municipal crèches.",
+        "Legacy endpoint explicitly marked for decommissioning; use current archive as canonical.",
+        "Separate current/future rolling menus from archive; related allergen tables require exact date/dish joins."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_marseille_archive",
+      "title": "Marseille school and crèche historical menus",
+      "tier": "A",
+      "kind": "historical_dated_school_menu_rows",
+      "geography": "Marseille, France",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://dev.data.gouv.fr/datasets/marseille-menus-des-cantines-ecoles-2020-2021",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte v2",
+        "scope": "Identified 2020–2021 catalog snapshot, not all current Marseille web PDFs.",
+        "evidence_status": "Explicit official catalog license in indexed development catalog; production URL resolution pending"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV"
+        ],
+        "updates": "Historical 2020–2021 school year; 171 KB CSV dated 2021-07-05.",
+        "auth": "Public catalog; canonical production catalog resolution required"
+      },
+      "inspection": {
+        "level": "Official catalog description and field semantics",
+        "sample_status": "No CSV payload"
+      },
+      "mapping": {
+        "parser": "marseille_menu_variants_pending_sample",
+        "observed_fields": [
+          "restaurant type",
+          "service date",
+          "menu variant",
+          "course",
+          "dish"
+        ],
+        "menu_key": [
+          "restaurant_type",
+          "service_date",
+          "menu_variant"
+        ],
+        "section": "Course: starter/main/side/dairy/dessert",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Alternative variants contain only changed dishes: derive full alternatives by explicitly documented inheritance from main menu on same date.",
+        "Local last-minute substitutions are not necessarily captured.",
+        "Additional historical school/crèche years are discovery expansion, not counted here.",
+        "Do not transfer this historical dataset license to current public PDFs without evidence."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 3,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_dijon_school",
+      "title": "Dijon municipal school menus",
+      "tier": "A",
+      "kind": "dated_school_menu_rows",
+      "geography": "Dijon, France",
+      "languages": [
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/menus-de-la-restauration-scolaire",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Licence Ouverte v2",
+        "scope": "School menu dataset, unrelated to Dijon library historic menu image collection.",
+        "evidence_status": "Explicit official catalog license"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV",
+          "JSON"
+        ],
+        "updates": "Catalog last updated 2022-11-07; stale.",
+        "auth": "Some resources reported unavailable"
+      },
+      "inspection": {
+        "level": "Official catalog metadata",
+        "sample_status": "No payload"
+      },
+      "mapping": {
+        "parser": "municipal_school_menu_pending_schema",
+        "menu_key": [
+          "school_or_service_id",
+          "service_date",
+          "meal_type"
+        ],
+        "item": "Dish text after schema validation",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Small stale supplemental source, not a large national corpus.",
+        "Advertised CSV 5.2 KB and JSON 24.6 KB are file sizes, not counts."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 4,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "jp_yamagata_school",
+      "title": "Yamagata school lunch open data",
+      "tier": "A",
+      "kind": "dated_school_meal_plan",
+      "geography": "Yamagata, Japan",
+      "languages": [
+        "ja"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.city.yamagata-yamagata.lg.jp/opendata/category/1007062/1012830.html",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "CC BY 4.0",
+        "scope": "Official school-lunch open data.",
+        "evidence_status": "Explicit municipal dataset license"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV"
+        ],
+        "resources": [
+          "elementary school CSV (104.6 KB)",
+          "junior-high CSV (97 KB)",
+          "metadata CSV (521 B)"
+        ],
+        "updates": "Official page updated 2026-05-27 (Reiwa 8).",
+        "auth": "Public download"
+      },
+      "inspection": {
+        "level": "Official dataset license and resources",
+        "sample_status": "CSV opened via web but tool cannot render text/csv; actual columns not inspected."
+      },
+      "mapping": {
+        "parser": "japanese_school_csv_pending_schema",
+        "menu_key": [
+          "school_or_kitchen_id",
+          "service_date",
+          "meal_type"
+        ],
+        "item": "Original Japanese dish name",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Byte sizes are not record counts.",
+        "Retain original era dates and validate encoding before conversion.",
+        "Planned menus are not verified meals served."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "jp_noshiro_school",
+      "title": "Noshiro southern community kitchen lunch menus",
+      "tier": "A",
+      "kind": "dated_school_meal_plan",
+      "geography": "Noshiro, Japan",
+      "languages": [
+        "ja"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.city.noshiro.lg.jp/city/opendata/oopun/25473",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "CC BY; version not stated on inspected page",
+        "scope": "Official school lunch open data.",
+        "evidence_status": "Explicit municipal dataset license; exact version unresolved"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV",
+          "XLSX"
+        ],
+        "updates": "Page updated 2025-03-28; January–March 2025 southern community kitchen.",
+        "auth": "Public download"
+      },
+      "inspection": {
+        "level": "Official field list, license and resource metadata",
+        "sample_status": "CSV opened via web but unsupported text/csv; no row payload."
+      },
+      "mapping": {
+        "parser": "noshiro_school_csv_pending_sample",
+        "observed_fields": [
+          "municipality code",
+          "school code",
+          "location",
+          "name",
+          "grade",
+          "date",
+          "dish name"
+        ],
+        "menu_key": [
+          "school code",
+          "grade",
+          "date"
+        ],
+        "item": "dish name",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Quarterly local archive, not all Japanese schools.",
+        "Keep school/grade targeting; one common kitchen menu can apply to multiple schools without being independent menus.",
+        "Record license version as unspecified, not CC BY 4.0 by assumption."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "jp_shizuoka_school",
+      "title": "Shizuoka school lunch menu PDFs",
+      "tier": "A",
+      "kind": "dated_school_meal_plan_with_ingredients_and_meal_nutrition",
+      "geography": "Shizuoka, Japan",
+      "languages": [
+        "ja"
+      ],
+      "evidence": [
+        {
+          "url": "https://shizuoka-kyushoku.com/lunchmenu/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://shizuoka-kyushoku.com/core/wp-content/uploads/2026/09/c67552f078d25792b04fd569e1c4b393.pdf",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "CC BY 4.0",
+        "scope": "Menu content ONLY; images explicitly excluded.",
+        "evidence_status": "Explicit site license scope; PDF text sample inspected"
+      },
+      "counts": [
+        {
+          "value": 2,
+          "unit": "pages in inspected PDF",
+          "scope": "October 2026 elementary B-block Mariko kitchen sample; not corpus count."
+        }
+      ],
+      "access": {
+        "formats": [
+          "PDF with extractable text"
+        ],
+        "updates": "Monthly kitchen/block menus; current October 2026 sample.",
+        "auth": "Public download"
+      },
+      "inspection": {
+        "level": "Actual two-page PDF text inspected",
+        "sample_status": "Dated dishes, ingredient classes, seasoning and meal nutrition visible."
+      },
+      "mapping": {
+        "parser": "shizuoka_monthly_pdf_layout",
+        "observed_fields": [
+          "date",
+          "dish names",
+          "ingredients by nutrition class",
+          "seasonings",
+          "energy kcal",
+          "protein g",
+          "calcium mg",
+          "salt g"
+        ],
+        "menu_key": [
+          "kitchen",
+          "block",
+          "school audience",
+          "date"
+        ],
+        "section": "Rice/milk/main/sides/soup as evidenced by layout",
+        "nutrition": "Meal totals for grade 3–4 reference audience, NOT per dish",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Reuse text data, not excluded illustrations or page images as distributable assets.",
+        "Deduplicate same PDF linked from many schools while retaining school-menu relationships.",
+        "PDF cautions about ingredient omissions/cross-contact: extracted allergens are not an allergy-safety guarantee.",
+        "Ingredients without method/quantities are composition, not full recipes."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "de_konstanz_canteens",
+      "title": "Konstanz archive: German university canteen meal options 2015–2024",
+      "tier": "A",
+      "kind": "research_archive_of_dated_menu_items",
+      "geography": "Germany",
+      "languages": [
+        "de",
+        "en metadata"
+      ],
+      "evidence": [
+        {
+          "url": "https://kondata.uni-konstanz.de/radar/de/dataset/ty235ftth5yvg7hd",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://doi.org/10.48606/ty235ftth5yvg7hd",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.nature.com/articles/s44458-026-00138-3",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "CC BY 4.0",
+        "scope": "Archived data package license explicitly listed; retain OpenMensa upstream provenance and transformation history.",
+        "evidence_status": "Explicit repository data license; upstream chain and collection-date discrepancy need resolution"
+      },
+      "counts": [
+        {
+          "value": 340,
+          "unit": "canteens",
+          "scope": "Research analysis, 2015–2024."
+        },
+        {
+          "value": 3789253,
+          "unit": "entries after excluding two company canteens",
+          "scope": "Original paper, not fetched audit."
+        },
+        {
+          "value": 3753180,
+          "unit": "final meal options",
+          "scope": "After removing 36,073 closure/nonmeal entries; not unique recipes or menus."
+        }
+      ],
+      "access": {
+        "formats": [
+          "research archive; internal file/schema not yet inspected"
+        ],
+        "archive_bytes_description": "913.1 MB",
+        "updates": "Repository publication 2026-07-31; historical data 2015–2024.",
+        "auth": "No embargo indicated"
+      },
+      "inspection": {
+        "level": "Indexed repository metadata and primary paper",
+        "sample_status": "No archive downloaded. DOI inaccessible; repository direct open timed out after indexed metadata."
+      },
+      "mapping": {
+        "parser": "konstanz_openmensa_archive_pending_schema",
+        "observed_fields": [
+          "textual description",
+          "date",
+          "diet labels where available",
+          "price",
+          "canteen/coordinates"
+        ],
+        "menu_key": [
+          "canteen_id",
+          "date",
+          "daypart_if_present"
+        ],
+        "item": "Preserve published cleaned description and label provenance",
+        "price": "Historical source observation; currency/basis must be verified in package",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Repository says collection February 2024; paper says 2025-02-28. Resolve discrepancy before ingest.",
+        "Paper preprocessing lowercases/removes punctuation, converts zero price to missing and corrects 20 high-price values; archive may not preserve raw source text.",
+        "Inferred diet labels are analytical classifications, not operator safety statements.",
+        "Do not assume CC BY repository label settles upstream rights without provenance review."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 1,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "us_nypl_menus",
+      "title": "NYPL What’s on the Menu historical transcriptions",
+      "tier": "B",
+      "kind": "historical_menu_page_item_hierarchy",
+      "geography": "United States collection; international historical menus",
+      "languages": [
+        "multilingual; per-menu language field"
+      ],
+      "evidence": [
+        {
+          "url": "https://nypl.github.io/menus-api/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.neh.gov/project/whats-menu",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://api.repo.nypl.org/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.nypl.org/research/support/whats-on-the-menu",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Export-wide transcription license not yet verified; capture-specific NYPL rights vary",
+        "scope": "Do not apply public-domain/CC0 status of selected images to all transcriptions or all menus.",
+        "evidence_status": "Conditional; explicit exact export license and current original distribution unresolved"
+      },
+      "counts": [
+        {
+          "value": 17500,
+          "unit": "transcribed menus",
+          "scope": "Historical NEH funder description, not current audit."
+        },
+        {
+          "value": 1330000,
+          "unit": "dish transcriptions (over)",
+          "scope": "Same historical description; not unique dish names."
+        },
+        {
+          "value": 45000,
+          "unit": "physical menus in collection",
+          "scope": "Collection size, not digitized structured-menu count."
+        },
+        {
+          "value": 14450,
+          "unit": "menus in old API example",
+          "scope": "Documentation sample only; not current count."
+        },
+        {
+          "value": 323958,
+          "unit": "dishes in old API example",
+          "scope": "Documentation sample only; not current count."
+        }
+      ],
+      "access": {
+        "formats": [
+          "legacy JSON/XML API",
+          "historical relational CSV export"
+        ],
+        "tables": [
+          "Menu",
+          "MenuPage",
+          "MenuItem",
+          "Dish"
+        ],
+        "updates": "Legacy API; current original distribution/retirement status not independently resolved.",
+        "auth": "Legacy API requires token"
+      },
+      "inspection": {
+        "level": "Actual documented JSON examples and primary funder/rights documentation",
+        "sample_status": "Support page HTTP 403; legacy data page inaccessible; no bulk export downloaded."
+      },
+      "mapping": {
+        "parser": "nypl_relational_csv_pending_license",
+        "observed_fields": [
+          "menu id",
+          "sponsor/place/event/date/language/currency",
+          "page count",
+          "dish count",
+          "menu page id",
+          "dish name",
+          "price/high price",
+          "page positions",
+          "creation/update timestamps"
+        ],
+        "menu_key": [
+          "menu_id"
+        ],
+        "section": "Page geometry does not automatically identify courses; preserve page relationships",
+        "relationships": [
+          "menu→page→menu item→dish"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Prioritize licensed/public-domain subsets once exact export and image rights are resolved.",
+        "Do not combine 45,000 physical menus with 17,500 transcribed menus as additive coverage.",
+        "Historical price/currency must retain date, original currency and source context.",
+        "Do not fetch a third-party mirror to work around unavailable official resources."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 1,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "us_menustat",
+      "title": "NYC MenuStat historical chain restaurant nutrition",
+      "tier": "B",
+      "kind": "chain_dish_nutrition_observations_not_full_menu_hierarchy",
+      "geography": "United States chains",
+      "languages": [
+        "en"
+      ],
+      "evidence": [
+        {
+          "url": "https://catalog.data.gov/dataset/dohmh-menustat-historical",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.menustat.org/uploads/1/4/1/6/141624194/menustat_data_completeness_documentation.pdf",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11757062/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://portal.311.nyc.gov/article/?kanumber=KA-02893",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "NYC public-use purpose documented; exact downloadable dataset license not verified",
+        "scope": "Do not rely on unverified third-party claim of CC0 Harvard deposit.",
+        "evidence_status": "Conditional license/terms check"
+      },
+      "counts": [
+        {
+          "value": 35000,
+          "unit": "items (over), historical claim",
+          "scope": "Older consortium description; not current national total."
+        },
+        {
+          "value": 75,
+          "unit": "chains in a 2013–2021 study",
+          "scope": "Study inclusion subset, not entire service coverage."
+        }
+      ],
+      "access": {
+        "formats": [
+          "CSV",
+          "JSON",
+          "XML",
+          "Socrata"
+        ],
+        "dataset_id": "qgc5-ecnb",
+        "export": "https://data.cityofnewyork.us/api/v3/views/qgc5-ecnb/export.csv?accessType=DOWNLOAD",
+        "updates": "Catalog last updated 2022-05-10; annual source methodology. Latest coverage unverified.",
+        "auth": "Public export advertised"
+      },
+      "inspection": {
+        "level": "Official catalog/methods indexed; primary research inspected",
+        "sample_status": "One-record API and columns endpoint inaccessible. Menustat homepage/codebook/method PDF returned 403 on direct requests; no retry."
+      },
+      "mapping": {
+        "parser": "menustat_socrata_pending_schema_license",
+        "observed_fields": [
+          "longitudinal item identifier",
+          "restaurant",
+          "year",
+          "food group",
+          "nutrition",
+          "serving size",
+          "kids/LTO/regional/shareable/combo flags",
+          "customizable_build_id"
+        ],
+        "menu_key": [
+          "chain",
+          "year",
+          "menu_scope_unknown"
+        ],
+        "item": "Item identity + year observation",
+        "nutrition": "Per reported serving/basis; retain changing variation methods",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Not a price corpus: original study states pricing, promotions and purchasing data not collected.",
+        "Twelve food groups are analytical categories, not necessarily original menu sections.",
+        "Customizable components/combos must not be blindly summed; beverage-variation collection differs across years.",
+        "Article access license does not license underlying menu observations."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "global_dolthub_menus",
+      "title": "DoltHub menus bounty 2021",
+      "tier": "B",
+      "kind": "restaurant_menu_item_price_observations",
+      "geography": "Primarily United States",
+      "languages": [
+        "en predominant; content languages unverified"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.dolthub.com/blog/2021-08-20-menus-bounty-retrospective/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.dolthub.com/repositories/dolthub/menus",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.dolthub.com/blog/2021-07-07-announcing-us-menus-data-bounty/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Data content license unverified",
+        "scope": "Open-source Dolt software is not a license for third-party restaurant data.",
+        "evidence_status": "Conditional upstream platform/source permission"
+      },
+      "counts": [
+        {
+          "value": 44720,
+          "unit": "restaurants",
+          "scope": "Publisher 2021 bounty retrospective."
+        },
+        {
+          "value": 6479347,
+          "unit": "menu item rows",
+          "scope": "Publisher 2021 snapshot, not current menus."
+        },
+        {
+          "value": 2695669,
+          "unit": "publisher-defined unique menu items",
+          "scope": "Deduplication semantics must be inspected."
+        },
+        {
+          "value": 6312564,
+          "unit": "rows with price",
+          "scope": "97.4% of snapshot rows."
+        },
+        {
+          "value": 157125,
+          "unit": "rows with nutrition",
+          "scope": "2.42% of snapshot rows."
+        }
+      ],
+      "access": {
+        "formats": [
+          "Dolt/SQL tables"
+        ],
+        "updates": "2021 historical snapshot; subsequent maintenance unverified.",
+        "auth": "Public repository metadata"
+      },
+      "inspection": {
+        "level": "Primary publisher SQL examples and counts",
+        "sample_status": "Repository web view did not expose license/schema; no clone or export."
+      },
+      "mapping": {
+        "parser": "dolthub_menus_sql_pending_license",
+        "observed_fields": [
+          "name",
+          "restaurant_name",
+          "identifier",
+          "price_usd"
+        ],
+        "menu_key": [
+          "restaurant/source identifier",
+          "menu date unknown unless evidenced"
+        ],
+        "price": "Historical observed delivery-channel price, not current retail availability",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Many records originate from Uber Eats/Grubhub; source terms and chain of rights unresolved.",
+        "Do not infer current outlet stock, live price, or full course hierarchy.",
+        "Do not treat repository visibility as redistribution permission."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "de_openmensa_live",
+      "title": "OpenMensa live community menus",
+      "tier": "B",
+      "kind": "dated_canteen_menu_items",
+      "geography": "Germany and participating canteens",
+      "languages": [
+        "de; other provider languages"
+      ],
+      "evidence": [
+        {
+          "url": "https://openmensa.org/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://docs.openmensa.org/api/v2/meals/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://docs.openmensa.org/api/v2/overview/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Content license not established from inspected docs",
+        "scope": "Open parser/client code licenses do not automatically license all operator menus.",
+        "evidence_status": "Conditional upstream data permission"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "JSON API"
+        ],
+        "endpoint_template": "/canteens/{canteen_id}/days/{date}/meals",
+        "updates": "Provider-dependent live menus; retained history unverified.",
+        "auth": "Public documentation"
+      },
+      "inspection": {
+        "level": "Actual documented two-meal JSON example",
+        "sample_status": "No live provider payload fetched"
+      },
+      "mapping": {
+        "parser": "openmensa_v2",
+        "observed_fields": [
+          "id",
+          "name",
+          "notes[]",
+          "category",
+          "prices.students",
+          "prices.employees",
+          "prices.others/pupils"
+        ],
+        "menu_key": [
+          "canteen_id from route",
+          "date from route"
+        ],
+        "section": "category",
+        "item": "name; notes preserved",
+        "price": "Audience-specific tariff; source currency must be established",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Community scrapers aggregate different original operators; permissions vary.",
+        "Konstanz archive is a separate explicitly licensed release, not evidence that the live API content has the same license.",
+        "Closed/no-service entries must not become dishes."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "de_dresden_original",
+      "title": "Studentenwerk Dresden original menu API",
+      "tier": "B",
+      "kind": "dated_institutional_menu_api",
+      "geography": "Dresden, Tharandt, Zittau and Görlitz, Germany",
+      "languages": [
+        "de",
+        "en documentation"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.studentenwerk-dresden.de/english/mensen/speiseplan-api.html",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "External application use invited; archival/redistribution/commercial license not explicit",
+        "scope": "Application access permission is narrower than an open corpus license.",
+        "evidence_status": "Conditional clarify reuse scope"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "JSON, mostly OpenMensa v2"
+        ],
+        "endpoint_template": "https://api.studentenwerk-dresden.de/openmensa/v2",
+        "updates": "Original operator menu publication; cadence not audited.",
+        "auth": "Public documented endpoint"
+      },
+      "inspection": {
+        "level": "Original operator API documentation",
+        "sample_status": "No live payload"
+      },
+      "mapping": {
+        "parser": "openmensa_v2_pending_operator_differences",
+        "menu_key": [
+          "canteen_id",
+          "date"
+        ],
+        "section": "category when present",
+        "item": "name",
+        "price": "Audience-specific source tariff",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Four listed places are cities/locations, not a count of canteens.",
+        "Prefer original source over community re-scrape once reuse scope is recorded."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 2,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "se_open_meal",
+      "title": "Swedish Open Meal protocol and provider network",
+      "tier": "B",
+      "kind": "provider_discovery_standard_not_single_dataset",
+      "geography": "Sweden",
+      "languages": [
+        "sv"
+      ],
+      "evidence": [
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/intro/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/data_providers/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/specification/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/icalendar/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Protocol/client openness does not establish provider menu-data license",
+        "scope": "Resolve each municipality/provider independently.",
+        "evidence_status": "Conditional per-provider rights and access"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "JSON REST",
+          "optional iCalendar"
+        ],
+        "provider_discovery": "https://sambruk.github.io/Open-Meal/api/dataproviders/",
+        "updates": "Provider-dependent school/retirement-home meal plans.",
+        "auth": "Some providers require headers/API keys"
+      },
+      "inspection": {
+        "level": "Standard and documented ICS example",
+        "sample_status": "No provider data or discovery registry fetched"
+      },
+      "mapping": {
+        "parser": "open_meal_provider_json_or_ics",
+        "observed_fields": [
+          "DTSTART",
+          "DTEND",
+          "DTSTAMP",
+          "UID",
+          "CREATED",
+          "SUMMARY",
+          "DESCRIPTION",
+          "LOCATION",
+          "LAST-MODIFIED",
+          "SEQUENCE"
+        ],
+        "menu_key": [
+          "provider",
+          "unit/venue",
+          "UID or date",
+          "daypart"
+        ],
+        "item": "DESCRIPTION may contain all courses; SUMMARY may contain only first one or two",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "This is an interoperability standard and directory, not a national menu corpus.",
+        "ICS requires line unfolding, escapes, timezone and date-only event handling.",
+        "Public care-home menus are generic institutional content; never ingest resident-level medical data."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 3,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "se_skolmaten_ist",
+      "title": "IST Skolmaten commercial integration",
+      "tier": "C",
+      "kind": "school_menu_service",
+      "geography": "Sweden",
+      "languages": [
+        "sv"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.ist.com/hubfs/139630678/Sweden/Dokument/Allm%C3%A4nna%20Villkor%20IST%20Skolmaten.pdf?hsLang=sv",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Contractual service terms; not an open content license",
+        "scope": "Additional paid integration license and API key described.",
+        "evidence_status": "Restricted / separate contract needed"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "API"
+        ],
+        "updates": "Service-dependent",
+        "auth": "API key; paid integration conditions"
+      },
+      "inspection": {
+        "level": "Vendor terms inspected",
+        "sample_status": "No service request"
+      },
+      "mapping": {
+        "parser": "not_authorized",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Do not equate Open Meal support or an ISC client license with free reuse of Skolmaten data.",
+        "Do not activate without separately approved appropriate agreement."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 9,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "br_prato_aberto",
+      "title": "São Paulo Prato Aberto municipal school menus",
+      "tier": "B",
+      "kind": "school_menu_search_and_extraction_service",
+      "geography": "São Paulo, Brazil",
+      "languages": [
+        "pt-BR"
+      ],
+      "evidence": [
+        {
+          "url": "https://apilib.prefeitura.sp.gov.br/store/apis/info?name=PratoAberto&provider=admin&version=v1",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://patiodigital.sme.prefeitura.sp.gov.br/codigosabertos/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://copicola.prefeitura.sp.gov.br/como-divulgar-cardapios-escolares-de-forma-colaborativa-e-transparente/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Menu-data license not established; open code is insufficient",
+        "scope": "Municipal transparency purpose does not alone grant bulk redistribution.",
+        "evidence_status": "Conditional data license and authenticated access"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "API v1",
+          "manager dataset extraction described"
+        ],
+        "endpoint_template": "https://gateway.apilib.prefeitura.sp.gov.br/sme/prato-aberto/v1",
+        "updates": "API store last updated 2021-06-01; current backend status untested.",
+        "auth": "Store explicitly requires login, subscription and bearer access token"
+      },
+      "inspection": {
+        "level": "Official API-store page and municipal project descriptions",
+        "sample_status": "No API call; authentication boundary respected."
+      },
+      "mapping": {
+        "parser": "prato_aberto_pending_documentation",
+        "menu_key": [
+          "school_unit",
+          "service_date",
+          "meal_type"
+        ],
+        "item": "Source dish/course text after schema discovery",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Large number of meals served by a city is not the number of records available.",
+        "No API docs attached in inspected store page; field names not verified.",
+        "Do not treat public source code as data content permission."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 3,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "us_souslab_sample",
+      "title": "Souslab US restaurant menu sample",
+      "tier": "C",
+      "kind": "restaurant_menu_item_observations",
+      "geography": "United States",
+      "languages": [
+        "en predominant"
+      ],
+      "evidence": [
+        {
+          "url": "https://huggingface.co/datasets/AnyStackLabsdev/souslab-us-restaurant-menus",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "CC BY-NC 4.0 sample; commercial use requires separate contract",
+        "scope": "10,000-row sample only; full commercial product not open.",
+        "evidence_status": "Explicit noncommercial restriction"
+      },
+      "counts": [
+        {
+          "value": 10000,
+          "unit": "sample menu item rows",
+          "scope": "Snapshot 2026-05-29."
+        },
+        {
+          "value": 4600,
+          "unit": "restaurants approximately",
+          "scope": "Sample publisher claim."
+        },
+        {
+          "value": 44300000,
+          "unit": "full-product menu items, advertised",
+          "scope": "Commercial product claim, not available open sample."
+        },
+        {
+          "value": 449000,
+          "unit": "full-product restaurants, advertised",
+          "scope": "Commercial product claim, not verified corpus."
+        }
+      ],
+      "access": {
+        "formats": [
+          "CSV",
+          "dataset viewer",
+          "commercial API separate"
+        ],
+        "updates": "Sample snapshot 2026-05-29.",
+        "auth": "Public sample; full product contracted"
+      },
+      "inspection": {
+        "level": "Dataset card and schema viewer",
+        "sample_status": "No dataset downloaded"
+      },
+      "mapping": {
+        "parser": "souslab_csv_only_if_approved_compatible_use",
+        "observed_fields": [
+          "item_uid",
+          "restaurant_id",
+          "menu_name",
+          "section_name",
+          "item_name",
+          "description",
+          "price",
+          "price_text",
+          "currency",
+          "out_of_stock",
+          "city",
+          "state",
+          "zip",
+          "geolocation",
+          "canonical_item_id"
+        ],
+        "menu_key": [
+          "restaurant_id",
+          "menu_name",
+          "snapshot_date"
+        ],
+        "section": "section_name",
+        "item": "item_name",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Noncommercial sample is not ready for unspecified commercial OffMenu use.",
+        "Source out_of_stock is not reliable current availability and must not feed stock claims.",
+        "Full-product scale must not be reported as open reusable coverage."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 9,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "global_menustatic",
+      "title": "MenuStatic community restaurant menu PDFs",
+      "tier": "B",
+      "kind": "menu_documents_not_structured_item_database",
+      "geography": "Global contributions; coverage unverified",
+      "languages": [
+        "mixed"
+      ],
+      "evidence": [
+        {
+          "url": "https://menustatic.com/terms-of-use/",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Uploader grants platform hosting/display rights; downstream open reuse not established",
+        "scope": "Public access/download is not a transferable corpus license.",
+        "evidence_status": "Conditional rights permission"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "PDF/menu images"
+        ],
+        "updates": "Community-dependent",
+        "auth": "Public site access; scraping terms not fully established"
+      },
+      "inspection": {
+        "level": "Terms reviewed",
+        "sample_status": "No menu documents fetched"
+      },
+      "mapping": {
+        "parser": "document_layout_only_after_permission",
+        "menu_key": [
+          "document_id",
+          "restaurant_ref",
+          "source_date"
+        ],
+        "section": "Only evidenced source layout",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Not a structured database of complete dishes merely because files can be viewed.",
+        "Obtain menu-content rights rather than relying on platform’s uploader license."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 8,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "us_unlv_menus",
+      "title": "UNLV historic menu collection",
+      "tier": "B",
+      "kind": "historical_menu_images_and_metadata",
+      "geography": "United States / international hospitality history",
+      "languages": [
+        "mixed; mostly English catalog"
+      ],
+      "evidence": [
+        {
+          "url": "https://special.library.unlv.edu/collections/menus/digitizing-menus",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://special.library.unlv.edu/node/316710",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Item-specific copyright; site cautions permission may be required",
+        "scope": "Library may not own copyright; scan accessibility is not universal reuse permission.",
+        "evidence_status": "Conditional item-level rights"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "Dublin Core metadata",
+          "TIFF/menu images"
+        ],
+        "updates": "Historical collection; digitization updates not audited.",
+        "auth": "Public catalog"
+      },
+      "inspection": {
+        "level": "Digitization process and one actual menu catalog item",
+        "sample_status": "One item advertises 80.6 MB TIFF; not downloaded."
+      },
+      "mapping": {
+        "parser": "catalog_metadata_then_licensed_ocr",
+        "menu_key": [
+          "catalog_item_id"
+        ],
+        "item": "No structured dishes established",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "The Library menu record is an image object, not a pre-existing transcribed dish list.",
+        "Only licensed/public-domain item subset after item-level provenance review; do not bulk-fetch scans."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 5,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fr_dijon_library",
+      "title": "Dijon municipal library historic menus",
+      "tier": "B",
+      "kind": "historical_menu_images_and_catalog",
+      "geography": "France and historical international events",
+      "languages": [
+        "fr predominant"
+      ],
+      "evidence": [
+        {
+          "url": "https://bm.dijon.fr/explorerlescollections.aspx?_lg=fr-FR",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.dijon.fr/dijon-a-votre-service/culture/bibliotheque-municipale/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://ccfr.bnf.fr/portailccfr/ark%3A/16871/007Fonds_4231",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Digitized-menu content reuse license not verified",
+        "scope": "Municipal school-menu open license does not apply to library scans.",
+        "evidence_status": "Conditional item/image rights"
+      },
+      "counts": [
+        {
+          "value": 13000,
+          "unit": "digitized menus approximately",
+          "scope": "Library collection description; not transcribed dish rows."
+        }
+      ],
+      "access": {
+        "formats": [
+          "catalog",
+          "digitized images"
+        ],
+        "updates": "Historical collection beginning in nineteenth century; current exact count unverified.",
+        "auth": "Public catalog"
+      },
+      "inspection": {
+        "level": "Primary library/city and BnF collection descriptions",
+        "sample_status": "No scans or transcription payload"
+      },
+      "mapping": {
+        "parser": "catalog_then_licensed_document_ocr",
+        "menu_key": [
+          "catalog_identifier"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Physical collection counts and digitized counts differ; do not sum or equate.",
+        "No complete structured-dish export demonstrated."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 5,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "us_lapl_menus",
+      "title": "Los Angeles Public Library historic menus",
+      "tier": "B",
+      "kind": "historical_menu_images_and_catalog",
+      "geography": "California and worldwide restaurant/travel menus",
+      "languages": [
+        "mixed"
+      ],
+      "evidence": [
+        {
+          "url": "https://tessa.lapl.org/c10",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "license": {
+        "name": "Collection-wide downstream content license not established",
+        "scope": "Inspect item-specific rights and public-domain status.",
+        "evidence_status": "Conditional"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "catalog",
+          "menu scans"
+        ],
+        "updates": "Historical digitization; some rescans/legacy entries unavailable.",
+        "auth": "Public catalog"
+      },
+      "inspection": {
+        "level": "Official collection description",
+        "sample_status": "No scans downloaded"
+      },
+      "mapping": {
+        "parser": "catalog_then_licensed_document_ocr",
+        "menu_key": [
+          "collection_item_id"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Includes hotels, restaurants, ships, airlines and clubs; not a current restaurant menu service.",
+        "Count and machine-readable full transcription availability unverified."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 5,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "kr_mind",
+      "title": "MIND Korean diet-planning benchmark",
+      "tier": "C",
+      "kind": "synthetic_diets_and_dish_ingredient_nutrition",
+      "geography": "South Korea",
+      "languages": [
+        "ko",
+        "en metadata"
+      ],
+      "evidence": [
+        {
+          "url": "https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/file/e3796ae838835da0b6f6ea37bcf8bcb7-Paper-round2.pdf",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://openreview.net/attachment?id=woX9uagUQiE&name=supplementary_material",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Ingredient data: Korea Open Government License Type 1; menu/diet components: noncommercial-only attribution",
+        "scope": "Component-specific license; do not extend commercial permission of ingredients to diets/menus.",
+        "evidence_status": "Explicit research supplementary license table"
+      },
+      "counts": [
+        {
+          "value": 1500,
+          "unit": "synthetic daily diets",
+          "scope": "Expert/optimization/ML-generated, not observed restaurant menus."
+        },
+        {
+          "value": 3238,
+          "unit": "cooked dishes called menus",
+          "scope": "Not 3,238 multi-item real menus."
+        },
+        {
+          "value": 3036,
+          "unit": "ingredients",
+          "scope": "Separate component of benchmark."
+        }
+      ],
+      "access": {
+        "formats": [
+          "dietKit dataset components"
+        ],
+        "updates": "2021 research release",
+        "auth": "Research release"
+      },
+      "inspection": {
+        "level": "Original paper and license supplement",
+        "sample_status": "No package downloaded"
+      },
+      "mapping": {
+        "parser": "research_only_dish_component_mapping",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Useful benchmark only if purpose is license-compatible; not the requested real-menu corpus.",
+        "Fourteen nutrient dimensions do not make it a cooking-instruction recipe collection."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 9,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "global_menu_ocr_benchmarks",
+      "title": "Menu image/OCR benchmarks (MMConflict and Roboflow examples)",
+      "tier": "C",
+      "kind": "image_annotation_benchmarks_not_full_transcribed_menus",
+      "geography": "Mixed/unknown",
+      "languages": [
+        "en annotations"
+      ],
+      "evidence": [
+        {
+          "url": "https://huggingface.co/datasets/shivank21/mmconflict-restaurant-menus-500",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://universe.roboflow.com/joel-kitching-4hi4b/restaurant-menus",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "CC0 / CC BY 4.0 claims respectively; underlying image provenance not established",
+        "scope": "Annotation license claims do not settle rights in all photographed menus.",
+        "evidence_status": "Restricted to evaluation lead until provenance review"
+      },
+      "counts": [
+        {
+          "value": 500,
+          "unit": "images/questions in MMConflict",
+          "scope": "One candidate price/item bounding-box question per image; not 500 complete structured menus."
+        },
+        {
+          "value": 100,
+          "unit": "images in Roboflow example",
+          "scope": "Single menu object class; not dish transcription rows."
+        }
+      ],
+      "access": {
+        "formats": [
+          "images",
+          "bounding boxes",
+          "question annotations"
+        ],
+        "updates": "Dataset-card release dependent.",
+        "auth": "Public cards"
+      },
+      "inspection": {
+        "level": "Dataset cards inspected",
+        "sample_status": "No images downloaded"
+      },
+      "mapping": {
+        "parser": "evaluation_only_not_menu_import",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "MMConflict card indicates inherited Kaggle provenance and not human verified.",
+        "Do not inflate structured-menu coverage with image count or selected question count."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 9,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "institutional_hospital_care",
+      "title": "Generic hospital/care-home published menus",
+      "tier": "B",
+      "kind": "generic_institutional_meal_plans_not_patient_records",
+      "geography": "United Kingdom and France",
+      "languages": [
+        "en",
+        "fr"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.uhleicester.nhs.uk/patients-visitors/staying-hospital/after-treatment/patient-menus/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://jeanne-de-baroncelli.fr/menus-de-la-semaine/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://ehpadlavarenne.fr/menu-de-la-semaine/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "license": {
+        "name": "Per-site menu-content license not established",
+        "scope": "Do not apply NHS.uk OGL automatically to separate hospital domains or private care homes.",
+        "evidence_status": "Conditional publisher permission"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "HTML weekly menus",
+          "PDF"
+        ],
+        "updates": "Care-home current weekly October 2026 pages; hospital current scope not verified.",
+        "auth": "Public pages"
+      },
+      "inspection": {
+        "level": "Indexed official generic menu listings; no personal medical data",
+        "sample_status": "Leicester direct page timed out; not retried. No patient records sought."
+      },
+      "mapping": {
+        "parser": "generic_weekly_html_or_pdf_after_license",
+        "menu_key": [
+          "institution",
+          "week/service_date",
+          "daypart",
+          "generic_diet_variant"
+        ],
+        "section": "Published courses only",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Generic texture/diet labels are menu variants, not evidence about named residents or patients.",
+        "Use no resident names, ward patient lists, individual prescriptions or clinical records.",
+        "Public availability alone is not permission for corpus republication."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 6,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "fi_finna_licensed_menu_images",
+      "title": "Finna licensed historical menu image subsets",
+      "tier": "A",
+      "kind": "historical_menu_images_and_CC0_catalog_not_transcribed_dishes",
+      "geography": "Finland; hotel/airline historical collections",
+      "languages": [
+        "fi",
+        "sv",
+        "other original menu languages unverified"
+      ],
+      "evidence": [
+        {
+          "url": "https://www.kiwi.fi/spaces/Finna/pages/53839699/Finna%2BAPI%2BTerms%2Bof%2BUse",
+          "role": "primary_API_terms"
+        },
+        {
+          "url": "https://www.kiwi.fi/spaces/Finna/pages/53839221/Finna%2BAPI%2Bin%2BEnglish",
+          "role": "primary_API_documentation"
+        },
+        {
+          "url": "https://www.finna.fi/Record/sim.M016-28254",
+          "role": "primary_licensed_menu_item"
+        },
+        {
+          "url": "https://www.finna.fi/Record/hkm.HKMS000005%3Akm002234",
+          "role": "primary_licensed_menu_item"
+        }
+      ],
+      "license": {
+        "name": "API metadata CC0 1.0; selected menu images explicitly CC BY 4.0",
+        "scope": "API metadata only gets CC0; linked images require individual imageRights/accessRestrictions, e.g. licensed Finnair and Helsinki Seurahuone menu objects.",
+        "evidence_status": "Explicit API terms plus indexed item-specific CC BY 4.0; NOT whole-service blanket license"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "JSON API metadata",
+          "licensed images",
+          "some IIIF manifests"
+        ],
+        "endpoint_template": "https://api.finna.fi/v1/search",
+        "updates": "Provider-dependent historical collections.",
+        "auth": "No registration required under current terms; API expressly not designed for large result sets."
+      },
+      "inspection": {
+        "level": "Primary API terms/docs and indexed actual menu-object metadata",
+        "sample_status": "No API query or images downloaded. Finnair item direct page returned HTTP 403; no retry."
+      },
+      "mapping": {
+        "parser": "finna_rights_filtered_catalog_then_ocr",
+        "observed_fields": [
+          "imageRights",
+          "accessRestrictions",
+          "images",
+          "recordPage",
+          "fullRecord"
+        ],
+        "menu_key": [
+          "provider record id"
+        ],
+        "item": "No existing complete dish transcription demonstrated",
+        "recipe_reference": null
+      },
+      "cautions": [
+        "Apply item-level rights allowlist before image acquisition; no terms means ask supplying organization.",
+        "Licensed images can support new OCR work, but are not an existing structured menu-item corpus.",
+        "Honor API large-result limitation; supported bulk arrangements would be a separate scoped step.",
+        "Collection counts and content-language distribution not established."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 5,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    },
+    {
+      "id": "br_fortaleza_school_csv",
+      "title": "Fortaleza school meal menu CSV",
+      "tier": "B",
+      "kind": "school_menu_CSV_schema_unverified",
+      "geography": "Fortaleza, Brazil",
+      "languages": [
+        "pt-BR"
+      ],
+      "evidence": [
+        {
+          "url": "https://dados.fortaleza.ce.gov.br/dataset/cardapio-alimentacao-escolar/resource/5fce42f1-6f31-4b8e-a1f4-dd70c4e93d94",
+          "role": "official_catalog_resource"
+        }
+      ],
+      "license": {
+        "name": "Catalog explicitly says no license provided",
+        "scope": "Open-data portal placement is not sufficient content permission.",
+        "evidence_status": "Unresolved; do not activate"
+      },
+      "counts": [],
+      "access": {
+        "formats": [
+          "CSV",
+          "CKAN catalog"
+        ],
+        "updates": "Resource and metadata last updated 2024-01-30; 19.2 KiB advertised.",
+        "auth": "Public resource metadata"
+      },
+      "inspection": {
+        "level": "Indexed official resource metadata; page shell",
+        "sample_status": "No CSV fetched; columns not verified."
+      },
+      "mapping": {
+        "parser": "fortaleza_csv_pending_license_and_schema",
+        "menu_key": [
+          "school_or_service_unit_if_present",
+          "service_date_if_present",
+          "meal_type_if_present"
+        ],
+        "recipe_reference": null
+      },
+      "cautions": [
+        "File size is not row count.",
+        "Confirm actual granularity; dataset title alone does not establish dated menus or full dish hierarchy."
+      ],
+      "proposed_registry": {
+        "enabled": false,
+        "production_fetch_allowed": false,
+        "execution_target": "Foo",
+        "priority": 4,
+        "activation_gates": [
+          "all_eight_databases_provisioned",
+          "all_eight_databases_relationally_fit_for_existing_data",
+          "license_scope_and_attribution_recorded",
+          "source_access_authorized_and_available",
+          "small_sample_schema_and_encoding_validated",
+          "provenance_dedup_and_safe_mapping_tests_pass"
+        ],
+        "schedule": null
+      }
+    }
+  ],
+  "expansion_paths": [
+    {
+      "region": "Japan",
+      "urls": [
+        "https://www.city.joetsu.niigata.jp/site/syoku-iku/kyusyoku-dayori.html",
+        "https://www.city.kanuma.tochigi.jp/0530/info-0000009896-0.html?idSubTop=0",
+        "https://opendata.city.chiba.jp/dataset/3180-3?activity_id=d87877d1-65e6-44aa-acf1-4c60107325b6"
+      ],
+      "status": "Official additional municipal menu leads with indexed CC notices; verify exact dataset/image scope before separate registry entries."
+    },
+    {
+      "region": "Taiwan",
+      "urls": [
+        "https://data.gov.tw/en/datasets/78344"
+      ],
+      "status": "Regional academic-year CSV sibling menus and ingredients; avoid overlap with national 2.0 extraction."
+    },
+    {
+      "region": "France",
+      "urls": [
+        "https://schema.data.gouv.fr/scdl/menus-collectifs/1.2.1/documentation.html"
+      ],
+      "status": "Discover further compliant municipal datasets by schema, then verify each data license and resource availability."
+    },
+    {
+      "region": "India",
+      "urls": [
+        "https://pmposhan.ap.gov.in/MDM/MDMCircularsDownload.aspx",
+        "https://pmposhan.education.gov.in/latest_update.html"
+      ],
+      "status": "Official menu-policy/revision circulars found, but no verified licensed nationwide dated-menu dataset in this review. Do not equate program counts or policy templates with recorded daily menus."
+    }
+  ],
+  "excluded_or_enrichment_only": [
+    {
+      "id": "fr_national_canteen_register",
+      "url": "https://www.data.gouv.fr/datasets/registre-national-des-cantines",
+      "reason": "Venue/operator register, not dated dish menus; useful licensed venue enrichment only."
+    },
+    {
+      "id": "wfp_school_meals",
+      "url": "https://www.schoolmealscoalitiondatabase.wfp.org/about",
+      "reason": "Program indicators, coverage and policy, not daily school menu records."
+    },
+    {
+      "id": "openfoodfacts",
+      "url": "https://github.com/openfoodfacts/openfoodfacts-server/issues/14863",
+      "reason": "Primarily product database; restaurant nutrition imports are not faithful menu hierarchies. Reported undefined ingredient imports make inferred ingredients unsafe; coordinate separately with product/food-source stream."
+    },
+    {
+      "id": "shifttrained_aggregate",
+      "url": "https://www.shifttrained.com/data",
+      "reason": "Licensed aggregate statistics derived from 15,000 items do not establish a downloadable raw menu-item corpus."
+    },
+    {
+      "id": "places_and_taxonomies",
+      "url": null,
+      "reason": "OSM/AllThePlaces venue records and Wikidata/Wikipedia dish taxonomies are optional enrichment, not menu corpora."
+    },
+    {
+      "id": "fi_lounasopas_aggregates",
+      "url": "https://lounasopas.com/lounashinnat/kunta/kirkkonummi",
+      "reason": "Indexed publisher says CC BY 4.0 CSV/JSON analytics; menu-derived deduplicated dish statistics are not established as raw dated menu records. Direct page cache miss; no retry. Secondary upstream rights and exact export scope unresolved."
+    }
+  ],
+  "access_outcomes": [
+    {
+      "target": "Taiwan OpenAPI JSON documentation",
+      "url": "https://fatraceschool.k12ea.gov.tw/cateringservice/web/openapi_doc/v1/openapi.json",
+      "action": "Read documentation",
+      "outcome": "HTTP 403",
+      "status": "unresolved_access",
+      "followup": "No retry or bypass. Obtain supported official access/documentation after gates."
+    },
+    {
+      "target": "NEIS one-row API sample",
+      "url": "https://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&pIndex=1&pSize=1",
+      "action": "Read one sample row",
+      "outcome": "Web inaccessible",
+      "status": "uncertain_tool_or_endpoint_access",
+      "followup": "No retry; document auth/key procedure before activation."
+    },
+    {
+      "target": "Bordeaux one-row API sample",
+      "url": "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_menu_cantine/records?limit=1",
+      "action": "Read one sample row",
+      "outcome": "Web inaccessible",
+      "status": "uncertain_tool_or_endpoint_access",
+      "followup": "No retry; schema remains unverified."
+    },
+    {
+      "target": "CNOUS one XML resource link",
+      "url": "https://www.data.gouv.fr/datasets/menus-des-restaurants-brasseries-et-cafeterias",
+      "action": "Read advertised 16.4 KB feed",
+      "outcome": "Internal tool error; final resource URL not returned",
+      "status": "uncertain",
+      "followup": "No retry; catalog-only evidence."
+    },
+    {
+      "target": "Yamagata CSV",
+      "url": "https://www.city.yamagata-yamagata.lg.jp/_res/projects/default_project/_page_/001/012/830/2026_school_lunch_s.csv",
+      "action": "Inspect schema/sample",
+      "outcome": "Web unsupported text/csv response",
+      "status": "tool_format_limitation_not_permission_denial",
+      "followup": "No download fallback performed; sample validation pending."
+    },
+    {
+      "target": "Noshiro CSV",
+      "url": "https://www.city.noshiro.lg.jp/up/files/www/city/opendata/oopun/052027_school_lunch_menu_information%28R7_1-3_southern_community_kitchen%29.csv",
+      "action": "Inspect schema/sample",
+      "outcome": "Web unsupported text/csv response",
+      "status": "tool_format_limitation_not_permission_denial",
+      "followup": "No download fallback performed."
+    },
+    {
+      "target": "Konstanz repository/DOI",
+      "url": "https://doi.org/10.48606/ty235ftth5yvg7hd",
+      "action": "Read data-package metadata",
+      "outcome": "Indexed metadata available; direct DOI inaccessible and repository page timed out",
+      "status": "metadata_verified_package_uninspected",
+      "followup": "No archive requested or mirrored."
+    },
+    {
+      "target": "NYPL support/current distribution",
+      "url": "https://www.nypl.org/research/support/whats-on-the-menu",
+      "action": "Read current support/availability",
+      "outcome": "HTTP 403; legacy data page inaccessible",
+      "status": "unresolved_access_and_license",
+      "followup": "No retries, third-party mirrors or bypass."
+    },
+    {
+      "target": "MenuStat documentation",
+      "url": "https://www.menustat.org/",
+      "action": "Read homepage/codebook/method document",
+      "outcome": "Direct HTTP 403 responses; indexed methods and official catalog available",
+      "status": "unresolved_access",
+      "followup": "No retries/bypass. Exact content license remains unresolved."
+    },
+    {
+      "target": "MenuStat NYC sample/schema",
+      "url": "https://data.cityofnewyork.us/resource/qgc5-ecnb.json?$limit=1",
+      "action": "Read one row and schema metadata",
+      "outcome": "Web inaccessible",
+      "status": "uncertain_tool_or_endpoint_access",
+      "followup": "No retry; no payload fields independently sampled."
+    },
+    {
+      "target": "MenuStat alleged Harvard deposit",
+      "url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/K4NYTR",
+      "action": "Verify secondary CC0 claim against original deposit",
+      "outcome": "Original deposit inaccessible; primary license not established",
+      "status": "unverified",
+      "followup": "Do not use secondary CC0 claim."
+    },
+    {
+      "target": "Prato Aberto API",
+      "url": "https://apilib.prefeitura.sp.gov.br/store/apis/info?name=PratoAberto&provider=admin&version=v1",
+      "action": "Read API-store documentation",
+      "outcome": "Completed; bearer token/login/subscription requirement visible",
+      "status": "dependent_access_pending_authorization",
+      "followup": "No API request or authentication bypass."
+    },
+    {
+      "target": "Leicester generic patient menu page",
+      "url": "https://www.uhleicester.nhs.uk/patients-visitors/staying-hospital/after-treatment/patient-menus/",
+      "action": "Read generic institutional menu page",
+      "outcome": "Timeout",
+      "status": "uncertain",
+      "followup": "Not retried; no private patient records requested."
+    },
+    {
+      "target": "Finnair menu object",
+      "url": "https://www.finna.fi/Record/sim.M016-28254",
+      "action": "Read licensed-item catalog page",
+      "outcome": "Indexed metadata license visible; direct HTTP 403",
+      "status": "item_metadata_indexed_direct_access_unresolved",
+      "followup": "No retry or alternate acquisition; no images fetched."
+    },
+    {
+      "target": "LounasOpas aggregate page",
+      "url": "https://lounasopas.com/lounashinnat/kunta/kirkkonummi",
+      "action": "Inspect claimed CSV/JSON analytic export scope",
+      "outcome": "Indexed description available; direct cache miss",
+      "status": "uncertain",
+      "followup": "No retry; treat as aggregate-only lead, not raw menu corpus."
+    }
+  ],
+  "coverage_limitations": [
+    "No claim of exhaustive all-language/global coverage. Highest-confidence large structured sources found are East Asian school meals, European institutional menus, and a German historical canteen archive.",
+    "Arabic, Indic, African, mainland Chinese, Spanish-language and Southeast Asian nationwide reusable dated-menu coverage remains unestablished in this review; absence of a verified source is not evidence none exists.",
+    "Historical-menu scans extend format/language breadth but need rights-filtered OCR and must not be counted as already structured transcriptions."
+  ]
+}

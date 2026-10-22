@@ -1,0 +1,1258 @@
+{
+  "schema_version": 1,
+  "retrieved_at": "2026-10-22",
+  "research_scope": "Multilingual reusable recipe content; public primary sources; research samples only",
+  "production_fetch_enabled": false,
+  "activation_gate": "All eight databases provisioned and relationally fit for existing data; source-specific rights and access tests passed; acquisition on Foo only.",
+  "classification_key": {
+    "A": "Practical content reuse route established for specified scope; access/quality gates may remain",
+    "B": "Conditional: exact missing evidence or operation stated; not blanket prohibition",
+    "C": "Explicitly restricted subset; exclude until permission or separate rights basis"
+  },
+  "sources": [
+    {
+      "id": "kochwiki_de",
+      "classification": "A",
+      "language": [
+        "de"
+      ],
+      "index_url": "https://www.kochwiki.org/wiki/Hauptseite",
+      "sample_url": "https://www.kochwiki.org/wiki/Arabischer_Bulgursalat",
+      "verified": "Full quantified ingredient list and ordered preparation inspected",
+      "count": {
+        "value": 11434,
+        "unit": "recipes advertised by publisher",
+        "separate_counts": {
+          "ingredient_entries": 2504,
+          "techniques": 435
+        },
+        "retrieved": "2026-10-22",
+        "not_ingested_or_deduplicated": true
+      },
+      "content_license": "CC-BY-SA-3.0",
+      "commercial_reuse": true,
+      "rights_urls": [
+        "https://www.kochwiki.org/wiki/Koch-Wiki:Lizenzbestimmungen",
+        "https://creativecommons.org/licenses/by-sa/3.0/"
+      ],
+      "obligations": [
+        "author/page-history attribution",
+        "license URL",
+        "indicate adaptations",
+        "ShareAlike for adapted recipe text"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext candidate"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "fields_observed": [
+        "title",
+        "6-person yield",
+        "30-minute time",
+        "quantified ingredients",
+        "equipment",
+        "preparation",
+        "variants",
+        "categories",
+        "revision"
+      ],
+      "limitations": [
+        "API probe unresolved through web tool; HTML works",
+        "media rights separate",
+        "not a verified net-new count"
+      ],
+      "overlap": "Independent from Wikibooks, but cross-site copies need content/provenance dedup."
+    },
+    {
+      "id": "cuisine_libre_fr",
+      "classification": "A",
+      "language": [
+        "fr"
+      ],
+      "index_url": "https://www.cuisine-libre.org/recettes",
+      "sample_urls": [
+        "https://www.cuisine-libre.org/curry-de-blettes",
+        "https://www.cuisine-libre.org/tartiflette-caledonienne?lang=fr",
+        "https://www.cuisine-libre.org/lovage-spritzers",
+        "https://www.cuisine-libre.org/couteaux-a-l-echalote"
+      ],
+      "verified": "Multiple actual recipes and explicit recipe-scoped licenses",
+      "count": null,
+      "content_license": "Per recipe: CC-BY-SA-3.0, CC0, CC-BY, GFDL observed; do not assign one blanket license",
+      "commercial_reuse": true,
+      "rights_urls": [
+        "https://www.cuisine-libre.org/curry-de-blettes",
+        "https://creativecommons.org/licenses/by-sa/3.0/deed.fr",
+        "https://www.cuisine-libre.org/tartiflette-caledonienne?lang=fr"
+      ],
+      "obligations": [
+        "persist per-recipe license URL and credited source",
+        "CC-BY attribution",
+        "CC-BY-SA adaptation ShareAlike",
+        "separate GFDL compatibility route",
+        "images per asset"
+      ],
+      "formats": [
+        "HTML",
+        "RSS link advertised but returned 404"
+      ],
+      "handler": "cuisine_libre_html_license_partitioned",
+      "fields_observed": [
+        "title",
+        "author",
+        "published month",
+        "ingredients",
+        "directions",
+        "yield",
+        "preparation/cooking/rest time",
+        "diet tags",
+        "source URL"
+      ],
+      "limitations": [
+        "Catalog, license-index and RSS links returned 404 through web tool",
+        "some pages are external-link references, not hosted recipe bodies",
+        "normalization/template debris visible"
+      ],
+      "overlap": "Foodista imports and Wikimanche imports explicitly present; upstream URL dedup required."
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": {
+        "value": 640,
+        "unit": "direct pages in all-recipes category",
+        "not_ingested_or_deduplicated": true
+      },
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_de",
+      "language": [
+        "de"
+      ],
+      "index_url": "https://de.wikibooks.org/wiki/Kategorie:Kochbuch/_Alle_Rezepte",
+      "sample_url": "https://de.wikibooks.org/wiki/Kochbuch/_Afrikanisches_Huhn",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "quantified ingredients",
+        "steps",
+        "6 servings",
+        "30-45 minute time",
+        "difficulty",
+        "diet flags"
+      ],
+      "limitations": [
+        "Category membership is not a quality-vetted total; generic African label is not national cuisine evidence"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_fr",
+      "language": [
+        "fr"
+      ],
+      "index_url": "https://fr.wikibooks.org/wiki/Livre_de_cuisine",
+      "sample_url": "https://fr.wikibooks.org/wiki/Livre_de_cuisine/Couscous",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "ingredient quantities",
+        "6-person yield",
+        "grouped numbered steps",
+        "variants"
+      ],
+      "limitations": [
+        "North African dish in French, not evidence of African-language corpus",
+        "Some ingredients used in directions absent from list; quality flag"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": {
+        "value": 364,
+        "unit": "direct pages in cookbook category, not validated recipes",
+        "subcategories": 11,
+        "source_url": "https://bn.wikibooks.org/wiki/বিষয়শ্রেণী:রন্ধনপ্রণালী",
+        "not_ingested_or_deduplicated": true
+      },
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_bn",
+      "language": [
+        "bn"
+      ],
+      "index_url": "https://bn.wikibooks.org/wiki/রন্ধনপ্রণালী:রন্ধনপ্রণালী",
+      "sample_url": "https://bn.wikibooks.org/wiki/রন্ধনপ্রণালী:মোরগ_পোলাও",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "Bengali ingredient table",
+        "3-4 servings",
+        "1-2 hour time",
+        "preparation paragraphs",
+        "ingredient subgroups in prose"
+      ],
+      "limitations": [
+        "Bengali digits and mixed units; ingredient/category/help pages mixed in tree"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_ta",
+      "language": [
+        "ta"
+      ],
+      "index_url": "https://ta.wikibooks.org/wiki/சமையல்_நூல்",
+      "sample_url": "https://ta.wikibooks.org/wiki/சமையல்_நூல்/இட்லி",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "ingredient table",
+        "rice 400g",
+        "black gram 100g",
+        "fermentation and steaming instructions"
+      ],
+      "limitations": [
+        "No normalized yield/time; historical and variant discussion not separate recipes"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_fa",
+      "language": [
+        "fa"
+      ],
+      "index_url": "https://fa.wikibooks.org/wiki/کتاب_آشپزی",
+      "sample_url": "https://fa.wikibooks.org/wiki/کتاب_آشپزی/کته",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "quantified ingredients",
+        "Persian digits",
+        "preparation",
+        "multiple variants"
+      ],
+      "limitations": [
+        "RTL preservation; don't merge ingredient lists across variants"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_ar",
+      "language": [
+        "ar"
+      ],
+      "index_url": "https://ar.wikibooks.org/wiki/كتاب_الطبخ",
+      "sample_url": "https://ar.wikibooks.org/wiki/كتاب_الطبخ/منسف",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "dish title",
+        "ingredient names",
+        "preparation section"
+      ],
+      "limitations": [
+        "Amounts largely missing; ingredient names and directions alone do not yield full quantified template"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_zh",
+      "language": [
+        "zh"
+      ],
+      "index_url": "https://zh.wikibooks.org/wiki/食谱",
+      "sample_url": "https://zh.wikibooks.org/zh-hans/食谱/蛋炒饭",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "ingredient names",
+        "equipment",
+        "preparation"
+      ],
+      "limitations": [
+        "No ingredient quantities observed; simplified/traditional renderer variants are not distinct recipes"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_ja",
+      "language": [
+        "ja"
+      ],
+      "index_url": "https://ja.wikibooks.org/wiki/料理本/簡易版",
+      "sample_url": "https://ja.wikibooks.org/wiki/料理本/味噌汁",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "3-person yield",
+        "quantified ingredients",
+        "preparation and main cooking steps"
+      ],
+      "limitations": [
+        "Main root has many red links; simple edition better discovery seed; captions not recipe text"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_id",
+      "language": [
+        "id"
+      ],
+      "index_url": "https://id.wikibooks.org/wiki/Resep",
+      "sample_url": "https://id.wikibooks.org/wiki/Resep:Nasi_goreng",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "ingredient amounts",
+        "numbered directions"
+      ],
+      "limitations": [
+        "Directions refer to additional ingredients missing from primary list",
+        "Source credits Mustikarasa, Indonesian agriculture 1967: retain and review imported-text provenance"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_pt",
+      "language": [
+        "pt"
+      ],
+      "index_url": "https://pt.wikibooks.org/wiki/Livro_de_receitas",
+      "sample_url": "https://pt.wikibooks.org/wiki/Livro_de_receitas/Feijoada_brasileira_completa",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "quantified ingredients",
+        "8 main steps",
+        "sauce subrecipe",
+        "variants"
+      ],
+      "limitations": [
+        "Book inventory also contains household bleach; exclude nonfood records",
+        "Brazilian sample plus Mozambique Ibo sample at separate URL"
+      ]
+    },
+    {
+      "classification": "A",
+      "scope": "Recipe text on verified pages; inspect per-page exceptions and imported attribution; images separately",
+      "content_license": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "commercial_reuse": true,
+      "obligations": [
+        "attribution with article/history link",
+        "retain license and imported credits",
+        "mark adaptations",
+        "share adapted text under compatible ShareAlike terms"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "compressed XML content export"
+      ],
+      "handler": "mediawiki_cookbook_localized",
+      "access_gate": "No production fetch until all eight databases ready; API endpoint live smoke test still needed",
+      "count": null,
+      "rights_urls": [
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://creativecommons.org/licenses/by-sa/4.0/"
+      ],
+      "overlap": "Pinned 14 October catalog snapshot already reports 17,379 Wikibooks records across 32 editions, including 3,309 English; reconcile source wiki/page/revision IDs before claiming any new delta. Not current loaded counts.",
+      "id": "wikibooks_pl",
+      "language": [
+        "pl"
+      ],
+      "index_url": "https://pl.wikibooks.org/wiki/Książka_kucharska",
+      "sample_url": "https://pl.wikibooks.org/wiki/Książka_kucharska/Ciasto_na_pierogi",
+      "verified": "Actual ingredient and preparation text",
+      "fields_observed": [
+        "five ingredients",
+        "fractional cup amounts",
+        "optional egg",
+        "eight steps"
+      ],
+      "limitations": [
+        "Yield missing; times embedded in directions"
+      ]
+    },
+    {
+      "id": "maff_our_regional_cuisines",
+      "classification": "B",
+      "language": [
+        "ja",
+        "en"
+      ],
+      "index_url": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/index.html",
+      "sample_url": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/menu/ishikarinabe_hokkaido.html",
+      "count": {
+        "value": 1365,
+        "unit": "local-dish database records advertised, not audited full recipes",
+        "source_url": "https://www.maff.go.jp/j/keikaku/syokubunka/expotenji/index.html"
+      },
+      "verified": "Actual Ishikarinabe HTML includes 4-person quantities and four numbered preparation steps",
+      "content_license": "MAFF default Public Data License 1.0; third-party content excluded unless cleared",
+      "commercial_reuse": "Allowed for covered ministry content; sampled provider credit requires clearance/provenance resolution",
+      "rights_urls": [
+        "https://www.maff.go.jp/j/use/link.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "obligations": [
+        "source URL attribution",
+        "mark modifications",
+        "no implied government endorsement",
+        "review third-party recipe/image credits"
+      ],
+      "formats": [
+        "HTML"
+      ],
+      "handler": "maff_regional_html",
+      "fields_observed": [
+        "prefecture",
+        "regional history",
+        "season",
+        "ingredients",
+        "yield",
+        "steps",
+        "recipe provider",
+        "photos"
+      ],
+      "limitations": [
+        "Sample credits 北海道の味 and 南部あき子; do not assume ministry owns supplied text",
+        "English/Japanese paired pages not independent recipes",
+        "No verified API/bulk export"
+      ],
+      "overlap": "Unknown against retained historic catalog; likely regional modern coverage but not established net-new."
+    },
+    {
+      "id": "mfds_cookrcp01_ko",
+      "classification": "A",
+      "language": [
+        "ko"
+      ],
+      "index_url": "https://www.data.go.kr/data/15060073/openapi.do",
+      "sample_url": "https://www.foodsafetykorea.go.kr/api/newDatasetDetail.do?svc_no=COOKRCP01",
+      "verified": "Official HTML sample rows include quantified ingredients and numbered instructions for rice/tofu/egg porridge, bibimbap and others",
+      "count": null,
+      "content_license": "Official data.go.kr dataset says 이용허락범위 제한 없음 (reuse scope unrestricted); not labeled public domain",
+      "commercial_reuse": "Official unrestricted-use label and business-reuse description",
+      "rights_urls": [
+        "https://www.data.go.kr/data/15060073/openapi.do",
+        "https://www.data.go.kr/ugs/selectPortalPolicyView.do"
+      ],
+      "obligations": [
+        "retain agency attribution and current dataset terms",
+        "do not treat unrelated site documents as same license",
+        "review linked images separately"
+      ],
+      "formats": [
+        "JSON",
+        "XML",
+        "documented file download"
+      ],
+      "handler": "mfds_cookrcp01",
+      "fields_observed": [
+        "RCP_SEQ",
+        "RCP_NM",
+        "RCP_WAY2",
+        "RCP_PAT2",
+        "INFO_WGT",
+        "INFO_ENG",
+        "INFO_CAR",
+        "INFO_PRO",
+        "INFO_FAT",
+        "INFO_NA",
+        "RCP_PARTS_DTLS",
+        "MANUAL01..20",
+        "MANUAL_IMG01..20",
+        "RCP_NA_TIP"
+      ],
+      "access_gate": "API key and service application; development auto-approval, operating/production review approval. No registration attempted.",
+      "endpoint_template": "https://openapi.foodsafetykorea.go.kr/api/{key}/COOKRCP01/json/{start}/{end}",
+      "limits": "Documented maximum 1000 rows/request; incremental and per-hour/file limits; obey current response codes",
+      "limitations": [
+        "Public two-record sample URL inaccessible via web tool; documentation samples verified",
+        "No verified total; third-party 1176/1600 totals deliberately not adopted",
+        "INFO_WGT can be empty; do not invent serving size"
+      ]
+    },
+    {
+      "id": "mafra_recipe_relations_ko",
+      "classification": "B",
+      "language": [
+        "ko"
+      ],
+      "index_url": "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20150827000000000464",
+      "sample_urls": [
+        "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20150827000000000465&filter_ty=",
+        "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20150827000000000466"
+      ],
+      "verified": "Official embedded XML examples show recipe base, ingredient rows, and numbered preparation rows for RECIPE_ID 1",
+      "count": null,
+      "content_license": "Reuse-scope field blank in rendered official pages; no grant established",
+      "commercial_reuse": "Unresolved, not prohibited by evidence",
+      "formats": [
+        "XML",
+        "JSON",
+        "XLS documented"
+      ],
+      "handler": "mafra_relational_recipe_api",
+      "fields_observed": [
+        "RECIPE_ID",
+        "RECIPE_NM_KO",
+        "SUMRY",
+        "NATION_NM",
+        "TY_NM",
+        "COOKING_TIME",
+        "CALORIE",
+        "QNT",
+        "LEVEL_NM",
+        "ingredient amounts/type",
+        "COOKING_NO",
+        "COOKING_DC",
+        "STEP_TIP"
+      ],
+      "limitations": [
+        "Must join all three relations; base alone not recipes",
+        "Example totalCnt=5 is sample size not corpus count",
+        "API registration required",
+        "Documented raw-IP endpoint not called",
+        "Text license scope needs exact clarification"
+      ],
+      "rights_urls": [
+        "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20150827000000000464"
+      ]
+    },
+    {
+      "id": "aozora_shokudoraku_ja",
+      "classification": "A",
+      "language": [
+        "ja"
+      ],
+      "index_url": "https://www.aozora.gr.jp/cards/000810/card49947.html",
+      "sample_url": "https://www.aozora.gr.jp/cards/000810/files/49947_40166.html",
+      "verified": "Actual pork preparations embedded in literary narrative and cooking notes; not merely catalog",
+      "count": {
+        "value": 1,
+        "unit": "verified volume, not recipe count"
+      },
+      "content_license": "Historical original work first published 1903; author died 1927; Aozora expired-copyright reuse policy",
+      "commercial_reuse": "Aozora explicitly allows commercial reuse of copyright-expired works; jurisdiction check remains",
+      "rights_urls": [
+        "https://www.aozora.gr.jp/guide/kijyunn.html",
+        "https://www.aozora.gr.jp/cards/000810/card49947.html"
+      ],
+      "formats": [
+        "XHTML",
+        "Shift-JIS plain text ZIP"
+      ],
+      "handler": "aozora_historical_recipe_segments",
+      "fields_observed": [
+        "work/author/bibliography",
+        "chapter headings",
+        "narrative ingredients",
+        "preparation",
+        "historical measures"
+      ],
+      "limitations": [
+        "Requires recipe-vs-story segmentation",
+        "Do not extract modern notes or illustrations under blanket PD assumption",
+        "Retain text input/proofreading/bibliographic credits",
+        "Historical health and storage claims not validated"
+      ],
+      "overlap": "Potential overlap with 25,135-record cross-source catalog snapshot; canonical work/edition match required."
+    },
+    {
+      "id": "wikisource_suiyuan_zh",
+      "classification": "A",
+      "language": [
+        "zh-classical"
+      ],
+      "index_url": "https://zh.wikisource.org/wiki/隨園食單",
+      "sample_url": "https://zh.wikisource.org/wiki/隨園食單/第四節",
+      "verified": "1792 work with transcribed HTML cooking passages (fish/tofu etc), ingredient names and procedures",
+      "count": {
+        "value": 5,
+        "unit": "transcribed top-level sections, not recipe count"
+      },
+      "content_license": "Original work carries old public-domain notice; modern editorial contributions may be CC-BY-SA-4.0",
+      "commercial_reuse": true,
+      "rights_urls": [
+        "https://zh.wikisource.org/wiki/隨園食單",
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use"
+      ],
+      "formats": [
+        "HTML",
+        "MediaWiki wikitext",
+        "XML export"
+      ],
+      "handler": "wikisource_historical_recipe_sections",
+      "fields_observed": [
+        "heading/title",
+        "ingredient mentions",
+        "narrative procedure",
+        "occasional traditional amounts"
+      ],
+      "limitations": [
+        "Do not count each heading or culinary opinion as recipe",
+        "Preserve source edition, attribution/moral-rights notices",
+        "Modern translations not included in original-work PD status",
+        "No modern nutrition/servings assumed"
+      ],
+      "overlap": "One work across editions/platforms; reconcile historic catalog."
+    },
+    {
+      "id": "gutenberg_artusi_it",
+      "classification": "A",
+      "language": [
+        "it"
+      ],
+      "index_url": "https://www.gutenberg.org/ebooks/59047",
+      "sample_url": "https://www.gutenberg.org/cache/epub/59047/pg59047-images.html",
+      "verified": "Full Italian text; numbered Risotto coi piselli sample includes quantities, five-person yield and instructions with cross-reference to peas recipe",
+      "count": {
+        "value": 790,
+        "unit": "numbered recipes advertised in book, not newly ingested count"
+      },
+      "content_license": "Public domain in USA per item; original author 1820-1911; jurisdiction and edition review outside USA",
+      "commercial_reuse": "Original PD text where applicable; respect Project Gutenberg trademark/license conditions if retaining branding",
+      "rights_urls": [
+        "https://www.gutenberg.org/ebooks/59047",
+        "https://www.gutenberg.org/cache/epub/59047/pg59047-images.html"
+      ],
+      "formats": [
+        "HTML",
+        "plain text",
+        "EPUB"
+      ],
+      "handler": "gutenberg_numbered_recipes",
+      "limitations": [
+        "Resolve subrecipe references",
+        "Don't duplicate table-of-contents entries",
+        "Wikisource versions duplicate same work"
+      ],
+      "overlap": "Likely catalog candidate; no incremental count until matched to 25,135-record cross-source catalog snapshot."
+    },
+    {
+      "id": "gutenberg_calleja_es",
+      "classification": "A",
+      "language": [
+        "es"
+      ],
+      "index_url": "https://www.gutenberg.org/ebooks/8870",
+      "sample_url": "https://www.gutenberg.org/cache/epub/8870/pg8870-images.html",
+      "verified": "Caldo sencillo actual narrative recipe has meat/water amounts and simmer instruction; many further recipes in full HTML",
+      "count": null,
+      "content_license": "Public domain in USA per item; non-USA jurisdiction review",
+      "commercial_reuse": "Original PD text where applicable; respect Gutenberg trademark/license conditions if retaining branding",
+      "rights_urls": [
+        "https://www.gutenberg.org/ebooks/8870",
+        "https://www.gutenberg.org/cache/epub/8870/pg8870-images.html"
+      ],
+      "formats": [
+        "HTML",
+        "plain text",
+        "EPUB"
+      ],
+      "handler": "gutenberg_heading_recipes",
+      "limitations": [
+        "Household/nonfood sections must be excluded",
+        "Short variants refer back to prior recipe",
+        "Do not use autogenerated book summary as publication-date authority"
+      ],
+      "overlap": "Historic catalog and structured archive copies must be canonicalized by work/edition."
+    },
+    {
+      "id": "gnome_recipes",
+      "classification": "B",
+      "language": [
+        "en",
+        "ar",
+        "cs",
+        "de",
+        "el",
+        "es",
+        "eu",
+        "fr",
+        "fur",
+        "hu",
+        "id",
+        "nl",
+        "pt-BR",
+        "sl",
+        "sr",
+        "sv",
+        "uk",
+        "zh-CN"
+      ],
+      "index_url": "https://github.com/GNOME/recipes",
+      "sample_url": "https://raw.githubusercontent.com/GNOME/recipes/master/data/recipes.db",
+      "verified": "Actual GLib keyfile recipe records including Rice Maize Apple Cake, Tzatziki, Soy Chicken; 17 po-data translation catalogs",
+      "count": null,
+      "content_license": "Repository COPYING is GPL-3.0; explicit license applicability to contributed recipe text not established from inspected upstream docs. Help/documentation CC-BY-SA does NOT settle data license.",
+      "commercial_reuse": "Pending data-specific license clarification, not a finding of prohibition",
+      "rights_urls": [
+        "https://github.com/GNOME/recipes/blob/master/COPYING",
+        "https://wiki.gnome.org/Apps%282f%29Recipes%282f%29Contributing.html",
+        "https://raw.githubusercontent.com/GNOME/recipes/master/help/C/contribute.page",
+        "https://wiki.gnome.org/DocumentationProject/Guide/Licensing"
+      ],
+      "formats": [
+        "GLib keyfile .db (not SQLite)",
+        "PO translation catalogs"
+      ],
+      "handler": "gnome_keyfile_po",
+      "fields_observed": [
+        "Name",
+        "Author",
+        "Description",
+        "Cuisine",
+        "Season",
+        "Category",
+        "PrepTime",
+        "CookTime",
+        "Ingredients",
+        "Instructions",
+        "Serves",
+        "Yield",
+        "Diets",
+        "Images",
+        "Created",
+        "Modified"
+      ],
+      "limitations": [
+        "17 catalogs are not 17 fully translated independent corpora",
+        "Quantity/unit/name/group tab-separated inside escaped newline string",
+        "Instructions contain timer and temperature markup",
+        "Photo/chef identities separately scoped"
+      ],
+      "metadata_snapshot": {
+        "tree_sha": "6d3beaa18ce8c4fccd6aa71c5c8ee0ae58514f4f",
+        "recipe_blob_sha": "89dd8ece128eb7ac761c805a3cc2bd2850939729",
+        "recipe_file_bytes": 97528,
+        "tree_sha_not_commit": true
+      }
+    },
+    {
+      "id": "aozora_copyrighted_or_later_works",
+      "classification": "C",
+      "language": [
+        "ja"
+      ],
+      "index_url": "https://www.aozora.gr.jp/guide/kijyunn.html",
+      "sample_url": "https://www.aozora.gr.jp/cards/001403/files/49986_37674.html",
+      "verified": "1933 Rosanjin stock-making text is an actual technique, but later publication raises cross-jurisdiction rights issue; not a new quantified recipe collection",
+      "content_license": "Aozora also hosts permission-based copyright-active works with limited/private-use rules; do not mirror entire catalog as PD",
+      "commercial_reuse": "Not established for copyright-active subset; country-specific review for later historical works",
+      "rights_urls": [
+        "https://www.aozora.gr.jp/guide/kijyunn.html",
+        "https://www.aozora.gr.jp/cards/001403/card49986.html"
+      ],
+      "formats": [
+        "HTML",
+        "TXT"
+      ],
+      "count": null,
+      "limitations": [
+        "C applies protected/private-use-only subset, not whole Aozora; 1933 example separately B for international rights",
+        "Catalog CC-BY metadata and guide CC-BY-NC are not work-text licenses"
+      ]
+    },
+    {
+      "id": "bn_wikisource_amish_niramish",
+      "classification": "B",
+      "language": [
+        "bn"
+      ],
+      "index_url": "https://bn.wikisource.org/wiki/রচনা:আমিষ_ও_নিরামিষ_আহার",
+      "verified": "Work/edition metadata verified only; no usable full recipe transcription established in this review",
+      "count": null,
+      "content_license": "Historical rights and transcription extent need edition-level verification",
+      "commercial_reuse": "Unresolved for chosen digital edition",
+      "formats": [
+        "Wikisource catalog HTML",
+        "scan indexes (not admitted as recipe corpus)"
+      ],
+      "handler": "none_until_actual_text_verified",
+      "limitations": [
+        "1900/1903/1907 edition links are not counts of recipe data",
+        "Do not use unsourced 2500-recipe claims",
+        "No PDF-only source admitted"
+      ]
+    }
+  ],
+  "wikimedia_discovery": {
+    "root_url": "https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents",
+    "other_language_links": 54,
+    "warning": "Language links are discovery candidates, not verified recipe collections; only sample-verified rows above qualify.",
+    "observed_roots_not_yet_recipe_sampled": [
+      "es",
+      "ru"
+    ],
+    "api_documentation": [
+      "https://www.mediawiki.org/wiki/API:Categorymembers",
+      "https://www.mediawiki.org/wiki/API:Revisions"
+    ],
+    "legacy_dump_deprecation_url": "https://dumps.wikimedia.org/backup-index.html",
+    "legacy_dump_sunset": "2027-01",
+    "replacement_url": "https://dumps.wikimedia.org/other/mediawiki_content_history/readme.html",
+    "replacement_format": "Per-wiki compressed XML compatible with legacy XML and Special:Export; current or history exports",
+    "dedup_key": [
+      "wiki_db",
+      "pageid",
+      "revision_id",
+      "recipe_section_id"
+    ],
+    "required_filters": [
+      "redirects",
+      "red links",
+      "categories",
+      "ingredient pages",
+      "techniques",
+      "equipment",
+      "household nonfood",
+      "table of contents",
+      "duplicate script variants"
+    ]
+  },
+  "overlap_reconciliation": {
+    "additional_recipe_total": null,
+    "reason": "No production census or source-ID diff performed; cannot safely sum advertised totals.",
+    "peer_confirmed_existing": [
+      "AdamBouhmad/open-recipe-archive ae3bd2c same retained revision",
+      "Anduin2017/HowToCook 362 at 3dfa950f6daf0a5b311fc46619f1b559bac980c4",
+      "UniTools 501"
+    ],
+    "cooklang": "General federation and structured archives covered by peer report; format/license/spec is not upstream recipe rights.",
+    "pinned_catalog_snapshot": {
+      "repository": "maldous/offmenu",
+      "revision": "52b6a50a59b458bdb49fe7ea090b72c63a4b1a30",
+      "path": "docs/world-recipe-research-20261014.json",
+      "checked_at": "2026-10-13T21:37:59.318718+00:00",
+      "release_id": "world-recipes-common-20261014",
+      "catalog_records": 25135,
+      "full_recipe_records": 24879,
+      "ocr_candidates": 256,
+      "wikibooks_records": 17379,
+      "wikibooks_editions": 32,
+      "wikibooks_english": 3309,
+      "historical_archive_subset": 6192,
+      "count_caution": "Historical catalog snapshot only; not current staged, normalized, loaded or independent deduplicated unique counts."
+    }
+  },
+  "disabled_fetch_proposals": [
+    {
+      "source_id": "kochwiki_de",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "cuisine_libre_fr",
+      "enabled": false,
+      "handler": "cuisine_libre_html_license_partitioned",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_de",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_fr",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_bn",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_ta",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_fa",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_ar",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_zh",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_ja",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_id",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_pt",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikibooks_pl",
+      "enabled": false,
+      "handler": "mediawiki_cookbook_localized",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "maff_our_regional_cuisines",
+      "enabled": false,
+      "handler": "maff_regional_html",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "mfds_cookrcp01_ko",
+      "enabled": false,
+      "handler": "mfds_cookrcp01",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "mafra_recipe_relations_ko",
+      "enabled": false,
+      "handler": "mafra_relational_recipe_api",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "aozora_shokudoraku_ja",
+      "enabled": false,
+      "handler": "aozora_historical_recipe_segments",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "wikisource_suiyuan_zh",
+      "enabled": false,
+      "handler": "wikisource_historical_recipe_sections",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "gutenberg_artusi_it",
+      "enabled": false,
+      "handler": "gutenberg_numbered_recipes",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "gutenberg_calleja_es",
+      "enabled": false,
+      "handler": "gutenberg_heading_recipes",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    },
+    {
+      "source_id": "gnome_recipes",
+      "enabled": false,
+      "handler": "gnome_keyfile_po",
+      "reason": "Production fetch held: all eight databases must be provisioned and relationally fit for existing data; acquisition on Foo only; source-specific gates documented.",
+      "persist_raw_provenance": true,
+      "fetch_images": false
+    }
+  ],
+  "blockers": [
+    {
+      "action": "Public sample HTTP read",
+      "target": "https://openapi.foodsafetykorea.go.kr/api/sample/COOKRCP01/json/1/2",
+      "status": "uncertain",
+      "reason": "Web tool reported inaccessible; not an API authorization response; no bypass or repeated fetch",
+      "completed": "Official HTML data samples and licensing reviewed",
+      "next_action": "After activation gate, authorized single sample using officially issued key/service approval"
+    },
+    {
+      "action": "Public API probe",
+      "target": "Koch-Wiki /api.php and fr.wikibooks.org /w/api.php",
+      "status": "uncertain",
+      "reason": "Web tool URL inaccessible; live API functionality not established",
+      "completed": "Actual HTML recipe and official API schema docs inspected",
+      "next_action": "Normal public endpoint discovery/smoke test when fetch work resumes"
+    },
+    {
+      "action": "Public catalog/RSS read",
+      "target": "https://www.cuisine-libre.org/recettes ; /exporter ; /licences ; /mentions-legales",
+      "status": "uncertain",
+      "reason": "404 via web tool; individual recipe pages work",
+      "completed": "Recipe-level content/license verified",
+      "next_action": "Resolve canonical catalog/export paths without assuming site is unavailable"
+    },
+    {
+      "action": "MFDS production access",
+      "target": "COOKRCP01 service registration",
+      "status": "pending",
+      "reason": "Official operating-stage review approval required",
+      "completed": "No account creation, service application or credentials submitted",
+      "next_action": "Use approved project credential process only after production-readiness gate"
+    },
+    {
+      "action": "Rights verification",
+      "target": "MAFF credited contributors, GNOME recipe data, MAFRA recipe relations",
+      "status": "pending",
+      "reason": "Exact content-specific grant not yet established for identified scope",
+      "completed": "Separated code/metadata/content and recorded primary notices",
+      "next_action": "Obtain source-specific license clarification or narrow to demonstrably covered records"
+    }
+  ],
+  "production_fetch_target": "Foo"
+}

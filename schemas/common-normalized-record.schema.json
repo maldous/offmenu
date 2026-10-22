@@ -1,0 +1,799 @@
+{
+  "type": "object",
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "cache_key": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "pass": {
+      "enum": [
+        "rules",
+        "interpreted"
+      ]
+    },
+    "domain": {
+      "enum": [
+        "barcodes",
+        "ingredients",
+        "recipes",
+        "dietary",
+        "user_profiles",
+        "inventory",
+        "suppliers",
+        "citations"
+      ]
+    },
+    "record_type": {
+      "enum": [
+        "barcode",
+        "ingredient",
+        "recipe",
+        "menu",
+        "dietary_assertion",
+        "profile",
+        "inventory",
+        "supplier",
+        "citation"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "enum": [
+            "barcodes",
+            "ingredients",
+            "recipes",
+            "dietary",
+            "user_profiles",
+            "inventory",
+            "suppliers",
+            "citations"
+          ]
+        },
+        "source_key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "domain",
+        "source_key",
+        "source_version",
+        "record_id",
+        "content_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "source_original": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/jsonValue"
+      }
+    },
+    "versions": {
+      "type": "object",
+      "properties": {
+        "rule_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "template_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "schema_version": {
+          "const": "offmenu.common-normalized-record/1"
+        },
+        "model_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "domain_rule_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "rule_version",
+        "template_version",
+        "schema_version",
+        "model_version",
+        "prompt_version",
+        "domain_rule_version"
+      ],
+      "additionalProperties": false
+    },
+    "normalized": {
+      "$ref": "#/$defs/normalized"
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/issue"
+      }
+    },
+    "uncertainty": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/jsonValue"
+      }
+    },
+    "review_item_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      },
+      "minItems": 1,
+      "maxItems": 10000,
+      "uniqueItems": true
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pendingreview",
+            "reviewed",
+            "needs_changes",
+            "rejected"
+          ]
+        },
+        "required": {
+          "const": true
+        },
+        "receipt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/actualReview"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "required",
+        "receipt"
+      ],
+      "additionalProperties": false
+    },
+    "translation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "needs_assessment"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "lineage": {
+      "type": "object",
+      "properties": {
+        "parent_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parent_artifact_sha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          ]
+        }
+      },
+      "required": [
+        "parent_artifact_id",
+        "parent_artifact_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "normalization_status": {
+      "enum": [
+        "rules_only",
+        "validated",
+        "pendingreview"
+      ]
+    },
+    "gold_status": {
+      "const": "blocked"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "cache_key",
+    "pass",
+    "domain",
+    "record_type",
+    "source",
+    "source_original",
+    "versions",
+    "normalized",
+    "issues",
+    "uncertainty",
+    "provenance",
+    "review_item_ids",
+    "review",
+    "translation",
+    "lineage",
+    "normalization_status",
+    "gold_status"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:common-normalized-record:1",
+  "title": "OffMenu immutable normalization sidecar, never an ingestion completion receipt",
+  "description": "Runtime additionally enforces 8 MiB JSON, 32 nesting levels, 100000 nodes, content-hash/cache-key lineage and domain/item-level review coverage. Schema validity alone is not review or gold eligibility.",
+  "$defs": {
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": [
+            "null",
+            "boolean",
+            "number",
+            "string"
+          ]
+        },
+        {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "maxProperties": 10000,
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "severity": {
+          "enum": [
+            "warning",
+            "error"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "path",
+        "detail"
+      ],
+      "additionalProperties": false
+    },
+    "normalized": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fields": {
+          "type": "object",
+          "maxProperties": 10000,
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/$defs/jsonValue"
+            }
+          }
+        },
+        "field_lineage": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/$defs/jsonValue"
+            }
+          }
+        }
+      },
+      "required": [
+        "title",
+        "language",
+        "fields",
+        "relations",
+        "field_lineage"
+      ],
+      "additionalProperties": false
+    },
+    "actualReview": {
+      "type": "object",
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "receipt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "reviewer_kind": {
+          "enum": [
+            "assistant",
+            "human"
+          ]
+        },
+        "model_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "template_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "method": {
+          "const": "direct_item_review"
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "decision": {
+          "enum": [
+            "accepted",
+            "needs_changes",
+            "rejected"
+          ]
+        },
+        "normalized": {
+          "$ref": "#/$defs/normalized"
+        },
+        "coverage": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "needs_changes",
+                  "rejected"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "item_id",
+              "decision",
+              "notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "issues": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "$ref": "#/$defs/issue"
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reuse_of_artifact_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "artifact_id",
+        "artifact_sha256",
+        "receipt_id",
+        "reviewer_id",
+        "reviewer_kind",
+        "model_version",
+        "prompt_version",
+        "schema_version",
+        "template_version",
+        "reviewed_at",
+        "method",
+        "evidence_ref",
+        "decision",
+        "normalized",
+        "coverage",
+        "issues",
+        "uncertainty"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$comment": "Offline schema; no remote refs or execution.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "barcodes"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "barcode"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "barcodes"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "ingredients"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "ingredient"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "ingredients"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "recipes"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "recipe",
+              "menu"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "recipes"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "dietary"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "dietary_assertion"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "dietary"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "user_profiles"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "profile"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "user_profiles"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "inventory"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "inventory"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "inventory"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "suppliers"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "supplier"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "suppliers"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "domain": {
+            "const": "citations"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "record_type": {
+            "enum": [
+              "citation"
+            ]
+          },
+          "source": {
+            "properties": {
+              "domain": {
+                "const": "citations"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "pass": {
+            "const": "rules"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "review": {
+            "properties": {
+              "status": {
+                "const": "pendingreview"
+              },
+              "receipt": {
+                "type": "null"
+              }
+            }
+          },
+          "normalization_status": {
+            "const": "rules_only"
+          },
+          "lineage": {
+            "properties": {
+              "parent_artifact_id": {
+                "type": "null"
+              },
+              "parent_artifact_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "review": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "reviewed",
+                  "needs_changes",
+                  "rejected"
+                ]
+              },
+              "receipt": {
+                "$ref": "#/$defs/actualReview"
+              }
+            }
+          },
+          "lineage": {
+            "properties": {
+              "parent_artifact_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "parent_artifact_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
