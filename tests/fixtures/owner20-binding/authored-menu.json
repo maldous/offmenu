@@ -1,0 +1,10 @@
+{
+  "schema": "offmenu-private-source-faithful-menu-normalized-candidate/2",
+  "country": "SB",
+  "records": [{"sourceItemId": "authored-priced"}, {"sourceItemId": "authored-unpriced"}],
+  "priceObservations": [
+    {"sourceItemId": "authored-priced", "sourceSelector": "#authored-price", "rawDisplay": "$0.00", "amountDecimal": "0.00", "currencySymbol": "$", "isoCurrency": null, "effectiveDate": null, "servingPackageQuantity": null, "normalization": "authored decimal token only"},
+    {"sourceItemId": "authored-priced", "sourceSelector": "#authored-variant", "rawDisplay": "Thick - -$45", "amountDecimal": "45", "currencySymbol": "$", "isoCurrency": null, "effectiveDate": null, "servingPackageQuantity": null, "variantLabel": null, "normalization": "authored ambiguous token, not an adjudicated price"}
+  ],
+  "sourcePunctuationWarnings": [{"sourceItemId": "authored-priced", "issue": "Authored ambiguous doubled separator"}]
+}

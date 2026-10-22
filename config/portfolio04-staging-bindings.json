@@ -1,0 +1,1220 @@
+{
+  "schemaVersion": "portfolio04-bindings/1",
+  "portfolio": [
+    "AE",
+    "CH",
+    "GL",
+    "KZ"
+  ],
+  "evidence": {
+    "ae-integrity": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/AE/retained-original-integrity.json",
+      "sha256": "5d55a3d275f3303dfa5b78ad732f022ccc9217cc9397a1a74609ce0378092b17",
+      "bytes": 4019
+    },
+    "ae-receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/AE/receipt.json",
+      "sha256": "24044373241266e5594f7340d5f25445885ee46c21c698223f9bbe863b7cf26f",
+      "bytes": 28097
+    },
+    "ae-gaps": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/AE/category-coverage-and-gaps.json",
+      "sha256": "865303bd6cd5f50a1ded0ff449833791b0c7d4b9fb95495e14bc4291aaacd9de",
+      "bytes": 9247
+    },
+    "ae-validation": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/AE/deliverable-validation.json",
+      "sha256": "0ddacbf194ccd90e99ec4063928b1880228659b2058b297c841a65bed158b7a1",
+      "bytes": 5456
+    },
+    "ch-integrity": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/CH/retained-original-integrity.json",
+      "sha256": "3f6661ebfc316be19411d03b3d3c6b8b6ed40e6c5d5a73f28bdba7c7d6ee449f",
+      "bytes": 1965
+    },
+    "ch-receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/CH/receipt.json",
+      "sha256": "e68e4a2704217c9659cb9f65019870889a419fdbe0bc8dbb310e36f6424a96af",
+      "bytes": 11540
+    },
+    "ch-gaps": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/CH/category-coverage-and-gaps.json",
+      "sha256": "e71bbc42ba701269c71a6f119ba195e02c7a2f7223baada9ee60b33bd749741c",
+      "bytes": 8815
+    },
+    "ch-validation": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/CH/deliverable-validation.json",
+      "sha256": "402c59b07760ffd276b327d06f656f678684372c508382a8a4ac41185dd36ce0",
+      "bytes": 3816
+    },
+    "gl-integrity": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/GL/retained-original-integrity.json",
+      "sha256": "ee6540184baf3235e82f1909e7cb90abc43e400b0851e4ffb8be9a42f797e850",
+      "bytes": 6020
+    },
+    "gl-receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/GL/receipt.json",
+      "sha256": "e21fdfe03c69fbb51a0d0e5c645bc0caea1210cafcdc0e16dc6a166989fc2929",
+      "bytes": 29931
+    },
+    "gl-gaps": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/GL/category-coverage-and-gaps.json",
+      "sha256": "40e0327ada2021f3526c7f64bb81b3f4f944ef4f8480f3ccaecf4055256a98e1",
+      "bytes": 8828
+    },
+    "gl-validation": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/GL/deliverable-validation.json",
+      "sha256": "110970993c28e0cc46f9bfffea89f14983f50016267aead9233fbfb99afbd02e",
+      "bytes": 4181
+    },
+    "kz-integrity": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/KZ/retained-original-integrity.json",
+      "sha256": "dcb9df3c876f78420ee21b64f2573a0131bb1ff8b717d5304583d90b93db7478",
+      "bytes": 9128
+    },
+    "kz-receipt": {
+      "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/KZ/receipt.json",
+      "sha256": "bb82fc843bb1e37ffbb083dc3e92f28b913b7780d693c214306425bb75f79dfd",
+      "bytes": 62848
+    },
+    "kz-gaps": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/KZ/category-coverage-and-gaps.json",
+      "sha256": "5b6762a5adf979f7e3aed2311c8a6fa86fd947eccf1a12aced745b4d53e8dfca",
+      "bytes": 9034
+    },
+    "kz-validation": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-04/KZ/deliverable-validation.json",
+      "sha256": "a71abcc1d8462417852578d21f2523df674013e51f325f5a8b1dbb167ac133ff",
+      "bytes": 3519
+    },
+    "ae37-return": {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-37/custody-routing-R1-W37/response.json",
+      "sha256": "fedf51fd66b92b7e7f4ee4f20d67964a7fb2a44fe46b420d849b647bcb94b219",
+      "bytes": 36210
+    }
+  },
+  "bindings": [
+    {
+      "id": "AE:1aaf5c0f0c6e8b45ac8d",
+      "country": "AE",
+      "sourceId": "1aaf5c0f0c6e8b45ac8d",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "food-safety-register"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/version"
+        },
+        "originalAssetPath": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "ae-receipt",
+          "selector": "/sources/2/requests/0/utc"
+        },
+        "publisherURL": {
+          "evidence": "ae-receipt",
+          "selector": "/sources/2/requests/0/url"
+        },
+        "retainedExtent": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/0/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "AE:bb539e44c76a8350ee06",
+      "country": "AE",
+      "sourceId": "bb539e44c76a8350ee06",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "national-recipe-source"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/version"
+        },
+        "originalAssetPath": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "ae-receipt",
+          "selector": "/sources/6/requests/0/utc"
+        },
+        "publisherURL": {
+          "evidence": "ae-receipt",
+          "selector": "/sources/6/requests/0/url"
+        },
+        "retainedExtent": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "ae-integrity",
+          "selector": "/assets/1/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "CH:ff87f83bfcf0b8843d75",
+      "country": "CH",
+      "sourceId": "ff87f83bfcf0b8843d75",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/version"
+        },
+        "originalAssetPath": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "ch-receipt",
+          "selector": "/sources/0/requests/0/utc"
+        },
+        "publisherURL": {
+          "evidence": "ch-receipt",
+          "selector": "/sources/0/requests/0/url"
+        },
+        "retainedExtent": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "ch-integrity",
+          "selector": "/assets/0/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "GL:7bc1e2d211c639fa92a0",
+      "country": "GL",
+      "sourceId": "7bc1e2d211c639fa92a0",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/version"
+        },
+        "originalAssetPath": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/0/requests/0/utc"
+        },
+        "publisherURL": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/0/requests/0/url"
+        },
+        "retainedExtent": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/0/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "GL:ce5569025ac240fe94b3",
+      "country": "GL",
+      "sourceId": "ce5569025ac240fe94b3",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "national-recipe-source"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/version"
+        },
+        "originalAssetPath": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/2/requests/0/utc"
+        },
+        "publisherURL": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/2/requests/0/url"
+        },
+        "retainedExtent": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/1/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "GL:d721e3e6eb870626fe17",
+      "country": "GL",
+      "sourceId": "d721e3e6eb870626fe17",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "national-recipe-source"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/version"
+        },
+        "originalAssetPath": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/4/requests/1/utc"
+        },
+        "publisherURL": {
+          "evidence": "gl-receipt",
+          "selector": "/sources/4/requests/1/url"
+        },
+        "retainedExtent": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "gl-integrity",
+          "selector": "/assets/2/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "KZ:dc236cdc34b3477b92b0",
+      "country": "KZ",
+      "sourceId": "dc236cdc34b3477b92b0",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/version"
+        },
+        "originalAssetPath": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/1/requests/2/utc"
+        },
+        "publisherURL": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/1/requests/2/url"
+        },
+        "retainedExtent": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/0/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      },
+      "officialPolicyObservation": {
+        "path": "config/portfolio04-official-document-observations.json",
+        "selector": "/observations/0",
+        "sourceURL": "https://stat.gov.kz/en/description/",
+        "state": "policy-evidence-present-acceptance-pending",
+        "condition": "Attribute BNS; prove exact official-statistical-information applicability and field-origin/unit scope. Not menu rights."
+      }
+    },
+    {
+      "id": "KZ:e03a7bf3ae8dad457a73",
+      "country": "KZ",
+      "sourceId": "e03a7bf3ae8dad457a73",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/version"
+        },
+        "originalAssetPath": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/2/requests/2/utc"
+        },
+        "publisherURL": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/2/requests/2/url"
+        },
+        "retainedExtent": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/1/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      },
+      "officialPolicyObservation": {
+        "path": "config/portfolio04-official-document-observations.json",
+        "selector": "/observations/0",
+        "sourceURL": "https://stat.gov.kz/en/description/",
+        "state": "policy-evidence-present-acceptance-pending",
+        "condition": "Attribute BNS; prove exact official-statistical-information applicability and field-origin/unit scope. Not menu rights."
+      }
+    },
+    {
+      "id": "KZ:4ef2fb43b2045c6ac259",
+      "country": "KZ",
+      "sourceId": "4ef2fb43b2045c6ac259",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/version"
+        },
+        "originalAssetPath": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/3/requests/2/utc"
+        },
+        "publisherURL": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/3/requests/2/url"
+        },
+        "retainedExtent": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/2/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      },
+      "officialPolicyObservation": {
+        "path": "config/portfolio04-official-document-observations.json",
+        "selector": "/observations/0",
+        "sourceURL": "https://stat.gov.kz/en/description/",
+        "state": "policy-evidence-present-acceptance-pending",
+        "condition": "Attribute BNS; prove exact official-statistical-information applicability and field-origin/unit scope. Not menu rights."
+      }
+    },
+    {
+      "id": "KZ:38ad917cbb06f56b62e3",
+      "country": "KZ",
+      "sourceId": "38ad917cbb06f56b62e3",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "basket-and-price"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/version"
+        },
+        "originalAssetPath": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/4/requests/2/utc"
+        },
+        "publisherURL": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/4/requests/2/url"
+        },
+        "retainedExtent": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/3/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      },
+      "officialPolicyObservation": {
+        "path": "config/portfolio04-official-document-observations.json",
+        "selector": "/observations/0",
+        "sourceURL": "https://stat.gov.kz/en/description/",
+        "state": "policy-evidence-present-acceptance-pending",
+        "condition": "Attribute BNS; prove exact official-statistical-information applicability and field-origin/unit scope. Not menu rights."
+      }
+    },
+    {
+      "id": "KZ:0a3333454f471ce47445",
+      "country": "KZ",
+      "sourceId": "0a3333454f471ce47445",
+      "metadataReleaseId": "owner04-retained-manifest-20261017",
+      "dataTypes": [
+        "national-menu-source"
+      ],
+      "holds": [
+        "source-body-operation-not-selected",
+        "exact-field-selector-unit-basis-unqualified",
+        "source-specific-use-scope-review-required"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "datasetRelease": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/version"
+        },
+        "originalAssetPath": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/asset/path"
+        },
+        "originalAssetSha256": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/asset/sha256"
+        },
+        "originalAssetBytes": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/asset/bytes"
+        },
+        "originalAcquiredAt": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/8/requests/1/utc"
+        },
+        "publisherURL": {
+          "evidence": "kz-receipt",
+          "selector": "/sources/8/requests/1/url"
+        },
+        "retainedExtent": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/retainedExtent"
+        },
+        "recordedAcquisitionBasis": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/licence/acquisition"
+        },
+        "recordedRedistributionStatus": {
+          "evidence": "kz-integrity",
+          "selector": "/assets/4/licence/redistribution"
+        },
+        "nativeUnit": {
+          "unknown": "No exact retained table/datum unit selector qualified; never infer currency or unit from country/title."
+        },
+        "nativeBasis": {
+          "unknown": "Release-specific denominator/index-base/preparation/time basis not qualified."
+        },
+        "fieldSelector": {
+          "unknown": "Original body field/page/cell selectors not qualified by this metadata operation."
+        },
+        "operationUseClause": {
+          "unknown": "Acquisition/archival basis is not a separately accepted extraction/mapping decision."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "unsupported-retained-body-contract",
+        "next": "Integrator may register only a source-format-specific reviewed shared family; no copied country engine."
+      }
+    },
+    {
+      "id": "AE:composition-unresolved",
+      "country": "AE",
+      "sourceId": "ae37-composition-metadata",
+      "metadataReleaseId": "owner37-custody-response-5205",
+      "dataTypes": [
+        "ingredients",
+        "nutrition"
+      ],
+      "holds": [
+        "no-qualified-composition-release",
+        "actual-dataset-custodian-unestablished"
+      ],
+      "requiredFields": [
+        "datasetRelease",
+        "nativeUnit",
+        "nativeBasis",
+        "fieldSelector",
+        "operationUseClause"
+      ],
+      "fields": {
+        "retainedResponseState": {
+          "evidence": "ae37-return",
+          "selector": "/responses/2/status"
+        },
+        "datasetRelease": {
+          "unknown": "Author37 expressly holds no newer same-release release/export."
+        },
+        "nativeUnit": {
+          "unknown": "Same-release dictionary NOT_HELD in returned response."
+        },
+        "nativeBasis": {
+          "unknown": "Same-release extent/provenance NOT_HELD."
+        },
+        "fieldSelector": {
+          "unknown": "No retainedDatasetBody or export selector."
+        },
+        "operationUseClause": {
+          "unknown": "Dataset-specific private extraction/derivative grant NOT_HELD."
+        },
+        "originalAcquiredAt": {
+          "unknown": "No composition dataset acquired; not replaced with metadata validation time."
+        }
+      },
+      "adapterBinding": {
+        "sharedFamily": null,
+        "state": "missing-release"
+      }
+    }
+  ],
+  "countryTypeRequirements": {
+    "AE": [
+      {
+        "dataType": "ingredients",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ae-gaps",
+        "selector": "/categories/0",
+        "missingFields": "No qualified structured food/ingredient records; recipe original is an archival booklet, not accepted ingredient mapping.",
+        "nextAction": "Existing4 delivery/source lane; exact recipe page/item selectors, extraction-use rights and original ingredient/quantity/basis mapping required."
+      },
+      {
+        "dataType": "recipes",
+        "status": "PARTIAL_ARCHIVE_IDENTITY_ONLY",
+        "evidence": "ae-gaps",
+        "selector": "/categories/1",
+        "missingFields": "One complete PlatinumHeritage booklet byte-verified; no permitted recipe derivative/action scope or accepted structured recipe rows.",
+        "nextAction": "Bind exact source-version/action-use and measured recipe/page selector before separately selected private extraction; retain photo/redistribution hold."
+      },
+      {
+        "dataType": "nutrition",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ae-gaps",
+        "selector": "/categories/2",
+        "missingFields": "G1 exact finite UAE composition release, G2 same-release extent/units/provenance, G3 dataset-specific extraction/derivative/redistribution rights remain OPEN.",
+        "nextAction": "Existing37 metadata source owner and20 review472/483 retained; request same-release missing dimensions through existingGateway, no43check replay."
+      },
+      {
+        "dataType": "retailers/providers",
+        "status": "REGULATORY_DOCUMENT_IDENTITY_ONLY_NOT_REGISTER",
+        "evidence": "ae-gaps",
+        "selector": "/categories/3",
+        "missingFields": "DubaiFoodCode2013 is an emirate regulatory document, not national establishment/recall/provider register data.",
+        "nextAction": "Exact qualified register/export release, jurisdiction/date/coverage/use evidence needed; preserve prior DubaiPulse/authority access stops."
+      },
+      {
+        "dataType": "prices/baskets",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ae-gaps",
+        "selector": "/categories/4",
+        "missingFields": "No qualified dated item-price/quantity/merchant dataset or accepted basket slice in selected retained outputs.",
+        "nextAction": "Select exact permitted finite price dataset and original currency/quantity/time basis; methodology and merchant references are insufficient, no denied-route retry."
+      },
+      {
+        "dataType": "dietary references",
+        "status": "PARTIAL_REFERENCE_METADATA_VALIDATED",
+        "evidence": "ae-gaps",
+        "selector": "/categories/5",
+        "missingFields": "One validated CC0 source-reference packet only; edition/population/page-specific numeric guidance and clinical applicability are not established.",
+        "nextAction": "Use exact existing issuer/document/edition/population/rights inputs for later numeric guidance selection; do not open linked documents from this check."
+      }
+    ],
+    "CH": [
+      {
+        "dataType": "ingredients",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ch-gaps",
+        "selector": "/categories/0",
+        "missingFields": "No accepted ingredient identity/state/component records in selected reference-only packet or CPI archive.",
+        "nextAction": "Bind an exact permitted ingredient release and stable original IDs/preparation-state crosswalk."
+      },
+      {
+        "dataType": "recipes",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ch-gaps",
+        "selector": "/categories/1",
+        "missingFields": "No accepted recipe body/method/yield records in this selected retained set.",
+        "nextAction": "Existing4 delivery chooses exact qualified retained source/action/pages if available; no generic acquisition or author fallback."
+      },
+      {
+        "dataType": "nutrition",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ch-gaps",
+        "selector": "/categories/2",
+        "missingFields": "Swisscomposition7.1 source-specific commercial/scientific permission versus reproduction restriction remains unresolved.",
+        "nextAction": "Preserve existing46 rights custodian and separate52lane holds. Exact intended-use decision needed; no workbook download/body processing or alternate actor."
+      },
+      {
+        "dataType": "retailers/providers",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "ch-gaps",
+        "selector": "/categories/3",
+        "missingFields": "CPI and dietary-reference metadata provide no qualified provider/register rows or national coverage.",
+        "nextAction": "Exact dated provider/site/register release/jurisdiction and reuse/privacy scope required."
+      },
+      {
+        "dataType": "prices/baskets",
+        "status": "PARTIAL_ARCHIVE_IDENTITY_ONLY",
+        "evidence": "ch-gaps",
+        "selector": "/categories/4",
+        "missingFields": "SNB plkopr complete CSV byte-verified; total national CPI is not item prices or a food basket; reuse/action and literal row/unit/base mapping unresolved.",
+        "nextAction": "Bind exact SNB private processing-use applicability, schema/header/period/unit/base mapping through existing custodian; no index-to-currency conversion."
+      },
+      {
+        "dataType": "dietary references",
+        "status": "PARTIAL_REFERENCE_METADATA_VALIDATED",
+        "evidence": "ch-gaps",
+        "selector": "/categories/5",
+        "missingFields": "One validated CC0 reference packet; no accepted numeric dietary/clinical guidance or national document derivative.",
+        "nextAction": "Retain reference lineage only; exact document edition/population/pages/rights and semantic decision needed for numeric use."
+      }
+    ],
+    "GL": [
+      {
+        "dataType": "ingredients",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "gl-gaps",
+        "selector": "/categories/0",
+        "missingFields": "Recipe/preparation originals are byte-verified but no accepted ingredient identity/amount/preparation-state derivative.",
+        "nextAction": "Exact source/action-use and recipe/page/ingredient selectors required; do not infer reuse from original archival acquisition."
+      },
+      {
+        "dataType": "recipes",
+        "status": "PARTIAL_ARCHIVE_IDENTITY_ONLY",
+        "evidence": "gl-gaps",
+        "selector": "/categories/1",
+        "missingFields": "Three retained PDFs verified including complete76page TasteofTwoWorlds; recipe/photos/illustration normalization and redistribution remain withheld.",
+        "nextAction": "Existing4 plus original source/rights custody must bind permitted recipe/field scope before extraction; old64MiB barrier is resolved, not a current blocker."
+      },
+      {
+        "dataType": "nutrition",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "gl-gaps",
+        "selector": "/categories/2",
+        "missingFields": "No qualified analytical nutrient/composition release/units/preparation/method in selected originals.",
+        "nextAction": "Provide exact food/nutrient release with source-use/provenance/basis and named semantic review; cookbook is not composition."
+      },
+      {
+        "dataType": "retailers/providers",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "gl-gaps",
+        "selector": "/categories/3",
+        "missingFields": "No qualified provider/food-business register output; authority/registration access stops persist.",
+        "nextAction": "Exact permitted dated register/API export with jurisdiction and coverage needed; no blocked source retry."
+      },
+      {
+        "dataType": "prices/baskets",
+        "status": "PARTIAL_ARCHIVE_IDENTITY_ONLY",
+        "evidence": "gl-gaps",
+        "selector": "/categories/4",
+        "missingFields": "PR202601 January2026 CPI PDF byte-verified, but no accepted numeric table/series mapping or processing-use decision; not full historical/item basket.",
+        "nextAction": "Bind exact table/page/cell, index unit/base/period and intended-use scope; no price or currency inference."
+      },
+      {
+        "dataType": "dietary references",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "gl-gaps",
+        "selector": "/categories/5",
+        "missingFields": "Own frozen dietary-reference packet contains0rows; no guideline record in this exact subset, not proof none exists nationally.",
+        "nextAction": "Exact issuer/document edition/population/pages/rights and accepted original-reference data required."
+      }
+    ],
+    "KZ": [
+      {
+        "dataType": "ingredients",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "kz-gaps",
+        "selector": "/categories/0",
+        "missingFields": "BNS price workbooks/menu are not accepted ingredient identity/preparation/nutrient records.",
+        "nextAction": "Bind qualified source/version/field/use and stable source IDs; menu labels or prices cannot imply ingredients."
+      },
+      {
+        "dataType": "recipes",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "kz-gaps",
+        "selector": "/categories/1",
+        "missingFields": "No qualified structured recipe method/ingredient/measure/yield data. QazaqGourmet is a menu only.",
+        "nextAction": "Exact permitted recipe source and bounded recipe/page selector needed; no synthetic replacement or menu-to-recipe inference."
+      },
+      {
+        "dataType": "nutrition",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "kz-gaps",
+        "selector": "/categories/2",
+        "missingFields": "No exact analytical food/nutrient composition release or accepted numeric nutrients.",
+        "nextAction": "Need same-release foods/nutrients/units/preparation/provenance/right-use and semantic review; price data is not composition."
+      },
+      {
+        "dataType": "retailers/providers",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "kz-gaps",
+        "selector": "/categories/3",
+        "missingFields": "One restaurant-menu original does not prove national provider/register coverage or legal identity.",
+        "nextAction": "Exact permitted provider/register release/date/jurisdiction/coverage/privacy contract required; preserve register/access denials."
+      },
+      {
+        "dataType": "prices/baskets",
+        "status": "PARTIAL_ARCHIVE_IDENTITY_ONLY",
+        "evidence": "kz-gaps",
+        "selector": "/categories/4",
+        "missingFields": "Four complete BNS XLSX releases byte-verified, but selected sheet/header/cell/units/currency/index-base mapping and intended private-processing use remain unbound.",
+        "nextAction": "Existing4 selects exact source/action-use and literal table scope from qualified evidence before numerical extraction; distinguish dated food prices, retail prices, CPI and agricultural measures. Retain lost prior404 bodies as unavailable, no recreation/retry."
+      },
+      {
+        "dataType": "dietary references",
+        "status": "NOT_YET_QUALIFIED",
+        "evidence": "kz-gaps",
+        "selector": "/categories/5",
+        "missingFields": "Own frozen dietary-reference packet has0rows, no current issuer/edition/population record accepted in this subset.",
+        "nextAction": "Need exact permitted guideline reference and population/edition/attribution; no completeness inference from empty subset."
+      }
+    ]
+  },
+  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "scope": "Metadata descriptors only; original paths are recorded scalar values, never opened by this package. No country acceptance or rights activation.",
+  "officialDocumentation": {
+    "path": "config/portfolio04-official-document-observations.json",
+    "sha256": "a7585962f2936d9a840dc9f512e312f54e4483464f871de07efa6c9a88ce2125",
+    "use": "Current public policy/format observations, not held body reads or review acceptance. Exact source fields remain unknown. See operations document."
+  }
+}

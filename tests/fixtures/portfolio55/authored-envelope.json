@@ -1,0 +1,44 @@
+{
+  "fixture": true,
+  "notRetainedSourceRecord": true,
+  "row": {
+    "data": {
+      "sourceDate": "2000-01-01",
+      "sourceDivision": "01",
+      "sourceIndexLexeme": "0"
+    },
+    "provenance": {
+      "sourceId": "DOSM:cpi_2d",
+      "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+      "fieldOrigins": {
+        "/data/sourceDate": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "date",
+          "sourceId": "DOSM:cpi_2d",
+          "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceRecordId": "authored-fixture-row-1"
+        },
+        "/data/sourceDivision": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "division",
+          "sourceId": "DOSM:cpi_2d",
+          "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceRecordId": "authored-fixture-row-1"
+        },
+        "/data/sourceIndexLexeme": {
+          "kind": "source",
+          "inputPath": "cpi-2d-full.csv",
+          "inputSha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceField": "index",
+          "sourceId": "DOSM:cpi_2d",
+          "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+          "sourceRecordId": "authored-fixture-row-1"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,687 @@
+{
+  "schemaVersion": "offmenu-worker53-binding-config/1",
+  "portfolio": [
+    "LK",
+    "LR",
+    "LS",
+    "LT"
+  ],
+  "snapshotBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "productionFactory": null,
+  "sourceBodiesPermitted": false,
+  "sources": [
+    {
+      "country": "LK",
+      "sourceId": "lk-food-basket",
+      "releaseId": "1ef180cc2a18079a336b55210f1143d1b8e037ef28fcc2472460579eb1b59fd9",
+      "metadata": [
+        {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-53/LK/cell-discrepancy-20261016/manifest.json",
+          "sha256": "27acb44d7982632ac46c6542b968dc3a8339ec5d7176cb4fdffbb25172e64702",
+          "bytes": 4202,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceSHA256",
+            "/counts",
+            "/holds"
+          ]
+        },
+        {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-53/LK/cell-discrepancy-20261016/discrepancy-summary.json",
+          "sha256": "60f1a7f76387d28e972add79e73f86de7709c63ae1177c03b28f79e93b5d33c0",
+          "bytes": 10784,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceDiscrepancies",
+            "/labelIssue"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-53/LK/finite-original/Food-Basket.pdf",
+          "sha256": "1ef180cc2a18079a336b55210f1143d1b8e037ef28fcc2472460579eb1b59fd9",
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "sourceCell",
+          "sourceSelector": "retained literal-cells.json cellId; not reparsed",
+          "evidenceSha256": "27acb44d7982632ac46c6542b968dc3a8339ec5d7176cb4fdffbb25172e64702",
+          "evidenceSelector": "/sourceSHA256"
+        },
+        {
+          "target": "printedTotal",
+          "sourceSelector": "retained discrepancy register printedTotalCellId",
+          "evidenceSha256": "27acb44d7982632ac46c6542b968dc3a8339ec5d7176cb4fdffbb25172e64702",
+          "evidenceSelector": "/sourceSHA256"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "ingredients",
+          "nutrition",
+          "dietary references",
+          "prices/baskets"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "units": null,
+        "basis": null
+      },
+      "originalAcquiredAt": null,
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "8-unresolved-discrepancies",
+        "male-age-label-unknown",
+        "structured-use-not-qualified"
+      ],
+      "unknowns": [
+        "intended-age-range",
+        "explaining-methodology",
+        "native-unit-basis-qualified",
+        "adaptation-use"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "source-use-or-method-input-unknown",
+          "code": "exact-source-fields-unresolved",
+          "owner": "Existing documented source custodian through Morgan",
+          "detail": "8-unresolved-discrepancies; male-age-label-unknown; structured-use-not-qualified"
+        }
+      ],
+      "acquisitionTimestampStatus": "unknown in selected binding evidence; do not substitute metadata validation or mtime"
+    },
+    {
+      "country": "LR",
+      "sourceId": "lr-wfp-prices",
+      "releaseId": "183bcae0cb100f08ada76623363ddfc6b3bbde7af578b8b069e21bdabb17c686",
+      "metadata": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/LR/mapping.json",
+          "sha256": "9108c1c09807716049a209cd563c2ac843b36fd4d19df8ea6a1a6cdfc7a38410",
+          "bytes": 2073,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceAsset",
+            "/publisherMetadata",
+            "/columns",
+            "/useScope"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/manifest.json",
+          "sha256": "c56956edbcf3ae3e41e61a715f9260c8f2ea54a16f535231d27e8683d95ff04d",
+          "bytes": 11806,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceUseBasis",
+            "/realSlices"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/LR/processing-result.json",
+          "sha256": "8a196a149312ac9eaa381d34e1afdd6430e4a561f3be8900b56809fa8fc85f3a",
+          "bytes": 2649,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceUnits",
+            "/sourceCategoriesOrMeasures",
+            "/dateLexicalRange"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/LR/01894a2082d2b08a891a/original.html",
+          "sha256": "183bcae0cb100f08ada76623363ddfc6b3bbde7af578b8b069e21bdabb17c686",
+          "bytes": 2611874,
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "/data/priceLiteral",
+          "sourceSelector": "CSV record ordinal + header price",
+          "evidenceSelector": "/mapping/value",
+          "evidenceSha256": "9108c1c09807716049a209cd563c2ac843b36fd4d19df8ea6a1a6cdfc7a38410"
+        },
+        {
+          "target": "/data/unitLiteral",
+          "sourceSelector": "CSV record ordinal + header unit",
+          "evidenceSelector": "/columns/10",
+          "evidenceSha256": "9108c1c09807716049a209cd563c2ac843b36fd4d19df8ea6a1a6cdfc7a38410"
+        },
+        {
+          "target": "/data/dateLiteral",
+          "sourceSelector": "CSV record ordinal + header date",
+          "evidenceSelector": "/mapping/time",
+          "evidenceSha256": "9108c1c09807716049a209cd563c2ac843b36fd4d19df8ea6a1a6cdfc7a38410"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "prices/baskets"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "unitSelector": "sourceValues.unit",
+        "observedUnitLiterals": [
+          "50 KG",
+          "Gallon",
+          "KG",
+          "USD/LCU",
+          "Day",
+          "2.25 KG",
+          "25 KG"
+        ],
+        "currencySelector": "sourceValues.currency",
+        "basis": null
+      },
+      "originalAcquiredAt": "2026-10-14T22:12:38.903193+00:00",
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "staging-contract-not-accepted",
+        "canonical-dictionary-and-equivalence-unresolved"
+      ],
+      "unknowns": [
+        "semantic-unit/quote-basis",
+        "food-only-applicability",
+        "not-merchant-identity",
+        "production-field-origin-qualification"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "semantic-input-missing",
+          "code": "native-versus-canonical-scope",
+          "owner": "Existing53 candidate author/56 canonical dictionary custody",
+          "detail": "WFP source-native candidate PASS retained. Dictionary/equivalence is needed for canonical use, not construed as a legal prohibition of separately qualified native use."
+        }
+      ],
+      "acquisitionTimestampStatus": "recorded-original-acquisition; not newly byte-validated"
+    },
+    {
+      "country": "LR",
+      "sourceId": "lr-wfp-markets",
+      "releaseId": "33397348b3bb7606a9ccb4de1d1eb983434d06fd4a6ced0faf20f2eda6b8a68b",
+      "metadata": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/LR-markets/mapping-result.json",
+          "sha256": "043d63a8e85a8dad28851be9359fb8cba62eefb34f607e0a42f66f493ec2f4fd",
+          "bytes": 1681,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceAsset",
+            "/publisherMetadata",
+            "/columns",
+            "/useScope"
+          ]
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-53/manifest.json",
+          "sha256": "c56956edbcf3ae3e41e61a715f9260c8f2ea54a16f535231d27e8683d95ff04d",
+          "bytes": 11806,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceUseBasis",
+            "/realSlices"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/LR/f15ea0d76241553bb229/original.html",
+          "sha256": "33397348b3bb7606a9ccb4de1d1eb983434d06fd4a6ced0faf20f2eda6b8a68b",
+          "bytes": 2916,
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "sourceValues",
+          "sourceSelector": "CSV header names under /columns; row source.csvRecordAfterHeader",
+          "evidenceSha256": "043d63a8e85a8dad28851be9359fb8cba62eefb34f607e0a42f66f493ec2f4fd",
+          "evidenceSelector": "/sourceAsset"
+        },
+        {
+          "target": "fieldOrigins",
+          "sourceSelector": "publisher resource + raw asset SHA + source record ordinal + original CSV header",
+          "evidenceSha256": "043d63a8e85a8dad28851be9359fb8cba62eefb34f607e0a42f66f493ec2f4fd",
+          "evidenceSelector": "/sourceAsset"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "retailers/providers"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "unitSelector": null,
+        "observedUnitLiterals": [],
+        "currencySelector": null,
+        "basis": null
+      },
+      "originalAcquiredAt": null,
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "staging-contract-not-accepted",
+        "canonical-dictionary-and-equivalence-unresolved"
+      ],
+      "unknowns": [
+        "semantic-unit/quote-basis",
+        "food-only-applicability",
+        "not-merchant-identity",
+        "production-field-origin-qualification"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "semantic-input-missing",
+          "code": "native-versus-canonical-scope",
+          "owner": "Existing53 candidate author/56 canonical dictionary custody",
+          "detail": "WFP source-native candidate PASS retained. Dictionary/equivalence is needed for canonical use, not construed as a legal prohibition of separately qualified native use."
+        }
+      ],
+      "acquisitionTimestampStatus": "unknown in selected binding evidence; do not substitute metadata validation or mtime"
+    },
+    {
+      "country": "LS",
+      "sourceId": "ls-composition-2006",
+      "releaseId": "3df750134a06b9f774099d1534d2325076b44b5e0324547a30ac1c60c9554638",
+      "metadata": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-32/78d0f7da554c5bf8b204/receipt.json",
+          "sha256": "841bae68f986bd44e1667f711f3daaea0e92e0899cf95bccb20fb8a92be73608",
+          "bytes": 20028,
+          "role": "retained-annotation",
+          "selectors": [
+            "/source",
+            "/acquisitionRights",
+            "/redistributionRights",
+            "/dataExtent"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-32/78d0f7da554c5bf8b204/Lesotho_1-127_pages.pdf",
+          "sha256": "3df750134a06b9f774099d1534d2325076b44b5e0324547a30ac1c60c9554638",
+          "bytes": 8452001,
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "unresolvedSourceCoordinate",
+          "sourceSelector": "No qualified table/page/field map supplied; explicit unknown",
+          "evidenceSha256": "841bae68f986bd44e1667f711f3daaea0e92e0899cf95bccb20fb8a92be73608",
+          "evidenceSelector": "/source"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "ingredients",
+          "nutrition"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "units": null,
+        "basis": null
+      },
+      "originalAcquiredAt": "2026-10-14T21:14:07.065664+00:00",
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "action-specific-use-not-held",
+        "table-and-method-selector-not-held"
+      ],
+      "unknowns": [
+        "native-unit",
+        "basis",
+        "field-selector-acceptance",
+        "rights-scope"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "source-use-or-method-input-unknown",
+          "code": "exact-source-fields-unresolved",
+          "owner": "Existing documented source custodian through Morgan",
+          "detail": "action-specific-use-not-held; table-and-method-selector-not-held"
+        }
+      ],
+      "acquisitionTimestampStatus": "recorded-original-acquisition; not newly byte-validated"
+    },
+    {
+      "country": "LS",
+      "sourceId": "ls-basotho-booklet",
+      "releaseId": "828a940726f0e02099463b9c62b9911184263d0836d52800b8ad886457ab234d",
+      "metadata": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/R3-W53-LS/custody-response.json",
+          "sha256": "082cd3bd13f1e7d915192b96e0718a073b9686cf416c4445a166e8b828a33f9b",
+          "bytes": 7619,
+          "role": "retained-annotation",
+          "selectors": [
+            "/custody",
+            "/facts",
+            "/answers",
+            "/sourceUseScope"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-20/LS/db587d0e7ab54748d78b/eco-cook-bag-recipe-booklet.pdf",
+          "sha256": "828a940726f0e02099463b9c62b9911184263d0836d52800b8ad886457ab234d",
+          "bytes": 7464675,
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "unresolvedSourceCoordinate",
+          "sourceSelector": "No qualified table/page/field map supplied; explicit unknown",
+          "evidenceSha256": "082cd3bd13f1e7d915192b96e0718a073b9686cf416c4445a166e8b828a33f9b",
+          "evidenceSelector": "/custody"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "recipes"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "units": null,
+        "basis": null
+      },
+      "originalAcquiredAt": null,
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "author-edition-use-grant-not-held"
+      ],
+      "unknowns": [
+        "native-unit",
+        "basis",
+        "field-selector-acceptance",
+        "rights-scope"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "source-use-or-method-input-unknown",
+          "code": "exact-source-fields-unresolved",
+          "owner": "Existing documented source custodian through Morgan",
+          "detail": "author-edition-use-grant-not-held"
+        }
+      ],
+      "acquisitionTimestampStatus": "unknown in selected binding evidence; do not substitute metadata validation or mtime"
+    },
+    {
+      "country": "LT",
+      "sourceId": "lt-retained-recipe",
+      "releaseId": "c25a587217b0150e114439e3b5754748635dca3330c5dcb56efbe4512a1417af",
+      "metadata": [
+        {
+          "path": "/home/user/src/offmenu-data/country-bundles-20261016/owner-53/LT/retained-recipe-qualification.json",
+          "sha256": "44ee0bfb20c011a188bf55bd4f953518a93cef3001eeb20fc310c22b3d533947",
+          "bytes": 6069,
+          "role": "retained-annotation",
+          "selectors": [
+            "/sourceSHA256",
+            "/retainedCommit",
+            "/rights",
+            "/proposals"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/recipe-research-20261013/LukeSmithxyz--based.cooking/content-originals/content/lithuanian-cold-borscht.md",
+          "sha256": "c25a587217b0150e114439e3b5754748635dca3330c5dcb56efbe4512a1417af",
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "unresolvedSourceCoordinate",
+          "sourceSelector": "No qualified table/page/field map supplied; explicit unknown",
+          "evidenceSha256": "44ee0bfb20c011a188bf55bd4f953518a93cef3001eeb20fc310c22b3d533947",
+          "evidenceSelector": "/sourceSHA256"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "ingredients",
+          "recipes"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "units": null,
+        "basis": null
+      },
+      "originalAcquiredAt": null,
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "recipe-specific-third-party-rights-unresolved",
+        "9-mentions-noncanonical"
+      ],
+      "unknowns": [
+        "native-unit",
+        "basis",
+        "field-selector-acceptance",
+        "rights-scope"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "source-use-or-method-input-unknown",
+          "code": "exact-source-fields-unresolved",
+          "owner": "Existing documented source custodian through Morgan",
+          "detail": "recipe-specific-third-party-rights-unresolved; 9-mentions-noncanonical"
+        }
+      ],
+      "acquisitionTimestampStatus": "unknown in selected binding evidence; do not substitute metadata validation or mtime"
+    },
+    {
+      "country": "LT",
+      "sourceId": "lt-school-menu",
+      "releaseId": "3d12dc3622618f4aa5a33cb95e9cd05b1101c1930ee4858acc9c05f3353558af",
+      "metadata": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/LT/4048828b08530987e832/receipt.json",
+          "sha256": "510c62d92dc209892d7ca70268cb1a0e11cf82590851b60d56931760dd94f154",
+          "bytes": 1952,
+          "role": "retained-annotation",
+          "selectors": [
+            "/version",
+            "/licence",
+            "/original_path",
+            "/requests/0/sha256"
+          ]
+        }
+      ],
+      "rawAssetReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-21/LT/4048828b08530987e832/Valgiara\u0161tis 6-10 m. pavakariai.pdf",
+          "sha256": "3d12dc3622618f4aa5a33cb95e9cd05b1101c1930ee4858acc9c05f3353558af",
+          "bytes": 2376252,
+          "opaque": true
+        }
+      ],
+      "fieldDeclarations": [
+        {
+          "target": "unresolvedSourceCoordinate",
+          "sourceSelector": "No qualified table/page/field map supplied; explicit unknown",
+          "evidenceSha256": "510c62d92dc209892d7ca70268cb1a0e11cf82590851b60d56931760dd94f154",
+          "evidenceSelector": "/version"
+        }
+      ],
+      "applicability": {
+        "dataTypes": [
+          "dietary references"
+        ],
+        "scope": "Retained source-native metadata binding only; no whole-country coverage",
+        "accepted": false
+      },
+      "nativeUnitsAndBases": {
+        "units": null,
+        "basis": null
+      },
+      "originalAcquiredAt": "2026-10-14T22:10:13.016197+00:00",
+      "metadataValidatedAt": null,
+      "stagingScopeAccepted": false,
+      "holds": [
+        "exact-edition-page-and-private-use-unqualified"
+      ],
+      "unknowns": [
+        "native-unit",
+        "basis",
+        "field-selector-acceptance",
+        "rights-scope"
+      ],
+      "blockers": [
+        {
+          "type": "authorization-restriction",
+          "code": "metadata-code-only",
+          "owner": "Morgan",
+          "detail": "This selected task authorizes metadata/code only; no source-body execution."
+        },
+        {
+          "type": "acceptance-missing",
+          "code": "staging-contract-unaccepted",
+          "owner": "Morgan/designated independent reviewer",
+          "detail": "Exact per-source native staging scope/field-origin validation requires explicit reviewed contract."
+        },
+        {
+          "type": "source-use-or-method-input-unknown",
+          "code": "exact-source-fields-unresolved",
+          "owner": "Existing documented source custodian through Morgan",
+          "detail": "exact-edition-page-and-private-use-unqualified"
+        }
+      ],
+      "acquisitionTimestampStatus": "recorded-original-acquisition; not newly byte-validated"
+    }
+  ],
+  "coverageRequirements": {
+    "LK": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "LR": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "LS": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ],
+    "LT": [
+      "ingredients",
+      "recipes",
+      "nutrition",
+      "retailers/providers",
+      "prices/baskets",
+      "dietary references"
+    ]
+  },
+  "uncoveredRequirements": "Data types listed are applicability leads only. Missing/held source and category coverage never become not-applicable or accepted from this configuration."
+}

@@ -1,0 +1,61 @@
+{
+  "sources": [
+    {
+      "acquisition": {
+        "basis": "original-completed",
+        "file": "metadata",
+        "pointer": "/acquiredAt"
+      },
+      "country": "LI",
+      "domains": [
+        "retailers/providers"
+      ],
+      "evidenceRole": "authored-fixture-only",
+      "fields": {
+        "basis": {
+          "file": "metadata",
+          "pointer": "/basis"
+        },
+        "nativeUnit": {
+          "file": "metadata",
+          "pointer": "/nativeUnit"
+        },
+        "value": {
+          "file": "metadata",
+          "pointer": "/value"
+        }
+      },
+      "files": {
+        "metadata": {
+          "bytes": 229,
+          "path": "metadata.json",
+          "role": "permitted-metadata",
+          "sha256": "e9834d2edc05670f9c02b72496cc119a871e571fe00d3079f60c2791f6dcb46f"
+        }
+      },
+      "fixture": true,
+      "holds": [],
+      "identityChecks": [
+        {
+          "expected": "authored-portfolio47-metadata",
+          "file": "metadata",
+          "pointer": "/sourceId"
+        },
+        {
+          "expected": "fixture-1",
+          "file": "metadata",
+          "pointer": "/releaseId"
+        }
+      ],
+      "nativeSemantics": {
+        "scope": "Authored metadata fixture only; never production"
+      },
+      "releaseId": "fixture-1",
+      "sourceId": "authored-portfolio47-metadata",
+      "validation": {
+        "file": "metadata",
+        "pointer": "/validatedAt"
+      }
+    }
+  ]
+}

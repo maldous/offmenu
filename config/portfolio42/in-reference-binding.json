@@ -1,0 +1,72 @@
+{
+  "schema": "offmenu-portfolio42-staging-binding/1",
+  "bindingId": "IN-own-reference-metadata-only-v1",
+  "acceptedBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "input": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-42/IN/validated-directory-reference.json",
+    "bytes": 2319,
+    "sha256": "1f04c3ff5f532a0778c12e0852e75f08b95496a06b1fd6a533418491e749bcfd",
+    "logicalPath": "reference-wrapper.json",
+    "recordSelector": "/record"
+  },
+  "upstreamAsRecorded": {
+    "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/normalized.jsonl.gz",
+    "bytes": 3934,
+    "sha256": "5fd9e0bae196ff4bb347d9036a0d3e735f19329e13eb67b9aa5e309ceec0ce5d",
+    "logicalLine": 47,
+    "index": 0,
+    "bodyNotOpenedThisTask": true
+  },
+  "sourceId": "dietary-guidelines",
+  "releaseId": "fao-directory-20261013",
+  "country": "IN",
+  "type": "dietary-reference-metadata",
+  "expectedRecords": 1,
+  "expectedId": "dietary-guidelines:sourceAssertion:IN",
+  "originalAcquiredAt": "2026-10-13T07:13:20.585551+00:00",
+  "validationAge": {
+    "lastValidationAt": null,
+    "meaning": "Caller supplies pinned validation observation; never replace original acquisition time or use filesystem mtime"
+  },
+  "evidence": {
+    "rights": {
+      "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/manifest.json",
+      "bytes": 817,
+      "sha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941",
+      "logicalPath": "rights.json",
+      "scope": "Original OffMenu CC0 reference metadata only; no linked national-document permission"
+    },
+    "scope": {
+      "path": "/home/user/Documents/Codex/2026-10-16/worker-44-country-review/e94d817af42c4de03abba22a9d7401b578137040d47a4c8df6878250ec208a1d/receipt.json",
+      "bytes": 7787,
+      "sha256": "1d29bc6deb0ca642358a0c821425e13adcad354171bb1203ac0c5d12cfe94777",
+      "logicalPath": "scope.json",
+      "scope": "Prior IN reference/provenance distinction only, no new binding code or staging acceptance"
+    }
+  },
+  "fieldOriginSelectors": {
+    "/data/name": "/record/data/name",
+    "/data/referenceType": "/record/data/referenceType",
+    "/data/referenceUrl": "/record/data/referenceUrl",
+    "/data/directoryUrl": "/record/data/directoryUrl",
+    "/data/reviewStatus": "/record/data/reviewStatus",
+    "/data/contentPermission": "/record/data/contentPermission",
+    "/data/qualificationStatus": "/record/data/qualificationStatus"
+  },
+  "units": null,
+  "quantityBasis": null,
+  "unitMeaning": "No dimensional quantities in directory strings; no nutrients, dietary targets or unit conversion",
+  "applicability": {
+    "IN": "one sourceAssertion directory reference only",
+    "IM": "held: currency/portion/source-use gaps",
+    "IO": "held: applicable source absent",
+    "IQ": "held: actual source custody and derivative use unestablished"
+  },
+  "enabledSourceAdmission": false,
+  "newRealSourceProcessingAuthorizedByThisPackage": false,
+  "independentCodeAndScopeReviewRequired": true,
+  "sharedExecution": "Portfolio module composes shared strict_json, serialization, per-datum origin validator and qualification interface; no global registrations/core edits",
+  "refresh": "Offline-only under30dayreuse; stale->conditional-review-required-no-download. No URL or force flag and no online activation.",
+  "cacheSecondsMinimum": 2592000,
+  "goldAdmitted": false
+}

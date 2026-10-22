@@ -1,0 +1,255 @@
+{
+  "scope": "Trusted reviewed configuration documentation; not runtime permissions/admissions",
+  "bindings": [
+    {
+      "source_id": "mq-agreste-catalogue",
+      "country": "MQ",
+      "data_types": [
+        "retailers/providers"
+      ],
+      "release_id": "snapshot-20261015; publisher release version pending",
+      "metadata_path": "src/offmenu-data/originals/country-followthrough-20261015/owner-45/MQ/cff9ad550c549bc1187c/receipt.json",
+      "metadata_bytes": 5312,
+      "metadata_sha256": "d8225516cddd5799be5f895fe2acb10a6ca093af2cd4fe28058005570fe5a7b9",
+      "release_pointer": "/version",
+      "fields": [
+        [
+          "sourceLabel",
+          "/title"
+        ],
+        [
+          "releaseLabel",
+          "/version"
+        ],
+        [
+          "recordedBodySha256",
+          "/requests/0/sha256"
+        ],
+        [
+          "recordedBodyBytes",
+          "/requests/0/bytes"
+        ]
+      ],
+      "unknowns": [
+        "complete-original",
+        "mq-row-selector",
+        "native-unit",
+        "basis",
+        "original-acquired-at"
+      ],
+      "holds": [
+        "upstream-certificate-no-retry",
+        "source-custodian-unestablished",
+        "catalogue-only"
+      ],
+      "acquired_pointer": null,
+      "fixture": false,
+      "retainedManifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/MQ/author-receipt.json",
+        "sha256": "380d7e64866664d395c5062f081d70ae4b8f44c69ad3af7e4e5ead908f735a76"
+      },
+      "nativeContext": {
+        "units": null,
+        "basis": null,
+        "meaning": "No native observation units/basis established by this receipt metadata binding."
+      },
+      "declaredClockBoundary": "Original acquisition completion is not independently qualified by these receipt-capture/request timestamps. Runner leaves acquired_pointer unset; never substitutes validation age."
+    },
+    {
+      "source_id": "mr-fews-retained",
+      "country": "MR",
+      "data_types": [
+        "prices/baskets"
+      ],
+      "release_id": "FEWS NET collected MR weekly complete filtered export snapshot 2026-10-15",
+      "metadata_path": "src/offmenu-data/originals/country-followthrough-20261015/owner-46/MR/b3eb74127e8d4d7eb747087b/receipt.json",
+      "metadata_bytes": 2990,
+      "metadata_sha256": "c807636a72e3931dd2256b00b9ba5d130a9c28542738d558ba25b79dfc7aecae",
+      "release_pointer": "/version",
+      "fields": [
+        [
+          "releaseLabel",
+          "/version"
+        ],
+        [
+          "recordedBodySha256",
+          "/sha256"
+        ],
+        [
+          "recordedBodyBytes",
+          "/bytes"
+        ],
+        [
+          "headers",
+          "/finite_original_verified/headers"
+        ],
+        [
+          "recordedPeriod",
+          "/finite_original_verified/date_range"
+        ],
+        [
+          "attribution",
+          "/rights/attribution"
+        ]
+      ],
+      "unknowns": [
+        "denomination-rescaling",
+        "package-value-basis",
+        "unit-conversions",
+        "original-acquired-at"
+      ],
+      "holds": [
+        "source-custodian-unestablished",
+        "denomination-package-unresolved",
+        "no-body-operation-selected"
+      ],
+      "acquired_pointer": null,
+      "fixture": false,
+      "retainedManifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/MR/author-receipt.json",
+        "sha256": "25d80e94eb287121306905e2d086845875ab03d067873efc35f63507b9bee8ed"
+      },
+      "nativeContext": {
+        "literalUnitTokens": [
+          "kg",
+          "ea",
+          "50_kg",
+          "L",
+          "12_kg",
+          "pile"
+        ],
+        "literalCurrency": "MRU",
+        "literalUnitTypes": [
+          "Weight",
+          "Item",
+          "Volume"
+        ],
+        "evidence": {
+          "source": {
+            "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/MR/deliverable-validation.json",
+            "sha256": "fa3f75cb95fd2dbbab617eee2a749ffdf5bcd7d6593a45f1063ece52a87e2344"
+          },
+          "selectors": [
+            "/actualChecks/0/measurements/unitValues",
+            "/actualChecks/0/measurements/currencyValues",
+            "/actualChecks/0/measurements/unitTypeValues"
+          ]
+        },
+        "basis": null,
+        "meaning": "Prior author source-validation metadata only, not a dictionary, rescaling or package conversion approval. Reviewer6 checked20kg/Weight rows only; no broader unit acceptance."
+      },
+      "declaredClockBoundary": "Original acquisition completion is not independently qualified by these receipt-capture/request timestamps. Runner leaves acquired_pointer unset; never substitutes validation age."
+    },
+    {
+      "source_id": "ms-sdm-index",
+      "country": "MS",
+      "data_types": [
+        "prices/baskets"
+      ],
+      "release_id": "MontserratSDM-datatable-index2026-10-15",
+      "metadata_path": "src/offmenu-data/originals/country-followthrough-20261015/owner-47/MS/6a66d6839b975411c465/receipt.json",
+      "metadata_bytes": 1753,
+      "metadata_sha256": "c4f9bc709bec0b6ccc912c6e9754bef776fe3b4eb47182cb095e85982aa8d534",
+      "release_pointer": "/requests/0/claimedVersion",
+      "fields": [
+        [
+          "releaseLabel",
+          "/requests/0/claimedVersion"
+        ],
+        [
+          "recordedBodySha256",
+          "/requests/0/sha256"
+        ],
+        [
+          "recordedBodyBytes",
+          "/requests/0/bodyBytes"
+        ],
+        [
+          "requestCaptureAt",
+          "/requests/0/requestUTC"
+        ]
+      ],
+      "unknowns": [
+        "workbook-manifest",
+        "sheet-range",
+        "index-base",
+        "month-extent",
+        "source-use",
+        "original-acquired-at"
+      ],
+      "holds": [
+        "source-custodian-unestablished",
+        "index-not-table",
+        "no-body-operation-selected"
+      ],
+      "acquired_pointer": null,
+      "fixture": false,
+      "retainedManifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/MS/author-receipt.json",
+        "sha256": "b3819bcfa08677b7ea779db0407a329062cf911d325293967359f14928efd0af"
+      },
+      "nativeContext": {
+        "units": null,
+        "basis": null,
+        "meaning": "No native observation units/basis established by this receipt metadata binding."
+      },
+      "declaredClockBoundary": "Original acquisition completion is not independently qualified by these receipt-capture/request timestamps. Runner leaves acquired_pointer unset; never substitutes validation age."
+    },
+    {
+      "source_id": "mt-kusksu-page",
+      "country": "MT",
+      "data_types": [
+        "ingredients",
+        "recipes"
+      ],
+      "release_id": "12 May 2025 recipe of the month",
+      "metadata_path": "src/offmenu-data/originals/country-followthrough-20261015/owner-48/MT/9db5099a5d1ae42b1585/receipt.json",
+      "metadata_bytes": 2732,
+      "metadata_sha256": "1216ec1d49aab4474c4dfd74e61b7898384c5147411acb8cbc8aece6b0566837",
+      "release_pointer": "/version_proposed",
+      "fields": [
+        [
+          "releaseLabel",
+          "/version_proposed"
+        ],
+        [
+          "recordedBodySha256",
+          "/artefacts/0/sha256"
+        ],
+        [
+          "recordedBodyBytes",
+          "/artefacts/0/bytes"
+        ],
+        [
+          "sourceScope",
+          "/scope"
+        ]
+      ],
+      "unknowns": [
+        "yield-servings",
+        "derivative-use",
+        "ingredient-identity",
+        "basis",
+        "original-acquired-at"
+      ],
+      "holds": [
+        "taste-credit-use-unresolved",
+        "booklet-403-no-retry",
+        "thesis-restricted",
+        "no-body-operation-selected"
+      ],
+      "acquired_pointer": null,
+      "fixture": false,
+      "retainedManifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-13/MT/author-receipt.json",
+        "sha256": "e4b2d9396b654e522a7af6373d6aa1ae0b05d4cedec7e7e84ed713259c2d994a"
+      },
+      "nativeContext": {
+        "units": null,
+        "basis": null,
+        "meaning": "13list entries/9ordered steps are a source-structure witness, not canonical ingredients, yield, nutrient amounts or a reuse grant."
+      },
+      "declaredClockBoundary": "Original acquisition completion is not independently qualified by these receipt-capture/request timestamps. Runner leaves acquired_pointer unset; never substitutes validation age."
+    }
+  ]
+}

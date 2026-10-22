@@ -2,3 +2,13 @@ include offmenu_norway/contract.json
 include offmenu_ciqual/contract.json
 include offmenu_ciqual/native-contract-v1.json
 include offmenu/refresh/portfolio37_bindings.json
+include offmenu/refresh/owner19_bindings.json
+include offmenu/refresh/owner20_bindings.json
+include offmenu/refresh/portfolios/worker23.json
+include offmenu/portfolio32/catalog.json
+include offmenu/refresh/portfolio_w35.json
+include offmenu/refresh/portfolio47_sources.json
+include offmenu/refresh/portfolio_owner51.json
+include offmenu/refresh/portfolio55.json
+include offmenu/refresh/source_recipe_template.schema.json
+include offmenu/refresh/english_extension.schema.json

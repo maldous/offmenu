@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "offmenu-worker23-bindings/1",
+  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "scope": "retained-metadata-staging-only",
+  "minimumReuseDays": 30,
+  "sources": [
+    {
+      "id": "w23-ci-anader-farmgate",
+      "country": "CI",
+      "dataType": "farmgate-price-lineage-metadata",
+      "sourceId": "w23-ci-anader-farmgate",
+      "releaseId": "publisher-years-2021-2023",
+      "metadataAsset": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-23/CI/deliverable-validation.json",
+        "sha256": "8d7898dbd7570e9d5481a891414410e8a3e644951b8774af39ac25eb9ceb789d",
+        "bytes": 7628,
+        "role": "retained-metadata"
+      },
+      "selectors": {
+        "country": "/country",
+        "observations": "/measuredCounts/observations",
+        "numeric": "/measuredCounts/numeric",
+        "nulls": "/measuredCounts/null",
+        "panels": "/measuredCounts/commodityPanels",
+        "currencyUnresolved": "/newChecks/unknownCurrencyRetained"
+      },
+      "originalAcquiredAt": "2026-10-14T22:31:28.235446Z",
+      "metadataValidatedAt": null,
+      "nativeSemantics": {
+        "unitLiteral": "FCFA/Kg",
+        "currencyCode": null,
+        "canonicalKgBinding": null,
+        "annualMethod": null,
+        "years": [
+          2021,
+          2022,
+          2023
+        ],
+        "foodEligibility": null,
+        "sourceOwnerLabel": 10,
+        "originalBodySha256": "f0ab100588b4bec94d6dd55bb20641c51d3b7f111bf0cdc1257bc186c706efc6",
+        "originalLicenceEvidenceSha256": "629a44a26eea86d1bbb555d73c493997709f904ff8ba4009f8d959932a837380",
+        "rights": "Open Licence2.0 per retained primary descriptor; attribution ANADER/data.gouv.ci; no food/live retail scope expansion",
+        "deniedSources": "FANTA403 and other blocked originals are separate; no retry"
+      },
+      "payloadHolds": [
+        "metadata-code-only-assignment"
+      ],
+      "payloadAdapter": null,
+      "acceptedRecords": 0,
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-10/CI/0e2ba74cdfc6fec622a9/receipt.json",
+        "sha256": "d3587e312e29fe36e1856db30bb07f6a5d9888c4045061fdc6925e2549cc9655",
+        "selector": "/requests/0/utc",
+        "meaning": "Receipt acquisition-request event UTC; exact completion UTC unavailable",
+        "verifiedByAuthorThisTask": true
+      },
+      "fieldOriginScope": "Selectors refer to retained metadata JSON only, never to uninspected publisher cells.",
+      "payloadDependencies": {
+        "owner": "Morgan and existing source/semantic owners",
+        "missingInputs": [
+          "B01 primary FCFA denomination/issuer, source-to-kg acceptance, annual method, food eligibility and exact date semantics"
+        ],
+        "sourceUseRestrictions": [],
+        "technical": [
+          "No reviewed generic payload adapter binding for this portfolio source format"
+        ],
+        "authorization": [
+          "metadata-code-only-assignment"
+        ]
+      }
+    },
+    {
+      "id": "w23-ck-tourism-standards",
+      "country": "CK",
+      "dataType": "quality-standard-metadata",
+      "sourceId": "w23-ck-tourism-standards",
+      "releaseId": "printed-update-2022-12-01-effective-2023-01-01",
+      "metadataAsset": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-05-CK-retailer-provider-scope/retailer-provider-scope-qualification.json",
+        "sha256": "40c80b7543e629b39f99b187ffa7538bdcb69dbe08a9fed2baa1e6e42bc00173",
+        "bytes": 6615,
+        "role": "retained-metadata"
+      },
+      "selectors": {
+        "classification": "/standards/classification",
+        "operatorMembershipEstablished": "/standards/operatorMembershipEstablished",
+        "effectiveDate": "/standards/printedEffectiveDate",
+        "updateDate": "/standards/printedUpdateDate",
+        "bodySha256": "/standards/body/sha256"
+      },
+      "originalAcquiredAt": "2026-10-14T22:05:22.136810Z",
+      "metadataValidatedAt": null,
+      "nativeSemantics": {
+        "operatorRegister": false,
+        "unit": null,
+        "basis": null,
+        "rights": "Redistribution unverified; quality standard does not identify certified operators",
+        "sourceOwnerLabel": 12
+      },
+      "payloadHolds": [
+        "metadata-code-only-assignment"
+      ],
+      "payloadAdapter": null,
+      "acceptedRecords": 0,
+      "acquisitionEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-05-CK-retailer-provider-scope/retailer-provider-scope-qualification.json",
+        "sha256": "40c80b7543e629b39f99b187ffa7538bdcb69dbe08a9fed2baa1e6e42bc00173",
+        "selector": "/standards/retainedUTC",
+        "meaning": "Prior pinned qualification reported retained acquisition UTC",
+        "verifiedByAuthorThisTask": true
+      },
+      "fieldOriginScope": "Selectors refer to retained metadata JSON only, never to uninspected publisher cells.",
+      "payloadDependencies": {
+        "owner": "Morgan and existing source/semantic owners",
+        "missingInputs": [
+          "Register identity/version and reviewed membership"
+        ],
+        "sourceUseRestrictions": [
+          "No affirmative structured derivative use bound to retained source"
+        ],
+        "technical": [
+          "No reviewed generic payload adapter binding for this portfolio source format"
+        ],
+        "authorization": [
+          "metadata-code-only-assignment"
+        ]
+      }
+    },
+    {
+      "id": "w23-ck-merchant-menu",
+      "country": "CK",
+      "dataType": "single-merchant-evidence-metadata",
+      "sourceId": "w23-ck-merchant-menu",
+      "releaseId": "retained-20261014-menu-version-unknown",
+      "metadataAsset": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-05-CK-retailer-provider-scope/retailer-provider-scope-qualification.json",
+        "sha256": "40c80b7543e629b39f99b187ffa7538bdcb69dbe08a9fed2baa1e6e42bc00173",
+        "bytes": 6615,
+        "role": "retained-metadata"
+      },
+      "selectors": {
+        "classification": "/merchantMenu/classification",
+        "currencyCode": "/merchantMenu/currencyCode",
+        "menuEffectiveDate": "/merchantMenu/menuEffectiveDate",
+        "legalOperatorIdentifier": "/merchantMenu/legalOperatorIdentifier",
+        "bodySha256": "/merchantMenu/body/sha256"
+      },
+      "originalAcquiredAt": "2026-10-14T22:17:21.794459Z",
+      "metadataValidatedAt": null,
+      "nativeSemantics": {
+        "operatorRegister": false,
+        "currencyLiteral": "$",
+        "currencyCode": null,
+        "menuVersion": null,
+        "priceBasis": null,
+        "rights": "Structured menu reuse unqualified; public offer alone is insufficient",
+        "sourceOwnerLabel": 12
+      },
+      "payloadHolds": [
+        "metadata-code-only-assignment"
+      ],
+      "payloadAdapter": null,
+      "acceptedRecords": 0,
+      "acquisitionEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-05-CK-retailer-provider-scope/retailer-provider-scope-qualification.json",
+        "sha256": "40c80b7543e629b39f99b187ffa7538bdcb69dbe08a9fed2baa1e6e42bc00173",
+        "selector": "/merchantMenu/retainedUTC",
+        "meaning": "Prior pinned qualification reported retained acquisition UTC",
+        "verifiedByAuthorThisTask": true
+      },
+      "fieldOriginScope": "Selectors refer to retained metadata JSON only, never to uninspected publisher cells.",
+      "payloadDependencies": {
+        "owner": "Morgan and existing source/semantic owners",
+        "missingInputs": [
+          "Menu date/version and explicit currency/legal operator evidence"
+        ],
+        "sourceUseRestrictions": [
+          "No affirmative structured derivative use bound to retained source"
+        ],
+        "technical": [
+          "No reviewed generic payload adapter binding for this portfolio source format"
+        ],
+        "authorization": [
+          "metadata-code-only-assignment"
+        ]
+      }
+    },
+    {
+      "id": "w23-cl-ine-cpi-method",
+      "country": "CL",
+      "dataType": "classification-methodology-metadata",
+      "sourceId": "w23-cl-ine-cpi-method",
+      "releaseId": "manual-may2024-v2.0-base2023",
+      "metadataAsset": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-02-CL-cpi-scope/scope-rights-qualification.json",
+        "sha256": "7efc0582bc13609e276ed4bb6ebd3e7462ef39601c7ae6452408a64e075464f0",
+        "bytes": 6343,
+        "role": "retained-metadata"
+      },
+      "selectors": {
+        "country": "/country",
+        "version": "/periodMapping/publicationVersion",
+        "indexReferenceYear": "/periodMapping/indexReferenceYear",
+        "indexReferenceValue": "/periodMapping/indexReferenceValue",
+        "weightReferenceStart": "/periodMapping/weightReferenceStart",
+        "weightReferenceEnd": "/periodMapping/weightReferenceEnd",
+        "currentObservationMonth": "/periodMapping/currentObservationMonth",
+        "reviewedHierarchyCount": "/reconciledExtent/uniqueTypedCodeTupleCount",
+        "bodySha256": "/source/originalSHA256"
+      },
+      "originalAcquiredAt": "2026-10-14T22:11:59.779678Z",
+      "metadataValidatedAt": null,
+      "nativeSemantics": {
+        "priceUnit": null,
+        "basketQuantity": null,
+        "pricesExported": 0,
+        "weightRowsExported": 0,
+        "sourceOwnerLabel": 13,
+        "rights": "Current official INE site terms section III states CC BY-SA4.0 for site content; attribution/link/change indication/sharealike required. Exact release/proposed derivative binding is next decision, not executed here.",
+        "currentTermsURL": "https://www.ine.gob.cl/terminos-de-uso-y-licencia-de-datos-abiertos",
+        "historicalRightsClaim": "Prior metadata found no PDF notice; not a statement of absent rights"
+      },
+      "payloadHolds": [
+        "metadata-code-only-assignment"
+      ],
+      "payloadAdapter": null,
+      "acceptedRecords": 0,
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-13/CL/8b341e9a5b7ba052dbd5/receipt.json",
+        "sha256": "56d685fc125648486071df0bc0dcf8fbea59b53833884c16125481a2845cafc1",
+        "selector": "/requests/0/finishedUTC",
+        "meaning": "Receipt response completion",
+        "verifiedByAuthorThisTask": true
+      },
+      "fieldOriginScope": "Selectors refer to retained metadata JSON only, never to uninspected publisher cells.",
+      "payloadDependencies": {
+        "owner": "Morgan and existing source/semantic owners",
+        "missingInputs": [
+          "Bind current official terms and attribution/sharealike plan to exact May2024 V2 release before selected derivative processing"
+        ],
+        "sourceUseRestrictions": [],
+        "technical": [
+          "No reviewed generic payload adapter binding for this portfolio source format"
+        ],
+        "authorization": [
+          "metadata-code-only-assignment"
+        ]
+      }
+    },
+    {
+      "id": "w23-cm-pele-leberre",
+      "country": "CM",
+      "dataType": "composition-publication-metadata",
+      "sourceId": "w23-cm-pele-leberre",
+      "releaseId": "printed1966-12-embedded1967-conflict",
+      "metadataAsset": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/country-bundles-20261016/owner-23/delta-03-CM-composition-metadata/metadata-measurement-basis-qualification.json",
+        "sha256": "5cc4a64ee23d31313663a8072472fc0ef58ff7399120a541a282cac48c9cec66",
+        "bytes": 6068,
+        "role": "retained-metadata"
+      },
+      "selectors": {
+        "country": "/country",
+        "printedDate": "/versionEvidence/printedDatePrecision",
+        "embeddedSubject": "/versionEvidence/embeddedSubject",
+        "digitizationYear": "/versionEvidence/embeddedCreationYear",
+        "universal100g": "/measurementBasis/per100gUniversalDefault",
+        "rawState": "/measurementBasis/defaultRawState",
+        "edibleFraction": "/measurementBasis/defaultEdibleFraction",
+        "wetDryBasis": "/measurementBasis/defaultWetDryBasis",
+        "bodySha256": "/source/sha256"
+      },
+      "originalAcquiredAt": "2026-10-14T20:57:00.006830Z",
+      "metadataValidatedAt": null,
+      "nativeSemantics": {
+        "amount": null,
+        "unit": null,
+        "basis": null,
+        "nutrientRowsExported": 0,
+        "sourceOwnerLabel": 56,
+        "rights": "Private source qualification only; historical publication consent not current derivative licence",
+        "deniedSources": "MINEPIA technical TLS failure separate; no retry in current task",
+        "basisEvidence": "Pages7/10 prose locators lack item/table/observation denominator binding"
+      },
+      "payloadHolds": [
+        "metadata-code-only-assignment"
+      ],
+      "payloadAdapter": null,
+      "acceptedRecords": 0,
+      "acquisitionEvidence": {
+        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/CM/composition/owner-56/acquisition-receipt.json",
+        "sha256": "6578b87eab063d3c5c459d4a9f25872bfc2f94a66a4eee4f0727b34432bd5c6c",
+        "selector": "/original/finished_utc",
+        "meaning": "Receipt response completion",
+        "verifiedByAuthorThisTask": true
+      },
+      "fieldOriginScope": "Selectors refer to retained metadata JSON only, never to uninspected publisher cells.",
+      "payloadDependencies": {
+        "owner": "Morgan and existing source/semantic owners",
+        "missingInputs": [
+          "Item/table/observation denominator, preparation, edible fraction, wet/dry basis, method/status and identity"
+        ],
+        "sourceUseRestrictions": [
+          "Private qualification scope only; applicable derivative licence unresolved"
+        ],
+        "technical": [
+          "No reviewed generic payload adapter binding for this portfolio source format"
+        ],
+        "authorization": [
+          "metadata-code-only-assignment"
+        ]
+      }
+    }
+  ]
+}

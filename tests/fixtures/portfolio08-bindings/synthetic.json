@@ -1,0 +1,107 @@
+{
+  "policy": {
+    "sourceId": "synthetic-owner08",
+    "releaseId": "authored-v1",
+    "countries": [
+      "AW"
+    ],
+    "dataType": "prices/baskets",
+    "enabled": true,
+    "operations": [
+      "stage-authored-metadata"
+    ],
+    "holds": [],
+    "inputs": [
+      {
+        "path": "authored/observation.json",
+        "sha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "bytes": 71
+      }
+    ],
+    "selectors": {
+      "value": {
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/value"
+      },
+      "unit": {
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/unit"
+      },
+      "basis": {
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/basis"
+      }
+    },
+    "nativeUnit": "kg",
+    "nativeBasis": "per person-day",
+    "evidence": [
+      {
+        "role": "authored synthetic fixture, no publisher/source entitlement"
+      }
+    ]
+  },
+  "manifest": {
+    "schemaVersion": "offmenu-owner08-source-input/1",
+    "sourceId": "synthetic-owner08",
+    "releaseId": "authored-v1",
+    "countries": [
+      "AW"
+    ],
+    "dataType": "prices/baskets",
+    "inputs": [
+      {
+        "path": "authored/observation.json",
+        "sha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "bytes": 71
+      }
+    ],
+    "data": {
+      "basis": "per person-day",
+      "unit": "kg",
+      "value": "12.00"
+    },
+    "fieldOrigins": {
+      "/data/value": {
+        "kind": "source",
+        "sourceId": "synthetic-owner08",
+        "releaseId": "authored-v1",
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/value"
+      },
+      "/data/unit": {
+        "kind": "source",
+        "sourceId": "synthetic-owner08",
+        "releaseId": "authored-v1",
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/unit"
+      },
+      "/data/basis": {
+        "kind": "source",
+        "sourceId": "synthetic-owner08",
+        "releaseId": "authored-v1",
+        "inputPath": "authored/observation.json",
+        "inputSha256": "ebb114d937bc48ce8daeed1b334690cfb640c0d2bf581e6adb4bb813ade6745c",
+        "sourceRecordId": "/observation",
+        "sourceField": "/basis"
+      }
+    },
+    "cacheEvidence": {
+      "inputBundleSha256": "fb166744638acfbcb9588a9ceba224c489da77041200d28cc501087ebf9f001e",
+      "originalAcquiredAt": "2026-10-01T00:00:00Z",
+      "checkedAt": "2026-10-01T00:00:00Z"
+    }
+  },
+  "metadata": {
+    "authored/observation.json": "{\"observation\":{\"basis\":\"per person-day\",\"unit\":\"kg\",\"value\":\"12.00\"}}\n"
+  }
+}

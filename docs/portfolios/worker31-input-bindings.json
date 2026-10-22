@@ -1,0 +1,974 @@
+{
+  "schemaVersion": "offmenu-worker31-input-bindings/1",
+  "selectedBase": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "portfolio": [
+    "CO",
+    "MP",
+    "ST",
+    "UZ"
+  ],
+  "minimumReuseSeconds": 2592000,
+  "sourceProcessingEnabled": false,
+  "bindings": [
+    {
+      "key": "co-sipsa-2025",
+      "country": "CO",
+      "sourceId": "0b018074d805240b38bf",
+      "releaseId": "SIPSA-published-historical:anex-SIPSA-SerieHistoricaMayorista-2025.xlsx",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/0b018074d805240b38bf/receipt.json",
+        "sha256": "819d48a512586f20f3fe4eb77b63ce916f89f95fc2f1c36172ad778c2614f676",
+        "selector": "/"
+      },
+      "releaseSelector": "/version",
+      "originalAcquiredAt": "2026-10-14T22:19:29.565239+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "semantic-dictionary-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/0b018074d805240b38bf/original.html",
+          "sha256": "235a93317d9845fd6ce31c5060e9fabc478dd7686e5dd3a3833c674eef7c4c8a",
+          "bytes": 1778462,
+          "pinOrigin": "/path,/sha256,/good_response_bytes",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "co-tcac-2018",
+      "country": "CO",
+      "sourceId": "81b1931a3a748b71bbab",
+      "releaseId": "TCAC2018",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/81b1931a3a748b71bbab/receipt.json",
+        "sha256": "25ebd17923de2ccf28be3a4432ed4c0f245a1f6863f481d9e2acd67f8bda5899",
+        "selector": "/"
+      },
+      "releaseSelector": "/version",
+      "originalAcquiredAt": "2026-10-14T22:05:01.658186+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-copy-restricted",
+        "source-use-unqualified",
+        "food-preparation-dictionary-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/81b1931a3a748b71bbab/original.pdf",
+          "sha256": "5766af74c750ca8b30b88196b71660f9568a0b4b37898c66aa84e857d21c5c96",
+          "bytes": 16769846,
+          "pinOrigin": "/path,/sha256,/good_response_bytes",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "co-bbctc-9",
+      "country": "CO",
+      "sourceId": "6b4a55ccbed0241d04dc",
+      "releaseId": "BBCTC2012:Gran libro de la cocina colombiana Primera Parte",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/6b4a55ccbed0241d04dc/receipt.json",
+        "sha256": "bd4deac1e40ec4245bcad2b67962cb987cb7ffcd329f983be9ed48f7d7a98d5a",
+        "selector": "/"
+      },
+      "releaseSelector": "/version",
+      "originalAcquiredAt": "2026-10-14T22:17:39.361110+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "method-yield-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/6b4a55ccbed0241d04dc/original.pdf",
+          "sha256": "8d5727d1f28376601c5b5c23a44c46a75ac07a4b0f27253075706c29bed13795",
+          "bytes": 2620678,
+          "pinOrigin": "/path,/sha256,/good_response_bytes",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "co-bbctc-10",
+      "country": "CO",
+      "sourceId": "7d1d7471b54fb8c4a68c",
+      "releaseId": "BBCTC2012:​ Gran libro de la cocina colombiana Segunda Parte",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/7d1d7471b54fb8c4a68c/receipt.json",
+        "sha256": "1b260c89696f06add1dad7eaef323e6ca29d87d71690486ebc2542ce65f9b4ee",
+        "selector": "/"
+      },
+      "releaseSelector": "/version",
+      "originalAcquiredAt": "2026-10-14T22:17:41.935094+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "method-yield-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/7d1d7471b54fb8c4a68c/original.pdf",
+          "sha256": "d41b1f812bd33985f5c6edcfa31eb4022b0180832ec560345eb8ff66980ddfa8",
+          "bytes": 32611559,
+          "pinOrigin": "/path,/sha256,/good_response_bytes",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "co-bbctc-11",
+      "country": "CO",
+      "sourceId": "55404f325149fa9b5f0c",
+      "releaseId": "BBCTC2012:​ Paseo de olla Recetas de las cocinas regionales de Colombia",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/55404f325149fa9b5f0c/receipt.json",
+        "sha256": "40cfcb16dc534ed05e19b041e23fe3f48609d1eb821a08ea92a752192da5a3c0",
+        "selector": "/"
+      },
+      "releaseSelector": "/version",
+      "originalAcquiredAt": "2026-10-14T22:17:46.414299+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "method-yield-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-18/CO/55404f325149fa9b5f0c/original.pdf",
+          "sha256": "3bcd12c4326b3fa5121a16eb5fc238253b07cced8d770afc86f0b5f783a7167d",
+          "bytes": 3939632,
+          "pinOrigin": "/path,/sha256,/good_response_bytes",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "mp-cnmi-menu",
+      "country": "MP",
+      "sourceId": "mp-cnmi-menu",
+      "releaseId": "2026-10",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/d8db372a38db908d8872/receipt.json",
+        "sha256": "f9e4fea65de7628773b9c79e4c944b1dbbe971e489c6c54d252b21a03a848778",
+        "selector": "/"
+      },
+      "releaseSelector": "/release",
+      "originalAcquiredAt": "2026-10-14T22:11:40.373286+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        },
+        "issuer": {
+          "selector": "/publisher_title",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "meal-day-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/requests/1/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/d8db372a38db908d8872/publisher-response-01.html",
+          "sha256": "20691249d017f32a2a5d2854ddd71e067fdb7561c11887013151a2f029e6d30f",
+          "bytes": 94655,
+          "pinOrigin": "/original_files/0",
+          "bodyVerifiedByThisPackage": false
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/d8db372a38db908d8872/october_2026_menu.pdf",
+          "sha256": "539a62b1fc3d92ad13498ce188f1704e018ac1738c1ce95b0e5d2452f4cbed88",
+          "bytes": 4111324,
+          "pinOrigin": "/original_files/1",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "mp-chl-links",
+      "country": "MP",
+      "sourceId": "mp-chl-links",
+      "releaseId": "2023-12-14-collection",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/aa7f87762aa62a872da3/receipt.json",
+        "sha256": "8e192a6122a351afdca30788d6048118fafe33285f654b5855ab65be61d09a99",
+        "selector": "/"
+      },
+      "releaseSelector": "/release",
+      "originalAcquiredAt": "2026-10-14T22:19:07.680431+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "collection-custody-held",
+        "source-use-unqualified",
+        "method-yield-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/requests/1/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/aa7f87762aa62a872da3/publisher-response-01.html",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "pinOrigin": "/original_files/0",
+          "bodyVerifiedByThisPackage": false
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-44/MP/aa7f87762aa62a872da3/publisher-response-02.html",
+          "sha256": "82145d15b8144cb7d77b322a27bd6d070a8e991fe0100f8652a0f10246ebc781",
+          "bytes": 54264,
+          "pinOrigin": "/original_files/1",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "st-ine-2024-01",
+      "country": "ST",
+      "sourceId": "fd1771e967f3635499f0",
+      "releaseId": "INE-C048-January2024",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-42/fd1771e967f3635499f0/receipt.json",
+        "sha256": "1380c8047ed214ad038443339688fdca45cda706c0c5b715ad56d49f9633f077",
+        "selector": "/"
+      },
+      "releaseSelector": "/release",
+      "originalAcquiredAt": "2026-10-14T21:11:38.043264+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release/version",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "source-use-unqualified",
+        "price-cpi-selectors-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/paths/0/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-42/fd1771e967f3635499f0/original-document.pdf",
+          "sha256": "4b51a8a90780b94399e1039f454b6737278944e809f27c16efd48551ca41a56c",
+          "bytes": 359513,
+          "pinOrigin": "/paths/0",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "st-ec-trade",
+      "country": "ST",
+      "sourceId": "st-ec-trade",
+      "releaseId": "EC-country-trade-document",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/ST/6ef07ae81497ae1d4f29/receipt.json",
+        "sha256": "6aa03dab6d2c09304b5ce392137621940fc2a5bb04dfc6bbeda5d10fba1828dc",
+        "selector": "/"
+      },
+      "releaseSelector": "/release",
+      "originalAcquiredAt": "2026-10-14T22:03:06.040701+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "trade-not-provider-register",
+        "source-use-unqualified"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/ST/6ef07ae81497ae1d4f29/response-1.original",
+          "sha256": "1d73054f8b5dc5c4bb564f9782ddf20d2ec15dfff8aaacaba4d508da8eac262e",
+          "bytes": 197618,
+          "pinOrigin": "/files/0",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "st-omali-description",
+      "country": "ST",
+      "sourceId": "st-omali-description",
+      "releaseId": "Omali-dining-snapshot",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/ST/920f9bb489027bcd2e36/receipt.json",
+        "sha256": "1c07ecdb47dd0579e8ca725ed03e37658a4f3b909970b1ea8eecaba43cc08ad8",
+        "selector": "/"
+      },
+      "releaseSelector": "/release",
+      "originalAcquiredAt": "2026-10-14T22:17:32.586495+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "description-not-operational-recipe",
+        "source-use-unqualified"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-12/ST/920f9bb489027bcd2e36/response-1.original",
+          "sha256": "b70addfcf6350d85e814f93cf8b37afe3e9f914c98a405b754d6683d3fc50245",
+          "bytes": 115457,
+          "pinOrigin": "/files/0",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "uz-siat-1327",
+      "country": "UZ",
+      "sourceId": "4ef97b5ed5fe9bf2502a",
+      "releaseId": "SIAT1327-2026-09-15",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/UZ/4ef97b5ed5fe9bf2502a/receipt.json",
+        "sha256": "4fe2ae477cba91a2e6020c93f349729242e8e4f8ca0d0ab05ccf201c4ded1ee8",
+        "selector": "/"
+      },
+      "releaseSelector": null,
+      "originalAcquiredAt": "2026-10-14T22:11:59.900134+00:00",
+      "validatedAt": null,
+      "fields": {
+        "release": {
+          "selector": "/release_identity",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "operation-scope-unqualified",
+        "sdmx-unit-currency-basis-missing"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [
+        {
+          "url": "https://stat.uz/en/legal-acts/ensuring-the-quality-of-official-statistics",
+          "observedAt": "2026-10-18",
+          "section": "Policy for dissemination, paragraphs21-24",
+          "finding": "Published official statistics may be used with source attribution; confidentiality and use restrictions survive. General policy is not SIAT1327 unit/market/field-origin qualification.",
+          "scope": "Official publisher licence/method metadata only; no dataset-body access."
+        }
+      ],
+      "fieldDeclarationEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/retained-artifact-integrity.json",
+        "sha256": "40ab601d693fd68cf37c82f439498e95a3e95bf01ce8344503dafe51a9e4394e",
+        "selector": "/results/1/header"
+      },
+      "declaredSourceFields": [
+        "Code",
+        "Klassifikator",
+        "Klassifikator_ru",
+        "Klassifikator_en",
+        "Klassifikator_uzc"
+      ],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/UZ/4ef97b5ed5fe9bf2502a/sdmx_data_1327.csv",
+          "sha256": "46d262c5dc5c18e05275568557f57e17313e91ef5ee58f2d31b6aa97671c4e08",
+          "bytes": 49951,
+          "pinOrigin": "/artefacts/0",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    },
+    {
+      "key": "uz-cuisine-description",
+      "country": "UZ",
+      "sourceId": "6057f632c95063e1c7c9",
+      "releaseId": "Uzbek-cuisine-edition-unknown",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/UZ/6057f632c95063e1c7c9/receipt.json",
+        "sha256": "56487bb8f68f43a41d1e7b600defac514cdba9c6617a543fdc954495e41d2b77",
+        "selector": "/"
+      },
+      "releaseSelector": null,
+      "originalAcquiredAt": "2026-10-14T22:48:27.577381+00:00",
+      "validatedAt": null,
+      "fields": {
+        "scope": {
+          "selector": "/scope",
+          "unit": null,
+          "basis": null,
+          "scope": "metadata-only"
+        }
+      },
+      "unit": null,
+      "basis": null,
+      "semanticSelectorEvidence": null,
+      "rightsDecision": null,
+      "custodyAcceptance": null,
+      "holds": [
+        "description-not-operational-recipe",
+        "source-use-unqualified"
+      ],
+      "adapterId": null,
+      "requiredOperations": [
+        "retain",
+        "parse",
+        "transform"
+      ],
+      "publicDocumentation": [],
+      "acquisitionSelector": "/utc",
+      "sourceAssetDeclarations": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/UZ/6057f632c95063e1c7c9/Uzbek-cuisine-original.pdf",
+          "sha256": "cb8b945618a5c2cc720318ab636fbff076fabccb51387e1791135332f7a948d3",
+          "bytes": 11422843,
+          "pinOrigin": "/artefacts/0",
+          "bodyVerifiedByThisPackage": false
+        }
+      ],
+      "releaseIdentityKind": "source-receipt-declaration-not-qualified-release-contract"
+    }
+  ],
+  "requirements": [
+    {
+      "country": "CO",
+      "dataType": "ingredients",
+      "bindings": [
+        "co-tcac-2018"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "CO",
+      "dataType": "recipes",
+      "bindings": [
+        "co-bbctc-9",
+        "co-bbctc-10",
+        "co-bbctc-11"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "CO",
+      "dataType": "nutrition",
+      "bindings": [
+        "co-tcac-2018"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "CO",
+      "dataType": "retailers/providers",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "CO",
+      "dataType": "prices/baskets",
+      "bindings": [
+        "co-sipsa-2025"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "CO",
+      "dataType": "dietary references",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/category-coverage-and-gaps.json",
+        "sha256": "8781e950badfa41ad1b9781ea525a3e14a8b576d0f4b98c4bb6bcfbf5cde4176",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "MP",
+      "dataType": "ingredients",
+      "bindings": [
+        "mp-chl-links"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "MP",
+      "dataType": "recipes",
+      "bindings": [
+        "mp-chl-links"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "MP",
+      "dataType": "nutrition",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "MP",
+      "dataType": "retailers/providers",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "MP",
+      "dataType": "prices/baskets",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "MP",
+      "dataType": "dietary references",
+      "bindings": [
+        "mp-cnmi-menu"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/MP/category-coverage-and-gaps.json",
+        "sha256": "81554462a45ba896afa9409353896f695129951c5cb53a3b2bba4f0e9540e6f0",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "ST",
+      "dataType": "ingredients",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "ST",
+      "dataType": "recipes",
+      "bindings": [
+        "st-omali-description"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "ST",
+      "dataType": "nutrition",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "ST",
+      "dataType": "retailers/providers",
+      "bindings": [
+        "st-ec-trade"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "ST",
+      "dataType": "prices/baskets",
+      "bindings": [
+        "st-ine-2024-01"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "ST",
+      "dataType": "dietary references",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/ST/category-coverage-and-gaps.json",
+        "sha256": "856d81e28521d89e1021506a7f6025113a245306bc8916a22696000b3eef1628",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "UZ",
+      "dataType": "ingredients",
+      "bindings": [
+        "uz-siat-1327"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "UZ",
+      "dataType": "recipes",
+      "bindings": [
+        "uz-cuisine-description"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "UZ",
+      "dataType": "nutrition",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "UZ",
+      "dataType": "retailers/providers",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    },
+    {
+      "country": "UZ",
+      "dataType": "prices/baskets",
+      "bindings": [
+        "uz-siat-1327"
+      ],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-applicability-and-scope"
+    },
+    {
+      "country": "UZ",
+      "dataType": "dietary references",
+      "bindings": [],
+      "applicability": "unaccepted",
+      "evidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/UZ/category-coverage-and-gaps.json",
+        "sha256": "a5927a7360199b505ebb29704ea6dc3f809fde9001d3e04c20a564dff4a15b66",
+        "selector": "/categories"
+      },
+      "missingInput": "qualified-source-manifest"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/CO/worksheet-locator-index.json",
+      "sha256": "7b07974a6e78d0cd29e339aabb7f144f08aa61b860f906381422fbe58a96c2f9",
+      "selector": "/results"
+    },
+    {
+      "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-31/B02-W31/returned-provider-uz-w01-binding.json",
+      "sha256": "19f65d8a871f2715971f5755abcc2ac07257e4616ab0bd428bf1afa4a11584c7",
+      "selector": "/resolved"
+    }
+  ]
+}

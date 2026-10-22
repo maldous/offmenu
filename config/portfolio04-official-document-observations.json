@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "portfolio04-official-document-observations/1",
+  "observedOn": "2026-10-18",
+  "observations": [
+    {
+      "url": "https://stat.gov.kz/en/description/",
+      "publisher": "Bureau of National Statistics Kazakhstan",
+      "selector": "Conditions for the use of official statistical information, paragraph following heading (web extracted lines24-25)",
+      "observation": "Official statistical information may be reused and modified, including software use, with reference to the source.",
+      "applicability": "General statistical-information policy evidence for the four retained BNS workbook leads, not the QazaqGourmet menu. Exact release/table/unit/field-origin applicability and independent operation-scope acceptance remain required. Existing source holds not lifted.",
+      "effect": "No new acquisition or body operation selected; this is policy evidence, not app admission."
+    },
+    {
+      "url": "https://data.snb.ch/en/help_api",
+      "publisher": "Swiss National Bank",
+      "selector": "API format and validation documentation lead; direct open returned JavaScript-required page",
+      "observation": "No exact plkopr release unit/basis or reuse clause established by this lookup.",
+      "effect": "Do not import units, release-equivalence or rights from unrelated SNB documentation."
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "worker43-portfolio-bindings/1",
+  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "requiredTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "countries": [
+    "BZ",
+    "FJ",
+    "RO",
+    "SR"
+  ],
+  "sources": [
+    {
+      "key": "bz-school-2019",
+      "sourceId": "BZ-school-recipes-2019",
+      "releaseId": "2019",
+      "releaseIdentityMeaning": "retained release label, not a new dataset/version acceptance",
+      "countries": [
+        "BZ"
+      ],
+      "types": [
+        "recipes"
+      ],
+      "format": "school-recipe-pdf-pages14-18",
+      "publisherURL": "https://www.unicef.org/belize/",
+      "manifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-allocation-after3128/owner57/deliverables/prereq-country-country-gap-BZ-owner43/selected-operation.json",
+        "sha256": "ce3b519a2e91613310f147b48f4f07ac86e08fcfde1d1b228a56697f4978a7a7"
+      },
+      "originalAcquiredAt": "2026-10-14T22:12:01.268199+00:00",
+      "lastValidationAt": "2026-10-16T22:34:14.034888+00:00",
+      "originalAsRecorded": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-55/BZ/National-school-menus-2019.pdf",
+        "sha256": "bee9b634232dc64b9d534f8ac2aaeed9c36aa7e5335a267876f2a560c9f2e169",
+        "bytes": 4094633,
+        "expectedSHA256": "bee9b634232dc64b9d534f8ac2aaeed9c36aa7e5335a267876f2a560c9f2e169",
+        "hashMatches": true,
+        "bytesMatch": true
+      },
+      "fields": {
+        "recordCount": {
+          "value": null,
+          "constant": "not-parsed-no-record-count"
+        },
+        "pageCount": {
+          "value": 24,
+          "record": "manifest:/chosenOperation/inputPinAsRecorded",
+          "selector": "/chosenOperation/inputPinAsRecorded/PDFPages"
+        },
+        "nativeUnit": {
+          "value": null,
+          "constant": "native-unit-unqualified-or-not-applicable"
+        },
+        "basis": {
+          "value": null,
+          "constant": "no-measured-composition-or-basket-basis-inferred"
+        }
+      },
+      "holds": [
+        "source-body-processing-not-selected",
+        "new-staging-scope-not-independently-accepted",
+        "recipe-text-derivative-use-unresolved"
+      ],
+      "adapterBinding": {
+        "sharedFamily": null,
+        "sharedSourceId": null,
+        "compatibility": "No qualified source parser selected; metadata only."
+      },
+      "rightsEvidence": {
+        "closure": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/source-qualifications.json",
+        "existingOnly": true,
+        "noOperationGrant": true
+      }
+    },
+    {
+      "key": "fj-gateway-menu",
+      "sourceId": "ec85bfa91700f3bbdef8",
+      "releaseId": "retained-undated-menu",
+      "releaseIdentityMeaning": "retained release label, not a new dataset/version acceptance",
+      "countries": [
+        "FJ"
+      ],
+      "types": [
+        "prices/baskets"
+      ],
+      "format": "two-page-image-menu",
+      "publisherURL": "https://www.fijigateway.com/",
+      "manifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-allocation-after3128/owner57/deliverables/prereq-country-country-gap-FJ-owner43/selected-operation.json",
+        "sha256": "0104f9e5849a02009a39026a84018f29f3c06b7e3b5eecf89d4604e6d999e15d"
+      },
+      "originalAcquiredAt": "2026-10-14T22:48:22.869851+00:00",
+      "lastValidationAt": "2026-10-16T22:34:14.034888+00:00",
+      "originalAsRecorded": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/FJ/ec85bfa91700f3bbdef8/Fiji-Gateway-Dinner.pdf",
+        "sha256": "ea55cd32727a9a473b439f6700d6662a49a772d0bf2942179c1d02fc0ed66621",
+        "bytes": 1821337,
+        "expectedSHA256": "ea55cd32727a9a473b439f6700d6662a49a772d0bf2942179c1d02fc0ed66621",
+        "hashMatches": true,
+        "bytesMatch": true
+      },
+      "fields": {
+        "recordCount": {
+          "value": null,
+          "constant": "not-parsed-no-record-count"
+        },
+        "effectiveDate": {
+          "value": null,
+          "record": "manifest:/chosenOperation",
+          "selector": "/chosenOperation/effectiveDate"
+        },
+        "nativeUnit": {
+          "value": null,
+          "constant": "native-unit-unqualified-or-not-applicable"
+        },
+        "basis": {
+          "value": null,
+          "constant": "no-measured-composition-or-basket-basis-inferred"
+        }
+      },
+      "holds": [
+        "source-body-processing-not-selected",
+        "new-staging-scope-not-independently-accepted",
+        "transcription-use-unresolved",
+        "price-effective-date-unknown"
+      ],
+      "adapterBinding": {
+        "sharedFamily": null,
+        "sharedSourceId": null,
+        "compatibility": "No qualified source parser selected; metadata only."
+      },
+      "rightsEvidence": {
+        "closure": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/source-qualifications.json",
+        "existingOnly": true,
+        "noOperationGrant": true
+      }
+    },
+    {
+      "key": "ro-hicp-method",
+      "sourceId": "92a590e32f9ae818d786",
+      "releaseId": "retained-methodology-snapshot",
+      "releaseIdentityMeaning": "retained release label, not a new dataset/version acceptance",
+      "countries": [
+        "RO"
+      ],
+      "types": [
+        "prices/baskets"
+      ],
+      "format": "hicp-reference-metadata",
+      "publisherURL": "https://ec.europa.eu/eurostat/",
+      "manifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-allocation-after3128/owner57/deliverables/country-RO-owner43/country-delivery-action.json",
+        "sha256": "7bedea9ceadaa65817d085f01bd3d4b70edb5aff8ebbcee391c196e2c8985718"
+      },
+      "originalAcquiredAt": "2026-10-14T21:13:12.992799+00:00",
+      "lastValidationAt": "2026-10-16T22:34:14.034888+00:00",
+      "originalAsRecorded": {
+        "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-40/92a590e32f9ae818d786/response-01.html",
+        "sha256": "935cc54087acb9be22cd92765832d0b20905eb807811aac7db02c7abc9aa83ca",
+        "bytes": 241209,
+        "expectedSHA256": "935cc54087acb9be22cd92765832d0b20905eb807811aac7db02c7abc9aa83ca",
+        "hashMatches": true,
+        "bytesMatch": true
+      },
+      "fields": {
+        "recordCount": {
+          "value": null,
+          "constant": "not-parsed-no-record-count"
+        },
+        "nativeUnit": {
+          "value": null,
+          "constant": "native-unit-unqualified-or-not-applicable"
+        },
+        "basis": {
+          "value": null,
+          "constant": "no-measured-composition-or-basket-basis-inferred"
+        }
+      },
+      "holds": [
+        "source-body-processing-not-selected",
+        "new-staging-scope-not-independently-accepted",
+        "methodology-is-not-item-price-data",
+        "document-specific-exceptions-and-section-binding-unresolved"
+      ],
+      "adapterBinding": {
+        "sharedFamily": null,
+        "sharedSourceId": null,
+        "compatibility": "No qualified source parser selected; metadata only."
+      },
+      "rightsEvidence": {
+        "closure": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/source-qualifications.json",
+        "existingOnly": true,
+        "noOperationGrant": true
+      }
+    },
+    {
+      "key": "sr-overture",
+      "sourceId": "overture-food-places",
+      "releaseId": "2026-09-23.1",
+      "releaseIdentityMeaning": "retained release label, not a new dataset/version acceptance",
+      "countries": [
+        "SR"
+      ],
+      "types": [
+        "retailers/providers"
+      ],
+      "format": "retained-normalized-candidates",
+      "publisherURL": "https://docs.overturemaps.org/",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/normalization/owner-43/overture-2026-09-23.1/SR/manifest.json",
+        "sha256": "7d3282c3ed268945bd791ff24e15367eca713f9c19e0ba43770ea684285ee596"
+      },
+      "originalAcquiredAt": null,
+      "lastValidationAt": "2026-10-16T22:34:14.034888+00:00",
+      "originalAsRecorded": null,
+      "fields": {
+        "candidateCount": {
+          "value": 1200,
+          "record": "manifest:/counts",
+          "selector": "/counts/candidates"
+        },
+        "farmExclusions": {
+          "value": 13,
+          "record": "manifest:/counts",
+          "selector": "/counts/agricultural-site-excluded; not a retail~1food-service entity"
+        },
+        "legalHolds": {
+          "value": 4,
+          "record": "manifest:/counts",
+          "selector": "/counts/permission-binding-held"
+        },
+        "nativeUnit": {
+          "value": null,
+          "constant": "native-unit-unqualified-or-not-applicable"
+        },
+        "basis": {
+          "value": null,
+          "constant": "no-measured-composition-or-basket-basis-inferred"
+        }
+      },
+      "holds": [
+        "source-body-processing-not-selected",
+        "new-staging-scope-not-independently-accepted",
+        "per-datum-field-origin-requires-new-contract",
+        "four-legal-text-delivery-holds-remain-excluded"
+      ],
+      "adapterBinding": {
+        "sharedFamily": "reference_adapters",
+        "sharedSourceId": "overture-food-places",
+        "compatibility": "SRnormalizedsingleton-packet output is NOT raw Overture projection-array input; do not feed candidates back through raw adapter."
+      },
+      "rightsEvidence": {
+        "closure": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/source-qualifications.json",
+        "existingOnly": true,
+        "noOperationGrant": true
+      }
+    },
+    {
+      "key": "sr-ezoti",
+      "sourceId": "ea145da7a219bc7c9045",
+      "releaseId": "retained-20261014-publication",
+      "releaseIdentityMeaning": "retained release label, not a new dataset/version acceptance",
+      "countries": [
+        "SR"
+      ],
+      "types": [
+        "prices/baskets"
+      ],
+      "format": "government-fixed-price-publication",
+      "publisherURL": "https://ez.gov.sr/",
+      "manifest": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-allocation-after3128/owner57/deliverables/prereq-country-country-gap-SR-owner43/selected-operation.json",
+        "sha256": "7a72282838b5170f42cce71a352cdce984ff496319211bb391a33e8cb611ba79"
+      },
+      "originalAcquiredAt": null,
+      "lastValidationAt": "2026-10-16T22:34:14.034888+00:00",
+      "originalAsRecorded": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-4/SR/ea145da7a219bc7c9045/SR-EZOTI-complete-published-product-price-list.html",
+        "sha256": "a06b493c2ed09d673254b90a306df2176629df1342c3a7eafd0b00f18fca415f",
+        "bytes": 143169,
+        "expectedSHA256": "a06b493c2ed09d673254b90a306df2176629df1342c3a7eafd0b00f18fca415f",
+        "hashMatches": true,
+        "bytesMatch": true
+      },
+      "fields": {
+        "recordCount": {
+          "value": null,
+          "constant": "not-parsed-no-record-count"
+        },
+        "nativeUnit": {
+          "value": null,
+          "constant": "native-unit-unqualified-or-not-applicable"
+        },
+        "basis": {
+          "value": null,
+          "constant": "no-measured-composition-or-basket-basis-inferred"
+        }
+      },
+      "holds": [
+        "source-body-processing-not-selected",
+        "new-staging-scope-not-independently-accepted",
+        "fixed-publication-not-observed-offers",
+        "column-currency-package-date-and-use-unresolved"
+      ],
+      "adapterBinding": {
+        "sharedFamily": null,
+        "sharedSourceId": null,
+        "compatibility": "No qualified source parser selected; metadata only."
+      },
+      "rightsEvidence": {
+        "closure": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-43/B03-W43/source-qualifications.json",
+        "existingOnly": true,
+        "noOperationGrant": true
+      }
+    }
+  ]
+}
