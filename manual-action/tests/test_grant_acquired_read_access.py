@@ -381,14 +381,51 @@ class ScopePlanTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def plan(self):
-        # /tmp fixture parent itself is private; parent traversal assessment is
-        # separately tested and modeled as already authorized for this fixture.
+    def plan(self, denied_ancestor=None):
+        # Model already-authorized traversal of every out-of-scope ancestor,
+        # including private runner TMPDIR parents. Never chmod actual ancestors,
+        # and never override access checks on selected nodes or sibling children.
+        ancestors = {(info.st_dev, info.st_ino)
+            for path in self.root.parent.parent.parents for info in (path.stat(),)}
+        denied = None
+        if denied_ancestor is not None:
+            info = Path(denied_ancestor).stat()
+            denied = (info.st_dev, info.st_ino)
+            self.assertIn(denied, ancestors)
         real_access = handoff.target_access
         def access(original, info, uid, groups):
-            return 1 if info.st_ino == Path(self.tmp.name).stat().st_ino else real_access(original, info, uid, groups)
+            identity = (info.st_dev, info.st_ino)
+            if identity in ancestors:
+                return 0 if identity == denied else 1
+            return real_access(original, info, uid, groups)
         with patch.object(handoff, 'EXPECTED_BYTES', self.total), patch.object(handoff, 'target_access', side_effect=access):
             return handoff.make_plan(self.manifest, self.actor, self.target, {self.target.pw_gid}, self.backend, self.root, observed_hashes=self.observed_hashes)
+
+    def test_fixture_under_private_tmpdir_parent_models_only_outside_traversal(self):
+        private_parent = Path(self.tmp.name) / 'private-runner-tmpdir'
+        private_parent.mkdir(mode=0o700)
+        before = private_parent.stat().st_mode
+        old_root = self.root
+        old_root.parent.parent.rename(private_parent / 'outputs')
+        self.root = private_parent / 'outputs' / 'batch' / 'source-cache'
+        self.paths = [self.root / path.relative_to(old_root) for path in self.paths]
+        plan = self.plan()
+        try:
+            self.assertEqual(len(plan['entries']), 109)
+            self.assertEqual({Path(entry['path']) for entry in plan['entries'] if entry['directory']},
+                {self.root.parent.parent, self.root.parent, self.root}
+                | {self.root / sid for sid in handoff.FAMILY_COUNTS})
+        finally:
+            for fd in plan['held']: os.close(fd)
+        self.assertEqual(private_parent.stat().st_mode, before)
+
+    def test_production_guard_refuses_one_unauthorized_outside_ancestor_without_writes(self):
+        # All other outside ancestors are modeled traversable; only this private
+        # generated directory is denied. The actual production guard must refuse.
+        with patch.object(self.backend, 'set', create=True) as write:
+            with self.assertRaisesRegex(handoff.Refusal, 'outside_ancestor_not_traversable'):
+                self.plan(denied_ancestor=self.tmp.name)
+            write.assert_not_called()
 
     def test_closed_50_plus_50_plus_9_scope_is_verified_readonly(self):
         before = {path: (path.read_bytes(), path.stat().st_mode) for path in self.paths}
