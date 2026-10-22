@@ -486,7 +486,11 @@ class ScopePlanTests(unittest.TestCase):
 
     def test_unselected_traversable_directory_blocks_without_recursion(self):
         sibling = self.root.parent.parent / 'unselected-directory'
-        sibling.mkdir(mode=0o701)
+        sibling.mkdir(mode=0o700)
+        # Materialize this generated fixture's intended ACL-visible mode even
+        # under the runner service umask 0077; no existing ancestor is changed.
+        sibling.chmod(0o701)
+        self.assertEqual(sibling.stat().st_mode & 0o777, 0o701)
         with self.assertRaisesRegex(handoff.Refusal, 'unlisted_sibling_exposure'):
             self.plan()
 
