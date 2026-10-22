@@ -1,0 +1,1759 @@
+{
+  "schema": "offmenu-remaining-fetch-triage/1",
+  "reviewed_at": "2026-10-22T04:52:00Z",
+  "disabled_rows_reviewed": 74,
+  "scope": "Existing researched rows only; no current fetch config changes, production fetch, normalization, publication or dispatch",
+  "status_counts": {
+    "existing_acquisition_or_rights_hold_unchanged": 49,
+    "retained_family_no_verified_delta": 14,
+    "canonical_endpoint_missing": 1,
+    "terms_decision_required": 1,
+    "terms_and_mixed_rights_scope_pending": 1,
+    "rights_hold_not_parser_only": 2,
+    "bounded_static_candidate_not_selected": 1,
+    "bounded_static_candidates_not_selected": 1,
+    "downstream_only_reason_but_overlap_not_reconciled": 3,
+    "retained_work_overlap_no_delta": 1
+  },
+  "rows": [
+    {
+      "id": "kerala_recipes",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://huggingface.co/datasets/Fathi7ma/kerala-recipes"
+      ],
+      "reason": "Verify exact per-file schema and provenance; No assumption Malayalam instructions exist",
+      "original_disabled_reason": "Verify exact per-file schema and provenance; No assumption Malayalam instructions exist",
+      "rights_context": {
+        "claim": "CC-BY-4.0",
+        "basis": "Contributor dataset card; traditional home-cook provenance claimed",
+        "obligations": [
+          "attribute contributor",
+          "retain cultural names",
+          "verify contributor/source provenance"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future pinned dataset files",
+        "size": "about 323 kB repository"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "public_domain_recipes",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://publicdomainrecipes.com/",
+        "https://github.com/ronaldl29/public-domain-recipes"
+      ],
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": {
+        "claim": "Public domain / Unlicense recipe content",
+        "basis": "Website content statement",
+        "obligations": [
+          "retain provenance",
+          "check copied-content exceptions",
+          "separate images"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future pinned Git delta only"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "hochipants_original_archive",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/HoChiPants/open-recipe-archive"
+      ],
+      "reason": "Verify final-record rights state; Exclude scraped/reworded rights-pending staging",
+      "original_disabled_reason": "Verify final-record rights state; Exclude scraped/reworded rights-pending staging",
+      "rights_context": {
+        "claim": "CC0 original published recipe data; MIT software",
+        "basis": "Maintainer policy distinguishes original data and staging",
+        "obligations": [
+          "only rights-verified published originals",
+          "exclude recipes-staging"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future final recipes directory only"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "unitools",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/farcrak/unitools-recipes",
+        "https://github.com/farcrak/unitools-recipes/blob/main/LICENSE",
+        "https://github.com/farcrak/unitools-recipes/blob/main/sample.json"
+      ],
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": {
+        "claim": "CC-BY-SA-4.0 content",
+        "basis": "Explicit data content license",
+        "obligations": [
+          "attribution",
+          "share-alike for covered adaptations",
+          "separate Commons photo licenses"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Retained-source reuse preferred; documented canonical JSON/CSV",
+        "documented_json": "https://theunitools.com/data/unitools-recipes-v1.json",
+        "size": "about 2.6 MB",
+        "retained_revision": "2f554073f7e730b18d707fe1164d18308f6ec16c",
+        "version": "2.0.0",
+        "generated": "2026-09-02"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "adambouhmad_historical_archive",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/AdamBouhmad/open-recipe-archive",
+        "https://github.com/AdamBouhmad/open-recipe-archive/commits/main/"
+      ],
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": {
+        "claim": "Repository Unlicense plus original-work rights",
+        "basis": "Only per-work cleared historical subset approved in retained audit",
+        "obligations": [
+          "author/translator/death/publication checks by jurisdiction",
+          "preserve book/page provenance",
+          "do not clear all records from wrapper"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Retained corpus and rights partitions; no repeat bulk fetch",
+        "revision": "ae3bd2c009a8899dfe63b9166fa98ae3fa8041a8",
+        "revision_date": "2026-07-06"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipeqa",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://hucvl.github.io/recipeqa/",
+        "https://hucvl.github.io/recipeqa/recipeqa-datasheet.pdf"
+      ],
+      "reason": "Current download availability and exact manifest; Ingredient completeness; QA preprocessing removes initial step; Separate non-food projects; Per-record license counts",
+      "original_disabled_reason": "Current download availability and exact manifest; Ingredient completeness; QA preprocessing removes initial step; Separate non-food projects; Per-record license counts",
+      "rights_context": {
+        "claim": "Mixed individual Creative Commons licenses in recipes.json",
+        "basis": "Primary dataset page/datasheet",
+        "obligations": [
+          "allowlist compatible per-record licenses",
+          "exclude NC/ND/unknown where incompatible",
+          "author/source attribution",
+          "retain license/version"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Documented JSON recipe archive about 400 MB, QA sets separate",
+        "size": "150/18/18 MB question sets; 400 MB recipe archive advertised",
+        "snapshot": "April 2018"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "foodcom_irkaal",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://www.kaggle.com/irkaal/foodcom-recipes-and-reviews/metadata"
+      ],
+      "reason": "Underlying content permission; No eval/exec of CSV c(...) lists; Deduplicate retained/other Food.com variants",
+      "original_disabled_reason": "Underlying content permission; No eval/exec of CSV c(...) lists; Deduplicate retained/other Food.com variants",
+      "rights_context": {
+        "claim": "Uploader CC0; underlying Food.com/author rights not established",
+        "basis": "Dataset metadata",
+        "obligations": [
+          "obtain content-rights basis",
+          "preserve source attribution",
+          "omit images and review/user tables"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future approved recipe-only Parquet preferred; CSV contains R-like lists",
+        "size": "recipes.csv about 704.21 MB; total repository about 1.55 GB"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "foodcom_personalization",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/majumderb/recipe-personalization",
+        "https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions"
+      ],
+      "reason": "Verify exact dataset license and rights; Quantities may be stripped; No unsafe evaluation",
+      "original_disabled_reason": "Verify exact dataset license and rights; Quantities may be stripped; No unsafe evaluation",
+      "rights_context": {
+        "claim": "Underlying content rights unresolved",
+        "basis": "Creator points to Food.com-derived dataset",
+        "obligations": [
+          "permission/provenance review",
+          "exclude user interaction table unless separately justified"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future recipe table only if approved"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipenlg",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/Glorf/recipenlg",
+        "https://recipenlg.cs.put.poznan.pl/dataset",
+        "https://huggingface.co/datasets/mbien/recipe_nlg"
+      ],
+      "reason": "Commercial-purpose incompatibility; Current exact terms and original source rights",
+      "original_disabled_reason": "Commercial-purpose incompatibility; Current exact terms and original source rights",
+      "rights_context": {
+        "claim": "Primary indexed terms: noncommercial research/education",
+        "basis": "Original download terms; live page sparse so revalidate exact current terms",
+        "obligations": [
+          "restricted-purpose separation",
+          "do not treat mirrors as new permission"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Terms-gated source; no terms accepted or download"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recifine_3a2m",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://huggingface.co/datasets/nuhuibrahim/recifine",
+        "https://arxiv.org/abs/2303.16778"
+      ],
+      "reason": "Upstream restrictions; Verify annotation rights separately",
+      "original_disabled_reason": "Upstream restrictions; Verify annotation rights separately",
+      "rights_context": {
+        "claim": "Derivative annotation license plus upstream RecipeNLG constraints require separate review",
+        "basis": "Creator lineage disclosures",
+        "obligations": [
+          "retain upstream lineage and conditions"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Documented derived datasets, not fetched"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipe1m",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://im2recipe.csail.mit.edu/"
+      ],
+      "reason": "Exact current terms/access; Scraped-content permission",
+      "original_disabled_reason": "Exact current terms/access; Scraped-content permission",
+      "rights_context": {
+        "claim": "Current exact dataset terms unresolved; prior retained audit classified research-restricted",
+        "basis": "Primary project + existing audit; download endpoint unavailable",
+        "obligations": [
+          "obtain exact dataset terms",
+          "separate code/paper licenses from content",
+          "preserve original sources"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Primary download/login unavailable in this research environment"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "foodkg",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://foodkg.github.io/foodkg.html"
+      ],
+      "reason": "Full instruction availability; Data license separate from toolkit; No additive recipe count",
+      "original_disabled_reason": "Full instruction availability; Data license separate from toolkit; No additive recipe count",
+      "rights_context": {
+        "claim": "Toolkit openness does not settle underlying recipe-text rights",
+        "basis": "Construction documentation",
+        "obligations": [
+          "preserve upstream rights/provenance"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Construction scripts/public endpoint documented"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "epicurious_images",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://www.kaggle.com/pes12017000148/food-ingredients-and-recipe-dataset-with-images/activity"
+      ],
+      "reason": "Original-source permission; No mirror-based license laundering",
+      "original_disabled_reason": "Original-source permission; No mirror-based license laundering",
+      "rights_context": {
+        "claim": "Uploader CC-BY-SA-3.0; underlying Epicurious/author grant unverified",
+        "basis": "Dataset metadata",
+        "obligations": [
+          "underlying content-rights review",
+          "omit images absent separate permission"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Future recipe CSV only if approved",
+        "size": "about 26.6 MB CSV; 238.62 MB including images"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "zenodo_culinary_50510",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://zenodo.org/records/15169428"
+      ],
+      "reason": "License metadata; Bounded schema/sample; Original sources and overlap",
+      "original_disabled_reason": "License metadata; Bounded schema/sample; Original sources and overlap",
+      "rights_context": {
+        "claim": "Not established from rendered record",
+        "basis": "License field not resolved; absence not proven",
+        "obligations": [
+          "resolve license and source provenance before acquisition"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "CSV deposited on Zenodo",
+        "size": "110 MB",
+        "version": "1",
+        "published": "2025-04-07",
+        "published_md5": "986efafad65c7969fde13a46d2defba0"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "mendeley_indian_6000",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://data.mendeley.com/datasets/xsphgmmh7b/1"
+      ],
+      "reason": "Underlying source permission; Translation accuracy and quantity preservation",
+      "original_disabled_reason": "Underlying source permission; Translation accuracy and quantity preservation",
+      "rights_context": {
+        "claim": "Uploader CC-BY-4.0; Archana's Kitchen underlying content unresolved",
+        "basis": "Creator source/translation disclosure",
+        "obligations": [
+          "verify original rights",
+          "record translation provenance and changes"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Version 1 deposited 2020"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipedb",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://cosylab.iiitd.edu.in/recipedb/",
+        "https://cosylab.iiitd.edu.in/recipedb/FAQ"
+      ],
+      "reason": "Commercial-purpose incompatibility; Full procedural export availability",
+      "original_disabled_reason": "Commercial-purpose incompatibility; Full procedural export availability",
+      "rights_context": {
+        "claim": "CC-BY-NC-SA-3.0",
+        "basis": "Primary site footer",
+        "obligations": [
+          "noncommercial scope",
+          "attribution/share-alike",
+          "original-source rights"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Web search/database; bulk full-procedure export not verified"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipedb2",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://cosylab.iiitd.edu.in/recipedb2/",
+        "https://arxiv.org/abs/2609.22099"
+      ],
+      "reason": "Exact license; Bulk availability; Complete steps schema",
+      "original_disabled_reason": "Exact license; Bulk availability; Complete steps schema",
+      "rights_context": {
+        "claim": "Exact 2.0 content terms unverified",
+        "basis": "JS-only site and primary paper",
+        "obligations": [
+          "do not automatically inherit predecessor license",
+          "verify export terms"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "JS site; source paper describes database"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "cooklang_federation",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://cooklang.org/guides/recipe-discovery/",
+        "https://github.com/cooklang/federation"
+      ],
+      "reason": "Per-feed content rights; Pin source commits; Do not assume all indexed recipes reusable",
+      "original_disabled_reason": "Per-feed content rights; Pin source commits; Do not assume all indexed recipes reusable",
+      "rights_context": {
+        "claim": "Per-source license; federation software license is not recipe grant",
+        "basis": "Federated collection architecture",
+        "obligations": [
+          "approve each contributing repository",
+          "retain attribution/license",
+          "check imported recipes"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Discovery API and linked source Git repositories"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "recipesource",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://www.recipesource.com/admin/faq.html",
+        "https://www.recipesource.com/admin/submit.html",
+        "https://www.recipesource.com/main-dishes/meat/pork/06/rec0612.html"
+      ],
+      "reason": "Content rights partition; Canonical archival manifest",
+      "original_disabled_reason": "Content rights partition; Canonical archival manifest",
+      "rights_context": {
+        "claim": "Mixed per-record rights; no blanket whole-archive grant",
+        "basis": "FAQ/submission policy and copyrighted-source sample",
+        "obligations": [
+          "per-record permission/provenance",
+          "exclude incompatible notices"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Legacy HTML/text; home page availability inconsistent"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "myplate_food",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://myplate.food/api",
+        "https://myplate.food/partners"
+      ],
+      "reason": "Commercial bulk agreement if selected; Per-original provenance; No API scraping to replace agreement",
+      "original_disabled_reason": "Commercial bulk agreement if selected; Per-original provenance; No API scraping to replace agreement",
+      "rights_context": {
+        "claim": "Runtime API terms; separate paid commercial bulk enrichment license",
+        "basis": "Provider API and partner terms",
+        "obligations": [
+          "do not bypass bulk licensing by API enumeration",
+          "separate original USDA and provider-added content"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Documented no-key API; 20 requests/min/IP, 100 full recipe calls/day",
+        "account_created": false,
+        "agreement_accepted": false
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "themealdb",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://www.themealdb.com/",
+        "https://www.themealdb.com/api.php",
+        "https://www.themealdb.com/terms_of_use.php"
+      ],
+      "reason": "Review planned commercial/bulk use under exact terms; Underlying third-party rights",
+      "original_disabled_reason": "Review planned commercial/bulk use under exact terms; Underlying third-party rights",
+      "rights_context": {
+        "claim": "Provider terms, not blanket CC0",
+        "basis": "Terms updated 2025-07-01 and bounded API response",
+        "obligations": [
+          "official API only, no website scrape",
+          "retain notices",
+          "third-party rights",
+          "paid app-store/supporter conditions",
+          "do not resell API"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Official API sample verified; bulk/supporter conditions apply",
+        "sample_url": "https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "tinyplates",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://www.tinyplates.dev/faq"
+      ],
+      "reason": "Bulk license if selected; Original publisher content rights",
+      "original_disabled_reason": "Bulk license if selected; Original publisher content rights",
+      "rights_context": {
+        "claim": "Commercial runtime allowed with credit/link; bulk/train agreement required",
+        "basis": "Provider FAQ",
+        "obligations": [
+          "no copy of index",
+          "expiring request cache only",
+          "contact for bulk/train authorization"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "Key required; OpenAPI at api.tinyplates.dev/openapi.json",
+        "account_created": false,
+        "agreement_accepted": false
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "global_recipe_db_aggregator",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        "https://github.com/drwjkirkpatrick-web/global-recipe-db/blob/main/README.md",
+        "https://github.com/dpapathanasiou/recipes"
+      ],
+      "reason": "No published database sample; Underlying source rights; Exclude unsupported blood-type-diet scores and inferred country claims",
+      "original_disabled_reason": "No published database sample; Underlying source rights; Exclude unsupported blood-type-diet scores and inferred country claims",
+      "rights_context": {
+        "claim": "MIT scripts; each source retains its rights",
+        "basis": "Maintainer license paragraph; shorthand table is not source grant",
+        "obligations": [
+          "re-audit original sources",
+          "do not infer rights from MIT/fair-use table"
+        ],
+        "code_license_is_content_license": false
+      },
+      "access_context": {
+        "method": "276 MB database not in Git; rebuild/request described"
+      },
+      "discovery_registry": "structured-recipes.json"
+    },
+    {
+      "id": "tw_school_lunch_v2",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://data.gov.tw/dataset/98339",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://data.gov.tw/en/datasets/78344",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13567730/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Original JSON documentation returned HTTP 403; exact authorized artifact endpoints unresolved. No bypass.",
+      "original_disabled_reason": "Original JSON documentation returned HTTP 403; exact authorized artifact endpoints unresolved. No bypass.",
+      "rights_context": {
+        "name": "Government Open Data License v1",
+        "scope": "Official catalog data; retain attribution, release and upstream source.",
+        "evidence_status": "Explicit official dataset license"
+      },
+      "access_context": {
+        "formats": [
+          "JSON documentation",
+          "regional/monthly CSV series"
+        ],
+        "documentation": "https://fatraceschool.k12ea.gov.tw/cateringservice/web/openapi_doc/v1/openapi.json",
+        "updates": "Monthly series; national catalog marks irregular update. Catalog metadata 2026-08-20.",
+        "auth": "Unverified"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "kr_neis_meals",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://open.neis.go.kr/portal/data/service/selectServicePage.do?infId=OPEN17320190722180924242823&infSeq=1",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.data.go.kr/data/15002118/fileData.do",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Service key/application procedure and exact usable payload access remain unverified; do not register or bypass.",
+      "original_disabled_reason": "Service key/application procedure and exact usable payload access remain unverified; do not register or bypass.",
+      "rights_context": {
+        "name": "Official catalog: unrestricted permitted use (이용허락범위 제한 없음)",
+        "scope": "Dataset-specific public-data declaration; preserve provider attribution and API conditions.",
+        "evidence_status": "Explicit official unrestricted-use declaration"
+      },
+      "access_context": {
+        "formats": [
+          "JSON",
+          "XML",
+          "CSV",
+          "XLS",
+          "TXT"
+        ],
+        "endpoint_template": "https://open.neis.go.kr/hub/mealServiceDietInfo",
+        "updates": "Daily loading; service documents current-year menus.",
+        "auth": "Authentication-key application documented; do not bypass."
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fr_croustillant",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/menus-du-crous",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.data.gouv.fr/fr/dataservices/api-croustillant/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Derived CNOUS corpus duplicates enabled original feeds; deposited CSV LOv2 versus noncommercial direct-API terms requires distinct scope review. No API request.",
+      "original_disabled_reason": "Derived CNOUS corpus duplicates enabled original feeds; deposited CSV LOv2 versus noncommercial direct-API terms requires distinct scope review. No API request.",
+      "rights_context": {
+        "name": "Licence Ouverte v2",
+        "scope": "Community-published cleaned menu dataset; preserve original CNOUS provenance.",
+        "evidence_status": "Explicit dataset license"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "API"
+        ],
+        "updates": "Publisher says daily at 01:00; catalog checked 2026-10-21.",
+        "auth": "API access conditions to verify"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fr_larochelle_archive",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/restauration-archives-des-menus-collectifs",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://d4c.agglo-larochelle.fr/lv/dataset/archives_des_menus_des_restaurants_scolaires",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Exact canonical artifact resolution timed out; preserve historical lead, no guessed download URL.",
+      "original_disabled_reason": "Exact canonical artifact resolution timed out; preserve historical lead, no guessed download URL.",
+      "rights_context": {
+        "name": "Licence Ouverte / Open Licence",
+        "scope": "Current city archive dataset; exact version unspecified.",
+        "evidence_status": "Explicit official catalog license"
+      },
+      "access_context": {
+        "formats": [
+          "CSV"
+        ],
+        "resource_name": "menus_collectifs.csv",
+        "updates": "Current catalog updated 2026-10-10.",
+        "auth": "Public catalog; some files flagged unavailable"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fr_marseille_archive",
+      "status": "canonical_endpoint_missing",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://dev.data.gouv.fr/datasets/marseille-menus-des-cantines-ecoles-2020-2021",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No sample is not the central blocker: primary license evidence is development catalog; canonical production artifact still unresolved.",
+      "original_disabled_reason": "No CSV payload",
+      "rights_context": {
+        "name": "Licence Ouverte v2",
+        "scope": "Identified 2020–2021 catalog snapshot, not all current Marseille web PDFs.",
+        "evidence_status": "Explicit official catalog license in indexed development catalog; production URL resolution pending"
+      },
+      "access_context": {
+        "formats": [
+          "CSV"
+        ],
+        "updates": "Historical 2020–2021 school year; 171 KB CSV dated 2021-07-05.",
+        "auth": "Public catalog; canonical production catalog resolution required"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fr_dijon_school",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.data.gouv.fr/datasets/menus-de-la-restauration-scolaire",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "Primary metadata API returned 503; exact downloadable artifact unresolved.",
+      "original_disabled_reason": "Primary metadata API returned 503; exact downloadable artifact unresolved.",
+      "rights_context": {
+        "name": "Licence Ouverte v2",
+        "scope": "School menu dataset, unrelated to Dijon library historic menu image collection.",
+        "evidence_status": "Explicit official catalog license"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "JSON"
+        ],
+        "updates": "Catalog last updated 2022-11-07; stale.",
+        "auth": "Some resources reported unavailable"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "jp_yamagata_school",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.city.yamagata-yamagata.lg.jp/opendata/category/1007062/1012830.html",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "CC BY 4.0 notice exists, but separate municipal terms deem use acceptance and include indemnification/jurisdiction clauses; no new agreement authorized.",
+      "original_disabled_reason": "CC BY 4.0 notice exists, but separate municipal terms deem use acceptance and include indemnification/jurisdiction clauses; no new agreement authorized.",
+      "rights_context": {
+        "name": "CC BY 4.0",
+        "scope": "Official school-lunch open data.",
+        "evidence_status": "Explicit municipal dataset license"
+      },
+      "access_context": {
+        "formats": [
+          "CSV"
+        ],
+        "resources": [
+          "elementary school CSV (104.6 KB)",
+          "junior-high CSV (97 KB)",
+          "metadata CSV (521 B)"
+        ],
+        "updates": "Official page updated 2026-05-27 (Reiwa 8).",
+        "auth": "Public download"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "jp_noshiro_school",
+      "status": "terms_decision_required",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.city.noshiro.lg.jp/city/opendata/oopun/25473",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "Tool cannot render text/csv is not acquisition refusal. Exact municipal CSV linked; approximately 215 KB advertised. Terms resolve CC BY 4.0 and commercial use, no account/clickthrough, but request email use report and add harm prohibition, claims costs, damages and Akita exclusive venue. Terms interpretation/approval pending; not silently cleared.",
+      "original_disabled_reason": "CSV opened via web but unsupported text/csv; no row payload.",
+      "rights_context": {
+        "name": "CC BY; version not stated on inspected page",
+        "scope": "Official school lunch open data.",
+        "evidence_status": "Explicit municipal dataset license; exact version unresolved"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "XLSX"
+        ],
+        "updates": "Page updated 2025-03-28; January–March 2025 southern community kitchen.",
+        "auth": "Public download"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "jp_shizuoka_school",
+      "status": "terms_and_mixed_rights_scope_pending",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://shizuoka-kyushoku.com/lunchmenu/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://shizuoka-kyushoku.com/core/wp-content/uploads/2026/09/c67552f078d25792b04fd569e1c4b393.pdf",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "PDF text mapping is downstream. Exact 2-page October 2026 PDF already inspected; CC BY 4.0 covers menu text only, images excluded. Separate linked terms https://open.city.shizuoka.jp/terms timed out in this pass. Do not imply entire PDF/images freely reusable or unresolved terms cleared.",
+      "original_disabled_reason": "Dated dishes, ingredient classes, seasoning and meal nutrition visible.",
+      "rights_context": {
+        "name": "CC BY 4.0",
+        "scope": "Menu content ONLY; images explicitly excluded.",
+        "evidence_status": "Explicit site license scope; PDF text sample inspected"
+      },
+      "access_context": {
+        "formats": [
+          "PDF with extractable text"
+        ],
+        "updates": "Monthly kitchen/block menus; current October 2026 sample.",
+        "auth": "Public download"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "de_konstanz_canteens",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://kondata.uni-konstanz.de/radar/de/dataset/ty235ftth5yvg7hd",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://doi.org/10.48606/ty235ftth5yvg7hd",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.nature.com/articles/s44458-026-00138-3",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Repository endpoint timeout; original archive URL/access, upstream provenance and collection-date discrepancy unresolved.",
+      "original_disabled_reason": "Repository endpoint timeout; original archive URL/access, upstream provenance and collection-date discrepancy unresolved.",
+      "rights_context": {
+        "name": "CC BY 4.0",
+        "scope": "Archived data package license explicitly listed; retain OpenMensa upstream provenance and transformation history.",
+        "evidence_status": "Explicit repository data license; upstream chain and collection-date discrepancy need resolution"
+      },
+      "access_context": {
+        "formats": [
+          "research archive; internal file/schema not yet inspected"
+        ],
+        "archive_bytes_description": "913.1 MB",
+        "updates": "Repository publication 2026-07-31; historical data 2015–2024.",
+        "auth": "No embargo indicated"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "us_nypl_menus",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://nypl.github.io/menus-api/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.neh.gov/project/whats-menu",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://api.repo.nypl.org/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.nypl.org/research/support/whats-on-the-menu",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Support page HTTP 403; legacy data page inaccessible; no bulk export downloaded.",
+      "original_disabled_reason": "Support page HTTP 403; legacy data page inaccessible; no bulk export downloaded.",
+      "rights_context": {
+        "name": "Export-wide transcription license not yet verified; capture-specific NYPL rights vary",
+        "scope": "Do not apply public-domain/CC0 status of selected images to all transcriptions or all menus.",
+        "evidence_status": "Conditional; explicit exact export license and current original distribution unresolved"
+      },
+      "access_context": {
+        "formats": [
+          "legacy JSON/XML API",
+          "historical relational CSV export"
+        ],
+        "tables": [
+          "Menu",
+          "MenuPage",
+          "MenuItem",
+          "Dish"
+        ],
+        "updates": "Legacy API; current original distribution/retirement status not independently resolved.",
+        "auth": "Legacy API requires token"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "us_menustat",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://catalog.data.gov/dataset/dohmh-menustat-historical",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.menustat.org/uploads/1/4/1/6/141624194/menustat_data_completeness_documentation.pdf",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11757062/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://portal.311.nyc.gov/article/?kanumber=KA-02893",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "One-record API and columns endpoint inaccessible. Menustat homepage/codebook/method PDF returned 403 on direct requests; no retry.",
+      "original_disabled_reason": "One-record API and columns endpoint inaccessible. Menustat homepage/codebook/method PDF returned 403 on direct requests; no retry.",
+      "rights_context": {
+        "name": "NYC public-use purpose documented; exact downloadable dataset license not verified",
+        "scope": "Do not rely on unverified third-party claim of CC0 Harvard deposit.",
+        "evidence_status": "Conditional license/terms check"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "JSON",
+          "XML",
+          "Socrata"
+        ],
+        "dataset_id": "qgc5-ecnb",
+        "export": "https://data.cityofnewyork.us/api/v3/views/qgc5-ecnb/export.csv?accessType=DOWNLOAD",
+        "updates": "Catalog last updated 2022-05-10; annual source methodology. Latest coverage unverified.",
+        "auth": "Public export advertised"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "global_dolthub_menus",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.dolthub.com/blog/2021-08-20-menus-bounty-retrospective/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.dolthub.com/repositories/dolthub/menus",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://www.dolthub.com/blog/2021-07-07-announcing-us-menus-data-bounty/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Repository web view did not expose license/schema; no clone or export.",
+      "original_disabled_reason": "Repository web view did not expose license/schema; no clone or export.",
+      "rights_context": {
+        "name": "Data content license unverified",
+        "scope": "Open-source Dolt software is not a license for third-party restaurant data.",
+        "evidence_status": "Conditional upstream platform/source permission"
+      },
+      "access_context": {
+        "formats": [
+          "Dolt/SQL tables"
+        ],
+        "updates": "2021 historical snapshot; subsequent maintenance unverified.",
+        "auth": "Public repository metadata"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "de_openmensa_live",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://openmensa.org/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://docs.openmensa.org/api/v2/meals/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://docs.openmensa.org/api/v2/overview/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No live provider payload fetched",
+      "original_disabled_reason": "No live provider payload fetched",
+      "rights_context": {
+        "name": "Content license not established from inspected docs",
+        "scope": "Open parser/client code licenses do not automatically license all operator menus.",
+        "evidence_status": "Conditional upstream data permission"
+      },
+      "access_context": {
+        "formats": [
+          "JSON API"
+        ],
+        "endpoint_template": "/canteens/{canteen_id}/days/{date}/meals",
+        "updates": "Provider-dependent live menus; retained history unverified.",
+        "auth": "Public documentation"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "de_dresden_original",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.studentenwerk-dresden.de/english/mensen/speiseplan-api.html",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No live payload",
+      "original_disabled_reason": "No live payload",
+      "rights_context": {
+        "name": "External application use invited; archival/redistribution/commercial license not explicit",
+        "scope": "Application access permission is narrower than an open corpus license.",
+        "evidence_status": "Conditional clarify reuse scope"
+      },
+      "access_context": {
+        "formats": [
+          "JSON, mostly OpenMensa v2"
+        ],
+        "endpoint_template": "https://api.studentenwerk-dresden.de/openmensa/v2",
+        "updates": "Original operator menu publication; cadence not audited.",
+        "auth": "Public documented endpoint"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "se_open_meal",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/intro/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/data_providers/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/specification/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://sambruk.github.io/Open-Meal/docs/API/icalendar/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No provider data or discovery registry fetched",
+      "original_disabled_reason": "No provider data or discovery registry fetched",
+      "rights_context": {
+        "name": "Protocol/client openness does not establish provider menu-data license",
+        "scope": "Resolve each municipality/provider independently.",
+        "evidence_status": "Conditional per-provider rights and access"
+      },
+      "access_context": {
+        "formats": [
+          "JSON REST",
+          "optional iCalendar"
+        ],
+        "provider_discovery": "https://sambruk.github.io/Open-Meal/api/dataproviders/",
+        "updates": "Provider-dependent school/retirement-home meal plans.",
+        "auth": "Some providers require headers/API keys"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "se_skolmaten_ist",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.ist.com/hubfs/139630678/Sweden/Dokument/Allm%C3%A4nna%20Villkor%20IST%20Skolmaten.pdf?hsLang=sv",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No service request",
+      "original_disabled_reason": "No service request",
+      "rights_context": {
+        "name": "Contractual service terms; not an open content license",
+        "scope": "Additional paid integration license and API key described.",
+        "evidence_status": "Restricted / separate contract needed"
+      },
+      "access_context": {
+        "formats": [
+          "API"
+        ],
+        "updates": "Service-dependent",
+        "auth": "API key; paid integration conditions"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "br_prato_aberto",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://apilib.prefeitura.sp.gov.br/store/apis/info?name=PratoAberto&provider=admin&version=v1",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://patiodigital.sme.prefeitura.sp.gov.br/codigosabertos/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://copicola.prefeitura.sp.gov.br/como-divulgar-cardapios-escolares-de-forma-colaborativa-e-transparente/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No API call; authentication boundary respected.",
+      "original_disabled_reason": "No API call; authentication boundary respected.",
+      "rights_context": {
+        "name": "Menu-data license not established; open code is insufficient",
+        "scope": "Municipal transparency purpose does not alone grant bulk redistribution.",
+        "evidence_status": "Conditional data license and authenticated access"
+      },
+      "access_context": {
+        "formats": [
+          "API v1",
+          "manager dataset extraction described"
+        ],
+        "endpoint_template": "https://gateway.apilib.prefeitura.sp.gov.br/sme/prato-aberto/v1",
+        "updates": "API store last updated 2021-06-01; current backend status untested.",
+        "auth": "Store explicitly requires login, subscription and bearer access token"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "us_souslab_sample",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://huggingface.co/datasets/AnyStackLabsdev/souslab-us-restaurant-menus",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No dataset downloaded",
+      "original_disabled_reason": "No dataset downloaded",
+      "rights_context": {
+        "name": "CC BY-NC 4.0 sample; commercial use requires separate contract",
+        "scope": "10,000-row sample only; full commercial product not open.",
+        "evidence_status": "Explicit noncommercial restriction"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "dataset viewer",
+          "commercial API separate"
+        ],
+        "updates": "Sample snapshot 2026-05-29.",
+        "auth": "Public sample; full product contracted"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "global_menustatic",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://menustatic.com/terms-of-use/",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No menu documents fetched",
+      "original_disabled_reason": "No menu documents fetched",
+      "rights_context": {
+        "name": "Uploader grants platform hosting/display rights; downstream open reuse not established",
+        "scope": "Public access/download is not a transferable corpus license.",
+        "evidence_status": "Conditional rights permission"
+      },
+      "access_context": {
+        "formats": [
+          "PDF/menu images"
+        ],
+        "updates": "Community-dependent",
+        "auth": "Public site access; scraping terms not fully established"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "us_unlv_menus",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://special.library.unlv.edu/collections/menus/digitizing-menus",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://special.library.unlv.edu/node/316710",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "One item advertises 80.6 MB TIFF; not downloaded.",
+      "original_disabled_reason": "One item advertises 80.6 MB TIFF; not downloaded.",
+      "rights_context": {
+        "name": "Item-specific copyright; site cautions permission may be required",
+        "scope": "Library may not own copyright; scan accessibility is not universal reuse permission.",
+        "evidence_status": "Conditional item-level rights"
+      },
+      "access_context": {
+        "formats": [
+          "Dublin Core metadata",
+          "TIFF/menu images"
+        ],
+        "updates": "Historical collection; digitization updates not audited.",
+        "auth": "Public catalog"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fr_dijon_library",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://bm.dijon.fr/explorerlescollections.aspx?_lg=fr-FR",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://www.dijon.fr/dijon-a-votre-service/culture/bibliotheque-municipale/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://ccfr.bnf.fr/portailccfr/ark%3A/16871/007Fonds_4231",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No scans or transcription payload",
+      "original_disabled_reason": "No scans or transcription payload",
+      "rights_context": {
+        "name": "Digitized-menu content reuse license not verified",
+        "scope": "Municipal school-menu open license does not apply to library scans.",
+        "evidence_status": "Conditional item/image rights"
+      },
+      "access_context": {
+        "formats": [
+          "catalog",
+          "digitized images"
+        ],
+        "updates": "Historical collection beginning in nineteenth century; current exact count unverified.",
+        "auth": "Public catalog"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "us_lapl_menus",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://tessa.lapl.org/c10",
+          "role": "primary_catalog_or_publisher"
+        }
+      ],
+      "reason": "No scans downloaded",
+      "original_disabled_reason": "No scans downloaded",
+      "rights_context": {
+        "name": "Collection-wide downstream content license not established",
+        "scope": "Inspect item-specific rights and public-domain status.",
+        "evidence_status": "Conditional"
+      },
+      "access_context": {
+        "formats": [
+          "catalog",
+          "menu scans"
+        ],
+        "updates": "Historical digitization; some rescans/legacy entries unavailable.",
+        "auth": "Public catalog"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "kr_mind",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/file/e3796ae838835da0b6f6ea37bcf8bcb7-Paper-round2.pdf",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://openreview.net/attachment?id=woX9uagUQiE&name=supplementary_material",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No package downloaded",
+      "original_disabled_reason": "No package downloaded",
+      "rights_context": {
+        "name": "Ingredient data: Korea Open Government License Type 1; menu/diet components: noncommercial-only attribution",
+        "scope": "Component-specific license; do not extend commercial permission of ingredients to diets/menus.",
+        "evidence_status": "Explicit research supplementary license table"
+      },
+      "access_context": {
+        "formats": [
+          "dietKit dataset components"
+        ],
+        "updates": "2021 research release",
+        "auth": "Research release"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "global_menu_ocr_benchmarks",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://huggingface.co/datasets/shivank21/mmconflict-restaurant-menus-500",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://universe.roboflow.com/joel-kitching-4hi4b/restaurant-menus",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "No images downloaded",
+      "original_disabled_reason": "No images downloaded",
+      "rights_context": {
+        "name": "CC0 / CC BY 4.0 claims respectively; underlying image provenance not established",
+        "scope": "Annotation license claims do not settle rights in all photographed menus.",
+        "evidence_status": "Restricted to evaluation lead until provenance review"
+      },
+      "access_context": {
+        "formats": [
+          "images",
+          "bounding boxes",
+          "question annotations"
+        ],
+        "updates": "Dataset-card release dependent.",
+        "auth": "Public cards"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "institutional_hospital_care",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.uhleicester.nhs.uk/patients-visitors/staying-hospital/after-treatment/patient-menus/",
+          "role": "primary_catalog_or_publisher"
+        },
+        {
+          "url": "https://jeanne-de-baroncelli.fr/menus-de-la-semaine/",
+          "role": "supporting_primary_source"
+        },
+        {
+          "url": "https://ehpadlavarenne.fr/menu-de-la-semaine/",
+          "role": "supporting_primary_source"
+        }
+      ],
+      "reason": "Leicester direct page timed out; not retried. No patient records sought.",
+      "original_disabled_reason": "Leicester direct page timed out; not retried. No patient records sought.",
+      "rights_context": {
+        "name": "Per-site menu-content license not established",
+        "scope": "Do not apply NHS.uk OGL automatically to separate hospital domains or private care homes.",
+        "evidence_status": "Conditional publisher permission"
+      },
+      "access_context": {
+        "formats": [
+          "HTML weekly menus",
+          "PDF"
+        ],
+        "updates": "Care-home current weekly October 2026 pages; hospital current scope not verified.",
+        "auth": "Public pages"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "fi_finna_licensed_menu_images",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://www.kiwi.fi/spaces/Finna/pages/53839699/Finna%2BAPI%2BTerms%2Bof%2BUse",
+          "role": "primary_API_terms"
+        },
+        {
+          "url": "https://www.kiwi.fi/spaces/Finna/pages/53839221/Finna%2BAPI%2Bin%2BEnglish",
+          "role": "primary_API_documentation"
+        },
+        {
+          "url": "https://www.finna.fi/Record/sim.M016-28254",
+          "role": "primary_licensed_menu_item"
+        },
+        {
+          "url": "https://www.finna.fi/Record/hkm.HKMS000005%3Akm002234",
+          "role": "primary_licensed_menu_item"
+        }
+      ],
+      "reason": "No API query or images downloaded. Finnair item direct page returned HTTP 403; no retry.",
+      "original_disabled_reason": "No API query or images downloaded. Finnair item direct page returned HTTP 403; no retry.",
+      "rights_context": {
+        "name": "API metadata CC0 1.0; selected menu images explicitly CC BY 4.0",
+        "scope": "API metadata only gets CC0; linked images require individual imageRights/accessRestrictions, e.g. licensed Finnair and Helsinki Seurahuone menu objects.",
+        "evidence_status": "Explicit API terms plus indexed item-specific CC BY 4.0; NOT whole-service blanket license"
+      },
+      "access_context": {
+        "formats": [
+          "JSON API metadata",
+          "licensed images",
+          "some IIIF manifests"
+        ],
+        "endpoint_template": "https://api.finna.fi/v1/search",
+        "updates": "Provider-dependent historical collections.",
+        "auth": "No registration required under current terms; API expressly not designed for large result sets."
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "br_fortaleza_school_csv",
+      "status": "rights_hold_not_parser_only",
+      "action": "Do not enable or dispatch in this triage",
+      "target": [
+        {
+          "url": "https://dados.fortaleza.ce.gov.br/dataset/cardapio-alimentacao-escolar/resource/5fce42f1-6f31-4b8e-a1f4-dd70c4e93d94",
+          "role": "official_catalog_resource"
+        }
+      ],
+      "reason": "No CSV sample is not the central blocker: catalog explicitly provides no license.",
+      "original_disabled_reason": "No CSV fetched; columns not verified.",
+      "rights_context": {
+        "name": "Catalog explicitly says no license provided",
+        "scope": "Open-data portal placement is not sufficient content permission.",
+        "evidence_status": "Unresolved; do not activate"
+      },
+      "access_context": {
+        "formats": [
+          "CSV",
+          "CKAN catalog"
+        ],
+        "updates": "Resource and metadata last updated 2024-01-30; 19.2 KiB advertised.",
+        "auth": "Public resource metadata"
+      },
+      "discovery_registry": "menus.json"
+    },
+    {
+      "id": "kochwiki_de",
+      "status": "bounded_static_candidate_not_selected",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.kochwiki.org/wiki/Hauptseite",
+      "reason": "Exact already-researched Arabischer Bulgursalat ordinary HTML is public and CC BY-SA 3.0. Missing bulk/API route is not a blocker to this one page. Broad crawl remains unimplemented; robots disallows /index.php? and wget. No corpus claim.",
+      "original_disabled_reason": "Ordinary recipe HTML is available; broad bounded category/robots handler not part of this finite exact-URL batch. API/dump endpoint unresolved; headline 11,434 is not a verified recipe yield.",
+      "rights_context": "CC-BY-SA-3.0",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "cuisine_libre_fr",
+      "status": "bounded_static_candidates_not_selected",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.cuisine-libre.org/recettes",
+      "reason": "Two exact already-researched pages have individual licenses: Curry de blettes CC BY-SA 3.0; Tartiflette caledonienne CC0. Broader directory/export routes unresolved; robots not accessible via web tool, not an auth refusal. Foo normal origin/robots preflight still needed. Known Foodista-derived Sirop excluded; external-credit burger omitted from strongest set.",
+      "original_disabled_reason": "Per-page license partition and exact non-PDF bulk export remain unresolved; sampled directory/export paths return 404.",
+      "rights_context": "Per recipe: CC-BY-SA-3.0, CC0, CC-BY, GFDL observed; do not assign one blanket license",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_de",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://de.wikibooks.org/wiki/Kategorie:Kochbuch/_Alle_Rezepte",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_fr",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://fr.wikibooks.org/wiki/Livre_de_cuisine",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_bn",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://bn.wikibooks.org/wiki/রন্ধনপ্রণালী:রন্ধনপ্রণালী",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_ta",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://ta.wikibooks.org/wiki/சமையல்_நூல்",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_fa",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://fa.wikibooks.org/wiki/کتاب_آشپزی",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_ar",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://ar.wikibooks.org/wiki/كتاب_الطبخ",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_zh",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://zh.wikibooks.org/wiki/食谱",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_ja",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://ja.wikibooks.org/wiki/料理本/簡易版",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_id",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://id.wikibooks.org/wiki/Resep",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_pt",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://pt.wikibooks.org/wiki/Livro_de_receitas",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikibooks_pl",
+      "status": "retained_family_no_verified_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://pl.wikibooks.org/wiki/Książka_kucharska",
+      "reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "original_disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "rights_context": "CC-BY-SA-4.0 under current Wikimedia terms, subject to per-page exceptions",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "maff_our_regional_cuisines",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/index.html",
+      "reason": "Sample credits 北海道の味 and 南部あき子; do not assume ministry owns supplied text; English/Japanese paired pages not independent recipes; No verified API/bulk export",
+      "original_disabled_reason": "Sample credits 北海道の味 and 南部あき子; do not assume ministry owns supplied text; English/Japanese paired pages not independent recipes; No verified API/bulk export",
+      "rights_context": "MAFF default Public Data License 1.0; third-party content excluded unless cleared",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "mfds_cookrcp01_ko",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.data.go.kr/data/15060073/openapi.do",
+      "reason": "MFDS service key/approval required and no existing available approved key established; no registration or credential discovery.",
+      "original_disabled_reason": "MFDS service key/approval required and no existing available approved key established; no registration or credential discovery.",
+      "rights_context": "Official data.go.kr dataset says 이용허락범위 제한 없음 (reuse scope unrestricted); not labeled public domain",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "mafra_recipe_relations_ko",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20150827000000000464",
+      "reason": "Must join all three relations; base alone not recipes; Example totalCnt=5 is sample size not corpus count; API registration required; Documented raw-IP endpoint not called; Text license scope needs exact clarification",
+      "original_disabled_reason": "Must join all three relations; base alone not recipes; Example totalCnt=5 is sample size not corpus count; API registration required; Documented raw-IP endpoint not called; Text license scope needs exact clarification",
+      "rights_context": "Reuse-scope field blank in rendered official pages; no grant established",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "aozora_shokudoraku_ja",
+      "status": "downstream_only_reason_but_overlap_not_reconciled",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.aozora.gr.jp/cards/000810/card49947.html",
+      "reason": "Narrative segmentation and historical measures do not prevent acquisition. Exact original XHTML metadata verified: 612741 bytes, updated 2019-08-01. Work differs from archive Japanese collection, but no full retained-original inventory match/new file delta verified. Keep out of next batch pending exact inventory comparison; do not label rights universally cleared.",
+      "original_disabled_reason": "Requires recipe-vs-story segmentation; Do not extract modern notes or illustrations under blanket PD assumption; Retain text input/proofreading/bibliographic credits; Historical health and storage claims not validated",
+      "rights_context": "Historical original work first published 1903; author died 1927; Aozora expired-copyright reuse policy",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "wikisource_suiyuan_zh",
+      "status": "downstream_only_reason_but_overlap_not_reconciled",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://zh.wikisource.org/wiki/隨園食單",
+      "reason": "Heading/recipe discrimination does not prevent raw HTML acquisition. Classical 1792 work differs from archive Chinese-American books; full retained-original inventory not reconciled. Modern editorial attribution, revision and edition must survive; no additive count.",
+      "original_disabled_reason": "Do not count each heading or culinary opinion as recipe; Preserve source edition, attribution/moral-rights notices; Modern translations not included in original-work PD status; No modern nutrition/servings assumed",
+      "rights_context": "Original work carries old public-domain notice; modern editorial contributions may be CC-BY-SA-4.0",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "gutenberg_artusi_it",
+      "status": "retained_work_overlap_no_delta",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.gutenberg.org/ebooks/59047",
+      "reason": "Cross-references and TOC are downstream issues, but retained pinned historical archive explicitly contains Artusi. Item 59047 released 2019-03-11; no new edition/file delta established. Do not fetch.",
+      "original_disabled_reason": "Resolve subrecipe references; Don't duplicate table-of-contents entries; Wikisource versions duplicate same work",
+      "rights_context": "Public domain in USA per item; original author 1820-1911; jurisdiction and edition review outside USA",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "gutenberg_calleja_es",
+      "status": "downstream_only_reason_but_overlap_not_reconciled",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.gutenberg.org/ebooks/8870",
+      "reason": "Nonfood segmentation and cross-references are downstream. Gutenberg item 8870 is USA-PD, last updated 2014-09-13; archive Spanish index names different works, but full retained-original inventory and jurisdiction/edition not reconciled. No new delta established.",
+      "original_disabled_reason": "Household/nonfood sections must be excluded; Short variants refer back to prior recipe; Do not use autogenerated book summary as publication-date authority",
+      "rights_context": "Public domain in USA per item; non-USA jurisdiction review",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "gnome_recipes",
+      "status": "rights_hold_not_parser_only",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://github.com/GNOME/recipes",
+      "reason": "GLib keyfile/PO/timer parsing is downstream, but explicit recipe-data applicability of GPL-3.0 remains unestablished. Documentation CC-BY-SA does not license recipes.",
+      "original_disabled_reason": "17 catalogs are not 17 fully translated independent corpora; Quantity/unit/name/group tab-separated inside escaped newline string; Instructions contain timer and temperature markup; Photo/chef identities separately scoped",
+      "rights_context": "Repository COPYING is GPL-3.0; explicit license applicability to contributed recipe text not established from inspected upstream docs. Help/documentation CC-BY-SA does NOT settle data license.",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "aozora_copyrighted_or_later_works",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://www.aozora.gr.jp/guide/kijyunn.html",
+      "reason": "C applies protected/private-use-only subset, not whole Aozora; 1933 example separately B for international rights; Catalog CC-BY metadata and guide CC-BY-NC are not work-text licenses",
+      "original_disabled_reason": "C applies protected/private-use-only subset, not whole Aozora; 1933 example separately B for international rights; Catalog CC-BY metadata and guide CC-BY-NC are not work-text licenses",
+      "rights_context": "Aozora also hosts permission-based copyright-active works with limited/private-use rules; do not mirror entire catalog as PD",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    },
+    {
+      "id": "bn_wikisource_amish_niramish",
+      "status": "existing_acquisition_or_rights_hold_unchanged",
+      "action": "Do not enable or dispatch in this triage",
+      "target": "https://bn.wikisource.org/wiki/রচনা:আমিষ_ও_নিরামিষ_আহার",
+      "reason": "1900/1903/1907 edition links are not counts of recipe data; Do not use unsourced 2500-recipe claims; No PDF-only source admitted",
+      "original_disabled_reason": "1900/1903/1907 edition links are not counts of recipe data; Do not use unsourced 2500-recipe claims; No PDF-only source admitted",
+      "rights_context": "Historical rights and transcription extent need edition-level verification",
+      "access_context": null,
+      "discovery_registry": "multilingual-recipes.json"
+    }
+  ]
+}

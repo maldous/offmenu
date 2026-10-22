@@ -1,0 +1,120 @@
+{
+  "schema": "offmenu-fetch-candidate-fragment/1",
+  "selected_for_next_batch": false,
+  "production_enabled": false,
+  "scope": "Three static pages only, not whole-corpus coverage, and not a request to dispatch a small page-only batch",
+  "sources": [
+    {
+      "id": "kochwiki_de_exact_sample",
+      "parent_disabled_id": "kochwiki_de",
+      "production_enabled": false,
+      "candidate_status": "bounded_static_candidate_not_selected",
+      "rights_status": "verified_open_recipe_text",
+      "access_status": "public_recipe_html_observed",
+      "lineage_family": "kochwiki",
+      "license": "CC-BY-SA-3.0",
+      "license_evidence": [
+        "https://www.kochwiki.org/wiki/Koch-Wiki:Lizenzbestimmungen",
+        "https://creativecommons.org/licenses/by-sa/3.0/"
+      ],
+      "license_scope_note": "Only recipe text; retain page contributors/source/revision pointers; no image license inferred. Do not request disallowed index.php permalink; record observed oldid 425411 only.",
+      "artifacts": [
+        {
+          "name": "de-arabischer-bulgursalat.html",
+          "url": "https://www.kochwiki.org/wiki/Arabischer_Bulgursalat",
+          "format": "html_recipe",
+          "license": "CC-BY-SA-3.0",
+          "license_evidence": [
+            "https://www.kochwiki.org/wiki/Arabischer_Bulgursalat"
+          ],
+          "attribution": "Koch-Wiki contributors; Arabischer Bulgursalat; source URL and observed oldid=425411",
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "Zutaten",
+            "Zubereitung"
+          ],
+          "content_distinction": "Distinct publisher/recipe page, not an enabled or retained source family in supplied baseline. Underlying cross-source recipe uniqueness not asserted.",
+          "verification": "Primary public recipe HTML returned by web tool; cached-page evidence, not origin status-code attestation",
+          "preflight_required": "Normal Foo origin/robots check. Existing robots permits ordinary /wiki/ recipe path, disallows /index.php? and wget. Use non-wget identified client, no recursion.",
+          "fetch_linked_resources": false,
+          "allowed_hosts": [
+            "www.kochwiki.org"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cuisine_libre_fr_exact_samples",
+      "parent_disabled_id": "cuisine_libre_fr",
+      "production_enabled": false,
+      "candidate_status": "bounded_static_candidates_not_selected",
+      "rights_status": "verified_per_recipe_open_text",
+      "access_status": "public_recipe_html_observed_robots_unresolved",
+      "lineage_family": "cuisine_libre",
+      "license": "Per-artifact CC-BY-SA-3.0 or CC0-1.0",
+      "license_evidence": [
+        "https://www.cuisine-libre.org/curry-de-blettes",
+        "https://www.cuisine-libre.org/tartiflette-caledonienne?lang=fr"
+      ],
+      "license_scope_note": "Do not transfer these per-recipe licenses to whole site, comments, images, related recipes or source-linked works. Broad crawl/export stays disabled.",
+      "artifacts": [
+        {
+          "name": "fr-curry-de-blettes.html",
+          "url": "https://www.cuisine-libre.org/curry-de-blettes",
+          "format": "html_recipe",
+          "license": "CC-BY-SA-3.0",
+          "license_evidence": [
+            "https://www.cuisine-libre.org/curry-de-blettes"
+          ],
+          "attribution": "nojhan; Cuisine-libre; March 2014; source URL",
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "Ingrédients",
+            "Préparation"
+          ],
+          "content_distinction": "Author-contributed primary recipe page; no Foodista provenance shown. Not a whole-site corpus or proven unique recipe count.",
+          "verification": "Primary public recipe HTML returned by web tool; cached-page evidence, not origin status-code attestation",
+          "preflight_required": "Normal Foo origin/robots check required; https://www.cuisine-libre.org/robots.txt web tool inaccessible, not an authorization refusal.",
+          "fetch_linked_resources": false,
+          "allowed_hosts": [
+            "www.cuisine-libre.org"
+          ]
+        },
+        {
+          "name": "fr-tartiflette-caledonienne.html",
+          "url": "https://www.cuisine-libre.org/tartiflette-caledonienne?lang=fr",
+          "format": "html_recipe",
+          "license": "CC0-1.0",
+          "license_evidence": [
+            "https://www.cuisine-libre.org/tartiflette-caledonienne?lang=fr"
+          ],
+          "attribution": "Cuisine-libre; Tartiflette calédonienne; November 2015; source URL; no named author displayed",
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "Ingrédients",
+            "Préparation"
+          ],
+          "content_distinction": "Distinct primary recipe page; canonical original URL redirects to explicit lang=fr. No Foodista provenance shown; uniqueness not asserted.",
+          "verification": "Primary public recipe HTML returned by web tool; cached-page evidence, not origin status-code attestation",
+          "preflight_required": "Normal Foo origin/robots check required; no failed directory/export routes or broad crawling.",
+          "fetch_linked_resources": false,
+          "allowed_hosts": [
+            "www.cuisine-libre.org"
+          ]
+        }
+      ]
+    }
+  ]
+}
