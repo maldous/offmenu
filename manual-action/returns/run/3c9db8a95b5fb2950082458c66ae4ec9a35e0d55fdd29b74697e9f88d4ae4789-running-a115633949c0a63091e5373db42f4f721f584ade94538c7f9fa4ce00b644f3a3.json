@@ -1,0 +1,462 @@
+{
+  "implementation_sha256": "422ba493acea8d741371a92df366111a8a5d98205ce77c818ac3197208f0a6d6",
+  "ingest": {
+    "binding": "additive_staging_not_app_bound",
+    "domains": {
+      "barcodes": {
+        "error_codes": [
+          "ValueError"
+        ],
+        "error_telemetry": {
+          "class_counts": {
+            "ValueError": 263
+          },
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 0,
+            "record_or_stream": 263
+          },
+          "reason_counts": {},
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 263,
+        "read": 286436,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 38148,
+        "status": "running",
+        "unchanged": 0,
+        "written": 286436
+      },
+      "citations": {
+        "error_codes": [
+          "MalformedRecord",
+          "source_error"
+        ],
+        "error_telemetry": {
+          "class_counts": {
+            "MalformedRecord": 103,
+            "source_error": 1936
+          },
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 2039,
+            "record_or_stream": 0
+          },
+          "reason_counts": {
+            "other_or_unavailable": 2039
+          },
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 2039,
+        "read": 2031686,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 387630,
+        "status": "running",
+        "unchanged": 0,
+        "written": 2031686
+      },
+      "dietary": {
+        "error_codes": [],
+        "error_telemetry": {
+          "class_counts": {},
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 0,
+            "record_or_stream": 0
+          },
+          "reason_counts": {},
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 0,
+        "read": 529350,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 86813,
+        "status": "running",
+        "unchanged": 0,
+        "written": 529350
+      },
+      "ingredients": {
+        "error_codes": [
+          "MalformedRecord",
+          "UnsupportedSource",
+          "source_error"
+        ],
+        "error_telemetry": {
+          "class_counts": {
+            "MalformedRecord": 99,
+            "UnsupportedSource": 2,
+            "source_error": 1936
+          },
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 2037,
+            "record_or_stream": 0
+          },
+          "reason_counts": {
+            "other_or_unavailable": 2035
+          },
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 2035,
+        "read": 1152690,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 135932,
+        "status": "running",
+        "unchanged": 0,
+        "written": 1152690
+      },
+      "inventory": {
+        "error_codes": [
+          "catalog_skip"
+        ],
+        "error_telemetry": {
+          "class_counts": {},
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 0,
+            "record_or_stream": 0
+          },
+          "reason_counts": {},
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 0,
+        "read": 0,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 15,
+        "source_count": 15,
+        "status": "partial",
+        "unchanged": 0,
+        "written": 0
+      },
+      "recipes": {
+        "error_codes": [
+          "MalformedRecord",
+          "UnicodeDecodeError",
+          "UnsupportedSource",
+          "source_error"
+        ],
+        "error_telemetry": {
+          "class_counts": {
+            "MalformedRecord": 1012,
+            "UnicodeDecodeError": 9,
+            "UnsupportedSource": 615589,
+            "source_error": 1967
+          },
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 618518,
+            "record_or_stream": 59
+          },
+          "reason_counts": {
+            "other_or_unavailable": 1961,
+            "unrecognized_recipe_or_lead_only": 451168
+          },
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 452804,
+        "read": 342195,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 49776,
+        "status": "running",
+        "unchanged": 0,
+        "written": 342195
+      },
+      "suppliers": {
+        "error_codes": [
+          "MalformedSupplierRow",
+          "UnsupportedSupplierSource"
+        ],
+        "error_telemetry": {
+          "class_counts": {
+            "MalformedSupplierRow": 1,
+            "UnsupportedSupplierSource": 2
+          },
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 0,
+            "record_or_stream": 3
+          },
+          "reason_counts": {},
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 0,
+        "read": 1435473,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 0,
+        "source_count": 49919,
+        "status": "running",
+        "unchanged": 0,
+        "written": 1435473
+      },
+      "user_profiles": {
+        "error_codes": [
+          "catalog_skip"
+        ],
+        "error_telemetry": {
+          "class_counts": {},
+          "durable_scope": "all_retained_source_versions",
+          "historical_reasons": "not_recorded",
+          "origin_counts": {
+            "adapter_callback": 0,
+            "record_or_stream": 0
+          },
+          "reason_counts": {},
+          "reason_scope": "current_run_adapter_callbacks",
+          "status": "available"
+        },
+        "errors": 0,
+        "read": 0,
+        "reused_rows": 0,
+        "reused_stores": 0,
+        "skipped": 76,
+        "source_count": 76,
+        "status": "partial",
+        "unchanged": 0,
+        "written": 0
+      }
+    },
+    "evidence_ref": {
+      "bytes": 36562,
+      "schema": "offmenu-ingest-evidence-ref/1",
+      "sha256": "16f58ac3a86a60004e3f5b60f73e45dd404f111b9161a31ac2091506b19b4c47"
+    },
+    "pending_work": {
+      "awaiting_input_domains": [
+        "user_profiles",
+        "inventory"
+      ],
+      "binding": "additive_staging_not_app_bound",
+      "catalog_complete": false,
+      "catalog_sources": 392583,
+      "domains": {
+        "barcodes": {
+          "assignments_total": 38148,
+          "awaiting_input": 0,
+          "completed": 15,
+          "failed": 256,
+          "files_remaining": 13439,
+          "held": 6,
+          "not_yet_read": 13157,
+          "partial": 1,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 38128,
+          "records_to_write": null,
+          "reused": 1,
+          "source_bytes_known": 158509281406,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 24687,
+          "unsupported": 25
+        },
+        "citations": {
+          "assignments_total": 387630,
+          "awaiting_input": 0,
+          "completed": 165,
+          "failed": 0,
+          "files_remaining": 124281,
+          "held": 3560,
+          "not_yet_read": 123059,
+          "partial": 9,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 387446,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 392575394128,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 259611,
+          "unsupported": 1226
+        },
+        "dietary": {
+          "assignments_total": 86813,
+          "awaiting_input": 0,
+          "completed": 78,
+          "failed": 0,
+          "files_remaining": 31948,
+          "held": 9,
+          "not_yet_read": 31883,
+          "partial": 1,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 86735,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 139491159203,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 54778,
+          "unsupported": 64
+        },
+        "ingredients": {
+          "assignments_total": 135932,
+          "awaiting_input": 0,
+          "completed": 94,
+          "failed": 0,
+          "files_remaining": 75863,
+          "held": 149,
+          "not_yet_read": 75707,
+          "partial": 10,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 135829,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 144271445597,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 59817,
+          "unsupported": 155
+        },
+        "inventory": {
+          "assignments_total": 15,
+          "awaiting_input": 15,
+          "completed": 0,
+          "failed": 0,
+          "files_remaining": 0,
+          "held": 0,
+          "not_yet_read": 0,
+          "partial": 0,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 15,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 69370,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 0,
+          "unsupported": 0
+        },
+        "recipes": {
+          "assignments_total": 49776,
+          "awaiting_input": 0,
+          "completed": 100,
+          "failed": 59,
+          "files_remaining": 42860,
+          "held": 140,
+          "not_yet_read": 42705,
+          "partial": 1413,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 48264,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 5021444425,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 5264,
+          "unsupported": 95
+        },
+        "suppliers": {
+          "assignments_total": 49919,
+          "awaiting_input": 0,
+          "completed": 320,
+          "failed": 3,
+          "files_remaining": 46470,
+          "held": 52,
+          "not_yet_read": 17493,
+          "partial": 28933,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 49598,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 119502275773,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 3077,
+          "unsupported": 41
+        },
+        "user_profiles": {
+          "assignments_total": 76,
+          "awaiting_input": 76,
+          "completed": 0,
+          "failed": 0,
+          "files_remaining": 0,
+          "held": 0,
+          "not_yet_read": 0,
+          "partial": 0,
+          "processed_bytes": null,
+          "records_remaining": null,
+          "records_remaining_known": 0,
+          "records_remaining_unknown": 76,
+          "records_to_write": null,
+          "reused": 0,
+          "source_bytes_known": 15237143,
+          "source_bytes_unknown": 0,
+          "unknown": 0,
+          "unqualified": 0,
+          "unsupported": 0
+        }
+      },
+      "schema": "offmenu-pending-work/1",
+      "status": "available",
+      "totals": {
+        "assignments_total": 748309,
+        "awaiting_input": 91,
+        "completed": 772,
+        "failed": 318,
+        "files_remaining": 334861,
+        "held": 3916,
+        "not_yet_read": 304004,
+        "partial": 30367,
+        "processed_bytes": null,
+        "records_remaining": null,
+        "records_remaining_known": 0,
+        "records_remaining_unknown": 746091,
+        "records_to_write": null,
+        "reused": 1,
+        "source_bytes_known": 959386307045,
+        "source_bytes_unknown": 0,
+        "unknown": 0,
+        "unqualified": 407234,
+        "unsupported": 1606
+      },
+      "unassigned_sources": 4862
+    },
+    "progress_sha256": "a115633949c0a63091e5373db42f4f721f584ade94538c7f9fa4ce00b644f3a3"
+  },
+  "input_sha256": "07595515348bd8feb226071ab157ddb135f1b5feb6b749a0e26a52cb2ca8d810",
+  "job_id": "retained-eight-domain-ingest",
+  "job_key": "3c9db8a95b5fb2950082458c66ae4ec9a35e0d55fdd29b74697e9f88d4ae4789",
+  "job_version": 2,
+  "observed_at": "2026-10-22T11:51:35Z",
+  "operation": "retained_ingest_all",
+  "outcome": "running",
+  "schema": "offmenu-run-receipt/2"
+}
