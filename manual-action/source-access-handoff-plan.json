@@ -1,0 +1,275 @@
+{
+  "schema": "offmenu-approved-source-access-scope/1",
+  "operation": "named_user_readonly_handoff",
+  "target_account": "user",
+  "actor_account": "offmenu-runner",
+  "cache_root": "/srv/offmenu-refresh/outputs/additional-sources-20261022/source-cache",
+  "manifest_sha256": "637bfeba82177e44a87080ca6be217c475cc02917848730762d9f1949e69ebec",
+  "artifact_count": 50,
+  "receipt_count": 50,
+  "traversal_directory_count": 9,
+  "source_bytes": 108318002,
+  "acquisition_evidence": {
+    "github_run_id": "39724029085",
+    "attempt": 1,
+    "execution_commit": "6740bcbfacfcc51e553128438f5153eca3a649a5",
+    "receipt_commit": "f9c75d1e38c4679ff660fa128bf1e52e0f3a81e3",
+    "job_report_sha256": "6ae7727a6eaa959cd7680fedb9397d4bbc9e49c2539e5503bb35f63443c6beef",
+    "observed_at": "2026-10-22T04:47:25Z",
+    "sha256_basis": "observed_acquisition_hashes_not_new_publisher_authentication",
+    "artifact_hash_order_basis": "fetch_source preserves manifest artifact order; sanitized_summary emits each source artifact SHA in that same order",
+    "job_report_hash_basis": "immutable OFFMENU_JOB_REPORT payload bytes (trimmed transport newline), as bound by hosted completion receipt"
+  },
+  "artifacts": [
+    {
+      "source_id": "foodista_common_pile",
+      "artifact": "00000_foodista.jsonl.gz",
+      "sha256": "014757f2b949d9dd679dc7cfb061db250f41c6e4fe9403e97ac549d69dffd4c5"
+    },
+    {
+      "source_id": "foodista_common_pile",
+      "artifact": "00001_foodista.jsonl.gz",
+      "sha256": "9364bd56ab38770456a854d02023f8cd632b723fe24f7c0ec2dd53a9ae97010d"
+    },
+    {
+      "source_id": "foodista_common_pile",
+      "artifact": "00002_foodista.jsonl.gz",
+      "sha256": "7e780cb542ba43b44c5c49456416def5afec7e9246ddf1bce002ac470ccb8962"
+    },
+    {
+      "source_id": "foodista_common_pile",
+      "artifact": "00003_foodista.jsonl.gz",
+      "sha256": "9706998001be7270ea61b31e8808b68f36521088d9540b97447d68994f5b2e43"
+    },
+    {
+      "source_id": "foodista_common_pile",
+      "artifact": "00004_foodista.jsonl.gz",
+      "sha256": "9b0e64eb000d87cb5b2a28c30813aaeac426c18cd2ab373d160cc3e10d0e3d43"
+    },
+    {
+      "source_id": "forkrecipe",
+      "artifact": "forkrecipe-934319313379201f91ddccdd29abd054039a3ad6.tar.gz",
+      "sha256": "e7afedc4c5ac583c9616af652c4e2a8c4449fa80a0c1d7570c738d131eb7d32a"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-any-berry-sauce.html",
+      "sha256": "07c9a4f288251e77f0064f2d7a2189bc054282df325c037eca265e75731131bc"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-salsa-de-cualquier-baya.html",
+      "sha256": "0d0e51eefa53e1e7c417c6c7240a2fe75afd1e3b5d963505acb28efbb89786fb"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-applesauce-french-toast.html",
+      "sha256": "eca9ee7bbfe2f21de3ca7197f969199aed5de1f17c488810d31822a9c722a55b"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-tostada-francesa-con-pure-de-manzana.html",
+      "sha256": "9d4457c040c0adc7c0c73519c26be39f7a8f1c4014c054dd516740551ebd3c2f"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-baked-berry-oatmeal.html",
+      "sha256": "94192683935b3f71b90502524113603673fb5955ad74007164b8b1e147aab70f"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-avena-horneada-con-bayas.html",
+      "sha256": "46c0cee6b735681c74b46249bcbf835650df91a46e1893ff1878fa76ffc1d5d4"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-breakfast-banana-split.html",
+      "sha256": "084e95a6b870b6404e1f454c8aaecfa24ed7a09be0a6c06e2a9f2b504176efb0"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-banana-split-para-el-desayuno.html",
+      "sha256": "47c5ebfc53f66b05e5ee9636cc366727703d9549ce8fe332dacb6e07048a2b50"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-breakfast-burritos.html",
+      "sha256": "99a18b43ec0be8423496cad5755e3e9067da24d974b677c60afba745363d12e8"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-burritos-de-desayuno.html",
+      "sha256": "111297f4ce73be5da778bae5ec442a8273d4b09fac3cb11b2bfddc82a0a3ad44"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "en-oatmeal-pecan-waffles-or-pancakes.html",
+      "sha256": "5ebe1aa4fa4be9dff7055046d4aa27886bf4614cd8b376d2fedfe2d431d45232"
+    },
+    {
+      "source_id": "medlineplus_healthy_recipes",
+      "artifact": "es-waffles-panqueques-de-avena-con-pacanas.html",
+      "sha256": "8f00125264aaa87698266588d474c1147d1e0f61381bd5ee3def9823a3ea1912"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "versailles.xml",
+      "sha256": "e2135c6807a60a034c76670ed3ba15fb32846564cf82a6446154293659804a75"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "toulouse.xml",
+      "sha256": "a9895dfebbecda8eb69769091b8f57eaa89349836531eb1d26227001e7a097e2"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "strasbourg.xml",
+      "sha256": "34cb185a2061a1f3d8e66905c6e34afe519a396146b2e6bdfa3d4a5bcd812db9"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "normandie.xml",
+      "sha256": "b3e5f427627571c49f52f9f30581acd1666eb76a948354c87789d6c3899e53d0"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "reunion.xml",
+      "sha256": "805262830d68bdad134399610a1f7bc5b29751b477c3186ada78c1b5518ed4a8"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "rennes.xml",
+      "sha256": "8bda60f47322228e8c6ecab5dacca48f4e32843f1526668958f6663e0e646553"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "reims.xml",
+      "sha256": "2b5323f350cad1f96729981d5a19522983241e6395110945f69826f62f5fd244"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "poitiers.xml",
+      "sha256": "1bd9939a3fa11a30ac9694a45ebc3e8026c9102fbc626701905dac14a513b541"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "paris.xml",
+      "sha256": "1d8fc393cd27a80e672a2dce2163cdc03f6b4d65b24743eecc0d930588526be7"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "orleans.tours.xml",
+      "sha256": "7b411385555252621098f9787aaba2604f43243a659efe87152a6ee157791a5a"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "nice.xml",
+      "sha256": "9a8aa8b958f7a320049d484713566303b0090f1b026156e7efad04e43f3f0fa6"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "nantes.xml",
+      "sha256": "c476fcb723070e9a899fd98cec6b7b4ba9e69d82938914466ebe4d3b985eced6"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "nancy.metz.xml",
+      "sha256": "bc15363794cf46bc6da5275027d7b34b8780b94b6da8b853c4dce078038d5529"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "montpellier.xml",
+      "sha256": "6fe0f94606db6f3d36172f5903af2df377082fe9f5c4d4889095347d4d9d0570"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "lyon.xml",
+      "sha256": "061e3d6222be9d356cb96e76cd44cff21061d20cda889defa11b2465f25ce85f"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "limoges.xml",
+      "sha256": "b6ea6c61c894e742fef6a3876abca9614b6c7b2546512b56da3bd3c45e9af1be"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "lille.xml",
+      "sha256": "6159ccc2506c19c8a98db125de31de5fbad7711014ae5a948ccaaf2942f4d09e"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "grenoble.xml",
+      "sha256": "024b4769fcda1da5e86e2ae32113710c72ff61815c6b3fc706dc5940b586a3b9"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "creteil.xml",
+      "sha256": "a7c89c4128df7490e4c4cb6edaa639d988fe06675d5b8a7c1f7cd78154db9d34"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "corte.xml",
+      "sha256": "7e11c22e04c7d0d4f93fc632f5d09f2077fee5f66e4dd3ce2c0ba137a8aac78b"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "clermont.ferrand.xml",
+      "sha256": "408e82249e4c84a99f0c15ecbe78500fb21c4dfd8db369b8620481bb75a5af5e"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "bordeaux.xml",
+      "sha256": "f3cf4cbedbc6c07bd8bf1a2f1a4393c449096b1c6899301eda37bbbe01c59fea"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "bfc.xml",
+      "sha256": "dca91f4be391b285701d80ca2f75ff3176e04a1ed08dfbea0c28b78e78d0312b"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "antilles.guyane.xml",
+      "sha256": "b550df96d9335ec52d3ec72cde4dd6e1d02783d5e82298c65cbcc0d92880cf38"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "amiens.xml",
+      "sha256": "946fdb15d44c74ca346323cee31e4a0d6207159b2d99dba35604cff78cb88de5"
+    },
+    {
+      "source_id": "fr_cnous_menus",
+      "artifact": "aix.marseille.xml",
+      "sha256": "b3cc59b4ead77122908773b62c45ec16c50dff1c037f2d12ea54e9385b2e3064"
+    },
+    {
+      "source_id": "fr_begles_menus",
+      "artifact": "met_menu_cantine.json",
+      "sha256": "bde5591ef68711eed4e642ab93402c22b71914188157ef563932b851a69f30cd"
+    },
+    {
+      "source_id": "fr_begles_menus",
+      "artifact": "met_plat_cantine.json",
+      "sha256": "63da1c7f79a929e05d0e8f2a15be809c3648145d8c412bc38643998bb842f1d3"
+    },
+    {
+      "source_id": "fr_toulouse_menus",
+      "artifact": "menus.json",
+      "sha256": "0066f9fb4452e2113879ba1f07dc6435d208ccb03d9196fb65a0107f1700d992"
+    },
+    {
+      "source_id": "fr_toulouse_menus",
+      "artifact": "plats-extrait-de-datameal.json",
+      "sha256": "515e5c64d51b65fefe1d94da2e14d81deeb0104d212ced70d10fe40b334d75f5"
+    },
+    {
+      "source_id": "fr_toulouse_menus",
+      "artifact": "denrees-extrait-de-datameal.json",
+      "sha256": "61e8ad9ac655dfa5cfd3cfb1a130487729486d73a2a9b76aabe1d49308695ed5"
+    },
+    {
+      "source_id": "fr_toulouse_menus",
+      "artifact": "liste-des-ft-des-denrees-de-la-cc-tls.json",
+      "sha256": "aebc2c091e3723ba43f52d0aaf07d0047f145223e72fd6349a1757c2fbe426f4"
+    }
+  ]
+}
