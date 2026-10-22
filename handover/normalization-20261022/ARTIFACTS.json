@@ -1,0 +1,123 @@
+{
+  "created_at_utc": "2026-10-22T20:39:04.524Z",
+  "files": [
+    {
+      "bytes": 219586,
+      "git_blob_sha1": "3952af066a598de13ca0043e30743e828d876905",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/source.patch",
+      "path": "handover/normalization-20261022/combined/source.patch",
+      "sha256": "15d98e26fa40d1ad283a434e63b4d817231fb407e9dd1ca19b8d1c5ca65a0a3d"
+    },
+    {
+      "bytes": 12448,
+      "git_blob_sha1": "c576c81b59841ed4fb853be7d7f21dfe594bcef9",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/source-manifest.json",
+      "path": "handover/normalization-20261022/combined/source-manifest.json",
+      "sha256": "2fa460f38943fc13444708fe41a233c65cd02c5e96640ecbfaa2da5453bce07e"
+    },
+    {
+      "bytes": 9140,
+      "git_blob_sha1": "911e2a2b649a7ec09f4d1b6c3c8a1cd5bf08e43d",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/freeze.json",
+      "path": "handover/normalization-20261022/combined/freeze.json",
+      "sha256": "256c202700696439f8fd992e383b3aa84025ceba71bef66b92aeb54a6f115424"
+    },
+    {
+      "bytes": 170862,
+      "git_blob_sha1": "3c3a24542a9dde7b899a35931d129a9f21a4a04b",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/source.patch",
+      "path": "handover/normalization-20261022/reconciliation/source.patch",
+      "sha256": "c6d42cf35848c7572a02bca52cb256edb571339a850acf5d8295283422b12927"
+    },
+    {
+      "bytes": 9635,
+      "git_blob_sha1": "bb7d6bcca20a12b389005a79485538ad330cdd89",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/source-manifest.json",
+      "path": "handover/normalization-20261022/reconciliation/source-manifest.json",
+      "sha256": "a29365df1a44e2797b3896eb90a515e2633c8423c4c0da4a37262e0d6d6e28c2"
+    },
+    {
+      "bytes": 8114,
+      "git_blob_sha1": "6186a8f9c9956cd5476a44bf12a4e2c94f6bb21b",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/freeze.json",
+      "path": "handover/normalization-20261022/reconciliation/freeze.json",
+      "sha256": "3da4c693947eee32c71bbff5bb1abc3cbb62e193e0ee7166f4065280b42ae200"
+    },
+    {
+      "bytes": 41226,
+      "git_blob_sha1": "87f90b1e8adac90481d5de462db09cf00e199d5c",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/source.patch",
+      "path": "handover/normalization-20261022/receipt-retry/source.patch",
+      "sha256": "ef20f4865e99ef084a2024957c039107af1c69b6a79654ec93d8c2726fb074fd"
+    },
+    {
+      "bytes": 4762,
+      "git_blob_sha1": "335bbdb0e85d7c00e69fff285f6381a593e283cb",
+      "mode": "100644",
+      "original_location": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/manifest.json",
+      "path": "handover/normalization-20261022/receipt-retry/manifest.json",
+      "sha256": "afb999f642a92c4ffce65185e032d63a933a4839d92bb6f47ffdf5b873fabd1c"
+    },
+    {
+      "bytes": 3664,
+      "git_blob_sha1": "f53a3218a3560d41f410297b0a8e9f52473174eb",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/reviewer-handoff/morgan-20261022T203528Z/MANIFEST.json",
+      "path": "handover/normalization-20261022/reviews/MANIFEST.json",
+      "sha256": "20a9a522a485c8045dae44d632ef8d65d37a6a0e8b4519380d4574b5ddfeb0c3"
+    },
+    {
+      "bytes": 1116,
+      "git_blob_sha1": "e0fbdd5048a294057412bd738e3c14b0d88ca2d8",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/reviewer-handoff/morgan-20261022T203528Z/README.md",
+      "path": "handover/normalization-20261022/reviews/README.md",
+      "sha256": "5d5db685009724fc77167be62acd04c748131fc383dee7b5eb3ffec6a82caee9"
+    },
+    {
+      "bytes": 4048,
+      "git_blob_sha1": "4d7db0c5ebb12e04902aeb93bf9918051a0630f4",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/reviewer-handoff/morgan-20261022T203528Z/composition-attestation.retrospective.json",
+      "path": "handover/normalization-20261022/reviews/composition-attestation.retrospective.json",
+      "sha256": "4f98d35e586a4f77fb02beab72c803349c60e37e26e73bb29eb6dbb6159b4251"
+    },
+    {
+      "bytes": 4740,
+      "git_blob_sha1": "c661d66aa1e57cebb9206c384f149bb57c95e39e",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/reviewer-handoff/morgan-20261022T203528Z/receipt-retry-review.retrospective.json",
+      "path": "handover/normalization-20261022/reviews/receipt-retry-review.retrospective.json",
+      "sha256": "1b930e1b69577797935f5a535be4dd973e55fa4bf660c369fa5363bc903ce6a7"
+    },
+    {
+      "bytes": 6786,
+      "git_blob_sha1": "72acfebf1c08725f881f41cd54f0eb0cb080aedc",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/reviewer-handoff/morgan-20261022T203528Z/reconciliation-review.retrospective.json",
+      "path": "handover/normalization-20261022/reviews/reconciliation-review.retrospective.json",
+      "sha256": "5132ef3be5ef32f92e028543af3a822bb284ddb09a18e735e8052fa434dd4db3"
+    },
+    {
+      "bytes": 2250,
+      "git_blob_sha1": "299178a1fa66c4b1f6c4c971855d037220208406",
+      "mode": "100644",
+      "original_location": "/workspace/shared/offmenu-db-normalization-20261022/handoff-evidence-transfer/README.md",
+      "path": "handover/normalization-20261022/README.md",
+      "sha256": "74514dd1347c4ea49c6ffdcac82a959c46acb02b2e1461c4a2b6ba532c6c6063"
+    }
+  ],
+  "review_receipts_are_retrospective": true,
+  "runtime_source_changed": false,
+  "schema": "offmenu-handoff-evidence-inventory/1",
+  "scope": "Evidence-only addition; original artifacts preserved, retrospective review provenance explicit; no runtime/source edits or new tests",
+  "source_handoff_commit": "7807b9488ec509747d8ec9b732aed66c1d761f5e",
+  "source_manifest_sha256": "2fa460f38943fc13444708fe41a233c65cd02c5e96640ecbfaa2da5453bce07e"
+}

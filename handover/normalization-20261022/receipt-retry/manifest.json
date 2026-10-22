@@ -1,0 +1,96 @@
+{
+  "base_candidate": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-runner-20261022",
+  "base_candidate_manifest_sha256": "a29365df1a44e2797b3896eb90a515e2633c8423c4c0da4a37262e0d6d6e28c2",
+  "candidate": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-20261022",
+  "files": [
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 4265,
+      "git_blob_sha1": "86a9b275d163f42ba6c1a529c9070220ea3b9665",
+      "mode": "100644",
+      "path": "manual-action/receipt_retry.py",
+      "sha256": "d8c28b60b0235eaf1c7172f9561e48e7425045d3598c160df34900c66b0f0e20"
+    },
+    {
+      "before_git_blob_sha1": "edb39c1ce0140ff05217fdce06597169c27d8a2e",
+      "before_sha256": "b47b71b34026d9509372a0e8a19d279cdeb4bc8ce1109765b86338ae2197cdcd",
+      "bytes": 13948,
+      "git_blob_sha1": "1f3ad18fe2811e4d856e277102edccd8c67f3477",
+      "mode": "100644",
+      "path": "manual-action/receipt_branch.py",
+      "sha256": "61c066670ba5d447dd549bd539b402f06ac2c1b683b5109668770dedcb229db7"
+    },
+    {
+      "before_git_blob_sha1": "29b2d8b305dc75872db2d1fd0a3f6d9cd6103df3",
+      "before_sha256": "9d610e78311d1f8b7c1700d101ab7de233113d20a4fc272cb6e5cadaa855ebfb",
+      "bytes": 78213,
+      "git_blob_sha1": "2ede5e99d68637efe341b7ad5bbd51daa024a3ca",
+      "mode": "100644",
+      "path": "manual-action/plan_runner.py",
+      "sha256": "daebd37b752d17ec2cd337099a173df2d16f59474211a8db70cddd60e4fd2939"
+    },
+    {
+      "before_git_blob_sha1": null,
+      "before_sha256": null,
+      "bytes": 17431,
+      "git_blob_sha1": "8a281dcbaffbbc182c529863785c0d3070631aa4",
+      "mode": "100644",
+      "path": "manual-action/tests/test_receipt_retry.py",
+      "sha256": "95eeb9dba0c3dd157b243657342d050552920f66062deb3eacba5c4b3c8a4c6d"
+    }
+  ],
+  "patch_sha256": "ef20f4865e99ef084a2024957c039107af1c69b6a79654ec93d8c2726fb074fd",
+  "schema": "offmenu-receipt-retry-source/1",
+  "scope": {
+    "broad_suite": false,
+    "cancellation": "KeyboardInterrupt propagates; existing process-group cleanup retained",
+    "legacy_same_source_branch_retry": false,
+    "not_a_diagnosis_of_current_receipt_stall": true,
+    "preservation": "unconfirmed/refused/exhausted spools and local commits retained; no force/reset/rebase or source refs/index/worktree mutation",
+    "proof": "fresh ls-remote/fetch; immutable validated local/remote history; strict exact canonical receipt and companion comparison; no second push for already-confirmed bytes",
+    "remote_or_Foo_actions": false,
+    "retry_policy": {
+      "base_delay_seconds": 60,
+      "clock": "monotonic",
+      "max_batch_bytes": 8388608,
+      "max_batch_receipts": 512,
+      "max_batches_per_checkpoint": 1,
+      "max_delay_seconds": 600,
+      "max_retries_per_invocation": 4,
+      "max_scanned_directory_entries": 4096,
+      "reset_budget_on_success": false,
+      "sleep": false
+    },
+    "stages": [
+      "isolated_ingestion",
+      "normalization",
+      "reconciliation"
+    ],
+    "timestamp_compatibility": "new spool may reuse exact validated cache only when observed_at is the sole difference; existing spool never rewritten; legacy single publication API unchanged"
+  },
+  "tests": {
+    "existing_receipt_compatibility": {
+      "count": 22,
+      "log_sha256": "bcb33d15cdffe550cb817370b34babcf0b2b07720428b0100c464ac30279a2c2",
+      "passed": true
+    },
+    "new_focused": {
+      "count": 18,
+      "log_sha256": "c5fbf737a93cb253dd7fa6e6ec071653d39fac36c62bf2498ea357291626df73",
+      "passed": true
+    }
+  },
+  "unchanged_engines_and_normalization_modules": {
+    "manual-action/ingest_engine.py": "e6d178f66b668eef02517caa25f35e953a961458265b08cd5b96ac6c185ab84f",
+    "manual-action/normalization_api.py": "faddea9b4447aa908ffc7ec92533dd078aac9d435aa2569dd2f0cece884229ea",
+    "manual-action/normalization_core.py": "c33e71595eabcef689f475b1866acc23cc69a9eb9bc758eefa0f5edb3828ac13",
+    "manual-action/normalization_domains.py": "f6487c8ad3d2e462c33849d156233a40bc914fa3ed3e44c8dae9f09f41696661",
+    "manual-action/normalization_engine.py": "a2802a1690def27c0926eb2291786e32521e7fb7b8435335f641132129b1c561",
+    "manual-action/normalization_parallel.py": "0f3a819c0e6413d691eea62d178f3bb24b93847e697bceb690aa84c23eaf5300",
+    "manual-action/normalization_receipts.py": "ba1d6aaf62a659dfd05c42a675e17f2da39d4042779d491e919e78bfd96bf5d3",
+    "manual-action/normalization_reconciliation.py": "682e90bea4f02e404c9fba3f27fc3210085632f4879573efad344eb6243cbc1c",
+    "manual-action/normalization_reconciliation_engine.py": "e7b851c95fadee8877494efa7d68e17de786520cf44d3fbcdc430bc214c1ca7a",
+    "manual-action/normalization_reconciliation_receipts.py": "9459a63c7fd4a8a066d79560867aa2ee187b96e1340332b77dcce5fe8482369d"
+  }
+}

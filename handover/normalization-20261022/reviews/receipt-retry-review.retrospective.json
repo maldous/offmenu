@@ -1,0 +1,88 @@
+{
+  "actions_not_performed_for_this_record": [
+    "New runtime review",
+    "New tests",
+    "Runtime source edits",
+    "Frozen artifact edits",
+    "Git/remote publication",
+    "Foo access or execution"
+  ],
+  "artifacts": {
+    "manifest.json": {
+      "bytes": 4762,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/manifest.json",
+      "sha256": "afb999f642a92c4ffce65185e032d63a933a4839d92bb6f47ffdf5b873fabd1c"
+    },
+    "source.patch": {
+      "bytes": 41226,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/source.patch",
+      "sha256": "ef20f4865e99ef084a2024957c039107af1c69b6a79654ec93d8c2726fb074fd"
+    }
+  },
+  "base": {
+    "manifest_sha256": "a29365df1a44e2797b3896eb90a515e2633c8423c4c0da4a37262e0d6d6e28c2",
+    "patch_sha256": "c6d42cf35848c7572a02bca52cb256edb571339a850acf5d8295283422b12927"
+  },
+  "finding_resolved_before_final_pass": "New same-progress checkpoints formerly created a later observed_at before strict cache recovery, causing a legitimate repeat to block sync. Corrected to adopt validated cached canonical bytes BEFORE a NEW spool only when observed_at is the sole difference. Existing spool bytes remain immutable and genuine same-path payload conflicts remain refused.",
+  "handoff_actions_only": [
+    "Write retrospective source-only review metadata",
+    "Retrieve existing artifact bytes to bind their original SHA-256 identities"
+  ],
+  "limitations": [
+    "This was not a diagnosis of the then-current receipt stall.",
+    "No real transport/Foo execution or broad test suite was performed by the reviewer."
+  ],
+  "original_advisory_recommendation": "merge; human_review_required under the existing safe-publication gate",
+  "original_final_hash_verification_time_utc": "2026-10-22T19:30:27Z",
+  "original_result": "PASS",
+  "original_verification": [
+    "Exact four paths, preimages, Git blobs and patch reconstruction matched.",
+    "Ten engine/normalization module identities remained unchanged.",
+    "Focused and compatibility test logs were hash-bound to the frozen candidate."
+  ],
+  "provenance": {
+    "contemporaneous_standalone_receipt_file_was_persisted": false,
+    "not_a_new_review": true,
+    "not_a_reconstructed_patch": true,
+    "original_review_record": "Prior reviewer agent messages and tool results in the same authorized conversation; this document was written later for handoff."
+  },
+  "publication_authority": "Review PASS is advisory and does not authorize publication past the existing confirmed-after-exit / freshly reconciled expected-SHA nonforce gate.",
+  "record_created_at_utc": "2026-10-22T20:35:28Z",
+  "record_type": "retrospective_record_of_previously_completed_review",
+  "review_id": "receipt-retry-final4",
+  "reviewer": {
+    "agent_task": "/root/publish_final_ingest_preparation/startup_review",
+    "name": "Morgan",
+    "role": "independent read-only reviewer"
+  },
+  "schema": "offmenu-independent-review-retrospective/1",
+  "scope": [
+    "Receipt retry helper, isolated branch publisher, runner wiring and focused tests only.",
+    "Fresh remote ref read/fetch and immutable history validation before uncertain-write retry; exact canonical receipt/companion equality before acknowledgement; no second push for already-confirmed bytes.",
+    "Compatible ancestry only; no force/reset; preserved local commits and spools on divergence, refusal, exhaustion or interrupted delivery.",
+    "Checkpoint-driven monotonic exponential backoff, no sleeps, four retry attempts per invocation without success budget reset;512 receipts/8MiB and4096 directory entries per tick.",
+    "KeyboardInterrupt propagation and no data-worker reruns; ingestion and normalization engine/module bytes unchanged."
+  ],
+  "source_patch_path_count": 4,
+  "test_evidence_inspected_not_personally_rerun": [
+    {
+      "duration_seconds": 5.38,
+      "log_path": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/focused-tests.txt",
+      "log_sha256": "c5fbf737a93cb253dd7fa6e6ec071653d39fac36c62bf2498ea357291626df73",
+      "result": "PASS",
+      "suite": "New receipt recovery tests",
+      "tests": 18
+    },
+    {
+      "duration_seconds": 6.362,
+      "log_path": "/workspace/scratch/88f4120a216c/offmenu-receipt-retry-artifacts-20261022/compatibility-tests.txt",
+      "log_sha256": "bcb33d15cdffe550cb817370b34babcf0b2b07720428b0100c464ac30279a2c2",
+      "result": "PASS",
+      "suite": "Existing receipt, batch and startup compatibility",
+      "tests": 22
+    }
+  ],
+  "tests_personally_executed_during_original_review": []
+}

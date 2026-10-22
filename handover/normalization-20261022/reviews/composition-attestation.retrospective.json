@@ -1,0 +1,80 @@
+{
+  "actions_not_performed_for_this_record": [
+    "New runtime review",
+    "New tests",
+    "Runtime source edits",
+    "Frozen artifact edits",
+    "Git/remote publication",
+    "Foo access or execution"
+  ],
+  "artifacts": {
+    "freeze.json": {
+      "bytes": 9140,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/freeze.json",
+      "sha256": "256c202700696439f8fd992e383b3aa84025ceba71bef66b92aeb54a6f115424"
+    },
+    "source-manifest.json": {
+      "bytes": 12448,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/source-manifest.json",
+      "sha256": "2fa460f38943fc13444708fe41a233c65cd02c5e96640ecbfaa2da5453bce07e"
+    },
+    "source.patch": {
+      "bytes": 219586,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-followon-combined-artifacts-20261022/source.patch",
+      "sha256": "15d98e26fa40d1ad283a434e63b4d817231fb407e9dd1ca19b8d1c5ca65a0a3d"
+    }
+  },
+  "base": {
+    "commit": "062dc707679e3b7eb726a9a5fe64277758b54573",
+    "remote_identity_verification_owner": "parent integration agent; reviewer checked the bound local preimages, not a new remote read",
+    "review_local_base": "/workspace/scratch/88f4120a216c/offmenu-db-normalization-runner-20261022",
+    "tree": "30eb68f87e46983d7e82fb339f859617350ed6ef"
+  },
+  "findings_resolved_before_final_pass": [],
+  "handoff_actions_only": [
+    "Write retrospective source-only review metadata",
+    "Retrieve existing artifact bytes to bind their original SHA-256 identities"
+  ],
+  "limitations": [
+    "Metadata attestation is not a new runtime safety review or deployment proof.",
+    "Publication remained gated on actual current-run exit; reviewer performed no remote/Foo action."
+  ],
+  "original_final_hash_verification_time_utc": "2026-10-22T20:11:47Z",
+  "original_result": "PASS",
+  "original_verification": [
+    "All23 file SHA-256 values, Git blobs, sizes, modes and exact062 local preimages matched.",
+    "Source patch reconstructed the exact22-path reviewed union without runtime edits.",
+    "Both original component artifact identities remained unchanged.",
+    "New provenance manifest accurately described reused evidence, bounded scope, remaining pipeline gates and safe-publication gate."
+  ],
+  "provenance": {
+    "contemporaneous_standalone_receipt_file_was_persisted": false,
+    "not_a_new_review": true,
+    "not_a_reconstructed_patch": true,
+    "original_review_record": "Prior reviewer agent messages and tool results in the same authorized conversation; this document was written later for handoff."
+  },
+  "publication_authority": "Review PASS is advisory and does not authorize publication past the existing confirmed-after-exit / freshly reconciled expected-SHA nonforce gate.",
+  "publication_path_count": 23,
+  "record_created_at_utc": "2026-10-22T20:35:28Z",
+  "record_type": "retrospective_record_of_previously_completed_review",
+  "review_id": "followon-composition-final23",
+  "reviewer": {
+    "agent_task": "/root/publish_final_ingest_preparation/startup_review",
+    "name": "Morgan",
+    "role": "independent read-only reviewer"
+  },
+  "schema": "offmenu-independent-review-retrospective/1",
+  "scope": [
+    "Metadata-only inventory/hash composition attestation; no renewed runtime review.",
+    "Exact22-path reviewed union plus one new provenance manifest.",
+    "Historical a293 reconciliation manifest preserved byte-for-byte and explicitly labeled historical."
+  ],
+  "separately_bound_manifest_path": "manual-action/db-followon-release-20261022.json",
+  "source_patch_path_count": 22,
+  "test_evidence_inspected_not_personally_rerun": [],
+  "test_evidence_policy": "No new tests or log-review cycle at composition; prior reviewed component evidence was reused explicitly.",
+  "tests_personally_executed_during_original_review": []
+}

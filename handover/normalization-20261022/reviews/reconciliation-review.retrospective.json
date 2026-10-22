@@ -1,0 +1,134 @@
+{
+  "actions_not_performed_for_this_record": [
+    "New runtime review",
+    "New tests",
+    "Runtime source edits",
+    "Frozen artifact edits",
+    "Git/remote publication",
+    "Foo access or execution"
+  ],
+  "artifacts": {
+    "freeze.json": {
+      "bytes": 8114,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/freeze.json",
+      "sha256": "3da4c693947eee32c71bbff5bb1abc3cbb62e193e0ee7166f4065280b42ae200"
+    },
+    "source-manifest.json": {
+      "bytes": 9635,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/source-manifest.json",
+      "sha256": "a29365df1a44e2797b3896eb90a515e2633c8423c4c0da4a37262e0d6d6e28c2"
+    },
+    "source.patch": {
+      "bytes": 170862,
+      "original_bytes_retrieved_without_modification": true,
+      "path": "/workspace/scratch/88f4120a216c/offmenu-db-reconciliation-release-artifacts-20261022/source.patch",
+      "sha256": "c6d42cf35848c7572a02bca52cb256edb571339a850acf5d8295283422b12927"
+    }
+  },
+  "base": {
+    "commit": "062dc707679e3b7eb726a9a5fe64277758b54573",
+    "remote_identity_verification_owner": "parent integration agent; reviewer checked the bound local preimages, not a new remote read",
+    "review_local_base": "/workspace/scratch/88f4120a216c/offmenu-db-normalization-runner-20261022",
+    "tree": "30eb68f87e46983d7e82fb339f859617350ed6ef"
+  },
+  "findings_resolved_before_final_pass": [
+    "Reconciliation source custody admission aligned to the normalization engine 65536-byte cap.",
+    "Malformed barcode/GTIN claim admission requires a string; malformed companion rows do not fail the whole batch.",
+    "Popular term lookup bounded to default32/max128 nodes, with truncation held and source conflicts checked across the full indexed group.",
+    "Completed checkpoint reuse rechecks prepared source/cache identities and validates graph/engine binding.",
+    "Reviewed parent/builder corrections: total current output logical bytes and capacity sampling denominator based on actually new facts.",
+    "Final packaging omission corrected: R3 direct hook regression file and hook contract added byte-for-byte; final closure20 supersedes earlier18."
+  ],
+  "handoff_actions_only": [
+    "Write retrospective source-only review metadata",
+    "Retrieve existing artifact bytes to bind their original SHA-256 identities"
+  ],
+  "limitations": [
+    "Generated local fixtures are not a Foo/corpus run or production capacity forecast.",
+    "No current host state or remote deployment was established by this review.",
+    "Remaining actual AI/semantic/translation/rights/application gates were not represented as complete."
+  ],
+  "original_final_hash_verification_time_utc": "2026-10-22T18:13:36Z",
+  "original_result": "PASS",
+  "original_verification": [
+    "Exact hashes, Git blob identities, sizes, modes, baseline preimages and allowlist matched.",
+    "Final19-path source patch plus separately bound manifest matched the20-file closure.",
+    "Both R3 added files matched the reviewed R3 source bytes."
+  ],
+  "provenance": {
+    "contemporaneous_standalone_receipt_file_was_persisted": false,
+    "not_a_new_review": true,
+    "not_a_reconstructed_patch": true,
+    "original_review_record": "Prior reviewer agent messages and tool results in the same authorized conversation; this document was written later for handoff."
+  },
+  "publication_authority": "Review PASS is advisory and does not authorize publication past the existing confirmed-after-exit / freshly reconciled expected-SHA nonforce gate.",
+  "publication_path_count": 20,
+  "record_created_at_utc": "2026-10-22T20:35:28Z",
+  "record_type": "retrospective_record_of_previously_completed_review",
+  "review_id": "reconciliation-runtime-final20",
+  "reviewer": {
+    "agent_task": "/root/publish_final_ingest_preparation/startup_review",
+    "name": "Morgan",
+    "role": "independent read-only reviewer"
+  },
+  "schema": "offmenu-independent-review-retrospective/1",
+  "scope": [
+    "Reviewed WAL identity correction, candidate reconciliation helper and R3 transaction hook, bounded coordinator, runner/protocol integration and final exact composition.",
+    "Candidate graph facts only; no authoritative entity merges, AI review, English translation, or gold/application completion claim.",
+    "Fixed six public domains; committed compact cache key selection; original source/cache preservation; atomic graph facts/counters/cursor/quarantine; bounded sampling/capacity, reserve, cancellation and resume.",
+    "Mixed v2/v3/v4 receipt compatibility and sanitized summaries; default follow-on does not dispatch ingestion or new normalization workers."
+  ],
+  "separately_bound_manifest_path": "manual-action/db-reconciliation-release-20261022.json",
+  "source_patch_path_count": 19,
+  "test_evidence_inspected_not_personally_rerun": [
+    {
+      "result": "PASS",
+      "suite": "WAL identity engine/store tests",
+      "tests": 22
+    },
+    {
+      "result": "PASS",
+      "suite": "R2 candidate helper tests",
+      "tests": 24
+    },
+    {
+      "overlap": "Includes the R2 24 and hook8; not32 additional tests.",
+      "result": "PASS",
+      "suite": "R3 combined helper and hook tests",
+      "tests": 32
+    },
+    {
+      "log_sha256": "b7d8dc29bace33aae1eb06320abd7f6add5221fba412ab0598cad1f0b5090607",
+      "result": "PASS",
+      "suite": "Reconciliation coordinator tests",
+      "tests": 16
+    },
+    {
+      "log_path": "/tmp/reconciliation-runner-composition.log",
+      "log_sha256": "97cd5d589d1c7c2fc5cd859d821d8bf33ce0a4cd6d27f1ca7af659c129d8f156",
+      "result": "PASS",
+      "suite": "Composed reconciliation runner, including actual generated local ./run twice",
+      "tests": 8
+    },
+    {
+      "log_path": "/tmp/reconciliation-normalization-compat.log",
+      "log_sha256": "555a7e7c7326011e79d2cbbfba3a8fc3612606a65b6f5b1fed288f1076593d18",
+      "result": "PASS",
+      "suite": "Normalization runner compatibility",
+      "tests": 9
+    }
+  ],
+  "tests_personally_executed_during_original_review": [
+    {
+      "command": "env -i PATH=/usr/local/bin:/usr/bin:/bin HOME=/tmp PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s manual-action/tests -p test_normalization_reconciliation_commit_hook.py -v",
+      "duration_seconds": 0.139,
+      "evidence": "Original reviewer tool output; no separate durable independent-run log was persisted.",
+      "result": "PASS",
+      "suite": "test_normalization_reconciliation_commit_hook.py",
+      "tests": 8,
+      "working_directory": "/workspace/scratch/88f4120a216c/offmenu-entity-reconciliation-r3-20261022"
+    }
+  ]
+}
