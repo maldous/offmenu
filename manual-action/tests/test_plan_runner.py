@@ -36,6 +36,7 @@ class RunnerTests(unittest.TestCase):
         (self.root / 'manual-action').mkdir()
         for name in ('plan_runner.py', 'foo_manual.py', 'plan.json', '.gitignore'):
             shutil.copy(PACKAGE / name, self.root / 'manual-action' / name)
+        (self.root / 'manual-action/plan.json').write_text(json.dumps({'schema':'offmenu-run-plan/1','max_parallel':1,'jobs':[{'id':'supplier-source-inspection','version':2,'operation':'supplier_inspect','depends_on':[]}]}))
         shutil.copy(PACKAGE.parent / 'run', self.root / 'run')
         (self.root / 'unrelated.txt').write_text('unchanged\n')
         self.git_at(self.root, 'add', '.')

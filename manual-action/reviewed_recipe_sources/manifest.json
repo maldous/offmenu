@@ -1,0 +1,36 @@
+{
+  "schema": "offmenu-reviewed-recipe-source-closure/1",
+  "repository": "maldous/offmenu",
+  "copied_from_commit": "f1faa0d63b6fd46e145122b1843ad3bb9fa60c0f",
+  "files": [
+    {
+      "local_path": "source_faithful_parse.py",
+      "repository_path": "offmenu/refresh/source_faithful_parse.py",
+      "git_blob_sha1": "6d9081b5570cc204680e3857313009e41cdf3a34",
+      "sha256": "843d7808881d39cfb65ad8db1bbc4604ea9706d54bc504854b88664e0c9887f2"
+    },
+    {
+      "local_path": "source_recipe_template.schema.json",
+      "repository_path": "offmenu/refresh/source_recipe_template.schema.json",
+      "git_blob_sha1": "9dbf74e652bc09b574deff2ce75b6c4564794249",
+      "sha256": "6c450429cea05a719bd367116cda978b465c44ab5f0e65c6fa0dc7a80ef57814"
+    }
+  ],
+  "inspected_projection_references_not_copied_or_invoked": [
+    {
+      "commit": "7a7c69063e15f83067b1a13f23a4f352db996ee4",
+      "path": "offmenu/refresh/unitools_recipe_adapter.py",
+      "use": "Native language-map, raw-number-lexeme and source-object representation contract. No receipt/pin bypass; broad staging adapter is a separate entry point."
+    },
+    {
+      "commit": "e18ff620e434cb0489c87a2d85069e621fefc4b8",
+      "path": "offmenu/refresh/recipe_section_cache.py",
+      "use": "Partial raw-section cache grain and unknown child-count semantics. Generic staging does not claim native anchor revalidation or full-template acceptance."
+    }
+  ],
+  "writer": "ingest_store.DomainStore; additive private staging, not native recipe_menu_store",
+  "native_writer_replaced": false,
+  "optional_dependencies": ["beautifulsoup4", "jsonschema"],
+  "dependency_installation": "never",
+  "raw_datasets_included": false
+}

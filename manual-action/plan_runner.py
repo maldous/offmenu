@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Finite, supplier-only checkout/pull/check/return loop; standard library only.
+"""Finite reviewed checkout/pull/ingest/return loop; standard library only.
 
-No shell from plans, inventory, imports, archive execution or source upload.
+No shell from plans, downloads, archive execution, or raw source uploads.
 Git output and private supplier details are never echoed or persisted.
 """
 from __future__ import annotations
@@ -18,6 +18,8 @@ import stat
 import subprocess
 import sys
 import tempfile
+import datetime
+import time
 
 BRANCH = 'integration/manual-actions-20261022'
 REMOTE_URLS = {'git@github.com:maldous/offmenu.git', 'https://github.com/maldous/offmenu.git',
@@ -25,8 +27,12 @@ REMOTE_URLS = {'git@github.com:maldous/offmenu.git', 'https://github.com/maldous
 RETURN_DIR = 'manual-action/returns/run'
 RECEIPT_SCHEMA = 'offmenu-run-receipt/1'
 COMMIT_MESSAGE = 'Return sanitized supplier check [skip ci]'
+INGEST_COMMIT_MESSAGE = 'Return sanitized retained ingest checkpoint [skip ci]'
+DOMAINS = ('barcodes','ingredients','recipes','dietary','user_profiles','inventory','suppliers','citations')
+DOMAIN_STATUSES = frozenset('pending running complete completed imported reused schema_only unavailable missing existing_loaded not_applicable awaiting_user_input skipped partial failed blocked no_inputs'.split())
+ERROR_CODES = frozenset('BudgetExceeded SourceChanged OSError IOError EOFError ValueError TypeError KeyError RuntimeError DatabaseError OperationalError IntegrityError JSONDecodeError UnicodeDecodeError PermissionError FileNotFoundError Error UnsupportedSource MalformedRecord MalformedSupplierRow resource_cap catalog_skip partial_source missing unreadable already_loaded incomplete_source unsupported_supplier_format unsupported_text_compression parquet_dependency_unavailable resource_budget UnsupportedSupplierSource DuplicateField existing_binding_reused source_error restricted_input awaiting_user_input no_recognized_sources schema_uncertain unsupported_format unavailable adapter_unavailable resource_limit'.split())
 HEX = re.compile(r'[0-9a-f]{64}\Z')
-RECEIPT_NAME = re.compile(r'[0-9a-f]{64}-(?:completed|blocked-[0-9a-f]{16})\.json\Z')
+RECEIPT_NAME = re.compile(r'[0-9a-f]{64}-(?:completed|blocked-[0-9a-f]{16}|(?:running|partial|blocked)-[0-9a-f]{64})\.json\Z')
 STAMP = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z')
 REASONS = frozenset('missing unreadable refused_or_unreadable sha256_prefix_mismatch '
     'compressed_archive_limit compressed_archive_changed_or_limit archive_changed '
@@ -87,21 +93,54 @@ def read_json(path):
 
 def validate_plan(plan):
     exact_keys(plan, {'schema', 'max_parallel', 'jobs'})
-    if plan['schema'] != 'offmenu-run-plan/1' or type(plan['max_parallel']) is not int or plan['max_parallel'] != 1:
-        raise Stop('unsupported_plan')
-    # Deliberately one reviewed read-only job, not an arbitrary workflow engine.
     if not isinstance(plan['jobs'], list) or len(plan['jobs']) != 1:
         raise Stop('unsupported_jobs')
     job = plan['jobs'][0]
     exact_keys(job, {'id', 'version', 'operation', 'depends_on'})
-    if (job['id'] != 'supplier-source-inspection' or job['operation'] != 'supplier_inspect'
-            or type(job['version']) is not int or not 1 <= job['version'] <= 1000000
-            or job['depends_on'] != []):
+    common = type(job['version']) is int and 1 <= job['version'] <= 1000000 and job['depends_on'] == []
+    legacy = (plan['schema'] == 'offmenu-run-plan/1' and plan['max_parallel'] == 1
+              and job['id'] == 'supplier-source-inspection' and job['operation'] == 'supplier_inspect')
+    ingest = (plan['schema'] == 'offmenu-run-plan/2' and type(plan['max_parallel']) is int
+              and 1 <= plan['max_parallel'] <= 8 and job['id'] == 'retained-eight-domain-ingest'
+              and job['operation'] == 'retained_ingest_all')
+    if not common or not (legacy or ingest):
         raise Stop('unsupported_job')
     return job
 
 
+def validate_ingest_receipt(value):
+    exact_keys(value, {'schema','job_id','job_version','operation','job_key',
+        'implementation_sha256','input_sha256','observed_at','outcome','ingest'})
+    if (value['schema'] != 'offmenu-run-receipt/2' or value['job_id'] != 'retained-eight-domain-ingest'
+        or value['operation'] != 'retained_ingest_all' or type(value['job_version']) is not int
+        or not 1 <= value['job_version'] <= 1000000 or value['outcome'] not in ('running','completed','partial','blocked')
+        or not isinstance(value['observed_at'],str) or not STAMP.fullmatch(value['observed_at'])):
+        raise Stop('invalid_sanitized_schema')
+    for key in ('job_key','implementation_sha256','input_sha256'):
+        if not isinstance(value[key],str) or not HEX.fullmatch(value[key]):
+            raise Stop('invalid_sanitized_digest')
+    summary=value['ingest']
+    exact_keys(summary,{'binding','domains','progress_sha256'})
+    if summary['binding'] != 'additive_staging_not_app_bound':
+        raise Stop('invalid_sanitized_schema')
+    exact_keys(summary['domains'],set(DOMAINS))
+    for domain, row in summary['domains'].items():
+        exact_keys(row,{'status','read','written','unchanged','errors','skipped','reused_rows','reused_stores','source_count','error_codes'})
+        if row['status'] not in DOMAIN_STATUSES:
+            raise Stop('invalid_sanitized_status')
+        for key in ('read','written','unchanged','errors','skipped','reused_rows','reused_stores','source_count'):
+            if type(row[key]) is not int or not 0 <= row[key] <= 10**15:
+                raise Stop('invalid_sanitized_count')
+        if not isinstance(row['error_codes'],list) or row['error_codes'] != sorted(set(row['error_codes'])) or any(code not in ERROR_CODES for code in row['error_codes']):
+            raise Stop('invalid_sanitized_reason')
+    if summary['progress_sha256'] != digest(canonical(summary['domains'])):
+        raise Stop('invalid_progress_digest')
+    return value
+
+
 def validate_receipt(value):
+    if isinstance(value,dict) and value.get('schema') == 'offmenu-run-receipt/2':
+        return validate_ingest_receipt(value)
     exact_keys(value, {'schema', 'job_id', 'job_version', 'operation', 'job_key',
         'implementation_sha256', 'input_sha256', 'observed_at', 'outcome', 'supplier',
         'data_loads', 'source_review', 'source_upload'})
@@ -141,7 +180,10 @@ def validate_receipt(value):
 
 def receipt_relpath(value):
     validate_receipt(value)
-    suffix = 'completed' if value['outcome'] == 'completed' else 'blocked-' + digest(canonical(value['supplier']))[:16]
+    if value['schema']=='offmenu-run-receipt/2':
+        suffix='completed' if value['outcome']=='completed' else value['outcome']+'-'+value['ingest']['progress_sha256']
+    else:
+        suffix = 'completed' if value['outcome'] == 'completed' else 'blocked-' + digest(canonical(value['supplier']))[:16]
     return f"{RETURN_DIR}/{value['job_key']}-{suffix}.json"
 
 
@@ -290,7 +332,7 @@ class Runner:
             raise Stop('remote_diverged_local_work_preserved_no_force')
         commits = self.textgit('rev-list', self.remote_head + '..HEAD').splitlines()
         for commit in commits:
-            if self.textgit('show', '-s', '--format=%B', commit) != COMMIT_MESSAGE:
+            if self.textgit('show', '-s', '--format=%B', commit) not in (COMMIT_MESSAGE,INGEST_COMMIT_MESSAGE):
                 raise Stop('non_runner_commit_message_preserved')
             if len(self.textgit('rev-list', '--parents', '-n', '1', commit).split()) != 2:
                 raise Stop('non_runner_commit_pending_preserved')
@@ -339,12 +381,24 @@ class Runner:
 
     def owned_receipt(self, relative, raw):
         path = self.state / 'checkpoint.json'
-        if not path.exists():
+        if path.exists():
+            value = read_json(path)
+            if (isinstance(value, dict) and value.get('schema') == 'offmenu-run-checkpoint/1'
+                    and value.get('receipt') == relative and value.get('sha256') == digest(raw)
+                    and value.get('phase') in {'receipt_ready', 'committed', 'published', 'blocked'}):
+                return True
+        # A v2 spool is durably written BEFORE materializing its receipt. It
+        # closes the crash window between exclusive receipt creation and the
+        # recovery checkpoint without accepting any unowned arbitrary file.
+        validate_return_path(relative)
+        spool=safe_path(self.state/'ingest-pending'/Path(relative).name)
+        if not spool.exists():
             return False
-        value = read_json(path)
-        return (isinstance(value, dict) and value.get('schema') == 'offmenu-run-checkpoint/1'
-                and value.get('receipt') == relative and value.get('sha256') == digest(raw)
-                and value.get('phase') in {'receipt_ready', 'committed', 'published', 'blocked'})
+        envelope=read_json(spool)
+        exact_keys(envelope,{'sha256','receipt'})
+        value=validate_ingest_receipt(envelope['receipt'])
+        return (envelope['sha256']==digest(raw) and canonical(value)==raw
+                and receipt_relpath(value)==relative)
 
     def recovery_receipt(self):
         path = self.state / 'checkpoint.json'
@@ -398,7 +452,7 @@ class Runner:
             staged = self.git('diff', '--no-ext-diff', '--no-textconv', '--cached', '--name-only', '-z')[1]
             if staged != relative.encode() + b'\0' or self.git('show', ':' + relative)[1] != raw or not self.regular_receipt_mode(relative):
                 raise Stop('staged_content_changed_preserved_review_index')
-            self.git('commit', '-m', COMMIT_MESSAGE)
+            self.git('commit', '-m', INGEST_COMMIT_MESSAGE if value['schema']=='offmenu-run-receipt/2' else COMMIT_MESSAGE)
             self.checkpoint('committed', value['job_key'], relative, digest(raw))
         if self.check_outgoing():
             announce('[4/4] Pushing sanitized receipts (no force).')
@@ -414,7 +468,175 @@ class Runner:
         spec.loader.exec_module(foo)
         return foo
 
+    def ingest_engine(self):
+        directory=str(self.root / 'manual-action')
+        if directory not in sys.path:
+            sys.path.insert(0,directory)
+        import importlib
+        return importlib.import_module('ingest_engine')
+
+    def durable_local_json(self, path, value):
+        path=safe_path(path)
+        path.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+        fd,temporary=tempfile.mkstemp(prefix='.pending-',dir=path.parent)
+        try:
+            with os.fdopen(fd,'wb') as out:
+                out.write(canonical(value));out.flush();os.fsync(out.fileno())
+            os.replace(temporary,path)
+            directory=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+
+    def materialize_ingest_receipt(self, value):
+        relative=receipt_relpath(value)
+        raw=canonical(value)
+        destination=safe_path(self.root / relative)
+        destination.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+        if destination.exists():
+            previous=validate_receipt(read_json(destination))
+            if receipt_relpath(previous)!=relative:
+                raise Stop('existing_receipt_identity_mismatch')
+            raw=canonical(previous)
+            if destination.read_bytes()!=raw:
+                raise Stop('existing_receipt_noncanonical_preserved')
+            if not self.tracked(relative):
+                if not self.owned_receipt(relative,raw):
+                    raise Stop('unowned_existing_receipt_preserved')
+                self.checkpoint('receipt_ready',value['job_key'],relative,digest(raw))
+        else:
+            fd=os.open(destination,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            with os.fdopen(fd,'wb') as out:
+                out.write(raw);out.flush();os.fsync(out.fileno())
+            self.checkpoint('receipt_ready',value['job_key'],relative,digest(raw))
+        self.publish(relative,raw)
+
+    def ingest_summary(self, report):
+        domains={}
+        for domain in DOMAINS:
+            row=report.get('domains',{}).get(domain,{})
+            status=row.get('status','pending')
+            status=status if status in DOMAIN_STATUSES else 'partial'
+            counts={key:row.get(key,0) for key in ('read','written','unchanged','errors','skipped','reused_rows','reused_stores')}
+            for key,value in counts.items():
+                if type(value) is not int or value<0 or value>10**15:
+                    raise Stop('invalid_engine_counter')
+            codes=row.get('error_codes',[])
+            if not isinstance(codes,list):
+                codes=[]
+            codes=sorted(set(code if isinstance(code,str) and code in ERROR_CODES else 'source_error' for code in codes))
+            domains[domain]={'status':status,**counts,'source_count':row.get('sources_total',0),'error_codes':codes}
+        return {'binding':'additive_staging_not_app_bound','domains':domains,
+                'progress_sha256':digest(canonical(domains))}
+
+    def run_ingest_plan(self, plan, job):
+        self.preconditions()
+        engine=self.ingest_engine()
+        self.state=safe_path(self.state)
+        self.state.mkdir(mode=0o700,exist_ok=True)
+        pending=safe_path(self.state / 'ingest-pending')
+        pending.mkdir(mode=0o700,exist_ok=True)
+        transport_failed=False
+
+        def deliver(value, spool=None):
+            nonlocal transport_failed
+            if transport_failed:
+                return
+            try:
+                self.materialize_ingest_receipt(value)
+                if spool is not None:
+                    spool.unlink()
+            except Stop as exc:
+                # No reset/rebase/pull mid-run. Keep data workers independent of
+                # transport; exact staged receipt and private spool remain durable.
+                transport_failed=True
+                announce('Receipt sync paused: '+str(exc)+'. Ingestion continues; local checkpoints retained.')
+
+        recovery=self.recovery_receipt()
+        if recovery:
+            relative,raw,value=recovery
+            if not self.tracked(relative) or self.check_outgoing():
+                try:
+                    announce('[2/4] Recovering exact owned receipt before the new ingest plan.')
+                    self.publish(relative,raw)
+                except Stop as exc:
+                    transport_failed=True
+                    announce('Receipt sync paused: '+str(exc)+'. New ingest is independent of the prior supplier outcome.')
+        # Spool files live only in .git, contain strict sanitized payloads and
+        # bind canonical bytes to a digest. Never stage arbitrary working files.
+        for spool in sorted(pending.glob('*.json')):
+            envelope=read_json(spool)
+            exact_keys(envelope,{'sha256','receipt'})
+            value=validate_ingest_receipt(envelope['receipt'])
+            if envelope['sha256']!=digest(canonical(value)) or spool.name!=Path(receipt_relpath(value)).name:
+                raise Stop('pending_receipt_changed_preserved')
+            deliver(value,spool)
+        options={'workers':plan['max_parallel'],'report_interval':60,'terminal_progress':True}
+        announce('[2/4] Discovering retained inputs, then ingesting all eight domains in parallel.')
+        prepared=engine.prepare_default(self.state/'ingest',options)
+        input_sha=prepared['catalog_sha256']
+        if not isinstance(input_sha,str) or not HEX.fullmatch(input_sha):
+            raise Stop('invalid_catalog_identity')
+        files=['run','manual-action/plan_runner.py']+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('ingest_*.py'))]
+        implementation=digest(b''.join((self.root/path).read_bytes() for path in files))
+        job_key=digest(canonical({'job':job,'implementation':implementation,'input':input_sha}))
+        completed=f'{RETURN_DIR}/{job_key}-completed.json'
+        if (self.root/completed).exists() and engine.completed_outputs_available(prepared):
+            value=validate_ingest_receipt(read_json(self.root/completed))
+            if value['job_key']!=job_key or value['outcome']!='completed':
+                raise Stop('existing_receipt_identity_mismatch')
+            deliver(value)
+            announce('[3/4] This unchanged completed ingest plan is already durable; no source rows replayed.')
+            return 2 if transport_failed else 0
+        last_signature=None
+
+        def checkpoint_report(report):
+            nonlocal last_signature
+            summary=self.ingest_summary(report)
+            status=report.get('status')
+            outcome='completed' if status=='complete' else 'running' if status=='running' else 'partial' if status=='partial' else 'blocked'
+            signature=(outcome,summary['progress_sha256'])
+            if signature==last_signature:
+                return
+            receipt={'schema':'offmenu-run-receipt/2','job_id':job['id'],'job_version':job['version'],
+                'operation':job['operation'],'job_key':job_key,'implementation_sha256':implementation,
+                'input_sha256':input_sha,'observed_at':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                'outcome':outcome,'ingest':summary}
+            validate_ingest_receipt(receipt)
+            spool=pending/Path(receipt_relpath(receipt)).name
+            if not spool.exists():
+                self.durable_local_json(spool,{'sha256':digest(canonical(receipt)),'receipt':receipt})
+            else:
+                envelope=read_json(spool)
+                exact_keys(envelope,{'sha256','receipt'})
+                prior=validate_ingest_receipt(envelope['receipt'])
+                if envelope['sha256']!=digest(canonical(prior)) or receipt_relpath(prior)!=receipt_relpath(receipt):
+                    raise Stop('pending_receipt_changed_preserved')
+                receipt=prior
+            last_signature=signature
+            deliver(receipt,spool)
+
+        report=engine.run_prepared(prepared,report_callback=checkpoint_report)
+        # Independent final handling also persists a result if an earlier engine
+        # callback encountered a local reporting error. No failed source hides it.
+        checkpoint_report(report)
+        announce('[3/4] Final domain summary (counts are source rows, not unique entities):')
+        for domain,row in self.ingest_summary(report)['domains'].items():
+            announce('  '+domain+': '+row['status']+'; written='+str(row['written'])+' reused_stores='+str(row['reused_stores'])+' reused_table_rows='+str(row['reused_rows'])+' errors='+str(row['errors']))
+        if transport_failed:
+            announce('[4/4] Git sync remains pending; ingestion data and sanitized checkpoints are preserved locally.')
+        return 0 if report.get('status')=='complete' and not transport_failed else 2
+
+
     def run_plan(self):
+        plan=read_json(self.root / 'manual-action/plan.json')
+        job=validate_plan(plan)
+        if job['operation']=='retained_ingest_all':
+            return self.run_ingest_plan(plan,job)
         self.preconditions()
         recovery = self.recovery_receipt()
         recovered = None
@@ -518,7 +740,7 @@ def main():
         runner.remote_head = inherited_remote
         runner.check_outgoing()
         code = runner.run_plan()
-        announce('Done. Inspection is not source-review acceptance or import readiness.' if code == 0 else 'Blocked result returned; job remains pending. Existing data/jobs unchanged.')
+        announce('Done. Sanitized results returned; local staging is not application acceptance.' if code == 0 else 'Partial or blocked result retained; see domain summary. Local data and receipts preserved.')
         return code
     except KeyboardInterrupt:
         announce('STOP: interrupted; local work preserved.')

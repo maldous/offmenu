@@ -1,11 +1,11 @@
 {
-  "schema": "offmenu-run-plan/1",
-  "max_parallel": 1,
+  "schema": "offmenu-run-plan/2",
+  "max_parallel": 8,
   "jobs": [
     {
-      "id": "supplier-source-inspection",
-      "version": 2,
-      "operation": "supplier_inspect",
+      "id": "retained-eight-domain-ingest",
+      "version": 1,
+      "operation": "retained_ingest_all",
       "depends_on": []
     }
   ]

@@ -1,3 +1,7 @@
+# Historical diagnostic-package independent review
+
+> Historical record: the original text and hashes below describe the earlier diagnostic/source-capsule package, not the current parallel retained-ingest plan. Current implementation provenance and validation are appended at the end. Earlier statements about no imports or no automatic returns must not be read as the current `./run` behavior.
+
 # Independent review receipt — manual action package
 
 Review accepted 22 October 2026, 01:09 UTC. The publisher records the independent reviewer’s final release message; this is bounded source review evidence, not provider approval or data-load authority.
@@ -29,3 +33,14 @@ Every source/package input below matches the reviewer’s accepted SHA-256. This
 | `manual-action/.gitignore` | `5bacfb5c80fa24833d5e7e946e1184559037ebbfa9bead8929192df08af65e6f` |
 | `manual-action/returns/.gitkeep` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 | `.github/workflows/manual-action-fixtures.yml` | `98aeb7bd6041aa6f0d1d2621deeab45467c1f65141928f2de7349e7ec542a45e` |
+
+
+# Current retained-ingest implementation validation — 22 October 2026
+
+This section records supplied implementation-owner validation of the current complete source closure. It does not relabel the earlier diagnostic-only independent review as a review of the new ingest engine, and no new external review or CI rehearsal is claimed.
+
+Latest reported combined generated suite: `python -B -m unittest discover -s manual-action/tests -v` — **182 tests, OK with one optional-dependency skip**, 24.703 seconds. After that combined run, a narrow recipe/ingredient unknown-grain reporting correction was applied; its final two-file freeze passed 27/27 focused generated tests, with the five vendored source files unchanged. Earlier full wrapper closure passed 181 tests with one skip before the final recipe regression was added. Core focused coverage passed 16 tests; supplier coverage was 22 passes plus one optional PyArrow skip; dietary/citation/private-domain coverage passed 19 tests. These are synthetic cloud checks, not live Foo dataset results.
+
+The actual subprocess fixture `test_root_run_real_catalog_engine_adapters_and_local_push` exercises root `./run`, fast-forward pull/re-exec, the real catalog/engine/fixed adapters and a generated local bare-Git remote. It verifies all-eight-domain dispatch, isolated malformed-recipe failure, valid staged ingredient/recipe/dietary/supplier/citation rows, read-only barcode-store reuse, private domains awaiting input, and strict running/final-partial receipts pushed without source paths, payloads or barcode values. Additional fixtures cover durable spool recovery, exact staged-receipt ownership, idempotence, source changes, output-loss recovery, bounded failures, privacy and non-destructive Git conflict handling.
+
+Current README and command-plan history distinguish additive staging from existing app bindings and historical diagnostic behavior from the active schema-2 ingest plan. Publication verifies the exact frozen source bytes and preserves all pre-existing user receipts. No live run, complete-worldwide-coverage claim, canonical identity acceptance, application acceptance or current dataset custody certification is made by these tests.
