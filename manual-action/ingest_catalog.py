@@ -337,7 +337,12 @@ def discover_sources(options=None):
     excluded.extend(_absolute(x) for x in options.get('exclude_paths', []))
     if not layout.legacy:
         excluded.extend((layout.runtime, layout.public_staging, layout.normalization, layout.household))
+        # All operational control/review runtime is outside source acquisition,
+        # including siblings of the selected runner state and config elsewhere.
+        excluded.extend((_absolute(DEFAULT_ROOT) / 'runtime', layout.config_path))
     exclusion_binding = sorted({str(x) for x in excluded})
+    def is_excluded(path):
+        return any(_inside(path, root) for root in excluded)
     max_files = max(1, int(options.get('max_files', 250000)))
     max_depth = max(1, int(options.get('max_depth', 40)))
     deadline = time.monotonic() + max(0.001, float(options.get('max_scan_seconds', 120)))
@@ -398,6 +403,8 @@ def discover_sources(options=None):
         counts[source['disposition']] += 1
         return source
     def read_manifest(path, trusted, hints):
+        if is_excluded(path):
+            return hints
         key = str(path)
         if key in reports_seen:
             return hints
@@ -418,6 +425,8 @@ def discover_sources(options=None):
                 obj = json.loads(data)
             hints = {**hints, **_metadata(obj)}
             for target, ref_hints in _references(obj, path.parent, hints):
+                if is_excluded(target):
+                    continue
                 if _allow_report_ref(target, roots, trusted, allowed):
                     queue.appendleft({'path': str(target), 'depth': 0, 'hints': ref_hints,
                                   'root': str(target.parent), 'trusted_report': trusted and bool(META_NAME.search(target.name))})
@@ -438,7 +447,7 @@ def discover_sources(options=None):
         if not is_continuation:
             seen.add(key)
             counts['inspected'] += 1
-        if any(_inside(path, e) for e in excluded):
+        if is_excluded(path):
             add(path, disposition='excluded', reason='own_state_directory')
             continue
         if _forbidden(path):
@@ -467,6 +476,8 @@ def discover_sources(options=None):
             if not is_continuation:
                 for manifest_name in ('manifest.json', 'collection.json'):
                     manifest = path / manifest_name
+                    if is_excluded(manifest):
+                        continue
                     try:
                         mst = _stat(manifest)
                     except FileNotFoundError:
