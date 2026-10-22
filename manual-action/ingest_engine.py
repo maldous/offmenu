@@ -16,6 +16,8 @@ import time
 import uuid
 from ingest_api import DOMAINS, COUNTERS, BudgetExceeded, source_key
 from ingest_store import DomainStore
+from ingest_errors import (ERROR_CLASSES, classify_error, collect_error_snapshot,
+                           sanitize_error_telemetry)
 try:
     from ingest_pending import collect_pending_work, sanitize_pending_work, dashboard, output_identity, store_path
 except Exception:
@@ -61,6 +63,7 @@ ERROR_CODES = frozenset(('ValueError','TypeError','RuntimeError','OSError','File
     'unsupported_format','catalog_skip','source_error','partial_source','missing','unreadable',
     'already_loaded','existing_binding_reused','incomplete_source','unsupported_supplier_format','unsupported_text_compression',
     'parquet_dependency_unavailable','resource_budget','UnsupportedSupplierSource','DuplicateField'))
+ERROR_CODES = ERROR_CODES | ERROR_CLASSES
 
 
 
@@ -125,6 +128,8 @@ def sanitize_report(report):
         safe['domains'][domain] = {'status': row.get('status') if row.get('status') in DOMAIN_STATUSES else 'pending',
             **{key:_nonnegative(row.get(key,0)) for key in PUBLIC_COUNTERS},
             'error_codes': sorted(set(row.get('error_codes',[])) & ERROR_CODES) if isinstance(row.get('error_codes',[]),list) and all(isinstance(x,str) for x in row.get('error_codes',[])) else []}
+        if 'error_telemetry' in row:
+            safe['domains'][domain]['error_telemetry'] = sanitize_error_telemetry(row['error_telemetry'])
     for key in ('catalog_sha256',):
         value = report.get(key)
         if isinstance(value,str) and re.fullmatch('[a-f0-9]{64}',value):
@@ -185,6 +190,7 @@ class IngestContext:
         self._progress_callback = progress_callback
         self.adapter_errors = 0
         self.private_errors = []
+        self.error_classes = set()
         self.source_summaries = []
         self.store = None
 
@@ -209,7 +215,9 @@ class IngestContext:
 
     def report_error(self, source, exc):
         self.adapter_errors += 1
-        error = {'source_key':source_key(source),'error_class':type(exc).__name__}
+        error_class, reason = classify_error(exc)
+        self.error_classes.add(error_class)
+        error = {'source_key':source_key(source),'error_class':error_class,'reason_code':reason}
         self.private_errors.append(error)
         # Keep diagnostics bounded even for large damaged files.
         if len(self.private_errors) > 1000:
@@ -219,7 +227,9 @@ class IngestContext:
                 self.store.record_error(source,exc)
             except (OSError,ValueError):
                 pass
-        self.progress(event='adapter_error', errors=self.adapter_errors)
+        # The source key is private coordinator metadata, never a public field.
+        # Do not present a domain-wide callback count as one source's row count.
+        self.progress(event='adapter_error', **error)
         return error
 
     def ingest(self, source, records):
@@ -267,6 +277,7 @@ def _run_domain(domain, sources, config, cancelled, progress, started, adapters=
             if (result['errors'] or result['sources_partial'] or result['sources_skipped']) and result['status'] in ('complete','imported','reused'):
                 result['status']='partial'
             result['error_codes']=sorted({code for source_result in [result,*source_results,*context.private_errors] if isinstance(source_result,dict) for code in [source_result.get('error_class'),source_result.get('reason'),*source_result.get('error_codes',[])] if isinstance(code,str) and code in ERROR_CODES})
+            result['error_codes']=sorted(set(result['error_codes']) | context.error_classes)
             for key in ('reused_rows','reused_stores'):
                 result[key]=max(_nonnegative(result.get(key,0)),sum(_nonnegative(s.get(key,0)) for s in source_results if isinstance(s,dict)))
             result['binding']='additive_staging_not_app_bound'
@@ -304,6 +315,7 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
     lock=threading.Lock()
     cancelled=threading.Event()
     source_progress={domain:{} for domain in DOMAINS}
+    observed_errors={domain:{} for domain in DOMAINS}
     report={'schema':REPORT_SCHEMA,'run_id':uuid.uuid4().hex,'status':'running',
             'started_at':_utc(),'updated_at':_utc(),'workers':workers,'elapsed_seconds':0,
             'domains':{d:{'status':'pending', **{k:0 for k in PUBLIC_COUNTERS}} for d in DOMAINS},
@@ -317,7 +329,15 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
             current=report['domains'][domain]
             current['status']='running'
             key=event.get('source_key')
-            if key:
+            if event.get('event') == 'adapter_error':
+                identity = (key, event['error_class'], event['reason_code'])
+                observed_errors[domain][identity] = observed_errors[domain].get(identity, 0) + 1
+                current['error_codes'] = sorted(set(current.get('error_codes', [])) | {event['error_class']})
+                telemetry = sanitize_error_telemetry(current.get('error_telemetry'))
+                reason = event['reason_code']
+                telemetry['reason_counts'][reason] = telemetry['reason_counts'].get(reason, 0) + 1
+                current['error_telemetry'] = telemetry
+            elif key:
                 source_progress[domain][key]={**source_progress[domain].get(key,{}),**event}
                 for k in COUNTERS:
                     current[k]=sum(_nonnegative(p.get(k,0)) for p in source_progress[domain].values())
@@ -334,7 +354,23 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None):
         # continue committing independently. No callback ever runs on a worker.
         pending_work = _pending_snapshot(sources, config, private_results, adapters)
         with lock:
+            observed = {domain: dict(rows) for domain, rows in observed_errors.items()}
+        try:
+            errors = collect_error_snapshot(state_dir, observed)
+            atomic_json(state_dir/'source-errors.private.json', errors)
+        except Exception:
+            # Optional diagnostics must never stop authorized ingestion.
+            errors = {'summary': {domain: sanitize_error_telemetry({}) for domain in DOMAINS}}
+        with lock:
             report['pending_work'] = pending_work
+            for domain, telemetry in errors['summary'].items():
+                # Callbacks may have arrived during the read-only SQLite query.
+                telemetry['reason_counts'] = {}
+                for (_, _, reason), count in observed_errors[domain].items():
+                    telemetry['reason_counts'][reason] = telemetry['reason_counts'].get(reason, 0) + count
+                report['domains'][domain]['error_telemetry'] = telemetry
+                report['domains'][domain]['error_codes'] = sorted(
+                    set(report['domains'][domain].get('error_codes', [])) | set(telemetry['class_counts']))
             report['updated_at']=_utc()
             report['elapsed_seconds']=int(time.monotonic()-started)
             clean=sanitize_report(report)

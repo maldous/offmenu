@@ -36,6 +36,7 @@ PENDING_COUNTS = ('assignments_total', *PENDING_ASSIGNMENTS, 'files_remaining',
 PENDING_NULLABLE = ('records_remaining','records_to_write')
 DOMAIN_STATUSES = frozenset('pending running complete completed imported reused schema_only unavailable missing existing_loaded not_applicable awaiting_user_input skipped partial failed blocked no_inputs'.split())
 ERROR_CODES = frozenset('BudgetExceeded SourceChanged OSError IOError EOFError ValueError TypeError KeyError RuntimeError DatabaseError OperationalError IntegrityError JSONDecodeError UnicodeDecodeError PermissionError FileNotFoundError Error UnsupportedSource MalformedRecord MalformedSupplierRow resource_cap catalog_skip partial_source missing unreadable already_loaded incomplete_source unsupported_supplier_format unsupported_text_compression parquet_dependency_unavailable resource_budget UnsupportedSupplierSource DuplicateField existing_binding_reused source_error restricted_input awaiting_user_input no_recognized_sources schema_uncertain unsupported_format unavailable adapter_unavailable resource_limit'.split())
+ERROR_CODES = ERROR_CODES | frozenset(('UnicodeError', 'DocumentTooLarge', 'OverflowError'))
 HEX = re.compile(r'[0-9a-f]{64}\Z')
 RECEIPT_NAME = re.compile(r'[0-9a-f]{64}-(?:completed|blocked-[0-9a-f]{16}|(?:running|partial|blocked)-[0-9a-f]{64})\.json\Z')
 STAMP = re.compile(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z')
@@ -168,6 +169,21 @@ def ingest_progress_digest(summary):
     return digest(canonical(evidence))
 
 
+def error_telemetry(value, strict=False):
+    # Optional extension: old receipts need no new fields and retain their exact
+    # digest. Only the reviewed fixed-schema helper may construct new telemetry.
+    directory = str(Path(__file__).resolve().parent)
+    if directory not in sys.path:
+        sys.path.insert(0, directory)
+    from ingest_errors import sanitize_error_telemetry
+    safe = sanitize_error_telemetry(value)
+    if strict and (value != safe or any(type(count) is not int
+            for field in ('class_counts', 'origin_counts', 'reason_counts')
+            for count in value.get(field, {}).values())):
+        raise Stop('invalid_sanitized_error_telemetry')
+    return safe
+
+
 def validate_ingest_receipt(value):
     exact_keys(value, {'schema','job_id','job_version','operation','job_key',
         'implementation_sha256','input_sha256','observed_at','outcome','ingest'})
@@ -185,7 +201,7 @@ def validate_ingest_receipt(value):
         raise Stop('invalid_sanitized_schema')
     exact_keys(summary['domains'],set(DOMAINS))
     for domain, row in summary['domains'].items():
-        exact_keys(row,{'status','read','written','unchanged','errors','skipped','reused_rows','reused_stores','source_count','error_codes'})
+        exact_keys(row,{'status','read','written','unchanged','errors','skipped','reused_rows','reused_stores','source_count','error_codes'}, {'error_telemetry'})
         if row['status'] not in DOMAIN_STATUSES:
             raise Stop('invalid_sanitized_status')
         for key in ('read','written','unchanged','errors','skipped','reused_rows','reused_stores','source_count'):
@@ -193,6 +209,8 @@ def validate_ingest_receipt(value):
                 raise Stop('invalid_sanitized_count')
         if not isinstance(row['error_codes'],list) or row['error_codes'] != sorted(set(row['error_codes'])) or any(code not in ERROR_CODES for code in row['error_codes']):
             raise Stop('invalid_sanitized_reason')
+        if 'error_telemetry' in row:
+            error_telemetry(row['error_telemetry'], strict=True)
     if 'pending_work' in summary:
         validate_pending_work(summary['pending_work'])
     if summary['progress_sha256'] != ingest_progress_digest(summary):
@@ -592,6 +610,8 @@ class Runner:
                 codes=[]
             codes=sorted(set(code if isinstance(code,str) and code in ERROR_CODES else 'source_error' for code in codes))
             domains[domain]={'status':status,**counts,'source_count':row.get('sources_total',0),'error_codes':codes}
+            if 'error_telemetry' in row:
+                domains[domain]['error_telemetry'] = error_telemetry(row['error_telemetry'])
         try:
             remaining=validate_pending_work(report.get('pending_work'))
         except (Stop, TypeError, ValueError):

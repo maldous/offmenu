@@ -1,0 +1,32 @@
+{
+  "schema_version": "offmenu-normalization-rule-registry/1",
+  "rule_version": "offmenu-domain-normalization/1",
+  "status": "small_reviewable_rulebook_not_global_ontology",
+  "reviewed_at": "2026-10-22",
+  "runtime_network": false,
+  "source_mutation": false,
+  "automatic_gold_eligibility": false,
+  "rules": [
+    {"id": "source-fields-v1", "scope": "Copy explicit supported source fields with JSON-pointer lineage; no meaning inferred from names."},
+    {"id": "gtin-syntax-v1", "scope": "ASCII lexical GTIN 8/12/13/14; modulo-10 check; left-pad valid syntax to 14 as an alias only. Retain all source zeros and namespace. No allocation, issuer, supplier, manufacturer or origin inference.", "references": ["gs1-check", "gs1-gtin"]},
+    {"id": "quantity-exact-v1", "scope": "Bounded decimal values and ordered ranges; exact g/mL/s/J prefixes and absolute/interval Celsius/Kelvin/Fahrenheit. Rational output avoids rounding. Explicit positive density plus requested g/mL target required across dimensions. No locale spoon/cup, oz or arbitrary unit conversions.", "references": ["bipm-si", "nist-temperature"]},
+    {"id": "nutrient-basis-v1", "scope": "Explicit nutrient observations; per-100-g, per-100-mL and per-serving remain distinct; unresolved bases remain unresolved. No salt/sodium, energy, serving-weight, nutrient-identity or suitability derivation."},
+    {"id": "ingredient-source-v1", "scope": "Original language/name/aliases/preparation and source IDs stay separate; cilantro/coriander/leaf/seed are not automatically equated. No dictionary-based identity collapse or fuzzy merge."},
+    {"id": "supplier-claims-v1", "scope": "Keep explicit organization, supplier entity, place, ownership and price-observation assertions distinct; no live-offer, ownership or user-supplier inference."},
+    {"id": "citation-url-v1", "scope": "HTTP(S) scheme/ASCII authority case only. Preserve query, percent escapes, path, explicit port, trailing slash, fragment and original string. Parent references and rights claims stay distinct; no rights clearance."},
+    {"id": "household-scope-v1", "scope": "Require explicit namespace and household ID; keep private user/profile/inventory assertions scoped; never merge across households or infer preferences."},
+    {"id": "identity-link-v1", "scope": "Only exact same namespace/value and explicit authoritative flags may produce a link candidate; private scope must agree; no automatic entity merging or authority inference."}
+  ],
+  "references": [
+    {"id": "gs1-check", "title": "GS1: How to calculate a check digit manually", "url": "https://www.gs1.org/services/how-calculate-check-digit-manually", "accessed": "2026-10-22", "supports": "Alternating 3/1 weights from the right before the check digit and modulo 10."},
+    {"id": "gs1-gtin", "title": "GS1 Australia: GTIN National Product Catalogue data dictionary", "url": "https://www.gs1au.org/services/data-and-content/national-product-catalogue/npc-data-dictionary/data-attribute/gtin-global-trade-item-number", "accessed": "2026-10-22", "supports": "GTIN lengths 8/12/13/14, check digit required, leading-zero padding to 14."},
+    {"id": "bipm-si", "title": "BIPM SI Brochure, ninth edition, version 4.01", "url": "https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf", "accessed": "2026-10-22", "supports": "SI decimal prefixes; litre as cubic decimetre; Celsius/Kelvin offset; second/minute/hour relationships."},
+    {"id": "nist-temperature", "title": "NIST SI Units - Temperature: exact conversion table", "url": "https://www.nist.gov/pml/owm/si-units-temperature", "accessed": "2026-10-22", "supports": "Exact Fahrenheit/Celsius/Kelvin conversion; intervals distinguished from absolute temperatures."}
+  ],
+  "limits": [
+    "No external AI invocation or simulated review; unresolved cases belong in the actual AI queue.",
+    "Every output requires review; engine is solely responsible for source-version/rule-version cache identity and gold gates.",
+    "No serving-factor, density, botanical synonym, all-world ingredient, dietary or supplier ontology is embedded.",
+    "Generated fixtures only; passing tests is not evidence that actual retained corpora were normalized."
+  ]
+}

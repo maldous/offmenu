@@ -1,0 +1,20 @@
+{
+  "fixture_status": "synthetic_only_no_actual_user_or_retained_records",
+  "records": {
+    "barcodes": [{"id":"000123", "code":"000123", "name":"SYNTHETIC barcode occurrence"}],
+    "ingredients": [{"id":"recipe-a:ingredient:0","kind":"ingredient_mention","recipe_id":"recipe-a","ordinal":0,"raw_text":"SYNTHETIC flour","relations":[{"kind":"ingredient_of","target_domain":"recipes","target_id":"recipe-a"}]}],
+    "recipes": [
+      {"id":"recipe-a","kind":"recipe","title":"SYNTHETIC recipe","relations":[{"kind":"has_ingredient_mention","target_domain":"ingredients","target_id":"recipe-a:ingredient:0"}]},
+      {"id":"menu-a","kind":"menu","title":"SYNTHETIC menu","relations":[{"kind":"contains_menu_entry","target_domain":"recipes","target_id":"menu-child"}]},
+      {"id":"menu-child","kind":"menu_item","title":"SYNTHETIC menu entry","relations":[]}
+    ],
+    "dietary": [{"id":"food-a","source_record_id":"0007","source_fields":{"foodId":"0007","basis":"per 100 g"}}],
+    "user_profiles": [],
+    "inventory": [],
+    "suppliers": [
+      {"id":"hashed-occurrence-a","entity_id":"001","provider":"synthetic-provider","type":"organization","name":"SYNTHETIC A","relations":[{"kind":"owned_by","target_domain":"suppliers","target_id":"002","subject_id":"001","source_property":"owner_id"}]},
+      {"id":"hashed-occurrence-b","entity_id":"002","provider":"synthetic-provider","type":"organization","name":"SYNTHETIC B","relations":[]}
+    ],
+    "citations": [{"id":"cite-a","source_record_id":"recipe-a","reference":"https://example.invalid/synthetic#fragment"}]
+  }
+}

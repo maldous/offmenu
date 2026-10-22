@@ -1,0 +1,13 @@
+{
+  "fixture_status": "generated_synthetic_not_retained_user_data",
+  "rule_version": "offmenu-domain-normalization/1",
+  "cases": [
+    {"record_type": "barcode", "payload": {"provider": "synthetic", "code": "00012345600012", "product_name": "Synthetic product"}},
+    {"record_type": "ingredient", "payload": {"kind": "ingredient_source_entity", "name": "coriander seed", "source_native_id": "synthetic-seed", "raw_source": {"language": "en", "aliases": ["cilantro"], "preparation": "whole seed"}}},
+    {"record_type": "dietary_assertion", "payload": {"record_type": "nutrientprofile", "source_fields": {"kind": "NutrientProfile", "data": {"name": "Synthetic nutrient record", "basis": "per_100g", "nutrients": [{"name": "protein", "amount": "1.25", "unit": "g"}]}}}},
+    {"record_type": "supplier", "payload": {"type": "place", "provider": "synthetic", "entity_id": "synthetic-place", "name": "Synthetic food place", "country": "ZZ", "relations": [{"kind": "owned_by", "target_id": "synthetic-owner"}]}},
+    {"record_type": "citation", "payload": {"record_type": "source_citation", "reference": {"title": "Synthetic reference", "url": "HTTPS://EXAMPLE.ORG/Article?x=2&x=1#section-2", "evidence_fragment": "Generated evidence fragment", "license": "source-asserted-only"}, "parent_reference": {"sha256": "synthetic-not-a-digest"}}},
+    {"record_type": "profile", "payload": {"household_namespace": "synthetic-fixtures", "household_id": "generated-household-a", "user_id": "generated-user-a", "preferences": ["synthetic preference"]}},
+    {"record_type": "inventory", "payload": {"household_namespace": "synthetic-fixtures", "household_id": "generated-household-a", "item_id": "generated-stock-a", "name": "Synthetic rice", "quantity": "0.75", "unit": "kg"}}
+  ]
+}
