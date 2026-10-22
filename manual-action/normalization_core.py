@@ -6,6 +6,7 @@ person/model truly reviewed an item: only the actual reviewer may submit one.
 This module cannot generate an actual-review receipt or invoke an AI provider.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 import copy
 from datetime import datetime
 import hashlib
@@ -451,7 +452,7 @@ def _secure_directory(path):
 class NormalizationStore:
     """Only owned private sidecars; never opens a staging/canonical DB for writes."""
     def __init__(self, state_dir):
-        directory = _secure_directory(Path(state_dir) / 'normalization-private')
+        directory = _secure_directory(resolve_layout(state_dir).normalization)
         self.path = directory / 'normalized-sidecars.sqlite3'
         if self.path.is_symlink():
             raise NormalizationError('symlink_store_refused')
@@ -759,7 +760,8 @@ class CompactNormalizationStore:
     def __init__(self, state_dir, domain):
         if domain not in DOMAINS or domain in ('user_profiles', 'inventory'):
             raise NormalizationError('public_domain_required')
-        directory = _secure_directory(Path(state_dir) / 'normalization-private')
+        self.layout = resolve_layout(state_dir)
+        directory = _secure_directory(self.layout.normalization)
         self.path = directory / ('compact-' + domain + '.sqlite3')
         for path in (self.path, Path(str(self.path) + '-wal'), Path(str(self.path) + '-shm'), Path(str(self.path) + '-journal')):
             if path.is_symlink():
@@ -837,7 +839,7 @@ class CompactNormalizationStore:
         """Read the bounded durable progress even when disk reserve blocks writes."""
         if domain not in DOMAINS or domain in ('user_profiles', 'inventory'):
             raise NormalizationError('public_domain_required')
-        path = Path(os.path.abspath(state_dir)) / 'normalization-private' / ('compact-' + domain + '.sqlite3')
+        path = resolve_layout(state_dir).normalization / ('compact-' + domain + '.sqlite3')
         if any(parent.is_symlink() for parent in (path, *path.parents)):
             raise NormalizationError('symlink_store_refused')
         if not path.exists():
@@ -924,6 +926,7 @@ class CompactNormalizationStore:
 
     def commit_batch(self, snapshot_key, entries, failures, cursor, counters, *, complete=False):
         """One transaction, including the durable cursor; no per-record commits."""
+        self.layout.verify_lease()
         if len(entries) + len(failures) > 1000:
             raise NormalizationError('compact_batch_row_cap')
         cursor_json = self._cursor_json(cursor)

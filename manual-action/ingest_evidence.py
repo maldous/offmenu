@@ -6,6 +6,7 @@ no diagnostic result grants ingestion eligibility. Public values are fixed enums
 and counts; private descriptor examples never enter the public projection.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 
 import hashlib
 import json
@@ -398,6 +399,7 @@ def _read_private(path):
 
 
 def _atomic_private(path, value):
+    resolve_layout(Path(path).parent)
     path = _safe_path(path)
     raw = (json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode()
     if len(raw) > MAX_PRIVATE_BYTES:
@@ -424,7 +426,7 @@ class EvidenceCollector:
     def __init__(self, sources, config, catalog=None):
         self.sources = sources if type(sources) is list else list(sources)
         self.config = config
-        self.path = Path(config['state_dir']) / 'ingest-evidence.private.json'
+        self.path = resolve_layout(config['state_dir']).ingest / 'ingest-evidence.private.json'
         self.catalog_id = config.get('catalog_sha256')
         self.catalog = _blank_catalog(len(self.sources), not config.get('catalog_truncated', False))
         self.before = None

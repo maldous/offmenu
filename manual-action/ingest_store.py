@@ -1,5 +1,6 @@
 """Additive source-faithful SQLite staging; never opens canonical stores for writes."""
 from __future__ import annotations
+from runner_paths import resolve_layout
 import contextlib
 import fcntl
 import hashlib
@@ -121,7 +122,8 @@ class DomainStore:
         self.config = config or {}
         self.check_budget = check_budget or (lambda: None)
         self.progress = progress or (lambda **kw: None)
-        self.directory = Path(state_dir).absolute() / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging'
+        self.layout = resolve_layout(state_dir)
+        self.directory = self.layout.domain_path(domain).parent
         self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
         self.path = self.directory / (domain + '.sqlite3')
         if self.directory.is_symlink() or self.path.is_symlink():
@@ -223,6 +225,7 @@ class DomainStore:
         return True
 
     def _commit_batch(self, source, fp, version, batch, cursor, totals):
+        self.layout.verify_lease()
         self.check_budget()
         if _fingerprint(source) != fp:
             raise SourceChanged('source_changed_during_ingestion')

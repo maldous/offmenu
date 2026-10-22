@@ -8,6 +8,7 @@ are not executed; symlinks, credentials and private household data are excluded.
 Unknown licences are reported, not fabricated or used as a global ingest gate.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 
 import collections
 import gzip
@@ -329,10 +330,14 @@ def discover_sources(options=None):
     discovery complete until truncated is false. No initial 1000-file ceiling.
     """
     options = dict(options or {})
+    layout = resolve_layout(options.get('state_dir', Path(__file__).parent / '.local-results' / 'ingest'))
     roots = [_absolute(x) for x in options.get('roots', [DEFAULT_ROOT])]
     allowed = [_absolute(x) for x in options.get('allowed_report_roots', [])]
     excluded = [_absolute(options['state_dir'])] if options.get('state_dir') else []
     excluded.extend(_absolute(x) for x in options.get('exclude_paths', []))
+    if not layout.legacy:
+        excluded.extend((layout.runtime, layout.public_staging, layout.normalization, layout.household))
+    exclusion_binding = sorted({str(x) for x in excluded})
     max_files = max(1, int(options.get('max_files', 250000)))
     max_depth = max(1, int(options.get('max_depth', 40)))
     deadline = time.monotonic() + max(0.001, float(options.get('max_scan_seconds', 120)))
@@ -344,6 +349,8 @@ def discover_sources(options=None):
         raise ValueError('invalid_catalog_cursor')
     if cursor and cursor.get('roots') != [str(x) for x in roots]:
         raise ValueError('catalog_cursor_roots_changed')
+    if cursor and not layout.legacy and cursor.get('excluded') != exclusion_binding:
+        raise ValueError('catalog_cursor_exclusions_changed')
     queue = collections.deque(cursor.get('pending', []))
     seen = set(cursor.get('seen', []))
     inodes = dict(cursor.get('inodes', {}))
@@ -638,7 +645,7 @@ def discover_sources(options=None):
               'restriction_updates': [{'id': key, 'reason': value} for key, value in restriction_updates.items()],
               'resume_cursor': None}
     if truncated:
-        result['resume_cursor'] = {'schema': 'offmenu-catalog-cursor/1', 'roots': [str(x) for x in roots],
+        result['resume_cursor'] = {'schema': 'offmenu-catalog-cursor/1', 'roots': [str(x) for x in roots], 'excluded': exclusion_binding,
                                    'pending': list(queue), 'seen': sorted(seen), 'inodes': inodes,
                                    'digests': digests, 'reports_seen': sorted(reports_seen),
                                    'restricted_inodes': restricted_inodes, 'restricted_digests': restricted_digests,

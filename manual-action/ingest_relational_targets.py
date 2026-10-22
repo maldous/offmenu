@@ -6,6 +6,7 @@ resumable and source-identity preserving. Exact record joins are not food identi
 equivalence, semantic review, rights clearance, translation or gold acceptance.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 import contextlib
 import fcntl
 import hashlib
@@ -114,7 +115,7 @@ def _identity(path):
 
 
 def _store(state, domain):
-    return state / ('private-household' if domain in PRIVATE else '.') / 'staging' / (domain + '.sqlite3')
+    return resolve_layout(state).domain_path(domain)
 
 
 def _lexical(value):
@@ -331,7 +332,7 @@ def relational_outputs_available(state_dir):
     Empty WAL inode churn is immaterial; nonempty WAL or active writers defer.
     """
     try:
-        state = _safe(state_dir)
+        state = _safe(resolve_layout(state_dir).ingest)
         def read(path):
             path = _safe(path)
             if _identity(path) is None: raise TargetError('derived_target_invalid')
@@ -343,7 +344,7 @@ def relational_outputs_available(state_dir):
         receipt = read(state/'relational-targets.private.json')
         snapshot = receipt.get('snapshot')
         if not isinstance(snapshot,str) or not re.fullmatch('[a-f0-9]{64}',snapshot): return False
-        root = _safe(state/'private-household'/'relational-targets'/'v1')
+        root = _safe(resolve_layout(state).household/'relational-targets'/'v1')
         target = _safe(root/(snapshot+'.sqlite3'))
         persisted = read(root/(snapshot+'.manifest.json'))
         for value in (receipt,persisted):
@@ -421,7 +422,7 @@ def materialize_relational_targets(state_dir, selections, *, catalog_complete=Tr
 
 def _materialize(state_dir, selections, catalog_complete, max_records, max_seconds, max_record_bytes,
                  reserve_bytes, progress_callback, progress_interval, blockers):
-    state = _safe(state_dir)
+    state = _safe(resolve_layout(state_dir).ingest)
     if not isinstance(selections, list) or len(selections) > 100000:
         raise TargetError('derived_target_invalid')
     selected = sorted(set((r.get('domain'), r.get('stored_source_key', r.get('source_key')),
@@ -478,8 +479,8 @@ def _materialize(state_dir, selections, catalog_complete, max_records, max_secon
         snapshot = _hash([SCHEMA, code_hash, identities, selected, bool(catalog_complete)])
         try: disk_check()
         except _Limit: raise TargetError('disk_reserve') from None
-        directory = _safe(state / 'private-household' / 'relational-targets' / 'v1')
-        for path in (state/'private-household', directory.parent, directory):
+        directory = _safe(resolve_layout(state).household / 'relational-targets' / 'v1')
+        for path in (resolve_layout(state).household, directory.parent, directory):
             _safe(path).mkdir(exist_ok=True, mode=0o700)
         lock = _safe(directory / 'materializer.lock')
         fd = os.open(lock, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)

@@ -4,6 +4,7 @@ Only this coordinating module invokes report_callback. Domain workers never run
 Git or transmit anything. Public counts describe source rows, not distinct entities.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import hashlib
 from contextlib import closing
@@ -51,7 +52,7 @@ except Exception:
         raise ValueError('report_metadata_unavailable')
 
     def store_path(state_dir, domain):
-        return Path(state_dir) / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging' / (domain + '.sqlite3')
+        return resolve_layout(state_dir).domain_path(domain)
 
     def dashboard(summary):
         return '[pending] reporting metadata unavailable; remaining reads/writes unknown'
@@ -88,6 +89,7 @@ def _utc():
 
 
 def atomic_json(path, value):
+    resolve_layout(Path(path).parent)
     path = Path(path)
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     if path.is_symlink() or path.parent.is_symlink():
@@ -496,11 +498,13 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
     for key, value in GLOBAL_BUDGET_DEFAULTS.items():
         config.setdefault(key, value)
     config.setdefault('state_dir',str(Path(__file__).parent / '.local-results' / 'ingest'))
-    state_dir=Path(config['state_dir']).absolute()
+    layout=resolve_layout(config['state_dir'])
+    state_dir=layout.ingest
     if any(p.is_symlink() for p in (state_dir,*state_dir.parents)):
         raise ValueError('symlink_state_dir_refused')
     state_dir.mkdir(mode=0o700,parents=True,exist_ok=True)
-    os.chmod(state_dir,0o700)
+    if layout.legacy:
+        os.chmod(state_dir,0o700)
     config['state_dir']=str(state_dir)
     workers=worker_limit(config.get('workers',8))
     started=time.monotonic()
@@ -736,6 +740,7 @@ def run_ingest(sources, config=None, report_callback=None, adapters=None, catalo
 def prepare_default(state_dir, options=None):
     from ingest_catalog import discover_sources
     options=dict(options or {})
+    state_dir=resolve_layout(state_dir).ingest
     options['state_dir']=str(state_dir)
     prior_path=Path(state_dir)/'catalog.private.json'
     prior={}
@@ -818,7 +823,7 @@ def completed_outputs_available(prepared):
     the completed plan even when the retained input catalog is unchanged.
     """
     import sqlite3
-    state=Path(prepared['config']['state_dir']).absolute()
+    state=resolve_layout(prepared['config']['state_dir']).ingest
     try:
         if any(p.is_symlink() for p in (state,*state.parents)):
             return False
@@ -829,7 +834,7 @@ def completed_outputs_available(prepared):
         if report.get('status')!='complete' or report.get('catalog_sha256')!=prepared.get('catalog_sha256') or report.get('run_id')!=private.get('report',{}).get('run_id'):
             return False
         for domain in DOMAINS:
-            path=state/('private-household' if domain in ('user_profiles','inventory') else '.')/'staging'/(domain+'.sqlite3')
+            path=resolve_layout(state).domain_path(domain)
             if path.is_symlink() or not path.is_file():
                 return False
             expected=private.get('domains',{}).get(domain,{})

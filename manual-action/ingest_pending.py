@@ -5,6 +5,7 @@ Expected counts must describe adapter-output ordinals for the exact source versi
 No historical hints, row COUNT(*), payload scans, or whole-file hashes are used.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 import hashlib
 from contextlib import closing
 import json
@@ -75,7 +76,7 @@ def sanitize_pending_work(value):
 
 
 def store_path(state_dir, domain):
-    return Path(state_dir).absolute() / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging' / (domain + '.sqlite3')
+    return resolve_layout(state_dir).domain_path(domain)
 
 
 def output_identity(path):
