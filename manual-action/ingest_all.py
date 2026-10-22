@@ -5,6 +5,7 @@ import argparse
 import json
 from pathlib import Path
 from ingest_engine import run_ingest, run_default
+from runner_paths import resolve_layout
 
 
 def main(argv=None):
@@ -32,7 +33,7 @@ def main(argv=None):
         if args.get(name) is None:
             args.pop(name, None)
     catalog=args.pop('catalog')
-    state=args.pop('state_dir')
+    state=str(resolve_layout(args.pop('state_dir')).ingest)
     if args.get('roots') is None:
         args.pop('roots',None)
     if catalog:

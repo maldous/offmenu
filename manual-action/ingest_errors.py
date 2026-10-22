@@ -5,6 +5,7 @@ Reasons cover observed adapter callbacks in THIS invocation only. Older stores
 did not record reasons and must not be retrospectively assigned one.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 
 from pathlib import Path
 import sqlite3
@@ -155,7 +156,7 @@ def collect_error_snapshot(state_dir, observed=None):
             details['observed_adapter_events'].append({'source_key': key, 'error_class': safe_class,
                                                        'reason_code': safe_reason, 'count': count})
             telemetry['reason_counts'][safe_reason] = telemetry['reason_counts'].get(safe_reason, 0) + count
-        path = Path(state_dir).absolute() / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging' / (domain + '.sqlite3')
+        path = resolve_layout(state_dir).domain_path(domain)
         try:
             if any(p.is_symlink() for p in (path, *path.parents)):
                 raise ValueError('unsafe_output_path')

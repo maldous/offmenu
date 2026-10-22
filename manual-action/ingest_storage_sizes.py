@@ -6,6 +6,7 @@ Allocated bytes sum reported blocks over these paths, not deduplicated/exclusive
 physical usage, a filesystem total, or an attribution of ingest growth.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 from pathlib import Path
 import stat
 from ingest_api import DOMAINS
@@ -98,10 +99,10 @@ def capture_storage_sizes(state_dir):
     Cache/source directory sizes are intentionally unmeasured and null.
     """
     value = unknown_storage_sizes()
-    root = Path(state_dir).absolute()
+    layout = resolve_layout(state_dir)
     ancestors = {}
     for domain in DOMAINS:
-        directory = root / ('private-household' if domain in ('user_profiles', 'inventory') else '.') / 'staging'
+        directory = layout.domain_path(domain).parent
         status = _directory_status(directory, ancestors)
         for index, suffix in enumerate(SUFFIXES):
             if status == 'absent':

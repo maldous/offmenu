@@ -7,6 +7,7 @@ resumes its atomic cursor without replaying the historical prefix. This first
 version does not claim change-feed incremental selection after DB mutations.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 from contextlib import closing
 import copy
 import hashlib
@@ -118,7 +119,8 @@ def prepare_default(state_dir, config=None):
     the runner lease. Admission also checks a stable SQLite read transaction;
     run_prepared rechecks the exact content-bearing snapshot on every batch.
     """
-    state = _safe_path(state_dir)
+    layout = resolve_layout(state_dir)
+    state = _safe_path(layout.ingest)
     options = _config(config)
     import normalization_domains
     import normalize_recipes
@@ -127,7 +129,7 @@ def prepare_default(state_dir, config=None):
             'admission_bytes': options['batch_bytes']}
     domains = {}
     for domain in PUBLIC_DOMAINS:
-        path = state / 'staging' / (domain + '.sqlite3')
+        path = layout.domain_path(domain)
         item = {'path': path, 'status': 'unavailable', 'selected_rows': None, 'snapshot': None}
         try:
             before = _identity(path)
@@ -235,6 +237,7 @@ _QUERY = '''SELECT r.source_key,r.source_version,r.record_id,r.content_sha256,
 
 def run_prepared(prepared, report_callback=None):
     """Rules-only cached progress; review never becomes optional or automatic."""
+    resolve_layout(prepared['state_dir'])  # Recheck selector/admission before any worker or DB.
     options = prepared['config']
     budget = _Budget(prepared)
     report = {'schema': SCHEMA, 'input_sha256': prepared['input_sha256'], 'status': 'running',

@@ -20,6 +20,7 @@ import sys
 import tempfile
 import datetime
 import time
+from runner_paths import resolve_layout
 
 BRANCH = 'integration/manual-actions-20261022'
 REMOTE_URLS = {'git@github.com:maldous/offmenu.git', 'https://github.com/maldous/offmenu.git',
@@ -404,7 +405,11 @@ class Runner:
     def __init__(self, root):
         self.root = safe_path(root)
         self.gitdir = safe_path(self.root / '.git')
-        self.state = self.gitdir / 'offmenu-runner'
+        try:
+            self.layout = resolve_layout(self.gitdir / 'offmenu-runner' / 'ingest', require_lease=False)
+        except (OSError, ValueError) as error:
+            raise Stop(str(error) if isinstance(error, ValueError) else 'runner_layout_unavailable') from None
+        self.state = self.layout.runtime
         self.lock = None
         self.remote_head = None
         self.receipt_transport = 'legacy-same-branch'
@@ -527,7 +532,8 @@ class Runner:
 
     def acquire(self, inherited=None):
         self.preconditions()
-        path = self.gitdir / 'offmenu-run.lock'
+        self.layout.verify()
+        path = self.layout.lock
         if inherited is None:
             fd = os.open(path, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
         else:
@@ -542,7 +548,10 @@ class Runner:
             os.close(fd)
             raise Stop('another_run_is_active') from None
         self.lock = fd
+        self.layout.activate(fd)
         self.preconditions()
+        if not self.layout.legacy:
+            self.durable_local_json(self.state / 'layout-admission.json', self.layout.binding(fd))
 
     def pull(self):
         announce('[1/4] Pulling the reviewed manual-action branch (fast-forward only).')
@@ -552,6 +561,7 @@ class Runner:
         self.check_outgoing()
 
     def reexec(self):
+        self.layout.verify_lease()
         os.set_inheritable(self.lock, True)
         env = dict(os.environ, OFFMENU_RUN_FD=str(self.lock), OFFMENU_RUN_HEAD=self.textgit('rev-parse', 'HEAD'), OFFMENU_RUN_REMOTE=self.remote_head)
         os.execve(sys.executable, [sys.executable, '-B', str(self.root / 'manual-action/plan_runner.py')], env)
@@ -584,6 +594,8 @@ class Runner:
         return bool(commits)
 
     def checkpoint(self, phase, job_key=None, relative=None, sha256=None):
+        # Physical admission is separate from immutable logical/job receipts.
+        self.layout.verify_lease()
         # A small local crash-recovery record; never staged or pushed.
         self.state = safe_path(self.state)
         self.state.mkdir(mode=0o700, exist_ok=True)
@@ -707,6 +719,7 @@ class Runner:
         return importlib.import_module('ingest_engine')
 
     def durable_local_json(self, path, value):
+        self.layout.verify_lease()
         path=safe_path(path)
         path.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
         fd,temporary=tempfile.mkstemp(prefix='.pending-',dir=path.parent)
@@ -853,6 +866,7 @@ class Runner:
             return result
 
     def run_ingest_plan(self, plan, job):
+        self.layout.verify_lease()
         self.preconditions()
         self.receipt_transport = plan.get('receipt_transport', 'legacy-same-branch')
         engine=self.ingest_engine()
@@ -943,7 +957,7 @@ class Runner:
         input_sha=prepared['catalog_sha256']
         if not isinstance(input_sha,str) or not HEX.fullmatch(input_sha):
             raise Stop('invalid_catalog_identity')
-        files=['run','manual-action/plan_runner.py']+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('receipt_*.py'))]+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('ingest_*.py'))]
+        files=['run','manual-action/plan_runner.py','manual-action/runner_paths.py']+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('receipt_*.py'))]+[str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob('ingest_*.py'))]
         for helper in ('manual-action/acquired_recipe_js.py', 'manual-action/relational-targets.schema.sql', 'manual-action/relational-target-mapping.json'):
             if (self.root / helper).is_file():
                 files.append(helper)
@@ -1027,6 +1041,7 @@ class Runner:
 
     def run_normalization_plan(self, plan, job):
         """Read only owned staging databases; never dispatch ingest/discovery."""
+        self.layout.verify_lease()
         self.preconditions()
         self.receipt_transport = 'isolated-branch-v1'
         engine = self.normalization_engine()
@@ -1095,7 +1110,7 @@ class Runner:
         input_sha = prepared['input_sha256']
         if not isinstance(input_sha, str) or not HEX.fullmatch(input_sha):
             raise Stop('invalid_normalization_input_identity')
-        names = ['run', 'manual-action/plan_runner.py', 'manual-action/plan.json',
+        names = ['run', 'manual-action/plan_runner.py', 'manual-action/runner_paths.py', 'manual-action/ingest_storage_sizes.py', 'manual-action/plan.json',
                  'manual-action/normalize_recipes.py']
         for pattern in ('normalization_*.py', 'receipt_*.py'):
             names += [str(p.relative_to(self.root)) for p in sorted((self.root/'manual-action').glob(pattern))]
@@ -1265,11 +1280,12 @@ class Runner:
 
 
 def main():
-    runner = Runner(Path(__file__).resolve().parents[1])
+    runner = None
     try:
+        runner = Runner(Path(__file__).resolve().parents[1])
         if len(sys.argv) != 1:
             raise Stop('no_arguments_supported_edit_reviewed_plan_for_reruns')
-        inherited = os.environ.pop('OFFMENU_RUN_FD', None)
+        inherited = os.environ.get('OFFMENU_RUN_FD')
         inherited_head = os.environ.pop('OFFMENU_RUN_HEAD', None)
         inherited_remote = os.environ.pop('OFFMENU_RUN_REMOTE', None)
         runner.acquire(inherited)
@@ -1291,7 +1307,7 @@ def main():
         announce('STOP: ' + reason + '. No reset, stash, clean or force-push was performed.')
         return 2
     finally:
-        if runner.lock is not None:
+        if runner is not None and runner.lock is not None:
             os.close(runner.lock)
 
 

@@ -5,6 +5,7 @@ The callable build_report(state_dir) is suitable for an existing one-command
 runner after its terminal receipt is durable. Only the CLI writes report files.
 """
 from __future__ import annotations
+from runner_paths import resolve_layout
 
 import argparse
 import contextlib
@@ -158,7 +159,7 @@ def database_identity(path):
 
 
 def store_path(state, domain):
-    return state / ('private-household' if domain in PRIVATE else '.') / 'staging' / (domain + '.sqlite3')
+    return resolve_layout(state).domain_path(domain)
 
 
 def read_json_file(path, budget):
@@ -582,7 +583,7 @@ class ReadonlyNormalizationView:
 
 
 def normalization_coverage(state, records, domains, budget, target_language):
-    path = state / 'normalization-private' / 'normalized-sidecars.sqlite3'
+    path = resolve_layout(state).normalization / 'normalized-sidecars.sqlite3'
     report = {'status': 'unknown', 'snapshot': None, 'orphan_or_stale_artifacts': 0,
               'invalid_artifacts': 0, 'matching_artifacts': 0,
               'target_language_status': 'specified' if target_language else 'unspecified',
@@ -697,7 +698,7 @@ def build_report(state_dir, *, limits=None, target_language=None):
     unknown/incomplete evidence, not invented zeros or a readiness approval.
     This does not write reports, staging, private inputs, or execution settings.
     """
-    state = safe_path(state_dir)
+    state = safe_path(resolve_layout(state_dir).ingest)
     limits = limits or Limits()
     budget = Budget(limits)
     if target_language is not None and (not isinstance(target_language, str) or not target_language or len(target_language) > 64):

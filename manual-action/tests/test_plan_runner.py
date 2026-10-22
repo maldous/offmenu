@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import types
@@ -14,6 +15,7 @@ import unittest
 from unittest.mock import patch
 
 PACKAGE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PACKAGE))
 SPEC = importlib.util.spec_from_file_location('plan_runner', PACKAGE / 'plan_runner.py')
 m = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(m)
@@ -34,7 +36,7 @@ class RunnerTests(unittest.TestCase):
         self.git_at(self.root, 'config', 'user.name', 'Generated fixture')
         self.git_at(self.root, 'config', 'user.email', 'fixture@example.invalid')
         (self.root / 'manual-action').mkdir()
-        for name in ('plan_runner.py', 'foo_manual.py', 'plan.json', '.gitignore'):
+        for name in ('plan_runner.py', 'runner_paths.py', 'foo_manual.py', 'plan.json', '.gitignore'):
             shutil.copy(PACKAGE / name, self.root / 'manual-action' / name)
         (self.root / 'manual-action/plan.json').write_text(json.dumps({'schema':'offmenu-run-plan/1','max_parallel':1,'jobs':[{'id':'supplier-source-inspection','version':2,'operation':'supplier_inspect','depends_on':[]}]}))
         shutil.copy(PACKAGE.parent / 'run', self.root / 'run')
