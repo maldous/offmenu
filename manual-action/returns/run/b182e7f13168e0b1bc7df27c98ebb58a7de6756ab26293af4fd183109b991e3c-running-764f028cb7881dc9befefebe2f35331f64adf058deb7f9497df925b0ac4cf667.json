@@ -1,0 +1,129 @@
+{
+  "implementation_sha256": "545cd8b9cc5efd5457aac667e54a985031323e1051e3f9240a677627e7ea15d4",
+  "input_sha256": "3f44fbbe2e7831332a973db869f92c378e89876689d82c633891ef503fdfac08",
+  "job_id": "retained-six-domain-normalization",
+  "job_key": "b182e7f13168e0b1bc7df27c98ebb58a7de6756ab26293af4fd183109b991e3c",
+  "job_version": 1,
+  "normalization": {
+    "binding": "normalization_sidecars_not_gold_or_app_bound",
+    "evidence_ref": {
+      "bytes": 3271,
+      "schema": "offmenu-ingest-evidence-ref/1",
+      "sha256": "c0592d7b87aa2f5a857689b5d68a5869028996a6ed487f409812b14f17cea2e9"
+    },
+    "progress_sha256": "764f028cb7881dc9befefebe2f35331f64adf058deb7f9497df925b0ac4cf667",
+    "report": {
+      "domains": {
+        "barcodes": {
+          "accepted": 0,
+          "checkpoint_sha256": "1a6beea7024b6cd8dd17de9d7324b6bcaa57d2cbb75243009fed1cfa1484ec01",
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 433843,
+          "rejected": 0,
+          "rules_new": 433843,
+          "rules_reused": 0,
+          "scanned": 433843,
+          "selected_rows": 984738,
+          "status": "partial",
+          "unresolved": 7275
+        },
+        "citations": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 5701365,
+          "status": "pending",
+          "unresolved": 0
+        },
+        "dietary": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 1853432,
+          "status": "pending",
+          "unresolved": 0
+        },
+        "ingredients": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 3341542,
+          "status": "pending",
+          "unresolved": 0
+        },
+        "recipes": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 447777,
+          "status": "pending",
+          "unresolved": 0
+        },
+        "suppliers": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 4110540,
+          "status": "pending",
+          "unresolved": 0
+        }
+      },
+      "gold_status": "blocked",
+      "input_sha256": "3f44fbbe2e7831332a973db869f92c378e89876689d82c633891ef503fdfac08",
+      "resources": {
+        "elapsed_seconds": 771,
+        "free_disk_bytes": 251665457152,
+        "workers": 16
+      },
+      "review_status": "pending_approved_route",
+      "schema": "offmenu-db-normalization-report/1",
+      "selected_rows_scope": "owned_metadata_counter",
+      "selection": "all_retained_source_versions",
+      "source_originals": "database_payload_only",
+      "status": "running",
+      "stop_reason": null,
+      "versions": {
+        "model_version": "unconfigured",
+        "prompt_version": "unconfigured",
+        "rule_version": "offmenu.normalization-rules/1",
+        "schema_version": "offmenu.common-normalized-record/1",
+        "template_version": "offmenu.common-template/1"
+      }
+    }
+  },
+  "observed_at": "2026-10-22T20:47:04Z",
+  "operation": "normalize_staged_databases",
+  "outcome": "running",
+  "schema": "offmenu-run-receipt/3"
+}
