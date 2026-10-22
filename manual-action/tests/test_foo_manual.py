@@ -104,6 +104,26 @@ class ManualActionTests(unittest.TestCase):
         for name, body in (('fixture.json', b'[{"item":1}]'), ('customers.json', b'{}'), ('opaque.exe', b'plain text')):
             self.assertEqual(self.inspect([(name, body, tarfile.REGTYPE)])['status'], 'blocked')
 
+    def test_exact_supplier_metadata_names_accept_generated_dicts(self):
+        for name in ('generated-author-proof.json', 'generated-boundary-evidence.json', 'source-file-pins.json'):
+            with self.subTest(name=name):
+                out = self.inspect([('supplier-review/' + name, b'{"kind":"generated","checks":2}', tarfile.REGTYPE)])
+                self.assertEqual(out['status'], 'inspection_pass_manual_review_required')
+                self.assertEqual(out['manifest'][0]['bytes'], 31)
+
+    def test_supplier_metadata_names_do_not_bypass_row_content_or_raw_path_guards(self):
+        for name in ('generated-author-proof.json', 'generated-boundary-evidence.json', 'source-file-pins.json'):
+            for data in (b'[{"raw_record":1}]', b'"not metadata"', b'{"token":"ghp_' + b'A' * 25 + b'"}', b'\xff'):
+                with self.subTest(name=name, data_kind=data[:1]):
+                    self.assertEqual(self.inspect([('supplier-review/' + name, data, tarfile.REGTYPE)])['status'], 'blocked')
+            with self.subTest(name=name, case='raw_path'):
+                self.assertEqual(self.inspect([('raw/' + name, b'{"records":[]}', tarfile.REGTYPE)])['reason'], 'dataset_looking_member_path')
+
+    def test_supplier_metadata_name_allowance_is_exact_not_proof_evidence_pattern(self):
+        for name in ('other-proof.json', 'other-evidence.json', 'x-generated-author-proof.json', 'generated-author-proof-copy.json', 'SOURCE-FILE-PINS.json'):
+            with self.subTest(name=name):
+                self.assertEqual(self.inspect([(name, b'{}', tarfile.REGTYPE)])['reason'], 'json_not_named_as_source_metadata')
+
     def test_duplicate_canonical_member_blocked(self):
         out = self.inspect([('a.py', b'x=1', tarfile.REGTYPE), ('./a.py', b'x=2', tarfile.REGTYPE)])
         self.assertEqual(out['reason'], 'duplicate_member_path')

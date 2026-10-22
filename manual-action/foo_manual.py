@@ -31,6 +31,13 @@ MAX_SECONDS = 30
 NAME_MATCH = re.compile(r'osm|openstreetmap|planet|recip|inventory|receipt|manifest|custody|acquisition|progress|cache', re.I)
 SECRET_PATH = re.compile(r'(^|/)(\.git|\.ssh|\.aws|\.env(?:\..*)?|credentials?|secrets?|id_rsa|id_ed25519)(/|$)|\.(pem|key|p12|pfx|keystore)$', re.I)
 DATA_PATH = re.compile(r'(^|/)(raw|datasets?|downloads?|retained|databases?)(/|$)|\.(db|sqlite3?|csv|tsv|parquet|pbf|osm|pdf|jsonl|ndjson|gz|bz2|zip|tar|xz|jpg|png|bin|part)$', re.I)
+# Exact source-metadata names observed in Matt's existing supplier capsule.
+# This does not permit arbitrary proof/evidence JSON or relax content checks.
+SUPPLIER_METADATA_BASENAMES = frozenset({
+    'generated-author-proof.json',
+    'generated-boundary-evidence.json',
+    'source-file-pins.json',
+})
 SOURCE_SUFFIXES = {'.py', '.md', '.rst', '.txt', '.sh', '.toml', '.yaml', '.yml', '.json', '.schema', '.js', '.mjs', '.ts'}
 # Deliberately heuristic; a passing scan is NOT a proof that source contains no secrets.
 SECRET_CONTENT = re.compile(r'(?im)-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----|\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9_-]{20,})\b|^\s*(?:export\s+)?[A-Z0-9_]*(?:PASSWORD|SECRET|ACCESS_TOKEN|API_KEY)[A-Z0-9_]*\s*=\s*[\"\']?[^\s\"\'{}$]{8,}')
@@ -159,7 +166,8 @@ def source_content_allowed(name, data):
         raise Refusal('binary_or_secret_looking_content')
     # JSON is restricted to small descriptive metadata/schema, not row payloads.
     if Path(name).suffix.lower() == '.json':
-        if not re.search(r'manifest|schema|provenance|package|source.state|receipt|fixture', Path(name).name, re.I):
+        if (Path(name).name not in SUPPLIER_METADATA_BASENAMES
+                and not re.search(r'manifest|schema|provenance|package|source.state|receipt|fixture', Path(name).name, re.I)):
             raise Refusal('json_not_named_as_source_metadata')
         try:
             obj = json.loads(body)
