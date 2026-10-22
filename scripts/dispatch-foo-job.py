@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
+from contextlib import ExitStack
 import fcntl
 import hashlib
 import importlib.util
@@ -755,20 +756,40 @@ def ownership_guard(code, identity, run_id, attempt):
     return module.acquire(code, identity, run_id, attempt)
 
 
+class CheckedOwnership:
+    """Classify only actual admission checks, never admitted coordinator work."""
+    def __init__(self, admission):
+        self.admission = admission
+        self.fd = admission.fd
+
+    def verify(self):
+        try:
+            return self.admission.verify()
+        except (OSError, ValueError) as error:
+            raise JobError('ownership-admission-refused') from error
+
+    def child_env(self):
+        try:
+            return self.admission.child_env()
+        except (OSError, ValueError) as error:
+            raise JobError('ownership-admission-refused') from error
+
+
 def execute(request, sha, code, run_id, attempt):
     global ACTIVE_OWNERSHIP
     identity = hashlib.sha256(canonical({"request": request, "trustedCodeSha": sha})).hexdigest()
     # Admission precedes any output-directory/receipt creation. A free lease or
     # an empty Actions queue alone cannot authorize taking native ownership.
-    try:
-        with ownership_guard(code, identity, run_id, attempt) as admission:
-            ACTIVE_OWNERSHIP = admission
-            try:
-                return execute_admitted(request, sha, code, run_id, attempt, identity)
-            finally:
-                ACTIVE_OWNERSHIP = None
-    except (OSError, ValueError) as error:
-        raise JobError('ownership-admission-refused') from error
+    with ExitStack() as cleanup:
+        try:
+            admission = cleanup.enter_context(ownership_guard(code, identity, run_id, attempt))
+        except (OSError, ValueError) as error:
+            raise JobError('ownership-admission-refused') from error
+        ACTIVE_OWNERSHIP = CheckedOwnership(admission) if admission is not None else None
+        try:
+            return execute_admitted(request, sha, code, run_id, attempt, identity)
+        finally:
+            ACTIVE_OWNERSHIP = None
 
 
 def execute_admitted(request, sha, code, run_id, attempt, identity):
