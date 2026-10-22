@@ -73,6 +73,8 @@ class AccessTestDiagnosticProfileTests(unittest.TestCase):
 
     def test_real_sanitizer_projects_complete_fixed_report_only(self):
         value = {'schemaVersion': 'offmenu-source-access-tests/1', 'status': 'passed',
+                 'reporter_mode': 'original_cli', 'child_exit_code': 0, 'unattributed_skips': 0,
+                 'capture_status': 'completed', 'failure_events': 0, 'error_events': 0,
                  'expected_test_suite_sha256': '3f418e0e27be6c21c63d3d33f4750e18aed85fe572ec91b6ca58c0e7d50a5520',
                  'suite_identity_verified': True,
                  'tests_expected': 38, 'tests_run': 38, 'failures': 0, 'errors': 0, 'skipped': 0,
@@ -82,7 +84,9 @@ class AccessTestDiagnosticProfileTests(unittest.TestCase):
         self.assertNotIn('/private', repr(evidence))
         for bad in ({'tests_run': 37}, {'tests_expected': 37}, {'failures': 1},
                     {'failed_test_ids': ['arbitrary.private.test']}, {'tests_run': True},
-                    {'expected_test_suite_sha256': 'a' * 64}, {'suite_identity_verified': False}):
+                    {'expected_test_suite_sha256': 'a' * 64}, {'suite_identity_verified': False},
+                    {'reporter_mode': 'other'}, {'child_exit_code': 1}, {'child_exit_code': True},
+                    {'unattributed_skips': 1}, {'capture_status': 'timeout'}, {'failure_events': 1}):
             with self.subTest(bad=bad):
                 rejected = jobs.safe_evidence(jobs.canonical(value | bad))
                 self.assertNotIn('sourceAccessTests', rejected)
