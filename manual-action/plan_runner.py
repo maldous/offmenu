@@ -38,7 +38,7 @@ REASONS = frozenset('missing unreadable refused_or_unreadable sha256_prefix_mism
     'trailing_archive_payload empty_source_archive symlink_path_refused not_regular_file '
     'wall_time_limit inspection_error OSError EOFError ReadError CompressionError '
     'HeaderError ExtractError ValueError error BadGzipFile PermissionError '
-    'FileNotFoundError'.split())
+    'FileNotFoundError sql_not_schema_ddl'.split())
 
 
 class Stop(Exception):
@@ -160,6 +160,8 @@ class Runner:
 
     def git(self, *args, check=True):
         env = dict(os.environ, GIT_TERMINAL_PROMPT='0', GIT_OPTIONAL_LOCKS='0')
+        if args[0] == 'commit':
+            env.update(self.commit_identity_env())
         command = ['git', '-C', str(self.root), '-c', 'core.hooksPath=/dev/null',
             '-c', 'core.fsmonitor=false', '-c', 'submodule.recurse=false',
             '-c', 'commit.gpgsign=false', '-c', 'push.followTags=false',
@@ -167,14 +169,55 @@ class Runner:
         proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 env=env, start_new_session=True)
         try:
-            out, _ = proc.communicate(timeout=120)
+            out, stderr = proc.communicate(timeout=120)
         except (subprocess.TimeoutExpired, KeyboardInterrupt):
             os.killpg(proc.pid, signal.SIGKILL)
             proc.communicate()
             raise Stop('git_timeout_local_work_preserved') from None
         if check and proc.returncode:
-            raise Stop('git_' + args[0].replace('-', '_') + '_failed_local_work_preserved')
+            operation = args[0].replace('-', '_')
+            detail = stderr.decode('utf-8', errors='replace').lower()
+            category = 'failed'
+            if args[0] == 'commit':
+                if any(text in detail for text in ('unable to auto-detect email address', 'author identity unknown', 'committer identity unknown', 'empty ident name', 'auto-detection is disabled')):
+                    category = 'identity_not_configured'
+                elif 'index.lock' in detail:
+                    category = 'index_locked'
+                elif any(text in detail for text in ('no space left on device', 'disk quota exceeded')):
+                    category = 'storage_unavailable'
+                elif 'permission denied' in detail:
+                    category = 'permission_denied'
+                elif 'nothing to commit' in (out.decode('utf-8', errors='replace').lower() + detail):
+                    category = 'no_changes'
+            raise Stop('git_' + operation + '_' + category + '_local_work_preserved')
         return proc.returncode, out
+
+    def commit_identity_env(self):
+        # Explicitly approved fallback, only for this commit and missing fields.
+        # Never persist Git configuration or replace an already usable identity.
+        result = {}
+        for role in ('AUTHOR', 'COMMITTER'):
+            code, identity = self.git('var', 'GIT_' + role + '_IDENT', check=False)
+            if code == 0 and re.fullmatch(rb'.+ <[^<>]+> [0-9]+ [+-][0-9]{4}\n?', identity):
+                continue
+            for field, fallback in (('NAME', 'OffMenu Runner'), ('EMAIL', 'offmenu-runner@localhost')):
+                variable = 'GIT_' + role + '_' + field
+                value = os.environ.get(variable)
+                if value is None:
+                    for key in (role.lower() + '.' + field.lower(), 'user.' + field.lower()):
+                        code, raw = self.git('config', '--get', key, check=False)
+                        if code == 0:
+                            value = raw.decode('utf-8', errors='strict').strip()
+                            break
+                        if code != 1:
+                            raise Stop('git_identity_config_unreadable_preserved')
+                if value is None and field == 'EMAIL':
+                    value = os.environ.get('EMAIL')
+                if not value or not value.strip():
+                    result[variable] = fallback
+        if result:
+            announce('Using per-command OffMenu Runner fallback for missing Git identity fields; no configuration changed.')
+        return result
 
     def textgit(self, *args):
         return self.git(*args)[1].decode('utf-8').strip()
@@ -194,11 +237,17 @@ class Runner:
         if self.textgit('symbolic-ref', '--short', 'HEAD') != BRANCH:
             raise Stop('expected_manual_action_branch_required')
         self.check_remote()
-        if self.git('diff', '--no-ext-diff', '--no-textconv', '--cached', '--quiet', check=False)[0] != 0:
+        staged = self.git('diff', '--no-ext-diff', '--no-textconv', '--cached', '--name-status', '-z')[1]
+        recovery = self.recovery_receipt() if staged else None
+        expected_stage = b'A\0' + recovery[0].encode() + b'\0' if recovery else b''
+        if staged and (not recovery or staged != expected_stage or self.git('show', ':' + recovery[0])[1] != recovery[1]
+                or not self.regular_receipt_mode(recovery[0])):
             raise Stop('preexisting_staged_changes_preserved_unstage_manually')
         if any((self.gitdir / name).exists() for name in ('MERGE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply', 'BISECT_LOG')):
             raise Stop('git_operation_in_progress')
-        if self.git('status', '--porcelain=v1', '-z', '--untracked-files=all', '--', 'run', 'manual-action', '.github/workflows/manual-action-fixtures.yml')[1]:
+        relevant = self.git('status', '--porcelain=v1', '-z', '--untracked-files=all', '--', 'run', 'manual-action', '.github/workflows/manual-action-fixtures.yml')[1]
+        expected_status = b'A  ' + recovery[0].encode() + b'\0' if recovery else b''
+        if relevant and relevant != expected_status:
             raise Stop('runner_or_plan_paths_dirty_preserved')
         for relative in ('run', 'manual-action', 'manual-action/plan_runner.py', 'manual-action/foo_manual.py', 'manual-action/plan.json', RETURN_DIR):
             safe_path(self.root / relative)
@@ -253,6 +302,8 @@ class Runner:
                 if status_code != 'A':
                     raise Stop('non_runner_commit_pending_preserved')
                 validate_return_path(path)
+                if not self.regular_receipt_mode(path, commit):
+                    raise Stop('non_regular_receipt_commit_preserved')
                 raw = self.git('show', commit + ':' + path)[1]
                 value = validate_receipt(json.loads(raw))
                 if receipt_relpath(value) != path or canonical(value) != raw:
@@ -295,8 +346,38 @@ class Runner:
                 and value.get('receipt') == relative and value.get('sha256') == digest(raw)
                 and value.get('phase') in {'receipt_ready', 'committed', 'published', 'blocked'})
 
+    def recovery_receipt(self):
+        path = self.state / 'checkpoint.json'
+        if not path.exists():
+            return None
+        checkpoint = read_json(path)
+        if (not isinstance(checkpoint, dict) or checkpoint.get('phase') not in {'receipt_ready', 'committed', 'published'}
+                or not checkpoint.get('receipt')):
+            return None
+        relative = checkpoint['receipt']
+        validate_return_path(relative)
+        destination = safe_path(self.root / relative)
+        if not destination.exists():
+            raise Stop('recorded_receipt_missing_preserved')
+        value = validate_receipt(read_json(destination))
+        raw = canonical(value)
+        if (receipt_relpath(value) != relative or destination.read_bytes() != raw
+                or checkpoint.get('job_key') != value['job_key'] or not self.owned_receipt(relative, raw)):
+            raise Stop('recorded_receipt_changed_preserved')
+        return relative, raw, value
+
+    def regular_receipt_mode(self, relative, commit=None):
+        validate_return_path(relative)
+        if commit is not None:
+            raw = self.git('ls-tree', '-z', commit, '--', relative)[1]
+            prefix = rb'100644 blob [0-9a-f]{40,64}\t'
+        else:
+            raw = self.git('ls-files', '--stage', '-z', '--', relative)[1]
+            prefix = rb'100644 [0-9a-f]{40,64} 0\t'
+        return bool(re.fullmatch(prefix + re.escape(relative.encode()) + b'\0', raw))
+
     def tracked(self, relative):
-        return self.git('ls-files', '--error-unmatch', '--', relative, check=False)[0] == 0
+        return self.git('cat-file', '-e', 'HEAD:' + relative, check=False)[0] == 0
 
     def publish(self, relative=None, raw=None):
         self.preconditions()
@@ -311,9 +392,11 @@ class Runner:
             attributes = self.git('check-attr', '-z', 'filter', '--', relative)[1].split(b'\0')
             if attributes != [relative.encode(), b'filter', b'unspecified', b''] and attributes != [relative.encode(), b'filter', b'unset', b'']:
                 raise Stop('receipt_clean_filter_refused_preserved')
-            self.git('add', '-f', '--', relative)
+            staged_now = self.git('diff', '--no-ext-diff', '--no-textconv', '--cached', '--name-only', '-z')[1]
+            if not staged_now:
+                self.git('add', '-f', '--', relative)
             staged = self.git('diff', '--no-ext-diff', '--no-textconv', '--cached', '--name-only', '-z')[1]
-            if staged != relative.encode() + b'\0' or self.git('show', ':' + relative)[1] != raw:
+            if staged != relative.encode() + b'\0' or self.git('show', ':' + relative)[1] != raw or not self.regular_receipt_mode(relative):
                 raise Stop('staged_content_changed_preserved_review_index')
             self.git('commit', '-m', COMMIT_MESSAGE)
             self.checkpoint('committed', value['job_key'], relative, digest(raw))
@@ -333,6 +416,16 @@ class Runner:
 
     def run_plan(self):
         self.preconditions()
+        recovery = self.recovery_receipt()
+        recovered = None
+        if recovery:
+            relative, raw, value = recovery
+            pending = not self.tracked(relative) or bool(self.textgit('rev-list', self.remote_head + '..HEAD', '--', relative))
+            if pending:
+                announce('[2/4] Resuming the existing sanitized receipt; no inspection repeated.')
+                announce('[3/4] Previous supplier outcome: ' + value['outcome'] + '. Existing data/jobs unchanged.')
+                self.publish(relative, raw)
+                recovered = value
         job = validate_plan(read_json(self.root / 'manual-action/plan.json'))
         foo = self.inspector()
         implementation = digest(b''.join((self.root / path).read_bytes() for path in ('run', 'manual-action/plan_runner.py', 'manual-action/foo_manual.py')))
@@ -345,6 +438,11 @@ class Runner:
                     input_sha = digest(raw)
         except (OSError, foo.Refusal):
             pass
+        if recovered and job['version'] == recovered['job_version'] and input_sha == recovered['input_sha256']:
+            announce('Existing receipt published; no new reviewed job version or changed input. No inspection repeated.')
+            return 0 if recovered['outcome'] == 'completed' else 2
+        if recovered:
+            announce('Existing receipt published; evaluating new reviewed supplier job version ' + str(job['version']) + '.')
         job_key = digest(canonical({'job': job, 'implementation': implementation, 'input': input_sha}))
         completed = f'{RETURN_DIR}/{job_key}-completed.json'
         if (self.root / completed).exists():

@@ -124,6 +124,78 @@ class ManualActionTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(self.inspect([(name, b'{}', tarfile.REGTYPE)])['reason'], 'json_not_named_as_source_metadata')
 
+    def test_exact_supplier_schema_ddl_is_read_only_source(self):
+        sql = b"""-- Generated source schema, not a database.
+        PRAGMA foreign_keys = ON;
+        BEGIN TRANSACTION;
+        CREATE TABLE IF NOT EXISTS parent (id TEXT PRIMARY KEY) WITHOUT ROWID;
+        CREATE TABLE item (id INTEGER PRIMARY KEY, parent_id TEXT,
+          note TEXT DEFAULT 'example; value',
+          FOREIGN KEY (parent_id) REFERENCES parent(id) ON DELETE CASCADE ON UPDATE RESTRICT) STRICT;
+        CREATE UNIQUE INDEX IF NOT EXISTS item_parent ON item(parent_id) WHERE parent_id IS NOT NULL;
+        COMMIT;
+        """
+        out = self.inspect([(m.SUPPLIER_SCHEMA_MEMBER, sql, tarfile.REGTYPE)])
+        self.assertEqual(out['status'], 'inspection_pass_manual_review_required')
+        self.assertEqual(out['manifest'][0]['path'], m.SUPPLIER_SCHEMA_MEMBER)
+        self.assertFalse((self.root / 'supplier-review').exists())
+
+    def test_sql_allowance_is_exact_member_not_extension(self):
+        for name in ('schema.sql', 'source/schema.sql', 'supplier-review/schema.sql', 'supplier-review/source/other.sql', 'supplier-review/source/SCHEMA.sql'):
+            with self.subTest(name=name):
+                self.assertEqual(self.inspect([(name, b'CREATE TABLE t(id INT);', tarfile.REGTYPE)])['reason'], 'non_source_member_extension')
+
+    def test_supplier_schema_rejects_dml_dumps_and_hidden_secondary_statements(self):
+        cases = [
+            b'INSERT INTO t VALUES (1);', b'COPY t FROM STDIN;\n1\n\\.',
+            b'CREATE TABLE t(id INT); INSERT INTO t VALUES (1);',
+            b'CREATE TABLE t AS SELECT 1;', b'CREATE TABLE t AS VALUES (1);',
+            b'CREATE TABLE t(id INT) INSERT INTO t VALUES (1);',
+            b'CREATE TABLE t(id INT); UPDATE t SET id=2;', b'DELETE FROM t;',
+            b'REPLACE INTO t VALUES (1);', b'CREATE TRIGGER tr AFTER INSERT ON t BEGIN SELECT 1; END;',
+            b'PRAGMA load_extension="extension";', b'ATTACH DATABASE "other.db" AS other;',
+            b'CREATE TABLE t(id TEXT DEFAULT(readfile("secret")));',
+            b'CREATE TABLE t(id TEXT DEFAULT(LOAD_EXTENSION("evil")));',
+            b'CREATE TABLE t(id INT); .read dump.sql', b'1,raw,row\n2,raw,row',
+            b'CREATE TABLE t(id INT); /* unterminated', b"CREATE TABLE t(id TEXT DEFAULT 'unterminated);",
+        ]
+        for sql in cases:
+            with self.subTest(sql=sql[:40]):
+                out = self.inspect([(m.SUPPLIER_SCHEMA_MEMBER, sql, tarfile.REGTYPE)])
+                self.assertEqual(out['reason'], 'sql_not_schema_ddl')
+
+    def test_supplier_schema_rejects_quoted_unsafe_function_calls(self):
+        for quote, end in (('"', '"'), ('`', '`'), ('[', ']')):
+            for function in ('readfile', 'writefile', 'load_extension'):
+                with self.subTest(quote=quote, function=function):
+                    sql = ('CREATE TABLE t(id TEXT DEFAULT(' + quote + function + end + "('private')));").encode()
+                    self.assertEqual(self.inspect([(m.SUPPLIER_SCHEMA_MEMBER, sql, tarfile.REGTYPE)])['reason'], 'sql_not_schema_ddl')
+        sql = b'CREATE TABLE t("readfile" TEXT, `writefile` TEXT, [load_extension] TEXT);'
+        self.assertEqual(self.inspect([(m.SUPPLIER_SCHEMA_MEMBER, sql, tarfile.REGTYPE)])['status'], 'inspection_pass_manual_review_required')
+
+    def test_supplier_schema_keeps_secret_binary_size_and_raw_path_guards(self):
+        for data in (b'CREATE TABLE t(id INT); -- ghp_' + b'A' * 25, b'CREATE TABLE t(id INT);\x00', b'\xff'):
+            self.assertEqual(self.inspect([(m.SUPPLIER_SCHEMA_MEMBER, data, tarfile.REGTYPE)])['status'], 'blocked')
+        out = self.inspect([('raw/' + m.SUPPLIER_SCHEMA_MEMBER, b'CREATE TABLE t(id INT);', tarfile.REGTYPE)])
+        self.assertEqual(out['reason'], 'dataset_looking_member_path')
+        prefix = self.archive_of([(m.SUPPLIER_SCHEMA_MEMBER, b'CREATE TABLE t(id INT);', tarfile.REGTYPE)])
+        with patch.object(m, 'MAX_MEMBER', 1):
+            self.assertEqual(m.inspect_supplier(self.archive, prefix)['reason'], 'member_size_limit')
+
+    def test_blocked_archive_retains_digest_and_private_failed_member_only(self):
+        out = self.inspect([('supplier-review/opaque.exe', b'source', tarfile.REGTYPE)])
+        self.assertEqual(out['reason'], 'non_source_member_extension')
+        self.assertEqual(out['observed_sha256'], hashlib.sha256(self.archive.read_bytes()).hexdigest())
+        self.assertEqual(out['failed_member'], {'ordinal': 1, 'name': 'supplier-review/opaque.exe', 'kind': 'file', 'bytes': 6})
+        summary = m.public_summary({'observed_at': 'test', 'command': 'supplier', 'supplier': out})
+        self.assertNotIn('failed_member', json.dumps(summary))
+        self.assertNotIn('opaque.exe', json.dumps(summary))
+        self.assertNotIn(str(self.root), json.dumps(summary))
+        self.assertEqual(summary['supplier']['observed_sha256'], out['observed_sha256'])
+        unsafe = self.inspect([('../secret.py', b'x=1', tarfile.REGTYPE)])
+        self.assertEqual(unsafe['failed_member'], {'ordinal': 1})
+        self.assertNotIn('../secret.py', json.dumps(unsafe))
+
     def test_duplicate_canonical_member_blocked(self):
         out = self.inspect([('a.py', b'x=1', tarfile.REGTYPE), ('./a.py', b'x=2', tarfile.REGTYPE)])
         self.assertEqual(out['reason'], 'duplicate_member_path')

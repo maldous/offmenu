@@ -38,6 +38,7 @@ SUPPLIER_METADATA_BASENAMES = frozenset({
     'generated-boundary-evidence.json',
     'source-file-pins.json',
 })
+SUPPLIER_SCHEMA_MEMBER = 'supplier-review/source/schema.sql'
 SOURCE_SUFFIXES = {'.py', '.md', '.rst', '.txt', '.sh', '.toml', '.yaml', '.yml', '.json', '.schema', '.js', '.mjs', '.ts'}
 # Deliberately heuristic; a passing scan is NOT a proof that source contains no secrets.
 SECRET_CONTENT = re.compile(r'(?im)-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----|\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9_-]{20,})\b|^\s*(?:export\s+)?[A-Z0-9_]*(?:PASSWORD|SECRET|ACCESS_TOKEN|API_KEY)[A-Z0-9_]*\s*=\s*[\"\']?[^\s\"\'{}$]{8,}')
@@ -155,8 +156,86 @@ def safe_member_name(name):
     return clean
 
 
+def schema_ddl_allowed(body):
+    """Conservative lexical DDL gate; does not parse with a DB or execute SQL."""
+    token_pattern = re.compile(
+        r"\s+|--[^\n]*(?:\n|$)|/\*.*?\*/|'(?:''|[^'])*'|"
+        r'"(?:""|[^"])*"|`(?:``|[^`])*`|\[[^\]]*\]|'
+        r"[A-Za-z_][A-Za-z0-9_]*|[0-9]+|.", re.S)
+    statements, current = [], []
+    for match in token_pattern.finditer(body):
+        token = match.group()
+        if token.isspace() or token.startswith(('--', '/*')):
+            continue
+        if token[0] in "'\"`[":
+            closing = ']' if token[0] == '[' else token[0]
+            if len(token) < 2 or token[-1] != closing or len(token) > 1024:
+                raise Refusal('sql_not_schema_ddl')
+            identifier = token[1:-1].replace(token[0] * 2, token[0]).upper()
+            token = '<LITERAL>' if token[0] == "'" else '<QUOTED_UNSAFE_FUNCTION>' if identifier in {'READFILE', 'WRITEFILE', 'LOAD_EXTENSION'} else '<IDENT>'
+        elif token == ';':
+            if current:
+                statements.append(current)
+                current = []
+            continue
+        current.append(token.upper())
+    if current:
+        statements.append(current)
+    if not statements:
+        raise Refusal('sql_not_schema_ddl')
+    forbidden = {'INSERT', 'COPY', 'SELECT', 'VALUES', 'ATTACH', 'DETACH',
+                 'READFILE', 'WRITEFILE', 'LOAD_EXTENSION', 'TRIGGER', 'VIRTUAL'}
+    for tokens in statements:
+        if any(t == '<QUOTED_UNSAFE_FUNCTION>' and i + 1 < len(tokens) and tokens[i + 1] == '('
+               for i, t in enumerate(tokens)):
+            raise Refusal('sql_not_schema_ddl')
+        if any(t in forbidden or t == chr(92) for t in tokens):
+            raise Refusal('sql_not_schema_ddl')
+        if any(t in {'DELETE', 'UPDATE'} and (i == 0 or tokens[i - 1] != 'ON')
+               or t == 'REPLACE' and (i == 0 or tokens[i - 1] != 'CONFLICT')
+               for i, t in enumerate(tokens)):
+            raise Refusal('sql_not_schema_ddl')
+        # Small schema wrappers, never arbitrary PRAGMA functions/arguments.
+        if tokens in (['BEGIN'], ['BEGIN', 'TRANSACTION'], ['COMMIT'], ['END']):
+            continue
+        if (len(tokens) == 4 and tokens[:3] == ['PRAGMA', 'FOREIGN_KEYS', '=']
+                and tokens[3] in {'ON', 'OFF', '0', '1'}):
+            continue
+        if (len(tokens) == 4 and tokens[0] == 'PRAGMA'
+                and tokens[1] in {'USER_VERSION', 'APPLICATION_ID'}
+                and tokens[2] == '=' and tokens[3].isdigit()):
+            continue
+        prefix = 2 if tokens[:2] in (['CREATE', 'TABLE'], ['CREATE', 'INDEX']) else 3 if tokens[:3] == ['CREATE', 'UNIQUE', 'INDEX'] else 0
+        if not prefix:
+            raise Refusal('sql_not_schema_ddl')
+        rest = tokens[prefix:]
+        if rest[:3] == ['IF', 'NOT', 'EXISTS']:
+            rest = rest[3:]
+        # Require a named object with a parenthesized declaration/expression.
+        if len(rest) < 3 or rest[0] in {'(', ')', '<LITERAL>'} or '(' not in rest or ')' not in rest:
+            raise Refusal('sql_not_schema_ddl')
+        ending = len(rest) - 1 - rest[::-1].index(')')
+        suffix = rest[ending + 1:]
+        if tokens[:2] == ['CREATE', 'TABLE']:
+            if suffix not in ([], ['WITHOUT', 'ROWID'], ['STRICT'],
+                              ['WITHOUT', 'ROWID', ',', 'STRICT'], ['STRICT', ',', 'WITHOUT', 'ROWID']):
+                raise Refusal('sql_not_schema_ddl')
+        elif suffix and (len(suffix) < 2 or suffix[0] != 'WHERE'):
+            raise Refusal('sql_not_schema_ddl')
+        if 'AS' in rest[:rest.index('(')]:
+            raise Refusal('sql_not_schema_ddl')
+        depth = 0
+        for token in rest:
+            depth += (token == '(') - (token == ')')
+            if depth < 0:
+                raise Refusal('sql_not_schema_ddl')
+        if depth:
+            raise Refusal('sql_not_schema_ddl')
+
+
 def source_content_allowed(name, data):
-    if Path(name).suffix.lower() not in SOURCE_SUFFIXES and Path(name).name not in {'LICENSE', 'NOTICE', 'Makefile'}:
+    is_supplier_schema = name == SUPPLIER_SCHEMA_MEMBER
+    if not is_supplier_schema and Path(name).suffix.lower() not in SOURCE_SUFFIXES and Path(name).name not in {'LICENSE', 'NOTICE', 'Makefile'}:
         raise Refusal('non_source_member_extension')
     try:
         body = data.decode('utf-8')
@@ -164,6 +243,8 @@ def source_content_allowed(name, data):
         raise Refusal('non_utf8_member') from None
     if '\x00' in body or SECRET_CONTENT.search(body):
         raise Refusal('binary_or_secret_looking_content')
+    if is_supplier_schema:
+        schema_ddl_allowed(body)
     # JSON is restricted to small descriptive metadata/schema, not row payloads.
     if Path(name).suffix.lower() == '.json':
         if (Path(name).name not in SUPPLIER_METADATA_BASENAMES
@@ -182,6 +263,7 @@ def inspect_supplier(path=SUPPLIER_ARCHIVE, expected_prefix=EXPECTED_SHA256_PREF
     meta = file_meta(path)
     if meta['status'] != 'present':
         return {'status': 'blocked', 'reason': meta['status'], 'archive': meta}
+    digest, failed_member = None, None
     try:
         with open_regular(path)[0] as f:
             before = os.fstat(f.fileno())
@@ -204,7 +286,9 @@ def inspect_supplier(path=SUPPLIER_ARCHIVE, expected_prefix=EXPECTED_SHA256_PREF
             for member in tf:
                 if len(manifest) >= MAX_MEMBERS:
                     raise Refusal('archive_member_limit')
+                failed_member = {'ordinal': len(manifest) + 1}
                 name = safe_member_name(member.name)
+                failed_member.update(name=name, kind='file' if member.isfile() else 'directory' if member.isdir() else 'other', bytes=member.size)
                 if name in seen:
                     raise Refusal('duplicate_member_path')
                 seen.add(name)
@@ -224,6 +308,7 @@ def inspect_supplier(path=SUPPLIER_ARCHIVE, expected_prefix=EXPECTED_SHA256_PREF
                     source_content_allowed(name, data)
                     row['sha256'] = hashlib.sha256(data).hexdigest()
                 manifest.append(row)
+                failed_member = None
             if expanded[tf.offset:].strip(b'\0'):
                 raise Refusal('trailing_archive_payload')
         if not any(x['kind'] == 'file' for x in manifest):
@@ -232,7 +317,12 @@ def inspect_supplier(path=SUPPLIER_ARCHIVE, expected_prefix=EXPECTED_SHA256_PREF
         return {'status': 'inspection_pass_manual_review_required', 'archive': meta, 'expected_sha256_prefix': expected_prefix, 'observed_sha256': digest, 'compressed_bytes': len(raw), 'source_bytes': total, 'manifest': sorted(manifest, key=lambda r: r['path']), 'transfer': 'NOT_UPLOADED', 'next': 'Review member list and source locally; manually attach only this unchanged archive and this manifest after confirming no secrets/raw data. Prefix match is a historical identity hint, not full-digest authentication.'}
     except (Refusal, OSError, EOFError, tarfile.TarError, ValueError, zlib.error) as error:
         reason = str(error) if isinstance(error, Refusal) else type(error).__name__
-        return {'status': 'blocked', 'reason': reason, 'archive': meta}
+        blocked = {'status': 'blocked', 'reason': reason, 'archive': meta}
+        if digest is not None:
+            blocked.update(expected_sha256_prefix=expected_prefix, observed_sha256=digest, compressed_bytes=len(raw))
+        if failed_member is not None:
+            blocked['failed_member'] = failed_member  # Private only; never projected to return JSON.
+        return blocked
 
 
 def validate_root(root):

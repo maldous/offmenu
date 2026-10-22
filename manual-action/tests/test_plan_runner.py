@@ -11,6 +11,7 @@ import tarfile
 import tempfile
 import types
 import unittest
+from unittest.mock import patch
 
 PACKAGE = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('plan_runner', PACKAGE / 'plan_runner.py')
@@ -247,6 +248,161 @@ class RunnerTests(unittest.TestCase):
             runner.check_outgoing()
         self.assertNotEqual(self.head(), self.head(self.remote))
 
+    def test_missing_identity_reports_and_resumes_staged_blocked_receipt(self):
+        self.inspection = {'status': 'blocked', 'reason': 'json_rows_refused'}
+        runner = self.new_runner()
+        self.git_at(self.root, 'config', 'user.name', '')
+        runner.commit_identity_env = lambda: {}  # Reproduce the previously deployed failure.
+        with self.assertRaisesRegex(m.Stop, 'git_commit_identity_not_configured'):
+            runner.run_plan()
+        self.assertEqual(self.calls, 1)
+        saved = self.receipts()[0].read_bytes()
+        self.assertTrue(self.git_at(self.root, 'diff', '--cached', '--name-only'))
+        self.close(runner)
+        # New runner may use only the explicitly approved per-command fallback.
+        editor = self.editor()
+        (editor / 'reviewed-fix.txt').write_text('reviewed update while receipt staged\n')
+        self.git_at(editor, 'add', 'reviewed-fix.txt')
+        self.git_at(editor, 'commit', '-m', 'Reviewed remote update fixture')
+        self.git_at(editor, 'push', 'origin', m.BRANCH)
+        resumed = self.new_runner()
+        self.assertEqual(resumed.run_plan(), 2)
+        self.assertEqual(self.calls, 1)
+        self.assertEqual(self.receipts()[0].read_bytes(), saved)
+        self.assertEqual(self.head(), self.head(self.remote))
+        self.assertEqual(self.git_at(self.root, 'diff', '--cached', '--name-only'), '')
+        self.assertEqual(self.git_at(self.root, 'config', '--get', 'user.name'), '')
+        self.assertEqual(self.git_at(self.root, 'log', '-1', '--format=%an|%ae'), 'OffMenu Runner|fixture@example.invalid')
+
+    def test_recovery_refuses_additional_staged_user_work(self):
+        runner = self.new_runner()
+        self.git_at(self.root, 'config', 'user.name', '')
+        runner.commit_identity_env = lambda: {}  # Reproduce the previously deployed failure.
+        with self.assertRaises(m.Stop):
+            runner.run_plan()
+        self.close(runner)
+        (self.root / 'unrelated.txt').write_text('new staged user work\n')
+        self.git_at(self.root, 'add', 'unrelated.txt')
+        before = self.git_at(self.root, 'diff', '--cached')
+        with self.assertRaisesRegex(m.Stop, 'preexisting_staged'):
+            self.new_runner()
+        self.assertEqual(before, self.git_at(self.root, 'diff', '--cached'))
+        self.assertEqual(self.calls, 1)
+
+    def test_recovery_refuses_changed_owned_receipt(self):
+        runner = self.new_runner()
+        self.git_at(self.root, 'config', 'user.name', '')
+        runner.commit_identity_env = lambda: {}  # Reproduce the previously deployed failure.
+        with self.assertRaises(m.Stop):
+            runner.run_plan()
+        self.close(runner)
+        path = self.receipts()[0]
+        value = json.loads(path.read_text())
+        value['observed_at'] = '2000-01-01T00:00:00Z'
+        path.write_bytes(m.canonical(value))
+        with self.assertRaisesRegex(m.Stop, 'recorded_receipt_changed'):
+            self.new_runner()
+        self.assertEqual(self.calls, 1)
+
+    def test_recovery_refuses_executable_index_mode(self):
+        runner = self.new_runner()
+        self.git_at(self.root, 'config', 'user.name', '')
+        runner.commit_identity_env = lambda: {}
+        with self.assertRaises(m.Stop):
+            runner.run_plan()
+        self.close(runner)
+        relative = str(self.receipts()[0].relative_to(self.root))
+        self.git_at(self.root, 'config', 'core.filemode', 'false')
+        self.git_at(self.root, 'update-index', '--chmod=+x', relative)
+        with self.assertRaisesRegex(m.Stop, 'preexisting_staged'):
+            self.new_runner()
+        self.assertEqual(self.calls, 1)
+
+    def test_blocked_pending_push_resumes_without_inspection(self):
+        self.inspection = {'status': 'blocked', 'reason': 'json_rows_refused'}
+        runner = self.new_runner()
+        original = runner.git
+        def fail_push(*args, **kwargs):
+            if args[0] == 'push':
+                raise m.Stop('git_push_failed_local_work_preserved')
+            return original(*args, **kwargs)
+        runner.git = fail_push
+        with self.assertRaises(m.Stop):
+            runner.run_plan()
+        self.close(runner)
+        resumed = self.new_runner()
+        self.assertEqual(resumed.run_plan(), 2)
+        self.assertEqual(self.calls, 1)
+        self.assertEqual(self.head(), self.head(self.remote))
+
+    def test_missing_name_email_fallback_is_per_command_only(self):
+        self.git_at(self.root, 'config', 'user.useConfigOnly', 'true')
+        self.git_at(self.root, 'config', '--unset', 'user.name')
+        self.git_at(self.root, 'config', '--unset', 'user.email')
+        with patch.dict(os.environ, {'GIT_CONFIG_GLOBAL': os.devnull, 'GIT_CONFIG_NOSYSTEM': '1'}):
+            for key in ('GIT_AUTHOR_NAME', 'GIT_AUTHOR_EMAIL', 'GIT_COMMITTER_NAME', 'GIT_COMMITTER_EMAIL', 'EMAIL'):
+                os.environ.pop(key, None)
+            runner = self.new_runner()
+            self.assertEqual(runner.run_plan(), 0)
+            self.assertEqual(self.git_at(self.root, 'log', '-1', '--format=%an|%ae|%cn|%ce'),
+                'OffMenu Runner|offmenu-runner@localhost|OffMenu Runner|offmenu-runner@localhost')
+            self.assertNotEqual(runner.git('config', '--get', 'user.name', check=False)[0], 0)
+            self.assertNotEqual(runner.git('config', '--get', 'user.email', check=False)[0], 0)
+
+    def test_only_missing_email_falls_back_preserving_configured_name(self):
+        self.git_at(self.root, 'config', 'user.email', '')
+        runner = self.new_runner()
+        self.assertEqual(runner.run_plan(), 0)
+        self.assertEqual(self.git_at(self.root, 'log', '-1', '--format=%an|%ae'),
+                         'Generated fixture|offmenu-runner@localhost')
+        self.assertEqual(self.git_at(self.root, 'config', '--get', 'user.email'), '')
+
+    def test_configured_environment_identity_preserved(self):
+        self.git_at(self.root, 'config', 'user.name', '')
+        self.git_at(self.root, 'config', 'user.email', '')
+        with patch.dict(os.environ, {'GIT_AUTHOR_NAME': 'Explicit Author', 'GIT_AUTHOR_EMAIL': 'author@example.invalid',
+                                    'GIT_COMMITTER_NAME': 'Explicit Committer', 'GIT_COMMITTER_EMAIL': 'committer@example.invalid'}):
+            runner = self.new_runner()
+            self.assertEqual(runner.run_plan(), 0)
+            self.assertEqual(self.git_at(self.root, 'log', '-1', '--format=%an|%ae|%cn|%ce'),
+                'Explicit Author|author@example.invalid|Explicit Committer|committer@example.invalid')
+
+    def test_recovery_publishes_old_receipt_before_new_reviewed_job(self):
+        self.inspection = {'status': 'blocked', 'reason': 'non_source_member_extension'}
+        runner = self.new_runner()
+        self.git_at(self.root, 'config', 'user.name', '')
+        runner.commit_identity_env = lambda: {}
+        with self.assertRaises(m.Stop):
+            runner.run_plan()
+        old_path = self.receipts()[0].relative_to(self.root)
+        old_bytes = self.receipts()[0].read_bytes()
+        self.close(runner)
+        editor = self.editor()
+        plan_path = editor / 'manual-action/plan.json'
+        plan = json.loads(plan_path.read_text())
+        plan['jobs'][0]['version'] += 1
+        plan_path.write_text(json.dumps(plan))
+        with (editor / 'manual-action/foo_manual.py').open('a') as stream:
+            stream.write('\n# reviewed source correction fixture\n')
+        self.git_at(editor, 'add', 'manual-action/plan.json', 'manual-action/foo_manual.py')
+        self.git_at(editor, 'commit', '-m', 'Reviewed new inspection job fixture')
+        self.git_at(editor, 'push', 'origin', m.BRANCH)
+        self.inspection = None
+        def assert_prior_returned():
+            returned = self.git_at(self.remote, 'show', 'refs/heads/' + m.BRANCH + ':' + str(old_path))
+            self.assertEqual(returned.encode() + b'\n', old_bytes)
+        self.after_inspect = assert_prior_returned
+        resumed = self.new_runner()
+        self.assertEqual(resumed.run_plan(), 0)
+        self.assertEqual(self.calls, 2)
+        self.assertEqual(len(self.receipts()), 2)
+        self.assertEqual((self.root / old_path).read_bytes(), old_bytes)
+        self.assertEqual(self.head(), self.head(self.remote))
+        self.close(resumed)
+        repeated = self.new_runner()
+        self.assertEqual(repeated.run_plan(), 0)
+        self.assertEqual(self.calls, 2)
+
     def test_plan_cannot_run_shell_or_inventory(self):
         plan = json.loads((PACKAGE / 'plan.json').read_text())
         for operation in ('inventory', 'collect', 'sh', 'import'):
@@ -300,7 +456,7 @@ class RunnerTests(unittest.TestCase):
         editor = self.editor()
         path = editor / 'manual-action/plan.json'
         plan = json.loads(path.read_text())
-        plan['jobs'][0]['version'] = 2
+        plan['jobs'][0]['version'] += 1
         path.write_text(json.dumps(plan))
         self.git_at(editor, 'add', 'manual-action/plan.json')
         self.git_at(editor, 'commit', '-m', 'Reviewed explicit rerun fixture')
