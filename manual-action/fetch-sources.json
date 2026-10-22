@@ -1,0 +1,1650 @@
+{
+  "schema": "offmenu-fetch-sources/1",
+  "reviewed_at": "2026-10-22",
+  "authorization": "User 2026-10-22T04:08:45Z: Add the additional sources and fetch them. Acquisition-only override of prior fetch hold; no loading/normalizing override.",
+  "production_enabled": true,
+  "execution_host": "Foo",
+  "operation": "acquisition_only",
+  "ingestion_enabled": false,
+  "raw_data_git_upload": false,
+  "source_code_execution": false,
+  "retained_baseline_commit": "52b6a50a59b458bdb49fe7ea090b72c63a4b1a30",
+  "retained_baseline_note": "Avoid Wikibooks32editions, UniTools501, based.cooking426 and same historical archive revision. No new unique-record total asserted.",
+  "limits": {
+    "parallel_sources": 2,
+    "parallel_files_per_source": 1,
+    "total_seconds": 1200,
+    "shared_disk_reserve_bytes": 10737418240,
+    "transfer_bytes": 268435456,
+    "aggregate_bytes_per_second": 2097152
+  },
+  "sources": [
+    {
+      "id": "foodista_common_pile",
+      "name": "Foodista Common Pile extracted text only",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "foodista",
+      "revision": "f84290688956bdb64c90e44636fda1c02f286849",
+      "license": "CC-BY-3.0 (snapshot record policy; preserve per-document label)",
+      "license_evidence": [
+        "https://huggingface.co/datasets/common-pile/foodista/blob/f84290688956bdb64c90e44636fda1c02f286849/README.md",
+        "https://github.com/r-three/common-pile/blob/main/sources/food/to_dolma.py",
+        "https://www.foodista.com/terms"
+      ],
+      "attribution": "Foodista original authors and source URLs, Common Pile collectors; retain each document metadata license and authors.",
+      "artifacts": [
+        {
+          "name": "00000_foodista.jsonl.gz",
+          "url": "https://huggingface.co/datasets/common-pile/foodista/resolve/f84290688956bdb64c90e44636fda1c02f286849/v0/documents/00000_foodista.jsonl.gz",
+          "format": "jsonl.gz",
+          "allowed_hosts": [
+            "huggingface.co",
+            "us.aws.cdn.hf.co"
+          ],
+          "expected_bytes": 6760459,
+          "max_bytes": 6760459,
+          "max_expanded_bytes": 134217728,
+          "sha256": "014757f2b949d9dd679dc7cfb061db250f41c6e4fe9403e97ac549d69dffd4c5",
+          "checksum_evidence": "Primary Hugging Face LFS oid, not Xet hash or ETag",
+          "transport_integrity": "https"
+        },
+        {
+          "name": "00001_foodista.jsonl.gz",
+          "url": "https://huggingface.co/datasets/common-pile/foodista/resolve/f84290688956bdb64c90e44636fda1c02f286849/v0/documents/00001_foodista.jsonl.gz",
+          "format": "jsonl.gz",
+          "allowed_hosts": [
+            "huggingface.co",
+            "us.aws.cdn.hf.co"
+          ],
+          "expected_bytes": 8112195,
+          "max_bytes": 8112195,
+          "max_expanded_bytes": 134217728,
+          "sha256": "9364bd56ab38770456a854d02023f8cd632b723fe24f7c0ec2dd53a9ae97010d",
+          "checksum_evidence": "Primary Hugging Face LFS oid, not Xet hash or ETag",
+          "transport_integrity": "https"
+        },
+        {
+          "name": "00002_foodista.jsonl.gz",
+          "url": "https://huggingface.co/datasets/common-pile/foodista/resolve/f84290688956bdb64c90e44636fda1c02f286849/v0/documents/00002_foodista.jsonl.gz",
+          "format": "jsonl.gz",
+          "allowed_hosts": [
+            "huggingface.co",
+            "us.aws.cdn.hf.co"
+          ],
+          "expected_bytes": 9458152,
+          "max_bytes": 9458152,
+          "max_expanded_bytes": 134217728,
+          "sha256": "7e780cb542ba43b44c5c49456416def5afec7e9246ddf1bce002ac470ccb8962",
+          "checksum_evidence": "Primary Hugging Face LFS oid, not Xet hash or ETag",
+          "transport_integrity": "https"
+        },
+        {
+          "name": "00003_foodista.jsonl.gz",
+          "url": "https://huggingface.co/datasets/common-pile/foodista/resolve/f84290688956bdb64c90e44636fda1c02f286849/v0/documents/00003_foodista.jsonl.gz",
+          "format": "jsonl.gz",
+          "allowed_hosts": [
+            "huggingface.co",
+            "us.aws.cdn.hf.co"
+          ],
+          "expected_bytes": 10040835,
+          "max_bytes": 10040835,
+          "max_expanded_bytes": 134217728,
+          "sha256": "9706998001be7270ea61b31e8808b68f36521088d9540b97447d68994f5b2e43",
+          "checksum_evidence": "Primary Hugging Face LFS oid, not Xet hash or ETag",
+          "transport_integrity": "https"
+        },
+        {
+          "name": "00004_foodista.jsonl.gz",
+          "url": "https://huggingface.co/datasets/common-pile/foodista/resolve/f84290688956bdb64c90e44636fda1c02f286849/v0/documents/00004_foodista.jsonl.gz",
+          "format": "jsonl.gz",
+          "allowed_hosts": [
+            "huggingface.co",
+            "us.aws.cdn.hf.co"
+          ],
+          "expected_bytes": 2431281,
+          "max_bytes": 2431281,
+          "max_expanded_bytes": 134217728,
+          "sha256": "9b0e64eb000d87cb5b2a28c30813aaeac426c18cd2ab373d160cc3e10d0e3d43",
+          "checksum_evidence": "Primary Hugging Face LFS oid, not Xet hash or ETag",
+          "transport_integrity": "https"
+        }
+      ],
+      "license_scope_note": "Mixed documents, not 72,090 recipes. Acquisition does not clear all documents for recipe ingestion; later exclude blogs/comments/images/third-party content and verify recipe shape. Current Foodista CC BY4 does not silently relicense snapshot.",
+      "artifact_metadata_evidence": "https://huggingface.co/api/datasets/common-pile/foodista/tree/f84290688956bdb64c90e44636fda1c02f286849/v0/documents"
+    },
+    {
+      "id": "forkrecipe",
+      "name": "ForkRecipe pinned original/community recipe archive",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "forkrecipe",
+      "revision": "934319313379201f91ddccdd29abd054039a3ad6",
+      "license": "CC-BY-SA-4.0",
+      "license_evidence": [
+        "https://github.com/futurechef/forkrecipe-recipes/blob/934319313379201f91ddccdd29abd054039a3ad6/NOTICE",
+        "https://github.com/futurechef/forkrecipe-recipes/blob/934319313379201f91ddccdd29abd054039a3ad6/LICENSE"
+      ],
+      "attribution": "FoodML/ForkRecipe and contributors identified in data/users.js; preserve notices and license; trademarks excluded.",
+      "artifacts": [
+        {
+          "name": "forkrecipe-934319313379201f91ddccdd29abd054039a3ad6.tar.gz",
+          "url": "https://github.com/futurechef/forkrecipe-recipes/archive/934319313379201f91ddccdd29abd054039a3ad6.tar.gz",
+          "format": "tar.gz",
+          "allowed_hosts": [
+            "github.com",
+            "codeload.github.com"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 33554432,
+          "max_expanded_bytes": 67108864,
+          "sha256": null,
+          "transport_integrity": "https",
+          "verification": "HEAD200 application/x-gzip after documented codeload redirect; publisher content SHA256 unavailable."
+        }
+      ],
+      "license_scope_note": "Archive retained inertly. Never execute/import recipe JavaScript. Later static parser, ratio-unit preservation, contributor exception review and culinary QA remain required; file count is not accepted unique recipe count."
+    },
+    {
+      "id": "medlineplus_healthy_recipes",
+      "name": "MedlinePlus fixed EN/ES recipe text page batch",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "medlineplus",
+      "revision": "verified-url-batch-20261022",
+      "license": "Public domain in United States (NLM expressly scoped Healthy Recipes EN/ES)",
+      "license_evidence": [
+        "https://medlineplus.gov/about/using/usingcontent/"
+      ],
+      "attribution": "MedlinePlus, National Library of Medicine; preserve NHLBI/FoodHero original credits and URLs.",
+      "artifacts": [
+        {
+          "name": "en-any-berry-sauce.html",
+          "url": "https://medlineplus.gov/recipes/any-berry-sauce/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:any-berry-sauce",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/salsa-de-cualquier-baya/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-salsa-de-cualquier-baya.html",
+          "url": "https://medlineplus.gov/spanish/recetas/salsa-de-cualquier-baya/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Preparaci"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:any-berry-sauce",
+          "counterpart_url": "https://medlineplus.gov/recipes/any-berry-sauce/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "en-applesauce-french-toast.html",
+          "url": "https://medlineplus.gov/recipes/applesauce-french-toast/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:applesauce-french-toast",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/tostada-francesa-con-pure-de-manzana/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-tostada-francesa-con-pure-de-manzana.html",
+          "url": "https://medlineplus.gov/spanish/recetas/tostada-francesa-con-pure-de-manzana/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Preparaci"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:applesauce-french-toast",
+          "counterpart_url": "https://medlineplus.gov/recipes/applesauce-french-toast/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "en-baked-berry-oatmeal.html",
+          "url": "https://medlineplus.gov/recipes/baked-berry-oatmeal/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:baked-berry-oatmeal",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/avena-horneada-con-bayas/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-avena-horneada-con-bayas.html",
+          "url": "https://medlineplus.gov/spanish/recetas/avena-horneada-con-bayas/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Preparaci"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:baked-berry-oatmeal",
+          "counterpart_url": "https://medlineplus.gov/recipes/baked-berry-oatmeal/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "en-breakfast-banana-split.html",
+          "url": "https://medlineplus.gov/recipes/breakfast-banana-split/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:breakfast-banana-split",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/banana-split-para-el-desayuno/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-banana-split-para-el-desayuno.html",
+          "url": "https://medlineplus.gov/spanish/recetas/banana-split-para-el-desayuno/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Preparaci"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:breakfast-banana-split",
+          "counterpart_url": "https://medlineplus.gov/recipes/breakfast-banana-split/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "en-breakfast-burritos.html",
+          "url": "https://medlineplus.gov/recipes/breakfast-burritos/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:breakfast-burritos",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/burritos-de-desayuno/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-burritos-de-desayuno.html",
+          "url": "https://medlineplus.gov/spanish/recetas/burritos-de-desayuno/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Preparaci"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:breakfast-burritos",
+          "counterpart_url": "https://medlineplus.gov/recipes/breakfast-burritos/",
+          "attribution": "FoodHero.org",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "en-oatmeal-pecan-waffles-or-pancakes.html",
+          "url": "https://medlineplus.gov/recipes/oatmeal-pecan-waffles-or-pancakes/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Ingredients",
+            "Directions"
+          ],
+          "language": "en",
+          "work_id": "medlineplus:oatmeal-pecan-waffles-or-pancakes",
+          "counterpart_url": "https://medlineplus.gov/spanish/recetas/waffles-panqueques-de-avena-con-pacanas/",
+          "attribution": "National Heart, Lung, and Blood Institute",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        },
+        {
+          "name": "es-waffles-panqueques-de-avena-con-pacanas.html",
+          "url": "https://medlineplus.gov/spanish/recetas/waffles-panqueques-de-avena-con-pacanas/",
+          "format": "html_recipe",
+          "allowed_hosts": [
+            "medlineplus.gov"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 2097152,
+          "max_expanded_bytes": 2097152,
+          "sha256": null,
+          "transport_integrity": "https",
+          "required_markers": [
+            "MedlinePlus",
+            "Direcciones"
+          ],
+          "language": "es",
+          "work_id": "medlineplus:oatmeal-pecan-waffles-or-pancakes",
+          "counterpart_url": "https://medlineplus.gov/recipes/oatmeal-pecan-waffles-or-pancakes/",
+          "attribution": "National Heart, Lung, and Blood Institute",
+          "verification": "web tool: text/html recipe body, not origin status-code attestation"
+        }
+      ],
+      "license_scope_note": "12 language variants across 6 explicitly paired works, not 12 new unique recipes or full corpus. Retain inert HTML pages for later text-only recipe extraction; no images/media/subresource downloads. Do not extend recipe PD grant to other health content. Spanish waffles quantity mismatch and omitted toast ingredient heading require later source-faithful review.",
+      "request_interval_seconds": 5,
+      "robots_url": "https://medlineplus.gov/robots.txt",
+      "robots_evidence": "Primary robots permits exact recipe paths at metadata review; recheck live on Foo and fail closed on policy/access failure."
+    },
+    {
+      "id": "kerala_recipes",
+      "name": "Kerala traditional recipes",
+      "production_enabled": false,
+      "disabled_reason": "Verify exact per-file schema and provenance; No assumption Malayalam instructions exist",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "public_domain_recipes",
+      "name": "Public Domain Recipes / based.cooking fork",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "hochipants_original_archive",
+      "name": "HoChiPants original recipe archive",
+      "production_enabled": false,
+      "disabled_reason": "Verify final-record rights state; Exclude scraped/reworded rights-pending staging",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "unitools",
+      "name": "UniTools",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "adambouhmad_historical_archive",
+      "name": "Historical open-recipe-archive",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipeqa",
+      "name": "RecipeQA",
+      "production_enabled": false,
+      "disabled_reason": "Current download availability and exact manifest; Ingredient completeness; QA preprocessing removes initial step; Separate non-food projects; Per-record license counts",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "foodcom_irkaal",
+      "name": "Food.com recipes/reviews (irkaal)",
+      "production_enabled": false,
+      "disabled_reason": "Underlying content permission; No eval/exec of CSV c(...) lists; Deduplicate retained/other Food.com variants",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "foodcom_personalization",
+      "name": "Food.com personalization subset",
+      "production_enabled": false,
+      "disabled_reason": "Verify exact dataset license and rights; Quantities may be stripped; No unsafe evaluation",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipenlg",
+      "name": "RecipeNLG",
+      "production_enabled": false,
+      "disabled_reason": "Commercial-purpose incompatibility; Current exact terms and original source rights",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recifine_3a2m",
+      "name": "ReciFine / 3A2M derivatives",
+      "production_enabled": false,
+      "disabled_reason": "Upstream restrictions; Verify annotation rights separately",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipe1m",
+      "name": "Recipe1M / Recipe1M+",
+      "production_enabled": false,
+      "disabled_reason": "Exact current terms/access; Scraped-content permission",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "foodkg",
+      "name": "FoodKG",
+      "production_enabled": false,
+      "disabled_reason": "Full instruction availability; Data license separate from toolkit; No additive recipe count",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "epicurious_images",
+      "name": "Epicurious recipe/image dataset",
+      "production_enabled": false,
+      "disabled_reason": "Original-source permission; No mirror-based license laundering",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "zenodo_culinary_50510",
+      "name": "Zenodo Culinary Recipes",
+      "production_enabled": false,
+      "disabled_reason": "License metadata; Bounded schema/sample; Original sources and overlap",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "mendeley_indian_6000",
+      "name": "Mendeley Indian recipes",
+      "production_enabled": false,
+      "disabled_reason": "Underlying source permission; Translation accuracy and quantity preservation",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipedb",
+      "name": "RecipeDB",
+      "production_enabled": false,
+      "disabled_reason": "Commercial-purpose incompatibility; Full procedural export availability",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipedb2",
+      "name": "RecipeDB 2.0",
+      "production_enabled": false,
+      "disabled_reason": "Exact license; Bulk availability; Complete steps schema",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "cooklang_federation",
+      "name": "Cooklang federation",
+      "production_enabled": false,
+      "disabled_reason": "Per-feed content rights; Pin source commits; Do not assume all indexed recipes reusable",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "recipesource",
+      "name": "RecipeSource / MealMaster archives",
+      "production_enabled": false,
+      "disabled_reason": "Content rights partition; Canonical archival manifest",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "myplate_food",
+      "name": "MyPlate.food preservation API",
+      "production_enabled": false,
+      "disabled_reason": "Commercial bulk agreement if selected; Per-original provenance; No API scraping to replace agreement",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "themealdb",
+      "name": "TheMealDB",
+      "production_enabled": false,
+      "disabled_reason": "Review planned commercial/bulk use under exact terms; Underlying third-party rights",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "tinyplates",
+      "name": "Tiny Plates",
+      "production_enabled": false,
+      "disabled_reason": "Bulk license if selected; Original publisher content rights",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "global_recipe_db_aggregator",
+      "name": "Global Recipe Database aggregator",
+      "production_enabled": false,
+      "disabled_reason": "No published database sample; Underlying source rights; Exclude unsupported blood-type-diet scores and inferred country claims",
+      "discovery_registry": "structured-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "tw_school_lunch_v2",
+      "name": "Taiwan national school lunch and ingredient registry 2.0",
+      "production_enabled": false,
+      "disabled_reason": "Original JSON documentation returned HTTP 403; exact authorized artifact endpoints unresolved. No bypass.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "kr_neis_meals",
+      "name": "Korea NEIS school meal service diet information",
+      "production_enabled": false,
+      "disabled_reason": "Service key/application procedure and exact usable payload access remain unverified; do not register or bypass.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fr_cnous_menus",
+      "name": "CNOUS original public institutional menu XML feeds",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "cnous",
+      "revision": "catalog-20261022-mutable-feeds",
+      "license": "Licence Ouverte / Open Licence (catalog version unspecified)",
+      "license_evidence": [
+        "https://www.data.gouv.fr/datasets/menus-des-restaurants-brasseries-et-cafeterias/informations"
+      ],
+      "attribution": "Centre National des Oeuvres Universitaires et Scolaires and respective CROUS regions; retain catalog resource ID, origin and observation date.",
+      "artifacts": [
+        {
+          "name": "versailles.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/versailles/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/versailles/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "c52dcbe5-661c-474c-94f9-403dd18283fb",
+          "observed_catalog_bytes": 30011,
+          "metadata_verification": "Exact primary catalog check:url with HTTP200; initial catalog display URL differs by explicit port. Current response validated on Foo.",
+          "catalog_original_url": "http://webservices-v2.crous-mobile.fr/feed/versailles/externe/menu.xml"
+        },
+        {
+          "name": "toulouse.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/toulouse/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/toulouse/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "19a25454-52f1-4154-9d54-4d65d53bccb3",
+          "observed_catalog_bytes": 42133,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "strasbourg.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/strasbourg/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/strasbourg/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "91e93a56-85bd-48ad-ac2e-304b0ef12705",
+          "observed_catalog_bytes": 46953,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "normandie.xml",
+          "url": "http://webservices-v2.crous-mobile.fr/feed/normandie/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr/feed/normandie/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "6d5418bd-79ab-424c-a043-9b86ba7d91a2",
+          "observed_catalog_bytes": 129627,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "reunion.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/reunion/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/reunion/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "2c6327b6-1716-45b5-9a80-49c3ef375df3",
+          "observed_catalog_bytes": 21120,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "rennes.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/rennes/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/rennes/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "cc13416a-1f84-4b39-bfbe-73db8847235b",
+          "observed_catalog_bytes": 25486,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "reims.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/reims/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/reims/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "3e6d08b8-d81e-4216-9bed-4359af4edc7a",
+          "observed_catalog_bytes": 22844,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "poitiers.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/poitiers/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/poitiers/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "3d935c5f-94e6-44e9-a4b8-a966fbe4ca04",
+          "observed_catalog_bytes": 128446,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "paris.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/paris/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/paris/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "f1126cc4-4811-4e03-b3df-729a62a8a17f",
+          "observed_catalog_bytes": 2792172,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "orleans.tours.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/orleans.tours/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/orleans.tours/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "eb0af16d-278b-4953-8386-d46050017fa8",
+          "observed_catalog_bytes": 97790,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "nice.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/nice/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/nice/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "66200794-af0c-437d-a144-b43a6bfc4d87",
+          "observed_catalog_bytes": 983767,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "nantes.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/nantes/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/nantes/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "e6fc5361-e8af-44ab-ae28-3e084bc061a9",
+          "observed_catalog_bytes": 289772,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "nancy.metz.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/nancy.metz/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/nancy.metz/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "f57e225d-fcef-4ea6-ba48-75f602458dc3",
+          "observed_catalog_bytes": 70230,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "montpellier.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/montpellier/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/montpellier/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "e4dc01e4-910a-4117-aedf-4ee49300dcb3",
+          "observed_catalog_bytes": 71919,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "lyon.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/lyon/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/lyon/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "8b5a04d7-8999-4e8f-a174-039e090aa28b",
+          "observed_catalog_bytes": 251208,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "limoges.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/limoges/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/limoges/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "9b8ef14c-c979-4064-90ba-ced9553bbbe0",
+          "observed_catalog_bytes": 88331,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "lille.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/lille/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/lille/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "cc62269d-0099-4388-aef5-7d91aa5df6f2",
+          "observed_catalog_bytes": 41055,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "grenoble.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/grenoble/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/grenoble/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "c9c1b1e2-4b9b-4987-8307-93aff8c41443",
+          "observed_catalog_bytes": 70848,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "creteil.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/creteil/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/creteil/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "51ba73f7-920e-4d76-a7af-05edfbd72c7f",
+          "observed_catalog_bytes": 2235,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "corte.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/corte/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/corte/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "ab96b495-d2a6-4a83-b0cb-993fe06c6a7e",
+          "observed_catalog_bytes": 35062,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "clermont.ferrand.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/clermont.ferrand/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/clermont.ferrand/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "ed18e859-f1a7-4808-b22b-44e1b559443f",
+          "observed_catalog_bytes": 128031,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "bordeaux.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/bordeaux/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/bordeaux/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "d97924d8-ef66-4560-9fdd-f66a53040d52",
+          "observed_catalog_bytes": 125537,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "bfc.xml",
+          "url": "http://webservices-v2.crous-mobile.fr/feed/bfc/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr/feed/bfc/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "9f4c6d34-bc4f-44bb-b4e4-e7ad963efd9b",
+          "observed_catalog_bytes": 114230,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "antilles.guyane.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/antilles.guyane/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/antilles.guyane/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "e1fa11c4-f954-41ae-9f06-4db8ca5869c5",
+          "observed_catalog_bytes": 3475,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "amiens.xml",
+          "url": "http://webservices-v2.crous-mobile.fr:8080/feed/amiens/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr:8080/feed/amiens/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "9ded1290-dd36-4b08-ba86-8c1739c69573",
+          "observed_catalog_bytes": 45655,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        },
+        {
+          "name": "aix.marseille.xml",
+          "url": "http://webservices-v2.crous-mobile.fr/feed/aix.marseille/externe/menu.xml",
+          "http_exception": "http://webservices-v2.crous-mobile.fr/feed/aix.marseille/externe/menu.xml",
+          "format": "xml",
+          "allowed_hosts": [
+            "webservices-v2.crous-mobile.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 4194304,
+          "max_expanded_bytes": 4194304,
+          "sha256": null,
+          "transport_integrity": "unverified_http",
+          "resource_id": "edb9e042-5225-423c-a40c-c718ee04028e",
+          "observed_catalog_bytes": 324,
+          "metadata_verification": "Primary catalog last availability 200; schema and current bytes validated only on Foo. Normandie additionally direct HEAD200 at review."
+        }
+      ],
+      "license_scope_note": "Menu observations, not recipes. Exact publisher HTTP endpoints are reviewed public-data-only exceptions; unauthenticated transport must remain explicit and no trusted-gold acceptance is implied. Local checksums establish retained bytes only.",
+      "artifact_metadata_evidence": "https://www.data.gouv.fr/api/1/datasets/menus-des-restaurants-brasseries-et-cafeterias/"
+    },
+    {
+      "id": "fr_croustillant",
+      "name": "CROUStillant cleaned CROUS menu CSV/API",
+      "production_enabled": false,
+      "disabled_reason": "Derived CNOUS corpus duplicates enabled original feeds; deposited CSV LOv2 versus noncommercial direct-API terms requires distinct scope review. No API request.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fr_begles_menus",
+      "name": "Bordeaux/Begles collective menus and dish composition",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "fr_begles_menus",
+      "revision": "catalog-20261022-mutable-exports",
+      "license": "Licence Ouverte",
+      "license_evidence": [
+        "https://datahub.bordeaux-metropole.fr/explore/dataset/met_menu_cantine/information/",
+        "https://opendata.bordeaux-metropole.fr/explore/dataset/met_plat_cantine/information/",
+        "https://www.etalab.gouv.fr/wp-content/uploads/2014/05/Licence_Ouverte.pdf"
+      ],
+      "attribution": "Bordeaux Metropole / Ville de Begles",
+      "artifacts": [
+        {
+          "name": "met_menu_cantine.json",
+          "url": "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_menu_cantine/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "datahub.bordeaux-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 33554432,
+          "max_expanded_bytes": 33554432,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://datahub.bordeaux-metropole.fr/explore/dataset/met_menu_cantine/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2014/05/Licence_Ouverte.pdf",
+          "observed_rows_not_new_unique_records": 12580,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_menu_cantine/records?limit=1&timezone=UTC"
+        },
+        {
+          "name": "met_plat_cantine.json",
+          "url": "https://opendata.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_plat_cantine/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "opendata.bordeaux-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 67108864,
+          "max_expanded_bytes": 67108864,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://opendata.bordeaux-metropole.fr/explore/dataset/met_plat_cantine/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2014/05/Licence_Ouverte.pdf",
+          "observed_rows_not_new_unique_records": 56424,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://opendata.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/met_plat_cantine/records?limit=1&timezone=UTC"
+        }
+      ],
+      "license_scope_note": "Dataset rows only. Dish/ingredient/technical-sheet registries are related evidence, not full recipes or additional menus; do not follow linked PDF/media URLs. Menu price is production cost where SCDL defines it, not retail price. Translation/normalization are not performed.",
+      "request_interval_seconds": 2
+    },
+    {
+      "id": "fr_toulouse_menus",
+      "name": "Toulouse menus, dish composition and ingredient registry",
+      "production_enabled": true,
+      "already_retained": false,
+      "rights_status": "verified_open_content",
+      "access_status": "public_no_registration",
+      "lineage_family": "fr_toulouse_menus",
+      "revision": "catalog-20261022-mutable-exports",
+      "license": "Licence Ouverte v2.0 (Etalab)",
+      "license_evidence": [
+        "https://data.toulouse-metropole.fr/explore/dataset/menus/information/",
+        "https://data.toulouse-metropole.fr/explore/dataset/plats-extrait-de-datameal/information/",
+        "https://data.toulouse-metropole.fr/explore/dataset/denrees-extrait-de-datameal/information/",
+        "https://data.toulouse-metropole.fr/explore/dataset/liste-des-ft-des-denrees-de-la-cc-tls/information/",
+        "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf"
+      ],
+      "attribution": "Toulouse Metropole / Ville de Toulouse",
+      "artifacts": [
+        {
+          "name": "menus.json",
+          "url": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/menus/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "data.toulouse-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 8388608,
+          "max_expanded_bytes": 8388608,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://data.toulouse-metropole.fr/explore/dataset/menus/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+          "observed_rows_not_new_unique_records": 566,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/menus/records?limit=1&timezone=UTC"
+        },
+        {
+          "name": "plats-extrait-de-datameal.json",
+          "url": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/plats-extrait-de-datameal/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "data.toulouse-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 8388608,
+          "max_expanded_bytes": 8388608,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://data.toulouse-metropole.fr/explore/dataset/plats-extrait-de-datameal/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+          "observed_rows_not_new_unique_records": 266,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/plats-extrait-de-datameal/records?limit=1&timezone=UTC"
+        },
+        {
+          "name": "denrees-extrait-de-datameal.json",
+          "url": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/denrees-extrait-de-datameal/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "data.toulouse-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 8388608,
+          "max_expanded_bytes": 8388608,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://data.toulouse-metropole.fr/explore/dataset/denrees-extrait-de-datameal/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+          "observed_rows_not_new_unique_records": 402,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/denrees-extrait-de-datameal/records?limit=1&timezone=UTC"
+        },
+        {
+          "name": "liste-des-ft-des-denrees-de-la-cc-tls.json",
+          "url": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/liste-des-ft-des-denrees-de-la-cc-tls/exports/json?lang=fr&timezone=UTC",
+          "format": "json",
+          "allowed_hosts": [
+            "data.toulouse-metropole.fr"
+          ],
+          "expected_bytes": null,
+          "max_bytes": 8388608,
+          "max_expanded_bytes": 8388608,
+          "sha256": null,
+          "transport_integrity": "https",
+          "dataset_catalog": "https://data.toulouse-metropole.fr/explore/dataset/liste-des-ft-des-denrees-de-la-cc-tls/information/",
+          "license_evidence": "https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf",
+          "observed_rows_not_new_unique_records": 547,
+          "verification": "Exact route observed in official Export UI; timezone normalized to documented UTC. Full export response/HEAD not fetched in cloud; validate on Foo before accepting.",
+          "bounded_sample_evidence": "https://data.toulouse-metropole.fr/api/explore/v2.1/catalog/datasets/liste-des-ft-des-denrees-de-la-cc-tls/records?limit=1&timezone=UTC"
+        }
+      ],
+      "license_scope_note": "Dataset rows only. Dish/ingredient/technical-sheet registries are related evidence, not full recipes or additional menus; do not follow linked PDF/media URLs. Menu price is production cost where SCDL defines it, not retail price. Translation/normalization are not performed.",
+      "request_interval_seconds": 2
+    },
+    {
+      "id": "fr_larochelle_archive",
+      "name": "La Rochelle collective menu archives",
+      "production_enabled": false,
+      "disabled_reason": "Exact canonical artifact resolution timed out; preserve historical lead, no guessed download URL.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fr_marseille_archive",
+      "name": "Marseille school and cr\u00e8che historical menus",
+      "production_enabled": false,
+      "disabled_reason": "No CSV payload",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fr_dijon_school",
+      "name": "Dijon municipal school menus",
+      "production_enabled": false,
+      "disabled_reason": "Primary metadata API returned 503; exact downloadable artifact unresolved.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "jp_yamagata_school",
+      "name": "Yamagata school lunch open data",
+      "production_enabled": false,
+      "disabled_reason": "CC BY 4.0 notice exists, but separate municipal terms deem use acceptance and include indemnification/jurisdiction clauses; no new agreement authorized.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "jp_noshiro_school",
+      "name": "Noshiro southern community kitchen lunch menus",
+      "production_enabled": false,
+      "disabled_reason": "CSV opened via web but unsupported text/csv; no row payload.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "jp_shizuoka_school",
+      "name": "Shizuoka school lunch menu PDFs",
+      "production_enabled": false,
+      "disabled_reason": "Dated dishes, ingredient classes, seasoning and meal nutrition visible.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "de_konstanz_canteens",
+      "name": "Konstanz archive: German university canteen meal options 2015\u20132024",
+      "production_enabled": false,
+      "disabled_reason": "Repository endpoint timeout; original archive URL/access, upstream provenance and collection-date discrepancy unresolved.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "us_nypl_menus",
+      "name": "NYPL What\u2019s on the Menu historical transcriptions",
+      "production_enabled": false,
+      "disabled_reason": "Support page HTTP 403; legacy data page inaccessible; no bulk export downloaded.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "us_menustat",
+      "name": "NYC MenuStat historical chain restaurant nutrition",
+      "production_enabled": false,
+      "disabled_reason": "One-record API and columns endpoint inaccessible. Menustat homepage/codebook/method PDF returned 403 on direct requests; no retry.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "global_dolthub_menus",
+      "name": "DoltHub menus bounty 2021",
+      "production_enabled": false,
+      "disabled_reason": "Repository web view did not expose license/schema; no clone or export.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "de_openmensa_live",
+      "name": "OpenMensa live community menus",
+      "production_enabled": false,
+      "disabled_reason": "No live provider payload fetched",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "de_dresden_original",
+      "name": "Studentenwerk Dresden original menu API",
+      "production_enabled": false,
+      "disabled_reason": "No live payload",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "se_open_meal",
+      "name": "Swedish Open Meal protocol and provider network",
+      "production_enabled": false,
+      "disabled_reason": "No provider data or discovery registry fetched",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "se_skolmaten_ist",
+      "name": "IST Skolmaten commercial integration",
+      "production_enabled": false,
+      "disabled_reason": "No service request",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "br_prato_aberto",
+      "name": "S\u00e3o Paulo Prato Aberto municipal school menus",
+      "production_enabled": false,
+      "disabled_reason": "No API call; authentication boundary respected.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "us_souslab_sample",
+      "name": "Souslab US restaurant menu sample",
+      "production_enabled": false,
+      "disabled_reason": "No dataset downloaded",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "global_menustatic",
+      "name": "MenuStatic community restaurant menu PDFs",
+      "production_enabled": false,
+      "disabled_reason": "No menu documents fetched",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "us_unlv_menus",
+      "name": "UNLV historic menu collection",
+      "production_enabled": false,
+      "disabled_reason": "One item advertises 80.6 MB TIFF; not downloaded.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fr_dijon_library",
+      "name": "Dijon municipal library historic menus",
+      "production_enabled": false,
+      "disabled_reason": "No scans or transcription payload",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "us_lapl_menus",
+      "name": "Los Angeles Public Library historic menus",
+      "production_enabled": false,
+      "disabled_reason": "No scans downloaded",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "kr_mind",
+      "name": "MIND Korean diet-planning benchmark",
+      "production_enabled": false,
+      "disabled_reason": "No package downloaded",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "global_menu_ocr_benchmarks",
+      "name": "Menu image/OCR benchmarks (MMConflict and Roboflow examples)",
+      "production_enabled": false,
+      "disabled_reason": "No images downloaded",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "institutional_hospital_care",
+      "name": "Generic hospital/care-home published menus",
+      "production_enabled": false,
+      "disabled_reason": "Leicester direct page timed out; not retried. No patient records sought.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "fi_finna_licensed_menu_images",
+      "name": "Finna licensed historical menu image subsets",
+      "production_enabled": false,
+      "disabled_reason": "No API query or images downloaded. Finnair item direct page returned HTTP 403; no retry.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "br_fortaleza_school_csv",
+      "name": "Fortaleza school meal menu CSV",
+      "production_enabled": false,
+      "disabled_reason": "No CSV fetched; columns not verified.",
+      "discovery_registry": "menus.json",
+      "artifacts": []
+    },
+    {
+      "id": "kochwiki_de",
+      "name": "kochwiki_de",
+      "production_enabled": false,
+      "disabled_reason": "Ordinary recipe HTML is available; broad bounded category/robots handler not part of this finite exact-URL batch. API/dump endpoint unresolved; headline 11,434 is not a verified recipe yield.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "cuisine_libre_fr",
+      "name": "cuisine_libre_fr",
+      "production_enabled": false,
+      "disabled_reason": "Per-page license partition and exact non-PDF bulk export remain unresolved; sampled directory/export paths return 404.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_de",
+      "name": "wikibooks_de",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_fr",
+      "name": "wikibooks_fr",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_bn",
+      "name": "wikibooks_bn",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_ta",
+      "name": "wikibooks_ta",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_fa",
+      "name": "wikibooks_fa",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_ar",
+      "name": "wikibooks_ar",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_zh",
+      "name": "wikibooks_zh",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_ja",
+      "name": "wikibooks_ja",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_id",
+      "name": "wikibooks_id",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_pt",
+      "name": "wikibooks_pt",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikibooks_pl",
+      "name": "wikibooks_pl",
+      "production_enabled": false,
+      "disabled_reason": "Retained source family or derivative overlap; no verified new revision/content delta. Do not refetch the pinned baseline.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "maff_our_regional_cuisines",
+      "name": "maff_our_regional_cuisines",
+      "production_enabled": false,
+      "disabled_reason": "Sample credits \u5317\u6d77\u9053\u306e\u5473 and \u5357\u90e8\u3042\u304d\u5b50; do not assume ministry owns supplied text; English/Japanese paired pages not independent recipes; No verified API/bulk export",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "mfds_cookrcp01_ko",
+      "name": "mfds_cookrcp01_ko",
+      "production_enabled": false,
+      "disabled_reason": "MFDS service key/approval required and no existing available approved key established; no registration or credential discovery.",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "mafra_recipe_relations_ko",
+      "name": "mafra_recipe_relations_ko",
+      "production_enabled": false,
+      "disabled_reason": "Must join all three relations; base alone not recipes; Example totalCnt=5 is sample size not corpus count; API registration required; Documented raw-IP endpoint not called; Text license scope needs exact clarification",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "aozora_shokudoraku_ja",
+      "name": "aozora_shokudoraku_ja",
+      "production_enabled": false,
+      "disabled_reason": "Requires recipe-vs-story segmentation; Do not extract modern notes or illustrations under blanket PD assumption; Retain text input/proofreading/bibliographic credits; Historical health and storage claims not validated",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "wikisource_suiyuan_zh",
+      "name": "wikisource_suiyuan_zh",
+      "production_enabled": false,
+      "disabled_reason": "Do not count each heading or culinary opinion as recipe; Preserve source edition, attribution/moral-rights notices; Modern translations not included in original-work PD status; No modern nutrition/servings assumed",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "gutenberg_artusi_it",
+      "name": "gutenberg_artusi_it",
+      "production_enabled": false,
+      "disabled_reason": "Resolve subrecipe references; Don't duplicate table-of-contents entries; Wikisource versions duplicate same work",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "gutenberg_calleja_es",
+      "name": "gutenberg_calleja_es",
+      "production_enabled": false,
+      "disabled_reason": "Household/nonfood sections must be excluded; Short variants refer back to prior recipe; Do not use autogenerated book summary as publication-date authority",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "gnome_recipes",
+      "name": "gnome_recipes",
+      "production_enabled": false,
+      "disabled_reason": "17 catalogs are not 17 fully translated independent corpora; Quantity/unit/name/group tab-separated inside escaped newline string; Instructions contain timer and temperature markup; Photo/chef identities separately scoped",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "aozora_copyrighted_or_later_works",
+      "name": "aozora_copyrighted_or_later_works",
+      "production_enabled": false,
+      "disabled_reason": "C applies protected/private-use-only subset, not whole Aozora; 1933 example separately B for international rights; Catalog CC-BY metadata and guide CC-BY-NC are not work-text licenses",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    },
+    {
+      "id": "bn_wikisource_amish_niramish",
+      "name": "bn_wikisource_amish_niramish",
+      "production_enabled": false,
+      "disabled_reason": "1900/1903/1907 edition links are not counts of recipe data; Do not use unsourced 2500-recipe claims; No PDF-only source admitted",
+      "discovery_registry": "multilingual-recipes.json",
+      "artifacts": []
+    }
+  ]
+}

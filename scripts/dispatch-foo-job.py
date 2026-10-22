@@ -24,7 +24,7 @@ import time
 CACHE = Path("/srv/offmenu-refresh/cache")
 OUTPUT = Path("/srv/offmenu-refresh/outputs")
 REPOSITORY_ID = "1416253963"
-PROFILES = {"readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness"}
+PROFILES = {"additional-public-sources", "readiness", "inventory", "offline-replay", "smoke", "delivery-diagnostics", "national-schema-survey", "ciqual-source-native", "global-readiness", "offline-reconciliation", "collection-prepare", "zenodo-private-original", "zenodo-response-metadata", "swiss-private-original", "selected-original-batch", "batch-recovery-diagnostic", "global-collection"}
 MAX_REQUEST = 1024
 MAX_CHILD_OUTPUT = 1024 * 1024
 MAX_REPORT = 32768
@@ -79,7 +79,7 @@ def canonical(value):
 
 
 def report_limit(value):
-    return MAX_SURVEY_REPORT if value.get('profile') == 'national-schema-survey' else MAX_REPORT
+    return MAX_SURVEY_REPORT if value.get('profile') in {'national-schema-survey','global-collection'} else MAX_REPORT
 
 
 def atomic_json(path, value):
@@ -140,7 +140,17 @@ def finite_float(value):
 def diagnostic_evidence(value):
     """Rebind child reports through pinned, closed-schema sanitizers."""
     schemas = {
+        "offmenu-source-fetch-failure/1": ("../manual-action/fetch_sources.py", "additionalPublicSources"),
+        "offmenu-source-fetch-summary/1": ("../manual-action/fetch_sources.py", "additionalPublicSources"),
+        "offmenu-global-collection-result/1": ("collect-fixed-global.py", "globalCollection"),
+        "offmenu-fixed-batch-recovery-diagnostic/1": ("diagnose-fixed-batch.py", "batchRecoveryDiagnostic"),
+        "offmenu-fixed-source-batch/1": ("acquire-fixed-batch.py", "fixedSourceBatch"),
+        "offmenu-fixed-swiss-original/1": ("acquire-fixed-swiss.py", "fixedSwissOriginal"),
         "offmenu-global-readiness/1": ("global-readiness.py", "globalReadiness"),
+        "offmenu-fixed-response-metadata/1": ("acquire-fixed-zenodo.py", "fixedResponseMetadata"),
+        "offmenu-fixed-original-summary/1": ("acquire-fixed-zenodo.py", "fixedOriginal"),
+        "offmenu-collection-preparation-summary/1": ("prepare-fixed-collection.py", "collectionPreparation"),
+        "offmenu-offline-reconciliation/1": ("offline-reconciliation.py", "offlineReconciliation"),
         "offmenu-ledger-structural-audit/1": ("offmenu_ledger_audit.py", "ledgerAudit"),
         "offmenu-selected-data-inventory/1": ("inspect-selected-datasets.py", "selectedDataInventory"),
     }
@@ -182,7 +192,7 @@ def diagnostic_evidence(value):
             return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
         if not isinstance(sanitized, dict) or sanitized.get("schemaVersion") != schema:
             return {"diagnosticEvidenceError": "invalid-diagnostic-schema"}
-        if len(canonical(sanitized)) > MAX_DIAGNOSTIC_EVIDENCE:
+        if len(canonical(sanitized)) > (MAX_SURVEY_EVIDENCE if schema=='offmenu-global-collection-result/1' else MAX_DIAGNOSTIC_EVIDENCE):
             return {"diagnosticEvidenceError": "diagnostic-evidence-limit-exceeded"}
         return {key: sanitized}
     except (OSError, ValueError, TypeError, KeyError, AttributeError, ImportError, RecursionError):
@@ -300,6 +310,51 @@ def profile_steps(profile, code, trusted_sha=None):
               "--manifest", "tests/fixtures/corpus-refresh/input-manifest.json",
               "--input-root", "tests/fixtures/corpus-refresh", "--workspace", str(OUTPUT / "pilot")]
     steps = [("readiness", [], [python, "-B", "-c", "import sys, fcntl, resource, offmenu.refresh; assert sys.version_info >= (3, 10)"])]
+    if profile == "additional-public-sources":
+        return steps + [
+            ("additional-public-source-tests", ["readiness"], [python, "-I", "-B", "-m", "unittest", "discover", "-s", "manual-action/tests", "-p", "test_fetch_sources.py"]),
+            ("additional-public-sources", ["readiness", "additional-public-source-tests"], [python, "-I", "-B", "manual-action/fetch_sources.py"]),
+        ]
+    if profile == "batch-recovery-diagnostic":
+        steps += [
+            ("batch-recovery-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_batch_recovery_diagnostic.py"]),
+            ("batch-recovery-diagnostic", ["readiness", "batch-recovery-tests"], [python, "-B", "scripts/diagnose-fixed-batch.py"]),
+        ]
+    if profile == "global-collection":
+        return steps + [
+            ("global-collection-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_global_collection.py"]),
+            ("media-preparation-tests", ["readiness", "global-collection-tests"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_media_preparation.py"]),
+            ("global-collection", ["readiness", "global-collection-tests", "media-preparation-tests"], [python, "-B", "scripts/collect-fixed-global.py"]),
+        ]
+    if profile == "selected-original-batch":
+        steps += [
+            ("fixed-source-batch-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_source*.py"]),
+            ("selected-original-batch", ["readiness", "fixed-source-batch-tests"], [python, "-B", "scripts/acquire-fixed-batch.py"]),
+        ]
+    if profile == "swiss-private-original":
+        steps += [
+            ("swiss-original-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_swiss_original.py"]),
+            ("swiss-private-original", ["readiness", "swiss-original-tests"], [python, "-B", "scripts/acquire-fixed-swiss.py"]),
+        ]
+    if profile == "zenodo-response-metadata":
+        steps += [
+            ("zenodo-response-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_zenodo_diagnostic.py"]),
+            ("zenodo-response-metadata", ["readiness", "zenodo-response-tests"], [python, "-B", "scripts/acquire-fixed-zenodo.py", "--response-metadata"]),
+        ]
+    if profile == "zenodo-private-original":
+        steps += [
+            ("zenodo-original-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_zenodo_original.py"]),
+            ("zenodo-private-original", ["readiness", "zenodo-original-tests"], [python, "-B", "scripts/acquire-fixed-zenodo.py"]),
+        ]
+    if profile == "collection-prepare":
+        steps += [
+            ("collection-preparation-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_fixed_collection_preparation.py"]),
+            ("collection-prepare", ["readiness", "collection-preparation-tests"], [python, "-B", "scripts/prepare-fixed-collection.py"]),
+        ]
+    if profile == "offline-reconciliation":
+        steps.append(("reconciliation-tests", ["readiness"], [python, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_offline_reconciliation.py"]))
+        for mode in ("source-claims", "transfer-receipts", "native-continuity", "disk-reservations", "pending-ownership"):
+            steps.append((mode, ["readiness", "reconciliation-tests"], [python, "-B", "scripts/offline-reconciliation.py", "--mode", mode]))
     if profile == "global-readiness":
         observed = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         steps += [
@@ -350,7 +405,20 @@ def profile_steps(profile, code, trusted_sha=None):
 
 def run_step(step_id, command, code):
     try:
-        result = run_child(command, code)
+        result = (run_child(command, code, timeout=210) if step_id == "batch-recovery-diagnostic"
+                  else run_child(command, code, timeout=1230) if step_id in {"selected-original-batch", "global-collection", "additional-public-sources"}
+                  else run_child(command, code, timeout=150) if step_id == "swiss-private-original"
+                  else run_child(command, code, timeout=930) if step_id == "zenodo-private-original"
+                  else run_child(command, code, timeout=60) if step_id == "zenodo-response-metadata"
+                  else run_child(command, code))
+        if step_id == "additional-public-sources" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("additionalPublicSources", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") not in {"partial", "failed"} or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="additional-source-report-invalid")
         if result["status"] == "failed" and result["evidence"].get("errorCode") == "unfinished-run-requires-resume" and step_id == "offline-replay":
             previous = result
             result = run_child(command + ["--resume"], code)
@@ -364,6 +432,70 @@ def run_step(step_id, command, code):
                 result.update(status='failed', exitCode=3, errorCode='native-candidate-not-established')
             elif step_id == 'ciqual-native-retry' and receipt.get('created') is not False:
                 result.update(status='failed', exitCode=3, errorCode='native-idempotency-not-established')
+        if step_id == "zenodo-response-metadata" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("fixedResponseMetadata", {})
+            if report.get("status") == "observed" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "failed" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="fixed-response-report-invalid")
+        if step_id == "batch-recovery-diagnostic" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("batchRecoveryDiagnostic", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "complete-with-errors" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="batch-recovery-report-invalid")
+        if step_id == "global-collection" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("globalCollection", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") not in {"complete-with-errors", "summary-projection-failed"} or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="global-collection-report-invalid")
+        if step_id == "selected-original-batch" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("fixedSourceBatch", {})
+            if report.get("status") == "complete" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "complete-with-errors" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="fixed-batch-report-invalid")
+        if step_id == "swiss-private-original" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("fixedSwissOriginal", {})
+            if report.get("status") == "verified-private-original" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "failed" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="fixed-swiss-report-invalid")
+        if step_id == "zenodo-private-original" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("fixedOriginal", {})
+            if report.get("status") == "verified-private-original" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            elif report.get("status") != "failed" or result["exitCode"] != 2:
+                result.update(status="failed", exitCode=3, errorCode="fixed-original-report-invalid")
+        if step_id == "collection-prepare" and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("collectionPreparation", {})
+            if report.get("status") == "prepared" and result["exitCode"] == 0:
+                result["status"] = "passed"
+            elif report.get("status") == "blocked" and result["exitCode"] == 2:
+                result["status"] = "blocked"
+            else:
+                result.update(status="failed", exitCode=3, errorCode="collection-preparation-invalid")
+        if step_id in {"source-claims", "transfer-receipts", "native-continuity", "disk-reservations", "pending-ownership"} and result["status"] in {"passed", "failed"}:
+            report = result["evidence"].get("offlineReconciliation", {})
+            if report.get("mode") != step_id:
+                result.update(status="failed", exitCode=3, errorCode="reconciliation-report-invalid")
+            elif result["exitCode"] == 2 and report.get("status") == "blocked":
+                result["status"] = "blocked"
+            elif result["exitCode"] != 0 or report.get("status") != "complete":
+                result.update(status="failed", exitCode=3, errorCode="reconciliation-not-established")
         if step_id in {"global-runtime", "global-coverage"} and result["status"] in {"passed", "failed"}:
             report = result["evidence"].get("globalReadiness", {})
             expected_kind = "runtime" if step_id == "global-runtime" else "coverage"
@@ -465,10 +597,48 @@ def run_profile(request, sha, code, run_id, attempt):
               "profile": request["profile"], "trustedCodeSha": sha, "githubRunId": run_id,
               "githubRunAttempt": attempt, "status": state, "steps": results,
               "sourceContentsUploaded": False, "externalPublication": False}
+    if request["profile"] == "additional-public-sources":
+        report.update(maximumParallelChildren=1, diagnosticScope="selected-public-source-acquisition-only",
+                      corpusAcceptanceEstablished=False, databaseWritesEnabled=False,
+                      existingIngestAccessEnabled=False)
     if request["profile"] == "delivery-diagnostics":
         report.update(manifestCommitSha=LEDGER_SOURCE_SHA, maximumParallelChildren=2,
                       diagnosticScope="structural-ledger-and-selected-cache-metadata",
                       corpusAcceptanceEstablished=False)
+    if request["profile"] == "zenodo-response-metadata":
+        report.update(maximumParallelChildren=1, diagnosticScope="one-prospective-HEAD-response-metadata",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, networkAcquisitionEnabled=False)
+    if request["profile"] == "batch-recovery-diagnostic":
+        report.update(maximumParallelChildren=1, diagnosticScope="five-failed-source-metadata-and-HEAD-diagnostics",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, networkAcquisitionEnabled=False)
+    if request["profile"] == "global-collection":
+        report.update(maximumParallelChildren=1, diagnosticScope="all-known249-and-shared-fixed-collection-and-preparation",
+                      sourceContentsUploaded=False, nativeClaimCoverageExhaustive=False,
+                      unknownClaimsAssumedEmpty=False, countryCoverageComplete=False)
+    if request["profile"] == "selected-original-batch":
+        report.update(maximumParallelChildren=1, diagnosticScope="seven-selected-private-recipe-originals",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, commercialReuseApproved=False)
+    if request["profile"] == "swiss-private-original":
+        report.update(maximumParallelChildren=1, diagnosticScope="one-selected-swiss-private-original",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, commercialReuseApproved=False)
+    if request["profile"] == "zenodo-private-original":
+        report.update(maximumParallelChildren=1, diagnosticScope="one-selected-global-private-original",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, commercialReuseApproved=False)
+    if request["profile"] == "collection-prepare":
+        report.update(maximumParallelChildren=1, diagnosticScope="pinned-custody-metadata-preparation",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, safeToAcquireEstablished=False,
+                      networkAcquisitionEnabled=False)
+    if request["profile"] == "offline-reconciliation":
+        report.update(maximumParallelChildren=1, diagnosticScope="fixed-path-offline-metadata-observations",
+                      corpusAcceptanceEstablished=False, countryCoverageComplete=False,
+                      candidateGenerationEnabled=False, nativeProcessesObserved=False,
+                      safeToAcquireEstablished=False)
     if request["profile"] == "global-readiness":
         report.update(maximumParallelChildren=2, diagnosticScope="fixed-scope-offline-global-readiness",
                       corpusAcceptanceEstablished=False, countryCoverageComplete=False,
@@ -567,4 +737,6 @@ def main(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
 
