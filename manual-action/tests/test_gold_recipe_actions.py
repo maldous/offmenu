@@ -12,14 +12,13 @@ import importlib
 import json
 from pathlib import Path
 import sqlite3
-import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = ROOT.parent
 PIN = "368ef2ce0e42bba3497c5e548f47422a989ea10a"
 NATIVE_FILES = (
     "manual-action/ingest_api.py",
@@ -31,11 +30,26 @@ NATIVE_FILES = (
 )
 
 
+# Test-only source snapshot: exact Git blobs from PIN, including the transitive
+# import closure. Never use installed/current runtime modules as a substitute.
+# All six hashes are checked before any snapshot module is imported.
+NATIVE_SHA256 = {
+    "manual-action/ingest_api.py": "b26a90375b9dc410dad2f6d00687ad810d60a653721d3a886cf4a4c998ffb26b",
+    "manual-action/normalization_api.py": "faddea9b4447aa908ffc7ec92533dd078aac9d435aa2569dd2f0cece884229ea",
+    "manual-action/runner_paths.py": "ffbe973e8885bd65c1813e5651a1530cca516dd6b87db7f4f60fdce20943fa99",
+    "manual-action/normalization_domains.py": "f6487c8ad3d2e462c33849d156233a40bc914fa3ed3e44c8dae9f09f41696661",
+    "manual-action/normalization_core.py": "72aceeae74b6a3a1fcafb0d2781b97e1b4e31697b7d92914c7946f3e0dca7793",
+    "manual-action/normalize_recipes.py": "ced8ed09b297330d68504cac14a8326d4a4500f4626097ce8b8520820175c053"
+}
+NATIVE_FIXTURE = Path(__file__).resolve().parent / "fixtures" / "recipe_native_368ef"
+
+
 def _blob(path):
-    return subprocess.run(
-        ["git", "-C", str(REPO), "show", f"{PIN}:{path}"],
-        check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    ).stdout
+    expected = NATIVE_SHA256[path]
+    blob = (NATIVE_FIXTURE / Path(path).name).read_bytes()
+    if hashlib.sha256(blob).hexdigest() != expected:
+        raise ValueError("immutable native test fixture digest mismatch: " + path)
+    return blob
 
 
 class PinnedNativeFixture:
@@ -418,6 +432,55 @@ class GoldRecipeActionTests(unittest.TestCase):
         self.assertEqual(result["material_inputs"][0]["material_id"], "material:mixed-beans")
         self.assertEqual(result["native_source_pin"], PIN)
         self.assertEqual(result["native_module_sha256"], self.actions.NATIVE_MODULES)
+
+    def test_reference_ids_must_be_nonempty_strings(self):
+        for field in ("entities", "citations"):
+            for invalid in (None, {}, [], 7, True, "", "  "):
+                with self.subTest(field=field, invalid=invalid):
+                    rules, review, connections = self._connected()
+                    if field == "entities":
+                        connections["entities"][1]["id"] = invalid
+                        for link in connections["ingredient_links"]:
+                            link["ingredient_entity_id"] = invalid
+                    else:
+                        connections["citations"][0]["id"] = invalid
+                        for group in ("ingredient_links", "materials", "material_inputs", "action_citations"):
+                            for row in connections[group]:
+                                row["citation_ids"] = [invalid]
+                    connections["qualification"]["content_sha256"] = self.native.digest(
+                        {k: v for k, v in connections.items() if k != "qualification"})
+                    result = self.actions.connect_recipe_actions(
+                        rules, review, native=self.native, connections=connections)
+                    self.assertEqual(result["status"], "held")
+                    self.assertIn({"code": "gold_reference_id_required", "target": "recipe"}, result["holds"])
+
+    def test_material_rows_reject_undeclared_properties(self):
+        for field, code in (("materials", "material_shape"), ("material_inputs", "material_input_shape")):
+            with self.subTest(field=field):
+                rules, review, connections = self._connected()
+                connections[field][0]["undeclared"] = "source annotation is not an output field"
+                connections["qualification"]["content_sha256"] = self.native.digest(
+                    {k: v for k, v in connections.items() if k != "qualification"})
+                result = self.actions.connect_recipe_actions(
+                    rules, review, native=self.native, connections=connections)
+                self.assertEqual(result["status"], "held")
+                self.assertTrue(any(h["code"] == code for h in result["holds"]))
+                self.assertFalse(any("undeclared" in row for row in result[field]))
+
+    def test_pinned_fixture_does_not_need_git_history(self):
+        with patch("subprocess.run", side_effect=AssertionError("test helpers must not require Git history")):
+            blob = _blob("manual-action/normalize_recipes.py")
+        self.assertEqual(hashlib.sha256(blob).hexdigest(), self.actions.NATIVE_MODULES["normalize_recipes.py"])
+
+    def test_missing_or_corrupt_fixture_never_uses_runtime_source(self):
+        with tempfile.TemporaryDirectory(prefix="offmenu-missing-fixture-") as directory:
+            with patch(__name__ + ".NATIVE_FIXTURE", Path(directory)):
+                with patch("subprocess.run", side_effect=AssertionError("no alternate history or runtime source")):
+                    with self.assertRaises(FileNotFoundError):
+                        _blob("manual-action/normalize_recipes.py")
+                    (Path(directory) / "normalize_recipes.py").write_bytes(b"not the immutable fixture")
+                    with self.assertRaisesRegex(ValueError, "fixture digest mismatch"):
+                        _blob("manual-action/normalize_recipes.py")
 
     def test_scaling_preserves_original_allocation_and_scales_only_amount(self):
         rules, review, connections = self._connected(single=True)

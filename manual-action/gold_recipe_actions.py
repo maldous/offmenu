@@ -223,6 +223,8 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
         if any(isinstance(i.get("quantity"), dict) and i["quantity"].get("status") != "normalized"
                for i in ingredients.values()):
             raise ActionConnectionError("recipe_ingredient_quantity_unresolved")
+        if any(not _text(row.get("id")) for field in ("entities", "citations") for row in connections[field]):
+            raise ActionConnectionError("gold_reference_id_required")
         entities = {r.get("id"): r for r in connections["entities"]}
         citations = {r.get("id"): r for r in connections["citations"]}
         if len(entities) != len(connections["entities"]) or len(citations) != len(connections["citations"]) or None in entities or None in citations:
@@ -415,6 +417,8 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
         for material in connections["materials"]:
             mid = material.get("material_id")
             try:
+                if set(material) != {"material_id", "producer_instance_id", "label", "citation_ids", "evidence"}:
+                    raise ActionConnectionError("material_shape")
                 producer = material["producer_instance_id"]
                 if not _text(mid) or mid in material_map or producer not in instance_map or not _text(material.get("label")):
                     raise ActionConnectionError("material_producer_binding")
@@ -427,6 +431,8 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
         seen_inputs = set()
         for item in connections["material_inputs"]:
             try:
+                if set(item) != {"instance_id", "material_id", "citation_ids", "evidence"}:
+                    raise ActionConnectionError("material_input_shape")
                 mid, consumer = item["material_id"], item["instance_id"]
                 if (consumer, mid) in seen_inputs: raise ActionConnectionError("duplicate_material_input")
                 seen_inputs.add((consumer, mid))
