@@ -4,10 +4,13 @@ The bundled catalog is reviewed portfolio configuration, not a runtime source
 registry. A ready result means metadata is ready for binding review only.
 """
 import argparse
+from contextlib import ExitStack, contextmanager
 from copy import deepcopy
 from datetime import datetime, timezone
+import os
 from pathlib import Path, PurePosixPath
 import re
+import stat
 
 from .acquisition import MIN_TTL
 from .core import RefreshError, canonical, safe_path, sha, strict_json, timestamp
@@ -115,6 +118,12 @@ def _valid_spec(spec):
     return len(names) == len(set(names))
 
 
+def _metadata_identity(value):
+    return (value.st_dev, value.st_ino, value.st_size,
+            value.st_mtime_ns, value.st_ctime_ns)
+
+
+@contextmanager
 def _metadata(asset, root):
     # Catalog locators are metadata JSON only, never response bodies. Fixture
     # roots expose only authored metadata; source-controlled retainedPath is not
@@ -135,19 +144,39 @@ def _metadata(asset, root):
             path = safe_path(location)
     else:
         path = safe_path(safe_path(root) / asset['path'])
-    if not path.is_file():
+    before = os.stat(path, follow_symlinks=False)
+    # Preserve the existing missing outcome for an initially nonregular input.
+    if not stat.S_ISREG(before.st_mode):
         raise FileNotFoundError()
-    if path.stat().st_size != asset['bytes']:
-        raise ValueError('metadata-pin-mismatch')
-    with path.open('rb') as stream:
-        raw = stream.read(MAX_METADATA_BYTES + 1)
-    if len(raw) != asset['bytes'] or sha(raw) != asset['sha256']:
-        raise ValueError('metadata-pin-mismatch')
-    value = strict_json(raw)
-    canonical(value)  # Also rejects overflow such as 1e999, not just NaN tokens.
-    if not isinstance(value, dict):
-        raise ValueError('metadata-object-required')
-    return value
+    fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    with os.fdopen(fd, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(opened.st_mode)
+                or _metadata_identity(before) != _metadata_identity(opened)):
+            raise ValueError('metadata-input-changed')
+        if not opened.st_size == asset['bytes'] <= MAX_METADATA_BYTES:
+            raise ValueError('metadata-pin-mismatch')
+        raw = stream.read(asset['bytes'] + 1)
+        if len(raw) != asset['bytes'] or sha(raw) != asset['sha256']:
+            raise ValueError('metadata-pin-mismatch')
+
+        def unchanged():
+            after = os.fstat(stream.fileno())
+            current = os.stat(path, follow_symlinks=False)
+            if (not stat.S_ISREG(current.st_mode)
+                    or not _metadata_identity(opened) == _metadata_identity(after)
+                    == _metadata_identity(current)):
+                raise ValueError('metadata-input-changed')
+
+        unchanged()
+        value = strict_json(raw)
+        canonical(value)  # Reject overflow such as1e999, as well as NaN.
+        if not isinstance(value, dict):
+            raise ValueError('metadata-object-required')
+        unchanged()
+        # The caller retains this descriptor until binding validation finishes.
+        yield value
+        unchanged()
 
 
 def inspect_binding(spec, *, metadata_root=None, now):
@@ -157,13 +186,18 @@ def inspect_binding(spec, *, metadata_root=None, now):
     observation and NEVER substitutes for original acquisition. No network,
     subprocess, payload fallback, acceptance constructor or pointer publication.
     """
+    with ExitStack() as readers:
+        return _inspect_binding(spec, metadata_root=metadata_root, now=now, readers=readers)
+
+
+def _inspect_binding(spec, *, metadata_root, now, readers):
     if not _valid_spec(spec):
         return {'sourceId': None, 'state': 'malformed', 'diagnostics': ['binding-spec-invalid']}
     errors = set()
     documents, inputs = {}, {}
     for role, asset in sorted(spec['files'].items()):
         try:
-            documents[role] = _metadata(asset, metadata_root)
+            documents[role] = readers.enter_context(_metadata(asset, metadata_root))
             inputs[asset['path']] = asset['sha256']
         except FileNotFoundError:
             errors.add('metadata-missing')
@@ -243,6 +277,12 @@ def inspect_binding(spec, *, metadata_root=None, now):
         errors.add('source-scope-held')
     if age is not None and age >= MIN_TTL:
         errors.add('stale-input-needs-reviewed-revalidation')
+    # Validate every opened object again after selectors, clocks and provenance.
+    # ExitStack closes all descriptors even when one input's identity check fails.
+    try:
+        readers.close()
+    except (OSError, ValueError, TypeError, RecursionError, RefreshError):
+        errors.add('metadata-malformed-or-pin-mismatch')
     malformed = any('invalid' in c or 'malformed' in c or c.startswith('field-origin') for c in errors)
     missing = any('missing' in c or c == 'original-acquisition-time-unknown' for c in errors)
     state = ('malformed' if malformed else 'missing' if missing else 'held' if spec['holds']
