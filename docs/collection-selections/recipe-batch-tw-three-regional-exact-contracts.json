@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "offmenu-source-original-batch-proposal/1",
+  "preparedAtUTC": "2026-10-18T19:59:23.157966+00:00",
+  "status": "SOURCE_QUALIFIED_PREPARATION_PENDING_ROOT_SELECTION_AND_REVIEW",
+  "runtimeEnabled": false,
+  "batchKey": "tw41-eastern-afa-three-regional-bento-originals-20261018",
+  "batchCapBytes": 50331648,
+  "maxWholeGETs": 3,
+  "maxSeconds": 900,
+  "maxStallSeconds": 45,
+  "maxRedirects": 0,
+  "maxRetries": 0,
+  "rangeOrResume": false,
+  "sourceEvidencePin": {
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-41/recipe-composition-prep-after8942/source-portfolio.json",
+    "sha256": "27884cf9d778eb7f5e46041300cd336e9d22c74a61006e9ff1cb4d486e15ff2b",
+    "snapshotVerification": "actual-v2-exact whole metadata hash match"
+  },
+  "freshEvidence": {
+    "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+    "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab"
+  },
+  "claimStatus": {
+    "historicalOwner": 41,
+    "producerThread": "01a1399c-4ea3-75f0-ab84-d8c8021284b9",
+    "preparationEvent": 9245,
+    "notificationEvents": [
+      9255,
+      9268
+    ],
+    "gatewayMessage": "01a14f00-42be-7586-9f9c-1a70a97be990",
+    "historicalState": "Metadata-only; zero original-body GET, claims or physical reservations.",
+    "laterReconciliation": "No later candidate acquisition or pickup identified in available native event projection through9395/Gateway newer reports. Snapshot projection is bounded, not current complete claims.",
+    "heldIdentitySearch": "Exact URL tokens not positively matched among2,129 retained descriptors. See source-identity-candidate-check.json.",
+    "runtimeRule": "Actual same-source held, partial or competing active claim causes reuse/block. Historical preparation alone is not a competing admission."
+  },
+  "sources": [
+    {
+      "sourceKey": "tw41-eastern-afa-14103-regional-bento-original",
+      "country": "TW",
+      "region": "Hualien County",
+      "title": "便當食譜(花蓮縣).pdf",
+      "sourceRole": "regional_recipe_collection_original",
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+      "publisherPage": "https://erb.afa.gov.tw/index.php?code=list&ids=581",
+      "publisher": "Ministry of Agriculture, Agriculture and Food Agency, Eastern Regional Branch",
+      "release": null,
+      "releaseQualification": "Edition and release date unknown; site copyright2017 is not publication date.",
+      "coverage": "One distinct regional bento recipe collection; original Traditional Chinese title. Actual pages, recipes, ingredient rows and national coverage unverified.",
+      "expectedMIME": "application/pdf",
+      "expectedBytes": null,
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+        "method": "HEAD",
+        "checkedAtUTC": "2026-10-18T19:57:20.792345+00:00",
+        "originalPayloadBytesRead": 0,
+        "status": 200,
+        "finalURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14103",
+        "headers": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E8%8A%B1%E8%93%AE%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        }
+      },
+      "privateCustodyRights": {
+        "assessment": "Official catalogue directly offers exact PDF. Branch use declaration permits free nonexclusive use with attribution, subject to personal-data, other-IP, specially reserved works and third-party moral-rights exceptions.",
+        "rightsPage": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "allowedScope": "Unchanged private reference copy only for this selection. Document-specific notices still uninspected.",
+        "reuseActivation": false
+      },
+      "maxBodyBytes": 16777216,
+      "physicalPreallocationBytes": 16777216,
+      "capBasis": "Explicit proposed unknown-extent hard ceiling, not expected/measured file size. Root must select this cap; stream stops before excess and retains partial with no retry.",
+      "maxWholeGETs": 1
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14102-regional-bento-original",
+      "country": "TW",
+      "region": "Yilan County",
+      "title": "便當食譜(宜蘭縣).pdf",
+      "sourceRole": "regional_recipe_collection_original",
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+      "publisherPage": "https://erb.afa.gov.tw/index.php?code=list&ids=581",
+      "publisher": "Ministry of Agriculture, Agriculture and Food Agency, Eastern Regional Branch",
+      "release": null,
+      "releaseQualification": "Edition and release date unknown; site copyright2017 is not publication date.",
+      "coverage": "One distinct regional bento recipe collection; original Traditional Chinese title. Actual pages, recipes, ingredient rows and national coverage unverified.",
+      "expectedMIME": "application/pdf",
+      "expectedBytes": null,
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+        "method": "HEAD",
+        "checkedAtUTC": "2026-10-18T19:57:20.793059+00:00",
+        "originalPayloadBytesRead": 0,
+        "status": 200,
+        "finalURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14102",
+        "headers": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%AE%9C%E8%98%AD%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        }
+      },
+      "privateCustodyRights": {
+        "assessment": "Official catalogue directly offers exact PDF. Branch use declaration permits free nonexclusive use with attribution, subject to personal-data, other-IP, specially reserved works and third-party moral-rights exceptions.",
+        "rightsPage": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "allowedScope": "Unchanged private reference copy only for this selection. Document-specific notices still uninspected.",
+        "reuseActivation": false
+      },
+      "maxBodyBytes": 16777216,
+      "physicalPreallocationBytes": 16777216,
+      "capBasis": "Explicit proposed unknown-extent hard ceiling, not expected/measured file size. Root must select this cap; stream stops before excess and retains partial with no retry.",
+      "maxWholeGETs": 1
+    },
+    {
+      "sourceKey": "tw41-eastern-afa-14101-regional-bento-original",
+      "country": "TW",
+      "region": "Taitung County",
+      "title": "便當食譜(台東縣).pdf",
+      "sourceRole": "regional_recipe_collection_original",
+      "exactURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+      "publisherPage": "https://erb.afa.gov.tw/index.php?code=list&ids=581",
+      "publisher": "Ministry of Agriculture, Agriculture and Food Agency, Eastern Regional Branch",
+      "release": null,
+      "releaseQualification": "Edition and release date unknown; site copyright2017 is not publication date.",
+      "coverage": "One distinct regional bento recipe collection; original Traditional Chinese title. Actual pages, recipes, ingredient rows and national coverage unverified.",
+      "expectedMIME": "application/pdf",
+      "expectedBytes": null,
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "url": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+        "method": "HEAD",
+        "checkedAtUTC": "2026-10-18T19:57:20.793487+00:00",
+        "originalPayloadBytesRead": 0,
+        "status": 200,
+        "finalURL": "https://erb.afa.gov.tw/index.php?act=download&ids=14101",
+        "headers": {
+          "content-disposition": "inline; filename=\"%E4%BE%BF%E7%95%B6%E9%A3%9F%E8%AD%9C%28%E5%8F%B0%E6%9D%B1%E7%B8%A3%29.pdf\"",
+          "content-type": "application/pdf"
+        }
+      },
+      "privateCustodyRights": {
+        "assessment": "Official catalogue directly offers exact PDF. Branch use declaration permits free nonexclusive use with attribution, subject to personal-data, other-IP, specially reserved works and third-party moral-rights exceptions.",
+        "rightsPage": "https://erb.afa.gov.tw/index.php?code=list&ids=569",
+        "allowedScope": "Unchanged private reference copy only for this selection. Document-specific notices still uninspected.",
+        "reuseActivation": false
+      },
+      "maxBodyBytes": 16777216,
+      "physicalPreallocationBytes": 16777216,
+      "capBasis": "Explicit proposed unknown-extent hard ceiling, not expected/measured file size. Root must select this cap; stream stops before excess and retains partial with no retry.",
+      "maxWholeGETs": 1
+    }
+  ],
+  "scope": "Private unchanged original retention with initial integrity/format checks; no translation, normalization, semantic acceptance, gold or country-complete claim.",
+  "preservedHolds": [
+    "Old main/central AFA restrictions are source-specific and remain.",
+    "TFDA8543 already held by36 via54; do not acquire alternate API.",
+    "Registration97 held by45 is not food composition.",
+    "WHO403, PH20, Zenodo15169428 and all prior holds remain independent."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "url": "https://zenodo.org/api/records/15169428/files/dataset.csv/content",
+  "method": "GET",
+  "requestHeaders": {
+    "Range": "bytes=0-8191",
+    "Accept-Encoding": "identity"
+  },
+  "purpose": "Bounded public source schema qualification only, not original acquisition",
+  "maxReadBytes": 8192,
+  "fullOriginalAcquired": false,
+  "rawSamplePersisted": false,
+  "status": 206,
+  "headers": {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Content-Length": "8192",
+    "Content-Range": "bytes 0-8191/110013794",
+    "Accept-Ranges": "bytes",
+    "ETag": null
+  },
+  "bytesRead": 8192,
+  "headerUtf8": "Name;Author;Date;Rating Value;Rating Count;Preparation Time;Cooking Time;Category;Cuisine;Ingredients;Ingredients_Raw;Instructions;Cooking Methods;Implements;Number of steps;Servings;Nutrition;URL\r",
+  "samplePrefixLooksDelimited": true,
+  "sampleRowsPersisted": false,
+  "delimiter": ";",
+  "headerFields": [
+    "Name",
+    "Author",
+    "Date",
+    "Rating Value",
+    "Rating Count",
+    "Preparation Time",
+    "Cooking Time",
+    "Category",
+    "Cuisine",
+    "Ingredients",
+    "Ingredients_Raw",
+    "Instructions",
+    "Cooking Methods",
+    "Implements",
+    "Number of steps",
+    "Servings",
+    "Nutrition",
+    "URL"
+  ],
+  "formatCheckScope": "Header only. No row count, recipe completeness, normalization, language inference, nutrition acceptance or upstream URL extraction."
+}

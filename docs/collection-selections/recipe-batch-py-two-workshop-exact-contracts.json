@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "offmenu-source-original-batch-proposal/1",
+  "preparedAtUTC": "2026-10-18T20:00:23.126790+00:00",
+  "status": "SOURCE_QUALIFIED_PREPARATION_PENDING_ROOT_SELECTION_AND_REVIEW",
+  "runtimeEnabled": false,
+  "batchKey": "py05-inan-two-cooking-workshop-originals-20261018",
+  "sources": [
+    {
+      "sourceKey": "PY-DRIVE-HEALTH1",
+      "country": "PY",
+      "title": "Recetario_Jornada_Cocina_Navidad_2021_10_12_2021.pdf",
+      "publisher": "Instituto Nacional de Alimentacion y Nutricion (INAN), Paraguay",
+      "sourceRole": "genuine_recipe_collection_original",
+      "publisherPage": "https://www.inan.gov.py/site/?page_id=60",
+      "offeredViewURL": "https://drive.google.com/file/d/1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP/view?usp=sharing",
+      "exactURL": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+      "locatorProvenance": "Current publisher catalogue links file ID; public Drive view embeds exact uc URL; HTTP303 explicitly advertises this download URL. No guessed endpoint, confirmation token, auth or agreement.",
+      "release": "Filename indicates December10,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+      "language": "Spanish publisher title; original body uninspected.",
+      "coverage": "One publisher-labelled recipe collection; amounts, methods, overlap and recipe counts require permitted original retention/check. Not whole-country coverage.",
+      "expectedBytes": 3450289,
+      "expectedMIME": "application/octet-stream",
+      "format": "pdf",
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "url": "https://drive.usercontent.google.com/download?id=1a39KB2fppy92pMkQyAz5DwTm_Fu5hRsP&export=download",
+        "method": "HEAD",
+        "checkedAtUTC": "2026-10-18T19:59:46.120457+00:00",
+        "originalPayloadBytesRead": 0,
+        "provenance": "Explicit303 Location from public Drive metadata-advertised download URL; first HEAD of this target, no origin repeat. Prior generic HTTP_ERROR label classified303 incorrectly; retained original receipt and additive correction.",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"Recetario_Jornada_Cocina_Navidad_2021_10_12_2021.pdf\"",
+          "content-length": "3450289",
+          "last-modified": "Tue, 24 May 2022 12:22:57 GMT"
+        }
+      },
+      "maxBodyBytes": 3538944,
+      "physicalPreallocationBytes": 3538944,
+      "maxWholeGETs": 1,
+      "privateCustodyRights": {
+        "assessment": "INAN publicly offers educational recipe PDF through its current catalogue. Anonymous offered download HEAD200 and filename/extent match. Qualified for unchanged private original reference copy; no open reuse/redistribution/translation/commercial grant inferred.",
+        "allowedScope": "Private unchanged Foo retention plus initial integrity/format checks.",
+        "documentSpecificNotices": "Uninspected; any contrary restriction found at permitted initial checks preserves a hold."
+      }
+    },
+    {
+      "sourceKey": "PY-DRIVE-HEALTH2",
+      "country": "PY",
+      "title": "Recetario_Jornada_Cocina_Navidad_2021_17_12_2021.pdf",
+      "publisher": "Instituto Nacional de Alimentacion y Nutricion (INAN), Paraguay",
+      "sourceRole": "genuine_recipe_collection_original",
+      "publisherPage": "https://www.inan.gov.py/site/?page_id=60",
+      "offeredViewURL": "https://drive.google.com/file/d/1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o/view?usp=sharing",
+      "exactURL": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+      "locatorProvenance": "Current publisher catalogue links file ID; public Drive view embeds exact uc URL; HTTP303 explicitly advertises this download URL. No guessed endpoint, confirmation token, auth or agreement.",
+      "release": "Filename indicates December17,2021 cooking workshop; Drive Last-Modified2022 is upload metadata, not new edition.",
+      "language": "Spanish publisher title; original body uninspected.",
+      "coverage": "One publisher-labelled recipe collection; amounts, methods, overlap and recipe counts require permitted original retention/check. Not whole-country coverage.",
+      "expectedBytes": 7587546,
+      "expectedMIME": "application/octet-stream",
+      "format": "pdf",
+      "originalSHA256": null,
+      "publisherChecksum": null,
+      "freshHEAD": {
+        "url": "https://drive.usercontent.google.com/download?id=1aV_VbH4qIRo-4ijPbyQuyP3YRwTVjs4o&export=download",
+        "method": "HEAD",
+        "checkedAtUTC": "2026-10-18T19:59:46.120956+00:00",
+        "originalPayloadBytesRead": 0,
+        "provenance": "Explicit303 Location from public Drive metadata-advertised download URL; first HEAD of this target, no origin repeat. Prior generic HTTP_ERROR label classified303 incorrectly; retained original receipt and additive correction.",
+        "status": 200,
+        "headers": {
+          "content-type": "application/octet-stream",
+          "content-disposition": "attachment; filename=\"Recetario_Jornada_Cocina_Navidad_2021_17_12_2021.pdf\"",
+          "content-length": "7587546",
+          "last-modified": "Tue, 24 May 2022 12:23:00 GMT"
+        }
+      },
+      "maxBodyBytes": 7667712,
+      "physicalPreallocationBytes": 7667712,
+      "maxWholeGETs": 1,
+      "privateCustodyRights": {
+        "assessment": "INAN publicly offers educational recipe PDF through its current catalogue. Anonymous offered download HEAD200 and filename/extent match. Qualified for unchanged private original reference copy; no open reuse/redistribution/translation/commercial grant inferred.",
+        "allowedScope": "Private unchanged Foo retention plus initial integrity/format checks.",
+        "documentSpecificNotices": "Uninspected; any contrary restriction found at permitted initial checks preserves a hold."
+      }
+    }
+  ],
+  "expectedBytes": 11037835,
+  "batchCapBytes": 11206656,
+  "maxWholeGETs": 2,
+  "maxRedirects": 0,
+  "maxRetries": 0,
+  "rangeOrResume": false,
+  "maxSeconds": 900,
+  "maxStallSeconds": 60,
+  "sourceEvidencePin": {
+    "path": "/home/user/Documents/Codex/2026-10-18/worker05-source-prep-after8942/ready-source-portfolio.json",
+    "sha256": "95bf44e1747ae146a3044cf1a2e002807e6b7cd9d28995b6584745491b7672c2",
+    "snapshotVerification": "actual-v2-exact whole metadata hash match"
+  },
+  "claimStatus": {
+    "historicalOwner": 5,
+    "producerThread": "01a138a5-6210-7ad3-af85-b50eb97eaf38",
+    "preparationEvent": 9214,
+    "gatewayMessage": "01a14eff-c867-731e-9b19-6ad9197ff422",
+    "historicalState": "Preparation only; no body GET, claims or physical original allocations.",
+    "laterReconciliation": "No matching later acquisition/pickup found in available Gateway reports and native event projection through9395. Projection is bounded, not current complete claims.",
+    "heldIdentityCheck": "Neither exact file ID positively matched in2,129 retained descriptors.",
+    "runtimeRule": "Reuse/block actual same-source held original, partial or competing active claim. Historical preparation alone is not an active competing claim."
+  },
+  "freshEvidencePins": [
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-offered-file-links.json",
+      "sha256": "2049c193e02ad9ea194213c151d10318cb69edd780011a96c04648616d54e953"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/tw-py-metadata-evidence.json",
+      "sha256": "7205e99a70c300914d69ebc5b59a6737def4c3c2b2c26c75a01d32aede5f4bab"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-original-head-evidence.json",
+      "sha256": "e45074f39adf07a5da1ba9fabf9a22a8af30c3e54b80d345ca5723214d61c3d0"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/py-drive303-target-heads.json",
+      "sha256": "784f1495b3dd116f71c8d4c99f57f77188588620b7ae675f875fa77b548c0301"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/later-event-reconciliation.json",
+      "sha256": "f576571783777d0d4c67fd5e792723ddd4c838f0ea4a886de2a2c0cb8262954f"
+    },
+    {
+      "path": "/workspace/shared/collection-recovery-queue-20261018/source-identity-candidate-check.json",
+      "sha256": "8c3d601a9782787b5617b4d577b6889c0ee521ff6265780dea8fa34c520b1502"
+    }
+  ],
+  "excludedFromBatch": [
+    {
+      "source": "PY-SICANA DOI10.3390/blsf2021008001",
+      "reason": "Current publisher-advertised exact PDFHEAD404, no retry/alternate."
+    },
+    {
+      "source": "PY-ANISOCAPPARIS DOI10.46932/sfjdv2n5-022",
+      "reason": "Current DOI metadata route403; no retry/alternate."
+    },
+    {
+      "source": "PY-DRIVE-SCHOOL1/SCHOOL2/VEG",
+      "reason": "Separate larger candidates; not included in this two-source profile."
+    }
+  ],
+  "scope": "No body acquisition by preparer, normalization, translation, gold, activation or country-complete claim."
+}
