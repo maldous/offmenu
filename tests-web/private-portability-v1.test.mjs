@@ -72,10 +72,89 @@ async function fixture({kind='owned-backup',executor=false}={}) {
   const exportRequest={packageId:'fixture-package',kind,sourceSchemaVersion:'offmenu-household-domain/1',payload:data,recoveryRef:'independent-fixture-recovery',keyReference:{keyRef:'source-key',keyVersion:1}};
   const make=()=>api.exportPackage(exportRequest);
   const restore=p=>({package:p,destination:{namespace:d.namespace,identity:clone(dst)},kitchenMap:{'kitchen-a':'kitchen-b'},keyReference:{keyRef:'destination-key',keyVersion:1}});
-  const openPlan=async plan=>createEnvelopeCryptor({resolveKey}).open(plan.envelope,{ownerUserId:dst.ownerUserId,kitchenId:null,objectType:'private-portable-package',objectId:'fixture-package',purpose:'owned_data_portability',providerId:null});
+  const openPlan=async plan=>createEnvelopeCryptor({resolveKey}).open(plan.envelope,{ownerUserId:dst.ownerUserId,kitchenId:null,objectType:'private-portable-package',objectId:'fixture-package',purpose:'owned_data_portability/manifest1:'+plan.manifestDigest,providerId:null});
   return {data,state,api,exportRequest,make,restore,openPlan};
 }
 async function rechecksum(p) {const {checksum,...rest}=p;p.checksum=await digest(rest);return p;}
+async function rewritePublicManifest(p) {
+  // The digest algorithm is public: an attacker can recompute it and the outer
+  // checksum, but cannot produce a valid GCM tag for a changed manifest.
+  if(Object.hasOwn(p,'manifestDigest')) {
+    const {checksum,envelope,manifestDigest,...header}=p;
+    p.manifestDigest=await digest(['offmenu-private-package-manifest/1',header]);
+  }
+  return rechecksum(p);
+}
+
+test('provider P1 authenticates immutable manifest even when rewritten metadata matches fresh authority',async()=>{
+  const clean=await fixture({kind:'privacy-access'});assert.deepEqual(await clean.api.accessReport(await clean.make()),clean.data);
+  const mutations=[
+    (p,a)=>{p.identity.issuer=a.identity.issuer='https://relinked-fixture.invalid';p.recipient.issuer=a.consent.recipient.issuer=a.identity.issuer;},
+    (p,a)=>{p.identity.subject=a.identity.subject='Relinked:Opaque_Subject';p.recipient.subject=a.consent.recipient.subject=a.identity.subject;},
+    (p,a)=>{p.consent.revision=++a.consent.revision;},
+    (p,a)=>{p.consent.id=a.consent.id='replacement-consent';},
+    p=>{p.scope.fields=p.scope.fields.filter(f=>f!=='profile.displayName');},
+    (p,a)=>{p.protection.recoveryRef='another-qualified-recovery';a.recoveryRefs.push(p.protection.recoveryRef);},
+    (p,a)=>{p.source.namespace=a.namespace='replacement-fixture-namespace';},
+    p=>{p.createdAt=new Date(now+1).toISOString();}
+  ];
+  for(const mutate of mutations) {const f=await fixture({kind:'privacy-access'}),p=clone(await f.make());mutate(p,f.state.source);await rewritePublicManifest(p);await assert.rejects(f.api.accessReport(p),/REPORT_DENIED/);}
+  const f=await fixture(),p=clone(await f.make()),newIdentity={...dst,issuer:'https://new-recipient-fixture.invalid'};
+  p.recipient=clone(newIdentity);f.state.source.consent.recipient=clone(newIdentity);f.state.destination.identity=clone(newIdentity);f.state.destination.consent.recipient=clone(newIdentity);
+  f.state.destination.allowedRecords=[];
+  for(const r of f.data.records) f.state.destination.allowedRecords.push(recordKey({type:r.type,id:await destinationRecordId({sourceNamespace:f.state.source.namespace,sourceIdentity:src,record:r,destinationNamespace:f.state.destination.namespace,destinationIdentity:newIdentity,kitchenMap:{'kitchen-a':'kitchen-b'}})}));
+  await rewritePublicManifest(p);const request=f.restore(p);request.destination.identity=clone(newIdentity);await assert.rejects(f.api.planRestore(request),/RESTORE_PLAN_DENIED/);
+});
+test('provider P1 excludes generic credential fields recursively from extension data',async()=>{
+  for(const name of ['token','oauthToken','secret','secretKey','oauth_token','oauth-token','SECRET_KEY']) {
+    const f=await fixture();f.data.extensions.push({namespace:'fixture',version:'1',value:{nested:[{[name]:'GENERATED-ONLY-NONSECRET-SENTINEL'}]}});f.state.source.backupInventory.payloadDigest=await digest(f.data);
+    await assert.rejects(validatePrivatePayload(f.data),/SECRET_FIELD/);await assert.rejects(f.make(),/EXPORT_DENIED/);assert.equal(f.state.resolveCalls,0);
+  }
+  const p=await payload();p.extensions.push({namespace:'fixture',version:'1',value:{tokenCount:3,secretary:'Fixture text'}});assert(await validatePrivatePayload(p));
+});
+test('provider P2 validates raw RFC URI syntax and retains accepted issuer text exactly',async()=>{
+  const invalid=['https://example.invalid/a b','https://example.invalid/a\nb','https://example.invalid/a\\b','https://example.invalid/%zz','https://user@@example.invalid/','https://[2001:db8:::1]/','https://[v1.]/','https://example.invalid/path[bad]','https://example.invalid/?x=[bad]','https://example.invalid/#a#b','https://example.invalid/café'];
+  for(const uri of invalid) {const p=await payload();p.records.find(r=>r.type==='identity_link').data.issuer=uri;await assert.rejects(validatePrivatePayload(p),/PAYLOAD_SCHEMA/);}
+  const valid=['https://Example.COM/A%20B?x=a%2Fb#Frag','urn:example:Original-Subject_01','mailto:fixture@example.invalid','https://[2001:db8::1]/path','https://[::ffff:192.0.2.1]/','https://[v1.a:b]/','file:///fixture'];
+  for(const uri of valid) {const p=await payload();p.records.find(r=>r.type==='identity_link').data.issuer=uri;assert.equal((await validatePrivatePayload(p)).records.find(r=>r.type==='identity_link').data.issuer,uri);}
+  const script="import json,sys,jsonschema\nd=json.load(sys.stdin);v=jsonschema.FormatChecker()\nif 'uri' in v.checkers:\n assert all(v.conforms(x,'uri') for x in d['valid'])\n assert all(not v.conforms(x,'uri') for x in d['invalid'])\n print('independent URI format controls PASS')\nelse:\n print('independent URI format checker NOT_AVAILABLE; runtime RFC sample controls run separately')\n";
+  const r=spawnSync('python3',['-B','-c',script],{input:JSON.stringify({valid,invalid}),encoding:'utf8'});assert.equal(r.status,0,r.stderr);
+});
+test('provider P2 medical-plan consent matches owner, exact profile, private purpose and granted choice on insert/update',()=>{
+  const script=`import sqlite3,pathlib
+c=sqlite3.connect(':memory:');c.execute('PRAGMA foreign_keys=ON')
+for p in ['cloud/schema.sql','cloud/migrations/20261022-byoc-security-v1.sql','cloud/migrations/20261022-household-domain-v1.sql','cloud/migrations/20261023-private-portability-v2.sql']:c.executescript(pathlib.Path(p).read_text())
+c.execute("INSERT INTO sec_key_references VALUES ('key','owner','server-envelope','external',1,'AES-256-GCM','active',0,200,NULL,NULL)")
+def envelope(i,t,o,p,n):c.execute('INSERT INTO sec_envelopes VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(i,'owner',None,t,o,p,'',1,'server-envelope','key',1,'AES-256-GCM',bytes([n])*12,bytes(17),0,200,1))
+for n,profile in enumerate(['profile','other-profile'],1):
+ envelope(profile+'-envelope','household_profiles',profile,'household-profile/1',n)
+ c.execute('INSERT INTO household_profiles VALUES (?,?,?,?,?,?,?)',('owner',profile,profile+'-envelope',1,'active','date','date'))
+def consent(i,obj,oid,purpose,choice):c.execute('INSERT INTO sec_consents VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(i,'owner','owner',obj,oid,purpose,'grantee' if purpose=='profile_share' else None,None,'notice',choice,1,0,200,1))
+consent('valid','household_profile','profile','private_use','granted')
+consent('valid-new','household_profile','profile','private_use','granted')
+consent('denied','household_profile','profile','private_use','denied')
+consent('withdrawn','household_profile','profile','private_use','withdrawn')
+consent('connection','connection','fixture-connection','private_use','granted')
+consent('other-profile','household_profile','other-profile','private_use','granted')
+consent('contribute','household_profile','profile','contribute_facts','granted')
+consent('sharing','household_profile','profile','profile_share','granted')
+envelope('plan-envelope','household_medical_plans','plan','household-medical-plan/1',3)
+def denied(sql,args):
+ try:c.execute(sql,args)
+ except sqlite3.IntegrityError:return
+ raise AssertionError('Expected exact medical consent denial')
+for bad in ['denied','withdrawn','connection','other-profile','contribute','sharing']:
+ denied('INSERT INTO household_medical_plans VALUES (?,?,?,?,?,?,?,?,?)',('owner','plan','profile','plan-envelope',bad,1,'active','date',200))
+c.execute('INSERT INTO household_medical_plans VALUES (?,?,?,?,?,?,?,?,?)',('owner','plan','profile','plan-envelope','valid',1,'active','date',200))
+for bad in ['denied','withdrawn','connection','other-profile','contribute','sharing']:denied('UPDATE household_medical_plans SET consent_id=?',(bad,))
+denied('UPDATE household_medical_plans SET profile_id=?',('other-profile',))
+c.execute("UPDATE household_medical_plans SET consent_id='valid-new'")
+assert c.execute('SELECT consent_id FROM household_medical_plans').fetchone()[0]=='valid-new'
+assert c.execute('PRAGMA foreign_key_check').fetchall()==[]
+print('generated exact medical consent insert/update controls PASS')
+`;
+  const r=spawnSync('python3',['-B','-c',script],{cwd:new URL('../',import.meta.url),encoding:'utf8'});assert.equal(r.status,0,r.stderr);assert.match(r.stdout,/PASS/);
+});
 
 test('all 17 typed kinds, original provenance, versioned unknown attributes and byte manifests validate',async()=>{
   const data=await payload();assert.equal(new Set(data.records.map(r=>r.type)).size,17);assert.equal((await validatePrivatePayload(data)).records.length,18);
@@ -251,7 +330,7 @@ test('pinned JSON Schema agrees with generated public package and decrypted payl
 });
 test('SQL proposal applies only to generated in-memory SQLite and enforces scopes, bindings, dispositions and rollback',()=>{
   // Deliberately no filesystem DB path and no actual D1/service binding.
-  const script=`import sqlite3,pathlib\nc=sqlite3.connect(':memory:');c.execute('PRAGMA foreign_keys=ON')\nfor p in ['cloud/schema.sql','cloud/migrations/20261022-byoc-security-v1.sql','cloud/migrations/20261022-household-domain-v1.sql','cloud/migrations/20261023-private-portability-v2.sql']: c.executescript(pathlib.Path(p).read_text())\nc.execute("INSERT INTO sec_consents VALUES ('c','owner','owner','private_record','fixture','private_use',NULL,NULL,'notice','granted',1,0,200,1)")\nscope=('owner','c',1,'destination','issuer','subject','owned-backup','inventory',0,200,'audit')\nc.execute('INSERT INTO private_portability_consent_fields VALUES (?,?,?,?,?,?,?,?,?,?,?)',scope)\ndef denied(sql,args=()):\n try: c.execute(sql,args)\n except sqlite3.IntegrityError: return\n raise AssertionError('Expected constraint denial')\ndenied('INSERT INTO private_portability_consent_fields VALUES (?,?,?,?,?,?,?,?,?,?,?)',tuple(2 if i==2 else x for i,x in enumerate(scope)))\ndenied("UPDATE private_portability_consent_fields SET recipient_issuer='other'")\nc.execute("INSERT INTO sec_key_references VALUES ('key','owner','server-envelope','external',1,'AES-256-GCM','active',0,200,NULL,NULL)")\nc.execute("INSERT INTO sec_envelopes VALUES ('bundle','owner',NULL,'private-portable-package','package','owned_data_portability','',1,'server-envelope','key',1,'AES-256-GCM',zeroblob(12),zeroblob(17),0,200,1)")\nreceipt=('owner','i'*64,'d'*64,'source','s'*64,'destination','issuer','subject',1,1,1,2,10,'a'*64)\nrow=('owner','identity_link','identity','i'*64,'source','original','package','bundle','r'*64,'history-only')\nc.commit();c.execute('BEGIN');c.execute('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt);c.execute('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',row);c.rollback()\nassert c.execute('SELECT count(*) FROM private_restore_receipts').fetchone()[0]==0\nassert c.execute('SELECT count(*) FROM private_owned_imports').fetchone()[0]==0\nc.execute('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt);c.execute('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',row);c.commit()\ndenied('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt)\ndenied("UPDATE private_restore_receipts SET content_digest=?",('f'*64,))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('owned-data' if i==9 else 'identity2' if i==2 else x for i,x in enumerate(row)))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('other-owner' if i==0 else 'identity3' if i==2 else x for i,x in enumerate(row)))\ndenied('INSERT INTO household_medical_plans VALUES (?,?,?,?,?,?,?,?,?)',('owner','plan','missing-profile','bundle','c',1,'active','date',200))\nassert c.execute('PRAGMA foreign_key_check').fetchall()==[]\nassert c.execute("SELECT count(*) FROM household_schema_versions WHERE version='offmenu-private-portability/1'").fetchone()[0]==1\nprint('generated in-memory SQLite constraints/rollback PASS; not native D1 qualification')\n`;
+  const script=`import sqlite3,pathlib\nc=sqlite3.connect(':memory:');c.execute('PRAGMA foreign_keys=ON')\nfor p in ['cloud/schema.sql','cloud/migrations/20261022-byoc-security-v1.sql','cloud/migrations/20261022-household-domain-v1.sql','cloud/migrations/20261023-private-portability-v2.sql']: c.executescript(pathlib.Path(p).read_text())\nc.execute("INSERT INTO sec_consents VALUES ('c','owner','owner','private_record','fixture','private_use',NULL,NULL,'notice','granted',1,0,200,1)")\nscope=('owner','c',1,'destination','issuer','subject','owned-backup','inventory',0,200,'audit')\nc.execute('INSERT INTO private_portability_consent_fields VALUES (?,?,?,?,?,?,?,?,?,?,?)',scope)\ndef denied(sql,args=()):\n try: c.execute(sql,args)\n except sqlite3.IntegrityError: return\n raise AssertionError('Expected constraint denial')\ndenied('INSERT INTO private_portability_consent_fields VALUES (?,?,?,?,?,?,?,?,?,?,?)',tuple(2 if i==2 else x for i,x in enumerate(scope)))\ndenied("UPDATE private_portability_consent_fields SET recipient_issuer='other'")\nc.execute("INSERT INTO sec_key_references VALUES ('key','owner','server-envelope','external',1,'AES-256-GCM','active',0,200,NULL,NULL)")\nc.execute("INSERT INTO sec_envelopes VALUES ('bundle','owner',NULL,'private-portable-package','package','owned_data_portability/manifest1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','',1,'server-envelope','key',1,'AES-256-GCM',zeroblob(12),zeroblob(17),0,200,1)")\nreceipt=('owner','i'*64,'d'*64,'source','s'*64,'destination','issuer','subject',1,1,1,2,10,'a'*64,'a'*64)\nrow=('owner','identity_link','identity','i'*64,'source','original','package','bundle','r'*64,'history-only')\nc.commit();c.execute('BEGIN');c.execute('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt);c.execute('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',row);c.rollback()\nassert c.execute('SELECT count(*) FROM private_restore_receipts').fetchone()[0]==0\nassert c.execute('SELECT count(*) FROM private_owned_imports').fetchone()[0]==0\nc.execute('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt);c.execute('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',row);c.commit()\ndenied('INSERT INTO private_restore_receipts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',receipt)\ndenied("UPDATE private_restore_receipts SET content_digest=?",('f'*64,))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('owned-data' if i==9 else 'identity2' if i==2 else x for i,x in enumerate(row)))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('other-owner' if i==0 else 'identity3' if i==2 else x for i,x in enumerate(row)))\ndenied('INSERT INTO household_medical_plans VALUES (?,?,?,?,?,?,?,?,?)',('owner','plan','missing-profile','bundle','c',1,'active','date',200))\nc.execute("INSERT INTO sec_envelopes VALUES ('wrong-manifest','owner',NULL,'private-portable-package','package','owned_data_portability/manifest1:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb','',1,'server-envelope','key',1,'AES-256-GCM',?,zeroblob(17),0,200,1)",(bytes([9])*12,))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('wrong-manifest' if i==7 else 'wrong-digest-record' if i==2 else x for i,x in enumerate(row)))\ndenied('INSERT INTO private_owned_imports VALUES (?,?,?,?,?,?,?,?,?,?)',tuple('wrong-package' if i==6 else 'wrong-package-record' if i==2 else x for i,x in enumerate(row)))\nassert c.execute('PRAGMA foreign_key_check').fetchall()==[]\nassert c.execute("SELECT count(*) FROM household_schema_versions WHERE version='offmenu-private-portability/1'").fetchone()[0]==1\nprint('generated in-memory SQLite constraints/rollback PASS; not native D1 qualification')\n`;
   const r=spawnSync('python3',['-B','-c',script],{cwd:new URL('../',import.meta.url),encoding:'utf8'});assert.equal(r.status,0,r.stderr);assert.match(r.stdout,/PASS/);
 });
 test('source-only seam imports existing cryptor and exposes no network, route, process or persistence activation',()=>{

@@ -55,6 +55,16 @@ WHEN NEW.owner_user_id!=OLD.owner_user_id OR NEW.id!=OLD.id OR NOT EXISTS (
   AND e.id=NEW.envelope_id AND e.kitchen_id IS NULL AND e.object_type='household_medical_plans'
   AND e.object_id=NEW.id AND e.purpose='household-medical-plan/1' AND e.provider_id='')
 BEGIN SELECT RAISE(ABORT,'medical plan envelope binding mismatch'); END;
+CREATE TRIGGER household_medical_plan_consent_insert BEFORE INSERT ON household_medical_plans
+WHEN NOT EXISTS (SELECT 1 FROM sec_consents c WHERE c.owner_user_id=NEW.owner_user_id
+  AND c.id=NEW.consent_id AND c.object_type='household_profile' AND c.object_id=NEW.profile_id
+  AND c.purpose='private_use' AND c.choice='granted')
+BEGIN SELECT RAISE(ABORT,'medical plan requires granted private-use consent for this profile'); END;
+CREATE TRIGGER household_medical_plan_consent_update BEFORE UPDATE ON household_medical_plans
+WHEN NOT EXISTS (SELECT 1 FROM sec_consents c WHERE c.owner_user_id=NEW.owner_user_id
+  AND c.id=NEW.consent_id AND c.object_type='household_profile' AND c.object_id=NEW.profile_id
+  AND c.purpose='private_use' AND c.choice='granted')
+BEGIN SELECT RAISE(ABORT,'medical plan requires granted private-use consent for this profile'); END;
 
 -- Body-free, immutable transaction receipts. A real executor must atomically CAS
 -- its authoritative destination revision and independent deletion/revocation
@@ -70,6 +80,7 @@ CREATE TABLE private_restore_receipts (
   expected_revision INTEGER NOT NULL CHECK(expected_revision>=0),
   committed_revision INTEGER NOT NULL CHECK(committed_revision=expected_revision+1),
   committed_at INTEGER NOT NULL, authority_digest TEXT NOT NULL CHECK(length(authority_digest)=64),
+  manifest_digest TEXT NOT NULL CHECK(length(manifest_digest)=64 AND manifest_digest NOT GLOB '*[^0-9a-f]*'),
   PRIMARY KEY(owner_user_id,idempotency_key)
 );
 CREATE TRIGGER private_restore_receipt_immutable BEFORE UPDATE ON private_restore_receipts
@@ -96,10 +107,15 @@ CREATE TABLE private_owned_imports (
   FOREIGN KEY(owner_user_id,idempotency_key) REFERENCES private_restore_receipts(owner_user_id,idempotency_key) DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY(owner_user_id,envelope_id) REFERENCES sec_envelopes(owner_user_id,id)
 );
+-- Receipt precedes its imports in the SAME atomic transaction. Its immutable
+-- manifest digest selects the exact authenticated purpose; native package ID,
+-- owner and empty provider binding remain independently checked.
 CREATE TRIGGER private_owned_imports_binding BEFORE INSERT ON private_owned_imports
-WHEN NOT EXISTS (SELECT 1 FROM sec_envelopes e WHERE e.owner_user_id=NEW.owner_user_id
+WHEN NOT EXISTS (SELECT 1 FROM sec_envelopes e JOIN private_restore_receipts r
+  ON r.owner_user_id=NEW.owner_user_id AND r.idempotency_key=NEW.idempotency_key
+  WHERE e.owner_user_id=NEW.owner_user_id
   AND e.id=NEW.envelope_id AND e.kitchen_id IS NULL AND e.object_type='private-portable-package'
-  AND e.object_id=NEW.source_package_id AND e.purpose='owned_data_portability' AND e.provider_id='')
+  AND e.object_id=NEW.source_package_id AND e.purpose='owned_data_portability/manifest1:'||r.manifest_digest AND e.provider_id='')
 BEGIN SELECT RAISE(ABORT,'restore bundle envelope binding mismatch'); END;
 CREATE TRIGGER private_owned_imports_immutable BEFORE UPDATE ON private_owned_imports
 BEGIN SELECT RAISE(ABORT,'restored records require an explicit new conflict resolution'); END;

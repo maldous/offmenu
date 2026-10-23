@@ -6,11 +6,13 @@ provisioning, sharing operation, migration, route activation or deployment.
 Worker19 owns the five-file proposal; Worker64 reviews the exact freeze and
 Worker00 owns Git custody, integration and any later actual DDL execution.
 
-The explicit immutable source is commit
+The prepared architecture originally came from immutable commit
 `011745f3aad5b5debf8765f74620437614039d31`, branch
-`feature/normalization-second-crash-isolation-20261023`. This older accepted
-source contains the prepared household/BYOC/auth contracts. It is not a claim
-that the source is current develop, a running checkout or an accepted release.
+`feature/normalization-second-crash-isolation-20261023`. The four PR106 provider
+corrections use published baseline `2cc7b402d7b474475e2dd9cdbdce1da49ca64d44`
+on `feature/private-portability-contracts-20261023`; its change from `666f949`
+was CI-only and the five private files were unchanged before correction. These
+source pins do not establish runtime adoption or an accepted release.
 Worker57's frozen 17-kind schema is unreviewed design input. Its record shapes
 are reused with qualification, encrypted packaging, lifecycle, clinical
 provenance, attachment bodies, relationship provenance and versioned extensions.
@@ -45,12 +47,25 @@ There is no heuristic field renaming or silent migration.
 
 The public manifest contains exact source/destination identity, instance,
 package ID, field/record scope, consent ID/revision, protection metadata,
-encrypted envelope and checksum. These identifiers are private metadata: it is
+encrypted envelope, manifest digest and checksum. These identifiers are private metadata: it is
 not a public publication artifact. The checksum covers the canonical manifest
 except its own checksum, including encrypted bytes. It detects corruption;
 it is not a signature, source identity proof or authorization grant. The
 version-local canonicalization sorts object keys and retains array ordering;
 it does not claim RFC 8785 interoperability.
+
+The manifest digest is additionally authenticated by the existing BYOC AES-GCM
+AAD: its purpose is `owned_data_portability/manifest1:<manifestDigest>`, while
+the owner, native package ID, object type and empty provider binding retain
+their existing separate AAD positions. For source packages the digest is SHA-256
+of the canonical JSON array `["offmenu-private-package-manifest/1", manifest]`.
+`manifest` includes every closed-schema package field except `envelope`,
+`checksum` and `manifestDigest`; it therefore binds issuer/subject, recipient,
+consent ID/revision, exact scope, recovery reference, source/version and timestamp.
+The required protection binding marker prevents accepting the previous draft's
+unbound format. Recomputing either public digest cannot repair a changed GCM tag.
+This is authenticated integrity under the existing custody key, not a signature
+or new authentication system. No previous actual export is adopted or migrated.
 
 All profile/health/clinical labels, content, typed source values, nested inventory
 locations, item/lot/holding/quantity/movement records, settings, safe connection
@@ -92,6 +107,10 @@ is required when source extensions are exported. Structural secret-key exclusion
 also applies inside extensions. This is not a DLP detector for secrets hidden in
 arbitrary user prose: a later authorized source extractor must exclude secret
 content before using these helpers.
+Generic `token`, `oauthToken`, `secret` and `secretKey` keys (including case and
+underscore/hyphen variants covered by the structural rule) are rejected recursively,
+including inside nested extension arrays. Unrelated keys such as `tokenCount`
+are preserved.
 
 The source extension limit remains 100 per record; import never appends to or
 truncates that list. Optional `record.importOrigin` has a separate strict version-1
@@ -159,7 +178,12 @@ keys. Known internal record references, attachments and relationship endpoints
 are rebound; original provenance, source extensions and first-import origin survive.
 
 The destination payload is freshly reencrypted with the existing cryptor under
-destination owner/object AAD. Relabeling source ciphertext is rejected. All key
+destination owner/object AAD. The restore manifest uses domain
+`offmenu-private-restore-manifest/1` and covers the entire plan except its
+`envelope`, `checksum` and `manifestDigest`, including source manifest digest,
+destination identity, consent revisions, scope-derived operations and logical
+content digest. It is computed before sealing and checked before commit.
+Relabeling source ciphertext is rejected. All key
 awaits are followed by fresh authority checks. A dry run performs validation and
 cryptography only; it never writes records or calls the restore executor.
 Conflicts are reported explicitly. Exact destination record digests yield
@@ -190,6 +214,16 @@ promise is made.
 The SQL proposal adds only scoped consent metadata, encrypted medical-plan
 references, body-free immutable restore receipts and encrypted owned-import
 record pointers. It reuses existing profile/consent/key/envelope/kitchen sources.
+The receipt stores the restore manifest digest. It is inserted before its imports
+in the same atomic transaction; the import trigger joins that receipt and requires
+its digest to match the envelope's exact authenticated purpose, as well as checking
+the native package ID, owner and empty provider binding. A wrong manifest cannot
+be attached by merely relabeling a record pointer.
+Medical-plan insert/update additionally requires the same owner's granted
+`private_use` consent for object type `household_profile` and the exact profile ID.
+Connection, other-profile, denied, withdrawn, contribution and sharing consents
+do not authorize that private clinical-record write. This storage constraint is
+not a substitute for fresh runtime expiry/revocation/read authorization checks.
 Imported data lands in owned encrypted storage/history; no automatic materializer
 into live stock/profile/auth tables is mounted. SQL constraints do not establish
 read authorization, authenticate an issuer or replace the required transaction
@@ -231,6 +265,21 @@ changes. Its five principal tests then passed, recorded separately. The four
 native D1/workerd tests in `tests-edge/better-auth.test.mjs` remain NOT_RUN;
 no full auth/runtime qualification is claimed. Dependency setup is not repeated
 for these R1/R2 corrections, and no mock package or auth-source edit is used.
+
+Four PR106 regressions cover metadata forgery even after public digests and fresh
+authority are changed together, generic extension credentials, exact clinical
+consent insert/update scope, and raw URI syntax. URI validation follows the
+[RFC 3986 Appendix A grammar](https://www.rfc-editor.org/rfc/rfc3986#appendix-A)
+without WHATWG URL normalization, network resolution or identity rewriting.
+Runtime controls check raw invalid spaces/controls, escapes, authority/IP-literal
+syntax and accepted URI strings. Scheme-specific validity and IRI support are
+separate. This environment's Python JSON Schema installation has no optional
+`uri` format checker; that independent URI check is reported NOT_AVAILABLE,
+not silently counted as passing. Metaschema/structural checks and the explicit
+runtime URI positive/negative controls still run.
+After those corrections the full private suite has 35 passing tests and the
+separate BYOC suite has seven. The prior five principal passes remain separate
+historical evidence; the four native authentication tests remain NOT_RUN.
 
 No actual private records, paid models, provider calls, sessions, source-cache
 reacquisition, denied diagnostic inputs, live jobs, additional workers or security

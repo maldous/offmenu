@@ -17,6 +17,50 @@ const group = type => ['space','location','item','lot','holding','movement','res
   : ['auth_history','consent_history'].includes(type) ? 'history' : type;
 const identityEqual = (a,b) => a && b && ['ownerUserId','issuer','subject'].every(k=>a[k]===b[k]);
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
+const packageBinding = 'offmenu-private-package-manifest/1';
+const restoreBinding = 'offmenu-private-restore-manifest/1';
+
+// RFC 3986 Appendix A generic URI syntax, not WHATWG URL repair/normalization.
+// Keep original text; scheme-specific validity, DNS and identity trust are separate.
+const uriAtom = "(?:[A-Za-z0-9._~!$&'()*+,;=-]|%[0-9A-Fa-f]{2})";
+const uriComponent = extra => new RegExp('^(?:'+uriAtom+'|['+extra+'])*$');
+const uriPath = uriComponent(':@/'),uriQuery = uriComponent(':@/?');
+const uriUser = uriComponent(':'),uriHost = new RegExp('^'+uriAtom+'*$');
+function ipv6(address) {
+  const halves=address.split('::');if(halves.length>2) return false;
+  const groups=halves.flatMap(h=>h?h.split(':'):[]);let count=0;
+  for(let i=0;i<groups.length;i++) {
+    const g=groups[i];
+    if(g.includes('.')) {
+      if(i!==groups.length-1||!address.endsWith(g)) return false;
+      const octets=g.split('.');
+      if(octets.length!==4||octets.some(x=>!/^(?:0|[1-9][0-9]{0,2})$/.test(x)||Number(x)>255)) return false;
+      count+=2;
+    } else {if(!/^[0-9A-Fa-f]{1,4}$/.test(g)) return false;count++;}
+  }
+  return halves.length===2?count<8:count===8;
+}
+function validURI(value) {
+  if(/[^A-Za-z0-9._~:/?#\[\]@!$&'()*+,;=%-]/.test(value)||/%(?![0-9A-Fa-f]{2})/.test(value)) return false;
+  const match=/^[A-Za-z][A-Za-z0-9+.-]*:([^?#]*)(?:\?([^#]*))?(?:#(.*))?$/.exec(value);
+  if(!match||!uriQuery.test(match[2]??'')||!uriQuery.test(match[3]??'')) return false;
+  let path=match[1];
+  if(path.startsWith('//')) {
+    const end=path.indexOf('/',2);let authority=path.slice(2,end<0?undefined:end);path=end<0?'':path.slice(end);
+    const at=authority.lastIndexOf('@');
+    if(at>=0) {if(!uriUser.test(authority.slice(0,at))) return false;authority=authority.slice(at+1);}
+    if(authority.startsWith('[')) {
+      const close=authority.indexOf(']');if(close<0||!/^(?::[0-9]*)?$/.test(authority.slice(close+1))) return false;
+      const literal=authority.slice(1,close);
+      if(!/^[vV][0-9A-Fa-f]+\.[A-Za-z0-9._~!$&'()*+,;=:-]+$/.test(literal)&&!ipv6(literal)) return false;
+    } else {
+      const colon=authority.lastIndexOf(':');
+      if(colon>=0) {if(!/^[0-9]*$/.test(authority.slice(colon+1))) return false;authority=authority.slice(0,colon);}
+      if(!uriHost.test(authority)) return false;
+    }
+  }
+  return uriPath.test(path);
+}
 
 // Canonical JSON for this version: sorted object keys, retained array ordering,
 // finite JSON numbers only. Not a claim of RFC 8785 interoperability.
@@ -72,7 +116,7 @@ function conforms(v,s) {
     if (s.pattern && !new RegExp(s.pattern,'u').test(v)) return false;
     if (s.format==='date' && (!/^\d{4}-\d{2}-\d{2}$/.test(v) || !Number.isFinite(Date.parse(v)) || new Date(v).toISOString().slice(0,10)!==v)) return false;
     if (s.format==='date-time' && (!/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.test(v) || !Number.isFinite(Date.parse(v)) || !conforms(v.slice(0,10),{format:'date'}))) return false;
-    if (s.format==='uri') {try {new URL(v);} catch {return false;}}
+    if (s.format==='uri'&&!validURI(v)) return false;
   }
   if (typeof v==='number' && (s.minimum!==undefined&&v<s.minimum || s.maximum!==undefined&&v>s.maximum)) return false;
   return true;
@@ -81,7 +125,7 @@ function noSecrets(v) {
   if (!v || typeof v!=='object') return;
   for (const [k,x] of Object.entries(v)) {
     // Strict structural exclusion, not a claim to detect secrets hidden in prose.
-    if (/^(?:password|passwordHash|api[_-]?key|access[_-]?token|refresh[_-]?token|id[_-]?token|session(?:Token|Cookie)?|cookie|authorization|bearer|client[_-]?secret|private[_-]?key|raw[_-]?key|wrapped[_-]?key|credentials?)$/iu.test(k)) fail('SECRET_FIELD');
+    if (/^(?:password|passwordHash|api[_-]?key|token|oauth[_-]?token|secret|secret[_-]?key|access[_-]?token|refresh[_-]?token|id[_-]?token|session(?:Token|Cookie)?|cookie|authorization|bearer|client[_-]?secret|private[_-]?key|raw[_-]?key|wrapped[_-]?key|credentials?)$/iu.test(k)) fail('SECRET_FIELD');
     noSecrets(x);
   }
 }
@@ -164,7 +208,11 @@ function context(a,now) {
   return a;
 }
 function subject(p,identity=p.identity,kitchenId=null) {
-  return {ownerUserId:identity.ownerUserId,kitchenId,objectType:'private-portable-package',objectId:p.packageId,purpose:'owned_data_portability',providerId:null};
+  return {ownerUserId:identity.ownerUserId,kitchenId,objectType:'private-portable-package',objectId:p.packageId,purpose:'owned_data_portability/manifest1:'+p.manifestDigest,providerId:null};
+}
+async function manifestHash(value,domain) {
+  const {envelope,checksum,manifestDigest,...immutable}=value;
+  return digest([domain,immutable]);
 }
 function packageScope(p,a,operation,recipient) {
   if(a.namespace!==p.source.namespace || !identityEqual(a.identity,p.identity) || a.consent.id!==p.consent.id || a.consent.revision!==p.consent.revision || a.consent.purpose!==operation || !identityEqual(a.consent.recipient,recipient)) fail('SOURCE_BINDING');
@@ -188,6 +236,7 @@ async function payloadScope(payload,p,a) {
 async function validatePackage(input) {
   const p=bounded(input);if(!conforms(p,schema)) fail('PACKAGE_SCHEMA');
   const {checksum,...rest}=p;if(await digest(rest)!==checksum) fail('PACKAGE_DIGEST');
+  if(await manifestHash(p,packageBinding)!==p.manifestDigest) fail('MANIFEST_DIGEST');
   unique(p.scope.records.map(key));return p;
 }
 const authorityStamp = a => canonical(a);
@@ -221,9 +270,10 @@ export function createPrivatePortability({readAuthority,resolveKey,custody='serv
         const {packageId,kind,sourceSchemaVersion,payload,recoveryRef,keyReference}=bounded(request);
         if(!atom(packageId)||!['privacy-access','portability','owned-backup'].includes(kind)||sourceSchemaVersion!=='offmenu-household-domain/1'||!atom(recoveryRef)) fail('UNSUPPORTED_VERSION');
         const a=await read(kind,'start',packageId),data=await validatePrivatePayload(payload);
-        const p={schemaVersion:'offmenu-private-portable-package/1',packageId,kind,source:{namespace:a.namespace,schemaVersion:sourceSchemaVersion},identity:clone(a.identity),recipient:clone(a.consent.recipient),createdAt:new Date(clock()).toISOString(),scope:{fields:clone(a.consent.fields),records:data.records.map(r=>({type:r.type,id:r.id}))},consent:{id:a.consent.id,revision:a.consent.revision},protection:{recoveryRef,sourceInstanceOnly:false,destinationReencryptionRequired:true,reauthenticationRequired:true,downloadedCopiesRevocable:false}};
+        const p={schemaVersion:'offmenu-private-portable-package/1',packageId,kind,source:{namespace:a.namespace,schemaVersion:sourceSchemaVersion},identity:clone(a.identity),recipient:clone(a.consent.recipient),createdAt:new Date(clock()).toISOString(),scope:{fields:clone(a.consent.fields),records:data.records.map(r=>({type:r.type,id:r.id}))},consent:{id:a.consent.id,revision:a.consent.revision},protection:{recoveryRef,sourceInstanceOnly:false,destinationReencryptionRequired:true,reauthenticationRequired:true,downloadedCopiesRevocable:false,manifestBinding:packageBinding}};
         packageScope(p,a,kind,p.recipient);await payloadScope(data,p,a);
         if(kind==='privacy-access'&&!identityEqual(a.identity,p.recipient)) fail('REPORT_RECIPIENT');
+        p.manifestDigest=await manifestHash(p,packageBinding);
         p.envelope=await crypt.seal(data,subject(p),clone(keyReference));p.checksum=await digest(p);
         await validatePackage(p);stable(a,await read(kind,'finish',packageId));return freeze(p);
       } catch {return fail('EXPORT_DENIED');}
@@ -278,8 +328,10 @@ export function createPrivatePortability({readAuthority,resolveKey,custody='serv
           operations.push({type:r.type,id:r.id,sourceId:original[i].id,digest:d,disposition:history.has(r.type)?'history-only':r.type==='medical_plan'?'clinical-review-required':'owned-data',action:existing.length?(existing[0].digest===d?'skip-identical':'conflict'):'insert'});
         }
         const intent={packageChecksum:p.checksum,destination:clone(destination),kitchenMap:clone(kitchenMap)};
-        const plan={schemaVersion:'offmenu-private-restore-plan/1',packageId:p.packageId,sourceChecksum:p.checksum,source:clone(p.identity),destination:clone(destination),sourceConsent:clone(p.consent),destinationConsent:{id:dst.consent.id,revision:dst.consent.revision},sourceRevision:src.revision,destinationRevision:dst.revision,idempotencyKey:await digest(intent),operations,conflicts:operations.filter(x=>x.action==='conflict').map(x=>({type:x.type,id:x.id})),warnings:['Original grants, sessions, entitlements and credentials are never restored.','Unknown versioned extension values remain source-bound; no implicit reference interpretation.','Downloaded copies cannot be recalled.'],atomicRequirements:['fresh-source-and-destination-authority','revision-CAS-and-tombstone-fence','all-records-attachments-relationships-or-rollback','unique-idempotency-receipt-in-same-transaction'],envelope:await crypt.seal(data,subject(p,dst.identity),clone(keyReference))};
-        plan.contentDigest=await digest({intent,records:operations.map(({action,...r})=>r),payload:data});plan.checksum=await digest(plan);
+        const plan={schemaVersion:'offmenu-private-restore-plan/1',manifestBinding:restoreBinding,packageId:p.packageId,sourceChecksum:p.checksum,sourceManifestDigest:p.manifestDigest,source:clone(p.identity),destination:clone(destination),sourceConsent:clone(p.consent),destinationConsent:{id:dst.consent.id,revision:dst.consent.revision},sourceRevision:src.revision,destinationRevision:dst.revision,idempotencyKey:await digest(intent),operations,conflicts:operations.filter(x=>x.action==='conflict').map(x=>({type:x.type,id:x.id})),warnings:['Original grants, sessions, entitlements and credentials are never restored.','Unknown versioned extension values remain source-bound; no implicit reference interpretation.','Downloaded copies cannot be recalled.'],atomicRequirements:['fresh-source-and-destination-authority','revision-CAS-and-tombstone-fence','all-records-attachments-relationships-or-rollback','unique-idempotency-receipt-in-same-transaction']};
+        plan.contentDigest=await digest({intent,records:operations.map(({action,...r})=>r),payload:data});
+        plan.manifestDigest=await manifestHash(plan,restoreBinding);
+        plan.envelope=await crypt.seal(data,subject(plan,dst.identity),clone(keyReference));plan.checksum=await digest(plan);
         stable(a,await read('restore','finish',p.packageId));
         if(issued.size>=100) issued.delete(issued.keys().next().value);
         issued.set(plan.checksum,clone(a));return freeze(plan);
@@ -289,7 +341,7 @@ export function createPrivatePortability({readAuthority,resolveKey,custody='serv
       try {
         if(typeof atomicRestore!=='function') fail('EXECUTOR_UNMOUNTED');
         const plan=clone(input),{checksum,...body}=plan;
-        if(plan.schemaVersion!=='offmenu-private-restore-plan/1'||await digest(body)!==checksum||!Array.isArray(plan.conflicts)||plan.conflicts.length) fail('PLAN_CONFLICT');
+        if(plan.schemaVersion!=='offmenu-private-restore-plan/1'||plan.manifestBinding!==restoreBinding||await manifestHash(plan,restoreBinding)!==plan.manifestDigest||await digest(body)!==checksum||!Array.isArray(plan.conflicts)||plan.conflicts.length) fail('PLAN_CONFLICT');
         // A plan is untrusted input. A private capability below proves it was issued
         // by THIS adapter; arbitrary checksummed plans cannot reach an executor.
         if(!issued.has(checksum)) fail('PLAN_NOT_ISSUED');

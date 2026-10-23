@@ -144,6 +144,9 @@
         },
         "downloadedCopiesRevocable": {
           "const": false
+        },
+        "manifestBinding": {
+          "const": "offmenu-private-package-manifest/1"
         }
       },
       "required": [
@@ -151,7 +154,8 @@
         "sourceInstanceOnly",
         "destinationReencryptionRequired",
         "reauthenticationRequired",
-        "downloadedCopiesRevocable"
+        "downloadedCopiesRevocable",
+        "manifestBinding"
       ],
       "additionalProperties": false
     },
@@ -159,6 +163,10 @@
       "$ref": "#/$defs/envelope"
     },
     "checksum": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "manifestDigest": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
     }
@@ -175,7 +183,8 @@
     "consent",
     "protection",
     "envelope",
-    "checksum"
+    "checksum",
+    "manifestDigest"
   ],
   "additionalProperties": false,
   "$defs": {
