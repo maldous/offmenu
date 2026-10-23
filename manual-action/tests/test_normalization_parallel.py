@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from normalization_api import Versions
+from normalization_api import NormalizationError, Versions
 from normalization_core import artifact_digest, digest, run_rules
 import normalization_parallel as parallel
 
@@ -232,6 +232,76 @@ class RulesParallelTests(unittest.TestCase):
                        {'max_input_bytes': 5}, {'workers': 1, 'max_inflight_tasks': 3}):
             with self.assertRaises(ValueError):
                 parallel.RulesExecutor(**kwargs)
+
+
+
+    def test_static_validation_categories_preserved_and_unknown_sanitized(self):
+        codes = ('json_complexity_cap', 'json_array_cap', 'json_size_cap',
+                 'invalid_json', 'invalid_json_object', 'non_json_value')
+        for code in codes:
+            with self.subTest(code=code), patch('normalization_core.run_rules',
+                    side_effect=NormalizationError(code)):
+                result = parallel._compact(parallel._encoded(fixture(1)), Versions().as_dict())
+                self.assertEqual(result['error_code'], code)
+                self.assertIsNone(result['artifact'])
+        marker = 'generated-private-error-context'
+        for error in (NormalizationError(marker), NormalizationError('json_size_cap', marker),
+                      NormalizationError(marker * 10000), NormalizationError({'private': marker})):
+            with self.subTest(kind=type(error).__name__), patch('normalization_core.run_rules', side_effect=error):
+                result = parallel._compact(parallel._encoded(fixture(1)), Versions().as_dict())
+                self.assertEqual(result['error_code'], 'rules_validation_error')
+                self.assertNotIn(marker, json.dumps(result))
+
+    def test_generated_recipe_failures_have_specific_categories_and_healthy_peer(self):
+        cases = [({'kind': 'unknown'}, 'unsupported_recipe_menu_projection'),
+                 ({'id': None}, 'recipe_menu_id_required'),
+                 ({'ingredients': ['not an ingredient object']}, 'ingredient_projection_not_object'),
+                 ({'steps': [{'raw_text': None}]}, 'step_projection_not_text')]
+        for changes, code in cases:
+            with self.subTest(code=code):
+                bad, good = fixture(1, 'recipes'), fixture(2)
+                bad['payload'].update(changes)
+                bad['content_sha256'] = digest(bad['payload'])
+                frames = [(0, parallel._encoded(bad)), (1, parallel._encoded(good))]
+                result = parallel._run_task(frames, Versions().as_dict(), 1024 * 1024)
+                values = [json.loads(raw) for _, raw in result['outputs']]
+                self.assertEqual([x['error_code'] for x in values], [code, None])
+                self.assertIsNone(values[0]['artifact'])
+                self.assertEqual(values[0]['source'], {k: bad[k] for k in parallel.SOURCE_KEYS})
+                self.assertEqual(values[1], expected(good))
+
+    def test_spoofed_known_recipe_error_retains_execution_fallback(self):
+        code = 'recipe_menu_id_required'
+        for error, domain in [(RuntimeError(code), 'recipes'), (ValueError(code), 'ingredients')]:
+            with self.subTest(kind=type(error).__name__, domain=domain), \
+                    patch('normalization_core.run_rules', side_effect=error):
+                result = parallel._compact(parallel._encoded(fixture(1, domain)), Versions().as_dict())
+                self.assertEqual(result['error_code'], 'rules_execution_error')
+
+    def test_broken_pool_inside_worker_is_global_fault_not_row_error(self):
+        with patch('normalization_core.run_rules', side_effect=BrokenProcessPool('generated-private-context')):
+            with self.assertRaisesRegex(parallel.RulesWorkerError, '^rules_worker_resource_failure$'):
+                parallel._compact(parallel._encoded(fixture(1)), Versions().as_dict())
+
+    def test_synthetic_faulting_encoding_path_has_controlled_bounds(self):
+        import normalization_core as core
+        value = []
+        for _ in range(core.MAX_JSON_DEPTH):
+            value = [value]
+        self.assertEqual(json.loads(core.canonical_json(value)), value)
+        with self.assertRaisesRegex(NormalizationError, '^json_complexity_cap$'):
+            core.canonical_json([value])
+        cyclic = []
+        cyclic.append(cyclic)
+        with self.assertRaisesRegex(NormalizationError, '^json_complexity_cap$'):
+            core.canonical_json(cyclic)
+        with self.assertRaisesRegex(NormalizationError, '^json_array_cap$'):
+            core.canonical_json([0] * (core.MAX_ITEMS + 1))
+        for domain in ('ingredients', 'recipes', 'dietary'):
+            result = expected(fixture(1, domain))
+            encoded = core.CompactNormalizationStore.encode_compact(result['artifact'], result['artifact_sha256'])
+            self.assertEqual(len(encoded), 4)
+            self.assertEqual(encoded[0], result['artifact']['cache_key'])
 
 
 if __name__ == '__main__':

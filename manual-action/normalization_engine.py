@@ -9,13 +9,14 @@ version does not claim change-feed incremental selection after DB mutations.
 from __future__ import annotations
 from runner_paths import resolve_layout
 from contextlib import closing
+from concurrent.futures.process import BrokenProcessPool
 import copy
 import hashlib
 import json
 import math
 import os
 import re
-from normalization_parallel import RulesWorkerError
+from normalization_parallel import ERROR_CODES, RulesWorkerError
 from pathlib import Path
 import shutil
 import sqlite3
@@ -370,7 +371,13 @@ def run_prepared(prepared, report_callback=None):
                                 if result.get('error_code') is not None:
                                     staged['failed'] += 1
                                     staged['unresolved'] += 1
-                                    failures.append((reference, 'rules_projection_unresolved'))
+                                    # Only fixed validated worker categories enter durable
+                                    # reasons. Legacy/unknown failures stay coarse; no
+                                    # exception context or historical backfill is inferred.
+                                    code = result['error_code']
+                                    reason = (code if type(code) is str and len(code) <= 64
+                                              and code in ERROR_CODES else 'rules_projection_unresolved')
+                                    failures.append((reference, reason))
                                     continue
                                 if compact['cache_key'] != key or compact['source'] != expected:
                                     raise NormalizationError('rules_worker_contract')
@@ -398,7 +405,7 @@ def run_prepared(prepared, report_callback=None):
                         emit()
                         if exhausted:
                             break
-            except (RulesWorkerError, MemoryError):
+            except (RulesWorkerError, MemoryError, BrokenProcessPool):
                 budget.latch('worker_resource_failure')
                 public['status'] = 'partial'
                 break
