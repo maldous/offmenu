@@ -1,0 +1,476 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "profile",
+    "status",
+    "product",
+    "nutrientObservations",
+    "citations",
+    "source",
+    "rights",
+    "extensions",
+    "admission"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "offmenu.product-nutrition-profile/1"
+    },
+    "profile": {
+      "const": "source-reported-product-nutrition-only"
+    },
+    "status": {
+      "enum": [
+        "qualified-candidate",
+        "held"
+      ]
+    },
+    "product": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "barcode",
+            "barcodeStatus",
+            "nameEn",
+            "sourceIngredientTags"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "barcode": {
+              "type": "string",
+              "pattern": "^[0-9]{13}$"
+            },
+            "barcodeStatus": {
+              "const": "source-asserted-not-GS1-verified"
+            },
+            "nameEn": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "sourceIngredientTags": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1,
+              "items": {
+                "type": "object",
+                "required": [
+                  "tag",
+                  "namespace",
+                  "relation",
+                  "canonicalIngredientId"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "tag": {
+                    "const": "en:sugar"
+                  },
+                  "namespace": {
+                    "const": "open-food-facts/product.ingredients.id"
+                  },
+                  "relation": {
+                    "const": "source-contains-tag"
+                  },
+                  "canonicalIngredientId": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nutrientObservations": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "metricId",
+          "value",
+          "unit",
+          "basis",
+          "kind",
+          "context",
+          "sourcePer100gIsIndependentMeasurement",
+          "citationIds",
+          "reportedValueCount",
+          "independentMeasurementCount"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "metricId": {
+            "const": "source-report-proteinmass"
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "unit": {
+            "const": "g"
+          },
+          "basis": {
+            "const": "100g"
+          },
+          "kind": {
+            "const": "source-reported"
+          },
+          "context": {
+            "type": "object",
+            "required": [
+              "country",
+              "cut",
+              "fat",
+              "preparation",
+              "raw_cooked",
+              "basis",
+              "source_date",
+              "method",
+              "uncertainty"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "country": {
+                "type": "null"
+              },
+              "cut": {
+                "type": "null"
+              },
+              "fat": {
+                "type": "null"
+              },
+              "preparation": {
+                "type": "null"
+              },
+              "raw_cooked": {
+                "type": "null"
+              },
+              "basis": {
+                "const": "100g"
+              },
+              "source_date": {
+                "type": "null"
+              },
+              "method": {
+                "type": "null"
+              },
+              "uncertainty": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "sourcePer100gIsIndependentMeasurement": {
+            "const": false
+          },
+          "citationIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "reportedValueCount": {
+            "const": 1
+          },
+          "independentMeasurementCount": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "url",
+          "attribution",
+          "sourceRecordId",
+          "fieldPointers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "attribution": {
+            "const": "Open Food Facts"
+          },
+          "sourceRecordId": {
+            "type": "string",
+            "pattern": "^[0-9]{13}$"
+          },
+          "fieldPointers": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^/"
+            }
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "name",
+        "recordId",
+        "contentSHA256",
+        "qualificationSHA256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "const": "Open Food Facts"
+        },
+        "recordId": {
+          "type": "string",
+          "pattern": "^[0-9]{13}$"
+        },
+        "contentSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "qualificationSHA256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "state",
+        "termsUrl",
+        "scope",
+        "operationEvidenceSHA256",
+        "licenceNotices",
+        "purposeLimits",
+        "legalComplianceClaim"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "permitted",
+            "unqualified"
+          ]
+        },
+        "termsUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scope": {
+          "const": "source-reported-product-nutrition-only"
+        },
+        "operationEvidenceSHA256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "licenceNotices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "version",
+              "uri"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "const": "1.0"
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        },
+        "purposeLimits": {
+          "const": {
+            "privateInternalAppSampleOnly": true,
+            "publicRedistributionQualified": false,
+            "publicDeploymentQualified": false,
+            "imagesOrMediaIncluded": false,
+            "brandingClearanceClaimed": false,
+            "accuracyWarrantyClaimed": false,
+            "changedPurposeRequiresSeparateReview": true
+          }
+        },
+        "legalComplianceClaim": {
+          "const": false
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "required": [
+        "recipe",
+        "canonicalIngredient",
+        "recallCoverage",
+        "manufacturer",
+        "parent",
+        "retailer",
+        "brandLabel"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recipe": {
+          "const": "HELD_NOT_QUALIFIED"
+        },
+        "canonicalIngredient": {
+          "const": "HELD_NOT_QUALIFIED"
+        },
+        "recallCoverage": {
+          "const": "NOT_CHECKED"
+        },
+        "manufacturer": {
+          "type": "null"
+        },
+        "parent": {
+          "type": "null"
+        },
+        "retailer": {
+          "type": "null"
+        },
+        "brandLabel": {
+          "type": "null"
+        }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "required": [
+        "actualGoldAdmitted",
+        "requires"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actualGoldAdmitted": {
+          "const": false
+        },
+        "requires": {
+          "const": "00 actual write and56 readback after64 source review"
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "offmenu.product-nutrition-profile/1",
+  "title": "English source-reported product/nutrition-only candidate DTO",
+  "description": "Narrow independent profile, not full recipe/canonical network admission. No field/policy hash creates rights.00 actual writer and56 acceptance separately record actual persistence.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "held"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "product": {
+            "type": "null"
+          },
+          "nutrientObservations": {
+            "maxItems": 0
+          },
+          "citations": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "qualified-candidate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "product": {
+            "type": "object"
+          },
+          "nutrientObservations": {
+            "minItems": 1
+          },
+          "citations": {
+            "minItems": 1
+          },
+          "rights": {
+            "properties": {
+              "state": {
+                "const": "permitted"
+              },
+              "licenceNotices": {
+                "const": [
+                  {
+                    "name": "Open Database License (ODbL)",
+                    "version": "1.0",
+                    "uri": "https://opendatacommons.org/licenses/odbl/1-0/"
+                  },
+                  {
+                    "name": "Database Contents License (DbCL)",
+                    "version": "1.0",
+                    "uri": "https://opendatacommons.org/licenses/dbcl/1-0/"
+                  }
+                ]
+              },
+              "termsUrl": {
+                "const": "https://openfoodfacts.github.io/documentation/docs/Product-Opener/api/tutorials/license-be-on-the-legal-side/"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
