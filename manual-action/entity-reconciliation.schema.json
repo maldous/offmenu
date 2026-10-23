@@ -1848,5 +1848,6 @@
       ],
       "additionalProperties": false
     }
-  }
+  },
+  "$comment": "Runtime additionally requires assign after mapped to preserve the same mapped entity; held/different entity transitions need explicit revoke/split. Qualified prior active memberships move only via retirement alias or an explicit decision chain containing their old mapping; final effective memberships are unique, residual members retained, raw registry immutable."
 }

@@ -281,6 +281,8 @@ def validate_reconciliation(selection, proposal, *, authority, prior_history=Non
         previous, prior_member = None, None
         for row in chain:
             _require(row['supersedes'] == previous, 'invalid_supersedes')
+            if previous is not None and history[previous]['disposition'] == 'mapped' and row['action'] == 'assign':
+                _require(row['disposition'] == 'mapped' and row['entity_id'] == history[previous]['entity_id'], 'mapped_successor_requires_explicit_reversal')
             if row['action'] in ('split', 'revoke'):
                 _require(previous is not None, 'invalid_reversal')
                 _require(history[previous]['disposition'] == 'mapped', 'invalid_reversal')
@@ -434,7 +436,32 @@ def validate_reconciliation(selection, proposal, *, authority, prior_history=Non
             _require(old in active and target in groups and all(effective[o]['disposition'] == 'mapped' and effective[o]['entity_id'] == target for o in prior_members[old]), 'alias_incomplete_membership')
     _require(set(entities) <= set(prior_entities) | {d['entity_id'] for chain in decisions.values() for d in chain if d['disposition'] == 'mapped'}, 'unreferenced_entity')
     if before is not None:
-        final_active = (active - new_aliases.keys()) | groups.keys()
+        # Preserve the registry as history, but qualify effective membership.
+        # A first assignment cannot silently move an already active member.
+        # Retirement aliases qualify a whole-entity merge. Otherwise the
+        # occurrence's explicit decision chain must include its old mapping
+        # before a validated split/revoke/reassignment can move it away.
+        residual_members = {eid: set(prior_members[eid]) for eid in active - new_aliases.keys()}
+        for old, remaining in residual_members.items():
+            for oid in tuple(remaining):
+                current = effective[oid]
+                if current['disposition'] == 'mapped' and current['entity_id'] != old:
+                    _require(any(row['disposition'] == 'mapped' and row['entity_id'] == old
+                                 for row in decisions[oid]), 'active_membership_remap_requires_explicit_transition')
+                    remaining.remove(oid)
+        # Held/unselected decisions do not erase retained baseline membership;
+        # partial splits retain residual members, and fully moved entities no
+        # longer inflate the active count. Raw prior rows remain untouched.
+        final_active = {eid for eid, remaining in residual_members.items() if remaining} | groups.keys()
+        effective_owners = {}
+        for eid, remaining in residual_members.items():
+            for oid in remaining:
+                _require(oid not in effective_owners or effective_owners[oid] == eid, 'final_multiple_active_membership')
+                effective_owners[oid] = eid
+        for eid, oids in groups.items():
+            for oid in oids:
+                _require(oid not in effective_owners or effective_owners[oid] == eid, 'final_multiple_active_membership')
+                effective_owners[oid] = eid
         _require(not (effective_aliases.keys() & final_active), 'effective_alias_source_active_registry')
         _require(set(effective_aliases.values()) <= final_active, 'effective_alias_target_inactive')
         after = len(final_active)

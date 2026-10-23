@@ -760,5 +760,227 @@ class ReconciliationAcceptanceTests(unittest.TestCase):
         self.assertEqual(result['preserved'],selection)
 
 
+def _pr100_split_case(action='split'):
+    """One explicit source-preserving split after a mapped decision."""
+    selection,proposal,authority=generated_case()
+    prior=copy.deepcopy(proposal['history'])
+    proposal['entities'].append(entity('new-split-entity'))
+    proposal['history'].update(version='mapping-2',previous_version=prior['version'])
+    proof=copy.deepcopy(authority['identity_evidence'][0])
+    proof.update(evidence_id='new-component',members=['b'])
+    authority['identity_evidence'][0]['members']=['a','a-copy']
+    authority['identity_evidence'].append(proof)
+    dec=decision('b',2,'mapped','new-split-entity',previous='d-b-1',
+                 action=action,evidence='new-component')
+    proposal['history']['entries'].extend([dec,membership(dec,'m-d-b-1')])
+    authority['prior_history']={'version':prior['version'],'scope_id':prior['scope_id'],
+                                'sha256':independent_history_digest(prior)}
+    return selection,proposal,authority,prior
+
+
+def _pr100_registry_split_case(moving='a-copy',retire_empty=False):
+    """Two prior entities: old-A owns a/a-copy, old-B owns b.
+
+    Splitting a-copy leaves a real residual old-A member. Splitting b empties
+    old-B; explicit split history can retire that empty entity without an alias.
+    Raw prior membership/history are immutable; tests never delete old rows.
+    """
+    selection,proposal,authority,registry=with_registry()
+    proposal['entities']=[entity('old-A'),entity('old-B'),entity('new-split-entity')]
+    entries=[row for row in proposal['history']['entries'] if row['kind']!='alias']
+    for row in entries:
+        if row.get('entity_id') is not None:
+            old='old-B' if row['occurrence_id']=='b' else 'old-A'
+            row['entity_id']=old
+            if row['kind']=='decision':row['identity_evidence_id']='identity-'+old
+    prior={**copy.deepcopy(proposal['history']),'version':'prior-mapping-0',
+           'previous_version':None,'entries':copy.deepcopy(entries)}
+    proposal['history'].update(version='mapping-1',previous_version=prior['version'],entries=entries)
+    template=copy.deepcopy(authority['identity_evidence'][0])
+    authority['identity_evidence']=[]
+    for old,oids in (('old-A',['a','a-copy']),('old-B',['b'])):
+        residual=[oid for oid in oids if oid!=moving]
+        if residual:
+            proof=copy.deepcopy(template)
+            proof.update(evidence_id='identity-'+old,members=residual)
+            authority['identity_evidence'].append(proof)
+    proof=copy.deepcopy(template)
+    proof.update(evidence_id='new-component',members=[moving])
+    authority['identity_evidence'].append(proof)
+    dec=decision(moving,2,'mapped','new-split-entity',previous='d-'+moving+'-1',
+                 action='split',evidence='new-component')
+    entries.extend([dec,membership(dec,'m-d-'+moving+'-1')])
+    if retire_empty:
+        old='old-B' if moving=='b' else 'old-A'
+        entries.append({'entry_id':'retire-'+old,'kind':'alias','from_entity_id':old,
+            'to_entity_id':'new-split-entity','decision_id':dec['entry_id'],'supersedes':None})
+    authority['prior_history']={'version':prior['version'],'scope_id':prior['scope_id'],
+                                'sha256':independent_history_digest(prior)}
+    return selection,proposal,authority,prior,registry
+
+
+class PR100ProviderTransitionTests(unittest.TestCase):
+    """Focused PR100 P1 regressions; run separately from the older 47 methods."""
+    run_case=ReconciliationAcceptanceTests.run_case
+    reject=ReconciliationAcceptanceTests.reject
+
+    @classmethod
+    def setUpClass(cls):
+        import jsonschema
+        cls.schema=json.loads(Path(__file__).resolve().parents[1].joinpath(
+            'entity-reconciliation.schema.json').read_text())
+        jsonschema.Draft202012Validator.check_schema(cls.schema)
+        cls.input_validator=jsonschema.Draft202012Validator(cls.schema)
+
+    def schema_valid(self,selection,proposal,authority,**prior):
+        wrapper={'selection':selection,'proposal':proposal,'authority':authority,
+                 'prior_history':prior.get('prior_history'),'prior_registry':prior.get('prior_registry')}
+        self.assertEqual(list(self.input_validator.iter_errors(wrapper)),[],
+                         'A runtime-boundary reproducer must be schema-valid')
+
+    def prior_preserved(self,receipt,prior):
+        rows={r['entry_id']:r for r in receipt['validated_proposal']['history']['entries']}
+        for row in prior['entries']:self.assertEqual(rows[row['entry_id']],row)
+
+    def test_reject_remap_all_prior_members_without_retirement(self):
+        selection,proposal,authority,registry=with_registry()
+        proposal['history']['entries']=[r for r in proposal['history']['entries'] if r['kind']!='alias']
+        self.schema_valid(selection,proposal,authority,prior_registry=registry)
+        self.reject(selection,proposal,authority,prior_registry=registry)
+
+    def test_explicit_full_split_retires_empty_entity_without_losing_other_residuals(self):
+        selection,proposal,authority,prior,registry=_pr100_registry_split_case(moving='b')
+        self.schema_valid(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        before=copy.deepcopy(registry)
+        result=self.run_case(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        self.assertEqual(result['metrics']['entities_before'],2)
+        self.assertEqual(result['metrics']['entities_after'],2)
+        self.assertEqual({r['entity_id'] for r in result['effective_decisions'] if r['disposition']=='mapped'},
+                         {'old-A','new-split-entity'})
+        self.assertEqual(registry,before)
+        self.prior_preserved(result,prior)
+
+    def test_reject_assign_disguising_mapped_to_held_or_excluded(self):
+        for disposition in ('held','excluded'):
+            with self.subTest(disposition=disposition):
+                selection,proposal,authority,prior=with_prior_history()
+                proposal['history']['entries'][-1].update(action='assign',disposition=disposition)
+                self.schema_valid(selection,proposal,authority,prior_history=prior)
+                self.reject(selection,proposal,authority,prior_history=prior)
+
+    def test_reject_assign_disguising_mapped_to_different_entity(self):
+        selection,proposal,authority,prior=_pr100_split_case(action='assign')
+        self.schema_valid(selection,proposal,authority,prior_history=prior)
+        self.reject(selection,proposal,authority,prior_history=prior)
+
+    def test_explicit_retirement_counts_unique_final_entities(self):
+        selection,proposal,authority,registry=with_registry()
+        before=copy.deepcopy(registry)
+        self.schema_valid(selection,proposal,authority,prior_registry=registry)
+        result=self.run_case(selection,proposal,authority,prior_registry=registry)
+        self.assertEqual(result['metrics']['entities_before'],2)
+        self.assertEqual(result['metrics']['entities_after'],1)
+        self.assertEqual(registry,before)
+        self.assertEqual(len(result['effective_decisions']),6)
+
+    def test_partial_split_keeps_residual_prior_member_and_both_prior_entities(self):
+        selection,proposal,authority,prior,registry=_pr100_registry_split_case()
+        before=copy.deepcopy(registry)
+        self.schema_valid(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        result=self.run_case(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        current={r['occurrence_id']:r for r in result['effective_decisions']}
+        self.assertEqual(current['a']['entity_id'],'old-A')
+        self.assertEqual(current['a-copy']['entity_id'],'new-split-entity')
+        self.assertEqual(current['b']['entity_id'],'old-B')
+        self.assertEqual(result['metrics']['entities_before'],2)
+        self.assertEqual(result['metrics']['entities_after'],3)
+        self.assertEqual(result['metrics']['mapped_occurrences'],3)
+        self.assertEqual(registry,before)
+        self.prior_preserved(result,prior)
+
+    def test_split_retiring_only_emptied_entity_keeps_unmoved_entity(self):
+        selection,proposal,authority,prior,registry=_pr100_registry_split_case(moving='b',retire_empty=True)
+        self.schema_valid(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        result=self.run_case(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        self.assertEqual(result['metrics']['entities_before'],2)
+        self.assertEqual(result['metrics']['entities_after'],2)
+        self.assertEqual({r['entity_id'] for r in result['effective_decisions'] if r['disposition']=='mapped'},
+                         {'old-A','new-split-entity'})
+        self.prior_preserved(result,prior)
+
+    def test_reject_blanket_retirement_of_entity_with_residual_member(self):
+        selection,proposal,authority,prior,registry=_pr100_registry_split_case(retire_empty=True)
+        self.schema_valid(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+        self.reject(selection,proposal,authority,prior_history=prior,prior_registry=registry)
+
+    def test_explicit_revoke_preserves_history_for_held_and_excluded(self):
+        for disposition in ('held','excluded'):
+            with self.subTest(disposition=disposition):
+                selection,proposal,authority,prior=with_prior_history()
+                proposal['history']['entries'][-1]['disposition']=disposition
+                self.schema_valid(selection,proposal,authority,prior_history=prior)
+                result=self.run_case(selection,proposal,authority,prior_history=prior)
+                self.assertEqual(next(r for r in result['effective_decisions'] if r['occurrence_id']=='b')['disposition'],disposition)
+                self.assertEqual(result['metrics']['mapped_occurrences'],2)
+                self.prior_preserved(result,prior)
+
+    def test_explicit_split_and_initial_assign_are_valid(self):
+        selection,proposal,authority,prior=_pr100_split_case()
+        self.schema_valid(selection,proposal,authority,prior_history=prior)
+        result=self.run_case(selection,proposal,authority,prior_history=prior)
+        self.assertEqual(result['metrics']['mapped_entities'],2)
+        self.prior_preserved(result,prior)
+        selection,proposal,authority=generated_case()
+        self.schema_valid(selection,proposal,authority)
+        result=self.run_case(selection,proposal,authority)
+        self.assertEqual(result['metrics']['mapped_entities'],1)
+        self.assertIsNone(result['metrics']['entities_before'])
+        self.assertIsNone(result['metrics']['entities_after'])
+
+    def test_noop_assign_same_entity_appends_without_reversal(self):
+        selection,proposal,authority=generated_case()
+        prior=copy.deepcopy(proposal['history'])
+        proposal['history'].update(version='mapping-2',previous_version=prior['version'])
+        dec=decision('b',2,'mapped','entity-one',previous='d-b-1',action='assign',evidence='identity-one')
+        proposal['history']['entries'].extend([dec,membership(dec,'m-d-b-1')])
+        authority['prior_history']={'version':prior['version'],'scope_id':prior['scope_id'],
+                                    'sha256':independent_history_digest(prior)}
+        self.schema_valid(selection,proposal,authority,prior_history=prior)
+        result=self.run_case(selection,proposal,authority,prior_history=prior)
+        self.assertEqual(result['metrics']['mapped_occurrences'],3)
+        self.assertEqual(result['metrics']['mapped_entities'],1)
+        self.prior_preserved(result,prior)
+
+    def test_exact_prior_replay_is_deterministic_and_unchanged(self):
+        selection,proposal,authority=generated_case()
+        prior=copy.deepcopy(proposal['history'])
+        authority['prior_history']={'version':prior['version'],'scope_id':prior['scope_id'],
+                                    'sha256':independent_history_digest(prior)}
+        self.schema_valid(selection,proposal,authority,prior_history=prior)
+        first=self.run_case(selection,proposal,authority,prior_history=prior)
+        self.assertEqual(first,self.run_case(selection,proposal,authority,prior_history=prior))
+        self.prior_preserved(first,prior)
+
+    def test_unknown_registry_baseline_does_not_invent_final_entity_counts(self):
+        selection,proposal,authority,registry=with_registry()
+        proposal['history']['entries']=[r for r in proposal['history']['entries'] if r['kind']!='alias']
+        authority['prior_registry']=None
+        self.schema_valid(selection,proposal,authority,prior_registry=registry)
+        result=self.run_case(selection,proposal,authority,prior_registry=registry)
+        self.assertIsNone(result['metrics']['entities_before'])
+        self.assertIsNone(result['metrics']['entities_after'])
+        self.assertTrue(result['metrics']['registry_unavailable_reason'])
+
+    def test_all_held_preserves_qualified_prior_active_entities_without_forced_retirement(self):
+        selection,proposal,authority,registry=with_registry()
+        proposal['entities']=copy.deepcopy(registry['entities'])
+        proposal['history']['entries']=[decision(o['occurrence_id'],1,'held') for o in selection['occurrences']]
+        self.schema_valid(selection,proposal,authority,prior_registry=registry)
+        result=self.run_case(selection,proposal,authority,prior_registry=registry)
+        self.assertEqual(result['metrics']['entities_before'],2)
+        self.assertEqual(result['metrics']['entities_after'],2)
+        self.assertEqual(result['metrics']['mapped_occurrences'],0)
+
+
 if __name__=='__main__':
     unittest.main()
