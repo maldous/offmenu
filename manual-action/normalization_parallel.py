@@ -24,9 +24,17 @@ MAX_WORKERS = 22
 MAX_BATCH_ROWS = 128
 DEFAULT_BYTES = 4 * 1024 * 1024
 MAX_BYTES = 16 * 1024 * 1024
+# Fixed literals raised by normalization_core._bounded; never exception text.
+VALIDATION_ERROR_CODES = frozenset(('json_complexity_cap', 'json_array_cap',
+    'json_size_cap', 'invalid_json', 'invalid_json_object', 'non_json_value'))
+# Fixed normalize_recipes.normalize_record projection guards. Only exact
+# ValueError from recipe evaluation may select one of these categories.
+RECIPE_ERROR_CODES = frozenset(('unsupported_recipe_menu_projection',
+    'recipe_menu_id_required', 'ingredient_projection_not_object',
+    'step_projection_not_text'))
 ERROR_CODES = frozenset(('outside_public_domain', 'invalid_source_envelope',
     'rules_input_limit', 'source_content_hash_mismatch', 'rules_validation_error',
-    'rules_execution_error', 'rules_output_limit'))
+    'rules_execution_error', 'rules_output_limit')) | VALIDATION_ERROR_CODES | RECIPE_ERROR_CODES
 _worker_cancel = None
 
 
@@ -83,6 +91,13 @@ def _init_worker(cancel):
     _worker_cancel = cancel
 
 
+def _known_error_category(error, allowed, fallback):
+    # No string conversion, prefix matching or arbitrary exception-context copy.
+    code = error.args[0] if len(error.args) == 1 else None
+    return (code if type(code) is str and len(code) <= 64 and code in allowed
+            else fallback)
+
+
 def _compact(encoded_record, versions):
     """Exactly one rules evaluation; digest precedes removal of the original."""
     from normalization_api import NormalizationError, Versions
@@ -98,11 +113,13 @@ def _compact(encoded_record, versions):
         return {'source': source, 'artifact': artifact,
                 'artifact_sha256': full_digest, 'error_code': None}
     except NormalizationError as exc:
-        code = ('source_content_hash_mismatch' if exc.args == ('source_content_hash_mismatch',)
-                else 'rules_validation_error')
-        return _error(source, code)
-    except (MemoryError, OSError):
+        return _error(source, _known_error_category(exc,
+            VALIDATION_ERROR_CODES | {'source_content_hash_mismatch'}, 'rules_validation_error'))
+    except (MemoryError, OSError, BrokenProcessPool, RulesWorkerError):
         raise RulesWorkerError('rules_worker_resource_failure') from None
+    except ValueError as exc:
+        allowed = RECIPE_ERROR_CODES if source['domain'] == 'recipes' and type(exc) is ValueError else ()
+        return _error(source, _known_error_category(exc, allowed, 'rules_execution_error'))
     except Exception:
         return _error(source, 'rules_execution_error')
 

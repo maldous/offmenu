@@ -1,4 +1,5 @@
 """Generated SQLite fixtures only; no corpus/originals/AI/network."""
+from concurrent.futures.process import BrokenProcessPool
 import json
 from pathlib import Path
 import sqlite3
@@ -199,4 +200,120 @@ class DatabaseNormalizationTests(unittest.TestCase):
         second=self.run_engine(batch_rows=1);row=second['domains']['ingredients']
         self.assertEqual((row['scanned'],row['failed'],row['rules_new']),(2,1,1));self.assertNotEqual(row['status'],'unavailable')
         self.assertNotIn(long_id,json.dumps(second));self.assertEqual(self.run_engine()['domains'],second['domains'])
+
+    def test_allowed_worker_reasons_and_unknown_fallback_persist_with_mixed_success(self):
+        codes = ('outside_public_domain', 'invalid_source_envelope', 'rules_input_limit',
+            'source_content_hash_mismatch', 'rules_validation_error', 'rules_execution_error',
+            'rules_output_limit', 'json_complexity_cap', 'json_array_cap', 'json_size_cap',
+            'invalid_json', 'invalid_json_object', 'non_json_value',
+            'unsupported_recipe_menu_projection', 'recipe_menu_id_required',
+            'ingredient_projection_not_object', 'step_projection_not_text')
+        marker = 'generated-private-error-not-a-category'
+        unknown = (marker, marker * 10000, ['private'], {'private': marker}, True)
+        all_codes = (*codes, *unknown)
+        self.db('ingredients', [{'name': 'generated row'} for _ in range(len(all_codes) + 1)])
+        self.empties()
+        original = InlineRules.run_batch
+        def coded(instance, records, versions=None):
+            values = original(instance, records, versions)
+            for value in values:
+                index = int(value['source']['record_id'][1:])
+                if index < len(all_codes):
+                    value.update(artifact=None, artifact_sha256=None, error_code=all_codes[index])
+            return values
+        with patch.object(InlineRules, 'run_batch', coded):
+            report = self.run_engine()
+        row = report['domains']['ingredients']
+        self.assertEqual((row['scanned'], row['failed'], row['rules_new']),
+                         (len(all_codes) + 1, len(all_codes), 1))
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            reasons = dict(store.db.execute('SELECT record_id,reason FROM unresolved_refs'))
+            self.assertEqual([reasons['r' + str(i)] for i in range(len(codes))], list(codes))
+            self.assertEqual([reasons['r' + str(i)] for i in range(len(codes), len(all_codes))],
+                             ['rules_projection_unresolved'] * len(unknown))
+            self.assertEqual(len(list(store.db.execute('SELECT cache_key FROM rules_cache'))), 1)
+            self.assertEqual(len(list(store.db.execute('SELECT cache_key FROM review_refs'))), 1)
+        self.assertNotIn(marker, json.dumps(report) + json.dumps(reasons))
+        self.assertTrue(all(row[k] == 0 for k in ('accepted', 'rejected', 'needs_changes')))
+
+    def test_failure_reason_and_cursor_remain_atomic_on_rollback(self):
+        self.db('ingredients', [{'name': 'good'}, {'name': 'bad'}]); self.empties()
+        prepared = engine.prepare_default(self.root, self.options)
+        original = InlineRules.run_batch
+        def coded(instance, records, versions=None):
+            values = original(instance, records, versions)
+            for value in values:
+                if value['source']['record_id'] == 'r1':
+                    value.update(artifact=None, artifact_sha256=None, error_code='rules_input_limit')
+            return values
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            store.db.execute("CREATE TRIGGER fail_cursor BEFORE INSERT ON progress BEGIN SELECT RAISE(ABORT,'generated'); END")
+            store.db.commit()
+        with patch.object(InlineRules, 'run_batch', coded):
+            report = engine.run_prepared(prepared)
+        self.assertEqual(report['domains']['ingredients']['scanned'], 0)
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            for table in ('rules_cache', 'review_refs', 'unresolved_refs', 'progress'):
+                self.assertIsNone(store.db.execute('SELECT 1 FROM ' + table + ' LIMIT 1').fetchone())
+            store.db.execute('DROP TRIGGER fail_cursor'); store.db.commit()
+        with patch.object(InlineRules, 'run_batch', coded):
+            report = self.run_engine()
+        self.assertEqual((report['domains']['ingredients']['scanned'], report['domains']['ingredients']['failed']), (2, 1))
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            self.assertEqual(store.db.execute('SELECT reason FROM unresolved_refs').fetchone()[0], 'rules_input_limit')
+
+    def test_legacy_coarse_reason_preserved_and_cursor_resume_does_not_backfill(self):
+        self.db('ingredients', [{'name': str(i)} for i in range(4)]); self.empties()
+        original = InlineRules.run_batch
+        seen = []
+        def coded(instance, records, versions=None):
+            values = original(instance, records, versions)
+            for value in values:
+                rid = value['source']['record_id']; seen.append(rid)
+                if rid == 'r0':
+                    value.update(artifact=None, artifact_sha256=None, error_code='rules_validation_error')
+            return values
+        with patch.object(InlineRules, 'run_batch', coded):
+            first = self.run_engine(max_rows=2)
+        self.assertEqual(first['domains']['ingredients']['scanned'], 2)
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            store.db.execute("UPDATE unresolved_refs SET reason='rules_projection_unresolved'"); store.db.commit()
+        seen.clear()
+        with patch.object(InlineRules, 'run_batch', coded):
+            resumed = self.run_engine()
+        self.assertEqual(set(seen), {'r2', 'r3'})
+        self.assertEqual((resumed['domains']['ingredients']['scanned'], resumed['domains']['ingredients']['failed']), (4, 1))
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            self.assertEqual(store.db.execute('SELECT reason FROM unresolved_refs').fetchone()[0], 'rules_projection_unresolved')
+        with patch.object(InlineRules, 'run_batch', side_effect=AssertionError('historical retry')):
+            self.assertEqual(self.run_engine()['domains'], resumed['domains'])
+
+    def test_infrastructure_faults_stop_globally_without_cursor_or_failure_rows(self):
+        self.db('barcodes', [{'barcode': 'generated'}]); self.db('ingredients', [{'name': 'unread'}]); self.empties()
+        for error in (MemoryError('generated-private'), BrokenProcessPool('generated-private'),
+                      RulesWorkerError('generated-private')):
+            with self.subTest(kind=type(error).__name__), patch.object(InlineRules, 'run_batch', side_effect=error):
+                report = self.run_engine()
+                self.assertEqual(report['stop_reason'], 'worker_resource_failure')
+                self.assertEqual(sum(r['scanned'] for r in report['domains'].values()), 0)
+                self.assertEqual(sum(r['failed'] for r in report['domains'].values()), 0)
+                with CompactNormalizationStore(self.root, 'barcodes') as store:
+                    self.assertIsNone(store.db.execute('SELECT 1 FROM progress LIMIT 1').fetchone())
+                    self.assertIsNone(store.db.execute('SELECT 1 FROM unresolved_refs LIMIT 1').fetchone())
+
+    def test_error_category_does_not_bypass_source_identity_gate(self):
+        self.db('ingredients', [{'name': 'generated'}]); self.empties()
+        original = InlineRules.run_batch
+        def wrong_source(instance, records, versions=None):
+            value = original(instance, records, versions)[0]
+            value['source']['record_id'] = 'different-generated-source'
+            value.update(artifact=None, artifact_sha256=None, error_code='rules_input_limit')
+            return [value]
+        with patch.object(InlineRules, 'run_batch', wrong_source):
+            report = self.run_engine()
+        self.assertEqual(report['domains']['ingredients']['scanned'], 0)
+        with CompactNormalizationStore(self.root, 'ingredients') as store:
+            self.assertIsNone(store.db.execute('SELECT 1 FROM progress LIMIT 1').fetchone())
+            self.assertIsNone(store.db.execute('SELECT 1 FROM unresolved_refs LIMIT 1').fetchone())
+
 if __name__=='__main__':unittest.main()
