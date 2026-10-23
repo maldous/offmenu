@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "offmenu.gold-application/1",
+  "title": "Bounded gold proposal application contract",
+  "description": "Pure builder packet and independently selected qualifications. Not gold admission; source/common schema and runtime bindings also apply. Unknown unit/AI admission held. Recall coverage defaults NOT_CHECKED.",
+  "type": "object",
+  "required": [
+    "packet",
+    "qualifications"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "packet": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "data_class",
+        "watermark",
+        "common",
+        "occurrences",
+        "metrics",
+        "observations",
+        "english_bindings"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "offmenu.gold-input/1"
+        },
+        "data_class": {
+          "enum": [
+            "synthetic",
+            "real-qualified"
+          ]
+        },
+        "common": {
+          "$ref": "../corpus/common-data.schema.json"
+        },
+        "watermark": {
+          "type": "object",
+          "required": [
+            "eligible_manifest_sha256",
+            "domains"
+          ]
+        },
+        "occurrences": {
+          "type": "array",
+          "maxItems": 10000
+        },
+        "metrics": {
+          "type": "array",
+          "maxItems": 10000
+        },
+        "observations": {
+          "type": "array",
+          "maxItems": 10000
+        },
+        "english_bindings": {
+          "type": "array",
+          "maxItems": 10000
+        }
+      }
+    },
+    "qualifications": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "packet_sha256",
+        "policy_sha256",
+        "records",
+        "supports"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "offmenu.gold-qualification/1"
+        },
+        "packet_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "records": {
+          "type": "array"
+        },
+        "supports": {
+          "type": "array"
+        },
+        "cache_entries": {
+          "type": "array"
+        },
+        "comparisons": {
+          "type": "array"
+        },
+        "metric_bindings": {
+          "type": "array",
+          "description": "Independently selected mapping required when claim property differs from canonical metric ID. Native quantity dimension must still match.",
+          "items": {
+            "type": "object",
+            "required": [
+              "property_id",
+              "metric_id",
+              "evidence_sha256"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "property_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "metric_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
