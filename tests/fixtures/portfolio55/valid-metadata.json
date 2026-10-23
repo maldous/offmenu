@@ -1,0 +1,47 @@
+{
+  "now": "2026-10-18T02:00:00+00:00",
+  "observations": {
+    "MY": {
+      "sourceId": "DOSM:cpi_2d",
+      "releaseId": "retained-sha256:b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6",
+      "pins": {
+        "original": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/a062a3fe4d3753230bcf/cpi-2d-full.csv",
+          "bytes": 148705,
+          "sha256": "b9c84879cc97ccbdac09b5abd2825a4928dfc9a43a26be144dc9d353a2f3d2e6"
+        },
+        "publisherMetadata": {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-53/MY/c36d383fd0f776c30e5f/publisher-source.html",
+          "bytes": 130935,
+          "sha256": "449a58bd07ba5c8ad656e2e827fcc60ad42e236539f275ee0b98e532ad7e75f4"
+        },
+        "normalized": {
+          "path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/source-observations.jsonl",
+          "sha256": "d43fc7b21fe76dde0a56859177e68c98bc38ab67545deb222abc22cb3a39ede0",
+          "bytes": 9372815,
+          "rows": 7840,
+          "manifest_path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/manifest.json",
+          "manifest_sha256": "053fbef431771a063a83f43943b3ed5e6d9c80f8e497682d64a28d651c1f107a"
+        },
+        "normalizer": {
+          "path": "/home/user/src/offmenu-workers/worker-38/scripts/normalize-my-cpi-worker38.py",
+          "sha256": "044b55559f0973ac47d90d1c183e0de77a83ff8c47407acf1acc936198dd5fb7"
+        },
+        "retainedHandoff": {
+          "path": "/home/user/src/offmenu-data/normalization/worker-38-my-cpi-f6-20261015/handoff.json",
+          "sha256": "9589987be36f54864fd35dcabc336baa5dd86270e9d98783c2124f7b4902226e"
+        },
+        "definitions": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/B03-W55/MY-series-source-definitions.json",
+          "sha256": "06066a989541d3a3fa5e451e9578f5e043e32c9177cbbc9eb244035d97be39ba"
+        },
+        "restoredManifest": {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-55/M-RESTORE-20261018-W55/manifest-corrected.json",
+          "sha256": "80363c78413623deee7072a237632b5b82b3d50aeada52078ba0307d2b87807a"
+        }
+      },
+      "originalAcquiredAt": "2026-10-14T22:13:28.105750+00:00",
+      "validatedAt": "2026-10-18T00:00:00+00:00"
+    }
+  }
+}

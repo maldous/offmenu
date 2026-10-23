@@ -1,0 +1,116 @@
+[
+  {
+    "bindingId": "hn-ipc-table6",
+    "sourceId": "bch-ipc",
+    "releaseId": "2026-07",
+    "manifestPins": [
+      {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/deliverable-validation.json",
+        "sha256": "71e2c468ec0883df1538f27ae5615de518e9d6a94addbbd03fa0b8990bfca962"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/category-coverage-and-gaps.json",
+        "sha256": "3863cb819a0d8c57ab2ac3fcad256db0dd859b5595a1def735cb0d8628de9599"
+      },
+      {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/HN/fd545264fea6ef527ac4/receipt.json",
+        "sha256": "b51b5b753be5010d947851046c85edfb6dee1f01c4146609f302becc619e8157"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table6-candidate.json",
+        "sha256": "3f58041ec38c4e192316ebb523db164650147953210d6fbccfaea0eb1a38a9f5"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table6-validation.json",
+        "sha256": "263ad6c2b4e46f65001cd188fd83bc35e0ec05692111b9e42f5dbc6d17cb580b"
+      },
+      {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/reviews/author35-result4043/review-receipt.json",
+        "sha256": "187bf8c49e5853913a39453ebfa81d1e88d38d8d22ee2d52f3a95b6bd7571042"
+      }
+    ],
+    "inputSha256": "3f58041ec38c4e192316ebb523db164650147953210d6fbccfaea0eb1a38a9f5",
+    "schemaVersion": "offmenu-w35-input-metadata/1",
+    "originalAcquiredAt": "2026-10-01T00:00:00Z",
+    "metadataValidatedAt": "2026-10-17T00:00:00Z",
+    "fieldDeclarations": {
+      "index_2025_07": {
+        "unit": "index-point",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/index_2025_07",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "index_2026_06": {
+        "unit": "index-point",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/index_2026_06",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "index_2026_07": {
+        "unit": "index-point",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/index_2026_07",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "inflation_yoy": {
+        "unit": "percent",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/inflation_yoy",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "inflation_mom": {
+        "unit": "percent",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/inflation_mom",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "contribution_yoy": {
+        "unit": "percentage-point",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/contribution_yoy",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      },
+      "contribution_mom": {
+        "unit": "percentage-point",
+        "recordSelector": "sourceRowOrdinal;14 rows",
+        "fieldSelector": "/records/{ordinal}/cells/contribution_mom",
+        "originalLocator": {
+          "pdfPage": 18,
+          "table": "Cuadro No.6",
+          "recordCoordinate": "sourceRowOrdinal;14 rows"
+        },
+        "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+      }
+    }
+  }
+]

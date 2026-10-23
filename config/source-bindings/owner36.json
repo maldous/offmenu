@@ -1,0 +1,287 @@
+{
+  "schemaVersion": "offmenu-portfolio36/1",
+  "scope": "metadata-only",
+  "baselineCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "sources": [
+    {
+      "country": "MU",
+      "domain": "recipes",
+      "sourceId": "02d619ff57d487253079",
+      "releaseId": "University Mauritius45recipe collection2023",
+      "originalAcquiredAt": "2026-10-14T22:10:15.600032+00:00",
+      "validationAt": null,
+      "inputs": [
+        {
+          "path": "mu-receipt.json",
+          "bytes": 2002,
+          "sha256": "11117c6329a226990ea99f6cfeb55c9cc9e1b8c3f3311bfee14a0bf4d6b03239"
+        },
+        {
+          "path": "mu-returned-evidence.json",
+          "bytes": 4860,
+          "sha256": "3199d063d1537023f5b9c063a939bdf33307431f098b133c4f7c228c2d93fbcd"
+        }
+      ],
+      "fields": {
+        "release": {
+          "input": "mu-receipt.json",
+          "selector": "/release",
+          "expected": "University Mauritius45recipe collection2023"
+        },
+        "licenceAssertion": {
+          "input": "mu-receipt.json",
+          "selector": "/licence"
+        },
+        "adaptationEntitlement": {
+          "input": "mu-returned-evidence.json",
+          "selector": "/decision/adaptationEntitlement",
+          "expected": "NOT_HELD_IN_THIS_LOCAL_CUSTODY_EVIDENCE"
+        },
+        "scope": {
+          "input": "mu-receipt.json",
+          "selector": "/actual_scope"
+        }
+      },
+      "unknowns": [
+        "exact-author-credit-and-adaptation-clause",
+        "recipe-quantity-unit-yield-selectors"
+      ],
+      "holds": [],
+      "payloadBlockers": [
+        "adaptation-entitlement-unestablished",
+        "no-reviewed-recipe-selector"
+      ],
+      "evidenceReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/MU/02d619ff57d487253079/receipt.json",
+          "sha256": "11117c6329a226990ea99f6cfeb55c9cc9e1b8c3f3311bfee14a0bf4d6b03239"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-17/B02-W36/MU-returned-evidence-binding.json",
+          "sha256": "3199d063d1537023f5b9c063a939bdf33307431f098b133c4f7c228c2d93fbcd"
+        }
+      ]
+    },
+    {
+      "country": "SV",
+      "domain": "prices/baskets",
+      "sourceId": "1e4ee30b0ce59e70c84a",
+      "releaseId": "Complete official UI report query, all listed years2001..2026, urban and rural; not all BCR publications",
+      "originalAcquiredAt": "2026-10-14T21:14:46.431355+00:00",
+      "validationAt": null,
+      "inputs": [
+        {
+          "path": "sv-receipt.json",
+          "bytes": 6753,
+          "sha256": "4e24c014b87f6922b7c41fd514e72e7815c54946f9acf5f921bfd2e1037831e8"
+        },
+        {
+          "path": "sv-fields.json",
+          "bytes": 17510,
+          "sha256": "18b7c0a3cf3fefa1d376e93c675429912251bbbd4e4a5d6a33c798f1e3f4fba7"
+        }
+      ],
+      "fields": {
+        "release": {
+          "input": "sv-receipt.json",
+          "selector": "/source_release/identity",
+          "expected": "Complete official UI report query, all listed years2001..2026, urban and rural; not all BCR publications"
+        },
+        "currencyLiteral": {
+          "input": "sv-fields.json",
+          "selector": "/currency/sourceBinding/0/literal",
+          "expected": "Valores en Dólares (US$)"
+        },
+        "quantityBasisLiteral": {
+          "input": "sv-fields.json",
+          "selector": "/quantityBasis/binding/0/literal",
+          "expected": "GRAMOS POR PERSONA"
+        },
+        "urbanLabel": {
+          "input": "sv-fields.json",
+          "selector": "/areas/0/geography/0/literal",
+          "expected": "URBANA"
+        },
+        "ruralLabel": {
+          "input": "sv-fields.json",
+          "selector": "/areas/1/geography/0/literal",
+          "expected": "RURAL"
+        },
+        "selectedObservationMonth": {
+          "input": "sv-fields.json",
+          "selector": "/releaseTime/selectedObservationMonth"
+        },
+        "urbanFamilyBasis": {
+          "input": "sv-fields.json",
+          "selector": "/areas/0/costBasis/dailyPerFamily/literal"
+        },
+        "ruralFamilyBasis": {
+          "input": "sv-fields.json",
+          "selector": "/areas/1/costBasis/dailyPerFamily/literal"
+        }
+      },
+      "unknowns": [
+        "exact-observation-cell-and-month-validity",
+        "reviewed-derived-use-and-semantic-acceptance"
+      ],
+      "holds": [],
+      "payloadBlockers": [
+        "no-numeric-value-selector-reviewed",
+        "no-source-scope-acceptance"
+      ],
+      "evidenceReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/source-queue/owner-36/1e4ee30b0ce59e70c84a/receipt.json",
+          "sha256": "4e24c014b87f6922b7c41fd514e72e7815c54946f9acf5f921bfd2e1037831e8"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-17/B02-W36/SV-methodology-bindings.json",
+          "sha256": "18b7c0a3cf3fefa1d376e93c675429912251bbbd4e4a5d6a33c798f1e3f4fba7"
+        }
+      ]
+    },
+    {
+      "country": "TN",
+      "domain": "prices/baskets",
+      "sourceId": "41924e35c05607a1eea4",
+      "releaseId": "2021 annual household expenditure by product publisher workbook",
+      "originalAcquiredAt": "2026-10-14T22:11:43.951348+00:00",
+      "validationAt": "2026-10-14T22:17:36.495456+00:00",
+      "inputs": [
+        {
+          "path": "tn-ins-receipt.json",
+          "bytes": 2702,
+          "sha256": "8f5e5f9eb98f24fdfc52bd2a875332698db7736f6bbb259048a8b63f0ce7a71a"
+        }
+      ],
+      "fields": {
+        "release": {
+          "input": "tn-ins-receipt.json",
+          "selector": "/version",
+          "expected": "2021 annual household expenditure by product publisher workbook"
+        },
+        "scope": {
+          "input": "tn-ins-receipt.json",
+          "selector": "/exact_scope"
+        },
+        "acquisitionBasis": {
+          "input": "tn-ins-receipt.json",
+          "selector": "/acquisition_rights"
+        },
+        "redistributionCleared": {
+          "input": "tn-ins-receipt.json",
+          "selector": "/redistribution_cleared"
+        }
+      },
+      "unknowns": [
+        "native-value-unit-and-denominator-unbound",
+        "exact-edition-use-attribution-decision"
+      ],
+      "holds": [],
+      "payloadBlockers": [
+        "source-use-scope-unresolved",
+        "no-reviewed-source-body-processing"
+      ],
+      "evidenceReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/41924e35c05607a1eea4/receipt.json",
+          "sha256": "8f5e5f9eb98f24fdfc52bd2a875332698db7736f6bbb259048a8b63f0ce7a71a"
+        }
+      ]
+    },
+    {
+      "country": "TN",
+      "domain": "dietary references",
+      "sourceId": "ceb76a86c1cd3ea355fc",
+      "releaseId": "Tunisia UNICEF/HealthMinistry infant-young-child nutrition toolkit",
+      "originalAcquiredAt": "2026-10-14T22:15:12.232496+00:00",
+      "validationAt": "2026-10-14T22:17:36.594162+00:00",
+      "inputs": [
+        {
+          "path": "tn-unicef-receipt.json",
+          "bytes": 2759,
+          "sha256": "6bc1890fc5e70c179765bcf5a5556cc48f448235dc3f62a5fa47c5056cebc828"
+        }
+      ],
+      "fields": {
+        "release": {
+          "input": "tn-unicef-receipt.json",
+          "selector": "/version",
+          "expected": "Tunisia UNICEF/HealthMinistry infant-young-child nutrition toolkit"
+        },
+        "scope": {
+          "input": "tn-unicef-receipt.json",
+          "selector": "/exact_scope"
+        },
+        "acquisitionBasis": {
+          "input": "tn-unicef-receipt.json",
+          "selector": "/acquisition_rights"
+        },
+        "redistributionCleared": {
+          "input": "tn-unicef-receipt.json",
+          "selector": "/redistribution_cleared"
+        }
+      },
+      "unknowns": [
+        "native-value-unit-and-denominator-unbound",
+        "exact-edition-use-attribution-decision"
+      ],
+      "holds": [],
+      "payloadBlockers": [
+        "source-use-scope-unresolved",
+        "no-reviewed-source-body-processing"
+      ],
+      "evidenceReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-36/TN/ceb76a86c1cd3ea355fc/receipt.json",
+          "sha256": "6bc1890fc5e70c179765bcf5a5556cc48f448235dc3f62a5fa47c5056cebc828"
+        }
+      ]
+    },
+    {
+      "country": "VA",
+      "domain": "retailers/providers",
+      "sourceId": "b35249a7e52ec6a11cb9",
+      "releaseId": "Official Vatican Museums selfservice description observed2026-10-14UTC",
+      "originalAcquiredAt": "2026-10-14T22:14:08.454049+00:00",
+      "validationAt": null,
+      "inputs": [
+        {
+          "path": "va-receipt.json",
+          "bytes": 2096,
+          "sha256": "c9cc7d753117540931b34d0b70b12e343507b1e7de5bd97227267376ae227265"
+        }
+      ],
+      "fields": {
+        "release": {
+          "input": "va-receipt.json",
+          "selector": "/release",
+          "expected": "Official Vatican Museums selfservice description observed2026-10-14UTC"
+        },
+        "scope": {
+          "input": "va-receipt.json",
+          "selector": "/actual_scope"
+        },
+        "licenceAssertion": {
+          "input": "va-receipt.json",
+          "selector": "/licence"
+        }
+      },
+      "unknowns": [
+        "itemized-menu-source-and-serving-price-units",
+        "native-current-custody-and-use-evidence"
+      ],
+      "holds": [],
+      "payloadBlockers": [
+        "metadata-description-not-itemized-source",
+        "no-derived-use-entitlement"
+      ],
+      "evidenceReferences": [
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-49/VA/b35249a7e52ec6a11cb9/receipt.json",
+          "sha256": "c9cc7d753117540931b34d0b70b12e343507b1e7de5bd97227267376ae227265"
+        }
+      ]
+    }
+  ]
+}

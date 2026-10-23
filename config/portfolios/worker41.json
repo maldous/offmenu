@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "offmenu-portfolio41-bindings/1",
+  "baseline": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "scope": "Metadata-only source-role bindings. Empty countryTypes means no food-domain applicability proven; no production admission. All four current body adapters disabled.",
+  "bindings": [
+    {
+      "id": "qa-qatar-now",
+      "country": "QA",
+      "sourceId": "qa-qatar-now",
+      "releaseId": "retained-20261014",
+      "releaseStatus": "retained-snapshot-not-verified-publisher-edition",
+      "role": "receipt-metadata-only",
+      "metadataPin": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/QA/f3504ac49277205cbfd4/receipt.json",
+        "bytes": 1614,
+        "sha256": "83ae4fc7fce6b378204c094ec72ce382d4afd9434a02962917d7a687dce17d3c"
+      },
+      "fieldSelectors": {
+        "recordedVersion": "/version",
+        "recordedRole": "/kind",
+        "recordedUse": "/rights/acquisition",
+        "historicalBodySha256": "/network/0/sha256"
+      },
+      "originalAcquiredAtSelector": "/utc",
+      "validatedAt": "2026-10-18T04:23:38+00:00",
+      "maxValidationAgeDays": 30,
+      "holds": [
+        "guide-body-not-qualified",
+        "guide-derivative-use-not-established"
+      ],
+      "missingInputs": [
+        "guide edition, qualified body, recipe field selector"
+      ],
+      "countryTypes": [],
+      "bodyAdapter": null
+    },
+    {
+      "id": "tc-headline-inflation",
+      "country": "TC",
+      "sourceId": "tc-headline-inflation",
+      "releaseId": "retained-20261014",
+      "releaseStatus": "retained-snapshot-not-verified-publisher-edition",
+      "role": "receipt-metadata-only",
+      "metadataPin": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-20/TC/receipt.json",
+        "bytes": 20358,
+        "sha256": "8d929d13d14e62fa1a73247ec21baf38630c6c1469a059b9e478484394724508"
+      },
+      "fieldSelectors": {
+        "recordedVersion": "/responses/1/version",
+        "recordedRole": "/responses/1/kind",
+        "recordedUse": "/responses/1/acquisition_basis",
+        "historicalBodySha256": "/responses/1/sha256"
+      },
+      "originalAcquiredAtSelector": "/responses/1/utc",
+      "validatedAt": "2026-10-18T04:23:38+00:00",
+      "maxValidationAgeDays": 30,
+      "holds": [
+        "source-use-not-qualified",
+        "macro-is-not-food-price"
+      ],
+      "missingInputs": [
+        "rate unit/base and literal embedded selector; actual food item dataset"
+      ],
+      "countryTypes": [],
+      "bodyAdapter": null
+    },
+    {
+      "id": "tw-afa38766",
+      "country": "TW",
+      "sourceId": "tw-afa38766",
+      "releaseId": "retained-20261014",
+      "releaseStatus": "retained-snapshot-not-verified-publisher-edition",
+      "role": "receipt-metadata-only",
+      "metadataPin": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-41/TW/55192fcb0c974a229f16/receipt.json",
+        "bytes": 1429,
+        "sha256": "545e82a0d5fb1bb5bd065707f7d5e3308ff51e560a4dadcb3f4ef9666b99b510"
+      },
+      "fieldSelectors": {
+        "recordedVersion": "/version",
+        "recordedRole": "/kind",
+        "recordedUse": "/rights/acquisition",
+        "historicalBodySha256": "/network/0/sha256"
+      },
+      "originalAcquiredAtSelector": "/utc",
+      "validatedAt": "2026-10-18T04:23:38+00:00",
+      "maxValidationAgeDays": 30,
+      "holds": [
+        "private-reading-is-not-extraction-use"
+      ],
+      "missingInputs": [
+        "exact publisher edition and recipe quantity/yield/method field witnesses"
+      ],
+      "countryTypes": [],
+      "bodyAdapter": null
+    },
+    {
+      "id": "vg-drunken-pelican-dinner",
+      "country": "VG",
+      "sourceId": "vg-drunken-pelican-dinner",
+      "releaseId": "retained-20261014",
+      "releaseStatus": "retained-snapshot-not-verified-publisher-edition",
+      "role": "receipt-metadata-only",
+      "metadataPin": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-52/VG/peterisland-drunkpelican-menu/menu-collection-receipt.json",
+        "bytes": 6091,
+        "sha256": "a3fe62c2356b450c93eb8134b07bae47ed17d1574b62d5ab2445eed2753d7827"
+      },
+      "fieldSelectors": {
+        "recordedVersion": "/documents/0/url",
+        "recordedRole": "/scope",
+        "recordedUse": "/documents/0/rights",
+        "historicalBodySha256": "/documents/0/sha256"
+      },
+      "originalAcquiredAtSelector": "/documents/0/utc",
+      "validatedAt": "2026-10-18T04:23:38+00:00",
+      "maxValidationAgeDays": 30,
+      "holds": [
+        "source-evaluation-only",
+        "menu-is-not-national-price-release"
+      ],
+      "missingInputs": [
+        "item serving/unit/currency/provider witness; actual Protected Basket release"
+      ],
+      "countryTypes": [],
+      "bodyAdapter": null
+    }
+  ]
+}

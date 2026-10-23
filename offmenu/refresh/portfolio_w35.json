@@ -1,0 +1,475 @@
+{
+  "schemaVersion": "offmenu-w35-portfolio-bindings/1",
+  "owner": 35,
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "requiredTypes": [
+    "ingredients",
+    "recipes",
+    "nutrition",
+    "retailers/providers",
+    "prices/baskets",
+    "dietary references"
+  ],
+  "bindings": [
+    {
+      "bindingId": "gy-retained-reference",
+      "country": "GY",
+      "sourceId": "gy-retained-reference",
+      "releaseId": "unknown-release",
+      "dataType": "prices-baskets-reference",
+      "inputPath": null,
+      "inputSha256": null,
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/GY/deliverable-validation.json",
+          "sha256": "db0a73ed9149ed175a8ad94fd2b34937b6970f8b6ab41fd9de827d27b1d39c4a"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/GY/category-coverage-and-gaps.json",
+          "sha256": "6e63ec75bf65924576c3d06dbe368a9bd9c32bcd6592c05cafaf54a3de08ad86"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-26/GY/receipt.json",
+          "sha256": "c7ed77d1e945ec744c414470c17442bc1c3c92da3f9a563e7d45849e59b9612a"
+        }
+      ],
+      "holds": [
+        "retained-429-no-retry",
+        "source-use-unqualified"
+      ],
+      "unknowns": [
+        "exact complete release",
+        "publisher field schema/native units/base",
+        "required category scope",
+        "original acquisition time"
+      ],
+      "fields": {},
+      "basis": null,
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hk-restaurant-licences",
+      "country": "HK",
+      "sourceId": "hk-fehd-restaurant-licences",
+      "releaseId": "unknown-snapshot",
+      "dataType": "retailers-providers",
+      "inputPath": null,
+      "inputSha256": null,
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/deliverable-validation.json",
+          "sha256": "0a8db77461d7513dfd0585e83b437dc2a0f590d6bafdcec3bed805adb1d7547e"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/category-coverage-and-gaps.json",
+          "sha256": "ca5f452cf7912f8d07b668083065cbe99ed3b1231880eca85befe6ca324b3899"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/HK/recalls/owner-45/acquisition-receipt.json",
+          "sha256": "055853402b3327f9d44cbf29a8da660b194e763e5e4d063b4448db1b20dc600a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/4b404d186de3c168dccc/receipt.json",
+          "sha256": "5cd35415612da67c2b6619e298a800c6a0704c3011c1e840ae442280760d781f"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/8344eb9cf6b3ed09a5e4/receipt.json",
+          "sha256": "7ffff7ffae5e38c9bec96866e6b89e03876b27320fe446b2a712b6b3670fb1a6"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-27/M-BATCH-CUSTODY-R1-W27/custody-response.json",
+          "sha256": "5f82ec57ff32a756940e8911a58f03045a0a50ac5a413d433175c910e49c5273"
+        }
+      ],
+      "holds": [
+        "authorized-party-terms-acceptance-unqualified"
+      ],
+      "unknowns": [
+        "exact XML snapshot/hash",
+        "dictionary contents not retrieved: official PDF timed out",
+        "record selectors/unit semantics"
+      ],
+      "fields": {},
+      "basis": null,
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hk-cfs-reference",
+      "country": "HK",
+      "sourceId": "hk-cfs-reference",
+      "releaseId": "October2026-index-only",
+      "dataType": "food-safety-reference",
+      "inputPath": null,
+      "inputSha256": null,
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/deliverable-validation.json",
+          "sha256": "0a8db77461d7513dfd0585e83b437dc2a0f590d6bafdcec3bed805adb1d7547e"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/category-coverage-and-gaps.json",
+          "sha256": "ca5f452cf7912f8d07b668083065cbe99ed3b1231880eca85befe6ca324b3899"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/HK/recalls/owner-45/acquisition-receipt.json",
+          "sha256": "055853402b3327f9d44cbf29a8da660b194e763e5e4d063b4448db1b20dc600a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/4b404d186de3c168dccc/receipt.json",
+          "sha256": "5cd35415612da67c2b6619e298a800c6a0704c3011c1e840ae442280760d781f"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/8344eb9cf6b3ed09a5e4/receipt.json",
+          "sha256": "7ffff7ffae5e38c9bec96866e6b89e03876b27320fe446b2a712b6b3670fb1a6"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-45/M-BATCH-CUSTODY-R1-W45/response.json",
+          "sha256": "a2487f99f2048983a2ed22887198a0b6c97f9c4227ab83776cd295e2f4940d27"
+        }
+      ],
+      "holds": [
+        "cfs-written-authorization-not-held"
+      ],
+      "unknowns": [
+        "incident source body and field origins",
+        "exact work-specific extraction permission"
+      ],
+      "fields": {},
+      "basis": null,
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hk-cookbook-reference",
+      "country": "HK",
+      "sourceId": "hk-doh-housing-cookbook",
+      "releaseId": "unknown-edition",
+      "dataType": "recipes-reference",
+      "inputPath": null,
+      "inputSha256": null,
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/deliverable-validation.json",
+          "sha256": "0a8db77461d7513dfd0585e83b437dc2a0f590d6bafdcec3bed805adb1d7547e"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HK/category-coverage-and-gaps.json",
+          "sha256": "ca5f452cf7912f8d07b668083065cbe99ed3b1231880eca85befe6ca324b3899"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-acquisition-20261015/HK/recalls/owner-45/acquisition-receipt.json",
+          "sha256": "055853402b3327f9d44cbf29a8da660b194e763e5e4d063b4448db1b20dc600a"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/4b404d186de3c168dccc/receipt.json",
+          "sha256": "5cd35415612da67c2b6619e298a800c6a0704c3011c1e840ae442280760d781f"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/HK/8344eb9cf6b3ed09a5e4/receipt.json",
+          "sha256": "7ffff7ffae5e38c9bec96866e6b89e03876b27320fe446b2a712b6b3670fb1a6"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-27/M-BATCH-CUSTODY-R1-W27/custody-response.json",
+          "sha256": "5f82ec57ff32a756940e8911a58f03045a0a50ac5a413d433175c910e49c5273"
+        }
+      ],
+      "holds": [
+        "work-specific-recipe-use-unqualified"
+      ],
+      "unknowns": [
+        "cookbook edition/payload/schema",
+        "exact recipe use decision"
+      ],
+      "fields": {},
+      "basis": null,
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hm-afma-reference",
+      "country": "HM",
+      "sourceId": "hm-afma-annual-report",
+      "releaseId": "2024-25",
+      "dataType": "fishery-management-reference",
+      "inputPath": "AFMA-Annual-Report-2024-25.pdf",
+      "inputSha256": "1b9eafedb2d88b1e6a6fa2a82a5f8d9cfa5e667174dd3342ddc326e708d651df",
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HM/deliverable-validation.json",
+          "sha256": "eae59baee97b81394296805c099aba56303ddc81ac6f3f8f44c3a722c4f68ba1"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HM/category-coverage-and-gaps.json",
+          "sha256": "d07c4c3f32b0136061cb29017229472336ea4b1a726ab2f50e3d0fae113425a5"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-28/HM/receipt.json",
+          "sha256": "595b573e538e14736933acb7081f4e0ff04412343d5ffb6edda106d819f6f0f7"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-28/custody-R1-W35-W48/response.json",
+          "sha256": "1534a337ff00bd209cba314475ce5b0247f2d90f33445033ef1f06a81277f649"
+        }
+      ],
+      "holds": [
+        "report-specific-derivative-use-unqualified"
+      ],
+      "unknowns": [
+        "territorial row/page selectors",
+        "accepted semantic dictionary",
+        "complete food-domain applicability"
+      ],
+      "fields": {},
+      "basis": null,
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hn-ipc-table5",
+      "country": "HN",
+      "sourceId": "bch-ipc",
+      "releaseId": "2026-07",
+      "dataType": "statistical-cpi-table5",
+      "inputPath": "HN/table5-candidate.json",
+      "inputSha256": "2c397e9a690659a458b94fb416dc83741f0186ca3bed63bd204dc0a326b351be",
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/deliverable-validation.json",
+          "sha256": "71e2c468ec0883df1538f27ae5615de518e9d6a94addbbd03fa0b8990bfca962"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/category-coverage-and-gaps.json",
+          "sha256": "3863cb819a0d8c57ab2ac3fcad256db0dd859b5595a1def735cb0d8628de9599"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/HN/fd545264fea6ef527ac4/receipt.json",
+          "sha256": "b51b5b753be5010d947851046c85edfb6dee1f01c4146609f302becc619e8157"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table5-candidate.json",
+          "sha256": "2c397e9a690659a458b94fb416dc83741f0186ca3bed63bd204dc0a326b351be"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table5-validation.json",
+          "sha256": "3f47471a4264dae5cf4619a127660487ec5d08523159f5cb3ca6e6711d68789f"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/reviews/author35-table5-result4540/review-receipt.json",
+          "sha256": "9eb81853e0e7a7d1d7c399646e6eca7860ed4f08dfc0ee09790bc5b7f3daa89b"
+        }
+      ],
+      "holds": [],
+      "unknowns": [
+        "trusted original acquisition timestamp",
+        "accepted new staging SourceContract; actual semantic/data qualification not selected",
+        "all other country/data-type requirements"
+      ],
+      "fields": {
+        "index": {
+          "unit": "index-point",
+          "recordSelector": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods",
+          "fieldSelector": "/records/{ordinal}/cells/index",
+          "originalLocator": {
+            "pdfPage": 17,
+            "table": "Cuadro No.5",
+            "recordCoordinate": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "inflation_mom": {
+          "unit": "percent",
+          "recordSelector": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods",
+          "fieldSelector": "/records/{ordinal}/cells/inflation_mom",
+          "originalLocator": {
+            "pdfPage": 17,
+            "table": "Cuadro No.5",
+            "recordCoordinate": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "inflation_yoy": {
+          "unit": "percent",
+          "recordSelector": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods",
+          "fieldSelector": "/records/{ordinal}/cells/inflation_yoy",
+          "originalLocator": {
+            "pdfPage": 17,
+            "table": "Cuadro No.5",
+            "recordCoordinate": "sourceMonthRow + sourceYearColumn; 48 grid slots,43 observed periods"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        }
+      },
+      "basis": "December2025=100",
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    },
+    {
+      "bindingId": "hn-ipc-table6",
+      "country": "HN",
+      "sourceId": "bch-ipc",
+      "releaseId": "2026-07",
+      "dataType": "statistical-cpi-table6",
+      "inputPath": "HN/table6-candidate.json",
+      "inputSha256": "3f58041ec38c4e192316ebb523db164650147953210d6fbccfaea0eb1a38a9f5",
+      "manifestPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/deliverable-validation.json",
+          "sha256": "71e2c468ec0883df1538f27ae5615de518e9d6a94addbbd03fa0b8990bfca962"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/category-coverage-and-gaps.json",
+          "sha256": "3863cb819a0d8c57ab2ac3fcad256db0dd859b5595a1def735cb0d8628de9599"
+        },
+        {
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-32/HN/fd545264fea6ef527ac4/receipt.json",
+          "sha256": "b51b5b753be5010d947851046c85edfb6dee1f01c4146609f302becc619e8157"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table6-candidate.json",
+          "sha256": "3f58041ec38c4e192316ebb523db164650147953210d6fbccfaea0eb1a38a9f5"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-35/HN/table6-validation.json",
+          "sha256": "263ad6c2b4e46f65001cd188fd83bc35e0ec05692111b9e42f5dbc6d17cb580b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-15/reviews/author35-result4043/review-receipt.json",
+          "sha256": "187bf8c49e5853913a39453ebfa81d1e88d38d8d22ee2d52f3a95b6bd7571042"
+        }
+      ],
+      "holds": [],
+      "unknowns": [
+        "trusted original acquisition timestamp",
+        "accepted new staging SourceContract; actual semantic/data qualification not selected",
+        "all other country/data-type requirements"
+      ],
+      "fields": {
+        "index_2025_07": {
+          "unit": "index-point",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/index_2025_07",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "index_2026_06": {
+          "unit": "index-point",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/index_2026_06",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "index_2026_07": {
+          "unit": "index-point",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/index_2026_07",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "inflation_yoy": {
+          "unit": "percent",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/inflation_yoy",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "inflation_mom": {
+          "unit": "percent",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/inflation_mom",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "contribution_yoy": {
+          "unit": "percentage-point",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/contribution_yoy",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        },
+        "contribution_mom": {
+          "unit": "percentage-point",
+          "recordSelector": "sourceRowOrdinal;14 rows",
+          "fieldSelector": "/records/{ordinal}/cells/contribution_mom",
+          "originalLocator": {
+            "pdfPage": 18,
+            "table": "Cuadro No.6",
+            "recordCoordinate": "sourceRowOrdinal;14 rows"
+          },
+          "scope": "declaration only; values/selectors not revalidated by metadata assessor"
+        }
+      },
+      "basis": "December2025=100",
+      "applicability": "scoped-retained-reference-only; no full-country/type acceptance",
+      "originalAcquiredAt": null,
+      "originalAcquisitionTimeEvidence": "UNRESOLVED; receipt completion/HTTP Date/validation timestamps are not silently acquisition time",
+      "acquisitionEnabled": false,
+      "sourceProcessingEnabled": false
+    }
+  ],
+  "documentation": [
+    {
+      "url": "https://data.gov.hk/en-data/dataset/hk-fehd-fehdlmis-restaurant-licences",
+      "observedDate": "2026-10-18",
+      "evidence": "Official catalog lists XML in English/Traditional Chinese and a restaurant-licence dictionary; does not supply actual XML snapshot or permission acceptance."
+    },
+    {
+      "url": "https://www.fehd.gov.hk/datagovhk/data_dictionary/english/restaurant_licences.pdf",
+      "observedDate": "2026-10-18",
+      "outcome": "web fetch400 Timeout fetching; dictionary content not used; no retry or payload download"
+    },
+    {
+      "url": "https://www.bch.hn/estadisticas-y-publicaciones-economicas/publicaciones-de-precios/series-ipc",
+      "observedDate": "2026-10-18",
+      "evidence": "Official HTML lists separate December2025=100 and December1999=100 series; not interchangeable, no dataset fetched."
+    },
+    {
+      "url": "https://data.gov.hk/en/terms-and-conditions",
+      "observedDate": "2026-10-18",
+      "evidence": "Version1.2 dated26May2025; conditional use/attribution/compliance/indemnity. Documentation check does not establish principal operation decision. Existing holds preserved."
+    }
+  ]
+}

@@ -1,0 +1,618 @@
+{
+  "schemaVersion": "offmenu-owner19-bindings/1",
+  "requestId": "M-STAGING-BIND-20261018-W19",
+  "acceptedBaseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "portfolio": [
+    "AF",
+    "AM",
+    "BT",
+    "CN"
+  ],
+  "owner": 19,
+  "catalogueAuthority": "Reviewed application configuration only; not an acquisition/rights/admission contract. SourceIds outside Overture are local binding identifiers, not new global source registrations.",
+  "bindings": [
+    {
+      "id": "AF-overture-retained",
+      "country": "AF",
+      "owner": 19,
+      "sourceId": "overture-food-places",
+      "releaseId": "2026-09-23.1",
+      "types": [
+        "food-venue-reference",
+        "food-retailer-reference"
+      ],
+      "inputFormat": "offmenu-overture/1 normalized site-or-retailer JSONL",
+      "sharedReferenceSource": true,
+      "metadata": [
+        {
+          "key": "manifest",
+          "path": "/home/user/src/offmenu-data/normalization-20261015/owner-19/overture-2026-09-23.1/AF/manifest.json",
+          "sha256": "a1ed525fd14ff4c5d24097761aba8f7e1e042ad2c43eee2b5a339fbaa9570907",
+          "assertions": [
+            {
+              "selector": "/sourceId",
+              "equals": "overture-food-places"
+            },
+            {
+              "selector": "/releaseId",
+              "equals": "2026-09-23.1"
+            },
+            {
+              "selector": "/countryLabel",
+              "equals": "AF"
+            },
+            {
+              "selector": "/counts/retailFoodServiceCandidates",
+              "equals": 514
+            },
+            {
+              "selector": "/outputs/0/sha256",
+              "equals": "825c9e5a39d1c15fdcc5990969e44ab92a5d0d92593260ae6b7cfea7ba4c8074"
+            }
+          ]
+        },
+        {
+          "key": "review20",
+          "path": "/home/user/src/offmenu-data/owner20/OVERTURE-AF-REVIEW-20261016/receipt.json",
+          "sha256": "02bcd4a1d505851f59ae55ab4d1f9b8f7c7e06d5f33912f2dadf33f020eceea2",
+          "assertions": []
+        },
+        {
+          "key": "semantic-manifest",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country-delivery-priority-20261017/owner-19/AF-source-semantic-proposal-v1/manifest.json",
+          "sha256": "405f23aa42f8dc6415b2bc39f1f661e4396833343d37d7862f33521ff1fafa61",
+          "assertions": []
+        },
+        {
+          "key": "semantic-review46",
+          "path": "/home/user/Documents/Codex/2026-10-17/owner46-AF-semantic-review-405f23aa42f8/review.json",
+          "sha256": "b674047c77a890250dd2a0d008fb0e6f70d8abfadd729a53f2970235e2f9daab",
+          "assertions": []
+        }
+      ],
+      "holds": [
+        {
+          "code": "legacy-normalized-format-not-shared-projection",
+          "kind": "technical-interface",
+          "owner": "integrator00 / Worker19",
+          "nextAction": "Select reviewed retained-native adapter interface without replay or reconstruction; shared Overture projection parser is incompatible."
+        },
+        {
+          "code": "per-datum-selector-map-unreviewed",
+          "kind": "missing-input",
+          "owner": "Worker19 / designated independent reviewer",
+          "nextAction": "Select exact legacy field-origin inventory successor and source-use scope; existing semantic PASS is not a field-origin/schema admission."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "Separately select any real input processing after review and develop integration."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "countryBasis": "source address-country label, not independent business/territorial verification",
+        "ownershipVerified": false,
+        "inventoryAvailability": "unknown",
+        "menuCoverage": null
+      },
+      "fieldDeclarations": [
+        {
+          "target": "/data/name",
+          "sourceSelector": null,
+          "status": "unbound-native-coordinate",
+          "evidenceArtifact": "manifest",
+          "evidenceSelector": "/preservation",
+          "meaning": "Legacy record field retained; original source row/column coordinate not established here."
+        },
+        {
+          "target": "/data/role and /data/taxonomy",
+          "sourceSelector": null,
+          "status": "scoped-semantic-definitions-only",
+          "evidenceArtifact": "semantic-manifest",
+          "evidenceSelector": "",
+          "meaning": "14 source-local role/category definitions and514 semantic links; not full datum lineage or global canonical mapping."
+        },
+        {
+          "target": "geometry, contacts, street addresses",
+          "sourceSelector": null,
+          "status": "omitted-unavailable",
+          "evidenceArtifact": "manifest",
+          "evidenceSelector": "/preservation",
+          "meaning": "Never reconstructed."
+        }
+      ],
+      "recordInventory": {
+        "publisherLabelledAF": 521,
+        "historicallyNormalizedCandidates": 514,
+        "historicallyExcluded": 7,
+        "reviewedSelectionScope": 514,
+        "reviewedSemanticDefinitions": 14,
+        "reviewedSemanticLinks": 514,
+        "goldAdmitted": 0,
+        "evidence": "Counts reported in pinned metadata; source bodies not read/revalidated by this package."
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    },
+    {
+      "id": "AF-production-publication",
+      "country": "AF",
+      "owner": 19,
+      "sourceId": "AF-ministry-annual-report",
+      "releaseId": "report1402-title-only",
+      "types": [
+        "agricultural-production-reference"
+      ],
+      "inputFormat": "retained-pdf-unparsed",
+      "sharedReferenceSource": false,
+      "metadata": [
+        {
+          "key": "receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-10/AF/0fea1bc60621b544cd6c/receipt.json",
+          "sha256": "030665000a5605281be1b3ea8686e38a996e53f1ba9328b52844f66b8a67f30a",
+          "assertions": [
+            {
+              "selector": "/country",
+              "equals": "AF"
+            },
+            {
+              "selector": "/release",
+              "equals": "Ministry agricultural annual report1402, linked directly on acquired publisher page"
+            }
+          ]
+        },
+        {
+          "key": "custody-response",
+          "path": "/home/user/Documents/Codex/2026-10-17/worker19-B01-lineage-resolution/returned-evidence/B01-W19-10/response-binding.json",
+          "sha256": "7eccee546289c93c5f1734af9ade91171bdbd52f3da07bf99caed0038f552a96",
+          "assertions": []
+        }
+      ],
+      "holds": [
+        {
+          "code": "production-table-unit-map-not-held",
+          "kind": "missing-input",
+          "owner": "Worker19 / source10 exact holder 01a138ed-be8c-7340-b25e-87bee9272d7e",
+          "nextAction": "Select bounded map work only after explicit permitted source-processing scope; holder has attested NOT_HELD, do not reroute same question."
+        },
+        {
+          "code": "private-derive-retention-use-unestablished",
+          "kind": "source-use",
+          "owner": "Morgan / source-use reviewer",
+          "nextAction": "Resolve operation-specific private parse/derive/retention scope; acquisition is not permission."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "No PDF processing under this task."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "tableRowLocator": null,
+        "unknownMeaning": "Not established by retained metadata; no default unit, currency or semantic conversion."
+      },
+      "fieldDeclarations": [
+        {
+          "target": "release title",
+          "sourceSelector": "/release",
+          "status": "metadata-bound",
+          "evidenceArtifact": "receipt",
+          "evidenceSelector": "/release",
+          "meaning": "Historical1402 literal; no Gregorian conversion or per-table crop/region/statistic inferred."
+        }
+      ],
+      "recordInventory": {
+        "originalFilesReported": 1,
+        "originalPagesReported": 41,
+        "parsedDataRecords": null,
+        "goldAdmitted": 0
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    },
+    {
+      "id": "AM-government-annex",
+      "country": "AM",
+      "owner": 19,
+      "sourceId": "AM-government-annex",
+      "releaseId": "2025-annex-two-incomplete-routes",
+      "types": [
+        "food-basket-reference"
+      ],
+      "inputFormat": "incomplete-original",
+      "sharedReferenceSource": false,
+      "metadata": [
+        {
+          "key": "receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/AM/receipt.json",
+          "sha256": "aa581527caa9e09f8f509354221c36dc74687fc181f0c499aafd1d9719caa753",
+          "assertions": [
+            {
+              "selector": "/country",
+              "equals": "AM"
+            },
+            {
+              "selector": "/sources/0/originals",
+              "equals": []
+            },
+            {
+              "selector": "/sources/1/originals",
+              "equals": []
+            }
+          ]
+        }
+      ],
+      "holds": [
+        {
+          "code": "whole-original-missing",
+          "kind": "missing-input",
+          "owner": "original source17 custodian via Morgan",
+          "nextAction": "Identify existing complete permitted original, if any; no duplicate acquisition or retry selected."
+        },
+        {
+          "code": "source17-native-custody-unresolved",
+          "kind": "missing-input",
+          "owner": "source17 custodian via Morgan",
+          "nextAction": "Bind exact native actor and source claim; worker number is not identity."
+        },
+        {
+          "code": "annex-schema-units-use-unestablished",
+          "kind": "source-use",
+          "owner": "source-use reviewer / Worker19",
+          "nextAction": "Resolve private operation scope, table/currency/quantity/population definitions before parsing."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "No original acquisition/processing selected."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "tableRowLocator": null,
+        "unknownMeaning": "Not established by retained metadata; no default unit, currency or semantic conversion."
+      },
+      "fieldDeclarations": [
+        {
+          "target": "release titles",
+          "sourceSelector": "/sources/0/release and /sources/1/release",
+          "status": "metadata-bound-title-only",
+          "evidenceArtifact": "receipt",
+          "evidenceSelector": "/sources",
+          "meaning": "Two redirect/partial routes, no usable whole original."
+        }
+      ],
+      "recordInventory": {
+        "originalFilesReported": 0,
+        "parsedDataRecords": null,
+        "goldAdmitted": 0
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    },
+    {
+      "id": "BT-damc-prices",
+      "country": "BT",
+      "owner": 19,
+      "sourceId": "BT-DAMC-vegetable-price-report",
+      "releaseId": "Apr-Sep2021-title-only",
+      "types": [
+        "historical-vegetable-price-reference"
+      ],
+      "inputFormat": "retained-pdf-unparsed",
+      "sharedReferenceSource": false,
+      "metadata": [
+        {
+          "key": "receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/BT/04e4b0f32ccc1c9ff57a/receipt.json",
+          "sha256": "490139b649a2c7c2bf7fb8d97716495bad4f3df1cae64519fca4382f2da923b3",
+          "assertions": [
+            {
+              "selector": "/country",
+              "equals": "BT"
+            },
+            {
+              "selector": "/release",
+              "equals": "DAMC Apr-Sep2021 six-month Thimphu vegetable price report"
+            }
+          ]
+        },
+        {
+          "key": "custody-response",
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-51/M-BATCH-CUSTODY-R1-W51/response.json",
+          "sha256": "185e4fc79a63e4793915fe38ad3c84c18609a14312b16905e54cd7d45ef9f445",
+          "assertions": [
+            {
+              "selector": "/responses/5/requestId",
+              "equals": "B01-W19-51"
+            },
+            {
+              "selector": "/responses/5/custody/currentNativeThread",
+              "equals": "01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a"
+            },
+            {
+              "selector": "/responses/5/requestedFields/currencyUnit/value",
+              "equals": null
+            }
+          ]
+        },
+        {
+          "key": "custody-claim",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/claims/04e4b0f32ccc1c9ff57ad46a96d9a6ebddef1b10b84cf04a66e39b70d35633fd.json",
+          "sha256": "dfc95ac6d26e1ee2289d419e3d28cbd0857822df7063bebee4526f018d1ff28a",
+          "assertions": [
+            {
+              "selector": "/threadId",
+              "equals": "01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a"
+            }
+          ]
+        }
+      ],
+      "holds": [
+        {
+          "code": "price-cell-map-not-retained",
+          "kind": "missing-input",
+          "owner": "Worker19 / exact source51 holder 01a139a6-42f9-7de2-bb25-c1dcd7ed4b7a",
+          "nextAction": "B01-W19-51 confirms no retained table/header/row/currency/quantity/market/statistic map; no repeat custody request needed."
+        },
+        {
+          "code": "private-derive-retention-use-unestablished",
+          "kind": "source-use",
+          "owner": "Morgan / source-use reviewer",
+          "nextAction": "Resolve operation-specific scope; public GET is not a derivative-use grant."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "No PDF processing under this task."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "tableRowLocator": null,
+        "unknownMeaning": "Not established by retained metadata; no default unit, currency or semantic conversion."
+      },
+      "fieldDeclarations": [
+        {
+          "target": "release / observation period",
+          "sourceSelector": "/release",
+          "status": "metadata-bound-title-only",
+          "evidenceArtifact": "receipt",
+          "evidenceSelector": "/release",
+          "meaning": "Apr-Sep2021 and Thimphu are title scope; exact row interval/market/statistic unknown."
+        },
+        {
+          "target": "currency, quantity basis, table/header/row, aggregation statistic",
+          "sourceSelector": null,
+          "status": "not-retained-in-checked-metadata",
+          "evidenceArtifact": "custody-response",
+          "evidenceSelector": "/responses/5/requestedFields",
+          "meaning": "Only matching B01-W19-51 request slice consumed; claim corroborates native holder. No body/hash/stat reread."
+        }
+      ],
+      "recordInventory": {
+        "originalFilesReported": 1,
+        "originalPagesReported": 2,
+        "originalBytesReported": 541405,
+        "originalSha256Reported": "f646f79f1d7b302636b0e0de5f27bd834544766b9be70760eafb1736446be3a3",
+        "parsedDataRecords": null,
+        "goldAdmitted": 0
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    },
+    {
+      "id": "BT-dietary-assessment",
+      "country": "BT",
+      "owner": 19,
+      "sourceId": "BT-MoESD-dietary-assessment",
+      "releaseId": "2017-title-only",
+      "types": [
+        "dietary-assessment-reference"
+      ],
+      "inputFormat": "retained-pdf-unparsed",
+      "sharedReferenceSource": false,
+      "metadata": [
+        {
+          "key": "receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-51/BT/e1cd61d8962b761a6026/receipt.json",
+          "sha256": "1bff0318fd93401891353812c7794ee400911aa92c0de3eb7aa61bfdb7a20445",
+          "assertions": [
+            {
+              "selector": "/country",
+              "equals": "BT"
+            },
+            {
+              "selector": "/release",
+              "equals": "Exact public download button15063 MoESD2017 dietary assessment whole original"
+            }
+          ]
+        }
+      ],
+      "holds": [
+        {
+          "code": "assessment-population-table-schema-unestablished",
+          "kind": "missing-input",
+          "owner": "Worker19 / source51 via Morgan",
+          "nextAction": "Resolve exact document/population/table/native bases; assessment is not automatically a national normative guideline."
+        },
+        {
+          "code": "private-derive-retention-use-unestablished",
+          "kind": "source-use",
+          "owner": "Morgan / source-use reviewer",
+          "nextAction": "Resolve operation-specific scope before source processing."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "No PDF processing under this task."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "tableRowLocator": null,
+        "unknownMeaning": "Not established by retained metadata; no default unit, currency or semantic conversion."
+      },
+      "fieldDeclarations": [
+        {
+          "target": "release title",
+          "sourceSelector": "/release",
+          "status": "metadata-bound-title-only",
+          "evidenceArtifact": "receipt",
+          "evidenceSelector": "/release",
+          "meaning": "2017 dietary assessment, not normative guideline admission."
+        }
+      ],
+      "recordInventory": {
+        "originalFilesReported": 1,
+        "originalPagesReported": 33,
+        "originalBytesReported": 3780898,
+        "originalSha256Reported": "58ad3a0f73c82698eb986276b254a7747b3d8e4d78e6702749df09a22e54c933",
+        "parsedDataRecords": null,
+        "goldAdmitted": 0
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    },
+    {
+      "id": "CN-moa-monthly",
+      "country": "CN",
+      "owner": 19,
+      "sourceId": "CN-MOA-commodity-supply-demand",
+      "releaseId": "issue145-October2025-title-only",
+      "types": [
+        "commodity-supply-demand-reference"
+      ],
+      "inputFormat": "retained-pdf-unparsed",
+      "sharedReferenceSource": false,
+      "metadata": [
+        {
+          "key": "receipt",
+          "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-17/CN/receipt.json",
+          "sha256": "55debce1d3845a58320e56e74ce2efe2f0c074bb4502d0a8caeb775020304127",
+          "assertions": [
+            {
+              "selector": "/country",
+              "equals": "CN"
+            },
+            {
+              "selector": "/sources/0/release",
+              "equals": "MOA commodity supply-demand monthly report issue145 October2025"
+            },
+            {
+              "selector": "/sources/0/originals/0/sha256",
+              "equals": "3531ce618d40ea1abe74a204421d01b45537caeb1c5d401901224e782975af1d"
+            }
+          ]
+        }
+      ],
+      "holds": [
+        {
+          "code": "source17-native-custody-unresolved",
+          "kind": "missing-input",
+          "owner": "source17 custodian via Morgan",
+          "nextAction": "Bind exact native actor/claim, not just source17 label."
+        },
+        {
+          "code": "commodity-table-statistic-unit-map-unestablished",
+          "kind": "missing-input",
+          "owner": "Worker19 / publisher method evidence",
+          "nextAction": "Select exact permitted table/metric/unit/quantity/observation-time mapping; no retail-price or nutrient applicability inferred."
+        },
+        {
+          "code": "private-derive-retention-use-unestablished",
+          "kind": "source-use",
+          "owner": "Morgan / source-use reviewer",
+          "nextAction": "Resolve operation-specific scope."
+        },
+        {
+          "code": "current-task-metadata-code-only",
+          "kind": "authorization",
+          "owner": "Morgan",
+          "nextAction": "No PDF processing under this task."
+        }
+      ],
+      "nativeBasis": {
+        "unit": null,
+        "currency": null,
+        "quantityBasis": null,
+        "aggregationStatistic": null,
+        "tableRowLocator": null,
+        "unknownMeaning": "Not established by retained metadata; no default unit, currency or semantic conversion."
+      },
+      "fieldDeclarations": [
+        {
+          "target": "release title and recorded original pin",
+          "sourceSelector": "/sources/0/release; /sources/0/originals/0/sha256",
+          "status": "metadata-bound",
+          "evidenceArtifact": "receipt",
+          "evidenceSelector": "/sources/0",
+          "meaning": "Commodity research publication, not retail offers. Separate Jiaozuo403 remains no-retry."
+        }
+      ],
+      "recordInventory": {
+        "originalFilesReported": 1,
+        "originalBytesReported": 1372443,
+        "originalSha256Reported": "3531ce618d40ea1abe74a204421d01b45537caeb1c5d401901224e782975af1d",
+        "parsedDataRecords": null,
+        "goldAdmitted": 0
+      },
+      "acquisitionClock": null,
+      "acquisitionClockReason": "No explicit per-bound-input original acquisition clock is established by these metadata selectors; report creation/release/source date is not substituted.",
+      "stagingEnabled": false
+    }
+  ],
+  "coverageEvidence": {
+    "key": "four-country-coverage",
+    "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-19/batch-result.json",
+    "sha256": "9661f4805161eadfdd867dcbbe47573750cd5aa7fe41ef05afa8f803a90bf9fb",
+    "assertions": []
+  },
+  "uncoveredRequirements": [
+    "Ingredients/recipes/nutrition/dietary references/retailers-prices-baskets remain per-country partial or missing as pinned coverage evidence states; six source branches do not complete any country.",
+    "AM product52/composition28/baskets45/register12-27-20 custody/use/access holds retained.",
+    "BT composition CNR/AFACI lacks qualified release/schema/licence; no generic Korean route substituted.",
+    "CN ChinaCDC53/GS1/GB2760 and licensing source owners retain holds.",
+    "AF production never joined to Overture, unaccepted lineage index remains separate."
+  ],
+  "preservedHolds": [
+    "No raw-body reads, normalization, reacquisition or dataset acceptance in current task.",
+    "Jiaozuo403 no retry; Finland/Frida/source/privacy/credential/actual-denial holds; native NO/FR crash restrictions.",
+    "No production/CIX/DEV7645 changes, security/model/credential changes, new workers or controllers.",
+    "Existing mandatory auto_review and denied-action holds preserved; independent approval and develop integration before next request."
+  ],
+  "sharedInterfaceDependency": {
+    "resultId": "soleintegrator-portfolio-fresh-baseline-interface-result-20261018",
+    "sequence": 5798,
+    "path": "/home/user/Documents/Codex/2026-10-18/offmenu-worker00-portfolio-baseline-interface/baseline-interface-receipt.json",
+    "sha256": "f94fbf0a42b5d7906e20ace0416295ae569ee400ddfd770f90a427f803d3b7cb",
+    "proposalOnly": "plan_retained_input: source/release/bundle pins; original acquisition/revalidation chain; UTCnow; retention/hold status; no I/O or rights acceptance. Do not copy new shared planner or use operational CachedAcquirer on held real inputs."
+  }
+}

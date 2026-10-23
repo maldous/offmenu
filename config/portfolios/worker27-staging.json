@@ -1,0 +1,811 @@
+{
+  "schemaVersion": "offmenu-worker27-catalog/1",
+  "scope": "metadata-only; no source-body reads, downloads, processing or admission",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "bindings": [
+    {
+      "bindingId": "DK:off:2026-10-12",
+      "country": "DK",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/off-2026-10-12-lf/manifest.json",
+        "sha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2"
+      },
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "types": [
+        "ingredients",
+        "nutrition"
+      ],
+      "requiredRoles": [
+        "products"
+      ],
+      "declaredFields": {
+        "barcode": "code",
+        "name": "product_name | product_name_en | code (code fallback is identity, not a food name)",
+        "brands": "brands",
+        "ingredients": "ingredients_text",
+        "countryTags": "countries_tags (country mapping unreviewed)",
+        "nutrients": "nutriments (release semantics unqualified)",
+        "basis": "nutrition_data_per"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_off at selected base",
+        "nativeBasis": "100ml only for literal 100ml, otherwise parser fallback100g; source qualification required",
+        "nativeUnits": "nutriments source fields; no automatic canonical equivalence",
+        "unknowns": [
+          "country tag mapping",
+          "per-serving basis",
+          "nutrient units and missing values",
+          "exact selected country record IDs"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DM:off:2026-10-12",
+      "country": "DM",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/off-2026-10-12-lf/manifest.json",
+        "sha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2"
+      },
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "types": [
+        "ingredients",
+        "nutrition"
+      ],
+      "requiredRoles": [
+        "products"
+      ],
+      "declaredFields": {
+        "barcode": "code",
+        "name": "product_name | product_name_en | code (code fallback is identity, not a food name)",
+        "brands": "brands",
+        "ingredients": "ingredients_text",
+        "countryTags": "countries_tags (country mapping unreviewed)",
+        "nutrients": "nutriments (release semantics unqualified)",
+        "basis": "nutrition_data_per"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_off at selected base",
+        "nativeBasis": "100ml only for literal 100ml, otherwise parser fallback100g; source qualification required",
+        "nativeUnits": "nutriments source fields; no automatic canonical equivalence",
+        "unknowns": [
+          "country tag mapping",
+          "per-serving basis",
+          "nutrient units and missing values",
+          "exact selected country record IDs"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DO:off:2026-10-12",
+      "country": "DO",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/off-2026-10-12-lf/manifest.json",
+        "sha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2"
+      },
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "types": [
+        "ingredients",
+        "nutrition"
+      ],
+      "requiredRoles": [
+        "products"
+      ],
+      "declaredFields": {
+        "barcode": "code",
+        "name": "product_name | product_name_en | code (code fallback is identity, not a food name)",
+        "brands": "brands",
+        "ingredients": "ingredients_text",
+        "countryTags": "countries_tags (country mapping unreviewed)",
+        "nutrients": "nutriments (release semantics unqualified)",
+        "basis": "nutrition_data_per"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_off at selected base",
+        "nativeBasis": "100ml only for literal 100ml, otherwise parser fallback100g; source qualification required",
+        "nativeUnits": "nutriments source fields; no automatic canonical equivalence",
+        "unknowns": [
+          "country tag mapping",
+          "per-serving basis",
+          "nutrient units and missing values",
+          "exact selected country record IDs"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DZ:off:2026-10-12",
+      "country": "DZ",
+      "sourceId": "off",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/off-2026-10-12-lf/manifest.json",
+        "sha256": "cd0a7267fb989656e50f29a670d8f518dff903a13130b6de751308d97148bcf2"
+      },
+      "archiveSha256": "11f50515dc79181f385df8e59d37ae5ddb85b9b932f84b6411055e026d84680e",
+      "types": [
+        "ingredients",
+        "nutrition"
+      ],
+      "requiredRoles": [
+        "products"
+      ],
+      "declaredFields": {
+        "barcode": "code",
+        "name": "product_name | product_name_en | code (code fallback is identity, not a food name)",
+        "brands": "brands",
+        "ingredients": "ingredients_text",
+        "countryTags": "countries_tags (country mapping unreviewed)",
+        "nutrients": "nutriments (release semantics unqualified)",
+        "basis": "nutrition_data_per"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_off at selected base",
+        "nativeBasis": "100ml only for literal 100ml, otherwise parser fallback100g; source qualification required",
+        "nativeUnits": "nutriments source fields; no automatic canonical equivalence",
+        "unknowns": [
+          "country tag mapping",
+          "per-serving basis",
+          "nutrient units and missing values",
+          "exact selected country record IDs"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DK:prices:2026-10-12",
+      "country": "DK",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+        "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5"
+      },
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "types": [
+        "prices/baskets",
+        "retailers/providers"
+      ],
+      "requiredRoles": [
+        "prices",
+        "locations",
+        "proofs"
+      ],
+      "declaredFields": {
+        "amount": "prices.price",
+        "currency": "prices.currency",
+        "observedAt": "prices.date",
+        "unit": "prices.price_per",
+        "unitPrice": "prices.price_per_unit",
+        "retailer": "prices.location_id -> locations.osm_name",
+        "country": "prices.location_id -> locations.osm_address_country_code",
+        "proofId": "prices.proof_id -> proofs.id"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_price at selected base",
+        "nativeBasis": "dated observation; price_per native enum, never inferred package mass",
+        "nativeUnits": "currency and price_per literal; no basket conversion",
+        "unknowns": [
+          "exact country IDs/complete joined role pins",
+          "package basis",
+          "proof completeness",
+          "DM presence (absent from historical manifest country summary is not a national zero)"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DM:prices:2026-10-12",
+      "country": "DM",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+        "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5"
+      },
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "types": [
+        "prices/baskets",
+        "retailers/providers"
+      ],
+      "requiredRoles": [
+        "prices",
+        "locations",
+        "proofs"
+      ],
+      "declaredFields": {
+        "amount": "prices.price",
+        "currency": "prices.currency",
+        "observedAt": "prices.date",
+        "unit": "prices.price_per",
+        "unitPrice": "prices.price_per_unit",
+        "retailer": "prices.location_id -> locations.osm_name",
+        "country": "prices.location_id -> locations.osm_address_country_code",
+        "proofId": "prices.proof_id -> proofs.id"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_price at selected base",
+        "nativeBasis": "dated observation; price_per native enum, never inferred package mass",
+        "nativeUnits": "currency and price_per literal; no basket conversion",
+        "unknowns": [
+          "exact country IDs/complete joined role pins",
+          "package basis",
+          "proof completeness",
+          "DM presence (absent from historical manifest country summary is not a national zero)"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DO:prices:2026-10-12",
+      "country": "DO",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+        "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5"
+      },
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "types": [
+        "prices/baskets",
+        "retailers/providers"
+      ],
+      "requiredRoles": [
+        "prices",
+        "locations",
+        "proofs"
+      ],
+      "declaredFields": {
+        "amount": "prices.price",
+        "currency": "prices.currency",
+        "observedAt": "prices.date",
+        "unit": "prices.price_per",
+        "unitPrice": "prices.price_per_unit",
+        "retailer": "prices.location_id -> locations.osm_name",
+        "country": "prices.location_id -> locations.osm_address_country_code",
+        "proofId": "prices.proof_id -> proofs.id"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_price at selected base",
+        "nativeBasis": "dated observation; price_per native enum, never inferred package mass",
+        "nativeUnits": "currency and price_per literal; no basket conversion",
+        "unknowns": [
+          "exact country IDs/complete joined role pins",
+          "package basis",
+          "proof completeness",
+          "DM presence (absent from historical manifest country summary is not a national zero)"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DZ:prices:2026-10-12",
+      "country": "DZ",
+      "sourceId": "prices",
+      "releaseId": "2026-10-12",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/prices-2026-10-12/manifest.json",
+        "sha256": "a2b5502bcaad9489d9fef02c105f5656666d87f4765fc31c762c72a8028a48e5"
+      },
+      "archiveSha256": "337f7bc662a8c8f880c457d966fffed7998722b25f2ed460b6194ba01f6653e0",
+      "types": [
+        "prices/baskets",
+        "retailers/providers"
+      ],
+      "requiredRoles": [
+        "prices",
+        "locations",
+        "proofs"
+      ],
+      "declaredFields": {
+        "amount": "prices.price",
+        "currency": "prices.currency",
+        "observedAt": "prices.date",
+        "unit": "prices.price_per",
+        "unitPrice": "prices.price_per_unit",
+        "retailer": "prices.location_id -> locations.osm_name",
+        "country": "prices.location_id -> locations.osm_address_country_code",
+        "proofId": "prices.proof_id -> proofs.id"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/product_adapters.py::_price at selected base",
+        "nativeBasis": "dated observation; price_per native enum, never inferred package mass",
+        "nativeUnits": "currency and price_per literal; no basket conversion",
+        "unknowns": [
+          "exact country IDs/complete joined role pins",
+          "package basis",
+          "proof completeness",
+          "DM presence (absent from historical manifest country summary is not a national zero)"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DK:dietary-guidelines:fao-directory-20261013",
+      "country": "DK",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/manifest.json",
+        "sha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941"
+      },
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "types": [
+        "dietary references"
+      ],
+      "requiredRoles": [
+        "directory"
+      ],
+      "declaredFields": {
+        "reference": "Unresolved: reviewed retained directory record schema absent"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/reference_adapters.py::UNSUPPORTED",
+        "nativeBasis": "reference metadata only; no advice/rules",
+        "nativeUnits": "not applicable to directory metadata",
+        "unknowns": [
+          "publisher issuer/edition/population",
+          "national document rights",
+          "exact record selectors; DZ absent from retained reference snapshot"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DM:dietary-guidelines:fao-directory-20261013",
+      "country": "DM",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/manifest.json",
+        "sha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941"
+      },
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "types": [
+        "dietary references"
+      ],
+      "requiredRoles": [
+        "directory"
+      ],
+      "declaredFields": {
+        "reference": "Unresolved: reviewed retained directory record schema absent"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/reference_adapters.py::UNSUPPORTED",
+        "nativeBasis": "reference metadata only; no advice/rules",
+        "nativeUnits": "not applicable to directory metadata",
+        "unknowns": [
+          "publisher issuer/edition/population",
+          "national document rights",
+          "exact record selectors; DZ absent from retained reference snapshot"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DO:dietary-guidelines:fao-directory-20261013",
+      "country": "DO",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/manifest.json",
+        "sha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941"
+      },
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "types": [
+        "dietary references"
+      ],
+      "requiredRoles": [
+        "directory"
+      ],
+      "declaredFields": {
+        "reference": "Unresolved: reviewed retained directory record schema absent"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/reference_adapters.py::UNSUPPORTED",
+        "nativeBasis": "reference metadata only; no advice/rules",
+        "nativeUnits": "not applicable to directory metadata",
+        "unknowns": [
+          "publisher issuer/edition/population",
+          "national document rights",
+          "exact record selectors; DZ absent from retained reference snapshot"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DZ:dietary-guidelines:fao-directory-20261013",
+      "country": "DZ",
+      "sourceId": "dietary-guidelines",
+      "releaseId": "fao-directory-20261013",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/dietary-guidelines-20261013/manifest.json",
+        "sha256": "b7ea4c7c11e92507956025e07db1020fea9e91e543be694a7a22e5114b0a8941"
+      },
+      "archiveSha256": "eb28660ef816bfa4c5186a4b088d3cbaae57334ccf1f24b3dd5b5d1a7ad6a334",
+      "types": [
+        "dietary references"
+      ],
+      "requiredRoles": [
+        "directory"
+      ],
+      "declaredFields": {
+        "reference": "Unresolved: reviewed retained directory record schema absent"
+      },
+      "nativeSemantics": {
+        "evidence": "offmenu/refresh/reference_adapters.py::UNSUPPORTED",
+        "nativeBasis": "reference metadata only; no advice/rules",
+        "nativeUnits": "not applicable to directory metadata",
+        "unknowns": [
+          "publisher issuer/edition/population",
+          "national document rights",
+          "exact record selectors; DZ absent from retained reference snapshot"
+        ]
+      },
+      "holds": [],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    },
+    {
+      "bindingId": "DK:frida:5.5",
+      "country": "DK",
+      "sourceId": "frida",
+      "releaseId": "5.5",
+      "manifest": {
+        "path": "/home/user/src/offmenu-data/frida-5.5/manifest.json",
+        "sha256": "ddbcb22d6a4f5dac4574f515fe7244d8c80fed5bf063df907f4f0a65170b39e7"
+      },
+      "archiveSha256": "14101f7df7b93dd78472c3e5506bf39104dd61d33f4ec45a9ee170a3e4063f92",
+      "types": [
+        "ingredients",
+        "nutrition"
+      ],
+      "requiredRoles": [
+        "workbook"
+      ],
+      "declaredFields": {
+        "nutrients": "Withheld pending exact dictionary and field/basis qualification"
+      },
+      "nativeSemantics": {
+        "evidence": "owner27 retained review-bound-country-status.json; no payload inspection in this task",
+        "nativeBasis": "native source basis only; no density conversion",
+        "nativeUnits": "g/ml density sidecar and RE/alfa-TE/NE equivalents unqualified for canonical nutrient mapping",
+        "unknowns": [
+          "dictionary",
+          "basis and native numeric semantics",
+          "scope and field-origin qualification"
+        ]
+      },
+      "holds": [
+        "Frida real-source processing/admission held; no native producer run"
+      ],
+      "dependencyOwner": "Morgan routes to retained-source custodian; owner27 binds returned exact metadata",
+      "sourceAdmission": false
+    }
+  ],
+  "countryRequirements": [
+    {
+      "country": "DK",
+      "type": "ingredients",
+      "status": "unqualified",
+      "remaining": "Frida identifiers/names retained and validated; independent identity/preparation mapping remains pending.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DK:off:2026-10-12",
+        "DK:frida:5.5"
+      ]
+    },
+    {
+      "country": "DK",
+      "type": "recipes",
+      "status": "unqualified",
+      "remaining": "Madskoler10-book inventory measured365450520bytes, above old batch192MiB; no acquisition selected. SST429/no-retry remains.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": []
+    },
+    {
+      "country": "DK",
+      "type": "nutrition",
+      "status": "unqualified",
+      "remaining": "Frida retained source/normalized structural validation completed; semantic acceptance and definition/basis review pending.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DK:off:2026-10-12",
+        "DK:frida:5.5"
+      ]
+    },
+    {
+      "country": "DK",
+      "type": "retailers/providers",
+      "status": "unqualified",
+      "remaining": "Organic holdings2024 is58-page aggregate statistics, not individual certification or provider register; no reuse grant bound.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DK:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DK",
+      "type": "prices/baskets",
+      "status": "unqualified",
+      "remaining": "Survey landing/docs retained; full FU12 release absent and historical302 route remains no-retry.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DK:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DK",
+      "type": "dietary references",
+      "status": "unqualified",
+      "remaining": "Issuer, exact edition, population, relevant pages, rights and independently accepted source-bound recommendations missing.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DK:dietary-guidelines:fao-directory-20261013"
+      ]
+    },
+    {
+      "country": "DM",
+      "type": "ingredients",
+      "status": "unqualified",
+      "remaining": "CDB project appraisal is not a food identity/composition release.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DM:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DM",
+      "type": "recipes",
+      "status": "unqualified",
+      "remaining": "Complete licensed ingredient/method/quantity/yield source and accepted extraction absent in selected retained packet.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": []
+    },
+    {
+      "country": "DM",
+      "type": "nutrition",
+      "status": "unqualified",
+      "remaining": "62-page CDB project document does not supply qualified food/nutrient release; no dataset bound.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DM:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DM",
+      "type": "retailers/providers",
+      "status": "unqualified",
+      "remaining": "CDB appraisal is historical project context; no current provider/site/register coverage or reuse licence bound.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DM:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DM",
+      "type": "prices/baskets",
+      "status": "unqualified",
+      "remaining": "Dated item observations with currency, unit/package, seller/site and rights missing; survey documentation is not a price release.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DM:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DM",
+      "type": "dietary references",
+      "status": "unqualified",
+      "remaining": "Issuer, exact edition, population, relevant pages, rights and independently accepted source-bound recommendations missing.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DM:dietary-guidelines:fao-directory-20261013"
+      ]
+    },
+    {
+      "country": "DO",
+      "type": "ingredients",
+      "status": "unqualified",
+      "remaining": "DIGEMAPS catalogue resource access failed TLS hostname verification; exact resource licence remains unconfirmed. No retry.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DO:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DO",
+      "type": "recipes",
+      "status": "unqualified",
+      "remaining": "One9-page restaurant menu held for publisher-specific reuse grant; no recipe/yield equivalence.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": []
+    },
+    {
+      "country": "DO",
+      "type": "nutrition",
+      "status": "unqualified",
+      "remaining": "No source-qualified accepted national composition output in selected packet.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DO:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DO",
+      "type": "retailers/providers",
+      "status": "unqualified",
+      "remaining": "Food/beverage registration catalogue is not verified producer identity; exact resource absent behind recorded TLS barrier.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DO:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DO",
+      "type": "prices/baskets",
+      "status": "unqualified",
+      "remaining": "Restaurant menu reuse/date/unit qualification unresolved; no dated price observation normalized.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DO:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DO",
+      "type": "dietary references",
+      "status": "unqualified",
+      "remaining": "Issuer, exact edition, population, relevant pages, rights and independently accepted source-bound recommendations missing.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DO:dietary-guidelines:fao-directory-20261013"
+      ]
+    },
+    {
+      "country": "DZ",
+      "type": "ingredients",
+      "status": "unqualified",
+      "remaining": "Six cultivar labels retained in study; canonical identity/preparation membership requires semantic review.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DZ:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DZ",
+      "type": "recipes",
+      "status": "unqualified",
+      "remaining": "Complete licensed ingredient/method/quantity/yield source and accepted extraction absent in selected retained packet.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": []
+    },
+    {
+      "country": "DZ",
+      "type": "nutrition",
+      "status": "unqualified",
+      "remaining": "36total-sugar observations extracted as dry-weight/extract study candidates only; independent review pending; national composition absent.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DZ:off:2026-10-12"
+      ]
+    },
+    {
+      "country": "DZ",
+      "type": "retailers/providers",
+      "status": "unqualified",
+      "remaining": "Provider/site/register identifiers, jurisdiction/date and exact reuse rights missing; aggregate reports/menu references do not qualify.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DZ:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DZ",
+      "type": "prices/baskets",
+      "status": "unqualified",
+      "remaining": "Dated item observations with currency, unit/package, seller/site and rights missing; survey documentation is not a price release.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DZ:prices:2026-10-12"
+      ]
+    },
+    {
+      "country": "DZ",
+      "type": "dietary references",
+      "status": "unqualified",
+      "remaining": "Issuer, exact edition, population, relevant pages, rights and independently accepted source-bound recommendations missing.",
+      "nextAction": "Morgan obtain exact permitted source/extent and independent review; owner27 bind returned metadata. No acquisition initiated.",
+      "dependencyOwner": "Morgan accountable routing; historical custodian labels are not fresh ownership proof",
+      "candidateBindings": [
+        "DZ:dietary-guidelines:fao-directory-20261013"
+      ]
+    }
+  ],
+  "codeEvidence": [
+    {
+      "path": "offmenu/refresh/product_adapters.py",
+      "sha256": "37fd03dcd459dea0d0edd7491aa0dc6ea71c851e79ea68b72bd74c4ff0efc42f"
+    },
+    {
+      "path": "offmenu/refresh/reference_adapters.py",
+      "sha256": "6482ee341d06b35c34af2a03648581028a957663f78398b3b5582cad42cf0527"
+    },
+    {
+      "path": "offmenu/refresh/adapter_mapping.py",
+      "sha256": "05f906a8d8f178c6da7f42d7f9d7693264f93d8d57fe2ea5d076b2dc6148373e"
+    },
+    {
+      "path": "offmenu/refresh/field_provenance.py",
+      "sha256": "2231641ea454496c6256ea96233c176b112a632bba52b122fb9a9d7051ffad98"
+    },
+    {
+      "path": "offmenu/refresh/acquisition.py",
+      "sha256": "fb5d74d9e751495a96a583bb6ae8028bbdd1af8a91c001964c3e33eea4c67a4e"
+    }
+  ],
+  "officialDocumentation": [
+    {
+      "url": "https://openfoodfacts.github.io/open-prices/guides/data/",
+      "scope": "Current public schema context only; not historical compatibility, source rights or admission"
+    },
+    {
+      "url": "https://openfoodfacts.github.io/documentation/docs/Open-prices/prices/prices_create/",
+      "scope": "Current public schema context only; not historical compatibility, source rights or admission"
+    },
+    {
+      "url": "https://openfoodfacts.github.io/openfoodfacts-server/api/ref-cheatsheet/",
+      "scope": "Current public schema context only; not historical compatibility, source rights or admission"
+    }
+  ]
+}

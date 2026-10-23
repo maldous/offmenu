@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "offmenu-owner20-fixed-portfolio-binding/1",
+  "baseCommit": "abecb99ee1125730ccbc2824b6ec49ffc5cc4302",
+  "owner": 20,
+  "nativeThread": "01a138f8-9d74-75c2-b5f4-b487f610f5e6",
+  "assignment": "M-STAGING-BIND-20261018-W20",
+  "bindings": [
+    {
+      "country": "NG",
+      "sourceId": "nomaada-awari-restaurant-week",
+      "releaseId": "2025-event-only",
+      "types": [
+        "event-menu-metadata"
+      ],
+      "state": "missing",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-62/NG/ca8008ecd3e8f17c0a07/receipt.json",
+        "sha256": "e98b7623b5f58aa53eacf316f3f80aa3685290c62b3cbb3c9710ec7f1bafe764"
+      },
+      "custodyEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/B01-W20/NG62-returned-evidence-binding.json",
+        "sha256": "6a3cfa2cb17c6b79647ebff3162af57e0f20c4fb368d205724690bb16f2b9e1c"
+      },
+      "requirements": [
+        {
+          "kind": "missing-input",
+          "owner": "native62/source claimant",
+          "code": "use-and-selectors-not-held",
+          "nextAction": "Morgan selects permission/version evidence check; prior62request answered5135, do not repeat"
+        },
+        {
+          "kind": "access-restriction",
+          "owner": "Morgan",
+          "code": "mansonia404-vii403-no-retry",
+          "nextAction": "Preserve denied routes; no alternate actor"
+        }
+      ],
+      "applicability": "One event menu; no national prices, nutrients or recipe coverage",
+      "legalProhibitionInferredFromMissingCustodian": false
+    },
+    {
+      "country": "PA",
+      "sourceId": "mef-basic-food-basket",
+      "releaseId": "2026-jan-feb-through-july",
+      "types": [
+        "basket-pdf-integrity-metadata"
+      ],
+      "state": "missing",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/queued89-local-qualification-20261016/owner-20/PA/qualification.json",
+        "sha256": "023c78f76a47ae098ae2a97909da7e15331eb3a27e1c09384c8313a73a4ca901"
+      },
+      "integrityEvidence": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/PA/retained-pdf-integrity-validation.json",
+        "sha256": "332944f46a42b92cc7c7c3d4abf162369ba9773e19047a4ae16d131f6b7f4ce6"
+      },
+      "requirements": [
+        {
+          "kind": "missing-input",
+          "owner": "20/Morgan/source publisher",
+          "code": "edition-use-unit-field-dictionary-not-held",
+          "nextAction": "Qualify exact2026 edition/use/attribution and source-native quantity/currency/geography/statistic/selectors before table binding"
+        }
+      ],
+      "nativeBasis": null,
+      "rawPDFs": 6,
+      "pages": 160,
+      "parsedRows": 0,
+      "applicability": "Integrity-only; 2025 59-product metadata is not2026 schema evidence"
+    },
+    {
+      "country": "PH",
+      "sourceId": "deped-catanduanes-feeding",
+      "releaseId": "planned-2025-2026",
+      "types": [
+        "feeding-plan-metadata"
+      ],
+      "state": "held",
+      "metadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-27/PH/4abff2ce7c9496150052/receipt.json",
+        "sha256": "35f247ed397a6a4dc0378785864fce3aa37998ddfbd807cc4c4bc61c21c7728f"
+      },
+      "requirements": [
+        {
+          "kind": "access-restriction",
+          "owner": "Morgan/native27/source publisher",
+          "code": "deped403-no-direct-file-bypass",
+          "nextAction": "Retain hold; await permitted publisher evidence route, no retry"
+        },
+        {
+          "kind": "missing-input",
+          "owner": "native27/source publisher",
+          "code": "menu-pdf-and-portion-evidence-missing",
+          "nextAction": "No fabricated120 rows:120means planned feeding DAYS"
+        }
+      ],
+      "parsedRows": 0,
+      "nativeBasis": "120 planned feeding days; not beneficiary, serving or consumption count"
+    },
+    {
+      "country": "SB",
+      "sourceId": "palm-sugar-honiara-private-menu",
+      "releaseId": "undated-snapshot-acquired-20261014",
+      "types": [
+        "private-merchant-display-price"
+      ],
+      "state": "derived-input-only",
+      "input": {
+        "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/SB/menu-normalized-candidate.json",
+        "sha256": "2bfe2295beb77e9f9288f335369a9bc87122949d0e332187368fdb24463f347a"
+      },
+      "retainedPins": [
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/SB/price-observations.csv",
+          "sha256": "28dd3285fa4a248b17263607410d2f43c533c75d49b19af54f94a2da0827db39"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/SB/price-export-lineage.json",
+          "sha256": "ec352767b38fbef894f9cd97e39328b833f318a9c517a4db255136bd0cf949e3"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/SB/price-export-validation.json",
+          "sha256": "5f9e89e9d8387ec20d5699bbb0245a732a661d24da2bdc7409e2d77ca351010b"
+        },
+        {
+          "path": "/home/user/Documents/Codex/2026-10-13/task-3/reports/country249-fixed64-priority/deliverables/owner-20/SB/menu-normalization-validation.json",
+          "sha256": "1516869c04ab67a78687cbb64837a35e0d99184b3ed5d70226ba61bf52f41893"
+        }
+      ],
+      "sourceMetadata": {
+        "path": "/home/user/src/offmenu-data/originals/country-followthrough-20261015/owner-48/SB/e3031034e09303d1f896/receipt.json",
+        "sha256": "7a73c69088207e62ed4470f5f7282d25f4caab40193c15e994b4c2aaabed555e"
+      },
+      "review": {
+        "receipt": {
+          "path": "/home/user/Documents/Codex/2026-10-17/worker44-country-delivery-reviews/owner20-result3911-SB/review-receipt.json",
+          "sha256": "23008f764a267753e6946bbb05eaab7a08335a57d9504395bb59825ad6be967f"
+        },
+        "ledgerReview": 4226,
+        "MorganDisposition": 4271,
+        "scope": "Private factual fidelity only; does not review this new binding"
+      },
+      "originalAcquiredAt": "2026-10-14T22:49:29.646263+00:00",
+      "metadataValidatedAt": "2026-10-18T04:56:43.371776+00:00",
+      "originalValidationTimestamp": null,
+      "validationTimestampMeaning": "Current metadata binding check only, not original source validation or reacquisition",
+      "expectedItems": 99,
+      "expectedObservations": 121,
+      "nativeBasis": {
+        "currencySymbol": "$",
+        "isoCurrency": null,
+        "effectiveDate": null,
+        "standardQuantity": null,
+        "variantLabels": "Literal strings only; no size/mass standardization",
+        "ambiguousPunctuation": "Thick - -$45 retains source warning; decimal token is not adjudicated transaction price"
+      },
+      "sourceSelectors": "Existing priceObservations[i].sourceSelector only; origin JSON pointers refer to pinned derived candidate, not a re-read HTML body",
+      "requirements": [
+        {
+          "kind": "review",
+          "owner": "designated independent reviewer/Morgan",
+          "code": "new-binding-review-required",
+          "nextAction": "Review current commit then integration00 normal expected-head integration"
+        },
+        {
+          "kind": "source-use-restriction",
+          "owner": "Morgan/native48/source publisher",
+          "code": "private-factual-only-no-public-corpus-gold",
+          "nextAction": "No redistribution or acceptance beyond recorded scope"
+        }
+      ],
+      "countryComplete": false
+    }
+  ],
+  "holds": [
+    "raw stays Foo",
+    "no new downloads/raw-body reads",
+    "no public/corpus/gold admission",
+    "Finland/Frida/nativeNO-FR/credential/denied-action holds retained",
+    "CIX/production paused; DEV7645 unchanged"
+  ],
+  "sharedInterfaceNeed": "policy.plan_fixture is registry-fixture-only, no private derivative admission exists; this module composes shared provenance+serialization outside registry. Do not invent registry admission or edit core. Integrator00 owns any later generic metadata-evidence planner interface."
+}
