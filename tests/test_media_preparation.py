@@ -415,6 +415,8 @@ class PreparationTests(unittest.TestCase):
 
     def test_permissive_output_directory_rejected(self):
         self.output.mkdir(mode=0o755)
+        self.output.chmod(0o755)
+        self.assertEqual(stat.S_IMODE(self.output.stat().st_mode), 0o755)
         self.assert_failed(self.prepare(b'[1]', 'application/json', {'jsonRecordPath': []}), 'output-unavailable')
 
     def test_unrecognized_parameters_rejected(self):
