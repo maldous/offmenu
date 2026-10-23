@@ -1,0 +1,129 @@
+{
+  "implementation_sha256": "252796ba53a19ffe5489bdd62401382af52ca7a42bba9cdedc8c47d41a2dc8b0",
+  "input_sha256": "3f44fbbe2e7831332a973db869f92c378e89876689d82c633891ef503fdfac08",
+  "job_id": "retained-six-domain-normalization",
+  "job_key": "c584bae0103fbda3db39b1aed49e4cea48994497ece70d73f5ee89746201863e",
+  "job_version": 1,
+  "normalization": {
+    "binding": "normalization_sidecars_not_gold_or_app_bound",
+    "evidence_ref": {
+      "bytes": 3271,
+      "schema": "offmenu-ingest-evidence-ref/1",
+      "sha256": "c0592d7b87aa2f5a857689b5d68a5869028996a6ed487f409812b14f17cea2e9"
+    },
+    "progress_sha256": "b33470315ade00c1375d1eda9e8dc377e4cb600989e999a2a5670a88ada72683",
+    "report": {
+      "domains": {
+        "barcodes": {
+          "accepted": 0,
+          "checkpoint_sha256": "38a19d0eee83c77299cde622d2cbfdea7320a0b7002b95574340069cef79a5a9",
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 854181,
+          "rejected": 0,
+          "rules_new": 854181,
+          "rules_reused": 0,
+          "scanned": 854181,
+          "selected_rows": 984738,
+          "status": "partial",
+          "unresolved": 7978
+        },
+        "citations": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 5701365,
+          "status": "pending",
+          "unresolved": 0
+        },
+        "dietary": {
+          "accepted": 0,
+          "checkpoint_sha256": "34d6b7b2dcd01727bd04f805369ac43576c9ca28bd091d1a75acb97ce0e5d1f4",
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 6528,
+          "rejected": 0,
+          "rules_new": 6528,
+          "rules_reused": 0,
+          "scanned": 6528,
+          "selected_rows": 1853432,
+          "status": "partial",
+          "unresolved": 6528
+        },
+        "ingredients": {
+          "accepted": 0,
+          "checkpoint_sha256": "69c03dc4c813e4276b378ef9b5dd9b42b1eb8319d7c635dee4fd8fa610f77e54",
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 3341542,
+          "rejected": 0,
+          "rules_new": 3341542,
+          "rules_reused": 0,
+          "scanned": 3341542,
+          "selected_rows": 3341542,
+          "status": "rules_complete",
+          "unresolved": 3341414
+        },
+        "recipes": {
+          "accepted": 0,
+          "checkpoint_sha256": "84c8adbfb428a3bf22e67e91a43b650b73749d7e424c4bcd02cd72e0b4f2224e",
+          "failed": 126518,
+          "needs_changes": 0,
+          "pendingreview": 321259,
+          "rejected": 0,
+          "rules_new": 321259,
+          "rules_reused": 0,
+          "scanned": 447777,
+          "selected_rows": 447777,
+          "status": "partial",
+          "unresolved": 392649
+        },
+        "suppliers": {
+          "accepted": 0,
+          "checkpoint_sha256": null,
+          "failed": 0,
+          "needs_changes": 0,
+          "pendingreview": 0,
+          "rejected": 0,
+          "rules_new": 0,
+          "rules_reused": 0,
+          "scanned": 0,
+          "selected_rows": 4110540,
+          "status": "pending",
+          "unresolved": 0
+        }
+      },
+      "gold_status": "blocked",
+      "input_sha256": "3f44fbbe2e7831332a973db869f92c378e89876689d82c633891ef503fdfac08",
+      "resources": {
+        "elapsed_seconds": 5160,
+        "free_disk_bytes": 246432468992,
+        "workers": 16
+      },
+      "review_status": "pending_approved_route",
+      "schema": "offmenu-db-normalization-report/1",
+      "selected_rows_scope": "owned_metadata_counter",
+      "selection": "all_retained_source_versions",
+      "source_originals": "database_payload_only",
+      "status": "running",
+      "stop_reason": null,
+      "versions": {
+        "model_version": "unconfigured",
+        "prompt_version": "unconfigured",
+        "rule_version": "offmenu.normalization-rules/1",
+        "schema_version": "offmenu.common-normalized-record/1",
+        "template_version": "offmenu.common-template/1"
+      }
+    }
+  },
+  "observed_at": "2026-10-23T01:18:18Z",
+  "operation": "normalize_staged_databases",
+  "outcome": "running",
+  "schema": "offmenu-run-receipt/3"
+}
