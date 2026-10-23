@@ -1,0 +1,2036 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:private-portable-package:1",
+  "title": "OffMenu encrypted owned-data package, preparation only",
+  "description": "No credentials, session material or effective grants. Payload is separately validated after authorized decryption; schema does not authorize processing or prove independent key recovery.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "offmenu-private-portable-package/1"
+    },
+    "packageId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "kind": {
+      "enum": [
+        "privacy-access",
+        "portability",
+        "owned-backup"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "schemaVersion": {
+          "const": "offmenu-household-domain/1"
+        }
+      },
+      "required": [
+        "namespace",
+        "schemaVersion"
+      ],
+      "additionalProperties": false
+    },
+    "identity": {
+      "$ref": "#/$defs/identity"
+    },
+    "recipient": {
+      "$ref": "#/$defs/identity"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "inventory",
+              "profile.full",
+              "settings",
+              "content",
+              "auth_metadata",
+              "history",
+              "derived_provenance",
+              "profile.displayName",
+              "profile.dietary",
+              "profile.allergies",
+              "profile.preferences",
+              "profile.diagnoses",
+              "profile.medical_plans",
+              "attachments",
+              "relationships",
+              "extensions"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/$defs/recordTypes"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "type",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "fields",
+        "records"
+      ],
+      "additionalProperties": false
+    },
+    "consent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "protection": {
+      "type": "object",
+      "properties": {
+        "recoveryRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceInstanceOnly": {
+          "const": false
+        },
+        "destinationReencryptionRequired": {
+          "const": true
+        },
+        "reauthenticationRequired": {
+          "const": true
+        },
+        "downloadedCopiesRevocable": {
+          "const": false
+        }
+      },
+      "required": [
+        "recoveryRef",
+        "sourceInstanceOnly",
+        "destinationReencryptionRequired",
+        "reauthenticationRequired",
+        "downloadedCopiesRevocable"
+      ],
+      "additionalProperties": false
+    },
+    "envelope": {
+      "$ref": "#/$defs/envelope"
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "packageId",
+    "kind",
+    "source",
+    "identity",
+    "recipient",
+    "createdAt",
+    "scope",
+    "consent",
+    "protection",
+    "envelope",
+    "checksum"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "properties": {
+        "ownerUserId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "ownerUserId",
+        "issuer",
+        "subject"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recordId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "sourceId",
+        "version",
+        "recordId",
+        "recordedAt"
+      ],
+      "additionalProperties": false
+    },
+    "recordTypes": {
+      "enum": [
+        "space",
+        "location",
+        "item",
+        "lot",
+        "holding",
+        "movement",
+        "reservation",
+        "waste",
+        "profile",
+        "medical_plan",
+        "settings",
+        "content",
+        "identity_link",
+        "connection_metadata",
+        "auth_history",
+        "consent_history",
+        "derived_provenance"
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "dimension": {
+          "enum": [
+            "mass",
+            "volume",
+            "count",
+            "portion",
+            "package"
+          ]
+        },
+        "status": {
+          "enum": [
+            "measured",
+            "declared",
+            "estimated",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "dimension",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "extension": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "value": {
+          "type": "object",
+          "maxProperties": 100,
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "namespace",
+        "version",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "space",
+            "location",
+            "item",
+            "lot",
+            "holding",
+            "movement",
+            "reservation",
+            "waste",
+            "profile",
+            "medical_plan",
+            "settings",
+            "content",
+            "identity_link",
+            "connection_metadata",
+            "auth_history",
+            "consent_history",
+            "derived_provenance"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "ownerRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "householdRef": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "data": {
+          "type": "object"
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "sourceId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "version": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "recordId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "recordedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "sourceId",
+            "version",
+            "recordId",
+            "recordedAt"
+          ],
+          "additionalProperties": false
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extension"
+          },
+          "maxItems": 100
+        },
+        "lifecycle": {
+          "enum": [
+            "active",
+            "archived",
+            "deletion_pending",
+            "deleted"
+          ]
+        },
+        "importOrigin": {
+          "$ref": "#/$defs/importOrigin"
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "ownerRef",
+        "householdRef",
+        "revision",
+        "data",
+        "provenance",
+        "extensions",
+        "lifecycle"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "space"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "label"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "location"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "spaceId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "parentId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "kind": {
+                    "enum": [
+                      "pantry",
+                      "freezer",
+                      "fridge",
+                      "bench",
+                      "custom"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "spaceId",
+                  "parentId",
+                  "kind",
+                  "label"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "item"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "productRef": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "ingredientRef": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "identityStatus": {
+                    "enum": [
+                      "unknown",
+                      "candidate",
+                      "verified",
+                      "conflict"
+                    ]
+                  }
+                },
+                "required": [
+                  "label",
+                  "productRef",
+                  "ingredientRef",
+                  "identityStatus"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "lot"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "itemId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "lotCode": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "useBy": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "bestBefore": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date"
+                  },
+                  "storage": {
+                    "enum": [
+                      "ambient",
+                      "refrigerated",
+                      "frozen",
+                      "other",
+                      "unknown"
+                    ]
+                  }
+                },
+                "required": [
+                  "itemId",
+                  "lotCode",
+                  "useBy",
+                  "bestBefore",
+                  "storage"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "holding"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "locationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "itemId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "lotId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "quantity": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "dimension": {
+                        "enum": [
+                          "mass",
+                          "volume",
+                          "count",
+                          "portion",
+                          "package"
+                        ]
+                      },
+                      "status": {
+                        "enum": [
+                          "measured",
+                          "declared",
+                          "estimated",
+                          "unknown"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "dimension",
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "availability": {
+                    "enum": [
+                      "available",
+                      "reserved",
+                      "quarantined",
+                      "unknown"
+                    ]
+                  }
+                },
+                "required": [
+                  "locationId",
+                  "itemId",
+                  "lotId",
+                  "quantity",
+                  "availability"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "movement"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "holdingId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "lotId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "kind": {
+                    "enum": [
+                      "acquire",
+                      "adjust",
+                      "consume",
+                      "waste",
+                      "transfer_in",
+                      "transfer_out",
+                      "undo"
+                    ]
+                  },
+                  "delta": {
+                    "type": "string",
+                    "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "occurredAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "holdingId",
+                  "lotId",
+                  "kind",
+                  "delta",
+                  "unit",
+                  "occurredAt"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "reservation"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "holdingId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "quantity": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "dimension": {
+                        "enum": [
+                          "mass",
+                          "volume",
+                          "count",
+                          "portion",
+                          "package"
+                        ]
+                      },
+                      "status": {
+                        "enum": [
+                          "measured",
+                          "declared",
+                          "estimated",
+                          "unknown"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "dimension",
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "status": {
+                    "enum": [
+                      "active",
+                      "released",
+                      "consumed"
+                    ]
+                  },
+                  "expiresAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "holdingId",
+                  "quantity",
+                  "status",
+                  "expiresAt"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "waste"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "movementId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "quantity": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "dimension": {
+                        "enum": [
+                          "mass",
+                          "volume",
+                          "count",
+                          "portion",
+                          "package"
+                        ]
+                      },
+                      "status": {
+                        "enum": [
+                          "measured",
+                          "declared",
+                          "estimated",
+                          "unknown"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "unit",
+                      "dimension",
+                      "status"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "reason": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "movementId",
+                  "quantity",
+                  "reason"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "profile"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "dietary": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "allergies": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "substance": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 2000
+                            },
+                            "kind": {
+                              "enum": [
+                                "allergy",
+                                "intolerance"
+                              ]
+                            },
+                            "verification": {
+                              "enum": [
+                                "declared",
+                                "clinical",
+                                "unknown"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "substance",
+                            "kind",
+                            "verification"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "maxItems": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "preferences": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "diagnoses": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        },
+                        "maxItems": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "displayName",
+                  "dietary",
+                  "allergies",
+                  "preferences",
+                  "diagnoses"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "medical_plan"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "profileId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "planType": {
+                    "enum": [
+                      "care-plan",
+                      "nutrition-request",
+                      "recommendation"
+                    ]
+                  },
+                  "status": {
+                    "enum": [
+                      "draft",
+                      "active",
+                      "completed",
+                      "revoked",
+                      "unknown"
+                    ]
+                  },
+                  "intent": {
+                    "enum": [
+                      "proposal",
+                      "plan",
+                      "order",
+                      "unknown"
+                    ]
+                  },
+                  "effectiveFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "effectiveUntil": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "sourceId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "version": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "recordId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "recordedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "sourceId",
+                      "version",
+                      "recordId",
+                      "recordedAt"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "authorRef": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "goals": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "activities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "maxItems": 1000
+                  },
+                  "recommendationProvenance": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/source"
+                    },
+                    "maxItems": 1000
+                  }
+                },
+                "required": [
+                  "profileId",
+                  "planType",
+                  "status",
+                  "intent",
+                  "effectiveFrom",
+                  "effectiveUntil",
+                  "source",
+                  "authorRef",
+                  "goals",
+                  "activities",
+                  "recommendationProvenance"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "settings"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "uiLanguage": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "dataLanguage": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "units": {
+                    "enum": [
+                      "metric",
+                      "imperial"
+                    ]
+                  }
+                },
+                "required": [
+                  "uiLanguage",
+                  "dataLanguage",
+                  "units"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "content"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "contentType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "contentType",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "identity_link"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "issuer": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "status": {
+                    "enum": [
+                      "linked",
+                      "unlinked",
+                      "revoked"
+                    ]
+                  }
+                },
+                "required": [
+                  "issuer",
+                  "subject",
+                  "status"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "connection_metadata"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "providerId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "authentication": {
+                    "enum": [
+                      "api_key",
+                      "oauth2",
+                      "browser_local",
+                      "none",
+                      "unknown"
+                    ]
+                  },
+                  "toolProtocol": {
+                    "enum": [
+                      "none",
+                      "mcp",
+                      "unknown"
+                    ]
+                  },
+                  "capabilities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "maxItems": 1000
+                  },
+                  "scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "maxItems": 1000
+                  },
+                  "sourceStatus": {
+                    "enum": [
+                      "pending",
+                      "active",
+                      "expired",
+                      "revoked",
+                      "deleted",
+                      "unknown"
+                    ]
+                  },
+                  "requiresReauthorization": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "providerId",
+                  "authentication",
+                  "toolProtocol",
+                  "capabilities",
+                  "scopes",
+                  "sourceStatus",
+                  "requiresReauthorization"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "auth_history"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "enum": [
+                      "connect",
+                      "disconnect",
+                      "revoke",
+                      "deny",
+                      "reauthorize",
+                      "login",
+                      "logout"
+                    ]
+                  },
+                  "occurredAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "outcome": {
+                    "enum": [
+                      "allowed",
+                      "denied",
+                      "pending",
+                      "complete"
+                    ]
+                  }
+                },
+                "required": [
+                  "action",
+                  "occurredAt",
+                  "outcome"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "consent_history"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "sourceStatus": {
+                    "enum": [
+                      "granted",
+                      "denied",
+                      "withdrawn",
+                      "expired"
+                    ]
+                  },
+                  "effectiveAuthority": {
+                    "const": "none"
+                  },
+                  "consentId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "revision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "recipient": {
+                    "$ref": "#/$defs/identity"
+                  },
+                  "fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "maxItems": 1000
+                  },
+                  "validFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "revokedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "auditRef": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "purpose",
+                  "sourceStatus",
+                  "effectiveAuthority",
+                  "consentId",
+                  "revision",
+                  "recipient",
+                  "fields",
+                  "validFrom",
+                  "expiresAt",
+                  "revokedAt",
+                  "auditRef"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "derived_provenance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "sourceId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "version": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "recordId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "recordedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "sourceId",
+                      "version",
+                      "recordId",
+                      "recordedAt"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "method": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "source",
+                  "method"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "attachment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "forRecord": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/recordTypes"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "mediaType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 524288
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "base64": {
+          "type": "string",
+          "maxLength": 699052,
+          "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+        },
+        "provenance": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "id",
+        "forRecord",
+        "mediaType",
+        "bytes",
+        "sha256",
+        "base64",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "from": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "space",
+                "location",
+                "item",
+                "lot",
+                "holding",
+                "movement",
+                "reservation",
+                "waste",
+                "profile",
+                "medical_plan",
+                "settings",
+                "content",
+                "identity_link",
+                "connection_metadata",
+                "auth_history",
+                "consent_history",
+                "derived_provenance"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "to": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "space",
+                "location",
+                "item",
+                "lot",
+                "holding",
+                "movement",
+                "reservation",
+                "waste",
+                "profile",
+                "medical_plan",
+                "settings",
+                "content",
+                "identity_link",
+                "connection_metadata",
+                "auth_history",
+                "consent_history",
+                "derived_provenance"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "provenance": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "type",
+        "from",
+        "to",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/record"
+          },
+          "maxItems": 1000
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attachment"
+          },
+          "maxItems": 100
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationship"
+          },
+          "maxItems": 1000
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extension"
+          },
+          "maxItems": 100
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            },
+            "settings": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            },
+            "attachments": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            },
+            "relationships": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            },
+            "history": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            },
+            "derived_provenance": {
+              "enum": [
+                "included",
+                "not-applicable",
+                "unavailable"
+              ]
+            }
+          },
+          "required": [
+            "content",
+            "settings",
+            "attachments",
+            "relationships",
+            "history",
+            "derived_provenance"
+          ],
+          "additionalProperties": false
+        },
+        "lossWarnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "records",
+        "attachments",
+        "relationships",
+        "extensions",
+        "coverage",
+        "lossWarnings"
+      ],
+      "additionalProperties": false
+    },
+    "envelope": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "algorithm": {
+          "const": "AES-256-GCM"
+        },
+        "custody": {
+          "enum": [
+            "server-envelope",
+            "client"
+          ]
+        },
+        "keyRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "keyVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "nonce": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]{16}$"
+        },
+        "ciphertext": {
+          "type": "string",
+          "minLength": 24,
+          "maxLength": 1398124,
+          "pattern": "^[A-Za-z0-9+/]*={0,2}$"
+        }
+      },
+      "required": [
+        "version",
+        "algorithm",
+        "custody",
+        "keyRef",
+        "keyVersion",
+        "nonce",
+        "ciphertext"
+      ],
+      "additionalProperties": false
+    },
+    "destination": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "identity": {
+          "$ref": "#/$defs/identity"
+        }
+      },
+      "required": [
+        "namespace",
+        "identity"
+      ],
+      "additionalProperties": false
+    },
+    "importOrigin": {
+      "description": "Bounded first-import provenance only, not identity verification or effective authority. Preserved on later imports independently of source extension slots.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "sourceNamespace": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "sourceIdentity": {
+          "$ref": "#/$defs/identity"
+        },
+        "sourceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "version",
+        "sourceNamespace",
+        "sourceIdentity",
+        "sourceId"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
