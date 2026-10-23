@@ -1,8 +1,14 @@
 import copy
+from contextlib import contextmanager
+import os
+import signal
 from dataclasses import replace
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+
+from offmenu.refresh import portfolio16_binding as binding
 
 from offmenu.refresh.acceptance import (Asset, SourceContract, fingerprint, ids_digest,
                                         qualify)
@@ -14,6 +20,19 @@ from offmenu.refresh.portfolio16_binding import (MetadataBinding, bind_metadata,
 FIXTURES = Path(__file__).parent / 'fixtures/portfolio16_binding'
 NOW = '2026-10-18T00:00:00Z'
 POLICY = sha(b'authored-fixture-portfolio16-policy')
+
+
+@contextmanager
+def bounded_metadata_read():
+    def blocked(signum, frame):
+        raise AssertionError('metadata read blocked on authored FIFO')
+    previous = signal.signal(signal.SIGALRM, blocked)
+    signal.setitimer(signal.ITIMER_REAL, 2)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
 
 
 class Portfolio16BindingTests(unittest.TestCase):
@@ -233,6 +252,115 @@ class Portfolio16BindingTests(unittest.TestCase):
         self.assertEqual(bl.evidence['serviceDeclarationEvidence']['selector'],
                          '/categories/4/scopeAndGap')
         self.assertEqual(len(policy), 64)
+
+    def _healthy_peer(self, spec):
+        (self.root / 'healthy.json').write_bytes((self.root / spec.metadata_path).read_bytes())
+        return replace(spec, source_id='z-healthy', metadata_path='healthy.json')
+
+    def _replace_metadata(self, kind, path, raw):
+        if kind == 'regular':
+            replacement = self.root / 'replacement-regular.json'
+            replacement.write_bytes(raw)
+            os.replace(replacement, path)
+            return
+        path.unlink()
+        if kind == 'fifo':
+            os.mkfifo(path)
+        elif kind == 'symlink':
+            target = self.root / 'replacement.json'
+            target.write_bytes(raw)
+            path.symlink_to(target)
+        else:
+            path.write_bytes(raw)
+
+    def _assert_failed_peer(self, report):
+        bad, good = report['results']
+        self.assertEqual(bad['status'], 'malformed', bad)
+        self.assertIsNone(bad['metadataCandidate'])
+        self.assertEqual(good['status'], 'valid-metadata-only', good)
+        self.assertEqual(report['metadataCandidates'], 1)
+        self.assertEqual(report['datasetRowsAccepted'], 0)
+
+    def test_fifo_input_fails_promptly_and_healthy_peer_continues(self):
+        spec = self.spec()
+        good = self._healthy_peer(spec)
+        self._replace_metadata('fifo', self.root / spec.metadata_path, b'')
+        with bounded_metadata_read():
+            report, _ = run_bindings([spec, good], self.root, now=NOW, policy_sha256=POLICY)
+        self._assert_failed_peer(report)
+
+    def test_replacement_before_metadata_open_never_blocks_or_follows(self):
+        spec = self.spec()
+        path = self.root / spec.metadata_path
+        raw = path.read_bytes()
+        good = self._healthy_peer(spec)
+        for kind in ('fifo', 'symlink', 'regular'):
+            with self.subTest(kind=kind):
+                path.unlink(missing_ok=True)
+                path.write_bytes(raw)
+                real_open, real_path_open = os.open, Path.open
+                replaced = False
+                def replace_once(candidate):
+                    nonlocal replaced
+                    if not replaced and Path(candidate) == path:
+                        replaced = True
+                        self._replace_metadata(kind, path, raw)
+                def fd_open(candidate, flags, *args, **kwargs):
+                    replace_once(candidate)
+                    return real_open(candidate, flags, *args, **kwargs)
+                def path_open(candidate, *args, **kwargs):
+                    replace_once(candidate)
+                    return real_path_open(candidate, *args, **kwargs)
+                with bounded_metadata_read(), patch.object(binding.os, 'open', side_effect=fd_open), \
+                        patch.object(Path, 'open', path_open):
+                    report, _ = run_bindings([spec, good], self.root, now=NOW, policy_sha256=POLICY)
+                self.assertTrue(replaced)
+                self._assert_failed_peer(report)
+
+    def test_replacement_during_metadata_consumption_fails_closed(self):
+        spec = self.spec()
+        path = self.root / spec.metadata_path
+        raw = path.read_bytes()
+        good = self._healthy_peer(spec)
+        for kind in ('fifo', 'symlink', 'regular', 'same-inode-change'):
+            with self.subTest(kind=kind):
+                path.unlink(missing_ok=True)
+                path.write_bytes(raw)
+                decode = binding.strict_json
+                replaced = False
+                def consume(payload):
+                    nonlocal replaced
+                    value = decode(payload)
+                    if not replaced:
+                        replaced = True
+                        if kind == 'same-inode-change':
+                            path.write_bytes(raw + b' ')
+                        else:
+                            self._replace_metadata(kind, path, raw)
+                    return value
+                with bounded_metadata_read(), patch.object(binding, 'strict_json', side_effect=consume):
+                    report, _ = run_bindings([spec, good], self.root, now=NOW, policy_sha256=POLICY)
+                self._assert_failed_peer(report)
+
+
+    def test_one_nofollow_nonblocking_descriptor_closed_after_consumption(self):
+        spec = self.spec()
+        real_open = os.open
+        opened = []
+        def track_open(path, flags, *args, **kwargs):
+            fd = real_open(path, flags, *args, **kwargs)
+            opened.append((fd, flags))
+            return fd
+        with patch.object(binding.os, 'open', side_effect=track_open), \
+                patch.object(Path, 'open', side_effect=AssertionError('metadata pathname reopened')):
+            result = self.bind(spec)
+        self.assertEqual(result['status'], 'valid-metadata-only')
+        self.assertEqual(len(opened), 1)
+        fd, flags = opened[0]
+        self.assertTrue(flags & os.O_NONBLOCK)
+        self.assertTrue(flags & os.O_NOFOLLOW)
+        with self.assertRaises(OSError):
+            os.fstat(fd)
 
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ Only reviewed, explicitly pinned JSON metadata is opened. Locators contained in
 metadata are values, not file capabilities. No original payload is followed.
 """
 import argparse
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 import fcntl
 import json
 import os
@@ -15,7 +15,7 @@ import stat
 from ._portfolio36_catalogue import load_catalogue
 from .acceptance import assess_cells, canonical, fingerprint
 from .core import (RefreshError, atomic_json, safe_path, sha, strict_json,
-                   timestamp, verify)
+                   timestamp)
 from .field_provenance import field_origin_errors
 
 CONFIG = Path(__file__).resolve().parents[2] / 'config/source-bindings/owner36.json'
@@ -156,6 +156,52 @@ def _config(config):
     return sources
 
 
+def _metadata_identity(value):
+    return (value.st_dev, value.st_ino, value.st_size,
+            value.st_mtime_ns, value.st_ctime_ns)
+
+
+@contextmanager
+def _metadata_bytes(path, expected):
+    """Pin one bounded regular descriptor through the caller's consumption.
+
+    A pathname check alone cannot make a subsequent blocking open safe. Open
+    nonblocking/nofollow, compare the opened inode with the pre-open snapshot,
+    and never reopen the pathname for digesting or parsing.
+    """
+    try:
+        before = os.stat(path, follow_symlinks=False)
+        fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    except FileNotFoundError:
+        raise RefreshError('metadata-input-missing') from None
+    except OSError:
+        raise RefreshError('metadata-input-invalid') from None
+    with os.fdopen(fd, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        _require(stat.S_ISREG(opened.st_mode), 'regular-file-required')
+        _require(_metadata_identity(before) == _metadata_identity(opened),
+                 'metadata-input-changed')
+        _require(opened.st_size == expected['bytes'] <= MAX_METADATA,
+                 'asset-checksum-mismatch')
+        raw = stream.read(expected['bytes'] + 1)
+        _require(len(raw) == expected['bytes'] and sha(raw) == expected['sha256'],
+                 'asset-checksum-mismatch')
+
+        def unchanged():
+            try:
+                after = os.fstat(stream.fileno())
+                current = os.stat(path, follow_symlinks=False)
+            except OSError:
+                raise RefreshError('metadata-input-changed') from None
+            _require(stat.S_ISREG(current.st_mode)
+                     and _metadata_identity(opened) == _metadata_identity(after)
+                     == _metadata_identity(current), 'metadata-input-changed')
+
+        unchanged()
+        yield raw
+        unchanged()
+
+
 def evaluate(config, metadata_root, *, now):
     """Isolate failures; report receipt age, never emulate a refresh planner.
 
@@ -178,55 +224,48 @@ def evaluate(config, metadata_root, *, now):
                 row.update(status='held', errors=['metadata-scope-held'])
                 reports.append(row)
                 continue  # A hold closes even metadata file access.
-            documents = {}
-            for asset in source['inputs']:
-                path = safe_path(root / asset['path'])
-                try:
-                    verify(path, asset)
-                except FileNotFoundError:
-                    raise RefreshError('metadata-input-missing') from None
-                with path.open('rb') as stream:
-                    raw = stream.read(asset['bytes'] + 1)
-                _require(len(raw) == asset['bytes'] and sha(raw) == asset['sha256'],
-                         'metadata-consumed-pin-mismatch')
-                documents[asset['path']] = strict_json(raw)
-                verify(path, asset)
-            data, origins = {}, {}
-            for key, field in sorted(source['fields'].items()):
-                value = pointer(documents[field['input']], field['selector'])
-                _require(value is None or isinstance(value, (str, int, float, bool)),
-                         'metadata-field-must-be-scalar')
-                # Expected literals are trusted configuration constraints, not
-                # new values synthesized when the input is absent or different.
-                if 'expected' in field:
-                    _require(type(value) is type(field['expected']) and value == field['expected'],
-                             'metadata-field-literal-mismatch')
-                data[key] = value
-                origins['/data/' + key] = {
-                    'kind': 'source', 'sourceId': source['sourceId'],
-                    'releaseId': source['releaseId'], 'inputPath': field['input'],
-                    'inputSha256': next(a['sha256'] for a in source['inputs']
-                                       if a['path'] == field['input']),
-                    'sourceRecordId': source['sourceId'], 'sourceField': field['selector']}
-            record = {'id': 'owner36:metadata:' + source['sourceId'],
-                      'kind': 'sourceInputBinding', 'schemaVersion': 'offmenu-owner36-binding/1',
-                      'data': data, 'provenance': {'sourceId': source['sourceId'],
-                          'releaseId': source['releaseId'],
-                          'fetchedAt': source['originalAcquiredAt'], 'fieldOrigins': origins}}
-            errors = field_origin_errors(record, {a['path']: a['sha256'] for a in source['inputs']})
-            _require(not errors, 'metadata-field-origin-invalid')
-            canonical(record)  # Reject overflowed JSON numbers, including 1e999.
-            age = (clock - timestamp(source['originalAcquiredAt'])).total_seconds()
-            _require(age >= 0, 'acquisition-timestamp-in-future')
-            row['cache'] = {'minimumReuseDays': 30, 'acquisitionAgeDays': int(age // 86400),
-                            'originalAcquiredAt': source['originalAcquiredAt'],
-                            'evaluatedAt': now, 'mtimeUsedForFreshness': False,
-                            'validationResetsAcquisitionAge': False, 'networkRequests': 0,
-                            'sharedPlannerCapability': 'unsupported-source-family',
-                            'cacheEligibility': 'not-evaluated-no-download'}
-            stale = age >= 30 * 86400
-            row.update(status='stale-input' if stale else 'metadata-ready',
-                       errors=['conditional-revalidation-not-selected'] if stale else [])
+            with ExitStack() as inputs:
+                documents = {}
+                for asset in source['inputs']:
+                    path = safe_path(root / asset['path'])
+                    raw = inputs.enter_context(_metadata_bytes(path, asset))
+                    documents[asset['path']] = strict_json(raw)
+                data, origins = {}, {}
+                for key, field in sorted(source['fields'].items()):
+                    value = pointer(documents[field['input']], field['selector'])
+                    _require(value is None or isinstance(value, (str, int, float, bool)),
+                             'metadata-field-must-be-scalar')
+                    # Expected literals are trusted configuration constraints, not
+                    # new values synthesized when the input is absent or different.
+                    if 'expected' in field:
+                        _require(type(value) is type(field['expected']) and value == field['expected'],
+                                 'metadata-field-literal-mismatch')
+                    data[key] = value
+                    origins['/data/' + key] = {
+                        'kind': 'source', 'sourceId': source['sourceId'],
+                        'releaseId': source['releaseId'], 'inputPath': field['input'],
+                        'inputSha256': next(a['sha256'] for a in source['inputs']
+                                           if a['path'] == field['input']),
+                        'sourceRecordId': source['sourceId'], 'sourceField': field['selector']}
+                record = {'id': 'owner36:metadata:' + source['sourceId'],
+                          'kind': 'sourceInputBinding', 'schemaVersion': 'offmenu-owner36-binding/1',
+                          'data': data, 'provenance': {'sourceId': source['sourceId'],
+                              'releaseId': source['releaseId'],
+                              'fetchedAt': source['originalAcquiredAt'], 'fieldOrigins': origins}}
+                errors = field_origin_errors(record, {a['path']: a['sha256'] for a in source['inputs']})
+                _require(not errors, 'metadata-field-origin-invalid')
+                canonical(record)  # Reject overflowed JSON numbers, including 1e999.
+                age = (clock - timestamp(source['originalAcquiredAt'])).total_seconds()
+                _require(age >= 0, 'acquisition-timestamp-in-future')
+                row['cache'] = {'minimumReuseDays': 30, 'acquisitionAgeDays': int(age // 86400),
+                                'originalAcquiredAt': source['originalAcquiredAt'],
+                                'evaluatedAt': now, 'mtimeUsedForFreshness': False,
+                                'validationResetsAcquisitionAge': False, 'networkRequests': 0,
+                                'sharedPlannerCapability': 'unsupported-source-family',
+                                'cacheEligibility': 'not-evaluated-no-download'}
+                stale = age >= 30 * 86400
+                row.update(status='stale-input' if stale else 'metadata-ready',
+                           errors=['conditional-revalidation-not-selected'] if stale else [])
             records.append(record)
         except (OSError, ValueError, TypeError, KeyError, OverflowError) as error:
             code = str(error) if isinstance(error, RefreshError) else 'metadata-invalid'

@@ -6,16 +6,18 @@ means metadata shape/provenance only, not SourceContract qualification/admission
 """
 import argparse
 import copy
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import timezone
 import json
 import os
 from pathlib import Path
 import re
+import stat
 import tempfile
 
 from .acquisition import MIN_TTL
-from .core import (RefreshError, canonical, digest, fsync_directory, safe_path,
+from .core import (RefreshError, canonical, fsync_directory, safe_path,
                    sha, strict_json, timestamp, writer_lock)
 from .field_provenance import datum_pointers, field_origin_errors
 from .national_tabular import valid_input_name
@@ -91,6 +93,54 @@ def _check_binding(spec):
         raise RefreshError('portfolio-binding-invalid')
 
 
+def _metadata_identity(value):
+    return (value.st_dev, value.st_ino, value.st_size,
+            value.st_mtime_ns, value.st_ctime_ns)
+
+
+@contextmanager
+def _metadata_bytes(path, expected):
+    """Pin one bounded regular descriptor through the caller's consumption.
+
+    A pathname check alone cannot make a subsequent blocking open safe. Open
+    nonblocking/nofollow, compare the opened inode with the pre-open snapshot,
+    and never reopen the pathname for digesting or parsing.
+    """
+    try:
+        before = os.stat(path, follow_symlinks=False)
+        fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    except FileNotFoundError:
+        raise RefreshError('metadata-input-missing') from None
+    except OSError:
+        raise RefreshError('metadata-input-invalid') from None
+    with os.fdopen(fd, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        if not stat.S_ISREG(opened.st_mode):
+            raise RefreshError('regular-file-required')
+        if _metadata_identity(before) != _metadata_identity(opened):
+            raise RefreshError('metadata-input-changed')
+        if not opened.st_size == expected['bytes'] <= MAX_METADATA:
+            raise RefreshError('metadata-input-pin-mismatch')
+        raw = stream.read(expected['bytes'] + 1)
+        if len(raw) != expected['bytes'] or sha(raw) != expected['sha256']:
+            raise RefreshError('metadata-input-pin-mismatch')
+
+        def unchanged():
+            try:
+                after = os.fstat(stream.fileno())
+                current = os.stat(path, follow_symlinks=False)
+            except OSError:
+                raise RefreshError('metadata-input-changed') from None
+            if (not stat.S_ISREG(current.st_mode)
+                    or not _metadata_identity(opened) == _metadata_identity(after)
+                    == _metadata_identity(current)):
+                raise RefreshError('metadata-input-changed')
+
+        unchanged()
+        yield raw
+        unchanged()
+
+
 def bind_metadata(spec, metadata_root, *, now, policy_sha256):
     """Return one isolated result and optional METADATA candidate. No network.
 
@@ -131,15 +181,8 @@ def bind_metadata(spec, metadata_root, *, now, policy_sha256):
                 result['cacheDecision'] = 'conditional-review-only-no-download'
                 errors.add('input-stale')
         path = safe_path(safe_path(metadata_root) / spec.metadata_path)
-        if not path.exists():
-            errors.add('metadata-input-missing')
-        else:
-            expected = {'bytes': spec.metadata_bytes, 'sha256': spec.metadata_sha256}
-            if digest(path, max_bytes=MAX_METADATA) != expected:
-                raise RefreshError('metadata-input-pin-mismatch')
-            raw = path.read_bytes()
-            if len(raw) != spec.metadata_bytes or sha(raw) != spec.metadata_sha256:
-                raise RefreshError('metadata-input-changed')
+        expected = {'bytes': spec.metadata_bytes, 'sha256': spec.metadata_sha256}
+        with _metadata_bytes(path, expected) as raw:
             document = strict_json(raw)
             canonical(document)  # Also rejects overflowed JSON numeric values.
             if not isinstance(document, dict):
@@ -180,9 +223,7 @@ def bind_metadata(spec, metadata_root, *, now, policy_sha256):
                        'fieldOrigins': origins}}
             errors.update(field_origin_errors(row, {spec.metadata_path: spec.metadata_sha256},
                                                policy_pins=(policy_sha256,)))
-            if digest(path, max_bytes=MAX_METADATA) != expected:
-                raise RefreshError('metadata-input-changed')
-            result['metadataCandidate'] = row
+        result['metadataCandidate'] = row
     except FileNotFoundError:
         errors.add('metadata-input-missing')
     except RefreshError as error:

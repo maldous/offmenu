@@ -1,5 +1,8 @@
 """Authored metadata fixtures only. No historic payload is opened by these tests."""
 import copy
+from contextlib import contextmanager
+import os
+import signal
 import hashlib
 import json
 from pathlib import Path
@@ -29,6 +32,19 @@ def config(payload):
                    'currency': {'input': 'metadata.json', 'selector': '/currency'},
                    'basis': {'input': 'metadata.json', 'selector': '/basis'}},
         'holds': [], 'payloadBlockers': ['authored-no-payload-admission']}]}
+
+
+@contextmanager
+def bounded_metadata_read():
+    def blocked(signum, frame):
+        raise AssertionError('metadata read blocked on authored FIFO')
+    previous = signal.signal(signal.SIGALRM, blocked)
+    signal.setitimer(signal.ITIMER_REAL, 2)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
 
 
 class Portfolio36Tests(unittest.TestCase):
@@ -104,7 +120,7 @@ class Portfolio36Tests(unittest.TestCase):
 
     def test_hold_prevents_even_metadata_reads(self):
         self.config['sources'][0]['holds'] = ['explicit-no-read']
-        with patch.object(binding, 'verify', side_effect=AssertionError('read under hold')):
+        with patch.object(binding, '_metadata_bytes', side_effect=AssertionError('read under hold')):
             manifest, report = self.evaluate()
         self.assertEqual(report['sources'][0]['status'], 'held')
         self.assertEqual(manifest['metadataRecords'], 0)
@@ -198,6 +214,136 @@ class Portfolio36Tests(unittest.TestCase):
         self.assertEqual(manifest['metadataRecords'], 0)
         self.assertEqual(report['countryCells']['requiredCountryDomainCells'], 24)
         self.assertEqual(report['countryCells']['acceptedCountryDomainCells'], 0)
+
+    def _healthy_peer(self):
+        (self.bundle / 'healthy.json').write_bytes(self.payload)
+        good = copy.deepcopy(self.config['sources'][0])
+        good['sourceId'] = 'z-healthy'
+        good['inputs'][0]['path'] = 'healthy.json'
+        for field in good['fields'].values():
+            field['input'] = 'healthy.json'
+        self.config['sources'] = [self.config['sources'][0], good]
+
+    def _replace_metadata(self, kind):
+        path = self.bundle / 'metadata.json'
+        if kind == 'regular':
+            replacement = self.bundle / 'replacement-regular.json'
+            replacement.write_bytes(self.payload)
+            os.replace(replacement, path)
+            return
+        path.unlink()
+        if kind == 'fifo':
+            os.mkfifo(path)
+        elif kind == 'symlink':
+            target = self.bundle / 'replacement.json'
+            target.write_bytes(self.payload)
+            path.symlink_to(target)
+        else:
+            path.write_bytes(self.payload)  # Same bytes, different inode/identity.
+
+    def _assert_failed_peer(self, manifest, report):
+        bad, good = report['sources']
+        self.assertEqual(bad['status'], 'malformed', bad)
+        self.assertEqual(good['status'], 'metadata-ready', good)
+        self.assertEqual(len(manifest['records']), 1)
+        self.assertEqual(manifest['records'][0]['provenance']['sourceId'], 'z-healthy')
+
+    def test_fifo_input_fails_promptly_and_healthy_peer_continues(self):
+        self._healthy_peer()
+        self._replace_metadata('fifo')
+        with bounded_metadata_read():
+            manifest, report = self.evaluate()
+        self._assert_failed_peer(manifest, report)
+
+    def test_replacement_before_metadata_open_never_blocks_or_follows(self):
+        self._healthy_peer()
+        path = self.bundle / 'metadata.json'
+        for kind in ('fifo', 'symlink', 'regular'):
+            with self.subTest(kind=kind):
+                path.unlink(missing_ok=True)
+                path.write_bytes(self.payload)
+                real_open, real_path_open = os.open, Path.open
+                replaced = False
+                def replace_once(candidate):
+                    nonlocal replaced
+                    if not replaced and Path(candidate) == path:
+                        replaced = True
+                        self._replace_metadata(kind)
+                def fd_open(candidate, flags, *args, **kwargs):
+                    replace_once(candidate)
+                    return real_open(candidate, flags, *args, **kwargs)
+                def path_open(candidate, *args, **kwargs):
+                    replace_once(candidate)
+                    return real_path_open(candidate, *args, **kwargs)
+                with bounded_metadata_read(), patch.object(binding.os, 'open', side_effect=fd_open), \
+                        patch.object(Path, 'open', path_open):
+                    manifest, report = self.evaluate()
+                self.assertTrue(replaced)
+                self._assert_failed_peer(manifest, report)
+
+    def test_replacement_during_metadata_consumption_fails_closed(self):
+        self._healthy_peer()
+        path = self.bundle / 'metadata.json'
+        for kind in ('fifo', 'symlink', 'regular', 'same-inode-change'):
+            with self.subTest(kind=kind):
+                path.unlink(missing_ok=True)
+                path.write_bytes(self.payload)
+                decode = binding.strict_json
+                replaced = False
+                def consume(raw):
+                    nonlocal replaced
+                    value = decode(raw)
+                    if not replaced:
+                        replaced = True
+                        if kind == 'same-inode-change':
+                            path.write_bytes(self.payload + b' ')
+                        else:
+                            self._replace_metadata(kind)
+                    return value
+                with bounded_metadata_read(), patch.object(binding, 'strict_json', side_effect=consume):
+                    manifest, report = self.evaluate()
+                self._assert_failed_peer(manifest, report)
+
+
+    def test_one_nofollow_nonblocking_descriptor_closed_after_consumption(self):
+        real_open = os.open
+        opened = []
+        def track_open(path, flags, *args, **kwargs):
+            fd = real_open(path, flags, *args, **kwargs)
+            opened.append((fd, flags))
+            return fd
+        with patch.object(binding.os, 'open', side_effect=track_open), \
+                patch.object(Path, 'open', side_effect=AssertionError('metadata pathname reopened')):
+            _, report = self.evaluate()
+        self.assertEqual(report['sources'][0]['status'], 'metadata-ready')
+        self.assertEqual(len(opened), 1)
+        fd, flags = opened[0]
+        self.assertTrue(flags & os.O_NONBLOCK)
+        self.assertTrue(flags & os.O_NOFOLLOW)
+        with self.assertRaises(OSError):
+            os.fstat(fd)
+
+    def test_first_input_stays_pinned_until_last_input_consumed(self):
+        source = self.config['sources'][0]
+        second = copy.deepcopy(source['inputs'][0])
+        second['path'] = 'second.json'
+        source['inputs'].append(second)
+        (self.bundle / 'second.json').write_bytes(self.payload)
+        self._healthy_peer()
+        # The healthy source has its own first input; both sources share the
+        # unchanged authored second input.
+        decode = binding.strict_json
+        calls = 0
+        def consume(raw):
+            nonlocal calls
+            value = decode(raw)
+            calls += 1
+            if calls == 2:
+                self._replace_metadata('regular')
+            return value
+        with bounded_metadata_read(), patch.object(binding, 'strict_json', side_effect=consume):
+            manifest, report = self.evaluate()
+        self._assert_failed_peer(manifest, report)
 
 
 if __name__ == '__main__':
