@@ -1,0 +1,641 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:offmenu:gold-recipe-actions:1",
+  "title": "Existing recipe template GOLD connection projection v1",
+  "$comment": "Output proposal only. Preserve existing native templates/typed slots unchanged. Pinned helper validates native semantic/translation receipts; this JSON Schema does not authenticate reviews, admit GOLD, infer identity, authorize real source use, or replace the native recipe IR.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "offmenu-gold-recipe-actions/1"
+    },
+    "status": {
+      "enum": [
+        "held",
+        "ready-for-review"
+      ]
+    },
+    "target_language": {
+      "const": "en"
+    },
+    "gold_admission": {
+      "const": "not-assigned"
+    },
+    "holds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code",
+          "target"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 1024,
+      "minItems": 0
+    },
+    "native_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$comment": "Verbatim existing learned_templates entries. Validated by pinned native validate_reviewed_template; not redefined here."
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "native_instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$comment": "Verbatim existing template_instances entries and typed slots. Native offmenu-recipe-menu-template/1 remains authoritative."
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/action"
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "depends_on": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "action_id",
+          "depends_on"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 16384,
+      "minItems": 0
+    },
+    "ingredient_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slot_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ingredient_line_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ingredient_entity_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "allocation": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/allocation"
+              }
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/sourceSpan"
+            },
+            "maxItems": 512,
+            "minItems": 1
+          }
+        },
+        "required": [
+          "action_id",
+          "slot_name",
+          "source_ingredient_line_id",
+          "ingredient_entity_id",
+          "allocation",
+          "evidence"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "material_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "producer_instance_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "citation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 128,
+            "minItems": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/sourceSpan"
+            },
+            "maxItems": 512,
+            "minItems": 1
+          }
+        },
+        "required": [
+          "material_id",
+          "producer_instance_id",
+          "label",
+          "citation_ids",
+          "evidence"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "material_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "instance_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "material_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "citation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "maxItems": 128,
+            "minItems": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/sourceSpan"
+            },
+            "maxItems": 512,
+            "minItems": 1
+          }
+        },
+        "required": [
+          "instance_id",
+          "material_id",
+          "citation_ids",
+          "evidence"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 128,
+      "minItems": 0
+    },
+    "supports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/support"
+      },
+      "maxItems": 1024,
+      "minItems": 0
+    },
+    "data_class": {
+      "enum": [
+        "synthetic",
+        "real-qualified"
+      ]
+    },
+    "native_source_pin": {
+      "const": "368ef2ce0e42bba3497c5e548f47422a989ea10a"
+    },
+    "native_module_sha256": {
+      "type": "object",
+      "properties": {
+        "normalize_recipes.py": {
+          "const": "ced8ed09b297330d68504cac14a8326d4a4500f4626097ce8b8520820175c053"
+        },
+        "normalization_core.py": {
+          "const": "72aceeae74b6a3a1fcafb0d2781b97e1b4e31697b7d92914c7946f3e0dca7793"
+        },
+        "normalization_domains.py": {
+          "const": "f6487c8ad3d2e462c33849d156233a40bc914fa3ed3e44c8dae9f09f41696661"
+        }
+      },
+      "required": [
+        "normalize_recipes.py",
+        "normalization_core.py",
+        "normalization_domains.py"
+      ],
+      "additionalProperties": false
+    },
+    "source_occurrence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recipe_entity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rules_artifact_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "semantic_review_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "translation_receipts_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "connection_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_original_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "scale_factor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^recipe-actions:[a-f0-9]{64}$"
+    },
+    "translation_unit_ids_used": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "maxItems": 512,
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "status",
+    "target_language",
+    "gold_admission",
+    "holds",
+    "native_templates",
+    "native_instances",
+    "actions",
+    "dependencies",
+    "ingredient_links",
+    "materials",
+    "material_inputs",
+    "supports"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "sourceSpan": {
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "offset_unit": {
+          "const": "unicode_codepoint"
+        }
+      },
+      "required": [
+        "pointer",
+        "start",
+        "end",
+        "text",
+        "offset_unit"
+      ],
+      "additionalProperties": false
+    },
+    "allocation": {
+      "type": "object",
+      "properties": {
+        "original": {
+          "type": "object"
+        },
+        "normalized": {
+          "type": "object",
+          "$comment": "Existing normalization_domains.normalize_quantity quantity-exact-v1 result, retained unchanged. No alternative quantity contract."
+        },
+        "scaled_min": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scaled_max": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "factor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "original",
+        "normalized",
+        "scaled_min",
+        "scaled_max",
+        "normalized_unit",
+        "factor"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "action_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "template_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "step_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sequence_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "original_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "english_text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_concept": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase": {
+          "enum": [
+            "preparation",
+            "cooking",
+            "presentation"
+          ]
+        },
+        "unknown_parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceSpan"
+          },
+          "maxItems": 512,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "action_id",
+        "template_id",
+        "step_id",
+        "source_order",
+        "sequence_index",
+        "original_text",
+        "source_language",
+        "english_text",
+        "action_concept",
+        "phase",
+        "unknown_parameters",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "support": {
+      "type": "object",
+      "properties": {
+        "target_kind": {
+          "enum": [
+            "action",
+            "ingredient",
+            "material",
+            "material_input"
+          ]
+        },
+        "target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slot_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "material_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceSpan"
+          },
+          "maxItems": 512,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "target_kind",
+        "target_id",
+        "action_id",
+        "citation_id",
+        "evidence"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "target_kind": {
+                "const": "ingredient"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "slot_name"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "target_kind": {
+                "enum": [
+                  "material",
+                  "material_input"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "material_id"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ready-for-review"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "schema_version",
+          "status",
+          "target_language",
+          "gold_admission",
+          "holds",
+          "native_templates",
+          "native_instances",
+          "actions",
+          "dependencies",
+          "ingredient_links",
+          "materials",
+          "material_inputs",
+          "supports",
+          "data_class",
+          "native_source_pin",
+          "native_module_sha256",
+          "source_occurrence_id",
+          "recipe_entity_id",
+          "rules_artifact_sha256",
+          "semantic_review_sha256",
+          "translation_receipts_sha256",
+          "connection_sha256",
+          "source_original_sha256",
+          "scale_factor",
+          "run_id",
+          "translation_unit_ids_used"
+        ],
+        "properties": {
+          "holds": {
+            "maxItems": 0
+          },
+          "actions": {
+            "minItems": 1
+          },
+          "native_instances": {
+            "minItems": 1
+          },
+          "native_templates": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "held"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "holds": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}
