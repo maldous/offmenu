@@ -93,6 +93,10 @@ def extract_ingredient_components(text, *, start, end, max_nodes=1000, max_depth
         while b > a and text[b - 1].isspace(): b -= 1
         return a, b
     def delimiters(a, b, depth):
+        # Only commas inside a recognized quantity value belong to that token.
+        # Unitless numbers and all other comma/semicolon separators stay intact.
+        quantity_commas = {position for match in quantity.finditer(text, a, b)
+                           for position in range(*match.span('value')) if text[position] == ','}
         stack = []; groups = []; cuts = []; uncertainty = []
         for position in range(a, b):
             character = text[position]
@@ -105,7 +109,7 @@ def extract_ingredient_components(text, *, start, end, max_nodes=1000, max_depth
                 else:
                     _, opening = stack.pop()
                     if not stack: groups.append((opening, position + 1))
-            elif character in ',;' and not stack: cuts.append(position)
+            elif character in ',;' and not stack and position not in quantity_commas: cuts.append(position)
         uncertainty += [{'reason': 'unclosed-delimiter', 'offset': position} for _, position in stack]
         return groups, cuts, uncertainty
     def quantities(a, b, attachment):

@@ -137,6 +137,57 @@ class ProductLabelSectionTests(unittest.TestCase):
         for node in nodes: check(node)
         self.assertNotIn('CONTAINS', result['ingredientSpan']['text'])
 
+    def test_decimal_commas_with_recognized_quantity_units_are_not_separators(self):
+        cases = [('Sugar 1,5%, Salt', '1,5', '%'),
+                 ('Sugar 1.5%, Salt', '1.5', '%'),
+                 ('Sugar 1,5–2,5%, Salt', '1,5–2,5', '%'),
+                 ('Sugar 0,75 g; Salt', '0,75', 'g')]
+        for text, value, unit in cases:
+            with self.subTest(text=text):
+                result = extract_ingredient_components(text, start=0, end=len(text))
+                nodes = result['components']
+                self.assertEqual(len(nodes), 2)
+                self.assertEqual(nodes[0]['text'], text[:text.rindex('Salt')].rstrip(',; '))
+                self.assertEqual(nodes[1]['text'], 'Salt')
+                self.assertEqual([(q['valueLexeme'], q['unitLexeme']) for q in nodes[0]['quantities']],
+                                 [(value, unit)])
+                self.assertEqual(nodes[0]['text'] + result['separators'][0]['text'] + nodes[1]['text'], text)
+
+    def test_unitless_numeric_commas_remain_component_separators(self):
+        text = 'Sugar 1,5, Salt'
+        result = extract_ingredient_components(text, start=0, end=len(text))
+        self.assertEqual([node['text'] for node in result['components']], ['Sugar 1', '5', 'Salt'])
+        self.assertTrue(all(not node['quantities'] for node in result['components']))
+
+    def test_nested_decimal_commas_preserve_all_source_spans_hashes_and_limits(self):
+        text = 'Préfixe 👩‍🍳: Blend (豆 Sugar 1,5%, Seed (2,5 g)), Salt; Water'
+        start = text.index('Blend')
+        result = extract_ingredient_components(text, start=start, end=len(text))
+        nodes = result['components']
+        self.assertEqual([node['text'] for node in nodes],
+                         ['Blend (豆 Sugar 1,5%, Seed (2,5 g))', 'Salt', 'Water'])
+        children = nodes[0]['children']
+        self.assertEqual([node['text'] for node in children], ['豆 Sugar 1,5%', 'Seed (2,5 g)'])
+        self.assertEqual(children[0]['quantities'][0]['valueLexeme'], '1,5')
+        self.assertEqual(children[1]['quantities'][0]['valueLexeme'], '2,5')
+        self.assertEqual(result['rawTextSHA256'], hashlib.sha256(text.encode()).hexdigest())
+        def check(value):
+            if isinstance(value, dict):
+                if {'text', 'start', 'end', 'utf8Start', 'utf8End', 'textSHA256'} <= value.keys():
+                    self.assertEqual(text[value['start']:value['end']], value['text'])
+                    self.assertEqual(text.encode()[value['utf8Start']:value['utf8End']].decode(), value['text'])
+                    self.assertEqual(hashlib.sha256(value['text'].encode()).hexdigest(), value['textSHA256'])
+                for child in value.values(): check(child)
+            elif isinstance(value, list):
+                for child in value: check(child)
+        check(result)
+        for parent in [nodes[0]]:
+            self.assertTrue(all(child['parentComponentId'] == parent['componentId'] for child in parent['children']))
+        with self.assertRaisesRegex(RefreshError, 'depth-bound'):
+            extract_ingredient_components(text, start=start, end=len(text), max_depth=1)
+        with self.assertRaisesRegex(RefreshError, 'node-bound'):
+            extract_ingredient_components(text, start=start, end=len(text), max_nodes=1)
+
     def test_unclosed_group_uncertainty_and_node_bounds(self):
         text = 'Blend (Oil, Water'
         result = extract_ingredient_components(text, start=0, end=len(text))
