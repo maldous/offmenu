@@ -32,7 +32,7 @@ FACT_POINTERS = ('/code','/product_name','/nutrition_data_per','/nutriments/prot
 RIGHTS_SCOPE = {'profile': PROFILE, 'target_locale': 'en',
                 'output': 'private-local-gold+app-dto', 'field_pointers': list(FACT_POINTERS)}
 QUERIES = {
- 'product_nutrition_citations': """SELECT p.entity_id,p.resource_id,o.observation_id,m.metric_id,o.context_json,o.original_json,s.citation_id,c.payload_json AS citation_json
+ 'product_nutrition_citations': """SELECT DISTINCT p.entity_id,p.resource_id,o.observation_id,m.metric_id,o.context_json,o.original_json,s.citation_id,c.payload_json AS citation_json
  FROM gold_entities p JOIN gold_observations o ON o.entity_id=p.entity_id AND o.state='verified'
  JOIN gold_metrics m ON m.metric_id=o.metric_id AND m.state='verified'
  JOIN gold_claims a ON a.claim_id=o.claim_id AND a.entity_id=p.entity_id AND a.state='verified'
@@ -106,6 +106,7 @@ def build_product_profile(packet, *, qualification):
     citations={}
     for c in packet.get('citations',[]):
         cid=c['citation_id']
+        if type(cid) is not str or not cid.strip():raise ValueError('invalid citation id')
         if cid in citations:raise ValueError('duplicate citation')
         if c.get('source_binding')!=source or (c.get('url') is not None and not _url(c.get('url'))) or c.get('attribution')!='Open Food Facts':raise ValueError('citation source/url/attribution mismatch')
         citations[cid]=c

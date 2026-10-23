@@ -145,6 +145,34 @@ class ProductProfileTests(unittest.TestCase):
         r=profile.build_product_profile(p,qualification=q)
         self.assertEqual(2,r['counts']['usableCitations']);self.assertEqual(1,r['counts']['heldCitations'])
         self.assertEqual('qualified-candidate',r['status']);self.assertTrue(any(h['target_kind']=='citation' and h['target_id']=='unused' for h in r['rows']['gold_holds']))
+    def test_invalid_citation_ids_rejected_before_dto_qualification(self):
+        for cid in ('', '   ', None, 0, False, [], {}):
+            with self.subTest(citation_id=cid):
+                p,q=fixture();p['citations'][0]['citation_id']=cid
+                for proof in q['field_proofs']:proof['citation_id']=copy.deepcopy(cid)
+                q['packet_sha256']=digest(p)
+                with self.assertRaisesRegex(ValueError,'invalid citation id'):
+                    profile.build_product_profile(p,qualification=q)
+        import jsonschema
+        p,q=fixture();dto=profile.build_product_profile(p,qualification=q)['dto']
+        jsonschema.Draft202012Validator(json.loads((ROOT/'gold-product-profile.schema.json').read_text())).validate(dto)
+    def test_nutrition_query_unique_citations_preserves_field_supports(self):
+        for count in (1,2):
+            with self.subTest(citation_count=count):
+                p,q=fixture();ids={'generated-curator-citation'}
+                if count==2:
+                    citation=copy.deepcopy(p['citations'][0]);citation['citation_id']='second'
+                    p['citations'].append(citation);ids.add('second')
+                    for proof in list(q['field_proofs']):
+                        added=copy.deepcopy(proof);added['citation_id']='second';q['field_proofs'].append(added)
+                q['packet_sha256']=digest(p);r=profile.build_product_profile(p,qualification=q)
+                self.assertEqual(7*count,len(r['rows']['gold_support']))
+                with database(r) as db:
+                    rows=db.execute(profile.QUERIES['product_nutrition_citations']).fetchall()
+                    self.assertEqual(count,len(rows));self.assertEqual(ids,{row[6] for row in rows})
+                    self.assertEqual(1,len({row[2] for row in rows}))
+                    self.assertEqual(4*count,db.execute("SELECT count(*) FROM gold_support WHERE target_kind='assertion'").fetchone()[0])
+                    self.assertEqual([],db.execute('PRAGMA foreign_key_check').fetchall())
     def test_url_credentials_and_nonselected_real_product_rejected(self):
         p,q=fixture();p['citations'][0]['url']='https://user:password@example.invalid/product';q['packet_sha256']=digest(p)
         with self.assertRaises(ValueError):profile.build_product_profile(p,qualification=q)
