@@ -23,37 +23,84 @@ from normalization_api import (DOMAINS, MAX_ITEMS, MAX_JSON_BYTES, MAX_JSON_DEPT
 
 
 def canonical_json(value):
-    _bounded(value)
-    return json.dumps(value, ensure_ascii=False, sort_keys=True,
-                      separators=(',', ':'), allow_nan=False)
+    # Reuse the bounded encoding instead of serializing the entire object twice.
+    return _bounded(value, _canonical=True)
 
 
-def _bounded(value):
-    count = 0
-    def visit(item, depth):
-        nonlocal count
+def _bounded(value, *, _canonical=False):
+    """Iterative native-JSON preflight and one bounded canonical encoding.
+
+    Preserve the old default-separator byte cap (including its whitespace), and
+    exact accepted canonical bytes. No data-dependent callbacks or recursive
+    Python visit. MemoryError remains an infrastructure fault, never a row code.
+    """
+    count, pending, minimum_chars, separator_spaces = 0, 1, 0, 0
+    stack, active = [(value, 0, False)], set()
+    while stack:
+        item, depth, leaving = stack.pop()
+        if leaving:
+            active.remove(id(item))
+            continue
+        pending -= 1
         count += 1
         if count > MAX_JSON_NODES or depth > MAX_JSON_DEPTH:
             raise NormalizationError('json_complexity_cap')
-        if isinstance(item, dict):
-            if len(item) > MAX_ITEMS or any(not isinstance(k, str) for k in item):
-                raise NormalizationError('invalid_json_object')
-            for child in item.values():
-                visit(child, depth + 1)
-        elif isinstance(item, list):
-            if len(item) > MAX_ITEMS:
-                raise NormalizationError('json_array_cap')
-            for child in item:
-                visit(child, depth + 1)
-        elif item is not None and not isinstance(item, (str, int, float, bool)):
+        kind = type(item)
+        if kind is dict or kind is list:
+            if id(item) in active:
+                raise NormalizationError('json_complexity_cap')
+            if kind is dict:
+                if len(item) > MAX_ITEMS or any(type(k) is not str for k in item):
+                    raise NormalizationError('invalid_json_object')
+                minimum_chars += sum(len(k) + 3 for k in item)
+                children = list(item.values())
+                separator_spaces += len(item)
+            else:
+                if len(item) > MAX_ITEMS:
+                    raise NormalizationError('json_array_cap')
+                children = item
+            minimum_chars += 2 + max(0, len(item) - 1)
+            separator_spaces += max(0, len(item) - 1)
+            if count + pending + len(children) > MAX_JSON_NODES:
+                raise NormalizationError('json_complexity_cap')
+            active.add(id(item))
+            stack.append((item, depth, True))
+            stack.extend((child, depth + 1, False) for child in reversed(children))
+            pending += len(children)
+        elif kind is str:
+            minimum_chars += len(item) + 2
+        elif kind is int:
+            # Four bits per decimal digit is a conservative lower bound; avoid
+            # constructing an arbitrarily large decimal scalar before the cap.
+            if item.bit_length() > 4 * MAX_JSON_BYTES:
+                raise NormalizationError('json_size_cap')
+            minimum_chars += 1
+        elif kind in (float, bool, type(None)):
+            minimum_chars += 1
+        else:
             raise NormalizationError('non_json_value')
-    visit(value, 0)
-    try:
-        encoded = json.dumps(value, ensure_ascii=False, allow_nan=False)
-        if len(encoded.encode('utf-8')) > MAX_JSON_BYTES:
+        # Lower bound checked before escaping/UTF8 allocation. The encoder may
+        # still allocate one escaped scalar chunk, bounded by this input budget.
+        if minimum_chars + separator_spaces > MAX_JSON_BYTES:
             raise NormalizationError('json_size_cap')
-    except (ValueError, TypeError, OverflowError, UnicodeError) as exc:
+    chunks, size = [], separator_spaces
+    encoder = json.JSONEncoder(ensure_ascii=False, sort_keys=True,
+                               separators=(',', ':'), allow_nan=False)
+    try:
+        # _one_shot=False uses incremental encoding rather than a whole-object
+        # C encoder call. Depth/cycles/types were already bounded above.
+        for chunk in encoder.iterencode(value, _one_shot=False):
+            size += len(chunk.encode('utf-8'))
+            if size > MAX_JSON_BYTES:
+                raise NormalizationError('json_size_cap')
+            chunks.append(chunk)
+    except NormalizationError:
+        # NormalizationError is a ValueError: do not mask our finite cap code.
+        raise
+    except (ValueError, TypeError, OverflowError, UnicodeError, RecursionError) as exc:
         raise NormalizationError('invalid_json') from exc
+    if _canonical:
+        return ''.join(chunks)
 
 
 def digest(value):
@@ -871,7 +918,9 @@ class CompactNormalizationStore:
     @staticmethod
     def encode_compact(compact, artifact_sha256):
         import zlib
-        _bounded(compact)
+        # Validate/encode this root once. No bytes are persisted before all
+        # compact state/normalized/issues checks below have passed.
+        raw = canonical_json(compact).encode('utf-8')
         _exact(compact, ('artifact_id', 'cache_key', 'pass', 'domain', 'record_type', 'source',
             'versions', 'normalized', 'issues', 'uncertainty', 'provenance', 'review_item_ids',
             'review', 'translation', 'lineage', 'normalization_status', 'gold_status'))
@@ -882,7 +931,6 @@ class CompactNormalizationStore:
             raise NormalizationError('invalid_compact_rule_state')
         validate_normalized(compact['normalized'])
         _issues(compact['issues'])
-        raw = canonical_json(compact).encode('utf-8')
         return (compact['cache_key'], artifact_sha256, hashlib.sha256(raw).hexdigest(), zlib.compress(raw, 1))
 
     def get_compact(self, cache_key):

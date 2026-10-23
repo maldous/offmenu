@@ -1,6 +1,6 @@
 {
   "schema": "offmenu-run-plan/3",
-  "max_parallel": 16,
+  "max_parallel": 2,
   "jobs": [
     {
       "id": "retained-six-domain-normalization",

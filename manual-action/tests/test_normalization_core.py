@@ -385,5 +385,114 @@ class NormalizationCoreTests(unittest.TestCase):
         jsonschema.Draft202012Validator(schema).validate(reviewed)
 
 
+class GeneratedBoundedEncodingRecoveryTests(unittest.TestCase):
+    """Only bounded generated objects/in-memory mocks; no store or child process."""
+    def test_legacy_canonical_byte_and_digest_parity(self):
+        import normalization_core as core
+        import hashlib
+        values = [None, True, False, 0, -1, 1.0, -0.0, 1e-200, 1e200,
+                  "English generated text", "é\n\t\x00", {}, [], {"z":1,"a":[True,None]}]
+        for i in range(100):
+            values.append({"z": [i, i/7, None, "x" * (i % 17)], "a": {"label": "generated", "v": -i}})
+        for value in values:
+            expected = json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)
+            self.assertEqual(core.canonical_json(value),expected)
+            self.assertEqual(core.digest(value),hashlib.sha256(expected.encode()).hexdigest())
+    def test_default_whitespace_byte_cap_preserved(self):
+        import normalization_core as core
+        for value in ({"a":[1,2],"b":"é"},["x",True,None],"\n"*20):
+            size=len(json.dumps(value,ensure_ascii=False,allow_nan=False).encode())
+            with patch.object(core,'MAX_JSON_BYTES',size):self.assertEqual(json.loads(core.canonical_json(value)),value)
+            with patch.object(core,'MAX_JSON_BYTES',size-1):
+                with self.assertRaisesRegex(NormalizationError,'^json_size_cap$'):core.canonical_json(value)
+    def test_oversized_scalar_rejected_before_encoder_allocation(self):
+        import normalization_core as core
+        with patch.object(core,'MAX_JSON_BYTES',64), patch.object(json.JSONEncoder,'iterencode',side_effect=AssertionError('must preflight')):
+            for value in ('x'*65,1<<300):
+                with self.assertRaisesRegex(NormalizationError,'^json_size_cap$'):core.canonical_json(value)
+    def test_escaped_output_cap_not_masked_as_invalid_json(self):
+        import normalization_core as core
+        with patch.object(core,'MAX_JSON_BYTES',40):
+            with self.assertRaisesRegex(NormalizationError,'^json_size_cap$'):core.canonical_json('\n'*30)
+    def test_depth_cycles_node_items_and_shared_noncycle(self):
+        import normalization_core as core
+        value=[]
+        for _ in range(core.MAX_JSON_DEPTH):value=[value]
+        self.assertEqual(json.loads(core.canonical_json(value)),value)
+        with self.assertRaisesRegex(NormalizationError,'^json_complexity_cap$'):core.canonical_json([value])
+        cyclic={};cyclic['self']=cyclic
+        with self.assertRaisesRegex(NormalizationError,'^json_complexity_cap$'):core.canonical_json(cyclic)
+        shared={'x':1};self.assertEqual(json.loads(core.canonical_json([shared,shared])),[shared,shared])
+        with patch.object(core,'MAX_JSON_NODES',3):
+            with self.assertRaisesRegex(NormalizationError,'^json_complexity_cap$'):core.canonical_json([0,1,2])
+        with patch.object(core,'MAX_ITEMS',2):
+            with self.assertRaisesRegex(NormalizationError,'^json_array_cap$'):core.canonical_json([0,1,2])
+    def test_malformed_native_types_and_nonfinite_are_sanitized(self):
+        import normalization_core as core
+        class CallbackDict(dict):
+            def values(self):raise AssertionError('custom callback forbidden')
+        for value in (CallbackDict(a=1),object(),b'not-json'):
+            with self.assertRaisesRegex(NormalizationError,'^non_json_value$'):core.canonical_json(value)
+        with self.assertRaisesRegex(NormalizationError,'^invalid_json_object$'):core.canonical_json({1:'bad key'})
+        for value in (float('nan'),float('inf'),'\ud800'):
+            with self.assertRaisesRegex(NormalizationError,'^invalid_json$'):core.canonical_json(value)
+    def test_compact_encodes_root_once_with_exact_legacy_payload(self):
+        import normalization_core as core
+        import zlib, hashlib
+        module=types.SimpleNamespace(RULE_VERSION='generated-rules/1',normalize_payload=projection,normalize_record=projection)
+        with patch.dict(sys.modules,{'normalization_domains':module}):artifact=core.run_rules(source())
+        full_hash=core.artifact_digest(artifact);compact={k:v for k,v in artifact.items() if k!='source_original'}
+        expected=json.dumps(compact,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False).encode()
+        with patch.object(core,'canonical_json',wraps=core.canonical_json) as encoder, patch.object(core,'_bounded',wraps=core._bounded) as bounded:
+            encoded=core.CompactNormalizationStore.encode_compact(compact,full_hash)
+        self.assertEqual(sum(call.args[0] is compact for call in bounded.call_args_list),1)
+        self.assertEqual(sum(call.args[0] is compact for call in encoder.call_args_list),1)
+        self.assertEqual(zlib.decompress(encoded[3]),expected)
+        self.assertEqual(encoded[:3],(compact['cache_key'],full_hash,hashlib.sha256(expected).hexdigest()))
+    def test_memory_failure_remains_global_not_row_validation(self):
+        import normalization_core as core
+        import normalization_parallel as parallel
+        with patch.object(json.JSONEncoder,'iterencode',side_effect=MemoryError('generated context')):
+            with self.assertRaises(MemoryError):core.canonical_json({'a':1})
+        body=parallel._encoded(source())
+        with patch.object(core,'run_rules',side_effect=MemoryError('generated context')):
+            with self.assertRaisesRegex(parallel.RulesWorkerError,'^rules_worker_resource_failure$'):parallel._compact(body,Versions().as_dict())
+    def test_mock_pool_loss_keeps_uncommitted_batch_global(self):
+        import normalization_parallel as parallel
+        from concurrent.futures.process import BrokenProcessPool
+        record=source();saved=copy.deepcopy(record)
+        with parallel.RulesExecutor(workers=1) as executor:
+            with patch.object(executor,'_collect',side_effect=BrokenProcessPool('generated context')), patch.object(executor,'_abort_pool') as abort, patch.object(executor,'_ensure_pool',side_effect=AssertionError('no child')):
+                with self.assertRaisesRegex(parallel.RulesWorkerError,'^rules_worker_pool_failed$'):executor.run_batch([record])
+                self.assertEqual(executor.stats.worker_restarts,2)
+                self.assertEqual(abort.call_count,3)  # two attempts plus outer global abort
+        self.assertEqual(record,saved)
+    def test_mock_commit_failure_rolls_back_before_progress_or_checkpoint(self):
+        import normalization_core as core
+        from unittest.mock import Mock
+        store=object.__new__(core.CompactNormalizationStore)
+        store.layout=types.SimpleNamespace(verify_lease=Mock())
+        store.db=Mock();statements=[];insertions=[]
+        def execute(sql,args=None):
+            statements.append(sql)
+            if sql.startswith('INSERT OR IGNORE INTO rules_cache'):
+                insertions.append(args)
+                if len(insertions)==2:raise MemoryError('generated resource failure')
+            return types.SimpleNamespace(fetchone=lambda:None)
+        store.db.execute.side_effect=execute
+        with patch.object(store,'_cursor_json',return_value='[]'):
+            with self.assertRaises(MemoryError):store.commit_batch('generated-snapshot',[('k1','a','b',b'x'),('k2','c','d',b'y')],[],[],{})
+        store.db.rollback.assert_called_once_with()
+        store.db.commit.assert_not_called()
+        self.assertFalse(any(sql.startswith('INSERT INTO progress') for sql in statements))
+
+    def test_compact_validation_failure_returns_no_partial_entry(self):
+        import normalization_core as core
+        module=types.SimpleNamespace(RULE_VERSION='generated-rules/1',normalize_payload=projection,normalize_record=projection)
+        with patch.dict(sys.modules,{'normalization_domains':module}):artifact=core.run_rules(source())
+        compact={k:v for k,v in artifact.items() if k!='source_original'};compact['gold_status']='admitted'
+        with self.assertRaisesRegex(NormalizationError,'^invalid_compact_rule_state$'):core.CompactNormalizationStore.encode_compact(compact,'a'*64)
+
+
 if __name__ == '__main__':
     unittest.main()
