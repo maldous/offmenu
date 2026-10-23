@@ -136,13 +136,15 @@ def _lookup(candidate, contract, qualification, expected_sha256, barcode,
     _require(_identity(_safe(path).stat()) == _identity(before), 'artifact-changed')
     _require(total == before.st_size and count == q['normalizedRecords']
              and digest.hexdigest() == q['candidateSha256'], 'artifact-pin-or-count-mismatch')
-    return {'sourceId': contract.source_id, 'releaseId': contract.release_id, 'scopeId': contract.scope_id,
+    result = {'sourceId': contract.source_id, 'releaseId': contract.release_id, 'scopeId': contract.scope_id,
             'barcode': barcode, 'status': 'matched' if matches else 'no-match', 'matches': matches,
             'candidateSha256': q['candidateSha256'], 'qualificationSha256': expected_sha256,
             'contractSha256': q['contractSha256'], 'fixture': q['fixture'],
             'scannedRecords': count, 'scannedBytes': total, 'visibility': 'private',
             'barcodeAssurance': 'lexical-source-assertion-only',
             'qualificationMeaning': 'Native selected source scope only; lexical source barcode assertion, no GTIN assurance, cross-source identity, ingredient edges or English/gold admission.'}
+    _require(len(canonical(result)) <= max_result_bytes, 'result-bound')
+    return result
 
 
 @dataclass(frozen=True)

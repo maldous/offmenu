@@ -147,6 +147,26 @@ class NativeBarcodeLookupTests(unittest.TestCase):
         for limits in [{'max_scan_bytes': True}, {'max_matches': 0}, {'max_result_bytes': -1}]:
             with self.subTest(limits=limits), self.assertRaisesRegex(NativeLookupError, 'limits-invalid'): self.lookup(**limits)
 
+    def test_no_match_full_envelope_is_subject_to_result_bound(self):
+        with self.assertRaisesRegex(NativeLookupError, 'result-bound'):
+            self.lookup('unmatched-lexical-value', max_result_bytes=1)
+
+    def test_complete_canonical_response_exact_and_one_less_for_match_and_no_match(self):
+        for barcode in ('00012345', 'unmatched-lexical-value'):
+            with self.subTest(barcode=barcode):
+                result = self.lookup(barcode)
+                bound = len(canonical(result))
+                self.assertEqual(self.lookup(barcode, max_result_bytes=bound), result)
+                with self.assertRaisesRegex(NativeLookupError, 'result-bound'):
+                    self.lookup(barcode, max_result_bytes=bound - 1)
+
+    def test_final_result_bound_does_not_hide_no_match_integrity_failure(self):
+        raw = self.candidate.read_bytes()
+        self.candidate.write_bytes(raw.replace(b'zero', b'Zero'))
+        with self.assertRaisesRegex(NativeLookupError, 'artifact-pin-or-count-mismatch'):
+            self.lookup('unmatched-lexical-value', max_result_bytes=1)
+
+
 
 class RetainedProductShardTests(unittest.TestCase):
     def test_missing_null_and_present_field_pointers_agree_with_indexed_wrappers(self):
