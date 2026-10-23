@@ -1,5 +1,8 @@
 """Authored metadata and isolated qualification, never real source bodies."""
+from contextlib import contextmanager
 from copy import deepcopy
+import os
+import signal
 from dataclasses import replace
 import json
 from pathlib import Path
@@ -15,6 +18,19 @@ from offmenu.refresh.serialization import encode_records
 
 FIXTURES = Path(__file__).parent / 'fixtures/portfolio47'
 NOW = '2026-10-18T00:00:00Z'
+
+
+@contextmanager
+def metadata_deadline():
+    def blocked(signum, frame):
+        raise AssertionError('metadata read blocked on authored FIFO')
+    previous = signal.signal(signal.SIGALRM, blocked)
+    signal.setitimer(signal.ITIMER_REAL, 2)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
 
 
 class Portfolio47Bindings(unittest.TestCase):
@@ -276,6 +292,209 @@ class Portfolio47Bindings(unittest.TestCase):
             q = qualify(contract, bundle, candidate, manifest, scratch_root=base)
             self.assertFalse(q['qualified'])
             self.assertIn('record-schema-invalid', q['errors'])
+
+
+    def _generated_pair(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        raw = (FIXTURES / 'metadata.json').read_bytes()
+        (root / 'metadata.json').write_bytes(raw)
+        (root / 'healthy.json').write_bytes(raw)
+        good = deepcopy(self.spec)
+        good['sourceId'] = 'authored-healthy'
+        good['files']['metadata']['path'] = 'healthy.json'
+        return root, deepcopy(self.spec), good, raw
+
+    def _replace_generated(self, path, raw, kind):
+        if kind == 'regular':
+            replacement = path.with_name('replacement-regular.json')
+            replacement.write_bytes(raw)
+            os.replace(replacement, path)
+        elif kind == 'same-inode-change':
+            path.write_bytes(raw + b' ')
+        else:
+            path.unlink()
+            if kind == 'fifo':
+                os.mkfifo(path)
+            else:
+                replacement = path.with_name('replacement-target.json')
+                replacement.write_bytes(raw)
+                path.symlink_to(replacement)
+
+    def _assert_isolated_change(self, report):
+        bad, good = report['results']
+        self.assertEqual(bad['state'], 'malformed', bad)
+        self.assertIn('metadata-malformed-or-pin-mismatch', bad['diagnostics'])
+        self.assertIsNone(bad['readyFor'])
+        self.assertEqual(good['state'], 'ready', good)
+        self.assertFalse(report['stagingAccepted'])
+        self.assertFalse(bad['dataProcessingAuthorized'])
+        self.assertEqual(bad['acceptedRecords'], 0)
+        self.assertEqual(report['payloadReads'], 0)
+
+    def test_generated_fifo_and_directory_remain_missing_and_peer_continues(self):
+        for kind in ('fifo', 'directory'):
+            with self.subTest(kind=kind):
+                root, bad, good, raw = self._generated_pair()
+                path = root / 'metadata.json'
+                path.unlink()
+                os.mkfifo(path) if kind == 'fifo' else path.mkdir()
+                with metadata_deadline():
+                    report = binding.plan([bad, good], metadata_root=root, now=NOW)
+                self.assertEqual([r['state'] for r in report['results']], ['missing', 'ready'])
+
+    def test_generated_replacement_before_open_never_blocks_or_follows(self):
+        for kind in ('fifo', 'symlink', 'regular'):
+            with self.subTest(kind=kind):
+                root, bad, good, raw = self._generated_pair()
+                target = root / 'metadata.json'
+                real_open, real_path_open = os.open, Path.open
+                replaced = False
+                def replace_once(path):
+                    nonlocal replaced
+                    if not replaced and Path(path) == target:
+                        replaced = True
+                        self._replace_generated(target, raw, kind)
+                def fd_open(path, flags, *args, **kwargs):
+                    replace_once(path)
+                    return real_open(path, flags, *args, **kwargs)
+                def path_open(path, *args, **kwargs):
+                    replace_once(path)
+                    return real_path_open(path, *args, **kwargs)
+                with metadata_deadline(), patch.object(os, 'open', side_effect=fd_open), \
+                        patch.object(Path, 'open', path_open):
+                    report = binding.plan([bad, good], metadata_root=root, now=NOW)
+                self.assertTrue(replaced)
+                self._assert_isolated_change(report)
+
+    def test_generated_replacement_during_read_is_isolated(self):
+        for kind in ('fifo', 'symlink', 'regular', 'same-inode-change'):
+            with self.subTest(kind=kind):
+                root, bad, good, raw = self._generated_pair()
+                target = root / 'metadata.json'
+                real_path_open, real_fdopen = Path.open, os.fdopen
+                wrapped = False
+                owner = self
+                class ChangingStream:
+                    def __init__(self, stream):
+                        self.stream = stream
+                    def __enter__(self):
+                        return self
+                    def __exit__(self, *args):
+                        return self.stream.__exit__(*args)
+                    def fileno(self):
+                        return self.stream.fileno()
+                    def read(self, *args):
+                        value = self.stream.read(*args)
+                        owner._replace_generated(target, raw, kind)
+                        return value
+                def path_open(path, *args, **kwargs):
+                    nonlocal wrapped
+                    stream = real_path_open(path, *args, **kwargs)
+                    if not wrapped and Path(path) == target:
+                        wrapped = True
+                        return ChangingStream(stream)
+                    return stream
+                def fdopen(fd, *args, **kwargs):
+                    nonlocal wrapped
+                    stream = real_fdopen(fd, *args, **kwargs)
+                    if not wrapped:
+                        wrapped = True
+                        return ChangingStream(stream)
+                    return stream
+                with metadata_deadline(), patch.object(Path, 'open', path_open), \
+                        patch.object(os, 'fdopen', side_effect=fdopen):
+                    report = binding.plan([bad, good], metadata_root=root, now=NOW)
+                self.assertTrue(wrapped)
+                self._assert_isolated_change(report)
+
+    def test_generated_replacement_during_parse_is_isolated(self):
+        for kind in ('fifo', 'symlink', 'regular', 'same-inode-change'):
+            with self.subTest(kind=kind):
+                root, bad, good, raw = self._generated_pair()
+                decode = binding.strict_json
+                changed = False
+                def consume(value):
+                    nonlocal changed
+                    document = decode(value)
+                    if not changed:
+                        changed = True
+                        self._replace_generated(root / 'metadata.json', raw, kind)
+                    return document
+                with metadata_deadline(), patch.object(binding, 'strict_json', side_effect=consume):
+                    report = binding.plan([bad, good], metadata_root=root, now=NOW)
+                self._assert_isolated_change(report)
+
+    def test_generated_replacement_at_final_validation_is_isolated(self):
+        for kind in ('fifo', 'symlink', 'regular', 'same-inode-change'):
+            with self.subTest(kind=kind):
+                root, bad, good, raw = self._generated_pair()
+                validate = binding.field_origin_errors
+                changed = False
+                def final_validation(*args, **kwargs):
+                    nonlocal changed
+                    errors = validate(*args, **kwargs)
+                    if not changed:
+                        changed = True
+                        self._replace_generated(root / 'metadata.json', raw, kind)
+                    return errors
+                with metadata_deadline(), patch.object(binding, 'field_origin_errors', side_effect=final_validation):
+                    report = binding.plan([bad, good], metadata_root=root, now=NOW)
+                self._assert_isolated_change(report)
+
+    def test_generated_earlier_input_stays_pinned_through_later_parse(self):
+        root, bad, good, raw = self._generated_pair()
+        second = deepcopy(bad['files']['metadata'])
+        second['path'] = 'second.json'
+        bad['files']['second'] = second
+        (root / 'second.json').write_bytes(raw)
+        decode = binding.strict_json
+        calls = 0
+        def consume(value):
+            nonlocal calls
+            document = decode(value)
+            calls += 1
+            if calls == 2:
+                self._replace_generated(root / 'metadata.json', raw, 'regular')
+            return document
+        with metadata_deadline(), patch.object(binding, 'strict_json', side_effect=consume):
+            report = binding.plan([bad, good], metadata_root=root, now=NOW)
+        self._assert_isolated_change(report)
+
+    def test_generated_single_bounded_nofollow_descriptor_is_closed(self):
+        root, bad, good, raw = self._generated_pair()
+        real_open, real_fdopen = os.open, os.fdopen
+        opened, limits = [], []
+        class BoundedStream:
+            def __init__(self, stream):
+                self.stream = stream
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return self.stream.__exit__(*args)
+            def fileno(self):
+                return self.stream.fileno()
+            def read(self, limit):
+                limits.append(limit)
+                return self.stream.read(limit)
+        def fdopen(fd, *args, **kwargs):
+            return BoundedStream(real_fdopen(fd, *args, **kwargs))
+        def track_open(path, flags, *args, **kwargs):
+            fd = real_open(path, flags, *args, **kwargs)
+            opened.append((fd, flags))
+            return fd
+        with patch.object(os, 'open', side_effect=track_open), \
+                patch.object(os, 'fdopen', side_effect=fdopen), \
+                patch.object(Path, 'open', side_effect=AssertionError('metadata pathname reopened')):
+            result = self.inspect(bad, root=root)
+        self.assertEqual(result['state'], 'ready', result)
+        self.assertEqual(len(opened), 1)
+        self.assertTrue(opened[0][1] & os.O_NONBLOCK)
+        self.assertTrue(opened[0][1] & os.O_NOFOLLOW)
+        self.assertEqual(limits, [len(raw) + 1])
+        with self.assertRaises(OSError):
+            os.fstat(opened[0][0])
 
 
 if __name__ == '__main__':
