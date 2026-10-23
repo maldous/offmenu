@@ -93,7 +93,7 @@ class NormalizationRunnerTests(unittest.TestCase):
         runner = self.case.case.new_runner()
         def prepare(state, config):
             self.assertEqual(state, runner.state/'ingest')
-            self.assertEqual(config['workers'], 16)
+            self.assertEqual(config['workers'], json.loads((self.root/'manual-action'/'plan.json').read_text())['max_parallel'])
             return {'input_sha256': self.identity, 'config': config}
         def run(prepared, report_callback):
             self.calls += 1
