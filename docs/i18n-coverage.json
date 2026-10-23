@@ -1,9 +1,9 @@
 {
   "schema": "offmenu-ui-catalogue/1",
   "sourceLanguage": "en",
-  "messages": 3005,
+  "messages": 3014,
   "arabicTranslated": 376,
-  "arabicMissing": 2629,
+  "arabicMissing": 2638,
   "arabicComplete": false,
   "entries": {
     "\nAlways check the package for allergens.": {
@@ -445,6 +445,12 @@
     "../research/manifest.json": {
       "sources": [
         "cloud/catalogue.mjs"
+      ],
+      "arabic": false
+    },
+    "../schemas/private-portable-package-v1.schema.json": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
       ],
       "arabic": false
     },
@@ -5083,6 +5089,12 @@
         "public/locales/ar.js"
       ],
       "arabic": true
+    },
+    "Downloaded copies cannot be recalled.": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
+      ],
+      "arabic": false
     },
     "Drinking water": {
       "sources": [
@@ -10588,6 +10600,12 @@
       ],
       "arabic": false
     },
+    "Original grants, sessions, entitlements and credentials are never restored.": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
+      ],
+      "arabic": false
+    },
     "Original ingredient wording": {
       "sources": [
         "public/app.js"
@@ -11367,6 +11385,12 @@
     "Proposal source": {
       "sources": [
         "public/care-ui.js"
+      ],
+      "arabic": false
+    },
+    "Protected data unavailable.": {
+      "sources": [
+        "cloud/byoc-envelope-v1.mjs"
       ],
       "arabic": false
     },
@@ -15459,6 +15483,12 @@
       ],
       "arabic": true
     },
+    "Unknown versioned extension values remain source-bound; no implicit reference interpretation.": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
+      ],
+      "arabic": false
+    },
     "Unlisted curation file": {
       "sources": [
         "cloud/corpus.mjs"
@@ -16669,6 +16699,12 @@
       ],
       "arabic": false
     },
+    "algorithm,ciphertext,custody,keyRef,keyVersion,nonce,version": {
+      "sources": [
+        "cloud/byoc-envelope-v1.mjs"
+      ],
+      "arabic": false
+    },
     "almond flour": {
       "sources": [
         "public/ingredients.js"
@@ -17847,6 +17883,24 @@
     "product_description:\"": {
       "sources": [
         "cloud/provider-data.mjs"
+      ],
+      "arabic": false
+    },
+    "profile.": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "profile.full": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
+      ],
+      "arabic": false
+    },
+    "profile.medical_plans": {
+      "sources": [
+        "cloud/private-portability-v1.mjs"
       ],
       "arabic": false
     },
