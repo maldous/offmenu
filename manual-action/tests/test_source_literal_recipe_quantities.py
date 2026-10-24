@@ -9,6 +9,7 @@ from dataclasses import replace
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import gold_recipe_actions as actions
+from source_literal_recipe_quantities import validate_source_literal, SourceLiteralQuantityError
 from test_gold_recipe_actions import (PinnedNativeFixture, _source_literal_case,
     _record, _rules_for, _review, _connections, _span)
 
@@ -83,6 +84,41 @@ class SourceLiteralQuantityTests(unittest.TestCase):
         connections['qualification']['content_sha256'] = self.n.core.digest(
             {k: v for k, v in connections.items() if k != 'qualification'})
         return actions.connect_recipe_actions(rules, review, native=self.native, connections=connections, **kwargs)
+
+    def test_literal_evidence_binds_complete_numeric_expression_in_full_source(self):
+        for count, amount, phrase in ((True, '4', '4 large eggs'), (False, '2', '2 handfuls')):
+            for prefix in ('1/', '1 / ', '1⁄', '1∕', '3–', '3 – ', '3—', '3-', '3‑', '3 to ',
+                           '-', '- ', '−', '− ', '+', '+ ', '＋', '1.', '1,', '1, ',
+                           '-(', '1/ (', '3–['):
+                for suffix_only_span in (False, True):
+                    with self.subTest(count=count, prefix=prefix, suffix_only_span=suffix_only_span):
+                        rules, review, c = _source_literal_case(self.n, count=count)
+                        ingredient = rules['normalized']['fields']['recipe_menu_template']['ingredients'][0]
+                        row = c['source_literal_quantities'][0]
+                        source = copy.deepcopy(rules['source_original'])
+                        text = prefix + phrase
+                        source['ingredients'][0]['raw_text'] = text
+                        row['evidence'] = [_span('/ingredients/0/raw_text', text, phrase if suffix_only_span else text)]
+                        with self.assertRaises(SourceLiteralQuantityError):
+                            validate_source_literal(row, ingredient,
+                                allowed_pointers={'/ingredients/0/raw_text'}, source=source,
+                                citations={'citation:generated': {'state':'verified'}}, validate_evidence=actions._evidence)
+
+    def test_full_source_token_check_preserves_standalone_literals(self):
+        for count, phrase in ((True, '4 large eggs'), (False, '2 handfuls')):
+            for prefix, suffix in (('', ''), ('* ', ''), ('Use ', '.'), ('(', ')')):
+                with self.subTest(count=count, prefix=prefix):
+                    rules, review, c = _source_literal_case(self.n, count=count)
+                    ingredient = rules['normalized']['fields']['recipe_menu_template']['ingredients'][0]
+                    row = c['source_literal_quantities'][0]
+                    source = copy.deepcopy(rules['source_original'])
+                    text = prefix + phrase + suffix
+                    source['ingredients'][0]['raw_text'] = text
+                    row['evidence'] = [_span('/ingredients/0/raw_text', text, phrase)]
+                    result = validate_source_literal(row, ingredient,
+                        allowed_pointers={'/ingredients/0/raw_text'}, source=source,
+                        citations={'citation:generated': {'state':'verified'}}, validate_evidence=actions._evidence)
+                    self.assertEqual(row, result)
 
     def test_literal_and_known_metric_allocate_once_unknown_extra_stays_none(self):
         rules, review, c = mixed_case(self.n)

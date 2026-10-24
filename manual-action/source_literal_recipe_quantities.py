@@ -6,10 +6,36 @@ It does not infer physical equivalence, food mass, serving size or scaling.
 """
 import copy
 import re
+import unicodedata
 
 
 class SourceLiteralQuantityError(ValueError):
     pass
+
+
+def _complete_literal_phrase(phrase, spans, source):
+    # Evidence has already been validated against this source. Check numeric
+    # boundaries in the full value, not just the selected span: a span starting
+    # at '4' must not hide the preceding '1/', range operator or unary sign.
+    pattern = r'(?<![\w.])' + re.escape(phrase) + r'(?!\w)'
+    for span in spans:
+        raw = source
+        for part in span['pointer'][1:].split('/'):
+            key = part.replace('~1', '/').replace('~0', '~')
+            raw = raw[int(key)] if isinstance(raw, list) else raw[key]
+        for match in re.finditer(pattern, raw):
+            if not span['start'] <= match.start() < match.end() <= span['end']:
+                continue
+            prefix = raw[:match.start()]
+            tail = prefix.rstrip()
+            while tail.endswith(('(', '[')):
+                tail = tail[:-1].rstrip()
+            if tail and (tail[-1] in '/⁄∕+−﹣－＋﹢±' or unicodedata.category(tail[-1]) == 'Pd'):
+                continue
+            if re.search(r'\d\s*(?:[.,]|to)\s*$', prefix, re.IGNORECASE):
+                continue
+            return True
+    return False
 
 
 def validate_source_literal(row, ingredient, *, allowed_pointers, source,
@@ -38,8 +64,7 @@ def validate_source_literal(row, ingredient, *, allowed_pointers, source,
     if any(span['pointer'] not in allowed_pointers for span in row['evidence']):
         raise SourceLiteralQuantityError('source_literal_evidence_wrong_line')
     phrase = value + ((' ' + descriptor) if descriptor else '') + ' ' + unit
-    pattern = r'(?<![\w.])' + re.escape(phrase) + r'(?!\w)'
-    if not any(re.search(pattern, span['text']) for span in row['evidence']):
+    if not _complete_literal_phrase(phrase, row['evidence'], source):
         raise SourceLiteralQuantityError('source_literal_phrase_not_in_evidence')
     ids = row['citation_ids']
     if (not isinstance(ids, list) or not ids or any(not isinstance(i, str) for i in ids)
