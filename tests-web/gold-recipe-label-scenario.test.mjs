@@ -19,7 +19,8 @@ function fixture() {
       quantityEvidence: {runId, actionId: 'test:action:0', ingredientId, citationIds: ['test:citation'],
         allocation: {factor: '1', normalized_unit: 'g', original: {unit: 'g', value: String(massG)},
           scaled_min: String(massG), scaled_max: String(massG),
-          normalized: {exact: true, status: 'normalized', unit: 'g', value: String(massG), issues: []}}},
+          normalized: {exact: true, status: 'normalized', unit: 'g', dimension: 'mass',
+            original: {unit: 'g', value: String(massG)}, value: String(massG), issues: []}}},
       selection: {origin: 'GENERATED', productId: id, variantAssumption: 'Explicit test variant',
         massStateAssumption: 'Input mass of the labeled product only; no prepared yield'},
       product: {id, entityId: String(i + 1).repeat(64), domain: 'barcodes', type: 'barcode-product',
@@ -32,6 +33,17 @@ function fixture() {
           uncertainty: 'Generated source rounding; not assay', underlyingIndependentMeasurementCount: 0},
         supportRecords: support('assertion', assertion, 'field')} ]};
   });
+  for (const [i, line] of lines.entries()) {
+    const q = line.quantityEvidence;
+    line.ingredientEntityId = String(i + 3).repeat(64); q.slotName = 'input' + i;
+    const evidence = JSON.stringify([{pointer: '/steps/0/raw_text', start: 0, end: 3,
+      text: 'Add', offset_unit: 'unicode_codepoint'}]);
+    q.ingredientRecord = {run_id: q.runId, action_id: q.actionId, slot_name: q.slotName,
+      source_ingredient_line_id: line.ingredientId, ingredient_entity_id: line.ingredientEntityId,
+      allocation_json: JSON.stringify(q.allocation), evidence_json: evidence};
+    q.ingredientSupport = [{run_id: q.runId, action_id: q.actionId, slot_name: q.slotName,
+      citation_id: 'test:citation', evidence_json: evidence}];
+  }
   return {schemaVersion: SCENARIO_VERSION, id: 'test:scenario', snapshot: {...selected},
     mode: 'GENERATED_SOURCE_LABEL_SCENARIO', recipe: {runId, repeatCount: 1,
       ingredientIds: lines.map(l => l.ingredientId)}, lines, metrics: [metric],
@@ -135,4 +147,61 @@ test('snapshot selection, nonfinite values and structural/count/byte limits fail
   assert.throws(() => evaluate(tooMany), /count-limit/);
   const huge = fixture(); huge.id = 'x'.repeat(524288); assert.throws(() => evaluate(huge), /byte-limit/);
   const cycle = fixture(); cycle.loop = cycle; assert.throws(() => evaluate(cycle), /json-required/);
+});
+
+
+test('native quantity support binds exact run, action, slot, source ingredient and evidence', () => {
+  const changes = [
+    q => q.ingredientSupport = [],
+    q => q.actionId = 'test:foreign-action',
+    q => q.ingredientSupport[0].run_id = 'recipe-actions:' + 'f'.repeat(64),
+    q => q.ingredientSupport[0].slot_name = 'foreign-slot',
+    q => q.ingredientSupport[0].evidence_json = '[]',
+    q => q.allocation.normalized.dimension = 'volume',
+    q => delete q.ingredientRecord,
+    q => q.ingredientRecord.run_id = 'recipe-actions:' + 'e'.repeat(64),
+    q => q.ingredientRecord.source_ingredient_line_id = 'test:foreign-ingredient',
+    q => q.ingredientRecord.ingredient_entity_id = 'f'.repeat(64),
+    q => q.ingredientRecord.allocation_json = 'null', // A later qualitative reference is not another debit.
+    q => q.ingredientRecord.allocation_json = 'invalid',
+    q => q.ingredientRecord.evidence_json = '[]',
+    q => q.ingredientSupport[0].citation_id = 'test:foreign-citation',
+    q => q.ingredientSupport[0].action_id = 'test:foreign-action',
+    q => q.ingredientSupport.push(structuredClone(q.ingredientSupport[0])),
+    q => q.ingredientSupport[0].evidence_json = JSON.stringify([{pointer: '/steps/0/raw_text',
+      start: 1, end: 4, text: 'Add', offset_unit: 'unicode_codepoint'}])
+  ];
+  for (const change of changes) {
+    const input = fixture(); change(input.lines[0].quantityEvidence);
+    const result = evaluate(input).metrics['test:protein'];
+    assert.equal(result.contributions[0].value, null, change.toString());
+    assert.ok(result.contributions[0].holdReasons.length);
+    assert.equal(result.contributions[1].value, 6);
+    assert.equal(result.knownSubtotal, 6); assert.equal(result.conditionalInputSum, null);
+  }
+});
+
+test('a coherent but non-mass allocation cannot qualify, and valid record order is immaterial', () => {
+  const input = fixture(), q = input.lines[0].quantityEvidence;
+  q.allocation.normalized.dimension = 'volume';
+  q.ingredientRecord.allocation_json = JSON.stringify(q.allocation);
+  assert.equal(evaluate(input).metrics['test:protein'].contributions[0].value, null);
+  const valid = fixture();
+  valid.lines[0].quantityEvidence.ingredientRecord.allocation_json = JSON.stringify(
+    Object.fromEntries(Object.entries(valid.lines[0].quantityEvidence.allocation).reverse()));
+  assert.equal(evaluate(valid).metrics['test:protein'].conditionalInputSum, 12);
+  const record = valid.lines[0].quantityEvidence.ingredientRecord;
+  assert.equal(record.source_ingredient_line_id, valid.lines[0].ingredientId);
+  assert.equal(record.action_id, valid.lines[0].quantityEvidence.actionId);
+});
+
+test('native evidence uses Unicode codepoint offsets, not UTF16 width or empty markers', () => {
+  const input = fixture(), q = input.lines[0].quantityEvidence;
+  const spans = [{pointer: '/steps/0/raw_text', start: 4, end: 5, text: '🥣', offset_unit: 'unicode_codepoint'}];
+  q.ingredientRecord.evidence_json = q.ingredientSupport[0].evidence_json = JSON.stringify(spans);
+  assert.equal(evaluate(input).metrics['test:protein'].conditionalInputSum, 12);
+  spans[0].end = 6;
+  q.ingredientRecord.evidence_json = q.ingredientSupport[0].evidence_json = JSON.stringify(spans);
+  const metric = evaluate(input).metrics['test:protein'];
+  assert.equal(metric.contributions[0].value, null); assert.equal(metric.contributions[1].value, 6);
 });

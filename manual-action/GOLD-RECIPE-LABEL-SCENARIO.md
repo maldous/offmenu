@@ -22,7 +22,21 @@ exactly match the separately supplied `databaseSha256` and `admissionSha256`.
 `recipe` specifies an exact `recipe-actions:<64-hex>` run, `repeatCount: 1` and the
 complete unique set of ingredient IDs. Each `lines[]` item has an ingredient ID,
 positive `massG`, `massUnit: 'g'` and its admitted exact, factor-one gram allocation
-under `quantityEvidence`. Later references to the same ingredient are not new
+under `quantityEvidence`. That evidence must include `slotName`, the complete
+supplied native `ingredientRecord`, and `ingredientSupport`. The record's exact
+run/action/slot/source-ingredient ID and ingredient entity ID must agree with the
+line (`ingredientEntityId`) and its evidence. Parsed `allocation_json` must match
+the supplied factor-one allocation, whose normalized dimension is explicitly
+`mass`, whose original/normalized-original unit and value agree, and whose exact
+amount agrees with input grams. Each quantity citation must have exactly one
+matching run/action/slot support with the same nonempty Unicode evidence as the
+record. Source pointer, offsets and codepoint length must be coherent; malformed,
+missing, duplicate or foreign support holds that line's contributions while
+healthy siblings remain available. These checks bind supplied records only: they
+do not open source files, authenticate evidence or establish actual product
+choice. Native JSON fields are bounded at 64 KiB and 64 evidence spans.
+
+Later references to the same ingredient are not new
 inputs; duplicate or omitted ingredient IDs fail the entire request.
 
 Each line explicitly supplies `selection.origin: 'GENERATED'`, its exact source
@@ -81,7 +95,8 @@ mutates no inputs and returns a detached copy of the supplied provenance.
 
 Generated tests cover arithmetic, actual/absent/foreign selection, missing versus
 recorded zero, complete once-only ingredient coverage, quantities, product types,
-source-reference rejection, context, units, definitions, methods, citation rights,
+source-reference rejection, exact native record/support/citation/Unicode/mass
+bindings, context, units, definitions, methods, citation rights,
 ambiguous observations, snapshot selection and bounds:
 
 ```sh

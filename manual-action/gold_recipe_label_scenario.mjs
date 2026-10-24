@@ -41,6 +41,42 @@ function supported(records, kind, target, scope, ids) {
     && s.target_id === target && s.support_scope === scope && s.citation_id === cid && sha(s.evidence_sha256)));
 }
 
+function nativeJSON(raw) {
+  if (typeof raw !== 'string') return null;
+  try {
+    const value = JSON.parse(raw);
+    bounded(value, 65536);
+    return value;
+  } catch { return null; }
+}
+
+function nativeSpans(value) {
+  return Array.isArray(value) && value.length > 0 && value.length <= 64
+    && value.every(s => s && typeof s === 'object' && Object.keys(s).length === 5
+      && typeof s.pointer === 'string' && /^\/steps\/(0|[1-9][0-9]*)\/raw_text$/.test(s.pointer)
+      && Number.isSafeInteger(s.start) && Number.isSafeInteger(s.end)
+      && 0 <= s.start && s.start < s.end && s.end <= 1e6
+      && s.offset_unit === 'unicode_codepoint' && text(s.text)
+      && Array.from(s.text).length === s.end - s.start);
+}
+
+function nativeIngredientBound(line, input) {
+  const q = line.quantityEvidence, record = q?.ingredientRecord, supports = q?.ingredientSupport;
+  const evidence = nativeJSON(record?.evidence_json);
+  if (!(record && sha(line.ingredientEntityId) && text(q?.slotName)
+    && record.run_id === input.recipe.runId && record.run_id === q.runId
+    && record.action_id === q.actionId && record.slot_name === q.slotName
+    && record.source_ingredient_line_id === line.ingredientId && record.source_ingredient_line_id === q.ingredientId
+    && record.ingredient_entity_id === line.ingredientEntityId
+    && same(nativeJSON(record.allocation_json), q.allocation) && nativeSpans(evidence)
+    && cited(q.citationIds, input.citations) && Array.isArray(supports)
+    && supports.length === q.citationIds.length
+    && new Set(supports.map(s => s?.citation_id)).size === supports.length)) return false;
+  return supports.every(s => s?.run_id === record.run_id && s.action_id === record.action_id
+    && s.slot_name === record.slot_name && q.citationIds.includes(s.citation_id)
+    && same(nativeJSON(s.evidence_json), evidence));
+}
+
 function lineReasons(line, input) {
   const q = line.quantityEvidence, a = q?.allocation, p = line.product, s = line.selection;
   const reasons = [];
@@ -49,11 +85,13 @@ function lineReasons(line, input) {
     && text(q?.actionId) && a?.original?.unit === 'g' && Number(a.original.value) === line.massG
     && a?.factor === '1' && a?.normalized_unit === 'g' && a?.normalized?.exact === true
     && a?.normalized?.status === 'normalized' && a?.normalized?.unit === 'g'
+    && a?.normalized?.dimension === 'mass' && same(a.normalized.original, a.original)
     && Array.isArray(a.normalized.issues) && a.normalized.issues.length === 0
     && Number(a.normalized.value) === line.massG && Number(a.scaled_min) === line.massG
     && Number(a.scaled_max) === line.massG && cited(q?.citationIds, input.citations))) {
     reasons.push('exact-once-gram-allocation-unqualified');
   }
+  if (!nativeIngredientBound(line, input)) reasons.push('native-ingredient-record-or-support-unqualified');
   if (!(s?.origin === 'GENERATED' && text(s.productId) && s.productId === p?.id
     && text(s.variantAssumption) && text(s.massStateAssumption))) reasons.push('explicit-generated-product-selection-required');
   if (!(p?.domain === 'barcodes' && p?.type === 'barcode-product' && p?.state === 'verified'
