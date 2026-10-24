@@ -183,6 +183,29 @@ class ProductSourceSubsetTests(unittest.TestCase):
         self.assertTrue(all(e['state']=='held' for e in r['rows']['gold_entities']))
         self.assertNotIn('admission_profile',r)
 
+    def test_source_observation_rejects_missing_unknown_and_wrong_dimension_units(self):
+        for unit,dimension in [(None,'mass'),('absent','mass'),('','mass'),(' ','mass'),('unknown','mass'),('g','energy'),('mg','energy'),('mL','mass')]:
+            with self.subTest(unit=unit,dimension=dimension):
+                p,q=product_subset_fixture();value=p['common']['assertions'][0]['value']
+                value.update(unitId=unit,dimension=dimension)
+                p['metrics'][0].update(canonical_unit_id=unit,dimension=dimension)
+                if unit=='absent':
+                    value.pop('unitId');p['metrics'][0].pop('canonical_unit_id')
+                result=self.build(p,q)
+                self.assertEqual('held',result['rows']['gold_observations'][0]['state'])
+                self.assertEqual([],gold.select_observations(result,metric_id='protein')['preferred_ids'])
+                self.assertEqual({'product','canonical'},{e['resource_id'] for e in result['rows']['gold_entities'] if e['state']=='verified'})
+
+    def test_source_zero_with_recognized_units_keeps_original_value_and_unit_lexemes(self):
+        for unit,dimension,source_unit in [('g','mass','G'),('mg','mass','MG'),('µg','mass','UG'),('kg','mass','kg'),('kcal','energy','KCAL'),('kJ','energy','KJ'),('mL','volume','ml')]:
+            with self.subTest(unit=unit,dimension=dimension):
+                p,q=product_subset_fixture();value=p['common']['assertions'][0]['value']
+                value.update(value=0,sourceValue='0.0',unitId=unit,sourceUnit=source_unit,dimension=dimension)
+                p['metrics'][0].update(canonical_unit_id=unit,dimension=dimension)
+                result=self.build(p,q);observation=result['rows']['gold_observations'][0]
+                self.assertEqual('verified',observation['state'])
+                self.assertEqual(value,json.loads(observation['original_json']))
+
 
 class GoldBuilderTests(unittest.TestCase):
     def add_subset_resource(self, packet, q, source_id, identity):
