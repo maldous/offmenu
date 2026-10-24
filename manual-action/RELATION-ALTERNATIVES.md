@@ -65,6 +65,26 @@ unconditional paths remain available. Results include the original relation
 payloads with their source paths, citations and scope/reuse restrictions; this
 lookup neither interprets free-text reuse restrictions nor grants a new use.
 It does not qualify cooking execution, nutrition, interchangeability or safety.
+Each result explicitly reports `productFitAcceptance: false`. Every returned
+path carries `sourceScope` for its exact recipe occurrence and mention, plus
+`productFitQualification: {"state":"held","reason":"selected-tuple-fit-contract-not-evaluated"}`.
+Together with the path's `canonicalId` and `productId`, this identifies the exact
+source/mention/class/product tuple whose fit remains held. Supported source
+identity relations remain available as structural evidence. A selected canonical
+alternative does not qualify the fit of every product in that class. Neither
+free-text `reuseScope` nor documentary claims in relation metadata grant fit
+acceptance, even when they name an exact product or resemble a review receipt.
+Original relation payloads, citations and reuse restrictions remain unchanged.
+
+This is an explicit documentary/held boundary, not a positive selected-tuple
+proof evaluator. All fits remain held, including tuples reviewed outside this
+consumer. Missing, stale or conflicting documentary proofs cannot lift that
+hold. A positive fit consumer requires a separately reviewed enforceable contract
+bound to exact source occurrence, mention, class, product and supporting review
+evidence. This change introduces no proof input, allowlist, predicate or schema
+extension and grants no new source use. Callers must not consume structural
+paths as accepted product fits.
+
 An attributable requested mention whose application mapping is held supplies
 source context only. It is reported as held while independent qualified siblings
 remain eligible; it cannot supply a sugar path. Unknown recipe occurrences,

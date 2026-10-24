@@ -36,6 +36,36 @@ def fixture(conditional=False):
 
 
 class GoldBarcodeLookupTests(unittest.TestCase):
+    def test_product_filter_keeps_structural_paths_without_granting_fit(self):
+        p, q, source = alternatives.two_member_fixture()
+        barcode(p, q)
+        barcode(p, q, product='other-member', identity='other-barcode')
+        with base.sqlite_proposal(base.build(p, q)) as db:
+            before = db.total_changes
+            for selected, expected in ((None, {'product', 'other-member'}),
+                                       ('product', {'product'}), ('other-member', {'other-member'})):
+                result = reader.read_barcode(db, CODE, selection=SELECTED, selected_product_id=selected)
+                self.assertEqual(expected, {p['sourceProductId'] for p in result['products']})
+                self.assertEqual(len(expected), len(result['paths']))
+                self.assertFalse(result['productFitAcceptance'])
+                self.assertFalse(result['automaticProductSelection'])
+                self.assertFalse(result['sourceReferenceNutritionTransfer'])
+                self.assertIsNone(result['recipeNutrientTotals'])
+                for path in result['paths']:
+                    self.assertEqual(source, path['sourceScope'])
+                    self.assertEqual(dict(state='held', reason='selected-tuple-fit-contract-not-evaluated'),
+                                     path['productFitQualification'])
+                    self.assertIn('Selected product only', path['relations'][1]['scope']['reuseScope'])
+            self.assertEqual(before, db.total_changes)
+
+    def test_no_result_or_exact_wrong_filter_never_claims_product_fit(self):
+        p, q, _ = fixture()
+        with base.sqlite_proposal(base.build(p, q)) as db:
+            for code, selected in (('999999', None), (CODE, 'absent-product')):
+                result = reader.read_barcode(db, code, selection=SELECTED, selected_product_id=selected)
+                self.assertFalse(result['productFitAcceptance'])
+                self.assertEqual([], result['paths'])
+
     def test_complete_structural_source_path_and_context_without_transfer(self):
         p,q,_=fixture()
         with base.sqlite_proposal(base.build(p,q)) as db:

@@ -50,6 +50,20 @@ produce no conditional paths; independent unconditional paths remain eligible.
 Scoped choices and qualification holds are included in the response.
 
 `paths` are qualified product → class → source mention → recipe associations.
+Qualification here is source-structure qualification. The result explicitly
+reports `productFitAcceptance: false`; every path propagates the relation
+reader's `productFitQualification` with state `held` and reason
+`selected-tuple-fit-contract-not-evaluated`. The path's exact `sourceScope` and
+entity IDs bind that held status to its source occurrence/mention/class/product
+tuple; original relations, citations and `reuseScope` remain available.
+`--selected-product-id` filters exact source products and does not prove fit.
+Choosing a canonical ingredient alternative does not prove member-product fit
+either. Both a documentary selected product and its structural class siblings
+remain held for fit consumption. Missing, stale, conflicting or apparently
+matching prose/metadata proofs cannot grant acceptance. No positive fit-proof
+input or evaluator is implemented; that remains a separate reviewed contract
+dependency. No allowlist is added to GOLD, and no identity, cooking, safety,
+nutrition or automatic-choice authority follows from this marker.
 They retain the actual relation payloads, citations and scopes. The `entities`
 map also contains source-qualified candidates examined while evaluating choices;
 its presence is not selection or a recommendation. Full source resource records,

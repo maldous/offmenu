@@ -134,6 +134,7 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
         purpose='private-local source-structure lookup; retain all source-use restrictions',
         identifierProperties=list(BARCODE_PROPERTIES),
         automaticProductSelection=False,universalIdentity=False,completeExecutableRecipe=False,
+        productFitAcceptance=False,
         recipeNutrientTotals=None,sourceReferenceNutritionTransfer=False,gs1Allocation='NOT_CHECKED')
     budget=_Budget(db,max_rows,max_steps,max_seconds,barcode);cache={};known_choices=set();path_keys=set()
     def size():
@@ -310,7 +311,8 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
                                 path_keys.add(key)
                                 out['paths'].append(dict(productEntityId=product['entity_id'],canonicalEntityId=canonical['entity_id'],
                                     mentionEntityId=mention['entity_id'],recipeEntityId=recipe['entity_id'],
-                                    sourceScope=scope,relations=path['relations']))
+                                    sourceScope=scope,relations=path['relations'],
+                                    productFitQualification=path['productFitQualification']))
                                 menu_edges=budget.query("SELECT e.*,m.entity_id menu_id FROM gold_edges e JOIN gold_entities m "
                                     "ON m.entity_id=CASE WHEN e.subject_id=? THEN e.object_id ELSE e.subject_id END "
                                     "WHERE (e.subject_id=? OR e.object_id=?) AND m.entity_type='menu'",(recipe['entity_id'],recipe['entity_id'],recipe['entity_id']))
