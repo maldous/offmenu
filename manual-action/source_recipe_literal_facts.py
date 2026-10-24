@@ -225,10 +225,18 @@ def _row_evidence(row, source, citations, *, whole=False):
 def _numeric_boundary(span, source):
     raw = _span(span, source)
     before, after = raw[:span["start"]].rstrip(), raw[span["end"]:].lstrip()
-    while before and (unicodedata.category(before[-1]) in ("Ps", "Pi") or before[-1] in "\"'"):
-        before = before[:-1].rstrip()
-    while after and (unicodedata.category(after[0]) in ("Pe", "Pf") or after[0] in "\"'"):
-        after = after[1:].lstrip()
+    prefix_bytes = 0
+    while before and (unicodedata.category(before[-1]) in ("Ps", "Pe", "Pi", "Pf") or before[-1] in "\"'"):
+        trimmed = before[:-1].rstrip()
+        prefix_bytes += len(before[len(trimmed):].encode("utf-8"))
+        _need(prefix_bytes <= MAX_AMOUNT_BYTES, "numeric operand prefix limit")
+        before = trimmed
+    prefix_bytes = 0
+    while after and (unicodedata.category(after[0]) in ("Ps", "Pe", "Pi", "Pf") or after[0] in "\"'"):
+        trimmed = after[1:].lstrip()
+        prefix_bytes += len(after[:len(after) - len(trimmed)].encode("utf-8"))
+        _need(prefix_bytes <= MAX_AMOUNT_BYTES, "numeric operand prefix limit")
+        after = trimmed
     bad = "/⁄∕+−﹣－＋﹢±×÷.,^"
     _need(not before or (before[-1] not in bad and unicodedata.category(before[-1])[0] != "N"
                         and unicodedata.category(before[-1]) != "Pd"), "partial numeric prefix")
@@ -238,12 +246,12 @@ def _numeric_boundary(span, source):
           and not re.match(r"to\s+\d", after, re.I), "partial numeric range")
     def adjacent_operand_is_numeric(text, *, reverse=False):
         # Inspect a bounded operand edge, never evaluate or rewrite an expression.
-        # The same signs/wrappers apply on either side of every ASCII operator.
+        # Traverse the whole operator run with the same bidirectional byte budget.
         characters = reversed(text) if reverse else iter(text)
         prefix_bytes = 0
         for character in characters:
-            if not (character.isspace() or character in "+-−﹣－＋﹢±\"'"
-                    or unicodedata.category(character) in ("Ps", "Pe", "Pi", "Pf")):
+            if not (character.isspace() or character in bad + "-*xXeE\"'"
+                    or unicodedata.category(character) in ("Ps", "Pe", "Pi", "Pf", "Pd")):
                 return unicodedata.category(character)[0] == "N"
             prefix_bytes += len(character.encode("utf-8"))
             _need(prefix_bytes <= MAX_AMOUNT_BYTES, "numeric operand prefix limit")

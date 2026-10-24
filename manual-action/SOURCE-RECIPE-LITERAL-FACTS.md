@@ -183,7 +183,11 @@ The original eighteen groups use seven retained source shapes with original arti
 Focused regression groups cover multiplication/exponent fragments and Unicode
 whole-word boundaries. All ASCII multiplication/exponent operators (`*`, `x`, `X`,
 `e`, `E`) share the same bounded adjacent-operand check on both sides, including
-interleaved signs, whitespace and wrappers. A leading `*` without a numeric left
+interleaved signs, whitespace, wrappers and repeated or mixed operator runs.
+Inspection continues across every existing operator glyph to the neighboring
+operand; a second operator cannot disguise a numeric operand as a quantity
+boundary. This is exclusion only and adds no supported expression grammar.
+A leading `*` without a numeric left
 operand remains a bullet. Clipped and full unsupported expressions reject without
 arithmetic or rewriting source text; ordinary integer/fraction/range/word
 positives remain supported. Operand-edge inspection is capped at128 UTF-8 bytes;
