@@ -207,15 +207,26 @@ def add_historical(args, *, claim='generated-claim'):
         'actualRecipeComposition': None, 'currentStateFit': None, 'preparedYieldG': None, 'servings': None,
         'actualSelection': 'unobserved', 'compositionReadiness': 'held',
         'existingProductFitAcceptance': False, 'productFitAcceptance': False,
-        'compositionGaps': {str(i): 'unobserved' for i in range(7)},
+        'compositionGaps': {name: 'unobserved' for name in (
+            'actualProductUse', 'currentFormulation', 'asUsedIngredientMasses',
+            'preparationStateIncludingSoftening', 'processingRetention',
+            'measuredOutputMass', 'measuredServings')},
         'constraints': scope, 'sourceRestrictions': copy.deepcopy(scope),
         'sourcePins': {'sourceOccurrence': {'recipeId': member['recipeResourceId'], 'mentionId': mention,
             'occurrenceId': source['occurrence_id'], 'contentSha256': source['content_sha256']},
             'mention': {'resourceId': mention}, 'sourceCitations': [member['citations'][0]]},
-        'futureUnknownResult': {'retainNull': None}}
+        'futureUnknownResult': {'retainNull': None},
+        'review': {'artifactSHA256': sha('review-file'), 'pointer': '/rows/0', 'rowSHA256': sha('review-row')},
+        'custody': {'artifactSHA256': sha('custody-file'), 'pointer': '/rows/0', 'rowSHA256': sha('custody-row')}}
+    def pin(label):
+        return {'path': 'generated://DO-NOT-OPEN/' + label, 'sha256': sha(label)}
     complete = {'documentKind': 'offmenu-private-historical-source-proof-context/1',
         'proofSnapshot': proof, 'currentSnapshotRebound': False, 'claimSHA256': claim_sha,
         'factsSHA256': sha('facts'), 'actualOutputRowSHA256': sha(result), 'completeActualResult': result,
+        'actualOutput': pin('raw-output-' + claim), 'actualOutputPointer': '/results/0',
+        'factsProjection': pin('facts-file'), 'factsPointer': '/facts/' + claim_sha,
+        'independentReviewArtifact': pin('review-file'), 'ownerCustodyArtifact': pin('custody-file'),
+        'actualOutputIndependentReview': pin('output-review-file'),
         'purpose': scope['purpose'], 'callerTrust': 'Never reconstruct caller authority from stored JSON.',
         'qualifiedAcceptedEntries': {'path': 'DO-NOT-OPEN.json', 'sha256': sha('inert-pointer')},
         'join': {'physicalRecipeEntityId': member['recipeEntityId'],
@@ -228,6 +239,71 @@ def add_historical(args, *, claim='generated-claim'):
 
 
 class ExtendedContextTests(unittest.TestCase):
+    def test_historical_all_seven_required_evidence_fields_must_survive(self):
+        for field in ('actualOutput', 'actualOutputPointer', 'factsProjection', 'factsPointer',
+                      'independentReviewArtifact', 'ownerCustodyArtifact', 'actualOutputIndependentReview'):
+            args = fixture(contexts=0, caution=False); value = add_historical(args)
+            value.pop(field)
+            args[0]['members'][0]['holds'][-1]['reason'] = encoded(value).decode()
+            with self.subTest(field=field), self.assertRaises(SourceContextPresentationError):
+                with patch('builtins.open', side_effect=AssertionError('no referenced file opens')):
+                    present(*args)
+
+    def test_historical_evidence_pin_shapes_and_pointer_crossbindings(self):
+        cases = []
+        for field in ('actualOutput', 'factsProjection', 'independentReviewArtifact',
+                      'ownerCustodyArtifact', 'actualOutputIndependentReview'):
+            for key, bad in (('path', None), ('path', ''), ('sha256', 'bad-pin')):
+                cases.append(('pin', field, key, bad))
+        for bad in ('/results/00', '/results/-1', '/rows/0', '/results/0/', '', None):
+            cases.append(('output-pointer', bad))
+        cases.append(('facts-pointer', '/facts/' + sha('foreign-claim')))
+        for field in ('review', 'custody'):
+            for key, bad in (('artifactSHA256', sha('foreign-artifact')), ('pointer', '/rows/1'),
+                             ('pointer', '/rows/00'), ('rowSHA256', 'bad-row-pin')):
+                cases.append(('row', field, key, bad))
+        for case in cases:
+            args = fixture(contexts=0, caution=False); value = add_historical(args)
+            if case[0] == 'pin': value[case[1]][case[2]] = case[3]
+            elif case[0] == 'output-pointer': value['actualOutputPointer'] = case[1]
+            elif case[0] == 'facts-pointer': value['factsPointer'] = case[1]
+            else:
+                value['completeActualResult'][case[1]][case[2]] = case[3]
+                value['actualOutputRowSHA256'] = sha(value['completeActualResult'])
+            args[0]['members'][0]['holds'][-1]['reason'] = encoded(value).decode()
+            with self.subTest(case=case), self.assertRaises(SourceContextPresentationError):
+                present(*args)
+
+    def test_historical_exact_named_unknowns_reject_unrelated_missing_extra_or_changed_gap(self):
+        for mode in ('unrelated', 'renamed', 'missing', 'extra', 'observed'):
+            args = fixture(contexts=0, caution=False); value = add_historical(args)
+            gaps = value['completeActualResult']['compositionGaps']
+            if mode == 'unrelated': value['completeActualResult']['compositionGaps'] = {str(i): 'unobserved' for i in range(7)}
+            elif mode == 'renamed': gaps['arbitrary'] = gaps.pop('actualProductUse')
+            elif mode == 'missing': gaps.pop('measuredServings')
+            elif mode == 'extra': gaps['extra'] = 'unobserved'
+            else: gaps['currentFormulation'] = 'observed'
+            value['actualOutputRowSHA256'] = sha(value['completeActualResult'])
+            args[0]['members'][0]['holds'][-1]['reason'] = encoded(value).decode()
+            with self.subTest(mode=mode), self.assertRaises(SourceContextPresentationError):
+                present(*args)
+
+    def test_complete_historical_metadata_nonzero_rows_and_unknown_fields_remain_inert(self):
+        args = fixture(contexts=0, caution=False); value = add_historical(args)
+        value['actualOutputPointer'] = '/results/5'
+        value['completeActualResult']['review']['pointer'] = '/rows/5'
+        value['completeActualResult']['custody']['pointer'] = '/rows/5'
+        value['actualOutput']['futureUnknown'] = {'preserve': None}
+        value['actualOutputRowSHA256'] = sha(value['completeActualResult'])
+        args[0]['members'][0]['holds'][-1]['reason'] = encoded(value).decode()
+        with patch('builtins.open', side_effect=AssertionError('no source authority loading')):
+            event = present(*args)['members'][0]['events'][0]
+        self.assertEqual(event['completeContext'], value)
+        self.assertFalse(event['callerAuthorityReconstructed'])
+        self.assertEqual(set(value['completeActualResult']['compositionGaps']), {
+            'actualProductUse', 'currentFormulation', 'asUsedIngredientMasses',
+            'preparationStateIncludingSoftening', 'processingRetention', 'measuredOutputMass', 'measuredServings'})
+
     def test_current_shaped_five_members_fit_existing_bounds_without_dropping_contexts(self):
         cases = [fixture(contexts=0, caution=False, actions=3),
                  fixture(contexts=0, caution=True, actions=13),

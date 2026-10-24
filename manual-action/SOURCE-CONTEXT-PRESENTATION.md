@@ -90,6 +90,22 @@ Two additional versioned context contracts are supported:
   the seven physical gaps, servings and yield retain their unobserved/held/NULL
   states. Two claims attached to one recipe remain two distinct events.
 
+  The version requires complete `actualOutput`, `factsProjection`,
+  `independentReviewArtifact`, `ownerCustodyArtifact` and
+  `actualOutputIndependentReview` path/SHA metadata. `actualOutputPointer` must
+  be a canonical `/results/<nonnegative integer>` pointer and `factsPointer`
+  must name `/facts/<this claim SHA>`. The inline review/custody artifact hashes
+  must match their corresponding metadata pins, retain valid row hashes and
+  use the matching `/rows/<result index>` pointers. These are local completeness
+  and consistency checks; the helper never opens those referenced files or
+  treats them as current caller authority. Missing/malformed anchors fail whole.
+
+  The seven physical gaps must have exactly these names, each `unobserved`:
+  `actualProductUse`, `currentFormulation`, `asUsedIngredientMasses`,
+  `preparationStateIncludingSoftening`, `processingRetention`,
+  `measuredOutputMass`, `measuredServings`. Seven arbitrary or renamed unknowns
+  do not satisfy the versioned contract. Unknown fields elsewhere remain intact.
+
 These are private internal attributed presentation contracts. A stored
 historical compatibility label does not qualify a current product, revoke a
 hold, or confer source-use permission. Unsupported required context versions,

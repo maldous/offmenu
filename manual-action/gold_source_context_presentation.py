@@ -27,6 +27,9 @@ _COMPANION = 'attributed-source-context-companion'
 _CAUTION = 'report-only-attributed-source-caution-companion'
 _LINEAGE = 'offmenu-source-local-lineage-qualified-companion/1'
 _HISTORICAL = 'offmenu-private-historical-source-proof-context/1'
+_PHYSICAL_GAPS = frozenset(('actualProductUse', 'currentFormulation', 'asUsedIngredientMasses',
+                           'preparationStateIncludingSoftening', 'processingRetention',
+                           'measuredOutputMass', 'measuredServings'))
 _FALSE_SCOPE = ('actualCookingQualified', 'actualUserChoice',
                 'recipeNutritionQualified', 'scalingQualified', 'executionQualified',
                 'cookingSafetyNutritionScalingAcceptance')
@@ -390,6 +393,21 @@ def _historical_event(payload, hold, member, run, source, snapshot, provenance, 
     _need(hold.get('target_kind') == 'resource' and hold.get('target_id') == member['recipeEntityId'],
           'historical-hold-target')
     join, result = payload['join'], payload['completeActualResult']
+    for key in ('actualOutput', 'factsProjection', 'independentReviewArtifact',
+                'ownerCustodyArtifact', 'actualOutputIndependentReview'):
+        _pin_metadata(payload[key])
+    output_pointer = payload['actualOutputPointer']
+    _need(type(output_pointer) is str
+          and re.fullmatch(r'/results/(0|[1-9][0-9]*)', output_pointer) is not None
+          and payload['factsPointer'] == '/facts/' + payload['claimSHA256'],
+          'historical-evidence-pointer-binding')
+    row_pointer = '/rows/' + output_pointer.rsplit('/', 1)[1]
+    for key, artifact_key in (('review', 'independentReviewArtifact'),
+                               ('custody', 'ownerCustodyArtifact')):
+        row = result[key]
+        _need(type(row) is dict and _sha(row.get('rowSHA256'))
+              and row.get('artifactSHA256') == payload[artifact_key]['sha256']
+              and row.get('pointer') == row_pointer, 'historical-evidence-artifact-binding')
     _need(payload['purpose'] == 'HISTORICAL_SOURCE_DECLARATION_COMPATIBILITY_ONLY'
           and payload['currentSnapshotRebound'] is False, 'historical-authority-uplift')
     proof = payload['proofSnapshot']
@@ -412,7 +430,7 @@ def _historical_event(payload, hold, member, run, source, snapshot, provenance, 
         _need(result[key] is None, 'historical-authority-uplift')
     _need(result['actualSelection'] == 'unobserved' and result['compositionReadiness'] == 'held'
           and result['existingProductFitAcceptance'] is False and result['productFitAcceptance'] is False
-          and type(result['compositionGaps']) is dict and len(result['compositionGaps']) == 7
+          and type(result['compositionGaps']) is dict and set(result['compositionGaps']) == _PHYSICAL_GAPS
           and all(v == 'unobserved' for v in result['compositionGaps'].values()),
           'historical-authority-uplift')
     for key in ('constraints', 'sourceRestrictions'):
