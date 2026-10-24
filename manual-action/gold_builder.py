@@ -403,12 +403,17 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only):
             continue
         adjacency.setdefault(edge["subject_id"], set()).add(edge["object_id"])
         adjacency.setdefault(edge["object_id"], set()).add(edge["subject_id"])
-    reachable = set(seeds); frontier = list(seeds)
-    while frontier:
-        current = frontier.pop()
-        for neighbor in adjacency.get(current, ()):
-            if neighbor not in reachable:
-                reachable.add(neighbor); frontier.append(neighbor)
+    if recipe_source_only:
+        # Each source recipe must qualify its own declared branches. Traversing
+        # back through a shared mention must never revive an incomplete recipe.
+        reachable = set(seeds) | mapped_mentions
+    else:
+        reachable = set(seeds); frontier = list(seeds)
+        while frontier:
+            current = frontier.pop()
+            for neighbor in adjacency.get(current, ()):
+                if neighbor not in reachable:
+                    reachable.add(neighbor); frontier.append(neighbor)
     islands = 0
     for e in rows["gold_entities"]:
         if e["entity_id"] not in reachable:

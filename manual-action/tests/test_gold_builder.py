@@ -66,6 +66,31 @@ def sqlite_proposal(proposal):
 
 
 class GoldBuilderTests(unittest.TestCase):
+    def add_subset_resource(self, packet, q, source_id, identity):
+        resource = copy.deepcopy(next(x for x in packet['common']['resources'] if x['id'] == source_id))
+        resource['id'] = identity
+        resource['names'][0].update(id=identity+'-text', value=identity,
+                                   sourceTextSha256=hashlib.sha256(identity.encode()).hexdigest())
+        packet['common']['resources'].append(resource)
+        occurrence = copy.deepcopy(next(x for x in packet['occurrences'] if x['resource_ids'] == [source_id]))
+        original_occurrence = occurrence['occurrence_id']
+        occurrence.update(occurrence_id=identity+'-occ', record_id=identity, resource_ids=[identity])
+        packet['occurrences'].append(occurrence)
+        rights = copy.deepcopy(next(x for x in q['records'] if x['occurrence_id'] == original_occurrence))
+        rights['occurrence_id'] = identity+'-occ'
+        q['records'].append(rights)
+        for kind, target, scope in [('resource', identity, 'record'), ('text', identity+'-text', 'field')]:
+            q['supports'].append({'target_kind':kind,'target_id':target,'citation_id':'cite',
+                                  'support_scope':scope,'evidence_sha256':PIN})
+
+    def add_subset_edge(self, packet, q, identity, subject, obj, *, supported=True):
+        packet['common']['relations'].append({'id':identity,'subjectId':subject,'predicateId':'mentions',
+            'objectId':obj,'status':'source-asserted','citationIds':['cite'],'scope':PUBLIC,
+            'sourcePath':'/generated/'+identity})
+        if supported:
+            q['supports'].append({'target_kind':'relation','target_id':identity,'citation_id':'cite',
+                                  'support_scope':'relationship','evidence_sha256':PIN})
+
     def source_subset(self):
         packet, q = fixture()
         packet['watermark']['domains'] = [x for x in packet['watermark']['domains'] if x['domain'] in ('recipes','ingredients')]
@@ -120,6 +145,67 @@ class GoldBuilderTests(unittest.TestCase):
         r=gold.build_recipe_source_subset(p,qualifications=q)
         self.assertEqual(0,r['metrics']['connectivity']['source_recipe_seeds'])
         self.assertTrue(all(x['state']=='held' for x in r['rows']['gold_entities']))
+
+    def test_source_subset_shared_mention_cannot_revive_incomplete_recipe(self):
+        p,q=self.source_subset()
+        self.add_subset_resource(p,q,'recipe','incomplete')
+        self.add_subset_edge(p,q,'shared','incomplete','mention')
+        self.add_subset_edge(p,q,'missing','incomplete','missing-mention',supported=False)
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertEqual({'recipe','mention'},{e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+        self.assertEqual({'mentions'},{e['relation_id'] for e in r['rows']['gold_edges'] if e['state']=='verified'})
+        self.assertEqual('held',next(e['state'] for e in r['rows']['gold_occurrences'] if e['occurrence_id']=='incomplete-occ'))
+        self.assertEqual('held',next(t['state'] for t in r['rows']['gold_texts'] if t['source_text_id']=='incomplete-text'))
+        self.assertEqual(1,r['metrics']['connectivity']['source_recipe_seeds'])
+        self.assertEqual(2,r['metrics']['connectivity']['reachable_entities'])
+
+    def test_source_subset_shared_cycle_preserves_only_complete_siblings(self):
+        p,q=self.source_subset()
+        self.add_subset_resource(p,q,'recipe','sibling')
+        self.add_subset_resource(p,q,'mention','sibling-mention')
+        self.add_subset_edge(p,q,'sibling-edge','sibling','sibling-mention')
+        for identity in ['incomplete-a','incomplete-b']:
+            self.add_subset_resource(p,q,'recipe',identity)
+            self.add_subset_edge(p,q,identity+'-left',identity,'mention')
+            self.add_subset_edge(p,q,identity+'-right',identity,'sibling-mention')
+            self.add_subset_edge(p,q,identity+'-missing',identity,'missing-mention',supported=False)
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertEqual({'recipe','mention','sibling','sibling-mention'},
+                         {e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+        self.assertEqual({'mentions','sibling-edge'},
+                         {e['relation_id'] for e in r['rows']['gold_edges'] if e['state']=='verified'})
+        self.assertEqual(2,r['metrics']['connectivity']['source_recipe_seeds'])
+        with sqlite_proposal(r) as db:self.assertEqual([],db.execute('PRAGMA foreign_key_check').fetchall())
+
+    def test_source_subset_cycle_without_complete_recipe_stays_held(self):
+        p,q=self.source_subset()
+        self.add_subset_resource(p,q,'recipe','second')
+        self.add_subset_resource(p,q,'mention','second-mention')
+        self.add_subset_edge(p,q,'first-right','recipe','second-mention')
+        self.add_subset_edge(p,q,'second-left','second','mention')
+        self.add_subset_edge(p,q,'second-right','second','second-mention')
+        for identity in ['recipe','second']:
+            self.add_subset_edge(p,q,identity+'-missing',identity,'missing-mention',supported=False)
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertTrue(all(e['state']=='held' for e in r['rows']['gold_entities']))
+        self.assertTrue(all(e['state']=='held' for e in r['rows']['gold_edges']))
+        self.assertEqual(0,r['metrics']['connectivity']['reachable_entities'])
+
+    def test_source_subset_recipe_chain_cannot_inherit_complete_sibling_qualification(self):
+        p,q=self.source_subset()
+        for identity in ['incomplete','sibling']:
+            self.add_subset_resource(p,q,'recipe',identity)
+            self.add_subset_edge(p,q,identity+'-shared',identity,'mention')
+        self.add_subset_edge(p,q,'recipe-chain','incomplete','sibling')
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertEqual({'recipe','mention','sibling'},
+                         {e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+        self.assertEqual({'mentions','sibling-shared'},
+                         {e['relation_id'] for e in r['rows']['gold_edges'] if e['state']=='verified'})
 
     def test_source_data_cannot_select_subset_admission_profile(self):
         p,q=self.source_subset();p['admission_profile']='recipe-source-subset/1';q['packet_sha256']=gold.digest(p)
