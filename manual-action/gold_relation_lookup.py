@@ -9,14 +9,16 @@ from gold_builder import (_pin, _json, alternative_scope_valid,
 
 
 def lookup_recipe_products(db, *, source, selections=()):
-    """Return only qualified paths whose exclusive choice is explicitly selected.
+    """Return qualified source-structure paths with explicit alternative choices.
 
     source is the exact recipe occurrence plus source mention context. Unknown
     selection is represented separately, never an implicit union or first item.
+    Product fit is held: no selected-tuple fit-proof contract is evaluated here.
     The caller owns the connection; this function issues SELECT statements only.
     """
     result = dict(paths=[], choices=[], errors=[], purpose='source-product-lookup-only',
-                  automaticCooking=False, nutritionAcceptance=False, safetyAcceptance=False)
+                  automaticCooking=False, nutritionAcceptance=False, safetyAcceptance=False,
+                  productFitAcceptance=False)
     if not alternative_scope_valid(source):
         result['errors'].append('invalid source scope'); return result
     if type(selections) not in (list, tuple) or len(selections) > 1000:
@@ -149,6 +151,8 @@ def lookup_recipe_products(db, *, source, selections=()):
                 except ValueError: continue
                 result['paths'].append(dict(recipeId=recipe['resource_id'],mentionId=mention['resource_id'],
                     canonicalId=canonical['resource_id'],productId=product['resource_id'],
+                    sourceScope=dict(source,mentionId=mention['resource_id']),
+                    productFitQualification=dict(state='held',reason='selected-tuple-fit-contract-not-evaluated'),
                     relations=[me['payload'],ce['payload'],pe['payload']]))
         if conditional and chosen is not None and not any(p['mentionId']==mention['resource_id'] for p in result['paths']):
             result['choices'][-1]['status']='unsupported'

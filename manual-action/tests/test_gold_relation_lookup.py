@@ -61,6 +61,22 @@ def resource_support_fixture(style):
     return p,q,source
 
 
+def two_member_fixture():
+    """Two supported structural members, only one named in documentary prose."""
+    p, q = fixtures.fixture()
+    fixtures.GoldBuilderTests.add_subset_resource(None, p, q, 'product', 'other-member')
+    edge = copy.deepcopy(next(e for e in p['common']['relations'] if e['id'] == 'represents'))
+    edge.update(id='other-represents', subjectId='other-member')
+    p['common']['relations'].append(edge)
+    q['supports'].append(dict(target_kind='relation', target_id=edge['id'], citation_id='cite',
+                             support_scope='relationship', evidence_sha256=fixtures.PIN))
+    mapping = next(e for e in p['common']['relations'] if e['id'] == 'maps')
+    mapping['scope'] = dict(visibility='public', reuseScope='Selected product only: product; other-member not reviewed.')
+    source = dict(recipeId='recipe', mentionId='mention', sourceKey='generated-source',
+                  sourceVersion='generated-v1', recordId='recipe', contentSha256=fixtures.PIN)
+    return p, q, source
+
+
 class AlternativeLookupTests(unittest.TestCase):
     def run_lookup(self, p, q, source, branch=None, selections=None):
         proposal = fixtures.build(p, q)
@@ -79,6 +95,52 @@ class AlternativeLookupTests(unittest.TestCase):
         self.assertIn('white OR turbinado', json.dumps(proposal))
         with fixtures.sqlite_proposal(proposal) as db:
             self.assertEqual(0, db.execute("SELECT count(*) FROM gold_edges WHERE predicate_id='canonical_ingredient' AND state='verified' AND relation_id IN ('maps','brown-map')").fetchone()[0])
+
+    def test_structural_members_keep_source_scope_but_fit_is_explicitly_held(self):
+        p, q, source = two_member_fixture()
+        result = self.run_lookup(p, q, source)
+        self.assertFalse(result['productFitAcceptance'])
+        self.assertEqual({'product', 'other-member'}, {p['productId'] for p in result['paths']})
+        for path in result['paths']:
+            self.assertEqual(source, path['sourceScope'])
+            self.assertEqual('canonical', path['canonicalId'])
+            self.assertEqual(dict(state='held', reason='selected-tuple-fit-contract-not-evaluated'),
+                             path['productFitQualification'])
+            self.assertEqual(['cite'], path['relations'][1]['citationIds'])
+            self.assertIn('Selected product only', path['relations'][1]['scope']['reuseScope'])
+
+    def test_documentary_tuple_claims_cannot_grant_fit_acceptance(self):
+        # Even a matching claim has no evaluated fit-proof contract. Missing,
+        # stale and conflicting documentary claims cannot grant a fit either.
+        for state in ('missing', 'matching', 'stale', 'conflicting'):
+            with self.subTest(state=state):
+                p, q, source = two_member_fixture()
+                mapping = next(e for e in p['common']['relations'] if e['id'] == 'maps')
+                if state != 'missing':
+                    mapping['context'] = dict(documentaryFitClaim=dict(
+                        sourceScope=dict(source, sourceVersion='stale') if state == 'stale' else source,
+                        canonicalId='canonical', productId='other-member' if state == 'conflicting' else 'product',
+                        decision='accepted'))
+                result = self.run_lookup(p, q, source)
+                self.assertEqual(2, len(result['paths']))
+                self.assertFalse(result['productFitAcceptance'])
+                self.assertTrue(all(p['productFitQualification']['state'] == 'held' for p in result['paths']))
+
+    def test_selected_ingredient_branch_is_not_product_fit_proof(self):
+        p, q, source = alternative_fixture()
+        result = self.run_lookup(p, q, source, 'white')
+        self.assertEqual('selected', result['choices'][0]['status'])
+        self.assertEqual(['product'], [p['productId'] for p in result['paths'] if p['mentionId'] == 'mention'])
+        self.assertFalse(result['productFitAcceptance'])
+        for path in result['paths']:
+            self.assertEqual(dict(source, mentionId=path['mentionId']), path['sourceScope'])
+            self.assertEqual('held', path['productFitQualification']['state'])
+
+    def test_stale_source_scope_has_no_fit_acceptance_or_paths(self):
+        p, q, source = two_member_fixture()
+        result = self.run_lookup(p, q, dict(source, sourceVersion='stale'))
+        self.assertFalse(result['productFitAcceptance'])
+        self.assertEqual([], result['paths'])
 
     def test_resource_each_citation_accepts_record_or_field_support(self):
         for style in ('all-field','mixed'):
