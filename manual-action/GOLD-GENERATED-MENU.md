@@ -67,6 +67,16 @@ pins remain references. Receipt limits share the JSON structure/size and final
 output bounds. Selecting a successor requires its explicitly supplied database
 and receipt hashes in a separate sidecar; an older selection never upgrades itself.
 
+For this recognized receipt version, each limits block may be a nonempty
+dictionary. `scopeLimits` may also contain a nonblank documentary restriction
+string, but only alongside a nonempty `sourceAndConsumerLimits` dictionary.
+That string is preserved verbatim, including whitespace and Unicode; it is never
+parsed into permissions. All dictionary values and unknown restriction fields
+remain complete. A textual scope by itself, blank text, an invalid consumer
+block or an unsupported receipt version stays held. The existing JSON and
+output bounds apply equally to text and dictionaries; this shape support grants
+no new source use or execution authority.
+
 For the barcode consumer, pass each desired `paths[].recipeEntityId` as a member
 reference after its admitted barcode traversal; select any native run explicitly.
 This module resolves membership, not barcode eligibility or product selection.

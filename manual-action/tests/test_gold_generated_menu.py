@@ -10,7 +10,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from gold_generated_menu import (GROUP_VERSION, GeneratedMenuError,
-                                 query_snapshot, read_generated_menu)
+                                 _receipt_limits, query_snapshot, read_generated_menu)
 
 EID, OTHER = '1' * 64, '2' * 64
 DB_SHA, ADMISSION_SHA = 'a' * 64, 'b' * 64
@@ -428,6 +428,10 @@ class GeneratedMenuTests(unittest.TestCase):
                     ('offmenu.private-incremental-source-data-admission/1',
                      {'sourceAndConsumerLimits': {'purpose': 'PRIVATE_ONLY', 'heldNumericContexts': 142,
                                                  'recipeNutritionTransferOrTotals': False}}, 'present'),
+                    ('offmenu.private-incremental-source-data-admission/1',
+                     {'scopeLimits': '  Generated café 😀 restriction; retain every clause.\n',
+                      'sourceAndConsumerLimits': {'privateOnly': True, 'fitAccepted': False,
+                          'unknownRestriction': {'complete': [None, False, 'retained']}}}, 'present'),
                     ('future/2', {'sourceAndConsumerLimits': {'rights': 'unknown'}}, 'held'),
                     ('offmenu.private-incremental-source-data-admission/1', {}, 'held'),
                     ('offmenu.private-incremental-source-data-admission/1', {'scopeLimits': []}, 'held')]:
@@ -442,9 +446,74 @@ class GeneratedMenuTests(unittest.TestCase):
                 if status == 'held':
                     self.assertTrue(result['admissionLimits']['holdReasons'])
                     self.assertIsNone(result['admissionScopeLimits'])
+                    self.assertIsNone(result['admissionSourceAndConsumerLimits'])
                 else:
                     self.assertEqual(result['admissionSourceAndConsumerLimits'], fields['sourceAndConsumerLimits'])
                     self.assertEqual(result['admissionScopeLimits'], fields.get('scopeLimits'))
+
+    def test_receipt_limits_text_requires_known_schema_and_nonempty_consumer_dictionary(self):
+        schema = 'offmenu.private-incremental-source-data-admission/1'
+        text = '  Generated private documentary restriction, café 😀.\n'
+        consumer = {'privateOnly': True, 'fitAccepted': False,
+                    'unknownRestriction': {'complete': [None, False, 'retained']}}
+        for fields in (
+                {'scopeLimits': {'oldRights': False}},
+                {'scopeLimits': {'oldRights': False}, 'sourceAndConsumerLimits': consumer},
+                {'sourceAndConsumerLimits': consumer},
+                {'scopeLimits': text, 'sourceAndConsumerLimits': consumer}):
+            with self.subTest(validFields=sorted(fields)):
+                data = {'schemaVersion': schema, **copy.deepcopy(fields)}
+                before = copy.deepcopy(data)
+                result = _receipt_limits(data)
+                self.assertEqual(result['status'], 'present')
+                self.assertEqual(result['holdReasons'], [])
+                self.assertEqual(result['sourceFields'], fields)
+                self.assertEqual(data, before)
+        for invalid_consumer in (None, {}, [], '', text, False, 1):
+            with self.subTest(invalidConsumer=repr(invalid_consumer)):
+                fields = {'scopeLimits': text, 'sourceAndConsumerLimits': invalid_consumer}
+                result = _receipt_limits({'schemaVersion': schema, **fields})
+                self.assertEqual(result['status'], 'held')
+                self.assertIn('admission-limits-invalid', result['holdReasons'])
+                self.assertEqual(result['sourceFields'], fields)
+        for invalid_scope in ('', ' \t\n\u2003', None, {}, [], False, 1):
+            with self.subTest(invalidScope=repr(invalid_scope)):
+                fields = {'scopeLimits': invalid_scope, 'sourceAndConsumerLimits': consumer}
+                result = _receipt_limits({'schemaVersion': schema, **fields})
+                self.assertEqual(result['status'], 'held')
+                self.assertIn('admission-limits-invalid', result['holdReasons'])
+                self.assertEqual(result['sourceFields'], fields)
+        for fields in ({}, {'scopeLimits': text}):
+            with self.subTest(missingRequired=sorted(fields)):
+                self.assertEqual(_receipt_limits({'schemaVersion': schema, **fields})['status'], 'held')
+        for unsupported in (None, '', 'future/2'):
+            result = _receipt_limits({'schemaVersion': unsupported, 'scopeLimits': text,
+                                      'sourceAndConsumerLimits': consumer})
+            self.assertEqual(result['status'], 'held')
+            self.assertIn('unsupported-receipt-schema', result['holdReasons'])
+
+    def test_receipt_limits_text_and_unknown_fields_keep_existing_bounds(self):
+        base = {'schemaVersion': 'offmenu.private-incremental-source-data-admission/1',
+                'scopeLimits': 'Generated documentary restriction',
+                'sourceAndConsumerLimits': {'privateOnly': True}}
+        cases = []
+        large_text = copy.deepcopy(base); large_text['scopeLimits'] = 'z' * 65536
+        cases.append(large_text)
+        many_nodes = copy.deepcopy(base)
+        many_nodes['sourceAndConsumerLimits']['unknownRestriction'] = [False] * 4096
+        cases.append(many_nodes)
+        deep = copy.deepcopy(base)
+        nested = {'restriction': False}
+        for _ in range(12):
+            nested = {'complete': nested}
+        deep['sourceAndConsumerLimits']['unknownRestriction'] = nested
+        cases.append(deep)
+        for data in cases:
+            with self.subTest(shape=list(data['sourceAndConsumerLimits'])):
+                before = copy.deepcopy(data)
+                with self.assertRaises(GeneratedMenuError):
+                    _receipt_limits(data)
+                self.assertEqual(data, before)
 
     def test_selected_snapshot_wrapper_checks_bytes_and_no_sidecars(self):
         with tempfile.TemporaryDirectory(prefix='generated-menu-test-') as directory:

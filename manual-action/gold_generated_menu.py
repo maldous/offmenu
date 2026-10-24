@@ -97,7 +97,13 @@ def _receipt_limits(receipt):
         reasons.append('unsupported-receipt-schema')
     if not fields:
         reasons.append('admission-limits-unknown')
-    if any(type(v) is not dict or not v for v in fields.values()):
+    consumer_limits = fields.get('sourceAndConsumerLimits')
+    text_scope_supported = (schema == 'offmenu.private-incremental-source-data-admission/1'
+                            and type(consumer_limits) is dict and bool(consumer_limits))
+    if any(not (type(v) is dict and bool(v))
+           and not (k == 'scopeLimits' and text_scope_supported
+                    and type(v) is str and bool(v.strip()))
+           for k, v in fields.items()):
         reasons.append('admission-limits-invalid')
     return {'receiptSchemaVersion': schema, 'status': 'held' if reasons else 'present',
             'sourceFields': fields, 'holdReasons': reasons}
