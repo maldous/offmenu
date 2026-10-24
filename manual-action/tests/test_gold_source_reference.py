@@ -52,7 +52,106 @@ def refresh_source_record(p, q, occurrence):
         {'resource': resource, 'identity': identity, 'occurrence': occurrence})
 
 
+def restricted_method_fixture(method, derivation_id, native_id='1106'):
+    """Generated source report; exact method labels never establish an assay."""
+    p, q = source_reference_fixture()
+    occurrence = next(o for o in p['occurrences'] if o['resource_ids'] == [FOOD_RAW])
+    row = next(r for r in occurrence['source_original']['food_nutrient']
+               if r['nutrient_id'] == native_id)
+    row['derivation_id'] = derivation_id
+    obs = next(o for o in p['observations']
+               if o['observation_id'] == FOOD_RAW + ':observation:' + native_id)
+    obs['context'].update(method=method, source_fields=copy.deepcopy(row))
+    b = basis_binding(q, native_id)
+    b.update(source_method=method, native_derivation_id=derivation_id,
+             source_row_sha256=g.digest(row),
+             evidence_sha256=g.digest({'synthetic_method_context': obs, 'row': row}))
+    refresh_source_record(p, q, occurrence)
+    bind_packet(p, q)
+    return p, q
+
+
+RESTRICTED_METHODS = (
+    ('SOURCE_PRODUCT_STANDARD_NOT_ASSAY', '66'),
+    ('SOURCE_REPORTED_ANALYTICAL_INCOMPLETE_DOCUMENTATION', '2'),
+    ('SOURCE_BORROWED_NORMALIZED_CONSTITUENTS_VITAMIN_A', '22'),
+)
+
+
 class GoldSourceReferenceTests(unittest.TestCase):
+    def test_restricted_native_methods_preserve_source_context_without_assay_or_transfer(self):
+        for method, derivation_id in RESTRICTED_METHODS:
+            with self.subTest(method=method):
+                p, q = restricted_method_fixture(method, derivation_id)
+                before = copy.deepcopy((p, q))
+                r = build(p, q)
+                self.assertEqual('verified', obs_state(r, '1106'))
+                self.assertEqual(before, (p, q))
+                row = next(o for o in r['rows']['gold_observations']
+                           if o['observation_id'] == FOOD_RAW + ':observation:1106')
+                context = json.loads(row['context_json'])
+                source_context = p['observations'][2]['context']
+                self.assertEqual(source_context, {key: context[key] for key in source_context})
+                self.assertTrue(all(value is None for key, value in context.items()
+                                    if key not in source_context))
+                self.assertEqual(p['observations'][2], json.loads(row['payload_json']))
+                self.assertIsNone(json.loads(row['comparable_json']))
+                self.assertEqual(method, context['method'])
+                self.assertEqual(derivation_id, context['source_fields']['derivation_id'])
+                self.assertTrue(context['source_reporting_only'])
+                self.assertFalse(context['independent_assay_verified'])
+                self.assertFalse(context['recipe_transfer_qualified'])
+                self.assertIsNone(context['assay_date'])
+                self.assertEqual('', context['source_fields']['LOQ'])
+                self.assertEqual('0.020', json.loads(row['original_json'])['sourceValue'])
+                self.assertEqual([], r['rows']['gold_edges'])
+                self.assertEqual([], r['rows']['gold_comparisons'])
+                self.assertEqual(0, r['metrics']['actual_gold_admitted'])
+                self.assertEqual(0, r['metrics']['connectivity']['core_chain_seeds'])
+
+    def test_restricted_methods_keep_each_source_context_gate(self):
+        edits = {
+            'assay': lambda p, b, c: c.update(independent_assay_verified=True),
+            'recipe': lambda p, b, c: c.update(recipe_transfer_qualified=True),
+            'reporting': lambda p, b, c: c.update(source_reporting_only=False),
+            'country': lambda p, b, c: c.update(country='US'),
+            'date': lambda p, b, c: c.update(assay_date='2026-01-01'),
+            'method': lambda p, b, c: b.update(source_method='SOURCE_CALCULATED'),
+            'native-derivation': lambda p, b, c: b.update(native_derivation_id='other'),
+            'row': lambda p, b, c: b.update(source_row_sha256='0' * 64),
+            'definition': lambda p, b, c: b.update(nutrient_definition_resource_id='urn:fixture:sr:nutrient:1093'),
+            'basis': lambda p, b, c: b['basis'].update(value=50),
+            'document': lambda p, b, c: b.pop('source_basis_document_sha256'),
+            'range-held': lambda p, b, c: b.update(numeric_context_status='held-source-range-context'),
+        }
+        for method, derivation_id in RESTRICTED_METHODS:
+            for name, edit in edits.items():
+                with self.subTest(method=method, mutation=name):
+                    p, q = restricted_method_fixture(method, derivation_id)
+                    edit(p, basis_binding(q, '1106'), p['observations'][2]['context'])
+                    r = build(p, q)
+                    self.assertEqual('held', obs_state(r, '1106'))
+                    self.assertEqual('verified', obs_state(r, '1093'))
+                    self.assertEqual('verified', entity_states(r)[FOOD_RAW])
+
+    def test_unregistered_method_labels_remain_held_even_with_matching_context(self):
+        for method in ['source_product_standard_not_assay', 'SOURCE_PRODUCT_STANDARD_NOT_ASSAY_EXTRA',
+                       'INDEPENDENTLY_REPRODUCED_ASSAY']:
+            with self.subTest(method=method):
+                p, q = restricted_method_fixture(method, '66')
+                self.assertEqual('held', obs_state(build(p, q), '1106'))
+
+    def test_restricted_methods_do_not_qualify_IU_or_select_the_trusted_profile(self):
+        for method, derivation_id in RESTRICTED_METHODS:
+            with self.subTest(method=method):
+                p, q = restricted_method_fixture(method, derivation_id, '1104')
+                basis_binding(q, '1104')['numeric_context_status'] = 'qualified-source-reference'
+                self.assertEqual('held', obs_state(build(p, q), '1104'))
+                bind_packet(p, q)
+                legacy = g.build_gold_slice(p, qualifications=q)
+                self.assertNotIn('admission_profile', legacy)
+                self.assertTrue(all(o['state'] == 'held' for o in legacy['rows']['gold_observations']))
+
     def test_trusted_profile_qualifies_own_identities_and_five_source_contexts_only(self):
         p, q = source_reference_fixture(); before = copy.deepcopy((p, q)); r = build(p, q)
         self.assertEqual(before, (p, q))
