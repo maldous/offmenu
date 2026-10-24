@@ -1,5 +1,6 @@
 """Actual trusted SR API tests; generated inputs and in-memory SQLite only."""
 import copy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -242,6 +243,50 @@ class GoldSourceReferenceTests(unittest.TestCase):
         self.assertTrue(all(c['state'] == 'verified' for c in duplicates))
         self.assertEqual({'verified'}, set(entity_states(r).values()))
         self.assertEqual(5, sum(o['state'] == 'verified' for o in r['rows']['gold_observations']))
+
+    def test_nutrient_properties_cannot_qualify_nonquantity_claims_without_observations(self):
+        values = [
+            {'kind': 'expression', 'syntax': 'literal-source-text', 'value': '999 g per 100 g'},
+            {'kind': 'text', 'language': 'en', 'value': '999 g per 100 g'},
+            {'kind': 'identifier', 'value': '999'},
+            {'kind': 'boolean', 'value': True},
+            {'kind': 'null', 'value': None},
+            {'kind': 'structure', 'fields': {'amount': {'kind': 'identifier', 'value': '999'}}},
+        ]
+        common = json.loads((ROOT.parent / 'corpus/common-data.schema.json').read_text())
+        for value in values:
+            with self.subTest(kind=value['kind']):
+                p, q = source_reference_fixture(identity_only=True)
+                if value['kind'] == 'text':
+                    text = copy.deepcopy(p['common']['resources'][0]['names'][0])
+                    text.update(id=FOOD_RAW + ':unqualified-nutrient-text', value=value['value'],
+                                sourceTextSha256=hashlib.sha256(value['value'].encode()).hexdigest())
+                    value = text
+                a = {'id': FOOD_RAW + ':unqualified-nutrient-content', 'subjectId': FOOD_RAW,
+                     'propertyId': 'urn:fixture:sr:nutrient:1004', 'value': value,
+                     'status': 'source-asserted', 'citationIds': [FOOD_RAW + ':citation'],
+                     'sourcePath': '/does-not-exist', 'scope': copy.deepcopy(p['common']['resources'][0]['scope'])}
+                p['common']['assertions'].append(a)
+                q['supports'].append({'target_kind': 'assertion', 'target_id': a['id'],
+                    'citation_id': a['citationIds'][0], 'support_scope': 'field', 'evidence_sha256': g.digest(a)})
+                jsonschema.Draft202012Validator(common).validate(p['common'])
+                r = build(p, q)
+                row = next(c for c in r['rows']['gold_claims'] if c['assertion_id'] == a['id'])
+                self.assertEqual('held', row['state'])
+                self.assertEqual(a, json.loads(row['payload_json']))
+                self.assertEqual({'verified'}, set(entity_states(r).values()))
+                self.assertEqual([], r['rows']['gold_observations'])
+
+    def test_relabelled_nutrient_value_cannot_borrow_a_valid_observation_or_sibling(self):
+        p, q = source_reference_fixture()
+        a = claim(p); a['value'] = {'kind': 'expression', 'syntax': 'literal-source-text', 'value': '999 g per 100 g'}
+        a['sourcePath'] = '/does-not-exist'
+        next(s for s in q['supports'] if s['target_kind'] == 'assertion' and s['target_id'] == a['id'])['evidence_sha256'] = g.digest(a)
+        r = build(p, q)
+        self.assertEqual('held', obs_state(r, '1004'))
+        self.assertEqual('held', next(c['state'] for c in r['rows']['gold_claims'] if c['assertion_id'] == a['id']))
+        self.assertEqual('verified', obs_state(r, '1093'))
+        self.assertEqual({'verified'}, set(entity_states(r).values()))
 
     def test_each_row_definition_document_metric_method_and_lexeme_must_match(self):
         edits = {

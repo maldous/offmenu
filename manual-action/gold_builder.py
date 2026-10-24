@@ -385,6 +385,8 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         for oid, _ in owners:
             add("gold_entity_occurrences", entity_id=eid, occurrence_id=oid)
     claims = _index(common.get("assertions", []), "id")
+    reference_nutrient_ids = {rid for rid, resource in resources.items()
+        if source_reference_only and resource.get("type") == "urn:offmenu:type:NutrientDefinition"}
     claim_for = {}; claim_good = {}
     for aid, assertion in claims.items():
         if assertion.get("scope", {}).get("visibility") != "public":
@@ -397,12 +399,15 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         if source_reference_only:
             subject_type = resources.get(assertion["subjectId"], {}).get("type")
             allowed_properties = ({"usda:fdc-id", "usda:ndb-number", "usda:data-type"}
-                | {rid for rid, resource in resources.items()
-                   if resource.get("type") == "urn:offmenu:type:NutrientDefinition"}
+                | reference_nutrient_ids
                 if subject_type == "urn:offmenu:type:FoodPreparation"
                 else {"usda:nutrient-id", "usda:nutrient-unit"})
             if assertion["propertyId"] not in allowed_properties:
                 good = False; hold("assertion", aid, "property excluded from source reference subset")
+            if (subject_type == "urn:offmenu:type:FoodPreparation"
+                    and assertion["propertyId"] in reference_nutrient_ids
+                    and assertion.get("value", {}).get("kind") != "quantity"):
+                good = False; hold("assertion", aid, "source nutrient property requires a qualified quantity observation")
             native_field = {
                 "usda:fdc-id": ("identifier", "/food/fdc_id", "sr_legacy_food"),
                 "usda:ndb-number": ("identifier", "/sr_legacy_food/NDB_number", "sr_legacy_food"),
@@ -691,7 +696,10 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
                 return value.get("kind") in {"quantity", "number"} or any(numeric_value(v) for v in value.values())
             return type(value) is list and any(numeric_value(v) for v in value)
         for claim in rows["gold_claims"]:
-            if numeric_value(claims[claim["assertion_id"]].get("value")):
+            assertion = claims[claim["assertion_id"]]
+            nutrient_property = (assertion["propertyId"] in reference_nutrient_ids
+                and resources.get(assertion["subjectId"], {}).get("type") == "urn:offmenu:type:FoodPreparation")
+            if numeric_value(assertion.get("value")) or nutrient_property:
                 bound = [o for o in rows["gold_observations"] if o["claim_id"] == claim["claim_id"]]
                 if len(bound) != 1 or bound[0]["state"] != "verified":
                     claim["state"] = "held"

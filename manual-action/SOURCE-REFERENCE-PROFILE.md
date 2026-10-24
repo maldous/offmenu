@@ -46,6 +46,10 @@ Every allowed native identity or vocabulary assertion, including an extra claim,
 must match its own source kind, value kind, anchored native pointer and exact
 native field value. A correct selected identity or unit cannot qualify a
 contradictory extra claim. Valid duplicate claims remain independently supported.
+Every food claim using a nutrient-definition resource as its property must use
+the quantity value kind and its own unique qualified observation. Text,
+expressions, identifiers and other value kinds remain held even if the food and
+nutrient identities qualify. Identity-only packets cannot qualify nutrient content.
 
 ## Separate numeric context
 
