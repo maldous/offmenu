@@ -17,6 +17,8 @@ import hashlib
 import json
 import re
 from typing import Callable
+from source_literal_recipe_quantities import (SourceLiteralQuantityError,
+    validate_source_literal, literal_allocation)
 
 SCHEMA_VERSION = "offmenu-gold-recipe-actions/1"
 CONNECTION_VERSION = "offmenu-gold-recipe-connections/1"
@@ -220,15 +222,39 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
         if len(instance_map) != len(instances): raise ActionConnectionError("duplicate_action_id")
         order = {i["instance_id"]: index for index, i in enumerate(instances)}
         ingredients = {i["ingredient_id"]: i for i in template["ingredients"]}
-        if any(isinstance(i.get("quantity"), dict) and i["quantity"].get("status") != "normalized"
-               for i in ingredients.values()):
-            raise ActionConnectionError("recipe_ingredient_quantity_unresolved")
         if any(not _text(row.get("id")) for field in ("entities", "citations") for row in connections[field]):
             raise ActionConnectionError("gold_reference_id_required")
         entities = {r.get("id"): r for r in connections["entities"]}
         citations = {r.get("id"): r for r in connections["citations"]}
         if len(entities) != len(connections["entities"]) or len(citations) != len(connections["citations"]) or None in entities or None in citations:
             raise ActionConnectionError("duplicate_or_missing_gold_reference")
+        literal_profile = "source_literal_quantities" in connections
+        literals = {}
+        if literal_profile:
+            rows = connections["source_literal_quantities"]
+            if not isinstance(rows, list) or not 1 <= len(rows) <= MAX_ROWS:
+                raise ActionConnectionError("source_literal_contract_list_required")
+            if requested_servings is not None:
+                raise ActionConnectionError("source_literal_scaling_not_qualified")
+            for row in rows:
+                line = row.get("source_ingredient_line_id") if isinstance(row, dict) else None
+                if not isinstance(line, str) or line not in ingredients or line in literals:
+                    raise ActionConnectionError("source_literal_duplicate_or_unknown_line")
+                ingredient = ingredients[line]
+                pointers = {ingredient["evidence_pointer"] + "/raw_text",
+                            ingredient["evidence_pointer"] + "/source_name_text"}
+                pointers.update(steps[i["step_id"]]["source_span"]["pointer"] for i in instances
+                    if any(s.get("type") == "ingredient_reference" and s.get("value") == line
+                           for s in i["slots"].values()))
+                try:
+                    literals[line] = validate_source_literal(row, ingredient,
+                        allowed_pointers=pointers, source=source, citations=citations,
+                        validate_evidence=_evidence)
+                except SourceLiteralQuantityError as exc:
+                    raise ActionConnectionError(str(exc)) from exc
+        if any(isinstance(i.get("quantity"), dict) and i["quantity"].get("status") != "normalized"
+               and line not in literals for line, i in ingredients.items()):
+            raise ActionConnectionError("recipe_ingredient_quantity_unresolved")
         recipe_entity = entities.get(connections["recipe_entity_id"], {})
         if recipe_entity.get("domain") != "recipes" or recipe_entity.get("state") != "verified":
             raise ActionConnectionError("recipe_entity_not_qualified")
@@ -278,6 +304,13 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
                    native_templates=copy.deepcopy(template["learned_templates"]), native_instances=copy.deepcopy(instances))
         out["run_id"] = "recipe-actions:" + _digest({k: out[k] for k in ("source_occurrence_id", "rules_artifact_sha256", "semantic_review_sha256", "translation_receipts_sha256", "connection_sha256", "scale_factor")})
         numeric_display, allocated, seen_links, bound_refs = {}, {}, set(), set()
+        allocation_counts = {}
+        first_use = {}
+        if literal_profile:
+            for item in instances:
+                for slot in item["slots"].values():
+                    if slot["type"] == "ingredient_reference":
+                        first_use.setdefault(slot["value"], item["instance_id"])
         for link in connections["ingredient_links"]:
             target = str(link.get("instance_id")) + ":" + str(link.get("slot_name"))
             try:
@@ -291,7 +324,30 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
                 if entity.get("domain") != "ingredients" or entity.get("state") != "verified": raise ActionConnectionError("canonical_ingredient_not_qualified")
                 supported(link.get("citation_ids"), link.get("evidence"), iid, "ingredient", target, slot_name=name)
                 allocation, quantity = None, link.get("quantity")
-                if quantity is not None:
+                if literal_profile and quantity is not None and first_use.get(line) != iid:
+                    raise ActionConnectionError("source_quantity_first_use_binding_required")
+                if quantity is not None and line in literals:
+                    qname, uname = link.get("quantity_slot_name"), link.get("unit_slot_name")
+                    slots = instance_map[iid]["slots"]
+                    if (iid, qname) in numeric_display or allocation_counts.get(line):
+                        raise ActionConnectionError("source_literal_allocate_once_required")
+                    if uname is None and any(s["type"] == "unit" for s in slots.values()):
+                        raise ActionConnectionError("allocation_unit_binding_required")
+                    if uname is not None and (uname not in slots or slots[uname].get("type") != "unit"):
+                        raise ActionConnectionError("source_literal_unit_slot_mismatch")
+                    lexical = bound.get("lexical_unit")
+                    noun = lexical["text"] if lexical else ingredients[line]["source_name"]
+                    try:
+                        allocation, display = literal_allocation(literals[line], quantity,
+                            slots.get(qname, {}), unit_slot=slots.get(uname) if uname is not None else None,
+                            ingredient_name=noun)
+                    except SourceLiteralQuantityError as exc:
+                        raise ActionConnectionError(str(exc)) from exc
+                    numeric_display[(iid, qname)] = display
+                    if uname is not None:
+                        numeric_display[(iid, uname)] = literals[line]["unit"]
+                    allocation_counts[line] = 1
+                elif quantity is not None:
                     if not isinstance(quantity, dict) or set(quantity) != {"value", "unit"}: raise ActionConnectionError("allocation_quantity_shape")
                     normal = native.normalize_quantity(quantity["value"], quantity["unit"])
                     low, high = _interval(normal)
@@ -318,6 +374,7 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
                     running = allocated.get(line, Fraction(0)) + high
                     if running > total_low: raise ActionConnectionError("ingredient_quantity_not_conserved")
                     allocated[line] = running
+                    allocation_counts[line] = allocation_counts.get(line, 0) + 1
                     # Reuse the native linear unit mapping for display; do not parse
                     # a second range grammar or attach a source unit to canonical bounds.
                     basis_unit = native.normalize_quantity("1", quantity["unit"])
@@ -343,6 +400,20 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
                     "allocation": allocation, "evidence": copy.deepcopy(link["evidence"])})
             except (ActionConnectionError, KeyError, TypeError, ValueError) as exc:
                 hold(str(exc) if isinstance(exc, ActionConnectionError) else "ingredient_binding_shape", target)
+        if literal_profile:
+            # This opt-in profile is source-amount transcription, not partial
+            # allocation. In particular a literal egg fix cannot hide an
+            # unallocated known flour amount behind qualitative NULL links.
+            for line, ingredient in ingredients.items():
+                total = ingredient.get("quantity")
+                if total is None:
+                    continue
+                complete = allocation_counts.get(line) == 1
+                if line not in literals:
+                    low, high = _interval(total)
+                    complete = complete and low == high and allocated.get(line) == low
+                if not complete:
+                    hold("source_quantity_allocate_once_required", line)
         action_support = {}
         for item in connections["action_citations"]:
             iid = item.get("instance_id")
@@ -374,6 +445,9 @@ def connect_recipe_actions(rules_artifact, semantic_review, *, native,
                 values = {}
                 for name, slot in instance["slots"].items():
                     kind = slot["type"]
+                    literal_line = slot.get("value") if kind == "ingredient_reference" else None
+                    if literal_line in literals and not allocation_counts.get(literal_line):
+                        raise ActionConnectionError("source_literal_allocation_required")
                     if kind == "ingredient_reference" and (iid, name) not in bound_refs: raise ActionConnectionError("ingredient_gold_link_required")
                     if (iid, name) in numeric_display: values[name] = numeric_display[(iid, name)]
                     elif kind in {"quantity", "unit", "duration", "temperature"}:
