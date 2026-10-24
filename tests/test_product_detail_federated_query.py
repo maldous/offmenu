@@ -336,9 +336,18 @@ class FederatedQueryTests(unittest.TestCase):
         with self.assertRaisesRegex(RefreshError,'read-only-required'):self.call()
         self.db['usda-products'].execute('PRAGMA query_only=ON');self.cleanup_ok()
 
-    def test_missing_or_wrong_pair_unavailable_corrupt_digest_typed(self):
+    def test_missing_profile_retains_product_and_corrupt_product_digest_is_typed(self):
         self.edit('usda-profiles','DELETE FROM native_nutrient_profile WHERE profile_id=?',(self.profile_ids[0],))
-        out=self.call();self.assertEqual(out['productDetailAvailability'][0]['state'],'not-loaded');self.assertEqual(len(out['sourceProducts']),2)
+        out=self.call();self.assertEqual(out['productDetailAvailability'][0]['state'],'loaded');self.assertEqual(len(out['sourceProducts']),3)
+        product=out['sourceProducts'][0]
+        self.assertEqual(len(product['records']),1)
+        self.assertEqual(product['fields']['nutrientProfile']['state'],'not-loaded')
+        self.assertEqual(product['sourceBinding']['backingRole'],['usda-products'])
+        self.assertIsNone(product['sourceBinding']['profileReference'])
+        self.assertEqual(product['sourceBinding']['recordPointers'],['jsonl:line:1/0'])
+        self.assertEqual(product['sourceBinding']['nutrientProfileAvailability'],
+            {'state':'not-loaded','reasonCode':'nutrient-profile-not-retained'})
+        self.assertEqual(product['sourceBinding']['recordSha256'],hashlib.sha256(old.readers.canonical(product['records'])).hexdigest())
         self.edit('usda-products','UPDATE retained_reference_record SET parsed_record_sha256=? WHERE reference_record_id=?',('0'*64,self.references[1]))
         with self.assertRaisesRegex(RefreshError,'record-digest'):self.call([self.observations[1]])
         self.cleanup_ok()
@@ -416,7 +425,11 @@ class FederatedQueryTests(unittest.TestCase):
                 self.edit('usda-profiles','UPDATE native_nutrient_profile SET native_packet_json=?,document_sha256=? WHERE profile_id=?',(raw,digest,pid))
                 self.edit('usda-profiles','UPDATE dietary_packet_audit SET packet_sha256=? WHERE packet_id=?',(digest,packet))
                 out=self.call([self.observations[0]])
-                self.assertEqual(out['sourceProducts'],[]);self.assertEqual(out['productDetailAvailability'][0]['state'],'not-loaded')
+                self.assertEqual(len(out['sourceProducts']),1);self.assertEqual(out['productDetailAvailability'][0]['state'],'loaded')
+                product=out['sourceProducts'][0]
+                self.assertEqual(len(product['records']),1)
+                self.assertEqual(product['fields']['nutrientProfile']['state'],'not-loaded')
+                self.assertIsNone(product['sourceBinding']['profileReference'])
         self.edit('identifier','UPDATE identifier_source_record SET record_ordinal=2 WHERE record_ordinal=1')
         self.edit('identifier','UPDATE identifier_assertion SET record_ordinal=2 WHERE assertion_id=1')
         obs=dict(self.observations[0],record_ordinal=2);out=self.call([obs]);self.assertEqual(out['sourceProducts'],[])
@@ -436,9 +449,60 @@ class FederatedQueryTests(unittest.TestCase):
         db.execute('ROLLBACK TO caller_savepoint');self.assertEqual(db.execute('SELECT * FROM caller').fetchall(),[(1,)])
         db.rollback();db.execute('PRAGMA query_only=ON');self.cleanup_ok()
 
+    def test_product_without_ingredients_or_nutrition_reference_is_visible(self):
+        ref=self.references[0]
+        raw=self.db['usda-products'].execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(ref,)).fetchone()[0]
+        product=json.loads(raw)[0]
+        product['data'].pop('ingredientsText');product['data'].pop('nutritionId')
+        product['data']['name']='Source-reported non-food example'
+        product['data']['extension']['productKind']='non-food'
+        digest=q._hash(product)
+        self.edit('usda-products','UPDATE retained_reference_record SET source_payload_json=?,parsed_record_sha256=? WHERE reference_record_id=?',(canonical([product]).decode(),digest,ref))
+        self.edit('usda-products','UPDATE product_processing_audit SET source_record_sha256=? WHERE processing_id=?',(digest,ref))
+        changes={role:db.total_changes for role,db in self.db.items()}
+        out=self.call([self.observations[0]])
+        returned=out['sourceProducts'][0]
+        self.assertEqual(out['productDetailAvailability'][0]['state'],'loaded')
+        self.assertEqual(returned['records'],[product])
+        self.assertEqual(returned['ingredientUsability']['status'],'unclassified')
+        self.assertIsNone(returned['ingredientUsability']['classificationEvidence'])
+        self.assertEqual(returned['fields']['nutrientProfile']['state'],'not-loaded')
+        self.assertEqual(returned['fields']['ingredientDeclaration']['state'],'missing')
+        self.assertEqual(returned['sourceObservation'],self.observations[0])
+        self.assertEqual(changes,{role:db.total_changes for role,db in self.db.items()})
+        self.cleanup_ok()
+
+    def test_OFF_product_with_missing_profile_keeps_exact_source_binding(self):
+        obs=self.observations[2];db=self.db['off-subset']
+        ref,old_binding,paired=db.execute(q.OFF_KEY_SQL,(obs['namespace'],obs['lexical_value'],'fixture-gen','product',100)).fetchone()
+        self.edit('off-subset','UPDATE product_detail_projection SET paired_profile_reference=NULL WHERE reference_record_id=?',(ref,))
+        before=db.total_changes;out=self.call([obs]);product=out['sourceProducts'][0]
+        self.assertEqual(out['productDetailAvailability'][0]['state'],'loaded')
+        self.assertEqual(len(product['records']),1)
+        self.assertEqual(product['fields']['nutrientProfile']['state'],'not-loaded')
+        self.assertIsNone(product['sourceBinding']['profileReference'])
+        self.assertEqual(product['sourceBinding']['declaredPairedSourceBinding']['recordSha256'],json.loads(old_binding)['recordSha256'])
+        self.assertEqual(product['sourceBinding']['recordSha256'],hashlib.sha256(old.readers.canonical(product['records'])).hexdigest())
+        self.assertEqual(db.total_changes,before);self.cleanup_ok()
+
+    def test_OFF_invalid_profile_digest_never_hides_valid_product_or_exports_profile(self):
+        obs=self.observations[2];db=self.db['off-subset']
+        ref,_,paired=db.execute(q.OFF_KEY_SQL,(obs['namespace'],obs['lexical_value'],'fixture-gen','product',100)).fetchone()
+        self.edit('off-subset','UPDATE retained_reference_record SET parsed_record_sha256=? WHERE reference_record_id=?',('0'*64,paired))
+        product=self.call([obs])['sourceProducts'][0]
+        self.assertEqual(len(product['records']),1)
+        self.assertEqual(product['sourceBinding']['nutrientProfileAvailability']['reasonCode'],'nutrient-profile-digest-unavailable')
+        self.edit('off-subset','UPDATE retained_reference_record SET parsed_record_sha256=? WHERE reference_record_id=?',('0'*64,ref))
+        with self.assertRaisesRegex(RefreshError,'record-digest'):self.call([obs])
+        self.cleanup_ok()
+
     def test_profile_raw_digest_error_and_sql_error_codes_are_safe(self):
         self.edit('usda-profiles','UPDATE native_nutrient_profile SET document_sha256=? WHERE profile_id=?',('0'*64,self.profile_ids[0]))
-        with self.assertRaisesRegex(RefreshError,'record-digest'):self.call([self.observations[0]])
+        out=self.call([self.observations[0]])
+        self.assertEqual(len(out['sourceProducts']),1)
+        self.assertEqual(out['sourceProducts'][0]['sourceBinding']['nutrientProfileAvailability'],
+            {'state':'not-loaded','reasonCode':'nutrient-profile-digest-unavailable'})
+        self.assertEqual(len(out['sourceProducts'][0]['records']),1)
         limits={role:db.getlimit(sqlite3.SQLITE_LIMIT_LENGTH) for role,db in self.db.items()}
         self.edit('usda-products','DROP TABLE product_processing_audit')
         with self.assertRaisesRegex(RefreshError,'sql-bound-or-store') as error:self.call([self.observations[0]])
