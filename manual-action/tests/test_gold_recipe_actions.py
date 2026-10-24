@@ -392,6 +392,44 @@ def _spanish_case(native):
     return rules, review, connections, receipts
 
 
+def _source_literal_case(native, *, count=False, method_evidence=False):
+    amount, unit = ('4', 'eggs') if count else ('2', 'handfuls')
+    record = _record(single=True)
+    record['ingredients'][0].update(quantity=amount, unit=unit,
+        raw_text='4 large eggs' if count else '2 handfuls beans',
+        source_name_text='eggs' if count else 'beans')
+    record['steps'][0]['raw_text'] = 'Mix 4 large eggs.' if count else 'Mix 2 handfuls beans.'
+    if method_evidence:
+        record['ingredients'][0]['raw_text'] = 'Beans'
+    rules = _rules_for(native, record)
+    review = _review(native, rules, amount=amount, unit=unit)
+    template = review['normalized']['fields']['recipe_menu_template']
+    instance = template['template_instances'][0]
+    if count:
+        definition = template['learned_templates'][0]['definition']
+        definition['pattern'] = 'Mix {amount} {material}.'
+        del definition['slot_types']['unit']
+        del instance['slots']['unit']
+        instance['slots']['amount']['value']['descriptor'] = 'large'
+        template_id = native.recipes.canonical_template_id(definition)
+        template['learned_templates'][0]['template_id'] = template_id
+        instance['template_id'] = template_id
+        review['normalized']['fields']['translation_plan']['template_ids'] = [template_id]
+    connections = _connections(native, review, quantity_value=amount, quantity_unit=unit)
+    if count:
+        connections['ingredient_links'][0]['unit_slot_name'] = None
+    connections['source_literal_quantities'] = [dict(
+        source_ingredient_line_id=template['ingredients'][0]['ingredient_id'],
+        kind='item-count' if count else 'household-measure', value=amount, unit=unit,
+        descriptor='large' if count else None,
+        evidence=[_span('/steps/0/raw_text', record['steps'][0]['raw_text'], record['steps'][0]['raw_text'])]
+                 if method_evidence else [_span('/ingredients/0/raw_text', record['ingredients'][0]['raw_text'],
+                        record['ingredients'][0]['raw_text'])], citation_ids=['citation:generated'])]
+    connections['qualification']['content_sha256'] = native.recipes.digest(
+        {key: value for key, value in connections.items() if key != 'qualification'})
+    return rules, review, connections
+
+
 class GoldRecipeActionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -421,6 +459,44 @@ class GoldRecipeActionTests(unittest.TestCase):
         review = _review(self.native_source, rules, dependency=kwargs.pop("dependency", True))
         connections = _connections(self.native_source, review, **kwargs)
         return rules, review, connections
+
+    def test_source_literal_measure_and_large_count_preserve_native_scaffold(self):
+        for count, text in ((False, 'Mix 2 handfuls beans.'), (True, 'Mix 4 large eggs.')):
+            with self.subTest(count=count):
+                rules, review, connections = _source_literal_case(self.native_source, count=count)
+                frozen = copy.deepcopy((rules, review, connections))
+                result = self.actions.connect_recipe_actions(rules, review, native=self.native, connections=connections)
+                self.assertEqual('ready-for-review', result['status'], result['holds'])
+                self.assertEqual(text, result['actions'][0]['english_text'])
+                allocation = result['ingredient_links'][0]['allocation']
+                self.assertEqual('source-literal', allocation['status'])
+                self.assertIsNone(allocation['metric_normalization'])
+                self.assertEqual('not-qualified', allocation['scaling'])
+                self.assertEqual('unresolved', review['normalized']['fields']['recipe_menu_template']['ingredients'][0]['quantity']['status'])
+                self.assertEqual(frozen, (rules, review, connections))
+
+    def test_no_literal_contract_keeps_legacy_unsupported_unit_hold(self):
+        rules, review, connections = _source_literal_case(self.native_source)
+        del connections['source_literal_quantities']
+        connections['qualification']['content_sha256'] = self.native_source.recipes.digest(
+            {k: v for k, v in connections.items() if k != 'qualification'})
+        result = self.actions.connect_recipe_actions(rules, review, native=self.native, connections=connections)
+        self.assertEqual([{'code': 'recipe_ingredient_quantity_unresolved', 'target': 'recipe'}], result['holds'])
+
+    def test_literal_profile_rejects_scaling_and_qualitative_allocation_bypass(self):
+        for change in ('scaling', 'null-allocation', 'duplicate-contract', 'wrong-evidence', 'missing-descriptor'):
+            with self.subTest(change=change):
+                rules, review, connections = _source_literal_case(self.native_source, count=True)
+                kwargs = {}
+                if change == 'scaling': kwargs['requested_servings'] = '2'
+                elif change == 'null-allocation': connections['ingredient_links'][0]['quantity'] = None
+                elif change == 'duplicate-contract': connections['source_literal_quantities'] *= 2
+                elif change == 'wrong-evidence': connections['source_literal_quantities'][0]['evidence'][0]['pointer'] = '/ingredients/1/raw_text'
+                else: connections['source_literal_quantities'][0]['descriptor'] = None
+                connections['qualification']['content_sha256'] = self.native_source.recipes.digest(
+                    {k: v for k, v in connections.items() if k != 'qualification'})
+                result = self.actions.connect_recipe_actions(rules, review, native=self.native, connections=connections, **kwargs)
+                self.assertEqual('held', result['status'])
 
     def test_verified_pinned_helpers_produce_ordered_english_actions_and_material_flow(self):
         rules, review, connections = self._connected()

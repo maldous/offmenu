@@ -367,41 +367,14 @@
       "additionalProperties": false
     },
     "allocation": {
-      "type": "object",
-      "properties": {
-        "original": {
-          "type": "object"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/nativeAllocation"
         },
-        "normalized": {
-          "type": "object",
-          "$comment": "Existing normalization_domains.normalize_quantity quantity-exact-v1 result, retained unchanged. No alternative quantity contract."
-        },
-        "scaled_min": {
-          "type": "string",
-          "minLength": 1
-        },
-        "scaled_max": {
-          "type": "string",
-          "minLength": 1
-        },
-        "normalized_unit": {
-          "type": "string",
-          "minLength": 1
-        },
-        "factor": {
-          "type": "string",
-          "minLength": 1
+        {
+          "$ref": "#/$defs/sourceLiteralAllocation"
         }
-      },
-      "required": [
-        "original",
-        "normalized",
-        "scaled_min",
-        "scaled_max",
-        "normalized_unit",
-        "factor"
-      ],
-      "additionalProperties": false
+      ]
     },
     "action": {
       "type": "object",
@@ -562,6 +535,151 @@
             "required": [
               "material_id"
             ]
+          }
+        }
+      ]
+    },
+    "nativeAllocation": {
+      "type": "object",
+      "properties": {
+        "original": {
+          "type": "object"
+        },
+        "normalized": {
+          "type": "object",
+          "$comment": "Existing normalization_domains.normalize_quantity quantity-exact-v1 result, retained unchanged. No alternative quantity contract."
+        },
+        "scaled_min": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scaled_max": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "factor": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "original",
+        "normalized",
+        "scaled_min",
+        "scaled_max",
+        "normalized_unit",
+        "factor"
+      ],
+      "additionalProperties": false
+    },
+    "sourceLiteralAllocation": {
+      "type": "object",
+      "properties": {
+        "source_ingredient_line_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "household-measure",
+            "item-count"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,8}$"
+        },
+        "unit": {
+          "enum": [
+            "handful",
+            "handfuls",
+            "egg",
+            "eggs"
+          ]
+        },
+        "descriptor": {
+          "enum": [
+            null,
+            "large"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceSpan"
+          },
+          "minItems": 1,
+          "maxItems": 512
+        },
+        "citation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "status": {
+          "const": "source-literal"
+        },
+        "metric_normalization": {
+          "type": "null"
+        },
+        "scaling": {
+          "const": "not-qualified"
+        }
+      },
+      "required": [
+        "source_ingredient_line_id",
+        "kind",
+        "value",
+        "unit",
+        "descriptor",
+        "evidence",
+        "citation_ids",
+        "status",
+        "metric_normalization",
+        "scaling"
+      ],
+      "additionalProperties": false,
+      "$comment": "Current connector successor annotation only; native unresolved quantity remains unchanged. No metric normalization, calibration, mass, scaling or admission grant. Semantic/source/receipt validation remains mandatory.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "household-measure"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "handful",
+                  "handfuls"
+                ]
+              },
+              "descriptor": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "egg",
+                  "eggs"
+                ]
+              }
+            }
           }
         }
       ]
