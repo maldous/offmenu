@@ -61,6 +61,22 @@ class _Budget:
         self.consume(tuple(r.values()) for r in rows)
         return rows
 
+    def recipe_support_evidence(self,kind,target,citation_ids,scopes):
+        """Retain selected metadata caches and budgets for batched lookups."""
+        self.load_supports()
+        evidence=[]
+        for cid in citation_ids:
+            if cid not in self.citation_rows:
+                self.citation_rows[cid]=self.query('SELECT payload_json FROM gold_citations WHERE citation_id=?',(cid,))
+            values=[(r['evidence_sha256'],c['payload_json'])
+                    for r in self.support_index.get((kind,target,cid),())
+                    if r['support_scope'] in scopes for c in self.citation_rows[cid]]
+            # CID is existing cache metadata; charge the same evidence fields
+            # and one row per match as the legacy cursor.
+            evidence.extend(dict(citation_id=cid,evidence_sha256=sha,payload_json=payload)
+                            for sha,payload in self.consume(values))
+        return evidence
+
     def consume(self,source):
         result=[]
         for row in source:
