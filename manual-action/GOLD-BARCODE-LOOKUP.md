@@ -14,7 +14,10 @@ python3 -B manual-action/gold_barcode_lookup.py \
   --barcode '078742003986'
 ```
 
-The CLI verifies the selected receipt hash and `ACCEPTED_` disposition, verifies
+The CLI reads at most 1 MiB plus one byte from a single receipt open, rejects
+oversize input, hashes that exact buffer and parses the same bytes. Replacing the
+receipt path after the read cannot substitute another artifact or notice under
+the selected hash. It checks the `ACCEPTED_` disposition and verifies
 its exact artifact hash, rejects WAL/SHM/journal sidecars, opens the frozen file
 with `mode=ro&immutable=1` and `query_only=ON`, closes it, and verifies the database
 bytes and sidecar absence again. This is not discovery or proof that an arbitrary
@@ -52,6 +55,11 @@ map also contains source-qualified candidates examined while evaluating choices;
 its presence is not selection or a recommendation. Full source resource records,
 occurrences, original names/languages, qualified original/English text records,
 source paths, citation rights/attribution and recorded holds remain available.
+JSON database columns are decoded once in the response (`payload`, `evidence`,
+`context`, `original` and `sourcePayload`); duplicate escaped transport copies of
+the same JSON are omitted. All decoded source values, raw original text and
+language remain intact. This keeps definition rights within the existing byte
+cap without truncating source records or increasing limits.
 Only already-qualified English names are displayed; an unsupported English name
 is `unknown`, with the original resource preserved. The query calls no model or
 translation service and does not silently translate outward.
@@ -63,6 +71,10 @@ matching, different and unknown contexts; it selects no winner, averages nothing
 and fills no unknown. Missing or held nutrition is explicit and does not erase
 independent structural paths. Canonical/source-reference nutrients never transfer
 to a product or recipe, and recipe totals remain null.
+Every returned metric also carries its qualified `definition` support records
+and citation IDs; distinct definition licences/attributions are retained in the
+shared citation map. Absent, invalid, wrongly scoped or nonpublic definition
+provenance holds the affected nutrition while independent recipe paths survive.
 
 Menu relationships are returned only when qualified menu entities and actual
 supported edges connect to a returned recipe. Predicate and direction are
@@ -91,9 +103,16 @@ on both success and failure. The CLI/API create no indexes or sidecars.
 
 Admitted snapshots lack a support-target index. A bounded per-call in-memory
 index of **support metadata only** avoids repeated full support scans by the
-existing recipe reader. Citation bodies load only as required. This is neither a
+existing recipe reader. Resource/text/relation/metric metadata remain bounded;
+assertion metadata is filtered in SQL to the exact barcode's source products.
+Unrelated source-reference assertion growth does not fill the default index.
+All metric definition metadata remain eligible so filtering cannot erase their
+rights. Citation bodies load only as required. This is neither a
 persistent cache nor a database/schema migration; its rows/bytes share the same
-budgets. A smaller row budget may deliberately fail before this index fits.
+budgets. A smaller row budget or future growth of the remaining metadata can
+still produce an honest typed limit error. No limit is automatically raised.
+Frozen c612 failed with `row-limit` on admitted batch17 at published defaults;
+its successor is tested explicitly on admitted16 and17 at the same defaults.
 
 No response establishes current stock, recall/allergen/private-profile safety,
 universal ingredient identity, product substitution, legal business ownership,

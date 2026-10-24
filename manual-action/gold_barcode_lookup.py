@@ -31,11 +31,35 @@ class SnapshotSelection:
 
 class _Budget:
     """SELECT-only connection adapter also bounds the existing recipe reader."""
-    def __init__(self,db,rows,steps,seconds):
+    def __init__(self,db,rows,steps,seconds,barcode):
         self.db=db;self.remaining=rows;self.steps=steps;self.deadline=time.monotonic()+seconds
         self.ticks=0
         self.support_index=None;self.citation_rows={}
         self.bytes_read=0
+        self.barcode=barcode;self.support_targets={}
+
+    def load_supports(self):
+        if self.support_index is not None:return
+        # Recipe qualification uses resource/text/relation supports. Assertion
+        # supports are needed only for the exact barcode's source products, not
+        # unrelated source-reference nutrition. Keep all metric definition
+        # metadata so separate definition rights cannot disappear.
+        rows=self.query("SELECT support_id,target_kind,target_id,citation_id,support_scope,evidence_sha256 FROM gold_support "
+            "WHERE target_kind IN ('resource','text','relation','metric') OR (target_kind='assertion' AND target_id IN "
+            "(SELECT assertion_id FROM gold_claims WHERE entity_id IN (SELECT entity_id FROM gold_claims "
+            "WHERE property_id='usda:gtin-upc' AND json_extract(payload_json,'$.value.kind')='identifier' "
+            "AND json_type(payload_json,'$.value.value')='text' AND json_extract(payload_json,'$.value.value')=? COLLATE BINARY)))",(self.barcode,))
+        self.support_index={}
+        for row in rows:
+            key=(row['target_kind'],row['target_id'],row['citation_id'])
+            self.support_index.setdefault(key,[]).append(row)
+            self.support_targets.setdefault(key[:2],[]).append(row)
+
+    def metric_definitions(self,metric_id):
+        self.load_supports()
+        rows=[r for r in self.support_targets.get(('metric',metric_id),()) if r['support_scope']=='definition']
+        self.consume(tuple(r.values()) for r in rows)
+        return rows
 
     def consume(self,source):
         result=[]
@@ -54,14 +78,7 @@ class _Budget:
         if not sql.lstrip().upper().startswith('SELECT '): raise BarcodeQueryError('select-only')
         if time.monotonic()>self.deadline: raise BarcodeQueryError('resource-limit')
         if 'FROM gold_support s JOIN gold_citations c' in sql:
-            # The immutable admitted schema has no support-target index. Build
-            # only bounded support metadata once; no persistent cache or DDL.
-            if self.support_index is None:
-                rows=self.query('SELECT target_kind,target_id,citation_id,support_scope,evidence_sha256 FROM gold_support')
-                self.support_index={}
-                for row in rows:
-                    key=(row['target_kind'],row['target_id'],row['citation_id'])
-                    self.support_index.setdefault(key,[]).append(row)
+            self.load_supports()
             key=tuple(args[:3]);cid=args[2]
             if cid not in self.citation_rows:
                 self.citation_rows[cid]=self.query('SELECT payload_json FROM gold_citations WHERE citation_id=?',(cid,))
@@ -118,7 +135,7 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
         identifierProperties=list(BARCODE_PROPERTIES),
         automaticProductSelection=False,universalIdentity=False,completeExecutableRecipe=False,
         recipeNutrientTotals=None,sourceReferenceNutritionTransfer=False,gs1Allocation='NOT_CHECKED')
-    budget=_Budget(db,max_rows,max_steps,max_seconds);cache={};known_choices=set();path_keys=set()
+    budget=_Budget(db,max_rows,max_steps,max_seconds,barcode);cache={};known_choices=set();path_keys=set()
     def size():
         if len(encoded(out))>max_bytes: raise BarcodeQueryError('output-limit')
     def hold(target,reason):
@@ -162,8 +179,10 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
         e['payload']=p;e['origins']=origins
         out['entities'][eid]=dict(entityId=eid,resourceId=e['resource_id'],type=e['entity_type'],
             englishNames=english,nameState='present' if english else 'unknown',
-            originalResource=p,textRecords=[dict(t,evidence=json.loads(t['evidence_json'])) for t in qualified],
-            sourceRecords=[dict(o,payload=json.loads(o['payload_json'])) for o in origins],
+            originalResource=p,textRecords=[dict({k:v for k,v in t.items() if k!='evidence_json'},
+                                                evidence=json.loads(t['evidence_json'])) for t in qualified],
+            sourceRecords=[dict({k:v for k,v in o.items() if k!='payload_json'},
+                                payload=json.loads(o['payload_json'])) for o in origins],
             holds=budget.query('SELECT target_kind,target_id,reason FROM gold_holds WHERE target_id IN (?,?)',(eid,e['resource_id'])))
         cache[eid]=e;size();return e
     def relation(row,subject,obj):
@@ -210,10 +229,18 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
                     or op.get('subjectId')!=product['resource_id'] or op.get('id')!=oc['assertion_id']
                     or not metric or metric[0]['state']!='verified' or not support('assertion',op,('field',))):
                     hold(observation['observation_id'],'nutrition source claim/metric support held');continue
+                definitions=budget.metric_definitions(observation['metric_id'])
+                definition_ids=sorted({d['citation_id'] for d in definitions})
+                definition_payload=dict(id=observation['metric_id'],citationIds=definition_ids,scope={'visibility':'public'})
+                if not definition_ids or not support('metric',definition_payload,('definition',)):
+                    hold(observation['observation_id'],'metric definition provenance held');continue
+                qualified_definitions=[d for d in definitions if _pin(d['evidence_sha256'])]
                 actual=json.loads(observation['context_json'])
                 unknown=[k for k in context if actual.get(k) is None]
                 mismatch=[k for k,v in context.items() if actual.get(k) is not None and actual[k]!=v]
-                entry['nutrition'].append(dict(observation=observation,sourceClaim=op,metric=metric[0],
+                entry['nutrition'].append(dict(observation={k:v for k,v in observation.items()
+                    if k not in ('context_json','original_json','payload_json')},sourceClaim=op,metric=metric[0],
+                    metricDefinitionSupports=qualified_definitions,metricDefinitionCitationIds=definition_ids,
                     context=actual,original=json.loads(observation['original_json']),
                     sourcePayload=json.loads(observation['payload_json']),requestedContext=context,
                     contextState='unknown' if unknown else 'different' if mismatch else 'matches' if context else 'not-requested',
@@ -302,9 +329,14 @@ def _file_sha(path):
 def query_snapshot(admission_path,admission_sha256,barcode,**kwargs):
     """Caller selects the receipt/hash; never discover or silently choose a DB."""
     receipt_path=Path(admission_path)
-    if not _pin(admission_sha256) or receipt_path.stat().st_size>1048576 or _file_sha(receipt_path)!=admission_sha256:
+    # Hash and parse one bounded byte buffer. A replaced path cannot switch the
+    # selected artifact/notice between separate receipt opens.
+    with receipt_path.open('rb') as stream:
+        receipt_bytes=stream.read(1048577)
+    if (not _pin(admission_sha256) or len(receipt_bytes)>1048576
+        or hashlib.sha256(receipt_bytes).hexdigest()!=admission_sha256):
         raise BarcodeQueryError('admission-pin-mismatch')
-    receipt=json.loads(receipt_path.read_text())
+    receipt=json.loads(receipt_bytes)
     if type(receipt) is not dict:raise BarcodeQueryError('admission-not-selected')
     artifact=receipt.get('artifact',{})
     if (type(artifact) is not dict or not str(receipt.get('state','')).startswith('ACCEPTED_')

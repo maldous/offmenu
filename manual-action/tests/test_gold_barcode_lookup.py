@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
@@ -50,6 +51,9 @@ class GoldBarcodeLookupTests(unittest.TestCase):
             entity=r['entities'][r['products'][0]['entityId']]
             self.assertTrue(entity['englishNames']);self.assertTrue(entity['originalResource']['names'])
             self.assertTrue(entity['sourceRecords']);self.assertTrue(r['citations'])
+            for origin in entity['sourceRecords']:
+                raw=db.execute('SELECT payload_json FROM gold_occurrences WHERE occurrence_id=?',(origin['occurrence_id'],)).fetchone()[0]
+                self.assertEqual(json.loads(raw),origin['payload'])
 
     def test_exact_lexeme_and_absent_barcode(self):
         p,q,_=fixture()
@@ -218,6 +222,93 @@ class GoldBarcodeLookupTests(unittest.TestCase):
             with self.assertRaises(reader.BarcodeQueryError):reader.query_snapshot(receipt,'b'*64,CODE)
             Path(str(path)+'-wal').write_text('generated test sidecar')
             with self.assertRaises(reader.BarcodeQueryError):reader.query_snapshot(receipt,sha(receipt),CODE)
+
+    def test_receipt_replacement_after_single_read_cannot_change_selection(self):
+        p,q,_=fixture()
+        with tempfile.TemporaryDirectory(prefix='offmenu-receipt-generated-') as folder:
+            folder=Path(folder);a=folder/'a.sqlite';b=folder/'b.sqlite';receipt=folder/'receipt.json'
+            for path in (a,b):
+                with base.sqlite_proposal(base.build(p,q)) as db:
+                    if path==b:db.execute("UPDATE gold_citations SET payload_json=json_set(payload_json,'$.attribution','Distinct generated B')")
+                    db.commit()
+                    with sqlite3.connect(path) as target:db.backup(target)
+            sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+            selected=dict(state='ACCEPTED_GENERATED_A',artifact=dict(path=str(a),sha256=sha(a)))
+            replacement=dict(state='ACCEPTED_GENERATED_B',artifact=dict(path=str(b),sha256=sha(b)))
+            receipt.write_text(json.dumps(selected));selected_sha=sha(receipt)
+            original_open=Path.open;reads=[]
+            def opening(path,*args,**kwargs):
+                stream=original_open(path,*args,**kwargs)
+                if path!=receipt or not args or args[0]!='rb':return stream
+                class InterleavedRead:
+                    def __enter__(self):return self
+                    def __exit__(self,*args):stream.close()
+                    def read(self,size=-1):
+                        data=stream.read(size);reads.append(size)
+                        if len(reads)==1:receipt.write_text(json.dumps(replacement))
+                        return data
+                return InterleavedRead()
+            with patch.object(Path,'open',opening):
+                result=reader.query_snapshot(receipt,selected_sha,CODE)
+            self.assertEqual([1048577],reads)
+            self.assertEqual(selected,result['admissionNotice'])
+            self.assertEqual(selected_sha,result['snapshot']['admissionSha256'])
+            self.assertEqual(sha(a),result['snapshot']['databaseSha256'])
+            self.assertNotEqual(sha(b),result['snapshot']['databaseSha256'])
+            self.assertNotEqual(selected_sha,sha(receipt))
+            self.assertEqual(replacement,json.loads(receipt.read_text()))
+
+    def test_receipt_buffer_hard_cap_rejects_oversized_input(self):
+        with tempfile.TemporaryDirectory(prefix='offmenu-receipt-size-') as folder:
+            receipt=Path(folder)/'oversized.json';receipt.write_bytes(b' ' * 1048577)
+            with self.assertRaisesRegex(reader.BarcodeQueryError,'admission-pin-mismatch'):
+                reader.query_snapshot(receipt,hashlib.sha256(receipt.read_bytes()).hexdigest(),CODE)
+
+    def test_separate_metric_definition_citation_rights_and_supports_returned(self):
+        p,q,_=fixture();citation=copy.deepcopy(p['common']['citations'][0])
+        citation.update(id='definition-only',license='Generated separate definition license',
+                        attribution='Generated separate definition attribution')
+        p['common']['citations'].append(citation);p['metrics'][0]['citation_ids']=['definition-only']
+        for support in q['supports']:
+            if support['target_kind']=='metric':support['citation_id']='definition-only'
+        proposal=base.build(p,q)
+        for failure in (None,'missing','invalid-pin','wrong-scope','private'):
+            with self.subTest(failure=failure):
+                with base.sqlite_proposal(proposal) as db:
+                    if failure=='missing':db.execute("DELETE FROM gold_support WHERE target_kind='metric'")
+                    elif failure=='invalid-pin':db.execute("UPDATE gold_support SET evidence_sha256='invalid' WHERE target_kind='metric'")
+                    elif failure=='wrong-scope':db.execute("UPDATE gold_support SET support_scope='field' WHERE target_kind='metric'")
+                    elif failure=='private':db.execute("UPDATE gold_citations SET payload_json=json_set(payload_json,'$.scope.visibility','private') WHERE citation_id='definition-only'")
+                    result=reader.read_barcode(db,CODE,selection=SELECTED)
+                    self.assertEqual(1,len(result['paths']))
+                    if failure is None:
+                        self.assertEqual(citation,result['citations']['definition-only'])
+                        self.assertEqual(3,len(result['products'][0]['nutrition']))
+                        for record in result['products'][0]['nutrition']:
+                            self.assertEqual(['definition-only'],record['metricDefinitionCitationIds'])
+                            self.assertEqual('definition',record['metricDefinitionSupports'][0]['support_scope'])
+                    else:
+                        self.assertEqual([],result['products'][0]['nutrition'])
+                        self.assertEqual('held',result['nutritionState'])
+                        self.assertTrue(any(h['reason']=='metric definition provenance held' for h in result['held']))
+
+    def test_large_unrelated_reference_assertions_do_not_fill_support_index(self):
+        p,q,_=fixture()
+        with base.sqlite_proposal(base.build(p,q)) as db:
+            canonical=db.execute("SELECT entity_id FROM gold_entities WHERE resource_id='canonical'").fetchone()[0]
+            claims=[];supports=[]
+            for index in range(12000):
+                identity='generated-reference-'+str(index)
+                payload=dict(id=identity,subjectId='canonical',propertyId='source:reference-nutrition',
+                    value=dict(kind='quantity',value=1,unitId='g',dimension='mass'),citationIds=['cite'],scope=base.PUBLIC)
+                claims.append((identity,identity,canonical,payload['propertyId'],'verified',json.dumps(payload)))
+                supports.append((identity,'assertion',identity,'cite','field',base.PIN))
+            db.executemany('INSERT INTO gold_claims VALUES(?,?,?,?,?,?)',claims)
+            db.executemany('INSERT INTO gold_support VALUES(?,?,?,?,?,?)',supports)
+            result=reader.read_barcode(db,CODE,selection=SELECTED)
+            self.assertEqual(1,len(result['paths']));self.assertEqual(3,len(result['products'][0]['nutrition']))
+            self.assertLess(result['limits']['rowsRead'],10000)
+            self.assertFalse(result['sourceReferenceNutritionTransfer'])
 
 
 if __name__=='__main__':unittest.main()
