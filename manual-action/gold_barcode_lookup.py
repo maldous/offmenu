@@ -1,7 +1,6 @@
 """Bounded private-local query of an independently selected admitted GOLD snapshot."""
 import argparse
 from dataclasses import dataclass
-from contextlib import closing
 import hashlib
 import json
 from pathlib import Path
@@ -10,6 +9,7 @@ import time
 
 from gold_builder import _pin, relation_condition, alternative_scope_valid
 from gold_relation_lookup import lookup_recipe_products
+from gold_snapshot_access import SnapshotAccessError, verified_snapshot
 
 
 class BarcodeQueryError(ValueError):
@@ -365,41 +365,19 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
         db.setlimit(sqlite3.SQLITE_LIMIT_LENGTH,previous_length)
 
 
-def _file_sha(path):
-    h=hashlib.sha256()
-    with path.open('rb') as stream:
-        for block in iter(lambda:stream.read(1048576),b''):h.update(block)
-    return h.hexdigest()
-
-
 def query_snapshot(admission_path,admission_sha256,barcode,**kwargs):
     """Caller selects the receipt/hash; never discover or silently choose a DB."""
-    receipt_path=Path(admission_path)
-    # Hash and parse one bounded byte buffer. A replaced path cannot switch the
-    # selected artifact/notice between separate receipt opens.
-    with receipt_path.open('rb') as stream:
-        receipt_bytes=stream.read(1048577)
-    if (not _pin(admission_sha256) or len(receipt_bytes)>1048576
-        or hashlib.sha256(receipt_bytes).hexdigest()!=admission_sha256):
-        raise BarcodeQueryError('admission-pin-mismatch')
-    receipt=json.loads(receipt_bytes)
-    if type(receipt) is not dict:raise BarcodeQueryError('admission-not-selected')
-    artifact=receipt.get('artifact',{})
-    if (type(artifact) is not dict or not str(receipt.get('state','')).startswith('ACCEPTED_')
-        or not _pin(artifact.get('sha256')) or type(artifact.get('path')) is not str):
-        raise BarcodeQueryError('admission-not-selected')
-    path=Path(artifact.get('path',''))
-    if not path.is_absolute() or path.stat().st_size>1073741824 or _file_sha(path)!=artifact['sha256']:raise BarcodeQueryError('database-pin-mismatch')
-    before_sidecars={s:Path(str(path)+s).exists() for s in ('-wal','-shm','-journal')}
-    if any(before_sidecars.values()):raise BarcodeQueryError('frozen-snapshot-required')
-    with closing(sqlite3.connect(path.as_uri()+'?mode=ro&immutable=1',uri=True)) as db:
-        db.execute('PRAGMA query_only=ON')
-        result=read_barcode(db,barcode,selection=SnapshotSelection(artifact['sha256'],admission_sha256),**kwargs)
-    result['admissionNotice']=receipt
-    if len(encoded(result))>kwargs.get('max_bytes',262144):raise BarcodeQueryError('output-limit')
-    if _file_sha(path)!=artifact['sha256'] or any(Path(str(path)+s).exists() for s in before_sidecars):
-        raise BarcodeQueryError('snapshot-changed')
-    return result
+    try:
+        with verified_snapshot(admission_path,admission_sha256) as access:
+            result=read_barcode(access.db,barcode,
+                selection=SnapshotSelection(access.database_sha256,admission_sha256),**kwargs)
+            result['admissionNotice']=access.receipt
+        result['snapshotVerification']=access.verification
+        if len(encoded(result))>kwargs.get('max_bytes',262144):raise BarcodeQueryError('output-limit')
+        return result
+    except SnapshotAccessError as error:
+        code='admission-pin-mismatch' if str(error)=='admission-hash-mismatch' else str(error)
+        raise BarcodeQueryError(code) from error
 
 
 def main():
