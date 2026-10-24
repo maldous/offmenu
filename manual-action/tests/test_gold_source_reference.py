@@ -198,6 +198,51 @@ class GoldSourceReferenceTests(unittest.TestCase):
                 self.assertEqual('held', entity_states(r)[FOOD_RAW])
                 self.assertEqual('verified', entity_states(r)[FOOD_COOKED])
 
+    def test_every_extra_native_claim_requires_its_own_kind_path_and_value(self):
+        for rid, suffix in [(FOOD_RAW, 'native-id'), (FOOD_RAW, 'ndb-number'),
+                            (FOOD_RAW, 'data-type'), ('urn:fixture:sr:nutrient:1004', 'native-id'),
+                            ('urn:fixture:sr:nutrient:1004', 'native-unit')]:
+            for mutation in ['value', 'kind', 'path']:
+                with self.subTest(resource=rid, suffix=suffix, mutation=mutation):
+                    p, q = source_reference_fixture()
+                    a = copy.deepcopy(next(a for a in p['common']['assertions'] if a['id'] == rid + ':' + suffix))
+                    a['id'] += ':unsupported-extra'
+                    if mutation == 'value': a['value']['value'] = 'MG' if suffix == 'native-unit' else '999'
+                    elif mutation == 'kind':
+                        a['value']['kind'] = 'expression' if a['value']['kind'] == 'identifier' else 'identifier'
+                        if a['value']['kind'] == 'expression': a['value']['syntax'] = 'literal-source-text'
+                        else: a['value'].pop('syntax', None)
+                    else:
+                        occurrence = next(o for o in p['occurrences'] if o['resource_ids'] == [rid])
+                        occurrence['source_original']['same_value_alias'] = a['value']['value']
+                        a['sourcePath'] = '/same_value_alias'
+                        refresh_source_record(p, q, occurrence)
+                    p['common']['assertions'].append(a)
+                    q['supports'].append({'target_kind': 'assertion', 'target_id': a['id'],
+                        'citation_id': a['citationIds'][0], 'support_scope': 'field', 'evidence_sha256': g.digest(a)})
+                    r = build(p, q)
+                    extra = next(c for c in r['rows']['gold_claims'] if c['assertion_id'] == a['id'])
+                    self.assertEqual('held', extra['state'])
+                    self.assertEqual(a, json.loads(extra['payload_json']))
+                    self.assertEqual({'verified'}, set(entity_states(r).values()))
+                    self.assertEqual(5, sum(o['state'] == 'verified' for o in r['rows']['gold_observations']))
+
+    def test_valid_duplicate_native_claims_preserve_selected_identity_and_context(self):
+        p, q = source_reference_fixture()
+        for old in list(p['common']['assertions']):
+            if old['propertyId'] not in {'usda:fdc-id', 'usda:ndb-number', 'usda:data-type',
+                                         'usda:nutrient-id', 'usda:nutrient-unit'}: continue
+            a = copy.deepcopy(old); a['id'] += ':valid-duplicate'
+            p['common']['assertions'].append(a)
+            q['supports'].append({'target_kind': 'assertion', 'target_id': a['id'],
+                'citation_id': a['citationIds'][0], 'support_scope': 'field', 'evidence_sha256': g.digest(a)})
+        r = build(p, q)
+        duplicates = [c for c in r['rows']['gold_claims'] if c['assertion_id'].endswith(':valid-duplicate')]
+        self.assertEqual(18, len(duplicates))
+        self.assertTrue(all(c['state'] == 'verified' for c in duplicates))
+        self.assertEqual({'verified'}, set(entity_states(r).values()))
+        self.assertEqual(5, sum(o['state'] == 'verified' for o in r['rows']['gold_observations']))
+
     def test_each_row_definition_document_metric_method_and_lexeme_must_match(self):
         edits = {
             'row-hash': lambda p, b: b.update(source_row_sha256='0' * 64),

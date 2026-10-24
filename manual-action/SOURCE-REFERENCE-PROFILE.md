@@ -42,6 +42,10 @@ Food assertions are limited to native FDC/NDB/type fields and numeric properties
 identified by a source nutrient-definition resource. Definition assertions are
 limited to native nutrient ID and unit. Other properties, including GTINs, remain
 held with their original payload; they cannot acquire reference-profile authority.
+Every allowed native identity or vocabulary assertion, including an extra claim,
+must match its own source kind, value kind, anchored native pointer and exact
+native field value. A correct selected identity or unit cannot qualify a
+contradictory extra claim. Valid duplicate claims remain independently supported.
 
 ## Separate numeric context
 

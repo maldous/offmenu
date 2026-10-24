@@ -403,6 +403,28 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
                 else {"usda:nutrient-id", "usda:nutrient-unit"})
             if assertion["propertyId"] not in allowed_properties:
                 good = False; hold("assertion", aid, "property excluded from source reference subset")
+            native_field = {
+                "usda:fdc-id": ("identifier", "/food/fdc_id", "sr_legacy_food"),
+                "usda:ndb-number": ("identifier", "/sr_legacy_food/NDB_number", "sr_legacy_food"),
+                "usda:data-type": ("expression", "/food/data_type", "sr_legacy_food"),
+                "usda:nutrient-id": ("identifier", "/nutrient/id", "nutrient"),
+                "usda:nutrient-unit": ("expression", "/nutrient/unit_name", "nutrient"),
+            }.get(assertion["propertyId"])
+            if native_field:
+                kind, pointer, source_kind = native_field
+                owners = [o for o in occurrences.values() if assertion["subjectId"] in o.get("resource_ids", [])]
+                value = assertion.get("value", {})
+                own_field = (len(owners) == 1
+                    and owners[0].get("source_key") == "usda-files:" + source_kind
+                    and REFERENCE_TYPES.get(subject_type) == source_kind
+                    and value.get("kind") == kind and type(value.get("value")) is str
+                    and (kind != "expression" or value.get("syntax") == "literal-source-text")
+                    and assertion.get("sourcePath") == pointer
+                    and _source_pointer(owners[0].get("source_original"), pointer) == value["value"]
+                    and bool(assertion.get("citationIds"))
+                    and set(assertion["citationIds"]) <= set(owners[0].get("citation_ids", [])))
+                if not own_field:
+                    good = False; hold("assertion", aid, "native source reference claim field binding incomplete")
         if not good: hold("assertion", aid, "claim qualification incomplete")
         claim_for[aid] = cid; claim_good[aid] = good
         add("gold_claims", claim_id=cid, assertion_id=aid, entity_id=eid, property_id=assertion["propertyId"], state="verified" if good else "held", payload_json=_json(assertion))
