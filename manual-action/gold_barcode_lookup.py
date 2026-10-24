@@ -63,9 +63,11 @@ class _Budget:
 
     def recipe_support_evidence(self,kind,target,citation_ids,scopes):
         """Retain selected metadata caches and budgets for batched lookups."""
+        if time.monotonic()>self.deadline: raise BarcodeQueryError('resource-limit')
         self.load_supports()
         evidence=[]
         for cid in citation_ids:
+            if time.monotonic()>self.deadline: raise BarcodeQueryError('resource-limit')
             if cid not in self.citation_rows:
                 self.citation_rows[cid]=self.query('SELECT payload_json FROM gold_citations WHERE citation_id=?',(cid,))
             values=[(r['evidence_sha256'],c['payload_json'])

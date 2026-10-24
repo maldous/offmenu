@@ -215,6 +215,43 @@ class AlternativeLookupTests(unittest.TestCase):
                     self.assertEqual(['other-member'], [p['productId'] for p in actual['paths']])
                     self.assertFalse(actual['productFitAcceptance'])
 
+    def test_cached_barcode_support_bridge_keeps_deadline_guards(self):
+        import gold_barcode_lookup as barcode
+        from unittest.mock import patch
+        db = sqlite3.connect(':memory:')
+        def cached_budget():
+            budget = barcode._Budget(db, 100, 1000000, 3, 'generated')
+            budget.support_index = {('resource', 'generated-product', cid):
+                [dict(support_scope='record', evidence_sha256=fixtures.PIN)]
+                for cid in ('generated-cite-1', 'generated-cite-2')}
+            budget.citation_rows = {cid: [dict(payload_json=json.dumps(
+                dict(scope=dict(visibility='public'))))]
+                for cid in ('generated-cite-1', 'generated-cite-2')}
+            return budget
+        args = ('resource', 'generated-product',
+                ['generated-cite-1', 'generated-cite-2'], ('record',))
+        try:
+            budget = cached_budget()
+            budget.deadline = -1
+            with self.assertRaisesRegex(barcode.BarcodeQueryError, 'resource-limit'):
+                budget.recipe_support_evidence(*args)
+            self.assertEqual(100, budget.remaining)
+            budget = cached_budget()
+            budget.deadline = 5
+            with patch.object(barcode.time, 'monotonic', side_effect=[0, 0, 6]):
+                with self.assertRaisesRegex(barcode.BarcodeQueryError, 'resource-limit'):
+                    budget.recipe_support_evidence(*args)
+            self.assertEqual(99, budget.remaining)
+            budget = cached_budget()
+            budget.deadline = 5
+            with patch.object(barcode.time, 'monotonic', return_value=0):
+                evidence = budget.recipe_support_evidence(*args)
+            self.assertEqual(['generated-cite-1', 'generated-cite-2'],
+                             [e['citation_id'] for e in evidence])
+            self.assertEqual(98, budget.remaining)
+        finally:
+            db.close()
+
     def test_resource_every_citation_still_requires_valid_scoped_support(self):
         for style in ('all-field','mixed'):
             for failure in ('missing','invalid-pin','wrong-scope'):
