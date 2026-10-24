@@ -358,6 +358,59 @@ class ProofTests(unittest.TestCase):
         self.assertEqual(rejected["outcome"], "rejected")
         self.assertEqual(rejected["results"], [])
 
+    def test_r4_nested_and_legacy_visibility_preserve_raw_payload(self):
+        cases = [
+            ({"scope": {"visibility": "public"}}, "public", "qualified"),
+            ({"scope": {"visibility": "private"}}, "private", "qualified"),
+            ({"visibility": "public"}, "public", "qualified"),
+            ({"visibility": "private"}, "private", "qualified"),
+            ({"visibility": "public", "scope": {"visibility": "public"}}, "public", "qualified"),
+            ({"visibility": "private", "scope": {"visibility": "private"}}, "private", "qualified"),
+            ({"visibility": "public", "scope": {"visibility": "private"}}, "public", "held"),
+            ({"visibility": "private", "scope": {"visibility": "public"}}, "public", "held"),
+            ({}, "public", "held"),
+            ({"scope": {}}, "public", "held"),
+            ({"visibility": "public", "scope": {}}, "public", "held"),
+            ({"visibility": "public", "scope": []}, "public", "held"),
+            ({"visibility": "public", "scope": {"visibility": None}}, "public", "held"),
+            ({"visibility": None, "scope": {"visibility": "public"}}, "public", "held"),
+            ({"scope": {"visibility": True}}, "public", "held"),
+            ({"visibility": "PUBLIC"}, "public", "held"),
+            ({"scope": {"visibility": "public"}}, "private", "held"),
+        ]
+        for shape, visibility, expected in cases:
+            with self.subTest(shape=shape, visibility=visibility):
+                r, c = fixture()
+                f = next(iter(c.facts.values()))
+                citation = f["citations"][0]
+                citation["payload"] = {"license": "generated", "attribution": "fixture", **shape}
+                sha = m.canonical_sha256(citation["payload"])
+                f["claim"]["sourceCitations"][0].update(
+                    payloadSHA256=sha, visibility=visibility, license="generated", attribution="fixture")
+                r["claims"][0]["claim"] = copy.deepcopy(f["claim"])
+                c = sign(replace(c, facts={m.canonical_sha256(f["claim"]): f}))
+                before = copy.deepcopy(citation["payload"])
+                self.assert_result(r, c, expected)
+                self.assertEqual(citation["payload"], before)
+                self.assertEqual(m.canonical_sha256(citation["payload"]), sha)
+
+    def test_r4_support_only_citation_shape_and_private_purpose_checks(self):
+        for shape, purpose, expected in [
+            ({"scope": {"visibility": "public"}}, m.PURPOSE, "qualified"),
+            ({"scope": {"visibility": "private"}}, m.PURPOSE, "qualified"),
+            ({"scope": {"visibility": "private"}}, "wrong-purpose", "held"),
+            ({"scope": {"visibility": "private"}, "visibility": "public"}, m.PURPOSE, "held"),
+        ]:
+            with self.subTest(shape=shape, purpose=purpose):
+                r, c = fixture()
+                f = next(iter(c.facts.values()))
+                extra = copy.deepcopy(f["citations"][0])
+                extra.update(id="support-only", allowedPurpose=purpose)
+                extra["payload"] = {"license": "generated", "attribution": "fixture", **shape}
+                f["citations"].append(extra)
+                f["endpoints"][0]["supports"][0]["citationId"] = extra["id"]
+                self.assert_result(r, sign(c), expected)
+
 
 def alternative(ctx, select=True, duplicate=False):
     f = copy.deepcopy(next(iter(ctx.facts.values())))
