@@ -65,6 +65,125 @@ def sqlite_proposal(proposal):
     return db
 
 
+def product_subset_fixture():
+    p,q=fixture()
+    p['watermark']['domains']=[x for x in p['watermark']['domains'] if x['domain'] in ('barcodes','ingredients')]
+    p['common']['resources']=[x for x in p['common']['resources'] if x['id'] in ('product','canonical')]
+    p['occurrences']=[x for x in p['occurrences'] if x['resource_ids'][0] in ('product','canonical')]
+    p['common']['relations']=[x for x in p['common']['relations'] if x['id']=='represents']
+    p['common']['assertions']=p['common']['assertions'][:1]
+    p['observations']=p['observations'][:1]
+    p['observations'][0]['context']['basis']=copy.deepcopy(p['common']['assertions'][0]['value']['basis'])
+    identifier={'id':'product-code','subjectId':'product','propertyId':'generated:source-code',
+                'value':{'kind':'identifier','value':'generated-product-123'},'status':'source-asserted',
+                'citationIds':['cite'],'sourcePath':'/generated/code','scope':PUBLIC}
+    p['common']['assertions'].append(identifier)
+    q['supports'].append({'target_kind':'assertion','target_id':'product-code','citation_id':'cite',
+                          'support_scope':'field','evidence_sha256':PIN})
+    q['product_identifier_bindings']=[{'resource_id':'product','assertion_id':'product-code','evidence_sha256':PIN}]
+    q['observation_basis_bindings']=[{'observation_id':'obs0','basis':copy.deepcopy(p['observations'][0]['context']['basis']),'evidence_sha256':PIN}]
+    q['packet_sha256']=gold.digest(p)
+    return p,q
+
+
+class ProductSourceSubsetTests(unittest.TestCase):
+    def build(self,p,q):
+        q['packet_sha256']=gold.digest(p)
+        return gold.build_product_source_subset(p,qualifications=q)
+
+    def test_identifier_lookup_does_not_claim_recipe_chain_or_actual_admission(self):
+        p,q=product_subset_fixture();before=copy.deepcopy((p,q))
+        default=gold.build_gold_slice(p,qualifications=q)
+        self.assertTrue(all(e['state']=='held' for e in default['rows']['gold_entities']))
+        r=self.build(p,q)
+        self.assertEqual({'product','canonical'},{e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+        self.assertEqual('verified',r['rows']['gold_observations'][0]['state'])
+        self.assertEqual('product-source-subset/1',r['admission_profile'])
+        self.assertEqual('product-source-subset/1',json.loads(r['rows']['gold_runs'][0]['watermark_json'])['admission_profile'])
+        self.assertNotEqual(default['slice_id'],r['slice_id'])
+        self.assertEqual(0,r['metrics']['connectivity']['core_chain_seeds'])
+        self.assertEqual(1,r['metrics']['connectivity']['source_product_seeds'])
+        self.assertEqual(0,r['metrics']['actual_gold_admitted'])
+        self.assertEqual(before,(p,q))
+        with sqlite_proposal(r) as db:self.assertEqual([],db.execute('PRAGMA foreign_key_check').fetchall())
+
+    def test_identifier_only_lookup_without_nutrition_or_class(self):
+        p,q=product_subset_fixture()
+        p['common']['resources']=[r for r in p['common']['resources'] if r['id']=='product']
+        p['occurrences']=[o for o in p['occurrences'] if o['resource_ids']==['product']]
+        p['common']['relations']=[];p['common']['assertions']=[a for a in p['common']['assertions'] if a['id']=='product-code']
+        p['metrics']=[];p['observations']=[];q['observation_basis_bindings']=[]
+        r=self.build(p,q)
+        self.assertEqual('verified',r['rows']['gold_entities'][0]['state'])
+
+    def test_unqualified_or_misbound_identifier_cannot_seed_lookup(self):
+        for failure in ('no-selection','wrong-subject','no-evidence','missing-support','wrong-kind','empty-code','rights','english'):
+            with self.subTest(failure=failure):
+                p,q=product_subset_fixture();a=p['common']['assertions'][-1]
+                if failure=='no-selection':q['product_identifier_bindings']=[]
+                elif failure=='wrong-subject':q['product_identifier_bindings'][0]['resource_id']='canonical'
+                elif failure=='no-evidence':q['product_identifier_bindings'][0]['evidence_sha256']=None
+                elif failure=='missing-support':q['supports']=[s for s in q['supports'] if s['target_id']!='product-code']
+                elif failure=='wrong-kind':a['value']={'kind':'expression','syntax':'generated','value':'123'}
+                elif failure=='empty-code':a['value']['value']=' '
+                elif failure=='rights':next(x for x in q['records'] if x['occurrence_id']=='product-occ')['rights_state']='held'
+                else:next(r for r in p['common']['resources'] if r['id']=='product')['names'][0]['language']='es'
+                r=self.build(p,q)
+                self.assertTrue(all(e['state']=='held' for e in r['rows']['gold_entities']))
+                self.assertEqual(0,r['metrics']['connectivity']['source_product_seeds'])
+
+    def test_shared_class_cannot_revive_an_unidentified_product(self):
+        p,q=product_subset_fixture()
+        GoldBuilderTests.add_subset_resource(self,p,q,'product','unidentified')
+        p['common']['relations'].append({'id':'unidentified-represents','subjectId':'unidentified','predicateId':'represents','objectId':'canonical','citationIds':['cite'],'scope':PUBLIC})
+        q['supports'].append({'target_kind':'relation','target_id':'unidentified-represents','citation_id':'cite','support_scope':'relationship','evidence_sha256':PIN})
+        r=self.build(p,q)
+        self.assertEqual({'product','canonical'},{e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+        self.assertEqual('held',next(e['state'] for e in r['rows']['gold_edges'] if e['relation_id']=='unidentified-represents'))
+        self.assertEqual('held',next(o['state'] for o in r['rows']['gold_occurrences'] if o['occurrence_id']=='unidentified-occ'))
+
+    def test_class_and_relationship_need_their_own_qualification(self):
+        for failure in ('class-rights','relationship-support'):
+            p,q=product_subset_fixture()
+            if failure=='class-rights':next(x for x in q['records'] if x['occurrence_id']=='canonical-occ')['rights_state']='held'
+            else:q['supports']=[s for s in q['supports'] if s['target_kind']!='relation']
+            r=self.build(p,q)
+            self.assertEqual({'product'},{e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+            self.assertEqual('held',r['rows']['gold_edges'][0]['state'])
+
+    def test_source_numeric_values_require_bound_basis_and_product_subject(self):
+        for failure in ('missing','different','no-evidence','unknown-unit','wrong-subject','unknown-value'):
+            with self.subTest(failure=failure):
+                p,q=product_subset_fixture();obs=p['observations'][0];value=p['common']['assertions'][0]['value']
+                if failure=='missing':q['observation_basis_bindings']=[]
+                elif failure=='different':q['observation_basis_bindings'][0]['basis']['value']=1
+                elif failure=='no-evidence':q['observation_basis_bindings'][0]['evidence_sha256']=None
+                elif failure=='unknown-unit':value['basis']['unitId']=None
+                elif failure=='wrong-subject':p['common']['assertions'][0]['subjectId']='canonical'
+                else:value['basis']['value']=None
+                r=self.build(p,q)
+                self.assertEqual('held',r['rows']['gold_observations'][0]['state'])
+                self.assertEqual({'product','canonical'},{e['resource_id'] for e in r['rows']['gold_entities'] if e['state']=='verified'})
+
+    def test_profile_rejects_other_domains_relations_comparisons_and_private_data(self):
+        for failure in ('domain','resource','relation','comparison','private'):
+            with self.subTest(failure=failure):
+                p,q=product_subset_fixture()
+                if failure=='domain':p['watermark']['domains'][0]['domain']='recipes'
+                elif failure=='resource':p['common']['resources'][0]['type']='supplier'
+                elif failure=='relation':p['common']['relations'][0]['predicateId']='contains'
+                elif failure=='comparison':q['comparisons']=[{'observation_ids':['obs0']}]
+                else:p['common']['resources'][0]['scope']={'visibility':'private','ownerId':'generated'}
+                with self.assertRaises(ValueError):self.build(p,q)
+
+    def test_packet_cannot_select_the_product_profile(self):
+        p,q=product_subset_fixture();p['product_source_only']=True
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_gold_slice(p,qualifications=q)
+        self.assertTrue(all(e['state']=='held' for e in r['rows']['gold_entities']))
+        self.assertNotIn('admission_profile',r)
+
+
 class GoldBuilderTests(unittest.TestCase):
     def add_subset_resource(self, packet, q, source_id, identity):
         resource = copy.deepcopy(next(x for x in packet['common']['resources'] if x['id'] == source_id))
