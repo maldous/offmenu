@@ -119,6 +119,168 @@
               }
             }
           }
+        },
+        "source_reference_identifier_bindings": {
+          "type": "array",
+          "description": "Own source identity selected by an independent qualifier; trusted source-reference API only. Does not select a profile.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "resource_id",
+              "assertion_id",
+              "occurrence_id",
+              "source_version",
+              "source_kind",
+              "identifier_system",
+              "native_id",
+              "evidence_sha256"
+            ],
+            "properties": {
+              "resource_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "assertion_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "occurrence_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_kind": {
+                "enum": [
+                  "sr_legacy_food",
+                  "nutrient"
+                ]
+              },
+              "identifier_system": {
+                "enum": [
+                  "USDA-FDC",
+                  "USDA-nutrient"
+                ]
+              },
+              "native_id": {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              },
+              "evidence_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "observation_basis_bindings": {
+          "type": "array",
+          "description": "Existing product basis shape remains supported. Source-reference API additionally requires exact SR row/definition/unit/method/document bindings and explicit context disposition.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "observation_id",
+              "basis",
+              "evidence_sha256"
+            ],
+            "properties": {
+              "observation_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "basis": {
+                "$ref": "../corpus/common-data.schema.json#/$defs/quantity"
+              },
+              "evidence_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "occurrence_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "metric_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "nutrient_definition_resource_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "native_nutrient_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_amount_lexeme": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_unit_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_method": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_kind": {
+                "const": "sr_legacy_food"
+              },
+              "native_derivation_id": {
+                "type": "string"
+              },
+              "source_row_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "source_basis_document_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "numeric_context_status": {
+                "enum": [
+                  "qualified-source-reference",
+                  "held-IU-activity-semantics",
+                  "held-source-range-context",
+                  "unqualified"
+                ]
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "required": [
+                    "source_kind"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "occurrence_id",
+                    "source_version",
+                    "metric_id",
+                    "nutrient_definition_resource_id",
+                    "native_nutrient_id",
+                    "source_amount_lexeme",
+                    "source_unit_name",
+                    "source_method",
+                    "source_kind",
+                    "native_derivation_id",
+                    "source_row_sha256",
+                    "source_basis_document_sha256",
+                    "numeric_context_status"
+                  ]
+                }
+              }
+            ]
+          }
         }
       }
     }
