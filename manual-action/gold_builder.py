@@ -25,6 +25,9 @@ TABLE_COLUMNS = {
 INSERT_ORDER = tuple(TABLE_COLUMNS)
 CONTEXT_FIELDS = ("country", "cut", "fat", "preparation", "raw_cooked", "basis", "source_date", "method", "uncertainty")
 RELATION_TYPES = {"mentions", "canonical_ingredient", "represents", "contains", "brand", "manufacturer", "parent", "retailer", "provider", "recall_applies_to", "nutrition_of"}
+SOURCE_NUMERATOR_UNITS = {"kg": "mass", "g": "mass", "mg": "mass", "µg": "mass",
+                          "L": "volume", "mL": "volume",
+                          "J": "energy", "kJ": "energy", "kcal": "energy"}
 
 def _json(value):
     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
@@ -348,8 +351,11 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
                 and any(b.get("observation_id") == oid and b.get("basis") == basis
                         and _pin(b.get("evidence_sha256"))
                         for b in qualifications.get("observation_basis_bindings", [])))
+            numerator_unit = original.get("unitId")
             source_value_ok = (type(original.get("value")) in (int, float)
-                and original.get("unitId") == metrics[mid].get("canonical_unit_id"))
+                and type(numerator_unit) is str
+                and SOURCE_NUMERATOR_UNITS.get(numerator_unit) == original.get("dimension")
+                and numerator_unit == metrics[mid].get("canonical_unit_id"))
             subject = resources.get(claims[aid]["subjectId"], {})
             if not basis_ok or not source_value_ok or subject.get("type") != "barcode-product":
                 good = False; hold("observation", oid, "source product value/basis qualification incomplete")
