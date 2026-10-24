@@ -229,6 +229,19 @@ def _native_pair(packet,u,obs):
         and type(profile['data'].get('basis')) is dict and type(profile['data'].get('nutrients')) is dict)
 
 
+def _native_product(product,u,obs):
+    """Product identity/provenance is independent of a nutrient-profile join."""
+    p=product.get('provenance'); data=product.get('data')
+    return (product.get('schemaVersion') == '1.0' and product.get('kind') == 'product'
+        and type(p) is dict and 'fetchedAt' in p
+        and (p.get('sourceId'),p.get('releaseId'),p.get('fetchedAt'),p.get('visibility'))
+            == ('usda-files',u['releaseId'],u['candidateFetchedAt'],'private-candidate')
+        and p.get('recordId') == obs.get('source_record_id') and _text(p.get('recordId'))
+        and product.get('id') == obs.get('native_record_id') == 'usda-files:product:'+p['recordId']
+        and type(data) is dict and type(data.get('identifiers')) is list
+        and type(product.get('countries')) is list)
+
+
 def _usda(obs,m,contexts,charge,candidate_charge):
     u=m['usda']; p=obs['record_ordinal']
     if (obs['artifact_sha256'],obs['input_id'],obs['release_id']) != (u['candidateSha256'],u['identifierInputId'],u['releaseId']): return []
@@ -243,36 +256,49 @@ def _usda(obs,m,contexts,charge,candidate_charge):
     if (ref != expected_ref or (source,release,asset,sha,ordinal,native_id,pointer) != ('usda-files',u['releaseId'],u['assetId'],u['candidateSha256'],p,obs.get('native_record_id'),'/0')
         or audit is None or audit[:-1] != (u['assetId'],m['roles']['usda-products']['manifestSha256'],u['candidateSha256'],'usda-files',u['releaseId'],p,obs.get('source_record_id'),obs.get('native_record_id'))):return []
     _require(audit[-1] == parsed,'record-digest')
-    packet_id='packet:'+u['candidateSha256']+':'+str(p+1); profile_id=packet_id+':profile'
-    prof=profile_db.execute(PROFILE_KEY_SQL,(profile_id,packet_id)).fetchone()
-    if prof is None:return []
-    input_id,ordinal,kind,native_id,source_id,packet_sha,source_pointer,disposition,document_sha,profile_size=prof
-    if (input_id,ordinal,kind,native_id,source_id,source_pointer,disposition) != (u['candidateSha256'],p+1,'nutrientProfile','usda-files:nutrientProfile:'+str(obs.get('source_record_id')),obs.get('source_record_id'),'/0','profile-stored'):return []
-    charge(size+profile_size)
+    charge(size)
     raw_product=product_db.execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(ref,)).fetchone()[0]
-    raw_profile=profile_db.execute('SELECT native_packet_json FROM native_nutrient_profile WHERE profile_id=?',(profile_id,)).fetchone()[0]
-    product=_packet(raw_product,'product');profile=_packet(raw_profile,'nutrientProfile')
-    _require(_hash(product) == parsed and hashlib.sha256(raw_profile.encode('utf-8')).hexdigest() == document_sha == packet_sha, 'record-digest')
-    if not _native_pair([product,profile],u,obs):return []
-    pair=[product,profile]; pair_sha=hashlib.sha256(native.readers.canonical(pair)).hexdigest()
+    product=_packet(raw_product,'product'); _require(_hash(product) == parsed,'record-digest')
+    if not _native_product(product,u,obs):return []
+    records=[product]; profile_ref=None; profile_digest=None
+    gap='nutrient-profile-not-retained'
+    packet_id='packet:'+u['candidateSha256']+':'+str(p+1); expected_profile=packet_id+':profile'
+    prof=profile_db.execute(PROFILE_KEY_SQL,(expected_profile,packet_id)).fetchone()
+    if prof is not None:
+        input_id,ordinal,kind,native_id,source_id,packet_sha,source_pointer,disposition,document_sha,profile_size=prof
+        gap='nutrient-profile-binding-unavailable'
+        if (input_id,ordinal,kind,native_id,source_id,source_pointer,disposition) == (u['candidateSha256'],p+1,'nutrientProfile','usda-files:nutrientProfile:'+str(obs.get('source_record_id')),obs.get('source_record_id'),'/0','profile-stored'):
+            charge(profile_size)
+            raw_profile=profile_db.execute('SELECT native_packet_json FROM native_nutrient_profile WHERE profile_id=?',(expected_profile,)).fetchone()[0]
+            profile_digest=hashlib.sha256(raw_profile.encode('utf-8')).hexdigest()
+            if profile_digest == document_sha == packet_sha:
+                try:profile=_packet(raw_profile,'nutrientProfile')
+                except RefreshError:gap='nutrient-profile-invalid'
+                else:
+                    if _native_pair([product,profile],u,obs):records.append(profile);profile_ref=expected_profile;gap=None
+            else:gap='nutrient-profile-digest-unavailable'
     binding={'sourceId':'usda-files','releaseId':u['releaseId'],'originalSha256':u['originalSha256'],
         'inputAssetSha256':u['candidateSha256'],'identifierAssetSha256':u['candidateSha256'],
         'identifierInputId':u['identifierInputId'],'identifierRecordOrdinal':p,
         'identifierNativeRecordId':obs['native_record_id'],'identifierSourceRecordId':obs['source_record_id'],
         'representation':'usda-native-jsonl','projectionVersion':u['projectionVersion'],
-        'recordPointers':['jsonl:line:'+str(p)+'/0','jsonl:line:'+str(p+1)+'/0'],
-        'recordPointer':'jsonl:line:'+str(p)+'/0','recordSha256':pair_sha,
+        'recordPointers':['jsonl:line:'+str(p)+'/0']+(['jsonl:line:'+str(p+1)+'/0'] if profile_ref else []),
+        'recordPointer':'jsonl:line:'+str(p)+'/0','recordSha256':hashlib.sha256(native.readers.canonical(records)).hexdigest(),
         'rightsReceiptSha256':u['rightsReceiptSha256'],'operationReceiptSha256':m['operationSelectionSha256'],
-        'citationId':citation,'citationState':citation_state,'backingRole':['usda-products','usda-profiles'],
-        'productReference':ref,'profileReference':profile_id,'pairEvidenceOrigin':'verified-retained-components',
+        'citationId':citation,'citationState':citation_state,'backingRole':['usda-products']+(['usda-profiles'] if profile_ref else []),
+        'productReference':ref,'profileReference':profile_ref,
+        'pairEvidenceOrigin':'verified-retained-components' if profile_ref else 'verified-retained-product',
         'originalAcquiredAt':m['roles']['usda-profiles']['originalAcquiredAt'],
         'acquisitionClockState':m['roles']['usda-profiles']['acquisitionClockState'],
         'candidateFetchedAt':u['candidateFetchedAt'],
-        'backingStoreSha256':{role:contexts[role].database_sha256 for role in ('usda-products','usda-profiles')},
-        'componentDigests':{'productParsedRecordSha256':parsed,'profileRawPacketSha256':document_sha}}
+        'backingStoreSha256':{role:contexts[role].database_sha256 for role in ('usda-products','usda-profiles') if role=='usda-products' or profile_ref},
+        'componentDigests':{'productParsedRecordSha256':parsed,**({'profileRawPacketSha256':profile_digest} if profile_ref else {})},
+        'nutrientProfileAvailability':{'state':'loaded' if profile_ref else 'not-loaded','reasonCode':gap}}
     virtual='urn:offmenu:federated-product:'+_hash([m['generationId'],contexts['usda-products'].database_sha256,
         contexts['usda-profiles'].database_sha256,u['candidateSha256'],p])
-    return [(virtual,pair,binding,['Qualified source-native retention; selected pair validated on query.'])]
+    limits=['Qualified source-native retention; selected components validated on query.']
+    if gap:limits.append('Product retained independently; nutrient profile unavailable: '+gap)
+    return [(virtual,records,binding,limits)]
 
 
 def _off(obs,m,context,remaining,charge,candidate_charge):
@@ -281,6 +307,7 @@ def _off(obs,m,context,remaining,charge,candidate_charge):
     rows=db.execute(OFF_KEY_SQL,(obs['namespace'],obs['lexical_value'],r['generationId'],'product',remaining+1)).fetchall()
     _require(len(rows) <= remaining,'candidate-bound');candidate_charge(len(rows))
     result=[]; seen=set(); allowed={(a['assetId'],a['inputSHA256']) for a in r['assets']}
+    meta_sql='SELECT asset_id,asset_sha256,source_pointer,parsed_record_sha256,length(CAST(source_payload_json AS BLOB)),source_id,release_id,native_record_id,source_ordinal FROM retained_reference_record WHERE reference_record_id=?'
     for ref,encoded,paired in rows:
         if ref in seen:continue
         seen.add(ref)
@@ -290,47 +317,73 @@ def _off(obs,m,context,remaining,charge,candidate_charge):
             ('artifact_sha256','identifierAssetSha256'),('record_ordinal','identifierRecordOrdinal'),
             ('native_record_id','identifierNativeRecordId'),('source_record_id','identifierSourceRecordId'))
         if any(obs.get(a) != b.get(c) for a,c in keys):continue
-        if b.get('representation') != 'off-legacy-paired-gzip' or paired is None:continue
-        metas=[db.execute('SELECT asset_id,asset_sha256,source_pointer,parsed_record_sha256,length(CAST(source_payload_json AS BLOB)),source_id,release_id,native_record_id,source_ordinal FROM retained_reference_record WHERE reference_record_id=?',(key,)).fetchone() for key in (ref,paired)]
-        if any(x is None for x in metas):continue
-        if any((x[0],x[1]) not in allowed for x in metas):continue
-        if (b.get('inputAssetSha256') != metas[0][1] or not native._sha(b.get('originalSha256'))
-            or b.get('operationReceiptSha256') != r['_operationsByAsset'].get(metas[0][0])):continue
-        charge(sum(x[4] for x in metas));packet=[]
-        for key,meta in zip((ref,paired),metas):
-            record=_json(db.execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(key,)).fetchone()[0])
-            _require(_hash(record) == meta[3],'record-digest');packet.append(record)
-        _require(hashlib.sha256(native.readers.canonical(packet)).hexdigest() == b.get('recordSha256'),'record-digest')
-        if b.get('recordPointers') != [x[2] for x in metas] or b.get('recordPointer') != metas[0][2]:continue
-        product,profile=packet
-        if not all(type(record) is dict and type(record.get('provenance')) is dict
-            and type(record.get('data')) is dict and record.get('schemaVersion') == '1.0'
-            and type(record.get('countries')) is list for record in packet):continue
-        code=product['provenance'].get('recordId');source_ordinal=metas[0][8]
-        if (type(code) is not str or code != obs['lexical_value'] or type(source_ordinal) is not int
-            or source_ordinal % 2 != 1 or metas[1][8] != source_ordinal+1
-            or metas[0][:2] != metas[1][:2]
-            or [meta[2] for meta in metas] != ['jsonl:packet:'+str((source_ordinal+1)//2)+'/0','jsonl:packet:'+str((source_ordinal+1)//2)+'/1']
-            or obs.get('native_record_id') != 'off:sourceOccurrence:'+str(b.get('originalSha256'))+':'+str(obs['record_ordinal'])):continue
-        if any((record['provenance'].get('sourceId'),record['provenance'].get('releaseId'),record['provenance'].get('recordId'),
-                record['provenance'].get('archiveSha256'),record['provenance'].get('sourceRow'))
+        if b.get('representation') != 'off-legacy-paired-gzip':continue
+        meta=db.execute(meta_sql,(ref,)).fetchone()
+        if meta is None or meta[:2] not in allowed:continue
+        if (b.get('inputAssetSha256') != meta[1] or not native._sha(b.get('originalSha256'))
+            or b.get('operationReceiptSha256') != r['_operationsByAsset'].get(meta[0])):continue
+        charge(meta[4])
+        product=_json(db.execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(ref,)).fetchone()[0])
+        _require(_hash(product) == meta[3],'record-digest')
+        if not (type(product) is dict and product.get('schemaVersion') == '1.0'
+            and type(product.get('provenance')) is dict and type(product.get('data')) is dict
+            and type(product.get('countries')) is list):continue
+        code=product['provenance'].get('recordId');ordinal=meta[8]
+        if (type(code) is not str or code != obs['lexical_value'] or type(ordinal) is not int or ordinal % 2 != 1
+            or meta[2] != 'jsonl:packet:'+str((ordinal+1)//2)+'/0' or b.get('recordPointer') != meta[2]
+            or obs.get('native_record_id') != 'off:sourceOccurrence:'+str(b.get('originalSha256'))+':'+str(obs['record_ordinal'])
+            or (product['provenance'].get('sourceId'),product['provenance'].get('releaseId'),product['provenance'].get('recordId'),
+                product['provenance'].get('archiveSha256'),product['provenance'].get('sourceRow'))
                 != ('off',r['releaseId'],code,b.get('originalSha256'),obs['record_ordinal'])
-            or (meta[5],meta[6],meta[7]) != ('off',r['releaseId'],record.get('id')) for record,meta in zip(packet,metas)):continue
-        profile_projection=db.execute('SELECT generation_id,record_kind FROM product_detail_projection WHERE reference_record_id=?',(paired,)).fetchone()
-        if (product.get('kind') != 'product' or profile.get('kind') != 'nutrientProfile'
-            or product.get('id') != 'off:product:'+code or profile.get('id') != 'off:nutrientProfile:'+code
-            or product['data'].get('nutritionId') != profile.get('id')
-            or profile_projection != (r['generationId'],'nutrientProfile')
-            or type(profile['data'].get('basis')) is not dict or type(profile['data'].get('nutrients')) is not dict):continue
-        binding=dict(b,backingRole=['off-subset'],productReference=ref,profileReference=paired,
-            subsetCertificateSha256=r['subsetCertificateSha256'],backingStoreSha256={'off-subset':context.database_sha256})
+            or (meta[5],meta[6],meta[7]) != ('off',r['releaseId'],product.get('id'))
+            or product.get('kind') != 'product' or product.get('id') != 'off:product:'+code):continue
+        records=[product]; profile_ref=None; profile_meta=None; gap='nutrient-profile-not-retained'
+        if paired is not None:
+            profile_meta=db.execute(meta_sql,(paired,)).fetchone()
+            if profile_meta is not None:
+                gap='nutrient-profile-binding-unavailable'
+                projection=db.execute('SELECT generation_id,record_kind FROM product_detail_projection WHERE reference_record_id=?',(paired,)).fetchone()
+                if (profile_meta[:2] == meta[:2] and profile_meta[:2] in allowed and profile_meta[8] == ordinal+1
+                    and profile_meta[2] == 'jsonl:packet:'+str((ordinal+1)//2)+'/1'
+                    and projection == (r['generationId'],'nutrientProfile')):
+                    charge(profile_meta[4])
+                    raw=db.execute('SELECT source_payload_json FROM retained_reference_record WHERE reference_record_id=?',(paired,)).fetchone()[0]
+                    try:profile=_json(raw)
+                    except RefreshError:gap='nutrient-profile-invalid'
+                    else:
+                        valid=(type(profile) is dict and profile.get('schemaVersion') == '1.0'
+                            and profile.get('kind') == 'nutrientProfile' and profile.get('id') == 'off:nutrientProfile:'+code
+                            and type(profile.get('data')) is dict and type(profile.get('provenance')) is dict
+                            and type(profile.get('countries')) is list
+                            and product['data'].get('nutritionId') == profile.get('id')
+                            and type(profile['data'].get('basis')) is dict and type(profile['data'].get('nutrients')) is dict
+                            and (profile['provenance'].get('sourceId'),profile['provenance'].get('releaseId'),profile['provenance'].get('recordId'),
+                                profile['provenance'].get('archiveSha256'),profile['provenance'].get('sourceRow'))
+                                == ('off',r['releaseId'],code,b.get('originalSha256'),obs['record_ordinal'])
+                            and (profile_meta[5],profile_meta[6],profile_meta[7]) == ('off',r['releaseId'],profile.get('id')))
+                        if valid:
+                            if (_hash(profile) == profile_meta[3]
+                                and hashlib.sha256(native.readers.canonical([product,profile])).hexdigest() == b.get('recordSha256')
+                                and b.get('recordPointers') == [meta[2],profile_meta[2]]):
+                                records.append(profile);profile_ref=paired;gap=None
+                            else:gap='nutrient-profile-digest-unavailable'
+        binding=dict(b,backingRole=['off-subset'],productReference=ref,profileReference=profile_ref,
+            subsetCertificateSha256=r['subsetCertificateSha256'],backingStoreSha256={'off-subset':context.database_sha256},
+            recordPointer=meta[2],recordPointers=[meta[2]]+([profile_meta[2]] if profile_ref else []),
+            recordSha256=hashlib.sha256(native.readers.canonical(records)).hexdigest(),
+            componentDigests={'productParsedRecordSha256':meta[3],**({'profileParsedRecordSha256':profile_meta[3]} if profile_ref else {})},
+            nutrientProfileAvailability={'state':'loaded' if profile_ref else 'not-loaded','reasonCode':gap})
+        if gap:
+            binding['declaredPairedSourceBinding']={'recordSha256':b.get('recordSha256'),'recordPointers':b.get('recordPointers'),
+                'pairedProfileReference':paired,'state':'not-validated-as-pair'}
         size=db.execute('SELECT length(CAST(projection_limitations_json AS BLOB)) FROM product_detail_projection WHERE reference_record_id=?',(ref,)).fetchone()
-        _require(size is not None and type(size[0]) is int and 0 <= size[0] <= 262144,'metadata-bound')
-        charge(size[0])
+        _require(size is not None and type(size[0]) is int and 0 <= size[0] <= 262144,'metadata-bound');charge(size[0])
         limitations=_json(db.execute('SELECT projection_limitations_json FROM product_detail_projection WHERE reference_record_id=?',(ref,)).fetchone()[0])
         _require(type(limitations) is list and all(type(item) is str for item in limitations),'projection-limitations')
         virtual='urn:offmenu:federated-product:'+_hash([m['generationId'],context.database_sha256,ref])
-        result.append((virtual,packet,binding,limitations+['Independently qualified OFF subset only; original257 generation remains incomplete.']))
+        caveats=limitations+['Independently qualified OFF subset only; original257 generation remains incomplete.']
+        if gap:caveats.append('Product retained independently; nutrient profile unavailable: '+gap)
+        result.append((virtual,records,binding,caveats))
     return result
 
 
@@ -412,7 +465,9 @@ def read_federated_product_details(current_identifier_rows, *, selection, identi
                     'referenceRecordId':ref,'records':records,'fields':native._fields(records,binding['representation']),
                     'projectionLimitations':limitations,'exactObservationBridge':{'state':'matched','key':key,'evidence':binding,
                         'persisted':False,'assertionEvidence':{'kind':'persisted-identifier-observation','databaseSha256':identifier_evidence.database_sha256,**dict(zip(native.CURRENT_OBSERVATION_COLUMNS,current))}},
-                    'canonicalIngredient':{'conceptId':None,'status':'unmapped'},'assurance':'Source-native retained components only; no canonical/English/gold/dietary certification.'})
+                    'canonicalIngredient':{'conceptId':None,'status':'unmapped'},
+                    'ingredientUsability':{'status':'unclassified','conceptId':None,
+                        'reasonCode':'no-qualified-ingredient-classification','classificationEvidence':None},'assurance':'Source-native retained components only; no canonical/English/gold/dietary certification.'})
             availability.append(dict(observationKey=key,state='ambiguous' if len(found)>1 else 'loaded' if found else 'not-loaded',eligibleProjections=len(found),reasonCode=None if found else 'no-exact-source-observation-bridge'))
             _require(len(canonical(products)) <= max_result_bytes,'result-bound')
         output={'sourceProducts':products,'productDetailAvailability':availability,'generationId':selection.generation_id,
