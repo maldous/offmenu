@@ -48,6 +48,19 @@ def alternative_fixture():
     return p, q, source
 
 
+def resource_support_fixture(style):
+    p,q,source=alternative_fixture()
+    for resource in p['common']['resources']:
+        resource['citationIds']=['cite','cite2']
+    q['supports']=[s for s in q['supports'] if s['target_kind']!='resource']
+    for resource in p['common']['resources']:
+        for cid in resource['citationIds']:
+            scope='field' if style=='all-field' or cid=='cite2' else 'record'
+            q['supports'].append(dict(target_kind='resource',target_id=resource['id'],
+                citation_id=cid,support_scope=scope,evidence_sha256=fixtures.PIN))
+    return p,q,source
+
+
 class AlternativeLookupTests(unittest.TestCase):
     def run_lookup(self, p, q, source, branch=None, selections=None):
         proposal = fixtures.build(p, q)
@@ -66,6 +79,42 @@ class AlternativeLookupTests(unittest.TestCase):
         self.assertIn('white OR turbinado', json.dumps(proposal))
         with fixtures.sqlite_proposal(proposal) as db:
             self.assertEqual(0, db.execute("SELECT count(*) FROM gold_edges WHERE predicate_id='canonical_ingredient' AND state='verified' AND relation_id IN ('maps','brown-map')").fetchone()[0])
+
+    def test_resource_each_citation_accepts_record_or_field_support(self):
+        for style in ('all-field','mixed'):
+            for branch,product in [(None,None),('white','product'),('turbinado','brown-product')]:
+                with self.subTest(style=style,branch=branch):
+                    p,q,s=resource_support_fixture(style)
+                    proposal=fixtures.build(p,q)
+                    states={e['resource_id']:e['state'] for e in proposal['rows']['gold_entities']}
+                    self.assertTrue(all(states[r]=='verified' for r in
+                        ('recipe','mention','canonical','product','turbinado','brown-product','water-mention')))
+                    result=self.run_lookup(p,q,s,branch)
+                    self.assertEqual(['water-mention'],[x['mentionId'] for x in result['paths'] if x['mentionId']!='mention'])
+                    self.assertEqual([] if product is None else [product],
+                        [x['productId'] for x in result['paths'] if x['mentionId']=='mention'])
+                    self.assertEqual([],result['errors'])
+
+    def test_resource_every_citation_still_requires_valid_scoped_support(self):
+        for style in ('all-field','mixed'):
+            for failure in ('missing','invalid-pin','wrong-scope'):
+                for target in ('recipe','mention','canonical','product','brown-product'):
+                    with self.subTest(style=style,failure=failure,target=target):
+                        p,q,s=resource_support_fixture(style)
+                        branch='turbinado' if target=='brown-product' else 'white'
+                        with fixtures.sqlite_proposal(fixtures.build(p,q)) as db:
+                            where="target_kind='resource' AND target_id=? AND citation_id='cite2'"
+                            if failure=='missing': db.execute('DELETE FROM gold_support WHERE '+where,(target,))
+                            elif failure=='invalid-pin': db.execute("UPDATE gold_support SET evidence_sha256='invalid' WHERE "+where,(target,))
+                            else: db.execute("UPDATE gold_support SET support_scope='relationship' WHERE "+where,(target,))
+                            result=lookup.lookup_recipe_products(db,source=s,selections=[
+                                dict(groupId='sugar',branchId=branch,sourceScope=s)])
+                            self.assertFalse(any(x['mentionId']=='mention' for x in result['paths']))
+                            if target in ('mention','brown-product'):
+                                self.assertEqual(['water-mention'],[x['mentionId'] for x in result['paths']])
+                            # A valid first citation never substitutes for the
+                            # missing/invalid second one at any resource hop.
+                            self.assertEqual(1,db.execute("SELECT count(*) FROM gold_support WHERE target_kind='resource' AND target_id=? AND citation_id='cite'",(target,)).fetchone()[0])
 
     def test_explicit_branch_returns_only_that_branch(self):
         for branch, product in [('white','product'),('turbinado','brown-product')]:

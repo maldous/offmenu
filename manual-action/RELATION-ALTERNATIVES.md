@@ -41,6 +41,10 @@ The mention must have the same source key/version. A valid qualified alternative
 is proposed as an edge in state `conditional`; a bad or unsupported branch is
 held. All declared branches participate in structural validation, including held
 ones, so removing qualification cannot silently change the declared choice.
+For every required resource citation, the builder and lookup accept qualified
+`record` **or** `field` support. The scopes may differ between citations; one
+supported citation never covers another missing, wrongly scoped or invalid-pin
+citation. Relationship citations still require `relationship` support.
 
 The builder's potential graph retains source-qualified alternative endpoints so
 a later explicit selection can use them. That graph is **not a selected recipe

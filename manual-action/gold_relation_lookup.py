@@ -26,7 +26,7 @@ def lookup_recipe_products(db, *, source, selections=()):
         cur=db.execute(sql,args)
         return [dict(zip([c[0] for c in cur.description],r)) for r in cur.fetchall()]
 
-    def supported(kind, payload, scope):
+    def supported(kind, payload, scopes):
         cids=payload.get('citationIds')
         if (payload.get('scope',{}).get('visibility')!='public'
             or type(cids) is not list or not cids or any(type(c) is not str for c in cids)):
@@ -34,8 +34,9 @@ def lookup_recipe_products(db, *, source, selections=()):
         for cid in cids:
             evidence=query('SELECT s.evidence_sha256,c.payload_json FROM gold_support s '
                 'JOIN gold_citations c ON c.citation_id=s.citation_id '
-                'WHERE s.target_kind=? AND s.target_id=? AND s.citation_id=? AND s.support_scope=?',
-                (kind,payload.get('id'),cid,scope))
+                'WHERE s.target_kind=? AND s.target_id=? AND s.citation_id=? AND s.support_scope IN ('+
+                ','.join('?' for _ in scopes)+')',
+                (kind,payload.get('id'),cid,*scopes))
             if not any(_pin(e['evidence_sha256']) and json.loads(e['payload_json']).get('scope',{}).get('visibility')=='public' for e in evidence):
                 return False
         return True
@@ -44,7 +45,7 @@ def lookup_recipe_products(db, *, source, selections=()):
         rows=query('SELECT * FROM gold_entities WHERE entity_id=? AND state=\'verified\' AND domain=? AND entity_type=?',(eid,domain,typ))
         if len(rows)!=1: return None
         e=rows[0];p=json.loads(e['payload_json'])
-        if p.get('id')!=e['resource_id'] or not supported('resource',p,'record'): return None
+        if p.get('id')!=e['resource_id'] or not supported('resource',p,('record','field')): return None
         owners=query('SELECT o.* FROM gold_occurrences o JOIN gold_entity_occurrences x '
                      'ON x.occurrence_id=o.occurrence_id WHERE x.entity_id=?',(eid,))
         if not owners or any(o['state']!='verified' for o in owners): return None
@@ -60,7 +61,7 @@ def lookup_recipe_products(db, *, source, selections=()):
         p=row['payload']
         return (row['state'] in states and p.get('id')==row['relation_id']
                 and p.get('subjectId')==subject['resource_id'] and p.get('objectId')==obj['resource_id']
-                and p.get('predicateId')==row['predicate_id'] and supported('relation',p,'relationship'))
+                and p.get('predicateId')==row['predicate_id'] and supported('relation',p,('relationship',)))
 
     recipes=query('SELECT entity_id FROM gold_entities WHERE resource_id=? AND domain=\'recipes\' AND entity_type=\'recipe\'',(source['recipeId'],))
     recipes=[e for r in recipes if (e:=entity(r['entity_id'],'recipes','recipe')) and any(
@@ -75,7 +76,7 @@ def lookup_recipe_products(db, *, source, selections=()):
         p=edge['payload']
         if (type(p) is not dict or p.get('objectId')!=source['mentionId']
             or p.get('subjectId')!=recipe['resource_id'] or p.get('id')!=edge['relation_id']
-            or p.get('predicateId')!='mentions' or not supported('relation',p,'relationship')):
+            or p.get('predicateId')!='mentions' or not supported('relation',p,('relationship',))):
             return False
         try:
             if relation_condition(p) is not None: return False
