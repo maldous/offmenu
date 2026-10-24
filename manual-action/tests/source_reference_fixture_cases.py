@@ -1,7 +1,7 @@
 """Synthetic source-reference packet preparation, not a Gold admission API.
 
-These projected identity/basis bindings are review fixtures for the proposed SR
-profile. Existing builders do not implement that profile or grant these seeds.
+These projected identity/basis bindings are generated fixtures for the SR
+profile. Legacy builders do not grant these source-reference seeds.
 No retained corpus, source database, cache, network or filesystem is accessed.
 """
 import copy
@@ -110,10 +110,11 @@ def source_reference_fixture(*, identity_only=False):
     native_rows = []
     for native_id, source_unit, unit, dimension, amount, method in UNITS:
         native_rows.append({'id': 'generated-row-' + native_id, 'fdc_id': '101',
-                            'nutrient_id': native_id, 'amount': amount, 'unit_name': source_unit,
+                            'nutrient_id': native_id, 'amount': amount,
                             'data_points': '0', 'min': '', 'max': '', 'median': '', 'LOQ': '',
                             'footnote': '', 'min_year_acquired': '', 'percent_daily_value': '',
-                            'derivation': method, 'assay_date': None, 'country': None})
+                            'derivation_id': '' if method == 'DERIVATION_NOT_SUPPLIED' else 'generated-' + native_id,
+                            'assay_date': None, 'country': None})
     for fid, rid, description in [
             ('101', FOOD_RAW, 'Synthetic carrots, raw'),
             ('102', FOOD_COOKED, 'Synthetic carrots, cooked, boiled, drained, without salt')]:
@@ -141,7 +142,7 @@ def source_reference_fixture(*, identity_only=False):
                   '/nutrient/unit_name')
         if identity_only:
             continue
-        metric = 'urn:fixture:metric:usda:' + native_id
+        metric = rid
         packet['metrics'].append({'metric_id': metric, 'name_en': 'Synthetic metric ' + native_id,
                                  'dimension': dimension, 'canonical_unit_id': unit, 'citation_ids': [cid]})
         support('metric', metric, cid, 'definition', original)
@@ -155,6 +156,8 @@ def source_reference_fixture(*, identity_only=False):
         obs = {'observation_id': FOOD_RAW + ':observation:' + native_id, 'assertion_id': a['id'],
                'metric_id': metric, 'kind': 'observed', 'comparable': None,
                'context': {'basis': copy.deepcopy(basis), 'method': method, 'source_fields': copy.deepcopy(row),
+                           'source_reporting_only': True, 'independent_assay_verified': False,
+                           'recipe_transfer_qualified': False,
                            'country': None, 'source_date': None, 'assay_date': None,
                            'source_publication_date': 'generated-publication-date',
                            'source_archive_release': RELEASE, 'source_origin_vintage': 'generated-origin-vintage',
@@ -164,10 +167,12 @@ def source_reference_fixture(*, identity_only=False):
         q['observation_basis_bindings'].append({
             'observation_id': obs['observation_id'], 'occurrence_id': FOOD_RAW + ':occurrence',
             'source_kind': 'sr_legacy_food', 'source_version': RELEASE, 'metric_id': metric,
+            'nutrient_definition_resource_id': rid, 'source_method': method,
+            'native_derivation_id': row['derivation_id'],
             'native_nutrient_id': native_id, 'source_amount_lexeme': amount,
             'source_unit_name': source_unit, 'source_row_sha256': digest(row),
             'basis': copy.deepcopy(basis), 'source_basis_document_sha256': digest(['generated-document', 'per100g']),
-            'numeric_context_status': 'HELD_IU_ACTIVITY_SEMANTICS' if source_unit == 'IU' else 'SYNTHETIC_SOURCE_CONTEXT_ONLY',
+            'numeric_context_status': 'held-IU-activity-semantics' if source_unit == 'IU' else 'qualified-source-reference',
             'evidence_sha256': digest({'observation': obs, 'native_row': row, 'definition': original})})
     bind_packet(packet, q)
     return packet, q

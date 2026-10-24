@@ -1,4 +1,4 @@
-"""Executable preparation checks, not acceptance of the pending SR builder API."""
+"""Executable preparation and legacy-profile checks, not real SR admission."""
 import copy
 import importlib.util
 import json
@@ -99,7 +99,7 @@ class SourceReferenceFixtureContractTests(unittest.TestCase):
             self.assertTrue(gold._pin(b['source_basis_document_sha256']))
             self.assertEqual((100, 'g', 'mass'), (b['basis']['value'], b['basis']['unitId'], b['basis']['dimension']))
         iu = next(b for b in q['observation_basis_bindings'] if b['source_unit_name'] == 'IU')
-        self.assertEqual('HELD_IU_ACTIVITY_SEMANTICS', iu['numeric_context_status'])
+        self.assertEqual('held-IU-activity-semantics', iu['numeric_context_status'])
         metric = next(m for m in p['metrics'] if m['metric_id'] == iu['metric_id'])
         self.assertEqual('unknown', metric['dimension'])
         self.assertEqual('usda:IU', metric['canonical_unit_id'])
@@ -131,7 +131,7 @@ class SourceReferenceFixtureContractTests(unittest.TestCase):
 
     def test_held_observation_lookup_preserves_originals_without_preference_or_averaging(self):
         p, q = source_reference_fixture(); r = gold.build_gold_slice(p, qualifications=q)
-        result = gold.select_observations(r, metric_id='urn:fixture:metric:usda:1004')
+        result = gold.select_observations(r, metric_id='urn:fixture:sr:nutrient:1004')
         self.assertEqual([], result['preferred_ids']); self.assertEqual('none', result['aggregation'])
         self.assertEqual(1, len(result['alternatives']))
         row = result['alternatives'][0]['observation']

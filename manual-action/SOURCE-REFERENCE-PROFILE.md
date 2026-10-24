@@ -1,68 +1,94 @@
-# SR source-reference profile preparation
+# SR source-reference subset
 
-This branch prepares generated fixtures for a proposed trusted
-`build_source_reference_subset(packet, *, qualifications)` API. It does not
-implement that API, broaden an existing builder, qualify real data, or grant
-publication, runtime or Gold admission. The generated fixture identifiers and
-amounts are synthetic, including those using USDA-shaped property names.
+`build_source_reference_subset(packet, *, qualifications)` is a pure trusted
+caller API in `gold_builder.py`. It proposes source-scoped SR food identities,
+nutrient vocabulary and separately qualified source numeric observations. It
+never performs I/O or admits Gold. A packet field cannot select this profile.
+Runs have a distinct `source-reference-subset/1` identity and zero core
+recipe-chain seeds. Publication, runtime and production rights are separate.
 
-Preparation is pinned to independently reviewed but unmerged PR #112 revision
-`e9ddac9fd2b50bfdfcdacde4d1b33715038d006d`. Accepted develop remains
-`1c4285260b90b63c84717b638865b4298942f236` at preparation. Worker05's six frozen
-files, checkout and branch stay untouched. After that PR is accepted and merged,
-reconcile this branch with the actual accepted develop, implement the separately
-owned builder change, and obtain exact code review and required checks before
-publication or real use. Passing these preparation tests is not that review.
+The implementation is a local candidate requiring independent exact code review
+and normal integration checks. PR #112 was accepted as develop merge
+`b626448c051245794adbe397052cc08ff3eaaa29`; this candidate must reconcile with
+that accepted baseline before review or publication. Its earlier `cf8ee1fb3`
+fixture-only acceptance does not accept this API or real source use.
 
-## Intended narrow boundary
+## Own source identity
 
-- Reuse registered `urn:offmenu:type:FoodPreparation` and
-  `urn:offmenu:type:NutrientDefinition` with source-scoped identity in the existing
-  ingredients domain. Preserve native FDC, NDB and nutrient identifier lexemes,
-  release, original description, editorial English term, source rows and citations.
-- An independently selected identifier must bind its own resource, assertion,
-  occurrence, source kind, native ID and release. A label, shared citation,
-  sibling record or unqualified English field cannot supply identity authority.
-- Identity and literal vocabulary remain separate from numeric observations.
-  Each observation needs its own source row, metric, native numerator unit,
-  source-specific basis document and source-method review. A branded serving
-  binding alone does not establish an SR basis. Prototype fixture binding fields
-  still require a reviewed application contract; they are not accepted schema.
-- Preserve literal amount lexemes, assumed zero versus unknown derivation,
-  zero source observation counts, blanks, source country/language nulls, and
-  publication/archive/origin dates separately from unknown assay dates. Publisher
-  location does not establish food origin. IU activity remains held without
-  component-specific semantics; no mass or RAE conversion is implied.
-- The initial profile excludes every relationship and comparison. It supplies no
-  GTIN, universal ingredient identity, current prepared-state fit, substitute,
-  recipe quantity/nutrition transfer, automatic choice or planning authority.
-  Any later contextual recipe-reference association needs its own reviewed
-  predicate, endpoint and consumer contract. It is not a gate for initial source
-  identity or separately qualified source numeric contexts.
+Only the existing registered `urn:offmenu:type:FoodPreparation` and
+`urn:offmenu:type:NutrientDefinition` types are allowed, in the ingredients
+domain. Each needs source-scoped identity, qualified record rights, scoped
+citations, qualified English fields and one independently selected
+`source_reference_identifier_bindings` entry. It binds its own resource,
+assertion, occurrence, native ID, source kind, identifier system and release.
 
-## Executable preparation and limits
+The sole source occurrence must name only that resource, use the corresponding
+`usda-files:sr_legacy_food` or `usda-files:nutrient` source key, and retain an
+original object matching its content digest. The selected identifier assertion
+must match its own original JSON pointer, not another valid assertion. Food
+references additionally require their source `sr_legacy_food` type and a
+qualified native NDB string, retaining leading zeros. Missing evidence holds
+the affected resource; a label, shared citation or sibling cannot seed it. Full
+native descriptions and separate editorial English terms remain intact.
+Matching nouns do not merge raw/cooked or other source variants.
 
-`tests/source_reference_fixture_cases.py` makes bounded, detached synthetic
-packets and prototype qualifications. Two food references share the editorial
-noun Carrot while retaining different raw/cooked descriptions and leading-zero
-NDB lexemes. Six source nutrient definitions retain G, MG, UG, KCAL, kJ and IU
-separately. Twelve finite cases cover missing/cross-resource identity, release,
-source kind, rights, English field, basis, numerator and packet profile spoofing.
-These examples are not a permanent food, row or packet-size cap.
+Each source resource, assertion and citation needs explicit `reuseScope` text
+in addition to public-source visibility. Independent qualification and the
+actual writer remain responsible for the exact permitted source purpose.
 
-`tests/test_source_reference_fixture_contract.py` checks Common validity,
-actual legacy profile isolation, in-memory DDL roundtrips, held lookup output,
-native lexemes, original/context retention, boundedness and nonfinite/boolean
-negative controls. The existing default profile must keep these reference
-entities and observations held; current retail/recipe source APIs reject them.
-No future SR API behavior is labeled passed. No corpus, source DB, cache, network,
-private profile or retained Gold snapshot is opened by these tests.
+## Separate numeric context
 
-The real source review's 5,005 qualified numeric contexts, 99 held IU contexts
-and 43 held range contexts remain separate; all 5,147 currently retain their
-persistence gate. A source review is not real source serialization or admission.
-Future actual packets and qualifications require measured 4 MiB limits,
-proposals 8 MiB, and the existing depth/node bounds, with no dropped originals
-or silent reuse of unresolved contexts. Exact written-data review precedes any
-scoped admission. Main, production, normalization and all other standing holds
-remain unchanged.
+Identity and literal vocabulary can qualify with no numeric observations or
+with every observation held. Each numeric observation additionally requires:
+
+- Its own `observation_basis_bindings` entry with a qualified source-reference
+  disposition, food occurrence/release, exact native row digest, amount lexeme,
+  nutrient definition, source unit, method and derivation ID, basis document
+  digest and independent evidence pin. A legacy branded basis entry is insufficient.
+- The definition's qualified own identity and original unit field. Metric and
+  quantity property IDs must be that source definition's resource ID, preventing
+  label-based merging into a legacy or different nutrient metric. Native G, MG,
+  UG, KCAL and kJ map to g, mg, µg, kcal and kJ, with unchanged source numbers
+  and exact dimensions. IU remains held.
+- A finite numeric value, excluding booleans and null, equal to the native
+  amount lexeme, and the same documented 100 g mass basis in claim, context
+  and qualification. Comparable conversions are excluded.
+- Exact original row fields in context, a recognized source-method category,
+  and the native derivation ID. Missing derivation remains explicitly unknown.
+  Context states source reporting only, no independently verified assay and no
+  recipe transfer. Country and assay date remain unknown in this initial scope.
+
+Literal zero, assumed zero, zero source observation counts, blanks, unknown
+methods and publication/archive/origin dates stay distinct. Qualification does
+not establish physical absence, current composition or reproduced assays. A
+typed numeric claim without one qualified observation stays held, including
+nested unbound numeric values. Source originals remain unchanged.
+
+## Excluded paths and actual use
+
+All relationships and comparisons are excluded. This creates no GTIN, global
+ingredient identity, product fit, preparation producer, current-state fit,
+substitute, automatic choice, cooking, safety, recipe quantity/nutrition transfer
+or planning authority. Later contextual recipe-reference associations need a
+separate predicate, endpoint and consumer contract. They do not gate this
+initial no-edge profile.
+
+The real source review's 5,005 qualified contexts, 99 held IU contexts and 43
+held range contexts are separate from code tests and persistence. This candidate
+does not serialize or admit those real rows or clear their persistence gate.
+Actual packet/qualification limits remain 4 MiB, proposals 8 MiB, with the
+existing depth/node limits. Measure and partition actual outputs without
+losing originals. Independent source, contract, proposal and written-data review
+precede scoped admission. Original snapshots stay unchanged.
+
+## Generated verification
+
+`tests/source_reference_fixture_cases.py` supplies generated identity-only and
+numeric packets plus finite counterexamples. Factory metadata is not a test
+verdict. `tests/test_gold_source_reference.py` invokes the actual new API and
+tests identity, sibling isolation, source pointer/row/definition/method/unit/basis
+guards, held numeric claims, profile isolation, deterministic immutable output,
+schema bindings and in-memory DDL. `test_source_reference_fixture_contract.py`
+preserves the preparation and legacy-profile boundaries. Tests do not open
+corpus/source/cache/Gold databases or call external services. No fixed food-count
+cap or real-data acceptance follows from the example packet sizes.

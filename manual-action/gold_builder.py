@@ -2,6 +2,8 @@
 import copy
 import hashlib
 import json
+import math
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 
 DOMAINS = ("barcodes", "ingredients", "recipes", "dietary", "suppliers", "citations")
@@ -28,6 +30,35 @@ RELATION_TYPES = {"mentions", "canonical_ingredient", "represents", "contains", 
 SOURCE_NUMERATOR_UNITS = {"kg": "mass", "g": "mass", "mg": "mass", "µg": "mass",
                           "L": "volume", "mL": "volume",
                           "J": "energy", "kJ": "energy", "kcal": "energy"}
+REFERENCE_TYPES = {"urn:offmenu:type:FoodPreparation": "sr_legacy_food",
+                   "urn:offmenu:type:NutrientDefinition": "nutrient"}
+REFERENCE_UNITS = {"G": ("g", "mass"), "MG": ("mg", "mass"), "UG": ("µg", "mass"),
+                   "KCAL": ("kcal", "energy"), "kJ": ("kJ", "energy")}
+REFERENCE_METHODS = {"SOURCE_REPORTED_ANALYTICAL", "SOURCE_CALCULATED", "SOURCE_ASSUMED_ZERO",
+    "DERIVATION_NOT_SUPPLIED", "SOURCE_AGGREGATED", "SOURCE_BORROWED_OR_ADJUSTED",
+    "SOURCE_DERIVED_FROM_ANALYTICAL", "SOURCE_OTHER_CALCULATED_OR_IMPUTED",
+    "SOURCE_OTHER_COMPOSITION_TABLE", "SOURCE_NUTRIENT_REUSED"}
+
+
+def _source_pointer(original, pointer):
+    """Read a source-local JSON pointer; invalid paths never supply a value."""
+    if type(pointer) is not str or not pointer.startswith("/"):
+        return None
+    try:
+        value = original
+        for part in pointer.split("/")[1:]:
+            part = part.replace("~1", "/").replace("~0", "~")
+            if type(value) is list:
+                if not part.isascii() or not part.isdigit() or str(int(part)) != part:
+                    return None
+                value = value[int(part)]
+            elif type(value) is dict:
+                value = value[part]
+            else:
+                return None
+        return value
+    except (KeyError, IndexError, ValueError):
+        return None
 
 def _json(value):
     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
@@ -138,7 +169,19 @@ def build_product_source_subset(packet, *, qualifications):
                              recipe_source_only=False, product_source_only=True)
 
 
-def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_source_only=False):
+def build_source_reference_subset(packet, *, qualifications):
+    """Propose source-scoped SR food/vocabulary and separately qualified values.
+
+    Caller-owned profile, no relationships, comparisons, product identity or
+    recipe transfer. Source numeric qualification is not a reproduced assay.
+    This function remains pure and never admits data or performs I/O.
+    """
+    return _build_gold_slice(packet, qualifications=qualifications,
+        recipe_source_only=False, source_reference_only=True)
+
+
+def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_source_only=False,
+                      source_reference_only=False):
     """Return deterministic proposed rows and explicit holds; never write a DB.
 
     Independent reviewers select qualifications; hashes bind those decisions, not
@@ -176,6 +219,24 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             raise ValueError("product source subset excludes recipes, mentions and other entities")
         if any(r.get("predicateId") != "represents" for r in common.get("relations", [])):
             raise ValueError("product source subset supports direct class fits only")
+    if source_reference_only:
+        for key in ("source_reference_identifier_bindings", "observation_basis_bindings"):
+            if type(qualifications.get(key, [])) is not list:
+                raise ValueError("source reference qualification binding list")
+        if common.get("relations") or qualifications.get("comparisons"):
+            raise ValueError("source reference subset excludes all relations and comparisons")
+        if any(o.get("comparable") is not None for o in packet.get("observations", [])):
+            raise ValueError("source reference subset excludes comparable conversions")
+        if any(s.get("domain") != "ingredients" for s in packet.get("watermark", {}).get("domains", [])):
+            raise ValueError("source reference subset domain")
+        if any(r.get("type") not in REFERENCE_TYPES for r in common.get("resources", [])):
+            raise ValueError("source reference subset resource type")
+        for collection in ("resources", "assertions", "citations"):
+            for item in common.get(collection, []):
+                scope = item.get("scope", {})
+                if (scope.get("visibility") != "public" or type(scope.get("reuseScope")) is not str
+                        or not scope["reuseScope"].strip()):
+                    raise ValueError("source reference subset requires explicit public-source reuse scope")
     rows = {name: [] for name in TABLE_COLUMNS}
     def add(table, **row):
         if set(row) != set(TABLE_COLUMNS[table]):
@@ -202,6 +263,9 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
     if product_source_only:
         run_id = _uid("product-source-subset/1", digest(packet), digest(qualifications))
         run_water = dict(water, admission_profile="product-source-subset/1")
+    if source_reference_only:
+        run_id = _uid("source-reference-subset/1", digest(packet), digest(qualifications))
+        run_water = dict(water, admission_profile="source-reference-subset/1")
     add("gold_runs", run_id=run_id, packet_sha256=digest(packet), qualification_sha256=digest(qualifications), data_class=packet["data_class"], watermark_json=_json(run_water))
     citations = _index(common.get("citations", []), "id")
     for cid, citation in citations.items():
@@ -333,6 +397,69 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         if not good: hold("assertion", aid, "claim qualification incomplete")
         claim_for[aid] = cid; claim_good[aid] = good
         add("gold_claims", claim_id=cid, assertion_id=aid, entity_id=eid, property_id=assertion["propertyId"], state="verified" if good else "held", payload_json=_json(assertion))
+    reference_sources = {}
+    reference_basis = {}
+    if source_reference_only:
+        selected = {}
+        for binding in qualifications.get("source_reference_identifier_bindings", []):
+            if type(binding) is not dict:
+                raise ValueError("source reference identifier binding")
+            if type(binding.get("resource_id")) is not str:
+                hold("qualification", digest(binding), "source reference identifier target is not an ID")
+                continue
+            selected.setdefault(binding.get("resource_id"), []).append(binding)
+        for rid, resource in resources.items():
+            candidates = selected.get(rid, [])
+            owners = [o for o in occurrences.values() if rid in o.get("resource_ids", [])]
+            b = candidates[0] if len(candidates) == 1 else {}
+            o = owners[0] if len(owners) == 1 else {}
+            a = claims.get(b.get("assertion_id"), {}); native_id = b.get("native_id")
+            kind = REFERENCE_TYPES[resource["type"]]
+            expected = ("USDA-FDC", "usda:fdc-id") if kind == "sr_legacy_food" else ("USDA-nutrient", "usda:nutrient-id")
+            def literal_claim(prop, value_kind, value):
+                return any(claim_good[aid] and a["subjectId"] == rid and a["propertyId"] == prop
+                    and a.get("value", {}).get("kind") == value_kind
+                    and a["value"].get("value") == value
+                    and _source_pointer(o.get("source_original"), a.get("sourcePath")) == value
+                    and bool(a.get("citationIds")) and set(a["citationIds"]) <= set(o.get("citation_ids", []))
+                    for aid, a in claims.items())
+            valid = (len(candidates) == len(owners) == 1
+                and set(b) == {"resource_id", "assertion_id", "occurrence_id", "source_kind",
+                    "identifier_system", "native_id", "source_version", "evidence_sha256"}
+                and resource.get("identityStatus") == "source-scoped"
+                and entity_good.get(entity_for.get(rid))
+                and o.get("resource_ids") == [rid] and o.get("domain") == "ingredients"
+                and o.get("source_key") == "usda-files:" + kind
+                and b.get("source_kind") == kind and b.get("identifier_system") == expected[0]
+                and b.get("occurrence_id") == o.get("occurrence_id")
+                and b.get("source_version") == o.get("source_version")
+                and type(native_id) is str and native_id.isascii() and native_id.isdigit()
+                and int(native_id) > 0 and o.get("record_id") == native_id
+                and _pin(b.get("evidence_sha256"))
+                and type(o.get("source_original")) is dict
+                and digest(o["source_original"]) == o.get("content_sha256")
+                and a.get("subjectId") == rid and claim_good.get(b.get("assertion_id"))
+                and a.get("propertyId") == expected[1] and a.get("value", {}).get("kind") == "identifier"
+                and a["value"].get("value") == native_id
+                and _source_pointer(o["source_original"], a.get("sourcePath")) == native_id
+                and bool(a.get("citationIds")) and set(a["citationIds"]) <= set(o.get("citation_ids", [])))
+            if valid and kind == "sr_legacy_food":
+                ndb = _source_pointer(o["source_original"], next((a.get("sourcePath") for a in claims.values()
+                    if a["subjectId"] == rid and a["propertyId"] == "usda:ndb-number"), None))
+                valid = (type(ndb) is str and ndb.isascii() and ndb.isdigit()
+                    and literal_claim("usda:ndb-number", "identifier", ndb)
+                    and literal_claim("usda:data-type", "expression", "sr_legacy_food"))
+            if valid:
+                reference_sources[rid] = (o, b)
+            else:
+                hold("resource", rid, "source reference own identity/occurrence binding incomplete")
+        for b in qualifications.get("observation_basis_bindings", []):
+            if type(b) is not dict:
+                raise ValueError("source reference observation binding")
+            if type(b.get("observation_id")) is not str:
+                hold("qualification", digest(b), "source reference observation target is not an ID")
+                continue
+            reference_basis.setdefault(b.get("observation_id"), []).append(b)
     endpoints = {e["entity_id"]: (e["domain"], e["entity_type"]) for e in rows["gold_entities"]}
     allowed_endpoints = {
         "mentions": (("recipes", "recipe"), ("ingredients", "ingredient-mention")),
@@ -441,6 +568,59 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             subject = resources.get(claims[aid]["subjectId"], {})
             if not basis_ok or not source_value_ok or subject.get("type") != "barcode-product":
                 good = False; hold("observation", oid, "source product value/basis qualification incomplete")
+        if source_reference_only:
+            chosen = reference_basis.get(oid, [])
+            b = chosen[0] if len(chosen) == 1 else {}
+            food = reference_sources.get(claims[aid]["subjectId"])
+            definition_id = b.get("nutrient_definition_resource_id")
+            definition = reference_sources.get(definition_id) if type(definition_id) is str else None
+            context = obs.get("context", {}); basis = original.get("basis", {})
+            pointer = claims[aid].get("sourcePath")
+            row = _source_pointer(food[0]["source_original"], pointer.rsplit("/", 1)[0]) if food and type(pointer) is str else None
+            source_unit = b.get("source_unit_name")
+            unit_claims = [a for a in claims.values() if a["subjectId"] == b.get("nutrient_definition_resource_id")
+                and a["propertyId"] == "usda:nutrient-unit" and claim_good.get(a["id"])]
+            numeric_ok = (len(chosen) == 1 and food and definition and type(row) is dict
+                and food[1]["source_kind"] == "sr_legacy_food" and definition[1]["source_kind"] == "nutrient"
+                and b.get("source_kind") == "sr_legacy_food" and b.get("numeric_context_status") == "qualified-source-reference"
+                and b.get("occurrence_id") == food[0]["occurrence_id"]
+                and b.get("source_version") == food[0]["source_version"] == definition[0]["source_version"]
+                and b.get("native_nutrient_id") == definition[1]["native_id"] == row.get("nutrient_id")
+                and row.get("fdc_id") == food[1]["native_id"]
+                and mid == b.get("metric_id") == b.get("nutrient_definition_resource_id") == property_id
+                and _pin(b.get("source_basis_document_sha256")) and _pin(b.get("evidence_sha256"))
+                and b.get("source_row_sha256") == digest(row) and context.get("source_fields") == row
+                and b.get("source_amount_lexeme") == row.get("amount") == original.get("sourceValue")
+                and type(row.get("amount")) is str and type(original.get("value")) in (int, float)
+                and (type(original["value"]) is int or math.isfinite(original["value"]))
+                and type(source_unit) is str and source_unit == original.get("sourceUnit")
+                and REFERENCE_UNITS.get(source_unit) == (original.get("unitId"), original.get("dimension"))
+                and original.get("unitId") == metrics[mid].get("canonical_unit_id")
+                and type(b.get("source_method")) is str and b["source_method"] == context.get("method")
+                and b["source_method"] in REFERENCE_METHODS
+                and "native_derivation_id" in b and type(row.get("derivation_id")) is str
+                and b["native_derivation_id"] == row["derivation_id"]
+                and ((b["source_method"] == "DERIVATION_NOT_SUPPLIED") == (row["derivation_id"] == ""))
+                and context.get("source_reporting_only") is True and context.get("independent_assay_verified") is False
+                and context.get("recipe_transfer_qualified") is False and context.get("country") is None
+                and context.get("assay_date") is None
+                and type(basis) is dict and basis.get("kind") == "quantity"
+                and type(basis.get("value")) in (int, float) and basis["value"] == 100
+                and (basis.get("unitId"), basis.get("dimension")) == ("g", "mass")
+                and b.get("basis") == context.get("basis") == basis
+                and any(a.get("value", {}).get("value") == source_unit
+                    and _source_pointer(definition[0]["source_original"], a.get("sourcePath")) == source_unit
+                    for a in unit_claims))
+            try:
+                # Decimal comparison does not expand a source exponent into a
+                # huge integer, unlike constructing a Fraction from that text.
+                source_number = Decimal(row["amount"]) if numeric_ok else None
+                numeric_ok = bool(numeric_ok and source_number.is_finite()
+                                  and source_number == Decimal(str(original["value"])))
+            except (KeyError, TypeError, ValueError, InvalidOperation):
+                numeric_ok = False
+            if not numeric_ok:
+                good = False; hold("observation", oid, "source reference row/definition/unit/method/basis qualification incomplete")
         if obs.get("comparable") is not None:
             comparable = obs["comparable"]; original = claims[aid]["value"]
             rules = [r for r in qualifications.get("unit_rules", []) if r.get("rule_id") == comparable.get("rule_id")]
@@ -469,6 +649,19 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         context = {key: obs.get("context", {}).get(key) for key in CONTEXT_FIELDS}
         context.update(obs.get("context", {}))
         add("gold_observations", observation_id=oid, claim_id=claim_for[aid], metric_id=mid, entity_id=entity_for.get(claims[aid]["subjectId"]), kind=obs["kind"], state="verified" if good else "held", context_json=_json(context), original_json=_json(claims[aid]["value"]), comparable_json=_json(obs.get("comparable")), payload_json=_json(obs))
+    if source_reference_only:
+        def numeric_value(value):
+            if type(value) is dict:
+                return value.get("kind") in {"quantity", "number"} or any(numeric_value(v) for v in value.values())
+            return type(value) is list and any(numeric_value(v) for v in value)
+        for claim in rows["gold_claims"]:
+            if numeric_value(claims[claim["assertion_id"]].get("value")):
+                bound = [o for o in rows["gold_observations"] if o["claim_id"] == claim["claim_id"]]
+                if len(bound) != 1 or bound[0]["state"] != "verified":
+                    claim["state"] = "held"
+                    hold("assertion", claim["assertion_id"], "source numeric claim requires its own qualified observation")
+                    for observation in bound:
+                        observation["state"] = "held"
     for comparison in qualifications.get("comparisons", []):
         ids = comparison["observation_ids"]
         if len(set(ids)) < 2 or any(oid not in observations for oid in ids):
@@ -525,6 +718,8 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
                 and value.get("kind") == "identifier" and type(value.get("value")) is str
                 and value["value"].strip() and _pin(binding.get("evidence_sha256"))):
                 seeds.add(eid)
+    if source_reference_only:
+        seeds = {entity_for[rid] for rid in reference_sources}
     # Component membership cannot supply a mention's own required association.
     mentions_with_canonical = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", [])}
     missing_associations = {}
@@ -550,6 +745,8 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         # Only a product's own selected identifier seeds it. A shared class must
         # never revive another product with missing identity/rights evidence.
         reachable = set(seeds) | {e["object_id"] for e in usable_edges if e["subject_id"] in seeds}
+    elif source_reference_only:
+        reachable = set(seeds)
     elif recipe_source_only:
         # Each source recipe must qualify its own declared branches. Traversing
         # back through a shared mention must never revive an incomplete recipe.
@@ -565,7 +762,8 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
     for e in rows["gold_entities"]:
         if e["entity_id"] not in reachable:
             islands += 1; e["state"] = "held"
-            hold("resource", e["resource_id"], "missing supported recipe/canonical/product/nutrition application path")
+            hold("resource", e["resource_id"], "missing own qualified source reference identity" if source_reference_only
+                 else "missing supported recipe/canonical/product/nutrition application path")
     for table in ("gold_texts", "gold_claims", "gold_observations"):
         for row in rows[table]:
             if row["entity_id"] not in reachable:
@@ -608,6 +806,10 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
     if product_source_only:
         result["admission_profile"] = "product-source-subset/1"
         result["metrics"]["connectivity"]["source_product_seeds"] = len(seeds)
+        result["metrics"]["connectivity"]["core_chain_seeds"] = 0
+    if source_reference_only:
+        result["admission_profile"] = "source-reference-subset/1"
+        result["metrics"]["connectivity"]["source_reference_seeds"] = len(seeds)
         result["metrics"]["connectivity"]["core_chain_seeds"] = 0
     conditional = [e for e in rows["gold_edges"] if e["state"] == "conditional"]
     if conditional:
