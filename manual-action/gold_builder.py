@@ -56,6 +56,51 @@ def digest(value):
 def _pin(value):
     return type(value) is str and len(value) == 64 and all(c in "0123456789abcdef" for c in value)
 
+ALTERNATIVE_SCOPE_FIELDS = {"recipeId", "mentionId", "sourceKey", "sourceVersion", "recordId", "contentSha256"}
+LEGACY_ALTERNATIVE_FIELDS = {"alternativeGroupId", "branchId", "groupId"}
+
+
+def alternative_scope_valid(scope):
+    return (type(scope) is dict and set(scope) == ALTERNATIVE_SCOPE_FIELDS
+            and all(type(v) is str and bool(v.strip()) for v in scope.values())
+            and _pin(scope["contentSha256"]))
+
+
+def relation_condition(relation):
+    """None means absent; malformed/present-null conditions never mean unconditional."""
+    if LEGACY_ALTERNATIVE_FIELDS.intersection(relation):
+        raise ValueError("untyped alternative metadata")
+    if "condition" not in relation:
+        return None
+    c = relation["condition"]
+    if (type(c) is not dict or set(c) != {"kind", "groupId", "branchId", "sourceScope"}
+        or c["kind"] != "selected-alternative"
+        or any(type(c[k]) is not str or not c[k].strip() for k in ("groupId", "branchId"))
+        or not alternative_scope_valid(c["sourceScope"])
+        or relation.get("predicateId") != "canonical_ingredient"
+        or c["sourceScope"]["mentionId"] != relation.get("subjectId")):
+        raise ValueError("invalid alternative condition")
+    return c
+
+
+def alternative_group_valid(relations):
+    """One exclusive group per source mention; all declared branches stay visible."""
+    try:
+        conditions = [relation_condition(r) for r in relations]
+    except ValueError:
+        return False
+    if not any(conditions):
+        # Multiple incompatible canonical identities are not an implicit AND/OR.
+        # A legacy packet missing both conditions must also fail closed.
+        return len({r.get("objectId") for r in relations}) <= 1
+    if not all(conditions):
+        return False
+    return (len({_json(c["sourceScope"]) for c in conditions}) == 1
+            and len({c["groupId"] for c in conditions}) == 1
+            and len({c["branchId"] for c in conditions}) >= 2
+            and len({c["branchId"] for c in conditions}) == len(conditions)
+            and len({r["objectId"] for r in relations}) == len(relations))
+
 def _uid(*parts):
     return digest(list(parts))
 
@@ -313,8 +358,45 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             context = relation.get("context", {})
             if not all(context.get(k) for k in ("product", "lot", "jurisdiction", "date")):
                 good = False; hold("relation", rid, "recall applicability scope incomplete")
+        condition = None
+        try:
+            condition = relation_condition(relation)
+            if condition:
+                scope = condition["sourceScope"]
+                recipe = entity_for.get(scope["recipeId"])
+                owners = [o for o in occurrences.values() if scope["recipeId"] in o.get("resource_ids", [])]
+                source_ok = any(occurrence_good[o["occurrence_id"]] and all(
+                    o[k] == scope[v] for k, v in (("source_key", "sourceKey"),
+                        ("source_version", "sourceVersion"), ("record_id", "recordId"),
+                        ("content_sha256", "contentSha256"))) for o in owners)
+                mention_owners = [o for o in occurrences.values() if relation["subjectId"] in o.get("resource_ids", [])]
+                source_ok = source_ok and bool(mention_owners) and all(
+                    o["source_key"] == scope["sourceKey"] and o["source_version"] == scope["sourceVersion"]
+                    for o in mention_owners)
+                # Resolve after the loop too: relation order cannot supply authority.
+                if not source_ok or endpoints.get(recipe) != ("recipes", "recipe") or not entity_good.get(recipe):
+                    good = False; hold("relation", rid, "alternative source scope not qualified")
+        except ValueError as error:
+            good = False; hold("relation", rid, str(error))
         if not good: hold("relation", rid, "relationship qualification incomplete")
-        add("gold_edges", edge_id=_uid("edge", rid), relation_id=rid, subject_id=subject, predicate_id=predicate, object_id=obj, state="verified" if good else "held", payload_json=_json(relation))
+        add("gold_edges", edge_id=_uid("edge", rid), relation_id=rid, subject_id=subject, predicate_id=predicate, object_id=obj, state=("conditional" if condition else "verified") if good else "held", payload_json=_json(relation))
+    canonical_groups = {}
+    for edge in rows["gold_edges"]:
+        if edge["predicate_id"] == "canonical_ingredient":
+            canonical_groups.setdefault(edge["subject_id"], []).append(edge)
+    for edges in canonical_groups.values():
+        relations = [json.loads(e["payload_json"]) for e in edges]
+        valid = alternative_group_valid(relations)
+        if valid and any("condition" in r for r in relations):
+            scope = relations[0]["condition"]["sourceScope"]
+            valid = any(e["predicate_id"] == "mentions" and e["state"] == "verified"
+                        and e["subject_id"] == entity_for.get(scope["recipeId"])
+                        and e["object_id"] == entity_for.get(scope["mentionId"])
+                        for e in rows["gold_edges"])
+        if not valid:
+            for edge in edges:
+                edge["state"] = "held"
+                hold("relation", edge["relation_id"], "invalid/conflicting alternative group or source recipe association")
     metrics = _index(packet.get("metrics", []), "metric_id")
     metric_good = {}
     for mid, metric in metrics.items():
@@ -403,7 +485,9 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             add("gold_comparison_observations", comparison_id=cid, observation_id=oid)
     # Admission network: a supported recipe/mention/canonical/product/observation
     # chain seeds reachability. Citation-only paths never seed admission.
-    usable_edges = [e for e in rows["gold_edges"] if e["state"] == "verified"]
+    # This graph retains source-qualified alternatives, not selected application
+    # paths. Consumers must evaluate conditional edges, never union them.
+    usable_edges = [e for e in rows["gold_edges"] if e["state"] in ("verified", "conditional")]
     by_predicate = {}
     adjacency = {}
     for e in usable_edges:
@@ -415,6 +499,10 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
     represented |= {e["object_id"] for e in by_predicate.get("contains", []) if e["subject_id"] in products_with_nutrition}
     mapped_mentions = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", []) if e["object_id"] in represented}
     seeds = {e["subject_id"] for e in by_predicate.get("mentions", []) if e["object_id"] in mapped_mentions}
+    unconditional_mentions = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", [])
+                              if e["state"] == "verified" and e["object_id"] in represented}
+    unconditional_seeds = {e["subject_id"] for e in by_predicate.get("mentions", [])
+                           if e["object_id"] in unconditional_mentions}
     if recipe_source_only:
         verified = {e["entity_id"] for e in rows["gold_entities"] if e["state"] == "verified"}
         declared = {}
@@ -503,7 +591,7 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         "resource": {e["resource_id"] for e in rows["gold_entities"] if e["state"] == "verified"},
         "text": {t["source_text_id"] for t in rows["gold_texts"] if t["state"] == "verified"},
         "assertion": {c["assertion_id"] for c in rows["gold_claims"] if c["state"] == "verified"},
-        "relation": {e["relation_id"] for e in rows["gold_edges"] if e["state"] == "verified"},
+        "relation": {e["relation_id"] for e in rows["gold_edges"] if e["state"] in ("verified", "conditional")},
         "metric": {m["metric_id"] for m in rows["gold_metrics"] if m["state"] == "verified"},
     }
     usable_citations = {support["citation_id"] for support in rows["gold_support"]
@@ -521,6 +609,11 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         result["admission_profile"] = "product-source-subset/1"
         result["metrics"]["connectivity"]["source_product_seeds"] = len(seeds)
         result["metrics"]["connectivity"]["core_chain_seeds"] = 0
+    conditional = [e for e in rows["gold_edges"] if e["state"] == "conditional"]
+    if conditional:
+        result["metrics"]["connectivity"].update(
+            core_chain_seeds=len(unconditional_seeds), source_qualified_potential_seeds=len(seeds),
+            conditional_edges=len(conditional), selection_required=True)
     if len(_json(result).encode()) > 8388608:
         raise ValueError("proposal exceeds 8 MiB")
     return copy.deepcopy(result)
