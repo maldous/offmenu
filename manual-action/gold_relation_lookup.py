@@ -69,7 +69,22 @@ def lookup_recipe_products(db, *, source, selections=()):
     if len(recipes)!=1:
         result['errors'].append('exact qualified recipe occurrence not found');return result
     recipe=recipes[0];mentions=edges(recipe['entity_id'],'mentions')
-    if not any(e['payload'].get('objectId')==source['mentionId'] and e['state']=='verified' for e in mentions):
+    # A declared source mention may be held because its application mapping is
+    # invalid. It supplies context only, never eligibility for a returned path.
+    def declared_context(edge):
+        p=edge['payload']
+        if (type(p) is not dict or p.get('objectId')!=source['mentionId']
+            or p.get('subjectId')!=recipe['resource_id'] or p.get('id')!=edge['relation_id']
+            or p.get('predicateId')!='mentions' or not supported('relation',p,'relationship')):
+            return False
+        try:
+            if relation_condition(p) is not None: return False
+        except ValueError: return False
+        return bool(query('SELECT 1 FROM gold_entities WHERE entity_id=? AND resource_id=? '
+                          'AND domain=\'ingredients\' AND entity_type=\'ingredient-mention\'',
+                          (edge['object_id'],source['mentionId'])))
+
+    if not any(declared_context(e) for e in mentions):
         result['errors'].append('source mention not declared by recipe');return result
     selected={};invalid_selection=False
     for s in selections:
@@ -82,7 +97,12 @@ def lookup_recipe_products(db, *, source, selections=()):
     consumed=set()
     for me in mentions:
         mention=entity(me['object_id'],'ingredients','ingredient-mention')
-        if not mention or not edge_ok(me,recipe,mention): continue
+        if not mention or not edge_ok(me,recipe,mention):
+            if declared_context(me):
+                result['choices'].append(dict(mentionId=source['mentionId'],groupId=None,
+                    sourceScope=source,status='held',branchId=None))
+                result['errors'].append('requested source mention application qualification held')
+            continue
         try:
             if relation_condition(me['payload']) is not None: continue
         except ValueError: continue
@@ -137,7 +157,7 @@ def lookup_recipe_products(db, *, source, selections=()):
         # independent source paths remain available.
         result['paths']=[p for p in result['paths'] if 'condition' not in p['relations'][1]]
         for choice in result['choices']:
-            choice.update(status='invalid',branchId=None)
+            if choice['status']!='held': choice.update(status='invalid',branchId=None)
     result['paths'].sort(key=_json)
     return result
 

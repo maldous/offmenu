@@ -170,6 +170,14 @@ WHEN (NEW.state='verified' AND (
  json_extract(NEW.payload_json,'$.condition.kind') IS NOT 'selected-alternative'))
 BEGIN SELECT RAISE(ABORT,'alternative requires typed conditional state'); END;
 
+-- REPLACE deletes/inserts instead of updating. Check both existing identities
+-- before it can discard conditional provenance, even after a hold.
+CREATE TRIGGER gold_edge_alternative_identity BEFORE INSERT ON gold_edges
+WHEN EXISTS(SELECT 1 FROM gold_edges old
+ WHERE (old.edge_id=NEW.edge_id OR old.relation_id=NEW.relation_id)
+ AND (old.state='conditional' OR json_type(old.payload_json,'$.condition') IS NOT NULL))
+BEGIN SELECT RAISE(ABORT,'existing alternative identity requires retained provenance'); END;
+
 CREATE TRIGGER gold_edge_qualified_update BEFORE UPDATE ON gold_edges
 WHEN NEW.state IN ('verified','conditional') AND (
  NEW.subject_id IS NULL OR NEW.object_id IS NULL OR
@@ -180,7 +188,8 @@ BEGIN SELECT RAISE(ABORT,'relationship requires qualified endpoints'); END;
 -- Qualification is proposed afresh; removing a condition in place is not review.
 CREATE TRIGGER gold_edge_alternative_update BEFORE UPDATE ON gold_edges
 WHEN ((OLD.state='conditional' OR json_type(OLD.payload_json,'$.condition') IS NOT NULL)
- AND (NEW.state='verified' OR NEW.payload_json!=OLD.payload_json)) OR
+ AND (NEW.state='verified' OR NEW.payload_json!=OLD.payload_json
+ OR NEW.edge_id!=OLD.edge_id OR NEW.relation_id!=OLD.relation_id)) OR
  (NEW.state='verified' AND (
  json_type(NEW.payload_json,'$.condition') IS NOT NULL OR
  json_type(NEW.payload_json,'$.alternativeGroupId') IS NOT NULL OR

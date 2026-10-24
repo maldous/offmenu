@@ -195,6 +195,79 @@ class AlternativeLookupTests(unittest.TestCase):
             with self.assertRaises(sqlite3.IntegrityError):
                 db.execute("UPDATE gold_edges SET state='verified',payload_json=json_remove(payload_json,'$.condition') WHERE relation_id='maps'")
 
+    def test_replacement_and_logical_collisions_preserve_conditional_provenance(self):
+        legacy_sql = """SELECT product.resource_id FROM gold_edges me
+            JOIN gold_entities recipe ON recipe.entity_id=me.subject_id
+            JOIN gold_edges ce ON ce.subject_id=me.object_id
+            JOIN gold_entities mention ON mention.entity_id=ce.subject_id
+            JOIN gold_edges pe ON pe.object_id=ce.object_id
+            JOIN gold_entities product ON product.entity_id=pe.subject_id
+            WHERE recipe.resource_id='recipe' AND mention.resource_id='mention'
+            AND me.predicate_id='mentions' AND me.state='verified'
+            AND ce.predicate_id='canonical_ingredient' AND ce.state='verified'
+            AND pe.predicate_id='represents' AND pe.state='verified'"""
+        for held in (False, True):
+            for collision in ('both-identities', 'physical-only', 'logical-only'):
+                for replacement_state in ('verified', 'held'):
+                    with self.subTest(held=held,collision=collision,state=replacement_state):
+                        p,q,s=alternative_fixture()
+                        with fixtures.sqlite_proposal(fixtures.build(p,q)) as db:
+                            if held:
+                                db.execute("UPDATE gold_edges SET state='held' WHERE relation_id IN ('maps','brown-map')")
+                            before=db.execute('SELECT * FROM gold_edges ORDER BY edge_id').fetchall()
+                            cur=db.execute("SELECT * FROM gold_edges WHERE relation_id IN ('maps','brown-map')")
+                            columns=[c[0] for c in cur.description]
+                            rows=[dict(zip(columns,r)) for r in cur.fetchall()]
+                            for row in rows:
+                                payload=json.loads(row['payload_json']);payload.pop('condition')
+                                row.update(payload_json=json.dumps(payload),state=replacement_state)
+                                if collision=='physical-only': row['relation_id']+='-replacement'
+                                if collision=='logical-only': row['edge_id']+='-replacement'
+                                with self.assertRaises(sqlite3.IntegrityError):
+                                    db.execute('INSERT OR REPLACE INTO gold_edges('+','.join(columns)+') VALUES ('+
+                                               ','.join('?' for _ in columns)+')',[row[k] for k in columns])
+                            self.assertEqual(before,db.execute('SELECT * FROM gold_edges ORDER BY edge_id').fetchall())
+                            self.assertEqual([],db.execute(legacy_sql).fetchall())
+                            self.assertEqual([],db.execute('PRAGMA foreign_key_check').fetchall())
+
+    def test_condition_identity_cannot_be_relabelled_before_replacement(self):
+        p,q,s=alternative_fixture()
+        with fixtures.sqlite_proposal(fixtures.build(p,q)) as db:
+            db.execute("UPDATE gold_edges SET state='held' WHERE relation_id='maps'")
+            for assignment in ("edge_id=edge_id||'-changed'", "relation_id=relation_id||'-changed'"):
+                with self.assertRaises(sqlite3.IntegrityError):
+                    db.execute("UPDATE gold_edges SET "+assignment+" WHERE relation_id='maps'")
+
+    def test_identity_guard_keeps_unrelated_unconditional_inserts_compatible(self):
+        p,q,s=alternative_fixture()
+        with fixtures.sqlite_proposal(fixtures.build(p,q)) as db:
+            cur=db.execute("SELECT * FROM gold_edges WHERE relation_id='water-map'")
+            columns=[c[0] for c in cur.description];row=dict(zip(columns,cur.fetchone()))
+            row.update(edge_id='ordinary-new-edge',relation_id='ordinary-new-relation')
+            payload=json.loads(row['payload_json']);payload['id']=row['relation_id']
+            row['payload_json']=json.dumps(payload)
+            db.execute('INSERT INTO gold_edges('+','.join(columns)+') VALUES ('+
+                       ','.join('?' for _ in columns)+')',[row[k] for k in columns])
+            self.assertEqual('verified',db.execute('SELECT state FROM gold_edges WHERE edge_id=?',
+                             (row['edge_id'],)).fetchone()[0])
+
+    def test_invalid_requested_sugar_keeps_independent_unconditional_sibling(self):
+        for failure in ('both-missing','subject-binding','group','source','duplicate'):
+            with self.subTest(failure=failure):
+                p,q,scope=alternative_fixture();source=copy.deepcopy(scope)
+                white=next(e for e in p['common']['relations'] if e['id']=='maps')
+                brown=next(e for e in p['common']['relations'] if e['id']=='brown-map')
+                if failure=='both-missing':
+                    white.pop('condition');brown.pop('condition')
+                elif failure=='subject-binding': white['condition']['sourceScope']['mentionId']='water-mention'
+                elif failure=='group': brown['condition']['groupId']='other-group'
+                elif failure=='source': brown['condition']['sourceScope']['recordId']='wrong-record'
+                else: brown['condition']['branchId']='white'
+                result=self.run_lookup(p,q,source,'white')
+                self.assertEqual(['water-mention'],[p['mentionId'] for p in result['paths']])
+                self.assertTrue(any(c['mentionId']=='mention' and c['status']=='held' for c in result['choices']))
+                self.assertTrue(result['errors'])
+
     def test_missing_branch_product_or_citation_fails_without_fallback(self):
         for failure in ['rights','citation','endpoint']:
             p,q,s=alternative_fixture()

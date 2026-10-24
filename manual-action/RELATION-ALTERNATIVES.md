@@ -61,6 +61,10 @@ unconditional paths remain available. Results include the original relation
 payloads with their source paths, citations and scope/reuse restrictions; this
 lookup neither interprets free-text reuse restrictions nor grants a new use.
 It does not qualify cooking execution, nutrition, interchangeability or safety.
+An attributable requested mention whose application mapping is held supplies
+source context only. It is reported as held while independent qualified siblings
+remain eligible; it cannot supply a sugar path. Unknown recipe occurrences,
+source mismatches and undeclared mention contexts still fail closed globally.
 
 The command-line route accepts JSON arguments without writing the database:
 
@@ -84,6 +88,14 @@ condition and group validation lives in the builder and is repeated in the
 lookup. Existing consumers filtering `state='verified'` exclude these branches;
 they do not gain explicit-choice support automatically. Integrators must route
 choice-aware callers through this lookup rather than unioning both states.
+Insert guards also check existing physical edge and logical relation identities
+before replacement/conflicting inserts, including held condition-bearing rows.
+Those identities cannot be relabelled in place to evade the insert guard.
+An identity collision is rejected without discarding the prior source payload.
+
+This implementation is qualified only by bounded generated fixtures and frozen
+snapshot use. It uses `fetchall`; live or unbounded consumer qualification is
+excluded and requires separate review rather than an assumed capacity guarantee.
 
 This is proposed source DDL, not a migration of any existing database. Worker00
 owns review, integration and any separately authorized snapshot rebuild/schema
