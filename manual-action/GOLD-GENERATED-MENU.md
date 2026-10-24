@@ -39,6 +39,34 @@ that name `held` with explicit `holdReasons`; valid names and member siblings
 remain available. No fallback citation or translation evidence is invented. This
 projects the selected admitted records; it does not grant new source authority.
 
+Each selected action has an `instructionRecords[]` entry with the complete
+`actionRecord`, parsed action `evidence`, exact `supportRecords` and parsed
+`supportEvidence`, and the support citations including license and attribution.
+Qualified action citations join the member citation collection even when absent
+from recipe, occurrence and name citations. Support must target the exact selected
+run/action, contain valid Unicode source spans matching the action evidence, and
+resolve its own citation and rights. Persisted native source/module and review
+artifact pins must be present and correctly shaped; this is a projection check,
+not a rerun of native review or proof of artifact contents. Raw admitted records
+remain available for diagnosis. If any action is unqualified, `instructions` is
+empty and `instructionState` is `held-action-provenance`, with per-action reasons;
+a partial sequence is never displayed as a complete selected run. Healthy names
+and other members remain available. No run selection still means unknown
+instructions, with no implicit fallback.
+
+The file wrapper explicitly recognizes receipt version
+`offmenu.private-incremental-source-data-admission/1`. `admissionLimits` preserves
+the receipt schema and the complete, separate `scopeLimits` and/or
+`sourceAndConsumerLimits` blocks under `sourceFields`. Neither block overwrites
+the other. The corresponding top-level compatibility fields contain qualified
+blocks; unsupported schema, missing blocks or invalid blocks produce a `held`
+metadata state, explicit reasons and null compatibility fields. Bounded raw blocks
+remain visible in `sourceFields`. Limits are projected without interpreting false
+restrictions as grants or following nested receipt paths. Prior rights/purpose
+pins remain references. Receipt limits share the JSON structure/size and final
+output bounds. Selecting a successor requires its explicitly supplied database
+and receipt hashes in a separate sidecar; an older selection never upgrades itself.
+
 For the barcode consumer, pass each desired `paths[].recipeEntityId` as a member
 reference after its admitted barcode traversal; select any native run explicitly.
 This module resolves membership, not barcode eligibility or product selection.

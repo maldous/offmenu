@@ -54,6 +54,54 @@ def _bounded_json(value, max_bytes=65536):
     _require(len(encoded(value)) <= max_bytes, 'group-byte-limit')
 
 
+def _parsed_json(raw):
+    try:
+        value = json.loads(raw)
+    except (ValueError, TypeError):
+        return None
+    _bounded_json(value)
+    return value
+
+
+def _native_pins_valid(run):
+    source = run.get('native_source_pin')
+    modules = _parsed_json(run.get('native_modules_json'))
+    return (type(source) is str and re.fullmatch('[0-9a-f]{40}|[0-9a-f]{64}', source) is not None
+            and type(modules) is dict and bool(modules)
+            and all(k.strip() and _sha(v) for k, v in modules.items())
+            and all(_sha(run.get(k)) for k in [
+                'rules_artifact_sha256', 'semantic_review_sha256',
+                'translation_receipts_sha256', 'connection_sha256', 'source_original_sha256']))
+
+
+def _action_evidence_valid(evidence, action):
+    original, order = action.get('original_text'), action.get('source_order')
+    if not (type(original) is str and type(order) is int and order >= 0
+            and type(evidence) is list and evidence):
+        return False
+    return all(type(span) is dict and span.get('pointer') == f'/steps/{order}/raw_text'
+               and span.get('offset_unit') == 'unicode_codepoint'
+               and type(span.get('start')) is int and type(span.get('end')) is int
+               and 0 <= span['start'] < span['end'] <= len(original)
+               and type(span.get('text')) is str
+               and original[span['start']:span['end']] == span['text'] for span in evidence)
+
+
+def _receipt_limits(receipt):
+    fields = {k: receipt[k] for k in ['scopeLimits', 'sourceAndConsumerLimits'] if k in receipt}
+    _bounded_json(fields)
+    reasons = []
+    schema = receipt.get('schemaVersion')
+    if schema != 'offmenu.private-incremental-source-data-admission/1':
+        reasons.append('unsupported-receipt-schema')
+    if not fields:
+        reasons.append('admission-limits-unknown')
+    if any(type(v) is not dict or not v for v in fields.values()):
+        reasons.append('admission-limits-invalid')
+    return {'receiptSchemaVersion': schema, 'status': 'held' if reasons else 'present',
+            'sourceFields': fields, 'holdReasons': reasons}
+
+
 def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                         max_members=8, max_rows=2000, max_bytes=1048576,
                         max_steps=1000000, max_seconds=3):
@@ -231,7 +279,8 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
             runs = query('SELECT * FROM gold_recipe_runs WHERE recipe_entity_id=? ORDER BY run_id', (eid,))
             selected = next((x for x in runs if x['run_id'] == member.get('nativeRunId')), None)
             _require('nativeRunId' not in member or selected is not None, 'missing-or-foreign-native-run')
-            instructions, native = [], None
+            instructions, instruction_records, native = [], [], None
+            instruction_state = 'unknown-no-run-selected'
             if selected is not None:
                 _require(selected['source_occurrence_id'] in {x['occurrence_id'] for x in origins}
                          and selected['target_language'] == 'en'
@@ -240,16 +289,65 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                                 (selected['run_id'],))
                 _require(actions and all(type(x['english_text']) is str and x['english_text'].strip()
                                          for x in actions), 'native-english-instructions-required')
-                instructions = [x['english_text'] for x in actions]
+                pins_valid = _native_pins_valid(selected)
+                for action in actions:
+                    reasons, action_citations = [], []
+                    if not pins_valid:
+                        reasons.append('native-run-pins-unqualified')
+                    evidence = _parsed_json(action.get('evidence_json'))
+                    if not _action_evidence_valid(evidence, action):
+                        reasons.append('action-evidence-invalid')
+                    supports = query('SELECT * FROM gold_recipe_action_support WHERE run_id=? '
+                                     'AND action_id=? ORDER BY citation_id',
+                                     (selected['run_id'], action.get('action_id')))
+                    if not supports:
+                        reasons.append('action-support-missing')
+                    support_evidence = []
+                    for support in supports:
+                        parsed = _parsed_json(support.get('evidence_json'))
+                        support_evidence.append(parsed)
+                        if not _action_evidence_valid(parsed, action) or parsed != evidence:
+                            reasons.append('action-support-evidence-invalid')
+                        cid = support.get('citation_id')
+                        if not (type(cid) is str and cid.strip()):
+                            reasons.append('action-citation-missing-or-invalid')
+                            continue
+                        if cid not in citation_cache:
+                            rows = query('SELECT payload_json FROM gold_citations WHERE citation_id=?', (cid,))
+                            citation_cache[cid] = _parsed_json(rows[0]['payload_json']) if len(rows) == 1 else None
+                        citation = citation_cache[cid]
+                        if type(citation) is not dict or citation.get('id') != cid:
+                            reasons.append('action-citation-missing-or-invalid')
+                        elif not all(type(citation.get(k)) is str and citation[k].strip()
+                                     for k in ['license', 'attribution']):
+                            reasons.append('action-citation-rights-unknown')
+                        else:
+                            action_citations.append(citation)
+                    status = 'held' if reasons else 'qualified'
+                    instruction_records.append({'status': status, 'holdReasons': sorted(set(reasons)),
+                        'actionRecord': action, 'evidence': evidence, 'supportRecords': supports,
+                        'supportEvidence': support_evidence, 'citations': action_citations})
+                    if status == 'qualified':
+                        existing = {c['id'] for c in citations}
+                        for citation in action_citations:
+                            if citation['id'] not in existing:
+                                citations.append(citation)
+                                existing.add(citation['id'])
+                        _require(len(citations) <= 64, 'recipe-citation-limit')
+                qualified = all(r['status'] == 'qualified' for r in instruction_records)
+                if qualified:
+                    instructions = [x['english_text'] for x in actions]
+                instruction_state = 'selected-native-run' if qualified else 'held-action-provenance'
                 native = {'run': selected, 'actions': actions,
-                          'meaning': 'Exact selected source-backed run; retain its scope and unknown parameters. No whole-recipe automation acceptance.'}
+                          'meaning': 'Exact selected admitted records; instructionState controls display qualification. Retain scope and unknown parameters. No whole-recipe automation acceptance.'}
             holds = query('SELECT target_kind,target_id,reason FROM gold_holds '
                           'WHERE target_id IN (?,?,?) ORDER BY hold_id',
                           (eid, entity['resource_id'], member.get('nativeRunId', '')))
             out['members'].append({'recipeEntityId': eid, 'recipeResourceId': entity['resource_id'],
                 'englishNames': english, 'englishNameState': 'present' if english else 'unknown',
                 'nameRecords': name_records,
-                'instructions': instructions, 'instructionState': 'selected-native-run' if native else 'unknown-no-run-selected',
+                'instructions': instructions, 'instructionState': instruction_state,
+                'instructionRecords': instruction_records,
                 'native': native, 'availableNativeRunIds': [x['run_id'] for x in runs],
                 'sourceRecords': source_records, 'citations': citations,
                 'sourceScope': payload.get('scope'), 'holds': holds,
@@ -302,7 +400,10 @@ def query_snapshot(admission_path, admission_sha256, group, **limits):
              'sealed-snapshot-required')
     _require(_file_sha(admission_path, 262144) == admission_sha256, 'admission-changed-during-query')
     result['admissionState'] = receipt['state']
-    result['admissionScopeLimits'] = receipt.get('scopeLimits')
+    result['admissionLimits'] = _receipt_limits(receipt)
+    qualified = result['admissionLimits']['status'] == 'present'
+    result['admissionScopeLimits'] = receipt.get('scopeLimits') if qualified else None
+    result['admissionSourceAndConsumerLimits'] = receipt.get('sourceAndConsumerLimits') if qualified else None
     _require(len(encoded(result)) <= limits.get('max_bytes', 1048576), 'menu-output-limit')
     return result
 

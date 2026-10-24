@@ -33,8 +33,9 @@ def fixture(db):
     CREATE TABLE gold_occurrences(occurrence_id TEXT,source_key TEXT,source_version TEXT,record_id TEXT,content_sha256 TEXT,normalized_artifact_sha256 TEXT,state TEXT,payload_json TEXT);
     CREATE TABLE gold_entity_occurrences(entity_id TEXT,occurrence_id TEXT);
     CREATE TABLE gold_citations(citation_id TEXT,payload_json TEXT);
-    CREATE TABLE gold_recipe_runs(run_id TEXT,recipe_entity_id TEXT,source_occurrence_id TEXT,target_language TEXT,status TEXT,gold_admission TEXT);
-    CREATE TABLE gold_recipe_actions(run_id TEXT,sequence_index INTEGER,english_text TEXT,unknown_parameters_json TEXT);
+    CREATE TABLE gold_recipe_runs(run_id TEXT,recipe_entity_id TEXT,source_occurrence_id TEXT,target_language TEXT,status TEXT,gold_admission TEXT,native_source_pin TEXT,native_modules_json TEXT,rules_artifact_sha256 TEXT,semantic_review_sha256 TEXT,translation_receipts_sha256 TEXT,connection_sha256 TEXT,source_original_sha256 TEXT);
+    CREATE TABLE gold_recipe_actions(run_id TEXT,sequence_index INTEGER,english_text TEXT,unknown_parameters_json TEXT,action_id TEXT,source_order INTEGER,original_text TEXT,evidence_json TEXT);
+    CREATE TABLE gold_recipe_action_support(run_id TEXT,action_id TEXT,citation_id TEXT,evidence_json TEXT);
     CREATE TABLE gold_holds(hold_id TEXT,target_kind TEXT,target_id TEXT,reason TEXT);
     ''')
     name = 'Generated crème source recipe'
@@ -54,10 +55,18 @@ def fixture(db):
     db.execute('INSERT INTO gold_citations VALUES(?,?)', ('source:citation', json.dumps(
         {'id': 'source:citation', 'sourceId': 'generated-test', 'revisionId': 7, 'attribution': 'Generated source author', 'license': 'Generated fixture license',
          'scope': {'visibility': 'local-restricted'}})))
-    db.execute('INSERT INTO gold_recipe_runs VALUES(?,?,?,?,?,?)', (RUN, EID, 'occ:1', 'en', 'ready-for-review', 'not-assigned'))
-    db.executemany('INSERT INTO gold_recipe_actions VALUES(?,?,?,?)', [
-        (RUN, 0, 'Combine the generated inputs.', '["yield-unqualified"]'),
-        (RUN, 1, 'Knead until evenly incorporated.', '["physical-cooking-unobserved"]')])
+    db.execute('INSERT INTO gold_recipe_runs VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+               (RUN, EID, 'occ:1', 'en', 'ready-for-review', 'not-assigned', 'd' * 40,
+                json.dumps({'generated.py': 'e' * 64}), *(['f' * 64] * 5)))
+    for index, (text, unknown) in enumerate([
+            ('Combine the generated inputs.', '["yield-unqualified"]'),
+            ('Knead until evenly incorporated.', '["physical-cooking-unobserved"]')]):
+        evidence = json.dumps([{'pointer': f'/steps/{index}/raw_text', 'start': 0,
+                               'end': len(text), 'text': text, 'offset_unit': 'unicode_codepoint'}])
+        db.execute('INSERT INTO gold_recipe_actions VALUES(?,?,?,?,?,?,?,?)',
+                   (RUN, index, text, unknown, f'action:{index}', index, text, evidence))
+        db.execute('INSERT INTO gold_recipe_action_support VALUES(?,?,?,?)',
+                   (RUN, f'action:{index}', 'source:citation', evidence))
     db.execute('INSERT INTO gold_holds VALUES(?,?,?,?)', ('hold:1', 'recipe-run', RUN, 'GENERATED preparation handoff only'))
     db.commit()
     db.execute('PRAGMA query_only=ON')
@@ -257,8 +266,7 @@ class GeneratedMenuTests(unittest.TestCase):
         self.assertEqual(member['englishNames'], [])
         self.assertIn('name-citation-rights-unknown', member['nameRecords'][0]['holdReasons'])
 
-    def test_name_provenance_bad_name_does_not_drop_valid_member_sibling(self):
-        self.distinct_name()
+    def add_member_sibling(self):
         self.db.execute('PRAGMA query_only=OFF')
         payload = json.loads(self.db.execute('SELECT payload_json FROM gold_entities WHERE entity_id=?', (EID,)).fetchone()[0])
         payload['id'] = 'generated:second:recipe'
@@ -274,14 +282,146 @@ class GeneratedMenuTests(unittest.TestCase):
         self.db.execute('INSERT INTO gold_entity_occurrences VALUES(?,?)', (OTHER, 'occ:second'))
         self.db.execute('INSERT INTO gold_support VALUES(?,?,?,?,?,?)',
                         ('support:second', 'text', 'name:second', 'source:citation', 'field', 'a' * 64))
-        self.db.execute('DELETE FROM gold_support WHERE target_id=?', ('name:1',))
         self.db.commit(); self.db.execute('PRAGMA query_only=ON')
         request = group(); request['members'].append({'recipeEntityId': OTHER})
+        return request
+
+    def test_name_provenance_bad_name_does_not_drop_valid_member_sibling(self):
+        self.distinct_name()
+        request = self.add_member_sibling()
+        self.edit('DELETE FROM gold_support WHERE target_id=?', ('name:1',))
         result = self.resolve(request)
         self.assertEqual(len(result['members']), 2)
         self.assertEqual(result['members'][0]['englishNameState'], 'unknown')
         self.assertTrue(result['members'][1]['englishNames'])
         self.assertEqual(result['members'][1]['nameRecords'][0]['status'], 'qualified')
+
+    def distinct_action(self):
+        citation = {'id': 'action:separate', 'license': 'Action-only license',
+                    'attribution': 'Action-only author', 'scope': {'visibility': 'local-restricted'}}
+        self.edit('INSERT INTO gold_citations VALUES(?,?)', (citation['id'], json.dumps(citation)))
+        self.edit('UPDATE gold_recipe_action_support SET citation_id=?', (citation['id'],))
+        return citation
+
+    def test_action_provenance_distinct_citation_support_and_rights_retained(self):
+        citation = self.distinct_action()
+        member = self.resolve()['members'][0]
+        self.assertIn(citation, member['citations'])
+        for record in member['instructionRecords']:
+            self.assertEqual(record['status'], 'qualified')
+            self.assertEqual(record['citations'], [citation])
+            self.assertEqual(record['supportRecords'][0]['action_id'], record['actionRecord']['action_id'])
+            self.assertEqual(record['supportEvidence'][0], record['evidence'])
+        self.assertEqual(len(member['instructions']), 2)
+
+    def test_action_provenance_missing_invalid_or_foreign_support_holds_sequence(self):
+        for sql, args in [
+                ('DELETE FROM gold_recipe_action_support WHERE action_id=?', ('action:0',)),
+                ('UPDATE gold_recipe_action_support SET action_id=?', ('foreign:action',)),
+                ('UPDATE gold_recipe_action_support SET run_id=?', ('recipe-actions:' + 'd' * 64,)),
+                ('UPDATE gold_recipe_action_support SET evidence_json=?', ('invalid',)),
+                ('UPDATE gold_recipe_action_support SET evidence_json=?', ('[]',)),
+                ('UPDATE gold_recipe_action_support SET evidence_json=(SELECT evidence_json FROM gold_recipe_actions WHERE action_id=?) WHERE action_id=?', ('action:1', 'action:0')),
+                ('UPDATE gold_recipe_actions SET evidence_json=? WHERE action_id=?', ('invalid', 'action:0')),
+                ('UPDATE gold_recipe_action_support SET evidence_json=?',
+                 (json.dumps([{'pointer': '/steps/99/raw_text', 'start': 0, 'end': 1,
+                               'text': 'x', 'offset_unit': 'unicode_codepoint'}]),))]:
+            with self.subTest(sql=sql, args=args):
+                db = sqlite3.connect(':memory:'); fixture(db)
+                db.execute('PRAGMA query_only=OFF'); db.execute(sql, args); db.commit()
+                db.execute('PRAGMA query_only=ON')
+                try:
+                    member = read_generated_menu(db, group(), database_sha256=DB_SHA,
+                                                 admission_sha256=ADMISSION_SHA)['members'][0]
+                    self.assertEqual(member['instructions'], [])
+                    self.assertEqual(member['instructionState'], 'held-action-provenance')
+                    self.assertTrue(member['englishNames'])
+                    self.assertTrue(any(r['holdReasons'] for r in member['instructionRecords']))
+                finally:
+                    db.close()
+
+    def test_action_provenance_bad_pins_and_missing_invalid_rights_hold(self):
+        cases = [
+            ('UPDATE gold_recipe_runs SET native_source_pin=?', ('unset',)),
+            ('UPDATE gold_recipe_runs SET native_modules_json=?', ('{}',)),
+            ('UPDATE gold_recipe_runs SET native_modules_json=?', ('{"module.py":"invalid"}',)),
+            ('DELETE FROM gold_citations WHERE citation_id=?', ('action:separate',)),
+            ('UPDATE gold_citations SET payload_json=? WHERE citation_id=?',
+             (json.dumps({'id': 'wrong', 'license': 'L', 'attribution': 'A'}), 'action:separate')),
+            ('UPDATE gold_citations SET payload_json=? WHERE citation_id=?', ('invalid', 'action:separate')),
+            ('UPDATE gold_citations SET payload_json=? WHERE citation_id=?',
+             (json.dumps({'id': 'action:separate', 'license': 'L'}), 'action:separate'))]
+        cases.extend((f'UPDATE gold_recipe_runs SET {field}=?', ('missing',)) for field in [
+            'rules_artifact_sha256', 'semantic_review_sha256', 'translation_receipts_sha256',
+            'connection_sha256', 'source_original_sha256'])
+        for sql, args in cases:
+            with self.subTest(sql=sql, args=args):
+                original_db = self.db
+                self.db = sqlite3.connect(':memory:'); fixture(self.db)
+                try:
+                    self.distinct_action()
+                    self.edit(sql, args)
+                    member = self.resolve()['members'][0]
+                    self.assertEqual(member['instructions'], [])
+                    self.assertEqual(member['instructionState'], 'held-action-provenance')
+                    self.assertTrue(member['englishNames'])
+                finally:
+                    self.db.close(); self.db = original_db
+
+    def test_action_provenance_held_sequence_keeps_healthy_member_sibling(self):
+        request = self.add_member_sibling()
+        # A second independently selected run remains healthy while the first is held.
+        second_run = 'recipe-actions:' + 'd' * 64
+        self.db.execute('PRAGMA query_only=OFF')
+        self.db.execute('INSERT INTO gold_recipe_runs SELECT ?,?, ?,target_language,status,gold_admission,'
+                        'native_source_pin,native_modules_json,rules_artifact_sha256,semantic_review_sha256,'
+                        'translation_receipts_sha256,connection_sha256,source_original_sha256 '
+                        'FROM gold_recipe_runs WHERE run_id=?', (second_run, OTHER, 'occ:second', RUN))
+        self.db.execute('INSERT INTO gold_recipe_actions SELECT ?,sequence_index,english_text,'
+                        'unknown_parameters_json,action_id,source_order,original_text,evidence_json '
+                        'FROM gold_recipe_actions WHERE run_id=?', (second_run, RUN))
+        self.db.execute('INSERT INTO gold_recipe_action_support SELECT ?,action_id,citation_id,evidence_json '
+                        'FROM gold_recipe_action_support WHERE run_id=?', (second_run, RUN))
+        self.db.commit(); self.db.execute('PRAGMA query_only=ON')
+        self.edit('DELETE FROM gold_recipe_action_support WHERE run_id=? AND action_id=?', (RUN, 'action:0'))
+        request['members'][1]['nativeRunId'] = second_run
+        first, second = self.resolve(request)['members']
+        self.assertEqual(first['instructions'], [])
+        self.assertEqual(first['instructionState'], 'held-action-provenance')
+        self.assertEqual(len(second['instructions']), 2)
+        self.assertEqual(second['instructionState'], 'selected-native-run')
+        self.assertTrue(second['englishNames'])
+
+    def test_receipt_limits_projection_preserves_both_fields_and_marks_unknown(self):
+        with tempfile.TemporaryDirectory(prefix='generated-menu-limits-') as directory:
+            root = Path(directory); database = root / 'generated.sqlite3'
+            db = sqlite3.connect(database); fixture(db); db.close()
+            db_hash = hashlib.sha256(database.read_bytes()).hexdigest()
+            receipt = root / 'admission.json'
+            for schema, fields, status in [
+                    ('offmenu.private-incremental-source-data-admission/1',
+                     {'scopeLimits': {'oldRights': False}, 'sourceAndConsumerLimits':
+                      {'heldNumericContexts': 142, 'recipeNutritionTransferOrTotals': False}}, 'present'),
+                    ('offmenu.private-incremental-source-data-admission/1',
+                     {'sourceAndConsumerLimits': {'purpose': 'PRIVATE_ONLY', 'heldNumericContexts': 142,
+                                                 'recipeNutritionTransferOrTotals': False}}, 'present'),
+                    ('future/2', {'sourceAndConsumerLimits': {'rights': 'unknown'}}, 'held'),
+                    ('offmenu.private-incremental-source-data-admission/1', {}, 'held'),
+                    ('offmenu.private-incremental-source-data-admission/1', {'scopeLimits': []}, 'held')]:
+                data = {'schemaVersion': schema, 'state': 'ACCEPTED_GENERATED_FIXTURE_ONLY',
+                        'artifact': {'path': str(database), 'sha256': db_hash}, **fields}
+                receipt.write_text(json.dumps(data)); sha = hashlib.sha256(receipt.read_bytes()).hexdigest()
+                request = group(); request['snapshot'] = {'databaseSha256': db_hash, 'admissionSha256': sha}
+                result = query_snapshot(receipt, sha, request)
+                self.assertEqual(result['admissionLimits']['status'], status)
+                self.assertEqual(result['admissionLimits']['sourceFields'], fields)
+                self.assertEqual(result['admissionLimits']['receiptSchemaVersion'], schema)
+                if status == 'held':
+                    self.assertTrue(result['admissionLimits']['holdReasons'])
+                    self.assertIsNone(result['admissionScopeLimits'])
+                else:
+                    self.assertEqual(result['admissionSourceAndConsumerLimits'], fields['sourceAndConsumerLimits'])
+                    self.assertEqual(result['admissionScopeLimits'], fields.get('scopeLimits'))
 
     def test_selected_snapshot_wrapper_checks_bytes_and_no_sidecars(self):
         with tempfile.TemporaryDirectory(prefix='generated-menu-test-') as directory:
@@ -289,7 +429,7 @@ class GeneratedMenuTests(unittest.TestCase):
             db = sqlite3.connect(database); fixture(db); db.close()
             db_hash = hashlib.sha256(database.read_bytes()).hexdigest()
             receipt = root / 'admission.json'
-            receipt.write_text(json.dumps({'state': 'ACCEPTED_GENERATED_TEST_FIXTURE_ONLY',
+            receipt.write_text(json.dumps({'schemaVersion': 'offmenu.private-incremental-source-data-admission/1', 'state': 'ACCEPTED_GENERATED_TEST_FIXTURE_ONLY',
                 'artifact': {'path': str(database), 'sha256': db_hash},
                 'scopeLimits': {'publicRedistributionQualified': False}}))
             receipt_hash = hashlib.sha256(receipt.read_bytes()).hexdigest()
