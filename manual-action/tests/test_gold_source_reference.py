@@ -40,6 +40,17 @@ def basis_binding(q, native_id='1004'):
     return next(b for b in q['observation_basis_bindings'] if b['native_nutrient_id'] == native_id)
 
 
+def refresh_source_record(p, q, occurrence):
+    """Refresh generated evidence so tests isolate semantics, not a stale hash."""
+    occurrence['content_sha256'] = g.digest(occurrence['source_original'])
+    next(r for r in q['records'] if r['occurrence_id'] == occurrence['occurrence_id'])['content_sha256'] = occurrence['content_sha256']
+    rid = occurrence['resource_ids'][0]
+    resource = next(r for r in p['common']['resources'] if r['id'] == rid)
+    identity = next(a for a in p['common']['assertions'] if a['id'] == rid + ':native-id')
+    next(b for b in q['source_reference_identifier_bindings'] if b['resource_id'] == rid)['evidence_sha256'] = g.digest(
+        {'resource': resource, 'identity': identity, 'occurrence': occurrence})
+
+
 class GoldSourceReferenceTests(unittest.TestCase):
     def test_trusted_profile_qualifies_own_identities_and_five_source_contexts_only(self):
         p, q = source_reference_fixture(); before = copy.deepcopy((p, q)); r = build(p, q)
@@ -121,6 +132,71 @@ class GoldSourceReferenceTests(unittest.TestCase):
                 self.assertEqual('verified', entity_states(r)[FOOD_RAW]); self.assertEqual('held', obs_state(r, '1004'))
                 self.assertEqual('held', next(c['state'] for c in r['rows']['gold_claims'] if c['assertion_id'] == FOOD_RAW + ':amount-1004'))
                 if name != 'branded-basis-shape-only': self.assertEqual('verified', obs_state(r, '1093'))
+
+    def test_numeric_source_path_must_select_the_native_amount_leaf(self):
+        for leaf in ['does_not_exist', 'nutrient_id', 'data_points', 'amount/does_not_exist']:
+            with self.subTest(leaf=leaf):
+                p, q = source_reference_fixture()
+                a = claim(p); a['sourcePath'] = '/food_nutrient/0/' + leaf
+                next(s for s in q['supports'] if s['target_kind'] == 'assertion' and s['target_id'] == a['id'])['evidence_sha256'] = g.digest(a)
+                # data_points and amount both contain literal "0": equality
+                # alone must not allow the wrong source field.
+                r = build(p, q)
+                self.assertEqual('held', obs_state(r, '1004'))
+                self.assertEqual('held', next(c['state'] for c in r['rows']['gold_claims'] if c['assertion_id'] == a['id']))
+                self.assertEqual('verified', entity_states(r)[FOOD_RAW])
+                self.assertEqual('verified', obs_state(r, '1093'))
+
+    def test_supported_gtin_and_other_unregistered_properties_stay_held(self):
+        for prop, kind in [('usda:gtin-upc', 'identifier'), ('schema:gtin13', 'identifier'),
+                           ('usda:gtin-upc', 'expression'), ('unregistered:source-property', 'identifier')]:
+            with self.subTest(property=prop, kind=kind):
+                p, q = source_reference_fixture()
+                occurrence = p['occurrences'][0]
+                occurrence['source_original']['food']['gtin_upc'] = '00012345678905'
+                refresh_source_record(p, q, occurrence)
+                a = copy.deepcopy(next(a for a in p['common']['assertions'] if a['id'] == FOOD_RAW + ':native-id'))
+                value = {'kind': kind, 'value': '00012345678905'}
+                if kind == 'expression': value['syntax'] = 'literal-source-text'
+                a.update(id=FOOD_RAW + ':excluded-property', propertyId=prop,
+                         value=value, sourcePath='/food/gtin_upc')
+                p['common']['assertions'].append(a)
+                q['supports'].append({'target_kind': 'assertion', 'target_id': a['id'],
+                    'citation_id': a['citationIds'][0], 'support_scope': 'field', 'evidence_sha256': g.digest(a)})
+                r = build(p, q)
+                c = next(c for c in r['rows']['gold_claims'] if c['assertion_id'] == a['id'])
+                self.assertEqual('held', c['state'])
+                self.assertEqual(a, json.loads(c['payload_json']))
+                self.assertEqual({'verified'}, set(entity_states(r).values()))
+                self.assertEqual(5, sum(o['state'] == 'verified' for o in r['rows']['gold_observations']))
+                self.assertEqual([], r['rows']['gold_edges'])
+
+    def test_sr_and_food_identity_rows_must_both_name_the_selected_food(self):
+        for table in ['food', 'sr_legacy_food']:
+            for value in ['101', None, 102]:
+                with self.subTest(table=table, value=value):
+                    p, q = source_reference_fixture()
+                    occurrence = next(o for o in p['occurrences'] if o['resource_ids'] == [FOOD_COOKED])
+                    occurrence['source_original'][table]['fdc_id'] = value
+                    refresh_source_record(p, q, occurrence)
+                    r = build(p, q)
+                    self.assertEqual('held', entity_states(r)[FOOD_COOKED])
+                    self.assertEqual('verified', entity_states(r)[FOOD_RAW])
+                    self.assertEqual(7, sum(s == 'verified' for s in entity_states(r).values()))
+                    self.assertEqual('verified', obs_state(r, '1004'))
+
+    def test_identity_claims_must_use_their_native_semantic_fields(self):
+        for suffix, alias in [('native-id', 'fdc_alias'), ('ndb-number', 'ndb_alias'), ('data-type', 'type_alias')]:
+            with self.subTest(claim=suffix):
+                p, q = source_reference_fixture()
+                a = next(a for a in p['common']['assertions'] if a['id'] == FOOD_RAW + ':' + suffix)
+                occurrence = p['occurrences'][0]
+                occurrence['source_original'][alias] = a['value']['value']
+                a['sourcePath'] = '/' + alias
+                refresh_source_record(p, q, occurrence)
+                r = build(p, q)
+                self.assertEqual('held', entity_states(r)[FOOD_RAW])
+                self.assertEqual('verified', entity_states(r)[FOOD_COOKED])
 
     def test_each_row_definition_document_metric_method_and_lexeme_must_match(self):
         edits = {

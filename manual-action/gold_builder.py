@@ -394,6 +394,15 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
         # Textual claims require independent per-field English support too; no title-only admission.
         if not field_english(assertion.get("value", {})):
             good = False; hold("assertion", aid, "non-English assertion requires field translation qualification")
+        if source_reference_only:
+            subject_type = resources.get(assertion["subjectId"], {}).get("type")
+            allowed_properties = ({"usda:fdc-id", "usda:ndb-number", "usda:data-type"}
+                | {rid for rid, resource in resources.items()
+                   if resource.get("type") == "urn:offmenu:type:NutrientDefinition"}
+                if subject_type == "urn:offmenu:type:FoodPreparation"
+                else {"usda:nutrient-id", "usda:nutrient-unit"})
+            if assertion["propertyId"] not in allowed_properties:
+                good = False; hold("assertion", aid, "property excluded from source reference subset")
         if not good: hold("assertion", aid, "claim qualification incomplete")
         claim_for[aid] = cid; claim_good[aid] = good
         add("gold_claims", claim_id=cid, assertion_id=aid, entity_id=eid, property_id=assertion["propertyId"], state="verified" if good else "held", payload_json=_json(assertion))
@@ -416,10 +425,11 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             a = claims.get(b.get("assertion_id"), {}); native_id = b.get("native_id")
             kind = REFERENCE_TYPES[resource["type"]]
             expected = ("USDA-FDC", "usda:fdc-id") if kind == "sr_legacy_food" else ("USDA-nutrient", "usda:nutrient-id")
-            def literal_claim(prop, value_kind, value):
+            def literal_claim(prop, value_kind, value, pointer):
                 return any(claim_good[aid] and a["subjectId"] == rid and a["propertyId"] == prop
                     and a.get("value", {}).get("kind") == value_kind
                     and a["value"].get("value") == value
+                    and a.get("sourcePath") == pointer
                     and _source_pointer(o.get("source_original"), a.get("sourcePath")) == value
                     and bool(a.get("citationIds")) and set(a["citationIds"]) <= set(o.get("citation_ids", []))
                     for aid, a in claims.items())
@@ -441,14 +451,16 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
                 and a.get("subjectId") == rid and claim_good.get(b.get("assertion_id"))
                 and a.get("propertyId") == expected[1] and a.get("value", {}).get("kind") == "identifier"
                 and a["value"].get("value") == native_id
+                and a.get("sourcePath") == ("/food/fdc_id" if kind == "sr_legacy_food" else "/nutrient/id")
                 and _source_pointer(o["source_original"], a.get("sourcePath")) == native_id
                 and bool(a.get("citationIds")) and set(a["citationIds"]) <= set(o.get("citation_ids", [])))
             if valid and kind == "sr_legacy_food":
-                ndb = _source_pointer(o["source_original"], next((a.get("sourcePath") for a in claims.values()
-                    if a["subjectId"] == rid and a["propertyId"] == "usda:ndb-number"), None))
-                valid = (type(ndb) is str and ndb.isascii() and ndb.isdigit()
-                    and literal_claim("usda:ndb-number", "identifier", ndb)
-                    and literal_claim("usda:data-type", "expression", "sr_legacy_food"))
+                ndb = _source_pointer(o["source_original"], "/sr_legacy_food/NDB_number")
+                valid = (_source_pointer(o["source_original"], "/food/fdc_id") == native_id
+                    and _source_pointer(o["source_original"], "/sr_legacy_food/fdc_id") == native_id
+                    and type(ndb) is str and ndb.isascii() and ndb.isdigit()
+                    and literal_claim("usda:ndb-number", "identifier", ndb, "/sr_legacy_food/NDB_number")
+                    and literal_claim("usda:data-type", "expression", "sr_legacy_food", "/food/data_type"))
             if valid:
                 reference_sources[rid] = (o, b)
             else:
@@ -581,6 +593,8 @@ def _build_gold_slice(packet, *, qualifications, recipe_source_only, product_sou
             unit_claims = [a for a in claims.values() if a["subjectId"] == b.get("nutrient_definition_resource_id")
                 and a["propertyId"] == "usda:nutrient-unit" and claim_good.get(a["id"])]
             numeric_ok = (len(chosen) == 1 and food and definition and type(row) is dict
+                and pointer.rsplit("/", 1)[-1] == "amount"
+                and _source_pointer(food[0]["source_original"], pointer) == row.get("amount")
                 and food[1]["source_kind"] == "sr_legacy_food" and definition[1]["source_kind"] == "nutrient"
                 and b.get("source_kind") == "sr_legacy_food" and b.get("numeric_context_status") == "qualified-source-reference"
                 and b.get("occurrence_id") == food[0]["occurrence_id"]

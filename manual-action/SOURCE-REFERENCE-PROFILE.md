@@ -27,7 +27,10 @@ The sole source occurrence must name only that resource, use the corresponding
 original object matching its content digest. The selected identifier assertion
 must match its own original JSON pointer, not another valid assertion. Food
 references additionally require their source `sr_legacy_food` type and a
-qualified native NDB string, retaining leading zeros. Missing evidence holds
+qualified native NDB string, retaining leading zeros. Both native `food.fdc_id`
+and `sr_legacy_food.fdc_id` must equal the selected own food ID. Identity claims
+must use their native ID, NDB and type fields rather than a same-valued alias.
+Missing evidence holds
 the affected resource; a label, shared citation or sibling cannot seed it. Full
 native descriptions and separate editorial English terms remain intact.
 Matching nouns do not merge raw/cooked or other source variants.
@@ -35,6 +38,10 @@ Matching nouns do not merge raw/cooked or other source variants.
 Each source resource, assertion and citation needs explicit `reuseScope` text
 in addition to public-source visibility. Independent qualification and the
 actual writer remain responsible for the exact permitted source purpose.
+Food assertions are limited to native FDC/NDB/type fields and numeric properties
+identified by a source nutrient-definition resource. Definition assertions are
+limited to native nutrient ID and unit. Other properties, including GTINs, remain
+held with their original payload; they cannot acquire reference-profile authority.
 
 ## Separate numeric context
 
@@ -52,7 +59,9 @@ with every observation held. Each numeric observation additionally requires:
   and exact dimensions. IU remains held.
 - A finite numeric value, excluding booleans and null, equal to the native
   amount lexeme, and the same documented 100 g mass basis in claim, context
-  and qualification. Comparable conversions are excluded.
+  and qualification. The full source pointer must select the row's actual
+  `amount` field and resolve to that lexeme; another field with the same value
+  cannot substitute. Comparable conversions are excluded.
 - Exact original row fields in context, a recognized source-method category,
   and the native derivation ID. Missing derivation remains explicitly unknown.
   Context states source reporting only, no independently verified assay and no
