@@ -76,7 +76,12 @@ evidence only; they do not have this new typed receipt shape.
   resource evidence, never manufactured mirrors of a claim.
 * `relations`: actual ID-keyed edge rows with payload/state/support closure. Exactly
   the claim's mentions, canonical_ingredient and represents path is compared by
-  payload SHA, predicate and source/mention/class/product endpoints. Relation IDs
+  payload SHA, predicate and logical source/mention/class/product resource endpoints.
+  Common `payload.subjectId`/`payload.objectId` use sourceOccurrence.recipeId and
+  mention/class/product.resourceId. They are never rewritten to physical Gold IDs.
+  Separate row fields `subjectEntityId` and `objectEntityId` must match the physical
+  endpoint rows, and mention/class/product physical endpoint IDs must independently
+  match their exact claim.entityId bindings. Relation IDs
   and citation IDs must agree with the exact claim.
 * `citations`: ID-keyed rows with actual `payload`, `state`, `allowedPurpose`.
   Exact claim citation SHA/visibility/license/attribution are compared. All used
@@ -87,6 +92,9 @@ evidence only; they do not have this new typed receipt shape.
   `kind` (`record`, `field`, `relationship`), verified `state`, `citationId`, and
   `valueSHA256`. Field supports also have a JSON `pointer` into that row's payload;
   other supports hash the full payload. `requiredSupportIds` equals the full set.
+  Resource endpoints permit only `record`/`field`; path relations and every canonical
+  declaration permit only `relationship`. Correct kind and target are mandatory for
+  every required support. A valid value hash cannot repair a wrong support role.
 * `canonicalGroup`: the complete set of declarations for this mention, including
   held/conditional siblings, with actual payload/state/support rows. The trusted
   caller must obtain that complete closure from existing qualified facts. A
@@ -119,6 +127,16 @@ The five actual proposal paths are unconditional; no product filter chooses a br
 for historical compatibility. A bad tuple does not invalidate independent healthy
 tuples. Malformed batch types, duplicate IDs or exceeded bounds return
 `outcome="rejected", results=[]`, with no positive partial batch output.
+
+Each qualified historical result also carries exact `claimSHA256`, `snapshot`,
+`review`, `custody`, `factsSHA256`, structured reviewed `constraints` and
+`sourceRestrictions`, and the exact claim's `sourcePins` (source occurrence,
+mention/class/product identities, citations and relations). These retain private
+purpose/variant restrictions as reviewed. The helper does not publish or redact
+private context; its already authorized caller must preserve operation-purpose and
+visibility restrictions when handling the result. All returned evidence, including
+restrictions, is subject to the same fail-closed262144-byte output limit. Held claims
+carry no accepted provenance assertion.
 
 Every v1 result always has `actualSelection="unobserved"`, `currentStateFit=null`,
 `actualRecipeComposition=null`, `productFitAcceptance=false`,

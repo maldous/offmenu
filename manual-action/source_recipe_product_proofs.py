@@ -190,7 +190,7 @@ def _index(rows):
     return out
 
 
-def _supports(row, citations, purpose):
+def _supports(row, citations, purpose, allowed_kinds):
     supports = row["supports"]
     _require(type(supports) is list and supports, "missing support")
     # Every caller-qualified required support is included in the custody-bound
@@ -202,7 +202,7 @@ def _supports(row, citations, purpose):
     for support in supports:
         _require(support["targetId"] == row["id"] and support["state"] == "verified",
                  "unsupported target")
-        _require(support["kind"] in ("record", "field", "relationship"), "support kind")
+        _require(support["kind"] in allowed_kinds, "support kind does not match row role")
         if support["kind"] == "field":
             actual = _pointer(row["payload"], support["pointer"])
         else:
@@ -234,6 +234,9 @@ def _closure(claim, facts, rules):
         row = endpoints[role]
         _require(row["state"] == "verified" and _same(row["binding"], claim[key]),
                  "endpoint state/binding mismatch")
+        _require(type(row["entityId"]) is str and row["entityId"] and
+                 (role == "source" or row["entityId"] == claim[key]["entityId"]),
+                 "physical endpoint binding mismatch")
         _require(row["resourceState"] == "verified" and
                  row["occurrenceState"] == "verified", "resource/occurrence held")
         _require(_digest(row["payloadSHA256"]) and
@@ -244,9 +247,14 @@ def _closure(claim, facts, rules):
         for field, expected in claim[key].items():
             _require(_same(_pointer(row["payload"], pointers[field]), expected),
                      "endpoint field value mismatch")
-        _supports(row, citations, purpose)
+        _supports(row, citations, purpose, ("record", "field"))
     relations = _index(facts["relations"])
     expected_edges = {
+        "mentions": (claim["sourceOccurrence"]["recipeId"], claim["mention"]["resourceId"]),
+        "canonical_ingredient": (claim["mention"]["resourceId"], claim["class"]["resourceId"]),
+        "represents": (claim["product"]["resourceId"], claim["class"]["resourceId"]),
+    }
+    physical_edges = {
         "mentions": (endpoints["source"]["entityId"], claim["mention"]["entityId"]),
         "canonical_ingredient": (claim["mention"]["entityId"], claim["class"]["entityId"]),
         "represents": (claim["product"]["entityId"], claim["class"]["entityId"]),
@@ -261,9 +269,11 @@ def _closure(claim, facts, rules):
         _require(row["payload"]["predicateId"] == edge["predicate"], "predicate mismatch")
         _require((row["payload"]["subjectId"], row["payload"]["objectId"]) ==
                  expected_edges[edge["predicate"]], "relation endpoint mismatch")
+        _require((row["subjectEntityId"], row["objectEntityId"]) ==
+                 physical_edges[edge["predicate"]], "physical relation endpoint mismatch")
         _require(set(edge["citationIds"]) == {s["citationId"] for s in row["supports"]},
                  "relation citation closure")
-        _supports(row, citations, purpose)
+        _supports(row, citations, purpose, ("relationship",))
     group = facts["canonicalGroup"]
     _require(type(group) is list and group, "missing complete canonical group")
     group_rows = _index(group)
@@ -277,13 +287,16 @@ def _closure(claim, facts, rules):
     payloads = []
     for row in group:
         payload = row["payload"]
-        _require(payload["subjectId"] == claim["mention"]["entityId"] and
+        _require(payload["subjectId"] == claim["mention"]["resourceId"] and
                  payload["predicateId"] == "canonical_ingredient", "foreign group endpoint")
+        _require(row["subjectEntityId"] == claim["mention"]["entityId"] and
+                 type(row["objectEntityId"]) is str and row["objectEntityId"],
+                 "physical group endpoint mismatch")
         _require(row["state"] in ("verified", "held"), "unknown declaration state")
-        _supports(row, citations, purpose)
+        _supports(row, citations, purpose, ("relationship",))
         payloads.append(payload)
     _require(rules.alternative_group_valid(payloads) is True, "invalid canonical group")
-    selected = [r for r in group if r["payload"]["objectId"] == claim["class"]["entityId"]]
+    selected = [r for r in group if r["payload"]["objectId"] == claim["class"]["resourceId"]]
     _require(len(selected) == 1 and selected[0]["state"] == "verified", "canonical target held")
     selected = selected[0]
     _require(selected["id"] in relations and selected == relations[selected["id"]],
@@ -323,6 +336,12 @@ def _assess(claim, ctx):
                             "disposition": "accepted"}), "custody mismatch")
     _require(type(facts["constraints"]) is dict and facts["constraints"], "missing constraints")
     _closure(claim, facts, ctx["rules"])
+    return {"claimSHA256": claim_sha, "snapshot": ctx["snapshot"],
+            "review": proof["review"], "custody": proof["custody"],
+            "factsSHA256": expected["factsSHA256"], "constraints": facts["constraints"],
+            "sourceRestrictions": facts["constraints"],
+            "sourcePins": {key: claim[key] for key in
+                ("sourceOccurrence", "mention", "class", "product", "sourceCitations", "relations")}}
 
 
 def assess(request, *, trusted_context):
@@ -380,7 +399,8 @@ def assess(request, *, trusted_context):
                                        "no mass inferred from volume/count or missing ingredients",
                                        "no actual composition authority in v1"]}
             try:
-                _assess(claim, ctx)
+                evidence = _assess(claim, ctx)
+                result.update(evidence)
                 result["historicalCompatibility"] = "qualified"
                 result["reason"] = "exact caller-qualified historical declaration only"
             except (Held, KeyError, IndexError, TypeError, ValueError) as exc:

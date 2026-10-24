@@ -26,9 +26,9 @@ def fixture(number=0):
              "sourceOccurrence": {"occurrenceId": "o" + suffix, "recipeId": "r" + suffix,
                  "mentionId": "m" + suffix, "sourceKey": "generated", "sourceVersion": "1",
                  "recordId": suffix, "contentSha256": "a" * 64},
-             "mention": {"entityId": "m" + suffix, "resourceId": "mr" + suffix},
-             "class": {"entityId": "c" + suffix, "resourceId": "cr" + suffix},
-             "product": {"entityId": "p" + suffix, "resourceId": "pr" + suffix},
+             "mention": {"entityId": "physical-m" + suffix, "resourceId": "m" + suffix},
+             "class": {"entityId": "physical-c" + suffix, "resourceId": "c" + suffix},
+             "product": {"entityId": "physical-p" + suffix, "resourceId": "p" + suffix},
              "sourceCitations": [{"id": citation["id"],
                  "payloadSHA256": m.canonical_sha256(citation["payload"]), **citation["payload"]}]}
     def row(id_, payload):
@@ -43,12 +43,17 @@ def fixture(number=0):
         endpoint = row(role, {"fixture": role + suffix, "binding": copy.deepcopy(claim[key])})
         endpoint.update(binding=copy.deepcopy(claim[key]), resourceState="verified",
                         occurrenceState="verified", payloadSHA256=m.canonical_sha256(endpoint["payload"]))
-        endpoint["entityId"] = "r" + suffix if role == "source" else claim[key]["entityId"]
+        endpoint["entityId"] = "physical-r" + suffix if role == "source" else claim[key]["entityId"]
         endpoint["bindingPointers"] = {k: "/binding/" + k for k in claim[key]}
         endpoints.append(endpoint)
     edges = [row("mentions" + suffix, {"subjectId": "r" + suffix, "predicateId": "mentions", "objectId": "m" + suffix}),
              row("canonical" + suffix, {"subjectId": "m" + suffix, "predicateId": "canonical_ingredient", "objectId": "c" + suffix}),
              row("represents" + suffix, {"subjectId": "p" + suffix, "predicateId": "represents", "objectId": "c" + suffix})]
+    for edge in edges:
+        edge["subjectEntityId"] = "physical-" + edge["payload"]["subjectId"]
+        edge["objectEntityId"] = "physical-" + edge["payload"]["objectId"]
+        for support in edge["supports"]:
+            support["kind"] = "relationship"
     claim["relations"] = [{"relationId": r["id"], "predicate": r["payload"]["predicateId"],
                            "payloadSHA256": m.canonical_sha256(r["payload"]),
                            "citationIds": [citation["id"]]} for r in edges]
@@ -289,6 +294,70 @@ class ProofTests(unittest.TestCase):
         with patch("builtins.open", side_effect=AssertionError("unexpected I/O")):
             self.assert_result(r, c, "qualified")
 
+    def test_r1_distinct_namespaces_and_independent_wrong_endpoint_failures(self):
+        r, c = fixture()
+        self.assert_result(r, c, "qualified")
+        for failure in ("logical-subject", "logical-object", "physical-subject", "physical-object",
+                        "physical-endpoint-binding", "group-physical-subject"):
+            with self.subTest(failure=failure):
+                r, c = fixture()
+                f = next(iter(c.facts.values()))
+                row = f["relations"][0]
+                if failure == "logical-subject": row["payload"]["subjectId"] = "foreign-logical"
+                elif failure == "logical-object": row["payload"]["objectId"] = "foreign-logical"
+                elif failure == "physical-subject": row["subjectEntityId"] = "foreign-physical"
+                elif failure == "physical-object": row["objectEntityId"] = "foreign-physical"
+                elif failure == "physical-endpoint-binding": f["endpoints"][1]["entityId"] = "foreign-physical"
+                elif failure == "group-physical-subject":
+                    f["canonicalGroup"][0]["subjectEntityId"] = "foreign-physical"
+                    f["groupQualification"]["groupSHA256"] = m.canonical_sha256(f["canonicalGroup"])
+                row["supports"][0]["valueSHA256"] = m.canonical_sha256(row["payload"])
+                f["claim"]["relations"][0]["payloadSHA256"] = m.canonical_sha256(row["payload"])
+                r["claims"][0]["claim"] = copy.deepcopy(f["claim"])
+                c = sign(replace(c, facts={m.canonical_sha256(f["claim"]): f}))
+                self.assert_result(r, c, "held")
+
+    def test_r2_support_roles_cannot_be_interchanged(self):
+        r, c = fixture()
+        endpoint = next(iter(c.facts.values()))["endpoints"][0]
+        endpoint["supports"][0].update(kind="field", pointer="/binding",
+                                      valueSHA256=m.canonical_sha256(endpoint["payload"]["binding"]))
+        self.assert_result(r, sign(c), "qualified")
+        for failure in ("relation-record", "relation-field", "endpoint-relationship", "declaration-record"):
+            with self.subTest(failure=failure):
+                r, c = fixture()
+                f = next(iter(c.facts.values()))
+                row = (f["endpoints"][0] if failure == "endpoint-relationship" else
+                       f["canonicalGroup"][0] if failure == "declaration-record" else f["relations"][0])
+                support = row["supports"][0]
+                support["kind"] = ("relationship" if failure == "endpoint-relationship" else
+                                   "field" if failure == "relation-field" else "record")
+                if failure == "relation-field":
+                    support.update(pointer="/predicateId", valueSHA256=m.canonical_sha256(row["payload"]["predicateId"]))
+                f["groupQualification"]["groupSHA256"] = m.canonical_sha256(f["canonicalGroup"])
+                self.assert_result(r, sign(c), "held")
+
+    def test_r3_qualified_output_retains_exact_audit_pins_and_constraints(self):
+        r, c = fixture()
+        f = next(iter(c.facts.values()))
+        f["constraints"]["privatePurpose"] = {"scope": "GENERATED_PRIVATE_EXACT_VARIANT_ONLY", "transfer": False}
+        c = sign(c)
+        out = self.assert_result(r, c, "qualified")["results"][0]
+        self.assertEqual(out["claimSHA256"], m.canonical_sha256(r["claims"][0]["claim"]))
+        for key in ("snapshot", "review", "custody", "constraints"):
+            expected = c.snapshot if key == "snapshot" else f["constraints"] if key == "constraints" else c.accepted[0][key]
+            self.assertEqual(out[key], expected)
+        self.assertEqual(out["factsSHA256"], m.canonical_sha256(f))
+        self.assertEqual(out["sourceRestrictions"], f["constraints"])
+        self.assertLess(len(json.dumps(out).encode()), m.MAX_OUTPUT_BYTES)
+        for key in ("sourceOccurrence", "mention", "class", "product", "sourceCitations", "relations"):
+            self.assertEqual(out["sourcePins"][key], r["claims"][0]["claim"][key])
+        # The qualified evidence must never escape the unchanged output cap.
+        f["constraints"]["largeReviewedRestriction"] = "x" * 132000
+        rejected = m.assess(r, trusted_context=sign(c))
+        self.assertEqual(rejected["outcome"], "rejected")
+        self.assertEqual(rejected["results"], [])
+
 
 def alternative(ctx, select=True, duplicate=False):
     f = copy.deepcopy(next(iter(ctx.facts.values())))
@@ -300,6 +369,7 @@ def alternative(ctx, select=True, duplicate=False):
     second = copy.deepcopy(first)
     second["id"] = "alternative"
     second["payload"]["objectId"] = "other-class"
+    second["objectEntityId"] = "physical-other-class"
     second["payload"]["condition"]["branchId"] = "a" if duplicate else "b"
     second["state"] = "held"  # Declaration retained; not a usable selected path.
     group.append(second)
