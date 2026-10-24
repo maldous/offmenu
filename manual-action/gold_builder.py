@@ -66,6 +66,20 @@ def _index(items, key):
     return out
 
 def build_gold_slice(packet, *, qualifications):
+    return _build_gold_slice(packet, qualifications=qualifications, recipe_source_only=False)
+
+
+def build_recipe_source_subset(packet, *, qualifications):
+    """Propose attributable recipe source facts without claiming an application chain.
+
+    This is a trusted caller choice, never a field supplied by a source packet.
+    Canonical identity, products, nutrition and private domains are excluded.
+    Structured actions and actual admission still require their own qualification.
+    """
+    return _build_gold_slice(packet, qualifications=qualifications, recipe_source_only=True)
+
+
+def _build_gold_slice(packet, *, qualifications, recipe_source_only):
     """Return deterministic proposed rows and explicit holds; never write a DB.
 
     Independent reviewers select qualifications; hashes bind those decisions, not
@@ -85,6 +99,15 @@ def build_gold_slice(packet, *, qualifications):
     common = packet["common"]
     if common.get("schemaVersion") != "offmenu-common/1":
         raise ValueError("common schema")
+    if recipe_source_only:
+        if packet.get("metrics") or packet.get("observations") or qualifications.get("comparisons"):
+            raise ValueError("recipe source subset excludes nutrition and comparisons")
+        if any(s.get("domain") not in {"recipes", "ingredients"} for s in packet.get("watermark", {}).get("domains", [])):
+            raise ValueError("recipe source subset domain")
+        if any(r.get("type") not in {"recipe", "ingredient-mention"} for r in common.get("resources", [])):
+            raise ValueError("recipe source subset excludes canonical identity and other entities")
+        if any(r.get("predicateId") != "mentions" for r in common.get("relations", [])):
+            raise ValueError("recipe source subset supports source mentions only")
     rows = {name: [] for name in TABLE_COLUMNS}
     def add(table, **row):
         if set(row) != set(TABLE_COLUMNS[table]):
@@ -104,7 +127,11 @@ def build_gold_slice(packet, *, qualifications):
         if not _pin(snap.get("manifest_sha256")) or not snap.get("snapshot_id") or not snap.get("committed_watermark"):
             raise ValueError("snapshot evidence")
     run_id = _uid(digest(packet), digest(qualifications))
-    add("gold_runs", run_id=run_id, packet_sha256=digest(packet), qualification_sha256=digest(qualifications), data_class=packet["data_class"], watermark_json=_json(water))
+    run_water = water
+    if recipe_source_only:
+        run_id = _uid("recipe-source-subset/1", digest(packet), digest(qualifications))
+        run_water = dict(water, admission_profile="recipe-source-subset/1")
+    add("gold_runs", run_id=run_id, packet_sha256=digest(packet), qualification_sha256=digest(qualifications), data_class=packet["data_class"], watermark_json=_json(run_water))
     citations = _index(common.get("citations", []), "id")
     for cid, citation in citations.items():
         if citation.get("scope", {}).get("visibility") != "public":
@@ -345,12 +372,23 @@ def build_gold_slice(packet, *, qualifications):
     represented |= {e["object_id"] for e in by_predicate.get("contains", []) if e["subject_id"] in products_with_nutrition}
     mapped_mentions = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", []) if e["object_id"] in represented}
     seeds = {e["subject_id"] for e in by_predicate.get("mentions", []) if e["object_id"] in mapped_mentions}
+    if recipe_source_only:
+        verified = {e["entity_id"] for e in rows["gold_entities"] if e["state"] == "verified"}
+        declared = {}
+        for edge in rows["gold_edges"]:
+            declared.setdefault(edge["subject_id"], []).append(edge)
+        # Every declared branch of a source recipe must qualify. An unsupported
+        # ingredient cannot disappear behind a sound sibling or a citation.
+        seeds = {subject for subject, edges in declared.items()
+                 if subject in verified and edges and all(e["state"] == "verified" and e["object_id"] in verified for e in edges)}
+        mapped_mentions = {e["object_id"] for e in usable_edges if e["subject_id"] in seeds}
     # Component membership cannot supply a mention's own required association.
     mentions_with_canonical = {e["subject_id"] for e in by_predicate.get("canonical_ingredient", [])}
     missing_associations = {}
     for entity in rows["gold_entities"]:
         if (entity["domain"], entity["entity_type"]) == ("ingredients", "ingredient-mention") and entity["entity_id"] not in mapped_mentions:
-            reason = ("missing own qualified canonical ingredient association"
+            reason = ("missing own qualified source recipe association" if recipe_source_only else
+                "missing own qualified canonical ingredient association"
                 if entity["entity_id"] not in mentions_with_canonical
                 else "own canonical ingredient lacks qualified product/nutrition association")
             missing_associations[entity["entity_id"]] = reason
@@ -411,6 +449,10 @@ def build_gold_slice(packet, *, qualifications):
     for table in rows:
         rows[table].sort(key=_json)
     result = dict(schema_version="offmenu.gold-proposal/1", status="proposal-not-admitted", slice_id=run_id, data_class=packet["data_class"], rows=rows, metrics={"domains": {d: sum(e["domain"] == d and e["state"] == "verified" for e in rows["gold_entities"]) for d in DOMAINS}, "holds": len(rows["gold_holds"]), "citations": {"total": len(citations), "usable": len(usable_citations), "held": len(citations) - len(usable_citations)}, "connectivity": {"core_chain_seeds": len(seeds), "reachable_entities": len(reachable), "held_islands": islands, "missing_required_associations": len(missing_associations), "unresolved_edges": sum(e["subject_id"] is None or e["object_id"] is None for e in rows["gold_edges"])}, "actual_gold_admitted": 0, "recall_coverage": "NOT_CHECKED"}, pins={"packet_sha256": digest(packet), "qualification_sha256": digest(qualifications)})
+    if recipe_source_only:
+        result["admission_profile"] = "recipe-source-subset/1"
+        result["metrics"]["connectivity"]["source_recipe_seeds"] = len(seeds)
+        result["metrics"]["connectivity"]["core_chain_seeds"] = 0
     if len(_json(result).encode()) > 8388608:
         raise ValueError("proposal exceeds 8 MiB")
     return copy.deepcopy(result)

@@ -66,6 +66,67 @@ def sqlite_proposal(proposal):
 
 
 class GoldBuilderTests(unittest.TestCase):
+    def source_subset(self):
+        packet, q = fixture()
+        packet['watermark']['domains'] = [x for x in packet['watermark']['domains'] if x['domain'] in ('recipes','ingredients')]
+        packet['common']['resources'] = [x for x in packet['common']['resources'] if x['id'] in ('recipe','mention')]
+        packet['occurrences'] = [x for x in packet['occurrences'] if x['resource_ids'][0] in ('recipe','mention')]
+        packet['common']['relations'] = [x for x in packet['common']['relations'] if x['id']=='mentions']
+        packet['common']['assertions'] = []; packet['observations'] = []; packet['metrics'] = []
+        q['packet_sha256'] = gold.digest(packet)
+        return packet, q
+
+    def test_source_subset_preserves_facts_without_claiming_application_chain(self):
+        p,q=self.source_subset()
+        default=gold.build_gold_slice(p,qualifications=q)
+        self.assertTrue(all(x['state']=='held' for x in default['rows']['gold_entities']))
+        result=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertEqual({'recipe','mention'},{x['resource_id'] for x in result['rows']['gold_entities'] if x['state']=='verified'})
+        self.assertEqual(1,len([x for x in result['rows']['gold_edges'] if x['state']=='verified']))
+        self.assertEqual('recipe-source-subset/1',result['admission_profile'])
+        self.assertNotEqual(default['slice_id'],result['slice_id'])
+        self.assertEqual('recipe-source-subset/1',json.loads(result['rows']['gold_runs'][0]['watermark_json'])['admission_profile'])
+        self.assertEqual(0,result['metrics']['connectivity']['core_chain_seeds'])
+        self.assertEqual(1,result['metrics']['connectivity']['source_recipe_seeds'])
+        self.assertEqual(0,result['metrics']['actual_gold_admitted'])
+        with sqlite_proposal(result) as db:self.assertEqual([],db.execute('PRAGMA foreign_key_check').fetchall())
+
+    def test_source_subset_still_requires_own_rights_english_and_relationship_support(self):
+        for failure in ('rights','english','relation'):
+            with self.subTest(failure=failure):
+                p,q=self.source_subset()
+                if failure=='rights':next(x for x in q['records'] if x['occurrence_id']=='mention-occ')['rights_state']='held'
+                elif failure=='english':next(x for x in p['common']['resources'] if x['id']=='mention')['names'][0]['language']='es'
+                else:q['supports']=[x for x in q['supports'] if x['target_kind']!='relation']
+                q['packet_sha256']=gold.digest(p)
+                r=gold.build_recipe_source_subset(p,qualifications=q)
+                self.assertTrue(all(x['state']=='held' for x in r['rows']['gold_entities']))
+                self.assertEqual(0,r['metrics']['connectivity']['source_recipe_seeds'])
+
+    def test_source_subset_rejects_full_network_inputs_and_private_data(self):
+        p,q=fixture()
+        with self.assertRaises(ValueError):gold.build_recipe_source_subset(p,qualifications=q)
+        p,q=self.source_subset();p['common']['resources'][0]['scope']={'visibility':'private','ownerId':'generated'}
+        q['packet_sha256']=gold.digest(p)
+        with self.assertRaises(ValueError):gold.build_recipe_source_subset(p,qualifications=q)
+        p,q=self.source_subset();p['common']['resources'][1]['type']='ingredient';q['packet_sha256']=gold.digest(p)
+        with self.assertRaises(ValueError):gold.build_recipe_source_subset(p,qualifications=q)
+
+    def test_source_subset_cannot_hide_an_unqualified_declared_branch(self):
+        p,q=self.source_subset();bad=copy.deepcopy(p['common']['resources'][1]);bad['id']='unsupported-mention'
+        bad['names'][0]['id']='unsupported-name';p['common']['resources'].append(bad)
+        p['common']['relations'].append({'id':'unsupported-edge','subjectId':'recipe','predicateId':'mentions','objectId':'unsupported-mention','citationIds':['cite'],'scope':PUBLIC})
+        q['packet_sha256']=gold.digest(p)
+        r=gold.build_recipe_source_subset(p,qualifications=q)
+        self.assertEqual(0,r['metrics']['connectivity']['source_recipe_seeds'])
+        self.assertTrue(all(x['state']=='held' for x in r['rows']['gold_entities']))
+
+    def test_source_data_cannot_select_subset_admission_profile(self):
+        p,q=self.source_subset();p['admission_profile']='recipe-source-subset/1';q['packet_sha256']=gold.digest(p)
+        result=gold.build_gold_slice(p,qualifications=q)
+        self.assertTrue(all(x['state']=='held' for x in result['rows']['gold_entities']))
+        self.assertNotIn('admission_profile',result)
+
     def test_joined_recipe_canonical_product_nutrition_many_citations(self):
         p,q=fixture(); result=build(p,q)
         with sqlite_proposal(result) as db:
