@@ -37,6 +37,14 @@ def fixture(db):
     CREATE TABLE gold_recipe_actions(run_id TEXT,sequence_index INTEGER,english_text TEXT,unknown_parameters_json TEXT,action_id TEXT,source_order INTEGER,original_text TEXT,evidence_json TEXT);
     CREATE TABLE gold_recipe_action_support(run_id TEXT,action_id TEXT,citation_id TEXT,evidence_json TEXT);
     CREATE TABLE gold_holds(hold_id TEXT,target_kind TEXT,target_id TEXT,reason TEXT);
+    CREATE TABLE gold_recipe_dependencies(run_id TEXT,action_id TEXT,depends_on TEXT,action_sequence INTEGER,dependency_sequence INTEGER);
+    CREATE TABLE gold_recipe_ingredients(run_id TEXT,action_id TEXT,slot_name TEXT,source_ingredient_line_id TEXT,ingredient_entity_id TEXT,allocation_json TEXT,evidence_json TEXT);
+    CREATE TABLE gold_recipe_ingredient_support(run_id TEXT,action_id TEXT,slot_name TEXT,citation_id TEXT,evidence_json TEXT);
+    CREATE TABLE gold_recipe_materials(run_id TEXT,material_id TEXT,producer_instance_id TEXT,producer_sequence INTEGER,source_label TEXT,evidence_json TEXT);
+    CREATE TABLE gold_recipe_material_support(run_id TEXT,material_id TEXT,citation_id TEXT,evidence_json TEXT);
+    CREATE TABLE gold_recipe_material_inputs(run_id TEXT,action_id TEXT,material_id TEXT,action_sequence INTEGER,producer_sequence INTEGER,evidence_json TEXT);
+    CREATE TABLE gold_recipe_material_input_support(run_id TEXT,action_id TEXT,material_id TEXT,citation_id TEXT,evidence_json TEXT);
+
     ''')
     name = 'Generated crème source recipe'
     resource = {'id': 'generated:source:recipe', 'names': [{'id': 'name:1', 'value': name, 'language': 'en', 'citationIds': ['source:citation'],
@@ -108,6 +116,21 @@ class GeneratedMenuTests(unittest.TestCase):
         self.assertFalse(result['actualUserSelection'])
         self.assertFalse(result['mealSuitabilityQualified'])
         self.assertFalse(result['automaticPlanning'])
+
+    def test_selected_graph_is_projected_and_charged_to_existing_row_budget(self):
+        self.edit('INSERT INTO gold_recipe_dependencies VALUES(?,?,?,?,?)',
+                  (RUN, 'action:1', 'action:0', 1, 0))
+        self.edit('INSERT INTO gold_recipe_materials VALUES(?,?,?,?,?,?)',
+                  (RUN, 'generated:material', 'action:0', 0, 'generated label', '[]'))
+        result = self.resolve()
+        graph = result['members'][0]['native']['graph']
+        self.assertEqual(graph['dependencies'][0]['depends_on'], 'action:0')
+        self.assertEqual(graph['materials'][0]['source_label'], 'generated label')
+        self.assertEqual(set(graph), {'dependencies', 'ingredients', 'ingredientSupport',
+                                     'materials', 'materialSupport', 'materialInputs', 'materialInputSupport'})
+        # Extra native graph rows consume the same per-call row allowance.
+        with self.assertRaises(GeneratedMenuError):
+            self.resolve(max_rows=result['limits']['rowsRead'] - 1)
 
     def test_source_menu_or_user_choice_cannot_be_requested(self):
         for key, value in [('origin', 'SOURCE_MENU'), ('selectionOrigin', 'USER_SELECTED')]:
