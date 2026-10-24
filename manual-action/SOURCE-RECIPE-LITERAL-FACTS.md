@@ -180,8 +180,14 @@ python3 -B -m unittest discover -s manual-action/tests -p test_source_recipe_lit
 ```
 
 The original eighteen groups use seven retained source shapes with original artifact SHA anchors.
-Two focused regression groups add multiplication/exponent fragments and Unicode
-whole-word boundaries, preserving ordinary integer/fraction/range/word positives.
+Focused regression groups cover multiplication/exponent fragments and Unicode
+whole-word boundaries. All ASCII multiplication/exponent operators (`*`, `x`, `X`,
+`e`, `E`) share the same bounded adjacent-operand check on both sides, including
+interleaved signs, whitespace and wrappers. A leading `*` without a numeric left
+operand remains a bullet. Clipped and full unsupported expressions reject without
+arithmetic or rewriting source text; ordinary integer/fraction/range/word
+positives remain supported. Operand-edge inspection is capped at128 UTF-8 bytes;
+ambiguous over-budget prefixes reject atomically.
 Generated wrappers/review contexts test fidelity and guards; they are not actual
 corpus calls or historical approvals. Exact independent code/generated review and00
 integration precede separately qualified real retained processing. The completed

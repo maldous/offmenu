@@ -474,5 +474,48 @@ class LiteralFactsTests(unittest.TestCase):
         self.rejected(r, c)
 
 
+    def test_22_expression_operands_share_boundaries_and_preserve_bullets(self):
+        # Both operands and the full unsupported expression must stay unqualified.
+        for operator in ("*", "x", "X", "e", "E"):
+            for left, right, spacing in [
+                ("2", "3", ""), ("(2)", "(3)", " "),
+                ("“2”", '"3"', ""), ("2", "-3", " "),
+                ("(-2)", "(+3)", " "), ("[+2]", "{−3}", ""),
+                ("((−(2)))", "((+ (−3)))", " "),
+            ]:
+                expression = left + spacing + operator + spacing + right
+                text = "* " + expression + " cups grains"
+                for value in ("2", "3", expression):
+                    with self.subTest(operator=operator, expression=expression, selected=value):
+                        r, c = boundary_fixture(text, value, "cups")
+                        self.rejected(r, c)
+        # Existing immediate operator guards also reject clipped/full expressions.
+        for operator in ("/", "⁄", "∕", "+", "−", "×", "÷", "^", "–"):
+            expression = "(2) " + operator + " (3)"
+            for value in ("2", "3", expression):
+                with self.subTest(operator=operator, selected=value):
+                    r, c = boundary_fixture("* " + expression + " cups grains", value, "cups")
+                    self.rejected(r, c)
+        for operator in ("*", "x", "X", "e", "E"):
+            for text, value in [("* 2" + operator + "(" * 129 + "3 cups grains", "2"),
+                                ("* 2" + ")" * 129 + operator + "3 cups grains", "3")]:
+                with self.subTest(over_budget=text, selected=value):
+                    r, c = boundary_fixture(text, value, "cups")
+                    self.rejected(r, c)
+        for text, value, unit, form in [
+            ("* 2 cups grains", "2", "cups", "integer"),
+            ("* (2) cups grains", "2", "cups", "integer"),
+            ("* ‘2’ cups grains", "2", "cups", "integer"),
+            ("* 250ml water", "250", "ml", "integer"),
+            ("* 2 xylitol portions", "2", "xylitol", "integer"),
+            ("* 2 espresso cups", "2", "espresso cups", "integer"),
+            ("* ½ cup water", "½", "cup", "fraction"),
+            ("* 1–2 shots coffee", "1–2", "shots", "range"),
+        ]:
+            with self.subTest(bullet_positive=text):
+                r, c = boundary_fixture(text, value, unit, form)
+                self.ok(r, c)
+
+
 if __name__ == "__main__":
     unittest.main()

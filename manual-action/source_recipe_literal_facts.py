@@ -236,25 +236,25 @@ def _numeric_boundary(span, source):
                        and unicodedata.category(after[0]) != "Pd"), "partial numeric suffix")
     _need(not re.search(r"\d\s+to\s*$", before, re.I)
           and not re.match(r"to\s+\d", after, re.I), "partial numeric range")
-    _need(not re.search(r"\d\s*\*\s*$", before)
-          and not re.match(r"\*\s*\d", after), "partial numeric multiplication")
-    if before and before[-1] in "xXeE":
-        operand = before[:-1].rstrip()
-        while operand and (unicodedata.category(operand[-1]) in ("Pe", "Pf") or operand[-1] in "\"'"):
-            operand = operand[:-1].rstrip()
-        _need(not operand or unicodedata.category(operand[-1])[0] != "N", "partial numeric expression operand")
-    if after and after[0] in "xXeE":
-        operand, position, prefix_bytes = after[1:], 0, 0
-        while position < len(operand):
-            character = operand[position]
+    def adjacent_operand_is_numeric(text, *, reverse=False):
+        # Inspect a bounded operand edge, never evaluate or rewrite an expression.
+        # The same signs/wrappers apply on either side of every ASCII operator.
+        characters = reversed(text) if reverse else iter(text)
+        prefix_bytes = 0
+        for character in characters:
             if not (character.isspace() or character in "+-−﹣－＋﹢±\"'"
                     or unicodedata.category(character) in ("Ps", "Pe", "Pi", "Pf")):
-                break
+                return unicodedata.category(character)[0] == "N"
             prefix_bytes += len(character.encode("utf-8"))
             _need(prefix_bytes <= MAX_AMOUNT_BYTES, "numeric operand prefix limit")
-            position += 1
-        _need(position == len(operand) or unicodedata.category(operand[position])[0] != "N",
-              "partial numeric expression operand")
+        return False
+
+    # A leading '*' with no numeric left operand remains an ingredient bullet.
+    if before and before[-1] in "*xXeE":
+        _need(not adjacent_operand_is_numeric(before[:-1], reverse=True),
+              "partial numeric expression operand (multiplication/exponent)")
+    if after and after[0] in "*xXeE":
+        _need(not adjacent_operand_is_numeric(after[1:]), "partial numeric expression operand (multiplication/exponent)")
 
 
 def _word_count_boundary(span, source):
