@@ -459,6 +459,20 @@ class LiteralFactsTests(unittest.TestCase):
                 r, c = boundary_fixture(text, value, "cup", "word-count")
                 self.ok(r, c)
 
+    def test_21_signed_wrapped_operand_prefixes_are_not_quantities(self):
+        operands = ["-3", "+3", "(-3)", "(+3)", "(−3)", "[−3]", "{ +3 }",
+                    "“(-3)”", "-(3)", "( - (3))", '"+3"', "((+ (−3)))"]
+        for operator in ("x", "X", "e", "E"):
+            for operand in operands:
+                value = "2" if operator in "xX" else "1"
+                text = "* " + value + operator + operand + " cups grains"
+                with self.subTest(operator=operator, operand=operand):
+                    r, c = boundary_fixture(text, value, "cups")
+                    self.rejected(r, c)
+        text = "* 1e" + "(" * 129 + "-3" + ")" * 129 + " cups grains"
+        r, c = boundary_fixture(text, "1", "cups")
+        self.rejected(r, c)
+
 
 if __name__ == "__main__":
     unittest.main()

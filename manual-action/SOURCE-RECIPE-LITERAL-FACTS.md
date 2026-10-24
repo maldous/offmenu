@@ -88,6 +88,10 @@ numeric signs/fractions/ranges/multiplication fail closed.
 ASCII `x`/`X` multiplication and `e`/`E` exponent joins also reject partial operands,
 including parenthesized operands and signed exponents. Caret expressions remain
 unsupported. These guards never evaluate an expression or rewrite its source.
+Right-operand lookahead consumes interleaved whitespace, signs and wrappers in one
+finite walk for both product and exponent markers. It stops at128 prefix UTF8 bytes;
+longer ambiguous prefixes reject atomically. A sign inside a wrapper or after x
+cannot expose an incomplete leading quantity as a qualified fact.
 Unrelated unit words beginning with x/e and compact numeric units remain supported.
 
 Word-count `one` must be a whole source token. Adjacent Unicode letters, combining

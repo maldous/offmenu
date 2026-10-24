@@ -244,12 +244,17 @@ def _numeric_boundary(span, source):
             operand = operand[:-1].rstrip()
         _need(not operand or unicodedata.category(operand[-1])[0] != "N", "partial numeric expression operand")
     if after and after[0] in "xXeE":
-        operand = after[1:].lstrip()
-        if after[0] in "eE" and operand and operand[0] in "+-−﹣－＋﹢":
-            operand = operand[1:].lstrip()
-        while operand and (unicodedata.category(operand[0]) in ("Ps", "Pi") or operand[0] in "\"'"):
-            operand = operand[1:].lstrip()
-        _need(not operand or unicodedata.category(operand[0])[0] != "N", "partial numeric expression operand")
+        operand, position, prefix_bytes = after[1:], 0, 0
+        while position < len(operand):
+            character = operand[position]
+            if not (character.isspace() or character in "+-−﹣－＋﹢±\"'"
+                    or unicodedata.category(character) in ("Ps", "Pe", "Pi", "Pf")):
+                break
+            prefix_bytes += len(character.encode("utf-8"))
+            _need(prefix_bytes <= MAX_AMOUNT_BYTES, "numeric operand prefix limit")
+            position += 1
+        _need(position == len(operand) or unicodedata.category(operand[position])[0] != "N",
+              "partial numeric expression operand")
 
 
 def _word_count_boundary(span, source):
