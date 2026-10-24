@@ -29,6 +29,16 @@ instructions, native unknown parameters and scope holds. Source records and
 individual recipe citations remain separate. There is no generated menu source
 citation, user-choice assertion, meal-suitability judgment or combined nutrition.
 
+Each `nameRecords[]` entry preserves the original `sourceName`, complete Gold
+`textRecord` (including original text, language and raw evidence), parsed
+`evidence`, the name's own citations/rights and field/translation support records.
+A qualified name's citations also appear in the member citation collection, even
+when different from the resource/occurrence citations. `englishNames` contains
+only qualified display names. Missing/invalid name support or cited rights marks
+that name `held` with explicit `holdReasons`; valid names and member siblings
+remain available. No fallback citation or translation evidence is invented. This
+projects the selected admitted records; it does not grant new source authority.
+
 For the barcode consumer, pass each desired `paths[].recipeEntityId` as a member
 reference after its admitted barcode traversal; select any native run explicitly.
 This module resolves membership, not barcode eligibility or product selection.

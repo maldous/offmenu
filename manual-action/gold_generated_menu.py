@@ -148,13 +148,6 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
             _require(payload.get('id') == entity['resource_id'], 'recipe-resource-binding')
             texts = query("SELECT * FROM gold_texts WHERE entity_id=? AND state='verified' ORDER BY text_id", (eid,))
             names = {x.get('id'): x for x in payload.get('names', []) if type(x) is dict}
-            english = []
-            for text in texts:
-                name = names.get(text['source_text_id'], {})
-                if (name.get('value') == text['original_text']
-                        and name.get('sourceTextSha256') == hashlib.sha256(text['original_text'].encode()).hexdigest()
-                        and type(text['english_text']) is str and text['english_text'].strip()):
-                    english.append(text['english_text'])
             origins = query('SELECT o.* FROM gold_occurrences o JOIN gold_entity_occurrences x '
                             'ON x.occurrence_id=o.occurrence_id WHERE x.entity_id=? ORDER BY o.occurrence_id', (eid,))
             _require(origins and all(x['state'] == 'verified' for x in origins), 'recipe-source-occurrence-required')
@@ -176,6 +169,65 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                 value = json.loads(cite[0]['payload_json'])
                 _require(value.get('id') == cid, 'recipe-citation-binding')
                 citations.append(value)
+            # A name can be qualified by a citation distinct from its resource.
+            # Preserve that text's complete provenance, not only its display string.
+            citation_cache = {c['id']: c for c in citations}
+            english, name_records = [], []
+            for text in texts:
+                name = names.get(text['source_text_id'], {})
+                reasons, name_citations, support_records = [], [], []
+                if not (type(text['original_text']) is str
+                        and name.get('value') == text['original_text']
+                        and name.get('sourceTextSha256') == hashlib.sha256(text['original_text'].encode()).hexdigest()
+                        and type(text.get('language')) is str and text['language']
+                        and name.get('language') == text['language']
+                        and type(text['english_text']) is str and text['english_text'].strip()):
+                    reasons.append('name-text-binding-unqualified')
+                try:
+                    evidence = json.loads(text['evidence_json']) if text.get('evidence_json') is not None else None
+                except (ValueError, TypeError):
+                    evidence = None
+                    reasons.append('name-evidence-invalid')
+                cids = name.get('citationIds')
+                if not (type(cids) is list and 1 <= len(cids) <= 64
+                        and all(type(cid) is str and cid for cid in cids)
+                        and len(set(cids)) == len(cids)):
+                    reasons.append('name-citation-ids-unqualified')
+                    cids = []
+                for cid in cids:
+                    if cid not in citation_cache:
+                        rows = query('SELECT payload_json FROM gold_citations WHERE citation_id=?', (cid,))
+                        try:
+                            citation_cache[cid] = json.loads(rows[0]['payload_json']) if len(rows) == 1 else None
+                        except (ValueError, TypeError):
+                            citation_cache[cid] = None
+                    citation = citation_cache[cid]
+                    if type(citation) is not dict or citation.get('id') != cid:
+                        reasons.append('name-citation-missing-or-invalid')
+                    elif not all(type(citation.get(k)) is str and citation[k].strip()
+                                 for k in ['license', 'attribution']):
+                        reasons.append('name-citation-rights-unknown')
+                    else:
+                        name_citations.append(citation)
+                    supports = query('SELECT * FROM gold_support WHERE target_kind=\'text\' '
+                                     'AND target_id=? AND citation_id=? '
+                                     "AND support_scope IN ('field','translation')", (text['source_text_id'], cid))
+                    valid = [s for s in supports if _sha(s['evidence_sha256'])]
+                    if not valid:
+                        reasons.append('name-support-missing-or-invalid')
+                    support_records.extend(valid)
+                status = 'held' if reasons else 'qualified'
+                name_records.append({'status': status, 'holdReasons': sorted(set(reasons)),
+                    'sourceName': name, 'textRecord': text, 'evidence': evidence,
+                    'citations': name_citations, 'supportRecords': support_records})
+                if status == 'qualified':
+                    english.append(text['english_text'])
+                    existing = {c['id'] for c in citations}
+                    for citation in name_citations:
+                        if citation['id'] not in existing:
+                            citations.append(citation)
+                            existing.add(citation['id'])
+                    _require(len(citations) <= 64, 'recipe-citation-limit')
             runs = query('SELECT * FROM gold_recipe_runs WHERE recipe_entity_id=? ORDER BY run_id', (eid,))
             selected = next((x for x in runs if x['run_id'] == member.get('nativeRunId')), None)
             _require('nativeRunId' not in member or selected is not None, 'missing-or-foreign-native-run')
@@ -196,6 +248,7 @@ def read_generated_menu(db, group, *, database_sha256, admission_sha256,
                           (eid, entity['resource_id'], member.get('nativeRunId', '')))
             out['members'].append({'recipeEntityId': eid, 'recipeResourceId': entity['resource_id'],
                 'englishNames': english, 'englishNameState': 'present' if english else 'unknown',
+                'nameRecords': name_records,
                 'instructions': instructions, 'instructionState': 'selected-native-run' if native else 'unknown-no-run-selected',
                 'native': native, 'availableNativeRunIds': [x['run_id'] for x in runs],
                 'sourceRecords': source_records, 'citations': citations,

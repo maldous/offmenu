@@ -28,7 +28,8 @@ def group():
 def fixture(db):
     db.executescript('''
     CREATE TABLE gold_entities(entity_id TEXT PRIMARY KEY,resource_id TEXT,domain TEXT,entity_type TEXT,state TEXT,payload_json TEXT);
-    CREATE TABLE gold_texts(text_id TEXT,source_text_id TEXT,entity_id TEXT,state TEXT,original_text TEXT,english_text TEXT);
+    CREATE TABLE gold_texts(text_id TEXT,source_text_id TEXT,entity_id TEXT,state TEXT,original_text TEXT,english_text TEXT,language TEXT,evidence_json TEXT);
+    CREATE TABLE gold_support(support_id TEXT,target_kind TEXT,target_id TEXT,citation_id TEXT,support_scope TEXT,evidence_sha256 TEXT);
     CREATE TABLE gold_occurrences(occurrence_id TEXT,source_key TEXT,source_version TEXT,record_id TEXT,content_sha256 TEXT,normalized_artifact_sha256 TEXT,state TEXT,payload_json TEXT);
     CREATE TABLE gold_entity_occurrences(entity_id TEXT,occurrence_id TEXT);
     CREATE TABLE gold_citations(citation_id TEXT,payload_json TEXT);
@@ -37,12 +38,13 @@ def fixture(db):
     CREATE TABLE gold_holds(hold_id TEXT,target_kind TEXT,target_id TEXT,reason TEXT);
     ''')
     name = 'Generated crème source recipe'
-    resource = {'id': 'generated:source:recipe', 'names': [{'id': 'name:1', 'value': name,
+    resource = {'id': 'generated:source:recipe', 'names': [{'id': 'name:1', 'value': name, 'language': 'en', 'citationIds': ['source:citation'],
                 'sourceTextSha256': hashlib.sha256(name.encode()).hexdigest()}],
                 'citationIds': ['source:citation'], 'scope': {'visibility': 'local-restricted', 'reuseScope': 'Private attributed source only'}}
     db.execute('INSERT INTO gold_entities VALUES(?,?,?,?,?,?)',
                (EID, resource['id'], 'recipes', 'recipe', 'verified', json.dumps(resource)))
-    db.execute('INSERT INTO gold_texts VALUES(?,?,?,?,?,?)', ('text:1', 'name:1', EID, 'verified', name, name))
+    db.execute('INSERT INTO gold_texts VALUES(?,?,?,?,?,?,?,?)', ('text:1', 'name:1', EID, 'verified', name, name, 'en', 'null'))
+    db.execute('INSERT INTO gold_support VALUES(?,?,?,?,?,?)', ('support:name:1', 'text', 'name:1', 'source:citation', 'field', 'a' * 64))
     original = {'kind': 'recipe', 'data': {'directions': ['Original source alternatives retained.']},
                 'provenance': {'sourceId': 'generated-test', 'revisionId': 7}}
     occurrence = {'resource_ids': [resource['id']], 'citation_ids': ['source:citation'], 'source_original': original}
@@ -50,7 +52,7 @@ def fixture(db):
                ('occ:1', 'generated-test', 'revision:7', 'source:1', 'd' * 64, 'e' * 64, 'verified', json.dumps(occurrence)))
     db.execute('INSERT INTO gold_entity_occurrences VALUES(?,?)', (EID, 'occ:1'))
     db.execute('INSERT INTO gold_citations VALUES(?,?)', ('source:citation', json.dumps(
-        {'id': 'source:citation', 'sourceId': 'generated-test', 'revisionId': 7, 'attribution': 'Generated source author',
+        {'id': 'source:citation', 'sourceId': 'generated-test', 'revisionId': 7, 'attribution': 'Generated source author', 'license': 'Generated fixture license',
          'scope': {'visibility': 'local-restricted'}})))
     db.execute('INSERT INTO gold_recipe_runs VALUES(?,?,?,?,?,?)', (RUN, EID, 'occ:1', 'en', 'ready-for-review', 'not-assigned'))
     db.executemany('INSERT INTO gold_recipe_actions VALUES(?,?,?,?)', [
@@ -178,6 +180,108 @@ class GeneratedMenuTests(unittest.TestCase):
         value_group = group(); value_group['title'] = 'x' * 70000
         with self.assertRaisesRegex(GeneratedMenuError, 'group-byte-limit'):
             self.resolve(value_group)
+
+    def distinct_name(self, *, translated=False):
+        self.db.execute('PRAGMA query_only=OFF')
+        payload = json.loads(self.db.execute('SELECT payload_json FROM gold_entities WHERE entity_id=?', (EID,)).fetchone()[0])
+        original = 'Recette de crème' if translated else 'Generated crème source recipe'
+        english = 'Cream recipe' if translated else original
+        name = payload['names'][0]
+        name.update(value=original, language='fr' if translated else 'en', citationIds=['name:separate'],
+                    sourceTextSha256=hashlib.sha256(original.encode()).hexdigest())
+        self.db.execute('UPDATE gold_entities SET payload_json=? WHERE entity_id=?', (json.dumps(payload), EID))
+        evidence = {'kind': 'generated-translation-evidence', 'sourceLanguage': 'fr', 'targetLanguage': 'en'} if translated else None
+        self.db.execute('UPDATE gold_texts SET original_text=?,english_text=?,language=?,evidence_json=? WHERE entity_id=?',
+                        (original, english, name['language'], json.dumps(evidence), EID))
+        self.db.execute('UPDATE gold_support SET citation_id=? WHERE target_id=?', ('name:separate', 'name:1'))
+        citation = {'id': 'name:separate', 'license': 'Independent name license', 'attribution': 'Independent name author',
+                    'scope': {'visibility': 'local-restricted'}}
+        self.db.execute('INSERT INTO gold_citations VALUES(?,?)', ('name:separate', json.dumps(citation)))
+        self.db.commit(); self.db.execute('PRAGMA query_only=ON')
+        return original, english, evidence, citation
+
+    def test_name_provenance_distinct_citation_and_original_text_retained(self):
+        original, english, evidence, citation = self.distinct_name()
+        member = self.resolve()['members'][0]
+        self.assertEqual(member['englishNames'], [english])
+        self.assertIn(citation, member['citations'])
+        record = member['nameRecords'][0]
+        self.assertEqual(record['status'], 'qualified')
+        self.assertEqual(record['textRecord']['original_text'], original)
+        self.assertEqual(record['textRecord']['language'], 'en')
+        self.assertIsNone(record['evidence'])
+        self.assertEqual(record['sourceName']['citationIds'], ['name:separate'])
+        self.assertEqual(record['citations'], [citation])
+        self.assertEqual(record['supportRecords'][0]['target_id'], 'name:1')
+
+    def test_name_provenance_translated_text_keeps_original_language_and_evidence(self):
+        original, english, evidence, citation = self.distinct_name(translated=True)
+        member = self.resolve()['members'][0]
+        self.assertEqual(member['englishNames'], [english])
+        record = member['nameRecords'][0]
+        self.assertEqual(record['textRecord']['original_text'], original)
+        self.assertEqual(record['textRecord']['language'], 'fr')
+        self.assertEqual(record['evidence'], evidence)
+        self.assertEqual(json.loads(record['textRecord']['evidence_json']), evidence)
+        self.assertEqual(record['citations'], [citation])
+
+    def test_name_provenance_missing_name_citation_holds_only_that_name(self):
+        self.distinct_name()
+        self.edit('DELETE FROM gold_citations WHERE citation_id=?', ('name:separate',))
+        member = self.resolve()['members'][0]
+        self.assertEqual(member['englishNames'], [])
+        self.assertEqual(member['englishNameState'], 'unknown')
+        self.assertEqual(member['nameRecords'][0]['status'], 'held')
+        self.assertTrue(member['nameRecords'][0]['holdReasons'])
+        self.assertTrue(member['instructions'])
+
+    def test_name_provenance_missing_or_invalid_support_is_explicitly_held(self):
+        self.distinct_name()
+        for update, values in [
+            ('UPDATE gold_support SET evidence_sha256=?', ('invalid',)),
+            ('UPDATE gold_support SET evidence_sha256=?,support_scope=?', ('a' * 64, 'record')),
+            ('UPDATE gold_support SET support_scope=?,target_id=?', ('field', 'foreign:text')),
+            ('DELETE FROM gold_support', ())]:
+            with self.subTest(update=update):
+                self.edit(update, values)
+                member = self.resolve()['members'][0]
+                self.assertEqual(member['englishNames'], [])
+                self.assertEqual(member['nameRecords'][0]['status'], 'held')
+                self.assertIn('name-support-missing-or-invalid', member['nameRecords'][0]['holdReasons'])
+
+    def test_name_provenance_unknown_rights_holds_name(self):
+        self.distinct_name()
+        self.edit('UPDATE gold_citations SET payload_json=? WHERE citation_id=?',
+                  (json.dumps({'id': 'name:separate', 'attribution': 'Author, no license supplied'}), 'name:separate'))
+        member = self.resolve()['members'][0]
+        self.assertEqual(member['englishNames'], [])
+        self.assertIn('name-citation-rights-unknown', member['nameRecords'][0]['holdReasons'])
+
+    def test_name_provenance_bad_name_does_not_drop_valid_member_sibling(self):
+        self.distinct_name()
+        self.db.execute('PRAGMA query_only=OFF')
+        payload = json.loads(self.db.execute('SELECT payload_json FROM gold_entities WHERE entity_id=?', (EID,)).fetchone()[0])
+        payload['id'] = 'generated:second:recipe'
+        payload['names'][0].update(id='name:second', citationIds=['source:citation'])
+        self.db.execute('INSERT INTO gold_entities VALUES(?,?,?,?,?,?)',
+                        (OTHER, payload['id'], 'recipes', 'recipe', 'verified', json.dumps(payload)))
+        self.db.execute('INSERT INTO gold_texts SELECT ?,?, ?,state,original_text,english_text,language,evidence_json FROM gold_texts WHERE entity_id=?',
+                        ('text:second', 'name:second', OTHER, EID))
+        occurrence = json.loads(self.db.execute('SELECT payload_json FROM gold_occurrences WHERE occurrence_id=?', ('occ:1',)).fetchone()[0])
+        occurrence['resource_ids'] = [payload['id']]
+        self.db.execute('INSERT INTO gold_occurrences SELECT ?,source_key,source_version,record_id,content_sha256,normalized_artifact_sha256,state,? FROM gold_occurrences WHERE occurrence_id=?',
+                        ('occ:second', json.dumps(occurrence), 'occ:1'))
+        self.db.execute('INSERT INTO gold_entity_occurrences VALUES(?,?)', (OTHER, 'occ:second'))
+        self.db.execute('INSERT INTO gold_support VALUES(?,?,?,?,?,?)',
+                        ('support:second', 'text', 'name:second', 'source:citation', 'field', 'a' * 64))
+        self.db.execute('DELETE FROM gold_support WHERE target_id=?', ('name:1',))
+        self.db.commit(); self.db.execute('PRAGMA query_only=ON')
+        request = group(); request['members'].append({'recipeEntityId': OTHER})
+        result = self.resolve(request)
+        self.assertEqual(len(result['members']), 2)
+        self.assertEqual(result['members'][0]['englishNameState'], 'unknown')
+        self.assertTrue(result['members'][1]['englishNames'])
+        self.assertEqual(result['members'][1]['nameRecords'][0]['status'], 'qualified')
 
     def test_selected_snapshot_wrapper_checks_bytes_and_no_sidecars(self):
         with tempfile.TemporaryDirectory(prefix='generated-menu-test-') as directory:
