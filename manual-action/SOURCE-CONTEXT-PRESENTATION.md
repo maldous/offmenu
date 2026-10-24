@@ -36,7 +36,13 @@ not an acceptance API for untrusted records or a replacement for the verified
 reader and independent source/written-data reviews.
 
 The result has schema `offmenu.source-context-presentation/1` and
-`textFormat: "plain"`. Each member preserves its run/entity/occurrence binding,
+`textFormat: "plain"`. It preserves the complete original `admissionLimits`
+object alongside `snapshot`, including unknown purpose, rights and restriction
+fields, without interpreting them as new authority. The same fixed whole-output
+limit applies to these fields; preserving them never permits truncation or a
+larger cap. The returned object is detached from the input.
+
+Each member preserves its run/entity/occurrence binding,
 full source provenance and existing remaining holds, with ordered `events`:
 
 - `source-context`: the complete original field, original Unicode span,
@@ -44,7 +50,9 @@ full source provenance and existing remaining holds, with ordered `events`:
 - `source-caution`: the complete original line (optionally excluding a leading
   `* `, `# ` or `- ` marker), with an exact `beforeActionId` and sequence.
 - `instruction`: the existing qualified English text, action/sequence,
-  evidence, full citations and unchanged unknown parameters.
+  evidence, full citations and unchanged unknown parameters. Both the action's
+  `run_id` and its matching `actionRecord.run_id` must equal the selected native
+  run; matching foreign rows or selected-run supports alone are insufficient.
 
 Whole branch/note contexts appear before that member's instructions. A caution
 appears exactly once, immediately before its bound instruction. The current

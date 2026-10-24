@@ -196,6 +196,9 @@ def _instruction_events(member, run, provenance, citations):
           'instruction-display-mismatch')
     events = []
     for action, record in zip(actions, records):
+        _need(action.get('run_id') == run['run_id']
+              and record.get('actionRecord', {}).get('run_id') == run['run_id'],
+              'instruction-run-binding')
         _need(record.get('status') == 'qualified' and record.get('holdReasons') == []
               and record.get('actionRecord') == action, 'instruction-provenance')
         _text(action['action_id']); _text(action['english_text'])
@@ -385,7 +388,8 @@ def build_source_context_presentation(menu_result, *, expected_snapshot, require
               'explicit-run-set-mismatch')
         _need(len({m['recipeEntityId'] for m in members}) == len(members), 'duplicate-recipe')
         result = {'schemaVersion': SCHEMA_VERSION, 'textFormat': 'plain',
-                  'snapshot': expected_snapshot, 'origin': 'APPLICATION_CREATED', 'selectionOrigin': 'GENERATED',
+                  'snapshot': expected_snapshot, 'admissionLimits': menu_result['admissionLimits'],
+                  'origin': 'APPLICATION_CREATED', 'selectionOrigin': 'GENERATED',
                   'sourceMenuEvidence': None, 'actualUserSelection': False, 'combinedNutrition': None,
                   'nutritionTotals': None, 'automaticPlanning': False, 'physicalCookingObserved': False,
                   'completeCookingPlan': False,

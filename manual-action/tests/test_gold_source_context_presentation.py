@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from gold_source_context_presentation import (
-    MAX_HOLD_REASON_BYTES, MAX_INPUT_BYTES, MAX_INSTRUCTIONS, MAX_JSON_NODES,
+    MAX_HOLD_REASON_BYTES, MAX_INPUT_BYTES, MAX_INSTRUCTIONS, MAX_JSON_NODES, MAX_OUTPUT_BYTES,
     SourceContextPresentationError, build_source_context_presentation,
 )
 
@@ -264,6 +264,55 @@ class PresentationTests(unittest.TestCase):
         self.rejected(lambda m,s,g:m['members'][0]['instructionRecords'][0]['supportRecords'][0].update(run_id='foreign'))
         self.rejected(lambda m,s,g:m['members'][0]['native']['actions'][0].update(unknown_parameters_json='[]'))
         self.rejected(lambda m,s,g:m['members'][0]['native']['actions'][0].update(evidence_json='[]'))
+
+    def test_both_action_rows_must_belong_to_selected_run(self):
+        for target in ('action', 'record', 'both', 'missing-action', 'missing-record'):
+            args = fixture()
+            member = args[0]['members'][0]
+            action = member['native']['actions'][0]
+            record = member['instructionRecords'][0]
+            record['actionRecord'] = copy.deepcopy(action)
+            if target in ('action', 'both'):
+                action['run_id'] = 'recipe-actions:' + sha('foreign')
+            if target in ('record', 'both'):
+                record['actionRecord']['run_id'] = 'recipe-actions:' + sha('foreign')
+            if target == 'missing-action':
+                del action['run_id']
+            if target == 'missing-record':
+                del record['actionRecord']['run_id']
+            self.assertEqual(record['supportRecords'][0]['run_id'],
+                             member['native']['run']['run_id'])
+            before = copy.deepcopy(args)
+            with self.subTest(target=target):
+                with self.assertRaisesRegex(SourceContextPresentationError, 'instruction-run-binding'):
+                    present(*args)
+                self.assertEqual(args, before)
+
+    def test_complete_admission_limits_and_unknown_restrictions_survive(self):
+        args = fixture()
+        limits = {'status': 'present', 'allowedPurpose': 'PRIVATE_INTERNAL_ATTRIBUTED_SOURCE_ONLY',
+                  'publicRedistributionQualified': False,
+                  'unknownFutureRightsRestriction': {'exact': 'RETAIN café 😀',
+                      'unknownFlags': [False, None, {'unreviewed': True}]}}
+        args[0]['admissionLimits'] = copy.deepcopy(limits)
+        before = copy.deepcopy(args)
+        out = present(*args)
+        self.assertEqual(out['admissionLimits'], limits)
+        self.assertEqual(out['snapshot'], args[1])
+        out['admissionLimits']['unknownFutureRightsRestriction']['unknownFlags'].clear()
+        self.assertEqual(args, before)
+
+    def test_preserved_admission_limits_still_obey_whole_output_cap(self):
+        args = fixture(contexts=10, provenance_extra=18000)
+        base = present(*args)
+        padding = MAX_OUTPUT_BYTES - len(encoded(base)) + 1
+        self.assertGreater(padding, 0)
+        args[0]['admissionLimits']['unknownFutureRestriction'] = 'x' * padding
+        self.assertLess(len(encoded(args[0])), MAX_INPUT_BYTES)
+        before = copy.deepcopy(args)
+        with self.assertRaisesRegex(SourceContextPresentationError, 'json-byte-bound'):
+            present(*args)
+        self.assertEqual(args, before)
 
     def test_input_bytes_nodes_depth_and_count_limits(self):
         self.rejected(lambda m,s,g:m.update(padding='x'*MAX_INPUT_BYTES),code='json-byte-bound')
