@@ -310,5 +310,51 @@ class GoldBarcodeLookupTests(unittest.TestCase):
             self.assertLess(result['limits']['rowsRead'],10000)
             self.assertFalse(result['sourceReferenceNutritionTransfer'])
 
+    def test_distinct_occurrence_only_citation_is_returned_with_rights(self):
+        p,q,_=fixture();citation=copy.deepcopy(p['common']['citations'][0])
+        citation.update(id='occurrence-only',license='Generated occurrence-only license',
+                        attribution='Generated occurrence-only attribution')
+        p['common']['citations'].append(citation)
+        next(o for o in p['occurrences'] if o['occurrence_id']=='product-occ')['citation_ids'].append('occurrence-only')
+        proposal=base.build(p,q)
+        self.assertEqual('verified',next(o for o in proposal['rows']['gold_occurrences'] if o['occurrence_id']=='product-occ')['state'])
+        with base.sqlite_proposal(proposal) as db:
+            result=reader.read_barcode(db,CODE,selection=SELECTED)
+            self.assertEqual(1,len(result['paths']))
+            self.assertEqual(citation,result['citations']['occurrence-only'])
+            for node in result['entities'].values():
+                for occurrence in node['sourceRecords']:
+                    for cid in occurrence['payload']['citation_ids']:
+                        self.assertIn(cid,result['citations'])
+
+    def test_bad_occurrence_provenance_holds_only_affected_sugar_sibling(self):
+        for failure in ('missing','private','license','attribution','wrong-id','empty-ids','wrong-ids-type','rights','support'):
+            with self.subTest(failure=failure):
+                p,q,scope=fixture(conditional=True);citation=copy.deepcopy(p['common']['citations'][0])
+                citation['id']='sugar-occurrence-only';p['common']['citations'].append(citation)
+                next(o for o in p['occurrences'] if o['occurrence_id']=='mention-occ')['citation_ids']=['cite','sugar-occurrence-only']
+                if failure=='rights':next(r for r in q['records'] if r['occurrence_id']=='mention-occ')['rights_state']='held'
+                if failure=='support':q['supports']=[s for s in q['supports'] if not(s['target_kind']=='resource' and s['target_id']=='mention')]
+                with base.sqlite_proposal(base.build(p,q)) as db:
+                    if failure=='missing':db.execute("DELETE FROM gold_citations WHERE citation_id='sugar-occurrence-only'")
+                    elif failure=='private':db.execute("UPDATE gold_citations SET payload_json=json_set(payload_json,'$.scope.visibility','private') WHERE citation_id='sugar-occurrence-only'")
+                    elif failure in ('license','attribution'):
+                        db.execute("UPDATE gold_citations SET payload_json=json_remove(payload_json,?) WHERE citation_id='sugar-occurrence-only'",('$.'+failure,))
+                    elif failure=='wrong-id':db.execute("UPDATE gold_citations SET payload_json=json_set(payload_json,'$.id','other-citation') WHERE citation_id='sugar-occurrence-only'")
+                    elif failure in ('empty-ids','wrong-ids-type'):
+                        value=[] if failure=='empty-ids' else 'sugar-occurrence-only'
+                        row=json.loads(db.execute("SELECT payload_json FROM gold_occurrences WHERE occurrence_id='mention-occ'").fetchone()[0])
+                        row['citation_ids']=value
+                        db.execute("UPDATE gold_occurrences SET payload_json=? WHERE occurrence_id='mention-occ'",(json.dumps(row),))
+                    result=reader.read_barcode(db,CODE,selection=SELECTED,
+                        selections=[dict(groupId='sugar',branchId='white',sourceScope=scope)])
+                    self.assertEqual(1,len(result['paths']))
+                    self.assertEqual('water-mention',result['entities'][result['paths'][0]['mentionEntityId']]['resourceId'])
+                    self.assertTrue(result['held'])
+                    self.assertFalse(any(n['resourceId']=='mention' for n in result['entities'].values()))
+                    for node in result['entities'].values():
+                        for occurrence in node['sourceRecords']:
+                            for cid in occurrence['payload']['citation_ids']:self.assertIn(cid,result['citations'])
+
 
 if __name__=='__main__':unittest.main()

@@ -55,6 +55,14 @@ map also contains source-qualified candidates examined while evaluating choices;
 its presence is not selection or a recommendation. Full source resource records,
 occurrences, original names/languages, qualified original/English text records,
 source paths, citation rights/attribution and recorded holds remain available.
+Every citation ID in a returned occurrence's `citation_ids` must resolve to its
+matching public citation body with nonempty licence and attribution, including
+citations used only by that occurrence. Bodies load by bounded primary-key
+lookup and reuse the per-call citation cache; no global citation scan is added.
+Persisted verified occurrences retain their existing operation-rights/review
+qualification; no new `occurrence` support kind or source-use permission is
+invented. Missing/invalid occurrence provenance holds the affected entity and
+its paths, while unrelated qualified siblings remain available.
 JSON database columns are decoded once in the response (`payload`, `evidence`,
 `context`, `original` and `sourcePayload`); duplicate escaped transport copies of
 the same JSON are omitted. All decoded source values, raw original text and

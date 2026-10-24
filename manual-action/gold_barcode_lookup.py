@@ -156,6 +156,25 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
             if not valid:return False
             found[cid]=valid[0]
         out['citations'].update(found);return True
+    def occurrence_citations(origin):
+        payload=json.loads(origin['payload_json'])
+        ids=payload.get('citation_ids') if type(payload) is dict else None
+        if type(ids) is not list or not ids or any(type(cid) is not str or not cid for cid in ids):return None
+        found={}
+        for cid in ids:
+            value=out['citations'].get(cid)
+            if value is None:
+                if cid not in budget.citation_rows:
+                    budget.citation_rows[cid]=budget.query('SELECT payload_json FROM gold_citations WHERE citation_id=?',(cid,))
+                rows=budget.citation_rows[cid]
+                if len(rows)!=1:return None
+                value=json.loads(rows[0]['payload_json'])
+            if (type(value) is not dict or value.get('id')!=cid
+                or type(value.get('scope')) is not dict or value['scope'].get('visibility')!='public'
+                or any(type(value.get(k)) is not str or not value[k].strip() for k in ('license','attribution'))):
+                return None
+            found[cid]=value
+        return found
     def node(eid):
         if eid in cache:return cache[eid]
         rows=budget.query('SELECT * FROM gold_entities WHERE entity_id=?',(eid,))
@@ -167,6 +186,13 @@ def read_barcode(db,barcode,*,selection,selections=(),selected_product_id=None,
                              'ON x.occurrence_id=o.occurrence_id WHERE x.entity_id=?',(eid,))
         if not origins or any(o['state']!='verified' for o in origins):
             hold(eid,'source occurrence qualification held');return None
+        origin_citations={}
+        for origin in origins:
+            citations=occurrence_citations(origin)
+            if citations is None:
+                hold(origin['occurrence_id'],'source occurrence citation provenance held');return None
+            origin_citations.update(citations)
+        out['citations'].update(origin_citations)
         texts=budget.query('SELECT * FROM gold_texts WHERE entity_id=? AND state=\'verified\'',(eid,))
         names={n.get('id'):n for n in p.get('names',[]) if type(n) is dict}
         qualified=[]
