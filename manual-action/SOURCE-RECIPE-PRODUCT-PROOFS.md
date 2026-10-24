@@ -87,6 +87,14 @@ evidence only; they do not have this new typed receipt shape.
   Exact claim citation SHA/visibility/license/attribution are compared. All used
   citations must be verified, licensed, attributed, and authorized for this purpose,
   including private material. Visibility alone is never processing permission.
+  The actual payload may carry visibility at `scope.visibility`, or at the legacy
+  flat `visibility` key. Resolution is read-only: the original payload and its hash
+  are preserved. Each present form must be exactly `public` or `private`; if both
+  are present they must agree. A present `scope` must be an object containing valid
+  visibility. Missing, malformed or conflicting forms hold the claim rather than
+  falling back to another form. The same resolver applies to support-only citations.
+  No flattening or inserted mirror field is required or accepted as a replacement
+  for the exact hash-bound source payload.
 * Each endpoint/relationship/declaration row has all required record-or-field or
   relationship supports. Support rows contain distinct `id`, exact `targetId`,
   `kind` (`record`, `field`, `relationship`), verified `state`, `citationId`, and

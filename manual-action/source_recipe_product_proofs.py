@@ -190,6 +190,22 @@ def _index(rows):
     return out
 
 
+def _citation_visibility(payload):
+    """Read existing citation shapes without changing the hash-bound payload."""
+    _require(type(payload) is dict, "citation payload required")
+    values = []
+    if "scope" in payload:
+        scope = payload["scope"]
+        _require(type(scope) is dict and "visibility" in scope, "citation scope visibility missing")
+        values.append(scope["visibility"])
+    if "visibility" in payload:
+        values.append(payload["visibility"])
+    _require(values and all(type(v) is str and v in ("public", "private") for v in values),
+             "citation visibility missing or invalid")
+    _require(len(set(values)) == 1, "conflicting citation visibility")
+    return values[0]
+
+
 def _supports(row, citations, purpose, allowed_kinds):
     supports = row["supports"]
     _require(type(supports) is list and supports, "missing support")
@@ -212,7 +228,7 @@ def _supports(row, citations, purpose, allowed_kinds):
         citation = citations[support["citationId"]]
         _require(citation["state"] == "verified" and citation["allowedPurpose"] == purpose,
                  "citation purpose/state")
-        _require(citation["payload"]["visibility"] in ("public", "private")
+        _require(_citation_visibility(citation["payload"]) in ("public", "private")
                  and citation["payload"].get("license") and
                  citation["payload"].get("attribution"), "citation rights missing")
 
@@ -225,7 +241,9 @@ def _closure(claim, facts, rules):
         actual = citations[cite["id"]]
         _require(canonical_sha256(actual["payload"]) == cite["payloadSHA256"],
                  "citation payload mismatch")
-        for key in ("visibility", "license", "attribution"):
+        _require(_citation_visibility(actual["payload"]) == cite["visibility"],
+                 "citation visibility binding mismatch")
+        for key in ("license", "attribution"):
             _require(actual["payload"][key] == cite[key], "citation binding mismatch")
     endpoints = _index(facts["endpoints"])
     _require(len(endpoints) == 4, "four exact endpoints required")
